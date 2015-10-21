@@ -1,0 +1,38 @@
+{
+  "name": "gorgias",
+  "version": "1.0.0",
+  "description": "Gorgias",
+  "main": "index.js",
+  "private": true,
+  "repository": "https://github.com/gorgias/gorgias",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "browserify": "^11.2.0",
+    "gulp": "^3.9.0",
+    "history": "^1.12.5",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "react-redux": "^4.0.0",
+    "react-router": "^1.0.0-rc3",
+    "redux": "^3.0.2"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babelify": "^6.3.0",
+    "browserify": "^11.2.0",
+    "eslint": "^1.6.0",
+    "eslint-plugin-react": "^3.5.1",
+    "gulp-size": "^2.0.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.4.2",
+    "gulp-util": "^3.0.6",
+    "nodemon": "^1.7.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0"
+  }
+}
