@@ -1,6 +1,6 @@
 import React from 'react'
-import RuleForm from './RuleForm'
-import RuleList from './RuleList'
+import RuleForm from '../../components/rule/RuleForm'
+import RuleList from '../../components/rule/RuleList'
 
 class RuleBox extends React.Component {
     constructor() {
