@@ -1,6 +1,7 @@
 import React from 'react'
 import RuleForm from '../../components/rule/RuleForm'
 import RuleList from '../../components/rule/RuleList'
+import reqwest from 'reqwest'
 
 class RuleBox extends React.Component {
     constructor() {
@@ -10,13 +11,12 @@ class RuleBox extends React.Component {
     }
 
     handleCommentSubmit(comment) {
-        $.ajax({
+        reqwest({
             url: this.props.url,
-            dataType: 'json',
-            type: 'POST',
+            type: 'json',
+            method: 'POST',
             data: JSON.stringify(comment),
             contentType: "application/json",
-            processData: false,
             success: function (data) {
                 this.setState({data: this.state.data.concat([data])})
             }.bind(this),
@@ -27,10 +27,11 @@ class RuleBox extends React.Component {
     }
 
     componentDidMount() {
-        $.ajax({
+        reqwest({
             url: this.props.url,
-            dataType: 'json',
-            cache: false,
+            type: 'json',
+            method: 'get',
+            contentType: "application/json",
             success: function (data) {
                 this.setState({data: data['data']})
             }.bind(this),
