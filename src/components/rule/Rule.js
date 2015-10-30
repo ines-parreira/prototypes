@@ -2,11 +2,14 @@ import React from 'react'
 import RuleForm from './RuleForm'
 import RuleList from './RuleList'
 
-const RuleBox = React.createClass({
-    getInitialState: function () {
-        return {data: []}
-    },
-    handleCommentSubmit: function (comment) {
+class RuleBox extends React.Component {
+    constructor() {
+        super()
+        this.handleCommentSubmit = this.handleCommentSubmit.bind(this)
+        this.state = {data: []}
+    }
+
+    handleCommentSubmit(comment) {
         $.ajax({
             url: this.props.url,
             dataType: 'json',
@@ -15,17 +18,15 @@ const RuleBox = React.createClass({
             contentType: "application/json",
             processData: false,
             success: function (data) {
-                var all_datas = this.state.data
-                all_datas.push(data)
-
-                this.setState({data: all_datas})
+                this.setState({data: this.state.data.concat([data])})
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         })
-    },
-    componentDidMount: function () {
+    }
+
+    componentDidMount() {
         $.ajax({
             url: this.props.url,
             dataType: 'json',
@@ -37,8 +38,9 @@ const RuleBox = React.createClass({
                 console.error(this.props.url, status, err.toString())
             }.bind(this)
         })
-    },
-    render: function () {
+    }
+
+    render() {
         return (
             <div className="row ruleBox">
                 <div className="col-md-12">
@@ -51,6 +53,6 @@ const RuleBox = React.createClass({
             </div>
         )
     }
-})
+}
 
 export default RuleBox

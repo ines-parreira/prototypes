@@ -1,7 +1,12 @@
 import React from 'react'
 
-const RuleForm = React.createClass({
-    handleSubmit: function (e) {
+class RuleForm extends React.Component {
+    constructor() {
+        super()
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleSubmit(e) {
         e.preventDefault()
         var type = this.refs.type.value.trim()
         var code = this.refs.code.value.trim()
@@ -17,8 +22,9 @@ const RuleForm = React.createClass({
         this.refs.code.value = ''
 
         return
-    },
-    render: function () {
+    }
+
+    render() {
         return (
             <form className="ruleForm form" onSubmit={this.handleSubmit}>
                 <div className="form-group">
@@ -33,8 +39,8 @@ const RuleForm = React.createClass({
                 </div>
                 <button type="submit" className="btn btn-default">Submit</button>
             </form>
-        );
+        )
     }
-});
+}
 
 export default RuleForm
