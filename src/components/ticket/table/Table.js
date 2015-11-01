@@ -5,7 +5,7 @@ import Body from './Body'
 const Table = React.createClass({
     render() {
         return (
-            <table className="TicketTable">
+            <table className="ui very basic selectable table">
                 <Head rows={this.props.fields} />
                 <Body rows={this.props.tickets} />
             </table>

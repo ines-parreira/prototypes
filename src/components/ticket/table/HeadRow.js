@@ -1,15 +1,14 @@
 import React from 'react'
+import _ from 'lodash'
 
-const HeadRow = React.createClass({
+export default class HeadRow extends React.Component {
     render() {
         return (
             <tr className="HeadRow">
-                {this.params.row.map((field) => {
-                    return <th>{field}</th>
+                {this.props.row.map((field, i) => {
+                    return <th key={i}>{field}</th>
                 })}
             </tr>
         )
     }
-})
-
-export default HeadRow
+}

@@ -1,15 +1,16 @@
 import React from 'react'
+import _ from 'lodash'
 
-const Row = React.createClass({
+export default class Row extends React.Component {
     render() {
         return (
             <tr className="Row">
-                {this.params.row.map((field) => {
-                    return <td>{field}</td>
+                {_.map(this.props.row, (value, field) => {
+                    return (<td key={field}>
+                        {value}
+                    </td>)
                 })}
             </tr>
         )
     }
-})
-
-export default Row
+}

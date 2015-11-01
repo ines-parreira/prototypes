@@ -1,9 +1,9 @@
 import React from 'react'
-import RuleForm from '../../components/rule/RuleForm'
-import RuleList from '../../components/rule/RuleList'
+import RuleForm from './RuleForm'
+import RuleList from './RuleList'
 import reqwest from 'reqwest'
 
-class RuleBox extends React.Component {
+export default class RuleContainer extends React.Component {
     constructor() {
         super()
         this.handleCommentSubmit = this.handleCommentSubmit.bind(this)
@@ -12,16 +12,16 @@ class RuleBox extends React.Component {
 
     handleCommentSubmit(comment) {
         reqwest({
-            url: this.props.url,
+            url: '/api/rules/',
             type: 'json',
             method: 'POST',
             data: JSON.stringify(comment),
-            contentType: "application/json",
+            contentType: 'application/json',
             success: function (data) {
                 this.setState({data: this.state.data.concat([data])})
             }.bind(this),
             error: function (xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
+                console.error(this.props.url, status, err.toString())
             }.bind(this)
         })
     }
@@ -31,7 +31,7 @@ class RuleBox extends React.Component {
             url: this.props.url,
             type: 'json',
             method: 'get',
-            contentType: "application/json",
+            contentType: 'application/json',
             success: function (data) {
                 this.setState({data: data['data']})
             }.bind(this),
@@ -55,5 +55,3 @@ class RuleBox extends React.Component {
         )
     }
 }
-
-export default RuleBox

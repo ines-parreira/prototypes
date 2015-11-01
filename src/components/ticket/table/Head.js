@@ -1,16 +1,15 @@
 import React from 'react'
-import HeadRow from './HeadRow'
 
-const Head = React.createClass({
+export default class Head extends React.Component {
     render() {
         return (
             <thead className="Head">
-            {this.props.rows.map((row) => {
-                return <HeadRow row={row} key={row.key} />
-            })}
+                <tr>
+                    {this.props.rows.map((row, i) => {
+                        return <th key={i}>{row}</th>
+                    })}
+                </tr>
             </thead>
         )
     }
-})
-
-export default Head
+}
