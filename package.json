@@ -13,12 +13,12 @@
   "dependencies": {
     "browserify": "^11.2.0",
     "gulp": "^3.9.0",
-    "history": "^1.12.5",
+    "history": "^1.13.0",
     "react": "^0.14.1",
     "react-dom": "^0.14.1",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0-rc3",
-    "redux": "^3.0.2"
+    "redux": "^3.0.4"
   },
   "devDependencies": {
     "babel": "^5.8.23",
