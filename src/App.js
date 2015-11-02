@@ -9,10 +9,28 @@ import Dashboard from './components/Dashboard'
 class App extends React.Component {
     render() {
         return (
-            <div className=''>
+            <div className="App">
                 <Sidebar />
-                <div className='pusher'>
-                    {this.props.children}
+
+                <div className="content pusher">
+                    <div className="ui secondary menu">
+                        <a className="active item">Show more fields</a>
+
+                        <div className="right menu">
+                            <div className="item">
+                                <div className="ui search">
+                                    <div className="ui icon input">
+                                        <input className="prompt" type="text" placeholder="Search..."/>
+                                        <i className="search icon"></i>
+                                    </div>
+                                    <div className="results"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="ui grid container">
+                        {this.props.children}
+                    </div>
                 </div>
             </div>
         )

@@ -38,8 +38,8 @@ export default class Dashboard extends React.Component {
 
     render() {
         return (
-            <div className="">
-                <h1 class="ui dividing header">My Tickets</h1>
+            <div className="column">
+                <h1 className="ui header">My Tickets</h1>
                 <TicketTable
                     fields={this.state.fields}
                     tickets={this.state.tickets}/>
