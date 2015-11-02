@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import { addRule } from './rule'
+import rules from './rule'
 
-const ruleApp = combineReducers({
-    addRule
+const ruleReducer = combineReducers({
+    rules
 })
 
-export default ruleApp
+export default ruleReducer

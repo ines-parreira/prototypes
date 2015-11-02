@@ -3,13 +3,12 @@ import React from 'react'
 class RuleItem extends React.Component{
     render(){
         return (
-            <div className="ruleItem">
-                <div className="title">
-                    <h4>{this.props.id}. {this.props.title}
-                        <small>{this.props.created_datetime}</small>
-                    </h4>
+            <div className="ruleItem item">
+                <div className="content">
+                    <div className="header">{this.props.id}. {this.props.title}</div>
+                    <code>{ this.props.code }</code>
+                    <small>{this.props.created_datetime}</small>
                 </div>
-                <code>{ this.props.code }</code>
                 <br />
             </div>
         )

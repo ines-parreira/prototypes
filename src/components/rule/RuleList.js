@@ -9,7 +9,7 @@ class RuleList extends React.Component{
             )
         })
         return (
-            <div className="ruleList">
+            <div className="ui middle aligned divided list">
                 { ruleNodes }
             </div>
         )

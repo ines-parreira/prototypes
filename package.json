@@ -33,6 +33,8 @@
     "gulp-util": "^3.0.6",
     "immutable": "^3.7.5",
     "nodemon": "^1.7.1",
+    "redux-devtools": "^2.1.5",
+    "redux-thunk": "^1.0.0",
     "reqwest": "^2.0.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",

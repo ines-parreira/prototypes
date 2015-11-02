@@ -1,57 +1,87 @@
 import React from 'react'
-import RuleForm from './RuleForm'
-import RuleList from './RuleList'
-import reqwest from 'reqwest'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-export default class RuleContainer extends React.Component {
-    constructor() {
-        super()
-        this.handleCommentSubmit = this.handleCommentSubmit.bind(this)
-        this.state = {data: []}
-    }
+import RuleForm from '../../components/rule/RuleForm'
+import RuleList from '../../components/rule/RuleList'
+import Sidebar from '../../components/rule/Sidebar'
+import * as RuleActions from '../../actions/rule'
 
-    handleCommentSubmit(comment) {
-        reqwest({
-            url: '/api/rules/',
-            type: 'json',
-            method: 'POST',
-            data: JSON.stringify(comment),
-            contentType: 'application/json',
-            success: function (data) {
-                this.setState({data: this.state.data.concat([data])})
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error(this.props.url, status, err.toString())
-            }.bind(this)
-        })
-    }
+class RuleBox extends React.Component {
+    //handleCommentSubmit(comment) {
+    //    reqwest({
+    //        url: this.props.url,
+    //        type: 'json',
+    //        method: 'POST',
+    //        data: JSON.stringify(comment),
+    //        contentType: "application/json",
+    //        success: function (data) {
+    //            this.setState({data: this.state.data.concat([data])})
+    //        }.bind(this),
+    //        error: function (xhr, status, err) {
+    //            console.error(this.props.url, status, err.toString());
+    //        }.bind(this)
+    //    })
+    //}
 
     componentDidMount() {
-        reqwest({
-            url: this.props.url,
-            type: 'json',
-            method: 'get',
-            contentType: 'application/json',
-            success: function (data) {
-                this.setState({data: data['data']})
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error(this.props.url, status, err.toString())
-            }.bind(this)
-        })
+        const { rules, actions } = this.props
+        actions.fetchRules("/api/rules")
     }
 
     render() {
-        return (
-            <div className="row ruleBox">
-                <div className="col-md-12">
-                    <h3>Rules</h3>
-                    <RuleList data={this.state.data}/>
+        const {rules, actions } = this.props
 
-                    <h3>Adding a new rule</h3>
-                    <RuleForm onCommentSubmit={this.handleCommentSubmit}/>
+        return (
+            <div className="App">
+                <Sidebar />
+
+                <div className="content pusher">
+                    <div className="ui secondary menu">
+                        <div className="right menu">
+                            <div className="item">
+                                <div className="ui search">
+                                    <div className="ui icon input">
+                                        <input className="prompt" type="text" placeholder="Search..."/>
+                                        <i className="search icon"></i>
+                                    </div>
+                                    <div className="results"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="ui grid">
+                        <div className="six column">
+                            <RuleList data={rules}/>
+
+                            <h3 className="ui header">Adding a new rule</h3>
+                            <RuleForm actions={actions}/>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        rules: state.rules
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(RuleActions, dispatch)
+    }
+}
+
+export
+default
+
+connect(mapStateToProps,
+    mapDispatchToProps)
+
+(
+    RuleBox
+)

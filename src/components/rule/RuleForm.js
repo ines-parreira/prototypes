@@ -26,18 +26,18 @@ class RuleForm extends React.Component {
 
     render() {
         return (
-            <form className="ruleForm form" onSubmit={this.handleSubmit}>
-                <div className="form-group">
+            <form className="ui form" onSubmit={this.handleSubmit}>
+                <div className="field">
                     <label htmlFor="ruletype">Rule type</label>
                     <input type="text" className="form-control" placeholder="Type of the rule" ref="type"
                            id="ruletype"/>
                 </div>
-                <div className="form-group">
+                <div className="field">
                     <label htmlFor="rulecode">Rule code</label>
                     <textarea type="text" className="form-control" placeholder="Code of the rule" ref="code"
                               id="rulecode"/>
                 </div>
-                <button type="submit" className="btn btn-default">Submit</button>
+                <button type="submit" className="ui button">Submit</button>
             </form>
         )
     }

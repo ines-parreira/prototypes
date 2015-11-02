@@ -1,6 +1,10 @@
-import { ADD_RULE } from '../actions/rule'
+import { ADD_RULE, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS } from '../actions/rule'
+import Immutable from 'immutable'
+import reqwest from 'reqwest'
 
-function addRule(state = [], action = {}) {
+const initialState = Immutable.List([])
+
+function rules(state = initialState, action) {
     switch (action.type) {
         case ADD_RULE:
             return [
@@ -10,9 +14,16 @@ function addRule(state = [], action = {}) {
                     code: action.code
                 }
             ]
+
+        case RULES_REQUESTS_POSTS:
+            return state
+
+        case RULES_RECEIVE_POSTS:
+            return action.rules
+
         default:
             return state
     }
 }
 
-export default addRule
+export default rules
