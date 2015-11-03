@@ -38,7 +38,7 @@ class RuleForm extends React.Component {
                     <textarea type="text" className="form-control" placeholder="Code of the rule" ref="code"
                               id="rulecode"/>
                 </div>
-                <button type="submit" className="ui button">Submit</button>
+                <button type="submit" className="ui positive button">Submit</button>
             </form>
         )
     }
