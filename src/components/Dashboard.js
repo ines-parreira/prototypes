@@ -1,4 +1,5 @@
 import React from 'react'
+import Search from './Search'
 import TicketTable from './ticket/table/Table'
 
 export default class Dashboard extends React.Component {
@@ -38,7 +39,17 @@ export default class Dashboard extends React.Component {
 
     render() {
         return (
-            <div className="column">
+            <div className="ui container">
+                <div className="ui secondary menu">
+                    <a className="active item">Show more fields</a>
+
+                    <div className="right menu">
+                        <div className="item">
+                            <Search />
+                        </div>
+                    </div>
+                </div>
+
                 <h1 className="ui header">My Tickets</h1>
                 <TicketTable
                     fields={this.state.fields}

@@ -1,48 +1,43 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute } from 'react-router'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
 
-import RuleContainer from './components/rule/RuleContainer'
 import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
+import RuleBox from './components/rule/RuleContainer'
+
+import RootReducer from './reducers/index'
 
 class App extends React.Component {
     render() {
         return (
             <div className="App">
                 <Sidebar />
-
                 <div className="content pusher">
-                    <div className="ui secondary menu">
-                        <a className="active item">Show more fields</a>
-
-                        <div className="right menu">
-                            <div className="item">
-                                <div className="ui search">
-                                    <div className="ui icon input">
-                                        <input className="prompt" type="text" placeholder="Search..."/>
-                                        <i className="search icon"></i>
-                                    </div>
-                                    <div className="results"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ui grid container">
-                        {this.props.children}
-                    </div>
+                    {this.props.children}
                 </div>
             </div>
         )
     }
 }
 
+const createStoreWithMiddleware = applyMiddleware(
+  thunk
+)(createStore)
+
+let store = createStoreWithMiddleware(RootReducer)
+
 ReactDOM.render((
-    <Router>
-        <Route path="/" component={App}>
-            <IndexRoute component={Dashboard}/>
-            <Route path="dashboard" component={Dashboard}/>
-            <Route path="rules" component={RuleContainer}/>
-        </Route>
-    </Router>
+    <Provider store={store}>
+        <Router>
+            <Route path="/" component={App}>
+                <IndexRoute component={Dashboard}/>
+                <Route path="dashboard" component={Dashboard}/>
+                <Route path="rules" component={RuleBox}/>
+            </Route>
+        </Router>
+    </Provider>
 ), document.getElementById('App'))

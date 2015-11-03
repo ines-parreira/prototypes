@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'react-router'
 
 export default class Sidebar extends React.Component {
     render() {
@@ -8,6 +9,7 @@ export default class Sidebar extends React.Component {
                     Tickets
                     <i className="dropdown icon"></i>
                 </div>
+
                 <div className="item">
                     <div className="header">FAVORITES</div>
                     <div className="menu">
@@ -36,9 +38,8 @@ export default class Sidebar extends React.Component {
                     </div>
                 </div>
 
-                <a className="ui bound bottom sticky active item">
-                    Avi Davis
-                    <i className="ellipsis horizontal icon"></i>
+                <a className="item bottom fixed">
+                    Avi Davis <i className="ellipsis horizontal icon"></i>
                 </a>
             </div>
         )
