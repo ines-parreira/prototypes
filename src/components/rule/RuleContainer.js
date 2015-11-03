@@ -16,7 +16,7 @@ class RuleBox extends React.Component {
         const {rules, actions } = this.props
 
         return (
-            <div className="Rules">
+            <div className="ui container Rules">
                 <RuleList data={rules}/>
 
                 <h3 className="ui header">Adding a new rule</h3>
