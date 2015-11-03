@@ -8,22 +8,6 @@ import Sidebar from '../../components/rule/Sidebar'
 import * as RuleActions from '../../actions/rule'
 
 class RuleBox extends React.Component {
-    //handleCommentSubmit(comment) {
-    //    reqwest({
-    //        url: this.props.url,
-    //        type: 'json',
-    //        method: 'POST',
-    //        data: JSON.stringify(comment),
-    //        contentType: "application/json",
-    //        success: function (data) {
-    //            this.setState({data: this.state.data.concat([data])})
-    //        }.bind(this),
-    //        error: function (xhr, status, err) {
-    //            console.error(this.props.url, status, err.toString());
-    //        }.bind(this)
-    //    })
-    //}
-
     componentDidMount() {
         const { rules, actions } = this.props
         actions.fetchRules("/api/rules")

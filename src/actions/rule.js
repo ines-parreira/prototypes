@@ -3,16 +3,25 @@ import reqwest from 'reqwest'
 
 /* Action types. */
 
-export const ADD_RULE = 'ADD_RULE'
+export const ADD_RULE_START = 'ADD_RULE_START'
+export const ADD_RULE_END = 'ADD_RULE_END'
+
 export const RULES_REQUESTS_POSTS = 'RULES_REQUESTS_POSTS'
 export const RULES_RECEIVE_POSTS = 'RULES_RECEIVE_POSTS'
 
 /* Actions */
-export function addRule(title, code) {
+export function addRuleStart(type, code) {
     return {
-        type: ADD_RULE,
-        title,
+        type: ADD_RULE_START,
+        type,
         code
+    }
+}
+
+export function addRuleEnd(rule){
+    return {
+        type: ADD_RULE_END,
+        rule
     }
 }
 
@@ -30,8 +39,23 @@ export function receiveRules(rules) {
     }
 }
 
-export function fetchRules(url) {
+export function submitRule(url, comment) {
+    return function (dispatch) {
+        dispatch(addRuleStart(comment.type, comment.code))
 
+        return reqwest({
+            url: url,
+            type: 'json',
+            method: 'POST',
+            data: JSON.stringify(comment),
+            contentType: "application/json"
+        }).then(function (resp) {
+            dispatch(addRuleEnd(resp))
+        })
+    }
+}
+
+export function fetchRules(url) {
     return function (dispatch) {
         dispatch(requestRules(url))
 

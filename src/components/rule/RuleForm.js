@@ -16,7 +16,8 @@ class RuleForm extends React.Component {
         }
 
 
-        this.props.onCommentSubmit({type: type, code: code})
+        const { rules, actions } = this.props
+        actions.submitRule("/api/rules/", {type: type, code: code})
 
         this.refs.type.value = ''
         this.refs.code.value = ''
