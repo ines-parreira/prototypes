@@ -5,7 +5,7 @@ class RuleItem extends React.Component{
         return (
             <div className="ruleItem item">
                 <div className="content">
-                    <div className="header">{this.props.id}. {this.props.title}</div>
+                    <div className="header">{this.props.id}. {this.props.type}</div>
                     <code>{ this.props.code }</code>
                     <small>{this.props.created_datetime}</small>
                 </div>
