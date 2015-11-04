@@ -1,19 +1,13 @@
 import { combineReducers } from 'redux'
 import reqwest from 'reqwest'
+import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS } from '../constants/rule/ActionTypes'
 
-/* Action types. */
-
-export const ADD_RULE_START = 'ADD_RULE_START'
-export const ADD_RULE_END = 'ADD_RULE_END'
-
-export const RULES_REQUESTS_POSTS = 'RULES_REQUESTS_POSTS'
-export const RULES_RECEIVE_POSTS = 'RULES_RECEIVE_POSTS'
 
 /* Actions */
 export function addRuleStart(type, code) {
     return {
         type: ADD_RULE_START,
-        type,
+        title: type,
         code
     }
 }

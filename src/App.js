@@ -48,5 +48,5 @@ ReactDOM.render((
         <DebugPanel top right bottom>
             <DevTools store={store} monitor={LogMonitor} />
         </DebugPanel>
-    </div> 
+    </div>
 ), document.getElementById('App'))
