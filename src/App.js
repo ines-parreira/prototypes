@@ -1,9 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute } from 'react-router'
-import { createStore, applyMiddleware } from 'redux'
+import { compose, createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+import { devTools, persistState } from 'redux-devtools'
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react'
 
 import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
@@ -24,20 +26,27 @@ class App extends React.Component {
     }
 }
 
-const createStoreWithMiddleware = applyMiddleware(
-  thunk
+const createStoreWithMiddleware = compose(
+    applyMiddleware(thunk),
+    devTools(),
+    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore)
 
 let store = createStoreWithMiddleware(RootReducer)
 
 ReactDOM.render((
-    <Provider store={store}>
-        <Router>
-            <Route path="/" component={App}>
-                <IndexRoute component={Dashboard}/>
-                <Route path="dashboard" component={Dashboard}/>
-                <Route path="rules" component={RuleBox}/>
-            </Route>
-        </Router>
-    </Provider>
+    <div>
+        <Provider store={store}>
+            <Router>
+                <Route path="/" component={App}>
+                    <IndexRoute component={Dashboard}/>
+                    <Route path="dashboard" component={Dashboard}/>
+                    <Route path="rules" component={RuleBox}/>
+                </Route>
+            </Router>
+        </Provider>
+        <DebugPanel top right bottom>
+            <DevTools store={store} monitor={LogMonitor} />
+        </DebugPanel>
+    </div> 
 ), document.getElementById('App'))
