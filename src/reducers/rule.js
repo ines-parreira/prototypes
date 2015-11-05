@@ -1,10 +1,10 @@
-import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS } from '../constants/rule/ActionTypes'
+import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, ERROR_MESSAGE } from '../constants/rule/ActionTypes'
 import Immutable from 'immutable'
 import reqwest from 'reqwest'
 
 const initialState = Immutable.List([])
 
-function rules(state = initialState, action) {
+export function rules(state = initialState, action) {
     switch (action.type) {
         case ADD_RULE_END:
             return state.push(action.rule)
@@ -20,4 +20,11 @@ function rules(state = initialState, action) {
     }
 }
 
-export default rules
+export function error(state='', action){
+    switch (action.type){
+        case ERROR_MESSAGE:
+            return action.errormsg
+        default:
+            return state
+    }
+}

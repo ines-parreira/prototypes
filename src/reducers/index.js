@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux'
-import rules from './rule'
+import { rules, error } from './rule'
 
 const RootReducer = combineReducers({
-    rules
+    rules,
+    error
 })
 
 export default RootReducer

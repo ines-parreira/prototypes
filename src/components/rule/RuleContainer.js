@@ -2,8 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import RuleForm from '../../components/rule/RuleForm'
-import RuleList from '../../components/rule/RuleList'
+import RuleForm from '../rule/RuleForm'
+import RuleList from '../rule/RuleList'
+import ErrorMessage from '../ErrorMessage'
 import * as RuleActions from '../../actions/rule'
 
 class RuleBox extends React.Component {
@@ -13,10 +14,11 @@ class RuleBox extends React.Component {
     }
 
     render() {
-        const {rules, actions } = this.props
+        const {rules, error, actions } = this.props
 
         return (
             <div className="ui container Rules">
+                <ErrorMessage error={error} />
                 <h3 className="ui header">List of rules</h3>
                 <RuleList data={rules}/>
                 <h3 className="ui header">Adding a new rule</h3>
@@ -28,7 +30,8 @@ class RuleBox extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        rules: state.rules
+        rules: state.rules,
+        error: state.error
     }
 }
 
@@ -38,12 +41,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export
-default
-
-connect(mapStateToProps,
-    mapDispatchToProps)
-
-(
-    RuleBox
-)
+export default connect(mapStateToProps, mapDispatchToProps)(RuleBox)

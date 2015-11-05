@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import reqwest from 'reqwest'
-import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS } from '../constants/rule/ActionTypes'
+import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, ERROR_MESSAGE } from '../constants/rule/ActionTypes'
 
 
 /* Actions */
@@ -12,7 +12,7 @@ export function addRuleStart(type, code) {
     }
 }
 
-export function addRuleEnd(rule){
+export function addRuleEnd(rule) {
     return {
         type: ADD_RULE_END,
         rule
@@ -33,6 +33,13 @@ export function receiveRules(rules) {
     }
 }
 
+export function errorMsg(errormsg) {
+    return {
+        type: ERROR_MESSAGE,
+        errormsg
+    }
+}
+
 export function submitRule(url, comment) {
     return function (dispatch) {
         dispatch(addRuleStart(comment.type, comment.code))
@@ -45,6 +52,8 @@ export function submitRule(url, comment) {
             contentType: "application/json"
         }).then(function (resp) {
             dispatch(addRuleEnd(resp))
+        }).fail(function (resp) {
+            dispatch(errorMsg('Ops, Server error.'))
         })
     }
 }
