@@ -1,4 +1,5 @@
 import React from 'react'
+import esprima from 'esprima'
 
 class RuleForm extends React.Component {
     constructor() {
@@ -17,7 +18,18 @@ class RuleForm extends React.Component {
 
 
         const { rules, actions } = this.props
-        actions.submitRule("/api/rules/", {type: type, code: code})
+
+        try {
+            var syntax = esprima.parse(code)
+        }
+        catch(err){
+            actions.errorMsg(err.message)
+            this.refs.type.value = ''
+            this.refs.code.value = ''
+            return
+        }
+
+        actions.submitRule("/api/rules/", {type: type, code: code, code_ast: JSON.stringify(syntax, null, 4)})
 
         this.refs.type.value = ''
         this.refs.code.value = ''
