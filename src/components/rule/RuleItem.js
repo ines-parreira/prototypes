@@ -1,7 +1,11 @@
 import React from 'react'
+import esprima from 'esprima'
+import Program from '../parser/Program'
 
 class RuleItem extends React.Component {
     render() {
+        var syntax = esprima.parse(this.props.code)
+
         return (
             <div className="ruleItem item">
                 <div className="content">
@@ -12,6 +16,7 @@ class RuleItem extends React.Component {
                     </pre>
                     </div>
                     <small>{this.props.created_datetime}</small>
+                    <Program {...syntax} />
                 </div>
                 <br />
             </div>
