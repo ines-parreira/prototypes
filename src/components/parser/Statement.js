@@ -1,6 +1,7 @@
 import React from 'react'
 import Expression from './Expression'
 import UnknownSyntax from './Utils'
+import DropDownButton from '../semanticui/Dropdown'
 
 class Statement extends React.Component {
 
@@ -23,8 +24,13 @@ class Statement extends React.Component {
                     <BlockStatement { ...this.props } />
                 )
 
+            case undefined:
+                return (
+                    <span></span>
+                )
+
             default:
-                return <UnknownSyntax { ... this.props } />
+                return <UnknownSyntax { ...this.props } />
         }
     }
 }
@@ -40,8 +46,8 @@ class BlockStatement extends React.Component {
         const { type, body } = this.props
         var statements = body.map(function (_body, idx) {
             return (
-                <div className="statement">
-                    <Statement { ..._body } key={ idx } />
+                <div className="BlockStatementItem">
+                    <Statement { ..._body } key={ idx }/>
                 </div>
             )
         })
@@ -65,19 +71,29 @@ class BlockStatement extends React.Component {
 class IfStatement extends React.Component {
     render() {
         const { type, test, consequent, alternate } = this.props
+        var _alternate
+
+        if (alternate) {
+            _alternate = (
+                <div class="alternate">
+                    <button className="ui button positive else">ELSE</button>
+                    <div className="alternate-tab">
+                        <Statement { ...alternate } />
+                    </div>
+                </div>
+            )
+        }
 
         return (
-            <div className="ifstatement">
+            <div className="IfStatement">
                 <div className="test">
-                    <button className="ui button positive">IF</button>
+                    <button className="ui button inline positive">IF</button>
                     <Expression { ...test} />
                 </div>
                 <div className="consequent">
                     <Statement { ...consequent} />
                 </div>
-                <div className="alternate">
-                    <Statement { ...alternate } />
-                </div>
+                { _alternate }
             </div>
         )
     }
