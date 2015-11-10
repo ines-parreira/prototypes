@@ -1,6 +1,6 @@
 import React from 'react'
 import UnknownSyntax from './Utils'
-import DropdownButton from '../semanticui/Dropdown'
+import DropdownButton from '../rule/Dropdown'
 
 class Expression extends React.Component {
     render() {
