@@ -8,47 +8,47 @@ export function addRuleStart(type, code) {
     return {
         type: ADD_RULE_START,
         title: type,
-        code
+        code,
     }
 }
 
 export function addRuleEnd(rule) {
     return {
         type: ADD_RULE_END,
-        rule
+        rule,
     }
 }
 
 export function requestRules(url) {
     return {
         type: RULES_REQUESTS_POSTS,
-        url
+        url,
     }
 }
 
 export function receiveRules(rules) {
     return {
         type: RULES_RECEIVE_POSTS,
-        rules: rules
+        rules: rules,
     }
 }
 
 export function errorMsg(errormsg) {
     return {
         type: ERROR_MESSAGE,
-        errormsg
+        errormsg,
     }
 }
 
-export function modifyCodeast(index, path){
+export function modifyCodeast(index, path) {
     return {
         type: RULES_UPDATE_CODE_AST,
         index,
-        path
+        path,
     }
 }
 export function submitRule(url, comment) {
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch(addRuleStart(comment.type, comment.code))
 
         return reqwest({
@@ -56,17 +56,17 @@ export function submitRule(url, comment) {
             type: 'json',
             method: 'POST',
             data: JSON.stringify(comment),
-            contentType: "application/json"
-        }).then(function (resp) {
+            contentType: "application/json",
+        }).then(function(resp) {
             dispatch(addRuleEnd(resp))
-        }).fail(function (resp) {
+        }).fail(function(resp) {
             dispatch(errorMsg('Ops, Server error.'))
         })
     }
 }
 
 export function fetchRules(url) {
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch(requestRules(url))
 
         return reqwest({
@@ -74,7 +74,7 @@ export function fetchRules(url) {
             type: 'json',
             method: 'GET',
             contentType: "application/json"
-        }).then(function (resp) {
+        }).then(function(resp) {
             dispatch(receiveRules(resp['data']))
         })
     }

@@ -5,40 +5,38 @@ import esprima from 'esprima'
 
 const initialState = Immutable.List([])
 
-function get_ast(code){
+function getAst(code) {
     return esprima.parse(code)
 }
 
 export function rules(state = initialState, action) {
     switch (action.type) {
         case ADD_RULE_END:
-            var rule = action.rule
-            rule['code_ast'] = get_ast(rule['code'])
+            const rule = action.rule
+            rule.code_ast = getAst(rule.code)
             return state.push(rule)
 
         case RULES_REQUESTS_POSTS:
             return state
 
         case RULES_RECEIVE_POSTS:
-            var rules = action.rules.map(function(rule, i){
-                rule['code_ast'] = get_ast(rule['code'])
-                return rule
+            const rules = action.rules.map(function(ruleItem) {
+                ruleItem.code_ast = getAst(ruleItem.code)
+                return ruleItem
             })
             return Immutable.List(rules)
 
         case RULES_UPDATE_CODE_AST:
-            console.log(state)
-            var path = action.path
-            var index = action.index
-            var rule = state[index]
+            /* TODO: handle update code ast. */
+            return state
 
         default:
             return state
     }
 }
 
-export function error(state='', action){
-    switch (action.type){
+export function error(state = '', action) {
+    switch (action.type) {
         case ERROR_MESSAGE:
             return action.errormsg
         default:

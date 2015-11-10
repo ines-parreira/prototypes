@@ -1,7 +1,6 @@
 import React from 'react'
 import Expression from './Expression'
 import UnknownSyntax from './Utils'
-import DropDownButton from '../semanticui/Dropdown'
 
 class Statement extends React.Component {
 
@@ -43,14 +42,13 @@ class Statement extends React.Component {
  */
 class BlockStatement extends React.Component {
     render() {
-        const { type, body, index, actions } = this.props
-        var parent = this.props.parent
-        var statements = body.map(function (_body, idx) {
-            var _parent = parent.push('body', idx)
+        const { type, body, index, actions, parent } = this.props
+        const statements = body.map(function(bodyItem, idx) {
+            const parentNew = parent.push('body', idx)
 
             return (
                 <div className="BlockStatementItem">
-                    <Statement key={ idx } { ..._body } parent={_parent} index={index} actions={actions} />
+                    <Statement key={ idx } { ...bodyItem } parent={ parentNew } index={ index } actions={ actions }/>
                 </div>
             )
         })
@@ -73,35 +71,35 @@ class BlockStatement extends React.Component {
  */
 class IfStatement extends React.Component {
     render() {
-        const { type, test, consequent, alternate, index, actions } = this.props
-        var _alternate
+        const { type, test, consequent, alternate, index, actions, parent } = this.props
+        let alternateDiv
 
         if (alternate) {
-            var _parent_alternate = this.props.parent.push('alternate')
+            const parentAlternate = parent.push('alternate')
 
-            _alternate = (
-                <div class="alternate">
+            alternateDiv = (
+                <div className="alternate">
                     <button className="ui button positive else">ELSE</button>
                     <div className="alternate-tab">
-                        <Statement { ...alternate } parent={_parent_alternate} index={index} actions={actions} />
+                        <Statement { ...alternate } parent={ parentAlternate } index={ index } actions={ actions }/>
                     </div>
                 </div>
             )
         }
 
-        var _parent_test = this.props.parent.push('test')
-        var _parent_consequent = this.props.parent.push('consequent')
+        const parentTest = parent.push('test')
+        const parentConsequent = parent.push('consequent')
 
         return (
             <div className="IfStatement">
                 <div className="test">
                     <button className="ui button inline positive">IF</button>
-                    <Expression { ...test} parent = {_parent_test} index={index} actions={actions} />
+                    <Expression { ...test } parent={ parentTest } index={ index } actions={ actions }/>
                 </div>
                 <div className="consequent">
-                    <Statement { ...consequent} parent = {_parent_consequent} index={index} actions={actions} />
+                    <Statement { ...consequent } parent={ parentConsequent } index={ index } actions={ actions }/>
                 </div>
-                { _alternate }
+                { alternateDiv }
             </div>
         )
     }
@@ -115,12 +113,12 @@ class IfStatement extends React.Component {
  */
 class ExpressionStatement extends React.Component {
     render() {
-        const { type, expression, index, actions } = this.props
-        var _parent = this.props.parent.push('expression')
+        const { type, expression, index, actions, parent } = this.props
+        const parentNew = parent.push('expression')
 
         return (
             <div className="ExpressionStatement">
-                <Expression {...expression} parent = {_parent} index={index} actions={actions} />
+                <Expression { ...expression } parent={ parentNew } index={ index } actions={ actions }/>
             </div>
         )
     }

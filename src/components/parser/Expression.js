@@ -8,12 +8,12 @@ class Expression extends React.Component {
         switch (type) {
             case 'BinaryExpression':
                 return (
-                    <BinaryExpression {...this.props} />
+                    <BinaryExpression { ...this.props } />
                 )
 
             case 'LogicalExpression':
                 return (
-                    <LogicalExpression {...this.props} />
+                    <LogicalExpression { ...this.props } />
                 )
 
             case 'Literal':
@@ -51,27 +51,26 @@ class Expression extends React.Component {
  */
 class CallExpression extends React.Component {
     render() {
-        const { type, callee, index, actions } = this.props
-        var _arguments = this.props['arguments']
+        const { type, callee, index, actions, parent } = this.props
+        const functionArguments = this.props.arguments
 
-        var parent = this.props.parent
-        var arguments_expressions = _arguments.map(function (_argument, idx) {
-            var _parent_arguments = parent.push('arguments', idx)
+        const argumentsExpressions = functionArguments.map(function(argumentItem, idx) {
+            const parentArguments = parent.push('arguments', idx)
 
             return (
-                <Expression { ..._argument } key={idx} parent={_parent_arguments} index={index} actions={actions} />
+                <Expression { ...argumentItem } key={idx} parent={parentArguments} index={index} actions={actions}/>
             )
         })
 
-        var _parent_callee = parent.push('callee')
+        const parentCallee = parent.push('callee')
 
         return (
             <span className="CallExpression">
-                <span class="callee">
-                    <Expression { ...callee } parent={_parent_callee} index={index} actions={actions} />
+                <span className="callee">
+                    <Expression { ...callee } parent={parentCallee} index={index} actions={actions}/>
                 </span>
-                <span class="arguments">
-                    { arguments_expressions }
+                <span className="arguments">
+                    { argumentsExpressions }
                 </span>
             </span>
         )
@@ -98,14 +97,15 @@ class MemberExpression extends React.Component {
 
         return (
             <span className="MemberExpression">
-                <select className="ui dropdown" value="{object.name}.{property.name}" onChange={ this.handleChange.bind(this) }>
+                <select className="ui dropdown" value="{object.name}.{property.name}"
+                        onChange={ this.handleChange.bind(this) }>
                     <option>
                         {/* <Expression {...object} />.<Expression {...property} /> */}
                         {object.name}.{property.name}
                     </option>
-                    <option className="item"><i class="edit icon"></i> Edit Post</option>
-                    <option className="item"><i class="delete icon"></i> Remove Post</option>
-                    <option className="item"><i class="hide icon"></i> Hide Post</option>
+                    <option className="item"><i className="edit icon"></i> Edit Post</option>
+                    <option className="item"><i className="delete icon"></i> Remove Post</option>
+                    <option className="item"><i className="hide icon"></i> Hide Post</option>
                 </select>
             </span>
         )
@@ -121,21 +121,21 @@ class MemberExpression extends React.Component {
  */
 class BinaryExpression extends React.Component {
     render() {
-        const { type, operator, left, right, index, actions } = this.props
-        var _parent_left = this.props.parent.push('left')
-        var _parent_right = this.props.parent.push('right')
-        var _parent_operator = this.props.parent.push('operator')
+        const { type, operator, left, right, index, actions, parent } = this.props
+        const parentLeft = parent.push('left')
+        const parentRight = parent.push('right')
+        const parentOperator = parent.push('operator')
 
         return (
             <span className="BinaryExpression">
                 <span className="left">
-                    <Expression {...left} parent={_parent_left} index={index} actions={actions} />
+                    <Expression {...left} parent={parentLeft} index={index} actions={actions}/>
                 </span>
                 <span className="operator">
-                    <DropdownButton text={ operator } parent={_parent_operator} index={index} actions={actions} />
+                    <DropdownButton text={ operator } parent={parentOperator} index={index} actions={actions}/>
                 </span>
                 <span className="right">
-                    <Expression {...right} parent={_parent_right} index={index} actions={actions} />
+                    <Expression {...right} parent={parentRight} index={index} actions={actions}/>
                 </span>
             </span>
         )
@@ -152,21 +152,21 @@ class BinaryExpression extends React.Component {
  */
 class LogicalExpression extends BinaryExpression {
     render() {
-        const { type, operator, left, right, index, actions } = this.props
-        var _parent_left = this.props.parent.push('left')
-        var _parent_right = this.props.parent.push('right')
-        var _parent_operator = this.props.parent.push('operator')
+        const { type, operator, left, right, index, parent, actions } = this.props
+        const parentLeft = parent.push('left')
+        const parentRight = parent.push('right')
+        const parentOperator = parent.push('operator')
 
         return (
             <span className="LogicalExpression">
                 <span className="left">
-                    <Expression {...left} parent={_parent_left} index={index} actions={actions} />
+                    <Expression { ...left } parent={ parentLeft } index={ index } actions={ actions }/>
                 </span>
                 <span className="operator">
-                    <DropdownButton text={ operator } parent={_parent_operator} index={index} actions={actions} />
+                    <DropdownButton text={ operator } parent={ parentOperator } index={ index } actions={ actions }/>
                 </span>
                 <span className="right">
-                    <Expression {...right} parent={_parent_right} index={index} actions={actions} />
+                    <Expression { ...right } parent={ parentRight } index={ index } actions={ actions }/>
                 </span>
             </span>
         )
@@ -201,7 +201,6 @@ class Identifier extends React.Component {
                     </span>
                 )
         }
-
     }
 }
 
@@ -213,13 +212,13 @@ class Identifier extends React.Component {
  */
 class Literal extends React.Component {
     render() {
-        const { type, value, index, actions } = this.props
-        var _parent = this.props.parent.push('value')
+        const { type, value, index, actions, parent } = this.props
+        const parentNew = parent.push('value')
 
         return (
 
             <span className="Literal">
-                <DropdownButton text={ value } parent={_parent} index={index} actions={actions} />
+                <DropdownButton text={ value } parent={ parentNew } index={ index } actions={ actions }/>
             </span>
         )
     }

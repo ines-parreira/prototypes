@@ -3,7 +3,7 @@ import { rules, error } from './rule'
 
 const RootReducer = combineReducers({
     rules,
-    error
+    error,
 })
 
 export default RootReducer

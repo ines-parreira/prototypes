@@ -6,11 +6,11 @@ class Program extends React.Component {
     render() {
         const { type, body, index, actions } = this.props
 
-        var statements = body.map(function (_statement, idx) {
-            var _parent = Immutable.List(['body', idx])
+        const statements = body.map(function(statement, idx) {
+            const parentNew = Immutable.List(['body', idx])
 
             return (
-                <Statement {..._statement} key={idx} parent={_parent} index={index} actions={actions}/>
+                <Statement {...statement} key={idx} parent={parentNew} index={index} actions={actions}/>
             )
         })
 
@@ -19,15 +19,6 @@ class Program extends React.Component {
                 { statements }
             </div>
         )
-    }
-
-    function deserialize() {
-        var tree = {type: 'Program', "body": []}
-        for (child in this.props.children) {
-            tree.body.push(child.deserialize())
-        }
-
-        return tree
     }
 }
 
