@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import reqwest from 'reqwest'
-import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, ERROR_MESSAGE } from '../constants/rule/ActionTypes'
+import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, ERROR_MESSAGE, RULES_UPDATE_CODE_AST } from '../constants/rule/ActionTypes'
 
 
 /* Actions */
@@ -40,6 +40,13 @@ export function errorMsg(errormsg) {
     }
 }
 
+export function modifyCodeast(index, path){
+    return {
+        type: RULES_UPDATE_CODE_AST,
+        index,
+        path
+    }
+}
 export function submitRule(url, comment) {
     return function (dispatch) {
         dispatch(addRuleStart(comment.type, comment.code))

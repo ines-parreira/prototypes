@@ -4,19 +4,19 @@ import Program from '../parser/Program'
 
 class RuleItem extends React.Component {
     render() {
-        var syntax = esprima.parse(this.props.code)
+        const { id, type, code, code_ast, index, actions, created_datetime } = this.props
 
         return (
             <div className="ruleItem item">
                 <div className="content">
-                    <div className="header">{this.props.id}. {this.props.type}</div>
+                    <div className="header">{id}. {type}</div>
                     <div className="ui existing segment">
                     <pre>
-                        <code className="code javascript">{ this.props.code }</code>
+                        <code className="code javascript">{ code }</code>
                     </pre>
                     </div>
-                    <small>{this.props.created_datetime}</small>
-                    <Program {...syntax} />
+                    <small>{created_datetime}</small>
+                    <Program {...code_ast} index={index} actions={actions} />
                 </div>
                 <br />
             </div>

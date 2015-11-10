@@ -3,9 +3,10 @@ import RuleItem from './RuleItem'
 
 class RuleList extends React.Component{
     render(){
-        var ruleNodes = this.props.data.map(function (rule) {
+        const {actions } = this.props
+        var ruleNodes = this.props.data.map(function (rule, idx) {
             return (
-                <RuleItem {...rule} key={rule.id} id={rule.id} />
+                <RuleItem {...rule} key={rule.id} id={rule.id} index={idx} actions={actions} />
             )
         })
         return (

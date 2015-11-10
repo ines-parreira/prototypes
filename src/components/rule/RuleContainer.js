@@ -9,14 +9,17 @@ import * as RuleActions from '../../actions/rule'
 
 class RuleBox extends React.Component {
     componentDidMount() {
-        $('.ui.dropdown').dropdown()
         const { rules, actions } = this.props
         actions.fetchRules("/api/rules")
-        console.log('init dropdown')
     }
 
     componentDidUpdate() {
-        $('.ui.dropdown').dropdown('refresh')
+        //$('.ui.dropdown').dropdown({
+        //    onChange: (value) => {
+        //        console.log('onchange')
+        //        console.log(value)
+        //    }
+        //})
     }
 
     render() {
@@ -27,7 +30,7 @@ class RuleBox extends React.Component {
                 <ErrorMessage error={error}/>
 
                 <h3 className="ui header">List of rules</h3>
-                <RuleList data={rules}/>
+                <RuleList data={rules} actions={actions} />
 
                 <h3 className="ui header">Adding a new rule</h3>
                 <RuleForm actions={actions}/>

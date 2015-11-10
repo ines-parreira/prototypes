@@ -43,11 +43,14 @@ class Statement extends React.Component {
  */
 class BlockStatement extends React.Component {
     render() {
-        const { type, body } = this.props
+        const { type, body, index, actions } = this.props
+        var parent = this.props.parent
         var statements = body.map(function (_body, idx) {
+            var _parent = parent.push('body', idx)
+
             return (
                 <div className="BlockStatementItem">
-                    <Statement { ..._body } key={ idx }/>
+                    <Statement key={ idx } { ..._body } parent={_parent} index={index} actions={actions} />
                 </div>
             )
         })
@@ -70,28 +73,33 @@ class BlockStatement extends React.Component {
  */
 class IfStatement extends React.Component {
     render() {
-        const { type, test, consequent, alternate } = this.props
+        const { type, test, consequent, alternate, index, actions } = this.props
         var _alternate
 
         if (alternate) {
+            var _parent_alternate = this.props.parent.push('alternate')
+
             _alternate = (
                 <div class="alternate">
                     <button className="ui button positive else">ELSE</button>
                     <div className="alternate-tab">
-                        <Statement { ...alternate } />
+                        <Statement { ...alternate } parent={_parent_alternate} index={index} actions={actions} />
                     </div>
                 </div>
             )
         }
 
+        var _parent_test = this.props.parent.push('test')
+        var _parent_consequent = this.props.parent.push('consequent')
+
         return (
             <div className="IfStatement">
                 <div className="test">
                     <button className="ui button inline positive">IF</button>
-                    <Expression { ...test} />
+                    <Expression { ...test} parent = {_parent_test} index={index} actions={actions} />
                 </div>
                 <div className="consequent">
-                    <Statement { ...consequent} />
+                    <Statement { ...consequent} parent = {_parent_consequent} index={index} actions={actions} />
                 </div>
                 { _alternate }
             </div>
@@ -107,11 +115,12 @@ class IfStatement extends React.Component {
  */
 class ExpressionStatement extends React.Component {
     render() {
-        const { type, expression } = this.props
+        const { type, expression, index, actions } = this.props
+        var _parent = this.props.parent.push('expression')
 
         return (
             <div className="ExpressionStatement">
-                <Expression {...expression} />
+                <Expression {...expression} parent = {_parent} index={index} actions={actions} />
             </div>
         )
     }
