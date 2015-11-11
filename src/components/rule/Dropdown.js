@@ -17,6 +17,9 @@ class DropdownButton extends React.Component {
                 <option>facebook</option>
                 <option>closed</option>
                 <option>open</option>
+                <option>==</option>
+                <option>status</option>
+                <option>channel</option>
             </select>
         )
     }
