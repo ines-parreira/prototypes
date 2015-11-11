@@ -24,11 +24,17 @@ export function rules(state = initialState, action) {
                 ruleItem.code_ast = getAst(ruleItem.code)
                 return ruleItem
             })
+
             return Immutable.List(rules)
 
         case RULES_UPDATE_CODE_AST:
-            /* TODO: handle update code ast. */
-            return state
+            const { index, path, value } = action
+            const stateitem = Immutable.fromJS(state.get(index))
+            const pathFull = path.unshift('code_ast')
+            const stateitemNew = stateitem.updateIn(pathFull.toJS(), val=>value)
+            const stateitemObj = stateitemNew.toJS()
+            const stateNew = state.set(index, stateitemObj)
+            return stateNew
 
         default:
             return state

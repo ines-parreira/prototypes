@@ -1,24 +1,22 @@
 import React from 'react'
 
 class DropdownButton extends React.Component {
+
     handleChange(event){
         const {actions, index, parent } = this.props
-        console.log(event.target.value)
-        actions.modifyCodeast(index, parent)
-
-        this.props.parent.map(function(value, idx){
-            console.log(value)
-        })
-        console.log(this.props.index)
-        console.log(this.props.actions)
+        actions.modifyCodeast(index, parent, event.target.value)
     }
 
     render() {
         return (
             <select className="ui dropdown" value="{ this.props.text }" onChange={ this.handleChange.bind(this) }>
                 <option>{ this.props.text }</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option>send_notification_to_user</option>
+                <option>action_add_tag_to_ticket</option>
+                <option>twitter</option>
+                <option>facebook</option>
+                <option>closed</option>
+                <option>open</option>
             </select>
         )
     }

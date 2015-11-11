@@ -40,11 +40,12 @@ export function errorMsg(errormsg) {
     }
 }
 
-export function modifyCodeast(index, path) {
+export function modifyCodeast(index, path, value) {
     return {
         type: RULES_UPDATE_CODE_AST,
         index,
         path,
+        value
     }
 }
 export function submitRule(url, comment) {

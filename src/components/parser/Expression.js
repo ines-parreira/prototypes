@@ -87,9 +87,8 @@ class CallExpression extends React.Component {
  */
 class MemberExpression extends React.Component {
     handleChange(event) {
-        console.log('onchange react.')
-        console.log(this.props.parent)
-        console.log(this.props.index)
+        const {actions, index, parent } = this.props
+        actions.modifyCodeast(index, parent, event.target.value)
     }
 
     render() {
@@ -100,12 +99,11 @@ class MemberExpression extends React.Component {
                 <select className="ui dropdown" value="{object.name}.{property.name}"
                         onChange={ this.handleChange.bind(this) }>
                     <option>
-                        {/* <Expression {...object} />.<Expression {...property} /> */}
                         {object.name}.{property.name}
                     </option>
-                    <option className="item"><i className="edit icon"></i> Edit Post</option>
-                    <option className="item"><i className="delete icon"></i> Remove Post</option>
-                    <option className="item"><i className="hide icon"></i> Hide Post</option>
+                    <option className="item">Edit Post</option>
+                    <option className="item">Remove Post</option>
+                    <option className="item">Hide Post</option>
                 </select>
             </span>
         )
@@ -213,6 +211,7 @@ class Identifier extends React.Component {
 class Literal extends React.Component {
     render() {
         const { type, value, index, actions, parent } = this.props
+
         const parentNew = parent.push('value')
 
         return (
