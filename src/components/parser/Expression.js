@@ -92,19 +92,14 @@ class MemberExpression extends React.Component {
     }
 
     render() {
-        const { type, object, property, computed, index, actions } = this.props
+        const { type, object, property, computed, index, actions, parent } = this.props
+        const parentObject = parent.push('object')
+        const parentProperty = parent.push('property')
 
         return (
             <span className="MemberExpression">
-                <select className="ui dropdown" value="{object.name}.{property.name}"
-                        onChange={ this.handleChange.bind(this) }>
-                    <option>
-                        {object.name}.{property.name}
-                    </option>
-                    <option className="item">Edit Post</option>
-                    <option className="item">Remove Post</option>
-                    <option className="item">Hide Post</option>
-                </select>
+                <Expression { ...object } parent={parentObject} index={index} actions={actions} /><b>.</b>
+                <Expression { ...property } parent={parentProperty} index={index} actions={actions} />
             </span>
         )
     }
@@ -180,7 +175,8 @@ class LogicalExpression extends BinaryExpression {
  */
 class Identifier extends React.Component {
     render() {
-        const { type, name } = this.props
+        const { type, name, parent, index, actions } = this.props
+        const parentNew = parent.push('name')
 
         switch (name) {
             case 'Action':
@@ -195,7 +191,7 @@ class Identifier extends React.Component {
             default:
                 return (
                     <span className="Identifier">
-                        { name }
+                         <DropdownButton text={ name } parent={ parentNew } index={ index } actions={ actions }/>
                     </span>
                 )
         }

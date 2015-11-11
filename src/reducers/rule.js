@@ -2,6 +2,7 @@ import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS
 import Immutable from 'immutable'
 import reqwest from 'reqwest'
 import esprima from 'esprima'
+import escodegen from 'escodegen'
 
 const initialState = Immutable.List([])
 
@@ -32,7 +33,8 @@ export function rules(state = initialState, action) {
             const stateitem = Immutable.fromJS(state.get(index))
             const pathFull = path.unshift('code_ast')
             const stateitemNew = stateitem.updateIn(pathFull.toJS(), val=>value)
-            const stateitemObj = stateitemNew.toJS()
+            let stateitemObj = stateitemNew.toJS()
+            stateitemObj.code = escodegen.generate(stateitemObj.code_ast)
             const stateNew = state.set(index, stateitemObj)
             return stateNew
 
