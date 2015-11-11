@@ -1,55 +1,56 @@
-import { combineReducers } from 'redux'
 import reqwest from 'reqwest'
-import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, ERROR_MESSAGE, RULES_UPDATE_CODE_AST } from '../constants/rule/ActionTypes'
+import * as ActionTypes from '../constants/rule/ActionTypes'
 
 
 /* Actions */
 export function addRuleStart(type, code) {
     return {
-        type: ADD_RULE_START,
+        type: ActionTypes.ADD_RULE_START,
         title: type,
-        code,
+        code
     }
 }
 
 export function addRuleEnd(rule) {
     return {
-        type: ADD_RULE_END,
-        rule,
+        type: ActionTypes.ADD_RULE_END,
+        rule
     }
 }
 
 export function requestRules(url) {
     return {
-        type: RULES_REQUESTS_POSTS,
-        url,
+        type: ActionTypes.RULES_REQUESTS_POSTS,
+        url
     }
 }
 
 export function receiveRules(rules) {
     return {
-        type: RULES_RECEIVE_POSTS,
-        rules: rules,
+        type: ActionTypes.RULES_RECEIVE_POSTS,
+        rules: rules
     }
 }
 
 export function errorMsg(errormsg) {
     return {
-        type: ERROR_MESSAGE,
-        errormsg,
+        type: ActionTypes.ERROR_MESSAGE,
+        errormsg
     }
 }
 
 export function modifyCodeast(index, path, value) {
     return {
-        type: RULES_UPDATE_CODE_AST,
+        type: ActionTypes.RULES_UPDATE_CODE_AST,
         index,
         path,
         value
     }
 }
+
+// Submit rule
 export function submitRule(url, comment) {
-    return function(dispatch) {
+    return (dispatch) => {
         dispatch(addRuleStart(comment.type, comment.code))
 
         return reqwest({
@@ -57,17 +58,17 @@ export function submitRule(url, comment) {
             type: 'json',
             method: 'POST',
             data: JSON.stringify(comment),
-            contentType: "application/json",
-        }).then(function(resp) {
+            contentType: "application/json"
+        }).then((resp) => {
             dispatch(addRuleEnd(resp))
-        }).fail(function(resp) {
-            dispatch(errorMsg('Ops, Server error.'))
+        }).fail((resp) => {
+            dispatch(errorMsg('Ops, Server error.' + resp))
         })
     }
 }
 
 export function fetchRules(url) {
-    return function(dispatch) {
+    return (dispatch) => {
         dispatch(requestRules(url))
 
         return reqwest({
@@ -75,8 +76,8 @@ export function fetchRules(url) {
             type: 'json',
             method: 'GET',
             contentType: "application/json"
-        }).then(function(resp) {
-            dispatch(receiveRules(resp['data']))
+        }).then((resp) => {
+            dispatch(receiveRules(resp.data))
         })
     }
 }

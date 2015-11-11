@@ -9,7 +9,7 @@ import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react'
 
 import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
-import RuleBox from './components/rule/RuleContainer'
+import RuleContainer from './components/rule/RuleContainer'
 
 import RootReducer from './reducers/index'
 
@@ -32,7 +32,7 @@ const createStoreWithMiddleware = compose(
     persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore)
 
-let store = createStoreWithMiddleware(RootReducer)
+const store = createStoreWithMiddleware(RootReducer)
 
 ReactDOM.render((
     <div>
@@ -41,7 +41,7 @@ ReactDOM.render((
                 <Route path="/" component={App}>
                     <IndexRoute component={Dashboard}/>
                     <Route path="dashboard" component={Dashboard}/>
-                    <Route path="rules" component={RuleBox}/>
+                    <Route path="rules" component={RuleContainer}/>
                 </Route>
             </Router>
         </Provider>

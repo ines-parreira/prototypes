@@ -54,7 +54,7 @@ class CallExpression extends React.Component {
         const { type, callee, index, actions, parent } = this.props
         const functionArguments = this.props.arguments
 
-        const argumentsExpressions = functionArguments.map(function(argumentItem, idx) {
+        const argumentsExpressions = functionArguments.map(function (argumentItem, idx) {
             const parentArguments = parent.push('arguments', idx)
 
             return (
@@ -98,8 +98,8 @@ class MemberExpression extends React.Component {
 
         return (
             <span className="MemberExpression">
-                <Expression { ...object } parent={parentObject} index={index} actions={actions} /><b>.</b>
-                <Expression { ...property } parent={parentProperty} index={index} actions={actions} />
+                <Expression { ...object } parent={parentObject} index={index} actions={actions}/>
+                <Expression { ...property } parent={parentProperty} index={index} actions={actions}/>
             </span>
         )
     }

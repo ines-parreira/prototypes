@@ -43,7 +43,7 @@ class Statement extends React.Component {
 class BlockStatement extends React.Component {
     render() {
         const { type, body, index, actions, parent } = this.props
-        const statements = body.map(function(bodyItem, idx) {
+        const statements = body.map(function (bodyItem, idx) {
             const parentNew = parent.push('body', idx)
 
             return (

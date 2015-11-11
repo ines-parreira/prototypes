@@ -7,7 +7,7 @@ import RuleList from '../rule/RuleList'
 import ErrorMessage from '../ErrorMessage'
 import * as RuleActions from '../../actions/rule'
 
-class RuleBox extends React.Component {
+class RuleContainer extends React.Component {
     componentDidMount() {
         const { rules, actions } = this.props
         actions.fetchRules("/api/rules")
@@ -30,7 +30,7 @@ class RuleBox extends React.Component {
                 <ErrorMessage error={error}/>
 
                 <h3 className="ui header">List of rules</h3>
-                <RuleList data={rules} actions={actions} />
+                <RuleList data={rules} actions={actions}/>
 
                 <h3 className="ui header">Adding a new rule</h3>
                 <RuleForm actions={actions}/>
@@ -52,4 +52,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RuleBox)
+export default connect(mapStateToProps, mapDispatchToProps)(RuleContainer)
