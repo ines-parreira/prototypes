@@ -1,7 +1,6 @@
 import reqwest from 'reqwest'
 import * as ActionTypes from '../constants/rule/ActionTypes'
 
-
 /* Actions */
 export function addRuleStart(type, code) {
     return {
@@ -44,7 +43,7 @@ export function modifyCodeast(index, path, value) {
         type: ActionTypes.RULES_UPDATE_CODE_AST,
         index,
         path,
-        value
+        value,
     }
 }
 

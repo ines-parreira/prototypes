@@ -1,4 +1,4 @@
-import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, ERROR_MESSAGE, RULES_UPDATE_CODE_AST } from '../constants/rule/ActionTypes'
+import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, ERROR_MESSAGE, RULES_UPDATE_CODE_AST, RULES_ADD_ACTION_CODE_AST } from '../constants/rule/ActionTypes'
 import Immutable from 'immutable'
 import reqwest from 'reqwest'
 import esprima from 'esprima'
@@ -29,6 +29,7 @@ export function rules(state = initialState, action) {
             return Immutable.List(rules)
 
         case RULES_UPDATE_CODE_AST:
+        {
             const { index, path, value } = action
             const stateitem = Immutable.fromJS(state.get(index))
             const pathFull = path.unshift('code_ast')
@@ -37,7 +38,21 @@ export function rules(state = initialState, action) {
             stateitemObj.code = escodegen.generate(stateitemObj.code_ast)
             const stateNew = state.set(index, stateitemObj)
             return stateNew
+        }
 
+        case RULES_ADD_ACTION_CODE_AST:
+        {
+            const { index, path, value } = action
+            const stateitem = Immutable.fromJS(state.get(index))
+            const pathFull = path.unshift('code_ast')
+            const lastIndex = pathFull.last()
+            const pathNew = pathFull.pop()
+            const stateitemNew = stateitem.updateIn(pathNew.toJS(), list=>list.splice(lastIndex, 0, value))
+            let stateitemObj = stateitemNew.toJS()
+            stateitemObj.code = escodegen.generate(stateitemObj.code_ast)
+            const stateNew = state.set(index, stateitemObj)
+            return stateNew
+        }
         default:
             return state
     }

@@ -1,6 +1,7 @@
 import React from 'react'
 import Expression from './Expression'
 import UnknownSyntax from './Utils'
+import { AddAction } from './Add'
 
 class Statement extends React.Component {
 
@@ -48,10 +49,18 @@ class BlockStatement extends React.Component {
 
             return (
                 <div className="BlockStatementItem">
-                    <Statement key={ idx } { ...bodyItem } parent={ parentNew } index={ index } actions={ actions }/>
+                    <div className="item">
+                        <Statement key={ idx } { ...bodyItem } parent={ parentNew } index={ index }
+                                   actions={ actions }/>
+                    </div>
+                    <AddAction key={ idx } parent={ parentNew } index={ index } actions={ actions }/>
                 </div>
             )
         })
+
+        const parentNew = parent.push(-1)
+        statements.unshift(<div className="BlockStatementItem"><AddAction key={ -1 } parent={ parentNew } index={-1}
+                                                                          actions={ actions }/></div>)
 
         return (
             <div className="BlockStatement">
