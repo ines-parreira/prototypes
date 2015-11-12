@@ -58,8 +58,8 @@ class BlockStatement extends React.Component {
             )
         })
 
-        const parentNew = parent.push(-1)
-        statements.unshift(<div className="BlockStatementItem"><AddAction key={ -1 } parent={ parentNew } index={-1}
+        const parentNew = parent.push('body', -1)
+        statements.unshift(<div className="BlockStatementItem"><AddAction key={ -1 } parent={ parentNew } index={ index }
                                                                           actions={ actions }/></div>)
 
         return (

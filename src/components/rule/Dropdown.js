@@ -4,7 +4,7 @@ class DropdownButton extends React.Component {
 
     handleChange(event){
         const {actions, index, parent } = this.props
-        actions.modifyCodeast(index, parent, event.target.value)
+        actions.modifyCodeast(index, parent, event.target.value, 'UPDATE')
     }
 
     render() {
