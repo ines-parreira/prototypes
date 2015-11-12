@@ -40,7 +40,7 @@ export function errorMsg(errormsg) {
 
 export function modifyCodeast(index, path, value, operation) {
     return {
-        type: ActionTypes,RULES_UPDATE_CODE_AST,
+        type: ActionTypes.RULES_UPDATE_CODE_AST,
         index,
         path,
         value,

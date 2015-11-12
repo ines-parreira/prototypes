@@ -44,11 +44,11 @@ export function rules(state = initialState, action) {
                 const pathNew = pathFull.pop()
                 stateitemNew = stateitem.updateIn(pathNew.toJS(), list=>list.splice(lastIndex, 0, value))
             }
-            //if (operation === 'DELETE') {
-            //    const lastIndex = pathFull.last()
-            //    const pathNew = pathFull.pop()
-            //    stateitemNew = stateitem.updateIn(pathNew.toJS(), list=>list.delete(lastIndex))
-            //}
+            if (operation === 'DELETE') {
+                const lastIndex = pathFull.last()
+                const pathNew = pathFull.pop()
+                stateitemNew = stateitem.updateIn(pathNew.toJS(), list=>list.delete(lastIndex))
+            }
 
             let stateitemObj = stateitemNew.toJS()
             stateitemObj.code = escodegen.generate(stateitemObj.code_ast)

@@ -1,7 +1,7 @@
 import React from 'react'
 import Expression from './Expression'
 import UnknownSyntax from './Utils'
-import { AddAction } from './Add'
+import { AddAction, DeleteBlockStatementItem } from './OperationButtons.js'
 
 class Statement extends React.Component {
 
@@ -44,7 +44,9 @@ class Statement extends React.Component {
 class BlockStatement extends React.Component {
     render() {
         const { type, body, index, actions, parent } = this.props
-        const statements = body.map(function (bodyItem, idx) {
+
+        const length = body.length
+        const statements = body.map(function(bodyItem, idx) {
             const parentNew = parent.push('body', idx)
 
             return (
@@ -53,13 +55,16 @@ class BlockStatement extends React.Component {
                         <Statement key={ idx } { ...bodyItem } parent={ parentNew } index={ index }
                                    actions={ actions }/>
                     </div>
-                    <AddAction key={ idx } parent={ parentNew } index={ index } actions={ actions }/>
+                    <AddAction key={ 2*length + idx } parent={ parentNew } index={ index } actions={ actions }/>
+                    <DeleteBlockStatementItem key={ 3*length + idx } parent={ parentNew } index={ index }
+                                              actions={ actions }/>
                 </div>
             )
         })
 
         const parentNew = parent.push('body', -1)
-        statements.unshift(<div className="BlockStatementItem"><AddAction key={ -1 } parent={ parentNew } index={ index }
+        statements.unshift(<div className="BlockStatementItem"><AddAction key={ -1 } parent={ parentNew }
+                                                                          index={ index }
                                                                           actions={ actions }/></div>)
 
         return (
