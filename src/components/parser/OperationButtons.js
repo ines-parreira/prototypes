@@ -127,6 +127,21 @@ export class AddIf extends React.Component {
     }
 }
 
+export class DeleteBinaryExpression extends React.Component {
+    handleClick(event) {
+        const { parent, actions, index } = this.props
+        actions.modifyCodeast(index, parent, null, 'DELETE_BINARY_EXPRESSION')
+    }
+
+    render() {
+        return (
+            <button className="ui red tiny button delete-binaryexpression" onClick={ this.handleClick.bind(this) }>
+                -
+            </button>
+        )
+    }
+}
+
 export class DeleteBlockStatementItem extends React.Component {
     handleClick(event) {
         const { parent, actions, index } = this.props

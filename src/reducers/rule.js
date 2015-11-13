@@ -84,6 +84,29 @@ export function rules(state = initialState, action) {
                 stateitemNew = stateitem.updateIn(pathFull.toJS(), val=>value)
             }
 
+            /* Operating on the syntax tree to delete the binary expression.
+             * We assume the statement includes only AND. And the order is
+             * enforced like:
+             * if (ticket.status == 'channel' && (ticket.status == 'channel' && ticket.status == 'new'))
+             *
+             * This assumption will stay true since in UPDATE_LOGICAL_AND, we force this order.
+             */
+            if (operation === 'DELETE_BINARY_EXPRESSION') {
+                const lastIndex = pathFull.last()
+                const pathNew = pathFull.pop()
+
+                if (lastIndex === 'left') {
+                    const right = stateitem.getIn(pathNew.push('right').toJS())
+                    stateitemNew = stateitem.updateIn(pathNew.toJS(), val=>right)
+                } else if (lastIndex === 'right') {
+                    const left = stateitem.getIn(pathNew.push('left').toJS())
+                    stateitemNew = stateitem.updateIn(pathNew.toJS(), val=>left)
+                } else {
+                    // We shouldn't reach here normally.
+                    return state
+                }
+            }
+
             let stateitemObj = stateitemNew.toJS()
             stateitemObj.code = escodegen.generate(stateitemObj.code_ast)
             const stateNew = state.set(index, stateitemObj)

@@ -1,6 +1,7 @@
 import React from 'react'
 import UnknownSyntax from './Utils'
 import DropdownButton from '../rule/Dropdown'
+import { DeleteBinaryExpression } from './OperationButtons'
 
 class Expression extends React.Component {
     render() {
@@ -54,7 +55,7 @@ class CallExpression extends React.Component {
         const { type, callee, index, actions, parent } = this.props
         const functionArguments = this.props.arguments
 
-        const argumentsExpressions = functionArguments.map(function (argumentItem, idx) {
+        const argumentsExpressions = functionArguments.map(function(argumentItem, idx) {
             const parentArguments = parent.push('arguments', idx)
 
             return (
@@ -119,6 +120,13 @@ class BinaryExpression extends React.Component {
         const parentRight = parent.push('right')
         const parentOperator = parent.push('operator')
 
+        let deleteBinaryExpressionComponent
+        if (parent.last() !== 'test') {
+            deleteBinaryExpressionComponent = (
+                <DeleteBinaryExpression parent={parent} index={index} actions={actions}/>
+            )
+        }
+
         return (
             <span className="BinaryExpression">
                 <span className="left">
@@ -130,6 +138,7 @@ class BinaryExpression extends React.Component {
                 <span className="right">
                     <Expression {...right} parent={parentRight} index={index} actions={actions}/>
                 </span>
+                { deleteBinaryExpressionComponent }
             </span>
         )
     }
