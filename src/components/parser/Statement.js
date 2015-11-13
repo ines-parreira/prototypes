@@ -1,7 +1,7 @@
 import React from 'react'
 import Expression from './Expression'
 import UnknownSyntax from './Utils'
-import { AddAction, DeleteBlockStatementItem } from './OperationButtons.js'
+import { AddAction, AddIf, DeleteBlockStatementItem } from './OperationButtons.js'
 
 class Statement extends React.Component {
 
@@ -55,17 +55,27 @@ class BlockStatement extends React.Component {
                         <Statement key={ idx } { ...bodyItem } parent={ parentNew } index={ index }
                                    actions={ actions }/>
                     </div>
-                    <AddAction key={ 2*length + idx } parent={ parentNew } index={ index } actions={ actions }/>
-                    <DeleteBlockStatementItem key={ 3*length + idx } parent={ parentNew } index={ index }
+                    <AddAction key={ 2 * length + idx } parent={ parentNew } index={ index } actions={ actions }/>
+                    <AddIf key={ 3 * length + idx } parent={ parentNew } index={ index } actions={ actions }/>
+                    <DeleteBlockStatementItem key={ 4 * length + idx } parent={ parentNew } index={ index }
                                               actions={ actions }/>
                 </div>
             )
         })
 
         const parentNew = parent.push('body', -1)
-        statements.unshift(<div className="BlockStatementItem"><AddAction key={ -1 } parent={ parentNew }
-                                                                          index={ index }
-                                                                          actions={ actions }/></div>)
+        statements.unshift(
+            (
+                <div className="BlockStatementItem">
+                    <AddAction key={ -1 } parent={ parentNew }
+                               index={ index }
+                               actions={ actions }/>
+                    <AddIf key={ -2 } parent={ parentNew }
+                           index={ index }
+                           actions={ actions }/>
+                </div>
+            )
+        )
 
         return (
             <div className="BlockStatement">
@@ -106,6 +116,7 @@ class IfStatement extends React.Component {
                     <Expression { ...test } parent={ parentTest } index={ index } actions={ actions }/>
                 </div>
                 <div className="consequent">
+                    <button className="ui button inline positive">THEN</button>
                     <Statement { ...consequent } parent={ parentConsequent } index={ index } actions={ actions }/>
                 </div>
                 <div className="alternate">
