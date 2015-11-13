@@ -76,6 +76,14 @@ export function rules(state = initialState, action) {
                 stateitemNew = stateitem.updateIn(pathNew.toJS(), list=>list.delete(lastIndex))
             }
 
+            /* Add logical AND operation in TEST block of IFSTATEMENT.
+             */
+            if (operation === 'UPDATE_LOGICAL_AND') {
+                const test = stateitem.getIn(pathFull.toJS())
+                value.right = test.toJS()
+                stateitemNew = stateitem.updateIn(pathFull.toJS(), val=>value)
+            }
+
             let stateitemObj = stateitemNew.toJS()
             stateitemObj.code = escodegen.generate(stateitemObj.code_ast)
             const stateNew = state.set(index, stateitemObj)

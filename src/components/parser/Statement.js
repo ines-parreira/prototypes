@@ -1,7 +1,7 @@
 import React from 'react'
 import Expression from './Expression'
 import UnknownSyntax from './Utils'
-import { AddAction, AddIf, DeleteBlockStatementItem } from './OperationButtons.js'
+import { AddAction, AddIf, DeleteBlockStatementItem, AddLogicalAndCondition } from './OperationButtons.js'
 
 class Statement extends React.Component {
 
@@ -114,6 +114,7 @@ class IfStatement extends React.Component {
                 <div className="test">
                     <button className="ui button inline positive">IF</button>
                     <Expression { ...test } parent={ parentTest } index={ index } actions={ actions }/>
+                    <AddLogicalAndCondition parent={ parentTest } index={ index } actions={ actions }/>
                 </div>
                 <div className="consequent">
                     <button className="ui button inline positive">THEN</button>

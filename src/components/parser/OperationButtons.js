@@ -17,8 +17,8 @@ export class AddAction extends React.Component {
                     },
                     {
                         type: 'Literal',
-                        value: "action_default_no_action",
-                        raw: "'action_default_no_action'",
+                        value: 'action_default_no_action',
+                        raw: '\'action_default_no_action\'',
                     },
                 ],
             },
@@ -32,6 +32,47 @@ export class AddAction extends React.Component {
         return (
             <button className="ui basic tiny button" onClick={ this.handleClick.bind(this) }>
                 Add action +
+            </button>
+        )
+    }
+}
+export class AddLogicalAndCondition extends React.Component {
+    handleClick(event) {
+        const actionNode = {
+            type: 'LogicalExpression',
+            operator: '&&',
+            left: {
+                type: 'BinaryExpression',
+                operator: '==',
+                left: {
+                    type: 'MemberExpression',
+                    computed: false,
+                    object: {
+                        type: 'Identifier',
+                        name: 'ticket'
+                    },
+                    property: {
+                        type: 'Identifier',
+                        name: 'status'
+                    }
+                },
+                right: {
+                    type: 'Literal',
+                    value: 'channel',
+                    raw: '\'channel\''
+                }
+            },
+            right: null,
+        }
+
+        const { parent, actions, index } = this.props
+        actions.modifyCodeast(index, parent, actionNode, 'UPDATE_LOGICAL_AND')
+    }
+
+    render() {
+        return (
+            <button className="ui basic tiny button" onClick={ this.handleClick.bind(this) }>
+                Add +
             </button>
         )
     }
