@@ -85,24 +85,19 @@ class BlockStatement extends React.Component {
  */
 class IfStatement extends React.Component {
     render() {
-        const { type, test, consequent, alternate, index, actions, parent } = this.props
-        let alternateDiv
+        const { type, test, consequent, index, actions, parent } = this.props
+        let alternate = this.props.alternate
 
-        if (alternate) {
-            const parentAlternate = parent.push('alternate')
-
-            alternateDiv = (
-                <div className="alternate">
-                    <button className="ui button positive else">ELSE</button>
-                    <div className="alternate-tab">
-                        <Statement { ...alternate } parent={ parentAlternate } index={ index } actions={ actions }/>
-                    </div>
-                </div>
-            )
+        if (alternate === null) {
+            alternate = {
+                type: "BlockStatement",
+                body: [],
+            }
         }
 
         const parentTest = parent.push('test')
         const parentConsequent = parent.push('consequent')
+        const parentAlternate = parent.push('alternate')
 
         return (
             <div className="IfStatement">
@@ -113,7 +108,12 @@ class IfStatement extends React.Component {
                 <div className="consequent">
                     <Statement { ...consequent } parent={ parentConsequent } index={ index } actions={ actions }/>
                 </div>
-                { alternateDiv }
+                <div className="alternate">
+                    <button className="ui button positive else">ELSE</button>
+                    <div className="alternate-tab">
+                        <Statement { ...alternate } parent={ parentAlternate } index={ index } actions={ actions }/>
+                    </div>
+                </div>
             </div>
         )
     }

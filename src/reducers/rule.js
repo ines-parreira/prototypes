@@ -42,7 +42,33 @@ export function rules(state = initialState, action) {
             if (operation === 'INSERT') {
                 const lastIndex = pathFull.last() + 1
                 const pathNew = pathFull.pop()
-                stateitemNew = stateitem.updateIn(pathNew.toJS(), list=>list.splice(lastIndex, 0, value))
+                const valueP = stateitem.getIn(pathNew.toJS())
+
+                /*
+                 * In the case of pathNew = ["code_ast", "body", 0, "alternate", "body"]
+                 * But in the real code, else part, "alternate" is null.
+                 * We need to change the code
+                 * I)  if(x){}
+                 * to
+                 * II) if(x){} else{}
+                 *
+                 * In the Syntax tree level, it's equivalent to change
+                 * I)  "alternate": null
+                 * to
+                 * II) "alternate": {
+                 *        "type": "BlockStatement"
+                 *        "body": []
+                 *     }
+                 * */
+                if ((valueP === undefined) && (pathNew.get(pathNew.size - 2) === 'alternate')) {
+                    const pathElse = pathNew.pop()
+                    stateitemNew = stateitem.updateIn(pathElse.toJS(), val=>Immutable.fromJS({
+                        type: "BlockStatement",
+                        body: [value],
+                    }))
+                } else {
+                    stateitemNew = stateitem.updateIn(pathNew.toJS(), list=>list.splice(lastIndex, 0, value))
+                }
             }
             if (operation === 'DELETE') {
                 const lastIndex = pathFull.last()
