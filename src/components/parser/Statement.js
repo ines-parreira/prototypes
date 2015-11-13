@@ -52,13 +52,13 @@ class BlockStatement extends React.Component {
             return (
                 <div className="BlockStatementItem">
                     <div className="item">
+                        <DeleteBlockStatementItem key={ 4 * length + idx } parent={ parentNew } index={ index }
+                                                  actions={ actions }/>
                         <Statement key={ idx } { ...bodyItem } parent={ parentNew } index={ index }
                                    actions={ actions }/>
                     </div>
                     <AddAction key={ 2 * length + idx } parent={ parentNew } index={ index } actions={ actions }/>
                     <AddIf key={ 3 * length + idx } parent={ parentNew } index={ index } actions={ actions }/>
-                    <DeleteBlockStatementItem key={ 4 * length + idx } parent={ parentNew } index={ index }
-                                              actions={ actions }/>
                 </div>
             )
         })

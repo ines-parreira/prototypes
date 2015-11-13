@@ -94,7 +94,7 @@ export class DeleteBlockStatementItem extends React.Component {
 
     render() {
         return (
-            <button className="ui red tiny button" onClick={ this.handleClick.bind(this) }>
+            <button className="ui red tiny button delete-blockstatement" onClick={ this.handleClick.bind(this) }>
                 Delete -
             </button>
         )
