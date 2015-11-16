@@ -1,25 +1,33 @@
 import React from 'react'
 
+const DEFAULT_OPTIONS = [
+    {
+        label: 'label',
+        value: 'value'
+    }
+]
+
 class DropdownButton extends React.Component {
 
-    handleChange(event){
-        const {actions, index, parent } = this.props
+    handleChange(event) {
+        const {actions, index, parent, options } = this.props
         actions.modifyCodeast(index, parent, event.target.value, 'UPDATE')
     }
 
     render() {
+        let options = this.props.options
+
+        if (options === undefined) {
+            options = DEFAULT_OPTIONS
+        }
+
+        const optionItems = options.map(function(option, idx) {
+            return <option value={option.value} key={idx}>{option.label}</option>
+        })
         return (
-            <select className="ui dropdown" value="{ this.props.text }" onChange={ this.handleChange.bind(this) }>
-                <option>{ this.props.text }</option>
-                <option>send_notification_to_user</option>
-                <option>action_add_tag_to_ticket</option>
-                <option>twitter</option>
-                <option>facebook</option>
-                <option>closed</option>
-                <option>open</option>
-                <option>==</option>
-                <option>status</option>
-                <option>channel</option>
+            <select className="ui dropdown" value={ this.props.text } onChange={ this.handleChange.bind(this) }>
+                { optionItems }
+                <option value={ this.props.text } key={-1}>{ this.props.text }</option>
             </select>
         )
     }

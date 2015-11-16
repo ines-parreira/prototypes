@@ -45,20 +45,19 @@ class BlockStatement extends React.Component {
     render() {
         const { type, body, index, actions, parent } = this.props
 
-        const length = body.length
         const statements = body.map(function(bodyItem, idx) {
             const parentNew = parent.push('body', idx)
 
             return (
-                <div className="BlockStatementItem">
+                <div className="BlockStatementItem" key={ idx }>
                     <div className="item">
-                        <DeleteBlockStatementItem key={ 4 * length + idx } parent={ parentNew } index={ index }
+                        <DeleteBlockStatementItem parent={ parentNew } index={ index }
                                                   actions={ actions }/>
-                        <Statement key={ idx } { ...bodyItem } parent={ parentNew } index={ index }
-                                   actions={ actions }/>
+                        <Statement { ...bodyItem } parent={ parentNew } index={ index }
+                                                   actions={ actions }/>
                     </div>
-                    <AddAction key={ 2 * length + idx } parent={ parentNew } index={ index } actions={ actions }/>
-                    <AddIf key={ 3 * length + idx } parent={ parentNew } index={ index } actions={ actions }/>
+                    <AddAction parent={ parentNew } index={ index } actions={ actions }/>
+                    <AddIf parent={ parentNew } index={ index } actions={ actions }/>
                 </div>
             )
         })
@@ -66,11 +65,11 @@ class BlockStatement extends React.Component {
         const parentNew = parent.push('body', -1)
         statements.unshift(
             (
-                <div className="BlockStatementItem">
-                    <AddAction key={ -1 } parent={ parentNew }
+                <div className="BlockStatementItem" key={ -1 }>
+                    <AddAction parent={ parentNew }
                                index={ index }
                                actions={ actions }/>
-                    <AddIf key={ -2 } parent={ parentNew }
+                    <AddIf parent={ parentNew }
                            index={ index }
                            actions={ actions }/>
                 </div>
