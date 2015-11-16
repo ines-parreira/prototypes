@@ -2,10 +2,12 @@ import React from 'react'
 import UnknownSyntax from './Utils'
 import DropdownButton from '../rule/Dropdown'
 import { DeleteBinaryExpression } from './OperationButtons'
+import Immutable from 'immutable'
 
 class Expression extends React.Component {
     render() {
         const { type } = this.props
+
         switch (type) {
             case 'BinaryExpression':
                 return (
@@ -78,6 +80,38 @@ class CallExpression extends React.Component {
     }
 }
 
+
+/* Get all the name of the leaf nodes (Identifier and Literal nodes) of
+ * the syntax tree.
+ */
+function getSyntaxTreeLeaves(syntaxTree) {
+    if (syntaxTree === undefined || syntaxTree.type === undefined) {
+        return null
+    }
+
+    if (syntaxTree.type === 'Identifier') {
+        return Immutable.List([syntaxTree.name])
+    }
+
+    if (syntaxTree.type === 'Literal') {
+        return Immutable.List([syntaxTree.value])
+    }
+
+
+    let ret = Immutable.List([])
+
+    for (let key of Object.keys(syntaxTree)) {
+        const r = getSyntaxTreeLeaves(syntaxTree[key])
+
+        if (r !== null) {
+            ret = ret.concat(r)
+        }
+    }
+
+    return ret
+}
+
+
 /*
  interface MemberExpression <: Expression, Pattern {
  type: "MemberExpression";
@@ -96,15 +130,18 @@ class MemberExpression extends React.Component {
         const { type, object, property, computed, index, actions, parent } = this.props
         const parentObject = parent.push('object')
         const parentProperty = parent.push('property')
+        const leftsiblings = getSyntaxTreeLeaves(object).toJS()
 
         return (
             <span className="MemberExpression">
-                <Expression { ...object } parent={parentObject} index={index} actions={actions}/>
-                <Expression { ...property } parent={parentProperty} index={index} actions={actions}/>
+                <Expression { ...object } parent={parentObject} index={index} actions={actions} leftsiblings={['root']} />
+                <Expression { ...property } parent={parentProperty} index={index} actions={actions} leftsiblings={ leftsiblings } />
             </span>
         )
     }
 }
+
+
 /*
  interface BinaryExpression <: Expression {
  type: "BinaryExpression";
@@ -127,16 +164,19 @@ class BinaryExpression extends React.Component {
             )
         }
 
+        const leftsiblings = getSyntaxTreeLeaves(left)
+
         return (
             <span className="BinaryExpression">
                 <span className="left">
                     <Expression {...left} parent={parentLeft} index={index} actions={actions}/>
                 </span>
                 <span className="operator">
-                    <DropdownButton text={ operator } parent={parentOperator} index={index} actions={actions}/>
+                    <DropdownButton text={ operator } parent={parentOperator} index={index} actions={actions}
+                                    leftsiblings={ leftsiblings.toJS() }/>
                 </span>
                 <span className="right">
-                    <Expression {...right} parent={parentRight} index={index} actions={actions}/>
+                    <Expression {...right} parent={parentRight} index={index} actions={actions} leftsiblings={ leftsiblings.push('operator').toJS() } />
                 </span>
                 { deleteBinaryExpressionComponent }
             </span>
@@ -152,7 +192,7 @@ class BinaryExpression extends React.Component {
  right: Expression;
  }
  */
-class LogicalExpression extends BinaryExpression {
+class LogicalExpression extends React.Component {
     render() {
         const { type, operator, left, right, index, parent, actions } = this.props
         const parentLeft = parent.push('left')
@@ -184,7 +224,7 @@ class LogicalExpression extends BinaryExpression {
  */
 class Identifier extends React.Component {
     render() {
-        const { type, name, parent, index, actions } = this.props
+        const { type, name, parent, index, actions, leftsiblings } = this.props
         const parentNew = parent.push('name')
 
         switch (name) {
@@ -200,7 +240,7 @@ class Identifier extends React.Component {
             default:
                 return (
                     <span className="Identifier">
-                         <DropdownButton text={ name } parent={ parentNew } index={ index } actions={ actions }/>
+                         <DropdownButton text={ name } parent={ parentNew } index={ index } actions={ actions } leftsiblings={ leftsiblings } />
                     </span>
                 )
         }
@@ -215,14 +255,14 @@ class Identifier extends React.Component {
  */
 class Literal extends React.Component {
     render() {
-        const { type, value, index, actions, parent } = this.props
+        const { type, value, index, actions, parent, leftsiblings } = this.props
 
         const parentNew = parent.push('value')
 
         return (
 
             <span className="Literal">
-                <DropdownButton text={ value } parent={ parentNew } index={ index } actions={ actions }/>
+                <DropdownButton text={ value } parent={ parentNew } index={ index } actions={ actions } leftsiblings={ leftsiblings } />
             </span>
         )
     }

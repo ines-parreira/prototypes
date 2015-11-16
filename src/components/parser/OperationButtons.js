@@ -29,8 +29,18 @@ export class AddAction extends React.Component {
     }
 
     render() {
+        const options = [
+            {
+                label: "Send notification email to user",
+                value: "send_notification_to_user"
+            },
+            {
+                label: "Add tag to the ticket",
+                value: "action_add_tag_to_ticket"
+            }
+        ]
         return (
-            <button className="ui basic tiny button" onClick={ this.handleClick.bind(this) }>
+            <button className="ui basic tiny button" onClick={ this.handleClick.bind(this) } options={ options }>
                 Add action +
             </button>
         )

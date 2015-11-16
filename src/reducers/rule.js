@@ -38,6 +38,39 @@ export function rules(state = initialState, action) {
 
             if (operation === 'UPDATE') {
                 stateitemNew = stateitem.updateIn(pathFull.toJS(), val=>value)
+                // When we do an update for a node, the possible choices after that
+                // node should be invalided.
+                // e.g. if(ticket.status == 'open'){}
+                // When "status" is changed to "channel", both the "==" and "open" should
+                // be invalidated.
+                const length = pathFull.size
+                if (length >= 3) {
+                    if (pathFull.get(length - 1) === 'name' && pathFull.get(length - 2) === 'object' && pathFull.get(length - 3) === 'left') {
+                        const parentPath = pathFull.pop().pop().pop()
+                        if (stateitem.getIn(parentPath.push('type').toJS()) === 'BinaryExpression') {
+                            const pathOperator = parentPath.push('operator')
+                            const pathProperty = parentPath.push('left', 'property', 'name')
+                            stateitemNew = stateitemNew.updateIn(pathOperator.toJS(), val=>'')
+                            stateitemNew = stateitemNew.updateIn(pathProperty.toJS(), val=>'')
+                            const pathValue = parentPath.push('right', 'value')
+                            stateitemNew = stateitemNew.updateIn(pathValue.toJS(), val=>'')
+                        }
+                    }
+
+                    if (pathFull.get(length - 1) === 'name' && pathFull.get(length - 2) === 'property' && pathFull.get(length - 3) === 'left') {
+                        const parentPath = pathFull.pop().pop().pop()
+                        if (stateitem.getIn(parentPath.push('type').toJS()) === 'BinaryExpression') {
+                            const pathOperator = parentPath.push('operator')
+                            console.log(stateitemNew.toJS())
+                            console.log(pathOperator.toJS())
+                            stateitemNew = stateitemNew.updateIn(pathOperator.toJS(), val=>'')
+                            const pathValue = parentPath.push('right', 'value')
+                            console.log(pathValue.toJS())
+                            stateitemNew = stateitemNew.updateIn(pathValue.toJS(), val=>'')
+                        }
+                    }
+                }
+
             }
             if (operation === 'INSERT') {
                 const lastIndex = pathFull.last() + 1

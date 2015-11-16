@@ -1,33 +1,149 @@
 import React from 'react'
+import Immutable from 'immutable'
 
-const DEFAULT_OPTIONS = [
-    {
-        label: 'label',
-        value: 'value'
+const DEFAULT_OPTION_CHAINS = {
+    root: {
+        choices: [
+            {
+                value: 'ticket',
+                label: 'ticket'
+            },
+            {
+                value: 'user',
+                label: 'user'
+            }
+        ]
+    },
+
+    ticket: {
+        choices: [
+            {
+                value: 'status',
+                label: 'status'
+            },
+            {
+                value: 'channel',
+                label: 'channel'
+            }
+        ],
+
+        status: {
+            choices: [
+                {
+                    value: '==',
+                    label: 'Is'
+                },
+                {
+                    value: '!=',
+                    label: 'Is not'
+                },
+                {
+                    value: '>',
+                    label: 'Greater than'
+                },
+                {
+                    value: '<',
+                    label: 'Less than'
+                }
+            ],
+            operator: {
+                choices: [
+                    {
+                        value: 'open',
+                        label: 'open'
+                    },
+                    {
+                        value: 'closed',
+                        label: 'closed'
+                    },
+                    {
+                        value: 'new',
+                        label: 'new'
+                    }
+                ]
+            }
+        },
+
+        channel: {
+            choices: [
+                {
+                    value: '==',
+                    label: 'Is'
+                },
+                {
+                    value: '!=',
+                    label: 'Is not'
+                }
+            ],
+            operator: {
+                choices: [
+                    {
+                        value: 'facebook',
+                        label: 'facebook'
+                    },
+                    {
+                        value: 'twitter',
+                        label: 'twitter'
+                    },
+                    {
+                        value: 'email',
+                        label: 'email'
+                    }
+                ]
+            }
+        }
     }
-]
+}
+
+/**
+ * The options list depend on the previous choices user made.
+ * Return the possible options given LEFTSIBLINGS.
+ */
+function getOptionsBySiblings(leftsiblings) {
+    const optionsDict = Immutable.fromJS(DEFAULT_OPTION_CHAINS)
+
+    leftsiblings.push('choices')
+    const options = optionsDict.getIn(leftsiblings)
+
+    let optionItems
+    if (options !== undefined) {
+        optionItems = options.toJS().map(function(option, idx) {
+            return <option value={ option.value } key={ idx }>{ option.label }</option>
+        })
+        optionItems.unshift((
+            <option value="" key="-1">-- select --</option>
+        ))
+    }
+
+    return optionItems
+}
 
 class DropdownButton extends React.Component {
 
     handleChange(event) {
         const {actions, index, parent, options } = this.props
+        console.log(parent.toJS())
         actions.modifyCodeast(index, parent, event.target.value, 'UPDATE')
     }
 
     render() {
-        let options = this.props.options
+        const leftsiblings = this.props.leftsiblings
 
-        if (options === undefined) {
-            options = DEFAULT_OPTIONS
+        let optionItems
+
+        if (leftsiblings !== undefined) {
+            optionItems = getOptionsBySiblings(leftsiblings)
         }
 
-        const optionItems = options.map(function(option, idx) {
-            return <option value={option.value} key={idx}>{option.label}</option>
-        })
+        if (optionItems === undefined) {
+            optionItems = (
+                <option value="{ this.props.text }">{ this.props.text }</option>
+            )
+        }
+
         return (
             <select className="ui dropdown" value={ this.props.text } onChange={ this.handleChange.bind(this) }>
                 { optionItems }
-                <option value={ this.props.text } key={-1}>{ this.props.text }</option>
             </select>
         )
     }
