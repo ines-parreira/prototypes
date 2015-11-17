@@ -68,8 +68,8 @@ export class AddLogicalAndCondition extends React.Component {
                 },
                 right: {
                     type: 'Literal',
-                    value: 'channel',
-                    raw: '\'channel\''
+                    value: 'open',
+                    raw: '\'open\''
                 }
             },
             right: null,
