@@ -15,6 +15,83 @@ const DEFAULT_OPTION_CHAINS = {
         ]
     },
 
+    user: {
+        choices: [
+            {
+                value: 'age',
+                label: 'age'
+            },
+            {
+                value: 'country',
+                label: 'country'
+            }
+        ],
+        age: {
+            choices: [
+                {
+                    value: '==',
+                    label: 'Is'
+                },
+                {
+                    value: '!=',
+                    label: 'Is not'
+                },
+                {
+                    value: '>',
+                    label: 'Greater than'
+                },
+                {
+                    value: '<',
+                    label: 'Less than'
+                }
+            ],
+            operator: {
+                choices: [
+                    {
+                        value: '20',
+                        label: '20'
+                    },
+                    {
+                        value: '30',
+                        label: '30'
+                    },
+                    {
+                        value: '40',
+                        label: '40'
+                    }
+                ]
+            }
+        },
+        country: {
+            choices: [
+                {
+                    value: '==',
+                    label: 'Is'
+                },
+                {
+                    value: '!=',
+                    label: 'Is not'
+                }
+            ],
+            operator: {
+                choices: [
+                    {
+                        value: 'FR',
+                        label: 'France'
+                    },
+                    {
+                        value: 'CN',
+                        label: 'China'
+                    },
+                    {
+                        value: 'US',
+                        label: 'United States'
+                    }
+                ]
+            }
+        }
+    },
+
     ticket: {
         choices: [
             {
@@ -122,7 +199,6 @@ class DropdownButton extends React.Component {
 
     handleChange(event) {
         const {actions, index, parent, options } = this.props
-        console.log(parent.toJS())
         actions.modifyCodeast(index, parent, event.target.value, 'UPDATE')
     }
 

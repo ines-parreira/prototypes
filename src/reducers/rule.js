@@ -61,11 +61,8 @@ export function rules(state = initialState, action) {
                         const parentPath = pathFull.pop().pop().pop()
                         if (stateitem.getIn(parentPath.push('type').toJS()) === 'BinaryExpression') {
                             const pathOperator = parentPath.push('operator')
-                            console.log(stateitemNew.toJS())
-                            console.log(pathOperator.toJS())
                             stateitemNew = stateitemNew.updateIn(pathOperator.toJS(), val=>'')
                             const pathValue = parentPath.push('right', 'value')
-                            console.log(pathValue.toJS())
                             stateitemNew = stateitemNew.updateIn(pathValue.toJS(), val=>'')
                         }
                     }
