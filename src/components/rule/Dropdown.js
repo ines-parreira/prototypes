@@ -2,7 +2,7 @@ import React from 'react'
 import Immutable from 'immutable'
 
 const DEFAULT_OPTION_CHAINS = {
-    root: {
+    _: {
         choices: [
             {
                 value: 'ticket',
@@ -12,164 +12,165 @@ const DEFAULT_OPTION_CHAINS = {
                 value: 'user',
                 label: 'user'
             }
-        ]
-    },
-
-    user: {
-        choices: [
-            {
-                value: 'age',
-                label: 'age'
-            },
-            {
-                value: 'country',
-                label: 'country'
-            }
         ],
-        age: {
+
+        user: {
             choices: [
                 {
-                    value: '==',
-                    label: 'Is'
+                    value: 'age',
+                    label: 'age'
                 },
                 {
-                    value: '!=',
-                    label: 'Is not'
-                },
-                {
-                    value: '>',
-                    label: 'Greater than'
-                },
-                {
-                    value: '<',
-                    label: 'Less than'
+                    value: 'country',
+                    label: 'country'
                 }
             ],
-            operator: {
+            age: {
                 choices: [
                     {
-                        value: '20',
-                        label: '20'
+                        value: 'equal',
+                        label: 'Is'
                     },
                     {
-                        value: '30',
-                        label: '30'
+                        value: 'notEqual',
+                        label: 'Is not'
                     },
                     {
-                        value: '40',
-                        label: '40'
+                        value: 'greaterThan',
+                        label: 'Greater than'
+                    },
+                    {
+                        value: 'lessThan',
+                        label: 'Less than'
                     }
-                ]
+                ],
+                operator: {
+                    choices: [
+                        {
+                            value: '20',
+                            label: '20'
+                        },
+                        {
+                            value: '30',
+                            label: '30'
+                        },
+                        {
+                            value: '40',
+                            label: '40'
+                        }
+                    ]
+                }
+            },
+            country: {
+                choices: [
+                    {
+                        value: 'equal',
+                        label: 'Is'
+                    },
+                    {
+                        value: 'notEqual',
+                        label: 'Is not'
+                    }
+                ],
+                operator: {
+                    choices: [
+                        {
+                            value: 'FR',
+                            label: 'France'
+                        },
+                        {
+                            value: 'CN',
+                            label: 'China'
+                        },
+                        {
+                            value: 'US',
+                            label: 'United States'
+                        }
+                    ]
+                }
             }
         },
-        country: {
+
+        ticket: {
             choices: [
                 {
-                    value: '==',
-                    label: 'Is'
+                    value: 'status',
+                    label: 'status'
                 },
                 {
-                    value: '!=',
-                    label: 'Is not'
+                    value: 'channel',
+                    label: 'channel'
                 }
             ],
-            operator: {
+
+            status: {
                 choices: [
                     {
-                        value: 'FR',
-                        label: 'France'
+                        value: 'equal',
+                        label: 'Is'
                     },
                     {
-                        value: 'CN',
-                        label: 'China'
+                        value: 'notEqual',
+                        label: 'Is not'
                     },
                     {
-                        value: 'US',
-                        label: 'United States'
+                        value: 'greaterThan',
+                        label: 'Greater than'
+                    },
+                    {
+                        value: 'lessThan',
+                        label: 'Less than'
                     }
-                ]
+                ],
+                operator: {
+                    choices: [
+                        {
+                            value: 'open',
+                            label: 'open'
+                        },
+                        {
+                            value: 'closed',
+                            label: 'closed'
+                        },
+                        {
+                            value: 'new',
+                            label: 'new'
+                        }
+                    ]
+                }
+            },
+
+            channel: {
+                choices: [
+                    {
+                        value: 'equal',
+                        label: 'Is'
+                    },
+                    {
+                        value: 'notEqual',
+                        label: 'Is not'
+                    }
+                ],
+                operator: {
+                    choices: [
+                        {
+                            value: 'facebook',
+                            label: 'facebook'
+                        },
+                        {
+                            value: 'twitter',
+                            label: 'twitter'
+                        },
+                        {
+                            value: 'email',
+                            label: 'email'
+                        }
+                    ]
+                }
             }
         }
     },
 
-    ticket: {
-        choices: [
-            {
-                value: 'status',
-                label: 'status'
-            },
-            {
-                value: 'channel',
-                label: 'channel'
-            }
-        ],
-
-        status: {
-            choices: [
-                {
-                    value: '==',
-                    label: 'Is'
-                },
-                {
-                    value: '!=',
-                    label: 'Is not'
-                },
-                {
-                    value: '>',
-                    label: 'Greater than'
-                },
-                {
-                    value: '<',
-                    label: 'Less than'
-                }
-            ],
-            operator: {
-                choices: [
-                    {
-                        value: 'open',
-                        label: 'open'
-                    },
-                    {
-                        value: 'closed',
-                        label: 'closed'
-                    },
-                    {
-                        value: 'new',
-                        label: 'new'
-                    }
-                ]
-            }
-        },
-
-        channel: {
-            choices: [
-                {
-                    value: '==',
-                    label: 'Is'
-                },
-                {
-                    value: '!=',
-                    label: 'Is not'
-                }
-            ],
-            operator: {
-                choices: [
-                    {
-                        value: 'facebook',
-                        label: 'facebook'
-                    },
-                    {
-                        value: 'twitter',
-                        label: 'twitter'
-                    },
-                    {
-                        value: 'email',
-                        label: 'email'
-                    }
-                ]
-            }
-        }
-    }
 }
 
 /**
@@ -178,9 +179,7 @@ const DEFAULT_OPTION_CHAINS = {
  */
 function getOptionsBySiblings(leftsiblings) {
     const optionsDict = Immutable.fromJS(DEFAULT_OPTION_CHAINS)
-
-    leftsiblings.push('choices')
-    const options = optionsDict.getIn(leftsiblings)
+    const options = optionsDict.getIn(leftsiblings.push('choices').toJS())
 
     let optionItems
     if (options !== undefined) {
@@ -213,7 +212,7 @@ class DropdownButton extends React.Component {
 
         if (optionItems === undefined) {
             optionItems = (
-                <option value="{ this.props.text }">{ this.props.text }</option>
+                <option value={ this.props.text }>{ this.props.text }</option>
             )
         }
 
