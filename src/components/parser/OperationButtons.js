@@ -52,25 +52,30 @@ export class AddLogicalAndCondition extends React.Component {
             type: 'LogicalExpression',
             operator: '&&',
             left: {
-                type: 'BinaryExpression',
-                operator: '==',
-                left: {
-                    type: 'MemberExpression',
-                    computed: false,
-                    object: {
-                        type: 'Identifier',
-                        name: 'ticket'
-                    },
-                    property: {
-                        type: 'Identifier',
-                        name: 'status'
-                    }
+                type: 'CallExpression',
+                callee: {
+                    type: 'Identifier',
+                    name: 'equal'
                 },
-                right: {
-                    type: 'Literal',
-                    value: 'open',
-                    raw: '\'open\''
-                }
+                arguments: [
+                    {
+                        type: 'MemberExpression',
+                        computed: false,
+                        object: {
+                            type: 'Identifier',
+                            name: 'ticket'
+                        },
+                        property: {
+                            type: 'Identifier',
+                            name: 'status'
+                        }
+                    },
+                    {
+                        type: 'Literal',
+                        value: 'open',
+                        raw: '\'open\''
+                    }
+                ],
             },
             right: null,
         }
@@ -94,25 +99,30 @@ export class AddIf extends React.Component {
         const actionNode = {
             type: 'IfStatement',
             test: {
-                type: 'BinaryExpression',
-                operator: '==',
-                left: {
-                    type: 'MemberExpression',
-                    computed: false,
-                    object: {
-                        type: 'Identifier',
-                        name: 'ticket'
-                    },
-                    property: {
-                        type: 'Identifier',
-                        name: 'status'
-                    }
+                type: 'CallExpression',
+                callee: {
+                    type: 'Identifier',
+                    name: 'equal'
                 },
-                right: {
-                    type: 'Literal',
-                    value: 'channel',
-                    raw: '\'channel\''
-                }
+                arguments: [
+                    {
+                        type: 'MemberExpression',
+                        computed: false,
+                        object: {
+                            type: 'Identifier',
+                            name: 'ticket'
+                        },
+                        property: {
+                            type: 'Identifier',
+                            name: 'status'
+                        }
+                    },
+                    {
+                        type: 'Literal',
+                        value: 'open',
+                        raw: '\'open\''
+                    }
+                ],
             },
             consequent: {
                 type: 'BlockStatement',

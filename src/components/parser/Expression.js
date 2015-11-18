@@ -102,6 +102,14 @@ class CallExpression extends React.Component {
 
         const parentCallee = parent.push('callee')
 
+
+        let deleteBinaryExpressionComponent
+        if (parent.last() !== 'test') {
+            deleteBinaryExpressionComponent = (
+                <DeleteBinaryExpression parent={parent} index={index} actions={actions}/>
+            )
+        }
+
         // We assume in Ifstatement.test, all the function calls look like
         // CallExpression <: Expression
         // callee: Identifier
@@ -126,6 +134,7 @@ class CallExpression extends React.Component {
                     <Expression { ...functionArguments[1] } parent={ parentArguments1 } index={ index }
                                                             actions={ actions }
                                                             leftsiblings={ leftsiblings.push('operator') }/>
+                    { deleteBinaryExpressionComponent }
                 </span>
             )
         }
@@ -196,12 +205,6 @@ class BinaryExpression extends React.Component {
         const parentRight = parent.push('right')
         const parentOperator = parent.push('operator')
 
-        let deleteBinaryExpressionComponent
-        if (parent.last() !== 'test') {
-            deleteBinaryExpressionComponent = (
-                <DeleteBinaryExpression parent={parent} index={index} actions={actions}/>
-            )
-        }
 
         let leftsiblings2
         let leftsiblings3
@@ -225,7 +228,6 @@ class BinaryExpression extends React.Component {
                     <Expression {...right} parent={parentRight} index={index} actions={actions}
                                            leftsiblings={leftsiblings3}/>
                 </span>
-                { deleteBinaryExpressionComponent }
             </span>
         )
     }
