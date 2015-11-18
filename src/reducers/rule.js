@@ -10,6 +10,10 @@ function getAst(code) {
     return esprima.parse(code)
 }
 
+/**
+ * In Order traversal the SYNTAXTREE from CURRENTPATH. Return a list
+ * of possible paths to leaves.
+ */
 function inOrderGetLeaves(syntaxTree, currentPath) {
     const currentNode = syntaxTree.getIn(currentPath)
 
@@ -105,7 +109,8 @@ export function rules(state = initialState, action) {
 
                         let shouldUpdate = false
 
-                        for (var pathItem of possiblePaths) {
+                        // Update all the leaves on the right side of this one.
+                        for (const pathItem of possiblePaths) {
                             if (shouldUpdate) {
                                 stateitemNew = stateitemNew.updateIn(pathItem, val=>'')
                             }

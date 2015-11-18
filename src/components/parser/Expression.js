@@ -1,6 +1,6 @@
 import React from 'react'
 import UnknownSyntax from './Utils'
-import DropdownButton from '../rule/Dropdown'
+import DropdownButton from './Dropdown'
 import { DeleteBinaryExpression } from './OperationButtons'
 import Immutable from 'immutable'
 
