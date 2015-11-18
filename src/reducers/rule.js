@@ -10,6 +10,53 @@ function getAst(code) {
     return esprima.parse(code)
 }
 
+function inOrderGetLeaves(syntaxTree, currentPath) {
+    const currentNode = syntaxTree.getIn(currentPath)
+
+    if (currentNode.get('type') === 'Identifier') {
+        return Immutable.List([]).push(currentPath.push('name'))
+    }
+
+    if (currentNode.get('type') === 'Literal') {
+        return Immutable.List([]).push(currentPath.push('value'))
+    }
+
+    if (currentNode.get('type') === 'CallExpression') {
+        const pathCallee = currentPath.push('callee')
+        const pathArgument0 = currentPath.push('arguments', 0)
+        const pathArgument1 = currentPath.push('arguments', 1)
+
+        const leavesCallee = inOrderGetLeaves(syntaxTree, pathCallee)
+        const leavesArgument0 = inOrderGetLeaves(syntaxTree, pathArgument0)
+        const leavesArgument1 = inOrderGetLeaves(syntaxTree, pathArgument1)
+
+
+        return leavesArgument0.push(...leavesCallee).push(...leavesArgument1)
+    }
+
+    if (currentNode.get('type') === 'BinaryExpression' || currentNode.get('type') === 'LogicalExpression') {
+        const pathOperator = currentPath.push('operator')
+        const pathLeft = currentPath.push('left')
+        const pathRight = currentPath.push('right')
+
+        const leavesOperator = Immutable.List([]).push(pathOperator)
+        const leavesLeft = inOrderGetLeaves(syntaxTree, pathLeft)
+        const leavesRight = inOrderGetLeaves(syntaxTree, pathRight)
+
+        return leavesLeft.push(...leavesOperator).push(...leavesRight)
+    }
+
+    if (currentNode.get('type') == 'MemberExpression') {
+        const pathObject = currentPath.push('object')
+        const pathProperty = currentPath.push('property')
+
+        const leavesObject = inOrderGetLeaves(syntaxTree, pathObject)
+        const leavesProperty = inOrderGetLeaves(syntaxTree, pathProperty)
+
+        return leavesObject.push(...leavesProperty)
+    }
+}
+
 export function rules(state = initialState, action) {
     switch (action.type) {
         case ADD_RULE_END:
@@ -47,7 +94,27 @@ export function rules(state = initialState, action) {
 
                 // Do the updates only in the Ifstatement.test
                 if (pathFull.contains('test')) {
+                    let index = pathFull.lastIndexOf('arguments')
+                    if (index === -1) {
+                        index = pathFull.lastIndexOf('callee')
+                    }
 
+                    if (index !== -1) {
+                        const pathParentCallExpression = pathFull.setSize(pathFull.count() - index - 1)
+                        const possiblePaths = inOrderGetLeaves(stateitemNew, pathParentCallExpression)
+
+                        let shouldUpdate = false
+
+                        for (var pathItem of possiblePaths) {
+                            if (shouldUpdate) {
+                                stateitemNew = stateitemNew.updateIn(pathItem, val=>'')
+                            }
+
+                            if (pathFull.equals(pathItem)) {
+                                shouldUpdate = true
+                            }
+                        }
+                    }
                 }
             }
             if (operation === 'INSERT') {
