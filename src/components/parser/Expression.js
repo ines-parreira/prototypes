@@ -4,6 +4,7 @@ import DropdownButton from './Dropdown'
 import { DEFAULT_OPTION_CHAINS } from './Dropdown'
 import { DeleteBinaryExpression } from './OperationButtons'
 import Immutable from 'immutable'
+import Input from './Input'
 
 /* Get all the name of the leaf nodes (Identifier and Literal nodes) of
  * the syntax tree.
@@ -88,7 +89,7 @@ class Expression extends React.Component {
  */
 class ObjectExpression extends React.Component {
     render() {
-        const { type, properties, leftsiblings, parent } = this.props
+        const { type, properties, leftsiblings, parent, actions, index } = this.props
 
         const propertiesComp = properties.map(function(property, idx) {
             let leftsiblings2
@@ -99,7 +100,7 @@ class ObjectExpression extends React.Component {
             const parentProperty = parent.push('properties', idx)
             return (
                 <Property { ...property } key={ idx } theKey={ property.key } leftsiblings={ leftsiblings2 }
-                                          parent={ parentProperty }/>
+                                          parent={ parentProperty } actions={ actions } index={ index } />
             )
         })
 
@@ -119,52 +120,20 @@ class ObjectExpression extends React.Component {
  */
 class Property extends React.Component {
     render() {
-        const { type, computed, theKey, value, kind, method, shorthand, actions, leftsiblings, parent } = this.props
+        const { theKey, value, actions, leftsiblings, parent, index } = this.props
 
         const options = Immutable.fromJS(DEFAULT_OPTION_CHAINS)
         const widgetType = options.getIn(leftsiblings.push('widget').toJS())
 
-        let widget
-        switch (widgetType) {
-            case 'input':
-                widget = (
-                    <input type='textarea' value={ value.value }/>
-                )
-                break
 
-            case 'textarea':
-                widget = (
-                    <textarea type='text' value={ value.value }/>
-                )
-                break
-
-            default:
-                widget = (
-                    <div className="ui red horizontal label"> Not recognized type with value: { value.value }</div>
-                )
-        }
-
-        switch (theKey.type) {
-            case 'Literal':
-                return (
-                    <div className="ui labeled input">
-                        <div className="ui label">
-                            { theKey.name }
-                        </div>
-                        { widget }
-                    </div>
-                )
-
-            default:
-                return (
-                    <div className="ui labeled input">
-                        <div className="ui label">
-                            { theKey.name }
-                        </div>
-                        { widget }
-                    </div>
-                )
-        }
+        return (
+            <div className="ui labeled input">
+                <div className="ui label">
+                    { theKey.name }
+                </div>
+                <Input widgetType={ widgetType } value={ value.value } parent={ parent.push('value', 'value') } actions={actions} index={ index} />
+            </div>
+        )
     }
 }
 

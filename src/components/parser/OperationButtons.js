@@ -8,20 +8,57 @@ export class AddAction extends React.Component {
                 type: 'CallExpression',
                 callee: {
                     type: 'Identifier',
-                    name: 'Action',
+                    name: 'Action'
                 },
                 arguments: [
                     {
                         type: 'Identifier',
-                        name: 'list_of_actions',
+                        name: 'list_of_actions'
                     },
                     {
                         type: 'Literal',
-                        value: 'action_default_no_action',
-                        raw: '\'action_default_no_action\'',
+                        value: 'action_send_email_notification',
+                        raw: '\'action_send_email_notification\''
                     },
-                ],
-            },
+                    {
+                        type: 'ObjectExpression',
+                        'properties': [
+                            {
+                                type: 'Property',
+                                key: {
+                                    type: 'Identifier',
+                                    name: 'subject'
+                                },
+                                computed: false,
+                                value: {
+                                    type: 'Literal',
+                                    value: 'Hello Gorgias',
+                                    raw: '\'Hello Gorgias\''
+                                },
+                                kind: 'init',
+                                method: false,
+                                shorthand: false
+                            },
+                            {
+                                type: 'Property',
+                                key: {
+                                    type: 'Identifier',
+                                    name: 'body'
+                                },
+                                computed: false,
+                                value: {
+                                    type: 'Literal',
+                                    value: '42',
+                                    raw: '\'42\''
+                                },
+                                kind: 'init',
+                                method: false,
+                                shorthand: false
+                            }
+                        ]
+                    }
+                ]
+            }
         }
 
         const { parent, actions, index } = this.props

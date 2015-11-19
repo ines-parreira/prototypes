@@ -62,8 +62,41 @@ function inOrderGetLeaves(syntaxTree, currentPath) {
     }
 }
 
-function getObjectExpression(actionDict){
-    
+function getObjectExpression(actionDict) {
+    let properties = []
+
+    for (let keyItem in actionDict) {
+        if (!actionDict.hasOwnProperty(keyItem)) {
+            continue
+        }
+
+
+        const property = {
+            type: 'Property',
+            key: {
+                type: 'Identifier',
+                name: keyItem,
+            },
+            computed: false,
+            value: {
+                type: 'Literal',
+                value: '',
+                raw: '\'\'',
+            },
+            kind: 'init',
+            method: false,
+            shorthand: false
+        }
+
+        properties.push(property)
+    }
+
+    const ret = {
+        type: "ObjectExpression",
+        properties: properties
+    }
+
+    return ret
 }
 
 export function rules(state = initialState, action) {
@@ -87,9 +120,6 @@ export function rules(state = initialState, action) {
         case RULES_UPDATE_CODE_AST:
         {
             const { index, path, value, operation } = action
-            console.log(path.toJS())
-            console.log(value)
-
             const stateitem = Immutable.fromJS(state.get(index))
             const pathFull = path.unshift('code_ast')
 
@@ -130,10 +160,11 @@ export function rules(state = initialState, action) {
                     }
                 } else {
                     /*
-                     * Update the arguments for actions when action is updated.
+                     * Update the arguments for actions when action name is updated.
                      * */
                     const index = pathFull.lastIndexOf('arguments')
-                    if (index !== -1) {
+                    const index2 = pathFull.lastIndexOf(1)
+                    if (index !== -1 && index2 != -1 && (index - index2 === 1)) {
                         const pathParentCallExpression = pathFull.setSize(pathFull.count() - index - 1)
                         const calleeName = stateitemNew.getIn(pathParentCallExpression.push('callee', 'name'))
                         if (calleeName === 'Action') {
@@ -143,11 +174,12 @@ export function rules(state = initialState, action) {
                             const actionDict = Immutable.fromJS(DEFAULT_OPTION_CHAINS).getIn(pathAction).toJS()
                             const objectExpression = getObjectExpression(actionDict)
 
+                            stateitemNew = stateitemNew.updateIn(pathParentCallExpression.push('arguments', 2).toJS(), val=>objectExpression)
                         }
                     }
                 }
-
             }
+
             if (operation === 'INSERT') {
                 const lastIndex = pathFull.last() + 1
                 const pathNew = pathFull.pop()
