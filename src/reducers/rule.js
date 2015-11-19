@@ -3,6 +3,7 @@ import Immutable from 'immutable'
 import reqwest from 'reqwest'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
+import { DEFAULT_OPTION_CHAINS } from '../components/parser/Dropdown'
 
 const initialState = Immutable.List([])
 
@@ -61,6 +62,10 @@ function inOrderGetLeaves(syntaxTree, currentPath) {
     }
 }
 
+function getObjectExpression(actionDict){
+    
+}
+
 export function rules(state = initialState, action) {
     switch (action.type) {
         case ADD_RULE_END:
@@ -82,6 +87,9 @@ export function rules(state = initialState, action) {
         case RULES_UPDATE_CODE_AST:
         {
             const { index, path, value, operation } = action
+            console.log(path.toJS())
+            console.log(value)
+
             const stateitem = Immutable.fromJS(state.get(index))
             const pathFull = path.unshift('code_ast')
 
@@ -120,7 +128,25 @@ export function rules(state = initialState, action) {
                             }
                         }
                     }
+                } else {
+                    /*
+                     * Update the arguments for actions when action is updated.
+                     * */
+                    const index = pathFull.lastIndexOf('arguments')
+                    if (index !== -1) {
+                        const pathParentCallExpression = pathFull.setSize(pathFull.count() - index - 1)
+                        const calleeName = stateitemNew.getIn(pathParentCallExpression.push('callee', 'name'))
+                        if (calleeName === 'Action') {
+                            const pathArgument1 = pathParentCallExpression.push('arguments', 1, 'value')
+                            const argument1 = stateitemNew.getIn(pathArgument1.toJS())
+                            const pathAction = ['_action', argument1]
+                            const actionDict = Immutable.fromJS(DEFAULT_OPTION_CHAINS).getIn(pathAction).toJS()
+                            const objectExpression = getObjectExpression(actionDict)
+
+                        }
+                    }
                 }
+
             }
             if (operation === 'INSERT') {
                 const lastIndex = pathFull.last() + 1

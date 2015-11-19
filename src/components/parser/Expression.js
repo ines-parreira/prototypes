@@ -1,9 +1,9 @@
 import React from 'react'
 import UnknownSyntax from './Utils'
 import DropdownButton from './Dropdown'
+import { DEFAULT_OPTION_CHAINS } from './Dropdown'
 import { DeleteBinaryExpression } from './OperationButtons'
 import Immutable from 'immutable'
-
 
 /* Get all the name of the leaf nodes (Identifier and Literal nodes) of
  * the syntax tree.
@@ -71,12 +71,102 @@ class Expression extends React.Component {
                     <CallExpression { ...this.props } />
                 )
 
+            case 'ObjectExpression':
+                return (
+                    <ObjectExpression { ...this.props } />
+                )
             default:
                 return <UnknownSyntax { ... this.props } />
         }
     }
 }
 
+/* interface ObjectExpression <: Expression {
+ type: "ObjectExpression";
+ properties: [ Property ];
+ }
+ */
+class ObjectExpression extends React.Component {
+    render() {
+        const { type, properties, leftsiblings, parent } = this.props
+
+        const propertiesComp = properties.map(function(property, idx) {
+            let leftsiblings2
+            if (leftsiblings !== undefined) {
+                leftsiblings2 = leftsiblings.push(property.key.name)
+            }
+
+            const parentProperty = parent.push('properties', idx)
+            return (
+                <Property { ...property } key={ idx } theKey={ property.key } leftsiblings={ leftsiblings2 }
+                                          parent={ parentProperty }/>
+            )
+        })
+
+        return (
+            <div>{ propertiesComp }</div>
+        )
+    }
+}
+
+/*
+ interface Property <: Node {
+ type: "Property";
+ key: Literal | Identifier;
+ value: Expression;
+ kind: "init" | "get" | "set";
+ }
+ */
+class Property extends React.Component {
+    render() {
+        const { type, computed, theKey, value, kind, method, shorthand, actions, leftsiblings, parent } = this.props
+
+        const options = Immutable.fromJS(DEFAULT_OPTION_CHAINS)
+        const widgetType = options.getIn(leftsiblings.push('widget').toJS())
+
+        let widget
+        switch (widgetType) {
+            case 'input':
+                widget = (
+                    <input type='textarea' value={ value.value }/>
+                )
+                break
+
+            case 'textarea':
+                widget = (
+                    <textarea type='text' value={ value.value }/>
+                )
+                break
+
+            default:
+                widget = (
+                    <div className="ui red horizontal label"> Not recognized type with value: { value.value }</div>
+                )
+        }
+
+        switch (theKey.type) {
+            case 'Literal':
+                return (
+                    <div className="ui labeled input">
+                        <div className="ui label">
+                            { theKey.name }
+                        </div>
+                        { widget }
+                    </div>
+                )
+
+            default:
+                return (
+                    <div className="ui labeled input">
+                        <div className="ui label">
+                            { theKey.name }
+                        </div>
+                        { widget }
+                    </div>
+                )
+        }
+    }
+}
 
 /*
  Standard interface CallExpression <: Expression {
@@ -91,14 +181,6 @@ class CallExpression extends React.Component {
     render() {
         const { type, callee, index, actions, parent } = this.props
         const functionArguments = this.props.arguments
-
-        let argumentsExpressions = functionArguments.map(function(argumentItem, idx) {
-            const parentArguments = parent.push('arguments', idx)
-
-            return (
-                <Expression { ...argumentItem } key={idx} parent={parentArguments} index={index} actions={actions}/>
-            )
-        })
 
         const parentCallee = parent.push('callee')
 
@@ -139,6 +221,35 @@ class CallExpression extends React.Component {
             )
         }
 
+        // This case for handling Action.
+        // Action(list_of_actions, "hello_action", {subject: "hello", body: "hello world"})
+        if (callee.type === 'Identifier' && callee.name === "Action") {
+            const listOfActions = functionArguments[0]
+            const actionName = functionArguments[1]
+            const actionArguments = functionArguments[2]
+            const actionRootLeftSiblings = Immutable.List(['_action'])
+            return (
+                <div>
+                    <DropdownButton text={ actionName.value } parent={ parent.push('arguments', 1, 'value') }
+                                    index={ index } actions={ actions }
+                                    leftsiblings={ actionRootLeftSiblings }/>
+                    <ObjectExpression { ...actionArguments }
+                        leftsiblings={ actionRootLeftSiblings.push(actionName.value) } index={ index }
+                        actions={ actions } parent={ parent.push("arguments", 2) }/>
+                </div>
+            )
+        }
+
+        // Else, it's a normal function. We handle it in normal way.
+        const argumentsExpressions = functionArguments.map(function(argumentItem, idx) {
+            const parentArguments = parent.push('arguments', idx)
+
+            return (
+                <Expression { ...argumentItem } key={idx} parent={parentArguments} index={index} actions={actions}/>
+            )
+        })
+
+        // The case for Actions.
         return (
             <span className="CallExpression">
                 <span className="callee">

@@ -1,7 +1,7 @@
 import React from 'react'
 import Immutable from 'immutable'
 
-const DEFAULT_OPTION_CHAINS = {
+export const DEFAULT_OPTION_CHAINS = {
     _: {
         choices: [
             {
@@ -170,7 +170,31 @@ const DEFAULT_OPTION_CHAINS = {
             }
         }
     },
-
+    _action: {
+        choices: [
+            {
+                value: 'action_send_email_notification',
+                label: 'Send email notification to user'
+            },
+            {
+                value: 'action_add_tag_to_ticket',
+                label: 'Add tag to ticket'
+            }
+        ],
+        action_send_email_notification: {
+            subject: {
+                widget: 'input'
+            },
+            body: {
+                widget: 'textarea'
+            }
+        },
+        action_add_tag_to_ticket: {
+            tag: {
+                widget: 'input'
+            }
+        },
+    }
 }
 
 /**
@@ -198,6 +222,9 @@ class DropdownButton extends React.Component {
 
     handleChange(event) {
         const {actions, index, parent, options } = this.props
+        console.log('DropdownButton')
+        console.log(parent.toJS())
+
         actions.modifyCodeast(index, parent, event.target.value, 'UPDATE')
     }
 
