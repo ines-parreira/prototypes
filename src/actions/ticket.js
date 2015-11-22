@@ -4,7 +4,7 @@ import * as constants from '../constants/ticket'
 export function fetchView(url) {
     return (dispatch) => {
         dispatch({
-           type: constants.FETCH_VIEW_START
+           type: constants.FETCH_TICKET_LIST_VIEW_START
         })
 
         return reqwest({
@@ -14,8 +14,8 @@ export function fetchView(url) {
             contentType: 'application/json'
         }).then((resp) => {
             dispatch({
-                type: constants.FETCH_TICKET_FINISH,
-                data: resp.data
+                type: constants.FETCH_TICKET_LIST_VIEW_FINISH,
+                resp
             })
         })
     }

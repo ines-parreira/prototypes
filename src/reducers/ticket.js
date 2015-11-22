@@ -7,12 +7,11 @@ export function tickets(state = initialState, action) {
     switch (action.type) {
         case constants.NEW_TICKET:
             return state
-        case constants.FETCH_VIEW_START:
+        case constants.FETCH_TICKET_LIST_VIEW_START:
             // here we should probably set the state as fetching (display that something is happening in the UI)
             return state
-        case constants.FETCH_VIEW_FINISH:
-            console.log(state);
-            return state
+        case constants.FETCH_TICKET_LIST_VIEW_FINISH:
+            return Immutable.List(action.resp.data)
         default:
             return state
     }
