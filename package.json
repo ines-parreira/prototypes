@@ -2,7 +2,7 @@
   "name": "gorgias",
   "version": "1.0.0",
   "description": "Gorgias",
-  "main": "index.js",
+  "main": "g/static/private/js/App.js",
   "private": true,
   "repository": "https://github.com/gorgias/gorgias",
   "scripts": {

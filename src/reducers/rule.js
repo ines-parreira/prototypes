@@ -1,8 +1,8 @@
-import { ADD_RULE_START, ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, ERROR_MESSAGE, RULES_UPDATE_CODE_AST } from '../constants/rule/ActionTypes'
 import Immutable from 'immutable'
-import reqwest from 'reqwest'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
+
+import { ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST } from '../constants/rule/ActionTypes'
 import { DEFAULT_OPTION_CHAINS } from '../components/parser/Dropdown'
 
 const initialState = Immutable.List([])
@@ -110,7 +110,7 @@ export function rules(state = initialState, action) {
             return state
 
         case RULES_RECEIVE_POSTS:
-            const rules = action.rules.map(function(ruleItem) {
+            const rules = action.rules.map(function (ruleItem) {
                 ruleItem.code_ast = getAst(ruleItem.code)
                 return ruleItem
             })
@@ -254,15 +254,6 @@ export function rules(state = initialState, action) {
             return stateNew
         }
 
-        default:
-            return state
-    }
-}
-
-export function error(state = '', action) {
-    switch (action.type) {
-        case ERROR_MESSAGE:
-            return action.errormsg
         default:
             return state
     }
