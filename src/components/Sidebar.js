@@ -5,16 +5,27 @@ export default class Sidebar extends React.Component {
     render() {
         return (
             <div className="ui inverted blue left visible vertical sidebar large menu">
-                <div className="header active dropdown item">
+                <div className="ui header active dropdown item">
                     Tickets
-                    <i className="dropdown icon"></i>
+                    <i className="chevron down icon"/>
+                    <div className="menu">
+                        <a className="item"><i className="edit icon"></i> Edit Profile</a>
+                        <a className="item"><i className="globe icon"></i> Choose Language</a>
+                        <a className="item"><i className="settings icon"></i> Account Settings</a>
+                    </div>
                 </div>
 
                 <div className="item">
                     <div className="header">FAVORITES</div>
                     <div className="menu">
-                        <a className="item">Tech issues (2)</a>
-                        <a className="item">Unsolved &gt;24h (20)</a>
+                        <a className="item">
+                            Tech issues
+                            <div className="ui teal label">10</div>
+                        </a>
+                        <a className="item">
+                            Unsolved &gt;24h
+                            <div className="ui red label">30</div>
+                        </a>
                     </div>
                 </div>
 
@@ -42,6 +53,6 @@ export default class Sidebar extends React.Component {
                     Avi Davis <i className="ellipsis horizontal icon"></i>
                 </a>
             </div>
-        )
+    )
     }
-}
+    }
