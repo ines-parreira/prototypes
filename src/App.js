@@ -30,7 +30,7 @@ const createStoreWithMiddleware = compose(
     applyMiddleware(thunk),
     devTools(),
     persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-)(createStore);
+)(createStore)
 
 const store = createStoreWithMiddleware(RootReducer)
 
