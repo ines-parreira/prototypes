@@ -1,5 +1,5 @@
 import React from 'react'
-import TicketView from './ticket/TicketView'
+import TicketView from './TicketView'
 
 export default class Dashboard extends React.Component {
     render() {

@@ -13,10 +13,10 @@ export function error(state = '', action) {
     }
 }
 
-const RootReducer = combineReducers({
+const rootReducer = combineReducers({
     tickets,
     rules,
     error
 })
 
-export default RootReducer
+export default rootReducer

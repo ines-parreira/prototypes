@@ -1,15 +1,16 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import TicketTable from './TicketTable'
-import Search from '../Search'
-import * as TicketActions from '../../actions/ticket'
+import TicketTable from '../components/ticket/TicketTable'
+import Search from '../components/Search'
+import * as TicketActions from '../actions/ticket'
 
 class TicketView extends React.Component {
     componentWillMount() {
         this.props.actions.fetchView(`/api/tickets/?view=${this.props.slug}`)
     }
+
     render() {
         return (
             <div className="TicketView">
@@ -28,6 +29,12 @@ class TicketView extends React.Component {
             </div>
         )
     }
+}
+
+TicketView.propTypes = {
+    slug: PropTypes.string,
+    tickets: PropTypes.array,
+    actions: PropTypes.array
 }
 
 function mapStateToProps(state) {

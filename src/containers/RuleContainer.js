@@ -2,10 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import RuleForm from '../rule/RuleForm'
-import RuleList from '../rule/RuleList'
-import ErrorMessage from '../ErrorMessage'
-import * as RuleActions from '../../actions/rule'
+import RuleForm from '../components/rule/RuleForm'
+import RuleList from '../components/rule/RuleList'
+import ErrorMessage from '../components/ErrorMessage'
+import * as RuleActions from '../actions/rule'
 
 class RuleContainer extends React.Component {
     componentDidMount() {

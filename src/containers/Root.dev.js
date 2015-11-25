@@ -1,0 +1,25 @@
+import React, { Component, PropTypes } from 'react'
+import { Provider } from 'react-redux'
+import { ReduxRouter } from 'redux-router'
+import DevTools from './DevTools'
+
+class Root extends Component {
+    render() {
+        console.log();
+        const { store } = this.props
+        return (
+            <Provider store={store}>
+                <div>
+                    <ReduxRouter />
+                    <DevTools />
+                </div>
+            </Provider>
+        )
+    }
+}
+
+Root.propTypes = {
+    store: PropTypes.object.isRequired
+}
+
+export default Root
