@@ -6,7 +6,7 @@ import Dashboard from './containers/Dashboard'
 import RuleContainer from './containers/RuleContainer'
 
 export default (
-    <Route path="/app" component={App}>
+    <Route path="/" component={App}>
         <IndexRoute component={Dashboard}/>
         <Route path="dashboard" component={Dashboard}/>
         <Route path="rules" component={RuleContainer}/>

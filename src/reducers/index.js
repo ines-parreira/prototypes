@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { routerStateReducer as router } from 'redux-router'
 import {ERROR_MESSAGE} from '../constants/utils'
 
 import { rules } from './rule'
@@ -16,7 +17,8 @@ export function error(state = '', action) {
 const rootReducer = combineReducers({
     tickets,
     rules,
-    error
+    error,
+    router
 })
 
 export default rootReducer
