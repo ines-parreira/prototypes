@@ -15,12 +15,11 @@ Structure
 The structure is inspired by this example here: https://github.com/rackt/redux/tree/master/examples/real-world
 
     ├── actions - where the Redux actions are stored
-    ├── components - dump components (no state handling - just presentation)
-    ├── constants
+    ├── components - dumb components (no state handling - just presentation)
     ├── containers - smart components (they handle state - used as wrappers for dump components)
-    ├── main.js - entry
+    ├── main.js - entry point
     ├── reducers - reducers of Redux
-    ├── routes.js
+    ├── routes.js - all routes are here
     └── store - combined stores of Redux
     
     

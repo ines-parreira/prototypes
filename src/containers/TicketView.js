@@ -32,9 +32,9 @@ class TicketView extends React.Component {
 }
 
 TicketView.propTypes = {
-    slug: PropTypes.string,
-    tickets: PropTypes.array,
-    actions: PropTypes.array
+    slug: PropTypes.string.isRequired,
+    tickets: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {

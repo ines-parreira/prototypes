@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import Link from 'react-router'
 
-export default class Sidebar extends React.Component {
+class Sidebar extends React.Component {
     render() {
         return (
             <div className="ui inverted blue left visible sidebar menu">
@@ -9,9 +9,7 @@ export default class Sidebar extends React.Component {
                     <div className="ui simple dropdown item">
                         Tickets
                         <i className="chevron down icon"/>
-                        <div className="menu">
-                            <Link to="/app" className="item">Dashboard</Link>
-                        </div>
+                        <div className="menu"></div>
                     </div>
 
                     <div className="item">
@@ -63,3 +61,9 @@ export default class Sidebar extends React.Component {
         )
     }
 }
+
+Sidebar.propTypes = {
+    children: PropTypes.node
+}
+
+export default Sidebar

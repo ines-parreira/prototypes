@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 
-import { ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST } from '../constants/rule/ActionTypes'
+import { ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST } from '../actions/rule'
 import { DEFAULT_OPTION_CHAINS } from '../components/parser/Dropdown'
 
 const initialState = Immutable.List([])

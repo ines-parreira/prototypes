@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
-//import { resetErrorMessage } from '../actions'
+import { resetErrorMessage } from '../actions/errors'
 
 import Sidebar from '../components/Sidebar'
 
@@ -26,9 +26,7 @@ App.propTypes = {
     inputValue: PropTypes.string.isRequired,
 
     // Injected by React Router
-    children: PropTypes.node,
-
-    location: PropTypes.string.isRequired
+    children: PropTypes.node
 }
 
 function mapStateToProps(state) {
@@ -39,5 +37,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
+    resetErrorMessage,
     pushState
 })(App)

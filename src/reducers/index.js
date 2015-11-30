@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { routerStateReducer as router } from 'redux-router'
-import {ERROR_MESSAGE} from '../constants/utils'
+import {ERROR_MESSAGE} from '../actions/errors'
 
 import { rules } from './rule'
 import { tickets } from './ticket'
