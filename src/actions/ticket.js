@@ -14,10 +14,10 @@ export const FETCH_TICKET_FINISH = 'FETCH_TICKET_FINISH'
 export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_FINISH = 'FETCH_TICKET_LIST_VIEW_FINISH'
 
-export function fetchView(url) {
+export function fetchView(url, type = 'list') {
     return (dispatch) => {
         dispatch({
-            type: FETCH_TICKET_LIST_VIEW_START
+            type: type === 'list' ? FETCH_TICKET_LIST_VIEW_START : FETCH_TICKET_START
         })
 
         return reqwest({
@@ -27,7 +27,7 @@ export function fetchView(url) {
             contentType: 'application/json'
         }).then((resp) => {
             dispatch({
-                type: FETCH_TICKET_LIST_VIEW_FINISH,
+                type: type === 'list' ? FETCH_TICKET_LIST_VIEW_FINISH : FETCH_TICKET_FINISH,
                 resp
             })
         })

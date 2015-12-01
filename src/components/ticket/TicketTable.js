@@ -21,7 +21,7 @@ export default class TicketTable extends React.Component {
                 <tbody>
                 {this.props.tickets.map((ticket) => {
                     return (
-                        <tr className="ticket-item" key={ticket.id}>
+                        <tr className="ticket-item" key={ticket.id} onClick={() => {this.props.pushState(`/ticket/${ticket.id}`)}}>
                             <td className="collapsing">
                                 <span className="ui checkbox">
                                     <input type="checkbox"/>
@@ -45,10 +45,11 @@ export default class TicketTable extends React.Component {
                 })}
                 </tbody>
             </table>
-    )
+        )
     }
-    }
+}
 
-    TicketTable.propTypes = {
-        tickets: PropTypes.object.isRequired
-    }
+TicketTable.propTypes = {
+    tickets: PropTypes.object.isRequired,
+    pushState: PropTypes.func.isRequired
+}

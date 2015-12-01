@@ -8,12 +8,7 @@ import Sidebar from '../components/Sidebar'
 class App extends React.Component {
     constructor(props) {
         super(props)
-        this.handleChange = this.handleChange.bind(this)
         this.handleDismissClick = this.handleDismissClick.bind(this)
-    }
-
-    handleChange(nextValue) {
-        this.props.pushState(null, `/${nextValue}`)
     }
 
     handleDismissClick(e) {
@@ -42,9 +37,9 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                {this.renderErrorMessage()}
                 <Sidebar />
                 <div className="main-content pusher">
+                    {this.renderErrorMessage()}
                     {this.props.children}
                 </div>
             </div>
@@ -57,7 +52,6 @@ App.propTypes = {
     errorMessage: PropTypes.string,
     resetErrorMessage: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired,
-    inputValue: PropTypes.string.isRequired,
 
     // Injected by React Router
     children: PropTypes.node
@@ -65,8 +59,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        errorMessage: state.errorMessage,
-        inputValue: state.router.location.pathname.substring(1)
+        errorMessage: state.errorMessage
     }
 }
 
