@@ -24,7 +24,7 @@ class TicketView extends React.Component {
                     </div>
                 </div>
 
-                <h1 className="ui header">My Tickets</h1>
+                <h1 className="ui header">{this.props.title}</h1>
                 <TicketTable tickets={this.props.tickets}/>
             </div>
         )
@@ -33,6 +33,7 @@ class TicketView extends React.Component {
 
 TicketView.propTypes = {
     slug: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     tickets: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 }

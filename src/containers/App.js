@@ -6,11 +6,45 @@ import { resetErrorMessage } from '../actions/errors'
 import Sidebar from '../components/Sidebar'
 
 class App extends React.Component {
+    constructor(props) {
+        super(props)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleDismissClick = this.handleDismissClick.bind(this)
+    }
+
+    handleChange(nextValue) {
+        this.props.pushState(null, `/${nextValue}`)
+    }
+
+    handleDismissClick(e) {
+        e.preventDefault()
+        this.props.resetErrorMessage()
+    }
+
+    renderErrorMessage() {
+        const { errorMessage } = this.props
+        if (!errorMessage) {
+            return null
+        }
+
+        return (
+            <p style={{ backgroundColor: '#e99', padding: 10 }}>
+                <strong>{errorMessage}</strong>
+                {' '}
+                (<a href="#"
+                    onClick={this.handleDismissClick}>
+                Dismiss
+            </a>)
+            </p>
+        )
+    }
+
     render() {
         return (
             <div className="App">
+                {this.renderErrorMessage()}
                 <Sidebar />
-                <div className="content pusher">
+                <div className="main-content pusher">
                     {this.props.children}
                 </div>
             </div>

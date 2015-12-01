@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import Link from 'react-router'
+import {Link} from 'react-router'
 
 class Sidebar extends React.Component {
     render() {
@@ -9,9 +9,11 @@ class Sidebar extends React.Component {
                     <div className="ui simple dropdown item">
                         Tickets
                         <i className="chevron down icon"/>
-                        <div className="menu"></div>
+                        <div className="menu">
+                            <Link to="/" className="item">Dashboard</Link>
+                            <Link to="/rules" className="item">Rules</Link>
+                        </div>
                     </div>
-
                     <div className="item">
                         <div className="header">FAVORITES</div>
                         <div className="menu">
