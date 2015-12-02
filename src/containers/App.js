@@ -3,12 +3,17 @@ import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import { resetErrorMessage } from '../actions/errors'
 
-import Sidebar from '../components/Sidebar'
+import TicketsSidebarContainer from './TicketsSidebar'
 
 class App extends React.Component {
     constructor(props) {
         super(props)
         this.handleDismissClick = this.handleDismissClick.bind(this)
+    }
+
+    componentDidMount() {
+        // Initialize semantic-ui dropdowns
+        $('.ui.dropdown').dropdown()
     }
 
     handleDismissClick(e) {
@@ -37,10 +42,10 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                <Sidebar />
+                {this.props.sidebar || <TicketsSidebarContainer />}
                 <div className="main-content pusher">
                     {this.renderErrorMessage()}
-                    {this.props.children}
+                    {this.props.content || this.props.children}
                 </div>
             </div>
         )
@@ -54,7 +59,10 @@ App.propTypes = {
     pushState: PropTypes.func.isRequired,
 
     // Injected by React Router
-    children: PropTypes.node
+    children: PropTypes.node,
+
+    sidebar: PropTypes.node,
+    content: PropTypes.node
 }
 
 function mapStateToProps(state) {

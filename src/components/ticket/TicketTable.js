@@ -2,6 +2,22 @@ import React, {PropTypes} from 'react'
 import moment from 'moment'
 
 export default class TicketTable extends React.Component {
+    stripHTML(text) {
+        try {
+            const doc = document.implementation.createHTMLDocument()
+            const body = doc.createElement('div')
+            body.innerHTML = text
+            return body.textContent || body.innerText
+        } catch (e) {}
+        return text
+    }
+
+    trim(text, length) {
+        text = this.stripHTML(text)
+        const slice = text.slice(0, length)
+        return slice !== text ? slice + ' ...' : text
+    }
+
     render() {
         return (
             <table className="ui single line very basic selectable table">
@@ -21,7 +37,8 @@ export default class TicketTable extends React.Component {
                 <tbody>
                 {this.props.tickets.map((ticket) => {
                     return (
-                        <tr className="ticket-item" key={ticket.id} onClick={() => {this.props.pushState(`/ticket/${ticket.id}`)}}>
+                        <tr className="ticket-item" key={ticket.id}
+                            onClick={() => {this.props.pushState(`/ticket/${ticket.id}`)}}>
                             <td className="collapsing">
                                 <span className="ui checkbox">
                                     <input type="checkbox"/>
@@ -32,9 +49,9 @@ export default class TicketTable extends React.Component {
                             <td className="details">
                                 <div className="ui header">
                                     <span
-                                        className="subject">{ticket.subject.slice(0, 50)}{ticket.subject.slice(0, 50) !== ticket.subject ? '...' : ''}</span>
+                                        className="subject">{this.trim(ticket.subject, 50)}</span>
                                     <div className="body sub header">
-                                        {ticket.body.slice(0, 100)}{ticket.body.slice(0, 100) !== ticket.body ? '...' : ''}
+                                        {this.trim(ticket.body, 100)}
                                     </div>
                                 </div>
                             </td>

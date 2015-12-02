@@ -3,17 +3,17 @@ import { IndexRoute, Route } from 'react-router'
 
 import App from './containers/App'
 import Dashboard from './containers/Dashboard'
-import TicketContainer from './containers/TicketContainer'
-import TicketsContainer from './containers/TicketsContainer'
-import RuleContainer from './containers/RuleContainer'
+import TicketContainer from './containers/Ticket'
+import TicketsContainer from './containers/Tickets'
+import RuleContainer from './containers/Rule'
 import NoMatch from './components/NoMatch'
 
 export default (
     <Route path="/" component={App}>
         <IndexRoute component={Dashboard}/>
         <Route path="rules" component={RuleContainer}/>
-        <Route path="ticket/:ticketId" component={TicketContainer}/>
-        <Route path="tickets/:view" component={TicketsContainer}/>
+        <Route path="ticket/:ticketId" components={TicketContainer}/>
+        <Route path="tickets/:view" components={TicketsContainer}/>
         <Route path="*" component={NoMatch}/>
     </Route>
 )

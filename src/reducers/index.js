@@ -4,6 +4,7 @@ import { ERROR_MESSAGE } from '../actions/errors'
 
 import { rules } from './rule'
 import { ticket, tickets } from './ticket'
+import { views } from './view'
 
 export function error(state = '', action) {
     switch (action.type) {
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     ticket,
     tickets,
     rules,
+    views,
     error,
     router
 })

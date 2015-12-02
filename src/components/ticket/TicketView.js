@@ -33,7 +33,7 @@ export default class TicketView extends React.Component {
                 <h1 className="ui header">{ticket.get('subject')}</h1>
                 <div className="ui basic segment header-meta">
                     <div className="ui left floated header">
-                        <div className="ui tiny tag labels">
+                        <div className="ui tiny labels">
                             <div className="ui red label">REFUND <i className="icon close"/></div>
                             <div className="ui teal label">PAYMENT <i className="icon close"/></div>
                             <a href="">+ Add tag</a>

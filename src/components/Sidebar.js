@@ -1,12 +1,41 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 
-class Sidebar extends React.Component {
+export default class Sidebar extends React.Component {
+
+    sections(views) {
+        // Populate sections
+        let ret = {
+            favorites: {
+                title: 'FAVORITES',
+                views: []
+            },
+            private: {
+                title: 'PRIVATE',
+                views: []
+            },
+            shared: {
+                title: 'SHARED',
+                views: []
+            }
+        }
+
+        if (views) {
+            for (const view of views) {
+                const section = view.section ? view.section : 'shared'
+                ret[section].views.push(view)
+            }
+        }
+        return ret
+    }
+
     render() {
+        const {views} = this.props
+        const sections = this.sections(views)
         return (
             <div className="ui inverted blue left visible sidebar menu">
                 <div className="ui inverted blue large vertical menu">
-                    <div className="ui simple dropdown item">
+                    <div className="ui dropdown item">
                         Tickets
                         <i className="chevron down icon"/>
                         <div className="menu">
@@ -14,22 +43,30 @@ class Sidebar extends React.Component {
                             <Link to="/rules" className="item">Rules</Link>
                         </div>
                     </div>
-                    <div className="item">
-                        <div className="header">FAVORITES</div>
-                        <div className="menu">
-                            <a className="item">
-                                Tech issues
-                                <div className="ui teal label">10</div>
-                            </a>
-                            <a className="item">
-                                Unsolved &gt;24h
-                                <div className="ui red label">30</div>
-                            </a>
-                        </div>
-                    </div>
+                    {Object.keys(sections).map((sectionId) => {
+                        const section = sections[sectionId]
+                        if (!section.views.length) {
+                            return null
+                        }
+                        return (
+                            <div key={sectionId} className="item">
+                                <div className="header">{section.title}</div>
+                                <div className="menu">
+                                    {section.views.map((view) => {
+                                        return (
+                                            <Link key={view.id} to={`/tickets/${view.slug}`} className="item">
+                                                {view.name}
+                                                <div className="ui label">0</div>
+                                            </Link>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        )
+                    })}
 
                     <div className="item">
-                        <div className="header">SHARED VIEWS (9)</div>
+                        <div className="header">FAVORITES (9)</div>
                         <div className="menu">
                             <a className="item">My tickets (12)</a>
                             <a className="item">New tickets (102)</a>
@@ -50,7 +87,7 @@ class Sidebar extends React.Component {
                 </div>
 
                 <div className="ui inverted blue large vertical bottom fixed menu">
-                    <div href="" className="ui simple bottom dropdown item">
+                    <div href="" className="ui top dropdown item">
                         Avi Davis <i className="ellipsis horizontal icon"/>
                         <div className="menu">
                             <a className="item"><i className="edit icon"/> Edit Profile</a>
@@ -65,7 +102,5 @@ class Sidebar extends React.Component {
 }
 
 Sidebar.propTypes = {
-    children: PropTypes.node
+    views: PropTypes.object
 }
-
-export default Sidebar
