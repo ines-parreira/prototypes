@@ -30,12 +30,10 @@ class TicketsContainer extends React.Component {
         this.props.pushState(null, url)
     }
 
-
     render() {
         return (
             <div className="TicketsContainer">
                 <TicketsView
-                    title={this.props.title}
                     tickets={this.props.tickets}
                     pushState={this.pushState}/>
             </div>
@@ -45,8 +43,12 @@ class TicketsContainer extends React.Component {
 
 TicketsContainer.propTypes = {
     view: PropTypes.string,
-    title: PropTypes.string.isRequired,
-    tickets: PropTypes.object.isRequired,
+    tickets: PropTypes.shape({
+        data: PropTypes.array,
+        meta: PropTypes.object,
+        uri: PropTypes.string,
+        object: PropTypes.string
+    }),
     actions: PropTypes.object.isRequired,
 
     // React Router
@@ -56,8 +58,7 @@ TicketsContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        tickets: state.tickets,
-        title: state.title
+        tickets: state.tickets
     }
 }
 

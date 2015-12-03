@@ -7,9 +7,16 @@ export default class TicketTable extends React.Component {
             const doc = document.implementation.createHTMLDocument()
             const body = doc.createElement('div')
             body.innerHTML = text
+
+            const removeElements = body.querySelectorAll('style,script')
+            for (let i = 0; i < removeElements.length; i++) {
+                removeElements[i].remove()
+            }
             return body.textContent || body.innerText
-        } catch (e) {}
-        return text
+        } catch (e) {
+            console.error('Failed stripHTML: ' + e, text)
+            return text
+        }
     }
 
     trim(text, length) {
@@ -51,7 +58,7 @@ export default class TicketTable extends React.Component {
                                     <span
                                         className="subject">{this.trim(ticket.subject, 50)}</span>
                                     <div className="body sub header">
-                                        {this.trim(ticket.body, 100)}
+                                        {this.trim(ticket.body_html ? ticket.body_html : ticket.body_text, 100)}
                                     </div>
                                 </div>
                             </td>
@@ -67,6 +74,6 @@ export default class TicketTable extends React.Component {
 }
 
 TicketTable.propTypes = {
-    tickets: PropTypes.object.isRequired,
+    tickets: PropTypes.array.isRequired,
     pushState: PropTypes.func.isRequired
 }

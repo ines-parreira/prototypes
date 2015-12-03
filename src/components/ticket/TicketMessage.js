@@ -1,15 +1,31 @@
 import React, {PropTypes} from 'react'
+import linkifyStr from 'linkifyjs/string'
 import moment from 'moment'
 
 export default class TicketMessage extends React.Component {
+
+    renderBody(message) {
+        if (message.body_html) {
+            return (
+                <div className="message-body"
+                     dangerouslySetInnerHTML={{__html: message.body}}></div>
+            )
+        }
+        return (
+            <div className="message-body">
+                <pre dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}} />
+            </div>
+        )
+    }
+
     render() {
         const { message } = this.props
         return (
             <div className="TicketMessage item">
                 <div className="content">
                     <div className="message-header">
-                       <div className="ui left floated header">
-                           <span>{message.sender.name || '(no name)'}</span>
+                        <div className="ui left floated header">
+                            <span>{message.sender.name || '(no name)'}</span>
                            <span className="ui label">
                                <i className="dollar icon"/>
                                 Startup Plan
@@ -23,7 +39,7 @@ export default class TicketMessage extends React.Component {
                         </div>
                     </div>
                     <div className="clearfix"></div>
-                    <div className="message-body" dangerouslySetInnerHTML={{__html: message.body}}/>
+                    {this.renderBody(message)}
                 </div>
             </div>
         )
@@ -31,5 +47,12 @@ export default class TicketMessage extends React.Component {
 }
 
 TicketMessage.propTypes = {
-    message: PropTypes.object.isRequired
+    message: PropTypes.shape({
+        sender: PropTypes.shape({
+            address: PropTypes.string.isRequired,
+            name: PropTypes.string
+        }),
+        created_datetime: PropTypes.string.isRequired,
+        body: PropTypes.string.isRequired
+    }).isRequired
 }

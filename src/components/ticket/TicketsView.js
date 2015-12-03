@@ -4,6 +4,12 @@ import Search from '../Search'
 
 export default class TicketsView extends React.Component {
     render() {
+        if (!this.props.tickets.size) {
+            return null
+        }
+
+        const tickets = this.props.tickets.toJS()
+
         return (
             <div className="TicketsView">
                 <div className="ui text menu">
@@ -37,9 +43,9 @@ export default class TicketsView extends React.Component {
                     </div>
                 </div>
 
-                <h1 className="ui header">{this.props.title}</h1>
+                <h1 className="ui header">{tickets.meta.view.name}</h1>
                 <TicketTable
-                    tickets={this.props.tickets}
+                    tickets={tickets.data}
                     pushState={this.props.pushState}
                 />
             </div>
@@ -48,7 +54,6 @@ export default class TicketsView extends React.Component {
 }
 
 TicketsView.propTypes = {
-    title: PropTypes.string.isRequired,
     tickets: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired
 }
