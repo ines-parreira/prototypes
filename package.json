@@ -15,6 +15,7 @@
     "esprima": "^2.7.0",
     "history": "^1.13.1",
     "immutable": "^3.7.5",
+    "linkifyjs": "^2.0.0-beta.5",
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "react": "^0.14.3",
