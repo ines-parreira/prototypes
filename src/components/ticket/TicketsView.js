@@ -6,11 +6,31 @@ export default class TicketsView extends React.Component {
     render() {
         return (
             <div className="TicketsView">
-                <div className="ui secondary menu">
-                    <a className="active item">
-                        <i className="columns icon"/> Show more fields
+                <div className="ui text menu">
+                    <a className="ui dropdown item">
+                        <i className="columns icon"/>
+                        Show more fields
+
+                        <div className="menu">
+                            <div className="item">
+                                <div className="ui checkbox">
+                                    <label>
+                                        <input type="checkbox"/>
+                                        Ticket: Last updated date
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="item">
+                                <div className="ui checkbox">
+                                    <label>
+                                        <input type="checkbox" />
+                                        Ticket: Checked
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </a>
-                    <div className="right menu">
+                    <div className="right menu item">
                         <div className="item">
                             <Search />
                         </div>

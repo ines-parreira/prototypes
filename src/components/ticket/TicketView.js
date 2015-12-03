@@ -50,7 +50,7 @@ export default class TicketView extends React.Component {
                     <div className="ui clearing divider"></div>
                 </div>
                 <TicketMessages messages={messages} />
-                <TicketReply ticket={ticket}/>
+                <TicketReply ticket={ticket} send={this.props.send}/>
             </div>
         )
     }
@@ -58,5 +58,6 @@ export default class TicketView extends React.Component {
 
 TicketView.propTypes = {
     ticket: PropTypes.object.isRequired,
+    send: PropTypes.func.isRequired,
     pushState: PropTypes.func
 }

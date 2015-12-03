@@ -1,4 +1,6 @@
 import * as actions from '../actions/ticket'
+import { systemMessage } from '../actions/systemMessage'
+
 import {List, Map} from 'immutable'
 
 export function tickets(state = List([]), action) {
@@ -8,7 +10,7 @@ export function tickets(state = List([]), action) {
         case actions.FETCH_TICKET_LIST_VIEW_START:
             // here we should probably set the state as fetching (display that something is happening in the UI)
             return state
-        case actions.FETCH_TICKET_LIST_VIEW_FINISH:
+        case actions.FETCH_TICKET_LIST_VIEW_SUCCESS:
             return List(action.resp.data)
         default:
             return state
@@ -20,8 +22,13 @@ export function ticket(state = ticketInitial, action) {
     switch (action.type) {
         case actions.FETCH_TICKET_START:
             return state
-        case actions.FETCH_TICKET_FINISH:
+        case actions.FETCH_TICKET_SUCCESS:
             return Map(action.resp)
+
+        case actions.REPLY_TICKET_START:
+            return state
+        case actions.REPLY_TICKET_SUCCESS:
+            return state
         default:
             return state
     }

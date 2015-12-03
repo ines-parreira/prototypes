@@ -1,6 +1,13 @@
 import React, {PropTypes} from 'react'
 
 export default class TicketReply extends React.Component {
+    send(extra) {
+        return (e) => {
+            e.preventDefault()
+            this.props.send(extra)
+        }
+    }
+
     render() {
         return (
             <div className="TicketReply">
@@ -11,8 +18,8 @@ export default class TicketReply extends React.Component {
                     <div className="field">
                         <textarea></textarea>
                     </div>
-                    <div className="ui green button">Send &amp; Close</div>
-                    <div className="ui button">Send</div>
+                    <button className="ui green button" onClick={this.send('close')}>Send &amp; Close</button>
+                    <button className="ui button" onClick={this.send()}>Send</button>
                 </form>
             </div>
         )
@@ -20,5 +27,6 @@ export default class TicketReply extends React.Component {
 }
 
 TicketReply.propTypes = {
-    ticket: PropTypes.object.isRequired
+    ticket: PropTypes.object.isRequired,
+    send: PropTypes.func.isRequired
 }

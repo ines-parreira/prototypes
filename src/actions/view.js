@@ -5,11 +5,13 @@ export const NEW_VIEW = 'NEW_VIEW'
 
 // Fetch individual view definitions
 export const FETCH_VIEW_START = 'FETCH_VIEW_START'
-export const FETCH_VIEW_FINISH = 'FETCH_VIEW_FINISH'
+export const FETCH_VIEW_SUCCESS = 'FETCH_VIEW_SUCCESS'
+export const FETCH_VIEW_ERROR = 'FETCH_VIEW_ERROR'
 
 // Fetch list views
 export const FETCH_VIEW_LIST_START = 'FETCH_VIEW_LIST_START'
-export const FETCH_VIEW_LIST_FINISH = 'FETCH_VIEW_LIST_FINISH'
+export const FETCH_VIEW_LIST_SUCCESS = 'FETCH_VIEW_LIST_SUCCESS'
+export const FETCH_VIEW_LIST_ERROR = 'FETCH_VIEW_LIST_ERROR'
 
 export function fetchView(url, type = 'list') {
     return (dispatch) => {
@@ -24,8 +26,13 @@ export function fetchView(url, type = 'list') {
             contentType: 'application/json'
         }).then((resp) => {
             dispatch({
-                type: type === 'list' ? FETCH_VIEW_LIST_FINISH : FETCH_VIEW_FINISH,
+                type: type === 'list' ? FETCH_VIEW_LIST_SUCCESS : FETCH_VIEW_SUCCESS,
                 resp
+            })
+        }).catch((err) => {
+            dispatch({
+                type: type === 'list' ? FETCH_VIEW_LIST_ERROR : FETCH_VIEW_ERROR,
+                err
             })
         })
     }

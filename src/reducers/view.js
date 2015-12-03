@@ -8,7 +8,7 @@ export function views(state = List([]), action) {
         case actions.FETCH_VIEW_LIST_START:
             // here we should probably set the state as fetching (display that something is happening in the UI)
             return state
-        case actions.FETCH_VIEW_LIST_FINISH:
+        case actions.FETCH_VIEW_LIST_SUCCESS:
             return List(action.resp.data)
         default:
             return state

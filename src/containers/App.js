@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
-import { resetErrorMessage } from '../actions/errors'
+import { dismissMessage } from '../actions/systemMessage'
 
 import TicketsSidebarContainer from './TicketsSidebar'
 
@@ -18,24 +18,31 @@ class App extends React.Component {
 
     handleDismissClick(e) {
         e.preventDefault()
-        this.props.resetErrorMessage()
+        this.props.dismissMessage()
     }
 
-    renderErrorMessage() {
-        const { errorMessage } = this.props
-        if (!errorMessage) {
+    // Show errors, warnings, info and success messages
+    renderSystemMessage() {
+        const systemMessage = this.props.systemMessage.toJS()
+        if (Object.keys(systemMessage).length === 0) {
             return null
         }
 
+        // map message.type to semantic ui classes
+        const messageType = {
+            neutral: '',
+            error: 'negative',
+            warning: 'warning',
+            info: 'info',
+            success: 'success'
+        }[systemMessage.type]
+
         return (
-            <p style={{ backgroundColor: '#e99', padding: 10 }}>
-                <strong>{errorMessage}</strong>
-                {' '}
-                (<a href="#"
-                    onClick={this.handleDismissClick}>
-                Dismiss
-            </a>)
-            </p>
+            <div className={`ui ${messageType} message`}>
+                <i className="close icon" onClick={this.handleDismissClick}/>
+                <div className="header">{systemMessage.header}</div>
+                <p>{systemMessage.msg}</p>
+            </div>
         )
     }
 
@@ -44,7 +51,7 @@ class App extends React.Component {
             <div className="App">
                 {this.props.sidebar || <TicketsSidebarContainer />}
                 <div className="main-content pusher">
-                    {this.renderErrorMessage()}
+                    {this.renderSystemMessage()}
                     {this.props.content || this.props.children}
                 </div>
             </div>
@@ -53,25 +60,32 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+    // System Message handling (errors, info, success..)
+    systemMessage: PropTypes.shape({
+        type: PropTypes.oneOf(['neutral', 'error', 'warning', 'info', 'success']),
+        header: PropTypes.string, // high level description
+        msg: PropTypes.string // what the user should do? Try again? Contact support?
+    }),
+    dismissMessage: PropTypes.func.isRequired,
+
     // Injected by React Redux
-    errorMessage: PropTypes.string,
-    resetErrorMessage: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired,
 
     // Injected by React Router
     children: PropTypes.node,
 
+    // Sidebar containers can be changed depending on the route. See `routes.js`
     sidebar: PropTypes.node,
     content: PropTypes.node
 }
 
 function mapStateToProps(state) {
     return {
-        errorMessage: state.errorMessage
+        systemMessage: state.systemMessage
     }
 }
 
 export default connect(mapStateToProps, {
-    resetErrorMessage,
+    dismissMessage,
     pushState
 })(App)

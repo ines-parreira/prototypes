@@ -8,8 +8,21 @@ import TicketView from '../components/ticket/TicketView'
 import * as TicketActions from '../actions/ticket'
 
 class TicketContainer extends React.Component {
+    constructor(props) {
+        super(props)
+        this.send = this.send.bind(this)
+    }
+
     componentWillMount() {
         this.props.actions.fetchView(`/api/tickets/${this.props.params.ticketId}/?view=${this.props.view}`, 'item')
+    }
+
+    // send a reply
+    send(extra) {
+        if (extra === 'close') {
+            this.props.ticket.status = 'closed'
+        }
+        this.props.actions.sendReply(this.props.ticket)
     }
 
     render() {
@@ -17,7 +30,9 @@ class TicketContainer extends React.Component {
             <div className="TicketContainer">
                 <TicketView
                     view={this.props.view}
-                    ticket={this.props.ticket} />
+                    ticket={this.props.ticket}
+                    send={this.send}
+                />
             </div>
         )
     }
@@ -42,8 +57,7 @@ TicketContainer.defaultProps = {
 
 function mapStateToProps(state) {
     return {
-        ticket: state.ticket,
-        error: state.error
+        ticket: state.ticket
     }
 }
 

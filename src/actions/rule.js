@@ -1,5 +1,5 @@
 import reqwest from 'reqwest'
-import {errorMsg} from './errors'
+import {systemMessage} from './systemMessage.js'
 
 export const ADD_RULE_START = 'ADD_RULE_START'
 export const ADD_RULE_END = 'ADD_RULE_END'
@@ -65,7 +65,11 @@ export function submitRule(url, comment) {
         }).then((resp) => {
             dispatch(addRuleEnd(resp))
         }).fail((resp) => {
-            dispatch(errorMsg('Ops, Server error.' + resp))
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Oops, Server error',
+                msg: resp
+            }))
         })
     }
 }

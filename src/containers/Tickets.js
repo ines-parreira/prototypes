@@ -12,21 +12,24 @@ class TicketsContainer extends React.Component {
         this.pushState = this.pushState.bind(this)
     }
 
-    pushState(url) {
-        this.props.pushState(null, url)
-    }
-
-    fetchTickets(props) {
-        this.props.actions.fetchView(`/api/tickets/?view=${props.view || props.params.view}`)
-    }
     componentWillMount() {
         this.fetchTickets(this.props)
     }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.params && this.props.params && nextProps.params.view !== this.props.params.view) {
             this.fetchTickets(nextProps)
         }
     }
+
+    fetchTickets(props) {
+        this.props.actions.fetchView(`/api/tickets/?view=${props.view || props.params.view}`)
+    }
+
+    pushState(url) {
+        this.props.pushState(null, url)
+    }
+
 
     render() {
         return (
@@ -34,7 +37,7 @@ class TicketsContainer extends React.Component {
                 <TicketsView
                     title={this.props.title}
                     tickets={this.props.tickets}
-                    pushState={this.pushState} />
+                    pushState={this.pushState}/>
             </div>
         )
     }
@@ -54,8 +57,7 @@ TicketsContainer.propTypes = {
 function mapStateToProps(state) {
     return {
         tickets: state.tickets,
-        title: state.title,
-        error: state.error
+        title: state.title
     }
 }
 
