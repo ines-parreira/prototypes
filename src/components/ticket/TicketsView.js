@@ -54,6 +54,9 @@ export default class TicketsView extends React.Component {
 }
 
 TicketsView.propTypes = {
-    tickets: PropTypes.object.isRequired,
+    tickets: PropTypes.shape({
+        meta: PropTypes.object.isRequired,
+        data: PropTypes.array.isRequired
+    }).isRequired,
     pushState: PropTypes.func.isRequired
 }

@@ -4,6 +4,9 @@ import { pushState } from 'redux-router'
 import { dismissMessage } from '../actions/systemMessage'
 
 import TicketsSidebarContainer from './TicketsSidebar'
+import KeyboardHelp from '../components/KeyboardHelp'
+
+import * as mousetrap from 'mousetrap'
 
 class App extends React.Component {
     constructor(props) {
@@ -13,7 +16,15 @@ class App extends React.Component {
 
     componentDidMount() {
         // Initialize semantic-ui dropdowns
-        $('.ui.dropdown').dropdown()
+        // $('.ui.dropdown').dropdown()
+        const props = this.props
+
+        // Some global keyboard shortcuts
+
+        // Go home (or dashboard)
+        mousetrap.bind('g h', (e) => {
+            props.pushState(null, '/')
+        })
     }
 
     handleDismissClick(e) {
@@ -54,6 +65,7 @@ class App extends React.Component {
                     {this.renderSystemMessage()}
                     {this.props.content || this.props.children}
                 </div>
+                <KeyboardHelp />
             </div>
         )
     }

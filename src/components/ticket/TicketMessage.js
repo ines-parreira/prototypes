@@ -8,7 +8,7 @@ export default class TicketMessage extends React.Component {
         if (message.body_html) {
             return (
                 <div className="message-body"
-                     dangerouslySetInnerHTML={{__html: message.body}}></div>
+                     dangerouslySetInnerHTML={{__html: message.body_html}}></div>
             )
         }
         return (
@@ -53,6 +53,7 @@ TicketMessage.propTypes = {
             name: PropTypes.string
         }),
         created_datetime: PropTypes.string.isRequired,
-        body: PropTypes.string.isRequired
+        body_text: PropTypes.string.isRequired,
+        body_html: PropTypes.string.isRequired
     }).isRequired
 }

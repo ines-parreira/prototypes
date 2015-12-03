@@ -18,13 +18,13 @@ export function tickets(state = ticketsInitial, action) {
 }
 
 const ticketInitial = Map()
+
 export function ticket(state = ticketInitial, action) {
     switch (action.type) {
         case actions.FETCH_TICKET_START:
             return state
         case actions.FETCH_TICKET_SUCCESS:
             return Map(action.resp)
-
         case actions.REPLY_TICKET_START:
             return state
         case actions.REPLY_TICKET_SUCCESS:

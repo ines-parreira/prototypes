@@ -4,15 +4,13 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import createHistory from 'history/lib/createHashHistory'
 
-import DevTools from '../containers/DevTools'
 import routes from '../routes'
 import rootReducer from '../reducers/index'
 
 const finalCreateStore = compose(
     applyMiddleware(thunk),
     reduxReactRouter({routes, createHistory}),
-    applyMiddleware(createLogger()),
-    DevTools.instrument()
+    applyMiddleware(createLogger({collapsed: true}))
 )(createStore)
 
 export default function configureStore(initialState) {
