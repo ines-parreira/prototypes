@@ -4,21 +4,6 @@ import moment from 'moment'
 import 'moment-timezone'
 
 export default class TicketMessage extends React.Component {
-
-    renderBody(message) {
-        if (message.body_html) {
-            return (
-                <div className="message-body"
-                     dangerouslySetInnerHTML={{__html: message.body_html}}></div>
-            )
-        }
-        return (
-            <div className="message-body">
-                <pre dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}}/>
-            </div>
-        )
-    }
-
     render() {
         const { message, currentUser } = this.props
 
@@ -26,25 +11,46 @@ export default class TicketMessage extends React.Component {
         if (message.created_datetime) {
             createdDatetime = moment(message.created_datetime).tz(currentUser.get('timezone', 'UTC')).fromNow()
         }
-
         return (
             <div className="TicketMessage item">
                 <div className="content">
                     <div className="message-header">
-                        <div className="ui left floated header">
-                            <span>{message.sender.name || '(no name)'}</span>
-                           <span className="ui label">
-                               <i className="dollar icon"/>
-                                Startup Plan
-                           </span>
+                        <div className="ui left floated header sender">
+                            {(() => {
+                                if (message.from_agent) {
+                                    return (<span className="ui mini yellow author-label label">A</span>)
+                                }
+                            })()}
+                            <span className="name">{`${message.sender.first_name} ${message.sender.last_name}`}</span>
+                            {(() => {
+                                if (!message.from_agent) {
+                                    return (
+                                        <span className="ui label">
+                                            <i className="dollar icon"/>Startup Plan
+                                        </span>
+                                    )
+                                }
+                            })()}
                             <div className="sub header">
-                                {message.sender.address}
+                                {message.sender.email}
                             </div>
                         </div>
                         <div className="ui right floated header">{createdDatetime}</div>
                     </div>
                     <div className="clearfix"></div>
-                    {this.renderBody(message)}
+                    {(() => {
+                        if (message.body_html) {
+                            return (
+                                <div className="message-body"
+                                     dangerouslySetInnerHTML={{__html: message.body_html}}></div>
+                            )
+                        }
+                        return (
+                            <div className="message-body">
+                                <pre dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}}/>
+                            </div>
+                        )
+                    })()}
                 </div>
             </div>
         )
@@ -54,12 +60,15 @@ export default class TicketMessage extends React.Component {
 TicketMessage.propTypes = {
     message: PropTypes.shape({
         sender: PropTypes.shape({
-            address: PropTypes.string.isRequired,
-            name: PropTypes.string
+            id: PropTypes.number,
+            first_name: PropTypes.string,
+            last_name: PropTypes.string,
+            email: PropTypes.string
         }),
-        created_datetime: PropTypes.string.isRequired,
+        from_agent: PropTypes.bool.isRequired,
         body_text: PropTypes.string.isRequired,
-        body_html: PropTypes.string.isRequired
+        body_html: PropTypes.string.isRequired,
+        created_datetime: PropTypes.string.isRequired,
     }).isRequired,
     currentUser: PropTypes.object.isRequired
 }
