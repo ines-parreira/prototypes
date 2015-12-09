@@ -92,7 +92,7 @@ export default class Sidebar extends React.Component {
                         <div>
                             <h4>
                                 <i className="green circle icon" title="User online" />
-                                {currentUser.get('first_name')} {currentUser.get('last_name')}
+                                {currentUser.get('name')}
                             </h4>
                         </div>
 

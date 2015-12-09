@@ -44,8 +44,7 @@ export default class TicketReply extends React.Component {
             <div className="TicketReply">
                 <div className="ui left floated header sender">
                     <span className="name">
-                        <span className="ui mini yellow author-label label">A</span>
-                        {currentUser.get('first_name')} {currentUser.get('last_name')}
+                        <span className="ui mini yellow author-label label">A</span> {currentUser.get('name')}
                     </span>
                     <div className="sub header email">{currentUser.get('email')}</div>
                 </div>

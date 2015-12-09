@@ -21,7 +21,7 @@ export default class TicketMessage extends React.Component {
                                     return (<span className="ui mini yellow author-label label">A</span>)
                                 }
                             })()}
-                            <span className="name">{`${message.sender.first_name} ${message.sender.last_name}`}</span>
+                            <span className="name">{message.sender.name}</span>
                             {(() => {
                                 if (!message.from_agent) {
                                     return (
@@ -61,8 +61,7 @@ TicketMessage.propTypes = {
     message: PropTypes.shape({
         sender: PropTypes.shape({
             id: PropTypes.number,
-            first_name: PropTypes.string,
-            last_name: PropTypes.string,
+            name: PropTypes.string,
             email: PropTypes.string
         }),
         from_agent: PropTypes.bool.isRequired,
