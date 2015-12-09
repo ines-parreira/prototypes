@@ -17,17 +17,62 @@ export function tickets(state = ticketsInitial, action) {
     }
 }
 
-const ticketInitial = Map()
+const ticketInitial = Map({
+    external_id: null,
+    view: 'default',
+    status: 'new',
+    subject: '',
+    body_html: '',
+    body_text: '',
+    created_datetime: null,
+    opened_datetime: null,
+    updated_datetime: null,
+    closed_datetime: null,
+    sender: {
+        name: '(no name)',
+        address: '(no address)'
+    },
+    receivers: {},
+    meta: {},
+    tags: [],
+    messages: [{
+        channel: 'helpdesk',
+        receivers: [],
+        sender: {
+            name: '(no name)',
+            address: ''
+        },
+        subject: '',
+        body_text: '',
+        body_html: ''
+    }]
+})
 
 export function ticket(state = ticketInitial, action) {
     switch (action.type) {
         case actions.FETCH_TICKET_START:
             return state
+        case actions.SUBMIT_TICKET_SUCCESS:
         case actions.FETCH_TICKET_SUCCESS:
+            const newMessage = ticketInitial.get('messages')[0]
+            action.resp.messages.push(newMessage)
             return Map(action.resp)
-        case actions.REPLY_TICKET_START:
+
+        case actions.UPDATE_TICKET_PROPS:
+            if (action.props.hasOwnProperty('message')) {
+                let messages = state.get('messages')
+                for (let message of messages) {
+                    if (!message.id) {
+                        console.log(message)
+                        message.sender = action.props.message.sender
+                        message.receivers = action.props.message.receivers
+                        message.body_text = action.props.message.body_text
+                    }
+                }
+                state.set('messages', messages)
+            }
             return state
-        case actions.REPLY_TICKET_SUCCESS:
+        case actions.SUBMIT_TICKET_START:
             return state
         default:
             return state

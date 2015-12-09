@@ -13,20 +13,22 @@ class TicketsSidebarContainer extends React.Component {
 
     render() {
         return (
-            <Sidebar views={this.props.views}/>
+            <Sidebar views={this.props.views}
+                     currentUser={this.props.currentUser}/>
         )
     }
 }
 
 TicketsSidebarContainer.propTypes = {
     views: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
     return {
         views: state.views,
-        error: state.error
+        currentUser: state.currentUser
     }
 }
 

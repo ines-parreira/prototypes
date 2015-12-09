@@ -10,19 +10,21 @@ import * as TicketActions from '../actions/ticket'
 class TicketContainer extends React.Component {
     constructor(props) {
         super(props)
-        this.send = this.send.bind(this)
+        this.submit = this.submit.bind(this)
+        this.update = this.update.bind(this)
     }
 
     componentWillMount() {
         this.props.actions.fetchView(`/api/tickets/${this.props.params.ticketId}/?view=${this.props.view}`, 'item')
     }
 
-    // send a reply
-    send(extra) {
-        if (extra === 'close') {
-            this.props.ticket.status = 'closed'
-        }
-        this.props.actions.sendReply(this.props.ticket)
+    update(props) {
+        this.props.actions.updateTicket(props)
+    }
+
+    submit(status) {
+        this.props.actions.updateTicket({status})
+        this.props.actions.submitTicket(this.props.ticket)
     }
 
     render() {
@@ -31,7 +33,9 @@ class TicketContainer extends React.Component {
                 <TicketView
                     view={this.props.view}
                     ticket={this.props.ticket}
-                    send={this.send}
+                    currentUser={this.props.currentUser}
+                    update={this.update}
+                    submit={this.submit}
                 />
             </div>
         )
@@ -45,19 +49,20 @@ TicketContainer.propTypes = {
 
     view: PropTypes.string,
     ticket: PropTypes.object,
+    currentUser: PropTypes.object,
 
     actions: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired
 }
 
 TicketContainer.defaultProps = {
-    view: 'default',
-    ticket: null
+    view: 'default'
 }
 
 function mapStateToProps(state) {
     return {
-        ticket: state.ticket
+        ticket: state.ticket,
+        currentUser: state.currentUser
     }
 }
 

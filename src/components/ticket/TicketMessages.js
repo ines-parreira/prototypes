@@ -8,13 +8,18 @@ export default class TicketMessages extends React.Component {
         if (!messages) {
             return null
         }
-
         return (
             <div className="TicketMessages">
                 <div className="ui divided items">
                     {messages.map((message) => {
+                        if (!message.id) {
+                            return null
+                        }
+
                         return (
-                            <TicketMessage key={message.id} message={message}/>
+                            <TicketMessage key={message.id}
+                                           message={message}
+                                           currentUser={this.props.currentUser} />
                         )
                     })}
                 </div>
@@ -24,5 +29,6 @@ export default class TicketMessages extends React.Component {
 }
 
 TicketMessages.propTypes = {
-    messages: PropTypes.array
+    messages: PropTypes.array,
+    currentUser: PropTypes.object
 }

@@ -46,6 +46,7 @@ export default class TicketsView extends React.Component {
                 <h1 className="ui header">{tickets.meta.view.name}</h1>
                 <TicketTable
                     tickets={tickets.data}
+                    currentUser={this.props.currentUser}
                     pushState={this.props.pushState}
                 />
             </div>
@@ -55,8 +56,9 @@ export default class TicketsView extends React.Component {
 
 TicketsView.propTypes = {
     tickets: PropTypes.shape({
-        meta: PropTypes.object.isRequired,
-        data: PropTypes.array.isRequired
+        meta: PropTypes.object,
+        data: PropTypes.array
     }).isRequired,
+    currentUser: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired
 }

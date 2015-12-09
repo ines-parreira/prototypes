@@ -37,6 +37,7 @@ class TicketsContainer extends React.Component {
             <div className="TicketsContainer">
                 <TicketsView
                     tickets={this.props.tickets}
+                    currentUser={this.props.currentUser}
                     pushState={this.pushState}/>
             </div>
         )
@@ -51,6 +52,7 @@ TicketsContainer.propTypes = {
         uri: PropTypes.string,
         object: PropTypes.string
     }),
+    currentUser: PropTypes.object,
     actions: PropTypes.object.isRequired,
 
     // React Router
@@ -60,7 +62,8 @@ TicketsContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        tickets: state.tickets
+        tickets: state.tickets,
+        currentUser: state.currentUser
     }
 }
 

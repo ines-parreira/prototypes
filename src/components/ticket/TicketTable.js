@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
+import 'moment-timezone'
 
 export default class TicketTable extends React.Component {
     stripHTML(text) {
@@ -26,6 +27,8 @@ export default class TicketTable extends React.Component {
     }
 
     render() {
+        const {currentUser, tickets} = this.props
+
         return (
             <table className="ui single line very basic selectable table">
                 <thead>
@@ -42,7 +45,11 @@ export default class TicketTable extends React.Component {
                 </tr>
                 </thead>
                 <tbody>
-                {this.props.tickets.map((ticket) => {
+                {tickets.map((ticket) => {
+                    let createdDatetime = ''
+                    if (ticket.created_datetime) {
+                        createdDatetime = moment(ticket.created_datetime).tz(currentUser.get('timezone', 'UTC')).fromNow()
+                    }
                     return (
                         <tr className="ticket-item" key={ticket.id}
                             onClick={() => {this.props.pushState(`/ticket/${ticket.id}`)}}>
@@ -62,7 +69,7 @@ export default class TicketTable extends React.Component {
                                     </div>
                                 </div>
                             </td>
-                            <td>{ticket.created_datetime ? moment(ticket.created_datetime).fromNow() : ''}</td>
+                            <td>{createdDatetime}</td>
                             <td>{ticket.channel}</td>
                         </tr>
                     )
@@ -75,5 +82,6 @@ export default class TicketTable extends React.Component {
 
 TicketTable.propTypes = {
     tickets: PropTypes.array.isRequired,
+    currentUser: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired
 }

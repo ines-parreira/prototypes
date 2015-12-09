@@ -6,9 +6,12 @@ export const NEW_TICKET = 'NEW_TICKET'
 export const CLOSE_TICKET = 'CLOSE_TICKET'
 export const OPEN_TICKET = 'OPEN_TICKET'
 
+// Given some changes in the UI, update ticket properties to be reflected in the UI and prepared for submission
+export const UPDATE_TICKET_PROPS = 'UPDATE_TICKET_PROPS'
+
 // Reply to a ticket
-export const REPLY_TICKET_START = 'REPLY_TICKET_START'
-export const REPLY_TICKET_SUCCESS = 'REPLY_TICKET_SUCCESS'
+export const SUBMIT_TICKET_START = 'SUBMIT_TICKET_START'
+export const SUBMIT_TICKET_SUCCESS = 'SUBMIT_TICKET_SUCCESS'
 
 // Fetching a single ticket life-cycle
 export const FETCH_TICKET_START = 'FETCH_TICKET_START'
@@ -44,22 +47,29 @@ export function fetchView(url, type = 'list') {
     }
 }
 
-export function sendReply(ticket) {
+export function updateTicket(props) {
+    return {
+        type: UPDATE_TICKET_PROPS,
+        props
+    }
+}
+
+export function submitTicket(ticket) {
     return (dispatch) => {
         // we mark that we're trying to send the reply (used in the UI to show progress)
         dispatch({
-            type: REPLY_TICKET_START
+            type: SUBMIT_TICKET_START
         })
 
         return reqwest({
-            url: `/tickets/${ticket.get('id')}/`,
+            url: `/api/tickets/${ticket.get('id')}/`,
             type: 'json',
-            method: 'POST',
             contentType: 'application/json',
+            method: 'PUT',
             data: JSON.stringify(ticket.toJS())
         }).then((resp) => {
             dispatch({
-                type: REPLY_TICKET_SUCCESS,
+                type: SUBMIT_TICKET_SUCCESS,
                 resp
             })
         }).catch((err) => {

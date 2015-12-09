@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import linkifyStr from 'linkifyjs/string'
 import moment from 'moment'
+import 'moment-timezone'
 
 export default class TicketMessage extends React.Component {
 
@@ -13,13 +14,19 @@ export default class TicketMessage extends React.Component {
         }
         return (
             <div className="message-body">
-                <pre dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}} />
+                <pre dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}}/>
             </div>
         )
     }
 
     render() {
-        const { message } = this.props
+        const { message, currentUser } = this.props
+
+        let createdDatetime = ''
+        if (message.created_datetime) {
+            createdDatetime = moment(message.created_datetime).tz(currentUser.get('timezone', 'UTC')).fromNow()
+        }
+
         return (
             <div className="TicketMessage item">
                 <div className="content">
@@ -34,9 +41,7 @@ export default class TicketMessage extends React.Component {
                                 {message.sender.address}
                             </div>
                         </div>
-                        <div className="ui right floated header">
-                            {message.created_datetime ? moment(message.created_datetime).fromNow() : ''}
-                        </div>
+                        <div className="ui right floated header">{createdDatetime}</div>
                     </div>
                     <div className="clearfix"></div>
                     {this.renderBody(message)}
@@ -55,5 +60,6 @@ TicketMessage.propTypes = {
         created_datetime: PropTypes.string.isRequired,
         body_text: PropTypes.string.isRequired,
         body_html: PropTypes.string.isRequired
-    }).isRequired
+    }).isRequired,
+    currentUser: PropTypes.object.isRequired
 }

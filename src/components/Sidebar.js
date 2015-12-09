@@ -30,7 +30,7 @@ export default class Sidebar extends React.Component {
     }
 
     render() {
-        const {views} = this.props
+        const {views, currentUser} = this.props
         const sections = this.sections(views)
         return (
             <div className="ui inverted blue left visible sidebar menu">
@@ -88,7 +88,14 @@ export default class Sidebar extends React.Component {
 
                 <div className="ui inverted blue large vertical bottom fixed menu">
                     <div href="" className="ui top dropdown item">
-                        Avi Davis <i className="ellipsis horizontal icon"/>
+                        <i className="ellipsis horizontal icon"/>
+                        <div>
+                            <h4>
+                                <i className="green circle icon" title="User online" />
+                                {currentUser.get('first_name')} {currentUser.get('last_name')}
+                            </h4>
+                        </div>
+
                         <div className="menu">
                             <a className="item"><i className="edit icon"/> Edit Profile</a>
                             <a className="item"><i className="globe icon"/> Choose Language</a>
@@ -102,5 +109,6 @@ export default class Sidebar extends React.Component {
 }
 
 Sidebar.propTypes = {
-    views: PropTypes.object
+    views: PropTypes.object,
+    currentUser: PropTypes.object
 }
