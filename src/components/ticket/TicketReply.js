@@ -18,7 +18,6 @@ export default class TicketReply extends React.Component {
 
     update() {
         return () => {
-
             const messages = this.props.ticket.get('messages')
             let lastMessage = messages[0]
             for (const m of messages) {

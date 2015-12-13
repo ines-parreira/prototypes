@@ -63,7 +63,9 @@ export function ticket(state = ticketInitial, action) {
                 let messages = state.get('messages')
                 for (let message of messages) {
                     if (!message.id) {
-                        console.log(message)
+                        message.via = 'helpdesk'
+                        message.channel = state.get('channel')
+                        message.from_agent = true
                         message.sender = action.props.message.sender
                         message.receivers = action.props.message.receivers
                         message.body_text = action.props.message.body_text
