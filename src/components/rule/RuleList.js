@@ -1,14 +1,18 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import RuleItem from './RuleItem'
 
-class RuleList extends React.Component {
+export default class RuleList extends React.Component {
     render() {
         const { actions } = this.props
         return (
             <div className="ui middle aligned divided list">
-                { this.props.data.map(function (rule, idx) {
+                { this.props.rules.map((rule, idx) => {
                     return (
-                        <RuleItem {...rule} key={rule.id} id={rule.id} index={idx} actions={actions}/>
+                        <RuleItem
+                            key={rule.id}
+                            index={idx}
+                            rule={rule}
+                            actions={actions} />
                     )
                 }) }
             </div>
@@ -16,4 +20,7 @@ class RuleList extends React.Component {
     }
 }
 
-export default RuleList
+RuleList.propTypes = {
+    rules: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
+}

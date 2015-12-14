@@ -40,7 +40,6 @@ function getSyntaxTreeLeaves(syntaxTree) {
 class Expression extends React.Component {
     render() {
         const { type } = this.props
-
         switch (type) {
             case 'BinaryExpression':
                 return (
@@ -90,8 +89,7 @@ class Expression extends React.Component {
 class ObjectExpression extends React.Component {
     render() {
         const { type, properties, leftsiblings, parent, actions, index } = this.props
-
-        const propertiesComp = properties.map(function(property, idx) {
+        const propertiesComp = properties.map(function (property, idx) {
             let leftsiblings2
             if (leftsiblings !== undefined) {
                 leftsiblings2 = leftsiblings.push(property.key.name)
@@ -100,7 +98,7 @@ class ObjectExpression extends React.Component {
             const parentProperty = parent.push('properties', idx)
             return (
                 <Property { ...property } key={ idx } theKey={ property.key } leftsiblings={ leftsiblings2 }
-                                          parent={ parentProperty } actions={ actions } index={ index } />
+                                          parent={ parentProperty } actions={ actions } index={ index }/>
             )
         })
 
@@ -131,7 +129,8 @@ class Property extends React.Component {
                 <div className="ui label">
                     { theKey.name }
                 </div>
-                <Input widgetType={ widgetType } value={ value.value } parent={ parent.push('value', 'value') } actions={actions} index={ index} />
+                <Input widgetType={ widgetType } value={ value.value } parent={ parent.push('value', 'value') }
+                       actions={actions} index={ index}/>
             </div>
         )
     }
@@ -191,11 +190,10 @@ class CallExpression extends React.Component {
         }
 
         // This case for handling Action.
-        // Action(list_of_actions, "hello_action", {subject: "hello", body: "hello world"})
-        if (callee.type === 'Identifier' && callee.name === "Action") {
-            const listOfActions = functionArguments[0]
-            const actionName = functionArguments[1]
-            const actionArguments = functionArguments[2]
+        // Action("hello_action", {subject: "hello", body: "hello world"})
+        if (callee.type === 'Identifier' && callee.name === 'Action') {
+            const actionName = functionArguments[0]
+            const actionArguments = functionArguments[1]
             const actionRootLeftSiblings = Immutable.List(['_action'])
             return (
                 <div>
@@ -204,13 +202,13 @@ class CallExpression extends React.Component {
                                     leftsiblings={ actionRootLeftSiblings }/>
                     <ObjectExpression { ...actionArguments }
                         leftsiblings={ actionRootLeftSiblings.push(actionName.value) } index={ index }
-                        actions={ actions } parent={ parent.push("arguments", 2) }/>
+                        actions={ actions } parent={ parent.push('arguments', 2) }/>
                 </div>
             )
         }
 
         // Else, it's a normal function. We handle it in normal way.
-        const argumentsExpressions = functionArguments.map(function(argumentItem, idx) {
+        const argumentsExpressions = functionArguments.map(function (argumentItem, idx) {
             const parentArguments = parent.push('arguments', idx)
 
             return (

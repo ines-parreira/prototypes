@@ -1,22 +1,25 @@
-import React from 'react'
-import esprima from 'esprima'
+import React, {PropTypes} from 'react'
 import Program from '../parser/Program'
 
-class RuleItem extends React.Component {
+export default class RuleItem extends React.Component {
     render() {
-        const { id, type, code, code_ast, index, actions, created_datetime } = this.props
+        const { index, rule, actions } = this.props
 
         return (
             <div className="ruleItem item">
                 <div className="content">
-                    <div className="header">{id}. {type}</div>
+                    <div className="header">{rule.id}. {rule.type}</div>
                     <div className="ui existing segment">
                     <pre>
-                        <code className="code javascript">{ code }</code>
+                        <code className="code javascript">{ rule.code }</code>
                     </pre>
                     </div>
-                    <small>{created_datetime}</small>
-                    <Program {...code_ast} index={index} actions={actions} />
+                    <small>{rule.created_datetime}</small>
+                    <Program
+                        {...rule.code_ast}
+                        index={index}
+                        actions={actions}
+                        />
                 </div>
                 <br />
             </div>
@@ -24,4 +27,8 @@ class RuleItem extends React.Component {
     }
 }
 
-export default RuleItem
+RuleItem.propTypes = {
+    index: PropTypes.number,
+    rule: PropTypes.object,
+    actions: PropTypes.object
+}

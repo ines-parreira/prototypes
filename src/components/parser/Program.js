@@ -1,25 +1,29 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import Statement from './Statement'
 import Immutable from 'immutable'
 
-class Program extends React.Component {
+export default class Program extends React.Component {
     render() {
-        const { type, body, index, actions } = this.props
-
-        const statements = body.map(function(statement, idx) {
-            const parentNew = Immutable.List(['body', idx])
-
-            return (
-                <Statement {...statement} key={idx} parent={parentNew} index={index} actions={actions}/>
-            )
-        })
-
+        const { index, actions, body} = this.props
         return (
             <div className="program">
-                { statements }
+            {body.map((statement, idx) => {
+                return (
+                    <Statement
+                        {...statement}
+                        key={idx}
+                        parent={Immutable.List(['body', idx])}
+                        index={index}
+                        actions={actions} />
+                )
+            })}
             </div>
         )
     }
 }
 
-export default Program
+Program.propTypes = {
+    index: PropTypes.number,
+    actions: PropTypes.object,
+    body: PropTypes.array
+}

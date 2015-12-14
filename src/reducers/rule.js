@@ -7,7 +7,7 @@ import { DEFAULT_OPTION_CHAINS } from '../components/parser/Dropdown'
 
 const initialState = Immutable.List([])
 
-function getAst(code) {
+function getAST(code) {
     return esprima.parse(code)
 }
 
@@ -103,7 +103,7 @@ export function rules(state = initialState, action) {
     switch (action.type) {
         case ADD_RULE_END:
             const rule = action.rule
-            rule.code_ast = getAst(rule.code)
+            rule.code_ast = getAST(rule.code)
             return state.push(rule)
 
         case RULES_REQUESTS_POSTS:
@@ -111,7 +111,7 @@ export function rules(state = initialState, action) {
 
         case RULES_RECEIVE_POSTS:
             const rules = action.rules.map(function (ruleItem) {
-                ruleItem.code_ast = getAst(ruleItem.code)
+                ruleItem.code_ast = getAST(ruleItem.code)
                 return ruleItem
             })
 

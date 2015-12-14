@@ -1,10 +1,9 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import Expression from './Expression'
 import UnknownSyntax from './Utils'
 import { AddAction, AddIf, DeleteBlockStatementItem, AddLogicalAndCondition } from './OperationButtons.js'
 
-class Statement extends React.Component {
-
+export default class Statement extends React.Component {
     render() {
         const {type} = this.props
 
@@ -35,6 +34,11 @@ class Statement extends React.Component {
     }
 }
 
+Statement.propTypes = {
+    type: PropTypes.string
+}
+
+
 /*
  interface BlockStatement <: Statement {
  type: "BlockStatement";
@@ -45,7 +49,7 @@ class BlockStatement extends React.Component {
     render() {
         const { type, body, index, actions, parent } = this.props
 
-        const statements = body.map(function(bodyItem, idx) {
+        const statements = body.map(function (bodyItem, idx) {
             const parentNew = parent.push('body', idx)
 
             return (
@@ -150,4 +154,3 @@ class ExpressionStatement extends React.Component {
 }
 
 
-export default Statement

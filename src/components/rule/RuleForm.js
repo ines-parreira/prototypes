@@ -1,45 +1,9 @@
-import React from 'react'
-import esprima from 'esprima'
+import React, {PropTypes} from 'react'
 
-class RuleForm extends React.Component {
-    constructor() {
-        super()
-        this.handleSubmit = this.handleSubmit.bind(this)
-    }
-
-    handleSubmit(e) {
-        e.preventDefault()
-        var type = this.refs.type.value.trim()
-        var code = this.refs.code.value.trim()
-
-        if (!type || !code) {
-            return
-        }
-
-
-        const { rules, actions } = this.props
-
-        try {
-            var syntax = esprima.parse(code)
-        }
-        catch(err){
-            actions.errorMsg(err.message)
-            this.refs.type.value = ''
-            this.refs.code.value = ''
-            return
-        }
-
-        actions.submitRule("/api/rules/", {type: type, code: code, code_ast: JSON.stringify(syntax, null, 4)})
-
-        this.refs.type.value = ''
-        this.refs.code.value = ''
-
-        return
-    }
-
+export default class RuleForm extends React.Component {
     render() {
         return (
-            <form className="ui form" onSubmit={this.handleSubmit}>
+            <form className="ui form" onSubmit={this.props.handleSubmit}>
                 <div className="field">
                     <label htmlFor="ruletype">Rule type</label>
                     <input type="text" className="form-control" placeholder="Type of the rule" ref="type"
@@ -56,4 +20,6 @@ class RuleForm extends React.Component {
     }
 }
 
-export default RuleForm
+RuleForm.propTypes = {
+    handleSubmit: PropTypes.func
+}
