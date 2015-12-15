@@ -28,6 +28,10 @@ const ticketInitial = Map({
     opened_datetime: null,
     updated_datetime: null,
     closed_datetime: null,
+    requester: {
+        name: '(no name)',
+        address: '(no address)'
+    },
     sender: {
         name: '(no name)',
         address: '(no address)'
@@ -36,12 +40,14 @@ const ticketInitial = Map({
     meta: {},
     tags: [],
     messages: [{
+        public: true,
         channel: 'helpdesk',
         receivers: [],
         sender: {
             name: '(no name)',
             address: ''
         },
+        from_agent: true,
         subject: '',
         body_text: '',
         body_html: ''
