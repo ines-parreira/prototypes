@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import Expression from './Expression'
 import UnknownSyntax from './Utils'
-import { AddAction, AddIf, DeleteBlockStatementItem, AddLogicalAndCondition } from './OperationButtons.js'
+import { AddAction, AddIf, DeleteBlockStatementItem, AddLogicalAndCondition } from './OperationButtons'
 
 export default class Statement extends React.Component {
     render() {

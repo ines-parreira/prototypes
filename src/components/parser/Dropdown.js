@@ -224,6 +224,7 @@ class DropdownButton extends React.Component {
         const {actions, index, parent, options } = this.props
 
         actions.modifyCodeast(index, parent, event.target.value, 'UPDATE')
+        // console.log(actions.modifyCodeast)
     }
 
     render() {
@@ -241,8 +242,14 @@ class DropdownButton extends React.Component {
             )
         }
 
+        let neutralBtn = this.props.text === "equal" ||
+                         this.props.text === "notEqual" ||
+                         this.props.text === "greaterThan" ||
+                         this.props.text === "lessThan"
+                         ? "neutral" : ""
+
         return (
-            <select className="ui dropdown" value={ this.props.text } onChange={ this.handleChange.bind(this) }>
+            <select className={"ui dropdown " + neutralBtn} value={ this.props.text } onChange={ this.handleChange.bind(this) }>
                 { optionItems }
             </select>
         )

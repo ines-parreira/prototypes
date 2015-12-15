@@ -10,9 +10,9 @@ export default class RuleItem extends React.Component {
                 <div className="content">
                     <div className="header">{rule.id}. {rule.type}</div>
                     <div className="ui existing segment">
-                    <pre>
-                        <code className="code javascript">{ rule.code }</code>
-                    </pre>
+                        <pre>
+                            <code className="code javascript">{ rule.code }</code>
+                        </pre>
                     </div>
                     <small>{rule.created_datetime}</small>
                     <Program

@@ -27,6 +27,22 @@ export class AddAction extends React.Component {
                                 type: 'Property',
                                 key: {
                                     type: 'Identifier',
+                                    name: 'to'
+                                },
+                                computed: false,
+                                value: {
+                                    type: 'Literal',
+                                    value: 'user@email.com',
+                                    raw: '\'user@email.com\''
+                                },
+                                kind: 'init',
+                                method: false,
+                                shorthand: false
+                            },
+                            {
+                                type: 'Property',
+                                key: {
+                                    type: 'Identifier',
                                     name: 'subject'
                                 },
                                 computed: false,
@@ -192,9 +208,18 @@ export class DeleteBinaryExpression extends React.Component {
 
     render() {
         return (
-            <button className="ui red tiny button delete-binaryexpression" onClick={ this.handleClick.bind(this) }>
-                -
+            <button className="ui circular red tiny icon button delete-binaryexpression" onClick={ this.handleClick.bind(this) }>
+                &times;
             </button>
+        )
+    }
+}
+
+// displays a number of matching rules for a given condition
+export class ShowMatchingRulesNumber extends React.Component {
+    render() {
+        return (
+            <button className="ui button basic green circular matching-rules-num">12345</button>
         )
     }
 }

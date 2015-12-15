@@ -2,7 +2,7 @@ import React from 'react'
 import UnknownSyntax from './Utils'
 import DropdownButton from './Dropdown'
 import { DEFAULT_OPTION_CHAINS } from './Dropdown'
-import { DeleteBinaryExpression } from './OperationButtons'
+import { DeleteBinaryExpression, ShowMatchingRulesNumber } from './OperationButtons'
 import Immutable from 'immutable'
 import Input from './Input'
 
@@ -154,9 +154,14 @@ class CallExpression extends React.Component {
 
 
         let deleteBinaryExpressionComponent
+        let showMatchingRulesNumberComponent
+        // ensures that the top level "if" statement cannot be deleted
         if (parent.last() !== 'test') {
             deleteBinaryExpressionComponent = (
                 <DeleteBinaryExpression parent={parent} index={index} actions={actions}/>
+            )
+            showMatchingRulesNumberComponent = (
+                <ShowMatchingRulesNumber />
             )
         }
 
@@ -184,7 +189,9 @@ class CallExpression extends React.Component {
                     <Expression { ...functionArguments[1] } parent={ parentArguments1 } index={ index }
                                                             actions={ actions }
                                                             leftsiblings={ leftsiblings.push('operator') }/>
+                    { showMatchingRulesNumberComponent }
                     { deleteBinaryExpressionComponent }
+                    <br/>
                 </span>
             )
         }
@@ -300,7 +307,7 @@ class BinaryExpression extends React.Component {
                 </span>
                 <span className="operator">
                     <DropdownButton text={ operator } parent={parentOperator} index={index} actions={actions}
-                                    leftsiblings={leftsiblings2}/>
+                                        leftsiblings={leftsiblings2}/>
                 </span>
                 <span className="right">
                     <Expression {...right} parent={parentRight} index={index} actions={actions}
@@ -341,8 +348,9 @@ class LogicalExpression extends React.Component {
                                             leftsiblings={leftsiblings}/>
                 </span>
                 <span className="operator">
-                    <DropdownButton text={ operator } parent={ parentOperator } index={ index } actions={ actions }
-                                    leftsiblings={leftsiblings2}/>
+                    {/*<DropdownButton text={ operator } parent={ parentOperator } index={ index } actions={ actions }
+                                    leftsiblings={leftsiblings2}/>*/}
+                                    <button className="ui button dropdown">AND</button>
                 </span>
                 <span className="right">
                     <Expression { ...right } parent={ parentRight } index={ index } actions={ actions }
