@@ -24,10 +24,6 @@ const ticketInitial = Map({
     subject: '',
     body_html: '',
     body_text: '',
-    created_datetime: null,
-    opened_datetime: null,
-    updated_datetime: null,
-    closed_datetime: null,
     requester: {
         name: '(no name)',
         address: '(no address)'
@@ -47,7 +43,6 @@ const ticketInitial = Map({
             name: '(no name)',
             address: ''
         },
-        from_agent: true,
         subject: '',
         body_text: '',
         body_html: ''
