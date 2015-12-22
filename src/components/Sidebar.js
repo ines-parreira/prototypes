@@ -5,7 +5,7 @@ export default class Sidebar extends React.Component {
 
     sections(views) {
         // Populate sections
-        let ret = {
+        const ret = {
             favorites: {
                 title: 'FAVORITES',
                 views: []
@@ -29,13 +29,17 @@ export default class Sidebar extends React.Component {
         return ret
     }
 
+    popup() {
+        $('.ui.dropdown').dropdown()
+    }
+
     render() {
         const {views, currentUser} = this.props
         const sections = this.sections(views)
         return (
             <div className="ui inverted blue left visible sidebar menu">
                 <div className="ui inverted blue large vertical menu">
-                    <div className="ui dropdown item">
+                    <div className="ui dropdown item" onClick={() => {this.popup()}}>
                         Tickets
                         <i className="chevron down icon"/>
                         <div className="menu">
