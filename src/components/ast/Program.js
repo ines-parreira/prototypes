@@ -4,7 +4,7 @@ import Immutable from 'immutable'
 
 export default class Program extends React.Component {
     render() {
-        const { index, actions, body} = this.props
+        const { index, actions, body, schemas} = this.props
         return (
             <div className="program">
             {body.map((statement, idx) => {
@@ -14,6 +14,7 @@ export default class Program extends React.Component {
                         key={idx}
                         parent={Immutable.List(['body', idx])}
                         index={index}
+                        schemas={schemas}
                         actions={actions} />
                 )
             })}
@@ -24,6 +25,7 @@ export default class Program extends React.Component {
 
 Program.propTypes = {
     index: PropTypes.number,
+    schemas: PropTypes.object,
     actions: PropTypes.object,
     body: PropTypes.array
 }

@@ -3,7 +3,7 @@ import esprima from 'esprima'
 import escodegen from 'escodegen'
 
 import { ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST } from '../actions/rule'
-import { DEFAULT_OPTION_CHAINS } from '../components/parser/Dropdown'
+import { DEFAULT_OPTION_CHAINS } from '../components/ast/Dropdown'
 
 const initialState = Immutable.List([])
 
@@ -51,7 +51,7 @@ function inOrderGetLeaves(syntaxTree, currentPath) {
         return leavesLeft.push(...leavesOperator).push(...leavesRight)
     }
 
-    if (currentNode.get('type') == 'MemberExpression') {
+    if (currentNode.get('type') === 'MemberExpression') {
         const pathObject = currentPath.push('object')
         const pathProperty = currentPath.push('property')
 
@@ -65,7 +65,7 @@ function inOrderGetLeaves(syntaxTree, currentPath) {
 function getObjectExpression(actionDict) {
     let properties = []
 
-    for (let keyItem in actionDict) {
+    for (const keyItem in actionDict) {
         if (!actionDict.hasOwnProperty(keyItem)) {
             continue
         }
@@ -75,13 +75,13 @@ function getObjectExpression(actionDict) {
             type: 'Property',
             key: {
                 type: 'Identifier',
-                name: keyItem,
+                name: keyItem
             },
             computed: false,
             value: {
                 type: 'Literal',
                 value: '',
-                raw: '\'\'',
+                raw: '\'\''
             },
             kind: 'init',
             method: false,
@@ -91,12 +91,10 @@ function getObjectExpression(actionDict) {
         properties.push(property)
     }
 
-    const ret = {
-        type: "ObjectExpression",
+    return {
+        type: 'ObjectExpression',
         properties: properties
     }
-
-    return ret
 }
 
 export function rules(state = initialState, action) {
@@ -110,12 +108,13 @@ export function rules(state = initialState, action) {
             return state
 
         case RULES_RECEIVE_POSTS:
-            const rules = action.rules.map(function (ruleItem) {
+            // Given the code of the rules received from server convert the code to AST
+            const ruleList = action.rules.map((ruleItem) => {
                 ruleItem.code_ast = getAST(ruleItem.code)
                 return ruleItem
             })
 
-            return Immutable.List(rules)
+            return Immutable.List(ruleList)
 
         case RULES_UPDATE_CODE_AST:
         {

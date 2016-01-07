@@ -84,12 +84,12 @@ export class AddAction extends React.Component {
     render() {
         const options = [
             {
-                label: "Send notification email to user",
-                value: "send_notification_to_user"
+                label: 'Send notification email to user',
+                value: 'send_notification_to_user'
             },
             {
-                label: "Add tag to the ticket",
-                value: "action_add_tag_to_ticket"
+                label: 'Add tag to the ticket',
+                value: 'action_add_tag_to_ticket'
             }
         ]
         return (
@@ -211,15 +211,6 @@ export class DeleteBinaryExpression extends React.Component {
             <button className="ui circular red tiny icon button delete-binaryexpression" onClick={ this.handleClick.bind(this) }>
                 &times;
             </button>
-        )
-    }
-}
-
-// displays a number of matching rules for a given condition
-export class ShowMatchingRulesNumber extends React.Component {
-    render() {
-        return (
-            <button className="ui button basic green circular matching-rules-num">12345</button>
         )
     }
 }

@@ -1,7 +1,6 @@
-import React from 'react'
-import Immutable from 'immutable'
+import React, {PropTypes} from 'react'
 
-class Input extends React.Component {
+export default class Input extends React.Component {
     handleChange(event) {
         const {actions, index, parent } = this.props
 
@@ -29,4 +28,6 @@ class Input extends React.Component {
     }
 }
 
-export default Input
+Input.propTypes = {
+    actions: PropTypes.object
+}

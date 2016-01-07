@@ -18,19 +18,19 @@ const ADVANCED_COMPARISON = [
     },
     {
         value: 'gt',
-        label: 'Greater than'
+        label: 'greater than'
     },
     {
         value: 'lt',
-        label: 'Less than'
+        label: 'less than'
     },
     {
         value: 'gte',
-        label: 'Greater than or equal'
+        label: 'greater than or equal'
     },
     {
         value: 'lte',
-        label: 'Less than or equal'
+        label: 'less than or equal'
     }
 ]
 
@@ -244,7 +244,7 @@ function getOptionsBySiblings(leftsiblings) {
     return optionItems
 }
 
-class DropdownButton extends React.Component {
+export default class DropdownButton extends React.Component {
 
     handleChange(event) {
         const {actions, index, parent, options } = this.props
@@ -254,7 +254,7 @@ class DropdownButton extends React.Component {
     }
 
     render() {
-        const leftsiblings = this.props.leftsiblings
+        const {leftsiblings} = this.props
 
         let optionItems
 
@@ -282,5 +282,3 @@ class DropdownButton extends React.Component {
         )
     }
 }
-
-export default DropdownButton

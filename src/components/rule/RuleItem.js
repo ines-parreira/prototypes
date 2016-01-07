@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react'
-import Program from '../parser/Program'
+import Program from '../ast/Program'
 
 export default class RuleItem extends React.Component {
     render() {
-        const { index, rule, actions } = this.props
+        const { index, rule, actions, schemas } = this.props
 
         return (
             <div className="ruleItem item">
@@ -18,6 +18,7 @@ export default class RuleItem extends React.Component {
                     <Program
                         {...rule.code_ast}
                         index={index}
+                        schemas={schemas}
                         actions={actions}
                         />
                 </div>
@@ -30,5 +31,6 @@ export default class RuleItem extends React.Component {
 RuleItem.propTypes = {
     index: PropTypes.number,
     rule: PropTypes.object,
-    actions: PropTypes.object
+    actions: PropTypes.object,
+    schemas: PropTypes.object
 }

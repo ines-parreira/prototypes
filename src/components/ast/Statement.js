@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import Expression from './Expression'
-import UnknownSyntax from './Utils'
+import UnknownSyntax from './UnknownSyntax.js'
 import { AddAction, AddIf, DeleteBlockStatementItem, AddLogicalAndCondition } from './OperationButtons'
 
 export default class Statement extends React.Component {
@@ -49,7 +49,7 @@ class BlockStatement extends React.Component {
     render() {
         const { type, body, index, actions, parent } = this.props
 
-        const statements = body.map(function (bodyItem, idx) {
+        const statements = body.map((bodyItem, idx) => {
             const parentNew = parent.push('body', idx)
 
             return (
@@ -98,7 +98,7 @@ class BlockStatement extends React.Component {
  */
 class IfStatement extends React.Component {
     render() {
-        const { type, test, consequent, index, actions, parent } = this.props
+        const { type, test, consequent, index, actions, parent, schemas } = this.props
         let alternate = this.props.alternate
 
         if (alternate === null) {
@@ -116,8 +116,14 @@ class IfStatement extends React.Component {
             <div className="IfStatement">
                 <div className="test">
                     <button className="ui button inline positive">IF</button>
-                    <Expression { ...test } parent={ parentTest } index={ index } actions={ actions }/>
-                    <AddLogicalAndCondition parent={ parentTest } index={ index } actions={ actions }/>
+                    <Expression
+                        { ...test }
+                        parent={ parentTest }
+                        index={ index }
+                        actions={ actions }
+                        schemas={ schemas }
+                    />
+                    <AddLogicalAndCondition parent={ parentTest } index={ index } actions={ actions } />
                 </div>
                 <div className="consequent">
                     <button className="ui button inline positive">THEN</button>
