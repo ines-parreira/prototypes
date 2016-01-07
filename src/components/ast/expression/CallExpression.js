@@ -3,11 +3,11 @@ import Immutable from 'immutable'
 
 import Expression from './Expression'
 import ObjectExpression from './ObjectExpression'
-import MatchingObjectsCounter from './MatchingObjectsCounter'
-import {DeleteBinaryExpression} from './OperationButtons'
-import DropdownButton from './Dropdown'
+import MatchingObjectsCounter from '../MatchingObjectsCounter'
+import {DeleteBinaryExpression} from '../OperationButtons'
+import DropdownButton from '../Dropdown'
 
-import getSyntaxTreeLeaves from './utils'
+import getSyntaxTreeLeaves from '../utils'
 
 /*
  Standard interface CallExpression <: Expression {

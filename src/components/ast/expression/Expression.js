@@ -2,12 +2,12 @@ import React, {PropTypes} from 'react'
 
 import LogicalExpression from './LogicalExpression'
 import BinaryExpression from './BinaryExpression'
-import Literal from './Literal'
-import Identifier from './Identifier'
+import Literal from '../Literal'
+import Identifier from '../Identifier'
 import MemberExpression from './MemberExpression'
 import CallExpression from './CallExpression'
 import ObjectExpression from './ObjectExpression'
-import UnknownSyntax from './UnknownSyntax'
+import UnknownSyntax from '../UnknownSyntax'
 
 export default class Expression extends React.Component {
     render() {

@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import Property from './Property'
+import Property from '../Property'
 
 /* interface ObjectExpression <: Expression {
  type: "ObjectExpression";

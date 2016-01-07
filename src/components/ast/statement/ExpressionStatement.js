@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import Expression from './Expression'
+import Expression from '../expression/Expression'
 
 /*
  interface ExpressionStatement <: Statement {

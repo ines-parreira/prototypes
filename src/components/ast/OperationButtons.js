@@ -40,7 +40,7 @@ export class AddLine extends React.Component {
     }
 }
 
-export class AddLogicalAndCondition extends React.Component {
+class AddLogicalAndCondition extends React.Component {
     handleClick(event) {
         const actionNode = {
             type: 'LogicalExpression',
@@ -87,7 +87,7 @@ export class AddLogicalAndCondition extends React.Component {
     }
 }
 
-export class AddAction extends React.Component {
+class AddAction extends React.Component {
     handleClick(event) {
         const actionNode = {
             type: 'ExpressionStatement',
@@ -185,7 +185,7 @@ export class AddAction extends React.Component {
     }
 }
 
-export class AddIf extends React.Component {
+class AddIf extends React.Component {
     handleClick(event) {
         const actionNode = {
             type: 'IfStatement',

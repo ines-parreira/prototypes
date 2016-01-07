@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
-import Expression from './Expression'
+import Expression from '../expression/Expression'
 import Statement from './Statement'
-import {AddLine} from './OperationButtons'
+import {AddLine} from '../OperationButtons'
 
 /*
  interface IfStatement <: Statement {

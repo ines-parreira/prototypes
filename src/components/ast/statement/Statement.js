@@ -3,7 +3,7 @@ import React, {PropTypes} from 'react'
 import IfStatement from './IfStatement'
 import ExpressionStatement from './ExpressionStatement'
 import BlockStatement from './BlockStatement'
-import UnknownSyntax from './UnknownSyntax.js'
+import UnknownSyntax from '../UnknownSyntax.js'
 
 export default class Statement extends React.Component {
     render() {

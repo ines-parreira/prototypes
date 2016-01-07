@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import Statement from './Statement'
-import {AddLine, DeleteBlockStatementItem} from './OperationButtons'
+import {AddLine, DeleteBlockStatementItem} from '../OperationButtons'
 
 /*
  interface BlockStatement <: Statement {

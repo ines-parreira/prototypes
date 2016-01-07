@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
-import Expression from './Expression'
+import Expression from '../expression/Expression'
 
-import getSyntaxTreeLeaves from './utils'
+import getSyntaxTreeLeaves from '../utils'
 
 /*
  interface MemberExpression <: Expression, Pattern {

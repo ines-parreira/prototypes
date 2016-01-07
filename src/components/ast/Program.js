@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import Statement from './Statement'
+import Statement from './statement/Statement'
 import Immutable from 'immutable'
 
 export default class Program extends React.Component {

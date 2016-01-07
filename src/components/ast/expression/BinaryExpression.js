@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react'
-import DropdownButton from './Dropdown'
+import DropdownButton from '../Dropdown'
 import Expression from './Expression'
 
-import getSyntaxTreeLeaves from './utils'
+import getSyntaxTreeLeaves from '../utils'
 
 /*
  interface BinaryExpression <: Expression {
