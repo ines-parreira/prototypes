@@ -254,7 +254,7 @@ export default class DropdownButton extends React.Component {
     }
 
     render() {
-        const {leftsiblings} = this.props
+        const {leftsiblings, text} = this.props
 
         let optionItems
 
@@ -264,21 +264,24 @@ export default class DropdownButton extends React.Component {
 
         if (optionItems === undefined) {
             optionItems = (
-                <option value={ this.props.text }>{ this.props.text }</option>
+                <option value={text}>{text}</option>
             )
         }
 
-        let neutralBtn = this.props.text === "equal" ||
-        this.props.text === "notEqual" ||
-        this.props.text === "greaterThan" ||
-        this.props.text === "lessThan"
-            ? "neutral" : ""
+        const neutralBtn = (
+            text === 'equal' ||
+            text === 'notEqual' ||
+            text === 'greaterThan' ||
+            text === 'lessThan') ? ' neutral' : ''
 
         return (
-            <select className={"ui dropdown " + neutralBtn} value={ this.props.text }
-                    onChange={ this.handleChange.bind(this) }>
-                { optionItems }
+            <select
+                className={`ui dropdown${neutralBtn}`}
+                value={text}
+                onChange={this.handleChange.bind(this)}>
+                {optionItems}
             </select>
         )
     }
 }
+

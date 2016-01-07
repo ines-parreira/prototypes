@@ -1,5 +1,92 @@
 import React from 'react'
 
+// Add a new line in the code.
+export class AddLine extends React.Component {
+    render() {
+        const {parent, index, actions} = this.props
+
+        if (parent.contains('test')) {
+            return (
+                <AddLogicalAndCondition
+                    parent={parent}
+                    index={index}
+                    actions={actions}
+                />
+            )
+        }
+
+        return (
+            <div className="AddLine ui blue icon mini dropdown button">
+                <i className="plus icon"/>
+                <div className="menu">
+                    <div className="header">Insert new line</div>
+                    <div className="item">
+                        <AddAction
+                            parent={parent}
+                            index={index}
+                            actions={actions}
+                        />
+                    </div>
+                    <div className="item">
+                        <AddIf
+                            parent={parent}
+                            index={index}
+                            actions={actions}
+                        />
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
+export class AddLogicalAndCondition extends React.Component {
+    handleClick(event) {
+        const actionNode = {
+            type: 'LogicalExpression',
+            operator: '&&',
+            left: {
+                type: 'CallExpression',
+                callee: {
+                    type: 'Identifier',
+                    name: 'equal'
+                },
+                arguments: [
+                    {
+                        type: 'MemberExpression',
+                        computed: false,
+                        object: {
+                            type: 'Identifier',
+                            name: 'ticket'
+                        },
+                        property: {
+                            type: 'Identifier',
+                            name: 'status'
+                        }
+                    },
+                    {
+                        type: 'Literal',
+                        value: 'open',
+                        raw: '\'open\''
+                    }
+                ],
+            },
+            right: null,
+        }
+
+        const { parent, actions, index } = this.props
+        actions.modifyCodeast(index, parent, actionNode, 'UPDATE_LOGICAL_AND')
+    }
+
+    render() {
+        return (
+            <button className="AddLine ui blue icon mini dropdown button" onClick={ this.handleClick.bind(this) }>
+                <i className="plus icon"></i>
+            </button>
+        )
+    }
+}
+
 export class AddAction extends React.Component {
     handleClick(event) {
         const actionNode = {
@@ -93,59 +180,10 @@ export class AddAction extends React.Component {
             }
         ]
         return (
-            <button className="ui basic tiny button" onClick={ this.handleClick.bind(this) } options={ options }>
-                Add action +
-            </button>
+            <span onClick={ this.handleClick.bind(this) } options={ options }>Action</span>
         )
     }
 }
-export class AddLogicalAndCondition extends React.Component {
-    handleClick(event) {
-        const actionNode = {
-            type: 'LogicalExpression',
-            operator: '&&',
-            left: {
-                type: 'CallExpression',
-                callee: {
-                    type: 'Identifier',
-                    name: 'equal'
-                },
-                arguments: [
-                    {
-                        type: 'MemberExpression',
-                        computed: false,
-                        object: {
-                            type: 'Identifier',
-                            name: 'ticket'
-                        },
-                        property: {
-                            type: 'Identifier',
-                            name: 'status'
-                        }
-                    },
-                    {
-                        type: 'Literal',
-                        value: 'open',
-                        raw: '\'open\''
-                    }
-                ],
-            },
-            right: null,
-        }
-
-        const { parent, actions, index } = this.props
-        actions.modifyCodeast(index, parent, actionNode, 'UPDATE_LOGICAL_AND')
-    }
-
-    render() {
-        return (
-            <button className="ui basic tiny button" onClick={ this.handleClick.bind(this) }>
-                Add +
-            </button>
-        )
-    }
-}
-
 
 export class AddIf extends React.Component {
     handleClick(event) {
@@ -193,9 +231,7 @@ export class AddIf extends React.Component {
 
     render() {
         return (
-            <button className="ui basic tiny button" onClick={ this.handleClick.bind(this) }>
-                Add IF +
-            </button>
+            <span onClick={ this.handleClick.bind(this) }>IF statement</span>
         )
     }
 }
@@ -208,7 +244,8 @@ export class DeleteBinaryExpression extends React.Component {
 
     render() {
         return (
-            <button className="ui circular red tiny icon button delete-binaryexpression" onClick={ this.handleClick.bind(this) }>
+            <button className="ui circular red mini icon button delete-binaryexpression"
+                    onClick={ this.handleClick.bind(this) }>
                 &times;
             </button>
         )
@@ -223,9 +260,9 @@ export class DeleteBlockStatementItem extends React.Component {
 
     render() {
         return (
-            <button className="ui red tiny button delete-blockstatement" onClick={ this.handleClick.bind(this) }>
-                Delete -
-            </button>
+            <button
+                className="ui circular red mini icon button delete-blockstatement"
+                onClick={ this.handleClick.bind(this) }>&times;</button>
         )
     }
 }

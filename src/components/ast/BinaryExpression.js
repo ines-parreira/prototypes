@@ -14,11 +14,10 @@ import getSyntaxTreeLeaves from './utils'
  */
 export default class BinaryExpression extends React.Component {
     render() {
-        const { type, operator, left, right, index, actions, parent, leftsiblings } = this.props
+        const { operator, left, right, index, actions, parent, leftsiblings } = this.props
         const parentLeft = parent.push('left')
         const parentRight = parent.push('right')
         const parentOperator = parent.push('operator')
-
 
         let leftsiblings2
         let leftsiblings3
@@ -31,12 +30,22 @@ export default class BinaryExpression extends React.Component {
         return (
             <span className="BinaryExpression">
                 <span className="left">
-                    <Expression {...left} parent={parentLeft} index={index} actions={actions}
-                                          leftsiblings={leftsiblings}/>
+                    <Expression
+                        {...left}
+                        parent={parentLeft}
+                        index={index}
+                        actions={actions}
+                        leftsiblings={leftsiblings}
+                    />
                 </span>
                 <span className="operator">
-                    <DropdownButton text={ operator } parent={parentOperator} index={index} actions={actions}
-                                    leftsiblings={leftsiblings2}/>
+                    <DropdownButton
+                        text={operator}
+                        parent={parentOperator}
+                        index={index}
+                        actions={actions}
+                        leftsiblings={leftsiblings2}
+                    />
                 </span>
                 <span className="right">
                     <Expression {...right} parent={parentRight} index={index} actions={actions}

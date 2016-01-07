@@ -3,10 +3,13 @@ import Statement from './Statement'
 import Immutable from 'immutable'
 
 export default class Program extends React.Component {
+    componentDidMount() {
+       $('.dropdown.button').dropdown()
+    }
     render() {
         const { index, actions, body, schemas} = this.props
         return (
-            <div className="program">
+            <div className="Program">
             {body.map((statement, idx) => {
                 return (
                     <Statement

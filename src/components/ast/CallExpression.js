@@ -21,33 +21,33 @@ import getSyntaxTreeLeaves from './utils'
 export default class CallExpression extends React.Component {
     render() {
         const { callee, index, actions, schemas, parent} = this.props
-        const functionArguments = this.props.arguments
+        const funcArgs = this.props.arguments
 
         const parentCallee = parent.push('callee')
 
-
         let deleteBinaryExpression = ''
-        let objectsCounter = ''
+
         // ensures that the top level "if" statement cannot be deleted
         if (parent.last() !== 'test') {
             deleteBinaryExpression = (
-                <DeleteBinaryExpression parent={parent} index={index} actions={actions}/>
-            )
-            objectsCounter = (
-                <MatchingObjectsCounter />
+                <DeleteBinaryExpression
+                    parent={parent}
+                    index={index}
+                    actions={actions}
+                />
             )
         }
 
-        // We assume in Ifstatement.test, all the function calls look like
+        // We assume in IfStatement.test, all the function calls look like
         // CallExpression <: Expression
         // callee: Identifier
         // arguments: Expression1, Expression2
         if (parent.contains('test')) {
             const rootsiblings = Immutable.List(['_'])
-            const leftsiblings = rootsiblings.push(...getSyntaxTreeLeaves(functionArguments[0]))
+            const leftsiblings = rootsiblings.push(...getSyntaxTreeLeaves(funcArgs[0]))
 
-            if (functionArguments.length !== 2) {
-                console.log('Something wrong happened')
+            if (funcArgs.length !== 2) {
+                console.error('Something wrong happened')
             }
 
             const parentArguments0 = parent.push('arguments', 0)
@@ -55,25 +55,41 @@ export default class CallExpression extends React.Component {
 
             return (
                 <span className="CallExpression">
-                    <Expression { ...functionArguments[0] } parent={ parentArguments0 } index={ index }
-                                                            actions={actions} leftsiblings={ rootsiblings }/>
-                    <Expression { ...callee } parent={ parentCallee } index={ index } actions={ actions }
-                                              leftsiblings={ leftsiblings }/>
-                    <Expression { ...functionArguments[1] } parent={ parentArguments1 } index={ index }
-                                                            actions={ actions }
-                                                            leftsiblings={ leftsiblings.push('operator') }/>
-                    { objectsCounter }
+                    <Expression
+                        {...funcArgs[0]}
+                        parent={parentArguments0}
+                        index={index}
+                        actions={actions}
+                        leftsiblings={rootsiblings}
+                    />
+                    <Expression
+                        {...callee}
+                        parent={parentCallee}
+                        index={index}
+                        actions={actions}
+                        leftsiblings={leftsiblings}
+                    />
+                    <Expression
+                        {...funcArgs[1]}
+                        parent={parentArguments1}
+                        index={index}
+                        actions={actions}
+                        leftsiblings={leftsiblings.push('operator')}
+                    />
+
+                    <MatchingObjectsCounter />
+
                     { deleteBinaryExpression }
                     <br/>
                 </span>
             )
         }
 
-        // This case for handling Action.
+        // This case for handling actions.
         // Action("hello_action", {subject: "hello", body: "hello world"})
         if (callee.type === 'Identifier' && callee.name === 'Action') {
-            const actionName = functionArguments[0]
-            const actionArguments = functionArguments[1]
+            const actionName = funcArgs[0]
+            const actionArguments = funcArgs[1]
             const actionRootLeftSiblings = Immutable.List(['actions'])
             return (
                 <div>
@@ -96,7 +112,7 @@ export default class CallExpression extends React.Component {
         }
 
         // Else, it's a normal function. We handle it in normal way.
-        const argumentsExpressions = functionArguments.map((argumentItem, idx) => {
+        const argumentsExpressions = funcArgs.map((argumentItem, idx) => {
             const parentArguments = parent.push('arguments', idx)
 
             return (

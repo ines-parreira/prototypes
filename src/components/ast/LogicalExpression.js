@@ -13,7 +13,7 @@ import getSyntaxTreeLeaves from './utils'
  */
 export default class LogicalExpression extends React.Component {
     render() {
-        const { type, operator, left, right, index, parent, actions, leftsiblings } = this.props
+        const { operator, left, right, index, parent, actions, leftsiblings } = this.props
         const parentLeft = parent.push('left')
         const parentRight = parent.push('right')
         const parentOperator = parent.push('operator')
@@ -29,17 +29,27 @@ export default class LogicalExpression extends React.Component {
         return (
             <span className="LogicalExpression">
                 <span className="left">
-                    <Expression { ...left } parent={ parentLeft } index={ index } actions={ actions }
-                                            leftsiblings={leftsiblings}/>
+                    <Expression
+                        {...left}
+                        parent={parentLeft}
+                        index={index}
+                        actions={actions}
+                        leftsiblings={leftsiblings}
+                    />
                 </span>
                 <span className="operator">
-                    {/*<DropdownButton text={ operator } parent={ parentOperator } index={ index } actions={ actions }
+                    {/* <DropdownButton text={ operator } parent={ parentOperator } index={ index } actions={ actions }
                      leftsiblings={leftsiblings2}/>*/}
-                    <button className="ui button dropdown">AND</button>
+                    <button className="AndOperator ui button dropdown">AND</button>
                 </span>
                 <span className="right">
-                    <Expression { ...right } parent={ parentRight } index={ index } actions={ actions }
-                                             leftsiblings={leftsiblings3}/>
+                    <Expression
+                        { ...right }
+                        parent={parentRight}
+                        index={index}
+                        actions={actions}
+                        leftsiblings={leftsiblings3}
+                    />
                 </span>
             </span>
         )
@@ -48,5 +58,8 @@ export default class LogicalExpression extends React.Component {
 
 
 LogicalExpression.propTypes = {
-    type: PropTypes.object
+    operator: PropTypes.string,
+    left: PropTypes.object,
+    right: PropTypes.object,
+    actions: PropTypes.object
 }
