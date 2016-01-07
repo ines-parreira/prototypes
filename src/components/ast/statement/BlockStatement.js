@@ -10,7 +10,7 @@ import {AddLine, DeleteBlockStatementItem} from '../OperationButtons'
  */
 export default class BlockStatement extends React.Component {
     render() {
-        const { body, index, actions, parent } = this.props
+        const { body, index, actions, parent, schemas } = this.props
 
         const statements = body.map((bodyItem, idx) => {
             const parentNew = parent.push('body', idx)
@@ -26,6 +26,7 @@ export default class BlockStatement extends React.Component {
                             {...bodyItem}
                             parent={parentNew}
                             index={index}
+                            schemas={schemas}
                             actions={ actions }/>
                     </div>
                     <AddLine
@@ -62,5 +63,6 @@ BlockStatement.propTypes = {
     body: PropTypes.array,
     index: PropTypes.number,
     parent: PropTypes.object,
-    actions: PropTypes.object
+    actions: PropTypes.object,
+    schemas: PropTypes.object
 }

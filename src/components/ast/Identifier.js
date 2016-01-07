@@ -9,7 +9,7 @@ import DropdownButton from './Dropdown'
  */
 export default class Identifier extends React.Component {
     render() {
-        const { type, name, parent, index, actions, leftsiblings } = this.props
+        const { type, name, parent, index, actions, schemas, leftsiblings } = this.props
         const parentNew = parent.push('name')
 
         switch (name) {
@@ -25,8 +25,14 @@ export default class Identifier extends React.Component {
             default:
                 return (
                     <span className="Identifier">
-                         <DropdownButton text={ name } parent={ parentNew } index={ index } actions={ actions }
-                                         leftsiblings={ leftsiblings }/>
+                         <DropdownButton
+                             text={name}
+                             parent={parentNew}
+                             index={index}
+                             actions={actions}
+                             leftsiblings={leftsiblings}
+                             schemas={schemas}
+                         />
                     </span>
                 )
         }
@@ -34,5 +40,6 @@ export default class Identifier extends React.Component {
 }
 
 Identifier.propTypes = {
-    type: PropTypes.string
+    type: PropTypes.string,
+    schemas: PropTypes.object
 }

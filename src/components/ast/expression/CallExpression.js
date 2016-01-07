@@ -43,7 +43,7 @@ export default class CallExpression extends React.Component {
         // callee: Identifier
         // arguments: Expression1, Expression2
         if (parent.contains('test')) {
-            const rootsiblings = Immutable.List(['_'])
+            const rootsiblings = Immutable.List(['objects'])
             const leftsiblings = rootsiblings.push(...getSyntaxTreeLeaves(funcArgs[0]))
 
             if (funcArgs.length !== 2) {
@@ -98,6 +98,7 @@ export default class CallExpression extends React.Component {
                         parent={ parent.push('arguments', 1, 'value') }
                         index={ index }
                         actions={ actions }
+                        schemas={schemas}
                         leftsiblings={ actionRootLeftSiblings }
                     />
                     <ObjectExpression { ...actionArguments }
@@ -135,5 +136,6 @@ export default class CallExpression extends React.Component {
 }
 
 CallExpression.propTypes = {
-    type: PropTypes.string
+    type: PropTypes.string,
+    schemas: PropTypes.object
 }

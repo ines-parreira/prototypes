@@ -46,12 +46,22 @@ export default class IfStatement extends React.Component {
                 </div>
                 <div className="consequent">
                     <button className="ui button inline positive">THEN</button>
-                    <Statement { ...consequent } parent={ parentConsequent } index={ index } actions={ actions }/>
+                    <Statement { ...consequent }
+                        parent={parentConsequent}
+                        index={index}
+                        actions={actions}
+                        schemas={schemas}
+                    />
                 </div>
                 <div className="alternate">
                     <button className="ui button positive else">ELSE</button>
                     <div className="alternate-tab">
-                        <Statement { ...alternate } parent={ parentAlternate } index={ index } actions={ actions }/>
+                        <Statement { ...alternate }
+                            parent={parentAlternate}
+                            index={index}
+                            actions={actions}
+                            schemas={schemas}
+                        />
                     </div>
                 </div>
             </div>

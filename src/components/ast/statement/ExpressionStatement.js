@@ -9,8 +9,9 @@ import Expression from '../expression/Expression'
  */
 export default class ExpressionStatement extends React.Component {
     render() {
-        const { expression, index, actions, parent } = this.props
+        const { expression, index, actions, parent, schemas } = this.props
         const parentNew = parent.push('expression')
+        console.log('yo', schemas)
 
         return (
             <div className="ExpressionStatement">
@@ -19,6 +20,7 @@ export default class ExpressionStatement extends React.Component {
                     parent={parentNew}
                     index={index}
                     actions={actions}
+                    schemas={schemas}
                 />
             </div>
         )
@@ -29,5 +31,6 @@ ExpressionStatement.propTypes = {
     expression: PropTypes.object,
     index: PropTypes.number,
     parent: PropTypes.object,
-    actions: PropTypes.object
+    actions: PropTypes.object,
+    schemas: PropTypes.object
 }

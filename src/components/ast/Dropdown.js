@@ -223,43 +223,53 @@ export const DEFAULT_OPTION_CHAINS = {
     }
 }
 
-/**
- * The options list depend on the previous choices user made.
- * Return the possible options given LEFTSIBLINGS.
- */
-function getOptionsBySiblings(leftsiblings) {
-    const optionsDict = Immutable.fromJS(DEFAULT_OPTION_CHAINS)
-    const options = optionsDict.getIn(leftsiblings.push('choices').toJS())
+export default class DropdownButton extends React.Component {
+    /**
+     * Get the right side of widgets based on the values of the left side widgets.
+     *
+     * Return the possible options given LEFTSIBLINGS.
+    */
+    getNextSiblings(schemas, leftsiblings) {
+        if (!schemas) {
+            return null
+        }
+        console.log('schemas:', schemas.toJS())
 
-    let optionItems
-    if (options !== undefined) {
-        optionItems = options.toJS().map(function (option, idx) {
-            return <option value={ option.value } key={ idx }>{ option.label }</option>
-        })
-        optionItems.unshift((
-            <option value="" key="-1">-- select --</option>
-        ))
+        console.log(leftsiblings.toJS())
+
+        const optionsDict = Immutable.fromJS(DEFAULT_OPTION_CHAINS)
+        const options = optionsDict.getIn(leftsiblings.push('choices').toJS())
+
+        let optionItems
+        if (options !== undefined) {
+            optionItems = options.toJS().map((option, idx) => {
+                return (<option
+                    value={ option.value }
+                    key={ idx }>{ option.label }</option>
+                )
+            })
+            optionItems.unshift((
+                <option value="" key="-1">-- select --</option>
+            ))
+        }
+
+        return optionItems
     }
 
-    return optionItems
-}
-
-export default class DropdownButton extends React.Component {
-
     handleChange(event) {
-        const {actions, index, parent, options } = this.props
+        const {actions, index, parent} = this.props
 
         actions.modifyCodeast(index, parent, event.target.value, 'UPDATE')
         // console.log(actions.modifyCodeast)
     }
 
     render() {
-        const {leftsiblings, text} = this.props
+        const {leftsiblings, text, schemas} = this.props
 
         let optionItems
 
         if (leftsiblings !== undefined) {
-            optionItems = getOptionsBySiblings(leftsiblings)
+            optionItems = this.getNextSiblings(schemas, leftsiblings)
         }
 
         if (optionItems === undefined) {

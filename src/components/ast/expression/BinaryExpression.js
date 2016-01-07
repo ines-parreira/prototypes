@@ -14,7 +14,7 @@ import getSyntaxTreeLeaves from '../utils'
  */
 export default class BinaryExpression extends React.Component {
     render() {
-        const { operator, left, right, index, actions, parent, leftsiblings } = this.props
+        const { operator, left, right, index, actions, schemas, parent, leftsiblings } = this.props
         const parentLeft = parent.push('left')
         const parentRight = parent.push('right')
         const parentOperator = parent.push('operator')
@@ -44,6 +44,7 @@ export default class BinaryExpression extends React.Component {
                         parent={parentOperator}
                         index={index}
                         actions={actions}
+                        schemas={schemas}
                         leftsiblings={leftsiblings2}
                     />
                 </span>
@@ -57,5 +58,6 @@ export default class BinaryExpression extends React.Component {
 }
 
 BinaryExpression.propTypes = {
-    type: PropTypes.string
+    type: PropTypes.string,
+    schemas: PropTypes.object
 }
