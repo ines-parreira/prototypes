@@ -32,11 +32,11 @@ export default class IfStatement extends React.Component {
                 <div className="test">
                     <button className="ui button inline positive">IF</button>
                     <Expression
-                        { ...test }
-                        parent={ parentTest }
-                        index={ index }
-                        actions={ actions }
-                        schemas={ schemas }
+                        {...test}
+                        parent={parentTest}
+                        index={index}
+                        actions={actions}
+                        schemas={schemas}
                     />
                     <AddLine
                         parent={parentTest}
@@ -46,7 +46,8 @@ export default class IfStatement extends React.Component {
                 </div>
                 <div className="consequent">
                     <button className="ui button inline positive">THEN</button>
-                    <Statement { ...consequent }
+                    <Statement
+                        {...consequent}
                         parent={parentConsequent}
                         index={index}
                         actions={actions}
@@ -56,7 +57,8 @@ export default class IfStatement extends React.Component {
                 <div className="alternate">
                     <button className="ui button positive else">ELSE</button>
                     <div className="alternate-tab">
-                        <Statement { ...alternate }
+                        <Statement
+                            {...alternate}
                             parent={parentAlternate}
                             index={index}
                             actions={actions}

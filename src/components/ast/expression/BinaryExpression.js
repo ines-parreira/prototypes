@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
-import DropdownButton from '../Dropdown'
+import Widget from '../Widget'
+
 import Expression from './Expression'
 
 import getSyntaxTreeLeaves from '../utils'
@@ -24,7 +25,7 @@ export default class BinaryExpression extends React.Component {
 
         if (leftsiblings) {
             leftsiblings2 = leftsiblings.push(...getSyntaxTreeLeaves(left))
-            leftsiblings3 = leftsiblings2.push('operator')
+            leftsiblings3 = leftsiblings2.push('operators')
         }
 
         return (
@@ -39,8 +40,8 @@ export default class BinaryExpression extends React.Component {
                     />
                 </span>
                 <span className="operator">
-                    <DropdownButton
-                        text={operator}
+                    <Widget
+                        value={operator}
                         parent={parentOperator}
                         index={index}
                         actions={actions}
@@ -49,8 +50,14 @@ export default class BinaryExpression extends React.Component {
                     />
                 </span>
                 <span className="right">
-                    <Expression {...right} parent={parentRight} index={index} actions={actions}
-                                           leftsiblings={leftsiblings3}/>
+                    <Expression
+                        {...right}
+                        parent={parentRight}
+                        index={index}
+                        actions={actions}
+                        schemas={schemas}
+                        leftsiblings={leftsiblings3}
+                    />
                 </span>
             </span>
         )

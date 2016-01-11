@@ -19,7 +19,7 @@ export default function getSyntaxTreeLeaves(syntaxTree) {
 
     let ret = Immutable.List([])
 
-    for (let key of Object.keys(syntaxTree)) {
+    for (const key of Object.keys(syntaxTree)) {
         const r = getSyntaxTreeLeaves(syntaxTree[key])
 
         if (r !== null) {

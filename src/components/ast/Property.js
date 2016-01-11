@@ -1,8 +1,5 @@
 import React, {PropTypes} from 'react'
-import Input from './Input'
-import Immutable from 'immutable'
-
-import {DEFAULT_OPTION_CHAINS} from './Dropdown'
+import Widget from './Widget'
 
 /*
  interface Property <: Node {
@@ -15,18 +12,17 @@ import {DEFAULT_OPTION_CHAINS} from './Dropdown'
 export default class Property extends React.Component {
     render() {
         const { theKey, value, actions, leftsiblings, parent, index, schemas } = this.props
-
-        console.log(schemas)
-        const options = Immutable.fromJS(DEFAULT_OPTION_CHAINS)
-        const widgetType = options.getIn(leftsiblings.push('widget').toJS())
-
         return (
             <div className="ui labeled input">
-                <div className="ui label">
-                    { theKey.name }
-                </div>
-                <Input widgetType={ widgetType } value={ value.value } parent={ parent.push('value', 'value') }
-                       actions={actions} index={ index}/>
+                <div className="ui label">{ theKey.name }</div>
+                <Widget
+                   value={value.value}
+                   parent={parent.push('value', 'value')}
+                   leftsiblings={leftsiblings}
+                   actions={actions}
+                   index={index}
+                   schemas={schemas}
+                />
             </div>
         )
     }

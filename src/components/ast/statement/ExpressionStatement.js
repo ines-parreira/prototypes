@@ -11,7 +11,6 @@ export default class ExpressionStatement extends React.Component {
     render() {
         const { expression, index, actions, parent, schemas } = this.props
         const parentNew = parent.push('expression')
-        console.log('yo', schemas)
 
         return (
             <div className="ExpressionStatement">

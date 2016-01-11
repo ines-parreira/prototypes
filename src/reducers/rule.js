@@ -3,7 +3,7 @@ import esprima from 'esprima'
 import escodegen from 'escodegen'
 
 import { ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST } from '../actions/rule'
-import { DEFAULT_OPTION_CHAINS } from '../components/ast/Dropdown'
+import { DEFAULT_OPTION_CHAINS } from '../components/ast/Widget.js'
 
 const initialState = Immutable.List([])
 

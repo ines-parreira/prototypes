@@ -9,7 +9,7 @@ export function schemas(state = initialState, action) {
         case actions.FETCH_SCHEMAS_START:
             return state
         case actions.FETCH_SCHEMAS_SUCCESS:
-            return Immutable.Map(action.data)
+            return Immutable.fromJS(action.data)
         default:
             return state
     }

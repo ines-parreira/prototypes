@@ -18,7 +18,7 @@ export default class MemberExpression extends React.Component {
     }
 
     render() {
-        const { type, object, property, computed, index, actions, parent, leftsiblings } = this.props
+        const { type, object, property, computed, index, actions, parent, leftsiblings, schemas } = this.props
 
         const parentObject = parent.push('object')
         const parentProperty = parent.push('property')
@@ -30,10 +30,22 @@ export default class MemberExpression extends React.Component {
 
         return (
             <span className="MemberExpression">
-                <Expression { ...object } parent={parentObject} index={index} actions={actions}
-                                          leftsiblings={ leftsiblings }/>
-                <Expression { ...property } parent={parentProperty} index={index} actions={actions}
-                                            leftsiblings={ leftsiblings2 }/>
+                <Expression
+                    { ...object }
+                    parent={parentObject}
+                    index={index}
+                    actions={actions}
+                    schemas={schemas}
+                    leftsiblings={ leftsiblings }
+                />
+                <Expression
+                    { ...property }
+                    parent={parentProperty}
+                    index={index}
+                    actions={actions}
+                    leftsiblings={ leftsiblings2 }
+                    schemas={schemas}
+                />
             </span>
         )
     }

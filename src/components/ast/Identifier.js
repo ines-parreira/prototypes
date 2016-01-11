@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import DropdownButton from './Dropdown'
+import Widget from './Widget'
 
 /*
  interface Identifier <: Node, Expression, Pattern {
@@ -25,8 +25,8 @@ export default class Identifier extends React.Component {
             default:
                 return (
                     <span className="Identifier">
-                         <DropdownButton
-                             text={name}
+                         <Widget
+                             value={name}
                              parent={parentNew}
                              index={index}
                              actions={actions}

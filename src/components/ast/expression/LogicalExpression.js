@@ -13,7 +13,7 @@ import getSyntaxTreeLeaves from '../utils'
  */
 export default class LogicalExpression extends React.Component {
     render() {
-        const { operator, left, right, index, parent, actions, leftsiblings } = this.props
+        const { operator, left, right, index, parent, actions, leftsiblings, schemas } = this.props
         const parentLeft = parent.push('left')
         const parentRight = parent.push('right')
         const parentOperator = parent.push('operator')
@@ -34,11 +34,12 @@ export default class LogicalExpression extends React.Component {
                         parent={parentLeft}
                         index={index}
                         actions={actions}
+                        schemas={schemas}
                         leftsiblings={leftsiblings}
                     />
                 </span>
                 <span className="operator">
-                    {/* <DropdownButton text={ operator } parent={ parentOperator } index={ index } actions={ actions }
+                    {/* <Widget value={ operator } parent={ parentOperator } index={ index } actions={ actions }
                      leftsiblings={leftsiblings2}/>*/}
                     <button className="AndOperator ui button dropdown">AND</button>
                 </span>
@@ -48,6 +49,7 @@ export default class LogicalExpression extends React.Component {
                         parent={parentRight}
                         index={index}
                         actions={actions}
+                        schemas={schemas}
                         leftsiblings={leftsiblings3}
                     />
                 </span>
