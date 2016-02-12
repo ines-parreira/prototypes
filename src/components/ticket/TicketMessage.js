@@ -18,14 +18,14 @@ export default class TicketMessage extends React.Component {
                         <div className="ui left floated header sender">
                             {(() => {
                                 if (message.from_agent) {
-                                    return (<span className="ui mini yellow author-label label">A</span>)
+                                    return (<span className="author-label ui mini yellow label">A</span>)
                                 }
                             })()}
                             <span className="name">{message.sender.name}</span>
                             {(() => {
                                 if (!message.from_agent) {
                                     return (
-                                        <span className="ui label">
+                                        <span className="ui horizontal label">
                                             <i className="dollar icon"/>Startup Plan
                                         </span>
                                     )
