@@ -5,14 +5,15 @@ import { systemMessage } from './systemMessage'
 import { currentUser } from './currentUser'
 import { rules } from './rule'
 import { schemas } from './schema'
-import { tickets, ticket } from './ticket'
+import { tickets } from './tickets'
+import { ticket } from './ticket'
 import { views } from './view'
 
 const rootReducer = combineReducers({
     systemMessage,
     currentUser,
-    ticket,
     tickets,
+    ticket,
     schemas,
     rules,
     views,

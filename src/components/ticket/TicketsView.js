@@ -2,14 +2,18 @@ import React, {PropTypes} from 'react'
 import TicketTable from './TicketTable'
 import Search from '../Search'
 
+
 export default class TicketsView extends React.Component {
+    getInfiniteScrollHeight() {
+        // This is hacky and not re-useable but for now I'd like to contain infinite-scroll stuff
+        // to one small, easy-to-understand spot rather than re-wiring the App > DashBoard > Container > View
+        // layout structure with CSS magic
+        const appHeight = document.getElementById('App').clientHeight
+        const topBarHeight = 200
+        return appHeight - topBarHeight
+    }
+
     render() {
-        if (!this.props.tickets.size) {
-            return null
-        }
-
-        const tickets = this.props.tickets.toJS()
-
         return (
             <div className="TicketsView">
                 <div className="ui text menu">
@@ -43,11 +47,14 @@ export default class TicketsView extends React.Component {
                     </div>
                 </div>
 
-                <h1 className="ui header">{tickets.meta.view.name}</h1>
+                <h1 className="ui header">{this.props.view.name}</h1>
                 <TicketTable
-                    tickets={tickets.data}
+                    items={this.props.items}
                     currentUser={this.props.currentUser}
                     pushState={this.props.pushState}
+                    onInfiniteLoad={this.props.onInfiniteLoad}
+                    isLoading={this.props.isLoading}
+                    infiniteScrollHeight={this.getInfiniteScrollHeight()}
                 />
             </div>
         )
@@ -55,10 +62,10 @@ export default class TicketsView extends React.Component {
 }
 
 TicketsView.propTypes = {
-    tickets: PropTypes.shape({
-        meta: PropTypes.object,
-        data: PropTypes.array
-    }).isRequired,
     currentUser: PropTypes.object.isRequired,
-    pushState: PropTypes.func.isRequired
+    pushState: PropTypes.func.isRequired,
+    onInfiniteLoad: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    view: PropTypes.object.isRequired,
+    items: PropTypes.array.isRequired,
 }

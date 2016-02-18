@@ -1,8 +1,15 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
 import 'moment-timezone'
+import { shouldComponentUpdate } from 'react-immutable-render-mixin'
+
 
 export default class TicketTableRow extends React.Component {
+    constructor(props) {
+        super(props)
+        this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
+    }
+
     stripHTML(text) {
         try {
             const doc = document.implementation.createHTMLDocument()
@@ -33,34 +40,43 @@ export default class TicketTableRow extends React.Component {
             createdDatetime = moment(ticket.created_datetime).tz(currentUser.get('timezone', 'UTC')).fromNow()
         }
 
-        return (
-            <tr className="ticket-item" key={ticket.id}
-                onClick={() => {this.props.pushState(`/ticket/${ticket.id}`)}}>
-                <td className="collapsing">
-                    <span className="ui checkbox">
-                        <input type="checkbox"/>
-                        <label></label>
-                    </span>
-                    <i className={`ticket-priority ${ticket.priority} flag ${ticket.priority === 'high' ? '' : 'outline'} icon`}></i>
-                </td>
-                <td className="details">
-                    <div className="ui header">
-                        <span
-                            className="subject">{this.trim(ticket.subject, 50)}</span>
-                        <div className="body sub header">
-                            {this.trim(ticket.body_html ? ticket.body_html : ticket.body_text, 100)}
+        // Unfortunately need to render a new .ui.grid for every row since
+        // semantic needs .rows to be a direct child of them, which react-infinite
+        // doesn't allow
+        return (            
+            <div className="ui grid" key={this.props.key}>
+                <div className="ticket-item row" key={ticket.id}
+                    onClick={() => {this.props.pushState(`/ticket/${ticket.id}`)}}>
+                    <div className="one wide column collapsing">
+                        <span className="ui checkbox">
+                            <input type="checkbox"/>
+                            <label></label>
+                        </span>
+                        <i className={`ticket-priority ${ticket.priority} flag ${ticket.priority === 'high' ? '' : 'outline'} icon`}></i>
+                    </div>
+                    <div className="ten wide column details">
+                        <div className="ui header">
+                            <span
+                                className="subject">{this.trim(ticket.subject, 50)}</span>
+                            <div className="body sub header">
+                                {this.trim(ticket.body_html ? ticket.body_html : ticket.body_text, 100)}
+                            </div>
                         </div>
                     </div>
-                </td>
-                <td>{createdDatetime}</td>
-                <td>{ticket.channel}</td>
-            </tr>
+                    <div className="three wide column">
+                        {createdDatetime}
+                    </div>
+                    <div className="two wide column">
+                        {ticket.channel}
+                    </div>
+                </div>
+            </div>
         )
     }
 }
 
 TicketTableRow.propTypes = {
-    ticket: PropTypes.array.isRequired,
+    ticket: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    pushState: PropTypes.func.isRequired
+    pushState: PropTypes.func.isRequired,
 }

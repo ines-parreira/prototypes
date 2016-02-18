@@ -6,38 +6,36 @@ import { bindActionCreators } from 'redux'
 import * as TicketActions from '../actions/ticket'
 import TicketsView from '../components/ticket/TicketsView'
 
+
 class TicketsContainer extends React.Component {
     constructor(props) {
         super(props)
         this.pushState = this.pushState.bind(this)
     }
 
-    componentWillMount() {
-        this.fetchTickets(this.props)
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.params && this.props.params && nextProps.params.view !== this.props.params.view) {
-            this.fetchTickets(nextProps)
-        }
-    }
-
-    fetchTickets(props) {
-        this.props.actions.fetchView(`/api/tickets/?view=${props.view || props.params.view}`)
-    }
-
     pushState(url) {
         this.props.pushState(null, url)
     }
 
-
+    onInfiniteLoad() {
+        const totalGettableItems = this.props.tickets.get('resp').meta.item_count
+        if (this.props.tickets.get('items').length < totalGettableItems) {
+            const view = this.props.view || this.props.params.view
+            const page = this.props.tickets.get('page')
+            const perPage = 40
+            this.props.actions.fetchView(`/api/tickets/?view=${view}&page=${page}&per_page=${perPage}`)
+        }
+    }
 
     render() {
         return (
             <div className="TicketsContainer">
                 <TicketsView
-                    tickets={this.props.tickets}
+                    items={this.props.tickets.get('items')}
+                    view={this.props.tickets.get('resp').meta.view}
                     currentUser={this.props.currentUser}
+                    onInfiniteLoad={this.onInfiniteLoad.bind(this)}
+                    isLoading={this.props.tickets.get('loading')}
                     pushState={this.pushState}/>
             </div>
         )
@@ -47,10 +45,15 @@ class TicketsContainer extends React.Component {
 TicketsContainer.propTypes = {
     view: PropTypes.string,
     tickets: PropTypes.shape({
-        data: PropTypes.array,
-        meta: PropTypes.object,
-        uri: PropTypes.string,
-        object: PropTypes.string
+        page: PropTypes.number,
+        loading: PropTypes.bool,
+        items: PropTypes.array,
+        resp: PropTypes.shape({
+            meta: PropTypes.object,
+            data: PropTypes.array,
+            uri: PropTypes.string,
+            object: PropTypes.string
+        }),
     }),
     currentUser: PropTypes.object,
     actions: PropTypes.object.isRequired,

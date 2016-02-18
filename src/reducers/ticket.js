@@ -1,22 +1,6 @@
 import * as actions from '../actions/ticket'
 import {Map} from 'immutable'
 
-const ticketsInitial = Map()
-
-export function tickets(state = ticketsInitial, action) {
-    switch (action.type) {
-        case actions.NEW_TICKET:
-            return state
-        case actions.FETCH_TICKET_LIST_VIEW_START:
-            // here we should probably set the state as fetching (display that something is happening in the UI)
-            return state
-        case actions.FETCH_TICKET_LIST_VIEW_SUCCESS:
-            return Map(action.resp)
-        default:
-            return state
-    }
-}
-
 const ticketInitial = Map({
     external_id: null,
     view: 'default',
