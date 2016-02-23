@@ -5,7 +5,7 @@ import Search from '../Search'
 
 export default class TicketsView extends React.Component {
     getInfiniteScrollHeight() {
-        // This is hacky and not re-useable but for now I'd like to contain infinite-scroll stuff
+        // @doda: This is hacky and not re-useable but for now I'd like to contain infinite-scroll stuff
         // to one small, easy-to-understand spot rather than re-wiring the App > DashBoard > Container > View
         // layout structure with CSS magic
         const appHeight = document.getElementById('App').clientHeight
