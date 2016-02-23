@@ -19,10 +19,11 @@ class TicketsContainer extends React.Component {
 
     onInfiniteLoad() {
         const totalGettableItems = this.props.tickets.get('resp').meta.item_count
+
         if (this.props.tickets.get('items').length < totalGettableItems) {
             const view = this.props.view || this.props.params.view
             const page = this.props.tickets.get('page')
-            const perPage = 40
+            const perPage = 50
             this.props.actions.fetchView(`/api/tickets/?view=${view}&page=${page}&per_page=${perPage}`)
         }
     }

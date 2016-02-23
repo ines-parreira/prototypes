@@ -9,8 +9,9 @@ export default class TicketsView extends React.Component {
         // to one small, easy-to-understand spot rather than re-wiring the App > DashBoard > Container > View
         // layout structure with CSS magic
         const appHeight = document.getElementById('App').clientHeight
-        const topBarHeight = 200
-        return appHeight - topBarHeight
+        const fromTop = 200
+        const fromBottom = 20
+        return appHeight - fromTop - fromBottom
     }
 
     render() {
