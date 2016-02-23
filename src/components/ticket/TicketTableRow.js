@@ -1,15 +1,11 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
 import 'moment-timezone'
-import { shouldComponentUpdate } from 'react-immutable-render-mixin'
+import { immutableRenderDecorator } from 'react-immutable-render-mixin'
 
 
+@immutableRenderDecorator
 export default class TicketTableRow extends React.Component {
-    constructor(props) {
-        super(props)
-        this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
-    }
-
     stripHTML(text) {
         try {
             const doc = document.implementation.createHTMLDocument()
