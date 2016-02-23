@@ -7,14 +7,15 @@ import TicketTableRow from './TicketTableRow'
 
 export default class TicketTable extends React.Component {
     loadingSpinnerDelegate() {
-        return this.props.isLoading ? <div>Loading...</div> : null
+        let noItems = this.props.items.length ? "" : "no-items"
+        return this.props.isLoading ? <div className={`loading ${noItems}`}>Loading...</div> : null
     }
 
     render() {
         const elementHeight = 40
 
         return (
-            <div className="ui grid">
+            <div className="TicketTable ui grid">
                 <div className="row head-row">
                     <div className="one wide column">
                         <span className="ui checkbox">
