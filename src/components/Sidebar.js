@@ -68,26 +68,6 @@ export default class Sidebar extends React.Component {
                             </div>
                         )
                     })}
-
-                    <div className="item">
-                        <div className="header">FAVORITES (9)</div>
-                        <div className="menu">
-                            <a className="item">My tickets (12)</a>
-                            <a className="item">New tickets (102)</a>
-                            <a className="item">Open tickets (22)</a>
-                            <a className="item">Closed tickets</a>
-                        </div>
-                    </div>
-
-                    <div className="item">
-                        <div className="header">MY VIEWS</div>
-                        <div className="menu">
-                            <a className="item">My tickets (12)</a>
-                            <a className="item">New tickets (102)</a>
-                            <a className="item">Open tickets (22)</a>
-                            <a className="item">Closed tickets</a>
-                        </div>
-                    </div>
                 </div>
 
                 <div className="ui inverted blue large vertical bottom fixed menu">

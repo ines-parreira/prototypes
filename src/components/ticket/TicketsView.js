@@ -10,7 +10,9 @@ export default class TicketsView extends React.Component {
         // layout structure with CSS magic
         const appHeight = document.getElementById('App').clientHeight
         const fromTop = 200
-        const fromBottom = 20
+        // Having a certain height from the bottom alleviates a scroll bug that makes the list jump if
+        // you try to scroll down while it's loading, TODO: find a better way to fix this bug
+        const fromBottom = 100
         return appHeight - fromTop - fromBottom
     }
 

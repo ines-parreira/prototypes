@@ -8,7 +8,9 @@ import Sidebar from '../components/Sidebar'
 class TicketsSidebarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        this.props.actions.fetchView(`/api/views/?type=ticket-list`)
+        this.props.actions.fetchView(`/api/views/`, {
+            type: "ticket-list"
+        })
     }
 
     render() {

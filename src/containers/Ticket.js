@@ -15,7 +15,11 @@ class TicketContainer extends React.Component {
     }
 
     componentWillMount() {
-        this.props.actions.fetchView(`/api/tickets/${this.props.params.ticketId}/?view=${this.props.view}`, 'item')
+        this.props.actions.fetchView(
+            `/api/tickets/${this.props.params.ticketId}/`,
+            {view: this.props.view},
+            'item'
+        )
     }
 
     update(props) {

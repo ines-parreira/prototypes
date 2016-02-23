@@ -21,20 +21,26 @@ export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
 export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
-export function fetchView(url, type = 'list') {
+export function fetchView(url, data = {}, type = 'list') {
     return (dispatch) => {
+        // Infinite loads should extend the list of tickets
+        const extend = data.page > 1
+
         dispatch({
-            type: type === 'list' ? FETCH_TICKET_LIST_VIEW_START : FETCH_TICKET_START
+            type: type === 'list' ? FETCH_TICKET_LIST_VIEW_START : FETCH_TICKET_START,
+            extend: extend
         })
 
         return reqwest({
             url: url,
+            data: data,
             type: 'json',
             method: 'GET',
             contentType: 'application/json'
         }).then((resp) => {
             dispatch({
                 type: type === 'list' ? FETCH_TICKET_LIST_VIEW_SUCCESS : FETCH_TICKET_SUCCESS,
+                extend: extend,
                 resp
             })
         }).catch((err) => {

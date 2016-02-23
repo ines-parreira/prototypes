@@ -17,7 +17,7 @@
     "history": "^1.13.1",
     "immutable": "^3.7.5",
     "linkifyjs": "^2.0.0-beta.5",
-    "lodash": "^3.10.1",
+    "lodash": "^4.5.1",
     "moment": "^2.10.6",
     "moment-timezone": "^0.4.1",
     "mousetrap": "^1.5.3",

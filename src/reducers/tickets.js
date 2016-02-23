@@ -1,17 +1,17 @@
 import * as actions from '../actions/ticket'
 import {Map} from 'immutable'
+import {_} from 'lodash'
 
 const ticketsInitial = Map({
     items: [],
-    page: 1,
-    nextPage: 1,
+    page: 0,
     loading: true,
+    endReached: false,
     resp: {
         meta: {
             view: {
                 name: ""
             },
-            item_count: 1000
         }
     }
 })
@@ -21,13 +21,21 @@ export function tickets(state = ticketsInitial, action) {
         case actions.NEW_TICKET:
             return state
         case actions.FETCH_TICKET_LIST_VIEW_START:
-            return state.set('loading', true)
+            if (action.extend) {
+                return state.set('loading', true)
+            } else {
+                return ticketsInitial
+            }
         case actions.FETCH_TICKET_LIST_VIEW_SUCCESS:
+            const oldItems = action.extend ? state.get('items') : []
+            const newItems = action.resp.data
+
             return Map({
-                items: [...state.get('items'), ...action.resp.data],
-                page: state.get('page') + 1,
+                items: _.concat(oldItems, newItems),
+                page: action.resp.meta.page,
                 loading: false,
-                resp: action.resp          
+                resp: action.resp,
+                endReached: _.isEmpty(newItems)
             })
         default:
             return state

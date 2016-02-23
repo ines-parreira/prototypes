@@ -12,16 +12,26 @@ class TicketsContainer extends React.Component {
         this.props.pushState(null, url)
     }
 
-    onInfiniteLoad() {
-        const totalGettableItems = this.props.tickets.get('resp').meta.item_count
-
-        if (this.props.tickets.get('items').length < totalGettableItems) {
-            const view = this.props.view || this.props.params.view
-            const page = this.props.tickets.get('page')
-            const perPage = 50
-            this.props.actions.fetchView(`/api/tickets/?view=${view}&page=${page}&per_page=${perPage}`)
+    componentWillReceiveProps = (nextProps) => {
+        if (nextProps.params && this.props.params && nextProps.params.view !== this.props.params.view) {
+            this.fetchTickets(nextProps, 1)
         }
     }
+
+    onInfiniteLoad = () => {
+        if (!this.props.tickets.get('endReached')) {
+            this.fetchTickets(this.props)
+        }
+    }
+
+    fetchTickets = (props, getPage = null) => {
+        const page = getPage || props.tickets.get('page') + 1
+        props.actions.fetchView("/api/tickets/", {
+            view: props.view || props.params.view,
+            page: page,
+            per_page: 50
+        })
+    }        
 
     render() {
         return (
@@ -30,9 +40,9 @@ class TicketsContainer extends React.Component {
                     items={this.props.tickets.get('items')}
                     view={this.props.tickets.get('resp').meta.view}
                     currentUser={this.props.currentUser}
-                    onInfiniteLoad={this.onInfiniteLoad.bind(this)}
+                    onInfiniteLoad={this.onInfiniteLoad}
                     isLoading={this.props.tickets.get('loading')}
-                    pushState={this.pushState}/>
+                    pushState={this.pushState} />
             </div>
         )
     }
@@ -43,6 +53,7 @@ TicketsContainer.propTypes = {
     tickets: PropTypes.shape({
         page: PropTypes.number,
         loading: PropTypes.bool,
+        endReached: PropTypes.bool,
         items: PropTypes.array,
         resp: PropTypes.shape({
             meta: PropTypes.object,
