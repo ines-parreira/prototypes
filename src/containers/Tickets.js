@@ -8,12 +8,7 @@ import TicketsView from '../components/ticket/TicketsView'
 
 
 class TicketsContainer extends React.Component {
-    constructor(props) {
-        super(props)
-        this.pushState = this.pushState.bind(this)
-    }
-
-    pushState(url) {
+    pushState = (url) => {
         this.props.pushState(null, url)
     }
 
