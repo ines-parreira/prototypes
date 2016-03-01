@@ -6,7 +6,7 @@ import UserForm from './UserForm'
 
 export default class UsersView extends React.Component {
     openNewUserForm = () => {
-        $('#newuserform').modal('show')
+        $('#userform-new').modal('show')
     }
 
     render() {

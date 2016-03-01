@@ -1,24 +1,47 @@
 import React, {PropTypes} from 'react'
 import { reduxForm } from 'redux-form'
 
-class UserForm extends React.Component {
+export default class UserForm extends React.Component {
     render() {
+        let id = 'userform-new'
+        let nameInput = <input type="text" name="name" placeholder="Tony Stark" />
+        let emailInput = <input type="text" name="email" placeholder="tony@stark.com" />
+
+        let defaultRole = 'user'
+
+        let title = "Add a user"
+
+        if (this.props.user) {
+            title = "Modify a user"
+            nameInput = <input type="text" name="name" placeholder="Tony Stark" value={this.props.user.name}/>
+            emailInput = <input type="text" name="email" placeholder="tony@stark.com" value={this.props.user.email}/>
+            id = 'userform-' + this.props.user.id
+
+
+            if (this.props.user.roles.indexOf('admin') !== -1) {
+                defaultRole = 'admin'
+            } else if (this.props.user.roles.indexOf('agent') !== -1) {
+                defaultRole = 'agent'
+            }
+        }
+
+
         return (
-            <div id="newuserform" className="UserForm ui small modal">
-                <div className="header">Add a user</div>
+            <div id={id} className="UserForm ui small modal">
+                <div className="header">{title}</div>
                 <div className="content">
                     <div className="ui form">
                         <div className="field">
                             <label>Name</label>
-                            <input type="text" name="name" placeholder="Tony Stark"/>
+                            {nameInput}
                         </div>
                         <div className="field">
                             <label>Email address</label>
-                            <input type="text" name="email" placeholder="tony@stark.com"/>
+                            {emailInput}
                         </div>
                         <div className="field">
                             <label>Role</label>
-                            <select name="role" className="ui fluid dropdown">
+                            <select name="role" className="ui fluid dropdown" defaultValue={defaultRole}>
                                 <option value="user">User</option>
                                 <option value="agent">Agent</option>
                                 <option value="admin">Admin</option>
@@ -33,13 +56,6 @@ class UserForm extends React.Component {
 }
 
 UserForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
     user: PropTypes.object
 }
-
-UserForm = reduxForm({
-    form: 'userForm',
-    fields: ['name', 'email', 'role']
-})(UserForm)
-
-export default UserForm

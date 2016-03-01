@@ -1,7 +1,13 @@
 import React, {PropTypes} from 'react'
 import 'moment-timezone'
+import UserForm from './UserForm'
 
 export default class UserRow extends React.Component {
+    openNewUserForm = () => {
+        const modalId = '#userform-' + this.props.user.id
+        $(modalId).modal('show')
+    }
+
     render() {
         let label
         const { user } = this.props
@@ -19,7 +25,10 @@ export default class UserRow extends React.Component {
         }
 
         return (
-            <div className="ui grid no-margin" key={user.key}>
+            <div className="ui grid no-margin">
+                <UserForm
+                    user={this.props.user}
+                />
                 <div className="UserRow row">
                     <div className="one wide column collapsing">
                         <span className="ui checkbox">
@@ -43,7 +52,7 @@ export default class UserRow extends React.Component {
                         <button className="ui button right">
                             Delete
                         </button>
-                        <button className="ui button right">
+                        <button className="ui button right" onClick={this.openNewUserForm}>
                             Edit
                         </button>
                     </div>
@@ -55,11 +64,12 @@ export default class UserRow extends React.Component {
 
 UserRow.propTypes = {
     user: PropTypes.shape({
-        key: PropTypes.string,
+        id: PropTypes.integer,
         roles: PropTypes.array,
         name: PropTypes.string,
         email: PropTypes.string,
         language: PropTypes.string,
         country: PropTypes.string
-    })
+    }),
+    key: PropTypes.string
 }
