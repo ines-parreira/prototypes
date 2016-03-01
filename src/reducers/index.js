@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import { routerStateReducer as router } from 'redux-router'
+import { reducer as formReducer } from 'redux-form'
 
 import { systemMessage } from './systemMessage'
 import { currentUser } from './currentUser'
@@ -8,6 +9,7 @@ import { schemas } from './schema'
 import { tickets } from './tickets'
 import { ticket } from './ticket'
 import { views } from './view'
+import { users } from './users'
 
 const rootReducer = combineReducers({
     systemMessage,
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
     schemas,
     rules,
     views,
+    users,
+    form: formReducer,
     router
 })
 

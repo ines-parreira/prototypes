@@ -6,6 +6,66 @@ export const FETCH_USER_START = 'FETCH_USER_START'
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'
 export const FETCH_CURRENT_USER_SUCCESS = 'FETCH_CURRENT_USER_SUCCESS'
 
+export const FETCH_USER_LIST_START = 'FETCH_USER_LIST_START'
+export const FETCH_USER_LIST_SUCCESS = 'FETCH_USER_LIST_SUCCESS'
+
+export const CREATE_NEW_USER_START = 'CREATE_NEW_USER_START'
+export const CREATE_NEW_USER_SUCCESS = 'CREATE_NEW_USER_SUCCESS'
+
+
+export function createUser(data) {
+    return(dispatch) => {
+        dispatch({
+            type: CREATE_NEW_USER_START
+        })
+
+        return reqwest({
+            url: `/api/users`,
+            type: 'json',
+            method: 'POST',
+            contentType: 'application/json',
+            data: data
+        }).then((resp) => {
+            dispatch({
+                type: CREATE_NEW_USER_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to create the new user',
+                msg: err
+            }))
+        })
+    }
+}
+
+export function fetchUsers() {
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_USER_LIST_START
+        })
+
+        return reqwest({
+            url: `/api/users/`,
+            type: 'json',
+            method: 'GET',
+            contentType: 'application/json'
+        }).then((resp) => {
+            dispatch({
+                type: FETCH_USER_LIST_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to fetch users',
+                msg: err
+            }))
+        })
+    }
+}
+
 export function fetchUser(userId) {
     return (dispatch) => {
         dispatch({
