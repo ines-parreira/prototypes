@@ -38,7 +38,7 @@ export default class UserForm extends React.Component {
     }
 
     componentDidMount() {
-        $('#userform-new').modal({detachable: false})
+        $('#' + this.state.id).modal({detachable: false})
         $(document).on('change', '#name-' + this.state.id, this.nameChange)
         $(document).on('change', '#email-' + this.state.id, this.emailChange)
         $(document).on('change', '#role-' + this.state.id, this.roleChange)
@@ -46,12 +46,32 @@ export default class UserForm extends React.Component {
     }
 
     submit = () => {
-        this.props.onSubmit({
-            name: this.state.name,
-            email: this.state.email,
-            password: '',
-            roles: [this.state.role]
-        })
+        let data = {}
+        let id
+
+        if (!this.props.user) {
+            data = {
+                name: this.state.name,
+                email: this.state.email,
+                password: '',
+                roles: [this.state.role]
+            }
+        } else {
+            if (this.state.name !== this.props.user.name) {
+                data.name = this.state.name
+            }
+            if (this.state.email !== this.props.user.email) {
+                data.email = this.state.email
+            }
+            if (this.props.user.roles.indexOf(this.state.role) === -1) {
+                data.roles = [this.state.role]
+            }
+            id = this.props.user.id
+        }
+
+        console.log(id)
+        this.props.onSubmit(data, id)
+        $('#' + this.state.id).modal('hide')
     }
 
     nameChange = (event) => {
@@ -74,15 +94,15 @@ export default class UserForm extends React.Component {
                     <form className="ui form">
                         <div className="field">
                             <label>Name</label>
-                            <input id={'name-' + this.state.id} type="text"/>
+                            <input id={'name-' + this.state.id} type="text" defaultValue={this.state.name}/>
                         </div>
                         <div className="field">
                             <label>Email address</label>
-                            <input id={'email-' + this.state.id} type="text"/>
+                            <input id={'email-' + this.state.id} type="text" defaultValue={this.state.email}/>
                         </div>
                         <div className="field">
                             <label>Role</label>
-                            <select id={'role-' + this.state.id} className="ui fluid dropdown">
+                            <select id={'role-' + this.state.id} defaultValue={this.state.role} className="ui fluid dropdown">
                                 <option value="user">User</option>
                                 <option value="agent">Agent</option>
                                 <option value="admin">Admin</option>

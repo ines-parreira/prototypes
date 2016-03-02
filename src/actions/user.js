@@ -12,6 +12,9 @@ export const FETCH_USER_LIST_SUCCESS = 'FETCH_USER_LIST_SUCCESS'
 export const CREATE_NEW_USER_START = 'CREATE_NEW_USER_START'
 export const CREATE_NEW_USER_SUCCESS = 'CREATE_NEW_USER_SUCCESS'
 
+export const UPDATE_USER_START = 'UPDATE_USER_START'
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
+
 
 export function fetchUsers() {
     return (dispatch) => {
@@ -86,6 +89,34 @@ export function createUser(data) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to create the new user',
+                msg: err
+            }))
+        })
+    }
+}
+
+export function updateUser(data, userId) {
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_USER_START
+        })
+
+        return reqwest({
+            url: `/api/users/${userId}/`,
+            type: 'json',
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data)
+        }).then((resp) => {
+            dispatch({
+                type: UPDATE_USER_SUCCESS,
+                userId: userId,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to update the user',
                 msg: err
             }))
         })

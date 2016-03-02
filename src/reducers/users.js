@@ -23,10 +23,20 @@ export function users(state = usersInitial, action) {
 
         case actions.CREATE_NEW_USER_SUCCESS:
             const oldItems = state.get('items')
-            const newItems = action.resp.data
+            const newItem = action.resp
 
             return Map({
-                items: _.concat(oldItems, newItems),
+                items: _.concat(newItem, oldItems),
+                loading: false,
+                resp: action.resp
+            })
+
+        case actions.UPDATE_USER_SUCCESS:
+            const obj = Array.assign({}, state.get('items'))
+            obj[action.userId] = action.resp
+
+            return Map({
+                items: obj,
                 loading: false,
                 resp: action.resp
             })

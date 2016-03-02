@@ -16,6 +16,10 @@ class UsersContainer extends React.Component {
         this.props.actions.createUser(data)
     }
 
+    updateUser = (data, userId) => {
+        this.props.actions.updateUser(data, userId)
+    }
+
     render() {
         return (
             <div className="UsersContainer">
@@ -23,7 +27,8 @@ class UsersContainer extends React.Component {
                     items={this.props.users.get('items')}
                     currentUser={this.props.currentUser}
                     isLoading={this.props.users.get('loading')}
-                    onSubmit={this.submitNewUser}
+                    createUser={this.submitNewUser}
+                    updateUser={this.updateUser}
                 />
             </div>
         )
