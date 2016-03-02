@@ -4,7 +4,7 @@ import UserRow from './UserRow'
 
 export default class UserList extends React.Component {
     render() {
-        const { items } = this.props
+        const { items, onSubmit } = this.props
 
         if (!items) {
             return null
@@ -27,8 +27,11 @@ export default class UserList extends React.Component {
                 <div className="ui divided items">
                     {items.map((user) => {
                         return (
-                            <UserRow key={user.id}
-                                     user={user}/>
+                            <UserRow
+                                key={user.id}
+                                user={user}
+                                onSubmit={onSubmit}
+                            />
                         )
                     })}
                 </div>
@@ -39,5 +42,5 @@ export default class UserList extends React.Component {
 
 UserList.propTypes = {
     items: PropTypes.array.isRequired,
-    currentUser: PropTypes.object.isRequired
+    onSubmit: PropTypes.func.isRequired
 }

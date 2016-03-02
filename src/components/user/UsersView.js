@@ -10,6 +10,7 @@ export default class UsersView extends React.Component {
     }
 
     render() {
+        const { items, onSubmit } = this.props
         return (
             <div className="UsersView">
                 <div className="ui text menu">
@@ -22,7 +23,7 @@ export default class UsersView extends React.Component {
                     </div>
                     <div className="three wide column">
                         <UserForm
-                            onSubmit={this.props.onSubmit}
+                            onSubmit={onSubmit}
                         />
                         <button className="ui button" onClick={this.openNewUserForm}>
                             Add a user
@@ -30,9 +31,8 @@ export default class UsersView extends React.Component {
                     </div>
                 </div>
                 <UserList
-                    items={this.props.items}
-                    currentUser={this.props.currentUser}
-                    isLoading={this.props.isLoading}
+                    items={items}
+                    onSubmit={onSubmit}
                 />
             </div>
         )

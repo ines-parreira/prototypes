@@ -28,6 +28,7 @@
     "react-infinite": "^0.8.0",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0",
+    "react-semantify": "^0.4.1",
     "redux": "^3.0.4",
     "redux-form": "^4.2.0",
     "redux-logger": "^2.0.4",

@@ -13,33 +13,6 @@ export const CREATE_NEW_USER_START = 'CREATE_NEW_USER_START'
 export const CREATE_NEW_USER_SUCCESS = 'CREATE_NEW_USER_SUCCESS'
 
 
-export function createUser(data) {
-    return(dispatch) => {
-        dispatch({
-            type: CREATE_NEW_USER_START
-        })
-
-        return reqwest({
-            url: `/api/users`,
-            type: 'json',
-            method: 'POST',
-            contentType: 'application/json',
-            data: data
-        }).then((resp) => {
-            dispatch({
-                type: CREATE_NEW_USER_SUCCESS,
-                resp
-            })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to create the new user',
-                msg: err
-            }))
-        })
-    }
-}
-
 export function fetchUsers() {
     return (dispatch) => {
         dispatch({
@@ -86,6 +59,33 @@ export function fetchUser(userId) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to fetch user.',
+                msg: err
+            }))
+        })
+    }
+}
+
+export function createUser(data) {
+    return (dispatch) => {
+        dispatch({
+            type: CREATE_NEW_USER_START
+        })
+
+        return reqwest({
+            url: `/api/users/`,
+            type: 'json',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data)
+        }).then((resp) => {
+            dispatch({
+                type: CREATE_NEW_USER_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to create the new user',
                 msg: err
             }))
         })

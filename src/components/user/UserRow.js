@@ -10,7 +10,7 @@ export default class UserRow extends React.Component {
 
     render() {
         let label
-        const { user } = this.props
+        const { user, onSubmit } = this.props
 
         if (!user) {
             return null
@@ -27,7 +27,8 @@ export default class UserRow extends React.Component {
         return (
             <div className="ui grid no-margin">
                 <UserForm
-                    user={this.props.user}
+                    user={user}
+                    onSubmit={onSubmit}
                 />
                 <div className="UserRow row">
                     <div className="one wide column collapsing">
@@ -71,5 +72,6 @@ UserRow.propTypes = {
         language: PropTypes.string,
         country: PropTypes.string
     }),
-    key: PropTypes.string
+    key: PropTypes.string,
+    onSubmit: PropTypes.func.isRequired
 }
