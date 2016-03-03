@@ -3,47 +3,8 @@ import React, {PropTypes} from 'react'
 import UserRow from './UserRow'
 
 export default class UserList extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.sortById = this.sortById.bind(this)
-        this.sortByName = this.sortByName.bind(this)
-    }
-
-    componentDidMount() {
-        $(document).on('click', '#users-name-sort', this.sortByName)
-    }
-
-    sortById = () => {
-        this.setState({items: this.props.items.sort(function(i1, i2) {
-            let res = 0
-
-            if (i1.id < i2.id) {
-                res = -1
-            } else if (i1.id > i2.id) {
-                res = 1
-            }
-
-            return res
-        })})
-    }
-
-    sortByName = () => {
-        this.setState({items: this.props.items.sort(function(i1, i2) {
-            let res = 0
-
-            if (i1.name < i2.name) {
-                res = -1
-            } else if (i1.name > i2.name) {
-                res = 1
-            }
-
-            return res
-        })})
-    }
-
     render() {
-        const { updateUser, deleteUser } = this.props
+        const { items, form, updateUser, deleteUser } = this.props
 
         return (
             <div className="UserList">
@@ -60,13 +21,11 @@ export default class UserList extends React.Component {
                     </div>
                 </div>
                 <div className="ui divided items">
-                    {this.props.items.map((user) => {
+                    {items.map((user) => {
                         return (
-                            <UserRow
-                                key={user.id}
+                            <UserRow key={user.id}
+                                form={form}
                                 user={user}
-                                updateUser={updateUser}
-                                deleteUser={deleteUser}
                             />
                         )
                     })}
@@ -78,6 +37,5 @@ export default class UserList extends React.Component {
 
 UserList.propTypes = {
     items: PropTypes.array.isRequired,
-    updateUser: PropTypes.func.isRequired,
-    deleteUser: PropTypes.func.isRequired
+    form: PropTypes.object.isRequired
 }

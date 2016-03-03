@@ -3,69 +3,32 @@ import 'moment-timezone'
 import UserForm from './UserForm'
 
 export default class UserRow extends React.Component {
-    constructor(props) {
-        super(props)
-
-        if (this.props.user) {
-            const label = this.rolesToLabel(this.props.user.roles)
-
-            this.state = {
-                name: this.props.user.name,
-                email: this.props.user.email,
-                label: label
-            }
-        }
-    }
-
-    updateUser = (data, userId) => {
-        if (data.name) {
-            this.setState({name: data.name})
-        }
-
-        if (data.email) {
-            this.setState({email: data.email})
-        }
-
-        if (data.role) {
-            this.setState({label: this.rolesToLabel([data.role])})
-        }
-
-        this.props.updateUser(data, userId)
-    }
-
-    deleteUser = () => {
-        this.props.deleteUser(this.props.user.id)
-    }
-
     openEditUserForm = () => {
         const modalId = '#userform-' + this.props.user.id
+        this.context.updateForm(this.props.user)
         $(modalId).modal('show')
     }
 
-    rolesToLabel = (roles) => {
+    render() {
+        const { user, form } = this.props
+        const { updateUser, deleteUser } = this.context
+
         let label
 
-        if (roles.indexOf('admin') !== -1) {
+        if (user.roles.indexOf('admin') !== -1) {
             label = <div className="ui red label">ADMIN</div>
-        } else if (roles.indexOf('agent') !== -1) {
+        } else if (user.roles.indexOf('agent') !== -1) {
             label = <div className="ui blue label">AGENT</div>
         } else {
             label = <div className="ui green label">USER</div>
         }
 
-        return label
-    }
-
-    render() {
-        if (!this.state) {
-            return null
-        }
-
         return (
             <div className="ui grid no-margin">
                 <UserForm
-                    user={this.props.user}
-                    onSubmit={this.updateUser}
+                    user={user}
+                    onSubmit={updateUser}
+                    form={form}
                 />
                 <div className="UserRow row">
                     <div className="one wide column collapsing">
@@ -75,19 +38,19 @@ export default class UserRow extends React.Component {
                         </span>
                     </div>
                     <div className="two wide column">
-                        {this.state.label}
+                        {label}
                     </div>
                     <div className="eight wide column details">
                         <div className="ui header">
                             <span
-                                className="subject">{this.state.name}</span>
+                                className="subject">{user.name}</span>
                             <div className="body sub header">
-                                {this.state.email}
+                                {user.email}
                             </div>
                         </div>
                     </div>
                     <div className="five wide column">
-                        <button className="ui button right" onClick={this.deleteUser}>
+                        <button className="ui button right" onClick={deleteUser}>
                             Delete
                         </button>
                         <button className="ui button right" onClick={this.openEditUserForm}>
@@ -109,7 +72,11 @@ UserRow.propTypes = {
         language: PropTypes.string,
         country: PropTypes.string
     }),
-    key: PropTypes.string,
+    form: PropTypes.object.isRequired,
+}
+
+UserRow.contextTypes = {
     updateUser: PropTypes.func.isRequired,
-    deleteUser: PropTypes.func.isRequired
+    deleteUser: PropTypes.func.isRequired,
+    updateForm: PropTypes.func.isRequired
 }

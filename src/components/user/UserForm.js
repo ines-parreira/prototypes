@@ -4,111 +4,78 @@ export default class UserForm extends React.Component {
     constructor(props) {
         super(props)
 
-        this.initialState = {
-            id: 'userform-new',
-            title: 'Add a user',
-            name: '',
-            email: '',
-            role: 'user'
-        }
-
-        if (this.props.user) {
-            let role = 'user'
-
-            if (this.props.user.roles.indexOf('admin') !== -1) {
-                role = 'admin'
-            } else if (this.props.user.roles.indexOf('agent') !== -1) {
-                role = 'agent'
-            }
-
-            this.state = {
-                id: 'userform-' + this.props.user.id,
-                title: 'Modify a user',
-                name: this.props.user.name,
-                email: this.props.user.email,
-                role: role
-            }
-        } else {
-            this.state = Object.assign({}, this.initialState)
-        }
-
-        this.nameChange = this.nameChange.bind(this)
-        this.emailChange = this.emailChange.bind(this)
-        this.roleChange = this.roleChange.bind(this)
+        this.formChange = this.formChange.bind(this)
         this.submit = this.submit.bind(this)
+        this.close = this.close.bind(this)
     }
 
     componentDidMount() {
-        $('#' + this.state.id).modal()
-        $(document).on('change', '#name-' + this.state.id, this.nameChange)
-        $(document).on('change', '#email-' + this.state.id, this.emailChange)
-        $(document).on('change', '#role-' + this.state.id, this.roleChange)
-        $(document).on('click', '#submit-' + this.state.id, this.submit)
+        const id = 'userform-' + (this.props.user ? this.props.user.id : 'new')
+        $('#userform-' + (this.props.user ? this.props.user.id : 'new')).modal()
+        $(document).on('change', '#name-' + id, this.formChange)
+        $(document).on('change', '#email-' + id, this.formChange)
+        $(document).on('change', '#role-' + id, this.formChange)
+        $(document).on('click', '#submit-' + id, this.submit)
     }
 
-    submit = () => {
-        let data = {}
-        let id
+    submit() {
+        if (this.props.user) {
+            const sendData = {}
 
-        if (!this.props.user) {
-            data = {
-                name: this.state.name,
-                email: this.state.email,
-                password: '',
-                roles: [this.state.role]
+            for (const k in this.props.form) {
+                if (this.props.user[k] !== this.props.form[k] && this.props.form[k] !== ''
+                && (k !== 'role' || this.props.user.roles.indexOf(this.props.form.role) === -1)) {
+                    sendData[k] = this.props.form[k]
+                }
             }
+
+            this.props.onSubmit(sendData, this.props.user.id)
         } else {
-            if (this.state.name !== this.props.user.name) {
-                data.name = this.state.name
-            }
-            if (this.state.email !== this.props.user.email) {
-                data.email = this.state.email
-            }
-            if (this.props.user.roles.indexOf(this.state.role) === -1) {
-                data.roles = [this.state.role]
-            }
-            id = this.props.user.id
+            this.props.onSubmit(this.props.form)
         }
 
-        this.props.onSubmit(data, id)
-        $('#' + this.state.id).modal('hide')
+        $('#userform-' + (this.props.user ? this.props.user.id : 'new')).modal('hide')
     }
 
-    nameChange = (event) => {
-        this.setState({name: event.target.value})
+    formChange = (event) => {
+        const data = {}
+        data[event.target.name] = event.target.value
+        this.context.updateForm(data)
     }
 
-    emailChange(event) {
-        this.setState({email: event.target.value})
-    }
-
-    roleChange(event) {
-        this.setState({role: event.target.value})
+    close() {
+        $('#userform-' + (this.props.user ? this.props.user.id : 'new')).modal('hide')
     }
 
     render() {
+        const { form } = this.props
+
+        const id = 'userform-' + (this.props.user ? this.props.user.id : 'new')
+        const title = this.props.user ? 'Modify a user' : 'Add a user'
+
         return (
-            <div id={this.state.id} className="UserForm ui modal small">
-                <div className="header">{this.state.title}</div>
+            <div id={id} className="UserForm ui modal small">
+                <i id={'close-' + id} className="remove icon"></i>
+                <div className="header">{title}</div>
                 <div className="content">
                     <form className="ui form">
                         <div className="field">
                             <label>Name</label>
-                            <input id={'name-' + this.state.id} type="text" defaultValue={this.state.name}/>
+                            <input id={'name-' + id} name="name" type="text" defaultValue={form.name}/>
                         </div>
                         <div className="field">
                             <label>Email address</label>
-                            <input id={'email-' + this.state.id} type="text" defaultValue={this.state.email}/>
+                            <input id={'email-' + id} name="email" type="text" defaultValue={form.email}/>
                         </div>
                         <div className="field">
                             <label>Role</label>
-                            <select id={'role-' + this.state.id} defaultValue={this.state.role} className="ui fluid dropdown">
+                            <select id={'role-' + id} name="role" defaultValue={form.role} className="ui fluid dropdown">
                                 <option value="user">User</option>
                                 <option value="agent">Agent</option>
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
-                        <button id={'submit-' + this.state.id} className="ui button" type="button">Submit</button>
+                        <button id={'submit-' + id} className="ui button" type="button">Submit</button>
                     </form>
                 </div>
             </div>
@@ -118,5 +85,10 @@ export default class UserForm extends React.Component {
 
 UserForm.propTypes = {
     user: PropTypes.object,
+    form: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired
+}
+
+UserForm.contextTypes = {
+    updateForm: PropTypes.func.isRequired
 }

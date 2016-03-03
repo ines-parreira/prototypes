@@ -10,7 +10,12 @@ export default class UsersView extends React.Component {
     }
 
     render() {
-        const { items, createUser, updateUser, deleteUser } = this.props
+        const { items, form } = this.props
+        const { createUser } = this.context
+
+        if (!items) {
+            return null
+        }
         return (
             <div className="UsersView">
                 <div className="ui text menu">
@@ -24,6 +29,7 @@ export default class UsersView extends React.Component {
                     <div className="three wide column">
                         <UserForm
                             onSubmit={createUser}
+                            form={form}
                         />
                         <button className="ui button" onClick={this.openNewUserForm}>
                             Add a user
@@ -32,8 +38,7 @@ export default class UsersView extends React.Component {
                 </div>
                 <UserList
                     items={items}
-                    updateUser={updateUser}
-                    deleteUser={deleteUser}
+                    form={form}
                 />
             </div>
         )
@@ -41,10 +46,15 @@ export default class UsersView extends React.Component {
 }
 
 UsersView.propTypes = {
-    currentUser: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired,
     items: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired
+}
+
+UsersView.contextTypes = {
     createUser: PropTypes.func.isRequired,
     updateUser: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired
 }
+
+

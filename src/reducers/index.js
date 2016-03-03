@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import { routerStateReducer as router } from 'redux-router'
-import { reducer as formReducer } from 'redux-form'
 
 import { systemMessage } from './systemMessage'
 import { currentUser } from './currentUser'
@@ -20,7 +19,6 @@ const rootReducer = combineReducers({
     rules,
     views,
     users,
-    form: formReducer,
     router
 })
 

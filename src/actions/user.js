@@ -9,14 +9,13 @@ export const FETCH_CURRENT_USER_SUCCESS = 'FETCH_CURRENT_USER_SUCCESS'
 export const FETCH_USER_LIST_START = 'FETCH_USER_LIST_START'
 export const FETCH_USER_LIST_SUCCESS = 'FETCH_USER_LIST_SUCCESS'
 
-export const CREATE_NEW_USER_START = 'CREATE_NEW_USER_START'
 export const CREATE_NEW_USER_SUCCESS = 'CREATE_NEW_USER_SUCCESS'
 
-export const UPDATE_USER_START = 'UPDATE_USER_START'
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
 
-export const DELETE_USER_START = 'DELETE_USER_START'
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'
+
+export const UPDATE_FORM = 'UPDATE_FORM'
 
 
 export function fetchUsers() {
@@ -73,9 +72,10 @@ export function fetchUser(userId) {
 
 export function createUser(data) {
     return (dispatch) => {
-        dispatch({
-            type: CREATE_NEW_USER_START
-        })
+        data.roles = [data.role.slice(0)]
+        delete data.role
+
+        data.password = ''
 
         return reqwest({
             url: `/api/users/`,
@@ -100,10 +100,6 @@ export function createUser(data) {
 
 export function updateUser(data, userId) {
     return (dispatch) => {
-        dispatch({
-            type: UPDATE_USER_START
-        })
-
         if (data.role) {
             data.roles = [data.role.slice(0)]
             delete data.role
@@ -133,10 +129,6 @@ export function updateUser(data, userId) {
 
 export function deleteUser(userId) {
     return (dispatch) => {
-        dispatch({
-            type: DELETE_USER_START
-        })
-
         return reqwest({
             url: `/api/users/${userId}/`,
             method: 'DELETE'
@@ -152,6 +144,15 @@ export function deleteUser(userId) {
                 header: 'Error: failed to update the user',
                 msg: err
             }))
+        })
+    }
+}
+
+export function updateForm(data) {
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_FORM,
+            data: data
         })
     }
 }
