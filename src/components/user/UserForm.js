@@ -1,9 +1,16 @@
 import React, {PropTypes} from 'react'
-import {Modal} from 'react-semantify'
 
 export default class UserForm extends React.Component {
     constructor(props) {
         super(props)
+
+        this.initialState = {
+            id: 'userform-new',
+            title: 'Add a user',
+            name: '',
+            email: '',
+            role: 'user'
+        }
 
         if (this.props.user) {
             let role = 'user'
@@ -22,13 +29,7 @@ export default class UserForm extends React.Component {
                 role: role
             }
         } else {
-            this.state = {
-                id: 'userform-new',
-                title: 'Add a user',
-                name: '',
-                email: '',
-                role: 'user'
-            }
+            this.state = Object.assign({}, this.initialState)
         }
 
         this.nameChange = this.nameChange.bind(this)
@@ -38,7 +39,7 @@ export default class UserForm extends React.Component {
     }
 
     componentDidMount() {
-        $('#' + this.state.id).modal({detachable: false})
+        $('#' + this.state.id).modal()
         $(document).on('change', '#name-' + this.state.id, this.nameChange)
         $(document).on('change', '#email-' + this.state.id, this.emailChange)
         $(document).on('change', '#role-' + this.state.id, this.roleChange)
@@ -87,7 +88,7 @@ export default class UserForm extends React.Component {
 
     render() {
         return (
-            <Modal id={this.state.id} className="UserForm small" init>
+            <div id={this.state.id} className="UserForm ui modal small">
                 <div className="header">{this.state.title}</div>
                 <div className="content">
                     <form className="ui form">
@@ -110,7 +111,7 @@ export default class UserForm extends React.Component {
                         <button id={'submit-' + this.state.id} className="ui button" type="button">Submit</button>
                     </form>
                 </div>
-            </Modal>
+            </div>
         )
     }
 }

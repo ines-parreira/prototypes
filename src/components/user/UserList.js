@@ -3,12 +3,47 @@ import React, {PropTypes} from 'react'
 import UserRow from './UserRow'
 
 export default class UserList extends React.Component {
-    render() {
-        const { items, updateUser, deleteUser } = this.props
+    constructor(props) {
+        super(props)
 
-        if (!items) {
-            return null
-        }
+        this.sortById = this.sortById.bind(this)
+        this.sortByName = this.sortByName.bind(this)
+    }
+
+    componentDidMount() {
+        $(document).on('click', '#users-name-sort', this.sortByName)
+    }
+
+    sortById = () => {
+        this.setState({items: this.props.items.sort(function(i1, i2) {
+            let res = 0
+
+            if (i1.id < i2.id) {
+                res = -1
+            } else if (i1.id > i2.id) {
+                res = 1
+            }
+
+            return res
+        })})
+    }
+
+    sortByName = () => {
+        this.setState({items: this.props.items.sort(function(i1, i2) {
+            let res = 0
+
+            if (i1.name < i2.name) {
+                res = -1
+            } else if (i1.name > i2.name) {
+                res = 1
+            }
+
+            return res
+        })})
+    }
+
+    render() {
+        const { updateUser, deleteUser } = this.props
 
         return (
             <div className="UserList">
@@ -20,12 +55,12 @@ export default class UserList extends React.Component {
                                 <label></label>
                             </span>
                         </div>
-                        <div className="two wide column">Role <i className="sort icon"></i></div>
-                        <div className="eight wide column">User <i className="sort icon"></i></div>
+                        <div className="two wide column">Role <i id="users-role-sort" className="sort icon"></i></div>
+                        <div className="eight wide column">User <i id="users-name-sort" className="sort icon"></i></div>
                     </div>
                 </div>
                 <div className="ui divided items">
-                    {items.map((user) => {
+                    {this.props.items.map((user) => {
                         return (
                             <UserRow
                                 key={user.id}
