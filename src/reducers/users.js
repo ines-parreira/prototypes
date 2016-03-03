@@ -54,7 +54,7 @@ export function users(state = usersInitial, action) {
                     return item.id !== action.userId
                 }),
                 form: state.get('form'),
-                loading: state.loading,
+                loading: state.get('loading'),
                 resp: action.resp
             })
 

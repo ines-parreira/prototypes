@@ -9,9 +9,13 @@ export default class UserRow extends React.Component {
         $(modalId).modal('show')
     }
 
+    deleteUser = () => {
+        this.context.deleteUser(this.props.user.id)
+    }
+
     render() {
         const { user, form } = this.props
-        const { updateUser, deleteUser } = this.context
+        const { updateUser } = this.context
 
         let label
 
@@ -50,7 +54,7 @@ export default class UserRow extends React.Component {
                         </div>
                     </div>
                     <div className="five wide column">
-                        <button className="ui button right" onClick={deleteUser}>
+                        <button className="ui button right" onClick={this.deleteUser}>
                             Delete
                         </button>
                         <button className="ui button right" onClick={this.openEditUserForm}>
