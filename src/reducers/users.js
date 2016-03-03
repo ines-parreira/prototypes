@@ -32,14 +32,7 @@ export function users(state = usersInitial, action) {
             })
 
         case actions.UPDATE_USER_SUCCESS:
-            const obj = Array.assign({}, state.get('items'))
-            obj[action.userId] = action.resp
-
-            return Map({
-                items: obj,
-                loading: false,
-                resp: action.resp
-            })
+            return state
 
         default:
             return state

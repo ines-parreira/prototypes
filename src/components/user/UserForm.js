@@ -69,7 +69,6 @@ export default class UserForm extends React.Component {
             id = this.props.user.id
         }
 
-        console.log(id)
         this.props.onSubmit(data, id)
         $('#' + this.state.id).modal('hide')
     }

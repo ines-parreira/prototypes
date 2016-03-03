@@ -101,6 +101,11 @@ export function updateUser(data, userId) {
             type: UPDATE_USER_START
         })
 
+        if (data.role) {
+            data.roles = [data.role.slice(0)]
+            delete data.role
+        }
+
         return reqwest({
             url: `/api/users/${userId}/`,
             type: 'json',

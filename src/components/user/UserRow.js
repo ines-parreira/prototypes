@@ -3,32 +3,65 @@ import 'moment-timezone'
 import UserForm from './UserForm'
 
 export default class UserRow extends React.Component {
-    openNewUserForm = () => {
+    constructor(props) {
+        super(props)
+
+        if (this.props.user) {
+            const label = this.rolesToLabel(this.props.user.roles)
+
+            this.state = {
+                name: this.props.user.name,
+                email: this.props.user.email,
+                label: label
+            }
+        }
+    }
+
+    onSubmit = (data, userId) => {
+        if (data.name) {
+            this.setState({name: data.name})
+        }
+
+        if (data.email) {
+            this.setState({email: data.email})
+        }
+
+        if (data.role) {
+            this.setState({label: this.rolesToLabel([data.role])})
+        }
+
+        this.props.onSubmit(data, userId)
+    }
+
+    openEditUserForm = () => {
         const modalId = '#userform-' + this.props.user.id
         $(modalId).modal('show')
     }
 
-    render() {
+    rolesToLabel = (roles) => {
         let label
-        const { user, onSubmit } = this.props
 
-        if (!user) {
-            return null
-        }
-
-        if (user.roles.indexOf('admin') !== -1) {
+        if (roles.indexOf('admin') !== -1) {
             label = <div className="ui red label">ADMIN</div>
-        } else if (user.roles.indexOf('agent') !== -1) {
+        } else if (roles.indexOf('agent') !== -1) {
             label = <div className="ui blue label">AGENT</div>
         } else {
             label = <div className="ui green label">USER</div>
         }
 
+        return label
+    }
+
+    render() {
+        if (!this.state) {
+            return null
+        }
+
         return (
             <div className="ui grid no-margin">
                 <UserForm
-                    user={user}
-                    onSubmit={onSubmit}
+                    user={this.props.user}
+                    onSubmit={this.onSubmit}
                 />
                 <div className="UserRow row">
                     <div className="one wide column collapsing">
@@ -38,14 +71,14 @@ export default class UserRow extends React.Component {
                         </span>
                     </div>
                     <div className="two wide column">
-                        {label}
+                        {this.state.label}
                     </div>
                     <div className="eight wide column details">
                         <div className="ui header">
                             <span
-                                className="subject">{user.name}</span>
+                                className="subject">{this.state.name}</span>
                             <div className="body sub header">
-                                {user.email}
+                                {this.state.email}
                             </div>
                         </div>
                     </div>
@@ -53,7 +86,7 @@ export default class UserRow extends React.Component {
                         <button className="ui button right">
                             Delete
                         </button>
-                        <button className="ui button right" onClick={this.openNewUserForm}>
+                        <button className="ui button right" onClick={this.openEditUserForm}>
                             Edit
                         </button>
                     </div>
