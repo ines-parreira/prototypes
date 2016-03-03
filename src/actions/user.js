@@ -15,6 +15,9 @@ export const CREATE_NEW_USER_SUCCESS = 'CREATE_NEW_USER_SUCCESS'
 export const UPDATE_USER_START = 'UPDATE_USER_START'
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
 
+export const DELETE_USER_START = 'DELETE_USER_START'
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'
+
 
 export function fetchUsers() {
     return (dispatch) => {
@@ -115,6 +118,31 @@ export function updateUser(data, userId) {
         }).then((resp) => {
             dispatch({
                 type: UPDATE_USER_SUCCESS,
+                userId: userId,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to update the user',
+                msg: err
+            }))
+        })
+    }
+}
+
+export function deleteUser(userId) {
+    return (dispatch) => {
+        dispatch({
+            type: DELETE_USER_START
+        })
+
+        return reqwest({
+            url: `/api/users/${userId}/`,
+            method: 'DELETE'
+        }).then((resp) => {
+            dispatch({
+                type: DELETE_USER_SUCCESS,
                 userId: userId,
                 resp
             })

@@ -20,6 +20,10 @@ class UsersContainer extends React.Component {
         this.props.actions.updateUser(data, userId)
     }
 
+    deleteUser = (userId) => {
+        this.props.actions.deleteUser(userId)
+    }
+
     render() {
         return (
             <div className="UsersContainer">
@@ -29,6 +33,7 @@ class UsersContainer extends React.Component {
                     isLoading={this.props.users.get('loading')}
                     createUser={this.submitNewUser}
                     updateUser={this.updateUser}
+                    deleteUser={this.deleteUser}
                 />
             </div>
         )

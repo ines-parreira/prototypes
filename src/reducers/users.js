@@ -34,6 +34,18 @@ export function users(state = usersInitial, action) {
         case actions.UPDATE_USER_SUCCESS:
             return state
 
+        case actions.DELETE_USER_SUCCESS:
+            const items = state.get('items')
+
+            return Map({
+                items: items.filter(function(item) {
+                    return item.id !== action.userId
+                }),
+                loading: false,
+                resp: action.resp
+            })
+
+
         default:
             return state
     }

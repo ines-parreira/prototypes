@@ -10,7 +10,7 @@ export default class UsersView extends React.Component {
     }
 
     render() {
-        const { items, createUser, updateUser } = this.props
+        const { items, createUser, updateUser, deleteUser } = this.props
         return (
             <div className="UsersView">
                 <div className="ui text menu">
@@ -32,7 +32,8 @@ export default class UsersView extends React.Component {
                 </div>
                 <UserList
                     items={items}
-                    onSubmit={updateUser}
+                    updateUser={updateUser}
+                    deleteUser={deleteUser}
                 />
             </div>
         )
@@ -44,5 +45,6 @@ UsersView.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     items: PropTypes.array.isRequired,
     createUser: PropTypes.func.isRequired,
-    updateUser: PropTypes.func.isRequired
+    updateUser: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired
 }

@@ -17,7 +17,7 @@ export default class UserRow extends React.Component {
         }
     }
 
-    onSubmit = (data, userId) => {
+    updateUser = (data, userId) => {
         if (data.name) {
             this.setState({name: data.name})
         }
@@ -30,7 +30,11 @@ export default class UserRow extends React.Component {
             this.setState({label: this.rolesToLabel([data.role])})
         }
 
-        this.props.onSubmit(data, userId)
+        this.props.updateUser(data, userId)
+    }
+
+    deleteUser = () => {
+        this.props.deleteUser(this.props.user.id)
     }
 
     openEditUserForm = () => {
@@ -61,7 +65,7 @@ export default class UserRow extends React.Component {
             <div className="ui grid no-margin">
                 <UserForm
                     user={this.props.user}
-                    onSubmit={this.onSubmit}
+                    onSubmit={this.updateUser}
                 />
                 <div className="UserRow row">
                     <div className="one wide column collapsing">
@@ -83,7 +87,7 @@ export default class UserRow extends React.Component {
                         </div>
                     </div>
                     <div className="five wide column">
-                        <button className="ui button right">
+                        <button className="ui button right" onClick={this.deleteUser}>
                             Delete
                         </button>
                         <button className="ui button right" onClick={this.openEditUserForm}>
@@ -106,5 +110,6 @@ UserRow.propTypes = {
         country: PropTypes.string
     }),
     key: PropTypes.string,
-    onSubmit: PropTypes.func.isRequired
+    updateUser: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired
 }

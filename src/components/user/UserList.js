@@ -4,7 +4,7 @@ import UserRow from './UserRow'
 
 export default class UserList extends React.Component {
     render() {
-        const { items, onSubmit } = this.props
+        const { items, updateUser, deleteUser } = this.props
 
         if (!items) {
             return null
@@ -30,7 +30,8 @@ export default class UserList extends React.Component {
                             <UserRow
                                 key={user.id}
                                 user={user}
-                                onSubmit={onSubmit}
+                                updateUser={updateUser}
+                                deleteUser={deleteUser}
                             />
                         )
                     })}
@@ -42,5 +43,6 @@ export default class UserList extends React.Component {
 
 UserList.propTypes = {
     items: PropTypes.array.isRequired,
-    onSubmit: PropTypes.func.isRequired
+    updateUser: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired
 }
