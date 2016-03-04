@@ -15,7 +15,7 @@ export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
 
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'
 
-export const UPDATE_FORM = 'UPDATE_FORM'
+export const SORT_USERS = 'SORT_USERS'
 
 
 export function fetchUsers() {
@@ -148,11 +148,11 @@ export function deleteUser(userId) {
     }
 }
 
-export function updateForm(data) {
+export function sortUsers(sort) {
     return (dispatch) => {
         dispatch({
-            type: UPDATE_FORM,
-            data: data
+            type: SORT_USERS,
+            sort: sort
         })
     }
 }

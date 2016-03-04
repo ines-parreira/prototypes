@@ -4,11 +4,7 @@ import {_} from 'lodash'
 
 const usersInitial = Map({
     items: [],
-    form: {
-        role: 'user',
-        name: '',
-        email: ''
-    },
+    sort: 'id',
     loading: true,
     resp: {}
 })
@@ -19,7 +15,7 @@ export function users(state = usersInitial, action) {
         case actions.FETCH_USER_LIST_START:
             return Map({
                 items: action.extend ? state.get('items') : [],
-                form: state.get('form'),
+                sort: state.get('sort'),
                 loading: action.extend ? true : false,
                 resp: action.resp
             })
@@ -27,7 +23,7 @@ export function users(state = usersInitial, action) {
         case actions.FETCH_USER_LIST_SUCCESS:
             return Map({
                 items: action.resp.data,
-                form: state.get('form'),
+                sort: state.get('sort'),
                 loading: false,
                 resp: action.resp
             })
@@ -38,34 +34,43 @@ export function users(state = usersInitial, action) {
 
             return Map({
                 items: _.concat(newItem, oldItems),
-                form: state.get('form'),
+                sort: state.get('sort'),
                 loading: false,
                 resp: action.resp
             })
 
         case actions.UPDATE_USER_SUCCESS:
-            return state
-
-        case actions.DELETE_USER_SUCCESS:
             const items = state.get('items')
+            const userIndex = _.findIndex(items, {id: action.userId})
 
             return Map({
-                items: items.filter(function(item) {
+                items: [
+                    ...items.slice(0, userIndex),
+                    action.resp,
+                    ...items.slice(userIndex + 1)
+                ],
+                sort: state.get('sort'),
+                loading: state.get('loading'),
+                resp: action.resp
+
+            })
+
+        case actions.DELETE_USER_SUCCESS:
+            return Map({
+                items: state.get('items').filter(function(item) {
                     return item.id !== action.userId
                 }),
-                form: state.get('form'),
+                sort: state.get('sort'),
                 loading: state.get('loading'),
                 resp: action.resp
             })
 
-        case actions.UPDATE_FORM:
-            console.log(state.get('form'))
-            console.log(Object.assign({}, state.get('form'), action.data))
+        case actions.SORT_USERS:
             return Map({
-                items: state.get('items'),
-                form: Object.assign({}, state.get('form'), action.data),
+                items: action.sort !== state.get('sort') ? _.sortBy(state.get('items'), [action.sort]) : _.reverse(state.get('items')),
+                sort: action.sort,
                 loading: state.get('loading'),
-                resp: state.resp
+                resp: state.get('resp')
             })
 
         default:

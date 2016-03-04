@@ -4,9 +4,7 @@ import UserForm from './UserForm'
 
 export default class UserRow extends React.Component {
     openEditUserForm = () => {
-        const modalId = '#userform-' + this.props.user.id
-        this.context.updateForm(this.props.user)
-        $(modalId).modal('show')
+        $('#userform-' + this.props.user.id).modal('show')
     }
 
     deleteUser = () => {
@@ -14,7 +12,7 @@ export default class UserRow extends React.Component {
     }
 
     render() {
-        const { user, form } = this.props
+        const { user } = this.props
         const { updateUser } = this.context
 
         let label
@@ -32,7 +30,6 @@ export default class UserRow extends React.Component {
                 <UserForm
                     user={user}
                     onSubmit={updateUser}
-                    form={form}
                 />
                 <div className="UserRow row">
                     <div className="one wide column collapsing">
@@ -75,12 +72,10 @@ UserRow.propTypes = {
         email: PropTypes.string,
         language: PropTypes.string,
         country: PropTypes.string
-    }),
-    form: PropTypes.object.isRequired,
+    })
 }
 
 UserRow.contextTypes = {
     updateUser: PropTypes.func.isRequired,
-    deleteUser: PropTypes.func.isRequired,
-    updateForm: PropTypes.func.isRequired
+    deleteUser: PropTypes.func.isRequired
 }

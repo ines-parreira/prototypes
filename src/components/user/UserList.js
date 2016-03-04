@@ -3,8 +3,16 @@ import React, {PropTypes} from 'react'
 import UserRow from './UserRow'
 
 export default class UserList extends React.Component {
+    sortUsersByName = () => {
+        this.context.sortUsers('name')
+    }
+
+    sortUsersByRoles = () => {
+        this.context.sortUsers('roles')
+    }
+
     render() {
-        const { items, form, updateUser, deleteUser } = this.props
+        const { items } = this.props
 
         return (
             <div className="UserList">
@@ -16,15 +24,14 @@ export default class UserList extends React.Component {
                                 <label></label>
                             </span>
                         </div>
-                        <div className="two wide column">Role <i id="users-role-sort" className="sort icon"></i></div>
-                        <div className="eight wide column">User <i id="users-name-sort" className="sort icon"></i></div>
+                        <div className="two wide column">Role <i id="users-role-sort" className="sort action icon" onClick={this.sortUsersByRoles}></i></div>
+                        <div className="eight wide column">User <i id="users-name-sort" className="sort action icon" onClick={this.sortUsersByName}></i></div>
                     </div>
                 </div>
                 <div className="ui divided items">
                     {items.map((user) => {
                         return (
                             <UserRow key={user.id}
-                                form={form}
                                 user={user}
                             />
                         )
@@ -36,6 +43,9 @@ export default class UserList extends React.Component {
 }
 
 UserList.propTypes = {
-    items: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired
+    items: PropTypes.array.isRequired
+}
+
+UserList.contextTypes = {
+    sortUsers: PropTypes.func.isRequired
 }

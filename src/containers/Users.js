@@ -13,7 +13,7 @@ class UsersContainer extends React.Component {
             createUser: this.props.actions.createUser,
             updateUser: this.props.actions.updateUser,
             deleteUser: this.props.actions.deleteUser,
-            updateForm: this.props.actions.updateForm
+            sortUsers: this.props.actions.sortUsers
         }
     }
 
@@ -32,7 +32,6 @@ class UsersContainer extends React.Component {
             <div className="UsersContainer">
                 <UsersView
                     items={users.get('items')}
-                    form={users.get('form')}
                     isLoading={users.get('loading')}
                 />
             </div>
@@ -44,11 +43,6 @@ UsersContainer.propTypes = {
     users: PropTypes.shape({
         loading: PropTypes.bool,
         items: PropTypes.array,
-        form: PropTypes.shape({
-            name: PropTypes.string,
-            email: PropTypes.string,
-            role: PropTypes.string
-        }),
         resp: PropTypes.shape({
             meta: PropTypes.object,
             data: PropTypes.array,
@@ -67,7 +61,7 @@ UsersContainer.childContextTypes = {
     createUser: PropTypes.func,
     updateUser: PropTypes.func,
     deleteUser: PropTypes.func,
-    updateForm: PropTypes.func
+    sortUsers: PropTypes.func
 }
 
 function mapStateToProps(state) {
