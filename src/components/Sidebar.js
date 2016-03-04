@@ -45,6 +45,7 @@ export default class Sidebar extends React.Component {
                         <div className="menu">
                             <Link to="/" className="item">Dashboard</Link>
                             <Link to="/rules" className="item">Rules</Link>
+                            <Link to="/users" className="item">Users</Link>
                         </div>
                     </div>
                     {Object.keys(sections).map((sectionId) => {

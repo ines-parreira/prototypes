@@ -8,6 +8,7 @@ import { schemas } from './schema'
 import { tickets } from './tickets'
 import { ticket } from './ticket'
 import { views } from './view'
+import { users } from './users'
 
 const rootReducer = combineReducers({
     systemMessage,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     schemas,
     rules,
     views,
+    users,
     router
 })
 

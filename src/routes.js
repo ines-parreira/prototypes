@@ -6,11 +6,15 @@ import Dashboard from './containers/Dashboard'
 import TicketContainer from './containers/Ticket'
 import TicketsContainer from './containers/Tickets'
 import RuleContainer from './containers/Rule'
+import UsersContainer from './containers/Users'
+import UserContainer from './containers/User'
 import NoMatch from './components/NoMatch'
 
 export default (
     <Route path="/" component={App}>
         <IndexRoute component={Dashboard}/>
+        <Route path="users" component={UsersContainer}/>
+        <Route path="users/:userId" component={UserContainer}/>
         <Route path="rules" component={RuleContainer}/>
         <Route path="ticket/:ticketId" components={TicketContainer}/>
         <Route path="tickets/:view" components={TicketsContainer}/>
