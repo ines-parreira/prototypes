@@ -14,6 +14,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "escodegen": "^1.7.0",
     "esprima": "^2.7.0",
+    "gulp": "^3.9.1",
     "history": "^1.13.1",
     "immutable": "^3.7.5",
     "linkifyjs": "^2.0.0-beta.5",
