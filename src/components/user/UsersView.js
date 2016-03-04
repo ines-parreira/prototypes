@@ -15,7 +15,11 @@ export default class UsersView extends React.Component {
         return (
             <div className="UsersView">
                 <div className="ui text menu">
-                    <Search/>
+                    <div className="right menu item">
+                        <div className="item">
+                            <Search />
+                        </div>
+                    </div>
                 </div>
 
                 <div className="ui grid">
