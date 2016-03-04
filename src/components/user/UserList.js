@@ -3,16 +3,9 @@ import React, {PropTypes} from 'react'
 import UserRow from './UserRow'
 
 export default class UserList extends React.Component {
-    sortUsersByName = () => {
-        this.context.sortUsers('name')
-    }
-
-    sortUsersByRoles = () => {
-        this.context.sortUsers('roles')
-    }
-
     render() {
         const { items } = this.props
+        const { sortUsers } = this.context
 
         return (
             <div className="UserList">
@@ -24,8 +17,12 @@ export default class UserList extends React.Component {
                                 <label></label>
                             </span>
                         </div>
-                        <div className="two wide column">Role <i id="users-role-sort" className="sort action icon" onClick={this.sortUsersByRoles}></i></div>
-                        <div className="eight wide column">User <i id="users-name-sort" className="sort action icon" onClick={this.sortUsersByName}></i></div>
+                        <div className="two wide column">
+                            Role
+                            <i id="users-role-sort" className="sort action icon" onClick={() => {sortUsers('role')}}></i></div>
+                        <div className="eight wide column">
+                            User
+                            <i id="users-name-sort" className="sort action icon" onClick={() => {sortUsers('name')}}></i></div>
                     </div>
                 </div>
                 <div className="ui divided items">
