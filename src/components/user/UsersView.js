@@ -5,10 +5,6 @@ import UserForm from './UserForm'
 
 
 export default class UsersView extends React.Component {
-    openNewUserForm = () => {
-        $('#userform-new').modal('show')
-    }
-
     render() {
         const { items } = this.props
         const { createUser } = this.context
@@ -30,7 +26,7 @@ export default class UsersView extends React.Component {
                         <UserForm
                             onSubmit={createUser}
                         />
-                        <button className="ui button" onClick={this.openNewUserForm}>
+                        <button className="ui button" onClick={() => {$('#userform-new').modal('show')}}>
                             Add a user
                         </button>
                     </div>

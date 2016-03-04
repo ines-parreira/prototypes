@@ -3,17 +3,9 @@ import 'moment-timezone'
 import UserForm from './UserForm'
 
 export default class UserRow extends React.Component {
-    openEditUserForm = () => {
-        $('#userform-' + this.props.user.id).modal('show')
-    }
-
-    deleteUser = () => {
-        this.context.deleteUser(this.props.user.id)
-    }
-
     render() {
         const { user } = this.props
-        const { updateUser } = this.context
+        const { updateUser, deleteUser } = this.context
 
         let label
 
@@ -51,10 +43,10 @@ export default class UserRow extends React.Component {
                         </div>
                     </div>
                     <div className="five wide column">
-                        <button className="ui button right" onClick={this.deleteUser}>
+                        <button className="ui button right" onClick={() => {deleteUser(user.id)}}>
                             Delete
                         </button>
-                        <button className="ui button right" onClick={this.openEditUserForm}>
+                        <button className="ui button right" onClick={() => {$('#userform-' + user.id).modal('show')}}>
                             Edit
                         </button>
                     </div>
