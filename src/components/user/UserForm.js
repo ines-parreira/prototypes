@@ -4,23 +4,24 @@ export default class UserForm extends React.Component {
     constructor(props) {
         super(props)
 
+        this.state = {id: 'userform-' + (this.props.user ? this.props.user.id : 'new')}
         this.submit = this.submit.bind(this)
         this.close = this.close.bind(this)
     }
 
     componentDidMount() {
-        const id = 'userform-' + (this.props.user ? this.props.user.id : 'new')
-        $('#userform-' + (this.props.user ? this.props.user.id : 'new')).modal()
-        $(document).on('submit', '#form-' + id, this.submit)
-        $(document).on('click', '#close-' + id, this.close)
+        $('#' + this.state.id).modal()
+        $(document).on('submit', '#form-' + this.state.id, this.submit)
+        $(document).on('click', '#close-' + this.state.id, this.close)
     }
 
     submit(e) {
         e.preventDefault()
+
         const data = {
-            name: $('#name-userform-' + (this.props.user ? this.props.user.id : 'new')).val(),
-            email: $('#email-userform-' + (this.props.user ? this.props.user.id : 'new')).val(),
-            role: $('#role-userform-' + (this.props.user ? this.props.user.id : 'new')).val()
+            name: $('#name-' + this.state.id).val(),
+            email: $('#email-' + this.state.id).val(),
+            role: $('#role-' + this.state.id).val()
         }
 
         if (this.props.user) {
@@ -40,17 +41,17 @@ export default class UserForm extends React.Component {
             this.props.onSubmit(data)
         }
 
-        $('#userform-' + (this.props.user ? this.props.user.id : 'new')).modal('hide')
+        $('#' + this.state.id).modal('hide')
     }
 
     close() {
-        $('#userform-' + (this.props.user ? this.props.user.id : 'new')).modal('hide')
+        $('#' + this.state.id).modal('hide')
     }
 
     render() {
         const { user } = this.props
 
-        const id = 'userform-' + (user ? user.id : 'new')
+        const id = this.state.id
         const title = user ? 'Modify a user' : 'Add a user'
 
         const defaultName = user ? user.name : ''
@@ -59,8 +60,10 @@ export default class UserForm extends React.Component {
 
         return (
             <div id={id} className="UserForm ui modal small">
-                <i id={'close-' + id} className="large remove action icon modal-close"></i>
-                <div className="header">{title}</div>
+                <div className="header">
+                    {title}
+                    <i id={'close-' + id} className="remove action icon modal-close"></i>
+                </div>
                 <div className="content">
                     <form id={'form-' + id} className="ui form">
                         <div className="field">
