@@ -62,6 +62,8 @@ export default class UserForm extends React.Component {
         const defaultEmail = user ? user.email : ''
         const defaultRole = user ? user.roles[0] : 'user'
 
+        const submitText = user ? "Update user" : "Create user"
+
         return (
             <div id={id} className="UserForm ui modal small">
                 <div className="header">
@@ -86,7 +88,8 @@ export default class UserForm extends React.Component {
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
-                        <button id={'submit-' + id} className="ui button" type="submit">Submit</button>
+                        <button id={'submit-' + id} className="ui green button" type="submit">{submitText}</button>
+                        <button id={'close-' + id} className="ui button" type="button">Cancel</button>
                     </form>
                 </div>
             </div>

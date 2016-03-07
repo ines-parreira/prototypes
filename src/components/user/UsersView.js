@@ -30,7 +30,7 @@ export default class UsersView extends React.Component {
                         <UserForm
                             onSubmit={createUser}
                         />
-                        <button className="ui button" onClick={() => {$('#userform-new').modal('show')}}>
+                        <button className="ui green button" onClick={() => {$('#userform-new').modal('show')}}>
                             Add a user
                         </button>
                     </div>

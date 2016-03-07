@@ -43,7 +43,7 @@ export default class UserRow extends React.Component {
                         </div>
                     </div>
                     <div className="five wide column">
-                        <button className="ui button right" onClick={() => {deleteUser(user.id)}}>
+                        <button className="ui red button right" onClick={() => {deleteUser(user.id)}}>
                             Delete
                         </button>
                         <button className="ui button right" onClick={() => {$('#userform-' + user.id).modal('show')}}>
