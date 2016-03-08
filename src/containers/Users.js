@@ -65,8 +65,6 @@ class UsersContainer extends React.Component {
 
         return (
             <div className="UsersContainer">
-                <div id="results-container">
-                </div>
                 <UsersView
                     items={users.get('items')}
                     isLoading={users.get('loading')}
