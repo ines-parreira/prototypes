@@ -20,6 +20,8 @@ export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'
 
 export const SORT_USERS = 'SORT_USERS'
 
+export const UPDATE_LIST = 'UPDATE_LIST'
+
 
 export function fetchUsers() {
     return (dispatch) => {
@@ -168,6 +170,15 @@ export function sortUsers(sort) {
         dispatch({
             type: SORT_USERS,
             sort: sort
+        })
+    }
+}
+
+export function updateList(list) {
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_LIST,
+            list: list
         })
     }
 }

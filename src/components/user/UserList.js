@@ -19,7 +19,7 @@ export default class UserList extends React.Component {
                         </div>
                         <div className="two wide column">
                             Role
-                            <i id="users-role-sort" className="sort action icon" onClick={() => {sortUsers('role')}}></i>
+                            <i id="users-role-sort" className="sort action icon" onClick={() => {sortUsers('roles')}}></i>
                         </div>
                         <div className="eight wide column">
                             User

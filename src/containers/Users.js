@@ -6,6 +6,8 @@ import { bindActionCreators } from 'redux'
 import * as UserActions from '../actions/user'
 import UsersView from '../components/user/UsersView'
 
+import instantsearch from 'instantsearch.js'
+
 
 class UsersContainer extends React.Component {
     getChildContext() {
@@ -21,6 +23,39 @@ class UsersContainer extends React.Component {
         this.props.actions.fetchUsers()
     }
 
+    componentDidMount() {
+        function searchResults({updateMethod}) {
+            return {
+                render({results}) {
+                    updateMethod(results.hits)
+                }
+            }
+        }
+
+        const search = instantsearch({
+            appId: 'G5FVFFNP0F',
+            apiKey: '1410ae780124bd574d8f28ef301e3df4',
+            indexName: 'dev_user_gorgias'
+        })
+
+        // add a searchBox
+        search.addWidget(
+            instantsearch.widgets.searchBox({
+                container: document.querySelector('#user-search'),
+                placeholder: 'iphone...'
+            })
+        )
+
+        // add a bestResult widget
+        search.addWidget(
+            searchResults({
+                updateMethod: this.props.actions.updateList
+            })
+        )
+
+        search.start()
+    }
+
     render() {
         const { users } = this.props
 
@@ -30,6 +65,8 @@ class UsersContainer extends React.Component {
 
         return (
             <div className="UsersContainer">
+                <div id="results-container">
+                </div>
                 <UsersView
                     items={users.get('items')}
                     isLoading={users.get('loading')}

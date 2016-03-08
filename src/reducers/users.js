@@ -4,6 +4,7 @@ import {_} from 'lodash'
 
 const usersInitial = Map({
     items: [],
+    displayItems: [],
     sort: 'id',
     loading: true,
     resp: {}
@@ -69,6 +70,14 @@ export function users(state = usersInitial, action) {
             return Map({
                 items: action.sort !== state.get('sort') ? _.sortBy(state.get('items'), [action.sort]) : _.reverse(state.get('items')),
                 sort: action.sort,
+                loading: state.get('loading'),
+                resp: state.get('resp')
+            })
+
+        case actions.UPDATE_LIST:
+            return Map({
+                items: action.list,
+                sort: state.get('sort'),
                 loading: state.get('loading'),
                 resp: state.get('resp')
             })

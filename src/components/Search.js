@@ -5,7 +5,7 @@ export default class Search extends React.Component {
         return (
             <div className="ui  search">
                 <div className="ui six icon input">
-                    <input className="prompt" type="text" placeholder="Search..."/>
+                    <input id="user-search" className="prompt" type="text" placeholder="Search..."/>
                     <i className="search icon"></i>
                 </div>
                 <div className="results"></div>

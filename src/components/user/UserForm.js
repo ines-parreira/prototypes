@@ -62,7 +62,7 @@ export default class UserForm extends React.Component {
         const defaultEmail = user ? user.email : ''
         const defaultRole = user ? user.roles[0] : 'user'
 
-        const submitText = user ? "Update user" : "Create user"
+        const submitText = user ? 'Update user' : 'Create user'
 
         return (
             <div id={id} className="UserForm ui modal small">
