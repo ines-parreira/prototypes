@@ -1,5 +1,6 @@
 import reqwest from 'reqwest'
-import {systemMessage} from './systemMessage'
+import { systemMessage } from './systemMessage'
+import { PER_PAGE } from '../constants'
 
 // Basic operations on the ticket
 export const NEW_TICKET = 'NEW_TICKET'
@@ -21,14 +22,22 @@ export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
 export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
+export const UPDATE_TICKET_RULES = 'UPDATE_TICKET_RULES'
+
+
+export function fetchPage(view, page, data = {}) {
+    const defaults = {
+        view: view.slug,
+        page: page,
+        per_page: PER_PAGE,
+    }
+    return fetchView("/api/tickets/", _.defaults(defaults, data))
+}
+
 export function fetchView(url, data = {}, type = 'list') {
     return (dispatch) => {
-        // Infinite loads should extend the list of tickets
-        const extend = data.page > 1
-
         dispatch({
             type: type === 'list' ? FETCH_TICKET_LIST_VIEW_START : FETCH_TICKET_START,
-            extend: extend
         })
 
         return reqwest({
@@ -40,7 +49,6 @@ export function fetchView(url, data = {}, type = 'list') {
         }).then((resp) => {
             dispatch({
                 type: type === 'list' ? FETCH_TICKET_LIST_VIEW_SUCCESS : FETCH_TICKET_SUCCESS,
-                extend: extend,
                 resp
             })
         }).catch((err) => {
@@ -57,6 +65,14 @@ export function updateTicket(props) {
     return {
         type: UPDATE_TICKET_PROPS,
         props
+    }
+}
+
+export function updateRules(name, value) {
+    return {
+        type: UPDATE_TICKET_RULES,
+        name,
+        value
     }
 }
 

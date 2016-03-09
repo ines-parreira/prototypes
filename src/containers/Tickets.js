@@ -2,9 +2,16 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import { bindActionCreators } from 'redux'
+import { _ } from 'lodash'
 
 import * as TicketActions from '../actions/ticket'
+import * as ViewActions from '../actions/view'
+import * as UserActions from '../actions/user'
+import * as TagActions from '../actions/tag'
+
 import TicketsView from '../components/ticket/TicketsView'
+import { TicketColumns } from '../components/ticket/TicketColumns'
+import { DEFAULT_VIEW } from '../constants'
 
 
 class TicketsContainer extends React.Component {
@@ -12,56 +19,67 @@ class TicketsContainer extends React.Component {
         this.props.pushState(null, url)
     }
 
+    getView = () => {
+        // TODO: Use reselect for this
+        const {views, view, params} = this.props
+        const viewName = params ? params.view : DEFAULT_VIEW
+
+        if (!views || !views.size) {
+            // Return something so sub-components can start rendering while the view loads
+            return {slug: viewName, simpleRules: []}
+        }
+
+        return views.get(viewName)
+    }
+
+    getViewColumns = () => {
+        const currentColumns = this.getView().columns
+        return _.filter(TicketColumns, (column) => {
+            return _.includes(currentColumns, column.name)
+        })
+    }
+
+    componentDidMount = () => {
+        this.props.actions.tag.fetchTags()
+        this.props.actions.user.fetchUsers()
+        this.props.actions.ticket.fetchPage(this.getView(), 1)
+    }
+
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.params && this.props.params && nextProps.params.view !== this.props.params.view) {
-            this.fetchTickets(nextProps, 1)
+            this.props.actions.ticket.fetchPage(this.getView(), 1)
         }
     }
-
-    onInfiniteLoad = () => {
-        if (!this.props.tickets.get('endReached')) {
-            this.fetchTickets(this.props)
-        }
-    }
-
-    fetchTickets = (props, getPage = null) => {
-        const page = getPage || props.tickets.get('page') + 1
-        props.actions.fetchView("/api/tickets/", {
-            view: props.view || props.params.view,
-            page: page,
-            per_page: 50
-        })
-    }        
 
     render() {
         return (
             <div className="TicketsContainer">
                 <TicketsView
-                    items={this.props.tickets.get('items')}
-                    view={this.props.tickets.get('resp').meta.view}
+                    tickets={this.props.tickets}
+                    allTags={this.props.tags.get('items')}
+                    allUsers={this.props.users.get('items')}
+                    columns={this.getViewColumns()}
+                    view={this.getView()}
                     currentUser={this.props.currentUser}
-                    onInfiniteLoad={this.onInfiniteLoad}
-                    isLoading={this.props.tickets.get('loading')}
-                    pushState={this.pushState} />
+                    actions={this.props.actions}
+                    pushState={this.pushState}
+                    />
             </div>
         )
     }
 }
 
 TicketsContainer.propTypes = {
-    view: PropTypes.string,
     tickets: PropTypes.shape({
-        page: PropTypes.number,
-        loading: PropTypes.bool,
-        endReached: PropTypes.bool,
         items: PropTypes.array,
-        resp: PropTypes.shape({
-            meta: PropTypes.object,
-            data: PropTypes.array,
-            uri: PropTypes.string,
-            object: PropTypes.string
+        resp_meta: PropTypes.shape({
+            page: PropTypes.number,
+            nb_pages: PropTypes.number,
         }),
     }),
+    views: PropTypes.object.isRequired,
+    users: PropTypes.object,
+    tags: PropTypes.object,
     currentUser: PropTypes.object,
     actions: PropTypes.object.isRequired,
 
@@ -72,6 +90,9 @@ TicketsContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        tags: state.tags,
+        users: state.users,
+        views: state.views,
         tickets: state.tickets,
         currentUser: state.currentUser
     }
@@ -79,7 +100,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(TicketActions, dispatch),
+        actions: {
+            view: bindActionCreators(ViewActions, dispatch),
+            ticket: bindActionCreators(TicketActions, dispatch),            
+            user: bindActionCreators(UserActions, dispatch),            
+            tag: bindActionCreators(TagActions, dispatch),            
+        },
         pushState: bindActionCreators(pushState, dispatch)
     }
 }

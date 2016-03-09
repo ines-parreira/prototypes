@@ -7,8 +7,12 @@ import { DEFAULT_OPTION_CHAINS } from '../components/ast/Widget.js'
 
 const initialState = Immutable.List([])
 
-function getAST(code) {
+export function getAST(code) {
     return esprima.parse(code)
+}
+
+export function getCode(ast) {
+    return escodegen.generate(ast)
 }
 
 /**
@@ -248,7 +252,7 @@ export function rules(state = initialState, action) {
             }
 
             let stateitemObj = stateitemNew.toJS()
-            stateitemObj.code = escodegen.generate(stateitemObj.code_ast)
+            stateitemObj.code = getCode(stateitemObj.code_ast)
             const stateNew = state.set(index, stateitemObj)
             return stateNew
         }

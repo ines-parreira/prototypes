@@ -8,12 +8,20 @@ export const FETCH_VIEW_START = 'FETCH_VIEW_START'
 export const FETCH_VIEW_SUCCESS = 'FETCH_VIEW_SUCCESS'
 export const FETCH_VIEW_ERROR = 'FETCH_VIEW_ERROR'
 
+// Update individual view definitions
+export const UPDATE_VIEW_START = 'UPDATE_VIEW_START'
+export const UPDATE_VIEW_SUCCESS = 'UPDATE_VIEW_SUCCESS'
+export const UPDATE_VIEW_ERROR = 'UPDATE_VIEW_ERROR'
+
+export const UPDATE_SIMPLE_RULES = 'UPDATE_SIMPLE_RULES'
+
 // Fetch list views
 export const FETCH_VIEW_LIST_START = 'FETCH_VIEW_LIST_START'
 export const FETCH_VIEW_LIST_SUCCESS = 'FETCH_VIEW_LIST_SUCCESS'
 export const FETCH_VIEW_LIST_ERROR = 'FETCH_VIEW_LIST_ERROR'
 
-export function fetchView(url, data = {}, type = 'list') {
+
+export function fetchViews(url, data = {}, type = 'list') {
     return (dispatch) => {
         dispatch({
             type: type === 'list' ? FETCH_VIEW_LIST_START : FETCH_VIEW_START
@@ -33,6 +41,46 @@ export function fetchView(url, data = {}, type = 'list') {
         }).catch((err) => {
             dispatch({
                 type: type === 'list' ? FETCH_VIEW_LIST_ERROR : FETCH_VIEW_ERROR,
+                err
+            })
+        })
+    }
+}
+
+export function updateSimpleRules(slug, data) {
+    return {
+        type: UPDATE_SIMPLE_RULES,
+        slug,
+        data
+    }
+}
+
+export function updateView(id, slug, data = {}) {
+    const url = `/api/views/${id}/`
+
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_VIEW_START,
+            slug,
+            data
+        })
+
+        return reqwest({
+            url: url,
+            data: JSON.stringify(data),
+            type: 'json',
+            method: 'PUT',
+            contentType: 'application/json'
+        }).then((resp) => {
+            dispatch({
+                type: UPDATE_VIEW_SUCCESS,
+                slug,
+                resp
+            })
+        }).catch((err) => {
+            dispatch({
+                type: UPDATE_VIEW_ERROR,
+                slug,
                 err
             })
         })

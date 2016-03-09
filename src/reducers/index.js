@@ -7,9 +7,10 @@ import { rules } from './rule'
 import { schemas } from './schema'
 import { tickets } from './tickets'
 import { ticket } from './ticket'
-import { views } from './view'
 import { users } from './users'
 import { settings } from './settings'
+import { tags } from './tags'
+import { views } from './view'
 
 const rootReducer = combineReducers({
     systemMessage,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     rules,
     views,
     users,
+    tags,
     router
 })
 

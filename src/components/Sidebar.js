@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
+import {_} from 'lodash'
 
 export default class Sidebar extends React.Component {
 
@@ -35,7 +36,7 @@ export default class Sidebar extends React.Component {
 
     render() {
         const {views, currentUser} = this.props
-        const sections = this.sections(views)
+        const sections = this.sections(_.values(views.toJS()))
         return (
             <div className="ui inverted blue left visible sidebar menu">
                 <div className="ui inverted blue large vertical menu">
