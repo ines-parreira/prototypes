@@ -22,8 +22,6 @@ export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
 export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
-export const UPDATE_TICKET_RULES = 'UPDATE_TICKET_RULES'
-
 
 export function fetchPage(view, page, data = {}) {
     const defaults = {
@@ -65,14 +63,6 @@ export function updateTicket(props) {
     return {
         type: UPDATE_TICKET_PROPS,
         props
-    }
-}
-
-export function updateRules(name, value) {
-    return {
-        type: UPDATE_TICKET_RULES,
-        name,
-        value
     }
 }
 

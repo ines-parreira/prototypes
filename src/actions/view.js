@@ -13,8 +13,6 @@ export const UPDATE_VIEW_START = 'UPDATE_VIEW_START'
 export const UPDATE_VIEW_SUCCESS = 'UPDATE_VIEW_SUCCESS'
 export const UPDATE_VIEW_ERROR = 'UPDATE_VIEW_ERROR'
 
-export const UPDATE_SIMPLE_RULES = 'UPDATE_SIMPLE_RULES'
-
 // Fetch list views
 export const FETCH_VIEW_LIST_START = 'FETCH_VIEW_LIST_START'
 export const FETCH_VIEW_LIST_SUCCESS = 'FETCH_VIEW_LIST_SUCCESS'
@@ -44,14 +42,6 @@ export function fetchViews(url, data = {}, type = 'list') {
                 err
             })
         })
-    }
-}
-
-export function updateSimpleRules(slug, data) {
-    return {
-        type: UPDATE_SIMPLE_RULES,
-        slug,
-        data
     }
 }
 

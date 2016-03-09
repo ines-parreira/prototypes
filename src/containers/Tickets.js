@@ -26,7 +26,7 @@ class TicketsContainer extends React.Component {
 
         if (!views || !views.size) {
             // Return something so sub-components can start rendering while the view loads
-            return {slug: viewName, simpleRules: []}
+            return {slug: viewName}
         }
 
         return views.get(viewName)
