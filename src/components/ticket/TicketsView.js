@@ -2,8 +2,6 @@ import React, {PropTypes} from 'react'
 import TicketTable from './TicketTable'
 import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
 import Search from '../Search'
-import FilterDropdown from './FilterDropdown'
-import { TICKET_TAGS, TICKET_ASSIGNEE, TICKET_STATUS, TICKET_STATUSES } from '../../constants'
 
 
 export default class TicketsView extends React.Component {

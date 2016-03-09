@@ -1,5 +1,4 @@
 import * as actions from '../actions/ticket'
-import { TICKET_TAGS, TICKET_ASSIGNEE } from '../constants'
 import { Map } from 'immutable'
 import { _ } from 'lodash'
 

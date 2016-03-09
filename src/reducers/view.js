@@ -16,10 +16,6 @@ export function views(state = Map(), action) {
             let newState = state.toJS()
             newState[action.slug] = _.assign({}, newState[action.slug], action.data)
             return Map(newState)
-        case actions.UPDATE_VIEW_SUCCESS:
-            let viewState = state.toJS()
-            viewState[action.slug].dirty = false
-            return Map(viewState)
         default:
             return state
     }

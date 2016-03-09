@@ -47,6 +47,8 @@ export function fetchViews(url, data = {}, type = 'list') {
 
 export function updateView(id, slug, data = {}) {
     const url = `/api/views/${id}/`
+    // Ensure we have the slug for the backend schema
+    data.slug = slug
 
     return (dispatch) => {
         dispatch({
