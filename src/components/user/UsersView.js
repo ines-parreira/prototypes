@@ -17,7 +17,7 @@ export default class UsersView extends React.Component {
                 <div className="ui text menu">
                     <div className="right menu item">
                         <div className="item">
-                            <Search />
+                            <Search id="user-search"/>
                         </div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@ export default class UsersView extends React.Component {
                         <UserForm
                             onSubmit={createUser}
                         />
-                        <button className="ui green button" onClick={() => {$('#userform-new').modal('show')}}>
+                        <button className="ui right floated green button" onClick={() => {$('#userform-new').modal('show')}}>
                             Add a user
                         </button>
                     </div>
@@ -51,5 +51,3 @@ UsersView.propTypes = {
 UsersView.contextTypes = {
     createUser: PropTypes.func.isRequired
 }
-
-

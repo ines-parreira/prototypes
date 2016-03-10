@@ -30,7 +30,8 @@ export default class UserList extends React.Component {
                 <div className="ui divided items">
                     {items.map((user) => {
                         return (
-                            <UserRow key={user.id}
+                            <UserRow
+                                key={user.id}
                                 user={user}
                             />
                         )

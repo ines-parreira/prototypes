@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import { dismissMessage } from '../actions/systemMessage'
 import { fetchUser } from '../actions/user'
+import { fetchSettings } from '../actions/settings'
 
 import TicketsSidebarContainer from './TicketsSidebar'
 import KeyboardHelp from '../components/KeyboardHelp'
@@ -18,6 +19,7 @@ class App extends React.Component {
     componentWillMount() {
         // fetch currently logged-in user
         this.props.fetchUser(0)
+        this.props.fetchSettings()
     }
 
     componentDidMount() {
@@ -89,6 +91,7 @@ App.propTypes = {
     // current logged in user
     currentUser: PropTypes.object,
     fetchUser: PropTypes.func.isRequired,
+    fetchSettings: PropTypes.func.isRequired,
 
     // Injected by React Redux
     pushState: PropTypes.func.isRequired,
@@ -111,5 +114,6 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
     dismissMessage,
     fetchUser,
+    fetchSettings,
     pushState
 })(App)
