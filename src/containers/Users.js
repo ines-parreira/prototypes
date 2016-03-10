@@ -33,7 +33,7 @@ class UsersContainer extends React.Component {
         }
 
         const search = instantsearch({
-            appId: 'G5FVFFNP0F',
+            appId: this.props.settings.algolia_app_name,
             apiKey: '1410ae780124bd574d8f28ef301e3df4',
             indexName: 'dev_user_gorgias'
         })
@@ -86,6 +86,7 @@ UsersContainer.propTypes = {
         })
     }),
     currentUser: PropTypes.object,
+    settings: PropTypes.object,
     actions: PropTypes.object.isRequired,
 
     // React Router
