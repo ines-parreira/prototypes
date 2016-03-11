@@ -102,25 +102,25 @@ export default class Paginator extends React.Component {
       var self = this
       children = children.map(function(child) {
         if (child === current) {
-          return React.DOM.div({className: 'active item'}, child)
+          return React.DOM.div({className: 'active item', key: 'current'}, child)
         } else {
-          return React.DOM.a({className: 'item', href: '#' + child, onClick: eventBinder(child, 'onChange', self, true)}, child)
+          return React.DOM.a({className: 'item', key: child, href: '#' + child, onClick: eventBinder(child, 'onChange', self, true)}, child)
         }
       })
 
       // separators
       if (showLeftSeparator) {
         if (compact) {
-          children.splice(anchor, 0, React.DOM.a({className: 'icon item'}, React.DOM.i({className: 'left arrow icon', onClick: eventBinder(current-1, 'onChange', self, true)})))
+          children.splice(anchor, 0, React.DOM.a({className: 'icon item', key: current-1}, React.DOM.i({className: 'left arrow icon', onClick: eventBinder(current-1, 'onChange', self, true)})))
         } else {
-          children.splice(anchor, 0, React.DOM.div({className: 'disabled item'}, separator))
+          children.splice(anchor, 0, React.DOM.div({className: 'disabled item', key: 'sep'}, separator))
         }
       }
       if (showRightSeparator) {
         if (compact) {
-          children.splice(children.length-anchor, 0, React.DOM.a({className: 'icon item'}, React.DOM.i({className: 'right arrow icon', onClick: eventBinder(current+1, 'onChange', self, true)})))
+          children.splice(children.length-anchor, 0, React.DOM.a({className: 'icon item', key: current+1}, React.DOM.i({className: 'right arrow icon', onClick: eventBinder(current+1, 'onChange', self, true)})))
         } else {
-          children.splice(children.length-anchor, 0, React.DOM.div({className: 'disabled item'}, separator))
+          children.splice(children.length-anchor, 0, React.DOM.div({className: 'disabled item', key: 'sep'}, separator))
         }
       }
 
@@ -135,7 +135,7 @@ export default class Paginator extends React.Component {
           className = 'icon item'
         }
         children.splice(0, 0, React.DOM[nodeName]({
-          className: className, onClick: current > 1 ? eventBinder(current-1, 'onChange', self, true) : undefined
+          className: className, key: 'prev', onClick: current > 1 ? eventBinder(current-1, 'onChange', self, true) : undefined
         }, React.DOM.i({className: 'left arrow icon'})))
 
         if (current === totalPages) {
@@ -146,7 +146,7 @@ export default class Paginator extends React.Component {
           className = 'icon item'
         }
         children.splice(children.length, 0, React.DOM[nodeName]({
-          className: className, onClick: current < totalPages ? eventBinder(current+1, 'onChange', self, true) : undefined
+          className: className, key: 'next', onClick: current < totalPages ? eventBinder(current+1, 'onChange', self, true) : undefined
         }, React.DOM.i({className: 'right arrow icon'})))
       }
 
