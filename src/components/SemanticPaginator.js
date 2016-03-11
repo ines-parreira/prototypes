@@ -34,14 +34,10 @@ const eventBinder = function(value, type, context, cancelEvent) {
 
 
 export default class Paginator extends React.Component {
-  componentWillMount() {
-    this.setState({page: this.props.page || 1})
-  }
-
   render() {
     var totalPages = this.props.totalPages
     if (totalPages && totalPages > 1) {
-      var current = this.state.page,
+      var current = this.props.page,
           radius = this.props.radius || 0,
           anchor = this.props.anchor || 1,
           separator = this.props.separator || '...',
@@ -159,17 +155,5 @@ export default class Paginator extends React.Component {
     } else {
       return React.DOM.div()
     }
-  }
-
-  onChange = (pageNumber) => {
-    this.setState({
-      page: pageNumber
-    })
-  }
-
-  setPage = (pageNumber) => {
-    this.setState({
-      page: pageNumber
-    })
   }
 }
