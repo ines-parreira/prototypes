@@ -1,6 +1,8 @@
 import * as actions from '../actions/ticket'
 import { Map } from 'immutable'
 import { _ } from 'lodash'
+import { getCode, getAST } from './rule'
+
 
 const ticketsInitial = Map({
     items: [],
@@ -12,7 +14,8 @@ export function tickets(state = ticketsInitial, action) {
         case actions.NEW_TICKET:
             return state
         case actions.FETCH_TICKET_LIST_VIEW_START:
-            return ticketsInitial
+            // Re-render as little as possible
+            return state
         case actions.FETCH_TICKET_LIST_VIEW_SUCCESS:
             return Map({
                 items: action.resp.data,

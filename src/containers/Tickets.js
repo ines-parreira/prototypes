@@ -19,9 +19,10 @@ class TicketsContainer extends React.Component {
         this.props.pushState(null, url)
     }
 
-    getView = () => {
+    getView = (props) => {
         // TODO: Use reselect for this
-        const {views, view, params} = this.props
+        props = props || this.props
+        const {views, view, params} = props
         const viewName = params ? params.view : DEFAULT_VIEW
 
         if (!views || !views.size) {
@@ -42,12 +43,17 @@ class TicketsContainer extends React.Component {
     componentDidMount = () => {
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers()
-        this.props.actions.ticket.fetchPage(this.getView(), 1)
+    }
+
+    componentDidUpdate = (prevProps) => {
+        if (!this.getView(prevProps).filters_ast && this.getView().filters_ast) {
+            this.props.actions.ticket.fetchPageFromAlgolia(this.getView(), 1)
+        }
     }
 
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.params && this.props.params && nextProps.params.view !== this.props.params.view) {
-            this.props.actions.ticket.fetchPage(this.getView(), 1)
+            this.props.actions.ticket.fetchPageFromAlgolia(this.getView(nextProps), 1)
         }
     }
 

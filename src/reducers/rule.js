@@ -1,19 +1,10 @@
 import Immutable from 'immutable'
-import esprima from 'esprima'
-import escodegen from 'escodegen'
+import { getCode, getAST } from '../filters/ast'
 
 import { ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST } from '../actions/rule'
 import { DEFAULT_OPTION_CHAINS } from '../components/ast/Widget.js'
 
 const initialState = Immutable.List([])
-
-export function getAST(code) {
-    return esprima.parse(code)
-}
-
-export function getCode(ast) {
-    return escodegen.generate(ast)
-}
 
 /**
  * In Order traversal the SYNTAXTREE from CURRENTPATH. Return a list

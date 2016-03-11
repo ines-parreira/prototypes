@@ -45,7 +45,9 @@ export default class TicketsView extends React.Component {
 
                 <h1 className="ui header">{this.props.view.name}</h1>
                 <TicketTable
+                    actions={this.props.actions}
                     tickets={this.props.tickets}
+                    view={this.props.view}
                     columns={this.props.columns}
                     allTags={this.props.allTags}
                     allUsers={this.props.allUsers}
@@ -58,6 +60,7 @@ export default class TicketsView extends React.Component {
 }
 
 TicketsView.propTypes = {
+    actions: PropTypes.object.isRequired,
     tickets: PropTypes.object.isRequired,
     view: PropTypes.object.isRequired,
     columns: PropTypes.arrayOf(

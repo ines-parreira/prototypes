@@ -1,6 +1,8 @@
 import reqwest from 'reqwest'
 import { systemMessage } from './systemMessage'
 import { PER_PAGE } from '../constants'
+import { ASTToAlgoliaSearchParams, ticketsIndex } from '../filters/algolia'
+
 
 // Basic operations on the ticket
 export const NEW_TICKET = 'NEW_TICKET'
@@ -23,6 +25,7 @@ export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
 
+
 export function fetchPage(view, page, data = {}) {
     const defaults = {
         view: view.slug,
@@ -30,6 +33,43 @@ export function fetchPage(view, page, data = {}) {
         per_page: PER_PAGE,
     }
     return fetchView("/api/tickets/", _.defaults(defaults, data))
+}
+
+export function fetchPageFromAlgolia(view, page) {
+    // We are 1-indexed, Algolia is 0-indexed
+    page = page - 1 
+    const defaults = {
+        page: page,
+        hitsPerPage: PER_PAGE,
+    }
+    const searchParams = ASTToAlgoliaSearchParams(view.filters_ast, 'ticket.')
+    const params = _.defaults(defaults, searchParams)
+
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_TICKET_LIST_VIEW_START,
+        })
+
+        return ticketsIndex.search('', params, (err, content) => {
+            if (err) {
+                return dispatch(systemMessage({
+                    type: 'error',
+                    header: 'Error: Failed to fetch list of tickets.',
+                    msg: err
+                }))
+            }
+            dispatch({
+                type: FETCH_TICKET_LIST_VIEW_SUCCESS,
+                resp: {
+                    data: content.hits,
+                    meta: {
+                        nb_pages: content.nbPages,
+                        page: content.page + 1,
+                    }
+                }
+            })
+        })
+    }
 }
 
 export function fetchView(url, data = {}, type = 'list') {

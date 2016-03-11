@@ -42,7 +42,7 @@ export default class TicketTable extends React.Component {
     }
 
     onPageChange = (page) => {
-        return this.props.actions.view.fetchPage(this.props.view, page)
+        return this.props.actions.ticket.fetchPageFromAlgolia(this.props.view, page)
     }
 
     render = () => {
@@ -53,7 +53,6 @@ export default class TicketTable extends React.Component {
         if (_.isEmpty(this.props.tickets.get('items'))) {
             return this.renderLoading()
         }
-
         return (
             <div className="TicketTable">
                 <div>
@@ -90,6 +89,8 @@ export default class TicketTable extends React.Component {
                     page={this.props.tickets.get('resp_meta').page}
                     totalPages={this.props.tickets.get('resp_meta').nb_pages}
                     onChange={this.onPageChange}
+                    radius={0}
+                    anchor={3}
                     />
             </div>
         )
@@ -98,6 +99,8 @@ export default class TicketTable extends React.Component {
 
 TicketTable.propTypes = {
     tickets: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
+    view: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired,
     allTags: PropTypes.array.isRequired,
     allUsers: PropTypes.array.isRequired,
