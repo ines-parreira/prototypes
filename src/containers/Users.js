@@ -4,7 +4,10 @@ import { pushState } from 'redux-router'
 import { bindActionCreators } from 'redux'
 
 import * as UserActions from '../actions/user'
+import * as SettingsActions from '../actions/settings'
 import UsersView from '../components/user/UsersView'
+
+import instantsearch from 'instantsearch.js'
 
 
 class UsersContainer extends React.Component {
@@ -17,8 +20,47 @@ class UsersContainer extends React.Component {
         }
     }
 
-    componentWillMount() {
-        this.props.actions.fetchUsers()
+    componentDidMount() {
+        if (this.props.settings.get('loaded')) {
+            this.loadSearch(this.props)
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.settings.get('loaded') && !nextProps.settings.get('searchLoaded').user) {
+            this.loadSearch(nextProps)
+        }
+    }
+
+    loadSearch(props) {
+        function searchResults({updateMethod}) {
+            return {
+                render({results}) {
+                    updateMethod(results.hits)
+                }
+            }
+        }
+
+        const search = instantsearch({
+            appId: props.settings.get('data').algolia_app_name,
+            apiKey: props.settings.get('data').algolia_api_key,
+            indexName: props.settings.get('data').indices_names.user
+        })
+
+        search.addWidget(
+            instantsearch.widgets.searchBox({
+                container: document.querySelector('#user-search')
+            })
+        )
+
+        search.addWidget(
+            searchResults({
+                updateMethod: props.actions.updateList
+            })
+        )
+
+        props.settingsActions.loadedSearch('user')
+        search.start()
     }
 
     render() {
@@ -51,7 +93,9 @@ UsersContainer.propTypes = {
         })
     }),
     currentUser: PropTypes.object,
+    settings: PropTypes.object,
     actions: PropTypes.object.isRequired,
+    settingsActions: PropTypes.object.isRequired,
 
     // React Router
     params: PropTypes.object
@@ -67,13 +111,15 @@ UsersContainer.childContextTypes = {
 function mapStateToProps(state) {
     return {
         users: state.users,
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        settings: state.settings
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(UserActions, dispatch)
+        actions: bindActionCreators(UserActions, dispatch),
+        settingsActions: bindActionCreators(SettingsActions, dispatch)
     }
 }
 

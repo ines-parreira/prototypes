@@ -9,10 +9,12 @@ import { tickets } from './tickets'
 import { ticket } from './ticket'
 import { views } from './view'
 import { users } from './users'
+import { settings } from './settings'
 
 const rootReducer = combineReducers({
     systemMessage,
     currentUser,
+    settings,
     tickets,
     ticket,
     schemas,
