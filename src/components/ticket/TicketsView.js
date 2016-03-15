@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react'
 import TicketTable from './TicketTable'
 import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
-import Search from '../Search'
 
 
 export default class TicketsView extends React.Component {
@@ -30,11 +29,6 @@ export default class TicketsView extends React.Component {
                 <a className="ui dropdown item top-dropdowns">
                     {this.renderShowMoreFieldsDropdown()}
                 </a>
-                <div className="right menu item">
-                    <div className="item">
-                        <Search />
-                    </div>
-                </div>
             </div>
         )
     }
