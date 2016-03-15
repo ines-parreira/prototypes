@@ -3,7 +3,7 @@ import moment from 'moment'
 import 'moment-timezone'
 import TicketTableRow from './TicketTableRow'
 import SemanticPaginator from '../SemanticPaginator'
-import classNames from 'classNames'
+import classNames from 'classnames'
 import { CELL_WIDTH } from '../../constants'
 
 

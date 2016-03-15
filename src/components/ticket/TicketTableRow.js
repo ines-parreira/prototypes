@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
 import 'moment-timezone'
-import classNames from 'classNames'
+import classNames from 'classnames'
 
 export default class TicketTableRow extends React.Component {
     stripHTML = (text) => {
