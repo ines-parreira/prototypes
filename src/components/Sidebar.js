@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {_} from 'lodash'
+import _ from 'lodash'
 
 export default class Sidebar extends React.Component {
 

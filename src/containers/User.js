@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 
-import * as UserActions from '../actions/User'
+import * as UserActions from '../actions/user'
 import UserView from '../components/user/UsersView'
 
 

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import { bindActionCreators } from 'redux'
-import { _ } from 'lodash'
+import _ from 'lodash'
 
 import * as TicketActions from '../actions/ticket'
 import * as ViewActions from '../actions/view'

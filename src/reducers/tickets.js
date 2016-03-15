@@ -1,6 +1,6 @@
 import * as actions from '../actions/ticket'
 import { Map } from 'immutable'
-import { _ } from 'lodash'
+import _ from 'lodash'
 import { getCode, getAST } from './rule'
 
 

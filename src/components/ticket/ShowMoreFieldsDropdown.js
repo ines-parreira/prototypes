@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {TicketColumns} from './TicketColumns'
-import {_} from 'lodash'
+import _ from 'lodash'
 
 
 export default class ShowMoreFieldsDropdown extends React.Component {

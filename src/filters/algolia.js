@@ -1,4 +1,4 @@
-import { _ } from 'lodash'
+import _ from 'lodash'
 import algoliasearch from 'algoliasearch'
 
 import { getCode, codeToKeyValuePairs, groupKeyValuePairs } from './ast'

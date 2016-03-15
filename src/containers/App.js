@@ -9,6 +9,7 @@ import TicketsSidebarContainer from './TicketsSidebar'
 import KeyboardHelp from '../components/KeyboardHelp'
 
 import * as mousetrap from 'mousetrap'
+import '../../css/main.less'
 
 class App extends React.Component {
     constructor(props) {

@@ -1,6 +1,6 @@
 import esprima from 'esprima'
 import escodegen from 'escodegen'
-import { _ } from 'lodash'
+import _ from 'lodash'
 
 
 export function getAST(code) {

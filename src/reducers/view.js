@@ -1,6 +1,6 @@
 import * as actions from '../actions/view'
 import Immutable, {Map} from 'immutable'
-import { _ } from 'lodash'
+import _ from 'lodash'
 
 
 export function views(state = Map(), action) {
