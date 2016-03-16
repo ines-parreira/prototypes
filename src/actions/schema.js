@@ -11,14 +11,14 @@ export function fetch() {
         })
 
         return reqwest({
-            url: '/api/schemas/',
+            url: '/doc/openapi.json',
             type: 'json',
             method: 'GET',
             contentType: 'application/json'
         }).then((resp) => {
             dispatch({
                 type: FETCH_SCHEMAS_SUCCESS,
-                data: resp.objects
+                data: resp
             })
         }).catch((err) => {
             dispatch(systemMessage({

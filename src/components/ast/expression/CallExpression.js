@@ -1,10 +1,11 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import Immutable from 'immutable'
+import { upperFirst } from 'lodash'
 
 import Expression from './Expression'
 import ObjectExpression from './ObjectExpression'
 import MatchingObjectsCounter from '../MatchingObjectsCounter'
-import {DeleteBinaryExpression} from '../OperationButtons'
+import { DeleteBinaryExpression } from '../OperationButtons'
 import Widget from '../Widget'
 
 import getSyntaxTreeLeaves from '../utils'
@@ -43,8 +44,16 @@ export default class CallExpression extends React.Component {
         // callee: Identifier
         // arguments: Expression1, Expression2
         if (parent.contains('test')) {
-            const root = Immutable.List(['objects'])
-            const left = root.push(...getSyntaxTreeLeaves(funcArgs[0]))
+            const root = Immutable.List(['definitions'])
+            let left = root.push(...getSyntaxTreeLeaves(funcArgs[0]))
+
+            // we need to title the first object after the definition definitions, ticket => definitions, Ticket
+            // this is needed to match the swagger spec structure
+            left = left.set(1, upperFirst(left.get(1)))
+            // each object in the swagger spec has properties
+            if (left.get(2) !== 'properties') {
+                left = left.splice(2, 0, 'properties')
+            }
 
             return (
                 <span className="CallExpression">
@@ -62,7 +71,7 @@ export default class CallExpression extends React.Component {
                         index={index}
                         actions={actions}
                         schemas={schemas}
-                        leftsiblings={left.push('operators')}
+                        leftsiblings={left.push('meta', 'operators')}
                     />
                     <Expression
                         {...funcArgs[1]}
@@ -76,7 +85,7 @@ export default class CallExpression extends React.Component {
                     <MatchingObjectsCounter />
 
                     { deleteBinaryExpression }
-                    <br/>
+                    <br />
                 </span>
             )
         }

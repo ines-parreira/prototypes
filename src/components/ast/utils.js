@@ -1,31 +1,33 @@
-import Immutable from 'immutable'
+import { List } from 'immutable'
 
-/* Get all the name of the leaf nodes (Identifier and Literal nodes) of
- * the syntax tree.
+/* Given a WrappingNode construct a list that contains the path of all the leaves inside the tree.
+
+ Ex:
+ <WrappingNode ticket>
+ <WrappingNode message>
+ <WrappingNode from_agent>
+
+ Will result in:
+ ['ticket', 'message', 'from_agent']
+
+ This kind of path is useful for use in combination with the schemas (getting the kind of widgets,
+ possible values, etc..)
+
  */
 export default function getSyntaxTreeLeaves(syntaxTree) {
     if (syntaxTree === undefined || syntaxTree.type === undefined) {
         return null
     }
 
-    if (syntaxTree.type === 'Identifier') {
-        return Immutable.List([syntaxTree.name])
+    switch (syntaxTree.type) {
+        case 'Identifier':
+            return List([syntaxTree.name])
+        case 'Literal':
+            return List([syntaxTree.value])
+        case 'MemberExpression':
+            return getSyntaxTreeLeaves(syntaxTree.object).concat(
+                getSyntaxTreeLeaves(syntaxTree.property))
+        default:
+            console.warn('Unknown type', syntaxTree)
     }
-
-    if (syntaxTree.type === 'Literal') {
-        return Immutable.List([syntaxTree.value])
-    }
-
-
-    let ret = Immutable.List([])
-
-    for (const key of Object.keys(syntaxTree)) {
-        const r = getSyntaxTreeLeaves(syntaxTree[key])
-
-        if (r !== null) {
-            ret = ret.concat(r)
-        }
-    }
-
-    return ret
 }

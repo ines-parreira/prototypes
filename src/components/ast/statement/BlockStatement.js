@@ -16,7 +16,7 @@ export default class BlockStatement extends React.Component {
             const parentNew = parent.push('body', idx)
 
             return (
-                <div className="BlockStatementItem" key={ idx }>
+                <div className="BlockStatementItem" key={idx}>
                     <div className="item">
                         <DeleteBlockStatementItem
                             parent={parentNew}

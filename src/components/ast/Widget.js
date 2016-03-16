@@ -1,4 +1,7 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
+import Select from './widget/Select'
+import { List } from 'immutable'
+import { drop } from 'lodash'
 
 export default class Widget extends React.Component {
     handleChange(event) {
@@ -6,31 +9,6 @@ export default class Widget extends React.Component {
 
         actions.modifyCodeast(index, parent, event.target.value, 'UPDATE')
         // console.log(actions.modifyCodeast)
-    }
-
-    select(value, options) {
-        const neutralBtn = (
-        value === 'eq' ||
-        value === 'neq' ||
-        value === 'gt' ||
-        value === 'lt') ? ' neutral' : ''
-
-        return (
-            <select
-                className={`ui dropdown${neutralBtn}`}
-                value={value}
-                onChange={this.handleChange.bind(this)}>
-
-                <option value="" key="-1">-- select --</option>
-                {Object.keys(options).map((actionKey) => {
-                    return (
-                        <option
-                            value={actionKey}
-                            key={actionKey}>{options[actionKey].label}</option>
-                    )
-                })}
-            </select>
-        )
     }
 
     input(value) {
@@ -56,57 +34,85 @@ export default class Widget extends React.Component {
     render() {
         const {value, leftsiblings, schemas} = this.props
 
-        if (!schemas || !leftsiblings) {
+        if (!(schemas && schemas.size && leftsiblings && leftsiblings.size)) {
             return null
         }
 
-        // add options in bet
+        let left = leftsiblings
+        // we need to figure out if the path contains '$ref' objects, then resolve them from that
         let path = []
-        const tmp = leftsiblings.toJS()
-        if (tmp.length === 2) {
-            tmp.splice(1, 0, 'options')
-            path = tmp
-        } else {
-            for (let i = 0; i < tmp.length; i++) {
-                path.push(tmp[i])
-                if (i < tmp.length - 1) {
-                    path.push('options')
-                    if (i === (tmp.length - 2) && leftsiblings.last() === 'operators') {
-                        path.pop()
-                    }
-                }
+        for (const item of leftsiblings.toJS()) {
+            path.push(item)
+            const schema = schemas.getIn(path)
+
+            if (schema && schema.has('$ref')) {
+                // get the remaining path
+                const obj = schema.get('$ref').split('/')[2]
+                const newLeft = List(['definitions', obj, 'properties'])
+                const newRight = List(drop(leftsiblings.toJS(), path.length))
+                left = newLeft.concat(newRight)
             }
         }
 
-        console.log('path', path)
-        console.log('left', leftsiblings.toJS())
 
-        const right = schemas.getIn(path)
-        if (!right) {
-            return null
-        }
-        console.log('right', right.toJS())
+        console.log(left.toJS())
 
+        // widget data used for rendering
         let widget = {
             type: 'select',
+            value: value,
+            description: '',
             options: []
         }
 
-        // Operators are special because they are always a select input, we only need the options
-        if (leftsiblings.last() === 'operators') {
-            widget.options = right.toJS()
+        const allowedObjects = ['ticket', 'event'] // todo(@xarg): should be defined in the schema what values are allowed
+        if (left.size === 1 && left.get(0) === 'definitions') {
+            // we are at the root here, only allow some values
+            widget.options = allowedObjects
+        } else if (left.last() === 'properties') {
+            // are special because they are defining the props that available on the top level objects: ticket, event, etc..
+            const props = schemas.getIn(left).toJS()
+            for (const key of Object.keys(props)) {
+                const prop = props[key]
+                // only show props that have a meta value
+                if (!prop.hasOwnProperty('meta')) {
+                    continue
+                }
+                widget.options.push(key)
+                widget.description = prop.description
+            }
+        } else if (left.last() === 'operators') {
+            // operators are using simple select widget, all we need is the options
+            const operators = schemas.getIn(left)
+            if (operators) {
+                widget.options = operators.toJS()
+            }
         } else {
-            widget.options = right.get('options')
-            // todo(@xarg): treat url based options
-            if (widget.options && typeof widget.options !== 'string') {
+            // all other properties
+            const right = schemas.getIn(left)
+            if (!right) {
+                return null
+            }
+
+            widget.type = right.getIn(['meta', 'rules', 'widget'])
+            if (!widget.type) {
+                return null
+            }
+            widget.description = right.get('description')
+            widget.options = right.getIn(['meta', 'enum'])
+            if (widget.options) {
                 widget.options = widget.options.toJS()
             }
-            widget.type = right.get('widget', 'select')
         }
 
         switch (widget.type) {
             case 'select':
-                return this.select(value, widget.options)
+                return (
+                    <Select
+                        {...widget}
+                        handleChange={this.handleChange}
+                    />
+                )
             case 'input':
                 return this.input(value)
             case 'textarea':
@@ -118,6 +124,7 @@ export default class Widget extends React.Component {
 }
 
 Widget.propTypes = {
+    value: PropTypes.any,
     index: PropTypes.number,
     parent: PropTypes.object,
     schemas: PropTypes.object,
