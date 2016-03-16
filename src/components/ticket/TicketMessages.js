@@ -5,21 +5,18 @@ import TicketMessage from './TicketMessage'
 export default class TicketMessages extends React.Component {
     render() {
         const {messages} = this.props
-        if (!messages) {
+        if (messages.size === 0) {
             return null
         }
         return (
             <div className="TicketMessages">
                 <div className="ui divided items">
                     {messages.map((message) => {
-                        if (!message.id) {
-                            return null
-                        }
-
                         return (
-                            <TicketMessage key={message.id}
-                                           message={message}
-                                           currentUser={this.props.currentUser} />
+                            <TicketMessage key={message.get('id')}
+                                message={message.toJS()}
+                                currentUser={this.props.currentUser}
+                                />
                         )
                     })}
                 </div>
@@ -29,6 +26,6 @@ export default class TicketMessages extends React.Component {
 }
 
 TicketMessages.propTypes = {
-    messages: PropTypes.array,
-    currentUser: PropTypes.object
+    messages: PropTypes.object,
+    currentUser: PropTypes.object,
 }

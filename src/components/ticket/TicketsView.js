@@ -6,21 +6,21 @@ import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
 export default class TicketsView extends React.Component {
     renderShowMoreFieldsDropdown = () => {
         // Only render jQuery-laden initialision once we have the columns
-        if (_.isEmpty(this.props.columns)) {
+        if (this.props.columns.size === 0) {
             return null
         }
 
         return (
             <ShowMoreFieldsDropdown
-                columns={_.map(this.props.columns, 'name')}
+                columns={this.props.columns.map((c) => c.get('name'))}
                 updateView={this.updateView}
                 />
         )
     }
 
     updateView = (data) => {
-        const view = this.props.view
-        return this.props.actions.view.updateView(view.id, view.slug, data)
+        const { id, slug } = this.props.view.toJS()
+        return this.props.actions.view.updateView(id, slug, data)
     }
 
     renderTopbar() {
@@ -34,19 +34,19 @@ export default class TicketsView extends React.Component {
     }
     render() {
         return (
-            <div className="TicketsView" key={this.props.view.slug}>
+            <div className="TicketsView" key={this.props.view.get('slug')}>
                 {this.renderTopbar()}
 
-                <h1 className="ui header">{this.props.view.name}</h1>
+                <h1 className="ui header">{this.props.view.get('name')}</h1>
                 <TicketTable
                     actions={this.props.actions}
                     tickets={this.props.tickets}
-                    view={this.props.view}
-                    columns={this.props.columns}
+                    columns={this.props.columns.toJS()}
                     allTags={this.props.allTags}
                     allUsers={this.props.allUsers}
                     currentUser={this.props.currentUser}
                     pushState={this.props.pushState}
+                    fetchPage={this.props.fetchPage}
                 />
             </div>
         )
@@ -57,18 +57,12 @@ TicketsView.propTypes = {
     actions: PropTypes.object.isRequired,
     tickets: PropTypes.object.isRequired,
     view: PropTypes.object.isRequired,
-    columns: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            header: PropTypes.string.isRequired,
-            width: PropTypes.number.isRequired,
-            sortable: PropTypes.bool.isRequired,
-        })
-    ).isRequired,
+    columns: PropTypes.object.isRequired,
     allTags: PropTypes.array.isRequired,
     allUsers: PropTypes.array.isRequired,
     currentUser: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired,
+    fetchPage: PropTypes.func.isRequired,
 }
 

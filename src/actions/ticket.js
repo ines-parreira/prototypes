@@ -9,9 +9,6 @@ export const NEW_TICKET = 'NEW_TICKET'
 export const CLOSE_TICKET = 'CLOSE_TICKET'
 export const OPEN_TICKET = 'OPEN_TICKET'
 
-// Given some changes in the UI, update ticket properties to be reflected in the UI and prepared for submission
-export const UPDATE_TICKET_PROPS = 'UPDATE_TICKET_PROPS'
-
 // Reply to a ticket
 export const SUBMIT_TICKET_START = 'SUBMIT_TICKET_START'
 export const SUBMIT_TICKET_SUCCESS = 'SUBMIT_TICKET_SUCCESS'
@@ -24,25 +21,21 @@ export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
 export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
+// Macro actions
+// TODO: These are snake-case on the backend. Perhaps make them consistent?
+export const SET_RESPONSE_TEXT = 'setResponseText'
+export const ADD_TAGS = 'addTags'
 
 
-export function fetchPage(view, page, data = {}) {
-    const defaults = {
-        view: view.slug,
-        page: page,
-        per_page: PER_PAGE,
-    }
-    return fetchView("/api/tickets/", _.defaults(defaults, data))
-}
 
-export function fetchPageFromAlgolia(view, page) {
+export function fetchPageFromAlgolia(settings, view, page) {
     // We are 1-indexed, Algolia is 0-indexed
     page = page - 1 
     const defaults = {
         page: page,
         hitsPerPage: PER_PAGE,
     }
-    const searchParams = ASTToAlgoliaSearchParams(view.filters_ast, 'ticket.')
+    const searchParams = ASTToAlgoliaSearchParams(view.get('filters_ast').toJS(), 'ticket.')
     const params = _.defaults(defaults, searchParams)
 
     return (dispatch) => {
@@ -50,7 +43,7 @@ export function fetchPageFromAlgolia(view, page) {
             type: FETCH_TICKET_LIST_VIEW_START,
         })
 
-        return ticketsIndex.search('', params, (err, content) => {
+        return settings.getIn(['indices', 'ticket']).search('', params, (err, content) => {
             if (err) {
                 return dispatch(systemMessage({
                     type: 'error',
@@ -99,26 +92,27 @@ export function fetchView(url, data = {}, type = 'list') {
     }
 }
 
-export function updateTicket(props) {
-    return {
-        type: UPDATE_TICKET_PROPS,
-        props
-    }
-}
-
-export function submitTicket(ticket) {
+export function submitTicket(ticket, status) {
     return (dispatch) => {
         // we mark that we're trying to send the reply (used in the UI to show progress)
         dispatch({
             type: SUBMIT_TICKET_START
         })
+        // Allow the user to trigger "Close & Send" with just one action
+        const data = ticket.toJS()
+        data.status = status || data.status
+
+        if (data.newMessage.body_text.length > 0) {
+            data.messages.push(data.newMessage)
+            delete data.newMessage
+        }
 
         return reqwest({
             url: `/api/tickets/${ticket.get('id')}/`,
             type: 'json',
             contentType: 'application/json',
             method: 'PUT',
-            data: JSON.stringify(ticket.toJS())
+            data: JSON.stringify(data)
         }).then((resp) => {
             dispatch({
                 type: SUBMIT_TICKET_SUCCESS,

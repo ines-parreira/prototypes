@@ -1,8 +1,6 @@
 import _ from 'lodash'
-import algoliasearch from 'algoliasearch'
 
 import { getCode, codeToKeyValuePairs, groupKeyValuePairs } from './ast'
-import { ALGOLIA_APP_NAME, ALGOLIA_SEARCH_KEY, GORGIAS_DEV_TICKETS_INDEX } from '../constants'
 
 function removeKeyPrefix(object, prefix) {
     return _.mapKeys(object, (value, key) => {
@@ -53,8 +51,3 @@ export function ASTToAlgoliaSearchParams(filters_ast, prefix) {
     const groupedWithoutPrefix  = removeKeyPrefix(grouped, prefix)
     return mapGroupsToAlgolia(groupedWithoutPrefix)
 }
-
-export const algoliaClient = algoliasearch(ALGOLIA_APP_NAME, ALGOLIA_SEARCH_KEY)
-
-// TODO: Load the correct index for dev/prod and the specific account
-export const ticketsIndex = algoliaClient.initIndex(GORGIAS_DEV_TICKETS_INDEX)

@@ -1,5 +1,5 @@
 import * as actions from '../actions/systemMessage'
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 const initial = Map()
 

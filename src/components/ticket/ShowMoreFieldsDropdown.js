@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {TicketColumns} from './TicketColumns'
+import TicketColumns from './TicketColumns'
 import _ from 'lodash'
 
 
@@ -28,7 +28,7 @@ export default class ShowMoreFieldsDropdown extends React.Component {
     }
 
     renderCheckbox = (column) => {
-        const checked = _.includes(this.props.columns, column.name)
+        const checked = this.props.columns.includes(column.name)
         return (
             <div className="field" key={column.name}>
               <div className="ui checkbox">
@@ -50,7 +50,7 @@ export default class ShowMoreFieldsDropdown extends React.Component {
                     <div className="ui form">
                         <div className="grouped fields">
                             {
-                                _.sortBy(TicketColumns, 'name').map(this.renderCheckbox)
+                                _.sortBy(TicketColumns.toJS(), 'name').map(this.renderCheckbox)
                             }
                         </div>
                     </div>
@@ -62,5 +62,5 @@ export default class ShowMoreFieldsDropdown extends React.Component {
 
 ShowMoreFieldsDropdown.propTypes = {
     updateView: PropTypes.func.isRequired,
-    columns: PropTypes.array.isRequired,
+    columns: PropTypes.object.isRequired,
 }

@@ -1,5 +1,5 @@
 import * as actions from '../actions/view'
-import Immutable, {Map} from 'immutable'
+import Immutable, { Map } from 'immutable'
 import _ from 'lodash'
 
 
@@ -10,12 +10,9 @@ export function views(state = Map(), action) {
         case actions.FETCH_VIEW_LIST_START:
             return state
         case actions.FETCH_VIEW_LIST_SUCCESS:
-            return Map(_.keyBy(action.resp.data, 'slug'))
+            return Immutable.fromJS(_.keyBy(action.resp.data, 'slug'))
         case actions.UPDATE_VIEW_START:
-            // TODO: Use ImmutableJS throughout
-            let newState = state.toJS()
-            newState[action.slug] = _.assign({}, newState[action.slug], action.data)
-            return Map(newState)
+            return state.mergeDeep({[action.slug]: action.data})
         default:
             return state
     }

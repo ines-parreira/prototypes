@@ -29,8 +29,8 @@ export default class TicketTable extends React.Component {
     }
 
     renderLoading = () => {
-        const resp_meta = this.props.tickets.get('resp_meta')
-        const message = resp_meta.nb_pages === 0 ? "No tickets found." : "Loading..."
+        const nbPages = this.props.tickets.getIn(['resp_meta', 'nb_pages'])
+        const message = nbPages === 0 ? "No tickets found." : "Loading..."
 
         return (
             <div className="loading-container">
@@ -42,7 +42,7 @@ export default class TicketTable extends React.Component {
     }
 
     onPageChange = (page) => {
-        return this.props.actions.ticket.fetchPageFromAlgolia(this.props.view, page)
+        return this.props.fetchPage(page)
     }
 
     render = () => {
@@ -50,7 +50,7 @@ export default class TicketTable extends React.Component {
         const width = this.getWidth()
         const style = {width: width}
 
-        if (_.isEmpty(this.props.tickets.get('items'))) {
+        if (this.props.tickets.get('items').size === 0) {
             return this.renderLoading()
         }
         return (
@@ -71,7 +71,7 @@ export default class TicketTable extends React.Component {
                     </div>
                     <div>
                         {
-                            this.props.tickets.get('items').map((ticket) => {
+                            this.props.tickets.get('items').toJS().map((ticket) => {
                                 return (
                                     <TicketTableRow
                                         key={ticket.id}
@@ -86,8 +86,8 @@ export default class TicketTable extends React.Component {
                     </div>
                 </div>
                 <SemanticPaginator
-                    page={this.props.tickets.get('resp_meta').page}
-                    totalPages={this.props.tickets.get('resp_meta').nb_pages}
+                    page={this.props.tickets.getIn(['resp_meta', 'page'])}
+                    totalPages={this.props.tickets.getIn(['resp_meta', 'nb_pages'])}
                     onChange={this.onPageChange}
                     radius={0}
                     anchor={3}
@@ -100,7 +100,6 @@ export default class TicketTable extends React.Component {
 TicketTable.propTypes = {
     tickets: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    view: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired,
     allTags: PropTypes.array.isRequired,
     allUsers: PropTypes.array.isRequired,

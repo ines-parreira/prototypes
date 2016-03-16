@@ -1,6 +1,7 @@
 import { CELL_WIDTH } from '../../constants'
+import Immutable from 'immutable'
 
-export const TicketColumns = [
+export default Immutable.fromJS([
     {
         name: "priority",
         width: 2 * CELL_WIDTH,
@@ -55,4 +56,4 @@ export const TicketColumns = [
         header: "Channel",
         sortable: true
     },
-]
+])

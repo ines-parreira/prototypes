@@ -20,7 +20,7 @@ export function codeToKeyValuePairs(code) {
     *  Turn an expression such as
     *  > contains(ticket.tags, 'a') && contains(ticket.tags, 'b')
     *  into a list of lists such as
-    *  > [ ['ticket.tags', 'a'], ['ticket.tags', 'a'] ]
+    *  > [ ['ticket.tags', 'a'], ['ticket.tags', 'b'] ]
     */
     if (!code) {
         return {}
@@ -37,7 +37,7 @@ export function codeToKeyValuePairs(code) {
 export function groupKeyValuePairs(pairs) {
     /*
     *  Group key+value pairs by their key:
-    *  > [ ['ticket.tags', 'a'], ['ticket.tags', 'a'] ]
+    *  > [ ['ticket.tags', 'a'], ['ticket.tags', 'b'] ]
     *  into 
     *  > {'ticket.tags': ['a', 'b']}
     */

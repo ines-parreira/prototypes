@@ -1,5 +1,5 @@
 import * as actions from '../actions/user'
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 import _ from 'lodash'
 
 const usersInitial = Map({

@@ -70,7 +70,7 @@ export default class TicketTableRow extends React.Component {
                 return ticket.requester.name
             case "tags":
                 return ticket.tags.map((tag) => {
-                    return <button key={tag.id} className="ui teal mini basic button tag">{tag.name}</button>
+                    return <button key={tag.id} className="ui teal mini basic button ticket-tag">{tag.name}</button>
                 })
             default:
                 console.error("Do not know how to render column", column.name)

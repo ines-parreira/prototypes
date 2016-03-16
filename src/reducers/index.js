@@ -11,6 +11,7 @@ import { widgets } from './widgets'
 import { users } from './users'
 import { settings } from './settings'
 import { tags } from './tags'
+import { macros } from './macros'
 import { views } from './view'
 
 const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     views,
     users,
     tags,
+    macros,
     router
 })
 

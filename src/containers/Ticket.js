@@ -6,40 +6,49 @@ import { pushState } from 'redux-router'
 import TicketView from '../components/ticket/TicketView'
 
 import * as TicketActions from '../actions/ticket'
+import * as MacroActions from '../actions/macro'
 
 class TicketContainer extends React.Component {
-    constructor(props) {
-        super(props)
-        this.submit = this.submit.bind(this)
-        this.update = this.update.bind(this)
-    }
-
     componentWillMount() {
-        this.props.actions.fetchView(
+        this.props.actions.ticket.fetchView(
             `/api/tickets/${this.props.params.ticketId}/`,
             {view: this.props.view},
             'item'
         )
+        this.props.actions.macro.fetchMacros()
     }
 
-    update(props) {
-        this.props.actions.updateTicket(props)
+    applyMacro = (macro) => {
+        this.props.actions.macro.applyMacro(macro, this.props.currentUser)
     }
 
-    submit(status) {
-        this.props.actions.updateTicket({status})
-        this.props.actions.submitTicket(this.props.ticket)
+    componentDidUpdate = (prevProps) => {
+        const prevMacros = prevProps.macros.get('items')
+        const macros = this.props.macros.get('items')
+        if (prevMacros.size === 0 && macros.size !== 0) {
+            this.props.actions.macro.previewMacro(macros.valueSeq().first())
+        }
+    }
+
+    submit = (status) => {
+        this.props.actions.ticket.submitTicket(this.props.ticket, status)
     }
 
     render() {
+        if (this.props.ticket.get('messages').size === 0) {
+            return null
+        }
         return (
             <div className="TicketContainer">
                 <TicketView
+                    actions={this.props.actions}
                     view={this.props.view}
                     ticket={this.props.ticket}
                     currentUser={this.props.currentUser}
                     update={this.update}
                     submit={this.submit}
+                    applyMacro={this.applyMacro}
+                    macros={this.props.macros}
                 />
             </div>
         )
@@ -53,6 +62,7 @@ TicketContainer.propTypes = {
 
     view: PropTypes.string,
     ticket: PropTypes.object,
+    macros: PropTypes.object,
     currentUser: PropTypes.object,
 
     actions: PropTypes.object.isRequired,
@@ -66,13 +76,17 @@ TicketContainer.defaultProps = {
 function mapStateToProps(state) {
     return {
         ticket: state.ticket,
-        currentUser: state.currentUser
+        macros: state.macros,
+        currentUser: state.currentUser,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(TicketActions, dispatch),
+        actions: {
+            ticket: bindActionCreators(TicketActions, dispatch),
+            macro: bindActionCreators(MacroActions, dispatch),
+        },
         pushState: bindActionCreators(pushState, dispatch)
     }
 }

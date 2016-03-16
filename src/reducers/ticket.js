@@ -1,66 +1,81 @@
 import * as actions from '../actions/ticket'
-import {Map} from 'immutable'
+import Immutable, { Map, List } from 'immutable'
+import _ from 'lodash'
 
 const ticketInitial = Map({
-    external_id: null,
-    view: 'default',
-    status: 'new',
-    subject: '',
-    body_html: '',
-    body_text: '',
-    requester: {
-        name: '(no name)',
-        address: '(no address)'
-    },
-    sender: {
-        name: '(no name)',
-        address: '(no address)'
-    },
-    receivers: {},
-    meta: {},
-    tags: [],
-    messages: [{
-        public: true,
-        channel: 'helpdesk',
-        receivers: [],
-        sender: {
-            name: '(no name)',
-            address: ''
-        },
-        subject: '',
-        body_text: '',
-        body_html: ''
-    }]
+    messages: List()
 })
+
+const newMessage = Map({
+    via: 'helpdesk',    
+    public: true,
+    from_agent: true,    
+    receivers: List(),
+    sender: Map({
+        name: '(no name)',
+        id: null,
+    }),
+    subject: '',
+    body_text: '',
+    body_html: '',
+    // TODO: Implement channel selection widget
+    channel: 'email',
+})
+
+function keyIn(/*...keys*/) {
+    var keySet = Immutable.Set(arguments);
+    return function (v, k) {
+        return keySet.has(k)
+    }
+}
+
+function getRecipient(messages, sender) {
+    for (let message of messages.reverse()) {
+        const senderId = message.getIn(['sender', 'id'])
+        if (senderId && senderId !== sender.get('id')) {
+            return message.get('sender')
+        }
+    }
+    console.error('No recipient')
+}
 
 export function ticket(state = ticketInitial, action) {
     switch (action.type) {
         case actions.FETCH_TICKET_START:
-            return state
-        case actions.SUBMIT_TICKET_SUCCESS:
-        case actions.FETCH_TICKET_SUCCESS:
-            const newMessage = ticketInitial.get('messages')[0]
-            action.resp.messages.push(newMessage)
-            return Map(action.resp)
-
-        case actions.UPDATE_TICKET_PROPS:
-            if (action.props.hasOwnProperty('message')) {
-                let messages = state.get('messages')
-                for (let message of messages) {
-                    if (!message.id) {
-                        message.via = 'helpdesk'
-                        message.channel = state.get('channel')
-                        message.from_agent = true
-                        message.sender = action.props.message.sender
-                        message.receivers = action.props.message.receivers
-                        message.body_text = action.props.message.body_text
-                    }
-                }
-                state.set('messages', messages)
-            }
-            return state
         case actions.SUBMIT_TICKET_START:
             return state
+
+        case actions.SUBMIT_TICKET_SUCCESS:
+        case actions.FETCH_TICKET_SUCCESS:
+            return Immutable
+                .fromJS(action.resp)
+                .set('newMessage', newMessage)
+
+        /* Macro actions */
+
+        case actions.ADD_TAGS:
+            let tags = state.get('tags', List())
+            const existingTagNames = tags.map((x) => x.get('name'))
+
+            for (let tag of action.args) {
+                if (!existingTagNames.includes(tag.get('name'))) {
+                    tags = tags.push(tag)
+                }
+            }
+            return state.set('tags', tags)
+
+        case actions.SET_RESPONSE_TEXT:
+            const text = action.args.get(0) || ''
+            const sender = action.currentUser.filter(keyIn('email', 'id', 'name'))
+
+            return state.mergeDeep({
+                newMessage: {
+                    sender: sender,
+                    receivers: [getRecipient(state.get('messages'), sender)],
+                    body_text: text
+                }
+            })
+
         default:
             return state
     }

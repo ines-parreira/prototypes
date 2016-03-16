@@ -1,12 +1,13 @@
 import * as actions from '../actions/ticket'
-import { Map } from 'immutable'
+import Immutable, { Map, List } from 'immutable'
 import _ from 'lodash'
 import { getCode, getAST } from './rule'
 
 
 const ticketsInitial = Map({
-    items: [],
-    resp_meta: {},
+    items: List(),
+    resp_meta: Map(),
+    loading: false,
 })
 
 export function tickets(state = ticketsInitial, action) {
@@ -14,12 +15,12 @@ export function tickets(state = ticketsInitial, action) {
         case actions.NEW_TICKET:
             return state
         case actions.FETCH_TICKET_LIST_VIEW_START:
-            // Re-render as little as possible
-            return state
+            return state.set('loading', true)
         case actions.FETCH_TICKET_LIST_VIEW_SUCCESS:
             return Map({
-                items: action.resp.data,
-                resp_meta: action.resp.meta,
+                items: Immutable.fromJS(action.resp.data),
+                resp_meta: Immutable.fromJS(action.resp.meta),
+                loading: false,
             })
         default:
             return state
