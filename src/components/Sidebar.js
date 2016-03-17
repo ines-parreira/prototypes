@@ -1,93 +1,13 @@
-import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
+import React, { PropTypes } from 'react'
 import _ from 'lodash'
 
 export default class Sidebar extends React.Component {
-
-    sections(views) {
-        // Populate sections
-        const ret = {
-            favorites: {
-                title: 'FAVORITES',
-                views: []
-            },
-            private: {
-                title: 'PRIVATE',
-                views: []
-            },
-            shared: {
-                title: 'SHARED',
-                views: []
-            }
-        }
-
-        if (views) {
-            for (const view of views) {
-                const section = view.section ? view.section : 'shared'
-                ret[section].views.push(view)
-            }
-        }
-        return ret
-    }
-
-    popup() {
-        $('.ui.dropdown').dropdown()
-    }
-
     render() {
-        const {views, currentUser} = this.props
-        const sections = this.sections(_.values(views.toJS()))
+        const { widgets, ticket } = this.props
         return (
-            <div className="ui inverted blue left visible sidebar menu">
-                <div className="ui inverted blue large vertical menu">
-                    <div className="ui dropdown item" onClick={() => {this.popup()}}>
-                        Tickets
-                        <i className="chevron down icon"/>
-                        <div className="menu">
-                            <Link to="/" className="item">Dashboard</Link>
-                            <Link to="/rules" className="item">Rules</Link>
-                            <Link to="/users" className="item">Users</Link>
-                        </div>
-                    </div>
-                    {Object.keys(sections).map((sectionId) => {
-                        const section = sections[sectionId]
-                        if (!section.views.length) {
-                            return null
-                        }
-                        return (
-                            <div key={sectionId} className="item">
-                                <div className="header">{section.title}</div>
-                                <div className="menu">
-                                    {section.views.map((view) => {
-                                        return (
-                                            <Link key={view.id} to={`/tickets/${view.slug}`} className="item">
-                                                {view.name}
-                                                <div className="ui label">0</div>
-                                            </Link>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        )
-                    })}
-                </div>
-
-                <div className="ui inverted blue large vertical bottom fixed menu">
-                    <div href="" className="ui top dropdown item">
-                        <i className="ellipsis horizontal icon"/>
-                        <div>
-                            <h4>
-                                <i className="green circle icon" title="User online" />
-                                {currentUser.get('name')}
-                            </h4>
-                        </div>
-
-                        <div className="menu">
-                            <a className="item"><i className="edit icon"/> Edit Profile</a>
-                            <a className="item"><i className="globe icon"/> Choose Language</a>
-                            <a className="item"><i className="settings icon"/> Account Settings</a>
-                        </div>
-                    </div>
+            <div className="ui right visible sidebar menu">
+                <div className="ui large vertical menu">
+                    <div className="ui dropdown item">Sidebar</div>
                 </div>
             </div>
         )
@@ -95,6 +15,6 @@ export default class Sidebar extends React.Component {
 }
 
 Sidebar.propTypes = {
-    views: PropTypes.object,
-    currentUser: PropTypes.object
+    widgets: PropTypes.object,
+    ticket: PropTypes.object
 }

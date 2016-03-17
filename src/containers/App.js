@@ -5,7 +5,8 @@ import { dismissMessage } from '../actions/systemMessage'
 import { fetchUser } from '../actions/user'
 import { fetchSettings } from '../actions/settings'
 
-import TicketsSidebarContainer from './TicketsSidebar'
+import TicketsNavbarContainer from './TicketsNavbar'
+import TicketSidebarContainer from './TicketsNavbar'
 import KeyboardHelp from '../components/KeyboardHelp'
 
 import * as mousetrap from 'mousetrap'
@@ -69,11 +70,12 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                {this.props.sidebar || <TicketsSidebarContainer />}
+                {this.props.navbar || <TicketsNavbarContainer />}
                 <div className="main-content pusher">
                     {this.renderSystemMessage()}
                     {this.props.content || this.props.children}
                 </div>
+                {this.props.sidebar}
                 <KeyboardHelp />
             </div>
         )
@@ -100,8 +102,10 @@ App.propTypes = {
     // Injected by React Router
     children: PropTypes.node,
 
-    // Sidebar containers can be changed depending on the route. See `routes.js`
+    // Navbar and Sidebar containers can be changed depending on the route. See `routes.js`
+    navbar: PropTypes.node,
     sidebar: PropTypes.node,
+
     content: PropTypes.node
 }
 

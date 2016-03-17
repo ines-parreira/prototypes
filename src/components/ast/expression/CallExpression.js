@@ -21,7 +21,7 @@ import getSyntaxTreeLeaves from '../utils'
  */
 export default class CallExpression extends React.Component {
     render() {
-        const { callee, index, actions, schemas, parent} = this.props
+        const { callee, index, actions, schemas, parent } = this.props
         const funcArgs = this.props.arguments
 
         const parentCallee = parent.push('callee')

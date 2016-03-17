@@ -2,41 +2,43 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as ViewActions from '../actions/view'
+import * as WidgetActions from '../actions/widget'
 import Sidebar from '../components/Sidebar'
 
 class TicketsSidebarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        this.props.actions.fetchViews(`/api/views/`, {
-            type: "ticket-list"
+        this.props.actions.fetchWidgets({
+            ticket: this.props.ticket,
+            type: 'ticket'
         })
     }
 
     render() {
         return (
-            <Sidebar views={this.props.views}
-                     currentUser={this.props.currentUser}/>
+            <Sidebar widgets={this.props.widgets}
+                     currentUser={this.props.currentUser}
+            />
         )
     }
 }
 
 TicketsSidebarContainer.propTypes = {
-    views: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired
+    widgets: PropTypes.object.isRequired,
+    ticket: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
     return {
-        views: state.views,
-        currentUser: state.currentUser
+        widgets: state.widgets,
+        ticket: state.ticket
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(ViewActions, dispatch)
+        actions: bindActionCreators(WidgetActions, dispatch)
     }
 }
 

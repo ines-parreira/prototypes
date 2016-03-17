@@ -9,8 +9,8 @@ import rootReducer from '../reducers/index'
 
 const finalCreateStore = compose(
     applyMiddleware(thunk),
-    reduxReactRouter({routes, createHistory}),
-    applyMiddleware(createLogger({collapsed: true}))
+    reduxReactRouter({ routes, createHistory }),
+    applyMiddleware(createLogger({ collapsed: true }))
 )(createStore)
 
 export default function configureStore(initialState) {

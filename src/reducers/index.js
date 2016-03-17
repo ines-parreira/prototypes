@@ -7,6 +7,7 @@ import { rules } from './rule'
 import { schemas } from './schema'
 import { tickets } from './tickets'
 import { ticket } from './ticket'
+import { widgets } from './widgets'
 import { users } from './users'
 import { settings } from './settings'
 import { tags } from './tags'
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     settings,
     tickets,
     ticket,
+    widgets,
     schemas,
     rules,
     views,

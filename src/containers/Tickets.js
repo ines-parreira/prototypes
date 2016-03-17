@@ -69,7 +69,7 @@ class TicketsContainer extends React.Component {
                     currentUser={this.props.currentUser}
                     actions={this.props.actions}
                     pushState={this.pushState}
-                    />
+                />
             </div>
         )
     }
@@ -108,9 +108,9 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: {
             view: bindActionCreators(ViewActions, dispatch),
-            ticket: bindActionCreators(TicketActions, dispatch),            
-            user: bindActionCreators(UserActions, dispatch),            
-            tag: bindActionCreators(TagActions, dispatch),            
+            ticket: bindActionCreators(TicketActions, dispatch),
+            user: bindActionCreators(UserActions, dispatch),
+            tag: bindActionCreators(TagActions, dispatch)
         },
         pushState: bindActionCreators(pushState, dispatch)
     }
