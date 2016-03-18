@@ -6,8 +6,11 @@ export default class Infobar extends React.Component {
         const { widgets, ticket } = this.props
         return (
             <div className="infobar">
-                <div className="infobar ui large vertical menu">
-                    <div className="ui dropdown item">Sidebar</div>
+                <div className="infobar-top infobar-box">
+                    infobar-top
+                </div>
+                <div className="infobar-content infobar-box">
+                    infobar-content
                 </div>
             </div>
         )

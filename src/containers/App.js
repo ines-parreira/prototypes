@@ -72,7 +72,13 @@ class App extends React.Component {
             <div className="App">
                 {this.props.navbar || <TicketsNavbarContainer />}
                 <div className="App-content">
-                    <div className="App-loader"></div>
+                    <div className="App-loader">
+                        <div className="ball-pulse-sync">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
                     <div className="main-content pusher">
                         {this.renderSystemMessage()}
                         {this.props.content || this.props.children}
