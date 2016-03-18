@@ -71,11 +71,14 @@ class App extends React.Component {
         return (
             <div className="App">
                 {this.props.navbar || <TicketsNavbarContainer />}
-                <div className="main-content pusher">
-                    {this.renderSystemMessage()}
-                    {this.props.content || this.props.children}
+                <div className="App-content">
+                    <div className="App-loader"></div>
+                    <div className="main-content pusher">
+                        {this.renderSystemMessage()}
+                        {this.props.content || this.props.children}
+                    </div>
                 </div>
-                {this.props.sidebar}
+                {this.props.infobar}
                 <KeyboardHelp />
             </div>
         )
@@ -102,9 +105,9 @@ App.propTypes = {
     // Injected by React Router
     children: PropTypes.node,
 
-    // Navbar and Sidebar containers can be changed depending on the route. See `routes.js`
+    // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
     navbar: PropTypes.node,
-    sidebar: PropTypes.node,
+    infobar: PropTypes.node,
 
     content: PropTypes.node
 }

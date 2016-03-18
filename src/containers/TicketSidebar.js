@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as WidgetActions from '../actions/widget'
-import Sidebar from '../components/Sidebar'
+import Infobar from '../components/Infobar'
 
-class TicketsSidebarContainer extends React.Component {
+class TicketsInfobarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
         this.props.actions.fetchWidgets({
@@ -16,14 +16,14 @@ class TicketsSidebarContainer extends React.Component {
 
     render() {
         return (
-            <Sidebar widgets={this.props.widgets}
+            <Infobar widgets={this.props.widgets}
                      currentUser={this.props.currentUser}
             />
         )
     }
 }
 
-TicketsSidebarContainer.propTypes = {
+TicketsInfobarContainer.propTypes = {
     widgets: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
@@ -42,4 +42,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketsSidebarContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(TicketsInfobarContainer)

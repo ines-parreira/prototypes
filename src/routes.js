@@ -17,7 +17,7 @@ export default (
         <Route path="users" component={UsersContainer}/>
         <Route path="users/:userId" component={UserContainer}/>
         <Route path="rules" component={RuleContainer}/>
-        <Route path="ticket/:ticketId" components={{ content: TicketContainer, sidebar: TicketSidebarContainer }}/>
+        <Route path="ticket/:ticketId" components={{ content: TicketContainer, infobar: TicketSidebarContainer }}/>
         <Route path="tickets/:view" component={TicketsContainer}/>
         <Route path="*" component={NoMatch}/>
     </Route>
