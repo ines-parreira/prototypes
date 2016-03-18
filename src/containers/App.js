@@ -84,7 +84,7 @@ class App extends React.Component {
                         {this.props.content || this.props.children}
                     </div>
                 </div>
-                {this.props.infobar}
+                {this.props.infobar }
                 <KeyboardHelp />
             </div>
         )
