@@ -30,7 +30,7 @@ export default class Navbar extends React.Component {
         return ret
     }
 
-    popup() {
+    componentDidMount() {
         $('.ui.dropdown').dropdown()
     }
 
@@ -38,17 +38,18 @@ export default class Navbar extends React.Component {
         const { views, currentUser } = this.props
         const sections = this.sections(_.values(views.toJS()))
         return (
-            <div className="ui inverted blue left visible sidebar menu">
-                <div className="ui inverted blue large vertical menu">
-                    <div className="ui dropdown item" onClick={() => {this.popup()}}>
-                        Tickets
-                        <i className="chevron down icon"/>
-                        <div className="menu">
-                            <Link to="/" className="item">Dashboard</Link>
-                            <Link to="/rules" className="item">Rules</Link>
-                            <Link to="/users" className="item">Users</Link>
-                        </div>
+            <div className="navbar">
+                <div className="navbar-btn ui dropdown">
+                    Tickets
+                    <i className="chevron down icon"/>
+                    <div className="menu">
+                        <Link to="/" className="item">Dashboard</Link>
+                        <Link to="/rules" className="item">Rules</Link>
+                        <Link to="/users" className="item">Users</Link>
                     </div>
+                </div>
+
+                <div className="navbar-content ui inverted blue large vertical menu">
                     {Object.keys(sections).map((sectionId) => {
                         const section = sections[sectionId]
                         if (!section.views.length) {
@@ -72,21 +73,19 @@ export default class Navbar extends React.Component {
                     })}
                 </div>
 
-                <div className="ui inverted blue large vertical bottom fixed menu">
-                    <div href="" className="ui top dropdown item">
-                        <i className="ellipsis horizontal icon" />
-                        <div>
-                            <h4>
-                                <i className="green circle icon" title="User online" />
-                                {currentUser.get('name')}
-                            </h4>
-                        </div>
+                <div className="navbar-btn ui dropdown">
+                    <i className="ellipsis horizontal icon" />
+                    <div>
+                        <h4>
+                            <i className="green circle icon" title="User online" />
+                            {currentUser.get('name')}
+                        </h4>
+                    </div>
 
-                        <div className="menu">
-                            <a className="item"><i className="edit icon" /> Edit Profile</a>
-                            <a className="item"><i className="globe icon" /> Choose Language</a>
-                            <a className="item"><i className="settings icon" /> Account Settings</a>
-                        </div>
+                    <div className="menu">
+                        <a className="item"><i className="edit icon" /> Edit Profile</a>
+                        <a className="item"><i className="globe icon" /> Choose Language</a>
+                        <a className="item"><i className="settings icon" /> Account Settings</a>
                     </div>
                 </div>
             </div>
