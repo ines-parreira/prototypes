@@ -5,22 +5,13 @@ import TicketReply from './TicketReply'
 import TicketMessages from './TicketMessages'
 
 export default class TicketView extends React.Component {
-    componentDidMount() {
-        setTimeout(() => {
-            $('.ui.sticky').sticky({
-                context: '.TicketMessages'
-            })
-            $('.ui.sticky').sticky('refresh')
-        }, 50)
-    }
-
     render() {
         const {ticket} = this.props
         const messages = ticket.get('messages', null)
 
         return (
             <div className="TicketView">
-                <div className="TicketHeader ui fixed top sticky">
+                <div className="TicketHeader">
                     <div className="ui text menu">
                         <a className="item">
                             <i className="clock icon"/> Previous tickets
@@ -36,7 +27,7 @@ export default class TicketView extends React.Component {
 
                         <div className="right menu">
                             <div className="item">
-                                <Search />
+                                <Search id="ticket" />
                             </div>
                         </div>
                     </div>

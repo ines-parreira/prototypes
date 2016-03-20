@@ -17,7 +17,6 @@ export function fetchWidgets(data = {}, type = 'ticket') {
 
         return reqwest({
             url: url,
-            data: data,
             type: 'json',
             method: 'GET',
             contentType: 'application/json'
@@ -30,7 +29,7 @@ export function fetchWidgets(data = {}, type = 'ticket') {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to fetch widgets.',
-                msg: err
+                msg: err.toString()
             }))
         })
     }

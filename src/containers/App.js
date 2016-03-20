@@ -67,24 +67,33 @@ class App extends React.Component {
         )
     }
 
+    renderLoader() {
+        return null
+        // no loader for now - we need to attach it to a state
+
+        return (
+            <div className="App-loader">
+                <div className="ball-pulse-sync">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className="App">
                 {this.props.navbar || <TicketsNavbarContainer />}
                 <div className="App-content">
-                    <div className="App-loader">
-                        <div className="ball-pulse-sync">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
+                    {this.renderLoader()}
                     <div className="main-content pusher">
                         {this.renderSystemMessage()}
                         {this.props.content || this.props.children}
                     </div>
                 </div>
-                {this.props.infobar }
+                {this.props.infobar}
                 <KeyboardHelp />
             </div>
         )
