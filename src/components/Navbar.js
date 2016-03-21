@@ -39,9 +39,9 @@ export default class Navbar extends React.Component {
         const sections = this.sections(_.values(views.toJS()))
         return (
             <div className="navbar">
-                <div className="navbar-btn ui dropdown">
+                <div className="navbar-btn navbar-btn-category ui dropdown">
                     Tickets
-                    <i className="chevron down icon"/>
+                    <i className="icon angle down"/>
                     <div className="menu">
                         <Link to="/" className="item">Dashboard</Link>
                         <Link to="/rules" className="item">Rules</Link>
