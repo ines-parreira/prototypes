@@ -87,7 +87,7 @@ export default class Infobar extends React.Component {
         return (
             <div className="infobar" ref="container" style={style}>
                 <div className="infobar-drag-handle"></div>
-                <div className="infobar-box infobar-search">
+                <div className="infobar-search infobar-box">
                     <Search id="ticket"/>
                 </div>
                 <div className="infobar-top infobar-box">
@@ -119,7 +119,36 @@ export default class Infobar extends React.Component {
                     </div>
                 </div>
                 <div className="infobar-content infobar-box">
-                    infobar-content
+
+                    <div className="infobar-card ui card">
+                        <div className="content">
+                            <h3 className="infobar-card-title">
+                                <a href="#">
+                                    Order 123456
+
+                                    <i className="ui icon caret right"></i>
+                                </a>
+                            </h3>
+
+                            <div className="ui menu vertical">
+                                <div className="item">
+                                    <div className="header">
+                                        GENERAL INFO
+                                    </div>
+                                    <div className="menu">
+                                        <div className="item">
+                                            Order_id:
+                                            <strong>
+                                                175
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         )
