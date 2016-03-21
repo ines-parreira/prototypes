@@ -5,18 +5,23 @@ export default class Infobar extends React.Component {
     constructor() {
         super()
 
-        this.dragging = false
+        this.cursorX = null
+        this.originalWidth = 0
+        this.minWidth = 0
+        this.maxWidth = 0
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'
 
-        console.log('constructor')
-    }
-
-    getInitialState() {
-        // TODO get bar size from api
-        return {
-            width: 200
+        // TODO get bar size from store/api
+        this.state = {
+            width: 320
         }
+
+        // overwrite methods with bound methods,
+        // so we can cleanly unbind on unmount
+        this.dragStart = this.dragStart.bind(this)
+        this.dragStop = this.dragStop.bind(this)
+        this.drag = this.drag.bind(this)
     }
 
     dragStart(e) {
@@ -24,42 +29,49 @@ export default class Infobar extends React.Component {
             return
         }
 
-        this.dragging = true
+        this.cursorX = e.clientX
+        var computedStyle = window.getComputedStyle(this.refs.container)
+
+        this.originalWidth = parseInt(computedStyle.getPropertyValue('width'))
+        this.minWidth = parseInt(computedStyle.getPropertyValue('min-width'))
+        this.maxWidth = parseInt(computedStyle.getPropertyValue('max-width'))
+
         document.body.classList.add(this.classActive)
     }
 
     dragStop(e) {
-        this.dragging = false
+        this.cursorX = null
         document.body.classList.remove(this.classActive)
     }
 
-    drag() {
-        if (this.dragging !== true) {
+    drag(e) {
+        if (this.cursorX === null) {
             return
         }
 
-        // TODO set css size and setState
+        var nextWidth = this.originalWidth + this.cursorX - e.clientX
 
-        console.log(this.dragging, 'drag')
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        // TODO, if width changed, check if the same as css (math.round)
-        // and don't re-render if the same
-        return true;
+        // don't expand/shrink past min/max width.
+        // for performance.
+        if (nextWidth > this.minWidth && nextWidth < this.maxWidth) {
+            this.setState({
+                width: this.originalWidth + this.cursorX - e.clientX
+            })
+        }
     }
 
     componentDidMount() {
-        // TODO stop drag when outside tab
-        window.addEventListener('mousedown', this.dragStart.bind(this))
-        window.addEventListener('mouseup', this.dragStop.bind(this))
-        window.addEventListener('mousemove', this.drag.bind(this))
+        window.addEventListener('mousedown', this.dragStart)
+        window.addEventListener('mouseup', this.dragStop)
+        window.addEventListener('contextmenu', this.dragStop)
+        window.addEventListener('mousemove', this.drag)
     }
 
     componentWillUnmount() {
-        window.removeEventListener('mousedown', this.dragStart.bind(this))
-        window.removeEventListener('mouseup', this.dragStop.bind(this))
-        window.removeEventListener('mousemove', this.drag.bind(this))
+        window.removeEventListener('mousedown', this.dragStart)
+        window.removeEventListener('mouseup', this.dragStop)
+        window.removeEventListener('contextmenu', this.dragStop)
+        window.removeEventListener('mousemove', this.drag)
     }
 
     render() {
@@ -68,8 +80,12 @@ export default class Infobar extends React.Component {
             return null
         }
 
+        var style = {
+            width: this.state.width
+        }
+
         return (
-            <div className="infobar">
+            <div className="infobar" ref="container" style={style}>
                 <div className="infobar-drag-handle"></div>
                 <div className="infobar-box infobar-search">
                     <Search id="ticket"/>
