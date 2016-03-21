@@ -2,19 +2,8 @@ import React, {PropTypes} from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import TicketMacroAction from './TicketMacroAction'
-import SearchInput from 'react-search-input'
-import {createFilter} from 'react-search-input'
 
 export default class TicketMacros extends React.Component {
-    constructor() {
-        super()
-        this.state = {searchTerm: ""}
-    }
-
-    searchUpdated = (term) => {
-        this.setState({searchTerm: term}) // Necessary for re-render
-    }
-
     renderMacroListItem = (macro) => {
         const containerOpts = {
             key: macro.get('id'),
@@ -42,9 +31,9 @@ export default class TicketMacros extends React.Component {
             <div>
                 <h2>{macro.get('name')}</h2>
                 <div>
-                    {macro.get('actions').map((action) => {
-                        return <TicketMacroAction key={action.get('id')} action={action} />
-                    })}
+                    {macro.get('actions').map((action) =>
+                        <TicketMacroAction key={action.get('id')} action={action} />
+                    )}
                 </div>
             </div>
         )
@@ -52,41 +41,20 @@ export default class TicketMacros extends React.Component {
 
     render = () => {
         let { items } = this.props
-        if (items.size === 0) {
-            return null
-        }
-        items = items.valueSeq()
-
-        if (this.refs.search) {
-            const filters = ['name']
-            items = items.filter(this.refs.search.filter(filters))
-        }
 
         return (
-            <div className="TicketMacros">
-                <div className="ui segments">
-                    <div className="search ui raised segment">
-                        <SearchInput
-                            ref="search"
-                            onChange={this.searchUpdated}
-                            className="ui large transparent input"
-                            placeholder="Search..."
-                            />
-                    </div>
-                    <div className="search ui raised segment">
-                        <div className="ui grid">
-                            <div className="four wide column">
-                                <div className="ui large aligned selection list">
-                                    {items.map(this.renderMacroListItem)}
-                                </div>
-                            </div>
-                            <div className="twelve wide column">
-                                <div className="macro-detail">
-                                    {this.renderSelectedMacro()}
-                                </div>
-                            </div>
+            <div className="TicketMacros search ui raised segment">
+                <div className="ui grid">
+                    <div className="four wide column">
+                        <div className="ui large aligned selection list">
+                            {this.props.items.map(this.renderMacroListItem)}
                         </div>
-                    </div>                
+                    </div>
+                    <div className="twelve wide column">
+                        <div className="macro-detail">
+                            {this.renderSelectedMacro()}
+                        </div>
+                    </div>
                 </div>
             </div>
         )

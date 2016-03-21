@@ -15,6 +15,12 @@ export function macros(state = macrosInitial, action) {
             const macros = state.get('items')
             return state.set('selected', macros.get(action.id))
 
+        case actions.APPLY_MACRO:
+            return state.set('show', false)
+
+        case actions.SET_MACROS_SHOW:
+            return state.set('show', action.show)
+
         case actions.FETCH_MACRO_LIST_SUCCESS:
             let items = Immutable.Map()
             for (let macro of action.resp.data) {

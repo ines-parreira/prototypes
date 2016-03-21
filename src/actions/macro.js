@@ -1,12 +1,20 @@
 import reqwest from 'reqwest'
 import { systemMessage } from './systemMessage'
-import * as TicketActions from '../actions/ticket'
+import { MACRO_ACTIONS } from '../actions/ticket'
 
 export const FETCH_MACRO_LIST_START = 'FETCH_MACRO_LIST_START'
 export const FETCH_MACRO_LIST_SUCCESS = 'FETCH_MACRO_LIST_SUCCESS'
 
+export const APPLY_MACRO = 'APPLY_MACRO'
 export const PREVIEW_MACRO = 'PREVIEW_MACRO'
+export const SET_MACROS_SHOW = 'SET_MACROS_SHOW'
 
+export function setMacrosShow(show) {
+    return {
+        type: SET_MACROS_SHOW,
+        show
+    }
+}
 
 export function previewMacro(macro) {
     return {
@@ -17,7 +25,10 @@ export function previewMacro(macro) {
 
 export function applyMacro(macro, currentUser) {
     return (dispatch) => {
-        dispatch(previewMacro(macro))
+        dispatch({
+            type: APPLY_MACRO,
+            macro
+        })
         macro.get('actions').map((action) => {
             dispatch(applyMacroAction(action, currentUser))
         })
@@ -26,7 +37,7 @@ export function applyMacro(macro, currentUser) {
 
 export function applyMacroAction(action, currentUser) {
     const { type, name } = action.toJS()
-    if (type === 'user' && TicketActions[name]) {
+    if (type === 'user' && !MACRO_ACTIONS.includes(name)) {
         console.error("Applying unknown macro action", name)
     }
 

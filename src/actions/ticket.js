@@ -1,4 +1,5 @@
 import reqwest from 'reqwest'
+import { List } from 'immutable'
 import { systemMessage } from './systemMessage'
 import { PER_PAGE } from '../constants'
 import { ASTToAlgoliaSearchParams, ticketsIndex } from '../filters/algolia'
@@ -22,11 +23,23 @@ export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
 // Macro actions
-// TODO: These are snake-case on the backend. Perhaps make them consistent?
+// TODO: These are lowerCamelCase on the backend. Perhaps make them CONSISTENT?
 export const SET_RESPONSE_TEXT = 'setResponseText'
 export const ADD_TAGS = 'addTags'
 
+export const MACRO_ACTIONS = [
+    SET_RESPONSE_TEXT, ADD_TAGS
+]
 
+
+
+export function setResponseText(currentUser, text) {
+    return {
+        type: SET_RESPONSE_TEXT,
+        args: List([text]),
+        currentUser
+    }
+}
 
 export function fetchPageFromAlgolia(settings, view, page) {
     // We are 1-indexed, Algolia is 0-indexed

@@ -56,6 +56,7 @@ export default class TicketView extends React.Component {
                     messages={ticket.get('messages')}
                     />
                 <TicketReplyArea
+                    actions={this.props.actions}
                     applyMacro={this.props.applyMacro}
                     previewMacro={this.props.actions.macro.previewMacro}
                     ticket={ticket}
