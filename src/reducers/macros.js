@@ -3,32 +3,46 @@ import Immutable, { Map } from 'immutable'
 import _ from 'lodash'
 
 const macrosInitial = Map({
-    show: true,
-    selected: null,
+    visible: true,
+    selected: Map(),
     items: Map(),
 })
 
 export function macros(state = macrosInitial, action) {
+    let items
     switch (action.type) {
 
         case actions.PREVIEW_MACRO:
-            const macros = state.get('items')
-            return state.set('selected', macros.get(action.id))
+            return state.set('selected', state.getIn(['items', action.id]))
 
         case actions.APPLY_MACRO:
-            return state.set('show', false)
+            return state.set('visible', false)
 
         case actions.SET_MACROS_VISIBILITY:
-            return state.set('show', action.show)
+            return state.set('visible', action.visible)
+
+        case actions.PREVIEW_ADJACENT_MACRO:
+            let prev
+            const selectedMacro = state.get('selected')
+            items = state.get('items')
+
+            for (let current of items.toIndexedSeq()) {
+                const toSelect = action.direction === 'prev' ? prev : current
+                const toCompare = action.direction === 'prev' ? current : prev
+                if (selectedMacro === toCompare) {
+                    return prev ? state.set('selected', toSelect) : state
+                }
+                prev = current
+            }
+            return state
 
         case actions.FETCH_MACRO_LIST_SUCCESS:
-            let items = Immutable.Map()
+            items = Immutable.Map()
             for (let macro of action.resp.data) {
                 items = items.set(macro.id, Immutable.fromJS(macro))
             }
-            return Map({
-                show: true,
-                selected: null,
+            return state.merge({
+                visible: true,
                 items,
             })
 
