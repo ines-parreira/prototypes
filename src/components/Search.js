@@ -1,14 +1,14 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 
 export default class Search extends React.Component {
     render() {
         const { id } = this.props
 
         return (
-            <div className="ui  search">
-                <div className="ui six icon input">
-                    <input id={id} className="prompt" type="text" placeholder="Search..."/>
-                    <i className="search icon"></i>
+            <div className="ui search">
+                <div className="ui small icon input">
+                    <input id={`search-${id}`} className="prompt" type="text" placeholder="Search..."/>
+                    <i className="search icon"/>
                 </div>
                 <div className="results"></div>
             </div>

@@ -16,9 +16,7 @@ class TicketsInfobarContainer extends React.Component {
 
     render() {
         return (
-            <Infobar widgets={this.props.widgets}
-                     currentUser={this.props.currentUser}
-            />
+            <Infobar widgets={this.props.widgets} />
         )
     }
 }

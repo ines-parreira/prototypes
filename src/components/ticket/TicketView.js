@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 
-import Search from '../Search'
 import TicketReply from './TicketReply'
 import TicketMessages from './TicketMessages'
 
@@ -24,12 +23,6 @@ export default class TicketView extends React.Component {
                             <i className="outline flag icon"/>
                             Mark as important
                         </a>
-
-                        <div className="right menu">
-                            <div className="item">
-                                <Search id="ticket" />
-                            </div>
-                        </div>
                     </div>
                     <h1 className="ui header">{ticket.get('subject')}</h1>
                     <div className="ui grid">

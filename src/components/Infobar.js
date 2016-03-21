@@ -1,15 +1,23 @@
 import React, { PropTypes } from 'react'
-import _ from 'lodash'
+import Search from './Search'
 
 export default class Infobar extends React.Component {
     render() {
-        const { widgets, ticket } = this.props
+        const { widgets } = this.props
+        if (!widgets.get('items').length) {
+            return null
+        }
+
         return (
             <div className="infobar">
+                <div className="infobar-top infobar-box infobar-search">
+                    <Search id="ticket"/>
+                </div>
                 <div className="infobar-top infobar-box">
                     <h2>
                         Erick Rodriguez
                     </h2>
+
                     <div className="infobar-card ui card">
                         <div className="content">
                             <ul>

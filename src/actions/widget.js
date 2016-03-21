@@ -8,7 +8,7 @@ export const FETCH_WIDGETS_SUCCESS = 'FETCH_WIDGETS_SUCCESS'
 
 
 export function fetchWidgets(data = {}, type = 'ticket') {
-    const url = '/widgets/'
+    const url = '/api/widgets/'
 
     return (dispatch) => {
         dispatch({
