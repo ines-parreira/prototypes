@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
+import * as mousetrap from 'mousetrap'
 
 import TicketView from '../components/ticket/TicketView'
 
@@ -16,6 +17,32 @@ class TicketContainer extends React.Component {
             'item'
         )
         this.props.actions.macro.fetchMacros()
+    }
+
+    componentDidMount() {
+        // Have to bind these here so they capture at the correct level
+        const macrosVisible = () => this.props.macros.get('visible')
+
+        mousetrap.bind('escape', () => {
+            if (macrosVisible()) {
+                this.props.actions.macro.setMacrosVisible(false)
+            }
+        })
+        mousetrap.bind('return', () => {
+            if (macrosVisible()) {
+                this.applyMacro(this.props.macros.get('selected'))
+            }
+        })
+        mousetrap.bind('up', () => {
+            if (macrosVisible()) {
+                this.props.actions.macro.previewAdjacentMacro('prev')
+            }
+        })
+        mousetrap.bind('down', () => {
+            if (macrosVisible()) {
+                this.props.actions.macro.previewAdjacentMacro('next')
+            }
+        })
     }
 
     applyMacro = (macro) => {

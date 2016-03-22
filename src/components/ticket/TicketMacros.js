@@ -1,13 +1,15 @@
 import React, {PropTypes} from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
+
 import TicketMacroAction from './TicketMacroAction'
+
 
 export default class TicketMacros extends React.Component {
     renderMacroListItem = (macro) => {
         const containerOpts = {
             key: macro.get('id'),
-            className: classNames('item', {active: macro === this.props.selected}),
+            className: classNames('item', {active: macro.get('id') === this.props.selected.get('id')}),
             onMouseEnter: () => this.props.previewMacro(macro),
             onClick: () => this.props.applyMacro(macro),
         }
@@ -23,7 +25,7 @@ export default class TicketMacros extends React.Component {
 
     renderSelectedMacro = () => {
         const macro = this.props.selected
-        if (!macro) {
+        if (macro.isEmpty()) {
             return null
         }
 
@@ -63,7 +65,7 @@ export default class TicketMacros extends React.Component {
 
 TicketMacros.propTypes = {
     items: PropTypes.object.isRequired,
+    selected: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     previewMacro: PropTypes.func.isRequired,
 }
-

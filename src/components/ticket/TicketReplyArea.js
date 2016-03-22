@@ -5,8 +5,7 @@ import classNames from 'classnames'
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
 
-import SearchInput from 'react-search-input'
-import {createFilter} from 'react-search-input'
+import SearchInput, { createFilter } from 'react-search-input'
 
 export default class TicketReplyArea extends React.Component {
     constructor() {
@@ -19,7 +18,7 @@ export default class TicketReplyArea extends React.Component {
     }
 
     renderChild = (macros) => {
-        if (this.props.macros.get('show')) {
+        if (this.props.macros.get('visible')) {
             return (
                 <TicketMacros
                     items={macros}
@@ -40,8 +39,8 @@ export default class TicketReplyArea extends React.Component {
     }
 
     render = () => {
-        const setMacrosShow = this.props.actions.macro.setMacrosShow
-        const showMacros = this.props.macros.get('show')
+        const setMacrosVisible = this.props.actions.macro.setMacrosVisible
+        const macrosVisible = this.props.macros.get('visible')
         let macros = this.props.macros.get('items')
 
         if (macros.size === 0) {
@@ -59,15 +58,15 @@ export default class TicketReplyArea extends React.Component {
                 <div className="search ui raised segment">
                     <SearchInput
                         ref="search"
-                        onFocus={() => setMacrosShow(true)}
+                        onFocus={() => setMacrosVisible(true)}
                         onChange={this.searchUpdated}
                         className="ui large transparent input full-width"
                         placeholder="Search..."
                         />
-                    <a className={classNames({hidden: !showMacros})}>
+                    <a className={classNames({hidden: !macrosVisible})}>
                         <i
                             className="clear-macros right close icon"
-                            onClick={() => setMacrosShow(false)}
+                            onClick={() => setMacrosVisible(false)}
                             />
                     </a>
                 </div>

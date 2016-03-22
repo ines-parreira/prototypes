@@ -8,11 +8,12 @@ export const FETCH_MACRO_LIST_SUCCESS = 'FETCH_MACRO_LIST_SUCCESS'
 export const APPLY_MACRO = 'APPLY_MACRO'
 export const PREVIEW_MACRO = 'PREVIEW_MACRO'
 export const SET_MACROS_VISIBILITY = 'SET_MACROS_VISIBILITY'
+export const PREVIEW_ADJACENT_MACRO = 'PREVIEW_ADJACENT_MACRO'
 
-export function setMacrosShow(show) {
+export function setMacrosVisible(visible) {
     return {
         type: SET_MACROS_VISIBILITY,
-        show
+        visible
     }
 }
 
@@ -20,6 +21,13 @@ export function previewMacro(macro) {
     return {
         type: PREVIEW_MACRO,
         id: macro.get('id')
+    }
+}
+
+export function previewAdjacentMacro(direction) {
+    return {
+        type: PREVIEW_ADJACENT_MACRO,
+        direction,
     }
 }
 
