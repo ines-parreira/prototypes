@@ -12,42 +12,37 @@ export default class TicketMessage extends React.Component {
             createdDatetime = moment(message.created_datetime).tz(currentUser.get('timezone', 'UTC')).fromNow()
         }
         return (
-            <div className="TicketMessage item">
+            <div className="ticket-message item">
                 <div className="content">
-                    <div className="message-header">
-                        <div className="ui left floated header sender">
+                    <div className="ticket-message-header">
+                        <div className="ui left floated">
                             {(() => {
                                 if (message.from_agent) {
-                                    return (<span className="author-label ui mini yellow label">A</span>)
+                                    return (<span className="ticket-message-author-label ui mini yellow label">A</span>)
                                 }
                             })()}
-                            <span className="name">{message.sender.name}</span>
-                            {(() => {
-                                if (!message.from_agent) {
-                                    return (
-                                        <span className="ui horizontal label">
-                                            <i className="dollar icon"/>Startup Plan
-                                        </span>
-                                    )
-                                }
-                            })()}
-                            <div className="sub header">
-                                {message.sender.email}
-                            </div>
+                            <span className="ticket-message-author ui header">
+                                {message.sender.name}
+                            </span>
+
+                            <span className="ticket-message-source">
+                                <i className="icon mail"></i>
+                                &lt;{message.sender.email}&gt;
+                            </span>
                         </div>
-                        <div className="ui right floated header">{createdDatetime}</div>
+                        <div className="ticket-message-time ui right floated">
+                            {createdDatetime}
+                        </div>
                     </div>
-                    <div className="clearfix"></div>
                     {(() => {
                         if (message.body_html) {
                             return (
-                                <div className="message-body"
+                                <div className="ticket-message-body"
                                      dangerouslySetInnerHTML={{__html: message.body_html}}></div>
                             )
                         }
                         return (
-                            <div className="message-body">
-                                <pre dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}}/>
+                            <div className="ticket-message-body ticket-message-body-text" dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}}>
                             </div>
                         )
                     })()}

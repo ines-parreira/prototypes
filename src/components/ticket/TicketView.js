@@ -49,7 +49,6 @@ export default class TicketView extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="ui clearing divider"></div>
                     </div>
                 </div>
                 <TicketMessages
