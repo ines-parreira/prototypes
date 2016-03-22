@@ -91,6 +91,9 @@ export function fetchView(url, data = {}, type = 'list') {
             method: 'GET',
             contentType: 'application/json'
         }).then((resp) => {
+            if (_.isEmpty(resp)) {
+                console.error("No results for", url)
+            }
             dispatch({
                 type: type === 'list' ? FETCH_TICKET_LIST_VIEW_SUCCESS : FETCH_TICKET_SUCCESS,
                 resp

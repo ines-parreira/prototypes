@@ -1,5 +1,5 @@
 import * as actions from '../actions/ticket'
-import Immutable, { Map, List } from 'immutable'
+import Immutable, { Map, List, Set } from 'immutable'
 import _ from 'lodash'
 
 const ticketInitial = Map({
@@ -23,7 +23,7 @@ const newMessage = Map({
 })
 
 function keyIn(/*...keys*/) {
-    var keySet = Immutable.Set(arguments);
+    var keySet = Set(arguments);
     return function (v, k) {
         return keySet.has(k)
     }

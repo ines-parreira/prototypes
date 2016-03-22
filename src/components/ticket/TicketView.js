@@ -15,6 +15,7 @@ export default class TicketView extends React.Component {
 
     render = () => {
         const { ticket } = this.props
+
         return (
             <div className="TicketView">
                 <div className="TicketHeader">
