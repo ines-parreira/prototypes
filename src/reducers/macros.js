@@ -18,7 +18,7 @@ export function macros(state = macrosInitial, action) {
         case actions.APPLY_MACRO:
             return state.set('show', false)
 
-        case actions.SET_MACROS_SHOW:
+        case actions.SET_MACROS_VISIBILITY:
             return state.set('show', action.show)
 
         case actions.FETCH_MACRO_LIST_SUCCESS:

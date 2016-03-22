@@ -7,11 +7,11 @@ export const FETCH_MACRO_LIST_SUCCESS = 'FETCH_MACRO_LIST_SUCCESS'
 
 export const APPLY_MACRO = 'APPLY_MACRO'
 export const PREVIEW_MACRO = 'PREVIEW_MACRO'
-export const SET_MACROS_SHOW = 'SET_MACROS_SHOW'
+export const SET_MACROS_VISIBILITY = 'SET_MACROS_VISIBILITY'
 
 export function setMacrosShow(show) {
     return {
-        type: SET_MACROS_SHOW,
+        type: SET_MACROS_VISIBILITY,
         show
     }
 }
