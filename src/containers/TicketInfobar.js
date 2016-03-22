@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux'
 
 import * as WidgetActions from '../actions/widget'
 import Infobar from '../components/Infobar'
+import TicketInfobar from '../components/ticket/TicketInfobar'
+
 
 class TicketsInfobarContainer extends React.Component {
     componentWillMount() {
@@ -15,8 +17,14 @@ class TicketsInfobarContainer extends React.Component {
     }
 
     render() {
+        const content = (
+            <TicketInfobar
+                    ticket={this.props.ticket}
+                    widgets={this.props.widgets} />
+        )
+
         return (
-            <Infobar widgets={this.props.widgets} />
+            <Infobar content={content} />
         )
     }
 }

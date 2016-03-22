@@ -24,13 +24,27 @@ export default class Infobar extends React.Component {
         this.drag = this.drag.bind(this)
     }
 
+    componentDidMount() {
+        window.addEventListener('mousedown', this.dragStart)
+        window.addEventListener('mouseup', this.dragStop)
+        window.addEventListener('contextmenu', this.dragStop)
+        window.addEventListener('mousemove', this.drag)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('mousedown', this.dragStart)
+        window.removeEventListener('mouseup', this.dragStop)
+        window.removeEventListener('contextmenu', this.dragStop)
+        window.removeEventListener('mousemove', this.drag)
+    }
+
     dragStart(e) {
         if (!e.target.classList.contains(this.classHandle)) {
             return
         }
 
         this.cursorX = e.clientX
-        var computedStyle = window.getComputedStyle(this.refs.container)
+        const computedStyle = window.getComputedStyle(this.refs.container)
 
         this.originalWidth = parseInt(computedStyle.getPropertyValue('width'))
         this.minWidth = parseInt(computedStyle.getPropertyValue('min-width'))
@@ -49,7 +63,7 @@ export default class Infobar extends React.Component {
             return
         }
 
-        var nextWidth = this.originalWidth + this.cursorX - e.clientX
+        const nextWidth = this.originalWidth + this.cursorX - e.clientX
 
         // don't expand/shrink past min/max width.
         // for performance.
@@ -60,102 +74,20 @@ export default class Infobar extends React.Component {
         }
     }
 
-    componentDidMount() {
-        window.addEventListener('mousedown', this.dragStart)
-        window.addEventListener('mouseup', this.dragStop)
-        window.addEventListener('contextmenu', this.dragStop)
-        window.addEventListener('mousemove', this.drag)
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('mousedown', this.dragStart)
-        window.removeEventListener('mouseup', this.dragStop)
-        window.removeEventListener('contextmenu', this.dragStop)
-        window.removeEventListener('mousemove', this.drag)
-    }
-
     render() {
-        const { widgets } = this.props
-        if (!widgets.get('items').length) {
-            return null
-        }
-
-        var style = {
+        const style = {
             width: this.state.width
         }
 
         return (
             <div className="infobar" ref="container" style={style}>
                 <div className="infobar-drag-handle"></div>
-                <div className="infobar-search infobar-box">
-                    <Search id="ticket"/>
-                </div>
-                <div className="infobar-top infobar-box">
-                    <h2>
-                        Erick Rodriguez
-                    </h2>
-
-                    <div className="infobar-card ui card">
-                        <div className="content">
-                            <ul>
-                                <li>
-                                    <strong>
-                                        Email address:
-                                    </strong>
-                                    <a href="">
-                                        erodriguez@gmail.com
-                                    </a>
-                                </li>
-                                <li>
-                                    <strong>
-                                        City:
-                                    </strong>
-                                    <a href="">
-                                        NYC
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div className="infobar-content infobar-box">
-
-                    <div className="infobar-card ui card">
-                        <div className="content">
-                            <h3 className="infobar-card-title">
-                                <a href="#">
-                                    Order 123456
-
-                                    <i className="ui icon caret right"></i>
-                                </a>
-                            </h3>
-
-                            <div className="ui menu vertical">
-                                <div className="item">
-                                    <div className="header">
-                                        GENERAL INFO
-                                    </div>
-                                    <div className="menu">
-                                        <div className="item">
-                                            Order_id:
-                                            <strong>
-                                                175
-                                            </strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
+                {this.props.content}
             </div>
         )
     }
 }
 
 Infobar.propTypes = {
-    widgets: PropTypes.object,
-    ticket: PropTypes.object
+    content: PropTypes.node
 }
