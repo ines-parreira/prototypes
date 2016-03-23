@@ -23,7 +23,7 @@ export default class TicketsView extends React.Component {
         return this.props.actions.view.updateView(id, slug, data)
     }
 
-    renderTopbar() {
+    renderMoreFieldsbar() {
         return (
             <div className="ui text menu">
                 <a className="ui dropdown item top-dropdowns">
@@ -32,12 +32,42 @@ export default class TicketsView extends React.Component {
             </div>
         )
     }
+
+    saveView = () => {
+        this.updateView(_.pick(this.props.view.toJS(), ['filters', 'filters_ast']))
+    }
+
+    renderSaveView = () => {
+       if (!this.props.view.get('dirty')) {
+           return null
+       }
+       return (
+           <div>
+               <button className="ui blue button" onClick={this.saveView}>Save</button>
+           </div>
+       )
+    }
+
+    renderTopbar() {
+        return (
+            <div className="ui text menu">
+                <a className="ui dropdown item top-dropdowns">
+                    {JSON.stringify(this.props.view.get('groupedFilters'))}
+                </a>
+
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className="TicketsView" key={this.props.view.get('slug')}>
-                {this.renderTopbar()}
+                {this.renderMoreFieldsbar()}
 
                 <h1 className="ui header">{this.props.view.get('name')}</h1>
+
+                {this.renderTopbar()}
+
                 <TicketTable
                     actions={this.props.actions}
                     tickets={this.props.tickets}

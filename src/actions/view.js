@@ -3,20 +3,41 @@ import reqwest from 'reqwest'
 // Basic operations on the views
 export const NEW_VIEW = 'NEW_VIEW'
 
+export const UPDATE_VIEW = 'UPDATE_VIEW'
+export const UPDATE_VIEW_FILTERS = 'UPDATE_VIEW_FILTERS'
+
 // Fetch individual view definitions
 export const FETCH_VIEW_START = 'FETCH_VIEW_START'
 export const FETCH_VIEW_SUCCESS = 'FETCH_VIEW_SUCCESS'
 export const FETCH_VIEW_ERROR = 'FETCH_VIEW_ERROR'
 
 // Update individual view definitions
-export const UPDATE_VIEW_START = 'UPDATE_VIEW_START'
-export const UPDATE_VIEW_SUCCESS = 'UPDATE_VIEW_SUCCESS'
-export const UPDATE_VIEW_ERROR = 'UPDATE_VIEW_ERROR'
+export const SUBMIT_VIEW_START = 'SUBMIT_VIEW_START'
+export const SUBMIT_VIEW_SUCCESS = 'SUBMIT_VIEW_SUCCESS'
+export const SUBMIT_VIEW_ERROR = 'SUBMIT_VIEW_ERROR'
 
 // Fetch list views
 export const FETCH_VIEW_LIST_START = 'FETCH_VIEW_LIST_START'
 export const FETCH_VIEW_LIST_SUCCESS = 'FETCH_VIEW_LIST_SUCCESS'
 export const FETCH_VIEW_LIST_ERROR = 'FETCH_VIEW_LIST_ERROR'
+
+
+export function updateView(slug, data) {
+    return {
+        type: UPDATE_VIEW,
+        slug,
+        data,
+    }
+}
+
+
+export function updateFilters(slug, data) {
+    return {
+        type: UPDATE_VIEW_FILTERS,
+        slug,
+        data
+    }
+}
 
 
 export function fetchViews(url, data = {}, type = 'list') {
@@ -30,31 +51,31 @@ export function fetchViews(url, data = {}, type = 'list') {
             data: data,
             type: 'json',
             method: 'GET',
-            contentType: 'application/json'
+            contentType: 'application/json',
         }).then((resp) => {
             dispatch({
                 type: type === 'list' ? FETCH_VIEW_LIST_SUCCESS : FETCH_VIEW_SUCCESS,
-                resp
+                resp,
             })
         }).catch((err) => {
             dispatch({
                 type: type === 'list' ? FETCH_VIEW_LIST_ERROR : FETCH_VIEW_ERROR,
-                err
+                err,
             })
         })
     }
 }
 
-export function updateView(id, slug, data = {}) {
+export function submitView(id, slug, data) {
     const url = `/api/views/${id}/`
     // Ensure we have the slug for the backend schema
     data.slug = slug
 
     return (dispatch) => {
         dispatch({
-            type: UPDATE_VIEW_START,
+            type: SUBMIT_VIEW_START,
             slug,
-            data
+            data,
         })
 
         return reqwest({
@@ -62,18 +83,18 @@ export function updateView(id, slug, data = {}) {
             data: JSON.stringify(data),
             type: 'json',
             method: 'PUT',
-            contentType: 'application/json'
+            contentType: 'application/json',
         }).then((resp) => {
             dispatch({
-                type: UPDATE_VIEW_SUCCESS,
+                type: SUBMIT_VIEW_SUCCESS,
                 slug,
-                resp
+                resp,
             })
         }).catch((err) => {
             dispatch({
-                type: UPDATE_VIEW_ERROR,
+                type: SUBMIT_VIEW_ERROR,
                 slug,
-                err
+                err,
             })
         })
     }

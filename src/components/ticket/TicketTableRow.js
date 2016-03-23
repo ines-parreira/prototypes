@@ -51,12 +51,13 @@ export default class TicketTableRow extends React.Component {
             case "updated":
                 return this.formatDatetime(ticket.updated_datetime)
             case "details":
+                const firstMessage = ticket.messages[0]
                 return (
                     <div className="ui header">
                         <span
                             className="subject">{this.trim(ticket.subject, 50)}</span>
                         <div className="body sub header">
-                            {this.trim(ticket.body_html ? ticket.body_html : ticket.body_text, 100)}
+                            {this.trim(firstMessage.body_html ? firstMessage.body_html : firstMessage.body_text, 100)}
                         </div>
                     </div>
                 )
