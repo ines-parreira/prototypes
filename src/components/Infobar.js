@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import Search from './Search'
 
 export default class Infobar extends React.Component {
     constructor() {

@@ -20,7 +20,8 @@ class TicketsInfobarContainer extends React.Component {
         const content = (
             <TicketInfobar
                     ticket={this.props.ticket}
-                    widgets={this.props.widgets} />
+                    widgets={this.props.widgets}
+            />
         )
 
         return (
