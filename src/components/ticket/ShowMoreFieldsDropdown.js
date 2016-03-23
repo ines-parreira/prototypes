@@ -13,9 +13,9 @@ export default class ShowMoreFieldsDropdown extends React.Component {
     componentDidMount = () => {
         const self = this
         $('.ShowMoreFieldsDropdown .custom.button').popup({
-          popup: $('.custom.popup'),
-          on: 'click',
-          position: 'bottom center',
+            popup: $('.custom.popup'),
+            on: 'click',
+            position: 'bottom center',
         })
 
         $('.ShowMoreFieldsDropdown .checkbox').checkbox({
@@ -31,10 +31,10 @@ export default class ShowMoreFieldsDropdown extends React.Component {
         const checked = this.props.columns.includes(column.name)
         return (
             <div className="field" key={column.name}>
-              <div className="ui checkbox">
-                <input type="checkbox" name={column.name} defaultChecked={checked} />
-                <label>{column.header}</label>
-              </div>
+                <div className="ui checkbox">
+                    <input type="checkbox" name={column.name} defaultChecked={checked} />
+                    <label>{column.header}</label>
+                </div>
             </div>
         )
     }
@@ -49,9 +49,7 @@ export default class ShowMoreFieldsDropdown extends React.Component {
                 <div className="ui popup custom">
                     <div className="ui form">
                         <div className="grouped fields">
-                            {
-                                _.sortBy(TicketColumns.toJS(), 'name').map(this.renderCheckbox)
-                            }
+                            {_.sortBy(TicketColumns.toJS(), 'name').map(this.renderCheckbox)}
                         </div>
                     </div>
                 </div>
