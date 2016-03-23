@@ -1,7 +1,10 @@
 import React, {PropTypes} from 'react'
-import TicketTable from './TicketTable'
-import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
+import { Map } from 'immutable'
 
+import TicketTable from './TicketTable'
+import FilterTopbar from './FilterTopbar'
+import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
+import { TICKET_STATUSES } from '../../constants'
 
 export default class TicketsView extends React.Component {
     renderShowMoreFieldsDropdown = () => {
@@ -14,13 +17,50 @@ export default class TicketsView extends React.Component {
             <ShowMoreFieldsDropdown
                 columns={this.props.columns.map((c) => c.get('name'))}
                 updateView={this.updateView}
-                />
+            />
         )
     }
 
+    getFilterSpecs = () => {
+        /*
+        * In the future this should perhaps be replaced by information gleaned from the swagger API spec
+        */
+        return {
+            'ticket.tags': {
+                name: 'ticket.tags',
+                allValues: this.props.allTags,
+                columnName: 'tags',
+                callee: 'contains',
+                getRepr: (value) => value.name,
+                getID: (value) => value.name,
+            },
+            'ticket.assignee_user.id': {
+                name: 'ticket.assignee_user.id',
+                allValues: this.props.allUsers,
+                columnName: 'assignee',
+                callee: 'eq',
+                getRepr: (value) => value.name,
+                getID: (value) => value.id,
+            },
+            'ticket.status': {
+                name: 'ticket.status',
+                allValues: TICKET_STATUSES,
+                columnName: 'status',
+                callee: 'eq',
+                getRepr: (value) => value,
+                getID: (value) => value,
+            },
+        }
+    }
+
+    getFilterSpecForColumn = (columnName) => {
+        return _.keyBy(_.values(this.getFilterSpecs()), 'columnName')[columnName]
+    }
+
     updateView = (data) => {
-        const { id, slug } = this.props.view.toJS()
-        return this.props.actions.view.updateView(id, slug, data)
+        // TODO: Just pass through the view
+        const slug = this.props.view.get('slug')
+        return this.props.actions.view.updateView(slug, data)
     }
 
     renderMoreFieldsbar() {
@@ -33,47 +73,39 @@ export default class TicketsView extends React.Component {
         )
     }
 
-    saveView = () => {
-        this.updateView(_.pick(this.props.view.toJS(), ['filters', 'filters_ast']))
+    updateFilters = (data) => {
+        this.props.actions.view.updateFilters(this.props.view.get('slug'), data)
     }
 
-    renderSaveView = () => {
-       if (!this.props.view.get('dirty')) {
-           return null
-       }
-       return (
-           <div>
-               <button className="ui blue button" onClick={this.saveView}>Save</button>
-           </div>
-       )
-    }
-
-    renderTopbar() {
-        return (
-            <div className="ui text menu">
-                <a className="ui dropdown item top-dropdowns">
-                    {JSON.stringify(this.props.view.get('groupedFilters'))}
-                </a>
-
-            </div>
-        )
+    clearFilter = (name) => {
+        this.props.actions.view.clearFilter(this.props.view.get('slug'), name)
     }
 
     render() {
+        const groupedFilters = this.props.view.get('groupedFilters', Map())
+
         return (
             <div className="TicketsView" key={this.props.view.get('slug')}>
                 {this.renderMoreFieldsbar()}
 
                 <h1 className="ui header">{this.props.view.get('name')}</h1>
 
-                {this.renderTopbar()}
+                <FilterTopbar
+                    view={this.props.view}
+                    groupedFilters={groupedFilters}
+                    filterSpecs={this.getFilterSpecs()}
+                    updateFilters={this.updateFilters}
+                    clearFilter={this.clearFilter}
+                    submitView={this.props.actions.view.submitView}
+                />
 
                 <TicketTable
                     actions={this.props.actions}
                     tickets={this.props.tickets}
                     columns={this.props.columns.toJS()}
-                    allTags={this.props.allTags}
-                    allUsers={this.props.allUsers}
+                    groupedFilters={groupedFilters}
+                    getFilterSpecForColumn={this.getFilterSpecForColumn}
+                    updateFilters={this.updateFilters}
                     currentUser={this.props.currentUser}
                     pushState={this.props.pushState}
                     fetchPage={this.props.fetchPage}

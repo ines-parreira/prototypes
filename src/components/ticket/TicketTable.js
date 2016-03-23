@@ -2,28 +2,21 @@ import React, {PropTypes} from 'react'
 import moment from 'moment'
 import 'moment-timezone'
 import TicketTableRow from './TicketTableRow'
+import PlainColumnHeader from './PlainColumnHeader'
+import ColumnHeader from './ColumnHeader'
 import SemanticPaginator from '../SemanticPaginator'
 import classNames from 'classnames'
 import { CELL_WIDTH } from '../../constants'
 
 
+const columnToFilterName = {
+    assignee: "ticket.assignee_user.id",
+    tags: "ticket.tags",
+    status: "ticket.status",
+}
+
+
 export default class TicketTable extends React.Component {
-    columnHeaderFieldContent = (column) => {
-        const sort = column.sortable ? <i className="sort icon"></i> : null
-        return <span>{column.header} {sort}</span>
-    }
-
-    renderColumnHeaderField = (column) => {
-        const style = {width: column.width}
-        const className = classNames(column.name, "wide", "column")
-
-        return (
-            <div style={style} className={className} key={column.name}>
-                {this.columnHeaderFieldContent(column)}
-            </div>
-        )
-    }
-
     getWidth = () => {
         return _.sumBy(this.props.columns, 'width') + CELL_WIDTH  // One extra cell for the row checkbox
     }
@@ -45,6 +38,25 @@ export default class TicketTable extends React.Component {
         return this.props.fetchPage(page)
     }
 
+    renderColumnHeader = (column) => {
+        const filterSpec = this.props.getFilterSpecForColumn(column.name)
+
+        if (!filterSpec) {
+            return <PlainColumnHeader key={column.name} column={column} />
+        }
+
+        return (
+            <ColumnHeader
+                key={column.name}
+                column={column}
+                groupedFilters={this.props.groupedFilters}
+                updateFilters={this.props.updateFilters}
+                searchPlaceholder="Search..."
+                filterSpec={filterSpec}
+            />
+        )            
+    }
+
     render = () => {
         // TODO: Do this with CSS rather than explicitly calculating & passing total width
         const width = this.getWidth()
@@ -53,6 +65,7 @@ export default class TicketTable extends React.Component {
         if (this.props.tickets.get('items').size === 0) {
             return this.renderLoading()
         }
+
         return (
             <div className="TicketTable">
                 <div>
@@ -64,9 +77,7 @@ export default class TicketTable extends React.Component {
                                     <label></label>
                                 </span>
                             </div>
-                            {
-                                this.props.columns.map(this.renderColumnHeaderField)
-                            }
+                            {this.props.columns.map(this.renderColumnHeader)}
                         </div>
                     </div>
                     <div>
@@ -79,7 +90,8 @@ export default class TicketTable extends React.Component {
                                         width={width}
                                         columns={this.props.columns}
                                         currentUser={this.props.currentUser}
-                                        pushState={this.props.pushState} />
+                                        pushState={this.props.pushState}
+                                    />
                                 )
                             })
                         }
@@ -91,7 +103,7 @@ export default class TicketTable extends React.Component {
                     onChange={this.onPageChange}
                     radius={0}
                     anchor={3}
-                    />
+                />
             </div>
         )
     }
@@ -100,9 +112,10 @@ export default class TicketTable extends React.Component {
 TicketTable.propTypes = {
     tickets: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
+    groupedFilters: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired,
-    allTags: PropTypes.array.isRequired,
-    allUsers: PropTypes.array.isRequired,
     currentUser: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired,
+    updateFilters: PropTypes.func.isRequired,
+    getFilterSpecForColumn: PropTypes.func.isRequired,
 }
