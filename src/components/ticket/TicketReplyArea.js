@@ -14,7 +14,7 @@ export default class TicketReplyArea extends React.Component {
     }
 
     searchUpdated = (term) => {
-        this.setState({searchTerm: term}) // Necessary for re-render
+        this.setState({ searchTerm: term }) // Necessary for re-render
     }
 
     renderChild = (macros) => {
@@ -25,7 +25,7 @@ export default class TicketReplyArea extends React.Component {
                     selected={this.props.macros.get('selected')}
                     applyMacro={this.props.applyMacro}
                     previewMacro={this.props.previewMacro}
-                    />
+                />
             )
         }
         return (
@@ -34,7 +34,7 @@ export default class TicketReplyArea extends React.Component {
                 ticket={this.props.ticket}
                 currentUser={this.props.currentUser}
                 value={this.props.ticket.getIn(['newMessage', 'body_text'])}
-                />
+            />
         )
     }
 
@@ -62,12 +62,12 @@ export default class TicketReplyArea extends React.Component {
                         onChange={this.searchUpdated}
                         className="ui large transparent input full-width"
                         placeholder="Search..."
-                        />
+                    />
                     <a className={classNames({hidden: !macrosVisible})}>
                         <i
                             className="clear-macros right close icon"
                             onClick={() => setMacrosVisible(false)}
-                            />
+                        />
                     </a>
                 </div>
                 {this.renderChild(macros)}

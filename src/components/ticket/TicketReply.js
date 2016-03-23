@@ -1,5 +1,4 @@
-import React, {PropTypes} from 'react'
-import moment from 'moment'
+import React, { PropTypes } from 'react'
 
 export default class TicketReply extends React.Component {
     onChange = (ev) => {
@@ -9,16 +8,8 @@ export default class TicketReply extends React.Component {
     }
 
     render() {
-        const {currentUser} = this.props
-
         return (
             <div className="TicketReply search ui raised segment">
-                <div className="ui left floated header sender">
-                    <span className="name">
-                        <span className="ui mini yellow author-label label">A</span> {currentUser.get('name')}
-                    </span>
-                    <div className="sub header email">{currentUser.get('email')}</div>
-                </div>
                 <form className="ui reply form">
                     <div className="field">
                         <textarea

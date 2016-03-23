@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 
@@ -15,7 +15,7 @@ export default class TicketMacros extends React.Component {
         }
 
         return (
-            <div  {...containerOpts}>
+            <div {...containerOpts}>
                 <div className="content">
                     <div className="header">{macro.get('name')}</div>
                 </div>
@@ -30,8 +30,7 @@ export default class TicketMacros extends React.Component {
         }
 
         return (
-            <div>
-                <h2>{macro.get('name')}</h2>
+            <div className="macro-preview">
                 <div>
                     {macro.get('actions').map((action) =>
                         <TicketMacroAction key={action.get('id')} action={action} />
@@ -47,12 +46,12 @@ export default class TicketMacros extends React.Component {
         return (
             <div className="TicketMacros search ui raised segment">
                 <div className="ui grid">
-                    <div className="four wide column">
-                        <div className="ui large aligned selection list">
+                    <div className="macro-list four wide column">
+                        <div className="ui large aligned selection relaxed list">
                             {this.props.items.map(this.renderMacroListItem)}
                         </div>
                     </div>
-                    <div className="twelve wide column">
+                    <div className="macro-preview-container twelve wide column">
                         <div className="macro-detail">
                             {this.renderSelectedMacro()}
                         </div>
