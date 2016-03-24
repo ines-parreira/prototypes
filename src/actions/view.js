@@ -5,6 +5,7 @@ export const NEW_VIEW = 'NEW_VIEW'
 
 export const UPDATE_VIEW = 'UPDATE_VIEW'
 export const UPDATE_VIEW_FILTERS = 'UPDATE_VIEW_FILTERS'
+export const CLEAR_VIEW_FILTER = 'CLEAR_VIEW_FILTER'
 
 // Fetch individual view definitions
 export const FETCH_VIEW_START = 'FETCH_VIEW_START'
@@ -23,6 +24,7 @@ export const FETCH_VIEW_LIST_ERROR = 'FETCH_VIEW_LIST_ERROR'
 
 
 export function updateView(slug, data) {
+    data.dirty = true
     return {
         type: UPDATE_VIEW,
         slug,
@@ -31,11 +33,20 @@ export function updateView(slug, data) {
 }
 
 
-export function updateFilters(slug, data) {
+export function updateFilters(slug, newFilters) {
     return {
         type: UPDATE_VIEW_FILTERS,
         slug,
-        data
+        newFilters,
+    }
+}
+
+
+export function clearFilter(slug, name) {
+    return {
+        type: CLEAR_VIEW_FILTER,
+        slug,
+        name,
     }
 }
 
@@ -66,10 +77,17 @@ export function fetchViews(url, data = {}, type = 'list') {
     }
 }
 
-export function submitView(id, slug, data) {
+function removeExtraAttributes(view) {
+    return view
+        .delete('groupedFilters')
+        .delete('dirty')
+}
+
+
+export function submitView(view) {
+    const data = removeExtraAttributes(view).toJS()
+    const { id, slug } = data
     const url = `/api/views/${id}/`
-    // Ensure we have the slug for the backend schema
-    data.slug = slug
 
     return (dispatch) => {
         dispatch({

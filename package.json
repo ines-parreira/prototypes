@@ -30,6 +30,7 @@
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-immutable-render-mixin": "^0.9.5",
+    "react-portal": "^2.1.0",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0",
     "react-search-input": "^0.6.0",

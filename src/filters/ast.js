@@ -56,6 +56,10 @@ export function groupFlatTriples(triples) {
     */
     let filters = {}
 
+    if (_.isEmpty(triples)) {
+        return {}
+    }
+
     for (let triple of triples) {
         let [callee, key, value] = triple
 
