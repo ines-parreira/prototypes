@@ -86,6 +86,7 @@ export default class Navbar extends React.Component {
                     </div>
 
                     <div className="menu">
+                        <a className="item" href="/logout"><i className="sign out icon"/> Sign Out</a>
                         <a className="item"><i className="edit icon"/> Edit Profile</a>
                         <a className="item"><i className="globe icon"/> Choose Language</a>
                         <a className="item"><i className="settings icon"/> Account Settings</a>
