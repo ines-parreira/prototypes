@@ -63,7 +63,6 @@ export default class ColumnHeader extends React.Component {
                         <FilterDropdown
                               groupedFilters={this.props.groupedFilters}
                               filterSpec={this.props.filterSpec}
-                              placeholder={this.props.searchPlaceholder}
                               updateFilters={this.props.updateFilters}
                               onClose={this.onClose}
                         />
@@ -77,7 +76,6 @@ export default class ColumnHeader extends React.Component {
 ColumnHeader.propTypes = {
     column: PropTypes.object.isRequired,
     updateFilters: PropTypes.func.isRequired,
-    searchPlaceholder: PropTypes.string.isRequired,
     groupedFilters: PropTypes.object.isRequired,
     filterSpec: PropTypes.object.isRequired,
 }
