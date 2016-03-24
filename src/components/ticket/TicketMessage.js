@@ -6,7 +6,8 @@ import 'moment-timezone'
 export default class TicketMessage extends React.Component {
     componentDidMount() {
         $('.ui.dropdown', this.refs.ticketMessage).dropdown({
-            on: 'hover'
+            on: 'hover',
+            action: 'nothing'
         })
     }
 
@@ -19,22 +20,6 @@ export default class TicketMessage extends React.Component {
         }
         return (
             <div className="ticket-message" ref="ticketMessage">
-                <div className="ticket-message-options-btn ui dropdown">
-                    <i className="ui icon angle down"></i>
-                    <div className="menu transition">
-                        <div className="item">
-                            <a href="#">
-                                Most Recent Orders
-                            </a>
-                        </div>
-                        <div className="item">
-                            <a href="#">
-                                View Original
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
                 <div className="ticket-message-header">
                     <div className="ticket-message-header-details">
                         {(() => {
@@ -42,13 +27,41 @@ export default class TicketMessage extends React.Component {
                                 return (<span className="ticket-message-author-label ui mini yellow label">A</span>)
                             }
                         })()}
+
                         <span className="ticket-message-author ui header">
                             {message.sender.name}
                         </span>
 
                         <span className="ticket-message-source">
-                            <i className="icon mail"></i>
-                            &lt;{message.sender.email}&gt;
+                            <div className="ui dropdown">
+                                <span className="text">
+                                    <i className="icon mail"></i>
+                                    &lt;{message.sender.email}&gt;
+                                </span>
+                                <div className="ticket-message-source-details menu transition">
+                                    <ul className="item">
+                                        <li>
+                                            To:
+                                            <strong>
+                                                {message.sender.email}
+                                            </strong>
+                                        </li>
+                                        <li>
+                                            From:
+                                            <strong>
+                                                support@gorgias.io
+                                            </strong>
+                                        </li>
+                                        <li>
+                                            Send via:
+                                            <strong>
+                                                Email
+                                            </strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
                         </span>
                     </div>
                     <div className="ticket-message-time">
@@ -67,6 +80,22 @@ export default class TicketMessage extends React.Component {
                         </div>
                     )
                 })()}
+
+                <div className="ticket-message-options-btn ui dropdown">
+                    <i className="ui icon angle down"></i>
+                    <div className="menu transition">
+                        <div className="item">
+                            <a href="#">
+                                Most Recent Orders
+                            </a>
+                        </div>
+                        <div className="item">
+                            <a href="#">
+                                View Original
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
