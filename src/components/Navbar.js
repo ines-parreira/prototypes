@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 export default class Navbar extends React.Component {
     componentDidMount() {
-        $('.ui.dropdown').dropdown()
+        $('.ui.dropdown', this.refs.navbar).dropdown()
     }
 
     sections(views) {
@@ -37,7 +37,7 @@ export default class Navbar extends React.Component {
         const { views, currentUser } = this.props
         const sections = this.sections(_.values(views.toJS()))
         return (
-            <div className="navbar">
+            <div className="navbar" ref="navbar">
                 <div className="navbar-btn navbar-btn-category ui dropdown">
                     Tickets
                     <i className="icon angle down"/>

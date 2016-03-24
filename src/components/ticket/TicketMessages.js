@@ -10,16 +10,14 @@ export default class TicketMessages extends React.Component {
         }
         return (
             <div className="TicketMessages">
-                <div className="ui divided items">
-                    {messages.map((message) => {
-                        return (
-                            <TicketMessage key={message.get('id')}
-                                message={message.toJS()}
-                                currentUser={this.props.currentUser}
-                                />
-                        )
-                    })}
-                </div>
+                {messages.map((message) => {
+                    return (
+                        <TicketMessage key={message.get('id')}
+                            message={message.toJS()}
+                            currentUser={this.props.currentUser}
+                            />
+                    )
+                })}
             </div>
         )
     }
