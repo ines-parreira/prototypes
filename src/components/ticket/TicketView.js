@@ -20,20 +20,6 @@ export default class TicketView extends React.Component {
         }
     }
 
-//     <div className="ui text menu">
-//                         <a className="item">
-//                             <i className="clock icon"/> Previous tickets
-//                         </a>
-//                         <a className="item">
-//                             <i className="user icon"/>
-//                             Assigned to Avi
-//                         </a>
-//                         <a className="item">
-//                             <i className="outline flag icon"/>
-//                             Mark as important
-//                         </a>
-//                     </div>
-
     render = () => {
         const { ticket } = this.props
 
@@ -63,18 +49,26 @@ export default class TicketView extends React.Component {
                     <h1 className="ui header">{ticket.get('subject')}</h1>
                     <div className="ui grid">
                         <div className="row">
-                            <div className="left floated eight wide column">
+                            <div className="eight wide column">
                                 <TicketTags tags={ticket.get('tags')} />
                             </div>
-                            <div className="left floated eight wide column">
-                                <div className="misc">
-                                    <span className="ticket-id">
-                                        {`Ticket #${ticket.get('id')}`}
-                                    </span>
-                                    <span className={`ui ticket-status horizontal ${ticket.get('status')} label`}>
-                                        {ticket.get('status')}
-                                    </span>
-                                </div>
+                            <div className="eight wide column ticket-details">
+                                <a className="ticket-flag-btn ticket-details-item">
+                                    <i className="icon flag" />
+                                </a>
+
+                                <a className="ticket-owner-btn ticket-details-item">
+                                    <span className="ui yellow label">A</span>
+                                    ABHIMANYU SINGH
+                                </a>
+
+                                <span className="ticket-id ticket-details-item">
+                                    {`#${ticket.get('id')}`}
+                                </span>
+
+                                <span className={`ticket-status ticket-details-item ui ${ticket.get('status')} label`}>
+                                    {ticket.get('status')}
+                                </span>
                             </div>
                         </div>
                     </div>
