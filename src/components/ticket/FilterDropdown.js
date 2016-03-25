@@ -2,11 +2,21 @@ import React, {PropTypes} from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import { List } from 'immutable'
+import SearchInput, { createFilter } from 'react-search-input'
 
 const upperFirstChar = (text) => text.charAt(0).toUpperCase() + text.substr(1)
 
 
 export default class FilterDropdown extends React.Component {
+    constructor() {
+        super()
+        this.state = {searchTerm: ""}
+    }
+
+    searchUpdated = (term) => {
+        this.setState({ searchTerm: term }) // Necessary for re-render
+    }
+
     getCurrentValues = () => {
         // Get the current values or an empty list
         const { groupedFilters, filterSpec } = this.props
@@ -29,7 +39,7 @@ export default class FilterDropdown extends React.Component {
     }
 
     onClick = (newValue) => {
-        const { name, callee, getRepr } = this.props.filterSpec
+        const { name, callee } = this.props.filterSpec
         const multiple = callee === 'contains'
         const existing = multiple ? this.getCurrentValues() : []
 
@@ -50,13 +60,19 @@ export default class FilterDropdown extends React.Component {
             "dropdown",
             "active",
             "visible",
-            {multiple: this.props.multiple},
         )
         const currentValues = this.getCurrentValues()
-        const { allValues, getID } = this.props.filterSpec
+        const { allValues, getID, search } = this.props.filterSpec
+        // TODO: This only searches .name on any object
+        const filters = ['name']
+        let values = allValues
+
+        if (this.refs.search) {
+            values = values.filter(this.refs.search.filter(filters))
+        }
 
         // We do not list currently selected values in the drop-down as per Semantic's implementation
-        const values = allValues.filter((value) =>
+        values = values.filter((value) =>
             !currentValues.includes(getID(value))
         )
 
@@ -65,9 +81,13 @@ export default class FilterDropdown extends React.Component {
                 <div ref="uicomponent" className={className}>
                     <input type="hidden" name="filters" />
                     <div className="menu visible" style={{display: "block !important" }}>
-                        <div className="ui icon search input">
+                        <div className={`ui icon search input ${search ? "" : "hidden"}`}>
                             <i className="search icon"></i>
-                            <input type="text" placeholder={this.props.placeholder} />
+                            <SearchInput
+                                ref="search"
+                                onChange={this.searchUpdated}
+                                placeholder="Search..."
+                            />
                         </div>
                         <div className="scrolling menu">
                             {values.map(this.renderValue)}
@@ -83,5 +103,4 @@ FilterDropdown.propTypes = {
     filterSpec: PropTypes.object.isRequired,
     groupedFilters: PropTypes.object.isRequired,
     updateFilters: PropTypes.func.isRequired,
-    placeholder: PropTypes.string.isRequired,
 }

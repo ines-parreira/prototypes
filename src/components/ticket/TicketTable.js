@@ -51,7 +51,6 @@ export default class TicketTable extends React.Component {
                 column={column}
                 groupedFilters={this.props.groupedFilters}
                 updateFilters={this.props.updateFilters}
-                searchPlaceholder="Search..."
                 filterSpec={filterSpec}
             />
         )            
