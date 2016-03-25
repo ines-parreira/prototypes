@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import 'moment-timezone'
 import UserForm from './UserForm'
 
@@ -12,9 +12,9 @@ export default class UserRow extends React.Component {
         if (user.roles.indexOf('admin') !== -1) {
             label = <div className="ui red label">ADMIN</div>
         } else if (user.roles.indexOf('agent') !== -1) {
-            label = <div className="ui blue label">AGENT</div>
+            label = <div className="ui yellow label">AGENT</div>
         } else {
-            label = <div className="ui green label">USER</div>
+            label = <div className="ui grey label">USER</div>
         }
 
         return (
@@ -30,23 +30,22 @@ export default class UserRow extends React.Component {
                             <label></label>
                         </span>
                     </div>
-                    <div className="two wide column">
-                        {label}
-                    </div>
                     <div className="eight wide column details">
                         <div className="ui header">
-                            <span
-                                className="subject">{user.name}</span>
+                            <span className="subject">{user.name}</span>
                             <div className="body sub header">
                                 {user.email}
                             </div>
                         </div>
                     </div>
+                    <div className="two wide column">
+                        {label}
+                    </div>
                     <div className="five wide column">
-                        <button className="ui red button right" onClick={() => {deleteUser(user.id)}}>
+                        <button className="ui inverted red basic button right" onClick={() => {deleteUser(user.id)}}>
                             Delete
                         </button>
-                        <button className="ui button right" onClick={() => {$('#userform-' + user.id).modal('show')}}>
+                        <button className="ui inverted blue basic button right" onClick={() => {$('#userform-' + user.id).modal('show')}}>
                             Edit
                         </button>
                     </div>

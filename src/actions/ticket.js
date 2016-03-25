@@ -32,7 +32,6 @@ export const MACRO_ACTIONS = [
 ]
 
 
-
 export function setResponseText(currentUser, text) {
     return {
         type: SET_RESPONSE_TEXT,
@@ -43,11 +42,13 @@ export function setResponseText(currentUser, text) {
 
 export function fetchPageFromAlgolia(settings, view, page) {
     // We are 1-indexed, Algolia is 0-indexed
-    page = page - 1 
+    page = page - 1
+
     const defaults = {
-        page: page,
+        page,
         hitsPerPage: PER_PAGE,
     }
+
     const searchParams = ASTToAlgoliaSearchParams(view.get('filters_ast').toJS(), 'ticket.')
     const params = _.defaults(defaults, searchParams)
 
@@ -92,7 +93,7 @@ export function fetchView(url, data = {}, type = 'list') {
             contentType: 'application/json'
         }).then((resp) => {
             if (_.isEmpty(resp)) {
-                console.error("No results for", url)
+                console.error('No results for', url)
             }
             dispatch({
                 type: type === 'list' ? FETCH_TICKET_LIST_VIEW_SUCCESS : FETCH_TICKET_SUCCESS,
@@ -137,8 +138,9 @@ export function submitTicket(ticket, status) {
         }).catch((err) => {
             dispatch(systemMessage({
                 type: 'error',
+                err,
                 header: 'Error: Message was not sent',
-                msg: `Please try again in a few moments. If the problem persists contact us.`
+                msg: 'Please try again in a few moments. If the problem persists contact us.'
             }))
         })
     }
