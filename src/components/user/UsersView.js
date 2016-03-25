@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import UserList from './UserList'
 import Search from '../Search'
 import UserForm from './UserForm'

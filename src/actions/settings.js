@@ -13,7 +13,7 @@ export function fetchSettings() {
         })
 
         return reqwest({
-            url: '/api/settings',
+            url: '/api/settings/',
             type: 'json',
             method: 'GET',
             contentType: 'application/json'

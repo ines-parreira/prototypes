@@ -16,7 +16,6 @@ const initial = Map({
 function getAlgoliaIndices(resp) {
     const { algolia_app_name, algolia_api_key, indices_names } = resp
     const client = algoliasearch(algolia_app_name, algolia_api_key)
-    const ind = client.initIndex(indices_names.ticket)
 
     return Map({
         ticket: client.initIndex(indices_names.ticket),

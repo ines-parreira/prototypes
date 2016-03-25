@@ -11,13 +11,16 @@ const usersInitial = Map({
 })
 
 export function users(state = usersInitial, action) {
+    const items = state.get('items')
+    let userIndex
+
     switch (action.type) {
 
         case actions.FETCH_USER_LIST_START:
             return Map({
                 items: action.extend ? state.get('items') : [],
                 sort: state.get('sort'),
-                loading: action.extend ? true : false,
+                loading: action.extend,
                 resp: action.resp
             })
 
@@ -30,19 +33,15 @@ export function users(state = usersInitial, action) {
             })
 
         case actions.CREATE_NEW_USER_SUCCESS:
-            const oldItems = state.get('items')
-            const newItem = action.resp
-
             return Map({
-                items: _.concat(newItem, oldItems),
+                items: _.concat(action.resp, items),
                 sort: state.get('sort'),
                 loading: false,
                 resp: action.resp
             })
 
         case actions.UPDATE_USER_SUCCESS:
-            const items = state.get('items')
-            const userIndex = _.findIndex(items, {id: action.userId})
+            userIndex = _.findIndex(items, { id: action.userId })
 
             return Map({
                 items: [
@@ -58,7 +57,7 @@ export function users(state = usersInitial, action) {
 
         case actions.DELETE_USER_SUCCESS:
             return Map({
-                items: state.get('items').filter(function(item) {
+                items: state.get('items').filter((item) => {
                     return item.id !== action.userId
                 }),
                 sort: state.get('sort'),
