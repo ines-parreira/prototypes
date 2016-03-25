@@ -17,10 +17,6 @@ import { DEFAULT_VIEW } from '../constants'
 
 
 class TicketsContainer extends React.Component {
-    pushState = (url) => {
-        this.props.pushState(null, url)
-    }
-
     getView = (props) => {
         // TODO: Use reselect for this
         props = props || this.props
@@ -29,10 +25,14 @@ class TicketsContainer extends React.Component {
 
         if (!views || !views.size) {
             // Return something so sub-components can start rendering while the view loads
-            return Map({slug: viewName})
+            return Map({ slug: viewName })
         }
 
         return views.get(viewName)
+    }
+
+    pushState = (url) => {
+        this.props.pushState(null, url)
     }
 
     getViewColumns = () => {
@@ -59,7 +59,7 @@ class TicketsContainer extends React.Component {
         }
     }
 
-    fetchPage = (page=1) => {
+    fetchPage = (page = 1) => {
         const { tickets, settings, actions } = this.props
         const loadPossible = !tickets.get('loading') && !settings.get('loading')
         if (loadPossible) {
@@ -94,6 +94,7 @@ TicketsContainer.propTypes = {
             nb_pages: PropTypes.number,
         }),
     }),
+    settings: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
     users: PropTypes.object,
     tags: PropTypes.object,

@@ -30,7 +30,7 @@ export function fetchUsers() {
         })
 
         return reqwest({
-            url: `/api/users/`,
+            url: '/api/users/',
             type: 'json',
             method: 'GET',
             contentType: 'application/json'
@@ -81,17 +81,18 @@ export function createUser(data) {
             type: CREATE_NEW_USER_START
         })
 
-        data.roles = [data.role.slice(0)]
-        delete data.role
+        const newData = Object.assign({}, data)
+        newData.roles = [data.role.slice(0)]
+        delete newData.role
 
-        data.password = ''
+        newData.password = ''
 
         return reqwest({
-            url: `/api/users/`,
+            url: '/api/users/',
             type: 'json',
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(data)
+            data: JSON.stringify(newData)
         }).then((resp) => {
             dispatch({
                 type: CREATE_NEW_USER_SUCCESS,
@@ -113,9 +114,11 @@ export function updateUser(data, userId) {
             type: UPDATE_USER_START
         })
 
+        const newData = Object.assign({}, data)
+
         if (data.role) {
-            data.roles = [data.role.slice(0)]
-            delete data.role
+            newData.roles = [data.role.slice(0)]
+            delete newData.role
         }
 
         return reqwest({
@@ -123,11 +126,11 @@ export function updateUser(data, userId) {
             type: 'json',
             method: 'PUT',
             contentType: 'application/json',
-            data: JSON.stringify(data)
+            data: JSON.stringify(newData)
         }).then((resp) => {
             dispatch({
                 type: UPDATE_USER_SUCCESS,
-                userId: userId,
+                userId,
                 resp
             })
         }).catch((err) => {
@@ -152,7 +155,7 @@ export function deleteUser(userId) {
         }).then((resp) => {
             dispatch({
                 type: DELETE_USER_SUCCESS,
-                userId: userId,
+                userId,
                 resp
             })
         }).catch((err) => {
@@ -169,7 +172,7 @@ export function sortUsers(sort) {
     return (dispatch) => {
         dispatch({
             type: SORT_USERS,
-            sort: sort
+            sort
         })
     }
 }
@@ -178,7 +181,7 @@ export function updateList(list) {
     return (dispatch) => {
         dispatch({
             type: UPDATE_LIST,
-            list: list
+            list
         })
     }
 }

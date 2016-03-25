@@ -27,29 +27,29 @@ class UsersContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.settings.get('loaded') && !nextProps.settings.get('searchLoaded').user) {
+        if (nextProps.settings.get('loaded') && !nextProps.settings.get('searchLoaded').get('user')) {
             this.loadSearch(nextProps)
         }
     }
 
     loadSearch(props) {
-        function searchResults({updateMethod}) {
+        function searchResults({ updateMethod }) {
             return {
-                render({results}) {
+                render({ results }) {
                     updateMethod(results.hits)
                 }
             }
         }
 
         const search = instantsearch({
-            appId: props.settings.get('data').algolia_app_name,
-            apiKey: props.settings.get('data').algolia_api_key,
-            indexName: props.settings.get('data').indices_names.user
+            appId: props.settings.get('data').get('algolia_app_name'),
+            apiKey: props.settings.get('data').get('algolia_api_key'),
+            indexName: props.settings.get('data').get('indices_names').get('user')
         })
 
         search.addWidget(
             instantsearch.widgets.searchBox({
-                container: document.querySelector('#user-search')
+                container: document.querySelector('#search-user')
             })
         )
 

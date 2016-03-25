@@ -1,29 +1,31 @@
-import React, {PropTypes} from 'react'
-import moment from 'moment'
+import React, { PropTypes } from 'react'
 import 'moment-timezone'
 import TicketTableRow from './TicketTableRow'
 import PlainColumnHeader from './PlainColumnHeader'
 import ColumnHeader from './ColumnHeader'
 import SemanticPaginator from '../SemanticPaginator'
-import classNames from 'classnames'
 import { CELL_WIDTH } from '../../constants'
 
 
 const columnToFilterName = {
-    assignee: "ticket.assignee_user.id",
-    tags: "ticket.tags",
-    status: "ticket.status",
+    assignee: 'ticket.assignee_user.id',
+    tags: 'ticket.tags',
+    status: 'ticket.status',
 }
 
 
 export default class TicketTable extends React.Component {
+    onPageChange = (page) => {
+        return this.props.fetchPage(page)
+    }
+
     getWidth = () => {
         return _.sumBy(this.props.columns, 'width') + CELL_WIDTH  // One extra cell for the row checkbox
     }
 
     renderLoading = () => {
         const nbPages = this.props.tickets.getIn(['resp_meta', 'nb_pages'])
-        const message = nbPages === 0 ? "No tickets found." : "Loading..."
+        const message = nbPages === 0 ? 'No tickets found.' : 'Loading...'
 
         return (
             <div className="loading-container">
@@ -32,10 +34,6 @@ export default class TicketTable extends React.Component {
                 </div>
             </div>
         )
-    }
-
-    onPageChange = (page) => {
-        return this.props.fetchPage(page)
     }
 
     renderColumnHeader = (column) => {
@@ -53,13 +51,13 @@ export default class TicketTable extends React.Component {
                 updateFilters={this.props.updateFilters}
                 filterSpec={filterSpec}
             />
-        )            
+        )
     }
 
     render = () => {
         // TODO: Do this with CSS rather than explicitly calculating & passing total width
         const width = this.getWidth()
-        const style = {width: width}
+        const style = { width }
 
         if (this.props.tickets.get('items').size === 0) {
             return this.renderLoading()
@@ -117,4 +115,5 @@ TicketTable.propTypes = {
     pushState: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,
     getFilterSpecForColumn: PropTypes.func.isRequired,
+    fetchPage: PropTypes.func.isRequired
 }

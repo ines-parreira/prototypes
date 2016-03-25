@@ -8,7 +8,7 @@ import { TICKET_STATUSES } from '../../constants'
 
 export default class TicketsView extends React.Component {
     renderShowMoreFieldsDropdown = () => {
-        // Only render jQuery-laden initialision once we have the columns
+        // Only render jQuery-laden initialization once we have the columns
         if (this.props.columns.size === 0) {
             return null
         }
