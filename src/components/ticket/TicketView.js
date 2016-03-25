@@ -6,6 +6,13 @@ import TicketSubmitButtons from './TicketSubmitButtons'
 import TicketTags from './TicketTags'
 
 export default class TicketView extends React.Component {
+    componentDidMount() {
+        $('.ui.dropdown', this.refs.ticketView).dropdown({
+            on: 'hover',
+            action: 'nothing'
+        })
+    }
+
     submit = (status) => {
         return (e) => {
             e.preventDefault()
@@ -13,25 +20,46 @@ export default class TicketView extends React.Component {
         }
     }
 
+//     <div className="ui text menu">
+//                         <a className="item">
+//                             <i className="clock icon"/> Previous tickets
+//                         </a>
+//                         <a className="item">
+//                             <i className="user icon"/>
+//                             Assigned to Avi
+//                         </a>
+//                         <a className="item">
+//                             <i className="outline flag icon"/>
+//                             Mark as important
+//                         </a>
+//                     </div>
+
     render = () => {
         const { ticket } = this.props
 
         return (
-            <div className="TicketView">
-                <div className="TicketHeader">
-                    <div className="ui text menu">
-                        <a className="item">
-                            <i className="clock icon"/> Previous tickets
-                        </a>
-                        <a className="item">
-                            <i className="user icon"/>
-                            Assigned to Avi
-                        </a>
-                        <a className="item">
-                            <i className="outline flag icon"/>
-                            Mark as important
-                        </a>
+            <div className="ticket-view" ref="ticketView">
+                <div className="ticket-header">
+                    <div className="ticket-actions-btn ui dropdown">
+                        <i className="ui icon angle down"></i>
+                        <div className="menu transition">
+                            <div className="item">
+                                <a href="#">
+                                    Merge
+                                </a>
+                            </div>
+                            <div className="item">
+                                <a href="#">
+                                    Mark as spam
+                                </a>
+                            </div>
+                        </div>
                     </div>
+
+                    <button className="ticket-previous-btn ui mini button">
+                        3 PREVIOUS TICKETS
+                    </button>
+
                     <h1 className="ui header">{ticket.get('subject')}</h1>
                     <div className="ui grid">
                         <div className="row">
