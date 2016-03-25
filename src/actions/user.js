@@ -81,11 +81,11 @@ export function createUser(data) {
             type: CREATE_NEW_USER_START
         })
 
-        const newData = [...data]
+        const newData = Object.assign({}, data)
         newData.roles = [data.role.slice(0)]
         delete newData.role
 
-        newData.password = null
+        newData.password = ''
 
         return reqwest({
             url: '/api/users/',
@@ -114,9 +114,12 @@ export function updateUser(data, userId) {
             type: UPDATE_USER_START
         })
 
-        const newData = [...data]
-        newData.roles = [data.role.slice(0)]
-        delete newData.role
+        const newData = Object.assign({}, data)
+
+        if (data.role) {
+            newData.roles = [data.role.slice(0)]
+            delete newData.role
+        }
 
         return reqwest({
             url: `/api/users/${userId}/`,

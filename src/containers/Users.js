@@ -47,11 +47,9 @@ class UsersContainer extends React.Component {
             indexName: props.settings.get('data').get('indices_names').get('user')
         })
 
-        console.log(document.querySelector('#user-search'))
-
         search.addWidget(
             instantsearch.widgets.searchBox({
-                container: document.querySelector('#user-search')
+                container: document.querySelector('#search-user')
             })
         )
 

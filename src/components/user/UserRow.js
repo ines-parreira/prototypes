@@ -10,7 +10,7 @@ export default class UserRow extends React.Component {
         let label
 
         if (user.roles.indexOf('admin') !== -1) {
-            label = <div className="ui red label">ADMIN</div>
+            label = <div className="ui blue label">ADMIN</div>
         } else if (user.roles.indexOf('agent') !== -1) {
             label = <div className="ui yellow label">AGENT</div>
         } else {

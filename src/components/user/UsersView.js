@@ -15,9 +15,23 @@ export default class UsersView extends React.Component {
         return (
             <div className="UsersView">
                 <div className="ui text menu">
+                    <div className="left menu item">
+                        <div className="ShowMoreFieldsDropdown">
+                            <div className="ui button teal basic custom">
+                                <i className="columns icon"/>
+                                Show more fields
+                            </div>
+                            <div className="ui popup custom">
+                                <div className="ui form">
+                                    <div className="grouped fields">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div className="right menu item">
                         <div className="item">
-                            <Search id="user-search"/>
+                            <Search id="user"/>
                         </div>
                     </div>
                 </div>
