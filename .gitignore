@@ -51,9 +51,6 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
-*.log
-
 # Sphinx documentation
 docs/_build/
 
@@ -64,3 +61,6 @@ target/
 
 # Kate editor
 .kateconfig
+
+# js build files
+g/static/*/_build/*
