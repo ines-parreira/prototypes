@@ -9,19 +9,20 @@ var jsMainFile = staticDirectory + 'js/main.js'
 var jsBuildPath = staticDirectory + '_build/js'
 var jsBundleFile = __PRODUCTION__ ? '[hash].build.min.js' : 'build.js'
 
-
-var prodEnvPlugin = new webpack.DefinePlugin({
-    'process.env': {
-        NODE_ENV: JSON.stringify('production')
-    }
-})
-
+var plugins = []
+if (__PRODUCTION__) {
+    plugins.push(new webpack.DefinePlugin({
+        'process.env': {
+            NODE_ENV: JSON.stringify('production')
+        }
+    }))
+}
 
 module.exports = {
     devtool: 'eval',
     entry: jsMainFile,
     output: {path: jsBuildPath, filename: jsBundleFile},
-    plugins: [prodEnvPlugin],
+    plugins: plugins,
     module: {
         loaders: [
             {
