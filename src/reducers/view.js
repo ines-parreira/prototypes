@@ -25,7 +25,7 @@ function addExtraAttributes(view) {
     }))
 }
 
-function updateViewFilters(view, groupedFilters, updatedFilters) {
+function updateViewFilters(view, updatedFilters) {
     const filtersAst = groupedFiltersToAST(updatedFilters)
     const filters = getCode(filtersAst)
 
@@ -33,7 +33,7 @@ function updateViewFilters(view, groupedFilters, updatedFilters) {
         dirty: false,
         filters,
         filters_ast: Map(filtersAst),
-        groupedFilters: Map(groupedFilters)
+        groupedFilters: Map(updatedFilters)
     })
 }
 
@@ -69,8 +69,10 @@ export function views(state = viewsInitial, action) {
         case actions.CLEAR_VIEW_FILTER:
             view = state.getIn(['items', action.slug])
             groupedFilters = view.get('groupedFilters').toJS()
+            console.log(groupedFilters)
             updatedFilters = _.omit(groupedFilters, action.name)
-            updatedView = updateViewFilters(view, groupedFilters, updatedFilters)
+            console.log(updatedFilters)
+            updatedView = updateViewFilters(view, updatedFilters)
 
             return state.setIn(['items', action.slug], updatedView)
 
