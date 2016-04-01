@@ -128,8 +128,8 @@ export function groupedFiltersToAST(groupedFilters) {
     return getAST(code)
 }
 
-export function ASTToGroupedFilters(filters_ast) {
-    const code = getCode(filters_ast)
+export function ASTToGroupedFilters(filtersAst) {
+    const code = getCode(filtersAst)
     const triples = codeToFlatTriples(code)
     return groupFlatTriples(triples)
 }

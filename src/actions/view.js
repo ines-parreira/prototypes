@@ -24,11 +24,10 @@ export const FETCH_VIEW_LIST_ERROR = 'FETCH_VIEW_LIST_ERROR'
 
 
 export function updateView(slug, data) {
-    data.dirty = true
     return {
         type: UPDATE_VIEW,
         slug,
-        data,
+        data: Object.assign({}, data, { dirty: true })
     }
 }
 
@@ -37,7 +36,7 @@ export function updateFilters(slug, newFilters) {
     return {
         type: UPDATE_VIEW_FILTERS,
         slug,
-        newFilters,
+        newFilters
     }
 }
 
@@ -46,7 +45,7 @@ export function clearFilter(slug, name) {
     return {
         type: CLEAR_VIEW_FILTER,
         slug,
-        name,
+        name
     }
 }
 
@@ -106,13 +105,13 @@ export function submitView(view) {
             dispatch({
                 type: SUBMIT_VIEW_SUCCESS,
                 slug,
-                resp,
+                resp
             })
         }).catch((err) => {
             dispatch({
                 type: SUBMIT_VIEW_ERROR,
                 slug,
-                err,
+                err
             })
         })
     }

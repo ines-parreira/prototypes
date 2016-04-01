@@ -126,8 +126,7 @@ TicketsView.propTypes = {
     allTags: PropTypes.array.isRequired,
     allUsers: PropTypes.array.isRequired,
     currentUser: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired,
-    fetchPage: PropTypes.func.isRequired,
+    fetchPage: PropTypes.func.isRequired
 }
 

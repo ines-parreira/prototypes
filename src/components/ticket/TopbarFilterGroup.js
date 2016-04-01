@@ -7,12 +7,6 @@ const upperFirstChar = (text) => text.charAt(0).toUpperCase() + text.substr(1)
 
 
 export default class TopbarFilterGroup extends React.Component {
-    getCurrentValues = (spec) => {
-        // Get the current values or an empty list
-        const { name, callee} = this.props.filterSpec
-        return this.props.groupedFilters.getIn([name, callee], List()).toJS()
-    }
-
     onDelete = (clickedValue) => {
         const { name, callee } = this.props.filterSpec
         const newValues = this.getCurrentValues().filter((value) => {
@@ -31,6 +25,12 @@ export default class TopbarFilterGroup extends React.Component {
         })
     }
 
+    getCurrentValues = (spec) => {
+        // Get the current values or an empty list
+        const { name, callee } = this.props.filterSpec
+        return this.props.groupedFilters.getIn([name], List())[callee]
+    }
+
     getFullObject = (id) => {
         // Get the full object, i.e. the user object from their ID
         const { allValues, getID } = this.props.filterSpec
@@ -47,8 +47,8 @@ export default class TopbarFilterGroup extends React.Component {
                     className="icon close"
                     onClick={() => this.onDelete(id)}
                 />
-            </a>            
-        )                        
+            </a>
+        )
     }
 
     render = () => {
@@ -60,8 +60,8 @@ export default class TopbarFilterGroup extends React.Component {
         return (
             <div className="ui item">
                 <div className="ui blue labels">
-                    <a key="name" className="filter-group-name">{upperFirstChar(columnName) + ":"}</a>
-                    {this.getCurrentValues().map(this.renderValue)}
+                    <a key="name" className="filter-group-name">{ upperFirstChar(columnName) + ':' }</a>
+                    { this.getCurrentValues().map(this.renderValue) }
                 </div>
             </div>
         )
@@ -74,5 +74,5 @@ TopbarFilterGroup.propTypes = {
     groupedFilters: PropTypes.object.isRequired,
     submitView: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,
-    clearFilter: PropTypes.func.isRequired,
+    clearFilter: PropTypes.func.isRequired
 }

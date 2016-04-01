@@ -35,22 +35,31 @@ export default class TicketTableRow extends React.Component {
         return formatted
     }
 
+    handleClick = (ev) => {
+        this.props.pushState(`/ticket/${this.props.ticket.id}`)
+    }
+
+    stopPropagation = (ev) => {
+        // TODO: Do we want to keep :checked state in the DOM?
+        ev.stopPropagation()
+    }
+
     renderFieldContent = (column) => {
-        const {ticket} = this.props
+        const { ticket } = this.props
         switch (column.name) {
-            case "assignee":
+            case 'assignee':
                 if (!ticket.assignee_user)
                     return null
                 return ticket.assignee_user.name
-            case "channel":
+            case 'channel':
                 return ticket.channel
-            case "status":
+            case 'status':
                 return ticket.status
-            case "created":
+            case 'created':
                 return this.formatDatetime(ticket.created_datetime)
-            case "updated":
+            case 'updated':
                 return this.formatDatetime(ticket.updated_datetime)
-            case "details":
+            case 'details':
                 const firstMessage = ticket.messages[0]
                 return (
                     <div className="ui header">
@@ -61,26 +70,26 @@ export default class TicketTableRow extends React.Component {
                         </div>
                     </div>
                 )
-            case "priority":
+            case 'priority':
                 const className = classNames(
-                    "ticket-priority", ticket.priority, "flag", "icon",
+                    'ticket-priority', ticket.priority, 'flag', 'icon',
                     { outline: ticket.priority !== 'high' },
                 )
                 return <i className={className}></i>
-            case "requester":
+            case 'requester':
                 return ticket.requester.name
-            case "tags":
+            case 'tags':
                 return ticket.tags.map((tag) => {
                     return <button key={tag.id} className="ui teal mini basic button ticket-tag">{tag.name}</button>
                 })
             default:
-                console.error("Do not know how to render column", column.name)
+                console.error('Do not know how to render column ', column.name)
         }
     }
 
     renderField = (column) => {
-        const style = {width: column.width}
-        const className = classNames(column.name, "wide", "column")
+        const style = { width: column.width }
+        const className = classNames(column.name, 'wide', 'column')
 
         return (
             <div style={style} className={className} key={column.name}>
@@ -89,26 +98,18 @@ export default class TicketTableRow extends React.Component {
         )
     }
 
-    stopPropagation = (ev) => {
-        // TODO: Do we want to keep :checked state in the DOM?
-        ev.stopPropagation()
-    }
-
-    handleClick = (ev) => {
-        this.props.pushState(`/ticket/${this.props.ticket.id}`)
-    }
-
     render = () => {
-        const {currentUser, ticket, pushState, columns, key} = this.props
-        const style = {width: this.props.width}
+        const { ticket, columns } = this.props
+        const style = { width: this.props.width }
 
         // Unfortunately need to render a new .ui.grid for every row since
         // semantic needs .rows to be a direct child of them, which react-infinite
         // doesn't allow
         return (
-            <div style={style} className="ui grid" key={key}>
-                <div className="ticket-item row body-row" key={ticket.id}
-                    onClick={this.handleClick}>
+            <div style={style} className="ui grid">
+                <div className="ticket-item row body-row"
+                    onClick={this.handleClick}
+                >
                     <div className="one-fixed wide column">
                         <span className="ui checkbox" onClick={this.stopPropagation}>
                             <input type="checkbox" />
@@ -129,4 +130,5 @@ TicketTableRow.propTypes = {
     currentUser: PropTypes.object.isRequired,
     width: PropTypes.number.isRequired,
     pushState: PropTypes.func.isRequired,
+    columns: PropTypes.array.isRequired
 }

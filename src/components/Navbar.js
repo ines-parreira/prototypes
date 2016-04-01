@@ -30,12 +30,13 @@ export default class Navbar extends React.Component {
                 ret[section].views.push(view)
             }
         }
+
         return ret
     }
 
     render() {
         const { views, currentUser } = this.props
-        const sections = this.sections(_.values(views.toJS()))
+        const sections = this.sections(_.values(views.get('items').toJS()))
         return (
             <div className="navbar" ref="navbar">
                 <div className="navbar-btn navbar-btn-category ui dropdown">
@@ -54,11 +55,7 @@ export default class Navbar extends React.Component {
                         if (!section.views.length) {
                             return null
                         }
-                        let counter = ''
-                        if (true) {
-                            //counter = `(${counter})`
-                            counter = '(0)'
-                        }
+                        const counter = '(0)'
                         return (
                             <div key={sectionId} className="item">
                                 <div className="header">{section.title}</div>

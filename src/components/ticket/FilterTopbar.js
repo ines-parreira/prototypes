@@ -1,22 +1,23 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import TopbarFilterGroup from './TopbarFilterGroup'
 
 
 export default class FilterTopbar extends React.Component {
     renderSaveButton = () => {
-       if (!this.props.view.get('dirty')) {
-           return null
-       }
-       const onClick = () => this.props.submitView(this.props.view)
+        if (!this.props.view.get('dirty')) {
+            return null
+        }
 
-       return (
-           <div className="item" key="save">
-               <button id="save" className="ui green label" onClick={onClick}>
-                   Save
-               </button>
-           </div>
-       )
+        const onClick = () => this.props.submitView(this.props.view)
+
+        return (
+            <div className="item" key="save">
+                <button id="save" className="ui green label" onClick={onClick}>
+                    Save
+                </button>
+            </div>
+        )
     }
 
     renderFilter = (name) => {

@@ -19,16 +19,16 @@ import { DEFAULT_VIEW } from '../constants'
 class TicketsContainer extends React.Component {
     getView = (props) => {
         // TODO: Use reselect for this
-        props = props || this.props
-        const {views, view, params} = props
+        const usedProps = props || this.props
+        const { views, params } = usedProps
         const viewName = params ? params.view : DEFAULT_VIEW
 
-        if (!views || !views.size) {
+        if (!views || !views.get('items').size) {
             // Return something so sub-components can start rendering while the view loads
             return Map({ slug: viewName })
         }
 
-        return views.get(viewName)
+        return views.getIn(['items', viewName])
     }
 
     pushState = (url) => {
@@ -48,22 +48,33 @@ class TicketsContainer extends React.Component {
     componentDidMount = () => {
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers()
-        this.fetchPage()
+
+        if (!this.props.views.get('loading')) {
+            this.fetchPage()
+        }
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+        if (this.props.views.get('loading') &&
+            !nextProps.views.get('loading') &&
+            nextProps.views.get('items').size) {
+            this.fetchPage(nextProps)
+        }
     }
 
     componentDidUpdate = (prevProps) => {
         const settingsLoaded = prevProps.settings.get('loading') !== this.props.settings.get('loading')
         const viewChanged = this.getView(prevProps).get('slug') !== this.getView().get('slug')
-        if (settingsLoaded || viewChanged) {
+        if (!this.props.views.get('loading') && this.props.views.get('items').size && (settingsLoaded || viewChanged)) {
             this.fetchPage()
         }
     }
 
-    fetchPage = (page = 1) => {
-        const { tickets, settings, actions } = this.props
+    fetchPage = (props, page = 1) => {
+        const { tickets, settings, actions } = props || this.props
         const loadPossible = !tickets.get('loading') && !settings.get('loading')
         if (loadPossible) {
-            return actions.ticket.fetchPageFromAlgolia(settings, this.getView(), page)
+            return actions.ticket.fetchPageFromAlgolia(settings, this.getView(props), page)
         }
     }
 

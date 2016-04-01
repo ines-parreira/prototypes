@@ -20,7 +20,7 @@ export function tickets(state = ticketsInitial, action) {
             return Map({
                 items: Immutable.fromJS(action.resp.data),
                 resp_meta: Immutable.fromJS(action.resp.meta),
-                loading: false,
+                loading: false
             })
         default:
             return state

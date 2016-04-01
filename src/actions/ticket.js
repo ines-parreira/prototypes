@@ -46,8 +46,10 @@ export function fetchPageFromAlgolia(settings, view, page) {
 
     const defaults = {
         page,
-        hitsPerPage: PER_PAGE,
+        hitsPerPage: PER_PAGE
     }
+
+    if (!view) { return }
 
     const searchParams = ASTToAlgoliaSearchParams(view.get('filters_ast').toJS(), 'ticket.')
     const params = _.defaults(defaults, searchParams)
@@ -71,7 +73,7 @@ export function fetchPageFromAlgolia(settings, view, page) {
                     data: content.hits,
                     meta: {
                         nb_pages: content.nbPages,
-                        page: content.page + 1,
+                        page: content.page + 1
                     }
                 }
             })
