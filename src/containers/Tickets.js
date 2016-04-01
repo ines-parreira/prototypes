@@ -58,7 +58,7 @@ class TicketsContainer extends React.Component {
         if (this.props.views.get('loading') &&
             !nextProps.views.get('loading') &&
             nextProps.views.get('items').size) {
-            this.fetchPage(nextProps)
+            this.fetchPage(1, nextProps)
         }
     }
 
@@ -70,7 +70,7 @@ class TicketsContainer extends React.Component {
         }
     }
 
-    fetchPage = (props, page = 1) => {
+    fetchPage = (page = 1, props, ) => {
         const { tickets, settings, actions } = props || this.props
         const loadPossible = !tickets.get('loading') && !settings.get('loading')
         if (loadPossible) {
