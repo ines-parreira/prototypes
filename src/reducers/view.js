@@ -30,7 +30,7 @@ function updateViewFilters(view, updatedFilters) {
     const filters = getCode(filtersAst)
 
     return view.merge({
-        dirty: false,
+        dirty: true,
         filters,
         filters_ast: Map(filtersAst),
         groupedFilters: Map(updatedFilters)
@@ -62,16 +62,14 @@ export function views(state = viewsInitial, action) {
             view = state.getIn(['items', action.slug])
             groupedFilters = view.get('groupedFilters').toJS()
             updatedFilters = _.assign({}, groupedFilters, action.newFilters)
-            updatedView = updateViewFilters(view, groupedFilters, updatedFilters)
+            updatedView = updateViewFilters(view, updatedFilters)
 
             return state.setIn(['items', action.slug], updatedView)
 
         case actions.CLEAR_VIEW_FILTER:
             view = state.getIn(['items', action.slug])
             groupedFilters = view.get('groupedFilters').toJS()
-            console.log(groupedFilters)
             updatedFilters = _.omit(groupedFilters, action.name)
-            console.log(updatedFilters)
             updatedView = updateViewFilters(view, updatedFilters)
 
             return state.setIn(['items', action.slug], updatedView)

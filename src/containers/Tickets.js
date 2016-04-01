@@ -60,6 +60,10 @@ class TicketsContainer extends React.Component {
             nextProps.views.get('items').size) {
             this.fetchPage(1, nextProps)
         }
+
+        if (this.getView().get('groupedFilters') !== this.getView(nextProps).get('groupedFilters')) {
+            this.fetchPage(1, nextProps)
+        }
     }
 
     componentDidUpdate = (prevProps) => {
