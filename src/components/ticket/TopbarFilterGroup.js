@@ -34,7 +34,7 @@ export default class TopbarFilterGroup extends React.Component {
     getFullObject = (id) => {
         // Get the full object, i.e. the user object from their ID
         const { allValues, getID } = this.props.filterSpec
-        return _.first(allValues.filter((value) => getID(value) === id))
+        return _.first(allValues.filter((value) => getID(value).toString() === id))
     }
 
     renderValue = (id) => {

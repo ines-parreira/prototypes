@@ -74,7 +74,7 @@ class TicketsContainer extends React.Component {
         }
     }
 
-    fetchPage = (page = 1, props, ) => {
+    fetchPage = (page = 1, props) => {
         const { tickets, settings, actions } = props || this.props
         const loadPossible = !tickets.get('loading') && !settings.get('loading')
         if (loadPossible) {
