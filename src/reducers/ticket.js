@@ -1,16 +1,18 @@
 import * as actions from '../actions/ticket'
-import Immutable, { Map, List, Set } from 'immutable'
-import _ from 'lodash'
+import Immutable, {Map, List, Set} from 'immutable'
 
 const ticketInitial = Map({
     messages: List()
 })
 
 const newMessage = Map({
-    via: 'helpdesk',    
+    via: 'helpdesk',
     public: true,
-    from_agent: true,    
-    receivers: List(),
+    from_agent: true,
+    receiver: Map({
+        name: '(no name)',
+        id: null,
+    }),
     sender: Map({
         name: '(no name)',
         id: null,
@@ -70,8 +72,8 @@ export function ticket(state = ticketInitial, action) {
 
             return state.mergeDeep({
                 newMessage: {
-                    sender: sender,
-                    receivers: [getRecipient(state.get('messages'), sender)],
+                    sender,
+                    receiver: getRecipient(state.get('messages'), sender),
                     body_text: text
                 }
             })
