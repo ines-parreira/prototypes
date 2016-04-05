@@ -29,10 +29,50 @@ export const ADD_TAGS = 'addTags'
 
 export const SEARCH = 'search'
 
+export const ADD_TAGS = 'ADD_TAGS'
+export const REMOVE_TAG = 'REMOVE_TAG'
+export const UPDATE_TAGS = 'UPDATE_TAGS'
+
+export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY'
+
+export const SET_AGENT = 'SET_AGENT'
+
 export const MACRO_ACTIONS = [
     SET_RESPONSE_TEXT, ADD_TAGS
 ]
 
+export function addTags(tags) {
+  return {
+    type: ADD_TAGS,
+    args: tags
+  }
+}
+export function removeTag(index) {
+  return {
+    type: REMOVE_TAG,
+    index: index
+  }
+}
+
+export function updateTags(tags) {
+  return {
+    type: UPDATE_TAGS,
+    args: tags
+  }
+}
+
+export function togglePriority() {
+  return {
+    type: TOGGLE_PRIORITY
+  }
+}
+
+export function setAgent(agent) {
+  return {
+    type: SET_AGENT,
+    args: agent
+  }
+}
 
 export function setResponseText(currentUser, text) {
     return {

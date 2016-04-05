@@ -2,7 +2,9 @@ import * as actions from '../actions/ticket'
 import Immutable, {Map, List, Set} from 'immutable'
 
 const ticketInitial = Map({
-    messages: List()
+    messages: List(),
+    priority: false,
+    agent: ''
 })
 
 const newMessage = Map({
@@ -65,6 +67,20 @@ export function ticket(state = ticketInitial, action) {
                 }
             }
             return state.set('tags', tags)
+
+        case actions.REMOVE_TAG:
+            tags = state.get('tags').delete(action.index)
+            return state.set('tags', tags)
+
+        case actions.UPDATE_TAGS:
+            tags = Immutable.fromJS(action.args)
+            return state.set('tags', tags)
+
+        case actions.TOGGLE_PRIORITY:
+            return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
+
+        case actions.SET_AGENT:
+            return state.setIn(['assignee_user', 'name'], action.args)
 
         case actions.SET_RESPONSE_TEXT:
             const text = action.args.get(0) || ''

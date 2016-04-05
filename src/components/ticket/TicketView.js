@@ -1,4 +1,7 @@
 import React, {PropTypes} from 'react'
+import classnames from 'classnames'
+
+import defaultAgents from '../../../../../fixtures/clients/agents'
 
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './TicketReplyArea'
@@ -11,6 +14,7 @@ export default class TicketView extends React.Component {
             on: 'hover',
             action: 'nothing'
         })
+        $('#popup-ticket-owner').popup({inline: true, position: 'bottom left', hoverable: true, on: 'click' })
     }
     submit = (status) => {
         return (e) => {
@@ -21,7 +25,6 @@ export default class TicketView extends React.Component {
 
     render = () => {
         const { ticket } = this.props
-
         return (
             <div className="ticket-view" ref="ticketView">
                 <div className="ticket-header">
@@ -51,15 +54,20 @@ export default class TicketView extends React.Component {
                             <div className="eight wide column">
                                 <TicketTags tags={ticket.get('tags')} />
                             </div>
-                            <div className="eight wide column ticket-details h5">
-                                <a className="ticket-flag-btn ticket-details-item">
-                                    <i className="icon flag" />
+                            <div className="eight wide column ticket-details">
+                                <a className="ticket-flag-btn ticket-details-item" onClick={this.props.actions.ticket.togglePriority}>
+                                    <i className={classnames("ticket-priority", ticket.get('priority'), "icon", "flag", {outline: ticket.priority !== 'high'})} />
                                 </a>
 
-                                <a className="ticket-owner-btn ticket-details-item">
-                                    <span className="agent-label ui medium yellow label">A</span>
-                                    ABHIMANYU SINGH
+                                <a className="ticket-owner-btn ticket-details-item" id="popup-ticket-owner">
+                                    <span className="ui yellow label">A</span>
+                                    {ticket.getIn(['assignee_user', 'name'])}
                                 </a>
+                                <div className="ui popup">
+                                    <div className="ui vertical menu" style={{textAlign: "left", border: "none", width: "inherit"}}>
+                                      {defaultAgents.map((agent) => <a className='item' onClick={()=>this.props.actions.ticket.setAgent(agent)}>{agent}</a>)}
+                                    </div>
+                                </div>
 
                                 <span className="ticket-id ticket-details-item">
                                     {`#${ticket.get('id')}`}
