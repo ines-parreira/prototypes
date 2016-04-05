@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import { bindActionCreators } from 'redux'
-import _ from 'lodash'
 import { Map, List } from 'immutable'
 
 
@@ -37,9 +36,11 @@ class TicketsContainer extends React.Component {
 
     getViewColumns = () => {
         const currentColumns = this.getView().get('columns')
+
         if (!currentColumns) {
             return List()
         }
+
         return TicketColumns.filter((column) =>
             currentColumns.includes(column.get('name'))
         )
@@ -76,8 +77,7 @@ class TicketsContainer extends React.Component {
 
     fetchPage = (page = 1, props) => {
         const { tickets, settings, actions } = props || this.props
-        const loadPossible = !tickets.get('loading') && !settings.get('loading')
-        if (loadPossible) {
+        if (!tickets.get('loading') && !settings.get('loading')) {
             return actions.ticket.fetchPageFromAlgolia(settings, this.getView(props), page)
         }
     }

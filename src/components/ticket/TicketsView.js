@@ -1,5 +1,6 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import { Map } from 'immutable'
+import _ from 'lodash'
 
 import TicketTable from './TicketTable'
 import FilterTopbar from './FilterTopbar'
