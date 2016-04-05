@@ -88,7 +88,7 @@ export default class TicketsView extends React.Component {
                         </a>
                     </div>
                     <div className="right menu item">
-                        <Search id="ticket"/>
+                        <Search id="ticket" search={this.props.search}/>
                     </div>
                 </div>
 
@@ -128,6 +128,7 @@ TicketsView.propTypes = {
     allUsers: PropTypes.array.isRequired,
     currentUser: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired,
-    fetchPage: PropTypes.func.isRequired
+    fetchPage: PropTypes.func.isRequired,
+    search: PropTypes.func.isRequired
 }
 
