@@ -4,7 +4,9 @@ import _ from 'lodash'
 
 export default class Navbar extends React.Component {
     componentDidMount() {
-        $('.ui.dropdown', this.refs.navbar).dropdown()
+        $('.ui.dropdown', this.refs.navbar).dropdown({
+            direction: 'upward'
+        })
     }
 
     sections(views) {
