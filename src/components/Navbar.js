@@ -4,9 +4,10 @@ import _ from 'lodash'
 
 export default class Navbar extends React.Component {
     componentDidMount() {
-        $('.ui.dropdown', this.refs.navbar).dropdown({
+        $('#user-menu', this.refs.navbar).dropdown({
             direction: 'upward'
         })
+        $('#main-menu', this.refs.navbar).dropdown()
     }
 
     sections(views) {
@@ -41,7 +42,7 @@ export default class Navbar extends React.Component {
         const sections = this.sections(_.values(views.get('items').toJS()))
         return (
             <div className="navbar" ref="navbar">
-                <div className="navbar-btn navbar-btn-category ui dropdown">
+                <div id="main-menu" className="navbar-btn navbar-btn-category ui dropdown">
                     Tickets
                     <i className="icon angle down"/>
                     <div className="menu">
@@ -75,7 +76,7 @@ export default class Navbar extends React.Component {
                     })}
                 </div>
 
-                <div className="navbar-btn ui dropdown">
+                <div id="user-menu" className="navbar-btn ui dropdown">
                     <i className="ellipsis horizontal icon"/>
                     <div>
                         <h4>
