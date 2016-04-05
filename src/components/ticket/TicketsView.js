@@ -1,9 +1,11 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import { Map } from 'immutable'
+import _ from 'lodash'
 
 import TicketTable from './TicketTable'
 import FilterTopbar from './FilterTopbar'
 import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
+import Search from '../Search'
 import { TICKET_STATUSES } from '../../constants'
 
 export default class TicketsView extends React.Component {
@@ -66,16 +68,6 @@ export default class TicketsView extends React.Component {
         return this.props.actions.view.updateView(slug, data)
     }
 
-    renderMoreFieldsbar() {
-        return (
-            <div className="ui text menu">
-                <a className="ui dropdown item top-dropdowns">
-                    {this.renderShowMoreFieldsDropdown()}
-                </a>
-            </div>
-        )
-    }
-
     updateFilters = (data) => {
         this.props.actions.view.updateFilters(this.props.view.get('slug'), data)
     }
@@ -89,7 +81,16 @@ export default class TicketsView extends React.Component {
 
         return (
             <div className="TicketsView" key={this.props.view.get('slug')}>
-                {this.renderMoreFieldsbar()}
+                <div className="ui text menu">
+                    <div className="left menu item">
+                        <a className="ui dropdown item top-dropdowns">
+                            {this.renderShowMoreFieldsDropdown()}
+                        </a>
+                    </div>
+                    <div className="right menu item">
+                        <Search id="ticket" search={this.props.search}/>
+                    </div>
+                </div>
 
                 <h1 className="ui header">{this.props.view.get('name')}</h1>
 
@@ -127,6 +128,7 @@ TicketsView.propTypes = {
     allUsers: PropTypes.array.isRequired,
     currentUser: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired,
-    fetchPage: PropTypes.func.isRequired
+    fetchPage: PropTypes.func.isRequired,
+    search: PropTypes.func.isRequired
 }
 
