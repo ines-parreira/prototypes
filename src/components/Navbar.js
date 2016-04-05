@@ -58,7 +58,7 @@ export default class Navbar extends React.Component {
                         const counter = '(0)'
                         return (
                             <div key={sectionId} className="item">
-                                <div className="header">{section.title}</div>
+                                <h4 className="">{section.title}</h4>
                                 <div className="menu">
                                     {section.views.map((view) => {
                                         return (
