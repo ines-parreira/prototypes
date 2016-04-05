@@ -24,11 +24,11 @@ export default class TicketMessage extends React.Component {
                     <div className="ticket-message-header-details">
                         {(() => {
                             if (message.from_agent) {
-                                return (<span className="ticket-message-author-label ui mini yellow label">A</span>)
+                                return (<span className="agent-label ui medium yellow label">A</span>)
                             }
                         })()}
 
-                        <span className="ticket-message-author ui header">
+                        <span className="ticket-message-author ui medium header">
                             {message.sender.name}
                         </span>
 

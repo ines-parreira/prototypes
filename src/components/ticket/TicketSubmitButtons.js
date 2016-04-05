@@ -9,8 +9,8 @@ export default class TicketSubmitButtons extends React.Component {
         const className = classNames('ui', 'green', 'button', {hidden: this.props.ticket.get('status') === 'closed'})
         return (
             <div>
-                <button className={className} onClick={this.props.submit('closed')}>Send &amp; Close</button>
-                <button className="ui button" onClick={this.props.submit()}>Send</button>
+                <button className={className} onClick={this.props.submit('closed')}>Submit &amp; Close</button>
+                <button className="ui basic green button" onClick={this.props.submit()}>Submit</button>
             </div>
         )
     }

@@ -52,13 +52,13 @@ export default class TicketView extends React.Component {
                             <div className="eight wide column">
                                 <TicketTags tags={ticket.get('tags')} />
                             </div>
-                            <div className="eight wide column ticket-details">
+                            <div className="eight wide column ticket-details h5">
                                 <a className="ticket-flag-btn ticket-details-item">
                                     <i className="icon flag" />
                                 </a>
 
                                 <a className="ticket-owner-btn ticket-details-item">
-                                    <span className="ui yellow label">A</span>
+                                    <span className="agent-label ui medium yellow label">A</span>
                                     ABHIMANYU SINGH
                                 </a>
 
