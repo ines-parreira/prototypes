@@ -27,6 +27,8 @@ export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 export const SET_RESPONSE_TEXT = 'setResponseText'
 export const ADD_TAGS = 'addTags'
 
+export const SEARCH = 'search'
+
 export const MACRO_ACTIONS = [
     SET_RESPONSE_TEXT, ADD_TAGS
 ]
@@ -40,7 +42,7 @@ export function setResponseText(currentUser, text) {
     }
 }
 
-export function fetchPageFromAlgolia(settings, view, page) {
+export function fetchPageFromAlgolia(settings, view, page, searchValue) {
     // We are 1-indexed, Algolia is 0-indexed
     page = page - 1
 
@@ -59,7 +61,7 @@ export function fetchPageFromAlgolia(settings, view, page) {
             type: FETCH_TICKET_LIST_VIEW_START,
         })
 
-        return settings.getIn(['indices', 'ticket']).search('', params, (err, content) => {
+        return settings.getIn(['indices', 'ticket']).search(searchValue, params, (err, content) => {
             if (err) {
                 return dispatch(systemMessage({
                     type: 'error',
@@ -145,5 +147,12 @@ export function submitTicket(ticket, status) {
                 msg: 'Please try again in a few moments. If the problem persists contact us.'
             }))
         })
+    }
+}
+
+export function search(searchValue) {
+    return {
+        type: SEARCH,
+        searchValue
     }
 }

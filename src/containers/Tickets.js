@@ -2,9 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import { bindActionCreators } from 'redux'
-import _ from 'lodash'
 import { Map, List } from 'immutable'
-
 
 import * as TicketActions from '../actions/ticket'
 import * as ViewActions from '../actions/view'
@@ -37,9 +35,11 @@ class TicketsContainer extends React.Component {
 
     getViewColumns = () => {
         const currentColumns = this.getView().get('columns')
+
         if (!currentColumns) {
             return List()
         }
+
         return TicketColumns.filter((column) =>
             currentColumns.includes(column.get('name'))
         )
@@ -64,6 +64,10 @@ class TicketsContainer extends React.Component {
         if (this.getView().get('groupedFilters') !== this.getView(nextProps).get('groupedFilters')) {
             this.fetchPage(1, nextProps)
         }
+
+        if (this.props.tickets.get('search') !== nextProps.tickets.get('search')) {
+            this.fetchPage(1, nextProps)
+        }
     }
 
     componentDidUpdate = (prevProps) => {
@@ -76,9 +80,8 @@ class TicketsContainer extends React.Component {
 
     fetchPage = (page = 1, props) => {
         const { tickets, settings, actions } = props || this.props
-        const loadPossible = !tickets.get('loading') && !settings.get('loading')
-        if (loadPossible) {
-            return actions.ticket.fetchPageFromAlgolia(settings, this.getView(props), page)
+        if (!tickets.get('loading') && !settings.get('loading')) {
+            return actions.ticket.fetchPageFromAlgolia(settings, this.getView(props), page, tickets.get('search'))
         }
     }
 
@@ -95,6 +98,7 @@ class TicketsContainer extends React.Component {
                     actions={this.props.actions}
                     fetchPage={this.fetchPage}
                     pushState={this.pushState}
+                    search={this.props.actions.ticket.search}
                 />
             </div>
         )
@@ -108,6 +112,7 @@ TicketsContainer.propTypes = {
             page: PropTypes.number,
             nb_pages: PropTypes.number,
         }),
+        search: PropTypes.string
     }),
     settings: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,

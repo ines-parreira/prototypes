@@ -12,7 +12,7 @@ function removeKeyPrefix(object, prefix) {
 }
 
 function buildAlgoliaFacetFilter(pair) {
-    let [key, values] = pair
+    const [key, values] = pair
     return _.map(values, (value) => {
         return `${key}:${value}`
     })
@@ -26,22 +26,22 @@ function removeCallees(grouped) {
     */
     const removedFrom = {}
     for (let key in grouped) {
-        let calleeGroup = grouped[key]
-        let listsOfValues = _.values(calleeGroup)
+        const calleeGroup = grouped[key]
+        const listsOfValues = _.values(calleeGroup)
         removedFrom[key] = _.concat(...listsOfValues)
     }
     return removedFrom
 }
 
 function mapGroupsToAlgolia(grouped) {
-    let algoliaParams = {}
+    const algoliaParams = {}
 
     /*
     *  Special handling for ticket tags since it's handled separately by Algolia
     *  ("tagFilters" for search and "_tags" on objects)
     */
 
-    const tagFilters = grouped['tags']
+    const tagFilters = grouped.tags
     if (!_.isEmpty(tagFilters)) {
         algoliaParams.tagFilters = tagFilters.join(',')
     }
@@ -65,6 +65,6 @@ function mapGroupsToAlgolia(grouped) {
 export function ASTToAlgoliaSearchParams(filters_ast, prefix) {
     const groupedFilters = ASTToGroupedFilters(filters_ast)
     const filtersWithoutCallees = removeCallees(groupedFilters)
-    const groupedWithoutPrefix  = removeKeyPrefix(filtersWithoutCallees, prefix)
+    const groupedWithoutPrefix = removeKeyPrefix(filtersWithoutCallees, prefix)
     return mapGroupsToAlgolia(groupedWithoutPrefix)
 }

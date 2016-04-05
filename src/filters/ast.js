@@ -19,7 +19,7 @@ export function getCode(ast) {
 }
 
 function parseMemberArgument(node) {
-    return node.type === "Literal" ? node.value : getCode(node)
+    return node.type === 'Literal' ? node.value : getCode(node)
 }
 
 
@@ -39,34 +39,34 @@ export function codeToFlatTriples(code) {
     }
     const expressions = code.split(' && ')
 
-     return _.map(expressions, (expression) => {
+    return _.map(expressions, (expression) => {
         const ast = getAST(expression)
         const callee = ast.body[0].expression.callee.name
         const callArgs = ast.body[0].expression.arguments
         return [callee].concat(_.map(callArgs, parseMemberArgument))
     })
- }
+}
 
 export function groupFlatTriples(triples) {
     /*
     *  Group filter triples by their key & then their callee, from
     *  > [ ['contains', 'ticket.tags', 'a'], ['contains', 'ticket.tags', 'b'] ]
-    *  into 
+    *  into
     *  > {'ticket.tags': {'contains': ['a', 'b']} }
     */
-    let filters = {}
+    const filters = {}
 
     if (_.isEmpty(triples)) {
         return {}
     }
 
     for (let triple of triples) {
-        let [callee, key, value] = triple
+        const [callee, key, value] = triple
 
-        let filtersForKey = filters[key] || {}
+        const filtersForKey = filters[key] || {}
         filters[key] = filtersForKey
 
-        let groupForCallee = filtersForKey[callee] || []
+        const groupForCallee = filtersForKey[callee] || []
         filtersForKey[callee] = groupForCallee
 
         groupForCallee.push(value)
@@ -77,7 +77,7 @@ export function groupFlatTriples(triples) {
 
 
 /*
-*  Utility functions to convert JS objects into a Code AST 
+*  Utility functions to convert JS objects into a Code AST
 */
 
 export function groupedFiltersToFlatTriples(groupedFilters) {
@@ -120,7 +120,7 @@ export function flatTriplesToCode(flatTriples) {
     *  > contains(ticket.tags, 'a') && contains(ticket.tags, 'b')
     */
     return _.map(flatTriples, getRuleCode).join(AND_JOIN)
- }
+}
 
 export function groupedFiltersToAST(groupedFilters) {
     const flatTriples = groupedFiltersToFlatTriples(groupedFilters)
