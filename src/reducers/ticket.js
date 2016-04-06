@@ -57,10 +57,9 @@ export function ticket(state = ticketInitial, action) {
 
         /* Macro actions */
 
-        case actions.ADD_TAGS:
-            let tags = state.get('tags', List())
+        case actions.ADD_TICKET_TAGS:
+            tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
-
             for (let tag of action.args) {
                 if (!existingTagNames.includes(tag.get('name'))) {
                     tags = tags.push(tag)
@@ -68,11 +67,11 @@ export function ticket(state = ticketInitial, action) {
             }
             return state.set('tags', tags)
 
-        case actions.REMOVE_TAG:
+        case actions.REMOVE_TICKET_TAG:
             tags = state.get('tags').delete(action.index)
             return state.set('tags', tags)
 
-        case actions.UPDATE_TAGS:
+        case actions.UPDATE_TICKET_TAGS:
             tags = Immutable.fromJS(action.args)
             return state.set('tags', tags)
 

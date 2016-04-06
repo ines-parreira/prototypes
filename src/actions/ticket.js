@@ -29,34 +29,35 @@ export const ADD_TAGS = 'addTags'
 
 export const SEARCH = 'search'
 
-export const ADD_TAGS = 'ADD_TAGS'
-export const REMOVE_TAG = 'REMOVE_TAG'
-export const UPDATE_TAGS = 'UPDATE_TAGS'
+//export const ADD_TAGS = 'addTags'
+export const ADD_TICKET_TAGS = 'ADD_TICKET_TAGS'
+export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
+export const UPDATE_TICKET_TAGS = 'UPDATE_TAGS'
 
 export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY'
 
 export const SET_AGENT = 'SET_AGENT'
 
 export const MACRO_ACTIONS = [
-    SET_RESPONSE_TEXT, ADD_TAGS
+    SET_RESPONSE_TEXT, ADD_TICKET_TAGS
 ]
 
 export function addTags(tags) {
   return {
-    type: ADD_TAGS,
+    type: ADD_TICKET_TAGS,
     args: tags
   }
 }
 export function removeTag(index) {
   return {
-    type: REMOVE_TAG,
+    type: REMOVE_TICKET_TAG,
     index: index
   }
 }
 
 export function updateTags(tags) {
   return {
-    type: UPDATE_TAGS,
+    type: UPDATE_TICKET_TAGS,
     args: tags
   }
 }

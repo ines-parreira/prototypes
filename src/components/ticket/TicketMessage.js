@@ -5,7 +5,11 @@ import 'moment-timezone'
 
 export default class TicketMessage extends React.Component {
     componentDidMount() {
-        $('.ui.dropdown', this.refs.ticketMessage).dropdown({
+        $('#email-dropdown', this.refs.ticketMessage).dropdown({
+            on: 'hover',
+            action: 'nothing'
+        })
+        $('#option-dropdown', this.refs.ticketMessage).dropdown({
             on: 'hover',
             action: 'nothing'
         })
@@ -33,7 +37,7 @@ export default class TicketMessage extends React.Component {
                         </span>
 
                         <span className="ticket-message-source">
-                            <div className="ui dropdown">
+                            <div className="ui dropdown" id="email-dropdown">
                                 <span className="text">
                                     <i className="icon mail"></i>
                                     &lt;{message.sender.email}&gt;
@@ -81,7 +85,7 @@ export default class TicketMessage extends React.Component {
                     )
                 })()}
 
-                <div className="ticket-actions-btn ui dropdown">
+                <div className="ticket-actions-btn ui dropdown" id="option-dropdown">
                     <i className="ui icon angle down"></i>
                     <div className="menu transition">
                         <div className="item">

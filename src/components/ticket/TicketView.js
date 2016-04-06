@@ -10,7 +10,7 @@ import TicketTags from './TicketTags'
 
 export default class TicketView extends React.Component {
     componentDidMount() {
-        $('.ui.dropdown', this.refs.ticketView).dropdown({
+        $('#top-option-dropdown', this.refs.ticketView).dropdown({
             on: 'hover',
             action: 'nothing'
         })
@@ -24,11 +24,11 @@ export default class TicketView extends React.Component {
     }
 
     render = () => {
-        const { ticket } = this.props
+        const { ticket, tags, users } = this.props
         return (
             <div className="ticket-view" ref="ticketView">
                 <div className="ticket-header">
-                    <div className="ticket-actions-btn ui dropdown">
+                    <div className="ticket-actions-btn ui dropdown" id="top-option-dropdown">
                         <i className="ui icon angle down"></i>
                         <div className="menu transition">
                             <div className="item">
@@ -52,7 +52,7 @@ export default class TicketView extends React.Component {
                     <div className="ui grid">
                         <div className="row">
                             <div className="eight wide column">
-                                <TicketTags tags={ticket.get('tags')} />
+                                <TicketTags ticketTags={ticket.get('tags')} tags={tags.get('items')} actions={this.props.actions}/>
                             </div>
                             <div className="eight wide column ticket-details">
                                 <a className="ticket-flag-btn ticket-details-item" onClick={this.props.actions.ticket.togglePriority}>
@@ -65,7 +65,7 @@ export default class TicketView extends React.Component {
                                 </a>
                                 <div className="ui popup">
                                     <div className="ui vertical menu" style={{textAlign: "left", border: "none", width: "inherit"}}>
-                                      {defaultAgents.map((agent) => <a className='item' onClick={()=>this.props.actions.ticket.setAgent(agent)}>{agent}</a>)}
+                                      {users.get('agents').map((agent) => <a className='item' key={agent.id} onClick={()=>this.props.actions.ticket.setAgent(agent.name)}>{agent.name}</a>)}
                                     </div>
                                 </div>
 

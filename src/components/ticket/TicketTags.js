@@ -1,4 +1,6 @@
 import React, {PropTypes} from 'react'
+import Immutable from 'immutable'
+import classnames from 'classnames'
 import _ from 'lodash'
 
 export default class TicketTags extends React.Component {
@@ -16,8 +18,8 @@ export default class TicketTags extends React.Component {
     render = () => {
       return (
         <div className="ui labels">
-          <Read hidden={this.state.edit} tags={this.props.tags} toggle={this.toggle} actions={this.props.actions}/>
-          <Edit hidden={!this.state.edit} tags={this.props.tags} toggle={this.toggle} onSelect={this.onSelectTag} actions={this.props.actions}/>
+          <Read hidden={this.state.edit} tags={this.props.tags} ticketTags={this.props.ticketTags} toggle={this.toggle} actions={this.props.actions}/>
+          <Edit hidden={!this.state.edit} tags={this.props.tags} ticketTags={this.props.ticketTags} toggle={this.toggle} onSelect={this.onSelectTag} actions={this.props.actions}/>
         </div>
       )
     }
@@ -26,7 +28,7 @@ const Read = (props) => {
   return (
     <div className={classnames({hidden: props.hidden})}>
       {
-        props.tags.map((tag, i) => {
+        props.ticketTags.map((tag, i) => {
           return (
             <div key={tag.get('id')} className="ticket-tag ui label">
               {tag.get('name')}
@@ -55,13 +57,13 @@ class Edit extends React.Component {
             setTimeout(()=> {self.update()}, 50) //you need to delay self.update to actually get the last tags added by semantic UI on Enter and avoid bugs
             return
           }
-          const tag = Immutable.fromJS({
-            //id: int,
+          const tag = {
+            id: this.value,
             //user_id: int,
             name: this.value
-          })
-          defaultTags[this.value] = 0 //you need to add the tag into tag's 'database' for semantic to style your new tag...
-          self.props.actions.ticket.addTags([tag])
+          }
+          self.props.actions.tag.addTags([tag]) //you need to add the tag into tag's 'database' for semanticUI to style your new tag...
+          self.props.actions.ticket.addTags([Immutable.fromJS(tag)])
         }
       }
     }, 50)
@@ -69,18 +71,18 @@ class Edit extends React.Component {
   }
 
   componentDidUpdate() {
-    $('#multi-select').dropdown('set exactly', this.props.tags.map(tag => tag.get('name').toLowerCase()).toJS())
+    $('#multi-select').dropdown('set exactly', this.props.ticketTags.map(tag => tag.get('name').toLowerCase()).toJS())
   }
 
   update = () => {
-    const tags = $('#multi-select').dropdown('get value').split(",").map((text) => {
+    const ticketTags = $('#multi-select').dropdown('get value').split(",").map((text) => {
       return {
         //id: int,
         //user_id: int,
         name: text
       }
     })
-    this.props.actions.ticket.updateTags(tags)
+    this.props.actions.ticket.updateTags(ticketTags)
   }
 
   close = () => {
@@ -91,13 +93,27 @@ class Edit extends React.Component {
   render () {
     let rows = []
     const row = (value) => {
-      return <div className='item' data-value={value}>{value}</div>
+      return <div className='item' key={value} data-value={value}>{value}</div>
     }
-    for (var key in defaultTags) {
-      rows.push(row(key));
-    }
+
+    this.props.tags.map(tag => rows.push(row(tag.name)))
+    return (
+      <div ref='multiselect' className={classnames({hidden: this.props.hidden})}>
+        <i className="icon close" onClick={this.close}/>
+        <div className="ui fluid multiple search selection dropdown" id='multi-select'>
+          <input type="hidden" name="tags"/>
+          <i className="dropdown icon"></i>
+          <div className="default text">tags</div>
+          <div className="menu">
+            {rows}
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
 TicketTags.propTypes = {
-    tags: PropTypes.object.isRequired,
+    tags: PropTypes.array.isRequired,
+    ticketTags: PropTypes.object.isRequired
 }

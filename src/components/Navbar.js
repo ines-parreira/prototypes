@@ -4,15 +4,10 @@ import _ from 'lodash'
 
 export default class Navbar extends React.Component {
     componentDidMount() {
-<<<<<<< HEAD
         $('#user-menu', this.refs.navbar).dropdown({
             direction: 'upward'
         })
         $('#main-menu', this.refs.navbar).dropdown()
-=======
-        $('#navbar-dropdown-1', this.refs.navbar).dropdown()
-        $('#navbar-dropdown-2', this.refs.navbar).dropdown()
->>>>>>> toggle priority and change assignee agent on ticket features
     }
 
     sections(views) {
@@ -87,11 +82,7 @@ export default class Navbar extends React.Component {
                     })}
                 </div>
 
-<<<<<<< HEAD
                 <div id="user-menu" className="navbar-btn ui dropdown">
-=======
-                <div className="navbar-btn ui dropdown" id="navbar-dropdown-2">
->>>>>>> toggle priority and change assignee agent on ticket features
                     <i className="ellipsis horizontal icon"/>
                     <div>
                         <h4 className="current-user">

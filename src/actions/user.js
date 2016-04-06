@@ -9,6 +9,9 @@ export const FETCH_CURRENT_USER_SUCCESS = 'FETCH_CURRENT_USER_SUCCESS'
 export const FETCH_USER_LIST_START = 'FETCH_USER_LIST_START'
 export const FETCH_USER_LIST_SUCCESS = 'FETCH_USER_LIST_SUCCESS'
 
+export const FETCH_USER_AGENT_LIST_START = 'FETCH_USER_AGENT_LIST_START'
+export const FETCH_USER_AGENT_LIST_SUCCESS = 'FETCH_USER_AGENT_LIST_SUCCESS'
+
 export const CREATE_NEW_USER_START = 'CREATE_NEW_USER_START'
 export const CREATE_NEW_USER_SUCCESS = 'CREATE_NEW_USER_SUCCESS'
 
@@ -37,6 +40,32 @@ export function fetchUsers() {
         }).then((resp) => {
             dispatch({
                 type: FETCH_USER_LIST_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to fetch users',
+                msg: err
+            }))
+        })
+    }
+}
+
+export function fetchAgentUsers() {
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_USER_AGENT_LIST_START
+        })
+
+        return reqwest({
+            url: '/api/users?roles=agent',
+            type: 'json',
+            method: 'GET',
+            contentType: 'application/json'
+        }).then((resp) => {
+            dispatch({
+                type: FETCH_USER_AGENT_LIST_SUCCESS,
                 resp
             })
         }).catch((err) => {

@@ -4,6 +4,7 @@ import _ from 'lodash'
 
 const usersInitial = Map({
     items: [],
+    agents: [],
     displayItems: [],
     sort: 'id',
     loading: true,
@@ -28,6 +29,20 @@ export function users(state = usersInitial, action) {
             return Map({
                 items: action.resp.data,
                 sort: state.get('sort'),
+                loading: false,
+                resp: action.resp
+            })
+
+        case actions.FETCH_USER_AGENT_LIST_START:
+            return Map({
+                agents: actions.extend ? state.get('agents') : [],
+                loading: action.extend,
+                resp: action.resp
+            })
+
+        case actions.FETCH_USER_AGENT_LIST_SUCCESS:
+            return Map({
+                agents: action.resp.data,
                 loading: false,
                 resp: action.resp
             })

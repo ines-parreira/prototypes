@@ -8,6 +8,8 @@ import TicketView from '../components/ticket/TicketView'
 
 import * as TicketActions from '../actions/ticket'
 import * as MacroActions from '../actions/macro'
+import * as UserActions from '../actions/user'
+import * as TagActions from '../actions/tag' //import that to fetch tags list
 
 class TicketContainer extends React.Component {
     componentWillMount() {
@@ -17,6 +19,8 @@ class TicketContainer extends React.Component {
             'item'
         )
         this.props.actions.macro.fetchMacros()
+        this.props.actions.tag.fetchTags()
+        this.props.actions.user.fetchAgentUsers()
     }
 
     componentDidMount() {
@@ -71,6 +75,8 @@ class TicketContainer extends React.Component {
                     actions={this.props.actions}
                     view={this.props.view}
                     ticket={this.props.ticket}
+                    tags={this.props.tags}
+                    users={this.props.users}
                     currentUser={this.props.currentUser}
                     update={this.update}
                     submit={this.submit}
@@ -90,6 +96,7 @@ TicketContainer.propTypes = {
     view: PropTypes.string,
     ticket: PropTypes.object,
     macros: PropTypes.object,
+    tags: PropTypes.object,
     currentUser: PropTypes.object,
 
     actions: PropTypes.object.isRequired,
@@ -104,6 +111,8 @@ function mapStateToProps(state) {
     return {
         ticket: state.ticket,
         macros: state.macros,
+        tags: state.tags,
+        users: state.users,
         currentUser: state.currentUser,
     }
 }
@@ -113,6 +122,8 @@ function mapDispatchToProps(dispatch) {
         actions: {
             ticket: bindActionCreators(TicketActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),
+            tag: bindActionCreators(TagActions, dispatch),
+            user: bindActionCreators(UserActions, dispatch)
         },
         pushState: bindActionCreators(pushState, dispatch)
     }

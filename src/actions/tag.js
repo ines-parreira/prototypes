@@ -4,6 +4,14 @@ import { systemMessage } from './systemMessage'
 export const FETCH_TAG_LIST_START = 'FETCH_TAG_LIST_START'
 export const FETCH_TAG_LIST_SUCCESS = 'FETCH_TAG_LIST_SUCCESS'
 
+export const ADD_TAGS = 'ADD_TAGS'
+
+export function addTags(tags) {
+  return {
+    type: ADD_TAGS,
+    tags: tags
+  }
+}
 
 export function fetchTags() {
     return (dispatch) => {

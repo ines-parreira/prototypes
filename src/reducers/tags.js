@@ -14,6 +14,8 @@ export function tags(state = tagsInitial, action) {
                 items: action.resp.data,
             })
 
+        case actions.ADD_TAGS:
+            return state.set('items', state.get('items').concat(action.tags))
         default:
             return state
     }
