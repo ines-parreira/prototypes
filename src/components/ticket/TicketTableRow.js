@@ -64,7 +64,8 @@ export default class TicketTableRow extends React.Component {
                 return (
                     <div className="ui header">
                         <span
-                            className="subject">{this.trim(ticket.subject, 50)}</span>
+                            className="subject"
+                        >{this.trim(ticket.subject, 50)}</span>
                         <div className="body sub header">
                             {this.trim(firstMessage.body_html ? firstMessage.body_html : firstMessage.body_text, 100)}
                         </div>
@@ -80,7 +81,7 @@ export default class TicketTableRow extends React.Component {
                 return ticket.requester.name
             case 'tags':
                 return ticket.tags.map((tag) => {
-                    return <button key={tag.id} className="ui teal mini basic button ticket-tag">{tag.name}</button>
+                    return <button key={tag.id} className="ui blue mini basic button ticket-tag">{tag.name}</button>
                 })
             default:
                 console.error('Do not know how to render column ', column.name)

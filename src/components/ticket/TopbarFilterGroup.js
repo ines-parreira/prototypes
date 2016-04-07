@@ -28,21 +28,20 @@ export default class TopbarFilterGroup extends React.Component {
     getCurrentValues = () => {
         // Get the current values or an empty list
         const { name, callee } = this.props.filterSpec
-        console.log(this.props.groupedFilters.toJS())
         return this.props.groupedFilters.getIn([name], List())[callee]
     }
 
     getFullObject = (id) => {
         // Get the full object, i.e. the user object from their ID
         const { allValues, getID } = this.props.filterSpec
-        return _.first(allValues.filter((value) => getID(value).toString() === id))
+        return _.first(allValues.filter((value) => getID(value).toString() === id.toString()))
     }
 
     renderValue = (id) => {
         const { getRepr } = this.props.filterSpec
         const value = this.getFullObject(id)
         return (
-            <a key={id} className="ui label">
+            <a key={id} className="ui basic light blue ticket-tag label">
                 {getRepr(value)}
                 <i
                     className="icon close"
@@ -60,7 +59,7 @@ export default class TopbarFilterGroup extends React.Component {
         const { columnName } = this.props.filterSpec
         return (
             <div className="ui item">
-                <div className="ui blue labels">
+                <div className="ui labels">
                     <a key="name" className="filter-group-name">{ upperFirstChar(columnName) + ':' }</a>
                     { this.getCurrentValues().map(this.renderValue) }
                 </div>
