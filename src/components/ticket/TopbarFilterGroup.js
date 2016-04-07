@@ -9,7 +9,7 @@ const upperFirstChar = (text) => text.charAt(0).toUpperCase() + text.substr(1)
 export default class TopbarFilterGroup extends React.Component {
     onDelete = (clickedValue) => {
         const { name, callee } = this.props.filterSpec
-        const newValues = this.getCurrentValues().filter((value) => {
+        const newValues = this.props.values.filter((value) => {
             return value !== clickedValue
         })
 
@@ -23,12 +23,6 @@ export default class TopbarFilterGroup extends React.Component {
                 [callee]: newValues
             }
         })
-    }
-
-    getCurrentValues = () => {
-        // Get the current values or an empty list
-        const { name, callee } = this.props.filterSpec
-        return this.props.groupedFilters.getIn([name], List())[callee]
     }
 
     getFullObject = (id) => {
@@ -57,11 +51,12 @@ export default class TopbarFilterGroup extends React.Component {
         }
 
         const { columnName } = this.props.filterSpec
+
         return (
             <div className="ui item">
                 <div className="ui labels">
                     <a key="name" className="filter-group-name">{ upperFirstChar(columnName) + ':' }</a>
-                    { this.getCurrentValues().map(this.renderValue) }
+                    { this.props.values.map(this.renderValue) }
                 </div>
             </div>
         )
@@ -71,7 +66,7 @@ export default class TopbarFilterGroup extends React.Component {
 TopbarFilterGroup.propTypes = {
     view: PropTypes.object.isRequired,
     filterSpec: PropTypes.object.isRequired,
-    groupedFilters: PropTypes.object.isRequired,
+    values: PropTypes.array.isRequired,
     submitView: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,
     clearFilter: PropTypes.func.isRequired

@@ -52,7 +52,7 @@ export default Immutable.fromJS([
     },
     {
         name: 'channel',
-        width: 1 * CELL_WIDTH,
+        width: 2 * CELL_WIDTH,
         header: 'Channel',
         sortable: true
     },

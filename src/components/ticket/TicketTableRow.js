@@ -54,7 +54,11 @@ export default class TicketTableRow extends React.Component {
             case 'channel':
                 return ticket.channel
             case 'status':
-                return ticket.status
+                return (
+                    <span className={`ticket-status ticket-details-item ui ${ticket.status} label`}>
+                        {ticket.status}
+                    </span>
+                )
             case 'created':
                 return this.formatDatetime(ticket.created_datetime)
             case 'updated':
@@ -81,7 +85,7 @@ export default class TicketTableRow extends React.Component {
                 return ticket.requester.name
             case 'tags':
                 return ticket.tags.map((tag) => {
-                    return <button key={tag.id} className="ui blue mini basic button ticket-tag">{tag.name}</button>
+                    return <button key={tag.id} className="ui light blue mini basic label">{tag.name}</button>
                 })
             default:
                 console.error('Do not know how to render column ', column.name)
@@ -89,7 +93,7 @@ export default class TicketTableRow extends React.Component {
     }
 
     renderField = (column) => {
-        const style = { width: column.width }
+        const style = { minWidth: column.width }
         const className = classNames(column.name, 'wide', 'column')
 
         return (
@@ -100,8 +104,8 @@ export default class TicketTableRow extends React.Component {
     }
 
     render = () => {
-        const { ticket, columns } = this.props
-        const style = { width: this.props.width }
+        const { columns } = this.props
+        const style = { maxWidth: this.props.width }
 
         // Unfortunately need to render a new .ui.grid for every row since
         // semantic needs .rows to be a direct child of them, which react-infinite

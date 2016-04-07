@@ -23,12 +23,14 @@ export default class FilterTopbar extends React.Component {
     }
 
     renderFilter = (name) => {
+        const { callee } = this.props.filterSpecs[name]
+
         return (
             <TopbarFilterGroup
                 key={name}
                 view={this.props.view}
                 filterSpec={this.props.filterSpecs[name]}
-                groupedFilters={this.props.groupedFilters}
+                values={this.props.groupedFilters.get(name)[callee]}
                 updateFilters={this.props.updateFilters}
                 clearFilter={this.props.clearFilter}
                 submitView={this.props.submitView}
@@ -37,15 +39,16 @@ export default class FilterTopbar extends React.Component {
     }
 
     render() {
-        let component = (
-                <div className="FilterTopbar ui horizontal list segment full-width">
-                    {this.props.groupedFilters.keySeq().map(this.renderFilter)}
+        const style = { width: this.props.width }
+        let component = null
+
+        if (this.props.view.get('dirty')) {
+            component = (
+                <div className="FilterTopbar ui horizontal list segment" style={style}>
+                    {this.props.groupedFilters.keySeq().toJS().map(this.renderFilter)}
                     {this.renderSaveButton()}
                 </div>
             )
-
-        if (!this.props.view.get('dirty')) {
-            component = null
         }
         return (
             <ReactCSSTransitionGroup
@@ -65,5 +68,6 @@ FilterTopbar.propTypes = {
     groupedFilters: PropTypes.object.isRequired,
     submitView: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,
-    clearFilter: PropTypes.func.isRequired
+    clearFilter: PropTypes.func.isRequired,
+    width: PropTypes.number.isRequired
 }

@@ -19,10 +19,6 @@ export default class TicketTable extends React.Component {
         return this.props.fetchPage(page)
     }
 
-    getWidth = () => {
-        return _.sumBy(this.props.columns, 'width') + CELL_WIDTH  // One extra cell for the row checkbox
-    }
-
     renderLoading = () => {
         const nbPages = this.props.tickets.getIn(['resp_meta', 'nb_pages'])
         const message = nbPages === 0 ? 'No tickets found.' : 'Loading...'
@@ -56,8 +52,7 @@ export default class TicketTable extends React.Component {
 
     render = () => {
         // TODO: Do this with CSS rather than explicitly calculating & passing total width
-        const width = this.getWidth()
-        const style = { width }
+        const style = { maxWidth: this.props.width }
 
         if (this.props.tickets.get('items').size === 0) {
             return this.renderLoading()
@@ -66,7 +61,7 @@ export default class TicketTable extends React.Component {
         return (
             <div className="TicketTable">
                 <div>
-                    <div className="ui grid" style={style} key={width}>
+                    <div className="ui grid" style={style}>
                         <div className="row head-row" >
                             <div className="one-fixed wide column">
                                 <span className="ui checkbox">
@@ -84,7 +79,7 @@ export default class TicketTable extends React.Component {
                                     <TicketTableRow
                                         key={ticket.id}
                                         ticket={ticket}
-                                        width={width}
+                                        width={this.props.width}
                                         columns={this.props.columns}
                                         currentUser={this.props.currentUser}
                                         pushState={this.props.pushState}
@@ -111,6 +106,7 @@ TicketTable.propTypes = {
     actions: PropTypes.object.isRequired,
     groupedFilters: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired,
+    width: PropTypes.number.isRequired,
     currentUser: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,

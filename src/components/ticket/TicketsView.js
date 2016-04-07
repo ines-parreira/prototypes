@@ -6,7 +6,7 @@ import TicketTable from './TicketTable'
 import FilterTopbar from './FilterTopbar'
 import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
 import Search from '../Search'
-import { TICKET_STATUSES } from '../../constants'
+import { TICKET_STATUSES, CELL_WIDTH } from '../../constants'
 
 export default class TicketsView extends React.Component {
     renderShowMoreFieldsDropdown = () => {
@@ -21,6 +21,10 @@ export default class TicketsView extends React.Component {
                 updateView={this.updateView}
             />
         )
+    }
+
+    getWidth = () => {
+        return _.sumBy(this.props.columns.toJS(), 'width') + CELL_WIDTH  // One extra cell for the row checkbox
     }
 
     getFilterSpecs = () => {
@@ -78,9 +82,10 @@ export default class TicketsView extends React.Component {
 
     render() {
         const groupedFilters = this.props.view.get('groupedFilters', Map())
+        const style = { maxWidth: this.getWidth() }
 
         return (
-            <div className="TicketsView" key={this.props.view.get('slug')}>
+            <div className="TicketsView" style={style}>
                 <div className="ui text menu">
                     <div className="left menu item">
                         <a className="ui dropdown item top-dropdowns">
@@ -102,6 +107,7 @@ export default class TicketsView extends React.Component {
                     clearFilter={this.clearFilter}
                     submitView={this.props.actions.view.submitView}
                     editMode={this.props.view.get('editMode')}
+                    width={this.getWidth()}
                 />
 
                 <TicketTable
@@ -114,6 +120,7 @@ export default class TicketsView extends React.Component {
                     currentUser={this.props.currentUser}
                     pushState={this.props.pushState}
                     fetchPage={this.props.fetchPage}
+                    width={this.getWidth()}
                 />
             </div>
         )

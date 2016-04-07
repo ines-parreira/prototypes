@@ -42,7 +42,7 @@ export default class ShowMoreFieldsDropdown extends React.Component {
     render() {
         return (
             <div className="ShowMoreFieldsDropdown">
-                <div className="ui button teal basic custom">
+                <div className="ui button light blue basic custom">
                     <i className="columns icon"/>
                     Show more fields
                 </div>
