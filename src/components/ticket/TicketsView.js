@@ -92,13 +92,7 @@ export default class TicketsView extends React.Component {
                     </div>
                 </div>
 
-                <h1 className="ui header">
-                    {this.props.view.get('name')}
-                    <i
-                        className="action setting icon"
-                        onClick={() => this.props.actions.view.switchEditMode(this.props.view.get('slug'))}
-                    />
-                </h1>
+                <h1 className="ui header">{this.props.view.get('name')}</h1>
 
                 <FilterTopbar
                     view={this.props.view}

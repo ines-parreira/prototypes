@@ -19,7 +19,6 @@ function addExtraAttributes(view) {
 
     return Map(Object.assign({}, view, {
         dirty: false,
-        editMode: false,
         filters,
         filters_ast: Map(filtersAst),
         groupedFilters: Map(groupedFilters)
@@ -51,7 +50,9 @@ export function views(state = viewsInitial, action) {
 
         case actions.UPDATE_VIEW:
             view = state.getIn(['items', action.slug])
-            return state.setIn(['items', action.slug], view.merge(action.data))
+            const newView = state.setIn(['items', action.slug], view.merge(action.data))
+            console.log(newView.toJS())
+            return newView
 
         case actions.FETCH_VIEW_LIST_START:
             return state.set('loading', true)
@@ -86,11 +87,6 @@ export function views(state = viewsInitial, action) {
                 items: Map(viewsBySlug),
                 loading: false
             })
-
-        case actions.SWITCH_EDIT_MODE:
-            view = state.getIn(['items', action.slug])
-            updatedView = view.set('editMode', !view.get('editMode'))
-            return state.setIn(['items', action.slug], updatedView)
 
         default:
             return state

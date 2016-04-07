@@ -44,7 +44,7 @@ export default class FilterTopbar extends React.Component {
                 </div>
             )
 
-        if (!this.props.editMode) {
+        if (!this.props.view.get('dirty')) {
             component = null
         }
         return (
@@ -65,6 +65,5 @@ FilterTopbar.propTypes = {
     groupedFilters: PropTypes.object.isRequired,
     submitView: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,
-    clearFilter: PropTypes.func.isRequired,
-    editMode: PropTypes.bool.isRequired
+    clearFilter: PropTypes.func.isRequired
 }
