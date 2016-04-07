@@ -23,7 +23,7 @@ class TicketsContainer extends React.Component {
 
         if (!views || !views.get('items').size) {
             // Return something so sub-components can start rendering while the view loads
-            return Map({ slug: viewName, editMode: false })
+            return Map({ slug: viewName })
         }
 
         return views.getIn(['items', viewName])

@@ -85,7 +85,7 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                {this.props.navbar || <TicketsNavbarContainer />}
+                {this.props.navbar || <TicketsNavbarContainer params={this.props.params}/>}
                 <div className="App-content">
                     {this.renderLoader()}
                     <div className="main-content pusher">
@@ -119,6 +119,7 @@ App.propTypes = {
 
     // Injected by React Router
     children: PropTypes.node,
+    params: PropTypes.object.isRequired,
 
     // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
     navbar: PropTypes.node,
