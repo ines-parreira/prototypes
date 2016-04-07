@@ -79,9 +79,9 @@ export default class Navbar extends React.Component {
                 <div id="user-menu" className="navbar-btn ui dropdown">
                     <i className="ellipsis horizontal icon"/>
                     <div>
-                        <h4>
-                            <i className="green circle icon" title="User online"/>
-                            {currentUser.get('name')}
+                        <h4 className="current-user">
+                            <i className="status green circle icon" title="User online"/>
+                            <span className="name" title={currentUser.get('name')}>{currentUser.get('name')}</span>
                         </h4>
                     </div>
 
