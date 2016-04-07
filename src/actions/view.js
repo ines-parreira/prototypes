@@ -3,6 +3,7 @@ import reqwest from 'reqwest'
 // Basic operations on the views
 export const NEW_VIEW = 'NEW_VIEW'
 
+export const SWITCH_EDIT_MODE = 'SWITCH_EDIT_MODE'
 export const UPDATE_VIEW = 'UPDATE_VIEW'
 export const UPDATE_VIEW_FILTERS = 'UPDATE_VIEW_FILTERS'
 export const CLEAR_VIEW_FILTER = 'CLEAR_VIEW_FILTER'
@@ -46,6 +47,14 @@ export function clearFilter(slug, name) {
         type: CLEAR_VIEW_FILTER,
         slug,
         name
+    }
+}
+
+
+export function switchEditMode(slug) {
+    return {
+        type: SWITCH_EDIT_MODE,
+        slug
     }
 }
 

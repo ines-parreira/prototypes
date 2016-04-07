@@ -25,9 +25,10 @@ export default class TopbarFilterGroup extends React.Component {
         })
     }
 
-    getCurrentValues = (spec) => {
+    getCurrentValues = () => {
         // Get the current values or an empty list
         const { name, callee } = this.props.filterSpec
+        console.log(this.props.groupedFilters.toJS())
         return this.props.groupedFilters.getIn([name], List())[callee]
     }
 

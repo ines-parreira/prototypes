@@ -19,6 +19,7 @@ function addExtraAttributes(view) {
 
     return Map(Object.assign({}, view, {
         dirty: false,
+        editMode: false,
         filters,
         filters_ast: Map(filtersAst),
         groupedFilters: Map(groupedFilters)
@@ -85,6 +86,11 @@ export function views(state = viewsInitial, action) {
                 items: Map(viewsBySlug),
                 loading: false
             })
+
+        case actions.SWITCH_EDIT_MODE:
+            view = state.getIn(['items', action.slug])
+            updatedView = view.set('editMode', !view.get('editMode'))
+            return state.setIn(['items', action.slug], updatedView)
 
         default:
             return state

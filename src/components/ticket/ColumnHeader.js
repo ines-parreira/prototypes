@@ -1,5 +1,4 @@
-import React, {PropTypes} from 'react'
-import classNames from 'classnames'
+import React, { PropTypes } from 'react'
 import FilterDropdown from './FilterDropdown'
 import PlainColumnHeader from './PlainColumnHeader'
 import Portal from 'react-portal'
@@ -13,17 +12,8 @@ export default class ColumnHeader extends React.Component {
         }
     }
 
-    portalContentStyle = () => {
-        return {
-            position: 'absolute',
-            top: this.state.top,
-            left: this.state.left,
-            width: this.state.width,
-        }
-    }
-
     onClose = () => {
-        this.setState({isOpened: false})
+        this.setState({ isOpened: false })
     }
 
     onClick = (e) => {
@@ -32,9 +22,18 @@ export default class ColumnHeader extends React.Component {
         this.setState({
             isOpened: true,
             top: targetRect.top - bodyRect.top,
-            left:  targetRect.left - bodyRect.left,
-            width: targetRect.width,
+            left: targetRect.left - bodyRect.left,
+            width: targetRect.width
         })
+    }
+
+    portalContentStyle() {
+        return {
+            position: 'absolute',
+            top: this.state.top,
+            left: this.state.left,
+            width: this.state.width
+        }
     }
 
     render = () => {
@@ -77,5 +76,5 @@ ColumnHeader.propTypes = {
     column: PropTypes.object.isRequired,
     updateFilters: PropTypes.func.isRequired,
     groupedFilters: PropTypes.object.isRequired,
-    filterSpec: PropTypes.object.isRequired,
+    filterSpec: PropTypes.object.isRequired
 }

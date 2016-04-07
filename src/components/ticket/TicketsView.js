@@ -54,7 +54,7 @@ export default class TicketsView extends React.Component {
                 search: false,
                 getRepr: (value) => value,
                 getID: (value) => value,
-            },
+            }
         }
     }
 
@@ -92,7 +92,13 @@ export default class TicketsView extends React.Component {
                     </div>
                 </div>
 
-                <h1 className="ui header">{this.props.view.get('name')}</h1>
+                <h1 className="ui header">
+                    {this.props.view.get('name')}
+                    <i
+                        className="action setting icon"
+                        onClick={() => this.props.actions.view.switchEditMode(this.props.view.get('slug'))}
+                    />
+                </h1>
 
                 <FilterTopbar
                     view={this.props.view}
@@ -101,6 +107,7 @@ export default class TicketsView extends React.Component {
                     updateFilters={this.updateFilters}
                     clearFilter={this.clearFilter}
                     submitView={this.props.actions.view.submitView}
+                    editMode={this.props.view.get('editMode')}
                 />
 
                 <TicketTable

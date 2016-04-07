@@ -58,7 +58,7 @@ export default class Navbar extends React.Component {
                         if (!section.views.length) {
                             return null
                         }
-                        const counter = '(0)'
+                        const counter = '' // '(0)'
                         return (
                             <div key={sectionId} className="item">
                                 <h4 className="">{section.title}</h4>
