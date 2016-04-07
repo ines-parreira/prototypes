@@ -5,25 +5,16 @@ import _ from 'lodash'
 
 export default class ShowMoreFieldsDropdown extends React.Component {
     getCheckboxColumns = () => {
-        return $('.ShowMoreFieldsDropdown .checkbox input:checked').map(function() {
+        return $('.ShowMoreFieldsDropdown .checkbox input:checked').map(function () {
             return $(this).attr('name')
         })
     }
 
     componentDidMount = () => {
-        const self = this
-        $('.ShowMoreFieldsDropdown .custom.button').popup({
+        $('#showmorefields').popup({
             popup: $('.custom.popup'),
             on: 'click',
             position: 'bottom center',
-        })
-
-        $('.ShowMoreFieldsDropdown .checkbox').checkbox({
-            onChange: (event) => {
-                self.props.updateView({
-                    columns: [...self.getCheckboxColumns()]
-                })
-            }
         })
     }
 
@@ -32,7 +23,14 @@ export default class ShowMoreFieldsDropdown extends React.Component {
         return (
             <div className="field" key={column.name}>
                 <div className="ui checkbox">
-                    <input type="checkbox" name={column.name} defaultChecked={checked} />
+                    <input
+                        type="checkbox"
+                        name={column.name}
+                        checked={checked}
+                        onChange={() => this.props.updateView({
+                            columns: [...this.getCheckboxColumns()]
+                        })}
+                    />
                     <label>{column.header}</label>
                 </div>
             </div>
@@ -42,7 +40,7 @@ export default class ShowMoreFieldsDropdown extends React.Component {
     render() {
         return (
             <div className="ShowMoreFieldsDropdown">
-                <div className="ui button light blue basic custom">
+                <div id="showmorefields" className="ui borderless label light blue basic custom">
                     <i className="columns icon"/>
                     Show more fields
                 </div>

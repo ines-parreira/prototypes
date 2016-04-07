@@ -88,9 +88,7 @@ export default class TicketsView extends React.Component {
             <div className="TicketsView" style={style}>
                 <div className="ui text menu">
                     <div className="left menu item">
-                        <a className="ui dropdown item top-dropdowns">
-                            {this.renderShowMoreFieldsDropdown()}
-                        </a>
+                        {this.renderShowMoreFieldsDropdown()}
                     </div>
                     <div className="right menu item">
                         <Search id="ticket" search={this.props.search}/>
