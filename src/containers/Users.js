@@ -73,7 +73,7 @@ class UsersContainer extends React.Component {
         return (
             <div className="UsersContainer">
                 <UsersView
-                    items={users.get('items')}
+                    items={users.get('items').toJS()}
                     isLoading={users.get('loading')}
                 />
             </div>
@@ -84,7 +84,7 @@ class UsersContainer extends React.Component {
 UsersContainer.propTypes = {
     users: PropTypes.shape({
         loading: PropTypes.bool,
-        items: PropTypes.array,
+        items: PropTypes.object,
         resp: PropTypes.shape({
             meta: PropTypes.object,
             data: PropTypes.array,

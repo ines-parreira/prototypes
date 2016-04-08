@@ -91,7 +91,7 @@ class TicketsContainer extends React.Component {
                 <TicketsView
                     tickets={this.props.tickets}
                     allTags={this.props.tags.get('items')}
-                    allUsers={this.props.users.get('items') || []}
+                    allUsers={this.props.users.get('items')}
                     columns={this.getViewColumns()}
                     view={this.getView()}
                     currentUser={this.props.currentUser}

@@ -55,7 +55,7 @@ export default class TicketView extends React.Component {
                             <div className="eight wide column">
                                 <TicketTags
                                     ticketTags={ticket.get('tags')}
-                                    tags={tags.get('items')}
+                                    tags={tags.get('items').toJS()}
                                     actions={actions}
                                 />
                             </div>
@@ -91,9 +91,9 @@ export default class TicketView extends React.Component {
                                       {users.get('agents').map((agent) =>
                                           <a
                                               className="item"
-                                              key={agent.id}
+                                              key={agent.get('id')}
                                               onClick={() => actions.ticket.setAgent(agent)}
-                                          >{agent.name}</a>
+                                          >{agent.get('name')}</a>
                                       )}
 
                                     </div>
