@@ -1,7 +1,5 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import classnames from 'classnames'
-
-import defaultAgents from '../../../../../fixtures/clients/agents'
 
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './TicketReplyArea'
@@ -10,11 +8,11 @@ import TicketTags from './TicketTags'
 
 export default class TicketView extends React.Component {
     componentDidMount() {
-        $('#top-option-dropdown', this.refs.ticketView).dropdown({
+        $('#top-option-dropdown').dropdown({
             on: 'hover',
             action: 'nothing'
         })
-        $('#popup-ticket-owner').popup({inline: true, position: 'bottom left', hoverable: true, on: 'click' })
+        $('#popup-ticket-owner').popup({ inline: true, position: 'bottom left', hoverable: true, on: 'click' })
     }
     submit = (status) => {
         return (e) => {
@@ -26,10 +24,10 @@ export default class TicketView extends React.Component {
     render = () => {
         const { ticket, tags, users } = this.props
         return (
-            <div className="ticket-view" ref="ticketView">
+            <div className="ticket-view">
                 <div className="ticket-header">
                     <div className="ticket-actions-btn ui dropdown" id="top-option-dropdown">
-                        <i className="ui icon angle down"></i>
+                        <i className="ui icon angle down"/>
                         <div className="menu transition">
                             <div className="item">
                                 <a href="#">
@@ -52,20 +50,47 @@ export default class TicketView extends React.Component {
                     <div className="ui grid">
                         <div className="row">
                             <div className="eight wide column">
-                                <TicketTags ticketTags={ticket.get('tags')} tags={tags.get('items')} actions={this.props.actions}/>
+                                <TicketTags
+                                    ticketTags={ticket.get('tags')}
+                                    tags={tags.get('items')}
+                                    actions={this.props.actions}
+                                />
                             </div>
                             <div className="eight wide column ticket-details">
-                                <a className="ticket-flag-btn ticket-details-item" onClick={this.props.actions.ticket.togglePriority}>
-                                    <i className={classnames("ticket-priority", ticket.get('priority'), "icon", "flag", {outline: ticket.priority !== 'high'})} />
+                                <a
+                                    className="ticket-flag-btn ticket-details-item"
+                                    onClick={this.props.actions.ticket.togglePriority}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'ticket-priority',
+                                            ticket.get('priority'),
+                                            'icon',
+                                            'flag',
+                                            { outline: ticket.priority !== 'high' }
+                                        )}
+                                    />
                                 </a>
 
                                 <a className="ticket-owner-btn ticket-details-item" id="popup-ticket-owner">
                                     <span className="ui yellow label">A</span>
                                     {ticket.getIn(['assignee_user', 'name'])}
                                 </a>
+
                                 <div className="ui popup">
-                                    <div className="ui vertical menu" style={{textAlign: "left", border: "none", width: "inherit"}}>
-                                      {users.get('agents').map((agent) => <a className='item' key={agent.id} onClick={()=>this.props.actions.ticket.setAgent(agent.name)}>{agent.name}</a>)}
+                                    <div
+                                        className="ui vertical menu"
+                                        style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
+                                    >
+
+                                      {users.get('agents').map((agent) =>
+                                          <a
+                                              className="item"
+                                              key={agent.id}
+                                              onClick={() => this.props.actions.ticket.setAgent(agent.name)}
+                                          >{agent.name}</a>
+                                      )}
+
                                     </div>
                                 </div>
 
@@ -83,7 +108,7 @@ export default class TicketView extends React.Component {
                 <TicketMessages
                     currentUser={this.props.currentUser}
                     messages={ticket.get('messages')}
-                    />
+                />
                 <TicketReplyArea
                     actions={this.props.actions}
                     applyMacro={this.props.applyMacro}
@@ -92,11 +117,11 @@ export default class TicketView extends React.Component {
                     currentUser={this.props.currentUser}
                     macros={this.props.macros}
                     ticket={this.props.ticket}
-                    />
+                />
                 <TicketSubmitButtons
                     ticket={ticket}
                     submit={this.submit}
-                    />
+                />
             </div>
         )
     }
@@ -109,5 +134,7 @@ TicketView.propTypes = {
     currentUser: PropTypes.object.isRequired,
     submit: PropTypes.func.isRequired,
     applyMacro: PropTypes.func.isRequired,
-    pushState: PropTypes.func
+    pushState: PropTypes.func,
+    tags: PropTypes.array.isRequired,
+    users: PropTypes.array.isRequired
 }
