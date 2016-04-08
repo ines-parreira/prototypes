@@ -10,7 +10,7 @@ export default class Read extends React.Component {
 
                 {
                     ticketTags.map((tag, i) => (
-                            <div key={tag.get('id')} className="ticket-tag ui label">
+                            <div key={i} className="ticket-tag ui label">
                                 {tag.get('name')}
                                 <i className="icon close" onClick={() => actions.ticket.removeTag(i)}/>
                             </div>

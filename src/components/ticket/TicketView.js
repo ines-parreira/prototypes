@@ -87,7 +87,7 @@ export default class TicketView extends React.Component {
                                           <a
                                               className="item"
                                               key={agent.id}
-                                              onClick={() => this.props.actions.ticket.setAgent(agent.name)}
+                                              onClick={() => this.props.actions.ticket.setAgent(agent)}
                                           >{agent.name}</a>
                                       )}
 

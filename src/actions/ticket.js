@@ -1,5 +1,6 @@
 import reqwest from 'reqwest'
 import { List } from 'immutable'
+import _ from 'lodash'
 import { systemMessage } from './systemMessage'
 import { PER_PAGE } from '../constants'
 import { ASTToAlgoliaSearchParams, ticketsIndex } from '../filters/algolia'
@@ -43,36 +44,36 @@ export const MACRO_ACTIONS = [
 ]
 
 export function addTags(tags) {
-  return {
-    type: ADD_TICKET_TAGS,
-    args: tags
-  }
+    return {
+        type: ADD_TICKET_TAGS,
+        args: tags
+    }
 }
 export function removeTag(index) {
-  return {
-    type: REMOVE_TICKET_TAG,
-    index: index
-  }
+    return {
+        type: REMOVE_TICKET_TAG,
+        index
+    }
 }
 
 export function updateTags(tags) {
-  return {
-    type: UPDATE_TICKET_TAGS,
-    args: tags
-  }
+    return {
+        type: UPDATE_TICKET_TAGS,
+        args: tags
+    }
 }
 
 export function togglePriority() {
-  return {
-    type: TOGGLE_PRIORITY
-  }
+    return {
+        type: TOGGLE_PRIORITY
+    }
 }
 
 export function setAgent(agent) {
-  return {
-    type: SET_AGENT,
-    args: agent
-  }
+    return {
+        type: SET_AGENT,
+        args: agent
+    }
 }
 
 export function setResponseText(currentUser, text) {

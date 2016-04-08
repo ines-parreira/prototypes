@@ -1,5 +1,5 @@
 import * as actions from '../actions/ticket'
-import Immutable, {Map, List, Set} from 'immutable'
+import Immutable, { Map, List, Set } from 'immutable'
 
 const ticketInitial = Map({
     messages: List(),
@@ -27,42 +27,37 @@ const newMessage = Map({
 })
 
 function keyIn(/*...keys*/) {
-    var keySet = Set(arguments);
+    const keySet = Set(arguments);
     return function (v, k) {
         return keySet.has(k)
     }
 }
 
 function getRecipient(messages, sender) {
-    for (let message of messages.reverse()) {
+    for (const message of messages.reverse()) {
         const senderId = message.getIn(['sender', 'id'])
         if (senderId && senderId !== sender.get('id')) {
             return message.get('sender')
         }
     }
     console.error('No recipient')
+    return null
 }
 
 export function ticket(state = ticketInitial, action) {
     let tags
 
     switch (action.type) {
-        case actions.FETCH_TICKET_START:
-        case actions.SUBMIT_TICKET_START:
-            return state
-
         case actions.SUBMIT_TICKET_SUCCESS:
         case actions.FETCH_TICKET_SUCCESS:
-            return Immutable
-                .fromJS(action.resp)
-                .set('newMessage', newMessage)
+            return Immutable.fromJS(action.resp).set('newMessage', newMessage)
 
         /* Macro actions */
 
         case actions.ADD_TICKET_TAGS:
             tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
-            for (let tag of action.args) {
+            for (const tag of action.args) {
                 if (!existingTagNames.includes(tag.get('name'))) {
                     tags = tags.push(tag)
                 }
@@ -81,7 +76,7 @@ export function ticket(state = ticketInitial, action) {
             return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
 
         case actions.SET_AGENT:
-            return state.setIn(['assignee_user', 'name'], action.args)
+            return state.set('assignee_user', Map(action.args))
 
         case actions.SET_RESPONSE_TEXT:
             const text = action.args.get(0) || ''

@@ -97,6 +97,7 @@ TicketContainer.propTypes = {
     ticket: PropTypes.object,
     macros: PropTypes.object,
     tags: PropTypes.object,
+    users: PropTypes.object,
     currentUser: PropTypes.object,
 
     actions: PropTypes.object.isRequired,
