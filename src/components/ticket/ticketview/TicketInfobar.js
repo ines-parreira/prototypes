@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react'
 
 import { List, fromJS } from 'immutable'
 
-import InfobarWidget from './InfobarWidget'
-import Search from '../Search'
+import InfobarWidget from './../InfobarWidget'
+import Search from '../../Search'
 
 export default class TicketInfobar extends React.Component {
     render() {

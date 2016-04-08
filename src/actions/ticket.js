@@ -30,8 +30,8 @@ export const ADD_TAGS = 'addTags'
 
 export const SEARCH = 'search'
 
-//export const ADD_TAGS = 'addTags'
-export const ADD_TICKET_TAGS = 'ADD_TICKET_TAGS'
+// export const ADD_TAGS = 'addTags'
+export const ADD_TICKET_TAGS = 'addTags'
 export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
 export const UPDATE_TICKET_TAGS = 'UPDATE_TAGS'
 

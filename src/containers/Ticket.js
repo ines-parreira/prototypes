@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import * as mousetrap from 'mousetrap'
 
-import TicketView from '../components/ticket/TicketView'
+import TicketView from '../components/ticket/ticketview/TicketView'
 
 import * as TicketActions from '../actions/ticket'
 import * as MacroActions from '../actions/macro'

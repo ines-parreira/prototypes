@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import Immutable from 'immutable'
 import classNames from 'classnames'
 
@@ -63,7 +63,7 @@ export default class TicketReplyArea extends React.Component {
                         className="ui large transparent input full-width"
                         placeholder="Search..."
                     />
-                    <a className={classNames({hidden: !macrosVisible})}>
+                    <a className={classNames({ hidden: !macrosVisible })}>
                         <i
                             className="clear-macros right close icon"
                             onClick={() => setMacrosVisible(false)}

@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react'
 import classnames from 'classnames'
 
 import TicketMessages from './TicketMessages'
-import TicketReplyArea from './TicketReplyArea'
-import TicketSubmitButtons from './TicketSubmitButtons'
+import TicketReplyArea from './replyarea/TicketReplyArea'
+import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
 import TicketTags from './tags/TicketTags'
 
 export default class TicketView extends React.Component {
@@ -22,10 +22,11 @@ export default class TicketView extends React.Component {
     }
 
     render = () => {
-        const { ticket, tags, users } = this.props
+        const { ticket, tags, users, actions } = this.props
         return (
             <div className="ticket-view">
                 <div className="ticket-header">
+
                     <div className="ticket-actions-btn ui dropdown" id="top-option-dropdown">
                         <i className="ui icon angle down"/>
                         <div className="menu transition">
@@ -43,28 +44,32 @@ export default class TicketView extends React.Component {
                     </div>
 
                     <button className="ticket-previous-btn ui mini button">
-                        3 PREVIOUS TICKETS
+                        NO PREVIOUS TICKETS
                     </button>
 
                     <h1 className="ui header">{ticket.get('subject')}</h1>
+
                     <div className="ui grid">
                         <div className="row">
+
                             <div className="eight wide column">
                                 <TicketTags
                                     ticketTags={ticket.get('tags')}
                                     tags={tags.get('items')}
-                                    actions={this.props.actions}
+                                    actions={actions}
                                 />
                             </div>
+
                             <div className="eight wide column ticket-details">
                                 <a
                                     className="ticket-flag-btn ticket-details-item"
-                                    onClick={this.props.actions.ticket.togglePriority}
+                                    onClick={actions.ticket.togglePriority}
                                 >
                                     <i
                                         className={classnames(
                                             'ticket-priority',
                                             ticket.get('priority'),
+                                            'action',
                                             'icon',
                                             'flag',
                                             { outline: ticket.priority !== 'high' }
@@ -74,7 +79,7 @@ export default class TicketView extends React.Component {
 
                                 <a className="ticket-owner-btn ticket-details-item" id="popup-ticket-owner">
                                     <span className="ui yellow label">A</span>
-                                    {ticket.getIn(['assignee_user', 'name'])}
+                                    <span className="padding-10">{(ticket.getIn(['assignee_user', 'name']) || '').toUpperCase()}</span>
                                 </a>
 
                                 <div className="ui popup">
@@ -87,7 +92,7 @@ export default class TicketView extends React.Component {
                                           <a
                                               className="item"
                                               key={agent.id}
-                                              onClick={() => this.props.actions.ticket.setAgent(agent)}
+                                              onClick={() => actions.ticket.setAgent(agent)}
                                           >{agent.name}</a>
                                       )}
 
@@ -102,13 +107,17 @@ export default class TicketView extends React.Component {
                                     {ticket.get('status')}
                                 </span>
                             </div>
+
                         </div>
                     </div>
+
                 </div>
+
                 <TicketMessages
                     currentUser={this.props.currentUser}
                     messages={ticket.get('messages')}
                 />
+
                 <TicketReplyArea
                     actions={this.props.actions}
                     applyMacro={this.props.applyMacro}
@@ -118,10 +127,12 @@ export default class TicketView extends React.Component {
                     macros={this.props.macros}
                     ticket={this.props.ticket}
                 />
+
                 <TicketSubmitButtons
                     ticket={ticket}
                     submit={this.submit}
                 />
+
             </div>
         )
     }

@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import linkifyStr from 'linkifyjs/string'
+import linkifyStr from '../../../../../../../node_modules/linkifyjs/string'
 import moment from 'moment'
 import 'moment-timezone'
 

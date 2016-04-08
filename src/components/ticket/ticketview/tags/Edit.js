@@ -31,7 +31,11 @@ export default class Edit extends React.Component {
     }
 
     update = () => {
-        const ticketTags = $('#multi-select').dropdown('get value').split(',').map((text) => {return { name: text }})
+        const ticketTags = $('#multi-select').dropdown('get value').split(',')
+            .filter((text) => text && text !== '')
+            .map((text) => {
+                return { name: text }
+            })
         this.props.actions.ticket.updateTags(ticketTags)
     }
 
