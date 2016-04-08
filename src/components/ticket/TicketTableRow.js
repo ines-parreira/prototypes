@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import moment from 'moment'
 import 'moment-timezone'
 import classNames from 'classnames'
@@ -30,7 +30,7 @@ export default class TicketTableRow extends React.Component {
     formatDatetime = (datetime) => {
         let formatted = ''
         if (datetime) {
-            formatted = moment(datetime).tz(this.props.currentUser.get('timezone', 'UTC')).fromNow()
+            formatted = moment(datetime).tz(this.props.currentUser.get('timezone') || 'UTC').fromNow()
         }
         return formatted
     }
