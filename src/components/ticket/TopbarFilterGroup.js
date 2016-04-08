@@ -11,7 +11,7 @@ export default class TopbarFilterGroup extends React.Component {
             return value !== clickedValue
         })
 
-        if (newValues.isEmpty()) {
+        if (_.isEmpty(newValues)) {
             // If the list is empty remove the filter
             return this.props.clearFilter(name)
         }
