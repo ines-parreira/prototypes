@@ -38,6 +38,7 @@ export const UPDATE_TICKET_TAGS = 'UPDATE_TAGS'
 export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY'
 
 export const SET_AGENT = 'SET_AGENT'
+export const SET_STATUS = 'SET_STATUS'
 
 export const MACRO_ACTIONS = [
     SET_RESPONSE_TEXT, ADD_TICKET_TAGS
@@ -72,7 +73,14 @@ export function togglePriority() {
 export function setAgent(agent) {
     return {
         type: SET_AGENT,
-        args: agent
+        agent
+    }
+}
+
+export function setStatus(status) {
+    return {
+        type: SET_STATUS,
+        status
     }
 }
 

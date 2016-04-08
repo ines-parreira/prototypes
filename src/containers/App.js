@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import { dismissMessage } from '../actions/systemMessage'
-import { fetchUser } from '../actions/user'
+import { fetchUser, fetchUsers, fetchAgentUsers } from '../actions/user'
 import { fetchSettings } from '../actions/settings'
 
 import TicketsNavbarContainer from './TicketsNavbar'
@@ -22,6 +22,8 @@ class App extends React.Component {
         // fetch currently logged-in user
         this.props.fetchUser(0)
         this.props.fetchSettings()
+        this.props.fetchUsers()
+        this.props.fetchAgentUsers()
     }
 
     componentDidMount() {
@@ -112,6 +114,7 @@ App.propTypes = {
     // current logged in user
     currentUser: PropTypes.object,
     fetchUser: PropTypes.func.isRequired,
+    fetchAgentUsers: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
 
     // Injected by React Redux
@@ -138,6 +141,8 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
     dismissMessage,
     fetchUser,
+    fetchUsers,
+    fetchAgentUsers,
     fetchSettings,
     pushState
 })(App)

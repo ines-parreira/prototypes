@@ -48,7 +48,6 @@ class TicketsContainer extends React.Component {
     componentDidMount = () => {
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers()
-        this.props.actions.user.fetchAgentUsers()
 
         if (!this.props.views.get('loading')) {
             this.fetchPage()

@@ -6,14 +6,19 @@ import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
 import TicketTags from './tags/TicketTags'
 
+import { TICKET_STATUSES } from './../../../constants'
+
 export default class TicketView extends React.Component {
     componentDidMount() {
         $('#top-option-dropdown').dropdown({
             on: 'hover',
             action: 'nothing'
         })
+
         $('#popup-ticket-owner').popup({ inline: true, position: 'bottom left', hoverable: true, on: 'click' })
+        $('#popup-ticket-status').popup({ inline: true, position: 'bottom right', hoverable: true, on: 'click' })
     }
+
     submit = (status) => {
         return (e) => {
             e.preventDefault()
@@ -23,6 +28,7 @@ export default class TicketView extends React.Component {
 
     render = () => {
         const { ticket, tags, users, actions } = this.props
+        console.log(TICKET_STATUSES)
         return (
             <div className="ticket-view">
                 <div className="ticket-header">
@@ -103,9 +109,29 @@ export default class TicketView extends React.Component {
                                     {`#${ticket.get('id')}`}
                                 </span>
 
-                                <span className={`ticket-status ticket-details-item ui ${ticket.get('status')} label`}>
+                                <a id="popup-ticket-status" className={`ticket-status ticket-details-item ui ${ticket.get('status')} label`}>
                                     {ticket.get('status')}
-                                </span>
+                                </a>
+
+                                <div className="ui popup">
+                                    <div
+                                        className="ui vertical menu"
+                                        style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
+                                    >
+
+                                    {TICKET_STATUSES.map((status) =>
+                                        <button
+                                            className={`ticket-status ticket-details-item ui ${status} label`}
+                                            key={status}
+                                            onClick={() => actions.ticket.setStatus(status)}
+                                        >
+                                            {status}
+                                        </button>
+                                    )}
+
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>
