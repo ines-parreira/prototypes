@@ -165,8 +165,11 @@ export function submitTicket(ticket, status) {
         const data = ticket.toJS()
         data.status = status || data.status
 
-        if (data.newMessage.body_text.length > 0) {
-            data.messages.push(data.newMessage)
+        if (data.newMessage) {
+            if (data.newMessage.body_text.length > 0) {
+                data.messages.push(data.newMessage)
+            }
+
             delete data.newMessage
         }
 
