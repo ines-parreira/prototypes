@@ -1,10 +1,10 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 
 import TicketMessage from './TicketMessage'
 
 export default class TicketMessages extends React.Component {
     render() {
-        const {messages} = this.props
+        const { messages } = this.props
         if (messages.size === 0) {
             return null
         }

@@ -28,7 +28,6 @@ export default class TicketView extends React.Component {
 
     render = () => {
         const { ticket, tags, users, actions } = this.props
-        console.log(TICKET_STATUSES)
         return (
             <div className="ticket-view">
                 <div className="ticket-header">
@@ -49,9 +48,11 @@ export default class TicketView extends React.Component {
                         </div>
                     </div>
 
-                    <button className="ticket-previous-btn ui mini button">
+                    {/*
+                     <button className="ticket-previous-btn ui mini button">
                         NO PREVIOUS TICKETS
                     </button>
+                    */}
 
                     <h1 className="ui header">{ticket.get('subject')}</h1>
 

@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import linkifyStr from '../../../../../../../node_modules/linkifyjs/string'
 import moment from 'moment'
 import 'moment-timezone'
@@ -39,7 +39,7 @@ export default class TicketMessage extends React.Component {
                         <span className="ticket-message-source">
                             <div className="ui dropdown" id="email-dropdown">
                                 <span className="text">
-                                    <i className="icon mail"></i>
+                                    <i className="icon mail"/>
                                     &lt;{message.sender.email}&gt;
                                 </span>
                                 <div className="ticket-message-source-details menu transition">
@@ -47,13 +47,13 @@ export default class TicketMessage extends React.Component {
                                         <li>
                                             To:
                                             <strong>
-                                                {message.sender.email}
+                                                {message.receiver.email}
                                             </strong>
                                         </li>
                                         <li>
                                             From:
                                             <strong>
-                                                support@gorgias.io
+                                                {message.sender.email}
                                             </strong>
                                         </li>
                                         <li>
@@ -86,7 +86,7 @@ export default class TicketMessage extends React.Component {
                 })()}
 
                 <div className="ticket-actions-btn ui dropdown" id="option-dropdown">
-                    <i className="ui icon angle down"></i>
+                    <i className="ui icon angle down"/>
                     <div className="menu transition">
                         <div className="item">
                             <a href="#">
