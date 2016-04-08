@@ -44,6 +44,8 @@ function getRecipient(messages, sender) {
 }
 
 export function ticket(state = ticketInitial, action) {
+    let tags
+
     switch (action.type) {
         case actions.FETCH_TICKET_START:
         case actions.SUBMIT_TICKET_START:

@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './TicketReplyArea'
 import TicketSubmitButtons from './TicketSubmitButtons'
-import TicketTags from './TicketTags'
+import TicketTags from './tags/TicketTags'
 
 export default class TicketView extends React.Component {
     componentDidMount() {
@@ -135,6 +135,6 @@ TicketView.propTypes = {
     submit: PropTypes.func.isRequired,
     applyMacro: PropTypes.func.isRequired,
     pushState: PropTypes.func,
-    tags: PropTypes.array.isRequired,
-    users: PropTypes.array.isRequired
+    tags: PropTypes.object.isRequired,
+    users: PropTypes.object.isRequired
 }
