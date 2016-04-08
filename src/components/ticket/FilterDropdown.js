@@ -10,7 +10,7 @@ const upperFirstChar = (text) => text.charAt(0).toUpperCase() + text.substr(1)
 export default class FilterDropdown extends React.Component {
     constructor() {
         super()
-        this.state = { searchTerm: ''}
+        this.state = { searchTerm: '' }
     }
 
     searchUpdated = (term) => {
@@ -20,19 +20,20 @@ export default class FilterDropdown extends React.Component {
     getCurrentValues = () => {
         // Get the current values or an empty list
         const { groupedFilters, filterSpec } = this.props
-        const { name, callee} = filterSpec
+        const { name, callee } = filterSpec
         return groupedFilters.getIn([name, callee], List()).toJS()
     }
 
     renderValue = (value) => {
         const { getID, getRepr } = this.props.filterSpec
+
         return (
             <div
                 key={getID(value)}
                 className="item"
                 onClick={() => this.onClick(getID(value))}
             >
-                <div className="ui teal empty circular label"></div>
+                <div className="ui blue empty circular label"></div>
                 {upperFirstChar(getRepr(value))}
             </div>
         )
@@ -56,10 +57,10 @@ export default class FilterDropdown extends React.Component {
         * manually added
         */
         const className = classNames(
-            "ui",
-            "dropdown",
-            "active",
-            "visible",
+            'ui',
+            'dropdown',
+            'active',
+            'visible',
         )
         const currentValues = this.getCurrentValues()
         const { allValues, getID, search } = this.props.filterSpec
@@ -80,9 +81,9 @@ export default class FilterDropdown extends React.Component {
             <div className="FilterDropdown">
                 <div ref="uicomponent" className={className}>
                     <input type="hidden" name="filters" />
-                    <div className="menu visible" style={{display: "block !important" }}>
-                        <div className={`ui icon search input ${search ? "" : "hidden"}`}>
-                            <i className="search icon"></i>
+                    <div className="menu visible" style={{ display: 'block !important' }}>
+                        <div className={`ui icon search input ${search ? '' : 'hidden'}`}>
+                            <i className="search icon"/>
                             <SearchInput
                                 ref="search"
                                 onChange={this.searchUpdated}

@@ -1,6 +1,4 @@
-import React, {PropTypes} from 'react'
-import _ from 'lodash'
-import { List } from 'immutable'
+import React, { PropTypes } from 'react'
 
 
 const upperFirstChar = (text) => text.charAt(0).toUpperCase() + text.substr(1)
@@ -13,7 +11,7 @@ export default class TopbarFilterGroup extends React.Component {
             return value !== clickedValue
         })
 
-        if (_.isEmpty(newValues)) {
+        if (newValues.isEmpty()) {
             // If the list is empty remove the filter
             return this.props.clearFilter(name)
         }
@@ -28,7 +26,7 @@ export default class TopbarFilterGroup extends React.Component {
     getFullObject = (id) => {
         // Get the full object, i.e. the user object from their ID
         const { allValues, getID } = this.props.filterSpec
-        return _.first(allValues.filter((value) => getID(value).toString() === id.toString()))
+        return allValues.filter(value => getID(value).toString() === id.toString()).first()
     }
 
     renderValue = (id) => {
@@ -46,7 +44,7 @@ export default class TopbarFilterGroup extends React.Component {
     }
 
     render = () => {
-        if (_.isEmpty(this.props.filterSpec.allValues)) {
+        if (this.props.filterSpec.allValues.isEmpty()) {
             return null
         }
 

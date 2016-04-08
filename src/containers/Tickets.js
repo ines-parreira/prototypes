@@ -48,6 +48,7 @@ class TicketsContainer extends React.Component {
     componentDidMount = () => {
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers()
+        this.props.actions.user.fetchAgentUsers()
 
         if (!this.props.views.get('loading')) {
             this.fetchPage()
@@ -92,6 +93,7 @@ class TicketsContainer extends React.Component {
                     tickets={this.props.tickets}
                     allTags={this.props.tags.get('items')}
                     allUsers={this.props.users.get('items')}
+                    agents={this.props.users.get('agents')}
                     columns={this.getViewColumns()}
                     view={this.getView()}
                     currentUser={this.props.currentUser}

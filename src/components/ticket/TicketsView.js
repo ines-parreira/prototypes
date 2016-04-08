@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { Map } from 'immutable'
+import { Map, List } from 'immutable'
 import _ from 'lodash'
 
 import TicketTable from './TicketTable'
@@ -38,21 +38,45 @@ export default class TicketsView extends React.Component {
                 columnName: 'tags',
                 callee: 'contains',
                 search: true,
-                getRepr: (value) => value.name,
-                getID: (value) => value.name,
+                getRepr: (value) => {
+                    if (value) {
+                        return value.get('name')
+                    } else {
+                        return ''
+                    }
+                },
+                getID: (value) => {
+                    if (value) {
+                        return value.get('name')
+                    } else {
+                        return ''
+                    }
+                }
             },
             'ticket.assignee_user.id': {
                 name: 'ticket.assignee_user.id',
-                allValues: this.props.allUsers,
+                allValues: this.props.agents,
                 columnName: 'assignee',
                 callee: 'eq',
                 search: true,
-                getRepr: (value) => value.name,
-                getID: (value) => value.id,
+                getRepr: (value) => {
+                    if (value) {
+                        return value.get('name')
+                    } else {
+                        return ''
+                    }
+                },
+                getID: (value) => {
+                    if (value) {
+                        return value.get('id')
+                    } else {
+                        return ''
+                    }
+                }
             },
             'ticket.status': {
                 name: 'ticket.status',
-                allValues: TICKET_STATUSES,
+                allValues: List(TICKET_STATUSES),
                 columnName: 'status',
                 callee: 'eq',
                 search: false,
@@ -132,6 +156,7 @@ TicketsView.propTypes = {
     columns: PropTypes.object.isRequired,
     allTags: PropTypes.object.isRequired,
     allUsers: PropTypes.object.isRequired,
+    agents: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired,
     fetchPage: PropTypes.func.isRequired,

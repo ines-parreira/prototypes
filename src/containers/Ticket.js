@@ -15,12 +15,11 @@ class TicketContainer extends React.Component {
     componentWillMount() {
         this.props.actions.ticket.fetchView(
             `/api/tickets/${this.props.params.ticketId}/`,
-            {view: this.props.view},
+            { view: this.props.view },
             'item'
         )
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
-        this.props.actions.user.fetchAgentUsers()
     }
 
     componentDidMount() {
