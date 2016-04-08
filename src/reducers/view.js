@@ -50,8 +50,7 @@ export function views(state = viewsInitial, action) {
 
         case actions.UPDATE_VIEW:
             view = state.getIn(['items', action.slug])
-            const newView = state.setIn(['items', action.slug], view.merge(action.data))
-            return newView
+            return state.setIn(['items', action.slug], view.merge(action.data))
 
         case actions.FETCH_VIEW_LIST_START:
             return state.set('loading', true)
