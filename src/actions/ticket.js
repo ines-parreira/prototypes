@@ -181,6 +181,11 @@ export function submitTicket(ticket, status) {
             delete data.newMessage
         }
 
+        if (data.assignee_user) {
+            data.assignee_user_id = data.assignee_user.id
+            delete data.assignee_user
+        }
+
         return reqwest({
             url: `/api/tickets/${ticket.get('id')}/`,
             type: 'json',
