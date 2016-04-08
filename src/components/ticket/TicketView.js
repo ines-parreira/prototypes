@@ -12,7 +12,6 @@ export default class TicketView extends React.Component {
             action: 'nothing'
         })
     }
-
     submit = (status) => {
         return (e) => {
             e.preventDefault()

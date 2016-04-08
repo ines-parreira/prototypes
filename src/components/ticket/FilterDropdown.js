@@ -10,7 +10,7 @@ const upperFirstChar = (text) => text.charAt(0).toUpperCase() + text.substr(1)
 export default class FilterDropdown extends React.Component {
     constructor() {
         super()
-        this.state = {searchTerm: ""}
+        this.state = { searchTerm: ''}
     }
 
     searchUpdated = (term) => {

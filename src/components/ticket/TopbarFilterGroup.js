@@ -9,7 +9,7 @@ const upperFirstChar = (text) => text.charAt(0).toUpperCase() + text.substr(1)
 export default class TopbarFilterGroup extends React.Component {
     onDelete = (clickedValue) => {
         const { name, callee } = this.props.filterSpec
-        const newValues = this.getCurrentValues().filter((value) => {
+        const newValues = this.props.values.filter((value) => {
             return value !== clickedValue
         })
 
@@ -25,23 +25,17 @@ export default class TopbarFilterGroup extends React.Component {
         })
     }
 
-    getCurrentValues = (spec) => {
-        // Get the current values or an empty list
-        const { name, callee } = this.props.filterSpec
-        return this.props.groupedFilters.getIn([name], List())[callee]
-    }
-
     getFullObject = (id) => {
         // Get the full object, i.e. the user object from their ID
         const { allValues, getID } = this.props.filterSpec
-        return _.first(allValues.filter((value) => getID(value).toString() === id))
+        return _.first(allValues.filter((value) => getID(value).toString() === id.toString()))
     }
 
     renderValue = (id) => {
         const { getRepr } = this.props.filterSpec
         const value = this.getFullObject(id)
         return (
-            <a key={id} className="ui label">
+            <a key={id} className="ui basic light blue ticket-tag label">
                 {getRepr(value)}
                 <i
                     className="icon close"
@@ -57,11 +51,12 @@ export default class TopbarFilterGroup extends React.Component {
         }
 
         const { columnName } = this.props.filterSpec
+
         return (
             <div className="ui item">
-                <div className="ui blue labels">
+                <div className="ui labels">
                     <a key="name" className="filter-group-name">{ upperFirstChar(columnName) + ':' }</a>
-                    { this.getCurrentValues().map(this.renderValue) }
+                    { this.props.values.map(this.renderValue) }
                 </div>
             </div>
         )
@@ -71,7 +66,7 @@ export default class TopbarFilterGroup extends React.Component {
 TopbarFilterGroup.propTypes = {
     view: PropTypes.object.isRequired,
     filterSpec: PropTypes.object.isRequired,
-    groupedFilters: PropTypes.object.isRequired,
+    values: PropTypes.array.isRequired,
     submitView: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,
     clearFilter: PropTypes.func.isRequired
