@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import { Map } from 'immutable'
 import Immutable from 'immutable'
 import classnames from 'classnames'
 
@@ -46,9 +45,9 @@ export default class Edit extends React.Component {
         const row = (value) => <div className="item" key={value} data-value={value}>{value}</div>
 
         this.props.tags.map(tag => {
-            console.log(this.props.ticketTags.toJS())
+            console.log(this.props.ticketTags)
             console.log(tag)
-            if (!this.props.ticketTags.contains(tag)) {
+            if (!this.props.ticketTags.contains(Map(tag))) {
                 rows.push(row(tag.name))
             }
         })
