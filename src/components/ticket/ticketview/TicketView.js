@@ -122,7 +122,7 @@ export default class TicketView extends React.Component {
 
                                     {TICKET_STATUSES.map((status) =>
                                         <button
-                                            className={`ticket-status ticket-details-item ui ${status} label`}
+                                            className={`item ticket-status ticket-details-item ui ${status} label`}
                                             key={status}
                                             onClick={() => actions.ticket.setStatus(status)}
                                         >
