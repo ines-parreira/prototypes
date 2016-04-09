@@ -97,7 +97,7 @@ export default class TicketView extends React.Component {
 
                                       {users.get('agents').map((agent) =>
                                           <a
-                                              className="item"
+                                              className="ticket-owner item"
                                               key={agent.get('id')}
                                               onClick={() => actions.ticket.setAgent(agent)}
                                           >{agent.get('name')}</a>
