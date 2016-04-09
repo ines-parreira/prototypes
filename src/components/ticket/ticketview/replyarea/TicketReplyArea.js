@@ -60,8 +60,8 @@ export default class TicketReplyArea extends React.Component {
                         ref="search"
                         onFocus={() => setMacrosVisible(true)}
                         onChange={this.searchUpdated}
-                        className="ui large transparent input full-width"
-                        placeholder="Search..."
+                        className="ui transparent input full-width"
+                        placeholder="Search for a macro"
                     />
                     <a className={classNames({ hidden: !macrosVisible })}>
                         <i
