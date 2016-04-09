@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { Map } from 'immutable'
 import Immutable from 'immutable'
 import classnames from 'classnames'
 
@@ -26,10 +27,6 @@ export default class Edit extends React.Component {
         $('#multi-select').dropdown('bind intent')
     }
 
-    componentDidUpdate() {
-        $('#multi-select').dropdown('set exactly', this.props.ticketTags.map(tag => tag.get('name').toLowerCase()).toJS())
-    }
-
     update = () => {
         const ticketTags = $('#multi-select').dropdown('get value').split(',')
             .filter((text) => text && text !== '')
@@ -48,7 +45,13 @@ export default class Edit extends React.Component {
         const rows = []
         const row = (value) => <div className="item" key={value} data-value={value}>{value}</div>
 
-        this.props.tags.map(tag => rows.push(row(tag.name)))
+        this.props.tags.map(tag => {
+            console.log(this.props.ticketTags.toJS())
+            console.log(tag)
+            if (!this.props.ticketTags.contains(tag)) {
+                rows.push(row(tag.name))
+            }
+        })
         return (
         <div ref="multiselect" className={classnames({ hidden: this.props.hidden })}>
             <i className="icon close" onClick={this.close}/>

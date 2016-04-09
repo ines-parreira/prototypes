@@ -6,19 +6,18 @@ export default class Read extends React.Component {
     render() {
         const { hidden, actions, ticketTags, toggle } = this.props
         return (
-            <div className={classnames({ hidden })}>
+            <div>
 
                 {
                     ticketTags.map((tag, i) => (
-                            <div key={i} className="ticket-tag ui label">
-                                {tag.get('name')}
-                                <i className="icon close" onClick={() => actions.ticket.removeTag(i)}/>
-                            </div>
-                        )
-                    )
+                        <div key={i} className="ticket-tag ui label">
+                            {tag.get('name')}
+                            <i className="icon close" onClick={() => actions.ticket.removeTag(i)}/>
+                        </div>
+                    ))
                 }
 
-                <button className="ticket-tag-add-btn ui button" onClick={toggle}>
+                <button className={ `ticket-tag-add-btn ui button ${classnames({ hidden })}` } onClick={toggle}>
                     <i className="icon plus" />
                     ADD TAG
                 </button>
