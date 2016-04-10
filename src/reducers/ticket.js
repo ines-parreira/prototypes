@@ -62,7 +62,6 @@ export function ticket(state = ticketInitial, action) {
                     tags = tags.push(Map(tag))
                 }
             }
-            console.log(tags.toJS())
             return state.set('tags', tags)
 
         case actions.REMOVE_TICKET_TAG:
