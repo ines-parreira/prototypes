@@ -28,6 +28,7 @@ export default class Navbar extends React.Component {
         }
 
         if (views) {
+            views.sort((a, b) => a.id > b.id)
             for (const view of views) {
                 const section = view.section ? view.section : 'shared'
                 ret[section].views.push(view)
@@ -47,7 +48,7 @@ export default class Navbar extends React.Component {
                     <i className="icon angle down"/>
                     <div className="menu">
                         <Link to="/" className="item">Dashboard</Link>
-                        <Link to="/rules" className="item">Rules</Link>
+                        {/*<Link to="/rules" className="item">Rules</Link>*/}
                         <Link to="/users" className="item">Users</Link>
                     </div>
                 </div>
