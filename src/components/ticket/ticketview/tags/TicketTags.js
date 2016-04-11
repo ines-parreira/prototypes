@@ -7,6 +7,9 @@ export default class TicketTags extends React.Component {
     componentDidMount() {
         $('#tag-dropdown').dropdown({
             allowAdditions: true,
+            onChange: () => {
+                this.update()
+            }
         })
 
         $(document).on('click', '#tag-dropdown > .menu > .addition.item.selected', this.update)

@@ -15,7 +15,17 @@ export default class TicketView extends React.Component {
             action: 'nothing'
         })
 
-        $('#popup-ticket-owner').popup({ inline: true, position: 'bottom left', hoverable: true, on: 'click' })
+        const ticketOwnerDropdown = $('#popup-ticket-owner')
+
+        ticketOwnerDropdown.dropdown({
+            inline: true,
+            position: 'bottom left',
+            hoverable: true,
+            onChange: (value, text) => {
+                const agent = this.props.users.get('agents').filter(agent => agent.get('name') === text).first()
+                this.props.actions.ticket.setAgent(agent)
+            }
+        })
         $('#popup-ticket-status').popup({ inline: true, position: 'bottom right', hoverable: true, on: 'click' })
     }
 
@@ -31,17 +41,13 @@ export default class TicketView extends React.Component {
 
         if (assignee) {
             return (
-                <a className="ticket-owner-btn ticket-details-item" id="popup-ticket-owner">
+                <span>
                     <span className="agent-label ui medium yellow label">A</span>
                     <span className="secondary-action">{assignee.toUpperCase()}</span>
-                </a>
+                </span>
             )
         } else {
-            return (
-                <a className="ticket-owner-btn ticket-details-item" id="popup-ticket-owner">
-                    <span className="secondary-action">UNASSIGNED</span>
-                </a>
-            )
+            return <span className="secondary-action">UNASSIGNED</span>
         }
     }
 
@@ -104,22 +110,24 @@ export default class TicketView extends React.Component {
                                     />
                                 </a>
 
-                                {this.renderTicketOwner(ticket)}
+                                <div className="ticket-owner-btn ticket-details-item ui search button input pointing dropdown link item" id="popup-ticket-owner">
+                                    {this.renderTicketOwner(ticket)}
 
-                                <div className="ui popup">
-                                    <div
-                                        className="ui vertical menu"
-                                        style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
-                                    >
-
-                                      {users.get('agents').map((agent) =>
-                                          <a
-                                              className="ticket-owner item"
-                                              key={agent.get('id')}
-                                              onClick={() => actions.ticket.setAgent(agent)}
-                                          >{agent.get('name')}</a>
-                                      )}
-
+                                    <div className="ui vertical menu">
+                                        <div className="ui search input">
+                                              <input id="ticket-owner-input" type="text" placeholder="Search agents..."/>
+                                        </div>
+                                        {
+                                            users.get('agents').map((agent) =>
+                                                <div
+                                                    className="item"
+                                                    key={agent.get('id')}
+                                                    onClick={() => actions.ticket.setAgent(agent)}
+                                                >
+                                                    {agent.get('name')}
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 </div>
 
