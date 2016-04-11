@@ -12,10 +12,16 @@ export default class TicketTags extends React.Component {
     }
 
     update = () => {
-        const name = $('#tag-dropdown').dropdown('get value')
+        const tagDropdown = $('#tag-dropdown')
+        const name = tagDropdown.dropdown('get value')
+
+        if (!name || name === '') {
+            return
+        }
+
         const tag = _.first(this.props.tags.filter(curTag => curTag.name === name)) || { name }
         this.props.actions.ticket.addTags([tag])
-        $('#tag-dropdown').dropdown('clear')
+        tagDropdown.dropdown('clear')
     }
 
     render = () => {

@@ -26,6 +26,25 @@ export default class TicketView extends React.Component {
         }
     }
 
+    renderTicketOwner(ticket) {
+        const assignee = ticket.getIn(['assignee_user', 'name']);
+
+        if (assignee) {
+            return (
+                <a className="ticket-owner-btn ticket-details-item" id="popup-ticket-owner">
+                    <span className="agent-label ui medium yellow label">A</span>
+                    <span className="secondary-action">{assignee.toUpperCase()}</span>
+                </a>
+            )
+        } else {
+            return (
+                <a className="ticket-owner-btn ticket-details-item" id="popup-ticket-owner">
+                    <span className="secondary-action">NO ASSIGNEE</span>
+                </a>
+            )
+        }
+    }
+
     render = () => {
         const { ticket, tags, users, actions } = this.props
         return (
@@ -84,10 +103,7 @@ export default class TicketView extends React.Component {
                                     />
                                 </a>
 
-                                <a className="ticket-owner-btn ticket-details-item" id="popup-ticket-owner">
-                                    <span className="ui yellow label">A</span>
-                                    <span className="padding-10">{(ticket.getIn(['assignee_user', 'name']) || '').toUpperCase()}</span>
-                                </a>
+                                {this.renderTicketOwner(ticket)}
 
                                 <div className="ui popup">
                                     <div
@@ -149,7 +165,6 @@ export default class TicketView extends React.Component {
                     actions={this.props.actions}
                     applyMacro={this.props.applyMacro}
                     previewMacro={this.props.actions.macro.previewMacro}
-                    ticket={ticket}
                     currentUser={this.props.currentUser}
                     macros={this.props.macros}
                     ticket={this.props.ticket}
