@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import TicketColumns from './TicketColumns'
+import TicketColumns from './ticket/TicketColumns'
 import _ from 'lodash'
 
 
@@ -37,13 +37,9 @@ export default class ShowMoreFieldsDropdown extends React.Component {
         )
     }
 
-    render() {
-        return (
-            <div className="ShowMoreFieldsDropdown">
-                <div id="showmorefields" className="ui borderless label light blue basic custom">
-                    <i className="columns icon"/>
-                    Show more fields
-                </div>
+    renderPopup = () => {
+        if (this.props.columns) {
+            return (
                 <div className="ui popup custom">
                     <div className="ui form">
                         <div className="grouped fields">
@@ -51,12 +47,24 @@ export default class ShowMoreFieldsDropdown extends React.Component {
                         </div>
                     </div>
                 </div>
+            )
+        }
+    }
+
+    render() {
+        return (
+            <div className="ShowMoreFieldsDropdown">
+                <div id="showmorefields" className="ui borderless label light blue basic custom">
+                    <i className="columns icon"/>
+                    Show more fields
+                </div>
+                {this.renderPopup()}
             </div>
         )
     }
 }
 
 ShowMoreFieldsDropdown.propTypes = {
-    updateView: PropTypes.func.isRequired,
-    columns: PropTypes.object.isRequired,
+    updateView: PropTypes.func,
+    columns: PropTypes.object,
 }

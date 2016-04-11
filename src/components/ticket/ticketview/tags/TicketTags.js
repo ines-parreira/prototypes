@@ -1,37 +1,86 @@
 import React, { PropTypes } from 'react'
-import Read from './Read'
-import Edit from './Edit'
+import { Map } from 'immutable'
+import _ from 'lodash'
 
 
 export default class TicketTags extends React.Component {
-    constructor() {
-        super()
-        this.state = {
-            edit: false
-        }
-    }
-    toggle = () => {
-        this.setState({
-            edit: !this.state.edit
+    componentDidMount() {
+        $('#tag-dropdown').dropdown({
+            allowAdditions: true,
+            onChange: () => {
+                this.update()
+            }
         })
+
+        $(document).on('click', '#tag-dropdown > .menu > .addition.item.selected', this.update)
     }
+
+    update = () => {
+        const tagDropdown = $('#tag-dropdown')
+        const name = tagDropdown.dropdown('get value')
+
+        if (!name || name === '') {
+            return
+        }
+
+        const tag = _.first(this.props.tags.filter(curTag => curTag.name === name)) || { name }
+        this.props.actions.ticket.addTags([Map(tag)])
+        tagDropdown.dropdown('clear')
+    }
+
     render = () => {
         const { tags, ticketTags, actions } = this.props
+        const existingTagNames = this.props.ticketTags.map(x => x.get('name'))
+
         return (
             <div className="ui labels">
-                <Read
-                    ticketTags={ticketTags}
-                    actions={actions}
-                    hidden={this.state.edit}
-                    toggle={this.toggle}
-                />
-                <Edit
-                    tags={tags}
-                    ticketTags={ticketTags}
-                    actions={actions}
-                    hidden={!this.state.edit}
-                    toggle={this.toggle}
-                />
+                <div>
+
+                    {
+                        ticketTags.map((tag, i) => (
+                            <div key={i} className="ticket-tag ui label">
+                                {tag.get('name')}
+                                <i className="icon close" onClick={() => actions.ticket.removeTag(i)}/>
+                            </div>
+                        ))
+                    }
+
+                    <div
+                        id="tag-dropdown"
+                        className="ticket-tag-add-btn ui search button input pointing dropdown link item"
+                        onClick={this.toggle}
+                    >
+                        <span>
+                            <i className="icon plus" /> ADD TAG
+                        </span>
+
+                        <div className="menu">
+                            <div className="ui search input">
+                                  <input id="tag-search" type="text" placeholder="Search tags..."/>
+                            </div>
+                            <div className="hidden item" key="placeholder"></div>
+                        {
+
+                            tags.map(tag => {
+                                if (!existingTagNames.contains(tag.name)) {
+                                    return (
+                                        <div
+                                            className="item"
+                                            key={tag.name}
+                                            data-value={tag.name}
+                                            onClick={this.update}
+                                        >
+                                            {tag.name}
+                                        </div>
+                                    )
+                                }
+                            })
+                        }
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
         )
     }

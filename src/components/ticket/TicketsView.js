@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import TicketTable from './TicketTable'
 import FilterTopbar from './FilterTopbar'
-import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
+import ShowMoreFieldsDropdown from './../ShowMoreFieldsDropdown'
 import Search from '../Search'
 import { TICKET_STATUSES, CELL_WIDTH } from '../../constants'
 

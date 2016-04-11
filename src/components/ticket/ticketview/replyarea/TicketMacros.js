@@ -9,7 +9,7 @@ export default class TicketMacros extends React.Component {
     renderMacroListItem = (macro) => {
         const containerOpts = {
             key: macro.get('id'),
-            className: classNames('item macro-item', {active: macro.get('id') === this.props.selected.get('id')}),
+            className: classNames('item macro-item', { active: macro.get('id') === this.props.selected.get('id') }),
             onMouseEnter: () => this.props.previewMacro(macro),
             onClick: () => this.props.applyMacro(macro),
         }

@@ -59,7 +59,7 @@ export function ticket(state = ticketInitial, action) {
             const existingTagNames = tags.map((x) => x.get('name'))
             for (const tag of action.args) {
                 if (!existingTagNames.includes(tag.get('name'))) {
-                    tags = tags.push(tag)
+                    tags = tags.push(Map(tag))
                 }
             }
             return state.set('tags', tags)
@@ -82,7 +82,7 @@ export function ticket(state = ticketInitial, action) {
             return state.set('status', action.status)
 
         case actions.SET_RESPONSE_TEXT:
-            const text = action.args.get(0) || ''
+            const text = action.args.get('body_text') || ''
             const sender = action.currentUser.filter(keyIn('email', 'id', 'name'))
 
             return state.mergeDeep({
