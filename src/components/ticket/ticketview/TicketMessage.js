@@ -85,6 +85,7 @@ export default class TicketMessage extends React.Component {
                     )
                 })()}
 
+                {/*
                 <div className="ticket-actions-btn ui dropdown" id="option-dropdown">
                     <i className="ui icon angle down"/>
                     <div className="menu transition">
@@ -100,6 +101,7 @@ export default class TicketMessage extends React.Component {
                         </div>
                     </div>
                 </div>
+                */}
             </div>
         )
     }

@@ -51,6 +51,7 @@ export default class TicketView extends React.Component {
             <div className="ticket-view">
                 <div className="ticket-header">
 
+                    {/*
                     <div className="ticket-actions-btn ui dropdown" id="top-option-dropdown">
                         <i className="ui icon angle down"/>
                         <div className="menu transition">
@@ -66,6 +67,7 @@ export default class TicketView extends React.Component {
                             </div>
                         </div>
                     </div>
+                    */}
 
                     {/*
                      <button className="ticket-previous-btn ui mini button">
