@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { Map } from 'immutable'
 import _ from 'lodash'
 
 
@@ -20,7 +21,7 @@ export default class TicketTags extends React.Component {
         }
 
         const tag = _.first(this.props.tags.filter(curTag => curTag.name === name)) || { name }
-        this.props.actions.ticket.addTags([tag])
+        this.props.actions.ticket.addTags([Map(tag)])
         tagDropdown.dropdown('clear')
     }
 

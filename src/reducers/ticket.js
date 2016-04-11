@@ -58,7 +58,7 @@ export function ticket(state = ticketInitial, action) {
             tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
             for (const tag of action.args) {
-                if (!existingTagNames.includes(tag.name || tag.get('name'))) {
+                if (!existingTagNames.includes(tag.get('name'))) {
                     tags = tags.push(Map(tag))
                 }
             }
