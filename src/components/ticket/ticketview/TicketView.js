@@ -94,11 +94,10 @@ export default class TicketView extends React.Component {
                                     <i
                                         className={classnames(
                                             'ticket-priority',
-                                            ticket.get('priority'),
+                                            ticket.get('priority') === 'high' ? '' : 'outline',
                                             'action',
                                             'icon',
-                                            'flag',
-                                            { outline: ticket.priority !== 'high' }
+                                            'flag'
                                         )}
                                     />
                                 </a>
