@@ -31,6 +31,19 @@ export function previewAdjacentMacro(direction) {
     }
 }
 
+export function applyMacroAction(action, currentUser) {
+    const { type, name } = action.toJS()
+    if (type === 'user' && !MACRO_ACTIONS.includes(name)) {
+        console.error('Applying unknown macro action', name)
+    }
+
+    return {
+        type: name,
+        args: action.get('arguments'),
+        currentUser
+    }
+}
+
 export function applyMacro(macro, currentUser) {
     return (dispatch) => {
         dispatch({
@@ -40,19 +53,6 @@ export function applyMacro(macro, currentUser) {
         macro.get('actions').map((action) => {
             dispatch(applyMacroAction(action, currentUser))
         })
-    }
-}
-
-export function applyMacroAction(action, currentUser) {
-    const { type, name } = action.toJS()
-    if (type === 'user' && !MACRO_ACTIONS.includes(name)) {
-        console.error("Applying unknown macro action", name)
-    }
-
-    return {
-        type: name,
-        args: action.get('arguments'),
-        currentUser: currentUser,
     }
 }
 
