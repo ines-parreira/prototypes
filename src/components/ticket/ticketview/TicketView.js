@@ -39,7 +39,7 @@ export default class TicketView extends React.Component {
         } else {
             return (
                 <a className="ticket-owner-btn ticket-details-item" id="popup-ticket-owner">
-                    <span className="secondary-action">NO ASSIGNEE</span>
+                    <span className="secondary-action">UNASSIGNED</span>
                 </a>
             )
         }
