@@ -87,7 +87,7 @@ export function ticket(state = ticketInitial, action) {
             const sender = action.currentUser.filter(keyIn('email', 'id', 'name'))
             const expandedText = Immutable.fromJS(renderTemplate(text, {
                 ticket: state.toJS(),
-                currentUser: sender.toJS()
+                current_user: sender.toJS()
             }))
 
             return state.mergeDeep({
