@@ -24,14 +24,12 @@ export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
 // Macro actions
-// TODO: These are lowerCamelCase on the backend. Perhaps make them CONSISTENT?
 export const SET_RESPONSE_TEXT = 'setResponseText'
 export const ADD_TAGS = 'addTags'
-
+export const ADD_TICKET_TAGS = 'addTags'
 export const SEARCH = 'search'
 
 // export const ADD_TAGS = 'addTags'
-export const ADD_TICKET_TAGS = 'addTags'
 export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
 export const UPDATE_TICKET_TAGS = 'UPDATE_TAGS'
 
