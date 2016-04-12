@@ -1,5 +1,6 @@
 import * as actions from '../actions/ticket'
 import Immutable, { Map, List, Set } from 'immutable'
+import { renderTemplate } from '../components/utils/template'
 
 const ticketInitial = Map({
     messages: List(),
@@ -84,12 +85,16 @@ export function ticket(state = ticketInitial, action) {
         case actions.SET_RESPONSE_TEXT:
             const text = action.args.get('body_text') || ''
             const sender = action.currentUser.filter(keyIn('email', 'id', 'name'))
+            const expandedText = Immutable.fromJS(renderTemplate(text, {
+                ticket: state.toJS(),
+                current_user: sender.toJS()
+            }))
 
             return state.mergeDeep({
                 newMessage: {
                     sender,
                     receiver: getRecipient(state.get('messages'), sender),
-                    body_text: text
+                    body_text: expandedText
                 }
             })
 
