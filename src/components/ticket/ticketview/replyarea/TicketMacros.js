@@ -72,7 +72,10 @@ export default class TicketMacros extends React.Component {
                 <div>
                     {this.renderAddTags(addTagsActions)}
                     {this.renderExternalActions(externalActions)}
-                    <div className="text-preview" dangerouslySetInnerHTML={{ __html: responseTextAction.get('description') }}>
+                    <div className="text-preview" dangerouslySetInnerHTML={{
+                        __html: responseTextAction.getIn(['arguments', 'body_html'])
+                        || responseTextAction.getIn(['arguments', 'body_text']) }}
+                    >
                     </div>
                 </div>
             </div>
