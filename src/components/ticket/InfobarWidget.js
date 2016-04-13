@@ -4,7 +4,7 @@ import InfobarWidgetField from './InfobarWidgetField'
 
 export default class InfobarWidget extends React.Component {
     render() {
-        const { widget, object } = this.props
+        const { widget, widgets, object } = this.props
         if (!object) {
             return null
         }
@@ -21,21 +21,20 @@ export default class InfobarWidget extends React.Component {
                 </div>
             )
         }
-
         return (
             <div className="infobar-card ui card">
                 {header}
                 <div className="content">
                     <div className="fields">
-                        {widget.fields.map(field => {
-                            return (
+                        {widget.fields.map((field) => (
                                 <InfobarWidgetField
                                     key={field.id}
                                     object={object}
                                     field={field}
+                                    widgets={widgets}
                                 />
                             )
-                        })}
+                        )}
                     </div>
                 </div>
             </div>
@@ -45,5 +44,6 @@ export default class InfobarWidget extends React.Component {
 
 InfobarWidget.propTypes = {
     widget: PropTypes.object,
+    widgets: PropTypes.object,
     object: PropTypes.object
 }
