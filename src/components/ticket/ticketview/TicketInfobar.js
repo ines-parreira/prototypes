@@ -38,9 +38,10 @@ export default class TicketInfobar extends React.Component {
                     return object.map((o, i) => {
                         return (
                             <InfobarWidget
-                                key={i}
+                                key={`${w.id}-${i}`}
                                 object={o}
                                 widget={w}
+                                widgets={widgetList}
                             />
                         )
                     })
@@ -50,6 +51,7 @@ export default class TicketInfobar extends React.Component {
                             key={w.id}
                             object={object}
                             widget={w}
+                            widgets={widgetList}
                         />
                     )
                 }
