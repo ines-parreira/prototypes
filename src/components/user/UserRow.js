@@ -8,11 +8,15 @@ export default class UserRow extends React.Component {
         const { updateUser, deleteUser } = this.context
 
         let label
-        const role = user.roles[0]
+        const userRoles = []
 
-        if (role && role.name.indexOf('admin') !== -1) {
+        _.each(user.roles, (v) => {
+            userRoles.push(v.name)
+        })
+
+        if (userRoles && userRoles.indexOf('admin') !== -1) {
             label = <div className="ui blue label">ADMIN</div>
-        } else if (role && role.name.indexOf('agent') !== -1) {
+        } else if (userRoles && userRoles.indexOf('agent') !== -1) {
             label = <div className="ui yellow label">AGENT</div>
         } else {
             label = <div className="ui grey label">USER</div>
@@ -46,7 +50,10 @@ export default class UserRow extends React.Component {
                         <button className="ui inverted red basic button right" onClick={() => {deleteUser(user.id)}}>
                             Delete
                         </button>
-                        <button className="ui inverted blue basic button right" onClick={() => {$('#userform-' + user.id).modal('show')}}>
+                        <button
+                            className="ui inverted blue basic button right"
+                            onClick={() => {$(`#userform-${user.id}`).modal('show')}}
+                        >
                             Edit
                         </button>
                     </div>

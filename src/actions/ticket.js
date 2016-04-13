@@ -180,8 +180,7 @@ export function submitTicket(ticket, status) {
         }
 
         if (data.assignee_user) {
-            data.assignee_user_id = data.assignee_user.id
-            delete data.assignee_user
+            data.assignee_user = { id: data.assignee_user.id }
         }
 
         return reqwest({
