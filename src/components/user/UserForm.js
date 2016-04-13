@@ -21,7 +21,7 @@ export default class UserForm extends React.Component {
         const data = {
             name: $('#name-' + this.state.id).val(),
             email: $('#email-' + this.state.id).val(),
-            role: $('#role-' + this.state.id).val()
+            role: { name: $('#role-' + this.state.id).val() }
         }
 
         if (this.props.user) {
@@ -60,7 +60,7 @@ export default class UserForm extends React.Component {
 
         const defaultName = user ? user.name : ''
         const defaultEmail = user ? user.email : ''
-        const defaultRole = user ? user.roles[0] : 'user'
+        const defaultRole = user ? user.roles[0].name : 'user'
 
         const submitText = user ? 'Update user' : 'Create user'
 
@@ -68,7 +68,7 @@ export default class UserForm extends React.Component {
             <div id={id} className="UserForm ui modal small">
                 <div className="header">
                     {title}
-                    <i id={'close-' + id} className="remove action icon modal-close"></i>
+                    <i id={`close-${id}`} className="remove action icon modal-close" />
                 </div>
                 <div className="content">
                     <form id={'form-' + id} className="ui form">

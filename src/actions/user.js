@@ -1,5 +1,5 @@
 import reqwest from 'reqwest'
-import { systemMessage } from './systemMessage'
+import {systemMessage} from './systemMessage'
 
 // Fetch individual view definitions
 export const FETCH_USER_START = 'FETCH_USER_START'

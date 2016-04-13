@@ -8,10 +8,11 @@ export default class UserRow extends React.Component {
         const { updateUser, deleteUser } = this.context
 
         let label
+        const role = user.roles[0]
 
-        if (user.roles.indexOf('admin') !== -1) {
+        if (role && role.name.indexOf('admin') !== -1) {
             label = <div className="ui blue label">ADMIN</div>
-        } else if (user.roles.indexOf('agent') !== -1) {
+        } else if (role && role.name.indexOf('agent') !== -1) {
             label = <div className="ui yellow label">AGENT</div>
         } else {
             label = <div className="ui grey label">USER</div>
