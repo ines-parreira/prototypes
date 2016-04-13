@@ -1,8 +1,5 @@
 import React, { PropTypes } from 'react'
-import _ from 'lodash'
 import classNames from 'classnames'
-
-import TicketMacroAction from './TicketMacroAction'
 
 
 export default class TicketMacros extends React.Component {
@@ -23,18 +20,60 @@ export default class TicketMacros extends React.Component {
         )
     }
 
-    renderSelectedMacro = () => {
-        const macro = this.props.selected
-        if (macro.isEmpty()) {
+    renderAddTags(addTagsActions) {
+        if (!addTagsActions || !addTagsActions.size) {
             return null
         }
 
         return (
+            <div className="ui container macro-data">
+                <div className="ui label macro-legend">TAGS: </div>
+                {
+                    addTagsActions.map((action) =>
+                        <div key={action.id} className="ui label ticket-tag no-icon">{action.getIn(['arguments', '0', 'name'])}</div>
+                    )
+                }
+            </div>
+        )
+    }
+
+    renderExternalActions(externalActions) {
+        if (!externalActions || !externalActions.size) {
+            return null
+        }
+
+        return (
+            <div className="ui container macro-data">
+                <div className="ui label macro-legend">ACTIONS: </div>
+                {
+                    externalActions.map((action) =>
+                        <div key={action.id} className="ui yellow label">{action.get('title')}</div>
+                    )
+                }
+            </div>
+        )
+    }
+
+    renderSelectedMacro = () => {
+        const macro = this.props.selected
+
+        if (macro.isEmpty()) {
+            return null
+        }
+
+        const addTagsActions = macro.get('actions').filter(action => action.get('name') === 'addTags')
+        const responseTextAction = macro.get('actions').filter(action => action.get('name') === 'setResponseText').get('0')
+        const externalActions = macro.get('actions').filter(
+            action => action.get('name') !== 'addTags' && action.get('name') !== 'setResponseText'
+        )
+
+        return (
             <div className="macro-preview">
                 <div>
-                    {macro.get('actions').map((action) =>
-                        <TicketMacroAction key={action.get('id')} action={action} />
-                    )}
+                    {this.renderAddTags(addTagsActions)}
+                    {this.renderExternalActions(externalActions)}
+                    <div className="text-preview" dangerouslySetInnerHTML={{ __html: responseTextAction.get('description') }}>
+                    </div>
                 </div>
             </div>
         )
