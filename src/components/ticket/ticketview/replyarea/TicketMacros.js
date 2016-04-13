@@ -26,7 +26,7 @@ export default class TicketMacros extends React.Component {
         }
 
         return (
-            <div className="ui container macro-data">
+            <div className="macro-data">
                 <div className="ui label macro-legend">TAGS: </div>
                 {
                     addTagsActions.map((action) =>
@@ -43,7 +43,7 @@ export default class TicketMacros extends React.Component {
         }
 
         return (
-            <div className="ui container macro-data">
+            <div className="macro-data">
                 <div className="ui label macro-legend">ACTIONS: </div>
                 {
                     externalActions.map((action) =>
