@@ -84,17 +84,28 @@ export function ticket(state = ticketInitial, action) {
 
         case actions.SET_RESPONSE_TEXT:
             const text = action.args.get('body_text') || action.args.get(0) || ''
+            const html = action.args.get('body_html') || action.args.get(1) || ''
             const sender = action.currentUser.filter(keyIn('email', 'id', 'name'))
+
+            const ticketState = state.toJS()
+            const currentUser = sender.toJS()
+
             const expandedText = Immutable.fromJS(renderTemplate(text, {
-                ticket: state.toJS(),
-                current_user: sender.toJS()
+                ticket: ticketState,
+                current_user: currentUser
+            }))
+
+            const expandedHTML = Immutable.fromJS(renderTemplate(html, {
+                ticket: ticketState,
+                current_user: currentUser
             }))
 
             return state.mergeDeep({
                 newMessage: {
                     sender,
                     receiver: getRecipient(state.get('messages'), sender),
-                    body_text: expandedText
+                    body_text: expandedText,
+                    body_html: expandedHTML
                 }
             })
 

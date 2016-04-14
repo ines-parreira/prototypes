@@ -30,7 +30,7 @@ export default class TicketMacros extends React.Component {
                 <div className="ui label macro-legend">TAGS: </div>
                 {
                     addTagsActions.map((action) =>
-                        <div key={action.id} className="ui label ticket-tag no-icon">{action.getIn(['arguments', '0', 'name'])}</div>
+                        <div key={`action-tag-${action.id}`} className="ui label ticket-tag no-icon">{action.getIn(['arguments', '0', 'name'])}</div>
                     )
                 }
             </div>
@@ -47,7 +47,7 @@ export default class TicketMacros extends React.Component {
                 <div className="ui label macro-legend">ACTIONS: </div>
                 {
                     externalActions.map((action) =>
-                        <div key={action.id} className="ui yellow label">{action.get('title')}</div>
+                        <div key={`external-action-${action.id}`} className="ui yellow label">{action.get('title')}</div>
                     )
                 }
             </div>

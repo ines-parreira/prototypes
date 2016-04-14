@@ -10,7 +10,7 @@ import SearchInput, { createFilter } from 'react-search-input'
 export default class TicketReplyArea extends React.Component {
     constructor() {
         super()
-        this.state = {searchTerm: ""}
+        this.state = {searchTerm: ''}
     }
 
     searchUpdated = (term) => {

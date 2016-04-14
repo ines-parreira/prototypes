@@ -1,5 +1,5 @@
 import reqwest from 'reqwest'
-import { List } from 'immutable'
+import { Map, List } from 'immutable'
 import _ from 'lodash'
 import { systemMessage } from './systemMessage'
 import { PER_PAGE } from '../constants'
@@ -82,10 +82,13 @@ export function setStatus(status) {
     }
 }
 
-export function setResponseText(currentUser, text) {
+export function setResponseText(currentUser, body_text, body_html) {
     return {
         type: SET_RESPONSE_TEXT,
-        args: List([text]),
+        args: Map({
+            body_text,
+            body_html
+        }),
         currentUser
     }
 }
