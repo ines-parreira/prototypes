@@ -121,7 +121,7 @@ export default class TicketMessage extends React.Component {
                         message.attachments.map(attachment => (
                             <div className="ui label">
                                 {this.renderAttachmentIcon(attachment.content_type)}
-                                <a key={attachment.url} href={attachment.url} target="_blank">{attachment.name}</a>
+                                <a key={attachment.name} href={attachment.url} target="_blank">{attachment.name}</a>
                             </div>
                         ))
                     }
