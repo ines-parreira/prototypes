@@ -36,8 +36,15 @@ export default class TicketMessage extends React.Component {
         if (message.created_datetime) {
             createdDatetime = moment(message.created_datetime).tz(currentUser.get('timezone') || 'UTC').fromNow()
         }
+
+        let className = 'ticket-message'
+
+        if (!message.public) {
+            className = 'ticket-message internal'
+        }
+
         return (
-            <div className="ticket-message" ref="ticketMessage">
+            <div className={className} ref="ticketMessage">
                 <div className="ticket-message-header">
                     <div className="ticket-message-header-details">
                         {(() => {

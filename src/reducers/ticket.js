@@ -82,6 +82,9 @@ export function ticket(state = ticketInitial, action) {
         case actions.SET_STATUS:
             return state.set('status', action.status)
 
+        case actions.SET_PUBLIC:
+            return state.setIn(['newMessage', 'public'], action.isPublic)
+
         case actions.SET_RESPONSE_TEXT:
             const text = action.args.get('body_text') || action.args.get(0) || ''
             const html = action.args.get('body_html') || action.args.get(1) || ''
