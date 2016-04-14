@@ -24,6 +24,10 @@ export default class InfobarWidgetField extends React.Component {
                     }
                 }
 
+                if (!widget) {
+                    break
+                }
+
                 const path = widget.object_path.split('.')
                 const obj = object.getIn(path.slice(1))
 
