@@ -22,6 +22,8 @@ export default class TicketMessage extends React.Component {
             return <i className="icon file image outline"/>
         } else if (contentType === 'application/msword') {
             return <i className="icon file word outline"/>
+        } else if (contentType.startsWith('text/')) {
+            return <i className="icon file text outline"/>
         }
 
         return <i className="icon attach"/>
