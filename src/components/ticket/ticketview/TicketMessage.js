@@ -142,6 +142,7 @@ TicketMessage.propTypes = {
         body_text: PropTypes.string.isRequired,
         body_html: PropTypes.string.isRequired,
         created_datetime: PropTypes.string.isRequired,
+        attachments: PropTypes.array
     }).isRequired,
     currentUser: PropTypes.object.isRequired
 }
