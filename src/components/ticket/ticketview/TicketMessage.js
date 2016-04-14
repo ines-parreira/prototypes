@@ -15,6 +15,20 @@ export default class TicketMessage extends React.Component {
         })
     }
 
+    renderAttachmentIcon(contentType) {
+        if (contentType === 'application/pdf') {
+            return <i className="icon file pdf outline"/>
+        } else if (contentType.startsWith('image/')) {
+            return <i className="icon file image outline"/>
+        } else if (contentType === 'application/msword') {
+            return <i className="icon file word outline"/>
+        } else if (contentType.startsWith('text/')) {
+            return <i className="icon file text outline"/>
+        }
+
+        return <i className="icon attach"/>
+    }
+
     render() {
         const { message, currentUser } = this.props
 
@@ -102,6 +116,16 @@ export default class TicketMessage extends React.Component {
                     </div>
                 </div>
                 */}
+                <div className="attachments">
+                    {
+                        message.attachments.map(attachment => (
+                            <div className="ui label">
+                                {this.renderAttachmentIcon(attachment.content_type)}
+                                <a key={attachment.name} href={attachment.url} target="_blank">{attachment.name}</a>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
         )
     }
@@ -118,6 +142,7 @@ TicketMessage.propTypes = {
         body_text: PropTypes.string.isRequired,
         body_html: PropTypes.string.isRequired,
         created_datetime: PropTypes.string.isRequired,
+        attachments: PropTypes.array
     }).isRequired,
     currentUser: PropTypes.object.isRequired
 }
