@@ -71,18 +71,25 @@ class TicketContainer extends React.Component {
         }
     }
 
-    submit = (status, next) => {
-        const nextTicket = this.props.tickets.get('items').toJS()[this.props.tickets.get('currentIndex') + 1]
-        let nextTicketUrl = null
+    submit = (status, next = false) => {
+        if (!next) {
+            this.props.actions.ticket.submitTicket(this.props.ticket, status)
+        } else {
+            /**
+             * `next` is a boolean indicating whether the agent want to be redirected to the next ticket.
+             *
+             * If he does, we first try to get the naive next ticket (the ticket at the current index + 1).
+             * If the ticket doesnt exist, then we can't redirect the agent.
+             * If it does, we save the new index (the old index + 1) as the new current index, then we push
+             * the new state to the application.
+             */
+            const nextTicket = this.props.tickets.get('items').toJS()[this.props.tickets.get('currentTicketIndex') + 1]
+            let nextTicketUrl = null
 
-        if (nextTicket) {
-            nextTicketUrl = `/tickets/${this.props.params.view}/${this.props.params.page}/${nextTicket.id}`
-            this.props.actions.ticket.saveIndex(this.props.tickets.get('currentIndex') + 1)
-        }
-
-        this.props.actions.ticket.submitTicket(this.props.ticket, status, next ? nextTicketUrl : null)
-
-        if (status === 'closed') {
+            if (nextTicket) {
+                nextTicketUrl = `/tickets/${this.props.params.view}/${this.props.params.page}/${nextTicket.id}`
+                this.props.actions.ticket.saveIndex(this.props.tickets.get('currentTicketIndex') + 1)
+            }
             this.props.pushState(null, nextTicketUrl)
         }
     }

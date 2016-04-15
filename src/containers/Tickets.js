@@ -38,6 +38,11 @@ class TicketsContainer extends React.Component {
     }
 
     componentWillMount() {
+        /**
+         * Here, we save in the application state the active View's slug, so that the active View doesn't depend
+         * solely on the URL parameters. The active view is extracted from the URL though, and if no view slug is
+         * present there, we use the DEFAULT_VIEW (currently set at `mt-tickets`).
+         */
         const viewSlug = this.props.params ? this.props.params.view : DEFAULT_VIEW
 
         if (!this.props.views.get('active') || this.props.views.get('active') !== viewSlug) {

@@ -226,9 +226,9 @@ export function search(searchValue) {
     }
 }
 
-export function saveIndex(currentIndex) {
+export function saveIndex(currentTicketIndex) {
     return {
         type: SAVE_INDEX,
-        currentIndex
+        currentTicketIndex
     }
 }

@@ -7,7 +7,7 @@ const ticketsInitial = Map({
     resp_meta: Map(),
     loading: false,
     search: '',
-    currentIndex: null
+    currentTicketIndex: null
 })
 
 export function tickets(state = ticketsInitial, action) {
@@ -30,7 +30,7 @@ export function tickets(state = ticketsInitial, action) {
             return state.set('search', action.searchValue)
 
         case actions.SAVE_INDEX:
-            return state.set('currentIndex', action.currentIndex)
+            return state.set('currentTicketIndex', action.currentTicketIndex)
 
         case actions.GO_TO_NEXT_TICKET:
             return state
