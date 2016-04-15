@@ -14,9 +14,7 @@ const columnToFilterName = {
 
 
 export default class TicketTable extends React.Component {
-    onPageChange = (page) => {
-        return this.props.fetchPage(page)
-    }
+    onPageChange = (page) => this.props.fetchPage(page)
 
     renderLoading = () => {
         const nbPages = this.props.tickets.getIn(['resp_meta', 'nb_pages'])
@@ -77,6 +75,8 @@ export default class TicketTable extends React.Component {
                                 <TicketTableRow
                                     key={ticket.id}
                                     ticket={ticket}
+                                    view={this.props.view}
+                                    page={this.props.tickets.getIn(['resp_meta', 'page'])}
                                     width={this.props.width}
                                     columns={this.props.columns}
                                     currentUser={this.props.currentUser}
@@ -102,6 +102,7 @@ export default class TicketTable extends React.Component {
 
 TicketTable.propTypes = {
     tickets: PropTypes.object.isRequired,
+    view: PropTypes.string,
     actions: PropTypes.object.isRequired,
     groupedFilters: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired,

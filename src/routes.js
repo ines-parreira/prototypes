@@ -19,7 +19,7 @@ export default (
         <Route path="rules" component={RuleContainer}/>
         <Route path="ticket/:ticketId" components={{ content: TicketContainer, infobar: TicketInfobarContainer }}/>
         <Route path="tickets/:view" component={TicketsContainer}/>
-        <Route path="tickets/:view/:ticketId" components={{ content: TicketContainer, infobar: TicketInfobarContainer }}/>
+        <Route path="tickets/:view/:page/:ticketId" components={{ content: TicketContainer, infobar: TicketInfobarContainer }}/>
         <Route path="*" component={NoMatch}/>
     </Route>
 )

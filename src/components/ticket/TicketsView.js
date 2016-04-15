@@ -134,6 +134,7 @@ export default class TicketsView extends React.Component {
 
                 <TicketTable
                     actions={this.props.actions}
+                    view={this.props.view.get('slug')}
                     tickets={this.props.tickets}
                     columns={this.props.columns.toJS()}
                     groupedFilters={groupedFilters}

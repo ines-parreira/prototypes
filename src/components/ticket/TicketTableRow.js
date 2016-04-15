@@ -38,7 +38,7 @@ export default class TicketTableRow extends React.Component {
 
     handleClick = () => {
         this.props.saveIndex(this.props.curIndex)
-        browserHistory.push(`/app/ticket/${this.props.ticket.id}`)
+        browserHistory.push(`/app/tickets/${this.props.view}/${this.props.page}/${this.props.ticket.id}`)
     }
 
     stopPropagation = (ev) => {
@@ -134,6 +134,8 @@ export default class TicketTableRow extends React.Component {
 
 TicketTableRow.propTypes = {
     ticket: PropTypes.object.isRequired,
+    view: PropTypes.string,
+    page: PropTypes.number,
     currentUser: PropTypes.object.isRequired,
     width: PropTypes.number.isRequired,
     columns: PropTypes.array.isRequired,

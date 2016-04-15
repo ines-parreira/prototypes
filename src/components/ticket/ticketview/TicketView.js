@@ -10,10 +10,6 @@ import ReplyMessageChannel from './ReplyMessageChannel'
 import { TICKET_STATUSES } from './../../../constants'
 
 export default class TicketView extends React.Component {
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
         $('#top-option-dropdown').dropdown({
             on: 'hover',
@@ -35,10 +31,10 @@ export default class TicketView extends React.Component {
         $('#popup-ticket-status').popup({ inline: true, position: 'bottom right', hoverable: true, on: 'click' })
     }
 
-    submit = (status) => {
+    submit = (status, next) => {
         return (e) => {
             e.preventDefault()
-            this.props.submit(status || this.props.ticket.get('status'))
+            this.props.submit(status || this.props.ticket.get('status'), next)
         }
     }
 
@@ -76,11 +72,6 @@ export default class TicketView extends React.Component {
 
     render = () => {
         const { ticket, tickets, tags, users, actions } = this.props
-        let nextTicketId = null
-
-        if (tickets.get('currentIndex')) {
-            nextTicketId = tickets.get('items').toJS()[tickets.get('currentIndex')].id
-        }
 
         return (
             <div className="ticket-view">
@@ -217,8 +208,6 @@ export default class TicketView extends React.Component {
                 <TicketSubmitButtons
                     ticket={ticket}
                     submit={this.submit}
-                    pushState={this.props.pushState}
-                    nextTicketId={nextTicketId}
                 />
 
             </div>
@@ -228,6 +217,7 @@ export default class TicketView extends React.Component {
 
 TicketView.propTypes = {
     actions: PropTypes.object.isRequired,
+    view: PropTypes.string.isRequired,
     ticket: PropTypes.object.isRequired,
     tickets: PropTypes.object.isRequired,
     macros: PropTypes.object.isRequired,

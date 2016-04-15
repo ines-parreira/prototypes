@@ -1,5 +1,6 @@
 import reqwest from 'reqwest'
 import { Map, List } from 'immutable'
+import { pushState } from 'redux-router'
 import _ from 'lodash'
 import { systemMessage } from './systemMessage'
 import { PER_PAGE } from '../constants'
@@ -40,7 +41,6 @@ export const SET_STATUS = 'SET_STATUS'
 export const SET_PUBLIC = 'TOGGLE_PUBLIC'
 
 export const SAVE_INDEX = 'SAVE_INDEX'
-export const GO_TO_NEXT_TICKET = 'GO_TO_NEXT_TICKET'
 
 export const MACRO_ACTIONS = [
     SET_RESPONSE_TEXT, ADD_TICKET_TAGS
@@ -230,11 +230,5 @@ export function saveIndex(currentIndex) {
     return {
         type: SAVE_INDEX,
         currentIndex
-    }
-}
-
-export function goToNextTicket() {
-    return {
-        type: GO_TO_NEXT_TICKET
     }
 }

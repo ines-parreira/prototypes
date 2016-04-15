@@ -21,6 +21,18 @@ class TicketContainer extends React.Component {
         this.props.actions.tag.fetchTags()
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.params.ticketId !== this.props.params.ticketId) {
+            this.props.actions.ticket.fetchView(
+                `/api/tickets/${nextProps.params.ticketId}/`,
+                { view: this.props.view },
+                'item'
+            )
+            this.props.actions.macro.fetchMacros()
+            this.props.actions.tag.fetchTags()
+        }
+    }
+
     componentDidMount() {
         // Have to bind these here so they capture at the correct level
         const macrosVisible = () => this.props.macros.get('visible')
@@ -59,8 +71,20 @@ class TicketContainer extends React.Component {
         }
     }
 
-    submit = (status) => {
-        this.props.actions.ticket.submitTicket(this.props.ticket, status)
+    submit = (status, next) => {
+        const nextTicket = this.props.tickets.get('items').toJS()[this.props.tickets.get('currentIndex') + 1]
+        let nextTicketUrl = null
+
+        if (nextTicket) {
+            nextTicketUrl = `/tickets/${this.props.params.view}/${this.props.params.page}/${nextTicket.id}`
+            this.props.actions.ticket.saveIndex(this.props.tickets.get('currentIndex') + 1)
+        }
+
+        this.props.actions.ticket.submitTicket(this.props.ticket, status, next ? nextTicketUrl : null)
+
+        if (status === 'closed') {
+            this.props.pushState(null, nextTicketUrl)
+        }
     }
 
     render() {
@@ -71,7 +95,7 @@ class TicketContainer extends React.Component {
             <div className="TicketContainer">
                 <TicketView
                     actions={this.props.actions}
-                    view={this.props.view}
+                    view={this.props.params.view}
                     ticket={this.props.ticket}
                     tickets={this.props.tickets}
                     tags={this.props.tags}
@@ -81,7 +105,6 @@ class TicketContainer extends React.Component {
                     submit={this.submit}
                     applyMacro={this.applyMacro}
                     macros={this.props.macros}
-                    pushState={this.props.pushState}
                 />
             </div>
         )
@@ -90,6 +113,8 @@ class TicketContainer extends React.Component {
 
 TicketContainer.propTypes = {
     params: PropTypes.shape({
+        view: PropTypes.string,
+        page: PropTypes.string,
         ticketId: PropTypes.string
     }).isRequired,
 
@@ -100,6 +125,7 @@ TicketContainer.propTypes = {
     tags: PropTypes.object,
     users: PropTypes.object,
     currentUser: PropTypes.object,
+    settings: PropTypes.object,
 
     actions: PropTypes.object.isRequired
 }
@@ -116,6 +142,7 @@ function mapStateToProps(state) {
         tags: state.tags,
         users: state.users,
         currentUser: state.currentUser,
+        settings: state.settings
     }
 }
 

@@ -1,23 +1,12 @@
 import React, {PropTypes} from 'react'
-
-import TicketReply from './TicketReply'
-import TicketMacros from './TicketMacros'
 import classNames from 'classnames'
 
 export default class TicketSubmitButtons extends React.Component {
-    handleSubmit(status) {
-        this.props.submit(status)
-
-        if (status === 'closed') {
-            this.props.pushState(`/ticket/${this.props.nextTicketId}`)
-        }
-    }
-
     render = () => {
         const className = classNames('ui', 'green', 'button', {hidden: this.props.ticket.get('status') === 'closed'})
         return (
             <div>
-                <button className={className} onClick={this.props.submit('closed')}>Submit &amp; Close</button>
+                <button className={className} onClick={this.props.submit('closed', true)}>Submit &amp; Close</button>
                 <button className="ui basic green button" onClick={this.props.submit()}>Submit</button>
             </div>
         )
@@ -26,7 +15,5 @@ export default class TicketSubmitButtons extends React.Component {
 
 TicketSubmitButtons.propTypes = {
     ticket: PropTypes.object.isRequired,
-    submit: PropTypes.func.isRequired,
-    pushState: PropTypes.func.isRequired,
-    nextTicketId: PropTypes.number
+    submit: PropTypes.func.isRequired
 }
