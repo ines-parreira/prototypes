@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react'
 
 export default class NextMessageChannel extends React.Component {
     componentDidMount() {
-        $('#popup-message-channel').popup({ inline: true, position: 'bottom left', hoverable: true, on: 'hover' })
+        $('#popup-message-channel').popup({ inline: true, position: 'bottom left', hoverable: true, on: 'click' })
     }
 
     render() {

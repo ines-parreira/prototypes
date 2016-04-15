@@ -29,6 +29,23 @@ export default class TicketMessage extends React.Component {
         return <i className="icon attach"/>
     }
 
+    renderAttachment(message) {
+        if (message.attachments) {
+            return (
+                <div className="attachments">
+                    {
+                        message.attachments.map(attachment => (
+                            <div className="ui label">
+                                {this.renderAttachmentIcon(attachment.content_type)}
+                                <a key={attachment.name} href={attachment.url} target="_blank">{attachment.name}</a>
+                            </div>
+                        ))
+                    }
+                </div>
+            )
+        }
+    }
+
     render() {
         const { message, currentUser } = this.props
 
@@ -123,16 +140,9 @@ export default class TicketMessage extends React.Component {
                     </div>
                 </div>
                 */}
-                <div className="attachments">
-                    {
-                        message.attachments.map(attachment => (
-                            <div className="ui label">
-                                {this.renderAttachmentIcon(attachment.content_type)}
-                                <a key={attachment.name} href={attachment.url} target="_blank">{attachment.name}</a>
-                            </div>
-                        ))
-                    }
-                </div>
+
+                {this.renderAttachment(message)}
+
             </div>
         )
     }
