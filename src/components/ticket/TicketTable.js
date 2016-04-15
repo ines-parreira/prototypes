@@ -73,17 +73,18 @@ export default class TicketTable extends React.Component {
                     </div>
                     <div>
                         {
-                            this.props.tickets.get('items').toJS().map((ticket) => {
-                                return (
-                                    <TicketTableRow
-                                        key={ticket.id}
-                                        ticket={ticket}
-                                        width={this.props.width}
-                                        columns={this.props.columns}
-                                        currentUser={this.props.currentUser}
-                                    />
-                                )
-                            })
+                            this.props.tickets.get('items').toJS().map((ticket, curIndex) => (
+                                <TicketTableRow
+                                    key={ticket.id}
+                                    ticket={ticket}
+                                    width={this.props.width}
+                                    columns={this.props.columns}
+                                    currentUser={this.props.currentUser}
+                                    pushState={this.props.pushState}
+                                    curIndex={curIndex}
+                                    saveIndex={this.props.actions.ticket.saveIndex}
+                                />
+                            ))
                         }
                     </div>
                 </div>

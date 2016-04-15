@@ -39,6 +39,8 @@ export const SET_AGENT = 'SET_AGENT'
 export const SET_STATUS = 'SET_STATUS'
 export const SET_PUBLIC = 'TOGGLE_PUBLIC'
 
+export const SAVE_INDEX = 'SAVE_INDEX'
+
 export const MACRO_ACTIONS = [
     SET_RESPONSE_TEXT, ADD_TICKET_TAGS
 ]
@@ -220,5 +222,12 @@ export function search(searchValue) {
     return {
         type: SEARCH,
         searchValue
+    }
+}
+
+export function saveIndex(currentIndex) {
+    return {
+        type: SAVE_INDEX,
+        currentIndex
     }
 }
