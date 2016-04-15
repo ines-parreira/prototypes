@@ -73,6 +73,7 @@ class TicketContainer extends React.Component {
                     actions={this.props.actions}
                     view={this.props.view}
                     ticket={this.props.ticket}
+                    tickets={this.props.tickets}
                     tags={this.props.tags}
                     users={this.props.users}
                     currentUser={this.props.currentUser}
@@ -80,6 +81,7 @@ class TicketContainer extends React.Component {
                     submit={this.submit}
                     applyMacro={this.applyMacro}
                     macros={this.props.macros}
+                    pushState={this.props.pushState}
                 />
             </div>
         )
@@ -93,6 +95,7 @@ TicketContainer.propTypes = {
 
     view: PropTypes.string,
     ticket: PropTypes.object,
+    tickets: PropTypes.object,
     macros: PropTypes.object,
     tags: PropTypes.object,
     users: PropTypes.object,
@@ -108,6 +111,7 @@ TicketContainer.defaultProps = {
 function mapStateToProps(state) {
     return {
         ticket: state.ticket,
+        tickets: state.tickets,
         macros: state.macros,
         tags: state.tags,
         users: state.users,

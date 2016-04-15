@@ -5,6 +5,14 @@ import TicketMacros from './TicketMacros'
 import classNames from 'classnames'
 
 export default class TicketSubmitButtons extends React.Component {
+    handleSubmit(status) {
+        this.props.submit(status)
+
+        if (status === 'closed') {
+            this.props.pushState(`/ticket/${this.props.nextTicketId}`)
+        }
+    }
+
     render = () => {
         const className = classNames('ui', 'green', 'button', {hidden: this.props.ticket.get('status') === 'closed'})
         return (
@@ -19,4 +27,6 @@ export default class TicketSubmitButtons extends React.Component {
 TicketSubmitButtons.propTypes = {
     ticket: PropTypes.object.isRequired,
     submit: PropTypes.func.isRequired,
+    pushState: PropTypes.func.isRequired,
+    nextTicketId: PropTypes.number
 }

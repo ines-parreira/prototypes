@@ -32,6 +32,9 @@ export function tickets(state = ticketsInitial, action) {
         case actions.SAVE_INDEX:
             return state.set('currentIndex', action.currentIndex)
 
+        case actions.GO_TO_NEXT_TICKET:
+            return state
+
         default:
             return state
     }
