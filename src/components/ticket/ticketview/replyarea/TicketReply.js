@@ -1,27 +1,60 @@
 import React, {PropTypes} from 'react'
-import {Editor, EditorState, ContentState, RichUtils} from 'draft-js'
+import {fromJS} from 'immutable'
+import {EditorState, ContentState, RichUtils} from 'draft-js'
+import {stateToHTML} from 'draft-js-export-html'
+import Editor from 'draft-js-plugins-editor'
+import createMentionPlugin from 'draft-js-mention-plugin'
+import createLinkifyPlugin from 'draft-js-linkify-plugin'
+import createEmojiPlugin from 'draft-js-emoji-plugin'
+import 'draft-js-mention-plugin/lib/plugin.css'
+import 'draft-js-linkify-plugin/lib/plugin.css'
+import 'draft-js-emoji-plugin/lib/plugin.css'
 
 export default class TicketReply extends React.Component {
     constructor(props) {
         super(props)
+
         const contentState = ContentState.createFromText(props.value)
-        this.state = {editorState: EditorState.createWithContent(contentState)}
+
+        const mentions = fromJS(props.users.get('agents', []).map(user => {
+            return fromJS({
+                name: user.get('name'),
+                link: '',
+                avatar: ''
+            })
+        }))
+
+        const plugins = [
+            createMentionPlugin({mentions}),
+            createLinkifyPlugin({
+                target: '_blank'
+            }),
+            createEmojiPlugin()
+        ]
+
+        this.state = {
+            editorState: EditorState.createWithContent(contentState),
+            plugins
+        }
+
         this.focus = () => this.refs.editor.focus()
         this.handleKeyCommand = this.handleKeyCommand.bind(this)
     }
 
-    onChange = (ev) => {
-        this.setState({editorState: ev})
-        const cleanHTML = this.cleanupHTML(this.refs.editor.refs.editor).innerHTML
-        const text = ev.getCurrentContent().getPlainText()
+    onChange = (editorState) => {
+        this.setState({editorState})
+
+        const text = editorState.getCurrentContent().getPlainText()
+        const html = stateToHTML(editorState.getCurrentContent());
 
         return this.props.actions.ticket.setResponseText(
             this.props.currentUser,
             text,
-            cleanHTML
+            html
         )
     }
 
+    // This is for handling things like Bold, Italic, etc..
     handleKeyCommand(command) {
         const newState = RichUtils.handleKeyCommand(this.state.editorState, command)
         if (newState) {
@@ -29,28 +62,6 @@ export default class TicketReply extends React.Component {
             return true
         }
         return false
-    }
-
-    // Before sending it to our API we're cleaning up all data-* attributes from elements
-    cleanupHTML = (domNode) => {
-        const domClone = domNode.cloneNode(true)
-        const domNodes = domClone.querySelectorAll('*')
-
-        for (let k = 0; k <= domNodes.length; k++) {
-            if (!domNodes.hasOwnProperty(k)) {
-                continue
-            }
-            const attrs = domNodes[k].attributes
-            for (let i = 0; i < attrs.length; i++) {
-                if (attrs[i].name.slice(0, 5) !== 'data-') {
-                    continue
-                }
-                domNodes[k].removeAttribute(attrs[i].name)
-                i--
-            }
-        }
-
-        return domClone
     }
 
     render() {
@@ -70,6 +81,7 @@ export default class TicketReply extends React.Component {
                             editorState={this.state.editorState}
                             onChange={this.onChange}
                             handleKeyCommand={this.handleKeyCommand}
+                            plugins={this.state.plugins}
                             ref="editor"
                         />
                     </div>
@@ -83,5 +95,6 @@ TicketReply.propTypes = {
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    value: PropTypes.string.isRequired,
+    users: PropTypes.object.isRequired,
+    value: PropTypes.string.isRequired
 }

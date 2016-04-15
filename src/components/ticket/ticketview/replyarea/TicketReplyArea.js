@@ -33,6 +33,7 @@ export default class TicketReplyArea extends React.Component {
                 actions={this.props.actions}
                 ticket={this.props.ticket}
                 currentUser={this.props.currentUser}
+                users={this.props.users}
                 value={this.props.ticket.getIn(['newMessage', 'body_text'])}
             />
         )
@@ -81,6 +82,7 @@ TicketReplyArea.propTypes = {
     ticket: PropTypes.object.isRequired,
     macros: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
+    users: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     previewMacro: PropTypes.func.isRequired,
 }

@@ -18,6 +18,7 @@
     "classnames": "^2.2.3",
     "draft-js": "^0.5.0",
     "draft-js-emoji-plugin": "0.0.4",
+    "draft-js-export-html": "^0.1.10",
     "draft-js-linkify-plugin": "0.0.3",
     "draft-js-mention-plugin": "0.0.4",
     "draft-js-plugins-editor": "^0.2.0",

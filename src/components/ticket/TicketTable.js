@@ -4,7 +4,6 @@ import TicketTableRow from './TicketTableRow'
 import PlainColumnHeader from './PlainColumnHeader'
 import ColumnHeader from './ColumnHeader'
 import SemanticPaginator from '../SemanticPaginator'
-import { CELL_WIDTH } from '../../constants'
 
 
 const columnToFilterName = {

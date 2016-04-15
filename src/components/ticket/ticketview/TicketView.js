@@ -199,6 +199,7 @@ export default class TicketView extends React.Component {
                     applyMacro={this.props.applyMacro}
                     previewMacro={this.props.actions.macro.previewMacro}
                     currentUser={this.props.currentUser}
+                    users={this.props.users}
                     macros={this.props.macros}
                     ticket={this.props.ticket}
                 />
