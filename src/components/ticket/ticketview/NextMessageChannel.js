@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react'
 
 export default class NextMessageChannel extends React.Component {
     componentDidMount() {
-        $('#popup-message-channel').popup({ inline: true, position: 'bottom left', hoverable: true, on: 'click' })
+        $('#popup-message-channel').popup({ popup: '#next-message-channel-popup', position: 'bottom left', hoverable: true, on: 'click' })
     }
 
     render() {
@@ -11,18 +11,26 @@ export default class NextMessageChannel extends React.Component {
         const channel = this.props.ticket.get('channel')
         let display = <span>Person</span>
 
-        if (channel === 'email') {
+        if (!this.props.ticket.getIn(['newMessage', 'public'])) {
             display = (
-                <span id="popup-message-channel">
-                    <i id="popup-message-channel" className="icon mail blue"/>
+                <span>
+                    <i id="popup-message-channel" className="action icon comment yellow"/>
+                    <span className="label">To: </span>
+                    <b>your team</b>
+                </span>
+            )
+        } else if (channel === 'email') {
+            display = (
+                <span>
+                    <i id="popup-message-channel" className="action icon mail blue"/>
                     <span className="label">To: </span>
                     <b>{ticket.getIn(['requester', 'email'])}</b>
                 </span>
             )
         } else if (channel === 'facebook') {
             display = (
-                <span id="popup-message-channel">
-                    <i className="icon facebook blue"/>
+                <span>
+                    <i id="popup-message-channel" className="action icon facebook blue"/>
                     <span className="label">To: </span>
                     <b>{ticket.getIn(['requester', 'name'])}</b>
                 </span>
@@ -30,10 +38,10 @@ export default class NextMessageChannel extends React.Component {
         }
 
         return (
-            <div className="recipient-data">
+            <div className="NextMessageChannel">
                 {display}
 
-                <div className="ui popup">
+                <div id="next-message-channel-popup" className="ui popup">
                     <div
                         className="ui vertical menu"
                         style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
@@ -41,7 +49,7 @@ export default class NextMessageChannel extends React.Component {
                         <div className="item" onClick={() => actions.setPublic(true)}>
                             Send as email
                         </div>
-                        <div className="item" onClick={() => actions.setPublic(false)}>
+                        <div className="item internal" onClick={() => actions.setPublic(false)}>
                             Send as internal note
                         </div>
                     </div>
