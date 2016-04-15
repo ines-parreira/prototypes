@@ -54,11 +54,13 @@ export default class TicketReply extends React.Component {
     }
 
     render() {
-        let className = 'TicketReply search ui raised segment'
+        let internal = ''
 
         if (this.props.ticket.get('newMessage') && !this.props.ticket.getIn(['newMessage', 'public'])) {
-            className = 'TicketReply search ui raised segment internal'
+            internal = 'internal'
         }
+
+        const className = `TicketReply search ui raised segment ${internal}`
 
         return (
             <div className={className}>

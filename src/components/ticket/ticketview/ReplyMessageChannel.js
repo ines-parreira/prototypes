@@ -38,7 +38,7 @@ export default class ReplyMessageChannel extends React.Component {
         }
 
         return (
-            <div className="NextMessageChannel">
+            <div className="ReplyMessageChannel">
                 {display}
 
                 <div id="next-message-channel-popup" className="ui popup">
