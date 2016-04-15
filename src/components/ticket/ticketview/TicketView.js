@@ -5,7 +5,7 @@ import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
 import TicketTags from './tags/TicketTags'
-import NextMessageChannel from './NextMessageChannel'
+import ReplyMessageChannel from './ReplyMessageChannel'
 
 import { TICKET_STATUSES } from './../../../constants'
 
@@ -189,7 +189,7 @@ export default class TicketView extends React.Component {
                     messages={ticket.get('messages')}
                 />
 
-                <NextMessageChannel
+                <ReplyMessageChannel
                     ticket={this.props.ticket}
                     actions={this.props.actions.ticket}
                 />

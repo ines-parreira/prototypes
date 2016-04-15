@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 
 
-export default class NextMessageChannel extends React.Component {
+export default class ReplyMessageChannel extends React.Component {
     componentDidMount() {
         $('#popup-message-channel').popup({ popup: '#next-message-channel-popup', position: 'bottom left', hoverable: true, on: 'click' })
     }
@@ -60,7 +60,7 @@ export default class NextMessageChannel extends React.Component {
     }
 }
 
-NextMessageChannel.propTypes = {
+ReplyMessageChannel.propTypes = {
     ticket: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 }
