@@ -46,6 +46,45 @@ export default class TicketMessage extends React.Component {
         }
     }
 
+    renderSource(message) {
+        if (!message.public) {
+            return null
+        }
+
+        return (
+            <span className="ticket-message-source">
+                <div className="ui dropdown" id="email-dropdown">
+                    <span className="text">
+                        <i className="icon mail"/>
+                        &lt;{message.sender.email}&gt;
+                    </span>
+                    <div className="ticket-message-source-details menu transition">
+                        <ul className="item">
+                            <li>
+                                To:
+                                <strong>
+                                    {message.receiver.email}
+                                </strong>
+                            </li>
+                            <li>
+                                From:
+                                <strong>
+                                    {message.sender.email}
+                                </strong>
+                            </li>
+                            <li>
+                                Send via:
+                                <strong>
+                                    Email
+                                </strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </span>
+        )
+    }
+
     render() {
         const { message, currentUser } = this.props
 
@@ -74,37 +113,7 @@ export default class TicketMessage extends React.Component {
                             {message.sender.name}
                         </span>
 
-                        <span className="ticket-message-source">
-                            <div className="ui dropdown" id="email-dropdown">
-                                <span className="text">
-                                    <i className="icon mail"/>
-                                    &lt;{message.sender.email}&gt;
-                                </span>
-                                <div className="ticket-message-source-details menu transition">
-                                    <ul className="item">
-                                        <li>
-                                            To:
-                                            <strong>
-                                                {message.receiver.email}
-                                            </strong>
-                                        </li>
-                                        <li>
-                                            From:
-                                            <strong>
-                                                {message.sender.email}
-                                            </strong>
-                                        </li>
-                                        <li>
-                                            Send via:
-                                            <strong>
-                                                Email
-                                            </strong>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                        </span>
+                        {this.renderSource(message)}
                     </div>
                     <div className="ticket-message-time">
                         {createdDatetime}
