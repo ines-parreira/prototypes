@@ -2,12 +2,6 @@ import * as actions from '../actions/ticket'
 import Immutable, { Map, List, Set } from 'immutable'
 import { renderTemplate } from '../components/utils/template'
 
-const ticketInitial = Map({
-    messages: List(),
-    priority: false,
-    agent: ''
-})
-
 const newMessage = Map({
     via: 'helpdesk',
     public: true,
@@ -25,6 +19,13 @@ const newMessage = Map({
     body_html: '',
     // TODO: Implement channel selection widget
     channel: 'email',
+})
+
+const ticketInitial = Map({
+    messages: List(),
+    priority: false,
+    agent: '',
+    newMessage
 })
 
 function keyIn(/*...keys*/) {
@@ -82,6 +83,9 @@ export function ticket(state = ticketInitial, action) {
         case actions.SET_STATUS:
             return state.set('status', action.status)
 
+        case actions.SET_PUBLIC:
+            return state.setIn(['newMessage', 'public'], action.isPublic)
+
         case actions.SET_RESPONSE_TEXT:
             const text = action.args.get('body_text') || action.args.get(0) || ''
             const html = action.args.get('body_html') || action.args.get(1) || ''
@@ -100,14 +104,12 @@ export function ticket(state = ticketInitial, action) {
                 current_user: currentUser
             }))
 
-            return state.mergeDeep({
-                newMessage: {
-                    sender,
-                    receiver: getRecipient(state.get('messages'), sender),
-                    body_text: expandedText,
-                    body_html: expandedHTML
-                }
-            })
+            return state.set('newMessage', state.get('newMessage').merge({
+                sender,
+                receiver: getRecipient(state.get('messages'), sender),
+                body_text: expandedText,
+                body_html: expandedHTML
+            }))
 
         default:
             return state

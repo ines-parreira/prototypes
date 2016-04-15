@@ -16,7 +16,7 @@ export default class TicketTableRow extends React.Component {
             }
             return body.textContent || body.innerText
         } catch (e) {
-            console.error('Failed stripHTML: ' + e, text)
+            console.error(`Failed stripHTML: ${e}`, text)
             return text
         }
     }
@@ -35,7 +35,7 @@ export default class TicketTableRow extends React.Component {
         return formatted
     }
 
-    handleClick = (ev) => {
+    handleClick = () => {
         this.props.pushState(`/ticket/${this.props.ticket.id}`)
     }
 

@@ -29,6 +29,62 @@ export default class TicketMessage extends React.Component {
         return <i className="icon attach"/>
     }
 
+    renderAttachment(message) {
+        if (message.attachments) {
+            return (
+                <div className="attachments">
+                    {
+                        message.attachments.map(attachment => (
+                            <div className="ui label">
+                                {this.renderAttachmentIcon(attachment.content_type)}
+                                <a key={attachment.name} href={attachment.url} target="_blank">{attachment.name}</a>
+                            </div>
+                        ))
+                    }
+                </div>
+            )
+        }
+    }
+
+    renderSource(message) {
+        if (!message.public) {
+            return null
+        }
+
+        return (
+            <span className="ticket-message-source">
+                <div className="ui dropdown" id="email-dropdown">
+                    <span className="text">
+                        <i className="icon mail"/>
+                        &lt;{message.sender.email}&gt;
+                    </span>
+                    <div className="ticket-message-source-details menu transition">
+                        <ul className="item">
+                            <li>
+                                To:
+                                <strong>
+                                    {message.receiver.email}
+                                </strong>
+                            </li>
+                            <li>
+                                From:
+                                <strong>
+                                    {message.sender.email}
+                                </strong>
+                            </li>
+                            <li>
+                                Send via:
+                                <strong>
+                                    Email
+                                </strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </span>
+        )
+    }
+
     render() {
         const { message, currentUser } = this.props
 
@@ -36,8 +92,15 @@ export default class TicketMessage extends React.Component {
         if (message.created_datetime) {
             createdDatetime = moment(message.created_datetime).tz(currentUser.get('timezone') || 'UTC').fromNow()
         }
+
+        let className = 'ticket-message'
+
+        if (!message.public) {
+            className = 'ticket-message internal'
+        }
+
         return (
-            <div className="ticket-message" ref="ticketMessage">
+            <div className={className} ref="ticketMessage">
                 <div className="ticket-message-header">
                     <div className="ticket-message-header-details">
                         {(() => {
@@ -50,37 +113,7 @@ export default class TicketMessage extends React.Component {
                             {message.sender.name}
                         </span>
 
-                        <span className="ticket-message-source">
-                            <div className="ui dropdown" id="email-dropdown">
-                                <span className="text">
-                                    <i className="icon mail"/>
-                                    &lt;{message.sender.email}&gt;
-                                </span>
-                                <div className="ticket-message-source-details menu transition">
-                                    <ul className="item">
-                                        <li>
-                                            To:
-                                            <strong>
-                                                {message.receiver.email}
-                                            </strong>
-                                        </li>
-                                        <li>
-                                            From:
-                                            <strong>
-                                                {message.sender.email}
-                                            </strong>
-                                        </li>
-                                        <li>
-                                            Send via:
-                                            <strong>
-                                                Email
-                                            </strong>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                        </span>
+                        {this.renderSource(message)}
                     </div>
                     <div className="ticket-message-time">
                         {createdDatetime}
@@ -116,16 +149,9 @@ export default class TicketMessage extends React.Component {
                     </div>
                 </div>
                 */}
-                <div className="attachments">
-                    {
-                        message.attachments.map(attachment => (
-                            <div className="ui label">
-                                {this.renderAttachmentIcon(attachment.content_type)}
-                                <a key={attachment.name} href={attachment.url} target="_blank">{attachment.name}</a>
-                            </div>
-                        ))
-                    }
-                </div>
+
+                {this.renderAttachment(message)}
+
             </div>
         )
     }

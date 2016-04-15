@@ -5,6 +5,7 @@ import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
 import TicketTags from './tags/TicketTags'
+import ReplyMessageChannel from './ReplyMessageChannel'
 
 import { TICKET_STATUSES } from './../../../constants'
 
@@ -26,6 +27,7 @@ export default class TicketView extends React.Component {
                 this.props.actions.ticket.setAgent(agent)
             }
         })
+
         $('#popup-ticket-status').popup({ inline: true, position: 'bottom right', hoverable: true, on: 'click' })
     }
 
@@ -46,8 +48,25 @@ export default class TicketView extends React.Component {
                     <span className="secondary-action">{assignee.toUpperCase()}</span>
                 </span>
             )
-        } else {
-            return <span className="secondary-action">UNASSIGNED</span>
+        }
+
+        return <span className="secondary-action">UNASSIGNED</span>
+    }
+
+    renderRequesterData() {
+        const channel = this.props.ticket.get('channel')
+        if (channel === 'email') {
+            return (
+                <div className="recipient-data">
+                    <i className="icon mail blue"/><span className="label">To: </span><b>{this.props.ticket.getIn(['requester', 'email'])}</b>
+                </div>
+            )
+        } else if (channel === 'facebook') {
+            return (
+                <div className="recipient-data">
+                    <i className="icon facebook blue"/><span className="label">To: </span><b>{this.props.ticket.getIn(['requester', 'name'])}</b>
+                </div>
+            )
         }
     }
 
@@ -168,6 +187,11 @@ export default class TicketView extends React.Component {
                 <TicketMessages
                     currentUser={this.props.currentUser}
                     messages={ticket.get('messages')}
+                />
+
+                <ReplyMessageChannel
+                    ticket={this.props.ticket}
+                    actions={this.props.actions.ticket}
                 />
 
                 <TicketReplyArea

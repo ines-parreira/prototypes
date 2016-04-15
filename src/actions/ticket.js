@@ -37,6 +37,7 @@ export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY'
 
 export const SET_AGENT = 'SET_AGENT'
 export const SET_STATUS = 'SET_STATUS'
+export const SET_PUBLIC = 'TOGGLE_PUBLIC'
 
 export const MACRO_ACTIONS = [
     SET_RESPONSE_TEXT, ADD_TICKET_TAGS
@@ -79,6 +80,13 @@ export function setStatus(status) {
     return {
         type: SET_STATUS,
         status
+    }
+}
+
+export function setPublic(isPublic) {
+    return {
+        type: SET_PUBLIC,
+        isPublic
     }
 }
 
