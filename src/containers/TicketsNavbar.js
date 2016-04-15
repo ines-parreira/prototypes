@@ -24,8 +24,9 @@ class TicketsNavbarContainer extends React.Component {
     render() {
         return (
             <Navbar views={this.props.views}
-                    currentViewSlug={this.getViewSlug()}
+                    currentViewSlug={this.props.views.get('active')}
                     currentUser={this.props.currentUser}
+                    applyView={this.props.actions.applyView}
             />
         )
     }

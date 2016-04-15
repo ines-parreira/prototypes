@@ -14,12 +14,10 @@ import {DEFAULT_VIEW} from '../constants'
 
 class TicketsContainer extends React.Component {
     getView = (props) => {
-        // TODO: Use reselect for this
-        const usedProps = props || this.props
-        const {views, params} = usedProps
-        const viewName = params ? params.view : DEFAULT_VIEW
+        const { views } = props || this.props
+        const viewName = views.get('active')
 
-        if (!views || !views.get('items').size) {
+        if (!viewName || !views || !views.get('items').size) {
             // Return something so sub-components can start rendering while the view loads
             return Map({slug: viewName})
         }
@@ -37,6 +35,14 @@ class TicketsContainer extends React.Component {
         return TicketColumns.filter((column) =>
             currentColumns.includes(column.get('name'))
         )
+    }
+
+    componentWillMount() {
+        const viewSlug = this.props.params ? this.props.params.view : DEFAULT_VIEW
+
+        if (!this.props.views.get('active') || this.props.views.get('active') !== viewSlug) {
+            this.props.actions.view.applyView(viewSlug)
+        }
     }
 
     componentDidMount = () => {

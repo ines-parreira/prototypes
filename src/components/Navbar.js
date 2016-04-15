@@ -39,7 +39,7 @@ export default class Navbar extends React.Component {
     }
 
     render() {
-        const { views, currentUser } = this.props
+        const { views, currentUser, applyView } = this.props
         const sections = this.sections(_.values(views.get('items').toJS()))
         return (
             <div className="navbar" ref="navbar">
@@ -48,7 +48,7 @@ export default class Navbar extends React.Component {
                     <i className="icon angle down"/>
                     <div className="menu">
                         <Link to="/app" className="item">Dashboard</Link>
-                        {/*<Link to="/rules" className="item">Rules</Link>*/}
+                        {/* <Link to="/rules" className="item">Rules</Link> */}
                         <Link to="/app/users" className="item">Users</Link>
                     </div>
                 </div>
@@ -72,7 +72,12 @@ export default class Navbar extends React.Component {
                                         }
 
                                         return (
-                                             <Link key={view.id} to={`/app/tickets/${view.slug}`} className={classes}>
+                                             <Link
+                                                 key={view.id}
+                                                 to={`/app/tickets/${view.slug}`}
+                                                 className={classes}
+                                                 onClick={() => { applyView(view.slug) }}
+                                             >
                                                 {view.name} {counter}
                                             </Link>
                                         )
@@ -107,5 +112,6 @@ export default class Navbar extends React.Component {
 Navbar.propTypes = {
     views: PropTypes.object,
     currentViewSlug: PropTypes.string,
-    currentUser: PropTypes.object
+    currentUser: PropTypes.object,
+    applyView: PropTypes.func
 }
