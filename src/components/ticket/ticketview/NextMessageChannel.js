@@ -49,7 +49,7 @@ export default class NextMessageChannel extends React.Component {
                         <div className="item" onClick={() => actions.setPublic(true)}>
                             Send as email
                         </div>
-                        <div className="item internal" onClick={() => actions.setPublic(false)}>
+                        <div className="item" onClick={() => actions.setPublic(false)}>
                             Send as internal note
                         </div>
                     </div>
