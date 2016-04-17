@@ -12,7 +12,7 @@ import UserContainer from './containers/User'
 import NoMatch from './components/NoMatch'
 
 export default (
-    <Route path="/" component={App}>
+    <Route path="/app" component={App}>
         <IndexRoute component={Dashboard}/>
         <Route path="users" component={UsersContainer}/>
         <Route path="users/:userId" component={UserContainer}/>

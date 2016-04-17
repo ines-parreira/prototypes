@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { pushState } from 'redux-router'
 import * as mousetrap from 'mousetrap'
 
 import TicketView from '../components/ticket/ticketview/TicketView'
@@ -99,8 +98,7 @@ TicketContainer.propTypes = {
     users: PropTypes.object,
     currentUser: PropTypes.object,
 
-    actions: PropTypes.object.isRequired,
-    pushState: PropTypes.func.isRequired
+    actions: PropTypes.object.isRequired
 }
 
 TicketContainer.defaultProps = {
@@ -124,8 +122,7 @@ function mapDispatchToProps(dispatch) {
             macro: bindActionCreators(MacroActions, dispatch),
             tag: bindActionCreators(TagActions, dispatch),
             user: bindActionCreators(UserActions, dispatch)
-        },
-        pushState: bindActionCreators(pushState, dispatch)
+        }
     }
 }
 

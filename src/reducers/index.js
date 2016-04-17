@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
-import { routerStateReducer as router } from 'redux-router'
+import { routerReducer as routing } from 'react-router-redux'
+
 
 import { systemMessage } from './systemMessage'
 import { currentUser } from './currentUser'
@@ -27,7 +28,7 @@ const rootReducer = combineReducers({
     users,
     tags,
     macros,
-    router
+    routing
 })
 
 export default rootReducer

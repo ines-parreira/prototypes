@@ -47,9 +47,9 @@ export default class Navbar extends React.Component {
                     Tickets
                     <i className="icon angle down"/>
                     <div className="menu">
-                        <Link to="/" className="item">Dashboard</Link>
+                        <Link to="/app" className="item">Dashboard</Link>
                         {/*<Link to="/rules" className="item">Rules</Link>*/}
-                        <Link to="/users" className="item">Users</Link>
+                        <Link to="/app/users" className="item">Users</Link>
                     </div>
                 </div>
 
@@ -72,7 +72,7 @@ export default class Navbar extends React.Component {
                                         }
 
                                         return (
-                                             <Link key={view.id} to={`/tickets/${view.slug}`} className={classes}>
+                                             <Link key={view.id} to={`/app/tickets/${view.slug}`} className={classes}>
                                                 {view.name} {counter}
                                             </Link>
                                         )

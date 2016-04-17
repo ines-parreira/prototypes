@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { pushState } from 'redux-router'
 import { bindActionCreators } from 'redux'
 
 import * as UserActions from '../actions/user'

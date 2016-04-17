@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { browserHistory } from 'react-router'
 import moment from 'moment'
 import 'moment-timezone'
 import classNames from 'classnames'
@@ -36,7 +37,7 @@ export default class TicketTableRow extends React.Component {
     }
 
     handleClick = () => {
-        this.props.pushState(`/ticket/${this.props.ticket.id}`)
+        browserHistory.push(`/app/ticket/${this.props.ticket.id}`)
     }
 
     stopPropagation = (ev) => {
@@ -134,6 +135,5 @@ TicketTableRow.propTypes = {
     ticket: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     width: PropTypes.number.isRequired,
-    pushState: PropTypes.func.isRequired,
     columns: PropTypes.array.isRequired
 }

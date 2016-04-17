@@ -221,7 +221,6 @@ TicketView.propTypes = {
     currentUser: PropTypes.object.isRequired,
     submit: PropTypes.func.isRequired,
     applyMacro: PropTypes.func.isRequired,
-    pushState: PropTypes.func,
     tags: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired
 }

@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react'
 import { connect } from 'react-redux'
-import { pushState } from 'redux-router'
+import { browserHistory } from 'react-router'
+
 import { dismissMessage } from '../actions/systemMessage'
 import { fetchUser, fetchUsers, fetchAgentUsers } from '../actions/user'
 import { fetchSettings } from '../actions/settings'
 
 import TicketsNavbarContainer from './TicketsNavbar'
-import TicketSidebarContainer from './TicketsNavbar'
 import KeyboardHelp from '../components/KeyboardHelp'
 
 import * as mousetrap from 'mousetrap'
@@ -27,15 +27,11 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        // Initialize semantic-ui dropdowns
-        // $('.ui.dropdown').dropdown()
-        const props = this.props
-
         // Some global keyboard shortcuts
 
         // Go home (or dashboard)
         mousetrap.bind('g h', (e) => {
-            props.pushState(null, '/')
+            browserHistory.push('/')
         })
     }
 
@@ -114,11 +110,9 @@ App.propTypes = {
     // current logged in user
     currentUser: PropTypes.object,
     fetchUser: PropTypes.func.isRequired,
+    fetchUsers: PropTypes.func.isRequired,
     fetchAgentUsers: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
-
-    // Injected by React Redux
-    pushState: PropTypes.func.isRequired,
 
     // Injected by React Router
     children: PropTypes.node,
@@ -143,6 +137,5 @@ export default connect(mapStateToProps, {
     fetchUser,
     fetchUsers,
     fetchAgentUsers,
-    fetchSettings,
-    pushState
+    fetchSettings
 })(App)

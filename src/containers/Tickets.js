@@ -1,36 +1,30 @@
-import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { pushState } from 'redux-router'
-import { bindActionCreators } from 'redux'
-import { Map, List } from 'immutable'
-
+import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {browserHistory} from 'react-router'
+import {bindActionCreators} from 'redux'
+import {Map, List} from 'immutable'
 import * as TicketActions from '../actions/ticket'
 import * as ViewActions from '../actions/view'
 import * as UserActions from '../actions/user'
 import * as TagActions from '../actions/tag'
-
 import TicketsView from '../components/ticket/TicketsView'
 import TicketColumns from '../components/ticket/TicketColumns'
-import { DEFAULT_VIEW } from '../constants'
+import {DEFAULT_VIEW} from '../constants'
 
 
 class TicketsContainer extends React.Component {
     getView = (props) => {
         // TODO: Use reselect for this
         const usedProps = props || this.props
-        const { views, params } = usedProps
+        const {views, params} = usedProps
         const viewName = params ? params.view : DEFAULT_VIEW
 
         if (!views || !views.get('items').size) {
             // Return something so sub-components can start rendering while the view loads
-            return Map({ slug: viewName })
+            return Map({slug: viewName})
         }
 
         return views.getIn(['items', viewName])
-    }
-
-    pushState = (url) => {
-        this.props.pushState(null, url)
     }
 
     getViewColumns = () => {
@@ -55,8 +49,7 @@ class TicketsContainer extends React.Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.views.get('loading') &&
-            !nextProps.views.get('loading') &&
+        if (this.props.views.get('loading') && !nextProps.views.get('loading') &&
             nextProps.views.get('items').size) {
             this.fetchPage(1, nextProps)
         }
@@ -79,7 +72,7 @@ class TicketsContainer extends React.Component {
     }
 
     fetchPage = (page = 1, props) => {
-        const { tickets, settings, actions } = props || this.props
+        const {tickets, settings, actions} = props || this.props
         if (!tickets.get('loading') && !settings.get('loading')) {
             return actions.ticket.fetchPageFromAlgolia(settings, this.getView(props), page, tickets.get('search'))
         }
@@ -98,7 +91,6 @@ class TicketsContainer extends React.Component {
                     currentUser={this.props.currentUser}
                     actions={this.props.actions}
                     fetchPage={this.fetchPage}
-                    pushState={this.pushState}
                     search={this.props.actions.ticket.search}
                 />
             </div>
@@ -123,8 +115,7 @@ TicketsContainer.propTypes = {
     actions: PropTypes.object.isRequired,
 
     // React Router
-    params: PropTypes.object,
-    pushState: PropTypes.func.isRequired
+    params: PropTypes.object
 }
 
 function mapStateToProps(state) {
@@ -145,8 +136,7 @@ function mapDispatchToProps(dispatch) {
             ticket: bindActionCreators(TicketActions, dispatch),
             user: bindActionCreators(UserActions, dispatch),
             tag: bindActionCreators(TagActions, dispatch)
-        },
-        pushState: bindActionCreators(pushState, dispatch)
+        }
     }
 }
 

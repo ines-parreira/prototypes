@@ -1,15 +1,11 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import createHistory from 'history/lib/createHashHistory'
-import { reduxReactRouter } from 'redux-router'
-import routes from '../routes'
+import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers/index'
 
-const finalCreateStore = compose(
-    applyMiddleware(thunk),
-    reduxReactRouter({routes, createHistory})
-)(createStore)
-
 export default function configureStore(initialState) {
-    return finalCreateStore(rootReducer, initialState)
+    return createStore(
+        rootReducer,
+        initialState,
+        applyMiddleware(thunk)
+    )
 }

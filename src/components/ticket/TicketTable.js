@@ -81,7 +81,6 @@ export default class TicketTable extends React.Component {
                                         width={this.props.width}
                                         columns={this.props.columns}
                                         currentUser={this.props.currentUser}
-                                        pushState={this.props.pushState}
                                     />
                                 )
                             })
@@ -107,7 +106,6 @@ TicketTable.propTypes = {
     columns: PropTypes.array.isRequired,
     width: PropTypes.number.isRequired,
     currentUser: PropTypes.object.isRequired,
-    pushState: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,
     getFilterSpecForColumn: PropTypes.func.isRequired,
     fetchPage: PropTypes.func.isRequired

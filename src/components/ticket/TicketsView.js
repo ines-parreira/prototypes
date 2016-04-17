@@ -140,7 +140,6 @@ export default class TicketsView extends React.Component {
                     getFilterSpecForColumn={this.getFilterSpecForColumn}
                     updateFilters={this.updateFilters}
                     currentUser={this.props.currentUser}
-                    pushState={this.props.pushState}
                     fetchPage={this.props.fetchPage}
                     width={this.getWidth()}
                 />
@@ -158,7 +157,6 @@ TicketsView.propTypes = {
     allUsers: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    pushState: PropTypes.func.isRequired,
     fetchPage: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired
 }

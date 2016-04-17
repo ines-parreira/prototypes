@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { pushState } from 'redux-router'
 
 import * as UserActions from '../actions/user'
 import UserView from '../components/user/UsersView'
@@ -35,7 +34,6 @@ UserContainer.propTypes = {
     currentUser: PropTypes.object,
 
     actions: PropTypes.object.isRequired,
-    pushState: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
@@ -47,8 +45,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(UserActions, dispatch),
-        pushState: bindActionCreators(pushState, dispatch)
+        actions: bindActionCreators(UserActions, dispatch)
     }
 }
 
