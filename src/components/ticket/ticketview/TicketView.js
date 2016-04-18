@@ -71,7 +71,7 @@ export default class TicketView extends React.Component {
     }
 
     render = () => {
-        const { ticket, tickets, tags, users, actions } = this.props
+        const { ticket, tags, users, actions } = this.props
 
         return (
             <div className="ticket-view">
@@ -217,9 +217,7 @@ export default class TicketView extends React.Component {
 
 TicketView.propTypes = {
     actions: PropTypes.object.isRequired,
-    view: PropTypes.string.isRequired,
     ticket: PropTypes.object.isRequired,
-    tickets: PropTypes.object.isRequired,
     macros: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     submit: PropTypes.func.isRequired,

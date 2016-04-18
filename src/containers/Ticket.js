@@ -42,6 +42,20 @@ class TicketContainer extends React.Component {
                 this.props.actions.macro.previewAdjacentMacro('next')
             }
         })
+        mousetrap.bind('left', () => {
+            const nextUrl = this.computeNextUrl(false)
+
+            if (nextUrl) {
+                browserHistory.push(nextUrl)
+            }
+        })
+        mousetrap.bind('right', () => {
+            const nextUrl = this.computeNextUrl(true)
+
+            if (nextUrl) {
+                browserHistory.push(nextUrl)
+            }
+        })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -64,6 +78,20 @@ class TicketContainer extends React.Component {
         this.props.actions.macro.applyMacro(macro, this.props.currentUser)
     }
 
+    computeNextUrl(ascending) {
+        const translation = ascending ? 1 : -1
+        console.log(translation)
+        const nextTicket = this.props.tickets.get('items').toJS()[this.props.tickets.get('currentTicketIndex') + translation]
+        let nextTicketUrl = null
+
+        if (nextTicket) {
+            nextTicketUrl = `/app/ticket/${nextTicket.id}`
+            this.props.actions.ticket.saveIndex(this.props.tickets.get('currentTicketIndex') + translation)
+        }
+
+        return nextTicketUrl
+    }
+
     submit = (status, next = false) => {
         if (!next) {
             this.props.actions.ticket.submitTicket(this.props.ticket, status)
@@ -76,14 +104,7 @@ class TicketContainer extends React.Component {
              * If it does, we save the new index (the old index + 1) as the new current index, then we push
              * the new state to the application.
              */
-            const nextTicket = this.props.tickets.get('items').toJS()[this.props.tickets.get('currentTicketIndex') + 1]
-            let nextTicketUrl = null
-
-            if (nextTicket) {
-                nextTicketUrl = `/app/ticket/${nextTicket.id}`
-                this.props.actions.ticket.saveIndex(this.props.tickets.get('currentTicketIndex') + 1)
-            }
-
+            const nextTicketUrl = this.computeNextUrl(true)
             this.props.actions.ticket.submitTicket(this.props.ticket, status)
             browserHistory.push(nextTicketUrl)
         }
@@ -94,12 +115,10 @@ class TicketContainer extends React.Component {
             return null
         }
         return (
-            <div className="TicketContainer">
+            <div className="TicketContainer" onKeyDown={this.handleKeyDown}>
                 <TicketView
                     actions={this.props.actions}
-                    view={this.props.params.view}
                     ticket={this.props.ticket}
-                    tickets={this.props.tickets}
                     tags={this.props.tags}
                     users={this.props.users}
                     currentUser={this.props.currentUser}
