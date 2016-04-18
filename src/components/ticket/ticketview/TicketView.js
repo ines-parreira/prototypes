@@ -53,23 +53,6 @@ export default class TicketView extends React.Component {
         return <span className="secondary-action">UNASSIGNED</span>
     }
 
-    renderRequesterData() {
-        const channel = this.props.ticket.get('channel')
-        if (channel === 'email') {
-            return (
-                <div className="recipient-data">
-                    <i className="icon mail blue"/><span className="label">To: </span><b>{this.props.ticket.getIn(['requester', 'email'])}</b>
-                </div>
-            )
-        } else if (channel === 'facebook') {
-            return (
-                <div className="recipient-data">
-                    <i className="icon facebook blue"/><span className="label">To: </span><b>{this.props.ticket.getIn(['requester', 'name'])}</b>
-                </div>
-            )
-        }
-    }
-
     render = () => {
         const { ticket, tags, users, actions } = this.props
 
@@ -101,7 +84,7 @@ export default class TicketView extends React.Component {
                     </button>
                     */}
 
-                    <h1 id="ticket-subject" className="ui header" onClick={() => this.props.toggleSubject()}>
+                    <h1 id="ticket-subject" placeholder="Ticket subject..." className="ui header" onClick={() => this.props.toggleSubject()}>
                         {ticket.get('subject')}
                     </h1>
 
@@ -195,7 +178,8 @@ export default class TicketView extends React.Component {
 
                 <ReplyMessageChannel
                     ticket={this.props.ticket}
-                    actions={this.props.actions.ticket}
+                    actions={this.props.actions}
+                    settings={this.props.settings}
                 />
 
                 <TicketReplyArea
@@ -223,9 +207,11 @@ TicketView.propTypes = {
     ticket: PropTypes.object.isRequired,
     macros: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    submit: PropTypes.func.isRequired,
-    applyMacro: PropTypes.func.isRequired,
     tags: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired,
-    toggleSubject: PropTypes.func.isRequired
+    settings: PropTypes.object.isRequired,
+
+    submit: PropTypes.func.isRequired,
+    applyMacro: PropTypes.func.isRequired,
+    toggleSubject: PropTypes.func.isRequired,
 }

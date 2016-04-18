@@ -8,7 +8,9 @@ const initial = Map({
     loaded: false,
     indices: Map(),
     searchLoaded: Map({
-        user: false
+        user: false,
+        ticket: false,
+        requester: false
     })
 })
 
@@ -40,13 +42,7 @@ export function settings(state = initial, action) {
             })
 
         case actions.LOADED_SEARCH:
-            return state.merge({
-                loading: false,
-                loaded: true,
-                searchLoaded: {
-                    user: true
-                }
-            })
+            return state.setIn(['searchLoaded', action.page], true)
 
         default:
             return state

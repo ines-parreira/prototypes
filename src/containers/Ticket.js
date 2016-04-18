@@ -10,10 +10,15 @@ import * as TicketActions from '../actions/ticket'
 import * as MacroActions from '../actions/macro'
 import * as UserActions from '../actions/user'
 import * as TagActions from '../actions/tag' // import that to fetch tags list
+import * as SettingsActions from '../actions/settings'
 
 class TicketContainer extends React.Component {
     componentWillMount() {
-        this.props.actions.ticket.fetchTicketDetails(this.props.params.ticketId)
+        if (this.props.params.ticketId !== 'new') {
+            this.props.actions.ticket.fetchTicketDetails(this.props.params.ticketId)
+        } else {
+            this.props.actions.ticket.setupNewTicket()
+        }
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
     }
@@ -63,6 +68,8 @@ class TicketContainer extends React.Component {
             this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
             this.props.actions.macro.fetchMacros()
             this.props.actions.tag.fetchTags()
+        } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
+            browserHistory.push(`/app/ticket/${nextProps.ticket.get('id')}/`)
         }
     }
 
@@ -97,16 +104,16 @@ class TicketContainer extends React.Component {
     toggleSubjectEditMode = () => {
         const subjectObject = $('#ticket-subject')
 
-        subjectObject.addClass('segment edit-mode').attr('contentEditable', true).focus().bind('keypress', (e) => {
+        subjectObject.addClass('edit-mode').attr('contentEditable', true).focus().bind('keypress', (e) => {
             if (e.keyCode === 13) { e.preventDefault() }
         }).bind('keyup', (e) => {
             if (e.keyCode === 13 || e.keyCode === 27) {
                 e.preventDefault()
-                subjectObject.unbind('keypress').removeClass('segment edit-mode').attr('contentEditable', false)
-                const subject = subjectObject.text()
+                subjectObject.unbind('keypress').unbind('keyup')
+                    .removeClass('edit-mode').attr('contentEditable', false)
 
-                if (subject && e.keyCode === 13) {
-                    this.props.actions.ticket.setSubject(subject)
+                if (e.keyCode === 13) {
+                    this.props.actions.ticket.setSubject(subjectObject.text())
                 } else {
                     subjectObject.text(this.props.ticket.get('subject'))
                 }
@@ -114,8 +121,20 @@ class TicketContainer extends React.Component {
         })
     }
 
-    submit = (status, next = false) => {
-        this.props.actions.ticket.submitTicket(this.props.ticket, status)
+    submit = (status, next) => {
+        let ticket = this.props.ticket
+
+        if (!ticket.get('id')) {
+            if (!ticket.getIn(['newMessage', 'body_text'])) { return }
+            console.log(ticket.get('receiver'))
+
+            ticket = ticket.set('sender', {id: this.props.currentUser.get('id')})
+            ticket = ticket.set('requester', ticket.getIn(['newMessage', 'receiver']))
+            ticket = ticket.set('receiver', ticket.getIn(['newMessage', 'receiver']))
+            ticket = ticket.setIn(['newMessage', 'sender'], {id: this.props.currentUser.get('id')})
+        }
+
+        this.props.actions.ticket.submitTicket(ticket, status)
 
         if (next) {
             /**
@@ -132,21 +151,22 @@ class TicketContainer extends React.Component {
     }
 
     render() {
-        if (this.props.ticket.get('messages').size === 0) {
-            return null
+        if (!this.props.ticket.get('messages').size && this.props.params.ticketId !== 'new') {
+            return <p>Not found</p>
         }
+
         return (
             <div className="TicketContainer" onKeyDown={this.handleKeyDown}>
                 <TicketView
                     actions={this.props.actions}
                     ticket={this.props.ticket}
+                    macros={this.props.macros}
+                    currentUser={this.props.currentUser}
                     tags={this.props.tags}
                     users={this.props.users}
-                    currentUser={this.props.currentUser}
-                    update={this.update}
+                    settings={this.props.settings}
                     submit={this.submit}
                     applyMacro={this.applyMacro}
-                    macros={this.props.macros}
                     toggleSubject={this.toggleSubjectEditMode}
                 />
             </div>
@@ -195,7 +215,8 @@ function mapDispatchToProps(dispatch) {
             ticket: bindActionCreators(TicketActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),
             tag: bindActionCreators(TagActions, dispatch),
-            user: bindActionCreators(UserActions, dispatch)
+            user: bindActionCreators(UserActions, dispatch),
+            settings: bindActionCreators(SettingsActions, dispatch)
         }
     }
 }

@@ -198,19 +198,15 @@ export function deleteUser(userId) {
 }
 
 export function sortUsers(sort) {
-    return (dispatch) => {
-        dispatch({
-            type: SORT_USERS,
-            sort
-        })
+    return {
+        type: SORT_USERS,
+        sort
     }
 }
 
 export function updateList(list) {
-    return (dispatch) => {
-        dispatch({
-            type: UPDATE_LIST,
-            list
-        })
+    return {
+        type: UPDATE_LIST,
+        list
     }
 }

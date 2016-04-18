@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Map, List } from 'immutable'
 import _ from 'lodash'
+import { browserHistory } from 'react-router'
 
 import TicketTable from './TicketTable'
 import FilterTopbar from './FilterTopbar'
@@ -124,7 +125,7 @@ export default class TicketsView extends React.Component {
                         <h1 className="ui header">{this.props.view.get('name')}</h1>
                     </div>
                     <div className="four wide column">
-                        <button className="ui right floated green button">
+                        <button className="ui right floated green button" onClick={() => { browserHistory.push('/app/ticket/new') }}>
                             CREATE TICKET
                         </button>
                     </div>

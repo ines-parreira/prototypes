@@ -22,9 +22,24 @@ const newMessage = Map({
 })
 
 const ticketInitial = Map({
+    state: Map({
+        potentialRequesters: List()
+    }),
     messages: List(),
-    priority: false,
-    agent: '',
+    subject: '',
+    via: 'helpdesk',
+    channel: 'email',
+    assignee_user: null,
+    status: 'new',
+    sender: null,
+    requester: Map({
+        id: null,
+        name: null,
+        email: null
+    }),
+    receiver: null,
+    priority: 'normal',
+    tags: List(),
     newMessage
 })
 
@@ -36,14 +51,21 @@ function keyIn(/*...keys*/) {
 }
 
 function getRecipient(messages, sender) {
+    let res = null
+
     for (const message of messages.reverse()) {
         const senderId = message.getIn(['sender', 'id'])
         if (senderId && senderId !== sender.get('id')) {
             return message.get('sender')
         }
+        const receiverId = message.getIn(['receiver', 'id'])
+        if (receiverId && receiverId !== sender.get('id')) {
+            res = message.get('receiver')
+        }
     }
-    console.error('No recipient')
-    return null
+
+    if (!res) { console.error('No recipient') }
+    return res
 }
 
 export function ticket(state = ticketInitial, action) {
@@ -52,7 +74,7 @@ export function ticket(state = ticketInitial, action) {
     switch (action.type) {
         case actions.SUBMIT_TICKET_SUCCESS:
         case actions.FETCH_TICKET_SUCCESS:
-            return Immutable.fromJS(action.resp).set('newMessage', newMessage)
+            return state.merge(Immutable.fromJS(action.resp)).set('newMessage', newMessage)
 
         /* Macro actions */
 
@@ -109,10 +131,19 @@ export function ticket(state = ticketInitial, action) {
 
             return state.set('newMessage', state.get('newMessage').merge({
                 sender,
-                receiver: getRecipient(state.get('messages'), sender),
+                receiver: state.getIn(['newMessage', 'receiver']) || getRecipient(state.get('messages'), sender),
                 body_text: expandedText,
                 body_html: expandedHTML
             }))
+
+        case actions.SETUP_NEW_TICKET:
+            return ticketInitial
+
+        case actions.UPDATE_POTENTIAL_REQUESTERS:
+            return state.setIn(['state', 'potentialRequesters'], action.potentialRequesters)
+
+        case actions.SET_RECEIVER:
+            return state.setIn(['newMessage', 'receiver'], Map({ id: action.receiverId }))
 
         default:
             return state

@@ -39,8 +39,13 @@ export const SET_AGENT = 'SET_AGENT'
 export const SET_STATUS = 'SET_STATUS'
 export const SET_PUBLIC = 'TOGGLE_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
+export const SET_RECEIVER = 'SET_RECEIVER'
 
 export const SAVE_INDEX = 'SAVE_INDEX'
+
+export const SETUP_NEW_TICKET = 'SETUP_NEW_TICKET'
+
+export const UPDATE_POTENTIAL_REQUESTERS = 'UPDATE_POTENTIAL_REQUESTERS'
 
 export const MACRO_ACTIONS = [
     SET_RESPONSE_TEXT, ADD_TICKET_TAGS
@@ -100,6 +105,20 @@ export function setSubject(subject) {
     }
 }
 
+export function setReceiver(receiverId) {
+    return {
+        type: SET_RECEIVER,
+        receiverId
+    }
+}
+
+export function updatePotentialRequesters(potentialRequesters) {
+    return {
+        type: UPDATE_POTENTIAL_REQUESTERS,
+        potentialRequesters
+    }
+}
+
 export function setResponseText(currentUser, body_text, body_html) {
     return {
         type: SET_RESPONSE_TEXT,
@@ -149,6 +168,12 @@ export function fetchPageFromAlgolia(settings, view, page, searchValue) {
                 }
             })
         })
+    }
+}
+
+export function setupNewTicket() {
+    return {
+        type: SETUP_NEW_TICKET
     }
 }
 
@@ -224,6 +249,7 @@ export function submitTicket(ticket, status) {
         })
         // Allow the user to trigger "Close & Send" with just one action
         const data = ticket.toJS()
+
         data.status = status || data.status
 
         if (data.newMessage) {
@@ -238,11 +264,13 @@ export function submitTicket(ticket, status) {
             data.assignee_user = { id: data.assignee_user.id }
         }
 
+        delete data.state
+
         return reqwest({
-            url: `/api/tickets/${ticket.get('id')}/`,
+            url: ticket.get('id') ? `/api/tickets/${ticket.get('id')}/` : '/api/tickets/',
             type: 'json',
             contentType: 'application/json',
-            method: 'PUT',
+            method: ticket.get('id') ? 'PUT' : 'POST',
             data: JSON.stringify(data)
         }).then((resp) => {
             dispatch({
