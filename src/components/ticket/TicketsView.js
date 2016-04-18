@@ -119,7 +119,16 @@ export default class TicketsView extends React.Component {
                     </div>
                 </div>
 
-                <h1 className="ui header">{this.props.view.get('name')}</h1>
+                <div className="ui grid view-header">
+                    <div className="twelve wide column">
+                        <h1 className="ui header">{this.props.view.get('name')}</h1>
+                    </div>
+                    <div className="four wide column">
+                        <button className="ui right floated green button">
+                            CREATE TICKET
+                        </button>
+                    </div>
+                </div>
 
                 <FilterTopbar
                     view={this.props.view}

@@ -27,7 +27,7 @@ export default class UsersView extends React.Component {
                     </div>
                 </div>
 
-                <div className="ui grid">
+                <div className="ui grid view-header">
                     <div className="thirteen wide column">
                         <h1 className="ui header">Users</h1>
                     </div>
