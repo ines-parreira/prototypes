@@ -1,10 +1,10 @@
 import reqwest from 'reqwest'
-import { Map, List } from 'immutable'
+import { Map } from 'immutable'
 import { pushState } from 'redux-router'
 import _ from 'lodash'
 import { systemMessage } from './systemMessage'
 import { PER_PAGE } from '../constants'
-import { ASTToAlgoliaSearchParams, ticketsIndex } from '../filters/algolia'
+import { ASTToAlgoliaSearchParams } from '../filters/algolia'
 
 
 // Basic operations on the ticket
@@ -145,11 +145,13 @@ export function fetchPageFromAlgolia(settings, view, page, searchValue) {
     }
 }
 
-export function fetchView(url, data = {}, type = 'list') {
+export function fetchTicketDetails(ticketId, data) {
     return (dispatch) => {
         dispatch({
-            type: type === 'list' ? FETCH_TICKET_LIST_VIEW_START : FETCH_TICKET_START,
+            type: FETCH_TICKET_START
         })
+
+        const url = `/api/tickets/${ticketId}/`
 
         return reqwest({
             url: url,
@@ -162,7 +164,39 @@ export function fetchView(url, data = {}, type = 'list') {
                 console.error('No results for', url)
             }
             dispatch({
-                type: type === 'list' ? FETCH_TICKET_LIST_VIEW_SUCCESS : FETCH_TICKET_SUCCESS,
+                type: FETCH_TICKET_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: `Error: Failed to fetch ticket ${ticketId}`,
+                msg: err
+            }))
+        })
+    }
+}
+
+export function fetchTicketList(data = {}) {
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_TICKET_LIST_VIEW_START
+        })
+
+        const url = '/api/tickets/'
+
+        return reqwest({
+            url: url,
+            data: data,
+            type: 'json',
+            method: 'GET',
+            contentType: 'application/json'
+        }).then((resp) => {
+            if (_.isEmpty(resp)) {
+                console.error('No results for', url)
+            }
+            dispatch({
+                type: FETCH_TICKET_LIST_VIEW_SUCCESS,
                 resp
             })
         }).catch((err) => {

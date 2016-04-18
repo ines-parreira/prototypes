@@ -8,29 +8,13 @@ import TicketView from '../components/ticket/ticketview/TicketView'
 import * as TicketActions from '../actions/ticket'
 import * as MacroActions from '../actions/macro'
 import * as UserActions from '../actions/user'
-import * as TagActions from '../actions/tag' //import that to fetch tags list
+import * as TagActions from '../actions/tag' // import that to fetch tags list
 
 class TicketContainer extends React.Component {
     componentWillMount() {
-        this.props.actions.ticket.fetchView(
-            `/api/tickets/${this.props.params.ticketId}/`,
-            { view: this.props.view },
-            'item'
-        )
+        this.props.actions.ticket.fetchTicketDetails(this.props.params.ticketId)
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.params.ticketId !== this.props.params.ticketId) {
-            this.props.actions.ticket.fetchView(
-                `/api/tickets/${nextProps.params.ticketId}/`,
-                { view: this.props.view },
-                'item'
-            )
-            this.props.actions.macro.fetchMacros()
-            this.props.actions.tag.fetchTags()
-        }
     }
 
     componentDidMount() {
@@ -59,8 +43,12 @@ class TicketContainer extends React.Component {
         })
     }
 
-    applyMacro = (macro) => {
-        this.props.actions.macro.applyMacro(macro, this.props.currentUser)
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.params.ticketId !== this.props.params.ticketId) {
+            this.props.actions.ticket.fetchTicketDetails(this.props.params.ticketId)
+            this.props.actions.macro.fetchMacros()
+            this.props.actions.tag.fetchTags()
+        }
     }
 
     componentDidUpdate = (prevProps) => {
@@ -69,6 +57,10 @@ class TicketContainer extends React.Component {
         if (prevMacros.size === 0 && macros.size !== 0) {
             this.props.actions.macro.previewMacro(macros.valueSeq().first())
         }
+    }
+
+    applyMacro = (macro) => {
+        this.props.actions.macro.applyMacro(macro, this.props.currentUser)
     }
 
     submit = (status, next = false) => {
@@ -90,6 +82,7 @@ class TicketContainer extends React.Component {
                 nextTicketUrl = `/tickets/${this.props.params.view}/${this.props.params.page}/${nextTicket.id}`
                 this.props.actions.ticket.saveIndex(this.props.tickets.get('currentTicketIndex') + 1)
             }
+
             this.props.pushState(null, nextTicketUrl)
         }
     }
