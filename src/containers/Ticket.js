@@ -80,8 +80,9 @@ class TicketContainer extends React.Component {
 
     computeNextUrl(ascending) {
         const translation = ascending ? 1 : -1
-        console.log(translation)
-        const nextTicket = this.props.tickets.get('items').toJS()[this.props.tickets.get('currentTicketIndex') + translation]
+        const nextTicket = this.props.tickets.get('items').toJS()[
+            this.props.tickets.get('currentTicketIndex') + translation
+        ]
         let nextTicketUrl = null
 
         if (nextTicket) {
