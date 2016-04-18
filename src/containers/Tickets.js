@@ -9,7 +9,7 @@ import * as UserActions from '../actions/user'
 import * as TagActions from '../actions/tag'
 import TicketsView from '../components/ticket/TicketsView'
 import TicketColumns from '../components/ticket/TicketColumns'
-import {DEFAULT_VIEW} from '../constants'
+import { DEFAULT_VIEW } from '../constants'
 
 
 class TicketsContainer extends React.Component {
@@ -19,7 +19,7 @@ class TicketsContainer extends React.Component {
 
         if (!viewName || !views || !views.get('items').size) {
             // Return something so sub-components can start rendering while the view loads
-            return Map({slug: viewName})
+            return Map({ slug: viewName })
         }
 
         return views.getIn(['items', viewName])
@@ -114,7 +114,7 @@ TicketsContainer.propTypes = {
         items: PropTypes.array,
         resp_meta: PropTypes.shape({
             page: PropTypes.number,
-            nb_pages: PropTypes.number,
+            nb_pages: PropTypes.number
         }),
         search: PropTypes.string
     }),

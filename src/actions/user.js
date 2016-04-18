@@ -59,7 +59,7 @@ export function fetchAgentUsers() {
         })
 
         return reqwest({
-            url: '/api/users?roles=agent',
+            url: '/api/users/?roles=agent',
             type: 'json',
             method: 'GET',
             contentType: 'application/json'

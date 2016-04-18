@@ -1,6 +1,5 @@
 import reqwest from 'reqwest'
 import { Map } from 'immutable'
-import { pushState } from 'redux-router'
 import _ from 'lodash'
 import { systemMessage } from './systemMessage'
 import { PER_PAGE } from '../constants'

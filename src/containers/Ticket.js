@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { browserHistory } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as mousetrap from 'mousetrap'
@@ -45,7 +46,7 @@ class TicketContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.params.ticketId !== this.props.params.ticketId) {
-            this.props.actions.ticket.fetchTicketDetails(this.props.params.ticketId)
+            this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
             this.props.actions.macro.fetchMacros()
             this.props.actions.tag.fetchTags()
         }
@@ -79,11 +80,12 @@ class TicketContainer extends React.Component {
             let nextTicketUrl = null
 
             if (nextTicket) {
-                nextTicketUrl = `/tickets/${this.props.params.view}/${this.props.params.page}/${nextTicket.id}`
+                nextTicketUrl = `/app/ticket/${nextTicket.id}`
                 this.props.actions.ticket.saveIndex(this.props.tickets.get('currentTicketIndex') + 1)
             }
 
-            this.props.pushState(null, nextTicketUrl)
+            this.props.actions.ticket.submitTicket(this.props.ticket, status)
+            browserHistory.push(nextTicketUrl)
         }
     }
 
