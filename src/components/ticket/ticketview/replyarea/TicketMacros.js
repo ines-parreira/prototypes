@@ -83,8 +83,6 @@ export default class TicketMacros extends React.Component {
     }
 
     render = () => {
-        const { items } = this.props
-
         return (
             <div className="TicketMacros search ui raised segment">
                 <div className="ui grid">

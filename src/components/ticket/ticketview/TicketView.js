@@ -101,7 +101,10 @@ export default class TicketView extends React.Component {
                     </button>
                     */}
 
-                    <h1 className="ui header">{ticket.get('subject')}</h1>
+                    <h1 id="ticket-subject" className="ui header" onClick={() => this.props.toggleSubject()}>
+                        {ticket.get('subject')}
+                    </h1>
+
 
                     <div className="ui grid">
                         <div className="row">
@@ -223,5 +226,6 @@ TicketView.propTypes = {
     submit: PropTypes.func.isRequired,
     applyMacro: PropTypes.func.isRequired,
     tags: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired
+    users: PropTypes.object.isRequired,
+    toggleSubject: PropTypes.func.isRequired
 }

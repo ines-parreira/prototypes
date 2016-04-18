@@ -38,6 +38,7 @@ export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY'
 export const SET_AGENT = 'SET_AGENT'
 export const SET_STATUS = 'SET_STATUS'
 export const SET_PUBLIC = 'TOGGLE_PUBLIC'
+export const SET_SUBJECT = 'SET_SUBJECT'
 
 export const SAVE_INDEX = 'SAVE_INDEX'
 
@@ -89,6 +90,13 @@ export function setPublic(isPublic) {
     return {
         type: SET_PUBLIC,
         isPublic
+    }
+}
+
+export function setSubject(subject) {
+    return {
+        type: SET_SUBJECT,
+        subject
     }
 }
 

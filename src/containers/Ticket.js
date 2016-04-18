@@ -83,6 +83,7 @@ class TicketContainer extends React.Component {
         const nextTicket = this.props.tickets.get('items').toJS()[
             this.props.tickets.get('currentTicketIndex') + translation
         ]
+
         let nextTicketUrl = null
 
         if (nextTicket) {
@@ -93,10 +94,30 @@ class TicketContainer extends React.Component {
         return nextTicketUrl
     }
 
+    toggleSubjectEditMode = () => {
+        const subjectObject = $('#ticket-subject')
+
+        subjectObject.addClass('segment edit-mode').attr('contentEditable', true).focus().bind('keypress', (e) => {
+            if (e.keyCode === 13) { e.preventDefault() }
+        }).bind('keyup', (e) => {
+            if (e.keyCode === 13 || e.keyCode === 27) {
+                e.preventDefault()
+                subjectObject.unbind('keypress').removeClass('segment edit-mode').attr('contentEditable', false)
+                const subject = subjectObject.text()
+
+                if (subject && e.keyCode === 13) {
+                    this.props.actions.ticket.setSubject(subject)
+                } else {
+                    subjectObject.text(this.props.ticket.get('subject'))
+                }
+            }
+        })
+    }
+
     submit = (status, next = false) => {
-        if (!next) {
-            this.props.actions.ticket.submitTicket(this.props.ticket, status)
-        } else {
+        this.props.actions.ticket.submitTicket(this.props.ticket, status)
+
+        if (next) {
             /**
              * `next` is a boolean indicating whether the agent want to be redirected to the next ticket.
              *
@@ -106,7 +127,6 @@ class TicketContainer extends React.Component {
              * the new state to the application.
              */
             const nextTicketUrl = this.computeNextUrl(true)
-            this.props.actions.ticket.submitTicket(this.props.ticket, status)
             browserHistory.push(nextTicketUrl)
         }
     }
@@ -127,6 +147,7 @@ class TicketContainer extends React.Component {
                     submit={this.submit}
                     applyMacro={this.applyMacro}
                     macros={this.props.macros}
+                    toggleSubject={this.toggleSubjectEditMode}
                 />
             </div>
         )
