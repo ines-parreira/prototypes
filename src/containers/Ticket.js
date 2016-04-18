@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { browserHistory } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as mousetrap from 'mousetrap'
@@ -8,15 +9,11 @@ import TicketView from '../components/ticket/ticketview/TicketView'
 import * as TicketActions from '../actions/ticket'
 import * as MacroActions from '../actions/macro'
 import * as UserActions from '../actions/user'
-import * as TagActions from '../actions/tag' //import that to fetch tags list
+import * as TagActions from '../actions/tag' // import that to fetch tags list
 
 class TicketContainer extends React.Component {
     componentWillMount() {
-        this.props.actions.ticket.fetchView(
-            `/api/tickets/${this.props.params.ticketId}/`,
-            { view: this.props.view },
-            'item'
-        )
+        this.props.actions.ticket.fetchTicketDetails(this.props.params.ticketId)
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
     }
@@ -45,10 +42,28 @@ class TicketContainer extends React.Component {
                 this.props.actions.macro.previewAdjacentMacro('next')
             }
         })
+        mousetrap.bind('left', () => {
+            const nextUrl = this.computeNextUrl(false)
+
+            if (nextUrl) {
+                browserHistory.push(nextUrl)
+            }
+        })
+        mousetrap.bind('right', () => {
+            const nextUrl = this.computeNextUrl(true)
+
+            if (nextUrl) {
+                browserHistory.push(nextUrl)
+            }
+        })
     }
 
-    applyMacro = (macro) => {
-        this.props.actions.macro.applyMacro(macro, this.props.currentUser)
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.params.ticketId !== this.props.params.ticketId) {
+            this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
+            this.props.actions.macro.fetchMacros()
+            this.props.actions.tag.fetchTags()
+        }
     }
 
     componentDidUpdate = (prevProps) => {
@@ -59,8 +74,41 @@ class TicketContainer extends React.Component {
         }
     }
 
-    submit = (status) => {
-        this.props.actions.ticket.submitTicket(this.props.ticket, status)
+    applyMacro = (macro) => {
+        this.props.actions.macro.applyMacro(macro, this.props.currentUser)
+    }
+
+    computeNextUrl(ascending) {
+        const translation = ascending ? 1 : -1
+        const nextTicket = this.props.tickets.get('items').toJS()[
+            this.props.tickets.get('currentTicketIndex') + translation
+        ]
+        let nextTicketUrl = null
+
+        if (nextTicket) {
+            nextTicketUrl = `/app/ticket/${nextTicket.id}`
+            this.props.actions.ticket.saveIndex(this.props.tickets.get('currentTicketIndex') + translation)
+        }
+
+        return nextTicketUrl
+    }
+
+    submit = (status, next = false) => {
+        if (!next) {
+            this.props.actions.ticket.submitTicket(this.props.ticket, status)
+        } else {
+            /**
+             * `next` is a boolean indicating whether the agent want to be redirected to the next ticket.
+             *
+             * If he does, we first try to get the naive next ticket (the ticket at the current index + 1).
+             * If the ticket doesnt exist, then we can't redirect the agent.
+             * If it does, we save the new index (the old index + 1) as the new current index, then we push
+             * the new state to the application.
+             */
+            const nextTicketUrl = this.computeNextUrl(true)
+            this.props.actions.ticket.submitTicket(this.props.ticket, status)
+            browserHistory.push(nextTicketUrl)
+        }
     }
 
     render() {
@@ -68,10 +116,9 @@ class TicketContainer extends React.Component {
             return null
         }
         return (
-            <div className="TicketContainer">
+            <div className="TicketContainer" onKeyDown={this.handleKeyDown}>
                 <TicketView
                     actions={this.props.actions}
-                    view={this.props.view}
                     ticket={this.props.ticket}
                     tags={this.props.tags}
                     users={this.props.users}
@@ -88,15 +135,19 @@ class TicketContainer extends React.Component {
 
 TicketContainer.propTypes = {
     params: PropTypes.shape({
+        view: PropTypes.string,
+        page: PropTypes.string,
         ticketId: PropTypes.string
     }).isRequired,
 
     view: PropTypes.string,
     ticket: PropTypes.object,
+    tickets: PropTypes.object,
     macros: PropTypes.object,
     tags: PropTypes.object,
     users: PropTypes.object,
     currentUser: PropTypes.object,
+    settings: PropTypes.object,
 
     actions: PropTypes.object.isRequired
 }
@@ -108,10 +159,12 @@ TicketContainer.defaultProps = {
 function mapStateToProps(state) {
     return {
         ticket: state.ticket,
+        tickets: state.tickets,
         macros: state.macros,
         tags: state.tags,
         users: state.users,
         currentUser: state.currentUser,
+        settings: state.settings
     }
 }
 

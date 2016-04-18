@@ -1,14 +1,13 @@
 import * as actions from '../actions/ticket'
 import Immutable, { Map, List } from 'immutable'
-import _ from 'lodash'
-import { getCode, getAST } from './rule'
 
 
 const ticketsInitial = Map({
     items: List(),
     resp_meta: Map(),
     loading: false,
-    search: ''
+    search: '',
+    currentTicketIndex: null
 })
 
 export function tickets(state = ticketsInitial, action) {
@@ -29,6 +28,12 @@ export function tickets(state = ticketsInitial, action) {
 
         case actions.SEARCH:
             return state.set('search', action.searchValue)
+
+        case actions.SAVE_INDEX:
+            return state.set('currentTicketIndex', action.currentTicketIndex)
+
+        case actions.GO_TO_NEXT_TICKET:
+            return state
 
         default:
             return state

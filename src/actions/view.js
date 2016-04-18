@@ -22,6 +22,15 @@ export const FETCH_VIEW_LIST_START = 'FETCH_VIEW_LIST_START'
 export const FETCH_VIEW_LIST_SUCCESS = 'FETCH_VIEW_LIST_SUCCESS'
 export const FETCH_VIEW_LIST_ERROR = 'FETCH_VIEW_LIST_ERROR'
 
+// Read views
+export const APPLY_VIEW = 'APPLY_VIEW'
+
+export function applyView(slug) {
+    return {
+        type: APPLY_VIEW,
+        slug
+    }
+}
 
 export function updateView(slug, data) {
     return {

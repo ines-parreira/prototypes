@@ -31,10 +31,10 @@ export default class TicketView extends React.Component {
         $('#popup-ticket-status').popup({ inline: true, position: 'bottom right', hoverable: true, on: 'click' })
     }
 
-    submit = (status) => {
+    submit = (status, next) => {
         return (e) => {
             e.preventDefault()
-            this.props.submit(status || this.props.ticket.get('status'))
+            this.props.submit(status || this.props.ticket.get('status'), next)
         }
     }
 
@@ -72,6 +72,7 @@ export default class TicketView extends React.Component {
 
     render = () => {
         const { ticket, tags, users, actions } = this.props
+
         return (
             <div className="ticket-view">
                 <div className="ticket-header">

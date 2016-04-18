@@ -1,9 +1,9 @@
 import reqwest from 'reqwest'
-import { Map, List } from 'immutable'
+import { Map } from 'immutable'
 import _ from 'lodash'
 import { systemMessage } from './systemMessage'
 import { PER_PAGE } from '../constants'
-import { ASTToAlgoliaSearchParams, ticketsIndex } from '../filters/algolia'
+import { ASTToAlgoliaSearchParams } from '../filters/algolia'
 
 
 // Basic operations on the ticket
@@ -38,6 +38,8 @@ export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY'
 export const SET_AGENT = 'SET_AGENT'
 export const SET_STATUS = 'SET_STATUS'
 export const SET_PUBLIC = 'TOGGLE_PUBLIC'
+
+export const SAVE_INDEX = 'SAVE_INDEX'
 
 export const MACRO_ACTIONS = [
     SET_RESPONSE_TEXT, ADD_TICKET_TAGS
@@ -142,11 +144,13 @@ export function fetchPageFromAlgolia(settings, view, page, searchValue) {
     }
 }
 
-export function fetchView(url, data = {}, type = 'list') {
+export function fetchTicketDetails(ticketId, data) {
     return (dispatch) => {
         dispatch({
-            type: type === 'list' ? FETCH_TICKET_LIST_VIEW_START : FETCH_TICKET_START,
+            type: FETCH_TICKET_START
         })
+
+        const url = `/api/tickets/${ticketId}/`
 
         return reqwest({
             url: url,
@@ -159,7 +163,39 @@ export function fetchView(url, data = {}, type = 'list') {
                 console.error('No results for', url)
             }
             dispatch({
-                type: type === 'list' ? FETCH_TICKET_LIST_VIEW_SUCCESS : FETCH_TICKET_SUCCESS,
+                type: FETCH_TICKET_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: `Error: Failed to fetch ticket ${ticketId}`,
+                msg: err
+            }))
+        })
+    }
+}
+
+export function fetchTicketList(data = {}) {
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_TICKET_LIST_VIEW_START
+        })
+
+        const url = '/api/tickets/'
+
+        return reqwest({
+            url: url,
+            data: data,
+            type: 'json',
+            method: 'GET',
+            contentType: 'application/json'
+        }).then((resp) => {
+            if (_.isEmpty(resp)) {
+                console.error('No results for', url)
+            }
+            dispatch({
+                type: FETCH_TICKET_LIST_VIEW_SUCCESS,
                 resp
             })
         }).catch((err) => {
@@ -220,5 +256,12 @@ export function search(searchValue) {
     return {
         type: SEARCH,
         searchValue
+    }
+}
+
+export function saveIndex(currentTicketIndex) {
+    return {
+        type: SAVE_INDEX,
+        currentTicketIndex
     }
 }

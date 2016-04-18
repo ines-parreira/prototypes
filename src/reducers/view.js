@@ -9,7 +9,8 @@ import { ASTToGroupedFilters, groupedFiltersToAST, getCode } from '../filters/as
 
 const viewsInitial = Map({
     items: Map(),
-    loading: false
+    loading: false,
+    active: null
 })
 
 function addExtraAttributes(view) {
@@ -81,10 +82,13 @@ export function views(state = viewsInitial, action) {
                 viewsBySlug[curView.slug] = addExtraAttributes(curView)
             }
 
-            return Map({
+            return state.merge({
                 items: Map(viewsBySlug),
-                loading: false
+                loading: false,
             })
+
+        case actions.APPLY_VIEW:
+            return state.set('active', action.slug)
 
         default:
             return state

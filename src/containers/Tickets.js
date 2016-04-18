@@ -9,19 +9,17 @@ import * as UserActions from '../actions/user'
 import * as TagActions from '../actions/tag'
 import TicketsView from '../components/ticket/TicketsView'
 import TicketColumns from '../components/ticket/TicketColumns'
-import {DEFAULT_VIEW} from '../constants'
+import { DEFAULT_VIEW } from '../constants'
 
 
 class TicketsContainer extends React.Component {
     getView = (props) => {
-        // TODO: Use reselect for this
-        const usedProps = props || this.props
-        const {views, params} = usedProps
-        const viewName = params ? params.view : DEFAULT_VIEW
+        const { views } = props || this.props
+        const viewName = views.get('active')
 
-        if (!views || !views.get('items').size) {
+        if (!viewName || !views || !views.get('items').size) {
             // Return something so sub-components can start rendering while the view loads
-            return Map({slug: viewName})
+            return Map({ slug: viewName })
         }
 
         return views.getIn(['items', viewName])
@@ -37,6 +35,19 @@ class TicketsContainer extends React.Component {
         return TicketColumns.filter((column) =>
             currentColumns.includes(column.get('name'))
         )
+    }
+
+    componentWillMount() {
+        /**
+         * Here, we save in the application state the active View's slug, so that the active View doesn't depend
+         * solely on the URL parameters. The active view is extracted from the URL though, and if no view slug is
+         * present there, we use the DEFAULT_VIEW (currently set at `mt-tickets`).
+         */
+        const viewSlug = this.props.params ? this.props.params.view : DEFAULT_VIEW
+
+        if (!this.props.views.get('active') || this.props.views.get('active') !== viewSlug) {
+            this.props.actions.view.applyView(viewSlug)
+        }
     }
 
     componentDidMount = () => {
@@ -103,7 +114,7 @@ TicketsContainer.propTypes = {
         items: PropTypes.array,
         resp_meta: PropTypes.shape({
             page: PropTypes.number,
-            nb_pages: PropTypes.number,
+            nb_pages: PropTypes.number
         }),
         search: PropTypes.string
     }),
