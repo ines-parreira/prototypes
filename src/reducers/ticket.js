@@ -129,9 +129,15 @@ export function ticket(state = ticketInitial, action) {
                 current_user: currentUser
             }))
 
+            let receiver = getRecipient(state.get('messages'), sender)
+
+            if (state.getIn(['newMessage', 'receiver', 'id'])) {
+                receiver = state.getIn(['newMessage', 'receiver'])
+            }
+
             return state.set('newMessage', state.get('newMessage').merge({
                 sender,
-                receiver: state.getIn(['newMessage', 'receiver']) || getRecipient(state.get('messages'), sender),
+                receiver,
                 body_text: expandedText,
                 body_html: expandedHTML
             }))

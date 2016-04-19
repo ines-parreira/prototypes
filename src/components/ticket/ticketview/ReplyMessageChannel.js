@@ -7,6 +7,13 @@ export default class ReplyMessageChannel extends React.Component {
         if (this.props.settings.get('loaded')) {
             this.loadSearch(this.props)
         }
+
+        $('#popup-message-channel').popup({
+            popup: '#next-message-channel-popup',
+            position: 'bottom left',
+            hoverable: true,
+            on: 'click'
+        })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -19,7 +26,7 @@ export default class ReplyMessageChannel extends React.Component {
         function searchResults({ updateMethod }) {
             return {
                 render({ results }) {
-                    updateMethod(results.hits)
+                    updateMethod(results.hits.splice(null, 5))
                 }
             }
         }
@@ -38,7 +45,8 @@ export default class ReplyMessageChannel extends React.Component {
 
         search.addWidget(
             searchResults({
-                updateMethod: props.actions.ticket.updatePotentialRequesters
+                updateMethod: props.actions.ticket.updatePotentialRequesters,
+                hitsPerPage: 5
             })
         )
 
@@ -46,61 +54,66 @@ export default class ReplyMessageChannel extends React.Component {
         search.start()
     }
 
-    update() {
-
-    }
-
     render() {
         const { ticket, actions } = this.props
         const channel = this.props.ticket.get('channel')
         let className = 'action icon '
         let receiver = 'select a receiver'
+        let receiverDisplayProp = 'email'
+        const popupReceiver = $('#popup-receiver')
 
         if (!this.props.ticket.getIn(['newMessage', 'public'])) {
             className += 'comment yellow'
             receiver = 'your team'
-        } else if (channel === 'email') {
-            className += 'mail blue'
-            receiver = ticket.getIn(['requester', 'email']) || receiver
-        } else if (channel === 'facebook') {
-            className += 'facebook blue'
-            receiver = ticket.getIn(['requester', 'name']) || receiver
+
+            popupReceiver.dropdown('set text', receiver)
+            popupReceiver.dropdown('destroy')
         } else {
-            receiver = 'No one'
-        }
+            popupReceiver.dropdown({
+                allowAdditions: true,
 
-        $('#popup-message-channel').popup({
-            popup: '#next-message-channel-popup',
-            position: 'bottom left',
-            hoverable: true,
-            on: 'click'
-        })
+                onChange: (value, text) => {
+                    const chosenReceiver = this.props.ticket
+                        .getIn(['state', 'potentialRequesters'])
+                        .filter(requester => requester.email === text)[0]
+                    this.props.actions.ticket.setReceiver(chosenReceiver.id)
+                }
+            })
 
-        $('#popup-receiver').dropdown({
-            allowAdditions: true,
-            onChange: (value, text) => {
-                const chosenReceiver = this.props.ticket
-                    .getIn(['state', 'potentialRequesters'])
-                    .filter(requester => requester.email === text)[0]
-                this.props.actions.ticket.setReceiver(chosenReceiver.id)
+            if (channel === 'email' || channel === 'api') {
+                className += 'mail blue'
+                receiver = ticket.getIn(['requester', 'email']) || receiver
+            } else if (channel === 'facebook') {
+                className += 'facebook square blue'
+                receiver = ticket.getIn(['requester', 'name']) || receiver
+                receiverDisplayProp = 'name'
+            } else {
+                receiver = 'No one'
             }
-        })
+
+            popupReceiver.dropdown('bind intent')
+
+            if (popupReceiver.dropdown('get text') === 'your team') {
+                popupReceiver.dropdown('set text', receiver)
+            }
+        }
 
         return (
             <div className="ReplyMessageChannel">
                 <span>
                     <i id="popup-message-channel" className={className}/>
                     <span className="label">To: </span>
+
                     <div id="popup-receiver" className="ui inline dropdown">
                         <div className="text"><b>{receiver}</b></div>
                         <div className="menu">
                             <div className="ui search icon input">
                               <i className="search icon"/>
-                              <input id="search-requester" type="text" name="search" placeholder="Search issues..."/>
+                              <input id="search-requester" type="text" name="search" placeholder="Search customers..."/>
                             </div>
                             {
                                 ticket.getIn(['state', 'potentialRequesters']).map(requester => (
-                                    <div className="item">{requester.email}</div>
+                                    <div key={requester.id} className="item">{requester[receiverDisplayProp]}</div>
                                 ))
                             }
                         </div>
