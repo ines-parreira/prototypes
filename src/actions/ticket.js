@@ -105,10 +105,12 @@ export function setSubject(subject) {
     }
 }
 
-export function setReceiver(receiverId) {
+export function setReceiver(receiverId, receiverAttr, channel) {
     return {
         type: SET_RECEIVER,
-        receiverId
+        receiverId,
+        receiverAttr,
+        channel
     }
 }
 
@@ -255,6 +257,13 @@ export function submitTicket(ticket, status) {
         if (data.newMessage) {
             if (data.newMessage.body_text.length > 0) {
                 data.messages.push(data.newMessage)
+            } else if (!data.messages.length) {
+                dispatch(systemMessage({
+                    type: 'error',
+                    header: 'You need to write a message.',
+                    msg: 'You can\'t create a new ticket without at least a message.'
+                }))
+                return
             }
 
             delete data.newMessage

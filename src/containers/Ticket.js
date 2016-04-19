@@ -64,7 +64,7 @@ class TicketContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.params.ticketId !== this.props.params.ticketId) {
+        if (nextProps.params.ticketId !== this.props.params.ticketId && nextProps.params.ticketId !== 'new') {
             this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
             this.props.actions.macro.fetchMacros()
             this.props.actions.tag.fetchTags()
@@ -109,8 +109,7 @@ class TicketContainer extends React.Component {
         }).bind('keyup', (e) => {
             if (e.keyCode === 13 || e.keyCode === 27) {
                 e.preventDefault()
-                subjectObject.unbind('keypress').unbind('keyup')
-                    .removeClass('edit-mode').attr('contentEditable', false)
+                subjectObject.unbind('keypress').unbind('keyup').removeClass('edit-mode').attr('contentEditable', false)
 
                 if (e.keyCode === 13) {
                     this.props.actions.ticket.setSubject(subjectObject.text())
@@ -118,6 +117,9 @@ class TicketContainer extends React.Component {
                     subjectObject.text(this.props.ticket.get('subject'))
                 }
             }
+        }).on('blur', () => {
+            subjectObject.unbind('keypress').unbind('keyup').removeClass('edit-mode').attr('contentEditable', false)
+            this.props.actions.ticket.setSubject(subjectObject.text())
         })
     }
 
@@ -125,13 +127,10 @@ class TicketContainer extends React.Component {
         let ticket = this.props.ticket
 
         if (!ticket.get('id')) {
-            if (!ticket.getIn(['newMessage', 'body_text'])) { return }
-            console.log(ticket.get('receiver'))
-
             ticket = ticket.set('sender', {id: this.props.currentUser.get('id')})
-            ticket = ticket.set('requester', ticket.getIn(['newMessage', 'receiver']))
-            ticket = ticket.set('receiver', ticket.getIn(['newMessage', 'receiver']))
-            ticket = ticket.setIn(['newMessage', 'sender'], {id: this.props.currentUser.get('id')})
+                .set('requester', ticket.getIn(['newMessage', 'receiver']))
+                .set('receiver', ticket.getIn(['newMessage', 'receiver']))
+                .setIn(['newMessage', 'sender'], {id: this.props.currentUser.get('id')})
         }
 
         this.props.actions.ticket.submitTicket(ticket, status)

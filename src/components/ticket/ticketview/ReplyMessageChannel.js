@@ -71,25 +71,22 @@ export default class ReplyMessageChannel extends React.Component {
         } else {
             popupReceiver.dropdown({
                 allowAdditions: true,
-
-                onChange: (value, text) => {
-                    const chosenReceiver = this.props.ticket
-                        .getIn(['state', 'potentialRequesters'])
-                        .filter(requester => requester.email === text)[0]
-                    this.props.actions.ticket.setReceiver(chosenReceiver.id)
+                onChange: (text, value) => {
+                    this.props.actions.ticket.setReceiver(text, value, channel)
                 }
             })
 
+
             if (channel === 'email' || channel === 'api') {
                 className += 'mail blue'
-                receiver = ticket.getIn(['requester', 'email']) || receiver
             } else if (channel === 'facebook') {
                 className += 'facebook square blue'
-                receiver = ticket.getIn(['requester', 'name']) || receiver
                 receiverDisplayProp = 'name'
-            } else {
-                receiver = 'No one'
             }
+
+            receiver = ticket.getIn(['newMessage', 'receiver', receiverDisplayProp])
+                || ticket.getIn(['requester', receiverDisplayProp])
+                || receiver
 
             popupReceiver.dropdown('bind intent')
 
@@ -105,16 +102,28 @@ export default class ReplyMessageChannel extends React.Component {
                     <span className="label">To: </span>
 
                     <div id="popup-receiver" className="ui inline dropdown">
-                        <div className="text"><b>{receiver}</b></div>
+                        <div><b>{receiver}</b></div>
                         <div className="menu">
                             <div className="ui search icon input">
-                              <i className="search icon"/>
-                              <input id="search-requester" type="text" name="search" placeholder="Search customers..."/>
+                                <i className="search icon"/>
+                                <input id="search-requester" type="text" name="search" placeholder="Search customers..."/>
                             </div>
+                            <div className="hidden item" data-text="receiver"></div>
                             {
-                                ticket.getIn(['state', 'potentialRequesters']).map(requester => (
-                                    <div key={requester.id} className="item">{requester[receiverDisplayProp]}</div>
-                                ))
+                                ticket.getIn(['state', 'potentialRequesters']).map(requester => {
+                                    if (requester[receiverDisplayProp]) {
+                                        return (
+                                            <div
+                                                key={requester.id}
+                                                data-value={requester.id}
+                                                data-text={requester[receiverDisplayProp]}
+                                                className="item"
+                                            >
+                                                <i className="user icon"/>{requester[receiverDisplayProp]}
+                                            </div>
+                                        )
+                                    }
+                                })
                             }
                         </div>
                     </div>

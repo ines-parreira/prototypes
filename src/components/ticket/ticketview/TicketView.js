@@ -138,7 +138,7 @@ export default class TicketView extends React.Component {
                                 </div>
 
                                 <span className="ticket-id ticket-details-item">
-                                    {`#${ticket.get('id')}`}
+                                    {`#${ticket.get('id') || ' no ID yet'}`}
                                 </span>
 
                                 <a id="popup-ticket-status" className={`ticket-status ticket-details-item ui ${ticket.get('status')} label`}>
