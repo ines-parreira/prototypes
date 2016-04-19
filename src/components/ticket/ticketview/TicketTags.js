@@ -31,6 +31,9 @@ export default class TicketTags extends React.Component {
     render = () => {
         const { tags, ticketTags, actions } = this.props
         const existingTagNames = this.props.ticketTags.map(x => x.get('name'))
+        let style = {}
+
+        if (!ticketTags.size) { style = { paddingLeft: 0 } }
 
         return (
             <div className="ui labels">
@@ -48,6 +51,7 @@ export default class TicketTags extends React.Component {
                     <div
                         id="tag-dropdown"
                         className="ticket-tag-add-btn ui search button input pointing dropdown link item"
+                        style={style}
                         onClick={this.toggle}
                     >
                         <span>

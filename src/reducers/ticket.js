@@ -150,7 +150,7 @@ export function ticket(state = ticketInitial, action) {
 
         case actions.SET_RECEIVER:
             const newReceiver = { id: action.receiverId }
-            newReceiver[action.channel === 'email' ? 'email' : 'name'] = action.receiverAttr
+            newReceiver[action.channel === 'email' || action.channel === 'api' ? 'email' : 'name'] = action.receiverAttr
             return state.setIn(['newMessage', 'receiver'], Map(newReceiver))
 
         default:

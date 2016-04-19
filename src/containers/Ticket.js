@@ -101,28 +101,6 @@ class TicketContainer extends React.Component {
         return nextTicketUrl
     }
 
-    toggleSubjectEditMode = () => {
-        const subjectObject = $('#ticket-subject')
-
-        subjectObject.addClass('edit-mode').attr('contentEditable', true).focus().bind('keypress', (e) => {
-            if (e.keyCode === 13) { e.preventDefault() }
-        }).bind('keyup', (e) => {
-            if (e.keyCode === 13 || e.keyCode === 27) {
-                e.preventDefault()
-                subjectObject.unbind('keypress').unbind('keyup').removeClass('edit-mode').attr('contentEditable', false)
-
-                if (e.keyCode === 13) {
-                    this.props.actions.ticket.setSubject(subjectObject.text())
-                } else {
-                    subjectObject.text(this.props.ticket.get('subject'))
-                }
-            }
-        }).on('blur', () => {
-            subjectObject.unbind('keypress').unbind('keyup').removeClass('edit-mode').attr('contentEditable', false)
-            this.props.actions.ticket.setSubject(subjectObject.text())
-        })
-    }
-
     submit = (status, next) => {
         let ticket = this.props.ticket
 
@@ -166,7 +144,6 @@ class TicketContainer extends React.Component {
                     settings={this.props.settings}
                     submit={this.submit}
                     applyMacro={this.applyMacro}
-                    toggleSubject={this.toggleSubjectEditMode}
                 />
             </div>
         )

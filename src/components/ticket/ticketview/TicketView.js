@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
-import TicketTags from './tags/TicketTags'
+import TicketTags from './TicketTags'
 import ReplyMessageChannel from './ReplyMessageChannel'
 
 import { TICKET_STATUSES } from './../../../constants'
@@ -31,6 +31,45 @@ export default class TicketView extends React.Component {
         $('#popup-ticket-status').popup({ inline: true, position: 'bottom right', hoverable: true, on: 'click' })
     }
 
+    toggleSubjectEditMode = () => {
+        const reinitSubject = function (subjObject) {
+            subjObject.classList.remove('edit-mode')
+            subjObject.setAttribute('contentEditable', 'false')
+            subjObject.onkeypress = null
+            subjObject.onkeyup = null
+        }
+
+        const self = this
+        const subjectObject = document.getElementById('ticket-subject')
+
+        subjectObject.classList.add('edit-mode')
+        subjectObject.setAttribute('contentEditable', 'true')
+        subjectObject.focus()
+
+        subjectObject.onkeypress = function (e) {
+            if (e.keyCode === 13) { e.preventDefault() }
+        }
+
+        subjectObject.onkeyup = function (e) {
+            if (e.keyCode === 13 || e.keyCode === 27) {
+                e.preventDefault()
+
+                reinitSubject(subjectObject)
+
+                if (e.keyCode === 13) {
+                    self.props.actions.ticket.setSubject(subjectObject.innerText)
+                } else {
+                    subjectObject.innerText = self.props.ticket.get('subject')
+                }
+            }
+        }
+
+        subjectObject.onblur = function () {
+            reinitSubject(subjectObject)
+            self.props.actions.ticket.setSubject(subjectObject.innerText)
+        }
+    }
+
     submit = (status, next) => {
         return (e) => {
             e.preventDefault()
@@ -55,6 +94,10 @@ export default class TicketView extends React.Component {
 
     render = () => {
         const { ticket, tags, users, actions } = this.props
+
+        let ticketId = ''
+
+        if (ticket.get('id')) { ticketId = `#${ticket.get('id')}`}
 
         return (
             <div className="ticket-view">
@@ -84,7 +127,12 @@ export default class TicketView extends React.Component {
                     </button>
                     */}
 
-                    <h1 id="ticket-subject" placeholder="Ticket subject..." className="ui header" onClick={() => this.props.toggleSubject()}>
+                    <h1
+                        id="ticket-subject"
+                        placeholder="Subject"
+                        className="ui header"
+                        onClick={() => this.toggleSubjectEditMode()}
+                    >
                         {ticket.get('subject')}
                     </h1>
 
@@ -138,7 +186,7 @@ export default class TicketView extends React.Component {
                                 </div>
 
                                 <span className="ticket-id ticket-details-item">
-                                    {`#${ticket.get('id') || ' no ID yet'}`}
+                                    {ticketId}
                                 </span>
 
                                 <a id="popup-ticket-status" className={`ticket-status ticket-details-item ui ${ticket.get('status')} label`}>
@@ -213,5 +261,4 @@ TicketView.propTypes = {
 
     submit: PropTypes.func.isRequired,
     applyMacro: PropTypes.func.isRequired,
-    toggleSubject: PropTypes.func.isRequired,
 }
