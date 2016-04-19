@@ -1,3 +1,5 @@
+/* eslint  "env/es6": 0, "no-var": 0, "semi": 0 */
+
 var path = require('path')
 var webpack = require('webpack')
 
@@ -9,7 +11,10 @@ var jsMainFile = staticDirectory + 'js/main.js'
 var jsBuildPath = staticDirectory + '_build/js'
 var jsBundleFile = __PRODUCTION__ ? '[hash].build.min.js' : 'build.js'
 
-var plugins = []
+var plugins = [
+    new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/])
+]
+
 if (__PRODUCTION__) {
     plugins.push(new webpack.DefinePlugin({
         'process.env': {
