@@ -90,7 +90,7 @@ export default class TicketMessage extends React.Component {
 
         let createdDatetime = ''
         if (message.created_datetime) {
-            createdDatetime = moment(message.created_datetime).tz(currentUser.get('timezone') || 'UTC').fromNow()
+            createdDatetime = moment(message.created_datetime).tz(currentUser.get('timezone') || 'UTC').format('DD/MM/YYYY h:mm')
         }
 
         let className = 'ticket-message'

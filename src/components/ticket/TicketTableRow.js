@@ -31,7 +31,7 @@ export default class TicketTableRow extends React.Component {
     formatDatetime = (datetime) => {
         let formatted = ''
         if (datetime) {
-            formatted = moment(datetime).tz(this.props.currentUser.get('timezone') || 'UTC').fromNow()
+            formatted = moment(datetime).tz(this.props.currentUser.get('timezone') || 'UTC').format('DD/MM/YY h:mm')
         }
         return formatted
     }
