@@ -132,6 +132,8 @@ class TicketContainer extends React.Component {
             return <p>Not found</p>
         }
 
+        const view = this.props.views.getIn(['items', this.props.routing.locationBeforeTransitions.query.view])
+
         return (
             <div className="TicketContainer" onKeyDown={this.handleKeyDown}>
                 <TicketView
@@ -144,6 +146,7 @@ class TicketContainer extends React.Component {
                     settings={this.props.settings}
                     submit={this.submit}
                     applyMacro={this.applyMacro}
+                    view={view}
                 />
             </div>
         )
@@ -157,7 +160,6 @@ TicketContainer.propTypes = {
         ticketId: PropTypes.string
     }).isRequired,
 
-    view: PropTypes.string,
     ticket: PropTypes.object,
     tickets: PropTypes.object,
     macros: PropTypes.object,
@@ -165,12 +167,10 @@ TicketContainer.propTypes = {
     users: PropTypes.object,
     currentUser: PropTypes.object,
     settings: PropTypes.object,
+    views: PropTypes.object,
+    routing: PropTypes.object,
 
     actions: PropTypes.object.isRequired
-}
-
-TicketContainer.defaultProps = {
-    view: 'default'
 }
 
 function mapStateToProps(state) {
@@ -181,7 +181,9 @@ function mapStateToProps(state) {
         tags: state.tags,
         users: state.users,
         currentUser: state.currentUser,
-        settings: state.settings
+        settings: state.settings,
+        views: state.views,
+        routing: state.routing
     }
 }
 

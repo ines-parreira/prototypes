@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import classnames from 'classnames'
+import _ from 'lodash'
 
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
@@ -29,6 +30,35 @@ export default class TicketView extends React.Component {
         })
 
         $('#popup-ticket-status').popup({ inline: true, position: 'bottom right', hoverable: true, on: 'click' })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (
+            nextProps.view && !nextProps.ticket.get('id') && !nextProps.ticket.getIn(['state', 'initialized']) &&
+            nextProps.tags.get('items').size && nextProps.users.get('agents').size
+        ) {
+            const groupedFilters = nextProps.view.get('groupedFilters')
+
+            if (groupedFilters.get('ticket.tags')) {
+                const tagNames = groupedFilters.get('ticket.tags').contains
+                const newTags = nextProps.tags.get('items').filter(curTag => _.includes(tagNames, curTag.get('name')))
+                nextProps.actions.ticket.addTags(newTags)
+            }
+
+            if (groupedFilters.get('ticket.status')) {
+                nextProps.actions.ticket.setStatus(_.first(groupedFilters.get('ticket.status').eq))
+            }
+
+            if (groupedFilters.get('ticket.assignee_user.id')) {
+                const agent = nextProps.users.get('agents').filter(
+                    curAgent => curAgent.get('id').toString() === _.first(groupedFilters.get('ticket.assignee_user.id').eq)
+                ).first()
+
+                nextProps.actions.ticket.setAgent(agent)
+            }
+
+            nextProps.actions.ticket.setInitialized()
+        }
     }
 
     toggleSubjectEditMode = () => {
@@ -258,6 +288,7 @@ TicketView.propTypes = {
     tags: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired,
+    view: PropTypes.object,
 
     submit: PropTypes.func.isRequired,
     applyMacro: PropTypes.func.isRequired,

@@ -114,7 +114,10 @@ export default class TicketsView extends React.Component {
                         <h1 className="ui header">{this.props.view.get('name')}</h1>
                     </div>
                     <div className="four wide column">
-                        <button className="ui right floated green button" onClick={() => { browserHistory.push('/app/ticket/new') }}>
+                        <button
+                            className="ui right floated green button"
+                            onClick={() => { browserHistory.push(`/app/ticket/new?view=${this.props.view.get('slug')}`) }}
+                        >
                             CREATE TICKET
                         </button>
                     </div>
