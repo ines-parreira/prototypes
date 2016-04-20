@@ -10,20 +10,6 @@ import Search from '../Search'
 import { TICKET_STATUSES, CELL_WIDTH } from '../../constants'
 
 export default class TicketsView extends React.Component {
-    renderShowMoreFieldsDropdown = () => {
-        // Only render jQuery-laden initialization once we have the columns
-        if (this.props.columns.size === 0) {
-            return null
-        }
-
-        return (
-            <ShowMoreFieldsDropdown
-                columns={this.props.columns.map((c) => c.get('name'))}
-                updateView={this.updateView}
-            />
-        )
-    }
-
     getWidth = () => {
         return _.sumBy(this.props.columns.toJS(), 'width') + CELL_WIDTH  // One extra cell for the row checkbox
     }
@@ -113,7 +99,10 @@ export default class TicketsView extends React.Component {
             <div className="TicketsView" style={style}>
                 <div className="ui text menu">
                     <div className="left menu item">
-                        {this.renderShowMoreFieldsDropdown()}
+                        <ShowMoreFieldsDropdown
+                            columns={this.props.columns.map((c) => c.get('name'))}
+                            updateView={this.updateView}
+                        />
                     </div>
                     <div className="right menu item">
                         <Search id="ticket" search={this.props.search}/>
