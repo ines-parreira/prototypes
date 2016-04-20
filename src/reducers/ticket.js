@@ -17,8 +17,7 @@ const newMessage = Map({
     subject: '',
     body_text: '',
     body_html: '',
-    // TODO: Implement channel selection widget
-    channel: 'email',
+    channel: 'email'
 })
 
 const ticketInitial = Map({

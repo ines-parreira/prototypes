@@ -39,7 +39,7 @@ export default class TicketView extends React.Component {
          * on which the Agent want to create a new Ticket.
          *
          * For example, if we create a new Ticket on the "My Tickets" view, we want the new ticket to automatically be
-         * assigneed to the current user.
+         * assigned to the current user.
          *
          * For that, we need to make sure :
          * 1) that we're creating a new Ticket on a defined view

@@ -1,10 +1,10 @@
 import instantsearch from 'instantsearch.js'
 
-export function loadSearch(props, indexName, searchBoxName) {
+export function loadSearch(props, indexName, searchBoxName, updateMethod, nbHits = 5) {
     function searchResults({ updateMethod }) {
         return {
             render({ results }) {
-                updateMethod(results.hits.splice(null, 5))
+                updateMethod(results.hits.splice(null, nbHits))
             }
         }
     }
@@ -23,7 +23,7 @@ export function loadSearch(props, indexName, searchBoxName) {
 
     search.addWidget(
         searchResults({
-            updateMethod: props.actions.ticket.updatePotentialRequesters,
+            updateMethod,
             hitsPerPage: 5
         })
     )

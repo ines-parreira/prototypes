@@ -5,7 +5,7 @@ import { loadSearch } from './../../../utils'
 export default class ReplyMessageChannel extends React.Component {
     componentDidMount() {
         if (this.props.settings.get('loaded')) {
-            loadSearch(this.props, 'user', 'requester')
+            loadSearch(this.props, 'user', 'requester', this.props.actions.ticket.updatePotentialRequesters)
         }
 
         $('#popup-message-channel').popup({
@@ -18,7 +18,7 @@ export default class ReplyMessageChannel extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.settings.get('loaded') && !nextProps.settings.get('searchLoaded').get('requester')) {
-            loadSearch(nextProps, 'user', 'requester')
+            loadSearch(nextProps, 'user', 'requester', nextProps.actions.ticket.updatePotentialRequesters)
         }
     }
 
