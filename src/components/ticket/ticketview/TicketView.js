@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import classnames from 'classnames'
 import _ from 'lodash'
 
+import TicketSubject from './TicketSubject'
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
@@ -58,45 +59,6 @@ export default class TicketView extends React.Component {
             }
 
             nextProps.actions.ticket.setInitialized()
-        }
-    }
-
-    toggleSubjectEditMode = () => {
-        const reinitSubject = function (subjObject) {
-            subjObject.classList.remove('edit-mode')
-            subjObject.setAttribute('contentEditable', 'false')
-            subjObject.onkeypress = null
-            subjObject.onkeyup = null
-        }
-
-        const self = this
-        const subjectObject = document.getElementById('ticket-subject')
-
-        subjectObject.classList.add('edit-mode')
-        subjectObject.setAttribute('contentEditable', 'true')
-        subjectObject.focus()
-
-        subjectObject.onkeypress = function (e) {
-            if (e.keyCode === 13) { e.preventDefault() }
-        }
-
-        subjectObject.onkeyup = function (e) {
-            if (e.keyCode === 13 || e.keyCode === 27) {
-                e.preventDefault()
-
-                reinitSubject(subjectObject)
-
-                if (e.keyCode === 13) {
-                    self.props.actions.ticket.setSubject(subjectObject.innerText)
-                } else {
-                    subjectObject.innerText = self.props.ticket.get('subject')
-                }
-            }
-        }
-
-        subjectObject.onblur = function () {
-            reinitSubject(subjectObject)
-            self.props.actions.ticket.setSubject(subjectObject.innerText)
         }
     }
 
@@ -157,15 +119,10 @@ export default class TicketView extends React.Component {
                     </button>
                     */}
 
-                    <h1
-                        id="ticket-subject"
-                        placeholder="Subject"
-                        className="ui header"
-                        onClick={() => this.toggleSubjectEditMode()}
-                    >
-                        {ticket.get('subject')}
-                    </h1>
-
+                    <TicketSubject
+                        ticket={ticket}
+                        actions={actions.ticket}
+                    />
 
                     <div className="ui grid">
                         <div className="row">
