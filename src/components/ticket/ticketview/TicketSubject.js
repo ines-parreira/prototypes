@@ -8,11 +8,10 @@ export default class TicketSubject extends React.Component {
     }
 
     onKeyUp(e) {
-        const subjectObject = document.getElementById('ticket-subject')
-
         if (e.keyCode === 13 || e.keyCode === 27) {
             e.preventDefault()
 
+            const subjectObject = this.refs.ticketSubject
             this.reinitSubject(subjectObject)
 
             if (e.keyCode === 13) {
@@ -24,7 +23,7 @@ export default class TicketSubject extends React.Component {
     }
 
     onBlur() {
-        const subjectObject = document.getElementById('ticket-subject')
+        const subjectObject = this.refs.ticketSubject
         this.reinitSubject(subjectObject)
         this.props.actions.setSubject(subjectObject.innerText)
     }
@@ -35,7 +34,7 @@ export default class TicketSubject extends React.Component {
     }
 
     toggleSubjectEditMode = () => {
-        const subjectObject = document.getElementById('ticket-subject')
+        const subjectObject = this.refs.ticketSubject
 
         subjectObject.classList.add('edit-mode')
         subjectObject.setAttribute('contentEditable', 'true')
@@ -47,6 +46,7 @@ export default class TicketSubject extends React.Component {
         return (
             <h1
                 id="ticket-subject"
+                ref="ticketSubject"
                 placeholder="Subject"
                 className="ui header"
                 onClick={() => this.toggleSubjectEditMode()}
