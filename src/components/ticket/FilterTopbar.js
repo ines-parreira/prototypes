@@ -6,7 +6,6 @@ import TopbarFilterGroup from './TopbarFilterGroup'
 
 export default class FilterTopbar extends React.Component {
     renderSaveButton = () => {
-        return null // todo: remove that
         if (!this.props.view.get('dirty')) {
             return null
         }
