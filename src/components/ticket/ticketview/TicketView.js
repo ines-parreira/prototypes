@@ -34,8 +34,28 @@ export default class TicketView extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        /**
+         * The code below is used to initialize a new Ticket being created with the constraints of the view
+         * on which the Agent want to create a new Ticket.
+         *
+         * For example, if we create a new Ticket on the "My Tickets" view, we want the new ticket to automatically be
+         * assigneed to the current user.
+         *
+         * For that, we need to make sure :
+         * 1) that we're creating a new Ticket on a defined view
+         * >> nextProps.view && !nextProps.ticket.get('id')
+         *
+         * 2) that we have all the data we need to initialize the ticket :
+         * >> nextProps.tags.get('items').size && nextProps.users.get('agents').size
+         *
+         * 3) that this code will only be executed once
+         * >> !nextProps.ticket.getIn(['state', 'initialized'])
+         */
+
         if (
-            nextProps.view && !nextProps.ticket.get('id') && !nextProps.ticket.getIn(['state', 'initialized']) &&
+            nextProps.view &&
+            !nextProps.ticket.get('id') &&
+            !nextProps.ticket.getIn(['state', 'initialized']) &&
             nextProps.tags.get('items').size && nextProps.users.get('agents').size
         ) {
             const groupedFilters = nextProps.view.get('groupedFilters')
