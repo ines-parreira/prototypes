@@ -50,9 +50,9 @@ export default class TicketSubject extends React.Component {
                 placeholder="Subject"
                 className="ui header"
                 onClick={() => this.toggleSubjectEditMode()}
-                onKeyDown={this.onKeyDown.bind(this)}
-                onKeyUp={this.onKeyUp.bind(this)}
-                onBlur={this.onBlur.bind(this)}
+                onKeyDown={(e) => this.onKeyDown(e)}
+                onKeyUp={(e) => this.onKeyUp(e)}
+                onBlur={(e) => this.onBlur(e)}
             >
                 {ticket.get('subject')}
             </h1>
