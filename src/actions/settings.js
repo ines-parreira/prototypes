@@ -34,10 +34,8 @@ export function fetchSettings() {
 
 // Called when an instantsearch widget has been loaded (page can be 'users', 'ticket'...)
 export function loadedSearch(page) {
-    return (dispatch) => {
-        dispatch({
-            type: LOADED_SEARCH,
-            page: page
-        })
+    return {
+        type: LOADED_SEARCH,
+        page
     }
 }

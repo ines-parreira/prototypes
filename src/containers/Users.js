@@ -5,61 +5,29 @@ import { bindActionCreators } from 'redux'
 import * as UserActions from '../actions/user'
 import * as SettingsActions from '../actions/settings'
 import UsersView from '../components/user/UsersView'
-
-import instantsearch from 'instantsearch.js'
+import { loadSearch } from '../utils'
 
 
 class UsersContainer extends React.Component {
     getChildContext() {
         return {
-            createUser: this.props.actions.createUser,
-            updateUser: this.props.actions.updateUser,
-            deleteUser: this.props.actions.deleteUser,
-            sortUsers: this.props.actions.sortUsers
+            createUser: this.props.actions.user.createUser,
+            updateUser: this.props.actions.user.updateUser,
+            deleteUser: this.props.actions.user.deleteUser,
+            sortUsers: this.props.actions.user.sortUsers
         }
     }
 
     componentDidMount() {
         if (this.props.settings.get('loaded')) {
-            this.loadSearch(this.props)
+            this.loadSearch(this.props, 'user', 'user', this.props.actions.user.updateList, 20)
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.settings.get('loaded') && !nextProps.settings.get('searchLoaded').get('user')) {
-            this.loadSearch(nextProps)
+            loadSearch(nextProps, 'user', 'user', nextProps.actions.user.updateList, 20)
         }
-    }
-
-    loadSearch(props) {
-        function searchResults({ updateMethod }) {
-            return {
-                render({ results }) {
-                    updateMethod(results.hits)
-                }
-            }
-        }
-
-        const search = instantsearch({
-            appId: props.settings.get('data').get('algolia_app_name'),
-            apiKey: props.settings.get('data').get('algolia_api_key'),
-            indexName: props.settings.get('data').get('indices_names').get('user')
-        })
-
-        search.addWidget(
-            instantsearch.widgets.searchBox({
-                container: document.querySelector('#search-user')
-            })
-        )
-
-        search.addWidget(
-            searchResults({
-                updateMethod: props.actions.updateList
-            })
-        )
-
-        props.settingsActions.loadedSearch('user')
-        search.start()
     }
 
     render() {
@@ -94,7 +62,6 @@ UsersContainer.propTypes = {
     currentUser: PropTypes.object,
     settings: PropTypes.object,
     actions: PropTypes.object.isRequired,
-    settingsActions: PropTypes.object.isRequired,
 
     // React Router
     params: PropTypes.object
@@ -117,8 +84,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(UserActions, dispatch),
-        settingsActions: bindActionCreators(SettingsActions, dispatch)
+        actions: {
+            user: bindActionCreators(UserActions, dispatch),
+            settings: bindActionCreators(SettingsActions, dispatch)
+        }
     }
 }
 

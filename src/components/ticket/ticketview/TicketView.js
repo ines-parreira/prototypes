@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react'
 import classnames from 'classnames'
+import _ from 'lodash'
 
+import TicketSubject from './TicketSubject'
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
-import TicketTags from './tags/TicketTags'
+import TicketTags from './TicketTags'
 import ReplyMessageChannel from './ReplyMessageChannel'
 
 import { TICKET_STATUSES } from './../../../constants'
@@ -31,6 +33,46 @@ export default class TicketView extends React.Component {
         $('#popup-ticket-status').popup({ inline: true, position: 'bottom right', hoverable: true, on: 'click' })
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (
+            /**
+             * The code below is used to initialize a new Ticket being created with the constraints of the view
+             * on which the Agent want to create a new Ticket.
+             *
+             * For example, if we create a new Ticket on the "My Tickets" view, we want the new ticket to automatically be
+             * assigned to the current user.
+             *
+             * For that, we need to make sure :
+             */
+            nextProps.view && // that we have a view from which to extract constraints
+            !nextProps.ticket.get('id') && // that we're on a Ticket being created
+            !nextProps.ticket.getIn(['state', 'dirty']) && // that this code hasn't been executed yet
+            nextProps.tags.get('items').size && nextProps.users.get('agents').size // that we've got all the data needed
+        ) {
+            const groupedFilters = nextProps.view.get('groupedFilters')
+
+            if (groupedFilters.get('ticket.tags')) {
+                const tagNames = groupedFilters.get('ticket.tags').contains
+                const newTags = nextProps.tags.get('items').filter(curTag => _.includes(tagNames, curTag.get('name')))
+                nextProps.actions.ticket.addTags(newTags)
+            }
+
+            if (groupedFilters.get('ticket.status')) {
+                nextProps.actions.ticket.setStatus(_.first(groupedFilters.get('ticket.status').eq))
+            }
+
+            if (groupedFilters.get('ticket.assignee_user.id')) {
+                const agent = nextProps.users.get('agents').filter(
+                    curAgent => curAgent.get('id').toString() === _.first(groupedFilters.get('ticket.assignee_user.id').eq)
+                ).first()
+
+                nextProps.actions.ticket.setAgent(agent)
+            }
+
+            nextProps.actions.ticket.markTicketDirty()
+        }
+    }
+
     submit = (status, next) => {
         return (e) => {
             e.preventDefault()
@@ -53,25 +95,12 @@ export default class TicketView extends React.Component {
         return <span className="secondary-action">UNASSIGNED</span>
     }
 
-    renderRequesterData() {
-        const channel = this.props.ticket.get('channel')
-        if (channel === 'email') {
-            return (
-                <div className="recipient-data">
-                    <i className="icon mail blue"/><span className="label">To: </span><b>{this.props.ticket.getIn(['requester', 'email'])}</b>
-                </div>
-            )
-        } else if (channel === 'facebook') {
-            return (
-                <div className="recipient-data">
-                    <i className="icon facebook blue"/><span className="label">To: </span><b>{this.props.ticket.getIn(['requester', 'name'])}</b>
-                </div>
-            )
-        }
-    }
-
     render = () => {
         const { ticket, tags, users, actions } = this.props
+
+        let ticketId = ''
+
+        if (ticket.get('id')) { ticketId = `#${ticket.get('id')}`}
 
         return (
             <div className="ticket-view">
@@ -101,7 +130,10 @@ export default class TicketView extends React.Component {
                     </button>
                     */}
 
-                    <h1 className="ui header">{ticket.get('subject')}</h1>
+                    <TicketSubject
+                        ticket={ticket}
+                        actions={actions.ticket}
+                    />
 
                     <div className="ui grid">
                         <div className="row">
@@ -152,7 +184,7 @@ export default class TicketView extends React.Component {
                                 </div>
 
                                 <span className="ticket-id ticket-details-item">
-                                    {`#${ticket.get('id')}`}
+                                    {ticketId}
                                 </span>
 
                                 <a id="popup-ticket-status" className={`ticket-status ticket-details-item ui ${ticket.get('status')} label`}>
@@ -192,7 +224,8 @@ export default class TicketView extends React.Component {
 
                 <ReplyMessageChannel
                     ticket={this.props.ticket}
-                    actions={this.props.actions.ticket}
+                    actions={this.props.actions}
+                    settings={this.props.settings}
                 />
 
                 <TicketReplyArea
@@ -220,8 +253,11 @@ TicketView.propTypes = {
     ticket: PropTypes.object.isRequired,
     macros: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
+    tags: PropTypes.object.isRequired,
+    users: PropTypes.object.isRequired,
+    settings: PropTypes.object.isRequired,
+    view: PropTypes.object,
+
     submit: PropTypes.func.isRequired,
     applyMacro: PropTypes.func.isRequired,
-    tags: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired
 }
