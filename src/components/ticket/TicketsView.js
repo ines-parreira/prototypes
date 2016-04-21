@@ -93,50 +93,52 @@ export default class TicketsView extends React.Component {
 
     render() {
         const groupedFilters = this.props.view.get('groupedFilters', Map())
-        const style = { maxWidth: this.getWidth() }
+        const style = { maxWidth: this.getWidth(), width: this.getWidth() }
 
         return (
             <div className="TicketsView" style={style}>
-                <div className="ui text menu">
-                    <div className="left menu item">
-                        <ShowMoreFieldsDropdown
-                            columns={this.props.columns.map((c) => c.get('name'))}
-                            updateView={this.updateView}
-                        />
+                <div className="sticky-header" style={style}>
+                    <div className="ui text menu">
+                        <div className="left menu item">
+                            <ShowMoreFieldsDropdown
+                                columns={this.props.columns.map((c) => c.get('name'))}
+                                updateView={this.updateView}
+                            />
+                        </div>
+                        <div className="right menu item">
+                            <Search id="ticket" search={this.props.search}/>
+                        </div>
                     </div>
-                    <div className="right menu item">
-                        <Search id="ticket" search={this.props.search}/>
-                    </div>
-                </div>
 
-                <div className="ui grid view-header">
-                    <div className="twelve wide column">
-                        <h1 className="ui header">{this.props.view.get('name')}</h1>
+                    <div className="ui grid view-header">
+                        <div className="twelve wide column">
+                            <h1 className="ui header">{this.props.view.get('name')}</h1>
+                        </div>
+                        <div className="four wide column">
+                            <button
+                                className="ui right floated green button"
+                                onClick={() => { browserHistory.push(`/app/ticket/new?view=${this.props.view.get('slug')}`) }}
+                            >
+                                CREATE TICKET
+                            </button>
+                        </div>
                     </div>
-                    <div className="four wide column">
-                        <button
-                            className="ui right floated green button"
-                            onClick={() => { browserHistory.push(`/app/ticket/new?view=${this.props.view.get('slug')}`) }}
-                        >
-                            CREATE TICKET
-                        </button>
-                    </div>
-                </div>
 
-                <FilterTopbar
-                    view={this.props.view}
-                    groupedFilters={groupedFilters}
-                    filterSpecs={this.getFilterSpecs()}
-                    updateFilters={this.updateFilters}
-                    clearFilter={this.clearFilter}
-                    submitView={this.props.actions.view.submitView}
-                    editMode={this.props.view.get('editMode')}
-                    width={this.getWidth()}
-                />
+                    <FilterTopbar
+                        view={this.props.view}
+                        groupedFilters={groupedFilters}
+                        filterSpecs={this.getFilterSpecs()}
+                        updateFilters={this.updateFilters}
+                        clearFilter={this.clearFilter}
+                        submitView={this.props.actions.view.submitView}
+                        width={this.getWidth()}
+                    />
+                </div>
 
                 <TicketTable
                     actions={this.props.actions}
                     view={this.props.view.get('slug')}
+                    isDirty={this.props.view.get('dirty')}
                     tickets={this.props.tickets}
                     columns={this.props.columns.toJS()}
                     groupedFilters={groupedFilters}
