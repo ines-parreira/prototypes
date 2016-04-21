@@ -85,7 +85,6 @@ export default class TicketsView extends React.Component {
     }
 
     updateViewName = (name) => {
-        console.log(name.toLowerCase().trim().replace(/[ ]/g, '-'))
         this.updateView({
             name,
             slug: name.toLowerCase().trim().replace(/[ ]/g, '-')
@@ -145,6 +144,7 @@ export default class TicketsView extends React.Component {
                         clearFilter={this.clearFilter}
                         submitView={this.props.actions.view.submitView}
                         width={this.getWidth()}
+                        urlSlug={this.props.urlSlug}
                     />
                 </div>
 
@@ -176,6 +176,7 @@ TicketsView.propTypes = {
     agents: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     fetchPage: PropTypes.func.isRequired,
-    search: PropTypes.func.isRequired
+    search: PropTypes.func.isRequired,
+    urlSlug: PropTypes.string
 }
 

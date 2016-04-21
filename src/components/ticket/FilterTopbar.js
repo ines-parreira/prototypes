@@ -1,21 +1,30 @@
 import React, { PropTypes } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import _ from 'lodash'
 import TopbarFilterGroup from './TopbarFilterGroup'
+import { browserHistory } from 'react-router'
 
 
 export default class FilterTopbar extends React.Component {
-    renderSaveButton = () => {
-        if (!this.props.view.get('dirty')) {
-            return null
+    renderSaveButtons = () => {
+        const onClickUpdate = () => {
+            this.props.submitView(this.props.view, this.props.urlSlug)
+            browserHistory.push(`/app/tickets/${this.props.view.get('slug')}`)
+        }
+        const onClickNew = () => {
+            const data = this.props.view.delete('id').delete('group_by').delete('icon')
+            this.props.submitView(data, this.props.urlSlug)
+            browserHistory.push(`/app/tickets/${this.props.view.get('slug')}`)
         }
 
         const onClick = () => this.props.submitView(this.props.view)
 
         return (
-            <div className="item" key="save">
-                <button id="save" className="ui green label" onClick={onClick}>
-                    Save
+            <div className="right menu">
+                <button className="ui basic green label item" onClick={onClickUpdate}>
+                    UPDATE
+                </button>
+                <button className="ui green label item" onClick={onClickNew}>
+                    SAVE AS NEW
                 </button>
             </div>
         )
@@ -68,5 +77,6 @@ FilterTopbar.propTypes = {
     submitView: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,
     clearFilter: PropTypes.func.isRequired,
-    width: PropTypes.number.isRequired
+    width: PropTypes.number.isRequired,
+    urlSlug: PropTypes.string
 }

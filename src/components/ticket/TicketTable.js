@@ -50,7 +50,7 @@ export default class TicketTable extends React.Component {
     render = () => {
         // TODO: Do this with CSS rather than explicitly calculating & passing total width
         const style = { maxWidth: this.props.width }
-        const ticketTableStyle = { marginTop: this.props.isDirty ? '13em' : '9em' }
+        const ticketTableStyle = { marginTop: this.props.isDirty ? '14em' : '9em' }
 
         if (this.props.tickets.get('items').size === 0) {
             return this.renderLoading()

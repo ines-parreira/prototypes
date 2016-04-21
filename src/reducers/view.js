@@ -44,6 +44,7 @@ export function views(state = viewsInitial, action) {
     let groupedFilters
     let updatedFilters
     let updatedView
+    let newState = state
 
     switch (action.type) {
         case actions.NEW_VIEW:
@@ -57,7 +58,18 @@ export function views(state = viewsInitial, action) {
             return state.set('loading', true)
 
         case actions.SUBMIT_VIEW_START:
-            return state.setIn(['items', action.slug, 'dirty'], false)
+            view = state.getIn(['items', action.slug])
+
+            if (action.data.slug !== action.slug) {
+                newState = newState.setIn(['items', action.data.slug], view)
+                newState = newState.deleteIn(['items', action.slug])
+                newState = newState.set('active', action.data.slug)
+            }
+
+            return newState.setIn(['items', action.data.slug, 'dirty'], false)
+
+        case actions.SUBMIT_VIEW_SUCCESS:
+            return state.setIn(['items', action.slug, action.resp])
 
         case actions.UPDATE_VIEW_FILTERS:
             view = state.getIn(['items', action.slug])

@@ -92,10 +92,14 @@ function removeExtraAttributes(view) {
 }
 
 
-export function submitView(view) {
+export function submitView(view, slug) {
     const data = removeExtraAttributes(view).toJS()
-    const { id, slug } = data
-    const url = `/api/views/${id}/`
+    const { id, newSlug } = data
+    let url = '/api/views/'
+
+    if (id) {
+        url = `/api/views/${id}/`
+    }
 
     return (dispatch) => {
         dispatch({
@@ -113,13 +117,13 @@ export function submitView(view) {
         }).then((resp) => {
             dispatch({
                 type: SUBMIT_VIEW_SUCCESS,
-                slug,
+                newSlug,
                 resp
             })
         }).catch((err) => {
             dispatch({
                 type: SUBMIT_VIEW_ERROR,
-                slug,
+                newSlug,
                 err
             })
         })

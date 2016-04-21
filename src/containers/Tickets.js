@@ -103,6 +103,7 @@ class TicketsContainer extends React.Component {
                     actions={this.props.actions}
                     fetchPage={this.fetchPage}
                     search={this.props.actions.ticket.search}
+                    urlSlug={this.props.params.view}
                 />
             </div>
         )
