@@ -1,7 +1,6 @@
-import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
+import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import * as WidgetActions from '../actions/widget'
 import Infobar from '../components/Infobar'
 import TicketInfobar from '../components/ticket/ticketview/TicketInfobar'
@@ -17,15 +16,20 @@ class TicketsInfobarContainer extends React.Component {
     }
 
     render() {
+        // TODO(@xarg): quick fix to not display the sidebar if there is no customer info
+        if (!this.props.ticket.get('customer')) {
+            return null
+        }
+
         const content = (
             <TicketInfobar
-                    ticket={this.props.ticket}
-                    widgets={this.props.widgets}
+                ticket={this.props.ticket}
+                widgets={this.props.widgets}
             />
         )
 
         return (
-            <Infobar content={content} />
+            <Infobar content={content}/>
         )
     }
 }
