@@ -23,6 +23,7 @@ const newMessage = Map({
 const ticketInitial = Map({
     state: Map({
         potentialRequesters: List(),
+        query: '',
         dirty: false
     }),
     messages: List(),
@@ -131,7 +132,7 @@ export function ticket(state = ticketInitial, action) {
 
             let receiver = getRecipient(state.get('messages'), sender)
 
-            if (state.getIn(['newMessage', 'receiver', 'id'])) {
+            if (state.getIn(['newMessage', 'receiver', 'id']) || state.getIn(['newMessage', 'receiver', 'email'])) {
                 receiver = state.getIn(['newMessage', 'receiver'])
             }
 
@@ -146,10 +147,17 @@ export function ticket(state = ticketInitial, action) {
             return ticketInitial
 
         case actions.UPDATE_POTENTIAL_REQUESTERS:
-            return state.setIn(['state', 'potentialRequesters'], action.potentialRequesters)
+            return state
+                .setIn(['state', 'potentialRequesters'], action.potentialRequesters)
+                .setIn(['state', 'query'], action.query)
 
         case actions.SET_RECEIVER:
-            const newReceiver = { id: action.receiverId }
+            const newReceiver = {}
+
+            if (!isNaN(action.receiverId)) {
+                newReceiver.id = action.receiverId
+            }
+
             newReceiver[action.channel === 'email' || action.channel === 'api' ? 'email' : 'name'] = action.receiverAttr
             return state.setIn(['newMessage', 'receiver'], Map(newReceiver))
 

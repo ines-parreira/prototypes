@@ -4,7 +4,7 @@ export function loadSearch(props, indexName, searchBoxName, updateMethod, nbHits
     function searchResults({ updateMethod }) {
         return {
             render({ results }) {
-                updateMethod(results.hits.splice(null, nbHits))
+                updateMethod(results.hits.splice(null, nbHits), results.query)
             }
         }
     }

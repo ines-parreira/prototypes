@@ -22,6 +22,11 @@ export default class ReplyMessageChannel extends React.Component {
         }
     }
 
+    updateSearchInput(e) {
+        this.refs.searchRequester.value = e.target.value
+        this.refs.searchRequester.dispatchEvent(new Event('input'))
+    }
+
     render() {
         const { ticket, actions } = this.props
         const channel = this.props.ticket.get('channel')
@@ -65,6 +70,12 @@ export default class ReplyMessageChannel extends React.Component {
 
         return (
             <div className="ReplyMessageChannel">
+                {/* This hidden input mirrors the search input of the dropdown, and is the one which Algolia listens to. */}
+                <input
+                    id="search-requester"
+                    ref="searchRequester"
+                    style={{ display: 'none'}}
+                />
                 <span>
                     <i id="popup-message-channel" className={className}/>
                     <span className="label">To: </span>
@@ -72,9 +83,15 @@ export default class ReplyMessageChannel extends React.Component {
                     <div id="popup-receiver" className="ui inline dropdown">
                         <div><b>{receiver}</b></div>
                         <div className="menu">
-                            <div className="ui search icon input">
-                                <i className="search icon"/>
-                                <input id="search-requester" type="text" name="search" placeholder="Search customers..."/>
+                            <div className="ui search input">
+                                <input
+                                    type="text"
+                                    name="search"
+                                    data-text={ticket.getIn(['state', 'query'])}
+                                    value={ticket.getIn(['state', 'query'])}
+                                    placeholder="Search customers..."
+                                    onChange={this.updateSearchInput.bind(this)}
+                                />
                             </div>
                             <div className="hidden item" data-text="receiver"></div>
                             {

@@ -115,10 +115,11 @@ export function setReceiver(receiverId, receiverAttr, channel) {
     }
 }
 
-export function updatePotentialRequesters(potentialRequesters) {
+export function updatePotentialRequesters(potentialRequesters, query) {
     return {
         type: UPDATE_POTENTIAL_REQUESTERS,
-        potentialRequesters
+        potentialRequesters,
+        query
     }
 }
 
