@@ -71,9 +71,11 @@ export default class Navbar extends React.Component {
                                             classes = 'active item'
                                         }
 
+                                        const key = `${view.slug}-${view.id}`
+
                                         return (
                                              <Link
-                                                 key={view.id}
+                                                 key={key}
                                                  to={`/app/tickets/${view.slug}`}
                                                  className={classes}
                                                  onClick={() => { applyView(view.slug) }}

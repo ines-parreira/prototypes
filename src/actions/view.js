@@ -59,7 +59,11 @@ export function clearFilter(slug, name) {
 }
 
 
-export function fetchViews(url, data = {}, type = 'list') {
+export function fetchViews() {
+    const url = '/api/views/'
+    const data = { type: 'ticket-list' }
+    const type = 'list'
+
     return (dispatch) => {
         dispatch({
             type: type === 'list' ? FETCH_VIEW_LIST_START : FETCH_VIEW_START
@@ -104,8 +108,8 @@ export function submitView(view, slug) {
     return (dispatch) => {
         dispatch({
             type: SUBMIT_VIEW_START,
-            slug,
-            data,
+            slug: slug || newSlug,
+            data
         })
 
         return reqwest({
@@ -117,13 +121,13 @@ export function submitView(view, slug) {
         }).then((resp) => {
             dispatch({
                 type: SUBMIT_VIEW_SUCCESS,
-                newSlug,
+                slug: newSlug,
                 resp
             })
         }).catch((err) => {
             dispatch({
                 type: SUBMIT_VIEW_ERROR,
-                newSlug,
+                slug: newSlug,
                 err
             })
         })

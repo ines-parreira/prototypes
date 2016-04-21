@@ -61,15 +61,16 @@ export function views(state = viewsInitial, action) {
             view = state.getIn(['items', action.slug])
 
             if (action.data.slug !== action.slug) {
-                newState = newState.setIn(['items', action.data.slug], view)
-                newState = newState.deleteIn(['items', action.slug])
+                if (action.data.id) {
+                    newState = newState.deleteIn(['items', action.slug])
+                } else {
+                    newState = newState.setIn(['items', action.slug, 'slug'], action.slug)
+                    newState = newState.setIn(['items', action.slug, 'dirty'], action.false)
+                }
                 newState = newState.set('active', action.data.slug)
             }
 
-            return newState.setIn(['items', action.data.slug, 'dirty'], false)
-
-        case actions.SUBMIT_VIEW_SUCCESS:
-            return state.setIn(['items', action.slug, action.resp])
+            return newState.setIn(['items', action.data.slug], view.merge({ dirty: false }))
 
         case actions.UPDATE_VIEW_FILTERS:
             view = state.getIn(['items', action.slug])
