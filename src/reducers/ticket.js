@@ -23,7 +23,7 @@ const newMessage = Map({
 const ticketInitial = Map({
     state: Map({
         potentialRequesters: List(),
-        initialized: false
+        dirty: false
     }),
     messages: List(),
     subject: '',
@@ -153,8 +153,8 @@ export function ticket(state = ticketInitial, action) {
             newReceiver[action.channel === 'email' || action.channel === 'api' ? 'email' : 'name'] = action.receiverAttr
             return state.setIn(['newMessage', 'receiver'], Map(newReceiver))
 
-        case actions.SET_INITIALIZED:
-            return state.setIn(['state', 'initialized'], true)
+        case actions.MARK_TICKET_DIRTY:
+            return state.setIn(['state', 'dirty'], true)
 
         default:
             return state

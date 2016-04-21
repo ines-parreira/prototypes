@@ -46,7 +46,7 @@ export const SAVE_INDEX = 'SAVE_INDEX'
 export const SETUP_NEW_TICKET = 'SETUP_NEW_TICKET'
 
 export const UPDATE_POTENTIAL_REQUESTERS = 'UPDATE_POTENTIAL_REQUESTERS'
-export const SET_INITIALIZED = 'SET_INITIALIZED'
+export const MARK_TICKET_DIRTY = 'MARK_TICKET_DIRTY'
 
 export const MACRO_ACTIONS = [
     SET_RESPONSE_TEXT, ADD_TICKET_TAGS
@@ -133,9 +133,9 @@ export function setResponseText(currentUser, body_text, body_html) {
     }
 }
 
-export function setInitialized() {
+export function markTicketDirty() {
     return {
-        type: SET_INITIALIZED
+        type: MARK_TICKET_DIRTY
     }
 }
 

@@ -52,7 +52,6 @@ export default class TicketTags extends React.Component {
                         id="tag-dropdown"
                         className="ticket-tag-add-btn ui search button input pointing dropdown link item"
                         style={style}
-                        onClick={this.toggle}
                     >
                         <span>
                             <i className="icon plus" /> ADD TAG
