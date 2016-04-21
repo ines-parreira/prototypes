@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import classnames from 'classnames'
 import _ from 'lodash'
 
-import TicketSubject from './TicketSubject'
+import EditableTitle from './../EditableTitle'
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
@@ -132,9 +132,10 @@ export default class TicketView extends React.Component {
                     </button>
                     */}
 
-                    <TicketSubject
-                        ticket={ticket}
-                        actions={actions.ticket}
+                    <EditableTitle
+                        title={ticket.get('subject')}
+                        placeholder="Subject"
+                        updateMethod={actions.ticket.setSubject}
                     />
 
                     <div className="ui grid">

@@ -3,6 +3,7 @@ import { Map, List } from 'immutable'
 import _ from 'lodash'
 import { browserHistory } from 'react-router'
 
+import EditableTitle from './EditableTitle'
 import TicketTable from './TicketTable'
 import FilterTopbar from './FilterTopbar'
 import ShowMoreFieldsDropdown from './../ShowMoreFieldsDropdown'
@@ -83,6 +84,14 @@ export default class TicketsView extends React.Component {
         return this.props.actions.view.updateView(slug, data)
     }
 
+    updateViewName = (name) => {
+        console.log(name.toLowerCase().trim().replace(/[ ]/g, '-'))
+        this.updateView({
+            name,
+            slug: name.toLowerCase().trim().replace(/[ ]/g, '-')
+        })
+    }
+
     updateFilters = (data) => {
         this.props.actions.view.updateFilters(this.props.view.get('slug'), data)
     }
@@ -112,7 +121,11 @@ export default class TicketsView extends React.Component {
 
                     <div className="ui grid view-header">
                         <div className="twelve wide column">
-                            <h1 className="ui header">{this.props.view.get('name')}</h1>
+                            <EditableTitle
+                                title={this.props.view.get('name') || ''}
+                                placeholder="View name"
+                                updateMethod={this.updateViewName}
+                            />
                         </div>
                         <div className="four wide column">
                             <button
