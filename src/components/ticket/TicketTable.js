@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import 'moment-timezone'
 import TicketTableRow from './TicketTableRow'
 import PlainColumnHeader from './PlainColumnHeader'
 import ColumnHeader from './ColumnHeader'

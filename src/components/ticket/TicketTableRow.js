@@ -1,7 +1,6 @@
-import React, { PropTypes } from 'react'
-import { browserHistory } from 'react-router'
-import moment from 'moment'
-import 'moment-timezone'
+import React, {PropTypes} from 'react'
+import {browserHistory} from 'react-router'
+import {formatDatetime} from '../../utils'
 import classNames from 'classnames'
 
 export default class TicketTableRow extends React.Component {
@@ -28,14 +27,6 @@ export default class TicketTableRow extends React.Component {
         return slice !== text ? slice + ' ...' : text
     }
 
-    formatDatetime = (datetime) => {
-        let formatted = ''
-        if (datetime) {
-            formatted = moment(datetime).tz(this.props.currentUser.get('timezone') || 'UTC').calendar()
-        }
-        return formatted
-    }
-
     handleClick = () => {
         this.props.saveIndex(this.props.curIndex)
         browserHistory.push(`/app/ticket/${this.props.ticket.id}`)
@@ -47,11 +38,12 @@ export default class TicketTableRow extends React.Component {
     }
 
     renderFieldContent = (column) => {
-        const { ticket } = this.props
+        const {ticket} = this.props
         switch (column.name) {
             case 'assignee':
-                if (!ticket.assignee_user)
+                if (!ticket.assignee_user) {
                     return null
+                }
                 return ticket.assignee_user.name
             case 'channel':
                 return ticket.channel
@@ -62,9 +54,9 @@ export default class TicketTableRow extends React.Component {
                     </span>
                 )
             case 'created':
-                return this.formatDatetime(ticket.created_datetime)
+                return formatDatetime(ticket.created_datetime, this.props.currentUser.get('timezone'))
             case 'updated':
-                return this.formatDatetime(ticket.updated_datetime)
+                return formatDatetime(ticket.updated_datetime, this.props.currentUser.get('timezone'))
             case 'details':
                 const firstMessage = ticket.messages[0]
                 return (
@@ -80,7 +72,7 @@ export default class TicketTableRow extends React.Component {
             case 'priority':
                 const className = classNames(
                     'ticket-priority', ticket.priority, 'flag', 'icon',
-                    { outline: ticket.priority !== 'high' },
+                    {outline: ticket.priority !== 'high'},
                 )
                 return <i className={className}></i>
             case 'requester':
@@ -95,7 +87,7 @@ export default class TicketTableRow extends React.Component {
     }
 
     renderField = (column) => {
-        const style = { minWidth: column.width }
+        const style = {minWidth: column.width}
         const className = classNames(column.name, 'wide', 'column')
 
         return (
@@ -106,8 +98,8 @@ export default class TicketTableRow extends React.Component {
     }
 
     render = () => {
-        const { columns } = this.props
-        const style = { maxWidth: this.props.width }
+        const {columns} = this.props
+        const style = {maxWidth: this.props.width}
 
         // Unfortunately need to render a new .ui.grid for every row since
         // semantic needs .rows to be a direct child of them, which react-infinite
@@ -115,11 +107,11 @@ export default class TicketTableRow extends React.Component {
         return (
             <div style={style} className="ui grid">
                 <div className="ticket-item row body-row"
-                    onClick={this.handleClick}
+                     onClick={this.handleClick}
                 >
                     <div className="one-fixed wide column">
                         <span className="ui checkbox" onClick={this.stopPropagation}>
-                            <input type="checkbox" />
+                            <input type="checkbox"/>
                             <label></label>
                         </span>
                     </div>

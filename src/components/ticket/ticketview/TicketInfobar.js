@@ -1,13 +1,11 @@
-import React, { PropTypes } from 'react'
-
-import { List, fromJS } from 'immutable'
-
+import React, {PropTypes} from 'react'
+import {List, fromJS} from 'immutable'
 import InfobarWidget from './../InfobarWidget'
 //import Search from '../../Search'
 
 export default class TicketInfobar extends React.Component {
     render() {
-        const { ticket, widgets } = this.props
+        const {ticket, widgets, currentUser} = this.props
         if (!ticket || !widgets.get('items').length) {
             return null
         }
@@ -42,6 +40,7 @@ export default class TicketInfobar extends React.Component {
                                 object={o}
                                 widget={w}
                                 widgets={widgetList}
+                                currentUser={currentUser}
                             />
                         )
                     })
@@ -52,6 +51,7 @@ export default class TicketInfobar extends React.Component {
                             object={object}
                             widget={w}
                             widgets={widgetList}
+                            currentUser={currentUser}
                         />
                     )
                 }
@@ -60,8 +60,8 @@ export default class TicketInfobar extends React.Component {
         return (
             <div className="infobar">
                 {/*<div className="infobar-top infobar-box infobar-search">
-                    <Search id="ticket"/>
-                </div>*/}
+                 <Search id="ticket"/>
+                 </div>*/}
                 <div className="infobar-top infobar-box">
                     <h2>{ticket.get('requester').name}</h2>
                     {renderWidgets(topWidgets)}
@@ -79,5 +79,6 @@ export default class TicketInfobar extends React.Component {
 
 TicketInfobar.propTypes = {
     widgets: PropTypes.object,
-    ticket: PropTypes.object
+    ticket: PropTypes.object,
+    currentUser: PropTypes.object
 }

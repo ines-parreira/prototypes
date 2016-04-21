@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import 'moment-timezone'
 import UserForm from './UserForm'
 
 export default class UserRow extends React.Component {

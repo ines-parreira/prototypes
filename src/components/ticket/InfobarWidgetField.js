@@ -1,17 +1,40 @@
 import React, {PropTypes} from 'react'
 import {renderTemplate} from '../utils/template'
+import {formatDatetime} from '../../utils'
 import InfobarWidget from './InfobarWidget'
 
 export default class InfobarWidgetField extends React.Component {
     render() {
-        const {object, field, widgets} = this.props
-        let value = null
+        const {object, field, widgets, currentUser} = this.props
+        let fieldValue = null
 
         switch (field.type) {
             case 'field':
-                value = (
-                    <span className="field-value">{renderTemplate(field.value.value, {self: object.toJS()})}</span>
-                )
+                const fieldRawVal = field.value.value
+                if (!fieldRawVal) {
+                    break
+                }
+                const fieldVal = renderTemplate(field.value.value, {self: object.toJS()})
+
+                switch (field.value.type) {
+                    case 'url':
+                        fieldValue = (
+                            <span className="field-value">
+                                <a href="{fieldVal}" target="_blank">{fieldVal}</a>
+                            </span>
+                        )
+                        break
+                    case 'datetime':
+                        fieldValue = (
+                            <span className="field-value datetime">{formatDatetime(fieldVal, currentUser.get('timezone'))}</span>
+                        )
+                        break
+                    default:
+                        fieldValue = (
+                            <span className="field-value">{fieldVal}</span>
+                        )
+                        break
+                }
                 break
             case 'widget':
                 let widget = null
@@ -32,22 +55,24 @@ export default class InfobarWidgetField extends React.Component {
                 const obj = object.getIn(path.slice(1))
 
                 if (widget.type === 'list') {
-                    value = obj.map((o, i) => {
+                    fieldValue = obj.map((o, i) => {
                         return (
                             <InfobarWidget
                                 key={`${widget.id}-${i}`}
                                 object={o}
                                 widget={widget}
                                 widgets={widgets}
+                                currentUser={currentUser}
                             />
                         )
                     })
                 } else {
-                    value = (
+                    fieldValue = (
                         <InfobarWidget
                             object={object}
                             widget={widget}
                             widgets={widgets}
+                            currentUser={currentUser}
                         />
                     )
                 }
@@ -56,9 +81,13 @@ export default class InfobarWidgetField extends React.Component {
                 break
         }
 
+        let fieldLabel = null
+        if (field.label) {
+           fieldLabel = <span className="field-label">{field.label}:</span>
+        }
         return (
             <div className="field">
-                <span className="field-label">{field.label}:</span> {value}
+                {fieldLabel} {fieldValue}
             </div>
         )
     }
@@ -67,5 +96,6 @@ export default class InfobarWidgetField extends React.Component {
 InfobarWidgetField.propTypes = {
     object: PropTypes.object,
     widgets: PropTypes.object,
+    currentUser: PropTypes.object,
     field: PropTypes.object
 }

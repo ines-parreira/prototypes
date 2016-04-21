@@ -25,6 +25,7 @@ class TicketsInfobarContainer extends React.Component {
             <TicketInfobar
                 ticket={this.props.ticket}
                 widgets={this.props.widgets}
+                currentUser={this.props.currentUser}
             />
         )
 
@@ -37,13 +38,15 @@ class TicketsInfobarContainer extends React.Component {
 TicketsInfobarContainer.propTypes = {
     widgets: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
     return {
         widgets: state.widgets,
-        ticket: state.ticket
+        ticket: state.ticket,
+        currentUser: state.currentUser
     }
 }
 

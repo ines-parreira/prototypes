@@ -1,9 +1,11 @@
 import instantsearch from 'instantsearch.js'
+import moment from 'moment'
+import 'moment-timezone'
 
 export function loadSearch(props, indexName, searchBoxName, updateMethod, nbHits = 5) {
-    function searchResults({ updateMethod }) {
+    function searchResults({updateMethod}) {
         return {
-            render({ results }) {
+            render({results}) {
                 updateMethod(results.hits.splice(null, nbHits), results.query)
             }
         }
@@ -30,4 +32,14 @@ export function loadSearch(props, indexName, searchBoxName, updateMethod, nbHits
 
     props.actions.settings.loadedSearch(searchBoxName)
     search.start()
+}
+
+
+export function formatDatetime(datetime, timezone) {
+    try {
+        return moment(datetime).tz(timezone || 'UTC').calendar()
+    } catch (e) {
+        console.error('Failed to format datetime', e, datetime, timezone)
+        return datetime
+    }
 }

@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import linkifyStr from 'linkifyjs/string'
-import moment from 'moment'
-import 'moment-timezone'
+import {formatDatetime} from '../../../utils';
 
 export default class TicketMessage extends React.Component {
     componentDidMount() {
@@ -35,9 +34,9 @@ export default class TicketMessage extends React.Component {
                 <div className="attachments">
                     {
                         message.attachments.map(attachment => (
-                            <div className="ui label">
+                            <div className="ui label" key={attachment.url}>
                                 {this.renderAttachmentIcon(attachment.content_type)}
-                                <a key={attachment.name} href={attachment.url} target="_blank">{attachment.name}</a>
+                                <a href={attachment.url} target="_blank">{attachment.name}</a>
                             </div>
                         ))
                     }
@@ -90,7 +89,7 @@ export default class TicketMessage extends React.Component {
 
         let createdDatetime = ''
         if (message.created_datetime) {
-            createdDatetime = moment(message.created_datetime).tz(currentUser.get('timezone') || 'UTC').calendar()
+            createdDatetime = formatDatetime(message.created_datetime, currentUser.get('timezone'))
         }
 
         let className = 'ticket-message'

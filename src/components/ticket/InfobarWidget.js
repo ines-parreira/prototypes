@@ -4,7 +4,7 @@ import InfobarWidgetField from './InfobarWidgetField'
 
 export default class InfobarWidget extends React.Component {
     render() {
-        const { widget, widgets, object } = this.props
+        const { widget, widgets, object, currentUser} = this.props
         if (!object) {
             return null
         }
@@ -32,6 +32,7 @@ export default class InfobarWidget extends React.Component {
                                     object={object}
                                     field={field}
                                     widgets={widgets}
+                                    currentUser={currentUser}
                                 />
                             )
                         )}
@@ -45,5 +46,6 @@ export default class InfobarWidget extends React.Component {
 InfobarWidget.propTypes = {
     widget: PropTypes.object,
     widgets: PropTypes.object,
-    object: PropTypes.object
+    object: PropTypes.object,
+    currentUser: PropTypes.object
 }

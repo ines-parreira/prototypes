@@ -12,7 +12,7 @@ var jsBuildPath = staticDirectory + '_build/js'
 var jsBundleFile = __PRODUCTION__ ? '[hash].build.min.js' : 'build.js'
 
 var plugins = [
-    new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/])
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/)
 ]
 
 if (__PRODUCTION__) {
