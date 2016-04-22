@@ -103,6 +103,8 @@ export function submitView(view, slug) {
 
     if (id) {
         url = `/api/views/${id}/`
+    } else {
+        data.display_order = 99
     }
 
     return (dispatch) => {

@@ -41,6 +41,7 @@ export default class Navbar extends React.Component {
     render() {
         const { views, currentUser, applyView } = this.props
         const sections = this.sections(_.values(views.get('items').toJS()))
+
         return (
             <div className="navbar" ref="navbar">
                 <div id="main-menu" className="navbar-btn navbar-btn-category ui dropdown">
@@ -60,11 +61,19 @@ export default class Navbar extends React.Component {
                             return null
                         }
                         const counter = '' // '(0)'
+                        let orderedViews = []
+
+                        for (const v in section.views) {
+                            orderedViews.push(section.views[v])
+                        }
+
+                        orderedViews = orderedViews.sort((a, b) => a.display_order - b.display_order)
+
                         return (
                             <div key={sectionId} className="item">
                                 <h4 className="">{section.title}</h4>
                                 <div className="menu">
-                                    {section.views.map((view) => {
+                                    {orderedViews.map((view) => {
                                         let classes = 'item'
 
                                         if (view.slug === this.props.currentViewSlug) {

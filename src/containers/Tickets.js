@@ -90,6 +90,12 @@ class TicketsContainer extends React.Component {
     }
 
     render() {
+        let urlSlug = ''
+
+        if (this.props.params) {
+            urlSlug = this.props.params.view
+        }
+
         return (
             <div className="TicketsContainer">
                 <TicketsView
@@ -103,7 +109,7 @@ class TicketsContainer extends React.Component {
                     actions={this.props.actions}
                     fetchPage={this.fetchPage}
                     search={this.props.actions.ticket.search}
-                    urlSlug={this.props.params.view}
+                    urlSlug={urlSlug}
                 />
             </div>
         )
