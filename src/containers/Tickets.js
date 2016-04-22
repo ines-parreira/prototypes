@@ -22,7 +22,13 @@ class TicketsContainer extends React.Component {
             return Map({ slug: viewName })
         }
 
-        return views.getIn(['items', viewName])
+        let view = views.getIn(['items', viewName])
+
+        if (view.get('dirty')) {
+            view = views.get('tmpView')
+        }
+
+        return view
     }
 
     getViewColumns = () => {
