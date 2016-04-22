@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import classnames from 'classnames'
 import { loadSearch } from './../../../utils'
 
 
@@ -8,8 +9,7 @@ export default class ReplyMessageChannel extends React.Component {
             loadSearch(this.props, 'user', 'requester', this.props.actions.ticket.updatePotentialRequesters)
         }
 
-        $('#popup-message-channel').popup({
-            popup: '#next-message-channel-popup',
+        $('#next-message-channel-popup').dropdown({
             position: 'bottom left',
             hoverable: true,
             on: 'click'
@@ -76,8 +76,30 @@ export default class ReplyMessageChannel extends React.Component {
                     ref="searchRequester"
                     style={{ display: 'none'}}
                 />
+
                 <span>
-                    <i id="popup-message-channel" className={className}/>
+
+                    <div id="next-message-channel-popup" className="ui dropdown">
+                        <i id="popup-message-channel" className={className}/>
+                        <div
+                            className="ui vertical menu"
+                            style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
+                        >
+                            <div className="item" onClick={() => actions.ticket.setPublic(true)}>
+                                Send as email
+                            </div>
+                            <div
+                                className={classnames(
+                                    'item',
+                                    ticket.get('id') ? '' : 'disabled'
+                                 )}
+                                onClick={() => actions.ticket.setPublic(false)}
+                            >
+                                Send as internal note
+                            </div>
+                        </div>
+                    </div>
+
                     <span className="label">To: </span>
 
                     <div id="popup-receiver" className="ui inline dropdown">
@@ -114,20 +136,6 @@ export default class ReplyMessageChannel extends React.Component {
                     </div>
 
                 </span>
-
-                <div id="next-message-channel-popup" className="ui popup">
-                    <div
-                        className="ui vertical menu"
-                        style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
-                    >
-                        <div className="item" onClick={() => actions.ticket.setPublic(true)}>
-                            Send as email
-                        </div>
-                        <div className="item" onClick={() => actions.ticket.setPublic(false)}>
-                            Send as internal note
-                        </div>
-                    </div>
-                </div>
 
             </div>
         )
