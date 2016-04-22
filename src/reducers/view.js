@@ -9,7 +9,7 @@ import { ASTToGroupedFilters, groupedFiltersToAST, getCode } from '../filters/as
 
 const viewsInitial = Map({
     items: Map(),
-    tmpView: Map,
+    viewBeingEdited: Map,
     loading: false,
     active: null
 })
@@ -54,13 +54,13 @@ export function views(state = viewsInitial, action) {
         case actions.UPDATE_VIEW:
             view = state.getIn(['items', action.slug])
             view = view.set('dirty', true)
-            return newState.set('tmpView', view.merge(action.data)).setIn(['items', action.slug], view)
+            return newState.set('viewBeingEdited', view.merge(action.data)).setIn(['items', action.slug], view)
 
         case actions.FETCH_VIEW_LIST_START:
             return state.set('loading', true)
 
         case actions.SUBMIT_VIEW_START:
-            view = state.get('tmpView')
+            view = state.get('viewBeingEdited')
 
             if (action.data.slug !== action.slug) {
                 if (action.data.id) {

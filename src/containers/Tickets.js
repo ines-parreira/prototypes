@@ -25,7 +25,7 @@ class TicketsContainer extends React.Component {
         let view = views.getIn(['items', viewName])
 
         if (view.get('dirty')) {
-            view = views.get('tmpView')
+            view = views.get('viewBeingEdited')
         }
 
         return view
