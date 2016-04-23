@@ -28,7 +28,6 @@ export default class Navbar extends React.Component {
         }
 
         if (views) {
-            views.sort((a, b) => a.id > b.id)
             for (const view of views) {
                 const section = view.section ? view.section : 'shared'
                 ret[section].views.push(view)
@@ -61,19 +60,12 @@ export default class Navbar extends React.Component {
                             return null
                         }
                         const counter = '' // '(0)'
-                        let orderedViews = []
-
-                        for (const v in section.views) {
-                            orderedViews.push(section.views[v])
-                        }
-
-                        orderedViews = orderedViews.sort((a, b) => a.display_order - b.display_order)
 
                         return (
                             <div key={sectionId} className="item">
                                 <h4 className="">{section.title}</h4>
                                 <div className="menu">
-                                    {orderedViews.map((view) => {
+                                    {section.views.map((view) => {
                                         let classes = 'item'
 
                                         if (view.slug === this.props.currentViewSlug) {

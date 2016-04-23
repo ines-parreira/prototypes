@@ -123,7 +123,7 @@ export default class TicketsView extends React.Component {
                             <EditableTitle
                                 title={this.props.view.get('name') || ''}
                                 placeholder="View name"
-                                updateMethod={this.updateViewName}
+                                update={this.updateViewName}
                             />
                         </div>
                         <div className="four wide column">
@@ -144,7 +144,7 @@ export default class TicketsView extends React.Component {
                         clearFilter={this.clearFilter}
                         submitView={this.props.actions.view.submitView}
                         width={this.getWidth()}
-                        urlSlug={this.props.urlSlug}
+                        slug={this.props.slug}
                     />
                 </div>
 
@@ -177,6 +177,6 @@ TicketsView.propTypes = {
     currentUser: PropTypes.object.isRequired,
     fetchPage: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
-    urlSlug: PropTypes.string
+    slug: PropTypes.string
 }
 

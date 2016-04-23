@@ -11,13 +11,12 @@ export default class EditableTitle extends React.Component {
         if (e.keyCode === 13 || e.keyCode === 27) {
             e.preventDefault()
 
-            const subjectObject = this.refs.title
-            this.reinitTitle(subjectObject)
+            this.reinitTitle(this.refs.title)
 
             if (e.keyCode === 13) {
                 this.refs.title.blur()
             } else {
-                subjectObject.innerText = this.props.title
+                this.refs.title.innerText = this.props.title
             }
         }
     }
@@ -25,7 +24,7 @@ export default class EditableTitle extends React.Component {
     onBlur() {
         const titleObject = this.refs.title
         this.reinitTitle(titleObject)
-        this.props.updateMethod(titleObject.innerText)
+        this.props.update(titleObject.innerText)
     }
 
     reinitTitle(subjectObject) {
@@ -64,5 +63,5 @@ export default class EditableTitle extends React.Component {
 EditableTitle.propTypes = {
     title: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    updateMethod: PropTypes.func.isRequired
+    update: PropTypes.func.isRequired
 }
