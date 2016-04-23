@@ -1,11 +1,9 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 import Immutable from 'immutable'
 import classNames from 'classnames'
-
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
-
-import SearchInput, { createFilter } from 'react-search-input'
+import SearchInput, {createFilter} from 'react-search-input'
 
 export default class TicketReplyArea extends React.Component {
     constructor() {
@@ -14,11 +12,11 @@ export default class TicketReplyArea extends React.Component {
     }
 
     searchUpdated = (term) => {
-        this.setState({ searchTerm: term }) // Necessary for re-render
+        this.setState({searchTerm: term}) // Necessary for re-render
     }
 
     renderChild = (macros) => {
-        if (this.props.macros.get('visible')) {
+        if (this.props.macros.get('visible') && macros.size > 0) {
             return (
                 <TicketMacros
                     items={macros}
@@ -44,9 +42,7 @@ export default class TicketReplyArea extends React.Component {
         const macrosVisible = this.props.macros.get('visible')
         let macros = this.props.macros.get('items')
 
-        if (macros.size === 0) {
-            return null
-        }
+
         macros = macros.valueSeq()
 
         if (this.refs.search) {
@@ -54,8 +50,9 @@ export default class TicketReplyArea extends React.Component {
             macros = Immutable.fromJS(macros.toJS().filter(this.refs.search.filter(filters)))
         }
 
-        return (
-            <div className="TicketReplyArea ui segments">
+        let searchInput = null
+        if (macros.size > 0) {
+            searchInput = (
                 <div className="search ui raised segment">
                     <SearchInput
                         ref="search"
@@ -71,6 +68,12 @@ export default class TicketReplyArea extends React.Component {
                         />
                     </a>
                 </div>
+            )
+        }
+
+        return (
+            <div className="TicketReplyArea ui segments">
+                {searchInput}
                 {this.renderChild(macros)}
             </div>
         )
