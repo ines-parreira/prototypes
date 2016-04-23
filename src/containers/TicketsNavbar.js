@@ -4,21 +4,11 @@ import { bindActionCreators } from 'redux'
 
 import * as ViewActions from '../actions/view'
 import Navbar from '../components/Navbar'
-import { DEFAULT_VIEW } from '../constants'
 
 class TicketsNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        this.props.actions.fetchViews('/api/views/', {
-            type: 'ticket-list'
-        })
-    }
-
-    getViewSlug = (props) => {
-        // TODO: Use reselect for this
-        const usedProps = props || this.props
-        const { params } = usedProps
-        return params ? params.view : DEFAULT_VIEW
+        this.props.actions.fetchViews()
     }
 
     render() {

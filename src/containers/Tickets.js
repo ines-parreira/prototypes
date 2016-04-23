@@ -22,7 +22,13 @@ class TicketsContainer extends React.Component {
             return Map({ slug: viewName })
         }
 
-        return views.getIn(['items', viewName])
+        let view = views.getIn(['items', viewName])
+
+        if (view.get('dirty')) {
+            view = views.get('viewBeingEdited')
+        }
+
+        return view
     }
 
     getViewColumns = () => {
@@ -90,6 +96,12 @@ class TicketsContainer extends React.Component {
     }
 
     render() {
+        let slug = ''
+
+        if (this.props.params) {
+            slug = this.props.params.view
+        }
+
         return (
             <div className="TicketsContainer">
                 <TicketsView
@@ -103,6 +115,7 @@ class TicketsContainer extends React.Component {
                     actions={this.props.actions}
                     fetchPage={this.fetchPage}
                     search={this.props.actions.ticket.search}
+                    slug={slug}
                 />
             </div>
         )

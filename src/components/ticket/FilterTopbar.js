@@ -1,25 +1,18 @@
 import React, { PropTypes } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import _ from 'lodash'
 import TopbarFilterGroup from './TopbarFilterGroup'
+import { browserHistory } from 'react-router'
 
 
 export default class FilterTopbar extends React.Component {
-    renderSaveButton = () => {
-        return null // todo: remove that
-        if (!this.props.view.get('dirty')) {
-            return null
-        }
-
-        const onClick = () => this.props.submitView(this.props.view)
-
-        return (
-            <div className="item" key="save">
-                <button id="save" className="ui green label" onClick={onClick}>
-                    Save
-                </button>
-            </div>
-        )
+    onClickUpdate = () => {
+        this.props.submitView(this.props.view, this.props.slug)
+        browserHistory.push(`/app/tickets/${this.props.view.get('slug')}`)
+    }
+    onClickNew = () => {
+        const data = this.props.view.delete('id').delete('group_by').delete('icon')
+        this.props.submitView(data, this.props.slug)
+        browserHistory.push(`/app/tickets/${this.props.view.get('slug')}`)
     }
 
     renderFilter = (name) => {
@@ -38,18 +31,27 @@ export default class FilterTopbar extends React.Component {
         )
     }
 
-    render() {
-        const style = { width: this.props.width }
-        let component = null
-
+    renderComponent() {
         if (this.props.view.get('dirty')) {
-            component = (
-                <div className="FilterTopbar ui horizontal list segment" style={style}>
+            return (
+                <div className="FilterTopbar ui menu segment" style={{ width: this.props.width }}>
                     {this.props.groupedFilters.keySeq().toJS().map(this.renderFilter)}
-                    {this.renderSaveButton()}
+                    <div className="right menu">
+                        <button className="ui basic green label item" onClick={this.onClickUpdate}>
+                            UPDATE
+                        </button>
+                        <button className="ui green label item" onClick={this.onClickNew}>
+                            SAVE AS NEW
+                        </button>
+                    </div>
                 </div>
             )
         }
+    }
+
+    render() {
+        const component = this.renderComponent()
+
         return (
             <ReactCSSTransitionGroup
                 transitionName="viewFilterTopbar"
@@ -69,5 +71,6 @@ FilterTopbar.propTypes = {
     submitView: PropTypes.func.isRequired,
     updateFilters: PropTypes.func.isRequired,
     clearFilter: PropTypes.func.isRequired,
-    width: PropTypes.number.isRequired
+    width: PropTypes.number.isRequired,
+    slug: PropTypes.string
 }

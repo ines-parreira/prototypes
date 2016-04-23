@@ -50,13 +50,14 @@ export default class TicketTable extends React.Component {
     render = () => {
         // TODO: Do this with CSS rather than explicitly calculating & passing total width
         const style = { maxWidth: this.props.width }
+        const ticketTableStyle = { marginTop: this.props.isDirty ? '14em' : '9em' }
 
         if (this.props.tickets.get('items').size === 0) {
             return this.renderLoading()
         }
 
         return (
-            <div className="TicketTable">
+            <div className="TicketTable" style={ticketTableStyle}>
                 <div>
                     <div className="ui grid" style={style}>
                         <div className="row head-row" >
@@ -103,6 +104,7 @@ export default class TicketTable extends React.Component {
 TicketTable.propTypes = {
     tickets: PropTypes.object.isRequired,
     view: PropTypes.string,
+    isDirty: PropTypes.bool,
     actions: PropTypes.object.isRequired,
     groupedFilters: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired,

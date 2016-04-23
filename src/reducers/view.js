@@ -1,5 +1,5 @@
 import * as actions from '../actions/view'
-import { Map } from 'immutable'
+import { OrderedMap, Map } from 'immutable'
 import _ from 'lodash'
 import { ASTToGroupedFilters, groupedFiltersToAST, getCode } from '../filters/ast'
 
@@ -8,7 +8,8 @@ import { ASTToGroupedFilters, groupedFiltersToAST, getCode } from '../filters/as
 */
 
 const viewsInitial = Map({
-    items: Map(),
+    items: OrderedMap(),
+    viewBeingEdited: Map,
     loading: false,
     active: null
 })
@@ -44,6 +45,7 @@ export function views(state = viewsInitial, action) {
     let groupedFilters
     let updatedFilters
     let updatedView
+    let newState = state
 
     switch (action.type) {
         case actions.NEW_VIEW:
@@ -51,13 +53,27 @@ export function views(state = viewsInitial, action) {
 
         case actions.UPDATE_VIEW:
             view = state.getIn(['items', action.slug])
-            return state.setIn(['items', action.slug], view.merge(action.data))
+            view = view.set('dirty', true)
+            return newState.set('viewBeingEdited', view.merge(action.data)).setIn(['items', action.slug], view)
 
         case actions.FETCH_VIEW_LIST_START:
             return state.set('loading', true)
 
         case actions.SUBMIT_VIEW_START:
-            return state.setIn(['items', action.slug, 'dirty'], false)
+            view = state.get('viewBeingEdited')
+
+            if (action.data.slug !== action.slug) {
+                if (action.data.id) {
+                    newState = newState.deleteIn(['items', action.slug])
+                } else {
+                    newState = newState.setIn(['items', action.slug, 'dirty'], false)
+                }
+
+                newState = newState.set('active', action.data.slug)
+            }
+
+            newState = newState.setIn(['items', action.data.slug], view.merge({ dirty: false }))
+            return newState.set('items', newState.get('items').sort((a, b) => a.get('order') - b.get('order')))
 
         case actions.UPDATE_VIEW_FILTERS:
             view = state.getIn(['items', action.slug])
@@ -83,7 +99,7 @@ export function views(state = viewsInitial, action) {
             }
 
             return state.merge({
-                items: Map(viewsBySlug),
+                items: Map(viewsBySlug).sort((a, b) => a.get('order') - b.get('order')),
                 loading: false,
             })
 

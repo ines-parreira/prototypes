@@ -59,7 +59,11 @@ export function clearFilter(slug, name) {
 }
 
 
-export function fetchViews(url, data = {}, type = 'list') {
+export function fetchViews() {
+    const url = '/api/views/'
+    const data = { type: 'ticket-list' }
+    const type = 'list'
+
     return (dispatch) => {
         dispatch({
             type: type === 'list' ? FETCH_VIEW_LIST_START : FETCH_VIEW_START
@@ -92,16 +96,22 @@ function removeExtraAttributes(view) {
 }
 
 
-export function submitView(view) {
+export function submitView(view, slug) {
     const data = removeExtraAttributes(view).toJS()
-    const { id, slug } = data
-    const url = `/api/views/${id}/`
+    const { id, newSlug } = data
+    let url = '/api/views/'
+
+    if (id) {
+        url = `/api/views/${id}/`
+    } else {
+        data.order = 99
+    }
 
     return (dispatch) => {
         dispatch({
             type: SUBMIT_VIEW_START,
-            slug,
-            data,
+            slug: slug || newSlug,
+            data
         })
 
         return reqwest({
@@ -113,13 +123,13 @@ export function submitView(view) {
         }).then((resp) => {
             dispatch({
                 type: SUBMIT_VIEW_SUCCESS,
-                slug,
+                slug: newSlug,
                 resp
             })
         }).catch((err) => {
             dispatch({
                 type: SUBMIT_VIEW_ERROR,
-                slug,
+                slug: newSlug,
                 err
             })
         })
