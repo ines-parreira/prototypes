@@ -15,8 +15,6 @@ const viewsInitial = Map({
 })
 
 function addExtraAttributes(view) {
-    console.log(view.name)
-    console.log(view.filters_ast)
     const filtersAst = view.filters_ast
     const filters = getCode(filtersAst)
     const groupedFilters = ASTToGroupedFilters(filtersAst)
@@ -95,13 +93,10 @@ export function views(state = viewsInitial, action) {
 
         case actions.FETCH_VIEW_LIST_SUCCESS:
             const viewsBySlug = {}
-            console.log(action.resp.data)
 
             for (let curView of action.resp.data) {
                 viewsBySlug[curView.slug] = addExtraAttributes(curView)
             }
-
-            console.log(viewsBySlug)
 
             return state.merge({
                 items: Map(viewsBySlug).sort((a, b) => a.get('order') - b.get('order')),
