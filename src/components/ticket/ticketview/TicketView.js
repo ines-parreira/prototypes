@@ -67,6 +67,8 @@ export default class TicketView extends React.Component {
                 ).first()
 
                 nextProps.actions.ticket.setAgent(agent)
+            } else {
+                nextProps.actions.ticket.setAgent(nextProps.currentUser)
             }
 
             nextProps.actions.ticket.markTicketDirty()
