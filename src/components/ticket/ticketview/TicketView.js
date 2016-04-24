@@ -135,7 +135,7 @@ export default class TicketView extends React.Component {
                     <EditableTitle
                         title={ticket.get('subject')}
                         placeholder="Subject"
-                        updateMethod={actions.ticket.setSubject}
+                        update={actions.ticket.setSubject}
                     />
 
                     <div className="ui grid">
