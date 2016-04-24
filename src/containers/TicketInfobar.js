@@ -17,7 +17,7 @@ class TicketsInfobarContainer extends React.Component {
 
     render() {
         // TODO(@xarg): quick fix to not display the sidebar if there is no customer info
-        if (!this.props.ticket.get('customer')) {
+        if (!this.props.ticket.getIn(['requester', 'customer'])) {
             return null
         }
 

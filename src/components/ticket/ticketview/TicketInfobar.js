@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react'
 import { List, fromJS } from 'immutable'
 
 import InfobarWidget from './../InfobarWidget'
-import Search from '../../Search'
+//import Search from '../../Search'
 
 export default class TicketInfobar extends React.Component {
     render() {
@@ -57,7 +57,6 @@ export default class TicketInfobar extends React.Component {
                 }
             })
         }
-
         return (
             <div className="infobar">
                 {/*<div className="infobar-top infobar-box infobar-search">
