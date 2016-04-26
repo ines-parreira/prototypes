@@ -20,7 +20,7 @@ class UsersContainer extends React.Component {
 
     componentDidMount() {
         if (this.props.settings.get('loaded')) {
-            this.loadSearch(this.props, 'user', 'user', this.props.actions.user.updateList, 20)
+            loadSearch(this.props, 'user', 'user', this.props.actions.user.updateList, 20)
         }
     }
 
