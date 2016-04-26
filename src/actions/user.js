@@ -111,7 +111,7 @@ export function createUser(data) {
         })
 
         const newData = Object.assign({}, data)
-        newData.roles = [data.role.slice(0)]
+        newData.roles = [data.role]
         delete newData.role
 
         newData.password = ''
