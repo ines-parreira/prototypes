@@ -3,7 +3,7 @@ import { Map } from 'immutable'
 import _ from 'lodash'
 import { systemMessage } from './systemMessage'
 import { PER_PAGE } from '../constants'
-import { ASTToAlgoliaSearchParams } from '../filters/algolia'
+import { AlgoliaSearchParams } from '../filters/algolia'
 
 
 // Basic operations on the ticket
@@ -151,7 +151,7 @@ export function fetchPageFromAlgolia(settings, view, page, searchValue) {
 
     if (!view) { return }
 
-    const searchParams = ASTToAlgoliaSearchParams(view.get('filters_ast').toJS(), 'ticket.')
+    const searchParams = AlgoliaSearchParams(view.get('filters_ast').toJS(), 'ticket.')
     const params = _.defaults(defaults, searchParams)
 
     return (dispatch) => {

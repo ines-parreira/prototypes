@@ -58,12 +58,10 @@ export function clearFilter(slug, name) {
     }
 }
 
-
 export function fetchViews() {
     const url = '/api/views/'
     const data = { type: 'ticket-list' }
     const type = 'list'
-
     return (dispatch) => {
         dispatch({
             type: type === 'list' ? FETCH_VIEW_LIST_START : FETCH_VIEW_START

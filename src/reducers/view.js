@@ -15,15 +15,11 @@ const viewsInitial = Map({
 })
 
 function addExtraAttributes(view) {
-    const filtersAst = view.filters_ast
-    const filters = getCode(filtersAst)
-    const groupedFilters = ASTToGroupedFilters(filtersAst)
-
     return Map(Object.assign({}, view, {
         dirty: false,
-        filters,
-        filters_ast: Map(filtersAst),
-        groupedFilters: Map(groupedFilters)
+        filters: view.filters,
+        filters_ast: Map(view.filters_ast),
+        groupedFilters: Map(ASTToGroupedFilters(view.filters))
     }))
 }
 
@@ -94,7 +90,7 @@ export function views(state = viewsInitial, action) {
         case actions.FETCH_VIEW_LIST_SUCCESS:
             const viewsBySlug = {}
 
-            for (let curView of action.resp.data) {
+            for (const curView of action.resp.data) {
                 viewsBySlug[curView.slug] = addExtraAttributes(curView)
             }
 
