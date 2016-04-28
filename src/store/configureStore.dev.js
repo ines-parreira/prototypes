@@ -12,6 +12,7 @@ export default function configureStore(initialState) {
         )
     )
 
+    /*
     if (module.hot) {
         // Enable Webpack hot module replacement for reducers
         module.hot.accept('../reducers', () => {
@@ -19,6 +20,7 @@ export default function configureStore(initialState) {
             store.replaceReducer(nextRootReducer)
         })
     }
+    */
 
     return store
 }

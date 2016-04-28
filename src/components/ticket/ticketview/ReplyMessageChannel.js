@@ -111,7 +111,7 @@ export default class ReplyMessageChannel extends React.Component {
                                     name="search"
                                     data-text={ticket.getIn(['state', 'query'])}
                                     value={ticket.getIn(['state', 'query'])}
-                                    placeholder="Search customers..."
+                                    placeholder="Search users..."
                                     onChange={this.updateSearchInput.bind(this)}
                                 />
                             </div>

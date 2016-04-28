@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import {EditorState, ContentState, RichUtils} from 'draft-js'
+import {EditorState, ContentState, RichUtils, convertFromHTML} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
 import Editor from 'draft-js-plugins-editor'
 import createMentionPlugin from 'draft-js-mention-plugin'
@@ -39,19 +39,30 @@ export default class TicketReply extends React.Component {
 
         this.focus = () => this.refs.editor.focus()
         this.handleKeyCommand = this.handleKeyCommand.bind(this)
+        this.updateAfterGorgias = this.updateAfterGorgias.bind(this)
+        this.receiveMessage = this.receiveMessage.bind(this)
     }
 
     onChange = (editorState) => {
         this.setState({editorState})
 
         const text = editorState.getCurrentContent().getPlainText()
-        const html = stateToHTML(editorState.getCurrentContent());
+        const html = stateToHTML(editorState.getCurrentContent())
 
         return this.props.actions.ticket.setResponseText(
             this.props.currentUser,
             text,
             html
         )
+    }
+
+    updateAfterGorgias(payload) {
+        const actualHTML = this.refs.editor.refs.editor.refs.editor.innerHTML
+        const contentBlock = convertFromHTML(actualHTML)
+        const contentState = ContentState.createFromBlockArray(contentBlock)
+        const editorState = EditorState.moveFocusToEnd(EditorState.createWithContent(contentState))
+
+        this.setState({editorState})
     }
 
     // This is for handling things like Bold, Italic, etc..
@@ -62,6 +73,19 @@ export default class TicketReply extends React.Component {
             return true
         }
         return false
+    }
+
+    receiveMessage(event) {
+        // We're waiting for an event from Gorgias extension - that the template has been inserted
+        if (event.data.source && event.data.source === 'gorgias-extension') {
+            if (event.data.payload.event === 'template-inserted') {
+                this.updateAfterGorgias(event.data.payload)
+            }
+        }
+    }
+
+    componentDidMount() {
+        window.addEventListener('message', this.receiveMessage, false)
     }
 
     render() {
@@ -80,6 +104,7 @@ export default class TicketReply extends React.Component {
                         <Editor
                             editorState={this.state.editorState}
                             onChange={this.onChange}
+                            onTab={this.onTab}
                             handleKeyCommand={this.handleKeyCommand}
                             plugins={this.state.plugins}
                             ref="editor"
