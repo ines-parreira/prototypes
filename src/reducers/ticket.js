@@ -17,7 +17,8 @@ const newMessage = Map({
     subject: '',
     body_text: '',
     body_html: '',
-    channel: 'email'
+    channel: 'email',
+    macros: List()
 })
 
 const ticketInitial = Map({
@@ -74,6 +75,12 @@ export function ticket(state = ticketInitial, action) {
     let newState = state
 
     switch (action.type) {
+        case actions.RECORD_MACRO:
+            return state.setIn(
+                ['newMessage', 'macros'],
+                state.getIn(['newMessage', 'macros']).push({ id: action.macro.get('id') })
+            )
+
         case actions.SUBMIT_TICKET_SUCCESS:
         case actions.FETCH_TICKET_SUCCESS:
             return state.merge(Immutable.fromJS(action.resp)).merge({
