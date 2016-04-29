@@ -47,7 +47,7 @@ export default class TicketReply extends React.Component {
         this.setState({editorState})
 
         const text = editorState.getCurrentContent().getPlainText()
-        const html = stateToHTML(editorState.getCurrentContent())
+        const html = text === '' ? '' : stateToHTML(editorState.getCurrentContent())
 
         return this.props.actions.ticket.setResponseText(
             this.props.currentUser,

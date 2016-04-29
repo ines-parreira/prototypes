@@ -25,8 +25,10 @@ export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
 // Macro actions
 export const SET_RESPONSE_TEXT = 'setResponseText'
-export const ADD_TAGS = 'addTags'
 export const ADD_TICKET_TAGS = 'addTags'
+export const SET_STATUS = 'setStatus'
+export const SET_AGENT = 'assignUser'
+
 export const SEARCH = 'search'
 
 // export const ADD_TAGS = 'addTags'
@@ -35,8 +37,6 @@ export const UPDATE_TICKET_TAGS = 'UPDATE_TAGS'
 
 export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY'
 
-export const SET_AGENT = 'SET_AGENT'
-export const SET_STATUS = 'SET_STATUS'
 export const SET_PUBLIC = 'TOGGLE_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
 export const SET_RECEIVER = 'SET_RECEIVER'
@@ -47,10 +47,6 @@ export const SETUP_NEW_TICKET = 'SETUP_NEW_TICKET'
 
 export const UPDATE_POTENTIAL_REQUESTERS = 'UPDATE_POTENTIAL_REQUESTERS'
 export const MARK_TICKET_DIRTY = 'MARK_TICKET_DIRTY'
-
-export const MACRO_ACTIONS = [
-    SET_RESPONSE_TEXT, ADD_TICKET_TAGS
-]
 
 export function addTags(tags) {
     return {
@@ -78,17 +74,21 @@ export function togglePriority() {
     }
 }
 
-export function setAgent(agent) {
+export function setAgent(assignee_user) {
     return {
         type: SET_AGENT,
-        agent
+        args: Map({
+            assignee_user
+        })
     }
 }
 
 export function setStatus(status) {
     return {
         type: SET_STATUS,
-        status
+        args: Map({
+            status
+        })
     }
 }
 

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import TicketTableRow from './TicketTableRow'
 import PlainColumnHeader from './PlainColumnHeader'
 import ColumnHeader from './ColumnHeader'
-import SemanticPaginator from '../SemanticPaginator'
+import SemanticPaginator from '../../SemanticPaginator'
 
 
 const columnToFilterName = {

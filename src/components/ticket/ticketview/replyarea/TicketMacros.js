@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
+import { DEFAULT_ACTIONS } from './../../../../constants'
 
 
 export default class TicketMacros extends React.Component {
@@ -20,6 +21,19 @@ export default class TicketMacros extends React.Component {
         )
     }
 
+    renderSetStatus(setStatusAction) {
+        if (setStatusAction) {
+            return (
+                <div className="macro-data">
+                    <div className="ui label macro-legend">STATUS: </div>
+                    <div className={`ui label ticket-status ${setStatusAction.getIn(['arguments', 'status'])}`}>
+                        {setStatusAction.getIn(['arguments', 'status'])}
+                    </div>
+                </div>
+            )
+        }
+    }
+
     renderAddTags(addTagsActions) {
         if (!addTagsActions || !addTagsActions.size) {
             return null
@@ -30,9 +44,32 @@ export default class TicketMacros extends React.Component {
                 <div className="ui label macro-legend">TAGS: </div>
                 {
                     addTagsActions.map((action) =>
-                        <div key={`action-tag-${action.id}`} className="ui label ticket-tag no-icon">{action.getIn(['arguments', '0', 'name'])}</div>
+                        action.get('arguments').map((arg, i) =>
+                            <div key={`action-tag-${action.id}-${i}`} className="ui label ticket-tag no-icon">{arg.get('name')}</div>
+                        )
                     )
                 }
+            </div>
+        )
+    }
+
+    renderAssignUser(assignUserAction) {
+        if (!assignUserAction) {
+            return null
+        }
+
+        return (
+            <div className="macro-data">
+                <div className="ui label macro-legend">ASSIGN TO: </div>
+                <span
+                    key={`action-assign-${assignUserAction.id}`}
+                    className="ticket-owner-btn ticket-details-item"
+                >
+                    <span className="agent-label ui medium yellow label">A</span>
+                    <span className="secondary-action">
+                        {assignUserAction.getIn(['arguments', 'assignee_user', 'name']).toUpperCase()}
+                    </span>
+                </span>
             </div>
         )
     }
@@ -54,6 +91,11 @@ export default class TicketMacros extends React.Component {
         )
     }
 
+    openModalOnSelectedMacro(selectedMacroId) {
+        this.props.previewMacroInModal(selectedMacroId)
+        this.props.openModal()
+    }
+
     renderSelectedMacro = () => {
         const macro = this.props.selected
 
@@ -62,15 +104,22 @@ export default class TicketMacros extends React.Component {
         }
 
         const addTagsActions = macro.get('actions').filter(action => action.get('name') === 'addTags')
-        const responseTextAction = macro.get('actions').filter(action => action.get('name') === 'setResponseText').get('0')
+        const responseTextAction = macro.get('actions').find(action => action.get('name') === 'setResponseText')
+        const setStatusAction = macro.get('actions').find(action => action.get('name') === 'setStatus')
+        const assignUserAction = macro.get('actions').find(action => action.get('name') === 'assignUser')
         const externalActions = macro.get('actions').filter(
-            action => action.get('name') !== 'addTags' && action.get('name') !== 'setResponseText'
+            action => DEFAULT_ACTIONS.indexOf(action.get('name')) === -1
         )
 
         return (
             <div className="macro-preview">
                 <div>
+                    <a className="ui right floated basic label" onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}>
+                        UPDATE MACRO
+                    </a>
+                    {this.renderSetStatus(setStatusAction)}
                     {this.renderAddTags(addTagsActions)}
+                    {this.renderAssignUser(assignUserAction)}
                     {this.renderExternalActions(externalActions)}
                     <div className="text-preview" dangerouslySetInnerHTML={{
                         __html: responseTextAction.getIn(['arguments', 'body_html'])
@@ -82,7 +131,7 @@ export default class TicketMacros extends React.Component {
         )
     }
 
-    render = () => {
+    render() {
         return (
             <div className="TicketMacros search ui raised segment">
                 <div className="ui grid">
@@ -107,4 +156,6 @@ TicketMacros.propTypes = {
     selected: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     previewMacro: PropTypes.func.isRequired,
+    previewMacroInModal: PropTypes.func.isRequired,
+    openModal: PropTypes.func.isRequired
 }

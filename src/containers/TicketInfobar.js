@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as WidgetActions from '../actions/widget'
 import Infobar from '../components/Infobar'
-import TicketInfobar from '../components/ticket/ticketview/TicketInfobar'
+import TicketInfobar from '../components/ticket/ticketview/infobar/TicketInfobar'
 
 
 class TicketsInfobarContainer extends React.Component {

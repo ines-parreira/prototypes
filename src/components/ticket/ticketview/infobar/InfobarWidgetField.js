@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
-import {renderTemplate} from '../utils/template'
-import {formatDatetime} from '../../utils'
+import {renderTemplate} from '../../../utils/template'
+import {formatDatetime} from '../../../../utils'
 import InfobarWidget from './InfobarWidget'
 
 export default class InfobarWidgetField extends React.Component {

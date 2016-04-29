@@ -101,10 +101,10 @@ export function ticket(state = ticketInitial, action) {
             return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
 
         case actions.SET_AGENT:
-            return state.set('assignee_user', Map(action.agent))
+            return state.set('assignee_user', Map(action.args.get('assignee_user')))
 
         case actions.SET_STATUS:
-            return state.set('status', action.status)
+            return state.set('status', action.args.get('status'))
 
         case actions.SET_PUBLIC:
             return state.setIn(['newMessage', 'public'], action.isPublic)

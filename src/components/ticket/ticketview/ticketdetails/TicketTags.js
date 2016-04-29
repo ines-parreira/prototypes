@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 export default class TicketTags extends React.Component {
     componentDidMount() {
-        $('#tag-dropdown').dropdown({
+        $(`#tag-dropdown-${this.props.suffix}`).dropdown({
             allowAdditions: true,
             onChange: () => {
                 this.update()
@@ -16,7 +16,7 @@ export default class TicketTags extends React.Component {
     }
 
     update = () => {
-        const tagDropdown = $('#tag-dropdown')
+        const tagDropdown = $(`#tag-dropdown-${this.props.suffix}`)
         const name = tagDropdown.dropdown('get value')
 
         if (!name || name === '') {
@@ -24,12 +24,12 @@ export default class TicketTags extends React.Component {
         }
 
         const tag = _.first(this.props.tags.filter(curTag => curTag.name === name)) || { name }
-        this.props.actions.ticket.addTags([Map(tag)])
+        this.props.addTag([Map(tag)])
         tagDropdown.dropdown('clear')
     }
 
     render = () => {
-        const { tags, ticketTags, actions } = this.props
+        const { tags, ticketTags, removeTag } = this.props
         const existingTagNames = this.props.ticketTags.map(x => x.get('name'))
         let style = {}
 
@@ -43,13 +43,13 @@ export default class TicketTags extends React.Component {
                         ticketTags.map((tag, i) => (
                             <div key={i} className="ticket-tag ui label">
                                 {tag.get('name')}
-                                <i className="icon close" onClick={() => actions.ticket.removeTag(i)}/>
+                                <i className="icon close" onClick={() => removeTag(i)}/>
                             </div>
                         ))
                     }
 
                     <div
-                        id="tag-dropdown"
+                        id={`tag-dropdown-${this.props.suffix}`}
                         className="ticket-tag-add-btn ui search button input pointing dropdown link item"
                         style={style}
                     >
@@ -93,5 +93,7 @@ export default class TicketTags extends React.Component {
 TicketTags.propTypes = {
     tags: PropTypes.array.isRequired,
     ticketTags: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    addTag: PropTypes.func.isRequired,
+    removeTag: PropTypes.func.isRequired,
+    suffix: PropTypes.string
 }

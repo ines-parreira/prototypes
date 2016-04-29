@@ -1,4 +1,4 @@
-import { CELL_WIDTH } from '../../constants'
+import { CELL_WIDTH } from '../../../constants'
 import Immutable from 'immutable'
 
 export default Immutable.fromJS([

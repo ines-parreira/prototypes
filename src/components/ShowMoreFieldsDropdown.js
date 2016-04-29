@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import TicketColumns from './ticket/TicketColumns'
+import TicketColumns from './ticket/ticketlist/TicketColumns'
 import _ from 'lodash'
 
 

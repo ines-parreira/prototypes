@@ -3,12 +3,12 @@ import { Map, List } from 'immutable'
 import _ from 'lodash'
 import { browserHistory } from 'react-router'
 
-import EditableTitle from './EditableTitle'
+import EditableTitle from './../EditableTitle'
 import TicketTable from './TicketTable'
 import FilterTopbar from './FilterTopbar'
-import ShowMoreFieldsDropdown from './../ShowMoreFieldsDropdown'
-import Search from '../Search'
-import { TICKET_STATUSES, CELL_WIDTH } from '../../constants'
+import ShowMoreFieldsDropdown from './../../ShowMoreFieldsDropdown'
+import Search from '../../Search'
+import { TICKET_STATUSES, CELL_WIDTH } from '../../../constants'
 
 export default class TicketsView extends React.Component {
     getWidth = () => {

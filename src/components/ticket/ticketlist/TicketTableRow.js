@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
-import {formatDatetime} from '../../utils'
+import {formatDatetime} from '../../../utils'
 import classNames from 'classnames'
 
 export default class TicketTableRow extends React.Component {

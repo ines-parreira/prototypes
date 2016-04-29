@@ -11,6 +11,7 @@ import * as MacroActions from '../actions/macro'
 import * as UserActions from '../actions/user'
 import * as TagActions from '../actions/tag' // import that to fetch tags list
 import * as SettingsActions from '../actions/settings'
+import MacrosContainer from './Macros'
 
 class TicketContainer extends React.Component {
     componentWillMount() {
@@ -148,6 +149,7 @@ class TicketContainer extends React.Component {
                     applyMacro={this.applyMacro}
                     view={view}
                 />
+                <MacrosContainer/>
             </div>
         )
     }

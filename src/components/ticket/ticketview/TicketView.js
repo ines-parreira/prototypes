@@ -6,10 +6,10 @@ import EditableTitle from './../EditableTitle'
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
-import TicketTags from './TicketTags'
-import ReplyMessageChannel from './ReplyMessageChannel'
-
-import { TICKET_STATUSES } from './../../../constants'
+import TicketTags from './ticketdetails/TicketTags'
+import TicketAssignee from './ticketdetails/TicketAssignee'
+import TicketStatus from './ticketdetails/TicketStatus'
+import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 
 export default class TicketView extends React.Component {
     componentDidMount() {
@@ -17,20 +17,6 @@ export default class TicketView extends React.Component {
             on: 'hover',
             action: 'nothing'
         })
-
-        const ticketOwnerDropdown = $('#popup-ticket-owner')
-
-        ticketOwnerDropdown.dropdown({
-            inline: true,
-            position: 'bottom left',
-            hoverable: true,
-            onChange: (value, text) => {
-                const agent = this.props.users.get('agents').filter(agent => agent.get('name') === text).first()
-                this.props.actions.ticket.setAgent(agent)
-            }
-        })
-
-        $('#popup-ticket-status').popup({ inline: true, position: 'bottom right', hoverable: true, on: 'click' })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -82,21 +68,6 @@ export default class TicketView extends React.Component {
         }
     }
 
-    renderTicketOwner(ticket) {
-        const assignee = ticket.getIn(['assignee_user', 'name']);
-
-        if (assignee) {
-            return (
-                <span>
-                    <span className="agent-label ui medium yellow label">A</span>
-                    <span className="secondary-action">{assignee.toUpperCase()}</span>
-                </span>
-            )
-        }
-
-        return <span className="secondary-action">UNASSIGNED</span>
-    }
-
     render = () => {
         const { ticket, tags, users, actions } = this.props
 
@@ -143,9 +114,11 @@ export default class TicketView extends React.Component {
 
                             <div className="eight wide column">
                                 <TicketTags
-                                    ticketTags={ticket.get('tags')}
                                     tags={tags.get('items').toJS()}
-                                    actions={actions}
+                                    ticketTags={ticket.get('tags')}
+                                    addTag={actions.ticket.addTags}
+                                    removeTag={actions.ticket.removeTag}
+                                    suffix=""
                                 />
                             </div>
 
@@ -165,53 +138,21 @@ export default class TicketView extends React.Component {
                                     />
                                 </a>
 
-                                <div className="ticket-owner-btn ticket-details-item ui search button input pointing dropdown link item" id="popup-ticket-owner">
-                                    {this.renderTicketOwner(ticket)}
-
-                                    <div className="ui vertical menu">
-                                        <div className="ui search input">
-                                              <input id="ticket-owner-input" type="text" placeholder="Search agents..."/>
-                                        </div>
-                                        {
-                                            users.get('agents').map((agent) =>
-                                                <div
-                                                    className="item"
-                                                    key={agent.get('id')}
-                                                    onClick={() => actions.ticket.setAgent(agent)}
-                                                >
-                                                    {agent.get('name')}
-                                                </div>
-                                            )
-                                        }
-                                    </div>
-                                </div>
+                                <TicketAssignee
+                                    currentAssignee={ticket.getIn(['assignee_user', 'name'])}
+                                    agents={users.get('agents')}
+                                    setAgent={actions.ticket.setAgent}
+                                    suffix=""
+                                />
 
                                 <span className="ticket-id ticket-details-item">
                                     {ticketId}
                                 </span>
 
-                                <a id="popup-ticket-status" className={`ticket-status ticket-details-item ui ${ticket.get('status')} label`}>
-                                    {ticket.get('status')}
-                                </a>
-
-                                <div className="ui popup">
-                                    <div
-                                        className="ui vertical menu"
-                                        style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
-                                    >
-
-                                    {TICKET_STATUSES.map((status) =>
-                                        <button
-                                            className={`item ticket-status ticket-details-item ui ${status} label`}
-                                            key={status}
-                                            onClick={() => actions.ticket.setStatus(status)}
-                                        >
-                                            {status}
-                                        </button>
-                                    )}
-
-                                    </div>
-                                </div>
+                                <TicketStatus
+                                    currentStatus={ticket.get('status')}
+                                    setStatus={actions.ticket.setStatus}
+                                />
 
                             </div>
 
@@ -235,6 +176,8 @@ export default class TicketView extends React.Component {
                     actions={this.props.actions}
                     applyMacro={this.props.applyMacro}
                     previewMacro={this.props.actions.macro.previewMacro}
+                    previewMacroInModal={this.props.actions.macro.previewMacroInModal}
+                    openModal={this.props.actions.macro.openModal}
                     currentUser={this.props.currentUser}
                     users={this.props.users}
                     macros={this.props.macros}
@@ -262,5 +205,5 @@ TicketView.propTypes = {
     view: PropTypes.object,
 
     submit: PropTypes.func.isRequired,
-    applyMacro: PropTypes.func.isRequired,
+    applyMacro: PropTypes.func.isRequired
 }

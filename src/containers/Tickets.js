@@ -7,8 +7,8 @@ import * as TicketActions from '../actions/ticket'
 import * as ViewActions from '../actions/view'
 import * as UserActions from '../actions/user'
 import * as TagActions from '../actions/tag'
-import TicketsView from '../components/ticket/TicketsView'
-import TicketColumns from '../components/ticket/TicketColumns'
+import TicketsView from '../components/ticket/ticketlist/TicketsView'
+import TicketColumns from '../components/ticket/ticketlist/TicketColumns'
 import { DEFAULT_VIEW } from '../constants'
 
 

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { renderTemplate } from '../utils/template'
+import { renderTemplate } from '../../../utils/template'
 import InfobarWidgetField from './InfobarWidgetField'
 
 export default class InfobarWidget extends React.Component {

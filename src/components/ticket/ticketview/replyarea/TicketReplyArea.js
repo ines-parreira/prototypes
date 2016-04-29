@@ -3,7 +3,7 @@ import Immutable from 'immutable'
 import classNames from 'classnames'
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
-import SearchInput, {createFilter} from 'react-search-input'
+import SearchInput from 'react-search-input'
 
 export default class TicketReplyArea extends React.Component {
     constructor() {
@@ -23,6 +23,8 @@ export default class TicketReplyArea extends React.Component {
                     selected={this.props.macros.get('selected')}
                     applyMacro={this.props.applyMacro}
                     previewMacro={this.props.previewMacro}
+                    previewMacroInModal={this.props.previewMacroInModal}
+                    openModal={this.props.openModal}
                 />
             )
         }
@@ -32,7 +34,7 @@ export default class TicketReplyArea extends React.Component {
                 ticket={this.props.ticket}
                 currentUser={this.props.currentUser}
                 users={this.props.users}
-                value={this.props.ticket.getIn(['newMessage', 'body_text'])}
+                value={this.props.ticket.getIn(['newMessage', 'body_html'])}
             />
         )
     }
@@ -88,4 +90,7 @@ TicketReplyArea.propTypes = {
     users: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     previewMacro: PropTypes.func.isRequired,
+    updateMacro: PropTypes.func,
+    previewMacroInModal: PropTypes.func.isRequired,
+    openModal: PropTypes.func.isRequired
 }

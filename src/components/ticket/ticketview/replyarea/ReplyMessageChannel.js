@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import classnames from 'classnames'
-import { loadSearch } from './../../../utils'
+import { loadSearch } from './../../../../utils'
 
 
 export default class ReplyMessageChannel extends React.Component {
