@@ -4,19 +4,6 @@ import Immutable, { Map, List } from 'immutable'
 
 import { DEFAULT_ACTIONS } from '../constants'
 
-const macroInitial = Map({
-    id: 'new',
-    name: 'New macro',
-    actions: List()
-})
-
-const macrosInitial = Map({
-    visible: true,
-    selected: Map(),
-    isModalOpen: false,
-    modalSelected: macroInitial,
-    items: Map(),
-})
 
 const actionInitial = Map({
     type: 'user',
@@ -54,6 +41,21 @@ const initialDefaultActions = {
         })
     })
 }
+const macroInitial = Map({
+    id: 'new',
+    name: 'New macro',
+    actions: List([
+        initialDefaultActions.setResponseText
+    ])
+})
+
+const macrosInitial = Map({
+    visible: true,
+    selected: Map(),
+    isModalOpen: false,
+    modalSelected: macroInitial,
+    items: Map(),
+})
 
 export function macros(state = macrosInitial, action) {
     let items
