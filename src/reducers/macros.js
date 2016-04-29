@@ -4,20 +4,18 @@ import Immutable, { Map, List } from 'immutable'
 
 import { DEFAULT_ACTIONS } from '../constants'
 
-const macrosInitial = Map({
-    visible: true,
-    selected: Map(),
-    isModalOpen: false,
-    modalSelected: Map({
-        actions: List()
-    }),
-    items: Map(),
-})
-
 const macroInitial = Map({
     id: 'new',
     name: 'New macro',
     actions: List()
+})
+
+const macrosInitial = Map({
+    visible: true,
+    selected: Map(),
+    isModalOpen: false,
+    modalSelected: macroInitial,
+    items: Map(),
 })
 
 const actionInitial = Map({
@@ -112,7 +110,7 @@ export function macros(state = macrosInitial, action) {
                 items = items.set(macro.id, Immutable.fromJS(macro))
             }
             return state.merge({
-                visible: true,
+                visible: !!items.size,
                 items
             })
 

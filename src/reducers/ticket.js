@@ -71,11 +71,15 @@ function getRecipient(messages, sender) {
 
 export function ticket(state = ticketInitial, action) {
     let tags
+    let newState = state
 
     switch (action.type) {
         case actions.SUBMIT_TICKET_SUCCESS:
         case actions.FETCH_TICKET_SUCCESS:
-            return state.merge(Immutable.fromJS(action.resp)).set('newMessage', newMessage)
+            return state.merge(Immutable.fromJS(action.resp)).merge({
+                newMessage,
+                state: state.get('state').merge({ dirty: false })
+            })
 
         /* Macro actions */
 
@@ -87,34 +91,50 @@ export function ticket(state = ticketInitial, action) {
                     tags = tags.push(Map(tag))
                 }
             }
-            return state.set('tags', tags)
+
+            return state.merge({
+                tags,
+                state: state.get('state').merge({ dirty: true })
+            })
 
         case actions.REMOVE_TICKET_TAG:
             tags = state.get('tags').delete(action.index)
-            return state.set('tags', tags)
-
-        case actions.UPDATE_TICKET_TAGS:
-            tags = Immutable.fromJS(action.args)
-            return state.set('tags', tags)
+            return state.merge({
+                tags,
+                state: state.get('state').merge({ dirty: true })
+            })
 
         case actions.TOGGLE_PRIORITY:
             if (action.args.get('priority')) {
-                return state.set('priority', action.args.get('priority'))
+                return state.merge({
+                    priority: action.args.get('priority'),
+                    state: state.get('state').merge({ dirty: true })
+                })
             }
 
-            return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
+            newState = state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
+            return newState.setIn(['state', 'dirty'], true)
 
         case actions.SET_AGENT:
-            return state.set('assignee_user', Map(action.args.get('assignee_user')))
+            return state.merge({
+                assignee_user: Map(action.args.get('assignee_user')),
+                state: state.get('state').merge({ dirty: true })
+            })
 
         case actions.SET_STATUS:
-            return state.set('status', action.args.get('status'))
+            return state.merge({
+                status: action.args.get('status'),
+                state: state.get('state').merge({ dirty: true })
+            })
 
         case actions.SET_PUBLIC:
             return state.setIn(['newMessage', 'public'], action.isPublic)
 
         case actions.SET_SUBJECT:
-            return state.set('subject', action.subject)
+            return state.merge({
+                subject: action.subject,
+                state: state.get('state').merge({ dirty: true })
+            })
 
         case actions.SET_RESPONSE_TEXT:
             const text = action.args.get('body_text') || action.args.get(0) || ''
@@ -145,7 +165,7 @@ export function ticket(state = ticketInitial, action) {
                 receiver,
                 body_text: expandedText,
                 body_html: expandedHTML
-            }))
+            })).setIn(['state', 'dirty'], expandedText !== '' || state.getIn(['state', 'dirty']))
 
         case actions.SETUP_NEW_TICKET:
             return ticketInitial

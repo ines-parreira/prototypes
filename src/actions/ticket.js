@@ -32,10 +32,7 @@ export const TOGGLE_PRIORITY = 'setPriority'
 
 export const SEARCH = 'search'
 
-// export const ADD_TAGS = 'addTags'
 export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
-export const UPDATE_TICKET_TAGS = 'UPDATE_TAGS'
-
 
 export const SET_PUBLIC = 'TOGGLE_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
@@ -48,6 +45,7 @@ export const SETUP_NEW_TICKET = 'SETUP_NEW_TICKET'
 export const UPDATE_POTENTIAL_REQUESTERS = 'UPDATE_POTENTIAL_REQUESTERS'
 export const MARK_TICKET_DIRTY = 'MARK_TICKET_DIRTY'
 
+
 export function addTags(tags) {
     return {
         type: ADD_TICKET_TAGS,
@@ -58,13 +56,6 @@ export function removeTag(index) {
     return {
         type: REMOVE_TICKET_TAG,
         index
-    }
-}
-
-export function updateTags(tags) {
-    return {
-        type: UPDATE_TICKET_TAGS,
-        args: tags
     }
 }
 

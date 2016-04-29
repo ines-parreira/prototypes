@@ -16,7 +16,7 @@ export default class TicketReplyArea extends React.Component {
     }
 
     renderChild = (macros) => {
-        if (this.props.macros.get('visible') && macros.size > 0) {
+        if (this.props.macros.get('visible')) {
             return (
                 <TicketMacros
                     items={macros}
@@ -44,7 +44,6 @@ export default class TicketReplyArea extends React.Component {
         const macrosVisible = this.props.macros.get('visible')
         let macros = this.props.macros.get('items')
 
-
         macros = macros.valueSeq()
 
         if (this.refs.search) {
@@ -52,9 +51,8 @@ export default class TicketReplyArea extends React.Component {
             macros = Immutable.fromJS(macros.toJS().filter(this.refs.search.filter(filters)))
         }
 
-        let searchInput = null
-        if (macros.size > 0) {
-            searchInput = (
+        return (
+            <div className="TicketReplyArea ui segments">
                 <div className="search ui raised segment">
                     <SearchInput
                         ref="search"
@@ -70,12 +68,6 @@ export default class TicketReplyArea extends React.Component {
                         />
                     </a>
                 </div>
-            )
-        }
-
-        return (
-            <div className="TicketReplyArea ui segments">
-                {searchInput}
                 {this.renderChild(macros)}
             </div>
         )

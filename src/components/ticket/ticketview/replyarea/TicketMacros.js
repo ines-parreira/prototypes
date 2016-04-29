@@ -138,7 +138,7 @@ export default class TicketMacros extends React.Component {
             <div className="macro-preview">
                 <div>
                     <a className="ui right floated basic label" onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}>
-                        UPDATE MACRO
+                        MANAGE MACROS
                     </a>
                     {this.renderSetStatus(setStatusAction)}
                     {this.renderAddTags(addTagsActions)}
@@ -156,20 +156,35 @@ export default class TicketMacros extends React.Component {
     }
 
     render() {
-        return (
-            <div className="TicketMacros search ui raised segment">
-                <div className="ui grid">
-                    <div className="macro-list four wide column">
-                        <div className="ui aligned selection relaxed list">
-                            {this.props.items.map(this.renderMacroListItem)}
-                        </div>
-                    </div>
-                    <div className="macro-preview-container twelve wide column">
-                        <div className="macro-detail">
-                            {this.renderSelectedMacro()}
-                        </div>
+        let content = (
+            <div className="ui grid">
+                <div className="macro-list four wide column">
+                    <div className="ui aligned selection relaxed list">
+                        {this.props.items.map(this.renderMacroListItem)}
                     </div>
                 </div>
+                <div className="macro-preview-container twelve wide column">
+                    <div className="macro-detail">
+                        {this.renderSelectedMacro()}
+                    </div>
+                </div>
+            </div>
+        )
+
+        if (!this.props.items.size) {
+            content = (
+                <div className="no-macro-container">
+                    <h4>You don't have any macros yet.</h4>
+                    <div className="ui large light blue labeled icon fluid button" onClick={() => this.props.openModal()}>
+                        <i className="plus icon"/>
+                        CREATE A NEW MACRO
+                    </div>
+                </div>
+            )
+        }
+        return (
+            <div className="TicketMacros search ui raised segment">
+                {content}
             </div>
         )
     }

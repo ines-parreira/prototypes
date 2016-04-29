@@ -48,11 +48,13 @@ export default class TicketView extends React.Component {
             }
 
             if (groupedFilters.get('ticket.assignee_user.id')) {
-                const agent = nextProps.users.get('agents').filter(
-                    curAgent => curAgent.get('id').toString() === _.first(groupedFilters.get('ticket.assignee_user.id').eq)
-                ).first()
-
-                nextProps.actions.ticket.setAgent(agent)
+                if (_.first(groupedFilters.get('ticket.assignee_user.id').eq) === '{current_user.id}') {
+                    nextProps.actions.ticket.setAgent(nextProps.currentUser)
+                } else {
+                    nextProps.actions.ticket.setAgent(nextProps.users.get('agents').find(
+                        curAgent => curAgent.get('id').toString() === _.first(groupedFilters.get('ticket.assignee_user.id').eq)
+                    ))
+                }
             } else {
                 nextProps.actions.ticket.setAgent(nextProps.currentUser)
             }

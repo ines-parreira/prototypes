@@ -3,11 +3,12 @@ import classNames from 'classnames'
 
 export default class TicketSubmitButtons extends React.Component {
     render = () => {
-        const className = classNames('ui', 'green', 'button', {hidden: this.props.ticket.get('status') === 'closed'})
+        const subAndCloseClassName = classNames('ui', 'green', 'button', {hidden: this.props.ticket.get('status') === 'closed'})
+        const subClassName = classNames('ui', 'basic', 'green', 'button', {disabled: !this.props.ticket.getIn(['state', 'dirty'])})
         return (
-            <div>
-                <button className={className} onClick={this.props.submit('closed', true)}>Submit &amp; Close</button>
-                <button className="ui basic green button" onClick={this.props.submit()}>Submit</button>
+            <div className="TicketSubmitButtons">
+                <button className={subAndCloseClassName} onClick={this.props.submit('closed', true)}>Submit &amp; Close</button>
+                <button className={subClassName} onClick={this.props.submit()}>Submit</button>
             </div>
         )
     }
