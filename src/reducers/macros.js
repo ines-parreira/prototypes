@@ -41,6 +41,7 @@ const initialDefaultActions = {
         })
     })
 }
+
 const macroInitial = Map({
     id: 'new',
     name: 'New macro',

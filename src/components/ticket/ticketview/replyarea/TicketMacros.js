@@ -134,6 +134,11 @@ export default class TicketMacros extends React.Component {
             action => DEFAULT_ACTIONS.indexOf(action.get('name')) === -1
         )
 
+        const textPreview = responseTextAction ? {
+            __html: responseTextAction.getIn(['arguments', 'body_html'])
+            || responseTextAction.getIn(['arguments', 'body_text'])
+        } : { __html: ''}
+
         return (
             <div className="macro-preview">
                 <div>
@@ -145,9 +150,7 @@ export default class TicketMacros extends React.Component {
                     {this.renderAssignUser(assignUserAction)}
                     {this.renderSetPriority(setPriorityAction)}
                     {this.renderExternalActions(externalActions)}
-                    <div className="text-preview" dangerouslySetInnerHTML={{
-                        __html: responseTextAction.getIn(['arguments', 'body_html'])
-                        || responseTextAction.getIn(['arguments', 'body_text']) }}
+                    <div className="text-preview" dangerouslySetInnerHTML={textPreview}
                     >
                     </div>
                 </div>

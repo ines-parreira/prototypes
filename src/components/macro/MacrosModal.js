@@ -24,9 +24,14 @@ export default class MacrosModal extends React.Component {
             onHidden: this.props.actions.closeModal
         }).modal('show')
 
-        $('#new-action-popup').popup({
-            inline: true,
-            hoverable: true
+        $('#new-action-popup').dropdown({
+            direction: 'upward',
+            onChange: (value, text) => {
+                if (DEFAULT_ACTIONS.indexOf(text) !== -1) {
+                    this.props.actions.addAction(text)
+                    $('#new-action-popup').dropdown('set text', 'Insert a new action')
+                }
+            }
         })
     }
 
@@ -223,7 +228,7 @@ export default class MacrosModal extends React.Component {
                                     <a
                                         className={`item ${macro.get('id') === currentMacro.get('id') ? 'active' : ''}`}
                                         key={macro.get('id')}
-                                        onClick={() => {actions.previewMacroInModal(macro.get('id'))}}
+                                        onClick={() => actions.previewMacroInModal(macro.get('id'))}
                                     >
                                         {macro.get('name')}
                                     </a>
@@ -269,18 +274,20 @@ export default class MacrosModal extends React.Component {
 
                             {this.renderExternalActions(externalActions)}
 
-
-                            <button id="new-action-popup" className="ui light blue button">
-                                Insert new action
-                            </button>
+                            <div id="new-action-popup" className="ui floating dropdown labeled search icon light blue button">
+                                <i className="plus icon"/>
+                                <span className="text">Insert a new action</span>
+                                <div className="menu">
+                                    {
+                                        DEFAULT_ACTIONS.map(action => (
+                                            <a key={action} className="item">{action}</a>
+                                        ))
+                                    }
+                                </div>
+                            </div>
 
                             <div className="ui popup">
                                 <div className="ui vertical menu">
-                                {
-                                    DEFAULT_ACTIONS.map(action => (
-                                        <a key={action} className="item" onClick={() => actions.addAction(action)}>{action}</a>
-                                    ))
-                                }
                                 </div>
                             </div>
                         </div>
