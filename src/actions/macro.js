@@ -1,6 +1,7 @@
 import reqwest from 'reqwest'
 import { systemMessage } from './systemMessage'
 import { DEFAULT_ACTIONS } from '../constants'
+import { RECORD_MACRO } from './ticket'
 
 export const FETCH_MACRO_LIST_START = 'FETCH_MACRO_LIST_START'
 export const FETCH_MACRO_LIST_SUCCESS = 'FETCH_MACRO_LIST_SUCCESS'
@@ -167,6 +168,10 @@ export function applyMacro(macro, currentUser) {
         })
         macro.get('actions').map((action) => {
             dispatch(applyMacroAction(action, currentUser))
+        })
+        dispatch({
+            type: RECORD_MACRO,
+            macro
         })
     }
 }
