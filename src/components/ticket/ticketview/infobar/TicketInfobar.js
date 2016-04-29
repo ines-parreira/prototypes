@@ -58,7 +58,7 @@ export default class TicketInfobar extends React.Component {
             })
         }
         return (
-            <div className="infobar">
+            <div>
                 {/*<div className="infobar-top infobar-box infobar-search">
                  <Search id="ticket"/>
                  </div>*/}
