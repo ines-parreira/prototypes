@@ -3,10 +3,11 @@ import Immutable from 'immutable'
 import SearchInput from 'react-search-input'
 
 import TicketTags from './../ticket/ticketview/ticketdetails/TicketTags'
-import TicketStatus from './../ticket/ticketview/ticketdetails/TicketStatus'
+import TicketPriority from './../ticket/ticketview/ticketdetails/TicketPriority'
 import TicketAssignee from './../ticket/ticketview/ticketdetails/TicketAssignee'
+import TicketStatus from './../ticket/ticketview/ticketdetails/TicketStatus'
 import { DEFAULT_ACTIONS } from './../../constants'
-import { SET_RESPONSE_TEXT, SET_AGENT, SET_STATUS, ADD_TICKET_TAGS } from './../../actions/ticket'
+import * as ticketActions from './../../actions/ticket'
 
 export default class MacrosModal extends React.Component {
     constructor() {
@@ -106,6 +107,23 @@ export default class MacrosModal extends React.Component {
                     agents={this.props.agents}
                     setAgent={this.props.actions.setAssignee}
                     suffix="macro-modal"
+                />
+                <div className="ui divider"></div>
+            </div>
+        )
+    }
+
+    renderSetPriorityAction(action, key) {
+        return (
+            <div key={key} className="priority">
+                <i
+                    className="right floated remove circle red large action icon"
+                    onClick={() => this.props.actions.deleteAction(action.get('id'))}
+                />
+                <h4>SET PRIORITY</h4>
+                <TicketPriority
+                    priority={action.getIn(['arguments', 'priority'])}
+                    togglePriority={this.props.actions.togglePriority}
                 />
                 <div className="ui divider"></div>
             </div>
@@ -233,14 +251,16 @@ export default class MacrosModal extends React.Component {
                             {
                                 presetActions.map((action, key) => {
                                     switch (action.get('name')) {
-                                        case SET_STATUS:
+                                        case ticketActions.SET_STATUS:
                                             return this.renderSetStatusAction(action, key)
-                                        case ADD_TICKET_TAGS:
+                                        case ticketActions.ADD_TICKET_TAGS:
                                             return this.renderAddTagsAction(action, key)
-                                        case SET_RESPONSE_TEXT:
+                                        case ticketActions.SET_RESPONSE_TEXT:
                                             return this.renderSetResponseTextAction(action, key)
-                                        case SET_AGENT:
+                                        case ticketActions.SET_AGENT:
                                             return this.renderSetAgentAction(action, key)
+                                        case ticketActions.TOGGLE_PRIORITY:
+                                            return this.renderSetPriorityAction(action, key)
                                         default:
                                             return null
                                     }

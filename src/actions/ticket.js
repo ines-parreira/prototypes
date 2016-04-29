@@ -28,6 +28,7 @@ export const SET_RESPONSE_TEXT = 'setResponseText'
 export const ADD_TICKET_TAGS = 'addTags'
 export const SET_STATUS = 'setStatus'
 export const SET_AGENT = 'assignUser'
+export const TOGGLE_PRIORITY = 'setPriority'
 
 export const SEARCH = 'search'
 
@@ -35,7 +36,6 @@ export const SEARCH = 'search'
 export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
 export const UPDATE_TICKET_TAGS = 'UPDATE_TAGS'
 
-export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY'
 
 export const SET_PUBLIC = 'TOGGLE_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
@@ -68,9 +68,12 @@ export function updateTags(tags) {
     }
 }
 
-export function togglePriority() {
+export function togglePriority(priority) { // here, the priority argument is optional
     return {
-        type: TOGGLE_PRIORITY
+        type: TOGGLE_PRIORITY,
+        args: Map({
+            priority: priority.isString ? priority : null
+        })
     }
 }
 

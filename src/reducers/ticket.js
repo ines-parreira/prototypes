@@ -98,6 +98,10 @@ export function ticket(state = ticketInitial, action) {
             return state.set('tags', tags)
 
         case actions.TOGGLE_PRIORITY:
+            if (action.args.get('priority')) {
+                return state.set('priority', action.args.get('priority'))
+            }
+
             return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
 
         case actions.SET_AGENT:

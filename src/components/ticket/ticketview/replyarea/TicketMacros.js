@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import { DEFAULT_ACTIONS } from './../../../../constants'
 
 
@@ -7,7 +7,7 @@ export default class TicketMacros extends React.Component {
     renderMacroListItem = (macro) => {
         const containerOpts = {
             key: macro.get('id'),
-            className: classNames('item macro-item', { active: macro.get('id') === this.props.selected.get('id') }),
+            className: classnames('item macro-item', { active: macro.get('id') === this.props.selected.get('id') }),
             onMouseEnter: () => this.props.previewMacro(macro),
             onClick: () => this.props.applyMacro(macro),
         }
@@ -74,6 +74,28 @@ export default class TicketMacros extends React.Component {
         )
     }
 
+    renderSetPriority(setPriorityAction) {
+        if (!setPriorityAction) {
+            return null
+        }
+
+        return (
+            <div className="macro-data">
+                <div className="ui label macro-legend">SET PRIORITY: </div>
+                <a className="ticket-flag-btn ticket-details-item">
+                    <i
+                        className={classnames(
+                            'ticket-priority',
+                            setPriorityAction.getIn(['arguments', 'priority']) === 'high' ? '' : 'outline',
+                            'icon',
+                            'flag'
+                        )}
+                    />
+                </a>
+            </div>
+        )
+    }
+
     renderExternalActions(externalActions) {
         if (!externalActions || !externalActions.size) {
             return null
@@ -106,6 +128,7 @@ export default class TicketMacros extends React.Component {
         const addTagsActions = macro.get('actions').filter(action => action.get('name') === 'addTags')
         const responseTextAction = macro.get('actions').find(action => action.get('name') === 'setResponseText')
         const setStatusAction = macro.get('actions').find(action => action.get('name') === 'setStatus')
+        const setPriorityAction = macro.get('actions').find(action => action.get('name') === 'setPriority')
         const assignUserAction = macro.get('actions').find(action => action.get('name') === 'assignUser')
         const externalActions = macro.get('actions').filter(
             action => DEFAULT_ACTIONS.indexOf(action.get('name')) === -1
@@ -120,6 +143,7 @@ export default class TicketMacros extends React.Component {
                     {this.renderSetStatus(setStatusAction)}
                     {this.renderAddTags(addTagsActions)}
                     {this.renderAssignUser(assignUserAction)}
+                    {this.renderSetPriority(setPriorityAction)}
                     {this.renderExternalActions(externalActions)}
                     <div className="text-preview" dangerouslySetInnerHTML={{
                         __html: responseTextAction.getIn(['arguments', 'body_html'])

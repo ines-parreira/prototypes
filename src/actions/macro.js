@@ -22,19 +22,20 @@ export const DELETE_MACRO_SUCCESS = 'DELETE_MACRO_SUCCESS'
 export const ADD_ACTION = 'ADD_ACTION'
 export const DELETE_ACTION = 'DELETE_ACTION'
 
-export const ADD_TAG = 'ADD_TAG_ON_MACRO'
-export const DELETE_TAG = 'DELETE_TAG_ON_MACRO'
-
-export const SET_STATUS = 'SET_STATUS_ON_MACRO'
-export const SET_NAME = 'SET_NAME_ON_MACRO'
-export const SET_RESPONSE_TEXT = 'SET_RESPONSE_TEXT_ON_MACRO'
-export const SET_ASSIGNEE = 'SET_ASSIGNEE_ON_MACRO'
-
 export const UPDATE_MACRO_START = 'UPDATE_MACRO_START'
 export const UPDATE_MACRO_SUCCESS = 'UPDATE_MACRO_SUCCESS'
 
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
+
+// Ticket Actions
+export const SET_STATUS = 'SET_STATUS_ON_MACRO'
+export const SET_NAME = 'SET_NAME_ON_MACRO'
+export const SET_RESPONSE_TEXT = 'SET_RESPONSE_TEXT_ON_MACRO'
+export const SET_ASSIGNEE = 'SET_ASSIGNEE_ON_MACRO'
+export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY_ON_MACRO'
+export const ADD_TAG = 'ADD_TAG_ON_MACRO'
+export const DELETE_TAG = 'DELETE_TAG_ON_MACRO'
 
 
 export function openModal() {
@@ -80,6 +81,12 @@ export function setAssignee(assignee) {
     return {
         type: SET_ASSIGNEE,
         assignee
+    }
+}
+
+export function togglePriority() {
+    return {
+        type: TOGGLE_PRIORITY
     }
 }
 
