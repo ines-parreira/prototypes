@@ -1,4 +1,5 @@
 import * as actions from '../actions/macro'
+import * as ticketActions from '../actions/ticket'
 import Immutable, { Map, List } from 'immutable'
 
 import { DEFAULT_ACTIONS } from '../constants'
@@ -46,6 +47,12 @@ const initialDefaultActions = {
         name: 'assignUser',
         arguments: Map({
             assignee_user: null
+        })
+    }),
+    setPriority: actionInitial.merge({
+        name: 'setPriority',
+        arguments: Map({
+            priority: 'normal'
         })
     })
 }
@@ -111,7 +118,7 @@ export function macros(state = macrosInitial, action) {
 
         case actions.ADD_TAG:
             actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === 'addTags'
+                curAction => curAction.get('name') === ticketActions.ADD_TICKET_TAGS
             )
 
             action.tags.map(tag => {
@@ -125,7 +132,7 @@ export function macros(state = macrosInitial, action) {
 
         case actions.DELETE_TAG:
             actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === 'addTags'
+                curAction => curAction.get('name') === ticketActions.ADD_TICKET_TAGS
             )
 
             return state.setIn(
@@ -135,7 +142,7 @@ export function macros(state = macrosInitial, action) {
 
         case actions.SET_STATUS:
             actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === 'setStatus'
+                curAction => curAction.get('name') === ticketActions.SET_STATUS
             )
 
             return state.setIn(['modalSelected', 'actions', actionIndex, 'arguments', 'status'], action.status)
@@ -145,7 +152,7 @@ export function macros(state = macrosInitial, action) {
 
         case actions.SET_RESPONSE_TEXT:
             actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === 'setResponseText'
+                curAction => curAction.get('name') === ticketActions.SET_RESPONSE_TEXT
             )
 
             return state.setIn(
@@ -155,13 +162,22 @@ export function macros(state = macrosInitial, action) {
 
         case actions.SET_ASSIGNEE:
             actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === 'setAssignee'
+                curAction => curAction.get('name') === ticketActions.SET_ASSIGNEE
             )
 
             return state.setIn(
                 ['modalSelected', 'actions', actionIndex, 'arguments', 'assignee_user'],
                 Map(action.assignee)
             )
+
+        case actions.TOGGLE_PRIORITY:
+            actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
+                curAction => curAction.get('name') === ticketActions.TOGGLE_PRIORITY
+            )
+
+            const path = ['modalSelected', 'actions', actionIndex, 'arguments', 'priority']
+
+            return state.setIn(path, state.getIn(path) === 'normal' ? 'high' : 'normal')
 
         case actions.DELETE_ACTION:
             actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(

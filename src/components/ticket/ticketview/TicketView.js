@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import classnames from 'classnames'
 import _ from 'lodash'
 
 import EditableTitle from './../EditableTitle'
@@ -7,6 +6,7 @@ import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
 import TicketTags from './ticketdetails/TicketTags'
+import TicketPriority from './ticketdetails/TicketPriority'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 import TicketStatus from './ticketdetails/TicketStatus'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
@@ -123,20 +123,10 @@ export default class TicketView extends React.Component {
                             </div>
 
                             <div className="eight wide column ticket-details">
-                                <a
-                                    className="ticket-flag-btn ticket-details-item"
-                                    onClick={actions.ticket.togglePriority}
-                                >
-                                    <i
-                                        className={classnames(
-                                            'ticket-priority',
-                                            ticket.get('priority') === 'high' ? '' : 'outline',
-                                            'action',
-                                            'icon',
-                                            'flag'
-                                        )}
-                                    />
-                                </a>
+                                <TicketPriority
+                                    priority={ticket.get('priority')}
+                                    togglePriority={actions.ticket.togglePriority}
+                                />
 
                                 <TicketAssignee
                                     currentAssignee={ticket.getIn(['assignee_user', 'name'])}
