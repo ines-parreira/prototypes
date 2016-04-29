@@ -25,7 +25,7 @@ export default class TicketMacros extends React.Component {
         if (setStatusAction) {
             return (
                 <div className="macro-data">
-                    <div className="ui label macro-legend">STATUS: </div>
+                    <div className="ui label macro-legend">SET STATUS: </div>
                     <div className={`ui label ticket-status ${setStatusAction.getIn(['arguments', 'status'])}`}>
                         {setStatusAction.getIn(['arguments', 'status'])}
                     </div>
@@ -41,7 +41,7 @@ export default class TicketMacros extends React.Component {
 
         return (
             <div className="macro-data">
-                <div className="ui label macro-legend">TAGS: </div>
+                <div className="ui label macro-legend">ADD TAGS: </div>
                 {
                     addTagsActions.map((action) =>
                         action.get('arguments').map((arg, i) =>
