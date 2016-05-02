@@ -12,7 +12,7 @@ export default Immutable.fromJS([
         name: 'status',
         width: 2 * CELL_WIDTH,
         header: 'Status',
-        sortable: true
+        sortable: false
     },
     {
         name: 'details',
@@ -24,7 +24,7 @@ export default Immutable.fromJS([
         name: 'requester',
         width: 3 * CELL_WIDTH,
         header: 'Requester',
-        sortable: true
+        sortable: false
     },
     {
         name: 'created',
@@ -42,7 +42,7 @@ export default Immutable.fromJS([
         name: 'assignee',
         width: 3 * CELL_WIDTH,
         header: 'Assignee',
-        sortable: true
+        sortable: false
     },
     {
         name: 'tags',

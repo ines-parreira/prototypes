@@ -4,11 +4,19 @@ import classNames from 'classnames'
 
 export default class PlainColumnHeader extends React.Component {
     render = () => {
-        const { column, sort } = this.props
+        const { column, sort, currentSort } = this.props
         const style = { width: column.width }
         const className = classNames(column.name, 'wide', 'column')
-        const sortIcon = column.sortable ? <i className="sort icon" onClick={() => sort(column.name)}/> : null
+        let sortIcon = column.sortable ? <i className="action sort icon" onClick={() => sort(column.name)}/> : null
         const onClick = this.props.onClick || (() => {})
+
+        if ((currentSort === 'updated_desc' && column.name === 'updated') ||
+            (currentSort === 'created_desc' && column.name === 'created')) {
+            sortIcon = <i className="action sort caret down icon" onClick={() => sort(column.name)}/>
+        } else if ((currentSort === 'updated_asc' && column.name === 'updated') ||
+            (currentSort === 'created_asc' && column.name === 'created')) {
+            sortIcon = <i className="action sort caret up icon" onClick={() => sort(column.name)}/>
+        }
 
         return (
             <div style={style} className={className} onClick={onClick}>
@@ -21,5 +29,6 @@ export default class PlainColumnHeader extends React.Component {
 PlainColumnHeader.propTypes = {
     column: PropTypes.object.isRequired,
     onClick: PropTypes.func,
-    sort: PropTypes.func.isRequired
+    sort: PropTypes.func.isRequired,
+    currentSort: PropTypes.string.isRequired,
 }
