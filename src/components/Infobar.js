@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 
 export default class Infobar extends React.Component {
     constructor() {
@@ -6,21 +6,18 @@ export default class Infobar extends React.Component {
 
         this.cursorX = null
         this.originalWidth = 0
-        this.minWidth = 0
-        this.maxWidth = 0
+        // a special method of minesweeping by @xarg
+        this.minWidth = window.innerWidth / 5.1
+        this.maxWidth = window.innerWidth / 2.3
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'
 
-        // TODO get bar size from store/api
-        this.state = {
-            width: 320
+        let width = window.localStorage.getItem('infobar-width')
+        if (!width) {
+            width = this.minWidth
         }
 
-        // overwrite methods with bound methods,
-        // so we can cleanly unbind on unmount
-        this.dragStart = this.dragStart.bind(this)
-        this.dragStop = this.dragStop.bind(this)
-        this.drag = this.drag.bind(this)
+        this.state = {width}
     }
 
     componentDidMount() {
@@ -37,7 +34,7 @@ export default class Infobar extends React.Component {
         window.removeEventListener('mousemove', this.drag)
     }
 
-    dragStart(e) {
+    dragStart = (e) => {
         if (!e.target.classList.contains(this.classHandle)) {
             return
         }
@@ -45,19 +42,20 @@ export default class Infobar extends React.Component {
         this.cursorX = e.clientX
         const computedStyle = window.getComputedStyle(this.refs.container)
 
-        this.originalWidth = parseInt(computedStyle.getPropertyValue('width'))
-        this.minWidth = parseInt(computedStyle.getPropertyValue('min-width'))
-        this.maxWidth = parseInt(computedStyle.getPropertyValue('max-width'))
+        this.originalWidth = parseInt(computedStyle.getPropertyValue('width'), 10)
 
         document.body.classList.add(this.classActive)
     }
 
-    dragStop(e) {
+    dragStop = (e) => {
         this.cursorX = null
         document.body.classList.remove(this.classActive)
+
+        // save width in local storage so it sticks
+        window.localStorage.setItem('infobar-width', this.state.width)
     }
 
-    drag(e) {
+    drag = (e) => {
         if (this.cursorX === null) {
             return
         }
@@ -75,7 +73,7 @@ export default class Infobar extends React.Component {
 
     render() {
         const style = {
-            width: this.state.width
+            width: `${this.state.width}px`
         }
 
         return (
