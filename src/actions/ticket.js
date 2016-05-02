@@ -2,6 +2,9 @@ import reqwest from 'reqwest'
 import {Map} from 'immutable'
 import _ from 'lodash'
 import {systemMessage} from './systemMessage'
+import { renderTemplate } from '../components/utils/template'
+
+import * as MacroActions from './macro'
 
 
 // Basic operations on the ticket
@@ -263,20 +266,74 @@ export function search(props, query) {
     }
 }
 
-export function submitTicket(ticket, status) {
+export function formatAction(action, template, context) {
+    /**
+     * Verify if any argument of the action is a `listDict`, i.e. a data structure as such :
+     *
+     * [
+     *   {
+     *     key: k1,
+     *     value: v1,
+     *     ... // anything else
+     *   },
+     *   {
+     *     key: k2,
+     *     value: v2,
+     *     ...
+     *   },
+     *   ...
+     * ]
+     *
+     * which must be transformed into a dict before sending to the server (the other fields being
+     * useful for the UI only).
+     *
+     * {
+     *   k1: v1,
+     *   k2: v2,
+     *   ...
+     * }
+     *
+     */
+
+    let newArgs = Map()
+
+    action.get('arguments').map((value, key) => {
+        if (template.getIn(['arguments', key, 'type']) === 'listDict') {
+            newArgs = newArgs.set(key, Map({}))
+            value.map(element => {
+                newArgs = newArgs.setIn(
+                    [key, renderTemplate(element.get('key'), context)],
+                    renderTemplate(element.get('value'), context)
+                )
+            })
+        } else {
+            newArgs = newArgs.set(key, value)
+        }
+    })
+
+    return action.set('arguments', newArgs)
+}
+
+export function submitTicket(ticket, status, macroActions, actionTemplates, currentUser) {
     return (dispatch) => {
         // we mark that we're trying to send the reply (used in the UI to show progress)
         dispatch({
             type: SUBMIT_TICKET_START
         })
-        // Allow the user to trigger "Close & Send" with just one action
-        const data = ticket.toJS()
 
+        const data = ticket.toJS()
         data.status = status || data.status
 
         if (data.newMessage) {
             if (data.newMessage.body_text.length > 0) {
+                data.newMessage.actions = macroActions.map(action => formatAction(
+                    action,
+                    actionTemplates.get(action.get('name')),
+                    { ticket: ticket.toJS(), currentUser: currentUser.toJS()}
+                ))
+
                 data.messages.push(data.newMessage)
+
             } else if (!data.messages.length) {
                 dispatch(systemMessage({
                     type: 'error',
@@ -305,6 +362,10 @@ export function submitTicket(ticket, status) {
             dispatch({
                 type: SUBMIT_TICKET_SUCCESS,
                 resp
+            })
+            dispatch({
+                type: MacroActions.APPLY_MACRO,
+                macro: undefined // reinitialize the current macro
             })
         }).catch((err) => {
             dispatch(systemMessage({

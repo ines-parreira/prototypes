@@ -131,8 +131,9 @@ export default class TicketMacros extends React.Component {
         const setPriorityAction = macro.get('actions').find(action => action.get('name') === 'setPriority')
         const assignUserAction = macro.get('actions').find(action => action.get('name') === 'assignUser')
         const externalActions = macro.get('actions').filter(
-            action => DEFAULT_ACTIONS.indexOf(action.get('name')) === -1
+            action => action.get('execution') === 'back'
         )
+        console.log(macro.get('actions').toJS())
 
         const textPreview = responseTextAction ? {
             __html: responseTextAction.getIn(['arguments', 'body_html'])
@@ -150,8 +151,7 @@ export default class TicketMacros extends React.Component {
                     {this.renderAssignUser(assignUserAction)}
                     {this.renderSetPriority(setPriorityAction)}
                     {this.renderExternalActions(externalActions)}
-                    <div className="text-preview" dangerouslySetInnerHTML={textPreview}
-                    >
+                    <div className="text-preview" dangerouslySetInnerHTML={textPreview}>
                     </div>
                 </div>
             </div>

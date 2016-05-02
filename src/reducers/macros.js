@@ -39,6 +39,33 @@ const initialDefaultActions = {
         arguments: Map({
             priority: 'normal'
         })
+    }),
+    http: actionInitial.merge({
+        execution: 'back',
+        name: 'http',
+        arguments: Map({
+            method: 'GET',
+            url: '',
+            headers: Map(),
+            params: Map(),
+            contentType: 'application/json'
+        })
+    }),
+    httpIntegration: actionInitial.merge({
+        execution: 'back',
+        name: 'http_integration',
+        arguments: Map({
+            integrationId: null
+        })
+    }),
+    notify: actionInitial.merge({
+        execution: 'back',
+        name: 'notify',
+        arguments: Map({
+            email: '',
+            subject: '{ticket.subject}',
+            content: '{ticket.last_message.body_text'
+        })
     })
 }
 
@@ -55,12 +82,14 @@ const macrosInitial = Map({
     selected: Map(),
     isModalOpen: false,
     modalSelected: macroInitial,
+    appliedMacro: null,
     items: Map(),
+    actions: Map(),
+    actionTemplates: Map()
 })
 
 export function macros(state = macrosInitial, action) {
     let items
-    let newState = state
     let actionIndex
 
     switch (action.type) {
@@ -87,7 +116,7 @@ export function macros(state = macrosInitial, action) {
             return state.set('modalSelected', state.getIn(['items', action.macroId])).set('isModalOpen', true)
 
         case actions.APPLY_MACRO:
-            return state.set('visible', false)
+            return state.set('visible', false).set('appliedMacro', action.macro)
 
         case actions.SET_MACROS_VISIBILITY:
             return state.set('visible', action.visible)
@@ -117,68 +146,53 @@ export function macros(state = macrosInitial, action) {
                 items
             })
 
-        case actions.ADD_TAG:
-            actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === ticketActions.ADD_TICKET_TAGS
-            )
+        case actions.FETCH_ACTION_LIST_SUCCESS:
+            const macroActions = {}
+            const templates = Immutable.fromJS(action.resp.ActionTemplates)
 
-            action.tags.map(tag => {
-                newState = newState.setIn(
-                    ['modalSelected', 'actions', actionIndex, 'arguments'],
-                    newState.getIn(['modalSelected', 'actions', actionIndex, 'arguments']).push(tag)
-                )
-            })
+            for (const key in action.resp.ActionTemplates) {
+                const curAction = action.resp.ActionTemplates[key]
+                macroActions[key] = Object.assign({}, curAction)
 
-            return newState
+                for (const arg in curAction.arguments) {
+                    switch (curAction.arguments[arg].type) {
+                        case 'string':
+                            macroActions[key].arguments[arg] = curAction.arguments[arg].default ? curAction.arguments[arg].default : ''
+                            break
 
-        case actions.DELETE_TAG:
-            actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === ticketActions.ADD_TICKET_TAGS
-            )
+                        case 'integer':
+                            macroActions[key].arguments[arg] = -1
+                            break
 
-            return state.setIn(
-                ['modalSelected', 'actions', actionIndex, 'arguments'],
-                state.getIn(['modalSelected', 'actions', actionIndex, 'arguments']).delete(action.index)
-            )
+                        case 'object':
+                            macroActions[key].arguments[arg] = Map({})
+                            break
 
-        case actions.SET_STATUS:
-            actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === ticketActions.SET_STATUS
-            )
+                        case 'array':
+                            macroActions[key].arguments[arg] = List([])
+                            break
 
-            return state.setIn(['modalSelected', 'actions', actionIndex, 'arguments', 'status'], action.status)
+                        default:
+                            break
+                    }
+                }
+            }
+
+            return state
+                .set('actions', Immutable.fromJS(macroActions))
+                .set('actionTemplates', templates)
+
+        case actions.UPDATE_ACTION_ARGS:
+            return state.setIn(['modalSelected', 'actions', action.actionIndex, 'arguments'], action.value)
+        
+        case actions.UPDATE_ACTION_ARGS_ON_APPLIED:
+            return state.setIn(['appliedMacro', 'actions', action.actionIndex, 'arguments'], action.value)
+
+        case actions.UPDATE_ACTION_TITLE:
+            return state.setIn(['modalSelected', 'actions', action.actionIndex, 'title'], action.title)
 
         case actions.SET_NAME:
             return state.setIn(['modalSelected', 'name'], action.name)
-
-        case actions.SET_RESPONSE_TEXT:
-            actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === ticketActions.SET_RESPONSE_TEXT
-            )
-
-            return state.setIn(
-                ['modalSelected', 'actions', actionIndex, 'arguments', 'body_html'],
-                action.responseText
-            )
-
-        case actions.SET_ASSIGNEE:
-            actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === ticketActions.SET_ASSIGNEE
-            )
-
-            return state.setIn(
-                ['modalSelected', 'actions', actionIndex, 'arguments', 'assignee_user'],
-                Map(action.assignee)
-            )
-
-        case actions.TOGGLE_PRIORITY:
-            actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('name') === ticketActions.TOGGLE_PRIORITY
-            )
-
-            const path = ['modalSelected', 'actions', actionIndex, 'arguments', 'priority']
-
-            return state.setIn(path, state.getIn(path) === 'normal' ? 'high' : 'normal')
 
         case actions.DELETE_ACTION:
             actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
@@ -197,7 +211,7 @@ export function macros(state = macrosInitial, action) {
 
             return state.setIn(
                 ['modalSelected', 'actions'],
-                state.getIn(['modalSelected', 'actions']).push(initialDefaultActions[action.actionType])
+                state.getIn(['modalSelected', 'actions']).push(state.getIn(['actions', action.actionType]))
             )
 
         default:

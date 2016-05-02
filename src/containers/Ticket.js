@@ -22,6 +22,7 @@ class TicketContainer extends React.Component {
             this.props.actions.ticket.setupNewTicket()
         }
         this.props.actions.macro.fetchMacros()
+        this.props.actions.macro.fetchActions()
         this.props.actions.tag.fetchTags()
     }
 
@@ -113,7 +114,13 @@ class TicketContainer extends React.Component {
                 .setIn(['newMessage', 'sender'], {id: this.props.currentUser.get('id')})
         }
 
-        this.props.actions.ticket.submitTicket(ticket, status)
+        this.props.actions.ticket.submitTicket(
+            ticket,
+            status,
+            this.props.macros.getIn(['appliedMacro', 'actions']),
+            this.props.macros.get('actionTemplates'),
+            this.props.currentUser
+        )
 
         if (next) {
             /**
