@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import * as mousetrap from 'mousetrap'
 
 import TicketView from '../components/ticket/ticketview/TicketView'
+import Loader from '../components/Loader'
 
 import * as TicketActions from '../actions/ticket'
 import * as MacroActions from '../actions/macro'
@@ -129,28 +130,30 @@ class TicketContainer extends React.Component {
     }
 
     render() {
-        if (!this.props.ticket.get('messages').size && this.props.params.ticketId !== 'new') {
-            return <p>Not found</p>
-        }
 
+        const ticketLoaded = !!(this.props.ticket.get('messages').size && this.props.params.ticketId !== 'new')
         const view = this.props.views.getIn(['items', this.props.routing.locationBeforeTransitions.query.view])
 
         return (
-            <div className="TicketContainer" onKeyDown={this.handleKeyDown}>
-                <TicketView
-                    actions={this.props.actions}
-                    ticket={this.props.ticket}
-                    macros={this.props.macros}
-                    currentUser={this.props.currentUser}
-                    tags={this.props.tags}
-                    users={this.props.users}
-                    settings={this.props.settings}
-                    submit={this.submit}
-                    applyMacro={this.applyMacro}
-                    view={view}
-                />
-                <MacrosContainer/>
-            </div>
+            <Loader
+                loaded={ticketLoaded}
+            >
+                <div className="TicketContainer" onKeyDown={this.handleKeyDown}>
+                    <TicketView
+                        actions={this.props.actions}
+                        ticket={this.props.ticket}
+                        macros={this.props.macros}
+                        currentUser={this.props.currentUser}
+                        tags={this.props.tags}
+                        users={this.props.users}
+                        settings={this.props.settings}
+                        submit={this.submit}
+                        applyMacro={this.applyMacro}
+                        view={view}
+                    />
+                    <MacrosContainer/>
+                </div>
+            </Loader>
         )
     }
 }
