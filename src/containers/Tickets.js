@@ -75,7 +75,8 @@ class TicketsContainer extends React.Component {
             this.fetchPage(1, nextProps)
         }
 
-        if (this.props.tickets.get('search') !== nextProps.tickets.get('search')) {
+        if (this.props.tickets.get('search') !== nextProps.tickets.get('search') ||
+            this.props.tickets.get('sort') !== nextProps.tickets.get('sort')) {
             this.fetchPage(1, nextProps)
         }
     }
@@ -91,7 +92,7 @@ class TicketsContainer extends React.Component {
     fetchPage = (page = 1, props) => {
         const {tickets, settings, actions} = props || this.props
         if (!tickets.get('loading') && !settings.get('loading')) {
-            return actions.ticket.fetchPageFromAlgolia(settings, this.getView(props), page, tickets.get('search'))
+            return actions.ticket.fetchPageFromAlgolia(settings, this.getView(props), page, tickets.get('search'), tickets.get('sort'))
         }
     }
 

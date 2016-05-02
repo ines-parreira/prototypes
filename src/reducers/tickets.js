@@ -7,7 +7,8 @@ const ticketsInitial = Map({
     resp_meta: Map(),
     loading: false,
     search: '',
-    currentTicketIndex: null
+    currentTicketIndex: null,
+    sort: 'updated_asc'
 })
 
 export function tickets(state = ticketsInitial, action) {
@@ -19,11 +20,11 @@ export function tickets(state = ticketsInitial, action) {
             return state.set('loading', true)
 
         case actions.FETCH_TICKET_LIST_VIEW_SUCCESS:
-            return Map({
+            return state.merge({
                 items: Immutable.fromJS(action.resp.data),
                 resp_meta: Immutable.fromJS(action.resp.meta),
                 loading: false,
-                search: state.get('search')
+                search: state.get('search'),
             })
 
         case actions.SEARCH:
@@ -32,8 +33,12 @@ export function tickets(state = ticketsInitial, action) {
         case actions.SAVE_INDEX:
             return state.set('currentTicketIndex', action.currentTicketIndex)
 
-        case actions.GO_TO_NEXT_TICKET:
-            return state
+        case actions.SORT:
+            if (action.sortProperty === 'updated') {
+                return state.set('sort', state.get('sort') === 'updated_asc' ? 'updated_desc' : 'updated_asc')
+            } else if (action.sortProperty === 'created') {
+                return state.set('sort', state.get('sort') === 'created_asc' ? 'created_desc' : 'created_asc')
+            }
 
         default:
             return state

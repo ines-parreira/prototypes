@@ -23,6 +23,8 @@ export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
 export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
+export const SORT = 'SORT'
+
 // Macro actions
 export const SET_RESPONSE_TEXT = 'setResponseText'
 export const ADD_TICKET_TAGS = 'addTags'
@@ -143,7 +145,7 @@ export function markTicketDirty() {
     }
 }
 
-export function fetchPageFromAlgolia(settings, view, page, searchValue) {
+export function fetchPageFromAlgolia(settings, view, page, searchValue, sort) {
     // We are 1-indexed, Algolia is 0-indexed
     page = page - 1
 
@@ -152,7 +154,7 @@ export function fetchPageFromAlgolia(settings, view, page, searchValue) {
         hitsPerPage: PER_PAGE
     }
 
-    if (!view) { return }
+    if (!view) { return null }
 
     const searchParams = AlgoliaSearchParams(view.get('filters_ast').toJS(), 'ticket.')
     const params = _.defaults(defaults, searchParams)
@@ -162,7 +164,7 @@ export function fetchPageFromAlgolia(settings, view, page, searchValue) {
             type: FETCH_TICKET_LIST_VIEW_START,
         })
 
-        return settings.getIn(['indices', 'ticket']).search(searchValue, params, (err, content) => {
+        return settings.getIn(['indices', 'ticket', sort]).search(searchValue, params, (err, content) => {
             if (err) {
                 return dispatch(systemMessage({
                     type: 'error',
@@ -319,5 +321,12 @@ export function saveIndex(currentTicketIndex) {
     return {
         type: SAVE_INDEX,
         currentTicketIndex
+    }
+}
+
+export function sort(sortProperty) {
+    return {
+        type: SORT,
+        sortProperty
     }
 }
