@@ -16,28 +16,26 @@ export default class InfobarWidget extends React.Component {
         let header = ''
         if (widget.title) {
             header = (
-                <div className="content">
                     <div className="header">{renderTemplate(widget.title, { self: object.toJS() })}</div>
-                </div>
             )
         }
         return (
             <div className="infobar-card ui card">
-                {header}
                 <div className="content">
-                    <div className="fields">
-                        {widget.fields.map((field) => (
-                                <InfobarWidgetField
-                                    key={field.id}
-                                    object={object}
-                                    field={field}
-                                    widgets={widgets}
-                                    currentUser={currentUser}
-                                />
-                            )
-                        )}
+                    {header}
+                        <div className="fields">
+                            {widget.fields.map((field) => (
+                                    <InfobarWidgetField
+                                        key={field.id}
+                                        object={object}
+                                        field={field}
+                                        widgets={widgets}
+                                        currentUser={currentUser}
+                                    />
+                                )
+                            )}
+                        </div>
                     </div>
-                </div>
             </div>
         )
     }
