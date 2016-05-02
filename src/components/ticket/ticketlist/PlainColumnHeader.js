@@ -28,5 +28,5 @@ PlainColumnHeader.propTypes = {
     column: PropTypes.object.isRequired,
     onClick: PropTypes.func,
     sort: PropTypes.func.isRequired,
-    currentSort: PropTypes.string.isRequired,
+    currentSort: PropTypes.string.isRequired
 }
