@@ -154,6 +154,8 @@ export function fetchPageFromAlgolia(settings, view, page, searchValue, sort) {
         hitsPerPage: PER_PAGE
     }
 
+    console.log(sort)
+
     if (!view) { return null }
 
     const searchParams = AlgoliaSearchParams(view.get('filters_ast').toJS(), 'ticket.')
