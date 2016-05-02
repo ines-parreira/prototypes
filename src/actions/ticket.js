@@ -23,7 +23,7 @@ export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
 export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 
-export const SORT = 'SORT'
+export const SORT_TICKETS = 'SORT_TICKETS'
 
 // Macro actions
 export const SET_RESPONSE_TEXT = 'setResponseText'
@@ -326,7 +326,7 @@ export function saveIndex(currentTicketIndex) {
 
 export function sort(sortProperty) {
     return {
-        type: SORT,
+        type: SORT_TICKETS,
         sortProperty
     }
 }

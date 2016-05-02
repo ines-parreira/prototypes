@@ -33,10 +33,10 @@ export function tickets(state = ticketsInitial, action) {
         case actions.SAVE_INDEX:
             return state.set('currentTicketIndex', action.currentTicketIndex)
 
-        case actions.SORT:
-            if (action.sortProperty === 'updated') {
+        case actions.SORT_TICKETS:
+            if (action.sortProperty === 'updated_datetime') {
                 return state.set('sort', state.get('sort') === 'updated_asc' ? 'updated_desc' : 'updated_asc')
-            } else if (action.sortProperty === 'created') {
+            } else if (action.sortProperty === 'created_datetime') {
                 return state.set('sort', state.get('sort') === 'created_asc' ? 'created_desc' : 'created_asc')
             }
 

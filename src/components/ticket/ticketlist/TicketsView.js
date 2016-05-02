@@ -26,19 +26,11 @@ export default class TicketsView extends React.Component {
                 columnName: 'tags',
                 callee: 'contains',
                 search: true,
-                getRepr: (value) => {
-                    if (value) {
-                        return value.get('name')
-                    } else {
-                        return ''
-                    }
+                getRepr: value => {
+                    return value ? value.get('name') : ''
                 },
                 getID: (value) => {
-                    if (value) {
-                        return value.get('name')
-                    } else {
-                        return ''
-                    }
+                    return value ? value.get('name') : ''
                 }
             },
             'ticket.assignee_user.id': {
@@ -48,18 +40,10 @@ export default class TicketsView extends React.Component {
                 callee: 'eq',
                 search: true,
                 getRepr: (value) => {
-                    if (value) {
-                        return value.get('name')
-                    } else {
-                        return ''
-                    }
+                    return value ? value.get('name') : ''
                 },
                 getID: (value) => {
-                    if (value) {
-                        return value.get('id')
-                    } else {
-                        return ''
-                    }
+                    return value ? value.get('id') : ''
                 }
             },
             'ticket.status': {

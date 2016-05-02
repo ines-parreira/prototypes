@@ -27,13 +27,13 @@ export default Immutable.fromJS([
         sortable: false
     },
     {
-        name: 'created',
+        name: 'created_datetime',
         width: 2 * CELL_WIDTH,
         header: 'Created',
         sortable: true
     },
     {
-        name: 'updated',
+        name: 'updated_datetime',
         width: 2 * CELL_WIDTH,
         header: 'Updated',
         sortable: true

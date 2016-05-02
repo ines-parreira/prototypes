@@ -21,10 +21,10 @@ function getAlgoliaIndices(resp) {
 
     return Map({
         ticket: Map({
-            updated_asc: client.initIndex(indices_names.ticket),
-            updated_desc: client.initIndex(`${indices_names.ticket}_updated_desc`),
-            created_asc: client.initIndex(`${indices_names.ticket}_created_asc`),
-            created_desc: client.initIndex(`${indices_names.ticket}_created_desc`),
+            updated_asc: client.initIndex(indices_names.ticket.updated_asc),
+            updated_desc: client.initIndex(indices_names.ticket.updated_desc),
+            created_asc: client.initIndex(indices_names.ticket.created_asc),
+            created_desc: client.initIndex(indices_names.ticket.created_desc)
         }),
         user: client.initIndex(indices_names.user),
     })
