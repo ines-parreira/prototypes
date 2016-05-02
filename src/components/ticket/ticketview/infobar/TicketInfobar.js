@@ -58,7 +58,7 @@ export default class TicketInfobar extends React.Component {
             })
         }
         return (
-            <div>
+            <div className="infobar-content">
                 {/*<div className="infobar-top infobar-box infobar-search">
                  <Search id="ticket"/>
                  </div>*/}
@@ -66,7 +66,8 @@ export default class TicketInfobar extends React.Component {
                     <h2>{ticket.get('requester').name}</h2>
                     {renderWidgets(topWidgets)}
                 </div>
-                <div className="infobar-content infobar-box">
+                <div className="infobar-section-separator"></div>
+                <div className="infobar-middle-content infobar-box ui two stackable cards">
                     {renderWidgets(contentWidgets)}
                 </div>
                 <div className="infobar-bottom infobar-box">
