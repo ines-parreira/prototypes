@@ -8,7 +8,7 @@ const ticketsInitial = Map({
     loading: false,
     search: '',
     currentTicketIndex: null,
-    sort: 'updated_asc'
+    sort: 'updated_datetime_asc'
 })
 
 export function tickets(state = ticketsInitial, action) {
@@ -35,9 +35,9 @@ export function tickets(state = ticketsInitial, action) {
 
         case actions.SORT_TICKETS:
             if (action.sortProperty === 'updated_datetime') {
-                return state.set('sort', state.get('sort') === 'updated_asc' ? 'updated_desc' : 'updated_asc')
+                return state.set('sort', state.get('sort') === 'updated_datetime_asc' ? 'updated_datetime_desc' : 'updated_datetime_asc')
             } else if (action.sortProperty === 'created_datetime') {
-                return state.set('sort', state.get('sort') === 'created_asc' ? 'created_desc' : 'created_asc')
+                return state.set('sort', state.get('sort') === 'created_datetime_asc' ? 'created_datetime_desc' : 'created_datetime_asc')
             }
 
         default:

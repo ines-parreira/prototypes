@@ -10,11 +10,9 @@ export default class PlainColumnHeader extends React.Component {
         let sortIcon = column.sortable ? <i className="action sort icon" onClick={() => sort(column.name)}/> : null
         const onClick = this.props.onClick || (() => {})
 
-        if ((currentSort === 'updated_desc' && column.name === 'updated_datetime') ||
-            (currentSort === 'created_desc' && column.name === 'created_datetime')) {
+        if (currentSort.endsWith('desc') && currentSort.startsWith(column.name)) {
             sortIcon = <i className="action sort caret down icon" onClick={() => sort(column.name)}/>
-        } else if ((currentSort === 'updated_asc' && column.name === 'updated_datetime') ||
-            (currentSort === 'created_asc' && column.name === 'created_datetime')) {
+        } else if (currentSort.endsWith('asc') && currentSort.startsWith(column.name)) {
             sortIcon = <i className="action sort caret up icon" onClick={() => sort(column.name)}/>
         }
 
