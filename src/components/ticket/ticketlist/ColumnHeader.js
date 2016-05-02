@@ -52,6 +52,8 @@ export default class ColumnHeader extends React.Component {
                 <PlainColumnHeader
                     column={this.props.column}
                     onClick={this.onClick}
+                    sort={this.props.sort}
+                    currentSort={this.props.currentSort}
                 />
                 <Portal
                     closeOnOutsideClick
@@ -76,5 +78,7 @@ ColumnHeader.propTypes = {
     column: PropTypes.object.isRequired,
     updateFilters: PropTypes.func.isRequired,
     groupedFilters: PropTypes.object.isRequired,
-    filterSpec: PropTypes.object.isRequired
+    filterSpec: PropTypes.object.isRequired,
+    sort: PropTypes.func.isRequired,
+    currentSort: PropTypes.string.isRequired
 }

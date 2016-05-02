@@ -32,7 +32,14 @@ export default class TicketTable extends React.Component {
         const filterSpec = this.props.getFilterSpecForColumn(column.name)
 
         if (!filterSpec) {
-            return <PlainColumnHeader key={column.name} column={column} />
+            return (
+                <PlainColumnHeader
+                    key={column.name}
+                    column={column}
+                    sort={this.props.actions.ticket.sort}
+                    currentSort={this.props.tickets.get('sort')}
+                />
+            )
         }
 
         return (
@@ -42,6 +49,8 @@ export default class TicketTable extends React.Component {
                 groupedFilters={this.props.groupedFilters}
                 updateFilters={this.props.updateFilters}
                 filterSpec={filterSpec}
+                sort={this.props.actions.ticket.sort}
+                currentSort={this.props.tickets.get('sort')}
             />
         )
     }

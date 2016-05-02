@@ -53,9 +53,9 @@ export default class TicketTableRow extends React.Component {
                         {ticket.status}
                     </span>
                 )
-            case 'created':
+            case 'created_datetime':
                 return formatDatetime(ticket.created_datetime, this.props.currentUser.get('timezone'))
-            case 'updated':
+            case 'updated_datetime':
                 return formatDatetime(ticket.updated_datetime, this.props.currentUser.get('timezone'))
             case 'details':
                 const firstMessage = ticket.messages[0]
