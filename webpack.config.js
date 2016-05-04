@@ -4,12 +4,13 @@ var path = require('path')
 var webpack = require('webpack')
 
 var __PRODUCTION__ = process.env.NODE_ENV === 'production'
+var HASH = process.env.CIRCLE_SHA1 ? process.env.CIRCLE_SHA1  : '[hash]'
 
 var staticDirectory = './g/static/private/'
 
 var jsMainFile = staticDirectory + 'js/main.js'
 var jsBuildPath = staticDirectory + '_build/js'
-var jsBundleFile = __PRODUCTION__ ? '[hash].build.min.js' : 'build.js'
+var jsBundleFile = __PRODUCTION__ ? (HASH + '.build.min.js') : 'build.js'
 
 var plugins = [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/)
