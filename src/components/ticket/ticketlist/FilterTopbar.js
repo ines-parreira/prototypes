@@ -9,6 +9,7 @@ export default class FilterTopbar extends React.Component {
         this.props.submitView(this.props.view, this.props.slug)
         browserHistory.push(`/app/tickets/${this.props.view.get('slug')}`)
     }
+
     onClickNew = () => {
         const data = this.props.view.delete('id').delete('group_by').delete('icon')
         this.props.submitView(data, this.props.slug)
