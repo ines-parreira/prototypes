@@ -26,7 +26,8 @@ const ticketInitial = Map({
     state: Map({
         potentialRequesters: List(),
         query: '',
-        dirty: false
+        dirty: false,
+        loading: false
     }),
     messages: List(),
     subject: '',
@@ -103,12 +104,29 @@ export function ticket(state = ticketInitial, action) {
                 state.getIn(['newMessage', 'macros']).push({ id: action.macro.get('id') })
             )
 
+        case actions.DELETE_TICKET_MESSAGE_START:
+        case actions.SUBMIT_TICKET_START:
+            return state.setIn(['state', 'loading'], true)
+
+        case actions.SUBMIT_TICKET_ERROR:
+            return state.setIn(['state', 'loading'], false)
+
         case actions.SUBMIT_TICKET_SUCCESS:
         case actions.FETCH_TICKET_SUCCESS:
             return state.merge(Immutable.fromJS(action.resp)).merge({
                 newMessage,
-                state: state.get('state').merge({ dirty: false })
+                state: state.get('state').merge({ dirty: false, loading: false })
             })
+
+        case actions.FETCH_MESSAGE_SUCCESS:
+            if (state.get('id') === action.resp.ticket_id) {
+                return state.setIn(
+                    ['messages', state.get('messages').findIndex(message => message.get('id') === action.resp.id)],
+                    Immutable.fromJS(action.resp)
+                )
+            }
+
+            return state
 
         /* Macro actions */
 
@@ -216,6 +234,14 @@ export function ticket(state = ticketInitial, action) {
 
         case actions.MARK_TICKET_DIRTY:
             return state.setIn(['state', 'dirty'], true)
+
+        case actions.DELETE_TICKET_MESSAGE_SUCCESS:
+            return state.set(
+                'messages',
+                state.get('messages').delete(
+                    state.get('messages').findIndex(message => message.get('id') === action.messageId)
+                )
+            ).setIn(['state', 'loading'], false)
 
         default:
             return state

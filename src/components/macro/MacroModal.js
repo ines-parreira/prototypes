@@ -32,64 +32,6 @@ export default class MacroModal extends React.Component {
         $('#macro-modal').modal('hide')
     }
 
-    renderExternalActions(actions, templates) {
-        if (actions.size) {
-            return (
-                <div>
-                    <h4>EXTERNAL ACTIONS</h4>
-                    {
-                        actions.map(action => {
-                            const template = templates.find(
-                                curTemplate => curTemplate.get('name') === action.get('name')
-                            )
-
-                            return (
-                                <div>
-                                    <button key={action.get('id')} className="ui right labeled icon yellow button">
-                                        {action.get('title') || action.get('name')}
-
-                                        <i
-                                            className="close icon"
-                                            onClick={() => this.props.actions.deleteAction(action.get('id'))}
-                                        />
-                                    </button>
-                                    {
-                                        template.get('arguments').map((arg, key) => {
-                                            if (key) {
-                                                console.log(arg, key)
-                                                switch (arg.get('type')) {
-                                                    case 'string':
-                                                        return (
-                                                            <div key={key} className="ui input">
-                                                                <h5>{key}</h5>
-                                                                <input type="text" defaultValue={arg.get('default')} value={arg.get('value')}/>
-                                                            </div>
-                                                        )
-
-                                                    case 'object':
-                                                        return <textarea key={key} defaultValue={arg.get('default')} value={arg.get('value')}/>
-
-                                                    case 'email':
-                                                        return <input key={key} type="email" defaultValue={arg.get('default')} value={arg.get('value')}/>
-
-                                                    default:
-                                                        return null
-                                                }
-                                            } else {
-                                                return 'no arg'
-                                            }
-                                        })
-                                    }
-                                </div>
-                            )
-                        })
-                    }
-                    <div className="ui divider"></div>
-                </div>
-            )
-        }
-    }
-
     create() {
         this.props.actions.createMacro(this.props.currentMacro)
         $('#macro-modal').modal('hide')
@@ -263,7 +205,6 @@ MacroModal.propTypes = {
     currentMacro: PropTypes.object.isRequired,
     tags: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
-    templates: PropTypes.object.isRequired,
 
     actions: PropTypes.object.isRequired
 }

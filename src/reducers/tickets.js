@@ -13,9 +13,6 @@ const ticketsInitial = Map({
 
 export function tickets(state = ticketsInitial, action) {
     switch (action.type) {
-        case actions.NEW_TICKET:
-            return state
-
         case actions.FETCH_TICKET_LIST_VIEW_START:
             return state.set('loading', true)
 

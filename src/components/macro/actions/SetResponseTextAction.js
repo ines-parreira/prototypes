@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 
-export default class SetStatusAction extends React.Component {
+export default class SetResponseTextAction extends React.Component {
     setResponseText(value) {
         const args = this.props.action.get('arguments')
 
@@ -32,7 +32,7 @@ export default class SetStatusAction extends React.Component {
     }
 }
 
-SetStatusAction.propTypes = {
+SetResponseTextAction.propTypes = {
     action: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     updateActionArgs: PropTypes.func.isRequired,

@@ -56,11 +56,13 @@ class App extends React.Component {
             success: 'success'
         }[systemMessage.type]
 
+        const msg = typeof systemMessage.msg === 'string' ? <p>{systemMessage.msg}</p> : systemMessage.msg
+
         return (
             <div className={`ui ${messageType} message`}>
                 <i className="close icon" onClick={this.handleDismissClick}/>
                 <div className="header">{systemMessage.header}</div>
-                <p>{systemMessage.msg}</p>
+                {msg}
             </div>
         )
     }

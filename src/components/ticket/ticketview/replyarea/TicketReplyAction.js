@@ -4,7 +4,7 @@ export default class TicketReplyAction extends React.Component {
     renderArgs(title, args) {
         if (args.size) {
             return (
-                <div>
+                <div className="six wide column">
                     <h5>{title}</h5>
                     {
                         args.map((arg, key) => (
@@ -36,21 +36,20 @@ export default class TicketReplyAction extends React.Component {
     }
 
     render() {
-        const { action } = this.props
+        const { action, remove } = this.props
         const headersArgs = action.getIn(['arguments', 'headers']).filter(curAction => curAction.get('editable'))
         const paramsArgs = action.getIn(['arguments', 'params']).filter(curAction => curAction.get('editable'))
 
         return (
             <div className="TicketReplyAction">
                 <div className="ui accordion">
-                    <div className="title ui orange label">{action.get('title')}</div>
-                    <div className="content ui grid">
-                        <div className="six wide column">
-                            {this.renderArgs('Headers', headersArgs)}
-                        </div>
-                        <div className="six wide column">
-                            {this.renderArgs('Parameters', paramsArgs)}
-                        </div>
+                    <div className="title ui yellow label">
+                        {action.get('title')}
+                        <i className="icon close" onClick={() => remove(this.props.index)}/>
+                    </div>
+                    <div className={`content ui grid ${headersArgs.size + paramsArgs.size ? '' : 'hidden'}`}>
+                        {this.renderArgs('Headers', headersArgs)}
+                        {this.renderArgs('Parameters', paramsArgs)}
                     </div>
                 </div>
             </div>
@@ -61,5 +60,6 @@ export default class TicketReplyAction extends React.Component {
 TicketReplyAction.propTypes = {
     action: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
-    update: PropTypes.func.isRequired
+    update: PropTypes.func.isRequired,
+    remove: PropTypes.func.isRequired
 }

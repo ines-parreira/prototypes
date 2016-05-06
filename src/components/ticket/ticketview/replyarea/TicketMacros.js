@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
+import { fromJS } from 'immutable'
 import classnames from 'classnames'
-import { DEFAULT_ACTIONS } from './../../../../constants'
+import { ACTION_TEMPLATES } from './../../../../constants'
 
 
 export default class TicketMacros extends React.Component {
@@ -105,8 +106,8 @@ export default class TicketMacros extends React.Component {
             <div className="macro-data">
                 <div className="ui label macro-legend">ACTIONS: </div>
                 {
-                    externalActions.map((action) =>
-                        <div key={`external-action-${action.id}`} className="ui yellow label">{action.get('title')}</div>
+                    externalActions.map((action, idx) =>
+                        <div key={`external-action-${idx}`} className="ui yellow label">{action.get('title')}</div>
                     )
                 }
             </div>
@@ -131,9 +132,8 @@ export default class TicketMacros extends React.Component {
         const setPriorityAction = macro.get('actions').find(action => action.get('name') === 'setPriority')
         const assignUserAction = macro.get('actions').find(action => action.get('name') === 'assignUser')
         const externalActions = macro.get('actions').filter(
-            action => action.get('execution') === 'back'
+            action => fromJS(ACTION_TEMPLATES).getIn([action.get('name'), 'execution']) === 'back'
         )
-        console.log(macro.get('actions').toJS())
 
         const textPreview = responseTextAction ? {
             __html: responseTextAction.getIn(['arguments', 'body_html'])

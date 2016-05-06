@@ -6,10 +6,6 @@ import MacroModal from './../components/macro/MacroModal'
 import * as MacroActions from './../actions/macro'
 
 class MacrosContainer extends React.Component {
-    // componentDidMount() {
-    //
-    // }
-
     render() {
         const { macros, tags, agents, actions } = this.props
 
@@ -24,7 +20,6 @@ class MacrosContainer extends React.Component {
                 currentMacro={macros.get('modalSelected')}
                 tags={tags.get('items')}
                 agents={agents}
-                templates={macros.get('actionTemplates')}
                 actions={actions}
             />
         )

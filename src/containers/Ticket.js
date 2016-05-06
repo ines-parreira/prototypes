@@ -22,7 +22,6 @@ class TicketContainer extends React.Component {
             this.props.actions.ticket.setupNewTicket()
         }
         this.props.actions.macro.fetchMacros()
-        this.props.actions.macro.fetchActions()
         this.props.actions.tag.fetchTags()
     }
 
@@ -104,7 +103,7 @@ class TicketContainer extends React.Component {
         return nextTicketUrl
     }
 
-    submit = (status, next) => {
+    submit = (status, next, action) => {
         let ticket = this.props.ticket
 
         if (!ticket.get('id')) {
@@ -114,12 +113,16 @@ class TicketContainer extends React.Component {
                 .setIn(['newMessage', 'sender'], {id: this.props.currentUser.get('id')})
         }
 
+        if (action === 'force') {
+            ticket.getIn(['messages', 'actions'])
+        }
+
         this.props.actions.ticket.submitTicket(
             ticket,
             status,
             this.props.macros.getIn(['appliedMacro', 'actions']),
-            this.props.macros.get('actionTemplates'),
-            this.props.currentUser
+            this.props.currentUser,
+            action
         )
 
         if (next) {
@@ -137,7 +140,7 @@ class TicketContainer extends React.Component {
     }
 
     render() {
-        const ticketLoaded = !!(this.props.ticket.get('messages').size && this.props.params.ticketId !== 'new')
+        const ticketLoaded = !!(this.props.ticket.get('messages').size || this.props.params.ticketId === 'new')
         const view = this.props.views.getIn(['items', this.props.routing.locationBeforeTransitions.query.view])
 
         return (

@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import linkifyStr from 'linkifyjs/string'
-import {formatDatetime} from '../../../utils';
+import {formatDatetime} from '../../../utils'
+import classNames from 'classnames'
+import TicketMessageActions from './TicketMessageActions'
 
 export default class TicketMessage extends React.Component {
     componentDidMount() {
@@ -12,6 +14,7 @@ export default class TicketMessage extends React.Component {
             on: 'hover',
             action: 'nothing'
         })
+        $('.actions .label').popup({ inline: true })
     }
 
     renderAttachmentIcon(contentType) {
@@ -92,14 +95,47 @@ export default class TicketMessage extends React.Component {
             createdDatetime = formatDatetime(message.created_datetime, currentUser.get('timezone'))
         }
 
-        let className = 'ticket-message'
+        let error = false
+        let pending = false
 
-        if (!message.public) {
-            className = 'ticket-message internal'
+        for (const action in message.actions) {
+            if (message.actions[action].status === 'error') {
+                error = true
+                break
+            } else if (message.actions[action].status === 'pending') {
+                pending = true
+            }
         }
+
+        const className = classNames(
+            'ticket-message',
+            'ui',
+            'raw',
+            'segment',
+            {
+                internal: !message.public,
+                loading: pending && !error
+            }
+        )
 
         return (
             <div className={className} ref="ticketMessage">
+                <div className={`ui inverted dimmer ${error ? 'active' : ''}`} data-opacity="0">
+                    <div className="content">
+                        <div className="center" style={{ color: 'red' }}>
+                            <div className={`ui segment ${this.props.loading ? 'loading' : ''}`} style={{ margin: 'auto', width: '50%'}}>
+                                This message wasn't send: one or more actions failed.
+                                <div style={{ margin: '1em auto'}}>
+                                    <TicketMessageActions message={message} />
+                                </div>
+                                <a onClick={() => this.props.submit(null, null, 'retry')}>retry</a> to execute the failed action(s) automatically, and send the message if it succeeds,<br/>
+                                <a onClick={() => this.props.submit(null, null, 'force')}>ignore failure</a>, execute the other actions and send the message<br/>
+                                <a onClick={() => this.props.deleteMessage(message.id)}>cancel</a> the message, and manually undo successful action(s).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="ticket-message-header">
                     <div className="ticket-message-header-details">
                         {(() => {
@@ -118,11 +154,15 @@ export default class TicketMessage extends React.Component {
                         {createdDatetime}
                     </div>
                 </div>
+
                 {(() => {
                     if (message.body_html) {
                         return (
-                            <div className="ticket-message-body"
-                                    dangerouslySetInnerHTML={{__html: message.body_html}}></div>
+                            <div
+                                className="ticket-message-body"
+                                dangerouslySetInnerHTML={{__html: message.body_html}}
+                            >
+                            </div>
                         )
                     }
                     return (
@@ -150,7 +190,7 @@ export default class TicketMessage extends React.Component {
                 */}
 
                 {this.renderAttachment(message)}
-
+                <TicketMessageActions message={message} />
             </div>
         )
     }
@@ -167,7 +207,11 @@ TicketMessage.propTypes = {
         body_text: PropTypes.string.isRequired,
         body_html: PropTypes.string.isRequired,
         created_datetime: PropTypes.string.isRequired,
-        attachments: PropTypes.array
+        attachments: PropTypes.array,
+        actions: PropTypes.array
     }).isRequired,
-    currentUser: PropTypes.object.isRequired
+    loading: PropTypes.bool.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    submit: PropTypes.func.isRequired,
+    deleteMessage: PropTypes.func.isRequired
 }

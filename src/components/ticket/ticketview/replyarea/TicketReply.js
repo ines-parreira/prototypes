@@ -26,7 +26,7 @@ export default class TicketReply extends React.Component {
         // we're listening from stuff that comes from the extension
         window.addEventListener('message', this.onMessage, false)
         this.refs.editor.focus()
-        $('.TicketReply .ui.accordion').accordion()
+        $('.TicketReply .ui.accordion').accordion('open', 0)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -188,6 +188,7 @@ export default class TicketReply extends React.Component {
                             index={this.props.appliedMacro.get('actions').indexOf(action)}
                             action={action}
                             update={this.props.actions.macro.updateActionArgsOnApplied}
+                            remove={this.props.actions.macro.deleteActionOnApplied}
                         />
                     ))
                 }

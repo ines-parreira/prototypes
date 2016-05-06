@@ -6,15 +6,18 @@ import { RECORD_MACRO } from './ticket'
 export const FETCH_MACRO_LIST_START = 'FETCH_MACRO_LIST_START'
 export const FETCH_MACRO_LIST_SUCCESS = 'FETCH_MACRO_LIST_SUCCESS'
 
-export const FETCH_ACTION_LIST_START = 'FETCH_ACTION_LIST_START'
-export const FETCH_ACTION_LIST_SUCCESS = 'FETCH_ACTION_LIST_SUCCESS'
+// TicketReply
+export const UPDATE_ACTION_ARGS_ON_APPLIED = 'UPDATE_ACTION_ARGS_ON_APPLIED'
+export const DELETE_ACTION_ON_APPLIED = 'DELETE_ACTION_ON_APPLIED'
 
+// TicketReplyMacros
 export const APPLY_MACRO = 'APPLY_MACRO'
 export const PREVIEW_MACRO = 'PREVIEW_MACRO'
 export const SET_MACROS_VISIBILITY = 'SET_MACROS_VISIBILITY'
 export const PREVIEW_ADJACENT_MACRO = 'PREVIEW_ADJACENT_MACRO'
 export const PREVIEW_MACRO_IN_MODAL = 'PREVIEW_MACRO_IN_MODAL'
 
+// Macro Management Modal
 export const ADD_NEW_MACRO = 'ADD_NEW_MACRO'
 
 export const CREATE_MACRO_START = 'CREATE_MACRO_START'
@@ -33,11 +36,17 @@ export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
 
 export const UPDATE_ACTION_ARGS = 'UPDATE_ACTION_ARGS'
-export const UPDATE_ACTION_ARGS_ON_APPLIED = 'UPDATE_ACTION_ARGS_ON_APPLIED'
 
 export const UPDATE_ACTION_TITLE = 'UPDATE_ACTION_TITLE'
 export const SET_NAME = 'SET_NAME_ON_MACRO'
 
+
+export function deleteActionOnApplied(actionIndex) {
+    return {
+        type: DELETE_ACTION_ON_APPLIED,
+        actionIndex
+    }
+}
 
 export function updateActionArgsOnApplied(actionIndex, value) {
     return {
@@ -155,32 +164,6 @@ export function applyMacro(macro, currentUser) {
         dispatch({
             type: RECORD_MACRO,
             macro
-        })
-    }
-}
-
-export function fetchActions() {
-    return (dispatch) => {
-        dispatch({
-            type: FETCH_ACTION_LIST_START
-        })
-
-        return reqwest({
-            url: '/doc/uispec.json',
-            type: 'json',
-            method: 'GET',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch({
-                type: FETCH_ACTION_LIST_SUCCESS,
-                resp
-            })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to fetch macros',
-                msg: err
-            }))
         })
     }
 }

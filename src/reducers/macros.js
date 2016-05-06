@@ -12,7 +12,7 @@ const actionInitial = Map({
     arguments: Map()
 })
 
-const initialDefaultActions = {
+const initialDefaultActions = Map({
     setStatus: actionInitial.merge({
         name: 'setStatus',
         arguments: Map({status: 'new'})
@@ -46,8 +46,8 @@ const initialDefaultActions = {
         arguments: Map({
             method: 'GET',
             url: '',
-            headers: Map(),
-            params: Map(),
+            headers: List(),
+            params: List(),
             contentType: 'application/json'
         })
     }),
@@ -67,7 +67,7 @@ const initialDefaultActions = {
             content: '{ticket.last_message.body_text'
         })
     })
-}
+})
 
 const macroInitial = Map({
     id: 'new',
@@ -84,8 +84,7 @@ const macrosInitial = Map({
     modalSelected: macroInitial,
     appliedMacro: null,
     items: Map(),
-    actions: Map(),
-    actionTemplates: Map()
+    actions: initialDefaultActions
 })
 
 export function macros(state = macrosInitial, action) {
@@ -146,47 +145,17 @@ export function macros(state = macrosInitial, action) {
                 items
             })
 
-        case actions.FETCH_ACTION_LIST_SUCCESS:
-            const macroActions = {}
-            const templates = Immutable.fromJS(action.resp.ActionTemplates)
-
-            for (const key in action.resp.ActionTemplates) {
-                const curAction = action.resp.ActionTemplates[key]
-                macroActions[key] = Object.assign({}, curAction)
-
-                for (const arg in curAction.arguments) {
-                    switch (curAction.arguments[arg].type) {
-                        case 'string':
-                            macroActions[key].arguments[arg] = curAction.arguments[arg].default ? curAction.arguments[arg].default : ''
-                            break
-
-                        case 'integer':
-                            macroActions[key].arguments[arg] = -1
-                            break
-
-                        case 'object':
-                            macroActions[key].arguments[arg] = Map({})
-                            break
-
-                        case 'array':
-                            macroActions[key].arguments[arg] = List([])
-                            break
-
-                        default:
-                            break
-                    }
-                }
-            }
-
-            return state
-                .set('actions', Immutable.fromJS(macroActions))
-                .set('actionTemplates', templates)
-
         case actions.UPDATE_ACTION_ARGS:
             return state.setIn(['modalSelected', 'actions', action.actionIndex, 'arguments'], action.value)
-        
+
         case actions.UPDATE_ACTION_ARGS_ON_APPLIED:
             return state.setIn(['appliedMacro', 'actions', action.actionIndex, 'arguments'], action.value)
+
+        case actions.DELETE_ACTION_ON_APPLIED:
+            return state.setIn(
+                ['appliedMacro', 'actions'],
+                state.getIn(['appliedMacro', 'actions']).delete(action.actionIndex)
+            )
 
         case actions.UPDATE_ACTION_TITLE:
             return state.setIn(['modalSelected', 'actions', action.actionIndex, 'title'], action.title)

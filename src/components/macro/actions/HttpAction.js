@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
-import {Map} from 'immutable'
-import DictEditor from './../../DictEditor'
+import ParametersEditor from '../../ParametersEditor'
 
 export default class HttpAction extends React.Component {
     componentDidMount() {
@@ -83,14 +82,14 @@ export default class HttpAction extends React.Component {
                     </div>
                     <div className="field">
                         <label>Headers</label>
-                        <DictEditor
+                        <ParametersEditor
                             list={action.getIn(['arguments', 'headers'])}
                             updateDict={headers => this.setHeaders(headers)}
                         />
                     </div>
                     <div className="field">
                         <label>Parameters</label>
-                        <DictEditor
+                        <ParametersEditor
                             list={action.getIn(['arguments', 'params'])}
                             updateDict={params => this.setParams(params)}
                         />

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Map} from 'immutable'
 
-export default class DictEditor extends React.Component {
+export default class ParametersEditor extends React.Component {
     addRow() {
         this.props.updateDict(this.props.list.push(Map({ key: '', value: '', editable: false })))
     }
@@ -62,7 +62,7 @@ export default class DictEditor extends React.Component {
     }
 }
 
-DictEditor.propTypes = {
+ParametersEditor.propTypes = {
     list: PropTypes.object.isRequired,
     updateDict: PropTypes.func.isRequired
 }
