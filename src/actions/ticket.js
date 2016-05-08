@@ -1,9 +1,7 @@
 import reqwest from 'reqwest'
-import { Map } from 'immutable'
+import {Map} from 'immutable'
 import _ from 'lodash'
-import { systemMessage } from './systemMessage'
-import { PER_PAGE } from '../constants'
-import { AlgoliaSearchParams } from '../filters/algolia'
+import {systemMessage} from './systemMessage'
 
 
 // Basic operations on the ticket
@@ -33,8 +31,6 @@ export const SET_AGENT = 'assignUser'
 export const TOGGLE_PRIORITY = 'setPriority'
 
 export const RECORD_MACRO = 'RECORD_MACRO'
-
-export const SEARCH = 'search'
 
 export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
 
@@ -145,47 +141,6 @@ export function markTicketDirty() {
     }
 }
 
-export function fetchPageFromAlgolia(settings, view, page, searchValue, sort) {
-    // We are 1-indexed, Algolia is 0-indexed
-    page = page - 1
-
-    const defaults = {
-        page,
-        hitsPerPage: PER_PAGE
-    }
-
-    if (!view) { return null }
-
-    const searchParams = AlgoliaSearchParams(view.get('filters_ast').toJS(), 'ticket.')
-    const params = _.defaults(defaults, searchParams)
-
-    return (dispatch) => {
-        dispatch({
-            type: FETCH_TICKET_LIST_VIEW_START,
-        })
-
-        return settings.getIn(['indices', 'ticket', sort]).search(searchValue, params, (err, content) => {
-            if (err) {
-                return dispatch(systemMessage({
-                    type: 'error',
-                    header: 'Error: Failed to fetch list of tickets.',
-                    msg: err
-                }))
-            }
-            dispatch({
-                type: FETCH_TICKET_LIST_VIEW_SUCCESS,
-                resp: {
-                    data: content.hits,
-                    meta: {
-                        nb_pages: content.nbPages,
-                        page: content.page + 1
-                    }
-                }
-            })
-        })
-    }
-}
-
 export function setupNewTicket() {
     return {
         type: SETUP_NEW_TICKET
@@ -224,7 +179,7 @@ export function fetchTicketDetails(ticketId, data) {
     }
 }
 
-export function fetchTicketList(data = {}) {
+export function fetchTicketsPage(view, page) {
     return (dispatch) => {
         dispatch({
             type: FETCH_TICKET_LIST_VIEW_START
@@ -233,8 +188,11 @@ export function fetchTicketList(data = {}) {
         const url = '/api/tickets/'
 
         return reqwest({
-            url: url,
-            data: data,
+            url,
+            data: {
+                view,
+                page
+            },
             type: 'json',
             method: 'GET',
             contentType: 'application/json'
@@ -250,6 +208,37 @@ export function fetchTicketList(data = {}) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to fetch list of tickets.',
+                msg: err
+            }))
+        })
+    }
+}
+
+export function search(props, query) {
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_TICKET_LIST_VIEW_START
+        })
+
+        return reqwest({
+            url: '/api/search/',
+            data: JSON.stringify({
+                doc_type: 'ticket',
+                fields: props.fields,
+                query
+            }),
+            type: 'json',
+            method: 'POST',
+            contentType: 'application/json'
+        }).then((resp) => {
+            dispatch({
+                type: FETCH_TICKET_LIST_VIEW_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to search tickets. Please try again..',
                 msg: err
             }))
         })
@@ -283,7 +272,7 @@ export function submitTicket(ticket, status) {
         }
 
         if (data.assignee_user) {
-            data.assignee_user = { id: data.assignee_user.id }
+            data.assignee_user = {id: data.assignee_user.id}
         }
 
         delete data.state
@@ -307,13 +296,6 @@ export function submitTicket(ticket, status) {
                 msg: 'Please try again in a few moments. If the problem persists contact us.'
             }))
         })
-    }
-}
-
-export function search(searchValue) {
-    return {
-        type: SEARCH,
-        searchValue
     }
 }
 

@@ -98,7 +98,13 @@ export default class TicketsView extends React.Component {
                             />
                         </div>
                         <div className="right menu item">
-                            <Search id="ticket" search={this.props.search}/>
+                            <Search
+                                id="tickets-search"
+                                search={this.props.search}
+                                autofocus={true}
+                                fields={['subject', 'messages.*.body_text', 'messages.*.body_html']}
+                                placeholder="Search tickets"
+                            />
                         </div>
                     </div>
 

@@ -1,12 +1,9 @@
-import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
+import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import * as UserActions from '../actions/user'
 import * as SettingsActions from '../actions/settings'
 import UsersView from '../components/user/UsersView'
-import { loadSearch } from '../utils'
-
 
 class UsersContainer extends React.Component {
     getChildContext() {
@@ -18,20 +15,21 @@ class UsersContainer extends React.Component {
         }
     }
 
-    componentDidMount() {
-        if (this.props.settings.get('loaded')) {
-            loadSearch(this.props, 'user', 'user', this.props.actions.user.updateList, 20)
-        }
+    componentWillMount() {
+        this.props.actions.user.fetchUsers()
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.settings.get('loaded') && !nextProps.settings.get('searchLoaded').get('user')) {
-            loadSearch(nextProps, 'user', 'user', nextProps.actions.user.updateList, 20)
+    search = (props, query) => {
+        if (!query) {
+            this.props.actions.user.fetchUsers()
+        } else {
+            // populate users state from search results now
+            this.props.actions.user.search(props, query)
         }
     }
 
     render() {
-        const { users } = this.props
+        const {users} = this.props
 
         if (!users) {
             return null
@@ -41,6 +39,7 @@ class UsersContainer extends React.Component {
             <div className="UsersContainer">
                 <UsersView
                     items={users.get('items').toJS()}
+                    search={this.search}
                     isLoading={users.get('loading')}
                 />
             </div>

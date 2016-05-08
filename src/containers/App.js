@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 
 import { dismissMessage } from '../actions/systemMessage'
-import { fetchUser, fetchUsers, fetchAgentUsers } from '../actions/user'
+import { fetchUser, fetchUsers } from '../actions/user'
 import { fetchSettings } from '../actions/settings'
 
 import TicketsNavbarContainer from './TicketsNavbar'
@@ -23,7 +23,7 @@ class App extends React.Component {
         this.props.fetchUser(0)
         this.props.fetchSettings()
         this.props.fetchUsers()
-        this.props.fetchAgentUsers()
+        this.props.fetchUsers('agent')
     }
 
     componentDidMount() {
@@ -111,7 +111,6 @@ App.propTypes = {
     currentUser: PropTypes.object,
     fetchUser: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
-    fetchAgentUsers: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
 
     // Injected by React Router
@@ -136,6 +135,5 @@ export default connect(mapStateToProps, {
     dismissMessage,
     fetchUser,
     fetchUsers,
-    fetchAgentUsers,
     fetchSettings
 })(App)

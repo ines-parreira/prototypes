@@ -22,7 +22,13 @@ export default class UsersView extends React.Component {
                     </div>
                     <div className="right menu item">
                         <div className="item">
-                            <Search id="user"/>
+                            <Search
+                                id="users-search"
+                                search={this.props.search}
+                                autofocus={true}
+                                fields={['name', 'email']}
+                                placeholder="Search users"
+                            />
                         </div>
                     </div>
                 </div>
@@ -50,6 +56,7 @@ export default class UsersView extends React.Component {
 
 UsersView.propTypes = {
     items: PropTypes.array.isRequired,
+    search: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired
 }
 

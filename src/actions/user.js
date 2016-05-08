@@ -26,14 +26,15 @@ export const SORT_USERS = 'SORT_USERS'
 export const UPDATE_LIST = 'UPDATE_LIST'
 
 
-export function fetchUsers() {
+export function fetchUsers(role) {
     return (dispatch) => {
         dispatch({
             type: FETCH_USER_LIST_START
         })
 
+        const roles = role ? `?roles=${role}` : ''
         return reqwest({
-            url: '/api/users/',
+            url: `/api/users/${roles}`,
             type: 'json',
             method: 'GET',
             contentType: 'application/json'
@@ -52,26 +53,31 @@ export function fetchUsers() {
     }
 }
 
-export function fetchAgentUsers() {
+export function search(props, query) {
     return (dispatch) => {
         dispatch({
-            type: FETCH_USER_AGENT_LIST_START
+            type: FETCH_USER_LIST_START
         })
 
         return reqwest({
-            url: '/api/users/?roles=agent',
+            url: '/api/search/',
+            data: JSON.stringify({
+                doc_type: 'user',
+                fields: props.fields,
+                query
+            }),
             type: 'json',
-            method: 'GET',
+            method: 'POST',
             contentType: 'application/json'
         }).then((resp) => {
             dispatch({
-                type: FETCH_USER_AGENT_LIST_SUCCESS,
+                type: FETCH_USER_LIST_SUCCESS,
                 resp
             })
         }).catch((err) => {
             dispatch(systemMessage({
                 type: 'error',
-                header: 'Error: failed to fetch users',
+                header: 'Error: failed to search users',
                 msg: err
             }))
         })
@@ -103,6 +109,7 @@ export function fetchUser(userId) {
         })
     }
 }
+
 
 export function createUser(data) {
     return (dispatch) => {
@@ -210,3 +217,4 @@ export function updateList(list) {
         list
     }
 }
+

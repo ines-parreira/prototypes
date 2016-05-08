@@ -1,7 +1,7 @@
 import * as actions from '../actions/view'
 import { OrderedMap, Map } from 'immutable'
 import _ from 'lodash'
-import { ASTToGroupedFilters, groupedFiltersToAST, getCode } from '../filters/ast'
+import { getCode } from '../filters/ast'
 
 /*
 *  Utility functions to keep view.filters_ast in-sync with the groupedFilters used on the frontend
@@ -18,20 +18,17 @@ function addExtraAttributes(view) {
     return Map(Object.assign({}, view, {
         dirty: false,
         filters: view.filters,
-        filters_ast: Map(view.filters_ast),
-        groupedFilters: Map(ASTToGroupedFilters(view.filters))
+        filters_ast: Map(view.filters_ast)
     }))
 }
 
-function updateViewFilters(view, updatedFilters) {
-    const filtersAst = groupedFiltersToAST(updatedFilters)
+function updateViewFilters(view, filtersAst) {
     const filters = getCode(filtersAst)
 
     return view.merge({
         dirty: true,
         filters,
-        filters_ast: Map(filtersAst),
-        groupedFilters: Map(updatedFilters)
+        filters_ast: Map(filtersAst)
     })
 }
 

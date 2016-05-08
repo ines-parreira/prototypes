@@ -1,24 +1,33 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
+import {throttle} from 'lodash'
+import classNames from 'classnames'
 
 export default class Search extends React.Component {
-    triggerSearch(id) {
-        if (this.props.search) {
-            this.props.search(document.getElementById(`search-${id}`).value)
-        }
+
+    constructor(props) {
+        super(props)
+
+        // search every 300ms
+        this.throttledSearch = throttle(() => {
+            this.props.search(this.props, this.refs.searchInput.value)
+        }, this.props.searchDebounceTime || 200)
     }
 
     render() {
-        const { id } = this.props
+        const {id} = this.props
+        const containerClass = classNames('ui', this.props.searchSize || 'small', 'icon input')
 
         return (
             <div className="ui search">
-                <div className="ui small icon input">
+                <div className={containerClass}>
                     <input
-                        id={`search-${id}`}
+                        id={id}
                         className="prompt"
                         type="text"
-                        placeholder="Search..."
-                        onChange={() => this.triggerSearch(id)}
+                        ref="searchInput"
+                        placeholder={this.props.placeholder || 'Search'}
+                        onChange={this.throttledSearch}
+                        autoFocus={this.props.autofocus}
                     />
                     <i className="search icon"/>
                 </div>
@@ -30,5 +39,10 @@ export default class Search extends React.Component {
 
 Search.propTypes = {
     id: PropTypes.string.isRequired,
-    search: PropTypes.func
+    search: PropTypes.func.isRequired,
+    fields: React.PropTypes.arrayOf(React.PropTypes.string),
+    autofocus: PropTypes.bool,
+    placeholder: PropTypes.string,
+    searchDebounceTime: React.PropTypes.number,
+    searchSize: React.PropTypes.string
 }

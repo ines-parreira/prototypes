@@ -75,8 +75,7 @@ class TicketsContainer extends React.Component {
             this.fetchPage(1, nextProps)
         }
 
-        if (this.props.tickets.get('search') !== nextProps.tickets.get('search') ||
-            this.props.tickets.get('sort') !== nextProps.tickets.get('sort')) {
+        if (this.props.tickets.get('sort') !== nextProps.tickets.get('sort')) {
             this.fetchPage(1, nextProps)
         }
     }
@@ -90,9 +89,18 @@ class TicketsContainer extends React.Component {
     }
 
     fetchPage = (page = 1, props) => {
-        const {tickets, settings, actions} = props || this.props
-        if (!tickets.get('loading') && !settings.get('loading')) {
-            return actions.ticket.fetchPageFromAlgolia(settings, this.getView(props), page, tickets.get('search'), tickets.get('sort'))
+        const {tickets, actions, views} = props || this.props
+        if (!tickets.get('loading')) {
+            return actions.ticket.fetchTicketsPage(views.get('active'), page)
+        }
+    }
+
+    search = (props, query) => {
+        if (!query) {
+            this.fetchPage()
+        } else {
+            // populate users state from search results now
+            this.props.actions.ticket.search(props, query)
         }
     }
 
@@ -115,7 +123,7 @@ class TicketsContainer extends React.Component {
                     currentUser={this.props.currentUser}
                     actions={this.props.actions}
                     fetchPage={this.fetchPage}
-                    search={this.props.actions.ticket.search}
+                    search={this.search}
                     slug={slug}
                 />
             </div>

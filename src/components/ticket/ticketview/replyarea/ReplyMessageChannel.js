@@ -1,25 +1,17 @@
 import React, { PropTypes } from 'react'
 import classnames from 'classnames'
-import { loadSearch } from './../../../../utils'
 
 
 export default class ReplyMessageChannel extends React.Component {
     componentDidMount() {
-        if (this.props.settings.get('loaded')) {
-            loadSearch(this.props, 'user', 'requester', this.props.actions.ticket.updatePotentialRequesters)
-        }
+        // Fix this
+        //this.props.actions.ticket.updatePotentialRequesters()
 
         $('#next-message-channel-popup').dropdown({
             position: 'bottom left',
             hoverable: true,
             on: 'click'
         })
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.settings.get('loaded') && !nextProps.settings.get('searchLoaded').get('requester')) {
-            loadSearch(nextProps, 'user', 'requester', nextProps.actions.ticket.updatePotentialRequesters)
-        }
     }
 
     updateSearchInput(e) {
