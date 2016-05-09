@@ -28,6 +28,6 @@ export default function getSyntaxTreeLeaves(syntaxTree) {
             return getSyntaxTreeLeaves(syntaxTree.object).concat(
                 getSyntaxTreeLeaves(syntaxTree.property))
         default:
-            console.warn('Unknown type', syntaxTree)
+            throw Error('Unknown type', syntaxTree)
     }
 }

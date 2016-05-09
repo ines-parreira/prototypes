@@ -1,13 +1,11 @@
 import reqwest from 'reqwest'
 import React from 'react'
-import { browserHistory } from 'react-router'
-import Immutable, { Map } from 'immutable'
+import {browserHistory} from 'react-router'
+import Immutable, {Map} from 'immutable'
 import _ from 'lodash'
-
 import {systemMessage} from './systemMessage'
-import { ACTION_TEMPLATES } from './../constants'
-import { renderTemplate } from '../components/utils/template'
-
+import {ACTION_TEMPLATES} from './../constants'
+import {renderTemplate} from '../components/utils/template'
 import * as MacroActions from './macro'
 
 // Reply to a ticket
@@ -26,8 +24,6 @@ export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 // Fetching a single ticketMessage to get action results
 export const FETCH_MESSAGE_START = 'FETCH_MESSAGE_START'
 export const FETCH_MESSAGE_SUCCESS = 'FETCH_MESSAGE_SUCCESS'
-
-export const SORT_TICKETS = 'SORT_TICKETS'
 
 // Macro actions
 export const SET_RESPONSE_TEXT = 'setResponseText'
@@ -58,7 +54,6 @@ export const DELETE_TICKET_MESSAGE_SUCCESS = 'DELETE_TICKET_MESSAGE_SUCCESS'
 export const ADD_ATTACHMENT_START = 'ADD_ATTACHMENT_START'
 export const ADD_ATTACHMENT_SUCCESS = 'ADD_ATTACHMENT_SUCCESS'
 export const DELETE_ATTACHMENT = 'DELETE_ATTACHMENT'
-
 
 export function addAttachments(attachments) {
     return (dispatch) => {
@@ -261,22 +256,36 @@ export function fetchTicketDetails(ticketId, data) {
     }
 }
 
-export function fetchTicketsPage(view, page) {
+export function fetchTicketsPage(views, page) {
     return (dispatch) => {
         dispatch({
             type: FETCH_TICKET_LIST_VIEW_START
         })
 
-        const url = '/api/tickets/'
+
+        let url = '/api/tickets/'
+        let method = 'GET'
+        let data = {
+            view: views.get('active').get('slug'),
+            page
+        }
+
+        // when a view is dirty, just send the whole view data rather than just the slug
+        // this will allow us to test a view before submitting it to the DB
+        if (views.get('dirty')) {
+            url = '/api/tickets/view/'
+            method = 'PUT'
+            data = JSON.stringify({
+                view: views.get('active').toJS(),
+                page
+            })
+        }
 
         return reqwest({
             url,
-            data: {
-                view,
-                page
-            },
+            method,
+            data,
             type: 'json',
-            method: 'GET',
             contentType: 'application/json'
         }).then((resp) => {
             if (_.isEmpty(resp)) {
@@ -296,36 +305,7 @@ export function fetchTicketsPage(view, page) {
     }
 }
 
-export function search(props, query) {
-    return (dispatch) => {
-        dispatch({
-            type: FETCH_TICKET_LIST_VIEW_START
-        })
 
-        return reqwest({
-            url: '/api/search/',
-            data: JSON.stringify({
-                doc_type: 'ticket',
-                fields: props.fields,
-                query
-            }),
-            type: 'json',
-            method: 'POST',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch({
-                type: FETCH_TICKET_LIST_VIEW_SUCCESS,
-                resp
-            })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to search tickets. Please try again..',
-                msg: err
-            }))
-        })
-    }
-}
 
 export function fetchTicketMessage(ticketId, messageId) {
     return (dispatch) => {
@@ -446,7 +426,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
                     data.newMessage.actions = macroActions.map(curAction => formatAction(
                         curAction,
                         Immutable.fromJS(ACTION_TEMPLATES).get(curAction.get('name')),
-                        { ticket: ticket.toJS(), currentUser: currentUser.toJS()}
+                        {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
                     ))
                 }
 
@@ -505,12 +485,5 @@ export function saveIndex(currentTicketIndex) {
     return {
         type: SAVE_INDEX,
         currentTicketIndex
-    }
-}
-
-export function sort(sortProperty) {
-    return {
-        type: SORT_TICKETS,
-        sortProperty
     }
 }

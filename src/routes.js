@@ -1,6 +1,5 @@
 import React from 'react'
-import { IndexRoute, Route } from 'react-router'
-
+import {IndexRoute, Route} from 'react-router'
 import App from './containers/App'
 import Dashboard from './containers/Dashboard'
 import TicketContainer from './containers/Ticket'

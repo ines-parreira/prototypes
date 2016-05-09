@@ -1,5 +1,5 @@
 import * as actions from '../actions/ticket'
-import Immutable, { Map, List } from 'immutable'
+import {fromJS, Map, List, Set} from 'immutable'
 
 
 const ticketsInitial = Map({
@@ -8,7 +8,7 @@ const ticketsInitial = Map({
     loading: false,
     search: '',
     currentTicketIndex: null,
-    sort: 'updated_datetime_asc'
+
 })
 
 export function tickets(state = ticketsInitial, action) {
@@ -18,10 +18,10 @@ export function tickets(state = ticketsInitial, action) {
 
         case actions.FETCH_TICKET_LIST_VIEW_SUCCESS:
             return state.merge({
-                items: Immutable.fromJS(action.resp.data),
-                resp_meta: Immutable.fromJS(action.resp.meta),
+                items: fromJS(action.resp.data),
+                resp_meta: fromJS(action.resp.meta),
                 loading: false,
-                search: state.get('search'),
+                search: state.get('search')
             })
 
         case actions.SEARCH:
@@ -29,13 +29,6 @@ export function tickets(state = ticketsInitial, action) {
 
         case actions.SAVE_INDEX:
             return state.set('currentTicketIndex', action.currentTicketIndex)
-
-        case actions.SORT_TICKETS:
-            if (action.sortProperty === 'updated_datetime') {
-                return state.set('sort', state.get('sort') === 'updated_datetime_asc' ? 'updated_datetime_desc' : 'updated_datetime_asc')
-            } else if (action.sortProperty === 'created_datetime') {
-                return state.set('sort', state.get('sort') === 'created_datetime_asc' ? 'created_datetime_desc' : 'created_datetime_asc')
-            }
 
         default:
             return state

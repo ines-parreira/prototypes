@@ -1,116 +1,92 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 import TicketTableRow from './TicketTableRow'
-import PlainColumnHeader from './PlainColumnHeader'
 import ColumnHeader from './ColumnHeader'
+import ShowMoreFieldsDropdown from './../../ShowMoreFieldsDropdown'
 import SemanticPaginator from '../../SemanticPaginator'
-import Loader from '../../Loader'
-
-
-const columnToFilterName = {
-    assignee: 'ticket.assignee_user.id',
-    tags: 'ticket.tags',
-    status: 'ticket.status',
-}
-
+import {Loader} from '../../Loader'
 
 export default class TicketTable extends React.Component {
     onPageChange = (page) => this.props.fetchPage(page)
-
-    renderColumnHeader = (column) => {
-        const filterSpec = this.props.getFilterSpecForColumn(column.name)
-
-        if (!filterSpec) {
-            return (
-                <PlainColumnHeader
-                    key={column.name}
-                    column={column}
-                    sort={this.props.actions.ticket.sort}
-                    currentSort={this.props.tickets.get('sort')}
-                />
-            )
+    toggleSelectAll = () => {
+        const checked = this.refs.toggleSelection.checked
+        const checkboxes = this.refs.table.querySelectorAll('.checkbox input')
+        for (const checkbox in checkboxes) {
+            if (checkboxes.hasOwnProperty(checkbox)) {
+                checkboxes[checkbox].checked = checked
+            }
         }
-
-        return (
-            <ColumnHeader
-                key={column.name}
-                column={column}
-                groupedFilters={this.props.groupedFilters}
-                updateFilters={this.props.updateFilters}
-                filterSpec={filterSpec}
-                sort={this.props.actions.ticket.sort}
-                currentSort={this.props.tickets.get('sort')}
-            />
-        )
     }
 
-    render = () => {
-        // TODO: Do this with CSS rather than explicitly calculating & passing total width
-        const style = { maxWidth: this.props.width }
-        const ticketTableStyle = { marginTop: this.props.isDirty ? '14em' : '9em' }
-
+    render() {
+        const {view, tickets, currentUser} = this.props
         const nbPages = this.props.tickets.getIn(['resp_meta', 'nb_pages'])
         const message = nbPages === 0 ? 'No tickets found.' : 'Loading...'
 
+        if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty())) {
+            return (<Loader message={message}/>)
+        }
         return (
-            <Loader 
-                loaded={this.props.tickets.get('items').size !== 0}
-                message={ message }
-            >   
-                <div className="TicketTable" style={ticketTableStyle}>
-                    <div>
-                        <div className="ui grid" style={style}>
-                            <div className="row head-row" >
-                                <div className="one-fixed wide column">
-                                    <span className="ui checkbox">
-                                        <input type="checkbox"/>
-                                        <label></label>
-                                    </span>
-                                </div>
-                                {this.props.columns.map(this.renderColumnHeader)}
-                            </div>
-                        </div>
-                        <div>
-                            {
-                                this.props.tickets.get('items').toJS().map((ticket, curIndex) => (
-                                    <TicketTableRow
-                                        key={ticket.id}
-                                        ticket={ticket}
-                                        view={this.props.view}
-                                        page={this.props.tickets.getIn(['resp_meta', 'page'])}
-                                        width={this.props.width}
-                                        columns={this.props.columns}
-                                        currentUser={this.props.currentUser}
-                                        pushState={this.props.pushState}
-                                        curIndex={curIndex}
-                                        saveIndex={this.props.actions.ticket.saveIndex}
+            <div className="TicketTable">
+                <table className="ui selectable very basic padded table" ref="table">
+                    <thead>
+                    <tr>
+                        <th>
+                               <span className="ui checkbox">
+                                    <input type="checkbox"
+                                           ref="toggleSelection"
+                                           onChange={this.toggleSelectAll}
                                     />
-                                ))
-                            }
-                        </div>
-                    </div>
-                    <SemanticPaginator
-                        page={this.props.tickets.getIn(['resp_meta', 'page'])}
-                        totalPages={this.props.tickets.getIn(['resp_meta', 'nb_pages'])}
-                        onChange={this.onPageChange}
-                        radius={0}
-                        anchor={3}
-                    />
-                </div>
-            </Loader>
+                                    <label />
+                                </span>
+                        </th>
+                        {view.get('fields').map((field) => (
+                            <ColumnHeader
+                                key={field.get('name')}
+                                field={field}
+                                view={view}
+                                updateView={this.props.updateView}
+                                updateFieldFilter={this.props.updateFieldFilter}
+                                updateFieldSearch={this.props.updateFieldSearch}
+                            />
+                        ))}
+                        <ShowMoreFieldsDropdown
+                            view={view}
+                            updateField={this.props.updateField}
+                        />
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {tickets.get('items').map((ticket, curIndex) => (
+                        <TicketTableRow
+                            key={ticket.get('id')}
+                            view={view}
+                            ticket={ticket}
+                            currentUser={currentUser}
+                            page={tickets.getIn(['resp_meta', 'page'])}
+                        />
+                    ))}
+                    </tbody>
+                </table>
+
+                <SemanticPaginator
+                    page={tickets.getIn(['resp_meta', 'page'])}
+                    totalPages={tickets.getIn(['resp_meta', 'nb_pages'])}
+                    onChange={this.onPageChange}
+                    radius={0}
+                    anchor={3}
+                />
+            </div>
         )
     }
 }
 
 TicketTable.propTypes = {
     tickets: PropTypes.object.isRequired,
-    view: PropTypes.string,
-    isDirty: PropTypes.bool,
-    actions: PropTypes.object.isRequired,
-    groupedFilters: PropTypes.object.isRequired,
-    columns: PropTypes.array.isRequired,
-    width: PropTypes.number.isRequired,
+    view: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    updateFilters: PropTypes.func.isRequired,
-    getFilterSpecForColumn: PropTypes.func.isRequired,
+    updateView: PropTypes.func.isRequired,
+    updateField: PropTypes.func.isRequired,
+    updateFieldFilter: PropTypes.func.isRequired,
+    updateFieldSearch: PropTypes.func.isRequired,
     fetchPage: PropTypes.func.isRequired
 }

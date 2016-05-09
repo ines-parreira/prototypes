@@ -1,9 +1,7 @@
 import React, {PropTypes} from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import esprima from 'esprima'
-
 import RuleForm from '../components/rule/RuleForm'
 import RuleList from '../components/rule/RuleList'
 import * as RuleActions from '../actions/rule'
@@ -16,8 +14,8 @@ class RuleContainer extends React.Component {
     }
 
     componentWillMount() {
-        this.props.actions.fetchRules('/api/rules/')
-        this.props.schemaActions.fetch()
+        this.props.actions.rule.fetchRules('/api/rules/')
+        this.props.actions.schema.fetch()
     }
 
     handleSubmit(e) {
@@ -30,7 +28,7 @@ class RuleContainer extends React.Component {
         }
 
 
-        const { actions } = this.props
+        const {actions} = this.props
 
         try {
             const syntax = esprima.parse(code)
@@ -47,7 +45,7 @@ class RuleContainer extends React.Component {
     }
 
     render() {
-        const {rules, schemas, actions } = this.props
+        const {rules, schemas, actions} = this.props
 
         return (
             <div className="ui container Rules">
@@ -55,8 +53,8 @@ class RuleContainer extends React.Component {
                 <RuleList
                     rules={rules}
                     schemas={schemas}
-                    actions={actions} />
-
+                    actions={actions}
+                />
                 <h3 className="ui header">Add a new rule</h3>
                 <RuleForm actions={actions} handleSubmit={this.handleSubmit}/>
             </div>
@@ -66,7 +64,6 @@ class RuleContainer extends React.Component {
 
 RuleContainer.propTypes = {
     actions: PropTypes.object,
-    schemaActions: PropTypes.object,
     rules: PropTypes.object,
     schemas: PropTypes.object
 }
@@ -80,8 +77,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(RuleActions, dispatch),
-        schemaActions: bindActionCreators(SchemaActions, dispatch)
+        actions: {
+            rule: bindActionCreators(RuleActions, dispatch),
+            schema: bindActionCreators(SchemaActions, dispatch)
+        }
     }
 }
 

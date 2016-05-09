@@ -1,66 +1,138 @@
 import reqwest from 'reqwest'
+import {systemMessage} from './systemMessage'
+
+export const DEFAULT_VIEW = 'my-tickets'
 
 // Basic operations on the views
-export const NEW_VIEW = 'NEW_VIEW'
-
 export const UPDATE_VIEW = 'UPDATE_VIEW'
-export const UPDATE_VIEW_FILTERS = 'UPDATE_VIEW_FILTERS'
-export const CLEAR_VIEW_FILTER = 'CLEAR_VIEW_FILTER'
+export const RESET_VIEW = 'RESET_VIEW'
+export const UPDATE_VIEW_FIELD = 'UPDATE_VIEW_FIELD'
+export const UPDATE_VIEW_FIELD_FILTER = 'UPDATE_VIEW_FIELD_FILTER'
 
 // Fetch individual view definitions
 export const FETCH_VIEW_START = 'FETCH_VIEW_START'
 export const FETCH_VIEW_SUCCESS = 'FETCH_VIEW_SUCCESS'
-export const FETCH_VIEW_ERROR = 'FETCH_VIEW_ERROR'
 
 // Update individual view definitions
 export const SUBMIT_VIEW_START = 'SUBMIT_VIEW_START'
-export const SUBMIT_VIEW_SUCCESS = 'SUBMIT_VIEW_SUCCESS'
-export const SUBMIT_VIEW_ERROR = 'SUBMIT_VIEW_ERROR'
+export const SUBMIT_NEW_VIEW_SUCCESS = 'SUBMIT_NEW_VIEW_SUCCESS'
+export const SUBMIT_UPDATE_VIEW_SUCCESS = 'SUBMIT_UPDATE_VIEW_SUCCESS'
 
 // Fetch list views
 export const FETCH_VIEW_LIST_START = 'FETCH_VIEW_LIST_START'
 export const FETCH_VIEW_LIST_SUCCESS = 'FETCH_VIEW_LIST_SUCCESS'
-export const FETCH_VIEW_LIST_ERROR = 'FETCH_VIEW_LIST_ERROR'
 
 // Read views
-export const APPLY_VIEW = 'APPLY_VIEW'
+export const SET_VIEW_ACTIVE = 'SET_VIEW_ACTIVE'
 
-export function applyView(slug) {
+export function setViewActive(view) {
     return {
-        type: APPLY_VIEW,
-        slug
+        type: SET_VIEW_ACTIVE,
+        view
     }
 }
 
-export function updateView(slug, data) {
+export function updateView(view) {
     return {
         type: UPDATE_VIEW,
-        slug,
-        data: Object.assign({}, data, { dirty: true })
+        view
     }
 }
 
-
-export function updateFilters(slug, newFilters) {
+export function updateField(field) {
     return {
-        type: UPDATE_VIEW_FILTERS,
-        slug,
-        newFilters
+        type: UPDATE_VIEW_FIELD,
+        field
     }
 }
 
-
-export function clearFilter(slug, name) {
+// update a filter for 1 field
+export function updateFieldFilter(field, filter) {
     return {
-        type: CLEAR_VIEW_FILTER,
-        slug,
-        name
+        type: UPDATE_VIEW_FIELD_FILTER,
+        field,
+        filter
     }
 }
 
-export function fetchViews() {
+export function updateFieldEnum(field) {
+    console.log(field)
+    return (dispatch) => {
+        //dispatch({
+        //    type: ""
+        //})
+
+        return reqwest({
+            url: '/api/search/',
+            data: JSON.stringify({
+                doc_type: 'ticket', // todo(@xarg): make it work with the users as well
+                query: field.filter.query_enum
+            }),
+            type: 'json',
+            method: 'POST',
+            contentType: 'application/json'
+        }).then((resp) => {
+            //dispatch({
+            //    type: ,
+            //    resp
+            //})
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to do the search. Please try again..',
+                msg: err
+            }))
+        })
+    }
+}
+
+export function updateFieldSearch(field, search) {
+    console.log(field, search)
+    return (dispatch) => {
+        //dispatch({
+        //    type: ""
+        //})
+
+        return reqwest({
+            url: '/api/search/',
+            data: JSON.stringify({
+                doc_type: 'ticket', // todo(@xarg): make it work with the users as well
+                source: search.source,
+                query: search.query,
+                params: search.params
+            }),
+            type: 'json',
+            method: 'POST',
+            contentType: 'application/json'
+        }).then((resp) => {
+            //dispatch({
+            //    type: ,
+            //    resp
+            //})
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to do the search. Please try again..',
+                msg: err
+            }))
+        })
+    }
+    //return {
+    //    type: UPDATE_VIEW_FIELD_FILTER,
+    //    field,
+    //    search
+    //}
+}
+
+export function resetView() {
+    return {
+        type: RESET_VIEW
+    }
+}
+
+export function fetchViews(currentViewSlug) {
     const url = '/api/views/'
-    const data = { type: 'ticket-list' }
+    const data = {type: 'ticket-list'}
     const type = 'list'
     return (dispatch) => {
         dispatch({
@@ -68,8 +140,8 @@ export function fetchViews() {
         })
 
         return reqwest({
-            url: url,
-            data: data,
+            url,
+            data,
             type: 'json',
             method: 'GET',
             contentType: 'application/json',
@@ -77,59 +149,79 @@ export function fetchViews() {
             dispatch({
                 type: type === 'list' ? FETCH_VIEW_LIST_SUCCESS : FETCH_VIEW_SUCCESS,
                 resp,
+                currentViewSlug
             })
         }).catch((err) => {
-            dispatch({
-                type: type === 'list' ? FETCH_VIEW_LIST_ERROR : FETCH_VIEW_ERROR,
-                err,
-            })
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: Failed to fetch views.',
+                msg: err
+            }))
         })
     }
 }
 
-function removeExtraAttributes(view) {
-    return view
-        .delete('groupedFilters')
-        .delete('dirty')
-}
-
-
-export function submitView(view, slug) {
-    const data = removeExtraAttributes(view).toJS()
-    const { id, newSlug } = data
+export function submitView(view) {
     let url = '/api/views/'
+    let method = 'POST'
 
-    if (id) {
-        url = `/api/views/${id}/`
-    } else {
-        data.order = 99
+    if (view.get('id')) {
+        url = `/api/views/${view.get('id')}/`
+        method = 'PUT'
     }
 
     return (dispatch) => {
         dispatch({
-            type: SUBMIT_VIEW_START,
-            slug: slug || newSlug,
-            data
+            type: SUBMIT_VIEW_START
         })
 
         return reqwest({
-            url: url,
-            data: JSON.stringify(data),
+            url,
+            method,
+            data: JSON.stringify(view.toJS()),
             type: 'json',
-            method: 'PUT',
-            contentType: 'application/json',
+            contentType: 'application/json'
         }).then((resp) => {
             dispatch({
-                type: SUBMIT_VIEW_SUCCESS,
-                slug: newSlug,
+                type: view.get('id') ? SUBMIT_UPDATE_VIEW_SUCCESS : SUBMIT_NEW_VIEW_SUCCESS,
                 resp
             })
         }).catch((err) => {
-            dispatch({
-                type: SUBMIT_VIEW_ERROR,
-                slug: newSlug,
-                err
-            })
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: Failed to submit view. Please try again',
+                msg: err
+            }))
         })
+    }
+}
+
+export function deleteView(view) {
+    if (view.get('slug') === DEFAULT_VIEW) {
+        return (dispatch) => dispatch(systemMessage({
+            type: 'error',
+            header: 'This view cannot be deleted.',
+            msg: 'This is a special view that needs to exist in order for the helpdesk to function correctly.'
+        }))
+    }
+
+    if (window.confirm('Are you sure you want to delete this view?')) {
+        return (dispatch) => reqwest({
+            url: `/api/views/${view.get('id')}/`,
+            type: 'json',
+            method: 'DELETE',
+            contentType: 'application/json'
+        }).then(() => {
+            dispatch(fetchViews(DEFAULT_VIEW))
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: Failed to delete views.',
+                msg: err
+            }))
+        })
+    }
+    return {
+        type: 'NOOP' // action always needs a type
     }
 }

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 import UserList from './UserList'
 import Search from '../Search'
 import UserForm from './UserForm'
@@ -7,8 +7,8 @@ import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown'
 
 export default class UsersView extends React.Component {
     render() {
-        const { items } = this.props
-        const { createUser } = this.context
+        const {items} = this.props
+        const {createUser} = this.context
 
         if (!items) {
             return null
@@ -23,11 +23,19 @@ export default class UsersView extends React.Component {
                     <div className="right menu item">
                         <div className="item">
                             <Search
-                                id="users-search"
-                                search={this.props.search}
-                                autofocus={true}
-                                fields={['name', 'email']}
+                                autofocus
+                                onChange={this.props.search}
+                                className="long"
+                                queryPath="multi_match.query"
+                                query={{
+                                    multi_match: {
+                                        query: '',
+                                        fuzziness: 3,
+                                        fields: ['name', 'email']
+                                    }
+                                }}
                                 placeholder="Search users"
+                                searchDebounceTime={400}
                             />
                         </div>
                     </div>
@@ -41,7 +49,8 @@ export default class UsersView extends React.Component {
                         <UserForm
                             onSubmit={createUser}
                         />
-                        <button className="ui right floated green button" onClick={() => {$('#userform-new').modal('show')}}>
+                        <button className="ui right floated green button"
+                                onClick={() => {$('#userform-new').modal('show')}}>
                             ADD USER
                         </button>
                     </div>

@@ -1,18 +1,16 @@
-import React, { PropTypes } from 'react'
-import { browserHistory } from 'react-router'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import React, {PropTypes} from 'react'
+import {browserHistory} from 'react-router'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import * as mousetrap from 'mousetrap'
-
 import TicketView from '../components/ticket/ticketview/TicketView'
-import Loader from '../components/Loader'
-
+import {Loader} from '../components/Loader'
 import * as TicketActions from '../actions/ticket'
 import * as MacroActions from '../actions/macro'
 import * as UserActions from '../actions/user'
-import * as TagActions from '../actions/tag' // import that to fetch tags list
+import * as TagActions from '../actions/tag'
 import * as SettingsActions from '../actions/settings'
-import MacrosContainer from './Macros'
+import MacrosContainer from './Macros' // import that to fetch tags list
 
 class TicketContainer extends React.Component {
     componentWillMount() {
@@ -90,8 +88,8 @@ class TicketContainer extends React.Component {
     computeNextUrl(ascending) {
         const translation = ascending ? 1 : -1
         const nextTicket = this.props.tickets.get('items').toJS()[
-            this.props.tickets.get('currentTicketIndex') + translation
-        ]
+        this.props.tickets.get('currentTicketIndex') + translation
+            ]
 
         let nextTicketUrl = null
 
@@ -140,29 +138,27 @@ class TicketContainer extends React.Component {
     }
 
     render() {
-        const ticketLoaded = !!(this.props.ticket.get('messages').size || this.props.params.ticketId === 'new')
-        const view = this.props.views.getIn(['items', this.props.routing.locationBeforeTransitions.query.view])
+        const view = this.props.views.get('active')
+        if (this.props.params.ticketId !== 'new' && this.props.ticket.get('messages').isEmpty()) {
+            return (<Loader />)
+        }
 
         return (
-            <Loader
-                loaded={ticketLoaded}
-            >
-                <div className="TicketContainer" onKeyDown={this.handleKeyDown}>
-                    <TicketView
-                        actions={this.props.actions}
-                        ticket={this.props.ticket}
-                        macros={this.props.macros}
-                        currentUser={this.props.currentUser}
-                        tags={this.props.tags}
-                        users={this.props.users}
-                        settings={this.props.settings}
-                        submit={this.submit}
-                        applyMacro={this.applyMacro}
-                        view={view}
-                    />
-                    <MacrosContainer/>
-                </div>
-            </Loader>
+            <div className="TicketContainer" onKeyDown={this.handleKeyDown}>
+                <TicketView
+                    actions={this.props.actions}
+                    ticket={this.props.ticket}
+                    macros={this.props.macros}
+                    currentUser={this.props.currentUser}
+                    tags={this.props.tags}
+                    users={this.props.users}
+                    settings={this.props.settings}
+                    submit={this.submit}
+                    applyMacro={this.applyMacro}
+                    view={view}
+                />
+                <MacrosContainer />
+            </div>
         )
     }
 }

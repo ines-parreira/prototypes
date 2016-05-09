@@ -1,32 +1,61 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 import classNames from 'classnames'
 
 
 export default class PlainColumnHeader extends React.Component {
-    render = () => {
-        const { column, sort, currentSort } = this.props
-        const style = { width: column.width }
-        const className = classNames(column.name, 'wide', 'column')
-        let sortIcon = column.sortable ? <i className="action sort icon" onClick={() => sort(column.name)}/> : null
-        const onClick = this.props.onClick || (() => {})
+    renderOrderIcon = () => {
+        const {view, updateView} = this.props
+        const field = this.props.field.toJS()
 
-        if (currentSort.endsWith('desc') && currentSort.startsWith(column.name)) {
-            sortIcon = <i className="action sort caret down icon" onClick={() => sort(column.name)}/>
-        } else if (currentSort.endsWith('asc') && currentSort.startsWith(column.name)) {
-            sortIcon = <i className="action sort caret up icon" onClick={() => sort(column.name)}/>
+        if (!(field.filter && field.filter.sort)) { // display order icon only if field is sortable
+            return null
+        }
+
+        const orderDir = view.get('order_dir')
+        const newOrderDir = orderDir === 'desc' ? 'asc' : 'desc'
+        const onClick = () => updateView(view.merge({
+            order_by: field.name,
+            order_dir: newOrderDir
+        }))
+
+
+        let orderClasses = 'action sort icon'
+        if (field.name === view.get('order_by')) {
+            orderClasses = classNames(orderClasses, 'caret', {
+                up: orderDir === 'desc',
+                down: orderDir === 'asc'
+            })
         }
 
         return (
-            <div style={style} className={className} onClick={onClick}>
-                <span>{column.header} {sortIcon}</span>
-            </div>
+            <i className={orderClasses} onClick={onClick}/>
+        )
+    }
+
+    render = () => {
+        const field = this.props.field.toJS()
+        const onClick = this.props.onClick || (() => {
+            })
+
+        // One small exception for priority which is displayed without header
+        if (field.name === 'priority') {
+            return null
+        }
+
+        return (
+            <span style={{width: field.width}}
+                  className={classNames(field.name, 'wide', 'field')}
+                  onClick={onClick}
+            >
+                <span>{field.title} {this.renderOrderIcon()}</span>
+            </span>
         )
     }
 }
 
 PlainColumnHeader.propTypes = {
-    column: PropTypes.object.isRequired,
-    onClick: PropTypes.func,
-    sort: PropTypes.func.isRequired,
-    currentSort: PropTypes.string.isRequired
+    view: PropTypes.object.isRequired,
+    field: PropTypes.object.isRequired,
+    updateView: PropTypes.func.isRequired,
+    onClick: PropTypes.func
 }
