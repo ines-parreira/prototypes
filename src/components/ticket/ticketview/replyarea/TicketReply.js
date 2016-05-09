@@ -19,7 +19,6 @@ export default class TicketReply extends React.Component {
         super(props)
         this.focus = () => this.refs.editor.focus()
         this.state = this.initialState(this.props)
-        this.dndPlugin = createDndPlugin()
     }
 
     componentDidMount() {
@@ -65,6 +64,8 @@ export default class TicketReply extends React.Component {
             }
         }
     }
+
+    dndPlugin = createDndPlugin()
 
     initialState(props) {
         const contentState = ContentState.createFromText(props.value)
