@@ -163,16 +163,18 @@ export default class TicketReply extends React.Component {
                         />
                     </div>
                 </form>
-                <div className="attachments-pseudobar">
-                    <div className="fake-fileinput">
-                        <i className="attach icon"></i>
-                        <input
-                            type="file"
-                            id="file-input"
-                            onChange={ this.handleUploadedFiles }
-                        />
+                {/*
+                    <div className="attachments-pseudobar">
+                        <div className="fake-fileinput">
+                            <i className="attach icon"></i>
+                            <input
+                                type="file"
+                                id="file-input"
+                                onChange={ this.handleUploadedFiles }
+                            />
+                        </div>
                     </div>
-                </div>
+                */}
                 <Attachments/>
             </div>
         )
