@@ -45,6 +45,24 @@ export const SETUP_NEW_TICKET = 'SETUP_NEW_TICKET'
 export const UPDATE_POTENTIAL_REQUESTERS = 'UPDATE_POTENTIAL_REQUESTERS'
 export const MARK_TICKET_DIRTY = 'MARK_TICKET_DIRTY'
 
+// Action related to attachments
+export const ADD_ATTACHMENT = 'ADD_ATTACHMENT'
+export const DELETE_ATTACHMENT = 'DELETE_ATTACHMENT'
+
+
+export function addAttachments(attachments) {
+    return {
+        type: ADD_ATTACHMENT,
+        attachments
+    }
+}
+
+export function deleteAttachment(index) {
+    return {
+        type: DELETE_ATTACHMENT,
+        index
+    }
+}
 
 export function recordMacro(macro) {
     return {

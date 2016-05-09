@@ -1,11 +1,15 @@
 import React, {PropTypes} from 'react'
-import {fromJS} from 'immutable'
+import { fromJS, List } from 'immutable'
+
+import Attachments from '../../../../containers/Attachments'
+
 import {EditorState, ContentState, RichUtils, convertFromHTML} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
 import Editor from 'draft-js-plugins-editor'
 import createMentionPlugin from 'draft-js-mention-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
+import createDndPlugin from 'draft-js-dnd-plugin'
 import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-linkify-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
@@ -13,34 +17,9 @@ import 'draft-js-emoji-plugin/lib/plugin.css'
 export default class TicketReply extends React.Component {
     constructor(props) {
         super(props)
-
         this.focus = () => this.refs.editor.focus()
         this.state = this.initialState(this.props)
-    }
-
-    initialState(props) {
-        const contentState = ContentState.createFromText(props.value)
-
-        const mentions = fromJS(props.users.get('agents', []).map(user => {
-            return fromJS({
-                name: user.get('name'),
-                link: '',
-                avatar: ''
-            })
-        }))
-
-        const plugins = [
-            createMentionPlugin({mentions}),
-            createLinkifyPlugin({
-                target: '_blank'
-            }),
-            createEmojiPlugin()
-        ]
-
-        return {
-            editorState: EditorState.createWithContent(contentState),
-            plugins
-        }
+        this.dndPlugin = createDndPlugin()
     }
 
     componentDidMount() {
@@ -87,6 +66,29 @@ export default class TicketReply extends React.Component {
         }
     }
 
+    initialState(props) {
+        const contentState = ContentState.createFromText(props.value)
+
+        const mentions = fromJS(
+            props.users.get('agents', [])
+            .map(user => fromJS({ name: user.get('name'), link: '', avatar: '' })
+        ))
+
+        const plugins = [
+            createMentionPlugin({mentions}),
+            createLinkifyPlugin({
+                target: '_blank'
+            }),
+            createEmojiPlugin(),
+            this.dndPlugin
+        ]
+
+        return {
+            editorState: EditorState.createWithContent(contentState),
+            plugins
+        }
+    }
+
     // This is for handling things like Bold, Italic, etc..
     handleKeyCommand = (command) => {
         const newState = RichUtils.handleKeyCommand(this.state.editorState, command)
@@ -95,6 +97,45 @@ export default class TicketReply extends React.Component {
             return true
         }
         return false
+    }
+
+    handleDroppedFiles = (selection, files) => {
+        this.dndPlugin.handleDroppedFiles(
+            selection,
+            files,
+            {
+                getEditorState: () => this.state.editorState,
+                setEditorState: this.onChange
+            }
+        )
+
+        // TODO : Fetch an url from an endpoint
+        const atts = files.map((o, i) => (
+            {
+                url: `https://github${i}.com`,
+                name: o.name,
+                size: o.size,
+                content_type: o.type
+            }
+        ))
+
+        this.props.actions.ticket.addAttachments(atts)
+
+        return false
+    }
+
+    handleUploadedFiles = (e) => {
+        // TODO : Fetch an url from an endpoint
+        const atts = List(e.target.files).map((o, i) => (
+            {
+                url: `https://github${i}.com`,
+                name: o.name,
+                size: o.size,
+                content_type: o.type
+            }
+        ))
+
+        this.props.actions.ticket.addAttachments(atts)
     }
 
     render() {
@@ -115,11 +156,23 @@ export default class TicketReply extends React.Component {
                             onChange={this.onChange}
                             onTab={this.onTab}
                             handleKeyCommand={this.handleKeyCommand}
+                            handleDroppedFiles={this.handleDroppedFiles}
                             plugins={this.state.plugins}
                             ref="editor"
                         />
                     </div>
                 </form>
+                <div className="attachments-pseudobar">
+                    <div className="fake-fileinput">
+                        <i className="attach icon"></i>
+                        <input
+                            type="file"
+                            id="file-input"
+                            onChange={ this.handleUploadedFiles }
+                        />
+                    </div>
+                </div>
+                <Attachments/>
             </div>
         )
     }

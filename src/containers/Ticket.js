@@ -130,7 +130,6 @@ class TicketContainer extends React.Component {
     }
 
     render() {
-
         const ticketLoaded = !!(this.props.ticket.get('messages').size && this.props.params.ticketId !== 'new')
         const view = this.props.views.getIn(['items', this.props.routing.locationBeforeTransitions.query.view])
 

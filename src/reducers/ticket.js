@@ -18,6 +18,7 @@ const newMessage = Map({
     body_text: '',
     body_html: '',
     channel: 'email',
+    attachments: List(),
     macros: List()
 })
 
@@ -75,6 +76,27 @@ export function ticket(state = ticketInitial, action) {
     let newState = state
 
     switch (action.type) {
+        case actions.ADD_ATTACHMENT:
+            return state.merge({
+                newMessage: state.get('newMessage').merge({
+                    attachments: state
+                    .get('newMessage')
+                    .get('attachments')
+                    .concat(action.attachments),
+                }),
+                state: state.get('state').merge({ dirty: true })
+            })
+        case actions.DELETE_ATTACHMENT:
+            return state.merge({
+                newMessage: state.get('newMessage').merge({
+                    attachments: state
+                    .get('newMessage')
+                    .get('attachments')
+                    .splice(action.index, 1)
+                }),
+                state: state.get('state').merge({ dirty: true })
+            })
+
         case actions.RECORD_MACRO:
             return state.setIn(
                 ['newMessage', 'macros'],
