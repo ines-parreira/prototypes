@@ -7,7 +7,7 @@ export default class Search extends React.Component {
     constructor(props) {
         super(props)
 
-        // search every 300ms
+        // search every XXXms
         this.throttledSearch = throttle(() => {
             this.props.search(this.props, this.refs.searchInput.value)
         }, this.props.searchDebounceTime || 200)
