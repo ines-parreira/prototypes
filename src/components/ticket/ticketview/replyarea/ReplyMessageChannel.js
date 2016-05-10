@@ -3,9 +3,26 @@ import classnames from 'classnames'
 
 
 export default class ReplyMessageChannel extends React.Component {
+    constructor(props) {
+        super(props)
+
+        // This should come from the API
+        this.channels = {
+            api: 'api',
+            facebook: 'facebook',
+            email: 'email',
+            private: 'private'
+        }
+
+        this.defaultNames = {
+            empty: 'select a receiver',
+            private: 'your team'
+        }
+    }
+
     componentDidMount() {
         // Fix this
-        //this.props.actions.ticket.updatePotentialRequesters()
+        // this.props.actions.ticket.updatePotentialRequesters()
 
         $('#next-message-channel-popup').dropdown({
             position: 'bottom left',
@@ -14,55 +31,137 @@ export default class ReplyMessageChannel extends React.Component {
         })
     }
 
+    // This function gather and builds the data needed to render the receiver
+    // (name, mail, className of the icon, and its channel)
+    getReceiverData() {
+        const identity = this.resolveReceiver()
+        const channel = this.props.ticket.get('channel')
+        const popupChannelClassNames = {
+            default: 'action icon',
+            private: 'action icon comment yellow',
+            blueMail: 'action icon mail blue',
+            facebook: 'action icon facebook square blue',
+        }
+
+        switch (channel) {
+            case this.channels.private:
+                return {
+                    name: this.defaultNames.private,
+                    className: popupChannelClassNames.private,
+                    email: '',
+                    channel
+                }
+            case this.channels.api:
+                return {
+                    name: identity.name,
+                    className: popupChannelClassNames.blueMail,
+                    email: identity.email,
+                    channel
+                }
+            case this.channels.email:
+                return {
+                    name: identity.name,
+                    className: popupChannelClassNames.blueMail,
+                    email: identity.email,
+                    channel
+                }
+            case this.channels.facebook:
+                return {
+                    name: identity.name,
+                    className: popupChannelClassNames.facebook,
+                    email: identity.email,
+                    channel
+                }
+            default:
+                return {
+                    name: identity.name,
+                    className: popupChannelClassNames.default,
+                    email: identity.email,
+                    channel
+                }
+        }
+    }
+
+    // This gives us the name and the mail of the receiver depending on what is available in tickets
+    // This function is used in getReceiverData
+    resolveReceiver() {
+        const { ticket } = this.props
+
+        const data = {
+            receiver: ticket.getIn(['newMessage', 'receiver', 'id']) ? 'receiver' : null,
+            requester: ticket.getIn(['requester', 'id']) ? 'requester' : null
+        }
+
+        const role = data.receiver || data.requester
+
+        switch (role) {
+            case 'receiver':
+                return {
+                    name: ticket.getIn(['newMessage', 'receiver', 'name']),
+                    email: ticket.getIn(['newMessage', 'receiver', 'email'])
+                }
+            case 'requester':
+                return {
+                    name: ticket.getIn(['requester', 'name']),
+                    email: ticket.getIn(['requester', 'email'])
+                }
+            default:
+                return {
+                    name: this.defaultNames.empty,
+                    email: ''
+                }
+        }
+    }
+
     updateSearchInput(e) {
         this.refs.searchRequester.value = e.target.value
         this.refs.searchRequester.dispatchEvent(new Event('input'))
     }
 
-    render() {
-        const { ticket, actions } = this.props
-        const channel = this.props.ticket.get('channel')
-        let className = 'action icon '
-        let receiver = 'select a receiver'
-        let receiverDisplayProp = 'email'
-        const popupReceiver = $('#popup-receiver')
-
-        if (!this.props.ticket.getIn(['newMessage', 'public'])) {
-            className += 'comment yellow'
-            receiver = 'your team'
-
-            popupReceiver.dropdown('set text', receiver)
-            popupReceiver.dropdown('destroy')
-        } else {
-            popupReceiver.dropdown({
+    renderReceiver(obj, elem) {
+        if (obj.channel !== this.channels.private) {
+            elem.dropdown({
                 allowAdditions: true,
                 onChange: (text, value) => {
-                    this.props.actions.ticket.setReceiver(text, value, channel)
+                    this.props.actions.ticket.setReceiver(text, value, obj.channel)
                 }
             })
 
+            elem.dropdown('bind intent')
 
-            if (channel === 'email' || channel === 'api') {
-                className += 'mail blue'
-            } else if (channel === 'facebook') {
-                className += 'facebook square blue'
-                receiverDisplayProp = 'name'
+            if (elem.dropdown('get text') === 'your team') {
+                elem.dropdown('set text', obj.name)
             }
-
-            receiver = ticket.getIn(['newMessage', 'receiver', receiverDisplayProp])
-                || ticket.getIn(['requester', receiverDisplayProp])
-                || receiver
-
-            popupReceiver.dropdown('bind intent')
-
-            if (popupReceiver.dropdown('get text') === 'your team') {
-                popupReceiver.dropdown('set text', receiver)
-            }
+        } else {
+            elem.dropdown('set text', obj.name)
+            elem.dropdown('destroy')
         }
+
+        return obj
+    }
+
+    render() {
+        const { ticket, actions } = this.props
+        const receiverDisplayProp = 'email'
+        const popupReceiver = $('#popup-receiver')
+        const receiver = this.renderReceiver(this.getReceiverData(this.channels.private), popupReceiver)
+
+        const receiverEmail = receiver.name ? (
+            <div className="receiver-email" key="email">
+                <i className="icon mail"></i><span>{`<${receiver.email}>`}</span>
+            </div>
+        ) : null
+
+        const receiverName = receiver.email ? (
+            <div className="receiver-name" key="name"><b>{receiver.name}</b></div>
+        ) : null
 
         return (
             <div className="ReplyMessageChannel">
-                {/* This hidden input mirrors the search input of the dropdown, and is the one which Algolia listens to. */}
+                {/*
+                    This hidden input mirrors the search input of the dropdown,
+                    and is the one which Algolia listens to.
+                */}
                 <input
                     id="search-requester"
                     ref="searchRequester"
@@ -72,7 +171,7 @@ export default class ReplyMessageChannel extends React.Component {
                 <span>
 
                     <div id="next-message-channel-popup" className="ui dropdown">
-                        <i id="popup-message-channel" className={className}/>
+                        <i id="popup-message-channel" className={receiver.className}/>
                         <div
                             className="ui vertical menu"
                             style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
@@ -95,7 +194,7 @@ export default class ReplyMessageChannel extends React.Component {
                     <span className="label">To: </span>
 
                     <div id="popup-receiver" className="ui inline dropdown">
-                        <div><b>{receiver}</b></div>
+                        { [receiverName, receiverEmail]}
                         <div className="menu">
                             <div className="ui search input">
                                 <input
@@ -122,6 +221,8 @@ export default class ReplyMessageChannel extends React.Component {
                                             </div>
                                         )
                                     }
+
+                                    return null
                                 })
                             }
                         </div>
