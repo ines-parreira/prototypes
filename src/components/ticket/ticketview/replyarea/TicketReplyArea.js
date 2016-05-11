@@ -16,7 +16,7 @@ export default class TicketReplyArea extends React.Component {
     }
 
     componentWillUnmount() {
-        window.addEventListener('keydown', this.hideMacros.bind(this))
+        window.removeEventListener('keydown', this.hideMacros.bind(this))
     }
 
     hideMacros(e) {
