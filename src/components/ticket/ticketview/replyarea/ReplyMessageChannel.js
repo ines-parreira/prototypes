@@ -192,14 +192,14 @@ export default class ReplyMessageChannel extends React.Component {
                     </div>
 
                     <span className="label">To: </span>
-
-                    <div id="popup-receiver" className="ui inline dropdown">
+                    <div id="popup-receiver" className="ui inline dropdown" onClick={ () => this.refs.searchInput.focus() }>
                         { [receiverName, receiverEmail]}
                         <div className="menu">
                             <div className="ui search input">
                                 <input
                                     type="text"
                                     name="search"
+                                    ref="searchInput"
                                     data-text={ticket.getIn(['state', 'query'])}
                                     value={ticket.getIn(['state', 'query'])}
                                     placeholder="Search users..."
