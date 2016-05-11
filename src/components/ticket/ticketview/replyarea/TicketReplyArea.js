@@ -11,6 +11,20 @@ export default class TicketReplyArea extends React.Component {
         this.state = {searchTerm: ''}
     }
 
+    componentDidMount() {
+        window.addEventListener('keydown', this.hideMacros.bind(this))
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.hideMacros.bind(this))
+    }
+
+    hideMacros(e) {
+        if (e.keyCode !== 27) return null
+        this.props.actions.macro.setMacrosVisible(false)
+        return null
+    }
+
     searchUpdated = (term) => {
         this.setState({searchTerm: term}) // Necessary for re-render
     }
@@ -34,7 +48,7 @@ export default class TicketReplyArea extends React.Component {
                 ticket={this.props.ticket}
                 currentUser={this.props.currentUser}
                 users={this.props.users}
-                value={this.props.ticket.getIn(['newMessage', 'body_html'])}
+                value={this.props.ticket.getIn(['newMessage', 'body_text'])}
             />
         )
     }

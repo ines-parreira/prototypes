@@ -17,13 +17,13 @@ import 'draft-js-emoji-plugin/lib/plugin.css'
 export default class TicketReply extends React.Component {
     constructor(props) {
         super(props)
-        this.focus = () => this.refs.editor.focus()
         this.state = this.initialState(this.props)
     }
 
     componentDidMount() {
         // we're listening from stuff that comes from the extension
         window.addEventListener('message', this.onMessage, false)
+        this.refs.editor.focus()
     }
 
     componentWillReceiveProps(nextProps) {
