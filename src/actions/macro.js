@@ -6,12 +6,18 @@ import { RECORD_MACRO } from './ticket'
 export const FETCH_MACRO_LIST_START = 'FETCH_MACRO_LIST_START'
 export const FETCH_MACRO_LIST_SUCCESS = 'FETCH_MACRO_LIST_SUCCESS'
 
+// TicketReply
+export const UPDATE_ACTION_ARGS_ON_APPLIED = 'UPDATE_ACTION_ARGS_ON_APPLIED'
+export const DELETE_ACTION_ON_APPLIED = 'DELETE_ACTION_ON_APPLIED'
+
+// TicketReplyMacros
 export const APPLY_MACRO = 'APPLY_MACRO'
 export const PREVIEW_MACRO = 'PREVIEW_MACRO'
 export const SET_MACROS_VISIBILITY = 'SET_MACROS_VISIBILITY'
 export const PREVIEW_ADJACENT_MACRO = 'PREVIEW_ADJACENT_MACRO'
 export const PREVIEW_MACRO_IN_MODAL = 'PREVIEW_MACRO_IN_MODAL'
 
+// Macro Management Modal
 export const ADD_NEW_MACRO = 'ADD_NEW_MACRO'
 
 export const CREATE_MACRO_START = 'CREATE_MACRO_START'
@@ -29,15 +35,42 @@ export const UPDATE_MACRO_SUCCESS = 'UPDATE_MACRO_SUCCESS'
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
 
-// Ticket Actions
-export const SET_STATUS = 'SET_STATUS_ON_MACRO'
-export const SET_NAME = 'SET_NAME_ON_MACRO'
-export const SET_RESPONSE_TEXT = 'SET_RESPONSE_TEXT_ON_MACRO'
-export const SET_ASSIGNEE = 'SET_ASSIGNEE_ON_MACRO'
-export const TOGGLE_PRIORITY = 'TOGGLE_PRIORITY_ON_MACRO'
-export const ADD_TAG = 'ADD_TAG_ON_MACRO'
-export const DELETE_TAG = 'DELETE_TAG_ON_MACRO'
+export const UPDATE_ACTION_ARGS = 'UPDATE_ACTION_ARGS'
 
+export const UPDATE_ACTION_TITLE = 'UPDATE_ACTION_TITLE'
+export const SET_NAME = 'SET_NAME_ON_MACRO'
+
+
+export function deleteActionOnApplied(actionIndex) {
+    return {
+        type: DELETE_ACTION_ON_APPLIED,
+        actionIndex
+    }
+}
+
+export function updateActionArgsOnApplied(actionIndex, value) {
+    return {
+        type: UPDATE_ACTION_ARGS_ON_APPLIED,
+        actionIndex,
+        value
+    }
+}
+
+export function updateActionArgs(actionIndex, value) {
+    return {
+        type: UPDATE_ACTION_ARGS,
+        actionIndex,
+        value
+    }
+}
+
+export function updateActionTitle(actionIndex, title) {
+    return {
+        type: UPDATE_ACTION_TITLE,
+        actionIndex,
+        title
+    }
+}
 
 export function openModal() {
     return {
@@ -64,33 +97,6 @@ export function setName(name) {
     }
 }
 
-export function setResponseText(responseText) {
-    return {
-        type: SET_RESPONSE_TEXT,
-        responseText
-    }
-}
-
-export function setStatus(status) {
-    return {
-        type: SET_STATUS,
-        status
-    }
-}
-
-export function setAssignee(assignee) {
-    return {
-        type: SET_ASSIGNEE,
-        assignee
-    }
-}
-
-export function togglePriority() {
-    return {
-        type: TOGGLE_PRIORITY
-    }
-}
-
 export function addAction(actionType) {
     return {
         type: ADD_ACTION,
@@ -102,20 +108,6 @@ export function deleteAction(actionId) {
     return {
         type: DELETE_ACTION,
         actionId
-    }
-}
-
-export function addTags(tags) {
-    return {
-        type: ADD_TAG,
-        tags
-    }
-}
-
-export function deleteTag(index) {
-    return {
-        type: DELETE_TAG,
-        index
     }
 }
 

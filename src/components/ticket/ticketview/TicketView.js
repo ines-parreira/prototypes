@@ -63,6 +63,10 @@ export default class TicketView extends React.Component {
         }
     }
 
+    deleteMessage = (messageId) => {
+        this.props.actions.ticket.deleteMessage(this.props.ticket.get('id'), messageId)
+    }
+
     submit = (status, next) => {
         return (e) => {
             e.preventDefault()
@@ -156,6 +160,9 @@ export default class TicketView extends React.Component {
                 <TicketMessages
                     currentUser={this.props.currentUser}
                     messages={ticket.get('messages')}
+                    submit={this.props.submit}
+                    deleteMessage={this.deleteMessage}
+                    loading={ticket.getIn(['state', 'loading'])}
                 />
 
                 <ReplyMessageChannel

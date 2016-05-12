@@ -14,6 +14,8 @@ import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-linkify-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
+import TicketReplyAction from './TicketReplyAction'
+
 export default class TicketReply extends React.Component {
     constructor(props) {
         super(props)
@@ -24,6 +26,7 @@ export default class TicketReply extends React.Component {
         // we're listening from stuff that comes from the extension
         window.addEventListener('message', this.onMessage, false)
         this.refs.editor.focus()
+        $('.TicketReply .ui.accordion').accordion('open', 0)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -147,6 +150,8 @@ export default class TicketReply extends React.Component {
         }
 
         const className = `TicketReply search ui raised segment ${internal}`
+        const httpActions = this.props.appliedMacro ?
+            this.props.appliedMacro.get('actions').filter(action => action.get('name') === 'http') : []
 
         return (
             <div className={className}>
@@ -176,6 +181,17 @@ export default class TicketReply extends React.Component {
                     </div>
                 */}
                 <Attachments/>
+                {
+                    httpActions.map((action, key) => (
+                        <TicketReplyAction
+                            key={key}
+                            index={this.props.appliedMacro.get('actions').indexOf(action)}
+                            action={action}
+                            update={this.props.actions.macro.updateActionArgsOnApplied}
+                            remove={this.props.actions.macro.deleteActionOnApplied}
+                        />
+                    ))
+                }
             </div>
         )
     }
@@ -185,6 +201,7 @@ TicketReply.propTypes = {
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
+    appliedMacro: PropTypes.object,
     users: PropTypes.object.isRequired,
     value: PropTypes.string.isRequired
 }

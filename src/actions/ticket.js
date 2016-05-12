@@ -1,17 +1,19 @@
 import reqwest from 'reqwest'
-import {Map} from 'immutable'
+import React from 'react'
+import { browserHistory } from 'react-router'
+import Immutable, { Map } from 'immutable'
 import _ from 'lodash'
+
 import {systemMessage} from './systemMessage'
+import { ACTION_TEMPLATES } from './../constants'
+import { renderTemplate } from '../components/utils/template'
 
-
-// Basic operations on the ticket
-export const NEW_TICKET = 'NEW_TICKET'
-export const CLOSE_TICKET = 'CLOSE_TICKET'
-export const OPEN_TICKET = 'OPEN_TICKET'
+import * as MacroActions from './macro'
 
 // Reply to a ticket
 export const SUBMIT_TICKET_START = 'SUBMIT_TICKET_START'
 export const SUBMIT_TICKET_SUCCESS = 'SUBMIT_TICKET_SUCCESS'
+export const SUBMIT_TICKET_ERROR = 'SUBMIT_TICKET_ERROR'
 
 // Fetching a single ticket life-cycle
 export const FETCH_TICKET_START = 'FETCH_TICKET_START'
@@ -20,6 +22,10 @@ export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
 // Fetching a list of tickets life-cycle
 export const FETCH_TICKET_LIST_VIEW_START = 'FETCH_TICKET_LIST_VIEW_START'
 export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
+
+// Fetching a single ticketMessage to get action results
+export const FETCH_MESSAGE_START = 'FETCH_MESSAGE_START'
+export const FETCH_MESSAGE_SUCCESS = 'FETCH_MESSAGE_SUCCESS'
 
 export const SORT_TICKETS = 'SORT_TICKETS'
 
@@ -44,6 +50,9 @@ export const SETUP_NEW_TICKET = 'SETUP_NEW_TICKET'
 
 export const UPDATE_POTENTIAL_REQUESTERS = 'UPDATE_POTENTIAL_REQUESTERS'
 export const MARK_TICKET_DIRTY = 'MARK_TICKET_DIRTY'
+
+export const DELETE_TICKET_MESSAGE_START = 'DELETE_TICKET_MESSAGE_START'
+export const DELETE_TICKET_MESSAGE_SUCCESS = 'DELETE_TICKET_MESSAGE_SUCCESS'
 
 // Action related to attachments
 export const ADD_ATTACHMENT = 'ADD_ATTACHMENT'
@@ -165,6 +174,34 @@ export function setupNewTicket() {
     }
 }
 
+export function deleteMessage(ticketId, messageId) {
+    return (dispatch) => {
+        dispatch({
+            type: DELETE_TICKET_MESSAGE_START
+        })
+
+        const url = `/api/tickets/${ticketId}/messages/${messageId}/`
+
+        return reqwest({
+            url,
+            type: 'json',
+            method: 'DELETE',
+            contentType: 'application/json'
+        }).then(() => {
+            dispatch({
+                type: DELETE_TICKET_MESSAGE_SUCCESS,
+                messageId
+            })
+        }).catch((err) => {
+            dispatch({
+                type: 'error',
+                header: `Error: failed to deleted message ${messageId} from ticket ${ticketId}`,
+                msg: err
+            })
+        })
+    }
+}
+
 export function fetchTicketDetails(ticketId, data) {
     return (dispatch) => {
         dispatch({
@@ -263,19 +300,129 @@ export function search(props, query) {
     }
 }
 
-export function submitTicket(ticket, status) {
+export function fetchTicketMessage(ticketId, messageId) {
+    return (dispatch) => {
+        dispatch({
+            type: FETCH_MESSAGE_START
+        })
+
+        return reqwest({
+            url: `/api/tickets/${ticketId}/messages/${messageId}/`,
+            method: 'GET',
+            contentType: 'application/json'
+        }).then((resp) => {
+            const hasFailure = resp.actions.find(action => action.status === 'error')
+            const hasPending = resp.actions.find(action => action.status === 'pending')
+
+            if (hasFailure) {
+                dispatch(systemMessage({
+                    type: 'error',
+                    header: 'Oops! One or more actions failed on your last message. Here is the message status:',
+                    msg: (
+                        <div>
+                            <ul>
+                                {
+                                    resp.actions.map((action, idx) => (
+                                        <li key={idx}>{action.title}: {action.status}</li>
+                                    ))
+                                }
+                            </ul>
+                            <p>
+                                The message hasn't been sent, you should
+                                <a onClick={() => browserHistory.push(`/app/ticket/${resp.ticket_id}`)}>
+                                    {" review it right now"}
+                                </a>
+                                .
+                            </p>
+                        </div>
+                    )
+                }))
+            } else if (hasPending) {
+                setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId)), 2000)
+            }
+
+            dispatch({
+                type: FETCH_MESSAGE_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to fetch message. Please try again..',
+                msg: err
+            }))
+        })
+    }
+}
+
+export function formatAction(action, template, context) {
+    /**
+     * Verify if any argument of the action is a `listDict`, i.e. a data structure as such :
+     *
+     * [
+     *   {
+     *     key: k1,
+     *     value: v1,
+     *     ... // anything else
+     *   },
+     *   {
+     *     key: k2,
+     *     value: v2,
+     *     ...
+     *   },
+     *   ...
+     * ]
+     *
+     * which must be transformed into a dict before sending to the server (the other fields being
+     * useful for the UI only).
+     *
+     * {
+     *   k1: v1,
+     *   k2: v2,
+     *   ...
+     * }
+     *
+     */
+
+    let newArgs = Map()
+
+    action.get('arguments').map((value, key) => {
+        if (template.getIn(['arguments', key, 'type']) === 'listDict') {
+            newArgs = newArgs.set(key, Map({}))
+            value.map(element => {
+                newArgs = newArgs.setIn(
+                    [key, renderTemplate(element.get('key'), context)],
+                    renderTemplate(element.get('value'), context)
+                )
+            })
+        } else {
+            newArgs = newArgs.set(key, value)
+        }
+    })
+
+    return action.set('arguments', newArgs).set('status', template.get('execution') === 'back' ? 'pending' : 'success')
+}
+
+export function submitTicket(ticket, status, macroActions, currentUser, action) {
     return (dispatch) => {
         // we mark that we're trying to send the reply (used in the UI to show progress)
         dispatch({
             type: SUBMIT_TICKET_START
         })
-        // Allow the user to trigger "Close & Send" with just one action
-        const data = ticket.toJS()
 
+        const data = ticket.toJS()
         data.status = status || data.status
 
         if (data.newMessage) {
             if (data.newMessage.body_text.length > 0) {
+                if (macroActions) {
+                    data.newMessage.actions = macroActions.map(curAction => formatAction(
+                        curAction,
+                        Immutable.fromJS(ACTION_TEMPLATES).get(curAction.get('name')),
+                        { ticket: ticket.toJS(), currentUser: currentUser.toJS()}
+                    ))
+                }
+
                 data.messages.push(data.newMessage)
             } else if (!data.messages.length) {
                 dispatch(systemMessage({
@@ -296,17 +443,25 @@ export function submitTicket(ticket, status) {
         delete data.state
 
         return reqwest({
-            url: ticket.get('id') ? `/api/tickets/${ticket.get('id')}/` : '/api/tickets/',
+            url: ticket.get('id') ? `/api/tickets/${ticket.get('id')}/${action ? `?action=${action}` : ''}` : '/api/tickets/',
             type: 'json',
             contentType: 'application/json',
             method: ticket.get('id') ? 'PUT' : 'POST',
             data: JSON.stringify(data)
         }).then((resp) => {
+            setTimeout(() => dispatch(fetchTicketMessage(resp.id, resp.last_message.id)), 1000)
             dispatch({
                 type: SUBMIT_TICKET_SUCCESS,
                 resp
             })
+            dispatch({
+                type: MacroActions.APPLY_MACRO,
+                macro: undefined // reinitialize the current macro
+            })
         }).catch((err) => {
+            dispatch({
+                type: SUBMIT_TICKET_ERROR
+            })
             dispatch(systemMessage({
                 type: 'error',
                 err,

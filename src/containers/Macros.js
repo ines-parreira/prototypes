@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import MacrosModal from './../components/macro/MacrosModal'
+import MacroModal from './../components/macro/MacroModal'
 import * as MacroActions from './../actions/macro'
 
 class MacrosContainer extends React.Component {
@@ -14,7 +14,7 @@ class MacrosContainer extends React.Component {
         }
 
         return (
-            <MacrosModal
+            <MacroModal
                 macros={macros.get('items')}
                 newMacro={macros.get('newMacro')}
                 currentMacro={macros.get('modalSelected')}
