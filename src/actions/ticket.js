@@ -46,6 +46,7 @@ export const RECORD_MACRO = 'RECORD_MACRO'
 export const SET_PUBLIC = 'SET_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
 export const SET_RECEIVER = 'SET_RECEIVER'
+export const SET_SOURCE_TYPE = 'SET_SOURCE_TYPE'
 
 export const SAVE_INDEX = 'SAVE_INDEX'
 
@@ -199,6 +200,13 @@ export function setReceiver(receiver, channel) {
         type: SET_RECEIVER,
         receiver,
         channel
+    }
+}
+
+export function setSourceType(source_type) {
+    return {
+        type: SET_SOURCE_TYPE,
+        source_type
     }
 }
 

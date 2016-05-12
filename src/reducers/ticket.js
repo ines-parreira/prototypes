@@ -14,6 +14,7 @@ const newMessage = Map({
         name: '(no name)',
         id: null
     }),
+    source: Map({}),
     subject: '',
     body_text: '',
     body_html: '',
@@ -193,14 +194,20 @@ export function ticket(state = ticketInitial, action) {
             if (state.getIn(['newMessage', 'receiver', 'id']) || state.getIn(['newMessage', 'receiver', 'email'])) {
                 receiver = state.getIn(['newMessage', 'receiver'])
             }
-
+          
+            let channel = state.get('channel', 'email');
+            let source = state.get('source', Map({}));
+          
             return state.set('newMessage', state.get('newMessage').merge({
                 sender,
                 receiver,
+                channel,
                 body_text: expandedText,
                 body_html: expandedHTML
             })).setIn(['state', 'dirty'], expandedText !== '' || state.getIn(['state', 'dirty']))
         }
+        case actions.SET_SOURCE_TYPE:
+            return state.setIn(['newMessage', 'source', 'type'], action.source_type)
 
         case actions.SETUP_NEW_TICKET:
             return ticketInitial

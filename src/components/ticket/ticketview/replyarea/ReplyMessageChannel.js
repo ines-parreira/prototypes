@@ -197,6 +197,12 @@ export default class ReplyMessageChannel extends React.Component {
                             >
                                 Send as internal note
                             </div>
+                            <div className="item" onClick={() => actions.ticket.setSourceType('facebook-comment')}>
+                                Send as Facebook comment 
+                            </div>
+                            <div className="item" onClick={() => actions.ticket.setSourceType('facebook-message')}>
+                                Send as Facebook private message 
+                            </div>
                         </div>
                     </div>
 
