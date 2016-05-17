@@ -1,6 +1,7 @@
 import * as actions from '../actions/ticket'
 import Immutable, { Map, List, Set } from 'immutable'
 import { renderTemplate } from '../components/utils/template'
+import moment from 'moment'
 
 const newMessage = Map({
     via: 'helpdesk',
@@ -115,7 +116,12 @@ export function ticket(state = ticketInitial, action) {
         case actions.FETCH_TICKET_SUCCESS:
             return state.merge(Immutable.fromJS(action.resp)).merge({
                 newMessage,
-                state: state.get('state').merge({ dirty: false, loading: false })
+                state: state.get('state').merge({ dirty: false, loading: false }),
+                messages: Immutable.fromJS(
+                    action.resp.messages.sort(
+                        (messageA, messageB) => moment(messageA.created_datetime)
+                        .diff(moment(messageB.created_datetime))
+                ))
             })
 
         case actions.FETCH_MESSAGE_SUCCESS:

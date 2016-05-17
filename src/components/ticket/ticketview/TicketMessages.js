@@ -18,6 +18,7 @@ export default class TicketMessages extends React.Component {
                         submit={this.props.submit}
                         deleteMessage={this.props.deleteMessage}
                         loading={this.props.loading}
+                        ticket={this.props.ticket}
                     />
                 ))}
             </div>
@@ -30,5 +31,6 @@ TicketMessages.propTypes = {
     deleteMessage: PropTypes.func.isRequired,
     messages: PropTypes.object,
     currentUser: PropTypes.object,
-    loading: PropTypes.bool.isRequired
+    loading: PropTypes.bool.isRequired,
+    ticket: PropTypes.object
 }

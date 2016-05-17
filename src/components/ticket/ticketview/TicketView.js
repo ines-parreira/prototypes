@@ -163,6 +163,7 @@ export default class TicketView extends React.Component {
                     submit={this.props.submit}
                     deleteMessage={this.deleteMessage}
                     loading={ticket.getIn(['state', 'loading'])}
+                    ticket={ticket}
                 />
 
                 <ReplyMessageChannel
@@ -202,7 +203,6 @@ TicketView.propTypes = {
     users: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired,
     view: PropTypes.object,
-
     submit: PropTypes.func.isRequired,
     applyMacro: PropTypes.func.isRequired
 }

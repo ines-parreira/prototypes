@@ -3,6 +3,7 @@ import linkifyStr from 'linkifyjs/string'
 import {formatDatetime} from '../../../utils'
 import classNames from 'classnames'
 import TicketMessageActions from './TicketMessageActions'
+import MessageQuote from './MessageQuote'
 
 export default class TicketMessage extends React.Component {
     componentDidMount() {
@@ -88,7 +89,11 @@ export default class TicketMessage extends React.Component {
     }
 
     render() {
-        const { message, currentUser } = this.props
+        const { message, currentUser, ticket } = this.props
+
+        const messages = ticket.get('messages')
+        const currentMessageIndex = messages.findIndex((o) => o.get('id') === message.id)
+        const previousMessage = currentMessageIndex > 0 ? messages.get(currentMessageIndex - 1) : null
 
         let createdDatetime = ''
         if (message.created_datetime) {
@@ -166,7 +171,10 @@ export default class TicketMessage extends React.Component {
                         )
                     }
                     return (
-                        <div className="ticket-message-body ticket-message-body-text" dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}}>
+                        <div
+                            className="ticket-message-body ticket-message-body-text"
+                            dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}}
+                        >
                         </div>
                     )
                 })()}
@@ -188,7 +196,11 @@ export default class TicketMessage extends React.Component {
                     </div>
                 </div>
                 */}
-
+                <MessageQuote
+                    quotedMessage={previousMessage}
+                    currentMessage={message}
+                    currentUser={this.props.currentUser}
+                />
                 {this.renderAttachment(message)}
                 <TicketMessageActions message={message} />
             </div>
@@ -213,5 +225,6 @@ TicketMessage.propTypes = {
     loading: PropTypes.bool.isRequired,
     currentUser: PropTypes.object.isRequired,
     submit: PropTypes.func.isRequired,
-    deleteMessage: PropTypes.func.isRequired
+    deleteMessage: PropTypes.func.isRequired,
+    ticket: PropTypes.object
 }
