@@ -55,14 +55,41 @@ export const DELETE_TICKET_MESSAGE_START = 'DELETE_TICKET_MESSAGE_START'
 export const DELETE_TICKET_MESSAGE_SUCCESS = 'DELETE_TICKET_MESSAGE_SUCCESS'
 
 // Action related to attachments
-export const ADD_ATTACHMENT = 'ADD_ATTACHMENT'
+export const ADD_ATTACHMENT_START = 'ADD_ATTACHMENT_START'
+export const ADD_ATTACHMENT_SUCCESS = 'ADD_ATTACHMENT_SUCCESS'
 export const DELETE_ATTACHMENT = 'DELETE_ATTACHMENT'
 
 
 export function addAttachments(attachments) {
-    return {
-        type: ADD_ATTACHMENT,
-        attachments
+    return (dispatch) => {
+        dispatch({
+            type: ADD_ATTACHMENT_START
+        })
+
+        const formData = new window.FormData()
+
+        for (const attachment of attachments) {
+            formData.append(attachment.name, attachment.file)
+        }
+
+        return reqwest({
+            url: '/api/upload/',
+            method: 'POST',
+            crossOrigin: true,
+            processData: false,
+            data: formData
+        }).then((resp) => {
+            dispatch({
+                type: ADD_ATTACHMENT_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: Failed to upload files. Please try again later.',
+                msg: err
+            }))
+        })
     }
 }
 
@@ -449,7 +476,9 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
             method: ticket.get('id') ? 'PUT' : 'POST',
             data: JSON.stringify(data)
         }).then((resp) => {
-            setTimeout(() => dispatch(fetchTicketMessage(resp.id, resp.last_message.id)), 1000)
+            if (resp.last_message.actions) {
+                setTimeout(() => dispatch(fetchTicketMessage(resp.id, resp.last_message.id)), 1000)
+            }
             dispatch({
                 type: SUBMIT_TICKET_SUCCESS,
                 resp

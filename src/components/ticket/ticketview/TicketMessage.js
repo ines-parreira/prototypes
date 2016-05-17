@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react'
+import { List } from 'immutable'
 import linkifyStr from 'linkifyjs/string'
 import {formatDatetime} from '../../../utils'
 import classNames from 'classnames'
 import TicketMessageActions from './TicketMessageActions'
 import MessageQuote from './MessageQuote'
+import TicketAttachments from './replyarea/TicketAttachments'
 
 export default class TicketMessage extends React.Component {
     componentDidMount() {
@@ -18,35 +20,13 @@ export default class TicketMessage extends React.Component {
         $('.actions .label').popup({ inline: true })
     }
 
-    renderAttachmentIcon(contentType) {
-        if (contentType === 'application/pdf') {
-            return <i className="icon file pdf outline"/>
-        } else if (contentType.startsWith('image/')) {
-            return <i className="icon file image outline"/>
-        } else if (contentType === 'application/msword') {
-            return <i className="icon file word outline"/>
-        } else if (contentType.startsWith('text/')) {
-            return <i className="icon file text outline"/>
-        }
-
-        return <i className="icon attach"/>
-    }
-
     renderAttachment(message) {
         if (message.attachments) {
             return (
-                <div className="attachments">
-                    {
-                        message.attachments.map(attachment => (
-                            <div className="ui label" key={attachment.url}>
-                                {this.renderAttachmentIcon(attachment.content_type)}
-                                <a href={attachment.url} target="_blank">{attachment.name}</a>
-                            </div>
-                        ))
-                    }
-                </div>
+                <TicketAttachments attachments={List(message.attachments)} removable={false} />
             )
         }
+        return null
     }
 
     renderSource(message) {

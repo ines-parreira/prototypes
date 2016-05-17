@@ -28,7 +28,8 @@ const ticketInitial = Map({
         potentialRequesters: List(),
         query: '',
         dirty: false,
-        loading: false
+        loading: false,
+        attachmentLoading: false
     }),
     messages: List(),
     subject: '',
@@ -78,32 +79,36 @@ export function ticket(state = ticketInitial, action) {
     let newState = state
 
     switch (action.type) {
-        case actions.ADD_ATTACHMENT:
-            return state.merge({
-                newMessage: state.get('newMessage').merge({
-                    attachments: state
-                    .get('newMessage')
-                    .get('attachments')
-                    .concat(action.attachments),
-                }),
-                state: state.get('state').merge({ dirty: true })
+        case actions.ADD_ATTACHMENT_START:
+            return state.setIn(['state', 'attachmentLoading'], true)
+
+        case actions.ADD_ATTACHMENT_SUCCESS:
+            return state.mergeDeep({
+                newMessage: {
+                    attachments: state.getIn(['newMessage', 'attachments']).concat(action.resp)
+                },
+                state: {
+                    dirty: true,
+                    attachmentLoading: false
+                }
             })
+
         case actions.DELETE_ATTACHMENT:
-            return state.merge({
-                newMessage: state.get('newMessage').merge({
-                    attachments: state
-                    .get('newMessage')
-                    .get('attachments')
-                    .splice(action.index, 1)
-                }),
-                state: state.get('state').merge({ dirty: true })
+            return state.mergeDeep({
+                newMessage: {
+                    attachments: state.getIn(['newMessage', 'attachments']).delete(action.index)
+                },
+                state: {
+                    dirty: true
+                }
             })
 
         case actions.RECORD_MACRO:
-            return state.setIn(
-                ['newMessage', 'macros'],
-                state.getIn(['newMessage', 'macros']).push({ id: action.macro.get('id') })
-            )
+            return state.mergeDeep({
+                newMessage: {
+                    macros: state.getIn(['newMessage', 'macros']).push({ id: action.macro.get('id') })
+                }
+            })
 
         case actions.DELETE_TICKET_MESSAGE_START:
         case actions.SUBMIT_TICKET_START:
@@ -114,14 +119,11 @@ export function ticket(state = ticketInitial, action) {
 
         case actions.SUBMIT_TICKET_SUCCESS:
         case actions.FETCH_TICKET_SUCCESS:
-            return state.merge(Immutable.fromJS(action.resp)).merge({
-                newMessage,
-                state: state.get('state').merge({ dirty: false, loading: false }),
-                messages: Immutable.fromJS(
-                    action.resp.messages.sort(
-                        (messageA, messageB) => moment(messageA.created_datetime)
-                        .diff(moment(messageB.created_datetime))
-                ))
+            return state.merge(Immutable.fromJS(action.resp)).set('newMessage', newMessage).mergeDeep({
+                state: {
+                    dirty: false,
+                    loading: false
+                }
             })
 
         case actions.FETCH_MESSAGE_SUCCESS:

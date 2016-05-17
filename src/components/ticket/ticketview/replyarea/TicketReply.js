@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react'
-import { fromJS, List } from 'immutable'
+import { fromJS } from 'immutable'
+import _ from 'lodash'
 
-import Attachments from '../../../../containers/Attachments'
+import TicketAttachments from './TicketAttachments'
 
 import {EditorState, ContentState, RichUtils, convertFromHTML} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
@@ -103,6 +104,26 @@ export default class TicketReply extends React.Component {
         return false
     }
 
+    handleFiles(files) {
+        let newFiles = []
+
+        if (files.constructor.name === 'FileList') {
+            newFiles = _.values(files)
+        } else {
+            newFiles = files
+        }
+
+        const atts = newFiles.map((o, i) => ({
+            url: null,
+            name: o.name,
+            size: o.size,
+            content_type: o.type,
+            file: document.getElementById('file-input').files[i] || o
+        }))
+
+        this.props.actions.ticket.addAttachments(atts)
+    }
+
     handleDroppedFiles = (selection, files) => {
         this.dndPlugin.handleDroppedFiles(
             selection,
@@ -113,49 +134,55 @@ export default class TicketReply extends React.Component {
             }
         )
 
-        // TODO : Fetch an url from an endpoint
-        const atts = files.map((o, i) => (
-            {
-                url: `https://github${i}.com`,
-                name: o.name,
-                size: o.size,
-                content_type: o.type
-            }
-        ))
-
-        this.props.actions.ticket.addAttachments(atts)
+        this.handleFiles(files)
 
         return false
     }
 
-    handleUploadedFiles = (e) => {
-        // TODO : Fetch an url from an endpoint
-        const atts = List(e.target.files).map((o, i) => (
-            {
-                url: `https://github${i}.com`,
-                name: o.name,
-                size: o.size,
-                content_type: o.type
-            }
-        ))
+    renderAttachmentInput = () => {
+        if (this.props.ticket.getIn(['state', 'attachmentLoading'])) {
+            return (
+                <div className="attachments-pseudobar">
+                    <div className="ui small active loader"></div>
+                </div>
+            )
+        }
 
-        this.props.actions.ticket.addAttachments(atts)
+        return (
+            <div className="attachments-pseudobar">
+                <div className="fake-fileinput">
+                    <i className="large attach icon"/>
+                    <input
+                        type="file"
+                        id="file-input"
+                        onChange={ (e) => this.handleFiles(e.target.files) }
+                    />
+                </div>
+            </div>
+        )
     }
 
     render() {
+        const { ticket, appliedMacro, actions } = this.props
         let internal = ''
 
-        if (this.props.ticket.get('newMessage') && !this.props.ticket.getIn(['newMessage', 'public'])) {
+        if (ticket.get('newMessage') && !ticket.getIn(['newMessage', 'public'])) {
             internal = 'internal'
         }
 
         const className = `TicketReply search ui raised segment ${internal}`
-        const httpActions = this.props.appliedMacro ?
-            this.props.appliedMacro.get('actions').filter(action => action.get('name') === 'http') : []
+        const httpActions = appliedMacro ?
+            appliedMacro.get('actions').filter(action => action.get('name') === 'http') : []
 
         return (
             <div className={className}>
-                <form className="ui reply form">
+                <form
+                    ref="overlay"
+                    className="ui reply form"
+                    onDragEnter={() => this.refs.overlay.classList.add('active')}
+                    onDragLeave={() => this.refs.overlay.classList.remove('active')}
+                    onDrop={() => this.refs.overlay.classList.remove('active')}
+                >
                     <div className="field">
                         <Editor
                             editorState={this.state.editorState}
@@ -168,27 +195,21 @@ export default class TicketReply extends React.Component {
                         />
                     </div>
                 </form>
-                {/*
-                    <div className="attachments-pseudobar">
-                        <div className="fake-fileinput">
-                            <i className="attach icon"></i>
-                            <input
-                                type="file"
-                                id="file-input"
-                                onChange={ this.handleUploadedFiles }
-                            />
-                        </div>
-                    </div>
-                */}
-                <Attachments/>
+
+                {this.renderAttachmentInput()}
+
+                <TicketAttachments removable
+                    attachments={ticket.getIn(['newMessage', 'attachments'])}
+                    deleteAttachment={actions.ticket.deleteAttachment}
+                />
                 {
                     httpActions.map((action, key) => (
                         <TicketReplyAction
                             key={key}
-                            index={this.props.appliedMacro.get('actions').indexOf(action)}
+                            index={appliedMacro.get('actions').indexOf(action)}
                             action={action}
-                            update={this.props.actions.macro.updateActionArgsOnApplied}
-                            remove={this.props.actions.macro.deleteActionOnApplied}
+                            update={actions.macro.updateActionArgsOnApplied}
+                            remove={actions.macro.deleteActionOnApplied}
                         />
                     ))
                 }
