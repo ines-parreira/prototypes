@@ -25,18 +25,6 @@ const newMessage = Map({
 const ticketInitial = Map({
     state: Map({
         potentialRequesters: List(),
-        queryPath: 'query.multi_match.query',
-        query: {
-            _source: ['id', 'name', 'email'],
-            size: 5,
-            query: {
-                multi_match: {
-                    query: '',
-                    fuzziness: 3,
-                    fields: ['name', 'email']
-                }
-            }
-        },
         dirty: false,
         loading: false,
         attachmentLoading: false

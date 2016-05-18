@@ -12,7 +12,7 @@ export default class TicketTags extends React.Component {
             }
         })
 
-        $(document).on('click', '#tag-dropdown > .menu > .addition.item.selected', this.update)
+        $(document).on('click', `#tag-dropdown-${this.props.suffix} > .menu > .addition.item.selected`, this.update)
     }
 
     update = () => {
@@ -63,23 +63,23 @@ export default class TicketTags extends React.Component {
                                   <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..."/>
                             </div>
                             <div className="hidden item" key="placeholder"></div>
-                        {
+                            {
 
-                            tags.map(tag => {
-                                if (!existingTagNames.contains(tag.name)) {
-                                    return (
-                                        <div
-                                            className="item"
-                                            key={tag.name}
-                                            data-value={tag.name}
-                                            onClick={this.update}
-                                        >
-                                            {tag.name}
-                                        </div>
-                                    )
-                                }
-                            })
-                        }
+                                tags.map(tag => {
+                                    if (!existingTagNames.contains(tag.name)) {
+                                        return (
+                                            <div
+                                                className="item"
+                                                key={tag.name}
+                                                data-value={tag.name}
+                                                onClick={this.update}
+                                            >
+                                                {tag.name}
+                                            </div>
+                                        )
+                                    }
+                                })
+                            }
                         </div>
                     </div>
 

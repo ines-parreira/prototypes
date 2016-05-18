@@ -12,12 +12,12 @@ import TicketStatus from './ticketdetails/TicketStatus'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 
 export default class TicketView extends React.Component {
-    componentDidMount() {
-        $('#top-option-dropdown').dropdown({
-            on: 'hover',
-            action: 'nothing'
-        })
-    }
+    // componentDidMount() {
+    //     $('#top-option-dropdown').dropdown({
+    //         on: 'hover',
+    //         action: 'nothing'
+    //     })
+    // }
 
     componentWillReceiveProps(nextProps) {
         if (

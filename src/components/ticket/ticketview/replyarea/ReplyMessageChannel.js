@@ -190,8 +190,18 @@ export default class ReplyMessageChannel extends React.Component {
                                     autofocus
                                     className="medium"
                                     onChange={this.props.actions.ticket.updatePotentialRequesters}
-                                    query={ticket.getIn(['state', 'query'])}
-                                    queryPath={ticket.getIn(['state', 'queryPath'])}
+                                    query={{
+                                        _source: ['id', 'name', 'email'],
+                                        size: 5,
+                                        query: {
+                                            multi_match: {
+                                                query: '',
+                                                fuzziness: 3,
+                                                fields: ['name', 'email']
+                                            }
+                                        }
+                                    }}
+                                    queryPath="query.multi_match.query"
                                     searchDebounceTime={300}
                                 />
 
