@@ -12,6 +12,7 @@ import TicketStatus from './ticketdetails/TicketStatus'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 
 export default class TicketView extends React.Component {
+    // USED ONLY BY THE COMMENTED DROPDOWN BELOW
     // componentDidMount() {
     //     $('#top-option-dropdown').dropdown({
     //         on: 'hover',
