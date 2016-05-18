@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {formatDatetime} from '../../utils'
 import classNames from 'classnames'
 
 export const AgentLabel = ({agent}) => (
@@ -43,3 +44,33 @@ export const ChannelLabel = ({channel}) => (
     </span>
 )
 ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
+
+
+export const RenderLabel = (field, value) => {
+    if (!value) {
+        return null
+    }
+
+    switch (field.type) {
+        case 'plain':
+        case 'composite':
+        case 'tags':
+            return value
+        case 'datetime':
+            return formatDatetime(value)
+        case 'status':
+            return <StatusLabel status={value}/>
+        case 'priority':
+            return (<PriorityLabel priority={value}/>)
+        case 'agent':
+            return (<AgentLabel agent={value}/>)
+        case 'user':
+            return (<UserLabel user={value}/>)
+        case 'channel':
+            return <ChannelLabel channel={value}/>
+        default:
+            console.error('Invalid field type', field.type)
+    }
+}
+
+

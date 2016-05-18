@@ -28,8 +28,8 @@ export default class ColumnHeader extends React.Component {
             width: targetRect.width
         })
 
-        if (this.props.field.filter.enum_query) {
-            this.props.updateFieldEnum(this.props.field)
+        if (this.props.field.getIn(['filter', 'enum_query'])) {
+            this.props.updateFieldEnumSearch(this.props.field, this.props.field.getIn(['filter', 'enum_query']))
         }
     }
 
@@ -64,7 +64,7 @@ export default class ColumnHeader extends React.Component {
                     <FilterDropdown
                         field={this.props.field}
                         updateFieldFilter={this.props.updateFieldFilter}
-                        updateFieldSearch={this.props.updateFieldSearch}
+                        updateFieldEnumSearch={this.props.updateFieldEnumSearch}
                         onClose={this.onClose}
                     />
                 </div>
@@ -101,7 +101,6 @@ ColumnHeader.propTypes = {
     view: PropTypes.object.isRequired,
 
     updateFieldFilter: PropTypes.func.isRequired, // called when a value is selected in the dropdown
-    updateFieldSearch: PropTypes.func.isRequired, // called when search is used inside dropdown
-    updateFieldEnum: PropTypes.func.isRequired, // called when the field has to get the data from the API
+    updateFieldEnumSearch: PropTypes.func.isRequired, // called when the field has to get enum data from the API
     updateView: PropTypes.func.isRequired
 }

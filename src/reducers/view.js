@@ -65,6 +65,22 @@ export function views(state = viewsInitial, action) {
                 dirty: true
             })
 
+        case actions.UPDATE_VIEW_FIELD_ENUM_SUCCESS:
+            // update our active view with the new data from the API
+            // to do that we need to change all the fields with a new list of fields
+            view = view.set('fields', view.get('fields').map(f => {
+                // names of fields are unique
+                if (f.get('name') === action.field.get('name')) {
+                    const filter = action.field.get('filter').set('enum', action.resp.data)
+                    return action.field.set('filter', filter)
+                }
+                return f
+            }))
+
+            return state.merge({
+                active: view
+            })
+
         case actions.RESET_VIEW:
             // find the original view from the state and replace the active view
             const original = state.get('items').find(v => v.get('id') === view.get('id'))

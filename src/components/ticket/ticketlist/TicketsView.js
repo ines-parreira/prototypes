@@ -28,8 +28,7 @@ export default class TicketsView extends React.Component {
     }
     updateField = (field) => this.props.actions.view.updateField(field)
     updateFieldFilter = (field, filter) => this.props.actions.view.updateFieldFilter(field, filter)
-    updateFieldSearch = (field, search) => this.props.actions.view.updateFieldSearch(field, search)
-    updateFieldEnum = (field) => this.props.actions.view.updateFieldEnum(field)
+    updateFieldEnumSearch = (field, query) => this.props.actions.view.updateFieldEnumSearch(field, query)
 
     render() {
         const {views, tickets, currentUser} = this.props
@@ -112,8 +111,7 @@ export default class TicketsView extends React.Component {
                     updateView={this.updateView}
                     updateField={this.updateField}
                     updateFieldFilter={this.updateFieldFilter}
-                    updateFieldSearch={this.updateFieldSearch}
-                    updateFieldEnum={this.updateFieldEnum}
+                    updateFieldEnumSearch={this.updateFieldEnumSearch}
                     fetchPage={this.props.fetchPage}
                 />
             </div>

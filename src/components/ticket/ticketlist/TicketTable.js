@@ -46,7 +46,7 @@ export default class TicketTable extends React.Component {
                                 view={view}
                                 updateView={this.props.updateView}
                                 updateFieldFilter={this.props.updateFieldFilter}
-                                updateFieldSearch={this.props.updateFieldSearch}
+                                updateFieldEnumSearch={this.props.updateFieldEnumSearch}
                             />
                         ))}
                         <ShowMoreFieldsDropdown
@@ -84,9 +84,10 @@ TicketTable.propTypes = {
     tickets: PropTypes.object.isRequired,
     view: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
+
     updateView: PropTypes.func.isRequired,
     updateField: PropTypes.func.isRequired,
     updateFieldFilter: PropTypes.func.isRequired,
-    updateFieldSearch: PropTypes.func.isRequired,
+    updateFieldEnumSearch: PropTypes.func.isRequired,
     fetchPage: PropTypes.func.isRequired
 }

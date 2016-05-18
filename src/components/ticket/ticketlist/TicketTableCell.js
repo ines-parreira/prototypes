@@ -1,13 +1,7 @@
 import React, {PropTypes} from 'react'
-import {formatDatetime} from '../../../utils'
-import {AgentLabel, UserLabel, TagLabel, PriorityLabel, StatusLabel, ChannelLabel} from '../../utils/labels'
+import {RenderLabel, TagLabel} from '../../utils/labels'
 
 export default class TicketTableCell extends React.Component {
-    constructor(props) {
-        super()
-        this.timezone = props.currentUser.get('timezone')
-    }
-
     stripHTML = (text) => {
         try {
             const doc = document.implementation.createHTMLDocument()
@@ -33,24 +27,33 @@ export default class TicketTableCell extends React.Component {
 
     renderFieldContent() {
         const {ticket} = this.props
-        let {field} = this.props
-        field = field.toJS()
-        const value = ticket.getIn(field.name.split('.'))
+        const field = this.props.field.toJS()
+        let value
 
+        // customize values of some fields
         switch (field.type) {
-            case 'plain':
-                return value
-            case 'datetime':
-                return formatDatetime(value, this.timezone)
-            case 'status':
-                return <StatusLabel status={value}/>
+            case 'agent':
+            case 'user':
+                // ticket.requester.id => ticket.requester
+                value = ticket.getIn(field.name.split('.').slice(0, -1))
+                if (value) {
+                    value = value.toJS()
+                }
+                break
+            case 'tags':
+                value = ticket.get('tags').map((tag) => (
+                    <TagLabel key={`${ticket.get('id')}-${tag.get('id')}`}
+                              tag={tag.toJS()}
+                    />
+                ))
+                break
             case 'composite':
                 if (field.name === 'ticket-details') {
                     const firstMessage = ticket.get('messages').toJS()[0]
                     if (!firstMessage) {
-                        return null
+                        break
                     }
-                    return (
+                    value = (
                         <div className="ui header">
                             <span className="subject">{this.truncate(ticket.get('subject'), 50)}</span>
                             <div className="body sub header">
@@ -58,41 +61,14 @@ export default class TicketTableCell extends React.Component {
                             </div>
                         </div>
                     )
+                } else {
+                    console.error('Invalid composite field', field)
                 }
-                console.error('Invalid composite field', field)
-                return null
-            case 'priority':
-                return (<PriorityLabel priority={value}/>)
-            case 'tags':
-                return ticket.get('tags').map((tag) => (
-                    <TagLabel key={`${ticket.get('id')}-${tag.get('id')}`}
-                              tag={tag.toJS()}
-                    />
-                ))
-            case 'agent':
-                // ticket.requester.id => ticket.requester
-                const agent = ticket.getIn(field.name.split('.').slice(0, -1))
-                if (agent) {
-                    return (
-                        <AgentLabel agent={agent.toJS()}/>
-                    )
-                }
-                return null
-            case 'user':
-                // ticket.requester.id => ticket.requester
-                const user = ticket.getIn(field.name.split('.').slice(0, -1))
-                if (user) {
-                    return (
-                        <UserLabel user={user.toJS()}/>
-                    )
-                }
-                return null
-            case 'channel':
-                return <ChannelLabel channel={value}/>
+                break
             default:
-                console.error('Invalid field type', field.type)
-                return null
+                value = ticket.getIn(field.name.split('.'))
         }
+        return RenderLabel(field, value)
     }
 
     render() {

@@ -1,4 +1,5 @@
 import reqwest from 'reqwest'
+import {fromJS} from 'immutable'
 import {systemMessage} from './systemMessage'
 
 export const DEFAULT_VIEW = 'my-tickets'
@@ -8,6 +9,8 @@ export const UPDATE_VIEW = 'UPDATE_VIEW'
 export const RESET_VIEW = 'RESET_VIEW'
 export const UPDATE_VIEW_FIELD = 'UPDATE_VIEW_FIELD'
 export const UPDATE_VIEW_FIELD_FILTER = 'UPDATE_VIEW_FIELD_FILTER'
+export const UPDATE_VIEW_FIELD_ENUM_START = 'UPDATE_VIEW_FIELD_ENUM_START'
+export const UPDATE_VIEW_FIELD_ENUM_SUCCESS = 'UPDATE_VIEW_FIELD_ENUM_SUCCESS'
 
 // Fetch individual view definitions
 export const FETCH_VIEW_START = 'FETCH_VIEW_START'
@@ -55,27 +58,29 @@ export function updateFieldFilter(field, filter) {
     }
 }
 
-export function updateFieldEnum(field) {
-    console.log(field)
+export function updateFieldEnumSearch(field, query) {
     return (dispatch) => {
-        //dispatch({
-        //    type: ""
-        //})
+        dispatch({
+            type: UPDATE_VIEW_FIELD_ENUM_START
+        })
 
+        const filter = field.get('filter')
+        const data = JSON.stringify({
+            doc_type: filter.get('doc_type'),
+            query
+        })
         return reqwest({
             url: '/api/search/',
-            data: JSON.stringify({
-                doc_type: 'ticket', // todo(@xarg): make it work with the users as well
-                query: field.filter.query_enum
-            }),
+            data,
             type: 'json',
             method: 'POST',
             contentType: 'application/json'
-        }).then((resp) => {
-            //dispatch({
-            //    type: ,
-            //    resp
-            //})
+        }).then(resp => {
+            dispatch({
+                type: UPDATE_VIEW_FIELD_ENUM_SUCCESS,
+                field,
+                resp
+            })
         }).catch((err) => {
             dispatch(systemMessage({
                 type: 'error',
@@ -84,44 +89,6 @@ export function updateFieldEnum(field) {
             }))
         })
     }
-}
-
-export function updateFieldSearch(field, search) {
-    console.log(field, search)
-    return (dispatch) => {
-        //dispatch({
-        //    type: ""
-        //})
-
-        return reqwest({
-            url: '/api/search/',
-            data: JSON.stringify({
-                doc_type: 'ticket', // todo(@xarg): make it work with the users as well
-                source: search.source,
-                query: search.query,
-                params: search.params
-            }),
-            type: 'json',
-            method: 'POST',
-            contentType: 'application/json'
-        }).then((resp) => {
-            //dispatch({
-            //    type: ,
-            //    resp
-            //})
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to do the search. Please try again..',
-                msg: err
-            }))
-        })
-    }
-    //return {
-    //    type: UPDATE_VIEW_FIELD_FILTER,
-    //    field,
-    //    search
-    //}
 }
 
 export function resetView() {
