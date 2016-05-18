@@ -1,5 +1,5 @@
 import * as actions from '../actions/user'
-import { Map, List } from 'immutable'
+import { Map, List, fromJS } from 'immutable'
 import _ from 'lodash'
 
 const usersInitial = Map({
@@ -13,6 +13,7 @@ const usersInitial = Map({
 
 export function users(state = usersInitial, action) {
     const items = state.get('items')
+    let newState = state
     let userIndex
 
     switch (action.type) {
@@ -21,8 +22,13 @@ export function users(state = usersInitial, action) {
             return state.merge({ loading: true })
 
         case actions.FETCH_USER_LIST_SUCCESS:
-            return state.merge({
-                items: action.resp.data,
+            if (action.role && action.role === 'agent') {
+                newState = newState.set('agents', fromJS(action.resp.data))
+            } else {
+                newState = newState.set('items', fromJS(action.resp.data))
+            }
+
+            return newState.merge({
                 loading: false,
                 resp: action.resp
             })

@@ -170,7 +170,6 @@ export function updatePotentialRequesters(query) {
             url: '/api/search/',
             data: JSON.stringify({
                 doc_type: 'user',
-                queryPath: 'query.multi_match.query',
                 query
             }),
             type: 'json',
