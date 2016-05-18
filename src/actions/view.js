@@ -1,5 +1,4 @@
 import reqwest from 'reqwest'
-import {fromJS} from 'immutable'
 import {systemMessage} from './systemMessage'
 
 export const DEFAULT_VIEW = 'my-tickets'
@@ -64,14 +63,12 @@ export function updateFieldEnumSearch(field, query) {
             type: UPDATE_VIEW_FIELD_ENUM_START
         })
 
-        const filter = field.get('filter')
-        const data = JSON.stringify({
-            doc_type: filter.get('doc_type'),
-            query
-        })
         return reqwest({
             url: '/api/search/',
-            data,
+            data: JSON.stringify({
+                doc_type: field.getIn(['filter', 'doc_type']),
+                query
+            }),
             type: 'json',
             method: 'POST',
             contentType: 'application/json'
