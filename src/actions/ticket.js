@@ -1,11 +1,13 @@
 import reqwest from 'reqwest'
 import React from 'react'
+import _ from 'lodash'
 import {browserHistory} from 'react-router'
 import Immutable, {Map} from 'immutable'
-import _ from 'lodash'
+
 import {systemMessage} from './systemMessage'
 import {ACTION_TEMPLATES} from './../constants'
 import {renderTemplate} from '../components/utils/template'
+import {lastMessage} from '../utils'
 import * as MacroActions from './macro'
 
 // Reply to a ticket
@@ -456,8 +458,9 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
             method: ticket.get('id') ? 'PUT' : 'POST',
             data: JSON.stringify(data)
         }).then((resp) => {
-            if (resp.last_message.actions) {
-                setTimeout(() => dispatch(fetchTicketMessage(resp.id, resp.last_message.id)), 1000)
+            const last = lastMessage(resp.messages)
+            if (last.actions) {
+                setTimeout(() => dispatch(fetchTicketMessage(resp.id, last.id)), 1000)
             }
             dispatch({
                 type: SUBMIT_TICKET_SUCCESS,
