@@ -18,16 +18,22 @@ export default class TicketsView extends React.Component {
     }
 
     updateView = (view) => this.props.actions.view.updateView(view)
+
     resetView = () => this.props.actions.view.resetView()
+
     deleteView = (view) => this.props.actions.view.deleteView(view)
+
     updateViewName = (name) => {
         this.updateView(this.props.views.get('active').merge({
             name,
             slug: name.toLowerCase().trim().replace(/[ ]/g, '-')
         }))
     }
+
     updateField = (field) => this.props.actions.view.updateField(field)
+
     updateFieldFilter = (field, filter) => this.props.actions.view.updateFieldFilter(field, filter)
+
     updateFieldEnumSearch = (field, query) => this.props.actions.view.updateFieldEnumSearch(field, query)
 
     render() {
@@ -86,8 +92,10 @@ export default class TicketsView extends React.Component {
                                 />
                             </div>
                             <div className="four wide column">
-                                <button className="ui right floated green button"
-                                        onClick={() => { browserHistory.push(`/app/ticket/new?view=${this.props.view.get('slug')}`) }}>
+                                <button
+                                    className="ui right floated green button"
+                                    onClick={() => { browserHistory.push(`/app/ticket/new?view=${this.props.views.getIn(['active', 'slug'])}`) }}
+                                >
                                     CREATE TICKET
                                 </button>
                             </div>

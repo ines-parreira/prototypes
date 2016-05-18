@@ -1,6 +1,4 @@
-import React, { PropTypes } from 'react'
-import _ from 'lodash'
-
+import React, {PropTypes} from 'react'
 import EditableTitle from './../EditableTitle'
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
@@ -12,12 +10,13 @@ import TicketStatus from './ticketdetails/TicketStatus'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 
 export default class TicketView extends React.Component {
-    componentDidMount() {
-        $('#top-option-dropdown').dropdown({
-            on: 'hover',
-            action: 'nothing'
-        })
-    }
+    // USED ONLY BY THE COMMENTED DROPDOWN BELOW
+    // componentDidMount() {
+    //     $('#top-option-dropdown').dropdown({
+    //         on: 'hover',
+    //         action: 'nothing'
+    //     })
+    // }
 
     componentWillReceiveProps(nextProps) {
         if (
@@ -30,33 +29,84 @@ export default class TicketView extends React.Component {
              *
              * For that, we need to make sure :
              */
-            nextProps.view && // that we have a view from which to extract constraints
-            !nextProps.ticket.get('id') && // that we're on a Ticket being created
-            !nextProps.ticket.getIn(['state', 'dirty']) && // that this code hasn't been executed yet
-            nextProps.tags.get('items').size && nextProps.users.get('agents').size // that we've got all the data needed
+        nextProps.view && // that we have a view from which to extract constraints
+        !nextProps.ticket.get('id') && // that we're on a Ticket being created
+        !nextProps.ticket.getIn(['state', 'dirty']) && // that this code hasn't been executed yet
+        nextProps.tags.get('items').size && nextProps.users.get('agents').size // that we've got all the data needed
         ) {
-            const groupedFilters = nextProps.view.get('groupedFilters')
+            /**
+             * In the future, this should use the filters_ast to generically apply any filter to the message.
+             * Though, not sure it is worth it right now.
+             */
 
-            if (groupedFilters.get('ticket.tags')) {
-                const tagNames = groupedFilters.get('ticket.tags').contains
-                const newTags = nextProps.tags.get('items').filter(curTag => _.includes(tagNames, curTag.get('name')))
-                nextProps.actions.ticket.addTags(newTags)
-            }
+            const filtersAst = nextProps.view.get('filters_ast')
+            const exp = filtersAst.getIn(['body', 0, 'expression']).toJS()
 
-            if (groupedFilters.get('ticket.status')) {
-                nextProps.actions.ticket.setStatus(_.first(groupedFilters.get('ticket.status').eq))
-            }
+            const fields = {}
+            const walk = function (node) {
+                switch (node.type) {
+                    case 'LogicalExpression':
+                        if (node.operator !== '&&') {
+                            throw Error('Unknown operator', node)
+                        }
+                        walk(node.left)
+                        walk(node.right)
 
-            if (groupedFilters.get('ticket.assignee_user.id')) {
-                if (_.first(groupedFilters.get('ticket.assignee_user.id').eq) === '{current_user.id}') {
-                    nextProps.actions.ticket.setAgent(nextProps.currentUser)
-                } else {
-                    nextProps.actions.ticket.setAgent(nextProps.users.get('agents').find(
-                        curAgent => curAgent.get('id').toString() === _.first(groupedFilters.get('ticket.assignee_user.id').eq)
-                    ))
+                        break
+                    case 'CallExpression':
+                        if (['eq', 'contains'].indexOf(node.callee.name) === -1) {
+                            break
+                        }
+
+                        const left = walk(node.arguments[0])
+                        const right = walk(node.arguments[1])
+                        if (!Array.isArray(fields[left])) {
+                            fields[left] = []
+                        }
+                        fields[left].push(right)
+                        break
+                    case 'MemberExpression':
+                        return `${walk(node.object)}.${node.property.name}`
+                    case 'Literal':
+                        // raw comes with extra quotes - we should remove them
+                        return node.raw.replace(/^"/, '').replace(/"$/, '')
+                    case 'Identifier':
+                        return node.name
+                    default:
+                        throw Error('Unknown node type', node)
+
                 }
-            } else {
-                nextProps.actions.ticket.setAgent(nextProps.currentUser)
+            }
+
+            walk(exp)
+
+            // Since it's the agent clicking on the 'New Ticket' it's automatically assigned to them
+            nextProps.actions.ticket.setAgent(nextProps.currentUser)
+            for (const field of Object.keys(fields)) {
+                const values = fields[field]
+                const firstValue = values[0]
+
+                switch (field) {
+                    case 'ticket.tags.name':
+                        const newTags = nextProps.tags.get('items').filter(t => values.indexOf(t.get('name')) !== -1)
+                        nextProps.actions.ticket.addTags(newTags)
+                        break
+                    case 'ticket.status':
+                        nextProps.actions.ticket.setStatus(firstValue)
+                        break
+                    case 'ticket.assignee_user.id':
+                        if (firstValue !== '{current_user.id}') {
+                            nextProps.actions.ticket.setAgent(nextProps.users.get('agents').find(
+                                curAgent => curAgent.get('id').toString() === firstValue
+                            ))
+                        }
+                        break
+                    case 'ticket.priority':
+                        nextProps.actions.ticket.setPriority(firstValue)
+                        break
+                    default:
+                        break
+                }
             }
 
             nextProps.actions.ticket.markTicketDirty()
@@ -75,44 +125,47 @@ export default class TicketView extends React.Component {
     }
 
     render = () => {
-        const { ticket, tags, users, actions } = this.props
+        const {ticket, tags, users, actions} = this.props
 
         let ticketId = ''
 
-        if (ticket.get('id')) { ticketId = `#${ticket.get('id')}`}
+        if (ticket.get('id')) {
+            ticketId = `#${ticket.get('id')}`
+        }
 
         return (
             <div className="ticket-view">
                 <div className="ticket-header">
 
                     {/*
-                    <div className="ticket-actions-btn ui dropdown" id="top-option-dropdown">
-                        <i className="ui icon angle down"/>
-                        <div className="menu transition">
-                            <div className="item">
-                                <a href="#">
-                                    Merge
-                                </a>
-                            </div>
-                            <div className="item">
-                                <a href="#">
-                                    Mark as spam
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    */}
+                     <div className="ticket-actions-btn ui dropdown" id="top-option-dropdown">
+                     <i className="ui icon angle down"/>
+                     <div className="menu transition">
+                     <div className="item">
+                     <a href="#">
+                     Merge
+                     </a>
+                     </div>
+                     <div className="item">
+                     <a href="#">
+                     Mark as spam
+                     </a>
+                     </div>
+                     </div>
+                     </div>
+                     */}
 
                     {/*
                      <button className="ticket-previous-btn ui mini button">
-                        NO PREVIOUS TICKETS
-                    </button>
-                    */}
+                     NO PREVIOUS TICKETS
+                     </button>
+                     */}
 
                     <EditableTitle
                         title={ticket.get('subject')}
                         placeholder="Subject"
                         update={actions.ticket.setSubject}
+                        focus={!ticket.get('id')}
                     />
 
                     <div className="ui grid">

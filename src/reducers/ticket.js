@@ -1,7 +1,6 @@
 import * as actions from '../actions/ticket'
-import Immutable, { Map, List, Set } from 'immutable'
+import { Map, List, Set, fromJS } from 'immutable'
 import { renderTemplate } from '../components/utils/template'
-import moment from 'moment'
 
 const newMessage = Map({
     via: 'helpdesk',
@@ -26,7 +25,6 @@ const newMessage = Map({
 const ticketInitial = Map({
     state: Map({
         potentialRequesters: List(),
-        query: '',
         dirty: false,
         loading: false,
         attachmentLoading: false
@@ -114,7 +112,7 @@ export function ticket(state = ticketInitial, action) {
 
         case actions.SUBMIT_TICKET_SUCCESS:
         case actions.FETCH_TICKET_SUCCESS:
-            return state.merge(Immutable.fromJS(action.resp)).set('newMessage', newMessage).mergeDeep({
+            return state.merge(fromJS(action.resp)).set('newMessage', newMessage).mergeDeep({
                 state: {
                     dirty: false,
                     loading: false
@@ -125,7 +123,7 @@ export function ticket(state = ticketInitial, action) {
             if (state.get('id') === action.resp.ticket_id) {
                 return state.setIn(
                     ['messages', state.get('messages').findIndex(message => message.get('id') === action.resp.id)],
-                    Immutable.fromJS(action.resp)
+                    fromJS(action.resp)
                 )
             }
 
@@ -194,12 +192,12 @@ export function ticket(state = ticketInitial, action) {
             const ticketState = state.toJS()
             const currentUser = sender.toJS()
 
-            const expandedText = Immutable.fromJS(renderTemplate(text, {
+            const expandedText = fromJS(renderTemplate(text, {
                 ticket: ticketState,
                 current_user: currentUser
             }))
 
-            const expandedHTML = Immutable.fromJS(renderTemplate(html, {
+            const expandedHTML = fromJS(renderTemplate(html, {
                 ticket: ticketState,
                 current_user: currentUser
             }))
@@ -222,18 +220,11 @@ export function ticket(state = ticketInitial, action) {
 
         case actions.UPDATE_POTENTIAL_REQUESTERS:
             return state
-                .setIn(['state', 'potentialRequesters'], action.potentialRequesters)
+                .setIn(['state', 'potentialRequesters'], fromJS(action.resp.data))
                 .setIn(['state', 'query'], action.query)
 
         case actions.SET_RECEIVER:
-            const newReceiver = {}
-
-            if (!isNaN(action.receiverId)) {
-                newReceiver.id = action.receiverId
-            }
-
-            newReceiver[action.channel === 'email' || action.channel === 'api' ? 'email' : 'name'] = action.receiverAttr
-            return state.setIn(['newMessage', 'receiver'], Map(newReceiver))
+            return state.setIn(['newMessage', 'receiver'], action.receiver)
 
         case actions.MARK_TICKET_DIRTY:
             return state.setIn(['state', 'dirty'], true)

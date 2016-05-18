@@ -27,6 +27,18 @@ export default class EditableTitle extends React.Component {
         this.props.update(titleObject.innerText)
     }
 
+    componentDidMount() {
+        if (this.props.focus) {
+            this.toggleEditMode()
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.focus && nextProps.focus) {
+            this.toggleEditMode()
+        }
+    }
+
     reinitTitle(subjectObject) {
         subjectObject.classList.remove('edit-mode')
         subjectObject.setAttribute('contentEditable', 'false')
@@ -39,8 +51,6 @@ export default class EditableTitle extends React.Component {
         subjectObject.setAttribute('contentEditable', 'true')
         subjectObject.focus()
     }
-
-
 
     render() {
         const {title, placeholder} = this.props
@@ -62,5 +72,6 @@ export default class EditableTitle extends React.Component {
 EditableTitle.propTypes = {
     title: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    update: PropTypes.func.isRequired
+    update: PropTypes.func.isRequired,
+    focus: PropTypes.bool
 }

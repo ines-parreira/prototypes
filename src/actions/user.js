@@ -41,7 +41,8 @@ export function fetchUsers(role) {
         }).then((resp) => {
             dispatch({
                 type: FETCH_USER_LIST_SUCCESS,
-                resp
+                resp,
+                role
             })
         }).catch((err) => {
             dispatch(systemMessage({

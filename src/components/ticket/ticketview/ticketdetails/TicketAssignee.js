@@ -42,6 +42,7 @@ export default class TicketAssignee extends React.Component {
                     <div className="ui search input">
                           <input id="ticket-owner-input" type="text" placeholder="Search agents..."/>
                     </div>
+                    <div className="hidden item"></div>
                     {
                         agents.map((agent) =>
                             <div
