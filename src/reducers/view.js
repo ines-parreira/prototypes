@@ -121,7 +121,7 @@ export function views(state = viewsInitial, action) {
             return state.merge({
                 items,
                 active,
-                dirty: true,
+                dirty: false,
                 loading: false
             })
 
