@@ -94,14 +94,9 @@ export function ticket(state = ticketInitial, action) {
             })
 
         case actions.DELETE_ATTACHMENT:
-            return state.mergeDeep({
-                newMessage: {
-                    attachments: state.getIn(['newMessage', 'attachments']).delete(action.index)
-                },
-                state: {
-                    dirty: true
-                }
-            })
+            return state
+                .setIn(['newMessage', 'attachments'], state.getIn(['newMessage', 'attachments']).delete(action.index))
+                .setIn(['state', 'dirty'], true)
 
         case actions.RECORD_MACRO:
             return state.mergeDeep({
