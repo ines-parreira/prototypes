@@ -1,104 +1,131 @@
+import esprima from 'esprima'
+import escodegen from 'escodegen'
+import {fromJS, List, Map} from 'immutable'
 import * as actions from '../actions/view'
-import { OrderedMap, Map } from 'immutable'
-import _ from 'lodash'
-import { getCode } from '../filters/ast'
 
-/*
-*  Utility functions to keep view.filters_ast in-sync with the groupedFilters used on the frontend
-*/
 
 const viewsInitial = Map({
-    items: OrderedMap(),
-    viewBeingEdited: Map,
-    loading: false,
-    active: null
+    items: List(),
+    active: Map(),
+    dirty: false,
+    loading: false
 })
 
-function addExtraAttributes(view) {
-    return Map(Object.assign({}, view, {
-        dirty: false,
-        filters: view.filters,
-        filters_ast: Map(view.filters_ast)
-    }))
+// traverse filters_ast, find all the call expressions and return a new tree
+function updateFilterAST(view, filter) {
+    // generate a new call expression for the new filter as a string
+    const newCallExprCode = `${filter.operator}(${filter.left}, ${filter.right})`
+    // since we only ever have AND operators just concatenate existing expressions
+    const newCode = `${view.get('filters')} && ${newCallExprCode}`
+    return fromJS(esprima.parse(newCode))
 }
 
-function updateViewFilters(view, filtersAst) {
-    const filters = getCode(filtersAst)
-
-    return view.merge({
-        dirty: true,
-        filters,
-        filters_ast: Map(filtersAst)
-    })
+// shortcut for sorting items
+function sortViews(items, key = 'display_order') {
+    return items.sort((a, b) => a.get(key) - b.get(key))
 }
-
 
 export function views(state = viewsInitial, action) {
-    let view
-    let groupedFilters
-    let updatedFilters
-    let updatedView
-    let newState = state
+    let items
+    let view = state.get('active')
 
     switch (action.type) {
-        case actions.NEW_VIEW:
-            return state
+        case actions.SET_VIEW_ACTIVE:
+            return state.set('active', action.view)
 
         case actions.UPDATE_VIEW:
-            view = state.getIn(['items', action.slug])
-            view = view.set('dirty', true)
-            return newState.set('viewBeingEdited', view.merge(action.data)).setIn(['items', action.slug], view)
+            return state.merge({
+                active: action.view,
+                dirty: true
+            })
+
+        case actions.UPDATE_VIEW_FIELD:
+            // replace a field with a new field
+            view = view.set('fields', view.get('fields').map(f => {
+                return (f.get('name') === action.field.get('name')) ? action.field : f
+            }))
+
+            return state.merge({
+                active: view,
+                dirty: true
+            })
+
+        case actions.UPDATE_VIEW_FIELD_FILTER:
+            // given a filter and our code+ast => generate new code/ast and save it to the state
+            const newAst = updateFilterAST(view, action.filter)
+            const newCode = escodegen.generate(newAst.toJS(), {
+                format: {
+                    semicolons: false
+                }
+            })
+
+            view = view.set('filters_ast', newAst).set('filters', newCode)
+            return state.merge({
+                active: view,
+                dirty: true
+            })
+
+        case actions.UPDATE_VIEW_FIELD_ENUM_SUCCESS:
+            // update our active view with the new data from the API
+            // to do that we need to change all the fields with a new list of fields
+            view = view.set('fields', view.get('fields').map(f => {
+                // names of fields are unique
+                if (f.get('name') === action.field.get('name')) {
+                    const filter = action.field.get('filter').set('enum', action.resp.data)
+                    return action.field.set('filter', filter)
+                }
+                return f
+            }))
+
+            return state.merge({
+                active: view
+            })
+
+        case actions.RESET_VIEW:
+            // find the original view from the state and replace the active view
+            const original = state.get('items').find(v => v.get('id') === view.get('id'))
+            return state.merge({
+                active: original,
+                dirty: false
+            })
+
+        case actions.SUBMIT_UPDATE_VIEW_SUCCESS:
+            const updatedView = fromJS(action.resp)
+            // we need to replace the old view with the new one
+            items = state.get('items')
+            const replaceIndex = items.findIndex(v => (v.get('id') === updatedView.get('id')))
+            return state.merge({
+                items: sortViews(items.delete(replaceIndex).push(updatedView)),
+                active: updatedView,
+                dirty: false
+            })
+
+        case actions.SUBMIT_NEW_VIEW_SUCCESS:
+            const newView = fromJS(action.resp)
+            return state.merge({
+                items: sortViews(state.get('items').push(newView)),
+                active: newView,
+                dirty: false
+            })
 
         case actions.FETCH_VIEW_LIST_START:
             return state.set('loading', true)
 
-        case actions.SUBMIT_VIEW_START:
-            view = state.get('viewBeingEdited')
-
-            if (action.data.slug !== action.slug) {
-                if (action.data.id) {
-                    newState = newState.deleteIn(['items', action.slug])
-                } else {
-                    newState = newState.setIn(['items', action.slug, 'dirty'], false)
-                }
-
-                newState = newState.set('active', action.data.slug)
-            }
-
-            newState = newState.setIn(['items', action.data.slug], view.merge({ dirty: false }))
-            return newState.set('items', newState.get('items').sort((a, b) => a.get('order') - b.get('order')))
-
-        case actions.UPDATE_VIEW_FILTERS:
-            view = state.getIn(['items', action.slug])
-            groupedFilters = view.get('groupedFilters').toJS()
-            updatedFilters = _.assign({}, groupedFilters, action.newFilters)
-            updatedView = updateViewFilters(view, updatedFilters)
-
-            return state.setIn(['items', action.slug], updatedView)
-
-        case actions.CLEAR_VIEW_FILTER:
-            view = state.getIn(['items', action.slug])
-            groupedFilters = view.get('groupedFilters').toJS()
-            updatedFilters = _.omit(groupedFilters, action.name)
-            updatedView = updateViewFilters(view, updatedFilters)
-
-            return state.setIn(['items', action.slug], updatedView)
-
         case actions.FETCH_VIEW_LIST_SUCCESS:
-            const viewsBySlug = {}
+            items = sortViews(fromJS(action.resp.data))
 
-            for (const curView of action.resp.data) {
-                viewsBySlug[curView.slug] = addExtraAttributes(curView)
-            }
+            // also populate the active view state
+            const slug = action.currentViewSlug ? action.currentViewSlug : actions.DEFAULT_VIEW
+            const active = items.filter(v => v.get('slug') === slug).get(0)
 
             return state.merge({
-                items: Map(viewsBySlug).sort((a, b) => a.get('order') - b.get('order')),
-                loading: false,
+                items,
+                active,
+                dirty: false,
+                loading: false
             })
 
-        case actions.APPLY_VIEW:
-            return state.set('active', action.slug)
-
+        case actions.SUBMIT_VIEW_START:
         default:
             return state
     }

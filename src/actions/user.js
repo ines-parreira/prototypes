@@ -64,6 +64,7 @@ export function search(props, query) {
             data: JSON.stringify({
                 doc_type: 'user',
                 fields: props.fields,
+                params: props.params,
                 query
             }),
             type: 'json',

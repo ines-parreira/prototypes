@@ -23,7 +23,6 @@ export default class CallExpression extends React.Component {
     render() {
         const { callee, index, actions, schemas, parent } = this.props
         const funcArgs = this.props.arguments
-
         const parentCallee = parent.push('callee')
 
         let deleteBinaryExpression = ''
@@ -155,5 +154,11 @@ export default class CallExpression extends React.Component {
 
 CallExpression.propTypes = {
     type: PropTypes.string,
-    schemas: PropTypes.object
+    callee: PropTypes.object.isRequired,
+    arguments: PropTypes.array.isRequired,
+    index: PropTypes.number,
+    parent: PropTypes.object,
+
+    schemas: PropTypes.object.isRequired,
+    actions: PropTypes.object
 }

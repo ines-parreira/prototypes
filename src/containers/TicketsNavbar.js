@@ -8,15 +8,15 @@ import Navbar from '../components/Navbar'
 class TicketsNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        this.props.actions.fetchViews()
+        this.props.actions.fetchViews(this.props.params.view)
     }
 
     render() {
         return (
             <Navbar views={this.props.views}
-                    currentViewSlug={this.props.views.get('active')}
+                    currentView={this.props.views.get('active')}
                     currentUser={this.props.currentUser}
-                    applyView={this.props.actions.applyView}
+                    setViewActive={this.props.actions.setViewActive}
             />
         )
     }

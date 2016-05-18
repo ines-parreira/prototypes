@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
+import classnames from 'classnames'
 import FilterDropdown from './FilterDropdown'
 import PlainColumnHeader from './PlainColumnHeader'
 import Portal from 'react-portal'
@@ -7,13 +8,14 @@ import Portal from 'react-portal'
 export default class ColumnHeader extends React.Component {
     constructor() {
         super()
+
         this.state = {
             isOpened: false
         }
     }
 
     onClose = () => {
-        this.setState({ isOpened: false })
+        this.setState({isOpened: false})
     }
 
     onClick = (e) => {
@@ -25,60 +27,80 @@ export default class ColumnHeader extends React.Component {
             left: targetRect.left - bodyRect.left,
             width: targetRect.width
         })
+
+        if (this.props.field.getIn(['filter', 'enum_query'])) {
+            this.props.updateFieldEnumSearch(this.props.field, this.props.field.getIn(['filter', 'enum_query']))
+        }
     }
 
-    portalContentStyle() {
-        return {
+    renderDropdown = () => {
+        if (!this.props.field.get('filter')) {
+            return null
+        }
+
+        /*
+         * Important to maintain this structure when implementing Portals:
+         *
+         *   <Portal>
+         *       <Outer>
+         *           <Inner>
+         *           </Inner>
+         *       </Outer>
+         *   </Portal>
+         */
+        const portalStyle = {
             position: 'absolute',
             top: this.state.top,
             left: this.state.left,
             width: this.state.width
         }
-    }
 
-    render = () => {
-        /*
-        * Important to maintain this structure when implementing Portals:
-        *
-        *   <Portal>
-        *       <Outer>
-        *           <Inner>
-        *           </Inner>
-        *       </Outer>
-        *   </Portal>
-        */
         return (
-            <div className="ColumnHeader">
-                <PlainColumnHeader
-                    column={this.props.column}
-                    onClick={this.onClick}
-                    sort={this.props.sort}
-                    currentSort={this.props.currentSort}
-                />
-                <Portal
-                    closeOnOutsideClick
+            <Portal closeOnOutsideClick
                     isOpened={this.state.isOpened}
                     onClose={this.onClose}
-                >
-                    <div style={this.portalContentStyle()}>
-                        <FilterDropdown
-                              groupedFilters={this.props.groupedFilters}
-                              filterSpec={this.props.filterSpec}
-                              updateFilters={this.props.updateFilters}
-                              onClose={this.onClose}
-                        />
-                    </div>
-                </Portal>
-            </div>
+            >
+                <div style={portalStyle}>
+                    <FilterDropdown
+                        field={this.props.field}
+                        updateFieldFilter={this.props.updateFieldFilter}
+                        updateFieldEnumSearch={this.props.updateFieldEnumSearch}
+                        onClose={this.onClose}
+                    />
+                </div>
+            </Portal>
+        )
+    }
+
+    render() {
+        const {field, view} = this.props
+        if (!field.get('visible')) {
+            return null
+        }
+
+        const classes = classnames('ColumnHeader', {
+            filterable: field.get('filter')
+        })
+
+        return (
+            <th className={classes}>
+                <PlainColumnHeader
+                    field={field}
+                    view={view}
+                    updateView={this.props.updateView}
+                    onClick={this.onClick}
+                />
+                {this.renderDropdown()}
+            </th>
         )
     }
 }
 
 ColumnHeader.propTypes = {
-    column: PropTypes.object.isRequired,
-    updateFilters: PropTypes.func.isRequired,
-    groupedFilters: PropTypes.object.isRequired,
-    filterSpec: PropTypes.object.isRequired,
-    sort: PropTypes.func.isRequired,
-    currentSort: PropTypes.string.isRequired
+    field: PropTypes.object.isRequired,
+    view: PropTypes.object.isRequired,
+
+    updateFieldFilter: PropTypes.func.isRequired, // called when a value is selected in the dropdown
+    updateFieldEnumSearch: PropTypes.func.isRequired, // called when the field has to get enum data from the API
+    updateView: PropTypes.func.isRequired
 }

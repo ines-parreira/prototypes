@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import Statement from './statement/Statement'
-import Immutable from 'immutable'
+import {List} from 'immutable'
 
 export default class Program extends React.Component {
     componentDidMount() {
@@ -15,7 +15,7 @@ export default class Program extends React.Component {
                     <Statement
                         {...statement}
                         key={idx}
-                        parent={Immutable.List(['body', idx])}
+                        parent={List(['body', idx])}
                         index={index}
                         schemas={schemas}
                         actions={actions} />

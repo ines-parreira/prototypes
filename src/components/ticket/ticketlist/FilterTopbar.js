@@ -1,77 +1,69 @@
-import React, { PropTypes } from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import TopbarFilterGroup from './TopbarFilterGroup'
-import { browserHistory } from 'react-router'
+import React, {PropTypes} from 'react'
+import ViewFilters from './ViewFilters'
 
 
 export default class FilterTopbar extends React.Component {
     onClickUpdate = () => {
-        this.props.submitView(this.props.view, this.props.slug)
-        browserHistory.push(`/app/tickets/${this.props.view.get('slug')}`)
+        const view = this.props.views.get('active')
+        this.props.submitView(view)
     }
 
     onClickNew = () => {
-        const data = this.props.view.delete('id').delete('group_by').delete('icon')
-        this.props.submitView(data, this.props.slug)
-        browserHistory.push(`/app/tickets/${this.props.view.get('slug')}`)
+        // new means it has no id set
+        const view = this.props.views.get('active').delete('id')
+        this.props.submitView(view)
     }
 
-    renderFilter = (name) => {
-        const { callee } = this.props.filterSpecs[name]
-
-        return (
-            <TopbarFilterGroup
-                key={name}
-                view={this.props.view}
-                filterSpec={this.props.filterSpecs[name]}
-                values={this.props.groupedFilters.get(name)[callee]}
-                updateFilters={this.props.updateFilters}
-                clearFilter={this.props.clearFilter}
-                submitView={this.props.submitView}
-            />
-        )
-    }
-
-    renderComponent() {
-        if (this.props.view.get('dirty')) {
-            return (
-                <div className="FilterTopbar ui menu segment" style={{ width: this.props.width }}>
-                    {this.props.groupedFilters.keySeq().toJS().map(this.renderFilter)}
-                    <div className="right menu">
-                        <button className="ui basic green label item" onClick={this.onClickUpdate}>
-                            UPDATE
-                        </button>
-                        <button className="ui green label item" onClick={this.onClickNew}>
-                            SAVE AS NEW
-                        </button>
-                    </div>
-                </div>
-            )
-        }
+    onDelete = () => {
+        const view = this.props.views.get('active')
+        this.props.deleteView(view)
     }
 
     render() {
-        const component = this.renderComponent()
+        const {views} = this.props
+        const view = views.get('active')
+        if (!views.get('dirty')) {
+            return null
+        }
 
         return (
-            <ReactCSSTransitionGroup
-                transitionName="viewFilterTopbar"
-                transitionEnterTimeout={250}
-                transitionLeaveTimeout={200}
-            >
-                {component}
-            </ReactCSSTransitionGroup>
+            <div>
+                <div className="ui card" style={{ width: this.props.width }}>
+                    <div className="content">
+                        <ViewFilters
+                            view={view}
+                            schemas={this.props.schemas}
+                        />
+                    </div>
+                </div>
+                <div>
+                    <div className="extra content">
+                        <div className="right menu">
+                            <button className="ui green label item" onClick={this.onClickUpdate}>
+                                UPDATE VIEW
+                            </button>
+                            <button className="ui basic green label item" onClick={this.onClickNew}>
+                                SAVE AS NEW VIEW
+                            </button>
+                            <button className="ui basic label right floated item" onClick={this.props.resetView}>
+                                RESET VIEW
+                            </button>
+                            <button className="ui red label right floated item" onClick={this.onDelete}>
+                                DELETE VIEW
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         )
     }
 }
 
 FilterTopbar.propTypes = {
-    view: PropTypes.object.isRequired,
-    filterSpecs: PropTypes.object.isRequired,
-    groupedFilters: PropTypes.object.isRequired,
+    views: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
     submitView: PropTypes.func.isRequired,
-    updateFilters: PropTypes.func.isRequired,
-    clearFilter: PropTypes.func.isRequired,
-    width: PropTypes.number.isRequired,
-    slug: PropTypes.string
+    resetView: PropTypes.func.isRequired,
+    deleteView: PropTypes.func.isRequired,
+    width: PropTypes.number.isRequired
 }

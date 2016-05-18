@@ -1,107 +1,41 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {browserHistory} from 'react-router'
 import {bindActionCreators} from 'redux'
-import {Map, List} from 'immutable'
 import * as TicketActions from '../actions/ticket'
 import * as ViewActions from '../actions/view'
 import * as UserActions from '../actions/user'
-import * as TagActions from '../actions/tag'
+import * as SchemaActions from '../actions/schema'
 import TicketsView from '../components/ticket/ticketlist/TicketsView'
-import TicketColumns from '../components/ticket/ticketlist/TicketColumns'
-import { DEFAULT_VIEW } from '../constants'
-
 
 class TicketsContainer extends React.Component {
-    getView = (props) => {
-        const { views } = props || this.props
-        const viewName = views.get('active')
-
-        if (!viewName || !views || !views.get('items').size) {
-            // Return something so sub-components can start rendering while the view loads
-            return Map({ slug: viewName })
-        }
-
-        let view = views.getIn(['items', viewName])
-
-        if (view.get('dirty')) {
-            view = views.get('viewBeingEdited')
-        }
-
-        return view
-    }
-
-    getViewColumns = () => {
-        const currentColumns = this.getView().get('columns')
-
-        if (!currentColumns) {
-            return List()
-        }
-
-        return TicketColumns.filter((column) =>
-            currentColumns.includes(column.get('name'))
-        )
-    }
-
     componentWillMount() {
-        /**
-         * Here, we save in the application state the active View's slug, so that the active View doesn't depend
-         * solely on the URL parameters. The active view is extracted from the URL though, and if no view slug is
-         * present there, we use the DEFAULT_VIEW (currently set at `mt-tickets`).
-         */
-        const viewSlug = this.props.params ? this.props.params.view : DEFAULT_VIEW
-
-        if (!this.props.views.get('active') || this.props.views.get('active') !== viewSlug) {
-            this.props.actions.view.applyView(viewSlug)
-        }
+        this.props.actions.schema.fetch()
+        this.fetchPage()
     }
 
-    componentDidMount = () => {
-        this.props.actions.tag.fetchTags()
-        this.props.actions.user.fetchUsers()
-
-        if (!this.props.views.get('loading')) {
-            this.fetchPage()
-        }
-    }
-
+    // Test if we need to re-fetch the data
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.views.get('loading') && !nextProps.views.get('loading') &&
-            nextProps.views.get('items').size) {
-            this.fetchPage(1, nextProps)
-        }
+        const currentViews = this.props.views
+        const nextViews = nextProps.views
 
-        if (this.getView().get('groupedFilters') !== this.getView(nextProps).get('groupedFilters')) {
+        // if our view changed
+        if (!(nextViews.get('active').isEmpty() || currentViews.get('active').equals(nextViews.get('active')))) {
             this.fetchPage(1, nextProps)
-        }
-
-        if (this.props.tickets.get('sort') !== nextProps.tickets.get('sort')) {
-            this.fetchPage(1, nextProps)
-        }
-    }
-
-    componentDidUpdate = (prevProps) => {
-        const settingsLoaded = prevProps.settings.get('loading') !== this.props.settings.get('loading')
-        const viewChanged = this.getView(prevProps).get('slug') !== this.getView().get('slug')
-        if (!this.props.views.get('loading') && this.props.views.get('items').size && (settingsLoaded || viewChanged)) {
-            this.fetchPage()
         }
     }
 
     fetchPage = (page = 1, props) => {
         const {tickets, actions, views} = props || this.props
-        if (!tickets.get('loading')) {
-            return actions.ticket.fetchTicketsPage(views.get('active'), page)
+        if (!(tickets.get('loading') || views.get('active').isEmpty())) {
+            return actions.ticket.fetchTicketsPage(views, page)
         }
+        return null
     }
 
-    search = (props, query) => {
-        if (!query) {
-            this.fetchPage()
-        } else {
-            // populate users state from search results now
-            this.props.actions.ticket.search(props, query)
-        }
+    search = (query, params) => {
+        // populate users state from search results now
+        const view = this.props.views.get('active')
+        this.props.actions.view.updateView(view.merge({search: {query, params}}))
     }
 
     render() {
@@ -115,13 +49,11 @@ class TicketsContainer extends React.Component {
             <div className="TicketsContainer">
                 <TicketsView
                     tickets={this.props.tickets}
-                    allTags={this.props.tags.get('items')}
-                    allUsers={this.props.users.get('items')}
-                    agents={this.props.users.get('agents')}
-                    columns={this.getViewColumns()}
-                    view={this.getView()}
+                    views={this.props.views}
+                    schemas={this.props.schemas}
                     currentUser={this.props.currentUser}
                     actions={this.props.actions}
+
                     fetchPage={this.fetchPage}
                     search={this.search}
                     slug={slug}
@@ -142,8 +74,7 @@ TicketsContainer.propTypes = {
     }),
     settings: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
-    users: PropTypes.object,
-    tags: PropTypes.object,
+    schemas: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
     actions: PropTypes.object.isRequired,
 
@@ -153,12 +84,12 @@ TicketsContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        tags: state.tags,
         users: state.users,
         views: state.views,
+        schemas: state.schemas,
         tickets: state.tickets,
         currentUser: state.currentUser,
-        settings: state.settings,
+        settings: state.settings
     }
 }
 
@@ -167,8 +98,8 @@ function mapDispatchToProps(dispatch) {
         actions: {
             view: bindActionCreators(ViewActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
+            schema: bindActionCreators(SchemaActions, dispatch),
             user: bindActionCreators(UserActions, dispatch),
-            tag: bindActionCreators(TagActions, dispatch)
         }
     }
 }

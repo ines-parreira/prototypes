@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 
 export default class EditableTitle extends React.Component {
     onKeyDown(e) {
@@ -40,11 +40,12 @@ export default class EditableTitle extends React.Component {
         subjectObject.focus()
     }
 
+
+
     render() {
-        const { title, placeholder } = this.props
+        const {title, placeholder} = this.props
         return (
-            <h1
-                id="title"
+            <h1 id="title"
                 ref="title"
                 placeholder={placeholder}
                 className="ui header EditableTitle"
@@ -52,9 +53,7 @@ export default class EditableTitle extends React.Component {
                 onKeyDown={(e) => this.onKeyDown(e)}
                 onKeyUp={(e) => this.onKeyUp(e)}
                 onBlur={(e) => this.onBlur(e)}
-            >
-                {title}
-            </h1>
+            >{title}</h1>
         )
     }
 

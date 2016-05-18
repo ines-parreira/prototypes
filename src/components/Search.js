@@ -1,27 +1,26 @@
 import React, {PropTypes} from 'react'
-import {throttle} from 'lodash'
+import _ from 'lodash'
 import classNames from 'classnames'
 
 export default class Search extends React.Component {
-
     constructor(props) {
         super(props)
 
         // search every XXXms
-        this.throttledSearch = throttle(() => {
-            this.props.search(this.props, this.refs.searchInput.value)
+        this.throttledSearch = _.throttle(() => {
+            _.set(this.props.query, this.props.queryPath, this.refs.searchInput.value)
+            this.props.onChange(this.props.query, this.props.params)
         }, this.props.searchDebounceTime || 200)
     }
 
     render() {
-        const {id} = this.props
-        const containerClass = classNames('ui', this.props.searchSize || 'small', 'icon input')
+        const containerClasses = classNames('ui search', this.props.className)
+        const inputClasses = classNames('ui small icon fluid input')
 
         return (
-            <div className="ui search">
-                <div className={containerClass}>
+            <div className={containerClasses}>
+                <div className={inputClasses}>
                     <input
-                        id={id}
                         className="prompt"
                         type="text"
                         ref="searchInput"
@@ -31,18 +30,19 @@ export default class Search extends React.Component {
                     />
                     <i className="search icon"/>
                 </div>
-                <div className="results"></div>
             </div>
         )
     }
 }
 
 Search.propTypes = {
-    id: PropTypes.string.isRequired,
-    search: PropTypes.func.isRequired,
-    fields: React.PropTypes.arrayOf(React.PropTypes.string),
-    autofocus: PropTypes.bool,
+    onChange: PropTypes.func.isRequired,
+    query: React.PropTypes.object.isRequired,
+    queryPath: React.PropTypes.string.isRequired,
+    params: React.PropTypes.object,
+
+    className: PropTypes.string,
     placeholder: PropTypes.string,
-    searchDebounceTime: React.PropTypes.number,
-    searchSize: React.PropTypes.string
+    autofocus: PropTypes.bool,
+    searchDebounceTime: React.PropTypes.number
 }
