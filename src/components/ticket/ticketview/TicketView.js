@@ -36,28 +36,49 @@ export default class TicketView extends React.Component {
             !nextProps.ticket.getIn(['state', 'dirty']) && // that this code hasn't been executed yet
             nextProps.tags.get('items').size && nextProps.users.get('agents').size // that we've got all the data needed
         ) {
-            const groupedFilters = nextProps.view.get('groupedFilters')
+            /**
+             * In the future, this should use the filters_ast to generically apply any filter to the message.
+             * Though, not sure it is worth it right now.
+             */
 
-            if (groupedFilters.get('ticket.tags')) {
-                const tagNames = groupedFilters.get('ticket.tags').contains
-                const newTags = nextProps.tags.get('items').filter(curTag => _.includes(tagNames, curTag.get('name')))
-                nextProps.actions.ticket.addTags(newTags)
-            }
+            const filters = nextProps.view.get('filters').split('&&')
+            nextProps.actions.ticket.setAgent(nextProps.currentUser)
 
-            if (groupedFilters.get('ticket.status')) {
-                nextProps.actions.ticket.setStatus(_.first(groupedFilters.get('ticket.status').eq))
-            }
+            for (const filter of filters) {
+                const tmp = filter.split('(')
+                const callee = tmp[0].trim()
+                const tmp2 = tmp[1].split(')')[0].split(',')
+                const key = tmp2[0].trim()
+                const value = tmp2[1].replace(/"/g, '').trim()
 
-            if (groupedFilters.get('ticket.assignee_user.id')) {
-                if (_.first(groupedFilters.get('ticket.assignee_user.id').eq) === '{current_user.id}') {
-                    nextProps.actions.ticket.setAgent(nextProps.currentUser)
-                } else {
-                    nextProps.actions.ticket.setAgent(nextProps.users.get('agents').find(
-                        curAgent => curAgent.get('id').toString() === _.first(groupedFilters.get('ticket.assignee_user.id').eq)
-                    ))
+                switch (key) {
+                    case 'ticket.tags.name':
+                        if (callee === 'contains') {
+                            const tagName = value
+                            const newTag = nextProps.tags.get('items').find(curTag => tagName === curTag.get('name'))
+                            nextProps.actions.ticket.addTags([newTag])
+                        }
+                        break
+
+                    case 'ticket.status':
+                        if (callee === 'eq') {
+                            nextProps.actions.ticket.setStatus(value)
+                        }
+                        break
+
+                    case 'ticket.assignee_user.id':
+                        if (callee === 'eq') {
+                            if (value !== '{current_user.id}') {
+                                nextProps.actions.ticket.setAgent(nextProps.users.get('agents').find(
+                                    curAgent => curAgent.get('id').toString() === value
+                                ))
+                            }
+                        }
+                        break
+
+                    default:
+                        break
                 }
-            } else {
-                nextProps.actions.ticket.setAgent(nextProps.currentUser)
             }
 
             nextProps.actions.ticket.markTicketDirty()
