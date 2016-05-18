@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import Search from '../../Search'
-import {RenderLabel, TagLabel} from '../../utils/labels'
+import {RenderLabel} from '../../utils/labels'
 
 export default class FilterDropdown extends React.Component {
     onClick = (newValue) => {
@@ -11,7 +11,7 @@ export default class FilterDropdown extends React.Component {
         })
     }
 
-    onSearch = (query, params) => {
+    onSearch = (query) => {
         this.props.updateFieldEnumSearch(this.props.field, query)
     }
 

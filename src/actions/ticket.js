@@ -156,20 +156,39 @@ export function setSubject(subject) {
     }
 }
 
-export function setReceiver(receiverId, receiverAttr, channel) {
+export function setReceiver(receiver, channel) {
     return {
         type: SET_RECEIVER,
-        receiverId,
-        receiverAttr,
+        receiver,
         channel
     }
 }
 
-export function updatePotentialRequesters(potentialRequesters, query) {
-    return {
-        type: UPDATE_POTENTIAL_REQUESTERS,
-        potentialRequesters,
-        query
+export function updatePotentialRequesters(query) {
+    return (dispatch) => {
+        return reqwest({
+            url: '/api/search/',
+            data: JSON.stringify({
+                doc_type: 'user',
+                queryPath: 'query.multi_match.query',
+                query
+            }),
+            type: 'json',
+            method: 'POST',
+            contentType: 'application/json'
+        }).then(resp => {
+            dispatch({
+                type: UPDATE_POTENTIAL_REQUESTERS,
+                resp,
+                query
+            })
+        }).catch((err) => {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: failed to do the search. Please try again..',
+                msg: err
+            }))
+        })
     }
 }
 

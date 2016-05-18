@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import classnames from 'classnames'
+import Search from './../../../Search'
 
 
 export default class ReplyMessageChannel extends React.Component {
@@ -82,48 +83,45 @@ export default class ReplyMessageChannel extends React.Component {
         }
     }
 
-    // This gives us the name and the mail of the receiver depending on what is available in tickets
-    // This function is used in getReceiverData
     resolveReceiver() {
+        /**
+         * This gives us the name and the mail of the receiver depending on what is available in tickets.
+         * This function is used in getReceiverData.
+         */
+
         const { ticket } = this.props
 
-        const data = {
-            receiver: ticket.getIn(['newMessage', 'receiver', 'id']) ? 'receiver' : null,
-            requester: ticket.getIn(['requester', 'id']) ? 'requester' : null
+        let res = {
+            name: this.defaultNames.empty,
+            email: ''
         }
 
-        const role = data.receiver || data.requester
-
-        switch (role) {
-            case 'receiver':
-                return {
-                    name: ticket.getIn(['newMessage', 'receiver', 'name']),
-                    email: ticket.getIn(['newMessage', 'receiver', 'email'])
-                }
-            case 'requester':
-                return {
-                    name: ticket.getIn(['requester', 'name']),
-                    email: ticket.getIn(['requester', 'email'])
-                }
-            default:
-                return {
-                    name: this.defaultNames.empty,
-                    email: ''
-                }
+        if (ticket.getIn(['newMessage', 'receiver', 'id'])) {
+            res = {
+                id: ticket.getIn(['newMessage', 'receiver', 'id']),
+                name: ticket.getIn(['newMessage', 'receiver', 'name']),
+                email: ticket.getIn(['newMessage', 'receiver', 'email'])
+            }
+        } else if (ticket.getIn(['requester', 'id'])) {
+            res = {
+                id: ticket.getIn(['requester', 'id']),
+                name: ticket.getIn(['requester', 'name']),
+                email: ticket.getIn(['requester', 'email'])
+            }
         }
-    }
 
-    updateSearchInput(e) {
-        this.refs.searchRequester.value = e.target.value
-        this.refs.searchRequester.dispatchEvent(new Event('input'))
+        return res
     }
 
     renderReceiver(obj, elem) {
         if (obj.channel !== this.channels.private) {
             elem.dropdown({
                 allowAdditions: true,
-                onChange: (text, value) => {
-                    this.props.actions.ticket.setReceiver(text, value, obj.channel)
+                onChange: (value) => {
+                    this.props.actions.ticket.setReceiver(
+                        this.props.ticket.getIn(['state', 'potentialRequesters']).find(req => req.get('id').toString() === value),
+                        obj.channel
+                    )
                 }
             })
 
@@ -146,28 +144,18 @@ export default class ReplyMessageChannel extends React.Component {
         const popupReceiver = $('#popup-receiver')
         const receiver = this.renderReceiver(this.getReceiverData(this.channels.private), popupReceiver)
 
-        const receiverEmail = receiver.name ? (
+        const receiverEmail = receiver.email ? (
             <div className="receiver-email" key="email">
-                <i className="icon mail"></i><span>{`<${receiver.email}>`}</span>
+                <i className="icon mail"/><span>{`<${receiver.email}>`}</span>
             </div>
         ) : null
 
-        const receiverName = receiver.email ? (
+        const receiverName = receiver.name ? (
             <div className="receiver-name" key="name"><b>{receiver.name}</b></div>
         ) : null
 
         return (
             <div className="ReplyMessageChannel">
-                {/*
-                    This hidden input mirrors the search input of the dropdown,
-                    and is the one which Algolia listens to.
-                */}
-                <input
-                    id="search-requester"
-                    ref="searchRequester"
-                    style={{ display: 'none'}}
-                />
-
                 <span>
 
                     <div id="next-message-channel-popup" className="ui dropdown">
@@ -183,7 +171,7 @@ export default class ReplyMessageChannel extends React.Component {
                                 className={classnames(
                                     'item',
                                     ticket.get('id') ? '' : 'disabled'
-                                 )}
+                                )}
                                 onClick={() => actions.ticket.setPublic(false)}
                             >
                                 Send as internal note
@@ -192,32 +180,34 @@ export default class ReplyMessageChannel extends React.Component {
                     </div>
 
                     <span className="label">To: </span>
+
                     <div id="popup-receiver" className="ui inline dropdown" onClick={ () => this.refs.searchInput.focus() }>
                         { [receiverName, receiverEmail]}
                         <div className="menu">
                             <div className="ui search input">
-                                <input
-                                    type="text"
-                                    name="search"
-                                    ref="searchInput"
-                                    data-text={ticket.getIn(['state', 'query'])}
-                                    value={ticket.getIn(['state', 'query'])}
-                                    placeholder="Search users..."
-                                    onChange={this.updateSearchInput.bind(this)}
+
+                                <Search
+                                    autofocus
+                                    className="medium"
+                                    onChange={this.props.actions.ticket.updatePotentialRequesters}
+                                    query={ticket.getIn(['state', 'query'])}
+                                    queryPath={ticket.getIn(['state', 'queryPath'])}
+                                    searchDebounceTime={300}
                                 />
+
                             </div>
                             <div className="hidden item" data-text="receiver"></div>
                             {
                                 ticket.getIn(['state', 'potentialRequesters']).map(requester => {
-                                    if (requester[receiverDisplayProp]) {
+                                    if (requester.get(receiverDisplayProp)) {
                                         return (
                                             <div
-                                                key={requester.id}
-                                                data-value={requester.id}
-                                                data-text={requester[receiverDisplayProp]}
+                                                key={requester.get('id')}
+                                                data-value={requester.get('id')}
+                                                data-text={requester.get(receiverDisplayProp)}
                                                 className="item"
                                             >
-                                                <i className="user icon"/>{requester[receiverDisplayProp]}
+                                                <i className="user icon"/>{requester.get(receiverDisplayProp)}
                                             </div>
                                         )
                                     }
@@ -229,7 +219,6 @@ export default class ReplyMessageChannel extends React.Component {
                     </div>
 
                 </span>
-
             </div>
         )
     }
