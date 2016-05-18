@@ -66,13 +66,61 @@ class TicketContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.params.ticketId !== this.props.params.ticketId && nextProps.params.ticketId !== 'new') {
+            /**
+             * Fetch required data when loading a ticket.
+             */
             this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
             this.props.actions.macro.fetchMacros()
             this.props.actions.tag.fetchTags()
         } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
+            /**
+             * Redirect to the new page when submitting a new ticket.
+             */
             browserHistory.push(`/app/ticket/${nextProps.ticket.get('id')}/`)
+        } else if (this.props.ticket.get('id')) {
+            /**
+             * This is the autosave. Here, we check changes to the ticket state, and if there's any we make a
+             * partial update to save only what has changed.
+             */
+
+            if (this.props.ticket.get('status') !== nextProps.ticket.get('status')) {
+                this.props.actions.ticket.ticketPartialUpdate(
+                    nextProps.ticket.get('id'),
+                    {status: nextProps.ticket.get('status')},
+                    TicketActions.SET_STATUS,
+                    'status'
+                )
+            }
+
+            if (this.props.ticket.get('tags').size !== nextProps.ticket.get('tags').size) {
+                this.props.actions.ticket.ticketPartialUpdate(
+                    nextProps.ticket.get('id'),
+                    {tags: nextProps.ticket.get('tags')},
+                    TicketActions.SET_TAGS,
+                    'tags'
+                )
+            }
+
+            if (this.props.ticket.get('priority') !== nextProps.ticket.get('priority')) {
+                this.props.actions.ticket.ticketPartialUpdate(
+                    nextProps.ticket.get('id'),
+                    {priority: nextProps.ticket.get('priority')},
+                    TicketActions.TOGGLE_PRIORITY,
+                    'priority'
+                )
+            }
+
+            if (this.props.ticket.getIn(['assignee_user', 'id']) !== nextProps.ticket.getIn(['assignee_user', 'id'])) {
+                this.props.actions.ticket.ticketPartialUpdate(
+                    nextProps.ticket.get('id'),
+                    {assignee_user: nextProps.ticket.get('assignee_user')},
+                    TicketActions.SET_AGENT,
+                    'assignee_user'
+                )
+            }
         }
     }
+
 
     componentDidUpdate = (prevProps) => {
         const prevMacros = prevProps.macros.get('items')
@@ -89,8 +137,8 @@ class TicketContainer extends React.Component {
     computeNextUrl(ascending) {
         const translation = ascending ? 1 : -1
         const nextTicket = this.props.tickets.get('items').toJS()[
-        this.props.tickets.get('currentTicketIndex') + translation
-            ]
+            this.props.tickets.get('currentTicketIndex') + translation
+        ]
 
         let nextTicketUrl = null
 

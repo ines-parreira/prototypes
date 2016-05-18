@@ -28,15 +28,17 @@ export const FETCH_MESSAGE_START = 'FETCH_MESSAGE_START'
 export const FETCH_MESSAGE_SUCCESS = 'FETCH_MESSAGE_SUCCESS'
 
 // Macro actions
-export const SET_RESPONSE_TEXT = 'setResponseText'
 export const ADD_TICKET_TAGS = 'addTags'
+export const TOGGLE_PRIORITY = 'setPriority'
+export const SET_RESPONSE_TEXT = 'setResponseText'
 export const SET_STATUS = 'setStatus'
 export const SET_AGENT = 'assignUser'
-export const TOGGLE_PRIORITY = 'setPriority'
 
-export const RECORD_MACRO = 'RECORD_MACRO'
+export const SET_TAGS = 'SET_TAGS'
 
 export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
+
+export const RECORD_MACRO = 'RECORD_MACRO'
 
 export const SET_PUBLIC = 'TOGGLE_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
@@ -104,12 +106,36 @@ export function recordMacro(macro) {
     }
 }
 
+export function ticketPartialUpdate(ticketId, args, action, attr) {
+    return (dispatch) => reqwest({
+        method: 'PUT',
+        url: `/api/tickets/${ticketId}/`,
+        data: JSON.stringify(args),
+        type: 'json',
+        contentType: 'application/json'
+    }).then((resp) => {
+        const newArgs = {}
+        newArgs[attr] = resp[attr]
+        dispatch({
+            type: action,
+            args: Map(newArgs)
+        })
+    }).catch((err) => {
+        dispatch({
+            type: 'error',
+            header: `Error: failed to update ticket ${ticketId}`,
+            msg: err
+        })
+    })
+}
+
 export function addTags(tags) {
     return {
         type: ADD_TICKET_TAGS,
         args: tags
     }
 }
+
 export function removeTag(index) {
     return {
         type: REMOVE_TICKET_TAG,
@@ -167,30 +193,28 @@ export function setReceiver(receiver, channel) {
 }
 
 export function updatePotentialRequesters(query) {
-    return (dispatch) => {
-        return reqwest({
-            url: '/api/search/',
-            data: JSON.stringify({
-                doc_type: 'user',
-                query
-            }),
-            type: 'json',
-            method: 'POST',
-            contentType: 'application/json'
-        }).then(resp => {
-            dispatch({
-                type: UPDATE_POTENTIAL_REQUESTERS,
-                resp,
-                query
-            })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to do the search. Please try again..',
-                msg: err
-            }))
+    return (dispatch) => reqwest({
+        url: '/api/search/',
+        data: JSON.stringify({
+            doc_type: 'user',
+            query
+        }),
+        type: 'json',
+        method: 'POST',
+        contentType: 'application/json'
+    }).then(resp => {
+        dispatch({
+            type: UPDATE_POTENTIAL_REQUESTERS,
+            resp,
+            query
         })
-    }
+    }).catch((err) => {
+        dispatch(systemMessage({
+            type: 'error',
+            header: 'Error: failed to do the search. Please try again..',
+            msg: err
+        }))
+    })
 }
 
 export function setResponseText(currentUser, body_text, body_html) {
@@ -253,8 +277,8 @@ export function fetchTicketDetails(ticketId, data) {
         const url = `/api/tickets/${ticketId}/`
 
         return reqwest({
-            url: url,
-            data: data,
+            url,
+            data,
             type: 'json',
             method: 'GET',
             contentType: 'application/json'
@@ -324,8 +348,6 @@ export function fetchTicketsPage(views, page) {
         })
     }
 }
-
-
 
 export function fetchTicketMessage(ticketId, messageId) {
     return (dispatch) => {
@@ -432,7 +454,6 @@ export function formatAction(action, template, context) {
 
 export function submitTicket(ticket, status, macroActions, currentUser, action) {
     return (dispatch) => {
-        // we mark that we're trying to send the reply (used in the UI to show progress)
         dispatch({
             type: SUBMIT_TICKET_START
         })
@@ -457,7 +478,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
                     header: 'You need to write a message.',
                     msg: 'You can\'t create a new ticket without at least a message.'
                 }))
-                return
+                return null
             }
 
             delete data.newMessage
