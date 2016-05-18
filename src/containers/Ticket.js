@@ -140,12 +140,16 @@ class TicketContainer extends React.Component {
 
     render() {
         const view = this.props.views.get('active')
-        if (this.props.params.ticketId !== 'new' && this.props.ticket.get('messages').isEmpty()) {
-            return (<Loader />)
+
+        if (
+            this.props.params.ticketId !== 'new' && this.props.ticket.get('messages').isEmpty()
+            || this.props.params.ticketId === 'new' && this.props.ticket.get('id')
+        ) {
+            return <Loader />
         }
 
         return (
-            <div className="TicketContainer" onKeyDown={this.handleKeyDown}>
+            <div className="TicketContainer">
                 <TicketView
                     actions={this.props.actions}
                     ticket={this.props.ticket}

@@ -42,7 +42,7 @@ export default class TicketView extends React.Component {
             const filtersAst = nextProps.view.get('filters_ast')
             const exp = filtersAst.getIn(['body', 0, 'expression']).toJS()
 
-            let fields = {}
+            const fields = {}
             const walk = function (node) {
                 switch (node.type) {
                     case 'LogicalExpression':
@@ -165,6 +165,7 @@ export default class TicketView extends React.Component {
                         title={ticket.get('subject')}
                         placeholder="Subject"
                         update={actions.ticket.setSubject}
+                        focus={!ticket.get('id')}
                     />
 
                     <div className="ui grid">
