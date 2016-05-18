@@ -64,7 +64,7 @@ const initialDefaultActions = Map({
         arguments: Map({
             email: '',
             subject: '{ticket.subject}',
-            content: '{ticket.last_message.body_text'
+            content: '{ticket.last_message.body_text}'
         })
     })
 })
