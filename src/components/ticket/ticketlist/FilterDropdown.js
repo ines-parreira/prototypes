@@ -1,13 +1,16 @@
 import React, {PropTypes} from 'react'
 import Search from '../../Search'
 import {RenderLabel} from '../../utils/labels'
+import {equalityOperator, resolveLiteral} from '../../../utils'
 
 export default class FilterDropdown extends React.Component {
     onClick = (newValue) => {
-        this.props.updateFieldFilter(this.props.field, {
-            left: `ticket.${this.props.field.get('name')}`,
-            operator: 'contains',
-            right: `'${newValue}'`
+        // todo(@xarg): this needs to work with users as well
+        const left = `ticket.${this.props.field.get('name')}`
+        this.props.addFieldFilter(this.props.field, {
+            left,
+            operator: equalityOperator(left, this.props.schemas),
+            right: resolveLiteral(newValue, left, this.props.schemas)
         })
     }
 
@@ -42,15 +45,16 @@ export default class FilterDropdown extends React.Component {
         }
 
         return field.filter.enum.map((value, idx) => {
+            let renderValue = value
             if (typeof value === 'object') {
-                value = RenderLabel(field, value)
+                renderValue = RenderLabel(field, value)
             }
 
             return (
                     <div key={idx}
                          className="item"
                          onClick={() => this.onClick(value)}
-                    >{value}</div>
+                    >{renderValue}</div>
             )
         })
     }
@@ -81,6 +85,7 @@ export default class FilterDropdown extends React.Component {
 
 FilterDropdown.propTypes = {
     field: PropTypes.object.isRequired,
-    updateFieldFilter: PropTypes.func.isRequired,
+    schemas: PropTypes.object.isRequired,
+    addFieldFilter: PropTypes.func.isRequired,
     updateFieldEnumSearch: PropTypes.func.isRequired
 }

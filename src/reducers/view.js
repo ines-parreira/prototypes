@@ -12,12 +12,22 @@ const viewsInitial = Map({
 })
 
 // traverse filters_ast, find all the call expressions and return a new tree
-function updateFilterAST(view, filter) {
+function addFilterAST(view, filter) {
     // generate a new call expression for the new filter as a string
     const newCallExprCode = `${filter.operator}(${filter.left}, ${filter.right})`
     // since we only ever have AND operators just concatenate existing expressions
     const newCode = `${view.get('filters')} && ${newCallExprCode}`
     return fromJS(esprima.parse(newCode))
+}
+
+// traverse filters_ast, remove the call expressions and return a new tree
+function removeFilterAST(view, index) {
+    // As always, we assume that we only have && operators
+    const codeSplit = view.get('filters').split('&&')
+    if (codeSplit.length !== 1) {
+        return fromJS(esprima.parse(codeSplit.splice(index).join('&&')))
+    }
+    return ''
 }
 
 // shortcut for sorting items
@@ -27,6 +37,8 @@ function sortViews(items, key = 'display_order') {
 
 export function views(state = viewsInitial, action) {
     let items
+    let ast = ''
+    let code = ''
     let view = state.get('active')
 
     switch (action.type) {
@@ -50,16 +62,30 @@ export function views(state = viewsInitial, action) {
                 dirty: true
             })
 
-        case actions.UPDATE_VIEW_FIELD_FILTER:
+        case actions.ADD_VIEW_FIELD_FILTER:
             // given a filter and our code+ast => generate new code/ast and save it to the state
-            const newAst = updateFilterAST(view, action.filter)
-            const newCode = escodegen.generate(newAst.toJS(), {
+            ast = addFilterAST(view, action.filter)
+            code = escodegen.generate(ast.toJS(), {
                 format: {
                     semicolons: false
                 }
             })
+            view = view.set('filters_ast', ast).set('filters', code)
+            return state.merge({
+                active: view,
+                dirty: true
+            })
 
-            view = view.set('filters_ast', newAst).set('filters', newCode)
+        case actions.REMOVE_VIEW_FIELD_FILTER:
+            ast = removeFilterAST(view, action.index)
+            if (ast) {
+                code = escodegen.generate(ast.toJS(), {
+                    format: {
+                        semicolons: false
+                    }
+                })
+            }
+            view = view.set('filters_ast', ast).set('filters', code)
             return state.merge({
                 active: view,
                 dirty: true

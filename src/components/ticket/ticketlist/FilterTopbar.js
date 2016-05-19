@@ -28,10 +28,11 @@ export default class FilterTopbar extends React.Component {
 
         return (
             <div>
-                <div className="ui card" style={{ width: this.props.width }}>
+                <div className="ui card FilterTopbar" style={{ width: this.props.width }}>
                     <div className="content">
                         <ViewFilters
                             view={view}
+                            removeFieldFilter={this.props.removeFieldFilter}
                             schemas={this.props.schemas}
                         />
                     </div>
@@ -65,5 +66,6 @@ FilterTopbar.propTypes = {
     submitView: PropTypes.func.isRequired,
     resetView: PropTypes.func.isRequired,
     deleteView: PropTypes.func.isRequired,
+    removeFieldFilter: PropTypes.func.isRequired,
     width: PropTypes.number.isRequired
 }

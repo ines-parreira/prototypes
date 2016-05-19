@@ -32,7 +32,7 @@ export default class TicketsView extends React.Component {
 
     updateField = (field) => this.props.actions.view.updateField(field)
 
-    updateFieldFilter = (field, filter) => this.props.actions.view.updateFieldFilter(field, filter)
+    addFieldFilter = (field, filter) => this.props.actions.view.addFieldFilter(field, filter)
 
     updateFieldEnumSearch = (field, query) => this.props.actions.view.updateFieldEnumSearch(field, query)
 
@@ -106,6 +106,7 @@ export default class TicketsView extends React.Component {
                         schemas={this.props.schemas}
                         resetView={this.resetView}
                         deleteView={this.deleteView}
+                        removeFieldFilter={this.props.actions.view.removeFieldFilter}
                         submitView={this.props.actions.view.submitView}
                         width={this.getWidth()}
                     />
@@ -114,11 +115,12 @@ export default class TicketsView extends React.Component {
                 <TicketTable
                     view={view}
                     tickets={tickets}
+                    schemas={this.props.schemas}
                     currentUser={currentUser}
 
                     updateView={this.updateView}
                     updateField={this.updateField}
-                    updateFieldFilter={this.updateFieldFilter}
+                    addFieldFilter={this.addFieldFilter}
                     updateFieldEnumSearch={this.updateFieldEnumSearch}
                     fetchPage={this.props.fetchPage}
                 />
