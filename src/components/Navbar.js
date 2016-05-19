@@ -57,7 +57,7 @@ export default class Navbar extends React.Component {
                         if (!section.views.length) {
                             return null
                         }
-                        const counter = '' // '(0)'
+
 
                         return (
                             <div key={sectionId} className="item">
@@ -79,7 +79,7 @@ export default class Navbar extends React.Component {
                                                   className={classes}
                                                   onClick={() => { setViewActive(v) }}
                                             >
-                                                {view.name} {counter}
+                                                {view.name} ({view.count})
                                             </Link>
                                         )
                                     })}
