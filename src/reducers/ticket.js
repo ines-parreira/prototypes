@@ -142,21 +142,23 @@ export function ticket(state = ticketInitial, action) {
 
             return state.merge({
                 tags,
-                state: state.get('state').merge({ dirty: true })
+                state: state.get('state').set('dirty', true)
             })
 
         case actions.REMOVE_TICKET_TAG:
-            tags = state.get('tags').delete(action.index)
             return state.merge({
-                tags,
-                state: state.get('state').merge({ dirty: true })
+                tags: state.get('tags').delete(action.index),
+                state: state.get('state').set('dirty', true)
             })
+
+        case actions.SET_TAGS:
+            return state.set('tags', fromJS(action.args.get('tags')))
 
         case actions.TOGGLE_PRIORITY:
             if (action.args.get('priority')) {
                 return state.merge({
                     priority: action.args.get('priority'),
-                    state: state.get('state').merge({ dirty: true })
+                    state: state.get('state').set('dirty', true)
                 })
             }
 
@@ -166,13 +168,13 @@ export function ticket(state = ticketInitial, action) {
         case actions.SET_AGENT:
             return state.merge({
                 assignee_user: Map(action.args.get('assignee_user')),
-                state: state.get('state').merge({ dirty: true })
+                state: state.get('state').set('dirty', true)
             })
 
         case actions.SET_STATUS:
             return state.merge({
                 status: action.args.get('status'),
-                state: state.get('state').merge({ dirty: true })
+                state: state.get('state').set('dirty', true)
             })
 
         case actions.SET_PUBLIC:
@@ -181,7 +183,7 @@ export function ticket(state = ticketInitial, action) {
         case actions.SET_SUBJECT:
             return state.merge({
                 subject: action.subject,
-                state: state.get('state').merge({ dirty: true })
+                state: state.get('state').set('dirty', true)
             })
 
         case actions.SET_RESPONSE_TEXT:

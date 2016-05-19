@@ -1,4 +1,7 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
+import { List } from 'immutable'
+import _ from 'lodash'
+
 import EditableTitle from './../EditableTitle'
 import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
@@ -120,7 +123,7 @@ export default class TicketView extends React.Component {
     submit = (status, next) => {
         return (e) => {
             e.preventDefault()
-            this.props.submit(status || this.props.ticket.get('status'), next)
+            this.props.submit(status, next)
         }
     }
 
@@ -202,7 +205,6 @@ export default class TicketView extends React.Component {
                                     currentStatus={ticket.get('status')}
                                     setStatus={actions.ticket.setStatus}
                                 />
-
                             </div>
 
                         </div>
