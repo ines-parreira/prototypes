@@ -65,7 +65,6 @@ export default class Navbar extends React.Component {
                                 <div className="menu">
                                     {section.views.map((v) => {
                                         const view = v.toJS()
-                                        const counter = `(${view.count})`
                                         let classes = 'item'
 
                                         if (view.slug === this.props.currentView.get('slug')) {
@@ -80,7 +79,7 @@ export default class Navbar extends React.Component {
                                                   className={classes}
                                                   onClick={() => { setViewActive(v) }}
                                             >
-                                                {view.name} {counter}
+                                                {view.name} ({view.count})
                                             </Link>
                                         )
                                     })}
