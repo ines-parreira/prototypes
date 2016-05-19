@@ -57,7 +57,7 @@ export default class Navbar extends React.Component {
                         if (!section.views.length) {
                             return null
                         }
-                        const counter = '' // '(0)'
+
 
                         return (
                             <div key={sectionId} className="item">
@@ -65,6 +65,7 @@ export default class Navbar extends React.Component {
                                 <div className="menu">
                                     {section.views.map((v) => {
                                         const view = v.toJS()
+                                        const counter = `(${view.count})`
                                         let classes = 'item'
 
                                         if (view.slug === this.props.currentView.get('slug')) {
