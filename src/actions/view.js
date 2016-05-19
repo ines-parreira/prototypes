@@ -7,7 +7,8 @@ export const DEFAULT_VIEW = 'my-tickets'
 export const UPDATE_VIEW = 'UPDATE_VIEW'
 export const RESET_VIEW = 'RESET_VIEW'
 export const UPDATE_VIEW_FIELD = 'UPDATE_VIEW_FIELD'
-export const UPDATE_VIEW_FIELD_FILTER = 'UPDATE_VIEW_FIELD_FILTER'
+export const ADD_VIEW_FIELD_FILTER = 'ADD_VIEW_FIELD_FILTER'
+export const REMOVE_VIEW_FIELD_FILTER = 'REMOVE_VIEW_FIELD_FILTER'
 export const UPDATE_VIEW_FIELD_ENUM_START = 'UPDATE_VIEW_FIELD_ENUM_START'
 export const UPDATE_VIEW_FIELD_ENUM_SUCCESS = 'UPDATE_VIEW_FIELD_ENUM_SUCCESS'
 
@@ -48,12 +49,20 @@ export function updateField(field) {
     }
 }
 
-// update a filter for 1 field
-export function updateFieldFilter(field, filter) {
+// add filter for 1 field
+export function addFieldFilter(field, filter) {
     return {
-        type: UPDATE_VIEW_FIELD_FILTER,
+        type: ADD_VIEW_FIELD_FILTER,
         field,
         filter
+    }
+}
+
+// remove a filter based on index
+export function removeFieldFilter(index) {
+    return {
+        type: REMOVE_VIEW_FIELD_FILTER,
+        index
     }
 }
 

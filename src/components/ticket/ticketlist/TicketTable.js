@@ -44,8 +44,9 @@ export default class TicketTable extends React.Component {
                                 key={field.get('name')}
                                 field={field}
                                 view={view}
+                                schemas={this.props.schemas}
                                 updateView={this.props.updateView}
-                                updateFieldFilter={this.props.updateFieldFilter}
+                                addFieldFilter={this.props.addFieldFilter}
                                 updateFieldEnumSearch={this.props.updateFieldEnumSearch}
                             />
                         ))}
@@ -83,11 +84,12 @@ export default class TicketTable extends React.Component {
 TicketTable.propTypes = {
     tickets: PropTypes.object.isRequired,
     view: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
 
     updateView: PropTypes.func.isRequired,
     updateField: PropTypes.func.isRequired,
-    updateFieldFilter: PropTypes.func.isRequired,
+    addFieldFilter: PropTypes.func.isRequired,
     updateFieldEnumSearch: PropTypes.func.isRequired,
     fetchPage: PropTypes.func.isRequired
 }

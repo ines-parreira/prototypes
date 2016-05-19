@@ -1,31 +1,36 @@
 import React, {PropTypes} from 'react'
+import {findProperty} from '../../../utils'
 
-const Left = ({view, node}) => {
-    const resolve = function (n) {
-        switch (n.type) {
-            case 'MemberExpression':
-                return `${resolve(n.object)}.${resolve(n.property)}`
-            case 'Identifier':
-                return n.name
-            default:
-                throw Error('Unknown type', node)
-        }
+const resolveObjectPath = function (node) {
+    switch (node.type) {
+        case 'MemberExpression':
+            return `${resolveObjectPath(node.object)}.${resolveObjectPath(node.property)}`
+        case 'Identifier':
+            return node.name
+        default:
+            throw Error('Unknown type', node)
     }
-    // just remove the first object name. Ex: ticket.requester.id ==> requester.id
-    const objectPath = resolve(node).split('.').slice(1).join('.')
+}
 
+const Left = ({view, objectPath}) => {
+    // just remove the first object name. Ex: ticket.requester.id ==> requester.id
+    const suffixPath = objectPath.split('.').slice(1).join('.')
 
     // now find our field and return it's title
-    const field = view.get('fields').find(f => f.get('name') === objectPath)
+    const field = view.get('fields').find(f => f.get('name') === suffixPath)
     return (
-        <span>{field.get('title')}</span>
+        <span className="ui mini basic light blue item button">{field.get('title')}</span>
     )
 }
 
-const Operator = ({schemas, node}) => {
+const Operator = ({operators, selected, index, onChange}) => {
     return (
-        <select>
-            <option value="{node.name}">{node.name}</option>
+        <select className="ui simple mini dropdown Operator"
+                defaultValue={selected}
+                onChange={(e) => onChange(index, e)}>
+            {Object.keys(operators).map((o, idx) => (
+                <option key={idx} value={o}>{operators[o].label}</option>
+            ))}
         </select>
     )
 }
@@ -35,24 +40,27 @@ const Right = ({node}) => {
     if (node.raw.indexOf('current_user') !== -1) {
         value = 'Me'
     }
-    return (<span>{value}</span>)
+    return (<span className="ui mini basic light blue button right-expression">{value}</span>)
 }
 
-const RemoveCallExpression = ({node, index}) => {
-    return (<span></span>)
+const RemoveCallExpression = ({index, onClick}) => {
+    return (<i className="right floated remove circle red large action icon" onClick={() => onClick(index)}></i>)
 }
 
-const CallExpression = ({view, schemas, node, index}) => {
+const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index}) => {
     const left = node.arguments[0]
     const right = node.arguments[1]
     const operator = node.callee
 
+    const objectPath = resolveObjectPath(left)
+    const operators = findProperty(objectPath, schemas).meta.operators
+
     return (
         <div>
-            <Left node={left} view={view}/>
-            <Operator node={operator} schemas={schemas}/>
+            <Left objectPath={objectPath} view={view}/>
+            <Operator operators={operators} selected={operator.name} index={index} onChange={updateOperator}/>
             <Right node={right}/>
-            <RemoveCallExpression node={node} index={index}/>
+            <RemoveCallExpression onClick={removeCondition} index={index}/>
         </div>
     )
 }
@@ -61,7 +69,10 @@ CallExpression.propTypes = {
     node: PropTypes.object.isRequired,
     view: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired
+    index: PropTypes.number.isRequired,
+
+    removeCondition: PropTypes.func.isRequired,
+    updateOperator: PropTypes.func.isRequired
 }
 
 const OperatorLabel = ({operator}) => {
@@ -70,49 +81,58 @@ const OperatorLabel = ({operator}) => {
         '||': 'OR'
     }
     return (
-        <div className="ui label">{operatorLabels[operator]}</div>
+        <span className="ui light blue mini button OperatorLabel">{operatorLabels[operator]}</span>
     )
-}
-
-const LogicalExpression = ({node, view, schemas}) => {
-    const left = node.left
-    const right = node.right
-    const operator = node.operator
-
-    return (
-        <div>
-            <CallExpression node={left} view={view} schemas={schemas} index={0}/>
-            <OperatorLabel operator={operator}/>
-            <CallExpression node={right} view={view} schemas={schemas} index={1}/>
-        </div>
-    )
-}
-
-LogicalExpression.propTypes = {
-    node: PropTypes.object.isRequired,
-    view: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired
 }
 
 export default class ViewFilters extends React.Component {
+    removeCondition = (index) => {
+        this.props.removeFieldFilter(index)
+    }
+    updateOperator = (index, event) => {
+        // this.props.updateFieldFilterOperator(index)
+        console.log("Not implemented yet", index, event.target.value)
+    }
+
     render() {
         const {view, schemas} = this.props
         if (schemas.isEmpty()) {
             return null
         }
-        const node = view.get('filters_ast').toJS().body[0].expression
-        switch (node.type) {
-            case 'CallExpression':
-                return <CallExpression node={node} view={view} schemas={schemas} index={0}/>
-            case 'LogicalExpression':
-                return <LogicalExpression node={node} view={view} schemas={schemas}/>
-            default:
-                throw Error('Unknown type', node)
+
+        if (!view.get('filters_ast')) {
+            return (<div className="no-filters">No filters selected</div>)
         }
+
+        const exp = view.get('filters_ast').toJS().body[0].expression
+        // counting call expressions so we can delete them later
+        let callExprCounter = 0
+        const walk = (node) => {
+            switch (node.type) {
+                case 'CallExpression':
+                    return <CallExpression node={node}
+                                           view={view}
+                                           schemas={schemas}
+                                           index={callExprCounter++}
+                                           removeCondition={this.removeCondition}
+                                           updateOperator={this.updateOperator}
+                    />
+                case 'LogicalExpression':
+                    return (<div>
+                        {walk(node.left)}
+                        <OperatorLabel operator={node.operator}/>
+                        {walk(node.right)}
+                    </div>)
+                default:
+                    throw Error('Unknown type', node)
+            }
+        }
+        return walk(exp)
     }
 }
 
 ViewFilters.propTypes = {
     view: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired
+    schemas: PropTypes.object.isRequired,
+    removeFieldFilter: PropTypes.func.isRequired
 }

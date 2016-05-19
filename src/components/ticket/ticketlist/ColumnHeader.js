@@ -63,7 +63,8 @@ export default class ColumnHeader extends React.Component {
                 <div style={portalStyle}>
                     <FilterDropdown
                         field={this.props.field}
-                        updateFieldFilter={this.props.updateFieldFilter}
+                        schemas={this.props.schemas}
+                        addFieldFilter={this.props.addFieldFilter}
                         updateFieldEnumSearch={this.props.updateFieldEnumSearch}
                         onClose={this.onClose}
                     />
@@ -99,8 +100,9 @@ export default class ColumnHeader extends React.Component {
 ColumnHeader.propTypes = {
     field: PropTypes.object.isRequired,
     view: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
 
-    updateFieldFilter: PropTypes.func.isRequired, // called when a value is selected in the dropdown
+    addFieldFilter: PropTypes.func.isRequired, // called when a value is selected in the dropdown
     updateFieldEnumSearch: PropTypes.func.isRequired, // called when the field has to get enum data from the API
     updateView: PropTypes.func.isRequired
 }
