@@ -25,7 +25,7 @@ function removeFilterAST(view, index) {
     // As always, we assume that we only have && operators
     const codeSplit = view.get('filters').split('&&')
     if (codeSplit.length !== 1) {
-        return fromJS(esprima.parse(codeSplit.splice(index).join('&&')))
+        return fromJS(esprima.parse(codeSplit.splice(index - 1, 1).join('&&')))
     }
     return ''
 }
