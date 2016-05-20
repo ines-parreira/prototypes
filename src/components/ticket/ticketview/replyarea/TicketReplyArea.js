@@ -49,7 +49,7 @@ export default class TicketReplyArea extends React.Component {
                 currentUser={this.props.currentUser}
                 appliedMacro={this.props.macros.get('appliedMacro')}
                 users={this.props.users}
-                value={this.props.ticket.getIn(['newMessage', 'body_text'])}
+                value={this.props.ticket.getIn(['newMessage', 'body_html'])}
             />
         )
     }
