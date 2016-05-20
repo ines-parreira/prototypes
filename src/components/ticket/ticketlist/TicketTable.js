@@ -7,6 +7,7 @@ import {Loader} from '../../Loader'
 
 export default class TicketTable extends React.Component {
     onPageChange = (page) => this.props.fetchPage(page)
+
     toggleSelectAll = () => {
         const checked = this.refs.toggleSelection.checked
         const checkboxes = this.refs.table.querySelectorAll('.checkbox input')
@@ -25,6 +26,7 @@ export default class TicketTable extends React.Component {
         if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty())) {
             return (<Loader message={message}/>)
         }
+
         return (
             <div className="TicketTable">
                 <table className="ui selectable very basic padded table" ref="table">
@@ -73,8 +75,8 @@ export default class TicketTable extends React.Component {
                     page={tickets.getIn(['resp_meta', 'page'])}
                     totalPages={tickets.getIn(['resp_meta', 'nb_pages'])}
                     onChange={this.onPageChange}
-                    radius={0}
-                    anchor={3}
+                    radius={1}
+                    anchor={2}
                 />
             </div>
         )

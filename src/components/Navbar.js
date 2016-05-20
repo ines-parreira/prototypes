@@ -79,7 +79,7 @@ export default class Navbar extends React.Component {
                                                   className={classes}
                                                   onClick={() => { setViewActive(v) }}
                                             >
-                                                {view.name} ({view.count})
+                                                {view.name} ({view.count >= 1000 ? '1k+' : view.count})
                                             </Link>
                                         )
                                     })}

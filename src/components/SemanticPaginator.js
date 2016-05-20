@@ -1,21 +1,19 @@
 import React from 'react'
 
-const eventBinder = function (value, type, context, cancelEvent) {
-    return function (event) {
-        if (cancelEvent) {
-            event.stopPropagation()
-            event.preventDefault()
-        }
-        if (context[type]) {
-            context[type](value, event)
-        }
-        if (context.props[type]) {
-            context.props[type](value, event)
-        }
+const eventBinder = (value, type, context, cancelEvent) => (event) => {
+    if (cancelEvent) {
+        event.stopPropagation()
+        event.preventDefault()
+    }
+    if (context[type]) {
+        context[type](value, event)
+    }
+    if (context.props[type]) {
+        context.props[type](value, event)
     }
 }
 
-/*
+/**
  *
  * Paginator
  * A paginator component.
@@ -38,18 +36,19 @@ export default class Paginator extends React.Component {
         var totalPages = this.props.totalPages
         if (totalPages && totalPages > 1) {
             var current = this.props.page,
-                radius = this.props.radius || 0,
+                radius = this.props.radius || 1,
                 anchor = this.props.anchor || 1,
                 separator = this.props.separator || '...',
                 min = Math.max(current - radius, 1),
                 max = Math.min(current + radius, totalPages),
                 showArrows = this.props.showArrows === undefined ? true : this.props.showArrows,
-                totalShowing = (radius * 2) + (anchor * 2) + 3 /* current + separator */,
+                totalShowing = (radius * 2) + (anchor * 2) /* current + separator */,
                 showRightSeparator = (totalPages > current + radius + anchor),
                 showLeftSeparator = (current > (anchor + Math.max(1, radius))),
                 compact = this.props.compact,
                 index = {},
                 children = []
+
             if (compact) {
                 showArrows = false
             }
@@ -87,7 +86,7 @@ export default class Paginator extends React.Component {
             // always keep the same number of indicators showing - start down from middle
             for (i = current; i > 0 && children.length < totalShowing; i--) {
                 if (typeof index[i] === 'undefined') {
-                    _idx = index[i + 1] - 1
+                    let _idx = index[i + 1] - 1
                     children.splice(_idx, 0, i)
                     index[i] = _idx + 1
                 }
@@ -107,7 +106,7 @@ export default class Paginator extends React.Component {
                     return React.DOM.a({
                         className: 'item',
                         key: child,
-                        href: '#' + child,
+                        href: `#${child}`,
                         onClick: eventBinder(child, 'onChange', self, true)
                     }, child)
                 }
@@ -124,7 +123,7 @@ export default class Paginator extends React.Component {
                         onClick: eventBinder(current - 1, 'onChange', self, true)
                     })))
                 } else {
-                    children.splice(anchor, 0, React.DOM.div({className: 'disabled item', key: 'sep'}, separator))
+                    children.splice(anchor, 0, React.DOM.div({className: 'disabled item', key: 'sepl'}, separator))
                 }
             }
             if (showRightSeparator) {
@@ -139,7 +138,7 @@ export default class Paginator extends React.Component {
                 } else {
                     children.splice(children.length - anchor, 0, React.DOM.div({
                         className: 'disabled item',
-                        key: 'sep'
+                        key: 'sepr'
                     }, separator))
                 }
             }
