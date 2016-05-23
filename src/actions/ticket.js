@@ -40,7 +40,7 @@ export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
 
 export const RECORD_MACRO = 'RECORD_MACRO'
 
-export const SET_PUBLIC = 'TOGGLE_PUBLIC'
+export const SET_PUBLIC = 'SET_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
 export const SET_RECEIVER = 'SET_RECEIVER'
 
@@ -180,7 +180,9 @@ export function setPublic(isPublic) {
 export function setSubject(subject) {
     return {
         type: SET_SUBJECT,
-        subject
+        args: Map({
+            subject
+        })
     }
 }
 

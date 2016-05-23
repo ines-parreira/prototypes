@@ -162,29 +162,19 @@ export function ticket(state = ticketInitial, action) {
                 })
             }
 
-            newState = state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
-            return newState.setIn(['state', 'dirty'], true)
+            return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
 
         case actions.SET_AGENT:
-            return state.merge({
-                assignee_user: Map(action.args.get('assignee_user')),
-                state: state.get('state').set('dirty', true)
-            })
+            return state.set('assignee_user', Map(action.args.get('assignee_user')))
 
         case actions.SET_STATUS:
-            return state.merge({
-                status: action.args.get('status'),
-                state: state.get('state').set('dirty', true)
-            })
+            return state.set('status', action.args.get('status'))
 
         case actions.SET_PUBLIC:
             return state.setIn(['newMessage', 'public'], action.isPublic)
 
         case actions.SET_SUBJECT:
-            return state.merge({
-                subject: action.subject,
-                state: state.get('state').set('dirty', true)
-            })
+            return state.set('subject', action.args.get('subject'))
 
         case actions.SET_RESPONSE_TEXT:
             const text = action.args.get('body_text') || action.args.get(0) || ''
@@ -226,7 +216,7 @@ export function ticket(state = ticketInitial, action) {
                 .setIn(['state', 'query'], action.query)
 
         case actions.SET_RECEIVER:
-            return state.setIn(['newMessage', 'receiver'], action.receiver)
+            return state.setIn(['newMessage', 'receiver'], fromJS(action.receiver))
 
         case actions.MARK_TICKET_DIRTY:
             return state.setIn(['state', 'dirty'], true)

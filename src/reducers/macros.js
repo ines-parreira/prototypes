@@ -73,7 +73,7 @@ const macroInitial = Map({
     id: 'new',
     name: 'New macro',
     actions: List([
-        initialDefaultActions.setResponseText
+        initialDefaultActions.get('setResponseText')
     ])
 })
 

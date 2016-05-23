@@ -118,6 +118,15 @@ class TicketContainer extends React.Component {
                     'assignee_user'
                 )
             }
+
+            if (this.props.ticket.get('subject') !== nextProps.ticket.get('subject')) {
+                this.props.actions.ticket.ticketPartialUpdate(
+                    nextProps.ticket.get('id'),
+                    {subject: nextProps.ticket.get('subject')},
+                    TicketActions.SET_SUBJECT,
+                    'subject'
+                )
+            }
         }
     }
 
