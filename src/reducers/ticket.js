@@ -68,7 +68,6 @@ function getRecipient(messages, sender) {
         }
     }
 
-    if (!res) { console.error('No recipient') }
     return res
 }
 
