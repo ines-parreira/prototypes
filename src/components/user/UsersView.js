@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react'
 import UserList from './UserList'
 import Search from '../Search'
 import UserForm from './UserForm'
-import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown'
 
 
 export default class UsersView extends React.Component {
@@ -17,9 +16,6 @@ export default class UsersView extends React.Component {
             <div className="UsersView">
                 <div className="ui text menu">
 
-                    <div className="left menu item">
-                        <ShowMoreFieldsDropdown />
-                    </div>
                     <div className="right menu item">
                         <div className="item">
                             <Search

@@ -133,32 +133,24 @@ export function ticket(state = ticketInitial, action) {
         case actions.ADD_TICKET_TAGS:
             tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
+
             for (const tag of action.args) {
                 if (!existingTagNames.includes(tag.get('name'))) {
                     tags = tags.push(Map(tag))
                 }
             }
 
-            return state.merge({
-                tags,
-                state: state.get('state').set('dirty', true)
-            })
+            return state.set('tags', tags)
 
         case actions.REMOVE_TICKET_TAG:
-            return state.merge({
-                tags: state.get('tags').delete(action.index),
-                state: state.get('state').set('dirty', true)
-            })
+            return state.set('tags', state.get('tags').delete(action.index))
 
         case actions.SET_TAGS:
             return state.set('tags', fromJS(action.args.get('tags')))
 
         case actions.TOGGLE_PRIORITY:
             if (action.args.get('priority')) {
-                return state.merge({
-                    priority: action.args.get('priority'),
-                    state: state.get('state').set('dirty', true)
-                })
+                return state.set('priority', action.args.get('priority'))
             }
 
             return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')

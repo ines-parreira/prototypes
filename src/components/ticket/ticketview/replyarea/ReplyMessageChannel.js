@@ -74,7 +74,7 @@ export default class ReplyMessageChannel extends React.Component {
         if (!identity.id && !identity.email) {
             return {
                 name: this.defaultNames.empty,
-                className: popupChannelClassNames.email,
+                className: popupChannelClassNames.blueMail,
                 public: true,
                 channel
             }
