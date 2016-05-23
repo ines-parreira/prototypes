@@ -77,7 +77,7 @@ class TicketContainer extends React.Component {
              * Redirect to the new page when submitting a new ticket.
              */
             browserHistory.push(`/app/ticket/${nextProps.ticket.get('id')}/`)
-        } else if (this.props.ticket.get('id') && this.props.ticket.get('id') === nextProps.ticket.get('id')) {
+        } else if (this.props.ticket.get('id') && this.props.ticket.get('id') !== 'new' && this.props.ticket.get('id') === nextProps.ticket.get('id')) {
             /**
              * This is the autosave. Here, we check changes to the ticket state, and if there's any we make a
              * partial update to save only what has changed.
