@@ -12,7 +12,7 @@ export function formatDatetime(datetime, timezone) {
 }
 
 export function lastMessage(messages) {
-    return messages.sort((m1, m2) => moment(m1).diff(moment(m2)))[0]
+    return messages.slice().sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]
 }
 
 // given a field path. Ex: ticket.requester.id and OpenID schemas => resolve the last property
