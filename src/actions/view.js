@@ -1,8 +1,6 @@
 import reqwest from 'reqwest'
 import {systemMessage} from './systemMessage'
 
-export const DEFAULT_VIEW = 'my-tickets'
-
 // Basic operations on the views
 export const UPDATE_VIEW = 'UPDATE_VIEW'
 export const RESET_VIEW = 'RESET_VIEW'
