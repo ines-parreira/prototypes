@@ -1,6 +1,5 @@
-import moment from 'moment'
 import {has, upperFirst} from 'lodash'
-import 'moment-timezone'
+import moment from 'moment-timezone'
 
 export function formatDatetime(datetime, timezone) {
     try {
