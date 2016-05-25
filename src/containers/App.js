@@ -59,7 +59,7 @@ class App extends React.Component {
         const msg = typeof systemMessage.msg === 'string' ? <p>{systemMessage.msg}</p> : systemMessage.msg
 
         return (
-            <div className={`ui ${messageType} message`}>
+            <div id="system-message" className={`ui ${messageType} message`}>
                 <i className="close icon" onClick={this.handleDismissClick}/>
                 <div className="header">{systemMessage.header}</div>
                 {msg}
@@ -83,13 +83,17 @@ class App extends React.Component {
     }
 
     render() {
+        const systemMessage = this.renderSystemMessage()
+        const height = systemMessage ? '90vh' : '100vh'
+        const marginTop = systemMessage ? '10vh' : '0vh'
+
         return (
-            <div className="App">
+            <div className="App" style={{ height, marginTop }}>
+                {systemMessage}
                 {this.props.navbar || <TicketsNavbarContainer params={this.props.params}/>}
                 <div className="App-content">
                     {this.renderLoader()}
                     <div className="main-content pusher">
-                        {this.renderSystemMessage()}
                         {this.props.content || this.props.children}
                     </div>
                 </div>
