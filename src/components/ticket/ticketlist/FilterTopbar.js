@@ -22,7 +22,7 @@ export default class FilterTopbar extends React.Component {
     render() {
         const {views} = this.props
         const view = views.get('active')
-        if (!views.get('dirty')) {
+        if (!views.getIn(['active', 'dirty'])) {
             return null
         }
 

@@ -72,6 +72,7 @@ export default class Navbar extends React.Component {
                                         }
 
                                         const key = `${view.slug}-${view.id}`
+                                        const count = view.count !== undefined && view.count !== null ? view.count : '?'
 
                                         return (
                                             <Link key={key}
@@ -79,7 +80,7 @@ export default class Navbar extends React.Component {
                                                   className={classes}
                                                   onClick={() => { setViewActive(v) }}
                                             >
-                                                {view.name} ({view.count >= 1000 ? '1k+' : view.count})
+                                                {view.name} ({count >= 1000 ? '1k+' : count})
                                             </Link>
                                         )
                                     })}

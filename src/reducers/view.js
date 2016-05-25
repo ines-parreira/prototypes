@@ -7,7 +7,6 @@ import * as actions from '../actions/view'
 const viewsInitial = Map({
     items: List(),
     active: Map(),
-    dirty: false,
     loading: false
 })
 
@@ -46,10 +45,7 @@ export function views(state = viewsInitial, action) {
             return state.set('active', action.view)
 
         case actions.UPDATE_VIEW:
-            return state.merge({
-                active: action.view,
-                dirty: true
-            })
+            return state.set('active', action.view.set('dirty', true))
 
         case actions.UPDATE_VIEW_FIELD:
             // replace a field with a new field
@@ -57,10 +53,7 @@ export function views(state = viewsInitial, action) {
                 return (f.get('name') === action.field.get('name')) ? action.field : f
             }))
 
-            return state.merge({
-                active: view,
-                dirty: true
-            })
+            return state.set('active', view.set('dirty', true))
 
         case actions.ADD_VIEW_FIELD_FILTER:
             // given a filter and our code+ast => generate new code/ast and save it to the state
@@ -71,10 +64,7 @@ export function views(state = viewsInitial, action) {
                 }
             })
             view = view.set('filters_ast', ast).set('filters', code)
-            return state.merge({
-                active: view,
-                dirty: true
-            })
+            return state.set('active', view.set('dirty', true))
 
         case actions.REMOVE_VIEW_FIELD_FILTER:
             ast = removeFilterAST(view, action.index)
@@ -86,10 +76,7 @@ export function views(state = viewsInitial, action) {
                 })
             }
             view = view.set('filters_ast', ast).set('filters', code)
-            return state.merge({
-                active: view,
-                dirty: true
-            })
+            return state.set('active', view.set('dirty', true))
 
         case actions.UPDATE_VIEW_FIELD_ENUM_SUCCESS:
             // update our active view with the new data from the API
@@ -110,10 +97,7 @@ export function views(state = viewsInitial, action) {
         case actions.RESET_VIEW:
             // find the original view from the state and replace the active view
             const original = state.get('items').find(v => v.get('id') === view.get('id'))
-            return state.merge({
-                active: original,
-                dirty: false
-            })
+            return state.set('active', original.set('dirty', false))
 
         case actions.SUBMIT_UPDATE_VIEW_SUCCESS:
             const updatedView = fromJS(action.resp)
@@ -122,16 +106,14 @@ export function views(state = viewsInitial, action) {
             const replaceIndex = items.findIndex(v => (v.get('id') === updatedView.get('id')))
             return state.merge({
                 items: sortViews(items.delete(replaceIndex).push(updatedView)),
-                active: updatedView,
-                dirty: false
+                active: updatedView.set('dirty', false)
             })
 
         case actions.SUBMIT_NEW_VIEW_SUCCESS:
             const newView = fromJS(action.resp)
             return state.merge({
                 items: sortViews(state.get('items').push(newView)),
-                active: newView,
-                dirty: false
+                active: newView.set('dirty', false)
             })
 
         case actions.FETCH_VIEW_LIST_START:
@@ -146,8 +128,7 @@ export function views(state = viewsInitial, action) {
 
             return state.merge({
                 items,
-                active,
-                dirty: false,
+                active: active.set('dirty', false),
                 loading: false
             })
 

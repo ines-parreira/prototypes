@@ -151,7 +151,7 @@ export function submitView(view) {
         return reqwest({
             url,
             method,
-            data: JSON.stringify(view.toJS()),
+            data: JSON.stringify(view.delete('dirty').toJS()),
             type: 'json',
             contentType: 'application/json'
         }).then((resp) => {
