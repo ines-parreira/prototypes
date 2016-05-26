@@ -367,8 +367,9 @@ export function fetchTicketMessage(ticketId, messageId) {
 
             if (hasFailure) {
                 dispatch(systemMessage({
-                    type: 'error',
-                    header: 'Oops! One or more actions failed on your last message. Here is the message status:',
+                    type: 'actionError',
+                    header: 'Oops! Some actions failed on your last message:',
+                    url: `/app/ticket/${resp.ticket_id}`,
                     msg: (
                         <div>
                             <ul>

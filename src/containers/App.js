@@ -30,13 +30,20 @@ class App extends React.Component {
         // Some global keyboard shortcuts
 
         // Go home (or dashboard)
-        mousetrap.bind('g h', (e) => {
-            browserHistory.push('/')
+        mousetrap.bind('g h', () => {
+            browserHistory.push('/app')
         })
+    }
+
+    componentDidUpdate() {
+        if (Object.keys(this.props.systemMessage.toJS()).length !== 0 && this.props.systemMessage.get('type') === 'actionError') {
+            $('#system-message').modal('show')
+        }
     }
 
     handleDismissClick(e) {
         e.preventDefault()
+        //$('#system-message').modal('hide')
         this.props.dismissMessage()
     }
 
@@ -48,21 +55,43 @@ class App extends React.Component {
         }
 
         // map message.type to semantic ui classes
-        const messageType = {
-            neutral: '',
-            error: 'negative',
-            warning: 'warning',
-            info: 'info',
-            success: 'success'
-        }[systemMessage.type]
 
         const msg = typeof systemMessage.msg === 'string' ? <p>{systemMessage.msg}</p> : systemMessage.msg
 
+        if (systemMessage.type !== 'actionError') {
+            const messageType = {
+                neutral: '',
+                error: 'negative',
+                warning: 'warning',
+                info: 'info',
+                success: 'success'
+            }[systemMessage.type]
+
+            return (
+                <div id="system-message" className={`ui ${messageType} message modal`}>
+                    <i className="close icon" onClick={this.handleDismissClick}/>
+                    <div className="header">{systemMessage.header}</div>
+                    {msg}
+                </div>
+            )
+        }
+
         return (
-            <div id="system-message" className={`ui ${messageType} message`}>
+            <div id="system-message" className="ui modal">
                 <i className="close icon" onClick={this.handleDismissClick}/>
-                <div className="header">{systemMessage.header}</div>
-                {msg}
+                <div className="header">Something went wrong :/</div>
+                <div className="content">
+                    {systemMessage.header}
+                    <div>{msg}</div>
+                </div>
+                <div className="actions">
+                    <div className="ui button" onClick={this.handleDismissClick}>
+                        Discard
+                    </div>
+                    <div className="ui green button" onClick={(e) => {this.handleDismissClick(e); browserHistory.push(systemMessage.url)}}>
+                        Review message
+                    </div>
+                </div>
             </div>
         )
     }
@@ -84,12 +113,9 @@ class App extends React.Component {
 
     render() {
         const systemMessage = this.renderSystemMessage()
-        const height = systemMessage ? '90vh' : '100vh'
-        const marginTop = systemMessage ? '10vh' : '0vh'
 
         return (
-            <div className="App" style={{ height, marginTop }}>
-                {systemMessage}
+            <div className="App">
                 {this.props.navbar || <TicketsNavbarContainer params={this.props.params}/>}
                 <div className="App-content">
                     {this.renderLoader()}
@@ -99,6 +125,7 @@ class App extends React.Component {
                 </div>
                 {this.props.infobar}
                 <KeyboardHelp />
+                {systemMessage}
             </div>
         )
     }
@@ -107,7 +134,7 @@ class App extends React.Component {
 App.propTypes = {
     // System Message handling (errors, info, success..)
     systemMessage: PropTypes.shape({
-        type: PropTypes.oneOf(['neutral', 'error', 'warning', 'info', 'success']),
+        type: PropTypes.oneOf(['neutral', 'error', 'warning', 'info', 'success', 'actionError']),
         header: PropTypes.string, // high level description
         msg: PropTypes.string // what the user should do? Try again? Contact support?
     }),
