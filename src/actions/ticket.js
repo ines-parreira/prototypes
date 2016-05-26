@@ -367,9 +367,19 @@ export function fetchTicketMessage(ticketId, messageId) {
 
             if (hasFailure) {
                 dispatch(systemMessage({
-                    type: 'actionError',
-                    header: 'Oops! Some actions failed on your last message:',
-                    url: `/app/ticket/${resp.ticket_id}`,
+                    type: 'error',
+                    header: 'Something went wrong :/',
+                    modal: true,
+                    options: {
+                        title: 'Oops! Some actions failed on your last message:',
+                        actions: [
+                            {
+                                onClick: () => browserHistory.push(`/app/ticket/${resp.ticket_id}`),
+                                className: 'ui green button',
+                                msg: 'Review message'
+                            }
+                        ]
+                    },
                     msg: (
                         <div>
                             <ul>

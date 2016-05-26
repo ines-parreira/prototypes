@@ -36,7 +36,7 @@ class App extends React.Component {
     }
 
     componentDidUpdate() {
-        if (Object.keys(this.props.systemMessage.toJS()).length !== 0 && this.props.systemMessage.get('type') === 'actionError') {
+        if (Object.keys(this.props.systemMessage.toJS()).length !== 0 && this.props.systemMessage.get('modal')) {
             $('#system-message').modal({
                 detachable: false
             }).modal('show')
@@ -46,7 +46,7 @@ class App extends React.Component {
     handleDismissClick(e) {
         e.preventDefault()
 
-        if (this.props.systemMessage.get('type') === 'actionError') {
+        if (this.props.systemMessage.get('modal')) {
             $('#system-message').modal('hide')
         }
 
@@ -64,7 +64,7 @@ class App extends React.Component {
 
         const msg = typeof systemMessage.msg === 'string' ? <p>{systemMessage.msg}</p> : systemMessage.msg
 
-        if (systemMessage.type !== 'actionError') {
+        if (!systemMessage.modal) {
             const messageType = {
                 neutral: '',
                 error: 'negative',
@@ -85,18 +85,25 @@ class App extends React.Component {
         return (
             <div id="system-message" className="ui modal">
                 <i className="close icon" onClick={this.handleDismissClick}/>
-                <div className="header">Something went wrong :/</div>
+                <div className="header">{systemMessage.header}</div>
                 <div className="content">
-                    {systemMessage.header}
+                    {systemMessage.options.title}
                     <div>{msg}</div>
                 </div>
                 <div className="actions">
                     <div className="ui button" onClick={this.handleDismissClick}>
                         Discard
                     </div>
-                    <div className="ui green button" onClick={(e) => {this.handleDismissClick(e); browserHistory.push(systemMessage.url)}}>
-                        Review message
-                    </div>
+                    {
+                        systemMessage.options.actions.map((action, idx) => (
+                            <div key={idx}
+                                className={action.className}
+                                onClick={(e) => {this.handleDismissClick(e); action.onClick()}}
+                            >
+                                {action.msg}
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
         )
@@ -118,8 +125,6 @@ class App extends React.Component {
     }
 
     render() {
-        const systemMessage = this.renderSystemMessage()
-
         return (
             <div className="App">
                 {this.props.navbar || <TicketsNavbarContainer params={this.props.params}/>}
@@ -131,7 +136,7 @@ class App extends React.Component {
                 </div>
                 {this.props.infobar}
                 <KeyboardHelp />
-                {systemMessage}
+                {this.renderSystemMessage()}
             </div>
         )
     }
