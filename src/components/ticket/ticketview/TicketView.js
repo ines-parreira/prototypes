@@ -1,6 +1,4 @@
 import React, { PropTypes } from 'react'
-import { List } from 'immutable'
-import _ from 'lodash'
 
 import EditableTitle from './../EditableTitle'
 import TicketMessages from './TicketMessages'
