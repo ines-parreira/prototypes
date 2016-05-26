@@ -37,13 +37,19 @@ class App extends React.Component {
 
     componentDidUpdate() {
         if (Object.keys(this.props.systemMessage.toJS()).length !== 0 && this.props.systemMessage.get('type') === 'actionError') {
-            $('#system-message').modal('show')
+            $('#system-message').modal({
+                detachable: false
+            }).modal('show')
         }
     }
 
     handleDismissClick(e) {
         e.preventDefault()
-        //$('#system-message').modal('hide')
+
+        if (this.props.systemMessage.get('type') === 'actionError') {
+            $('#system-message').modal('hide')
+        }
+
         this.props.dismissMessage()
     }
 
@@ -68,7 +74,7 @@ class App extends React.Component {
             }[systemMessage.type]
 
             return (
-                <div id="system-message" className={`ui ${messageType} message modal`}>
+                <div id="system-message" className={`ui ${messageType} message`}>
                     <i className="close icon" onClick={this.handleDismissClick}/>
                     <div className="header">{systemMessage.header}</div>
                     {msg}

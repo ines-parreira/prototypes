@@ -374,17 +374,15 @@ export function fetchTicketMessage(ticketId, messageId) {
                         <div>
                             <ul>
                                 {
-                                    resp.actions.map((action, idx) => (
-                                        <li key={idx}>{action.title}: {action.status}</li>
-                                    ))
+                                    resp.actions.map((action, idx) => {
+                                        if (ACTION_TEMPLATES[action.name].execution === 'back') {
+                                            return <li key={idx}>{action.title}: {action.status}</li>
+                                        }
+                                    })
                                 }
                             </ul>
                             <p>
-                                The message hasn't been sent, you should
-                                <a onClick={() => browserHistory.push(`/app/ticket/${resp.ticket_id}`)}>
-                                    {" review it right now"}
-                                </a>
-                                .
+                                The message hasn't been sent, you should review it right now.
                             </p>
                         </div>
                     )
