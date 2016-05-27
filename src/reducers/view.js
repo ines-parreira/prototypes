@@ -90,9 +90,7 @@ export function views(state = viewsInitial, action) {
                 return f
             }))
 
-            return state.merge({
-                active: view
-            })
+            return state.set('active', view)
 
         case actions.RESET_VIEW: {
             // find the original view from the state and replace the active view

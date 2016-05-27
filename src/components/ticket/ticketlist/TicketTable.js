@@ -6,8 +6,6 @@ import SemanticPaginator from '../../SemanticPaginator'
 import {Loader} from '../../Loader'
 
 export default class TicketTable extends React.Component {
-    onPageChange = (page) => this.props.fetchPage(page)
-
     toggleSelectAll = () => {
         const checked = this.refs.toggleSelection.checked
         const checkboxes = this.refs.table.querySelectorAll('.checkbox input')
@@ -20,43 +18,43 @@ export default class TicketTable extends React.Component {
 
     render() {
         const {view, tickets, currentUser} = this.props
-        const nbPages = this.props.tickets.getIn(['resp_meta', 'nb_pages'])
-        const message = nbPages === 0 ? 'This view is empty. Enjoy your day!' : 'Loading...'
+        const isLoading = this.props.tickets.get('loading')
+        const message = isLoading ? 'Loading...' : 'This view is empty. Enjoy your day!'
 
-        if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty())) {
-            return (<Loader message={message} loading={nbPages !== 0} />)
+        if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty() && !isLoading)) {
+            return <Loader message={message} loading={isLoading} />
         }
 
         return (
             <div className="TicketTable">
                 <table className="ui selectable very basic padded table" ref="table">
                     <thead>
-                    <tr>
-                        <th>
-                               <span className="ui checkbox">
+                        <tr>
+                            <th>
+                                <span className="ui checkbox">
                                     <input type="checkbox"
                                            ref="toggleSelection"
                                            onChange={this.toggleSelectAll}
                                     />
                                     <label />
                                 </span>
-                        </th>
-                        {view.get('fields').map((field) => (
-                            <ColumnHeader
-                                key={field.get('name')}
-                                field={field}
+                            </th>
+                            {view.get('fields').map((field) => (
+                                <ColumnHeader
+                                    key={field.get('name')}
+                                    field={field}
+                                    view={view}
+                                    schemas={this.props.schemas}
+                                    updateView={this.props.updateView}
+                                    addFieldFilter={this.props.addFieldFilter}
+                                    updateFieldEnumSearch={this.props.updateFieldEnumSearch}
+                                />
+                            ))}
+                            <ShowMoreFieldsDropdown
                                 view={view}
-                                schemas={this.props.schemas}
-                                updateView={this.props.updateView}
-                                addFieldFilter={this.props.addFieldFilter}
-                                updateFieldEnumSearch={this.props.updateFieldEnumSearch}
+                                updateField={this.props.updateField}
                             />
-                        ))}
-                        <ShowMoreFieldsDropdown
-                            view={view}
-                            updateField={this.props.updateField}
-                        />
-                    </tr>
+                        </tr>
                     </thead>
                     <tbody>
                     {tickets.get('items').map((ticket, curIndex) => (
@@ -74,7 +72,7 @@ export default class TicketTable extends React.Component {
                 <SemanticPaginator
                     page={tickets.getIn(['resp_meta', 'page'])}
                     totalPages={tickets.getIn(['resp_meta', 'nb_pages'])}
-                    onChange={this.onPageChange}
+                    onChange={(page) => this.props.fetchPage(page)}
                     radius={1}
                     anchor={2}
                 />
