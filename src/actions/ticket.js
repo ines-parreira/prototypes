@@ -318,11 +318,11 @@ export function fetchTicketsPage(views, page) {
 
         // when a view is dirty, just send the whole view data rather than just the slug
         // this will allow us to test a view before submitting it to the DB
-        if (views.get('dirty')) {
+        if (views.getIn(['active', 'dirty'])) {
             url = '/api/tickets/view/'
             method = 'PUT'
             data = JSON.stringify({
-                view: views.get('active').toJS(),
+                view: views.get('active').delete('dirty').toJS(),
                 page
             })
         }

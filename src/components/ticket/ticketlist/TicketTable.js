@@ -21,10 +21,10 @@ export default class TicketTable extends React.Component {
     render() {
         const {view, tickets, currentUser} = this.props
         const nbPages = this.props.tickets.getIn(['resp_meta', 'nb_pages'])
-        const message = nbPages === 0 ? 'No tickets found.' : 'Loading...'
+        const message = nbPages === 0 ? 'This view is empty. Enjoy your day!' : 'Loading...'
 
         if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty())) {
-            return (<Loader message={message}/>)
+            return (<Loader message={message} loading={nbPages !== 0} />)
         }
 
         return (

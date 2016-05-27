@@ -3,21 +3,23 @@ import classNames from 'classnames'
 
 export const DEFAULT_MESSAGE = 'Loading...'
 
-export const Loader = ({message}) => {
-    const className = classNames(
-        'ui',
-        'active',
-        'text',
-        'loader', {
-            indeterminate: message !== DEFAULT_MESSAGE
-        }
-    )
+export const Loader = ({message, loading = true}) => {
+    let content = <div className="ui active text loader">{message || DEFAULT_MESSAGE}</div>
+
+    if (!loading) {
+        content = <p>{message}</p>
+    }
+
     return (
         <div className="loading-container">
             <div className="loading">
-                <div className={className}>{message || DEFAULT_MESSAGE}</div>
+                {content}
             </div>
         </div>
     )
 }
-Loader.propTypes = {message: PropTypes.string}
+
+Loader.propTypes = {
+    loading: PropTypes.bool,
+    message: PropTypes.string
+}
