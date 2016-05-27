@@ -19,12 +19,12 @@ class UsersContainer extends React.Component {
         this.props.actions.user.fetchUsers()
     }
 
-    search = (props, query) => {
-        if (!query) {
+    search = (query, params, stringQuery) => {
+        if (!stringQuery) {
             this.props.actions.user.fetchUsers()
         } else {
             // populate users state from search results now
-            this.props.actions.user.search(props, query)
+            this.props.actions.user.search(query, params)
         }
     }
 

@@ -32,10 +32,14 @@ class TicketsContainer extends React.Component {
         return null
     }
 
-    search = (query, params) => {
+    search = (query, params, stringQuery) => {
         // populate users state from search results now
         const view = this.props.views.get('active')
-        this.props.actions.view.updateView(view.merge({search: {query, params}}))
+        if (stringQuery) {
+            this.props.actions.view.updateView(view.merge({search: {query, params}}))
+        } else {
+            this.props.actions.view.updateView(view.merge({search: {}}))
+        }
     }
 
     render() {

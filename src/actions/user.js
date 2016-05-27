@@ -54,7 +54,7 @@ export function fetchUsers(role) {
     }
 }
 
-export function search(props, query) {
+export function search(query, params) {
     return (dispatch) => {
         dispatch({
             type: FETCH_USER_LIST_START
@@ -64,9 +64,8 @@ export function search(props, query) {
             url: '/api/search/',
             data: JSON.stringify({
                 doc_type: 'user',
-                fields: props.fields,
-                params: props.params,
-                query
+                query,
+                params,
             }),
             type: 'json',
             method: 'POST',
