@@ -49,7 +49,7 @@ export function views(state = viewsInitial, action) {
 
         case actions.UPDATE_VIEW_FIELD:
             // replace a field with a new field
-            view = view.set('fields', view.get('fields').map(f => {
+            view = view.set('fields', view.get('fields').map((f) => {
                 return (f.get('name') === action.field.get('name')) ? action.field : f
             }))
 
@@ -94,12 +94,13 @@ export function views(state = viewsInitial, action) {
                 active: view
             })
 
-        case actions.RESET_VIEW:
+        case actions.RESET_VIEW: {
             // find the original view from the state and replace the active view
             const original = state.get('items').find(v => v.get('id') === view.get('id'))
             return state.set('active', original.set('dirty', false))
+        }
 
-        case actions.SUBMIT_UPDATE_VIEW_SUCCESS:
+        case actions.SUBMIT_UPDATE_VIEW_SUCCESS: {
             const updatedView = fromJS(action.resp)
             // we need to replace the old view with the new one
             items = state.get('items')
@@ -108,18 +109,19 @@ export function views(state = viewsInitial, action) {
                 items: sortViews(items.delete(replaceIndex).push(updatedView)),
                 active: updatedView.set('dirty', false)
             })
-
-        case actions.SUBMIT_NEW_VIEW_SUCCESS:
+        }
+        case actions.SUBMIT_NEW_VIEW_SUCCESS: {
             const newView = fromJS(action.resp)
             return state.merge({
                 items: sortViews(state.get('items').push(newView)),
                 active: newView.set('dirty', false)
             })
+        }
 
         case actions.FETCH_VIEW_LIST_START:
             return state.set('loading', true)
 
-        case actions.FETCH_VIEW_LIST_SUCCESS:
+        case actions.FETCH_VIEW_LIST_SUCCESS: {
             items = sortViews(fromJS(action.resp.data))
 
             // also populate the active view state
@@ -131,6 +133,7 @@ export function views(state = viewsInitial, action) {
                 active: active.set('dirty', false),
                 loading: false
             })
+        }
 
         case actions.SUBMIT_VIEW_START:
         default:

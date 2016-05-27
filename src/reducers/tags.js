@@ -1,6 +1,5 @@
 import * as actions from '../actions/tag'
-import { Map, List } from 'immutable'
-import _ from 'lodash'
+import {Map, List} from 'immutable'
 
 const tagsInitial = Map({
     items: List(),

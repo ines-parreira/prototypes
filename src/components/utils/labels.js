@@ -70,7 +70,6 @@ export const RenderLabel = (field, value) => {
             return <ChannelLabel channel={value}/>
         default:
             console.error('Invalid field type', field.type)
+            return null
     }
 }
-
-

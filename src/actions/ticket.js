@@ -152,6 +152,7 @@ export function togglePriority(priority) { // here, the priority argument is opt
     }
 }
 
+/* eslint "camelcase": "off" */
 export function setAgent(assignee_user) {
     return {
         type: SET_AGENT,
@@ -388,6 +389,7 @@ export function fetchTicketMessage(ticketId, messageId) {
                                         if (ACTION_TEMPLATES[action.name].execution === 'back') {
                                             return <li key={idx}>{action.title}: {action.status}</li>
                                         }
+                                        return null
                                     })
                                 }
                             </ul>

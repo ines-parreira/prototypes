@@ -1,17 +1,15 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 import UserForm from './UserForm'
 
 export default class UserRow extends React.Component {
     render() {
-        const { user } = this.props
-        const { updateUser, deleteUser } = this.context
+        const {user} = this.props
+        const {updateUser, deleteUser} = this.context
 
         let label
         const userRoles = []
 
-        _.each(user.roles, (v) => {
-            userRoles.push(v.name)
-        })
+        user.roles.map((v) => userRoles.push(v.name))
 
         if (userRoles && userRoles.indexOf('admin') !== -1) {
             label = <div className="ui blue label">ADMIN</div>
@@ -46,12 +44,12 @@ export default class UserRow extends React.Component {
                         {label}
                     </div>
                     <div className="five wide column">
-                        <button className="ui inverted red basic button right" onClick={() => {deleteUser(user.id)}}>
+                        <button className="ui inverted red basic button right" onClick={() => { deleteUser(user.id) }}>
                             Delete
                         </button>
                         <button
                             className="ui inverted blue basic button right"
-                            onClick={() => {$(`#userform-${user.id}`).modal('show')}}
+                            onClick={() => { $(`#userform-${user.id}`).modal('show') }}
                         >
                             Edit
                         </button>
