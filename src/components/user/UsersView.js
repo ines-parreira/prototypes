@@ -15,19 +15,21 @@ export default class UsersView extends React.Component {
         return (
             <div className="UsersView">
                 <div className="ui text menu">
-
                     <div className="right menu item">
                         <div className="item">
                             <Search
                                 autofocus
                                 onChange={this.props.search}
                                 className="long"
-                                queryPath="multi_match.query"
+                                queryPath="query.multi_match.query"
                                 query={{
-                                    multi_match: {
-                                        query: '',
-                                        fuzziness: 3,
-                                        fields: ['name', 'email']
+                                    _source: ['id', 'name', 'email', 'roles'],
+                                    query: {
+                                        multi_match: {
+                                            query: '',
+                                            fuzziness: 3,
+                                            fields: ['name', 'email']
+                                        }
                                     }
                                 }}
                                 placeholder="Search users"
