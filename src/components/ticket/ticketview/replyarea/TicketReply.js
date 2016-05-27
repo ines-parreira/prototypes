@@ -1,9 +1,6 @@
 import React, {PropTypes} from 'react'
-import { fromJS } from 'immutable'
+import {fromJS} from 'immutable'
 import _ from 'lodash'
-
-import TicketAttachments from './TicketAttachments'
-
 import {EditorState, ContentState, RichUtils, convertFromHTML} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
 import Editor from 'draft-js-plugins-editor'
@@ -14,7 +11,7 @@ import createDndPlugin from 'draft-js-dnd-plugin'
 import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-linkify-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
-
+import TicketAttachments from './TicketAttachments'
 import TicketReplyAction from './TicketReplyAction'
 
 export default class TicketReply extends React.Component {
@@ -76,8 +73,8 @@ export default class TicketReply extends React.Component {
 
         const mentions = fromJS(
             props.users.get('agents', [])
-            .map(user => fromJS({ name: user.get('name'), link: '', avatar: '' })
-        ))
+                .map(user => fromJS({name: user.get('name'), link: '', avatar: ''})
+                ))
 
         const plugins = [
             createMentionPlugin({mentions}),
@@ -155,7 +152,7 @@ export default class TicketReply extends React.Component {
                     <input
                         type="file"
                         id="file-input"
-                        onChange={ (e) => this.handleFiles(e.target.files) }
+                        onChange={(e) => this.handleFiles(e.target.files)}
                     />
                 </div>
             </div>
@@ -163,7 +160,7 @@ export default class TicketReply extends React.Component {
     }
 
     render() {
-        const { ticket, appliedMacro, actions } = this.props
+        const {ticket, appliedMacro, actions} = this.props
         let internal = ''
 
         if (ticket.get('newMessage') && !ticket.getIn(['newMessage', 'public'])) {
@@ -198,7 +195,8 @@ export default class TicketReply extends React.Component {
 
                 {this.renderAttachmentInput()}
 
-                <TicketAttachments removable
+                <TicketAttachments
+                    removable
                     attachments={ticket.getIn(['newMessage', 'attachments'])}
                     deleteAttachment={actions.ticket.deleteAttachment}
                 />

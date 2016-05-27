@@ -54,7 +54,7 @@ export default class TicketView extends React.Component {
                         walk(node.right)
 
                         break
-                    case 'CallExpression':
+                    case 'CallExpression': {
                         if (['eq', 'contains'].indexOf(node.callee.name) === -1) {
                             break
                         }
@@ -66,6 +66,7 @@ export default class TicketView extends React.Component {
                         }
                         fields[left].push(right)
                         break
+                    }
                     case 'MemberExpression':
                         return `${walk(node.object)}.${node.property.name}`
                     case 'Literal':
@@ -88,10 +89,11 @@ export default class TicketView extends React.Component {
                 const firstValue = values[0]
 
                 switch (field) {
-                    case 'ticket.tags.name':
+                    case 'ticket.tags.name': {
                         const newTags = nextProps.tags.get('items').filter(t => values.indexOf(t.get('name')) !== -1)
                         nextProps.actions.ticket.addTags(newTags)
                         break
+                    }
                     case 'ticket.status':
                         nextProps.actions.ticket.setStatus(firstValue)
                         break
@@ -118,12 +120,10 @@ export default class TicketView extends React.Component {
         this.props.actions.ticket.deleteMessage(this.props.ticket.get('id'), messageId)
     }
 
-    submit = (status, next) => {
-        return (e) => {
-            e.preventDefault()
-            this.props.submit(status, next)
-        }
-    }
+    submit = (status, next) => ((e) => {
+        e.preventDefault()
+        this.props.submit(status, next)
+    })
 
     render = () => {
         const {ticket, tags, users, actions} = this.props

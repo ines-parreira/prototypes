@@ -1,8 +1,6 @@
 import * as actions from '../actions/macro'
-import * as ticketActions from '../actions/ticket'
-import Immutable, { Map, List } from 'immutable'
-
-import { DEFAULT_ACTIONS } from '../constants'
+import Immutable, {Map, List} from 'immutable'
+import {DEFAULT_ACTIONS} from '../constants'
 
 
 const actionInitial = Map({
@@ -120,7 +118,7 @@ export function macros(state = macrosInitial, action) {
         case actions.SET_MACROS_VISIBILITY:
             return state.set('visible', action.visible)
 
-        case actions.PREVIEW_ADJACENT_MACRO:
+        case actions.PREVIEW_ADJACENT_MACRO: {
             let prev = null
             const selectedMacro = state.get('selected')
             items = state.get('items')
@@ -134,8 +132,8 @@ export function macros(state = macrosInitial, action) {
                 prev = current
             }
             return state
-
-        case actions.FETCH_MACRO_LIST_SUCCESS:
+        }
+        case actions.FETCH_MACRO_LIST_SUCCESS: {
             items = Immutable.Map()
             for (const macro of action.resp.data) {
                 items = items.set(macro.id, Immutable.fromJS(macro))
@@ -144,6 +142,7 @@ export function macros(state = macrosInitial, action) {
                 visible: !!items.size,
                 items
             })
+        }
 
         case actions.UPDATE_ACTION_ARGS:
             return state.setIn(['modalSelected', 'actions', action.actionIndex, 'arguments'], action.value)

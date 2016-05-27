@@ -4,11 +4,7 @@ import TicketTags from './../../ticket/ticketview/ticketdetails/TicketTags'
 export default class AddTagsAction extends React.Component {
     addTags(tags) {
         let newTags = this.props.action.get('arguments')
-
-        tags.map(tag => {
-            newTags = newTags.push(tag)
-        })
-
+        newTags = newTags.concat(tags)
         this.props.updateActionArgs(this.props.index, newTags)
     }
 
@@ -20,7 +16,7 @@ export default class AddTagsAction extends React.Component {
     }
 
     render() {
-        const { action, tags, deleteAction, index } = this.props
+        const {action, tags, deleteAction, index} = this.props
 
         return (
             <div className="tags">

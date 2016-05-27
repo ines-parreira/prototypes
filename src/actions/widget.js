@@ -1,5 +1,5 @@
 import reqwest from 'reqwest'
-import { systemMessage } from './systemMessage'
+import {systemMessage} from './systemMessage'
 
 
 // Fetching a list of tickets life-cycle
@@ -7,7 +7,7 @@ export const FETCH_WIDGETS_START = 'FETCH_WIDGETS_START'
 export const FETCH_WIDGETS_SUCCESS = 'FETCH_WIDGETS_SUCCESS'
 
 
-export function fetchWidgets(data = {}, type = 'ticket') {
+export function fetchWidgets() {
     const url = '/api/widgets/'
 
     return (dispatch) => {
@@ -16,7 +16,7 @@ export function fetchWidgets(data = {}, type = 'ticket') {
         })
 
         return reqwest({
-            url: url,
+            url,
             type: 'json',
             method: 'GET',
             contentType: 'application/json'

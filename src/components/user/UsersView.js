@@ -48,7 +48,8 @@ export default class UsersView extends React.Component {
                             onSubmit={createUser}
                         />
                         <button className="ui right floated green button"
-                                onClick={() => {$('#userform-new').modal('show')}}>
+                                onClick={() => { $('#userform-new').modal('show') }}
+                        >
                             ADD USER
                         </button>
                     </div>

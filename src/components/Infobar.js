@@ -47,7 +47,7 @@ export default class Infobar extends React.Component {
         document.body.classList.add(this.classActive)
     }
 
-    dragStop = (e) => {
+    dragStop = () => {
         this.cursorX = null
         document.body.classList.remove(this.classActive)
 

@@ -1,14 +1,11 @@
 import React, {PropTypes} from 'react'
-import { connect } from 'react-redux'
-import { browserHistory } from 'react-router'
-
-import { dismissMessage } from '../actions/systemMessage'
-import { fetchUser, fetchUsers } from '../actions/user'
-import { fetchSettings } from '../actions/settings'
-
+import {connect} from 'react-redux'
+import {browserHistory} from 'react-router'
+import {dismissMessage} from '../actions/systemMessage'
+import {fetchUser, fetchUsers} from '../actions/user'
+import {fetchSettings} from '../actions/settings'
 import TicketsNavbarContainer from './TicketsNavbar'
 import KeyboardHelp from '../components/KeyboardHelp'
-
 import * as mousetrap from 'mousetrap'
 import '../../css/main.less'
 
@@ -97,8 +94,8 @@ class App extends React.Component {
                     {
                         systemMessage.options.actions.map((action, idx) => (
                             <div key={idx}
-                                className={action.className}
-                                onClick={(e) => {this.handleDismissClick(e); action.onClick()}}
+                                 className={action.className}
+                                 onClick={(e) => { this.handleDismissClick(e); action.onClick() }}
                             >
                                 {action.msg}
                             </div>
@@ -109,27 +106,11 @@ class App extends React.Component {
         )
     }
 
-    renderLoader() {
-        return null
-        // no loader for now - we need to attach it to a state
-
-        return (
-            <div className="App-loader">
-                <div className="ball-pulse-sync">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-        )
-    }
-
     render() {
         return (
             <div className="App">
                 {this.props.navbar || <TicketsNavbarContainer params={this.props.params}/>}
                 <div className="App-content">
-                    {this.renderLoader()}
                     <div className="main-content pusher">
                         {this.props.content || this.props.children}
                     </div>
@@ -144,11 +125,7 @@ class App extends React.Component {
 
 App.propTypes = {
     // System Message handling (errors, info, success..)
-    systemMessage: PropTypes.shape({
-        type: PropTypes.oneOf(['neutral', 'error', 'warning', 'info', 'success', 'actionError']),
-        header: PropTypes.string, // high level description
-        msg: PropTypes.string // what the user should do? Try again? Contact support?
-    }),
+    systemMessage: PropTypes.object,
     dismissMessage: PropTypes.func.isRequired,
 
     // current logged in user

@@ -1,6 +1,6 @@
 import * as actions from '../actions/ticket'
-import { Map, List, Set, fromJS } from 'immutable'
-import { renderTemplate } from '../components/utils/template'
+import {Map, List, Set, fromJS} from 'immutable'
+import {renderTemplate} from '../components/utils/template'
 
 const newMessage = Map({
     via: 'helpdesk',
@@ -8,11 +8,11 @@ const newMessage = Map({
     from_agent: true,
     receiver: Map({
         name: '(no name)',
-        id: null,
+        id: null
     }),
     sender: Map({
         name: '(no name)',
-        id: null,
+        id: null
     }),
     subject: '',
     body_text: '',
@@ -47,11 +47,9 @@ const ticketInitial = Map({
     newMessage
 })
 
-function keyIn(/*...keys*/) {
-    const keySet = Set(arguments);
-    return function (v, k) {
-        return keySet.has(k)
-    }
+function keyIn(...keys) {
+    const keySet = Set(keys)
+    return (v, k) => keySet.has(k)
 }
 
 function getRecipient(messages, sender) {
@@ -73,7 +71,6 @@ function getRecipient(messages, sender) {
 
 export function ticket(state = ticketInitial, action) {
     let tags
-    let newState = state
 
     switch (action.type) {
         case actions.ADD_ATTACHMENT_START:
@@ -98,7 +95,7 @@ export function ticket(state = ticketInitial, action) {
         case actions.RECORD_MACRO:
             return state.mergeDeep({
                 newMessage: {
-                    macros: state.getIn(['newMessage', 'macros']).push({ id: action.macro.get('id') })
+                    macros: state.getIn(['newMessage', 'macros']).push({id: action.macro.get('id')})
                 }
             })
 
@@ -130,7 +127,7 @@ export function ticket(state = ticketInitial, action) {
 
         /* Macro actions */
 
-        case actions.ADD_TICKET_TAGS:
+        case actions.ADD_TICKET_TAGS: {
             tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
 
@@ -141,7 +138,7 @@ export function ticket(state = ticketInitial, action) {
             }
 
             return state.set('tags', tags)
-
+        }
         case actions.REMOVE_TICKET_TAG:
             return state.set('tags', state.get('tags').delete(action.index))
 
@@ -167,7 +164,7 @@ export function ticket(state = ticketInitial, action) {
         case actions.SET_SUBJECT:
             return state.set('subject', action.args.get('subject'))
 
-        case actions.SET_RESPONSE_TEXT:
+        case actions.SET_RESPONSE_TEXT: {
             const text = action.args.get('body_text') || action.args.get(0) || ''
             const html = action.args.get('body_html') || action.args.get(1) || ''
             const sender = action.currentUser.filter(keyIn('email', 'id', 'name'))
@@ -197,6 +194,7 @@ export function ticket(state = ticketInitial, action) {
                 body_text: expandedText,
                 body_html: expandedHTML
             })).setIn(['state', 'dirty'], expandedText !== '' || state.getIn(['state', 'dirty']))
+        }
 
         case actions.SETUP_NEW_TICKET:
             return ticketInitial

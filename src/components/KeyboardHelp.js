@@ -1,11 +1,10 @@
 import React from 'react'
-
 import * as mousetrap from 'mousetrap'
 
 export default class KeyboardHelp extends React.Component {
     componentDidMount() {
         // Show keyboard shortcuts
-        mousetrap.bind('?', (e) => {
+        mousetrap.bind('?', () => {
             $('#keyboard-shortcuts').modal({
                 blurring: true
             }).modal('show')

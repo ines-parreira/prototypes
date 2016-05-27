@@ -16,7 +16,7 @@ export function lastMessage(messages) {
 
 // given a field path. Ex: ticket.requester.id and OpenID schemas => resolve the last property
 export function findProperty(field, schemas) {
-    let parts = field.split('.')
+    const parts = field.split('.')
     let def = schemas.getIn(['definitions', upperFirst(parts.shift())])
     let prop
 

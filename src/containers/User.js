@@ -27,7 +27,7 @@ class UserContainer extends React.Component {
 
 UserContainer.propTypes = {
     params: PropTypes.shape({
-        UserId: PropTypes.string
+        userId: PropTypes.string
     }).isRequired,
 
     User: PropTypes.object,

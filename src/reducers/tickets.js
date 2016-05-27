@@ -1,5 +1,5 @@
 import * as actions from '../actions/ticket'
-import {fromJS, Map, List, Set} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 
 
 const ticketsInitial = Map({
@@ -7,8 +7,7 @@ const ticketsInitial = Map({
     resp_meta: Map(),
     loading: false,
     search: '',
-    currentTicketIndex: null,
-
+    currentTicketIndex: null
 })
 
 export function tickets(state = ticketsInitial, action) {
