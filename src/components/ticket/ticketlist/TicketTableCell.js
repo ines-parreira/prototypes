@@ -53,9 +53,17 @@ export default class TicketTableCell extends React.Component {
                     if (!firstMessage) {
                         break
                     }
+
+                    // Optionally show how many messages a ticket has in the subject
+                    let subject = this.truncate(ticket.get('subject'), 50)
+                    const messageCount = this.props.ticket.get('messages').size
+                    if (messageCount > 1) {
+                        subject = `(${messageCount}) ${subject}`
+                    }
+
                     value = (
                         <div className="ui header">
-                            <span className="subject">{this.truncate(ticket.get('subject'), 50)}</span>
+                            <span className="subject">{subject}</span>
                             <div className="body sub header">
                                 {this.truncate(firstMessage.body_html ? firstMessage.body_html : firstMessage.body_text, 50)}
                             </div>
