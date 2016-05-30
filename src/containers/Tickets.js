@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import DocumentTitle from 'react-document-title'
 import * as TicketActions from '../actions/ticket'
 import * as ViewActions from '../actions/view'
 import * as UserActions from '../actions/user'
@@ -55,20 +56,24 @@ class TicketsContainer extends React.Component {
             slug = this.props.params.view
         }
 
-        return (
-            <div className="TicketsContainer">
-                <TicketsView
-                    tickets={this.props.tickets}
-                    views={this.props.views}
-                    schemas={this.props.schemas}
-                    currentUser={this.props.currentUser}
-                    actions={this.props.actions}
+        const active = this.props.views.get('active').toJS()
 
-                    fetchPage={this.fetchPage}
-                    search={this.search}
-                    slug={slug}
-                />
-            </div>
+        return (
+            <DocumentTitle title={`${active.name} (${active.count})`}>
+                <div className="TicketsContainer">
+                    <TicketsView
+                        tickets={this.props.tickets}
+                        views={this.props.views}
+                        schemas={this.props.schemas}
+                        currentUser={this.props.currentUser}
+                        actions={this.props.actions}
+
+                        fetchPage={this.fetchPage}
+                        search={this.search}
+                        slug={slug}
+                    />
+                </div>
+            </DocumentTitle>
         )
     }
 }
