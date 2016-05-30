@@ -115,6 +115,13 @@ export function ticket(state = ticketInitial, action) {
                 }
             })
 
+        case actions.TICKET_PARTIAL_UPDATE_SUCCESS:
+            if (action.resp.id === state.get('id')) {
+                return state.merge(fromJS(action.resp))
+            }
+
+            return state
+
         case actions.FETCH_MESSAGE_SUCCESS:
             if (state.get('id') === action.resp.ticket_id) {
                 return state.setIn(
