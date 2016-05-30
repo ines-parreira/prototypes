@@ -19,9 +19,14 @@ export default class TicketTable extends React.Component {
     render() {
         const {view, tickets, currentUser} = this.props
         const isLoading = this.props.tickets.get('loading')
-        const message = isLoading ? 'Loading...' : 'This view is empty. Enjoy your day!'
 
         if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty() && !isLoading)) {
+            let message = <p>{isLoading ? 'Loading...' : 'This view is empty. Enjoy your day!'}</p>
+
+            if (view.get('dirty') && !isLoading) {
+                message = <p>No tickets found.<br/><a onClick={this.props.resetView}>Reset view</a></p>
+            }
+
             return <Loader message={message} loading={isLoading} />
         }
 
@@ -57,7 +62,7 @@ export default class TicketTable extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                    {tickets.get('items').map((ticket, curIndex) => (
+                    {tickets.get('items').map(ticket => (
                         <TicketTableRow
                             key={ticket.get('id')}
                             view={view}
@@ -87,6 +92,7 @@ TicketTable.propTypes = {
     schemas: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
 
+    resetView: PropTypes.func.isRequired,
     updateView: PropTypes.func.isRequired,
     updateField: PropTypes.func.isRequired,
     addFieldFilter: PropTypes.func.isRequired,

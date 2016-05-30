@@ -61,6 +61,7 @@ export default class TicketsView extends React.Component {
                                         multi_match: {
                                             query: '',
                                             fuzziness: 3,
+                                            type: 'phrase_prefix',
                                             fields: [
                                                 'subject^3',
                                                 'requester.name',
@@ -116,6 +117,7 @@ export default class TicketsView extends React.Component {
                     schemas={this.props.schemas}
                     currentUser={currentUser}
 
+                    resetView={this.resetView}
                     updateView={this.updateView}
                     updateField={this.updateField}
                     addFieldFilter={this.addFieldFilter}

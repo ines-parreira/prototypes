@@ -6,7 +6,7 @@ export const Loader = ({message, loading = true}) => {
     let content = <div className="ui active text loader">{message || DEFAULT_MESSAGE}</div>
 
     if (!loading) {
-        content = <p>{message}</p>
+        content = message
     }
 
     return (
@@ -20,5 +20,5 @@ export const Loader = ({message, loading = true}) => {
 
 Loader.propTypes = {
     loading: PropTypes.bool,
-    message: PropTypes.string
+    message: PropTypes.object // sometimes Object, sometimes string
 }
