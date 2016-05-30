@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import DocumentTitle from 'react-document-title'
 import * as UserActions from '../actions/user'
 import * as SettingsActions from '../actions/settings'
 import UsersView from '../components/user/UsersView'
@@ -36,13 +37,15 @@ class UsersContainer extends React.Component {
         }
 
         return (
-            <div className="UsersContainer">
-                <UsersView
-                    items={users.get('items').toJS()}
-                    search={this.search}
-                    isLoading={users.get('loading')}
-                />
-            </div>
+            <DocumentTitle title="Users">
+                <div className="UsersContainer">
+                    <UsersView
+                        items={users.get('items').toJS()}
+                        search={this.search}
+                        isLoading={users.get('loading')}
+                    />
+                </div>
+            </DocumentTitle>
         )
     }
 }

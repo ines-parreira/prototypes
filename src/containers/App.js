@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
+import DocumentTitle from 'react-document-title'
 import {dismissMessage} from '../actions/systemMessage'
 import {fetchUser, fetchUsers} from '../actions/user'
 import {fetchSettings} from '../actions/settings'
@@ -108,17 +109,19 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="App">
-                {this.props.navbar || <TicketsNavbarContainer params={this.props.params}/>}
-                <div className="App-content">
-                    <div className="main-content pusher">
-                        {this.props.content || this.props.children}
+            <DocumentTitle title="Gorgias">
+                <div className="App">
+                    {this.props.navbar || <TicketsNavbarContainer params={this.props.params}/>}
+                    <div className="App-content">
+                        <div className="main-content pusher">
+                            {this.props.content || this.props.children}
+                        </div>
                     </div>
+                    {this.props.infobar}
+                    <KeyboardHelp />
+                    {this.renderSystemMessage()}
                 </div>
-                {this.props.infobar}
-                <KeyboardHelp />
-                {this.renderSystemMessage()}
-            </div>
+            </DocumentTitle>
         )
     }
 }

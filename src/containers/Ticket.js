@@ -3,6 +3,7 @@ import {browserHistory} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as mousetrap from 'mousetrap'
+import DocumentTitle from 'react-document-title'
 import TicketView from '../components/ticket/ticketview/TicketView'
 import {Loader} from '../components/Loader'
 import * as TicketActions from '../actions/ticket'
@@ -146,8 +147,8 @@ class TicketContainer extends React.Component {
     computeNextUrl(ascending) {
         const translation = ascending ? 1 : -1
         const nextTicket = this.props.tickets.get('items').toJS()[
-            this.props.tickets.get('currentTicketIndex') + translation
-        ]
+        this.props.tickets.get('currentTicketIndex') + translation
+            ]
 
         let nextTicketUrl = null
 
@@ -206,21 +207,23 @@ class TicketContainer extends React.Component {
         }
 
         return (
-            <div className="TicketContainer">
-                <TicketView
-                    actions={this.props.actions}
-                    ticket={this.props.ticket}
-                    macros={this.props.macros}
-                    currentUser={this.props.currentUser}
-                    tags={this.props.tags}
-                    users={this.props.users}
-                    settings={this.props.settings}
-                    submit={this.submit}
-                    applyMacro={this.applyMacro}
-                    view={view}
-                />
-                <MacrosContainer />
-            </div>
+            <DocumentTitle title={`${this.props.ticket.get('subject')}`}>
+                <div className="TicketContainer">
+                    <TicketView
+                        actions={this.props.actions}
+                        ticket={this.props.ticket}
+                        macros={this.props.macros}
+                        currentUser={this.props.currentUser}
+                        tags={this.props.tags}
+                        users={this.props.users}
+                        settings={this.props.settings}
+                        submit={this.submit}
+                        applyMacro={this.applyMacro}
+                        view={view}
+                    />
+                    <MacrosContainer />
+                </div>
+            </DocumentTitle>
         )
     }
 }
