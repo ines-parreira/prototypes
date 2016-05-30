@@ -27,6 +27,9 @@ export const FETCH_TICKET_LIST_VIEW_SUCCESS = 'FETCH_TICKET_LIST_VIEW_SUCCESS'
 export const FETCH_MESSAGE_START = 'FETCH_MESSAGE_START'
 export const FETCH_MESSAGE_SUCCESS = 'FETCH_MESSAGE_SUCCESS'
 
+export const TICKET_PARTIAL_UPDATE_START = 'TICKET_PARTIAL_UPDATE_START'
+export const TICKET_PARTIAL_UPDATE_SUCCESS = 'TICKET_PARTIAL_UPDATE_SUCCESS'
+
 // Macro actions
 export const ADD_TICKET_TAGS = 'addTags'
 export const TOGGLE_PRIORITY = 'setPriority'
@@ -106,27 +109,31 @@ export function recordMacro(macro) {
     }
 }
 
-export function ticketPartialUpdate(ticketId, args, action, attr) {
-    return (dispatch) => reqwest({
-        method: 'PUT',
-        url: `/api/tickets/${ticketId}/`,
-        data: JSON.stringify(args),
-        type: 'json',
-        contentType: 'application/json'
-    }).then((resp) => {
-        const newArgs = {}
-        newArgs[attr] = resp[attr]
+export function ticketPartialUpdate(ticketId, args) {
+    return (dispatch) => {
         dispatch({
-            type: action,
-            args: Map(newArgs)
+            type: TICKET_PARTIAL_UPDATE_START
         })
-    }).catch((err) => {
-        dispatch({
-            type: 'error',
-            header: `Error: failed to update ticket ${ticketId}`,
-            msg: err
+
+        return reqwest({
+            method: 'PUT',
+            url: `/api/tickets/${ticketId}/`,
+            data: JSON.stringify(args),
+            type: 'json',
+            contentType: 'application/json'
+        }).then((resp) => {
+            dispatch({
+                type: TICKET_PARTIAL_UPDATE_SUCCESS,
+                resp
+            })
+        }).catch((err) => {
+            dispatch({
+                type: 'error',
+                header: `Error: failed to update ticket ${ticketId}`,
+                msg: err
+            })
         })
-    })
+    }
 }
 
 export function addTags(tags) {

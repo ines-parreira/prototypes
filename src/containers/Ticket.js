@@ -78,55 +78,41 @@ class TicketContainer extends React.Component {
              * Redirect to the new page when submitting a new ticket.
              */
             browserHistory.push(`/app/ticket/${nextProps.ticket.get('id')}/`)
-        } else if (this.props.ticket.get('id') && this.props.ticket.get('id') !== 'new' && this.props.ticket.get('id') === nextProps.ticket.get('id')) {
+        } else if (
+            this.props.ticket.get('id') &&
+            this.props.ticket.get('id') !== 'new' &&
+            this.props.ticket.get('id') === nextProps.ticket.get('id') &&
+            this.props.ticket.get('id').toString() === this.props.params.ticketId
+        ) {
             /**
              * This is the autosave. Here, we check changes to the ticket state, and if there's any we make a
              * partial update to save only what has changed.
              */
 
+            const data = {}
+
             if (this.props.ticket.get('status') !== nextProps.ticket.get('status')) {
-                this.props.actions.ticket.ticketPartialUpdate(
-                    nextProps.ticket.get('id'),
-                    {status: nextProps.ticket.get('status')},
-                    TicketActions.SET_STATUS,
-                    'status'
-                )
+                data.status = nextProps.ticket.get('status')
             }
 
             if (this.props.ticket.get('tags').size !== nextProps.ticket.get('tags').size) {
-                this.props.actions.ticket.ticketPartialUpdate(
-                    nextProps.ticket.get('id'),
-                    {tags: nextProps.ticket.get('tags')},
-                    TicketActions.SET_TAGS,
-                    'tags'
-                )
+                data.tags = nextProps.ticket.get('tags')
             }
 
             if (this.props.ticket.get('priority') !== nextProps.ticket.get('priority')) {
-                this.props.actions.ticket.ticketPartialUpdate(
-                    nextProps.ticket.get('id'),
-                    {priority: nextProps.ticket.get('priority')},
-                    TicketActions.TOGGLE_PRIORITY,
-                    'priority'
-                )
+                data.priority = nextProps.ticket.get('priority')
             }
 
             if (this.props.ticket.getIn(['assignee_user', 'id']) !== nextProps.ticket.getIn(['assignee_user', 'id'])) {
-                this.props.actions.ticket.ticketPartialUpdate(
-                    nextProps.ticket.get('id'),
-                    {assignee_user: nextProps.ticket.get('assignee_user')},
-                    TicketActions.SET_AGENT,
-                    'assignee_user'
-                )
+                data.assignee_user = { id: nextProps.ticket.getIn(['assignee_user', 'id']) }
             }
 
             if (this.props.ticket.get('subject') !== nextProps.ticket.get('subject')) {
-                this.props.actions.ticket.ticketPartialUpdate(
-                    nextProps.ticket.get('id'),
-                    {subject: nextProps.ticket.get('subject')},
-                    TicketActions.SET_SUBJECT,
-                    'subject'
-                )
+                data.subject = nextProps.ticket.get('subject')
+            }
+
+            if (Object.keys(data).length) {
+                this.props.actions.ticket.ticketPartialUpdate(nextProps.ticket.get('id'), data)
             }
         }
     }
