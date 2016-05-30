@@ -522,6 +522,10 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
                 type: MacroActions.APPLY_MACRO,
                 macro: undefined // reinitialize the current macro
             })
+            dispatch(systemMessage({
+                type: 'success',
+                msg: 'Message successfully sent!'
+            }))
         }).catch((err) => {
             dispatch({
                 type: SUBMIT_TICKET_ERROR

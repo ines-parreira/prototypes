@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import DocumentTitle from 'react-document-title'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import {dismissMessage} from '../actions/systemMessage'
 import {fetchUser, fetchUsers} from '../actions/user'
 import {fetchSettings} from '../actions/settings'
@@ -42,7 +43,9 @@ class App extends React.Component {
     }
 
     handleDismissClick(e) {
-        e.preventDefault()
+        if (e) {
+            e.preventDefault()
+        }
 
         if (this.props.systemMessage.get('modal')) {
             $('#system-message').modal('hide')
@@ -70,6 +73,8 @@ class App extends React.Component {
                 info: 'info',
                 success: 'success'
             }[systemMessage.type]
+
+            setTimeout(this.handleDismissClick, 1500)
 
             return (
                 <div id="system-message" className={`ui ${messageType} message`}>
@@ -121,6 +126,11 @@ class App extends React.Component {
                     <KeyboardHelp />
                     {this.renderSystemMessage()}
                 </div>
+                {this.props.infobar}
+                <KeyboardHelp />
+                <ReactCSSTransitionGroup transitionName="fade" transitionAppear transitionAppearTimeout={200} transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                    {this.renderSystemMessage()}
+                </ReactCSSTransitionGroup>
             </DocumentTitle>
         )
     }
