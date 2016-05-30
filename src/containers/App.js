@@ -124,13 +124,10 @@ class App extends React.Component {
                     </div>
                     {this.props.infobar}
                     <KeyboardHelp />
-                    {this.renderSystemMessage()}
+                    <ReactCSSTransitionGroup transitionName="fade" transitionAppear transitionAppearTimeout={200} transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                        {this.renderSystemMessage()}
+                    </ReactCSSTransitionGroup>
                 </div>
-                {this.props.infobar}
-                <KeyboardHelp />
-                <ReactCSSTransitionGroup transitionName="fade" transitionAppear transitionAppearTimeout={200} transitionEnterTimeout={200} transitionLeaveTimeout={200}>
-                    {this.renderSystemMessage()}
-                </ReactCSSTransitionGroup>
             </DocumentTitle>
         )
     }
