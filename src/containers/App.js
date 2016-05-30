@@ -74,7 +74,9 @@ class App extends React.Component {
                 success: 'success'
             }[systemMessage.type]
 
-            setTimeout(this.handleDismissClick, 1500)
+            if (systemMessage.type === 'info' || systemMessage.type === 'success') {
+                setTimeout(this.handleDismissClick, 1500)
+            }
 
             return (
                 <div id="system-message" className={`ui ${messageType} message`}>
