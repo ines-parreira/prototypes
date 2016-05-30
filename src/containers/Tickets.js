@@ -19,7 +19,13 @@ class TicketsContainer extends React.Component {
         const nextViews = nextProps.views
 
         // if our view changed
-        if (!(nextViews.get('active').isEmpty() || currentViews.get('active').equals(nextViews.get('active')))) {
+        if (!nextViews.get('active').isEmpty() && (
+                currentViews.get('active').isEmpty() ||
+                currentViews.getIn(['active', 'slug']) !== nextViews.getIn(['active', 'slug']) ||
+                currentViews.getIn(['active', 'filters']) !== nextViews.getIn(['active', 'filters']) ||
+                currentViews.getIn(['active', 'search']) !== nextViews.getIn(['active', 'search'])
+            )
+        ) {
             this.fetchPage(1, nextProps)
         }
     }
