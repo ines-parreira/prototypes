@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import DocumentTitle from 'react-document-title'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import {dismissMessage} from '../actions/systemMessage'
 import {fetchUser, fetchUsers} from '../actions/user'
 import {fetchSettings} from '../actions/settings'
@@ -41,10 +42,12 @@ class App extends React.Component {
         }
     }
 
-    handleDismissClick(e) {
-        e.preventDefault()
+    handleDismissClick(e, modal = false) {
+        if (e) {
+            e.preventDefault()
+        }
 
-        if (this.props.systemMessage.get('modal')) {
+        if (modal) {
             $('#system-message').modal('hide')
         }
 
@@ -54,49 +57,60 @@ class App extends React.Component {
     // Show errors, warnings, info and success messages
     renderSystemMessage() {
         const systemMessage = this.props.systemMessage.toJS()
-        if (Object.keys(systemMessage).length === 0) {
+
+        if (Object.keys(systemMessage).length === 0 || systemMessage.modal) {
             return null
         }
 
-        // map message.type to semantic ui classes
-
         const msg = typeof systemMessage.msg === 'string' ? <p>{systemMessage.msg}</p> : systemMessage.msg
 
-        if (!systemMessage.modal) {
-            const messageType = {
-                neutral: '',
-                error: 'negative',
-                warning: 'warning',
-                info: 'info',
-                success: 'success'
-            }[systemMessage.type]
+        const messageType = {
+            neutral: '',
+            error: 'negative',
+            warning: 'warning',
+            info: 'info',
+            success: 'success'
+        }[systemMessage.type]
 
-            return (
-                <div id="system-message" className={`ui ${messageType} message`}>
-                    <i className="close icon" onClick={this.handleDismissClick}/>
-                    <div className="header">{systemMessage.header}</div>
-                    {msg}
-                </div>
-            )
+        if (systemMessage.type === 'info' || systemMessage.type === 'success') {
+            setTimeout(this.handleDismissClick, 1500)
         }
 
         return (
-            <div id="system-message" className="ui modal">
+            <div id="system-message" className={`ui ${messageType} message`}>
                 <i className="close icon" onClick={this.handleDismissClick}/>
+                <div className="header">{systemMessage.header}</div>
+                {msg}
+            </div>
+        )
+    }
+
+    renderModalSystemMessage() {
+        const systemMessage = this.props.systemMessage.toJS()
+
+        if (Object.keys(systemMessage).length === 0 || !systemMessage.modal) {
+            return null
+        }
+
+        const msg = typeof systemMessage.msg === 'string' ? <p>{systemMessage.msg}</p> : systemMessage.msg
+
+        return (
+            <div id="system-message" className="ui modal">
+                <i className="close icon" onClick={e => this.handleDismissClick(e, true)}/>
                 <div className="header">{systemMessage.header}</div>
                 <div className="content">
                     {systemMessage.options.title}
                     <div>{msg}</div>
                 </div>
                 <div className="actions">
-                    <div className="ui button" onClick={this.handleDismissClick}>
+                    <div className="ui button" onClick={e => this.handleDismissClick(e, true)}>
                         Discard
                     </div>
                     {
                         systemMessage.options.actions.map((action, idx) => (
                             <div key={idx}
                                  className={action.className}
-                                 onClick={(e) => { this.handleDismissClick(e); action.onClick() }}
+                                 onClick={(e) => { this.handleDismissClick(e, true); action.onClick() }}
                             >
                                 {action.msg}
                             </div>
@@ -119,7 +133,10 @@ class App extends React.Component {
                     </div>
                     {this.props.infobar}
                     <KeyboardHelp />
-                    {this.renderSystemMessage()}
+                    {this.renderModalSystemMessage()}
+                    <ReactCSSTransitionGroup transitionName="fade" transitionAppear transitionAppearTimeout={200} transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                        {this.renderSystemMessage()}
+                    </ReactCSSTransitionGroup>
                 </div>
             </DocumentTitle>
         )

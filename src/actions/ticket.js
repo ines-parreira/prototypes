@@ -401,6 +401,11 @@ export function fetchTicketMessage(ticketId, messageId) {
                 }))
             } else if (hasPending) {
                 setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId)), 2000)
+            } else {
+                dispatch(systemMessage({
+                    type: 'success',
+                    msg: 'Message successfully sent!'
+                }))
             }
 
             dispatch({
@@ -513,6 +518,11 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
             const last = lastMessage(resp.messages)
             if (last.actions) {
                 setTimeout(() => dispatch(fetchTicketMessage(resp.id, last.id)), 1000)
+            } else {
+                dispatch(systemMessage({
+                    type: 'success',
+                    msg: 'Message successfully sent!'
+                }))
             }
             dispatch({
                 type: SUBMIT_TICKET_SUCCESS,
