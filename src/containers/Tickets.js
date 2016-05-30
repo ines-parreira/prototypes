@@ -57,9 +57,16 @@ class TicketsContainer extends React.Component {
         }
 
         const active = this.props.views.get('active').toJS()
+        let title = 'Loading...'
+        if (Object.keys(active).length) {
+            title = `${active.name}`
+            if (active.count > 0) {
+                title = `(${active.count}) ${title}`
+            }
+        }
 
         return (
-            <DocumentTitle title={`${active.name} (${active.count})`}>
+            <DocumentTitle title={title}>
                 <div className="TicketsContainer">
                     <TicketsView
                         tickets={this.props.tickets}
