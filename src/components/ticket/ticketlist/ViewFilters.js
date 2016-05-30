@@ -18,9 +18,8 @@ const Left = ({view, objectPath}) => {
 
     // now find our field and return it's title
     const field = view.get('fields').find(f => f.get('name') === suffixPath)
-    return (
-        <span className="ui mini basic light blue item button">{field.get('title')}</span>
-    )
+    console.log(suffixPath)
+    return <span className="ui mini basic light blue item button">{field.get('title')}</span>
 }
 
 const Operator = ({operators, selected, index, onChange}) => {
@@ -40,11 +39,11 @@ const Right = ({node}) => {
     if (node.raw.indexOf('current_user') !== -1) {
         value = 'Me'
     }
-    return (<span className="ui mini basic light blue button right-expression">{value}</span>)
+    return <span className="ui mini basic light blue button right-expression">{value}</span>
 }
 
 const RemoveCallExpression = ({index, onClick}) => {
-    return (<i className="right floated remove circle red large action icon" onClick={() => onClick(index)}></i>)
+    return <i className="right floated remove circle red large action icon" onClick={() => onClick(index)}/>
 }
 
 const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index}) => {
@@ -80,18 +79,18 @@ const OperatorLabel = ({operator}) => {
         '&&': 'AND',
         '||': 'OR'
     }
-    return (
-        <span className="ui light blue mini button OperatorLabel">{operatorLabels[operator]}</span>
-    )
+
+    return <span className="ui light blue mini button OperatorLabel">{operatorLabels[operator]}</span>
 }
 
 export default class ViewFilters extends React.Component {
     removeCondition = (index) => {
         this.props.removeFieldFilter(index)
     }
+
     updateOperator = (index, event) => {
         // this.props.updateFieldFilterOperator(index)
-        console.log("Not implemented yet", index, event.target.value)
+        console.log('Not implemented yet', index, event.target.value)
     }
 
     render() {
@@ -110,13 +109,16 @@ export default class ViewFilters extends React.Component {
         const walk = (node) => {
             switch (node.type) {
                 case 'CallExpression':
-                    return <CallExpression node={node}
-                                           view={view}
-                                           schemas={schemas}
-                                           index={callExprCounter++}
-                                           removeCondition={this.removeCondition}
-                                           updateOperator={this.updateOperator}
-                    />
+                    return (
+                        <CallExpression
+                            node={node}
+                            view={view}
+                            schemas={schemas}
+                            index={callExprCounter++}
+                            removeCondition={this.removeCondition}
+                            updateOperator={this.updateOperator}
+                        />
+                    )
                 case 'LogicalExpression':
                     return (<div>
                         {walk(node.left)}
