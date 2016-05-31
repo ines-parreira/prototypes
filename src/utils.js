@@ -22,11 +22,18 @@ export function lastMessage(messages) {
 // given a field path. Ex: ticket.requester.id and OpenID schemas => resolve the last property
 export function findProperty(field, schemas) {
     const parts = field.split('.')
+
     let def = schemas.getIn(['definitions', upperFirst(parts.shift())])
     let prop
 
     while (parts.length !== 0) {
-        prop = def.getIn(['properties', parts.shift()]).toJS()
+        prop = def.getIn(['properties', parts.shift()])
+
+        if (!prop) {
+            return null
+        }
+
+        prop = prop.toJS()
 
         // if we have a ref then we need to redo the whole definition thing
         if (typeof prop.$ref !== 'undefined') {
