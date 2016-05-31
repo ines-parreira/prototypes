@@ -35,11 +35,6 @@ export default class TicketView extends React.Component {
         !nextProps.ticket.getIn(['state', 'dirty']) && // that this code hasn't been executed yet
         nextProps.tags.get('items').size && nextProps.users.get('agents').size // that we've got all the data needed
         ) {
-            /**
-             * In the future, this should use the filters_ast to generically apply any filter to the message.
-             * Though, not sure it is worth it right now.
-             */
-
             const filtersAst = nextProps.view.get('filters_ast')
             const exp = filtersAst.getIn(['body', 0, 'expression']).toJS()
 

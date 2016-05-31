@@ -50,6 +50,7 @@ export default class TicketReplyArea extends React.Component {
                 appliedMacro={this.props.macros.get('appliedMacro')}
                 users={this.props.users}
                 value={this.props.ticket.getIn(['newMessage', 'body_html'])}
+                autoFocus={!!this.props.ticket.get('id')}
             />
         )
     }
