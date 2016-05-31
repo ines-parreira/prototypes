@@ -51,7 +51,10 @@ export default class TicketTableCell extends React.Component {
             case 'address':
                 if (field.name.startsWith('messages')) {
                     const path = field.name.split('.')
+
+                    // insert a '0' in the path so that we look in the first message (messages.0. ...)
                     path.splice(path.indexOf('messages') + 1, 0, '0')
+
                     value = _.get(ticket.toJS(), path)
                 }
                 break
