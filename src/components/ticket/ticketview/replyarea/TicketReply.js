@@ -23,7 +23,11 @@ export default class TicketReply extends React.Component {
     componentDidMount() {
         // we're listening from stuff that comes from the extension
         window.addEventListener('message', this.onMessage, false)
-        this.refs.editor.focus()
+
+        if (this.props.autoFocus) {
+            this.refs.editor.focus()
+        }
+
         $('.TicketReply .ui.accordion').accordion('open', 0)
     }
 
@@ -222,5 +226,6 @@ TicketReply.propTypes = {
     currentUser: PropTypes.object.isRequired,
     appliedMacro: PropTypes.object,
     users: PropTypes.object.isRequired,
-    value: PropTypes.string.isRequired
+    value: PropTypes.string.isRequired,
+    autoFocus: PropTypes.bool.isRequired
 }
