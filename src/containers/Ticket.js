@@ -13,6 +13,7 @@ import * as TagActions from '../actions/tag'
 import * as SettingsActions from '../actions/settings'
 import MacrosContainer from './Macros' // import that to fetch tags list
 
+
 class TicketContainer extends React.Component {
     componentWillMount() {
         if (this.props.params.ticketId !== 'new') {
@@ -160,25 +161,27 @@ class TicketContainer extends React.Component {
             ticket.getIn(['messages', 'actions'])
         }
 
-        this.props.actions.ticket.submitTicket(
-            ticket,
-            status,
-            this.props.macros.getIn(['appliedMacro', 'actions']),
-            this.props.currentUser,
-            action
-        )
+        if (ticket.get('subject') || window.confirm('Are you sure you want to create a ticket with no subject?')) {
+            this.props.actions.ticket.submitTicket(
+                ticket,
+                status,
+                this.props.macros.getIn(['appliedMacro', 'actions']),
+                this.props.currentUser,
+                action
+            )
 
-        if (next) {
-            /**
-             * `next` is a boolean indicating whether the agent want to be redirected to the next ticket.
-             *
-             * If he does, we first try to get the naive next ticket (the ticket at the current index + 1).
-             * If the ticket doesnt exist, then we can't redirect the agent.
-             * If it does, we save the new index (the old index + 1) as the new current index, then we push
-             * the new state to the application.
-             */
-            const nextTicketUrl = this.computeNextUrl(true)
-            browserHistory.push(nextTicketUrl)
+            if (next) {
+                /**
+                 * `next` is a boolean indicating whether the agent want to be redirected to the next ticket.
+                 *
+                 * If he does, we first try to get the naive next ticket (the ticket at the current index + 1).
+                 * If the ticket doesnt exist, then we can't redirect the agent.
+                 * If it does, we save the new index (the old index + 1) as the new current index, then we push
+                 * the new state to the application.
+                 */
+                const nextTicketUrl = this.computeNextUrl(true)
+                browserHistory.push(nextTicketUrl)
+            }
         }
     }
 
