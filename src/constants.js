@@ -4,6 +4,15 @@ export const CELL_WIDTH = 60
 
 export const TICKET_STATUSES = ['open', 'new', 'closed']
 
+export const BASIC_OPERATORS = {
+    eq: {
+        label: 'is'
+    },
+    neq: {
+        label: 'is not'
+    }
+}
+
 export const DEFAULT_ACTIONS = [
     'addTags',
     'setStatus',

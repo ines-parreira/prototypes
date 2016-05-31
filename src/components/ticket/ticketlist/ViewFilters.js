@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {findProperty} from '../../../utils'
+import {BASIC_OPERATORS} from '../../../constants'
 
 const resolveObjectPath = function (node) {
     switch (node.type) {
@@ -52,7 +53,8 @@ const CallExpression = ({view, schemas, node, updateOperator, removeCondition, i
     const operator = node.callee
 
     const objectPath = resolveObjectPath(left)
-    const operators = findProperty(objectPath, schemas).meta.operators
+    const property = findProperty(objectPath, schemas)
+    const operators = property ? property.meta.operators : BASIC_OPERATORS
 
     return (
         <div>

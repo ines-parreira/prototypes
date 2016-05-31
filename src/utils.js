@@ -27,10 +27,14 @@ export function findProperty(field, schemas) {
     let prop
 
     while (parts.length !== 0) {
-        let a = parts.shift()
-        console.log(def.toJS())
-        console.log(a)
-        prop = def.getIn(['properties', a]).toJS()
+        const a = parts.shift()
+        prop = def.getIn(['properties', a])
+
+        if (!prop) {
+            return null
+        }
+
+        prop = prop.toJS()
 
         // if we have a ref then we need to redo the whole definition thing
         if (typeof prop.$ref !== 'undefined') {
