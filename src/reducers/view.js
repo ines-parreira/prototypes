@@ -23,8 +23,9 @@ function addFilterAST(view, filter) {
 function removeFilterAST(view, index) {
     // As always, we assume that we only have && operators
     const codeSplit = view.get('filters').split('&&')
-    if (codeSplit.length !== 1) {
-        return fromJS(esprima.parse(codeSplit.splice(index - 1, 1).join('&&')))
+    codeSplit.splice(index, 1)
+    if (codeSplit.length !== 0) {
+        return fromJS(esprima.parse(codeSplit.join('&&')))
     }
     return ''
 }
