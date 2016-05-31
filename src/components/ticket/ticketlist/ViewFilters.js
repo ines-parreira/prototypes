@@ -19,7 +19,6 @@ const Left = ({view, objectPath}) => {
 
     // now find our field and return it's title
     const field = view.get('fields').find(f => f.get('name') === suffixPath)
-    console.log(suffixPath)
     return <span className="ui mini basic light blue item button">{field.get('title')}</span>
 }
 

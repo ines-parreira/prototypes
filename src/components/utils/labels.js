@@ -52,6 +52,7 @@ export const RenderLabel = (field, value) => {
     }
 
     switch (field.type) {
+        case 'address':
         case 'plain':
         case 'composite':
         case 'tags':

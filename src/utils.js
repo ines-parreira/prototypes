@@ -27,8 +27,7 @@ export function findProperty(field, schemas) {
     let prop
 
     while (parts.length !== 0) {
-        const a = parts.shift()
-        prop = def.getIn(['properties', a])
+        prop = def.getIn(['properties', parts.shift()])
 
         if (!prop) {
             return null

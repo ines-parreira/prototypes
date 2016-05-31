@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import _ from 'lodash'
 import {RenderLabel, TagLabel} from '../../utils/labels'
 
 export default class TicketTableCell extends React.Component {
@@ -46,6 +47,13 @@ export default class TicketTableCell extends React.Component {
                               tag={tag.toJS()}
                     />
                 ))
+                break
+            case 'address':
+                if (field.name.startsWith('messages')) {
+                    const path = field.name.split('.')
+                    path.splice(path.indexOf('messages') + 1, 0, '0')
+                    value = _.get(ticket.toJS(), path)
+                }
                 break
             case 'composite':
                 if (field.name === 'ticket-details') {
