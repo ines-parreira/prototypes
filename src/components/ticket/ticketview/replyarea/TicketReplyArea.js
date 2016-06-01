@@ -72,6 +72,7 @@ export default class TicketReplyArea extends React.Component {
                 <div className="search ui raised segment">
                     <SearchInput
                         ref="search"
+                        tabIndex="2"
                         autoFocus={!!this.props.ticket.get('id')}
                         onFocus={() => setMacrosVisible(true)}
                         onChange={this.searchUpdated}

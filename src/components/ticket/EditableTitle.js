@@ -57,6 +57,7 @@ export default class EditableTitle extends React.Component {
         return (
             <h1 id="title"
                 ref="title"
+                tabIndex="1"
                 placeholder={placeholder}
                 className="ui header EditableTitle"
                 onClick={() => this.toggleEditMode()}
