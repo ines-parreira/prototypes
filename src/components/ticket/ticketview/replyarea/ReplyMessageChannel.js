@@ -203,7 +203,7 @@ export default class ReplyMessageChannel extends React.Component {
                     <span className="label">To: </span>
 
                     <div id="popup-receiver" className="ui inline dropdown">
-                        { [receiverName, receiverEmail]}
+                        {[receiverName, receiverEmail]}
                         <div className="menu">
                             <div className="ui search input">
 

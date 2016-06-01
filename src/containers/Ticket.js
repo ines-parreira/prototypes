@@ -56,13 +56,15 @@ class TicketContainer extends React.Component {
                 this.applyMacro(this.props.macros.get('selected'))
             }
         })
-        mousetrap.bind('up', () => {
+        mousetrap.bind('up', (e) => {
             if (macrosVisible()) {
+                e.preventDefault()
                 this.props.actions.macro.previewAdjacentMacro('prev')
             }
         })
-        mousetrap.bind('down', () => {
+        mousetrap.bind('down', (e) => {
             if (macrosVisible()) {
+                e.preventDefault()
                 this.props.actions.macro.previewAdjacentMacro('next')
             }
         })
