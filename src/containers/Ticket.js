@@ -48,7 +48,7 @@ class TicketContainer extends React.Component {
     }
 
     bindConfirmToRouter() {
-        this.setState({ unbind: this.props.router.setRouteLeaveHook(
+        this.setState({ unbindConfirmationHook: this.props.router.setRouteLeaveHook(
             this.props.route,
             (e) => this.confirmLeaveWhenDirty(e, '\n\nAre you sure you want to leave this page?')
         )})
