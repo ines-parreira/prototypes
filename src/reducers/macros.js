@@ -133,6 +133,7 @@ export function macros(state = macrosInitial, action) {
             }
             return state
         }
+
         case actions.FETCH_MACRO_LIST_SUCCESS: {
             items = Immutable.Map()
             for (const macro of action.resp.data) {

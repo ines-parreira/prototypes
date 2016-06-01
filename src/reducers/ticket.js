@@ -93,11 +93,10 @@ export function ticket(state = ticketInitial, action) {
                 .setIn(['state', 'dirty'], true)
 
         case actions.RECORD_MACRO:
-            return state.mergeDeep({
-                newMessage: {
-                    macros: state.getIn(['newMessage', 'macros']).push({id: action.macro.get('id')})
-                }
-            })
+            return state.setIn(
+                ['newMessage', 'macros'],
+                state.getIn(['newMessage', 'macros']).push({id: action.macro.get('id')})
+            )
 
         case actions.DELETE_TICKET_MESSAGE_START:
         case actions.SUBMIT_TICKET_START:

@@ -41,6 +41,7 @@ class TicketContainer extends React.Component {
          *  - window.onbeforeunload:    'You have unsaved changes! \n\n Are you sure you want to reload this page?'
          *  - router.setRouteLeaveHook: 'You have unsaved changes! \n\n Are you sure you want to leave this page?'
          */
+
         if (this.props.ticket.getIn(['state', 'dirty'])) {
             return `You have unsaved changes! ${suffix}`
         }
@@ -69,8 +70,10 @@ class TicketContainer extends React.Component {
                 this.props.actions.macro.setMacrosVisible(false)
             }
         })
-        mousetrap.bind('return', () => {
+        mousetrap.bind('return', (e) => {
             if (macrosVisible()) {
+                e.preventDefault()
+                e.stopPropagation()
                 this.applyMacro(this.props.macros.get('selected'))
             }
         })
@@ -100,6 +103,20 @@ class TicketContainer extends React.Component {
                 browserHistory.push(nextUrl)
             }
         })
+        // mousetrap.bind('mod+enter', (e) => {
+        //     if (e.preventDefault) {
+        //         e.preventDefault()
+        //     }
+        //
+        //     this.submit('closed', true)
+        // })
+        // mousetrap.bind('mod+shift+enter', (e) => {
+        //     if (e.preventDefault) {
+        //         e.preventDefault()
+        //     }
+        //
+        //     this.submit()
+        // })
 
         this.bindConfirmToRouter()
         window.onbeforeunload = this.confirmLeaveWhenDirty

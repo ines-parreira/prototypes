@@ -32,7 +32,7 @@ export default class TicketReply extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.value === '') {
+        if (nextProps.value !== this.props.value) {
             this.state = this.initialState(nextProps)
         }
     }
