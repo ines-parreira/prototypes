@@ -33,6 +33,7 @@ export default class TicketMacros extends React.Component {
                 </div>
             )
         }
+        return null
     }
 
     renderAddTags(addTagsActions) {

@@ -13,6 +13,7 @@ export default class TicketReplyArea extends React.Component {
 
     componentDidMount() {
         window.addEventListener('keydown', this.hideMacros.bind(this))
+        $('.mousetrap input').addClass('mousetrap')
     }
 
     componentWillUnmount() {
@@ -20,8 +21,7 @@ export default class TicketReplyArea extends React.Component {
     }
 
     hideMacros(e) {
-        if (e.keyCode !== 27) return null
-        this.props.actions.macro.setMacrosVisible(false)
+        if (e.keyCode === 27) this.props.actions.macro.setMacrosVisible(false)
         return null
     }
 
@@ -76,7 +76,7 @@ export default class TicketReplyArea extends React.Component {
                         autoFocus={!!this.props.ticket.get('id')}
                         onFocus={() => setMacrosVisible(true)}
                         onChange={this.searchUpdated}
-                        className="ui transparent input full-width"
+                        className="ui transparent input full-width mousetrap"
                         placeholder="Search for a macro"
                     />
                     <a className={classNames({ hidden: !macrosVisible })}>
