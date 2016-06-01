@@ -15,6 +15,11 @@ import MacrosContainer from './Macros' // import that to fetch tags list
 
 
 class TicketContainer extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = { unbindConfirmationHook: () => {} }
+    }
+
     componentWillMount() {
         if (this.props.params.ticketId !== 'new') {
             this.props.actions.ticket.fetchTicketDetails(this.props.params.ticketId)
@@ -40,6 +45,19 @@ class TicketContainer extends React.Component {
             return `You have unsaved changes! ${suffix}`
         }
         return null
+    }
+
+    bindConfirmToRouter() {
+        this.setState({ unbind: this.props.router.setRouteLeaveHook(
+            this.props.route,
+            (e) => this.confirmLeaveWhenDirty(e, '\n\nAre you sure you want to leave this page?')
+        )})
+    }
+
+    forcePush(url) {
+        this.state.unbindConfirmationHook()
+        browserHistory.push(url)
+        this.bindConfirmToRouter()
     }
 
     componentDidMount() {
@@ -83,11 +101,7 @@ class TicketContainer extends React.Component {
             }
         })
 
-        this.props.router.setRouteLeaveHook(
-            this.props.route,
-            (e) => this.confirmLeaveWhenDirty(e, '\n\nAre you sure you want to leave this page?')
-        )
-
+        this.bindConfirmToRouter()
         window.onbeforeunload = this.confirmLeaveWhenDirty
     }
 
@@ -107,7 +121,7 @@ class TicketContainer extends React.Component {
             /**
              * Redirect to the new page when submitting a new ticket.
              */
-            browserHistory.push(`/app/ticket/${nextProps.ticket.get('id')}/`)
+            this.forcePush(`/app/ticket/${nextProps.ticket.get('id')}/`)
         } else if (
             this.props.ticket.get('id') &&
             this.props.ticket.get('id') !== 'new' &&
@@ -146,7 +160,6 @@ class TicketContainer extends React.Component {
             }
         }
     }
-
 
     componentDidUpdate = (prevProps) => {
         const prevMacros = prevProps.macros.get('items')
@@ -209,7 +222,7 @@ class TicketContainer extends React.Component {
                  * the new state to the application.
                  */
                 const nextTicketUrl = this.computeNextUrl(true)
-                browserHistory.push(nextTicketUrl)
+                this.forcePush(nextTicketUrl)
             }
         }
     }
