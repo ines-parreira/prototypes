@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {browserHistory} from 'react-router'
+import {browserHistory, withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as mousetrap from 'mousetrap'
@@ -24,6 +24,22 @@ class TicketContainer extends React.Component {
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers('agent')
+    }
+
+    confirmLeaveWhenDirty = (e, suffix = '') => {
+        /**
+         * When using window.onbeforeunload, the text '\n\n Are you sure you want to reload this page?' is not
+         * removable. So we need to deal with it and try to be as consistent as possible when using
+         * router.setRouteLeaveHook.
+         *
+         * Using the suffix, we have:
+         *  - window.onbeforeunload:    'You have unsaved changes! \n\n Are you sure you want to reload this page?'
+         *  - router.setRouteLeaveHook: 'You have unsaved changes! \n\n Are you sure you want to leave this page?'
+         */
+        if (this.props.ticket.getIn(['state', 'dirty'])) {
+            return `You have unsaved changes! ${suffix}`
+        }
+        return null
     }
 
     componentDidMount() {
@@ -64,6 +80,17 @@ class TicketContainer extends React.Component {
                 browserHistory.push(nextUrl)
             }
         })
+
+        this.props.router.setRouteLeaveHook(
+            this.props.route,
+            (e) => this.confirmLeaveWhenDirty(e, '\n\nAre you sure you want to leave this page?')
+        )
+
+        window.onbeforeunload = this.confirmLeaveWhenDirty
+    }
+
+    componentWillUnmount() {
+        window.onbeforeunload = null
     }
 
     componentWillReceiveProps(nextProps) {
@@ -234,8 +261,13 @@ TicketContainer.propTypes = {
     views: PropTypes.object,
     routing: PropTypes.object,
 
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+
+    // React Router
+    router: PropTypes.object.isRequired,
+    route: PropTypes.object.isRequired
 }
+
 
 function mapStateToProps(state) {
     return {
@@ -263,4 +295,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketContainer)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TicketContainer))
