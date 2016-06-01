@@ -186,6 +186,7 @@ export default class TicketReply extends React.Component {
                 >
                     <div className="field">
                         <Editor
+                            tabIndex="3"
                             editorState={this.state.editorState}
                             onChange={this.onChange}
                             onTab={this.onTab}
