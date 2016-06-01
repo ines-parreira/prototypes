@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {List} from 'immutable'
 import {formatDatetime} from '../../../utils'
+import { SOURCE_VALUE_PROP } from '../../../constants'
 import classNames from 'classnames'
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
@@ -33,31 +34,37 @@ export default class TicketMessage extends React.Component {
             return null
         }
 
+        const icons = {
+            email: 'mail',
+            'facebook-message': 'square facebook',
+            'facebook-comment': 'facebook'
+        }
+
         return (
             <span className="ticket-message-source">
                 <div className="ui dropdown" id="email-dropdown">
                     <span className="text">
-                        <i className="icon mail"/>
-                        &lt;{message.sender.email}&gt;
+                        <i className={`icon ${icons[message.source.type]}`}/>
+                        &lt;{message.source.from[SOURCE_VALUE_PROP[message.source.type]]}&gt;
                     </span>
                     <div className="ticket-message-source-details menu transition">
                         <ul className="item">
                             <li>
                                 To:
                                 <strong>
-                                    {message.receiver.email}
+                                    {message.source.to.map(dest => dest[SOURCE_VALUE_PROP[message.source.type]]).join(', ')}
                                 </strong>
                             </li>
                             <li>
                                 From:
                                 <strong>
-                                    {message.sender.email}
+                                    {message.source.from[SOURCE_VALUE_PROP[message.source.type]]}
                                 </strong>
                             </li>
                             <li>
                                 Send via:
                                 <strong>
-                                    Email
+                                    {message.source.type}
                                 </strong>
                             </li>
                         </ul>

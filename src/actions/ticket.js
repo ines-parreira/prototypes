@@ -2,7 +2,8 @@ import reqwest from 'reqwest'
 import React from 'react'
 import _ from 'lodash'
 import {browserHistory} from 'react-router'
-import Immutable, {Map} from 'immutable'
+import Immutable, {Map, Set} from 'immutable'
+
 import {systemMessage} from './systemMessage'
 import {ACTION_TEMPLATES} from './../constants'
 import {renderTemplate} from '../components/utils/template'
@@ -44,7 +45,9 @@ export const RECORD_MACRO = 'RECORD_MACRO'
 
 export const SET_PUBLIC = 'SET_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
-export const SET_RECEIVER = 'SET_RECEIVER'
+export const ADD_RECEIVER = 'ADD_RECEIVER'
+export const REMOVE_RECEIVER = 'REMOVE_RECEIVER'
+export const SET_SOURCE_TO = 'SET_SOURCE_TO'
 export const SET_SOURCE_TYPE = 'SET_SOURCE_TYPE'
 
 export const SAVE_INDEX = 'SAVE_INDEX'
@@ -194,18 +197,31 @@ export function setSubject(subject) {
     }
 }
 
-export function setReceiver(receiver, channel) {
+export function addReceiver(receiver) {
     return {
-        type: SET_RECEIVER,
-        receiver,
-        channel
+        type: ADD_RECEIVER,
+        receiver
     }
 }
 
-export function setSourceType(source_type) {
+export function removeReceiver(prop) {
+    return {
+        type: REMOVE_RECEIVER,
+        prop
+    }
+}
+
+export function setSourceTo(emails) {
+    return {
+        type: SET_SOURCE_TO,
+        emails
+    }
+}
+
+export function setSourceType(sourceType) {
     return {
         type: SET_SOURCE_TYPE,
-        source_type
+        sourceType
     }
 }
 
@@ -213,7 +229,7 @@ export function updatePotentialRequesters(query) {
     return (dispatch) => reqwest({
         url: '/api/search/',
         data: JSON.stringify({
-            doc_type: 'user',
+            doc_type: 'user_channel',
             query
         }),
         type: 'json',
@@ -481,6 +497,40 @@ export function formatAction(action, template, context) {
     return action.set('arguments', newArgs).set('status', template.get('execution') === 'back' ? 'pending' : 'success')
 }
 
+/**
+ * Return a user's most appropriate address to send a message.
+ *
+ * @param ticketChannel: the channel of the current ticket
+ * @param user: the user from which we want the address
+ * @returns {string} the address of the user
+ */
+function getAddress(ticketChannel, user) {
+    let res = null
+
+    if (user.channels) {
+        for (const channel of user.channels) {
+            if (channel.type === ticketChannel) {
+                if (channel.preferred) {
+                    return channel.address
+                }
+
+                res = channel.address
+            }
+        }
+    }
+
+    if (!res && ticketChannel === 'email') {
+        res = user.email
+    }
+
+    return res
+}
+
+export function keyIn(...keys) {
+    const keySet = Set(keys)
+    return (v, k) => keySet.has(k)
+}
+
 export function submitTicket(ticket, status, macroActions, currentUser, action) {
     return (dispatch) => {
         dispatch({
@@ -491,6 +541,20 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
         data.status = status || data.status
 
         if (data.newMessage) {
+            if (data.messages.length) {
+                const msg = lastMessage(data.messages)
+                data.newMessage.source.from = msg.from_agent ? msg.source.from : msg.source.to[0]
+            } else {
+                data.newMessage.source.from = {
+                    name: currentUser.get('name'),
+                    address: getAddress(data.channel, currentUser.toJS())
+                }
+            }
+
+            if (!data.newMessage.sender) {
+                data.newMessage.sender = currentUser.filter(keyIn('email', 'id', 'name'))
+            }
+
             if (data.newMessage.body_text.length > 0) {
                 if (macroActions) {
                     data.newMessage.actions = macroActions.map(curAction => formatAction(
@@ -527,6 +591,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
             data: JSON.stringify(data)
         }).then((resp) => {
             const last = lastMessage(resp.messages)
+
             if (last.actions) {
                 setTimeout(() => dispatch(fetchTicketMessage(resp.id, last.id)), 1000)
             } else {
@@ -535,13 +600,16 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
                     msg: 'Message successfully sent!'
                 }))
             }
+
             dispatch({
                 type: SUBMIT_TICKET_SUCCESS,
                 resp
             })
+
+            // reinitialize the current macro
             dispatch({
                 type: MacroActions.APPLY_MACRO,
-                macro: undefined // reinitialize the current macro
+                macro: undefined
             })
         }).catch((err) => {
             dispatch({

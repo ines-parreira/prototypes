@@ -218,7 +218,7 @@ export default class TicketReply extends React.Component {
                     <div className="field">
                         <Editor
                             ref="editor"
-                            tabIndex="3"
+                            tabIndex="4"
                             editorState={this.state.editorState}
                             plugins={this.state.plugins}
                             onChange={this.onChange}
