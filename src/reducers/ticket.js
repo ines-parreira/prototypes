@@ -195,8 +195,7 @@ export function ticket(state = ticketInitial, action) {
                 receiver = state.getIn(['newMessage', 'receiver'])
             }
           
-            let channel = state.get('channel', 'email');
-            let source = state.get('source', Map({}));
+            const channel = state.get('channel', 'email');
           
             return state.set('newMessage', state.get('newMessage').merge({
                 sender,
