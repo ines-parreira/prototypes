@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import DocumentTitle from 'react-document-title'
 import * as TicketActions from '../actions/ticket'
+import * as TicketsActions from '../actions/tickets'
 import * as ViewActions from '../actions/view'
 import * as UserActions from '../actions/user'
 import * as SchemaActions from '../actions/schema'
@@ -40,7 +41,7 @@ class TicketsContainer extends React.Component {
     fetchPage = (page = 1, props) => {
         const {tickets, actions, views} = props || this.props
         if (!(tickets.get('loading') || views.get('active').isEmpty())) {
-            return actions.ticket.fetchTicketsPage(views, page)
+            return actions.tickets.fetchTicketsPage(views, page)
         }
         return null
     }
@@ -132,6 +133,7 @@ function mapDispatchToProps(dispatch) {
         actions: {
             view: bindActionCreators(ViewActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
+            tickets: bindActionCreators(TicketsActions, dispatch),
             schema: bindActionCreators(SchemaActions, dispatch),
             user: bindActionCreators(UserActions, dispatch),
         }

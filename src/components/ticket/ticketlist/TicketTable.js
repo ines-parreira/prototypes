@@ -7,13 +7,7 @@ import {Loader} from '../../Loader'
 
 export default class TicketTable extends React.Component {
     toggleSelectAll = () => {
-        const checked = this.refs.toggleSelection.checked
-        const checkboxes = this.refs.table.querySelectorAll('.checkbox input')
-        for (const checkbox in checkboxes) {
-            if (checkboxes.hasOwnProperty(checkbox)) {
-                checkboxes[checkbox].checked = checked
-            }
-        }
+        this.props.toggleTicketSelection('all')
     }
 
     render() {
@@ -40,6 +34,7 @@ export default class TicketTable extends React.Component {
                                     <input type="checkbox"
                                            ref="toggleSelection"
                                            onChange={this.toggleSelectAll}
+                                           checked={tickets.get('items').size === tickets.get('selected').size}
                                     />
                                     <label />
                                 </span>
@@ -68,7 +63,8 @@ export default class TicketTable extends React.Component {
                             view={view}
                             ticket={ticket}
                             currentUser={currentUser}
-                            page={tickets.getIn(['resp_meta', 'page'])}
+                            toggleTicketSelection={this.props.toggleTicketSelection}
+                            selected={tickets.get('selected').indexOf(ticket.get('id')) !== -1}
                         />
                     ))}
                     </tbody>
@@ -97,5 +93,7 @@ TicketTable.propTypes = {
     updateField: PropTypes.func.isRequired,
     addFieldFilter: PropTypes.func.isRequired,
     updateFieldEnumSearch: PropTypes.func.isRequired,
-    fetchPage: PropTypes.func.isRequired
+    fetchPage: PropTypes.func.isRequired,
+
+    toggleTicketSelection: PropTypes.func.isRequired
 }

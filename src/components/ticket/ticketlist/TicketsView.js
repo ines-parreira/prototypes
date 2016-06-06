@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
-import {browserHistory} from 'react-router'
 import EditableTitle from './../EditableTitle'
 import TicketTable from './TicketTable'
+import ListActions from './ListActions'
 import FilterTopbar from './FilterTopbar'
 import Search from '../../Search'
 import {CELL_WIDTH} from '../../../constants'
@@ -37,8 +37,9 @@ export default class TicketsView extends React.Component {
     updateFieldEnumSearch = (field, query) => this.props.actions.view.updateFieldEnumSearch(field, query)
 
     render() {
-        const {views, tickets, currentUser} = this.props
+        const {views, tickets, currentUser, search, schemas, actions, fetchPage} = this.props
         const view = views.get('active')
+
         if (!view.get('fields')) {
             return null
         }
@@ -49,12 +50,13 @@ export default class TicketsView extends React.Component {
             <div className="TicketsView" style={style}>
                 <div style={style}>
                     <div className="sticky-header">
+
                         <div className="ui text menu">
                             <div className="left menu item"></div>
                             <div className="right menu item">
                                 <Search
                                     autofocus
-                                    onChange={this.props.search}
+                                    onChange={search}
                                     className="long"
                                     queryPath="multi_match.query"
                                     query={{
@@ -83,30 +85,33 @@ export default class TicketsView extends React.Component {
                         </div>
 
                         <div className="ui grid view-header">
-                            <div className="twelve wide column">
+                            <div className="six wide column">
+
                                 <EditableTitle
                                     title={view.get('name') || ''}
                                     placeholder="View name"
                                     update={this.updateViewName}
                                 />
+
                             </div>
-                            <div className="four wide column">
-                                <button
-                                    className="ui right floated green button"
-                                    onClick={() => { browserHistory.push(`/app/ticket/new?view=${this.props.views.getIn(['active', 'slug'])}`) }}
-                                >
-                                    CREATE TICKET
-                                </button>
+                            <div className="ten wide column">
+
+                                <ListActions
+                                    views={views}
+                                    shouldDisplayBulkActions={tickets.get('selected').size > 0}
+                                />
+
                             </div>
                         </div>
+
                     </div>
                     <FilterTopbar
                         views={views}
-                        schemas={this.props.schemas}
+                        schemas={schemas}
                         resetView={this.resetView}
                         deleteView={this.deleteView}
-                        removeFieldFilter={this.props.actions.view.removeFieldFilter}
-                        submitView={this.props.actions.view.submitView}
+                        removeFieldFilter={actions.view.removeFieldFilter}
+                        submitView={actions.view.submitView}
                         width={this.getWidth()}
                     />
                 </div>
@@ -114,7 +119,7 @@ export default class TicketsView extends React.Component {
                 <TicketTable
                     view={view}
                     tickets={tickets}
-                    schemas={this.props.schemas}
+                    schemas={schemas}
                     currentUser={currentUser}
 
                     resetView={this.resetView}
@@ -122,7 +127,9 @@ export default class TicketsView extends React.Component {
                     updateField={this.updateField}
                     addFieldFilter={this.addFieldFilter}
                     updateFieldEnumSearch={this.updateFieldEnumSearch}
-                    fetchPage={this.props.fetchPage}
+                    fetchPage={fetchPage}
+
+                    toggleTicketSelection={actions.tickets.toggleTicketSelection}
                 />
             </div>
         )

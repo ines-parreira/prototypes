@@ -1,9 +1,10 @@
-import * as actions from '../actions/ticket'
+import * as actions from '../actions/tickets'
 import {fromJS, Map, List} from 'immutable'
 
 
 const ticketsInitial = Map({
     items: List(),
+    selected: List(),
     resp_meta: Map(),
     loading: false,
     search: '',
@@ -23,11 +24,26 @@ export function tickets(state = ticketsInitial, action) {
                 search: state.get('search')
             })
 
-        case actions.SEARCH:
-            return state.set('search', action.searchValue)
-
         case actions.SAVE_INDEX:
             return state.set('currentTicketIndex', action.currentTicketIndex)
+
+        case actions.TOGGLE_TICKET_SELECTION: {
+            if (action.ticketId === 'all') {
+                if (state.get('selected').size < state.get('items').size) {
+                    return state.set('selected', state.get('items').map(item => item.get('id')))
+                }
+
+                return state.set('selected', List())
+            }
+
+            const idx = state.get('selected').indexOf(action.ticketId)
+
+            if (idx !== -1) {
+                return state.set('selected', state.get('selected').delete(idx))
+            }
+
+            return state.set('selected', state.get('selected').push(action.ticketId))
+        }
 
         default:
             return state

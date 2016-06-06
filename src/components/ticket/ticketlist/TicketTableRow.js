@@ -4,7 +4,7 @@ import TicketTableCell from './TicketTableCell'
 
 export default class TicketTableRow extends React.Component {
     handleClick = () => {
-        //this.props.saveIndex(this.props.curIndex)
+        // this.props.saveIndex(this.props.curIndex)
         browserHistory.push(`/app/ticket/${this.props.ticket.get('id')}`)
     }
 
@@ -14,8 +14,8 @@ export default class TicketTableRow extends React.Component {
     }
 
     render() {
-        //const style = {maxWidth: this.props.width}
-        const {view, ticket, currentUser} = this.props
+        // const style = {maxWidth: this.props.width}
+        const {view, ticket, currentUser, toggleTicketSelection, selected} = this.props
 
         // Unfortunately need to render a new .ui.grid for every row since
         // semantic needs .rows to be a direct child of them, which react-infinite
@@ -24,7 +24,7 @@ export default class TicketTableRow extends React.Component {
             <tr onClick={this.handleClick}>
                 <td>
                     <span className="ui fitted checkbox" onClick={this.stopPropagation}>
-                        <input type="checkbox" />
+                        <input type="checkbox" checked={selected} onChange={() => toggleTicketSelection(ticket.get('id'))}/>
                         <label />
                     </span>
                 </td>
@@ -46,6 +46,6 @@ TicketTableRow.propTypes = {
     ticket: PropTypes.object.isRequired,
     view: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    //curIndex: PropTypes.number.isRequired,
-    //saveIndex: PropTypes.func.isRequired
+    toggleTicketSelection: PropTypes.func.isRequired,
+    selected: PropTypes.bool.isRequired
 }
