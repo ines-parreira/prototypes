@@ -124,7 +124,7 @@ export default class TicketMacros extends React.Component {
     renderSelectedMacro = () => {
         const macro = this.props.selected
 
-        if (macro.isEmpty()) {
+        if (!macro || macro.isEmpty()) {
             return null
         }
 
@@ -204,7 +204,7 @@ export default class TicketMacros extends React.Component {
 
 TicketMacros.propTypes = {
     items: PropTypes.object.isRequired,
-    selected: PropTypes.object.isRequired,
+    selected: PropTypes.object,
     applyMacro: PropTypes.func.isRequired,
     previewMacro: PropTypes.func.isRequired,
     previewMacroInModal: PropTypes.func.isRequired,

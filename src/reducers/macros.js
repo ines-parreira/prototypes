@@ -127,7 +127,7 @@ export function macros(state = macrosInitial, action) {
             items = state.get('items').toIndexedSeq().toJS()
             items = fromJS(items.filter(createFilter(state.getIn(['state', 'query']), ['name'])))
 
-            const curIdx = items.findIndex(item => item.get('id') === selectedMacro.get('id'))
+            const curIdx = selectedMacro ? items.findIndex(item => item.get('id') === selectedMacro.get('id')) : 0
 
             if (action.direction === 'next') {
                 return state.set('selected', curIdx + 1 <= items.size - 1 ? items.get(curIdx + 1) : items.get(0))
@@ -194,7 +194,9 @@ export function macros(state = macrosInitial, action) {
             items = newState.get('items').toIndexedSeq().toJS()
             items = fromJS(items.filter(createFilter(newState.getIn(['state', 'query']), ['name'])))
 
-            if (items.findIndex(item => item.get('id') === selectedMacro.get('id')) === -1) {
+            if (!selectedMacro) {
+                newState = newState.set('selected', items.first())
+            } else if (items.findIndex(item => item.get('id') === selectedMacro.get('id')) === -1) {
                 newState = newState.set('selected', items.first())
             }
 
