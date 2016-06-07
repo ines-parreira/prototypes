@@ -135,7 +135,7 @@ export function previewMacro(macro) {
 export function previewAdjacentMacro(direction) {
     return {
         type: PREVIEW_ADJACENT_MACRO,
-        direction,
+        direction
     }
 }
 

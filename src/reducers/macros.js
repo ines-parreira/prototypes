@@ -119,18 +119,17 @@ export function macros(state = macrosInitial, action) {
             return state.set('visible', action.visible)
 
         case actions.PREVIEW_ADJACENT_MACRO: {
-            let prev = null
             const selectedMacro = state.get('selected')
-            items = state.get('items')
+            items = state.get('items').toIndexedSeq()
 
-            for (const current of items.toIndexedSeq()) {
-                const toSelect = action.direction === 'prev' ? prev : current
-                const toCompare = action.direction === 'prev' ? current : prev
-                if (selectedMacro === toCompare) {
-                    return prev ? state.set('selected', toSelect) : state
-                }
-                prev = current
+            const curIdx = items.findIndex(item => item.get('id') === selectedMacro.get('id'))
+
+            if (action.direction === 'next') {
+                return state.set('selected', curIdx + 1 <= items.size - 1 ? items.get(curIdx + 1) : items.get(0))
+            } else if (action.direction === 'prev') {
+                return state.set('selected', curIdx - 1 >= 0 ? items.get(curIdx - 1) : items.get(items.size - 1))
             }
+
             return state
         }
 
