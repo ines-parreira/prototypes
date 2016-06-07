@@ -40,6 +40,7 @@ export const UPDATE_ACTION_ARGS = 'UPDATE_ACTION_ARGS'
 export const UPDATE_ACTION_TITLE = 'UPDATE_ACTION_TITLE'
 export const SET_NAME = 'SET_NAME_ON_MACRO'
 
+export const SAVE_SEARCH = 'SAVE_SEARCH'
 
 export function deleteActionOnApplied(actionIndex) {
     return {
@@ -136,6 +137,13 @@ export function previewAdjacentMacro(direction) {
     return {
         type: PREVIEW_ADJACENT_MACRO,
         direction
+    }
+}
+
+export function saveSearch(query) {
+    return {
+        type: SAVE_SEARCH,
+        query
     }
 }
 

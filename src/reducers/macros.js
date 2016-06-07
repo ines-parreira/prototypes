@@ -1,6 +1,7 @@
 import * as actions from '../actions/macro'
-import Immutable, {Map, List} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import {DEFAULT_ACTIONS} from '../constants'
+import {createFilter} from 'react-search-input'
 
 
 const actionInitial = Map({
@@ -75,13 +76,16 @@ const macroInitial = Map({
     ])
 })
 
-const macrosInitial = Map({
+const macrosInitial = fromJS({
+    state: {
+        query: ''
+    },
     visible: true,
-    selected: Map(),
+    selected: {},
     isModalOpen: false,
     modalSelected: macroInitial,
     appliedMacro: null,
-    items: Map(),
+    items: {},
     actions: initialDefaultActions
 })
 
@@ -101,7 +105,7 @@ export function macros(state = macrosInitial, action) {
 
         case actions.CREATE_MACRO_SUCCESS:
         case actions.UPDATE_MACRO_SUCCESS:
-            return state.setIn(['items', action.resp.id], Immutable.fromJS(action.resp))
+            return state.setIn(['items', action.resp.id], fromJS(action.resp))
 
         case actions.DELETE_MACRO_SUCCESS:
             return state.set('items', state.get('items').delete(action.macroId)).set('modalSelected', state.get('items').first())
@@ -120,7 +124,8 @@ export function macros(state = macrosInitial, action) {
 
         case actions.PREVIEW_ADJACENT_MACRO: {
             const selectedMacro = state.get('selected')
-            items = state.get('items').toIndexedSeq()
+            items = state.get('items').toIndexedSeq().toJS()
+            items = fromJS(items.filter(createFilter(state.getIn(['state', 'query']), ['name'])))
 
             const curIdx = items.findIndex(item => item.get('id') === selectedMacro.get('id'))
 
@@ -134,9 +139,9 @@ export function macros(state = macrosInitial, action) {
         }
 
         case actions.FETCH_MACRO_LIST_SUCCESS: {
-            items = Immutable.Map()
+            items = Map()
             for (const macro of action.resp.data) {
-                items = items.set(macro.id, Immutable.fromJS(macro))
+                items = items.set(macro.id, fromJS(macro))
             }
             return state.merge({
                 visible: !!items.size,
@@ -181,6 +186,20 @@ export function macros(state = macrosInitial, action) {
                 ['modalSelected', 'actions'],
                 state.getIn(['modalSelected', 'actions']).push(state.getIn(['actions', action.actionType]))
             )
+
+        case actions.SAVE_SEARCH: {
+            let newState = state.setIn(['state', 'query'], action.query)
+
+            const selectedMacro = newState.get('selected')
+            items = newState.get('items').toIndexedSeq().toJS()
+            items = fromJS(items.filter(createFilter(newState.getIn(['state', 'query']), ['name'])))
+
+            if (items.findIndex(item => item.get('id') === selectedMacro.get('id')) === -1) {
+                newState = newState.set('selected', items.first())
+            }
+
+            return newState
+        }
 
         default:
             return state

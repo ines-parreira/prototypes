@@ -26,6 +26,7 @@ export default class TicketReplyArea extends React.Component {
     }
 
     searchUpdated = (term) => {
+        this.props.actions.macro.saveSearch(term)
         this.setState({searchTerm: term}) // Necessary for re-render
     }
 
@@ -42,6 +43,7 @@ export default class TicketReplyArea extends React.Component {
                 />
             )
         }
+
         return (
             <TicketReply
                 actions={this.props.actions}
