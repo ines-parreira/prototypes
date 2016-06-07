@@ -37,7 +37,7 @@ export default class TicketReply extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // clear if the state is empty
-        if (!nextProps.contentState) {
+        if (nextProps.contentState !== this.props.contentState) {
             this.setState(this.getEditorState(nextProps))
         }
     }
