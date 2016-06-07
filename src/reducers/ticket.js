@@ -1,5 +1,7 @@
 import * as actions from '../actions/ticket'
 import {Map, List, Set, fromJS} from 'immutable'
+import {convertToRaw, convertFromHTML, ContentState} from 'draft-js'
+import {stateToHTML} from 'draft-js-export-html'
 import {renderTemplate} from '../components/utils/template'
 
 const newMessage = Map({
@@ -18,6 +20,7 @@ const newMessage = Map({
     subject: '',
     body_text: '',
     body_html: '',
+    contentState: null,
     channel: 'email',
     attachments: List(),
     macros: List()
@@ -134,7 +137,8 @@ export function ticket(state = ticketInitial, action) {
 
         /* Macro actions */
 
-        case actions.ADD_TICKET_TAGS: {
+        case actions.ADD_TICKET_TAGS:
+        {
             tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
 
@@ -171,9 +175,12 @@ export function ticket(state = ticketInitial, action) {
         case actions.SET_SUBJECT:
             return state.set('subject', action.args.get('subject'))
 
-        case actions.SET_RESPONSE_TEXT: {
-            const text = action.args.get('body_text') || action.args.get(0) || ''
-            const html = action.args.get('body_html') || action.args.get(1) || ''
+        case actions.SET_RESPONSE_TEXT:
+        {
+            let contentState = action.args.get('contentState')
+            const text = contentState ? contentState.getPlainText() : action.args.get('body_text', '')
+            const html = contentState ? stateToHTML(contentState) : action.args.get('body_html', '')
+
             const sender = action.currentUser.filter(keyIn('email', 'id', 'name'))
 
             const ticketState = state.toJS()
@@ -189,18 +196,23 @@ export function ticket(state = ticketInitial, action) {
                 current_user: currentUser
             }))
 
+            if (!contentState) {
+                contentState = ContentState.createFromText(expandedText)
+            }
+
             let receiver = getRecipient(state.get('messages'), sender)
 
             if (state.getIn(['newMessage', 'receiver', 'id']) || state.getIn(['newMessage', 'receiver', 'email'])) {
                 receiver = state.getIn(['newMessage', 'receiver'])
             }
-          
+
             const channel = state.get('channel', 'email');
-          
+
             return state.set('newMessage', state.get('newMessage').merge({
                 sender,
                 receiver,
                 channel,
+                contentState,
                 body_text: expandedText,
                 body_html: expandedHTML
             })).setIn(['state', 'dirty'], expandedText !== '' || state.getIn(['state', 'dirty']))

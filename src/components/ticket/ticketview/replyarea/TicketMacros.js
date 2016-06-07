@@ -1,14 +1,14 @@
-import React, { PropTypes } from 'react'
-import { fromJS } from 'immutable'
+import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import { ACTION_TEMPLATES } from './../../../../constants'
+import {ACTION_TEMPLATES} from './../../../../constants'
 
 
 export default class TicketMacros extends React.Component {
     renderMacroListItem = (macro) => {
         const containerOpts = {
             key: macro.get('id'),
-            className: classnames('item macro-item', { active: macro.get('id') === this.props.selected.get('id') }),
+            className: classnames('item macro-item', {active: macro.get('id') === this.props.selected.get('id')}),
             onMouseEnter: () => this.props.previewMacro(macro),
             onClick: () => this.props.applyMacro(macro),
         }
@@ -26,7 +26,7 @@ export default class TicketMacros extends React.Component {
         if (setStatusAction) {
             return (
                 <div className="macro-data">
-                    <div className="ui label macro-legend">SET STATUS: </div>
+                    <div className="ui label macro-legend">SET STATUS:</div>
                     <div className={`ui label ticket-status ${setStatusAction.getIn(['arguments', 'status'])}`}>
                         {setStatusAction.getIn(['arguments', 'status'])}
                     </div>
@@ -43,11 +43,12 @@ export default class TicketMacros extends React.Component {
 
         return (
             <div className="macro-data">
-                <div className="ui label macro-legend">ADD TAGS: </div>
+                <div className="ui label macro-legend">ADD TAGS:</div>
                 {
                     addTagsActions.map((action) =>
                         action.get('arguments').map((arg, i) =>
-                            <div key={`action-tag-${action.id}-${i}`} className="ui label ticket-tag no-icon">{arg.get('name')}</div>
+                            <div key={`action-tag-${action.id}-${i}`}
+                                 className="ui label ticket-tag no-icon">{arg.get('name')}</div>
                         )
                     )
                 }
@@ -62,7 +63,7 @@ export default class TicketMacros extends React.Component {
 
         return (
             <div className="macro-data">
-                <div className="ui label macro-legend">ASSIGN TO: </div>
+                <div className="ui label macro-legend">ASSIGN TO:</div>
                 <span
                     key={`action-assign-${assignUserAction.id}`}
                     className="ticket-owner-btn ticket-details-item"
@@ -83,7 +84,7 @@ export default class TicketMacros extends React.Component {
 
         return (
             <div className="macro-data">
-                <div className="ui label macro-legend">SET PRIORITY: </div>
+                <div className="ui label macro-legend">SET PRIORITY:</div>
                 <a className="ticket-flag-btn ticket-details-item">
                     <i
                         className={classnames(
@@ -105,7 +106,7 @@ export default class TicketMacros extends React.Component {
 
         return (
             <div className="macro-data">
-                <div className="ui label macro-legend">ACTIONS: </div>
+                <div className="ui label macro-legend">ACTIONS:</div>
                 {
                     externalActions.map((action, idx) =>
                         <div key={`external-action-${idx}`} className="ui yellow label">{action.get('title')}</div>
@@ -136,15 +137,22 @@ export default class TicketMacros extends React.Component {
             action => fromJS(ACTION_TEMPLATES).getIn([action.get('name'), 'execution']) === 'back'
         )
 
-        const textPreview = responseTextAction ? {
-            __html: responseTextAction.getIn(['arguments', 'body_html'])
-            || responseTextAction.getIn(['arguments', 'body_text'])
-        } : { __html: ''}
+        let textPreview = null
+        if (responseTextAction) {
+            const html = responseTextAction.getIn(['arguments', 'body_html'])
+            const text = responseTextAction.getIn(['arguments', 'body_text'])
+            if (text) {
+                textPreview = (<pre className="text-preview">{text}</pre>)
+            } else {
+                textPreview = (<div className="text-preview" dangerouslySetInnerHTML={{__html: html}}/>)
+            }
+        }
 
         return (
             <div className="macro-preview">
                 <div>
-                    <a className="ui right floated basic label" onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}>
+                    <a className="ui right floated basic label"
+                       onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}>
                         MANAGE MACROS
                     </a>
                     {this.renderSetStatus(setStatusAction)}
@@ -152,8 +160,7 @@ export default class TicketMacros extends React.Component {
                     {this.renderAssignUser(assignUserAction)}
                     {this.renderSetPriority(setPriorityAction)}
                     {this.renderExternalActions(externalActions)}
-                    <div className="text-preview" dangerouslySetInnerHTML={textPreview}>
-                    </div>
+                    {textPreview}
                 </div>
             </div>
         )
@@ -179,7 +186,8 @@ export default class TicketMacros extends React.Component {
             content = (
                 <div className="no-macro-container">
                     <h4>You don't have any macros yet.</h4>
-                    <div className="ui large light blue labeled icon fluid button" onClick={() => this.props.openModal()}>
+                    <div className="ui large light blue labeled icon fluid button"
+                         onClick={() => this.props.openModal()}>
                         <i className="plus icon"/>
                         CREATE A NEW MACRO
                     </div>

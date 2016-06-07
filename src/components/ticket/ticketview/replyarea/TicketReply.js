@@ -1,8 +1,7 @@
 import React, {PropTypes} from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _ from 'lodash'
 import {EditorState, ContentState, RichUtils, convertFromHTML} from 'draft-js'
-import {stateToHTML} from 'draft-js-export-html'
 import Editor from 'draft-js-plugins-editor'
 import createMentionPlugin from 'draft-js-mention-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
@@ -15,9 +14,14 @@ import TicketAttachments from './TicketAttachments'
 import TicketReplyAction from './TicketReplyAction'
 
 export default class TicketReply extends React.Component {
+
     constructor(props) {
         super(props)
-        this.state = this.initialState(this.props)
+        this.state = this.getEditorState(this.props)
+    }
+
+    state = {
+        editorState: EditorState.createEmpty()
     }
 
     componentDidMount() {
@@ -32,8 +36,9 @@ export default class TicketReply extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.value !== this.props.value) {
-            this.state = this.initialState(nextProps)
+        // clear if the state is empty
+        if (!nextProps.contentState) {
+            this.setState(this.getEditorState(nextProps))
         }
     }
 
@@ -42,55 +47,81 @@ export default class TicketReply extends React.Component {
         window.removeEventListener('message', this.onMessage, false)
     }
 
+    // throttle the updating of the state because it's slow otherwise when we type
+    updateMessageText = _.throttle((editorState) => {
+        const contentState = editorState.getCurrentContent()
+        this.props.actions.ticket.setResponseText(this.props.currentUser, Map({contentState}))
+    }, 500)
+
+    // store the content before the tab (completion from the extension), this allows us to manage the state correctly
+    textBeforeTab = ''
+    onTab = () => {
+        this.textBeforeTab = this.refs.editor.refs.editor.refs.editor.innerText
+    }
+
     onChange = (editorState) => {
+        // don't update the state if the change came from the extension
+        if (this.textBeforeTab !== '' &&
+            this.refs.editor && this.refs.editor.refs.editor.refs.editor.innerText !== this.textBeforeTab) {
+            // we do this to let onMessage be called which will itself call onChange
+            this.textBeforeTab = ''
+            return
+        }
+
         this.setState({editorState})
-
-        const text = editorState.getCurrentContent().getPlainText()
-        const html = text === '' ? '' : stateToHTML(editorState.getCurrentContent())
-
-        return this.props.actions.ticket.setResponseText(
-            this.props.currentUser,
-            text,
-            html
-        )
+        this.updateMessageText(editorState)
     }
 
     onMessage = (event) => {
         // We're waiting for an event from Gorgias extension - that the template has been inserted
-        if (event.data.source && event.data.source === 'gorgias-extension') {
-            if (event.data.payload.event === 'template-inserted') {
-                // update the editor state after the extension was used
-                const actualHTML = this.refs.editor.refs.editor.refs.editor.innerHTML
-                const contentBlock = convertFromHTML(actualHTML)
-                const contentState = ContentState.createFromBlockArray(contentBlock)
-                const editorState = EditorState.moveFocusToEnd(EditorState.createWithContent(contentState))
+        if (!(event.data.source && event.data.source === 'gorgias-extension')) {
+            return
+        }
 
-                this.setState({editorState})
+        if (event.data.payload.event === 'template-inserted') {
+            // update the editor state after the extension was used
+            const blocks = this.refs.editor.refs.editor.refs.editor.querySelectorAll('[data-text=true]')
+            let actualHTML = ''
+            for (let i = 0; i < blocks.length; i++) {
+                actualHTML += `<div>${blocks.item(i).innerHTML}</div>`
             }
+
+            // const browserSelection = window.getSelection()
+            // const selectionState = SelectionState.createEmpty()
+            const contentBlocks = convertFromHTML(actualHTML)
+            const contentState = ContentState.createFromBlockArray(contentBlocks)
+            const editorState = EditorState.moveFocusToEnd(EditorState.createWithContent(contentState))
+
+            this.onChange(editorState)
         }
     }
 
     dndPlugin = createDndPlugin()
 
-    initialState(props) {
-        const contentState = ContentState.createFromText(props.value)
+    getEditorState(props) {
+        // No point in reinitializing the plugins once initiated
+        let plugins
+        if (!(this.state && this.state.plugins)) {
+            const mentions = fromJS(
+                props.users.get('agents', [])
+                    .map(user => fromJS({name: user.get('name'), link: '', avatar: ''})
+                    ))
 
-        const mentions = fromJS(
-            props.users.get('agents', [])
-                .map(user => fromJS({name: user.get('name'), link: '', avatar: ''})
-                ))
+            plugins = [
+                createMentionPlugin({mentions}),
+                createLinkifyPlugin({
+                    target: '_blank'
+                }),
+                createEmojiPlugin(),
+                this.dndPlugin
+            ]
+        }
 
-        const plugins = [
-            createMentionPlugin({mentions}),
-            createLinkifyPlugin({
-                target: '_blank'
-            }),
-            createEmojiPlugin(),
-            this.dndPlugin
-        ]
+        const contentState = props.contentState ? props.contentState : ContentState.createFromText('')
+        const editorState =  EditorState.moveFocusToEnd(EditorState.createWithContent(contentState))
 
         return {
-            editorState: EditorState.createWithContent(contentState),
+            editorState,
             plugins
         }
     }
@@ -186,14 +217,14 @@ export default class TicketReply extends React.Component {
                 >
                     <div className="field">
                         <Editor
+                            ref="editor"
                             tabIndex="3"
                             editorState={this.state.editorState}
+                            plugins={this.state.plugins}
                             onChange={this.onChange}
                             onTab={this.onTab}
                             handleKeyCommand={this.handleKeyCommand}
                             handleDroppedFiles={this.handleDroppedFiles}
-                            plugins={this.state.plugins}
-                            ref="editor"
                         />
                     </div>
                 </form>
@@ -227,6 +258,6 @@ TicketReply.propTypes = {
     currentUser: PropTypes.object.isRequired,
     appliedMacro: PropTypes.object,
     users: PropTypes.object.isRequired,
-    value: PropTypes.string.isRequired,
+    contentState: PropTypes.object,
     autoFocus: PropTypes.bool.isRequired
 }

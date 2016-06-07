@@ -12,15 +12,15 @@ export default class TicketReplyArea extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('keydown', this.hideMacros.bind(this))
+        window.addEventListener('keydown', this.hideMacros)
         $('.mousetrap input').addClass('mousetrap')
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.hideMacros.bind(this))
+        window.removeEventListener('keydown', this.hideMacros)
     }
 
-    hideMacros(e) {
+    hideMacros = (e) => {
         if (e.keyCode === 27) this.props.actions.macro.setMacrosVisible(false)
         return null
     }
@@ -49,7 +49,7 @@ export default class TicketReplyArea extends React.Component {
                 currentUser={this.props.currentUser}
                 appliedMacro={this.props.macros.get('appliedMacro')}
                 users={this.props.users}
-                value={this.props.ticket.getIn(['newMessage', 'body_html'])}
+                contentState={this.props.ticket.getIn(['newMessage', 'contentState'])}
                 autoFocus={!!this.props.ticket.get('id')}
             />
         )

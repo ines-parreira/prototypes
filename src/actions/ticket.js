@@ -3,7 +3,6 @@ import React from 'react'
 import _ from 'lodash'
 import {browserHistory} from 'react-router'
 import Immutable, {Map} from 'immutable'
-
 import {systemMessage} from './systemMessage'
 import {ACTION_TEMPLATES} from './../constants'
 import {renderTemplate} from '../components/utils/template'
@@ -235,13 +234,10 @@ export function updatePotentialRequesters(query) {
     })
 }
 
-export function setResponseText(currentUser, body_text, body_html) {
+export function setResponseText(currentUser, args) {
     return {
         type: SET_RESPONSE_TEXT,
-        args: Map({
-            body_text,
-            body_html
-        }),
+        args,
         currentUser
     }
 }
@@ -503,7 +499,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
                         {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
                     ))
                 }
-
+                delete data.newMessage.contentState
                 data.messages.push(data.newMessage)
             } else if (!data.messages.length) {
                 dispatch(systemMessage({
