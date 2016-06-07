@@ -73,7 +73,7 @@ class App extends React.Component {
         }[systemMessage.type]
 
         if (systemMessage.type === 'info' || systemMessage.type === 'success') {
-            setTimeout(this.handleDismissClick, 1500)
+            setTimeout(this.handleDismissClick, 4500)
         }
 
         return (
