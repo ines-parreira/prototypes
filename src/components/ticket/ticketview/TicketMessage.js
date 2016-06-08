@@ -1,10 +1,9 @@
-import React, { PropTypes } from 'react'
-import { List } from 'immutable'
-import linkifyStr from 'linkifyjs/string'
+import React, {PropTypes} from 'react'
+import {List} from 'immutable'
 import {formatDatetime} from '../../../utils'
 import classNames from 'classnames'
 import TicketMessageActions from './TicketMessageActions'
-import MessageQuote from './MessageQuote'
+import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
 
 export default class TicketMessage extends React.Component {
@@ -17,13 +16,13 @@ export default class TicketMessage extends React.Component {
             on: 'hover',
             action: 'nothing'
         })
-        $('.actions .label').popup({ inline: true })
+        $('.actions .label').popup({inline: true})
     }
 
     renderAttachment(message) {
         if (message.attachments) {
             return (
-                <TicketAttachments attachments={List(message.attachments)} removable={false} />
+                <TicketAttachments attachments={List(message.attachments)} removable={false}/>
             )
         }
         return null
@@ -69,7 +68,7 @@ export default class TicketMessage extends React.Component {
     }
 
     render() {
-        const { message, currentUser, ticket } = this.props
+        const {message, currentUser, ticket} = this.props
 
         const messages = ticket.get('messages')
         const currentMessageIndex = messages.findIndex((o) => o.get('id') === message.id)
@@ -108,14 +107,18 @@ export default class TicketMessage extends React.Component {
                 <div className={`ui inverted dimmer ${error ? 'active' : ''}`} data-opacity="0">
                     <div className="content">
                         <div className="center" style={{ color: 'red' }}>
-                            <div className={`ui segment ${this.props.loading ? 'loading' : ''}`} style={{ margin: 'auto', width: '50%'}}>
+                            <div className={`ui segment ${this.props.loading ? 'loading' : ''}`}
+                                 style={{ margin: 'auto', width: '50%'}}>
                                 This message wasn't send: one or more actions failed.
                                 <div style={{ margin: '1em auto'}}>
-                                    <TicketMessageActions message={message} />
+                                    <TicketMessageActions message={message}/>
                                 </div>
-                                <a onClick={() => this.props.submit(null, null, 'retry')}>retry</a> to execute the failed action(s) automatically, and send the message if it succeeds,<br/>
-                                <a onClick={() => this.props.submit(null, null, 'force')}>ignore failure</a>, execute the other actions and send the message<br/>
-                                <a onClick={() => this.props.deleteMessage(message.id)}>cancel</a> the message, and manually undo successful action(s).
+                                <a onClick={() => this.props.submit(null, null, 'retry')}>retry</a> to execute the
+                                failed action(s) automatically, and send the message if it succeeds,<br/>
+                                <a onClick={() => this.props.submit(null, null, 'force')}>ignore failure</a>, execute
+                                the other actions and send the message<br/>
+                                <a onClick={() => this.props.deleteMessage(message.id)}>cancel</a> the message, and
+                                manually undo successful action(s).
                             </div>
                         </div>
                     </div>
@@ -139,50 +142,26 @@ export default class TicketMessage extends React.Component {
                         {createdDatetime}
                     </div>
                 </div>
-
-                {(() => {
-                    if (message.body_html) {
-                        return (
-                            <div
-                                className="ticket-message-body"
-                                dangerouslySetInnerHTML={{__html: message.body_html}}
-                            >
-                            </div>
-                        )
-                    }
-                    return (
-                        <div
-                            className="ticket-message-body ticket-message-body-text"
-                            dangerouslySetInnerHTML={{__html: linkifyStr(message.body_text)}}
-                        >
-                        </div>
-                    )
-                })()}
-
                 {/*
-                <div className="ticket-actions-btn ui dropdown" id="option-dropdown">
-                    <i className="ui icon angle down"/>
-                    <div className="menu transition">
-                        <div className="item">
-                            <a href="#">
-                                Most Recent Orders
-                            </a>
-                        </div>
-                        <div className="item">
-                            <a href="#">
-                                View Original
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                */}
-                <MessageQuote
-                    quotedMessage={previousMessage}
-                    currentMessage={message}
-                    currentUser={this.props.currentUser}
-                />
+                 <div className="ticket-actions-btn ui dropdown" id="option-dropdown">
+                 <i className="ui icon angle down"/>
+                 <div className="menu transition">
+                 <div className="item">
+                 <a href="#">
+                 Most Recent Orders
+                 </a>
+                 </div>
+                 <div className="item">
+                 <a href="#">
+                 View Original
+                 </a>
+                 </div>
+                 </div>
+                 </div>
+                 */}
+                <TicketMessageBody message={message} currentUser={this.props.currentUser}/>
                 {this.renderAttachment(message)}
-                <TicketMessageActions message={message} />
+                <TicketMessageActions message={message}/>
             </div>
         )
     }
