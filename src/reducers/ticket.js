@@ -1,6 +1,6 @@
 import * as actions from '../actions/ticket'
 import {Map, List, Set, fromJS} from 'immutable'
-import {convertToRaw, convertFromHTML, ContentState} from 'draft-js'
+import {convertFromHTML, ContentState} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
 import {renderTemplate} from '../components/utils/template'
 
@@ -197,7 +197,13 @@ export function ticket(state = ticketInitial, action) {
             }))
 
             if (!contentState) {
-                contentState = ContentState.createFromText(expandedText)
+                // we use text first because it's more stable
+                if (expandedText) {
+                    contentState = ContentState.createFromText(expandedText)
+                } else {
+                    // fallback to html
+                    contentState = ContentState.createFromBlockArray(convertFromHTML(expandedHTML))
+                }
             }
 
             let receiver = getRecipient(state.get('messages'), sender)

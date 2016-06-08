@@ -6,7 +6,7 @@ export default class SetResponseTextAction extends React.Component {
 
         this.props.updateActionArgs(
             this.props.index,
-            args.set('body_html', value)
+            args.set('body_html', value).set('body_text', value)
         )
     }
     render() {
