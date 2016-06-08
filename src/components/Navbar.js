@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
+import {compactInteger} from '../utils'
 
 export default class Navbar extends React.Component {
     componentDidMount() {
@@ -80,7 +81,7 @@ export default class Navbar extends React.Component {
                                                   className={classes}
                                                   onClick={() => { setViewActive(v) }}
                                             >
-                                                {view.name} ({count >= 1000 ? '1k+' : count})
+                                                {view.name} ({compactInteger(count)})
                                             </Link>
                                         )
                                     })}

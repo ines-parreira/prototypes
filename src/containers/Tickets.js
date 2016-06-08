@@ -7,6 +7,7 @@ import * as ViewActions from '../actions/view'
 import * as UserActions from '../actions/user'
 import * as SchemaActions from '../actions/schema'
 import TicketsView from '../components/ticket/ticketlist/TicketsView'
+import {compactInteger} from '../utils'
 
 class TicketsContainer extends React.Component {
     componentWillMount() {
@@ -63,7 +64,7 @@ class TicketsContainer extends React.Component {
         if (Object.keys(active).length) {
             title = `${active.name}`
             if (active.count > 0) {
-                title = `(${active.count}) ${title}`
+                title = `(${compactInteger(active.count)}) ${title}`
             }
         }
 
