@@ -8,7 +8,7 @@ import {fetchUser, fetchUsers} from '../actions/user'
 import {fetchSettings} from '../actions/settings'
 import TicketsNavbarContainer from './TicketsNavbar'
 import KeyboardHelp from '../components/KeyboardHelp'
-import * as mousetrap from 'mousetrap'
+import Mousetrap, * as mousetrap from 'mousetrap'
 import '../../css/main.less'
 
 class App extends React.Component {
@@ -27,6 +27,22 @@ class App extends React.Component {
 
     componentDidMount() {
         // Some global keyboard shortcuts
+
+        Mousetrap.prototype.stopCallback = (e, element, combo) => {
+            // if the element has the class "mousetrap" then no need to stop
+            // also, if the combo includes 'mod', then the event should be triggered
+            if ((` ${element.className} `).indexOf(' mousetrap ') > -1 || combo.indexOf('mod') > -1) {
+                return false
+            }
+
+            // stop for input, select, and textarea
+            return (
+                element.tagName === 'INPUT' ||
+                element.tagName === 'SELECT' ||
+                element.tagName === 'TEXTAREA' ||
+                (element.contentEditable && element.contentEditable === 'true')
+            )
+        }
 
         // Go home (or dashboard)
         mousetrap.bind('g h', () => {
