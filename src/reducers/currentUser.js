@@ -5,6 +5,10 @@ import moment from 'moment'
 const initial = Map()
 
 export function currentUser(state = initial, action) {
+    if (!action) {
+        return state
+    }
+
     switch (action.type) {
         case actions.FETCH_CURRENT_USER_SUCCESS:
             // set default locale and timezone
