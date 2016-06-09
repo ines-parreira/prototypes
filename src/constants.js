@@ -1,4 +1,6 @@
-// View related
+/**
+ * View-related
+ */
 
 export const CELL_WIDTH = 60
 
@@ -13,6 +15,23 @@ export const BASIC_OPERATORS = {
     }
 }
 
+/**
+ * Ticket-related
+ */
+
+export const SOURCE_VALUE_PROP = {
+    email: 'address',
+    'facebook-message': 'facebook_id',
+    'facebook-comment': 'comment-id'
+}
+
+/**
+ * Templates for custom actions.
+ * Those templates are used by the front-end to generate the UI to create a new action (in the Macros Management).
+ * Once it has been filled and saved by the user, it is saved in the Action table.
+ * Then, when the macro will be used, the fields with no value will show up to be filled by the agent using the macro.
+ */
+
 export const DEFAULT_ACTIONS = [
     'addTags',
     'setStatus',
@@ -24,22 +43,17 @@ export const DEFAULT_ACTIONS = [
     'notify'
 ]
 
-/**
- * Templates for custom actions.
- * Those templates are used by the front-end to generate the UI to create a new action (in the Macros Management).
- * Once it has been filled and saved by the user, it is saved in the Action table.
- * Then, when the macro will be used, the fields with no value will show up to be filled by the agent using the macro.
- */
-
 export const ARGUMENT_TYPES = [
     'email',        // an email input
     'password',     // a password input
     'string',       // a standard text input
     'object',       // a dictionary ( input: textarea )
-    'bool'          // a checkbox
+    'bool',         // a checkbox
+    'array'
 ]
 
 export const ACTION_STATUS = ['pending', 'running', 'success', 'error', 'canceled']
+
 
 export const ACTION_TEMPLATES = {
     setStatus: {

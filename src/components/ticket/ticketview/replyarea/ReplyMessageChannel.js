@@ -1,25 +1,13 @@
 import React, { PropTypes } from 'react'
 import classnames from 'classnames'
-import Search from './../../../Search'
+import {Map, List} from 'immutable'
+import SearchableDropdown from './SearchableDropdown'
+import {SOURCE_VALUE_PROP} from '../../../../constants'
+import {lastMessage} from '../../../../utils'
+import _ from 'lodash'
 
 
 export default class ReplyMessageChannel extends React.Component {
-    constructor(props) {
-        super(props)
-
-        // This should come from the API
-        this.channels = {
-            api: 'api',
-            facebook: 'facebook',
-            email: 'email'
-        }
-
-        this.defaultNames = {
-            empty: 'select a receiver',
-            private: 'your team'
-        }
-    }
-
     componentDidMount() {
         $('#next-message-channel-popup').dropdown({
             position: 'bottom left',
@@ -28,16 +16,84 @@ export default class ReplyMessageChannel extends React.Component {
         })
     }
 
-    resolveReceiver() {
-        /**
-        * This gives us the name and the mail of the receiver depending on what is available in tickets.
-        * This function is used in getReceiverData.
-        */
+    /**
+     * Return the default `to` of the next message:
+     * - if the last message is `from_agent`, the `to` list of this message
+     * - if not, the `from` of this message
+     *
+     * @param onlyAddrs
+     * @param ticket
+     *
+     * @returns {List}
+     */
+    getTargets(onlyAddrs = false, ticket = this.props.ticket) {
+        if (!ticket.get('messages').size) {
+            return List()
+        }
 
+        let to = List()
+        const curTo = ticket.getIn(['newMessage', 'source', 'to'])
+        const ticketLastMessage = ticket.get('messages').last()
+        const valueProp = SOURCE_VALUE_PROP[ticketLastMessage.getIn(['source', 'type'])]
+
+        if (curTo.size) {
+            to = curTo
+        } else {
+            if (ticketLastMessage) {
+                if (ticketLastMessage.get('from_agent')) {
+                    to = ticketLastMessage.getIn(['source', 'to'])
+                } else {
+                    to = List([ticketLastMessage.getIn(['source', 'from'])])
+                }
+            }
+        }
+
+        if (onlyAddrs) {
+            to = List(to.map(dest => dest.get(valueProp).toString()))
+        }
+
+        return to
+    }
+
+    /**
+     * This function gather and builds the data needed to render the receiver (name, mail, className of the icon, and its channel)
+     *
+     * @returns {string}
+     */
+    getClassNames() {
+        const identity = this.resolveReceiver()
+        const message = this.props.ticket.get('newMessage')
+        const channel = message.getIn(['source', 'type'])
+        const popupChannelClassNames = {
+            default: 'action icon',
+            private: 'action icon comment yellow',
+            email: 'action icon mail blue',
+            'facebook-message': 'action icon facebook square blue',
+            'facebook-comment': 'action icon facebook blue'
+        }
+
+        if (!identity.id && !identity.email) {
+            return popupChannelClassNames.email
+        } else if (!message.get('public')) {
+            return popupChannelClassNames.private
+        } else if (Object.keys(popupChannelClassNames).indexOf(channel)) {
+            return popupChannelClassNames[channel]
+        }
+
+        return popupChannelClassNames.default
+    }
+
+    /**
+     * This gives us the name and the mail of the receiver depending on what is available in tickets.
+     * This function is used in getReceiverData.
+     *
+     * @returns {{name: string, email: string}}
+     */
+    resolveReceiver() {
         const { ticket } = this.props
 
         let res = {
-            name: this.defaultNames.empty,
+            name: 'select a receiver',
             email: ''
         }
 
@@ -58,205 +114,159 @@ export default class ReplyMessageChannel extends React.Component {
         return res
     }
 
-    // This function gather and builds the data needed to render the receiver
-    // (name, mail, className of the icon, and its channel)
-    getReceiverData() {
-        const identity = this.resolveReceiver()
-        const message = this.props.ticket.get('newMessage')
-        const channel = message.get('channel')
-        const popupChannelClassNames = {
-            default: 'action icon',
-            private: 'action icon comment yellow',
-            blueMail: 'action icon mail blue',
-            facebook: 'action icon facebook square blue',
-        }
-
-        if (!identity.id && !identity.email) {
-            return {
-                name: this.defaultNames.empty,
-                className: popupChannelClassNames.blueMail,
-                public: true,
-                channel
+    /**
+     * Wrapper around actions.ticket.updatePotentialRequesters, which crafts the query from the value before
+     * sending it to the action.
+     *
+     * @param value: the string query from the user
+     */
+    updatePotentialRequesters(value) {
+        const searchQuery = {
+            _source: ['id', 'address', 'type', 'user'],
+            size: 5,
+            query: {
+                filtered: {
+                    filter: {
+                        bool: {
+                            must: [{
+                                match: {
+                                    type: this.props.ticket.getIn(['newMessage', 'channel'])
+                                }
+                            }]
+                        }
+                    },
+                    query: {
+                        multi_match: {
+                            query: '',
+                            fuzziness: 3,
+                            fields: ['address', 'user.name'],
+                            type: 'phrase_prefix'
+                        }
+                    }
+                }
             }
         }
 
-        if (!message.get('public')) {
-            return {
-                name: this.defaultNames.private,
-                className: popupChannelClassNames.private,
-                email: '',
-                public: false,
-                channel
-            }
-        }
+        _.set(searchQuery, 'query.filtered.query.multi_match.query', value)
 
-        switch (channel) {
-            case this.channels.email:
-                return {
-                    name: identity.name,
-                    className: popupChannelClassNames.blueMail,
-                    email: identity.email,
-                    public: true,
-                    channel
-                }
-            case this.channels.facebook:
-                return {
-                    name: identity.name,
-                    className: popupChannelClassNames.facebook,
-                    email: identity.email,
-                    public: true,
-                    channel
-                }
-            default:
-                return {
-                    name: identity.name,
-                    className: popupChannelClassNames.default,
-                    email: identity.email,
-                    public: true,
-                    channel
-                }
-        }
+        this.props.actions.ticket.updatePotentialRequesters(searchQuery)
     }
 
-    renderReceiver(obj) {
-        const elem = $('#popup-receiver')
+    /**
+     * Callback passed to the SearchableDropdown component, for when a new value is added.
+     *
+     * @param value: the new value added
+     * @param text: the text matching this value (its displayable pendant) (SemanticUI-specific)
+     */
+    addValue(value, text) {
+        const splittedText = typeof text === 'string' ? text.split('&lt;') : []
+        const fieldName = SOURCE_VALUE_PROP[this.props.ticket.getIn(['newMessage', 'source', 'type'])]
 
-        if (obj.public) {
-            elem.dropdown({
-                allowAdditions: true,
-                onChange: (value, text) => {
-                    let receiver = this.props.ticket.getIn(['state', 'potentialRequesters']).find(req => req.get('id').toString() === value)
-
-                    if (!receiver && value === 'new') {
-                        receiver = { email: text }
-                    }
-                    this.props.actions.ticket.setReceiver(
-                        receiver,
-                        obj.channel
-                    )
-                }
-            })
-
-            elem.dropdown('bind intent')
-
-            if (elem.dropdown('get text') === 'your team') {
-                elem.dropdown('set text', obj.name)
-            }
-        } else {
-            elem.dropdown('set text', obj.name)
-            elem.dropdown('destroy')
+        if (this.props.ticket.getIn(['newMessage', 'source', 'to']).map(r => r.get(fieldName)).indexOf(value) !== -1) {
+            return
         }
+
+        const data = {
+            name: splittedText.length > 1 ? _.trim(splittedText[0]) : '',
+            id: (this.props.ticket.getIn(['state', 'potentialRequesters']).concat(this.getTargets()).find(
+                receiver => receiver.get('address') === value
+            ) || Map()).get('id')
+        }
+
+        data[fieldName] = value
+
+        this.props.actions.ticket.addReceiver(data)
+    }
+
+    renderTo(ticket, actions) {
+        const valueProp = SOURCE_VALUE_PROP[ticket.getIn(['newMessage', 'source', 'type'])]
+
+        if (!ticket.getIn(['newMessage', 'public'])) {
+            return <p className="receiver-placeholder">your team</p>
+        }
+
+        let optionValues = ticket.getIn(['state', 'potentialRequesters'])
+        const targets = this.getTargets()
+
+        if (!this.props.ticket.getIn(['state', 'query']) &&
+            _.every(targets.map(target => optionValues.indexOf(target) === -1).toJS()) // verify that no element of targets is already in optionValues
+        ) {
+            optionValues = optionValues.concat(targets)
+        }
+
+        const parentId = ticket.get('messages').size ?
+            `${ticket.get('id')} - ${ticket.get('messages').last().get('id')}` : 'new'
+
+        return (
+            <SearchableDropdown
+                defaultValues={this.getTargets(true)}
+                existingValues={ticket.getIn(['newMessage', 'source', 'to']).map(user => user.get(valueProp))}
+                optionValues={optionValues}
+                search={v => this.updatePotentialRequesters(v)}
+                addValue={(v, t) => this.addValue(v, t)}
+                removeValue={actions.ticket.removeReceiver}
+                enabled={this.props.ticket.get('channel') !== 'facebook'}
+                suffix="to"
+                parentId={parentId.toString()}
+                valueProp={SOURCE_VALUE_PROP[this.props.ticket.getIn(['newMessage', 'source', 'type'])]}
+            />
+        )
     }
 
     render() {
         const { ticket, actions } = this.props
-        const receiverDisplayProp = 'email'
-        const receiver = this.getReceiverData()
-        this.renderReceiver(receiver)
+        const popupClassNames = this.getClassNames()
 
-        const addNewItem = ticket.getIn(['state', 'query']) && ticket.getIn(['state', 'query']).query.multi_match.query ? (
-            <div
-                key="add"
-                className="item"
-                data-value="new"
-                data-text={ticket.getIn(['state', 'query']).query.multi_match.query}
-            >
-                Add <b>{ticket.getIn(['state', 'query']).query.multi_match.query}</b>
-            </div>
-        ) : null
+        const ticketLastMessage = lastMessage(ticket.get('messages').toJS())
 
-        const receiverEmail = receiver.email ? (
-            <div className="receiver-email" key="email">
-                <i className="icon mail"/><span>{`<${receiver.email}>`}</span>
-            </div>
-        ) : null
-
-        const receiverName = receiver.name ? (
-            <div className="receiver-name" key="name"><b>{receiver.name}</b></div>
-        ) : null
+        const channelClassNames = {
+            email: classnames('item', {
+                disabled: ticketLastMessage ? ticketLastMessage.source.type !== 'email' : false
+            }),
+            facebookComment: classnames('item', {
+                disabled: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-comment'
+            }),
+            facebookMessage: classnames('item', {
+                disabled: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-message'
+            }),
+            internal: classnames('item', {
+                disabled: !ticket.get('id')
+            })
+        }
 
         return (
             <div className="ReplyMessageChannel">
-                <span>
+                <div className="channel-picker">
 
                     <div id="next-message-channel-popup" className="ui dropdown">
-                        <i id="popup-message-channel" className={receiver.className}/>
+                        <i id="popup-message-channel" className={popupClassNames}/>
                         <div
                             className="ui vertical menu"
                             style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
                         >
-                            <div className="item" onClick={() => actions.ticket.setPublic(true)}>
+                            <div className={channelClassNames.email} onClick={() => actions.ticket.setSourceType('email')}>
                                 Send as email
                             </div>
                             <div
-                                className={classnames(
-                                    'item',
-                                    ticket.get('id') ? '' : 'disabled'
-                                )}
+                                className={channelClassNames.internal}
                                 onClick={() => actions.ticket.setPublic(false)}
                             >
                                 Send as internal note
                             </div>
-                            <div className="item" onClick={() => actions.ticket.setSourceType('facebook-comment')}>
-                                Send as Facebook comment 
+                            <div className={channelClassNames.facebookComment} onClick={() => actions.ticket.setSourceType('facebook-comment')}>
+                                Send as Facebook comment
                             </div>
-                            <div className="item" onClick={() => actions.ticket.setSourceType('facebook-message')}>
-                                Send as Facebook private message 
+                            <div className={channelClassNames.facebookMessage} onClick={() => actions.ticket.setSourceType('facebook-message')}>
+                                Send as Facebook private message
                             </div>
                         </div>
                     </div>
 
-                    <span className="label">To: </span>
+                    <span className="label to">To: </span>
+                </div>
 
-                    <div id="popup-receiver" className="ui inline dropdown">
-                        {[receiverName, receiverEmail]}
-                        <div className="menu">
-                            <div className="ui search input">
+                {this.renderTo(ticket, actions)}
 
-                                <Search
-                                    autofocus
-                                    className="medium"
-                                    onChange={this.props.actions.ticket.updatePotentialRequesters}
-                                    query={{
-                                        _source: ['id', 'name', 'email'],
-                                        size: 5,
-                                        query: {
-                                            multi_match: {
-                                                query: '',
-                                                fuzziness: 3,
-                                                fields: ['name', 'email']
-                                            }
-                                        }
-                                    }}
-                                    queryPath="query.multi_match.query"
-                                    searchDebounceTime={300}
-                                />
-
-                            </div>
-                            <div className="hidden item" key="placeholder" data-text="receiver"></div>
-                            {
-                                ticket.getIn(['state', 'potentialRequesters']).map(requester => {
-                                    if (requester.get(receiverDisplayProp)) {
-                                        return (
-                                            <div
-                                                key={requester.get('id')}
-                                                data-value={requester.get('id')}
-                                                data-text={requester.get(receiverDisplayProp)}
-                                                className="item"
-                                            >
-                                                <i className="user icon"/>{requester.get(receiverDisplayProp)}
-                                            </div>
-                                        )
-                                    }
-
-                                    return null
-                                })
-                            }
-                            {addNewItem}
-                        </div>
-                    </div>
-
-                </span>
             </div>
         )
     }
