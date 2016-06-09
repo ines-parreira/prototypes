@@ -7,11 +7,14 @@ export default class TicketAssignee extends React.Component {
 
         ticketOwnerDropdown.dropdown({
             inline: true,
-            position: 'bottom left',
             hoverable: true,
-            onChange: (value, text) => {
-                const agent = this.props.agents.find(curAgent => curAgent.get('name') === text)
-                this.props.setAgent({id: agent.get('id'), name: agent.get('name')})
+            onChange: (value) => {
+                if (value !== 'clear') {
+                    const agent = this.props.agents.find(curAgent => curAgent.get('id').toString() === value)
+                    this.props.setAgent({id: agent.get('id'), name: agent.get('name')})
+                } else {
+                    this.props.setAgent(null)
+                }
             }
         })
     }
@@ -31,16 +34,26 @@ export default class TicketAssignee extends React.Component {
 
     render() {
         const { currentAssignee, agents, suffix } = this.props
+
+        let divider = null
+        let clearItem = null
+
+        if (currentAssignee) {
+            divider = <div className="divider"></div>
+            clearItem = <div className="item" data-value="clear">Clear assignee</div>
+        }
+
         return (
             <div
                 id={`popup-ticket-owner-${suffix}`}
-                className="ticket-owner-btn ticket-details-item ui search button input pointing dropdown link item"
+                className="TicketAssignee ticket-owner-btn ticket-details-item ui search button input pointing dropdown link item"
+                        onClick={() => this.refs.assigneeSearch.focus()}
             >
                 {this.renderTicketOwner(currentAssignee)}
 
                 <div className="ui vertical menu">
                     <div className="ui search input">
-                          <input id="ticket-owner-input" type="text" placeholder="Search agents..."/>
+                        <input id="ticket-owner-input" ref="assigneeSearch" type="text" placeholder="Search agents..."/>
                     </div>
                     <div className="hidden item"></div>
                     {
@@ -48,11 +61,15 @@ export default class TicketAssignee extends React.Component {
                             <div
                                 className="item"
                                 key={agent.get('id')}
+                                data-value={agent.get('id')}
                             >
                                 {agent.get('name')}
                             </div>
                         )
                     }
+
+                    {divider}
+                    {clearItem}
                 </div>
             </div>
         )
