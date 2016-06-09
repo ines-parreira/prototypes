@@ -4,6 +4,7 @@ import _ from 'lodash'
 export default class SearchableDropdown extends React.Component {
     componentDidMount() {
         const receiverDropdown = $(`#receiver-dropdown-${this.props.suffix}`)
+        const searchInput = $(`#receiver-dropdown-${this.props.suffix} input.search`)
 
         receiverDropdown.dropdown({
             allowAdditions: true,
@@ -12,8 +13,10 @@ export default class SearchableDropdown extends React.Component {
         })
 
         $(`#receiver-dropdown-${this.props.suffix} input.search`)
-            .on('keyup', (e) => this.props.search(e.target.value))
-            .attr('tabindex', 2)
+            .on('keyup', _.throttle((e) => {
+                this.props.search(e.target.value)
+            }, this.props.searchDebounceTime || 200)
+        ).attr('tabindex', 2)
 
         receiverDropdown.dropdown('set exactly', this.props.defaultValues.toJS())
     }
@@ -57,7 +60,9 @@ export default class SearchableDropdown extends React.Component {
             if (!hasSelected) {
                 // If we don't have this selected item, we need to define the first non-filtered item as selected
                 for (const child in this.refs.dropdownMenu.children) {
-                    if (!_.includes(this.refs.dropdownMenu.children[child].classList, 'filtered')) {
+                    if (this.refs.dropdownMenu.children[child].classList &&
+                        !_.includes(this.refs.dropdownMenu.children[child].classList, 'filtered')
+                    ) {
                         this.refs.dropdownMenu.children[child].classList.add('selected')
                         break
                     }
@@ -109,7 +114,10 @@ SearchableDropdown.propTypes = {
     defaultValues: PropTypes.object.isRequired, // the values which should populate the field when it mounts
     existingValues: PropTypes.object.isRequired, // the list of values already chosen
     optionValues: PropTypes.object.isRequired, // the list of possible choices
+
     search: PropTypes.func.isRequired, // the action to trigger to search for new options
+    searchDebounceTime: PropTypes.number, // optional: throttling delay between each search
+
     addValue: PropTypes.func.isRequired, // the callback to call when adding a new value
     removeValue: PropTypes.func.isRequired, // the callback to call when removing a value
 

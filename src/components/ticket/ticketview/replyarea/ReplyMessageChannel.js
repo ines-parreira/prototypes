@@ -33,17 +33,17 @@ export default class ReplyMessageChannel extends React.Component {
 
         let to = List()
         const curTo = ticket.getIn(['newMessage', 'source', 'to'])
-        const lastMessage = ticket.get('messages').last()
-        const valueProp = SOURCE_VALUE_PROP[lastMessage.getIn(['source', 'type'])]
+        const ticketLastMessage = ticket.get('messages').last()
+        const valueProp = SOURCE_VALUE_PROP[ticketLastMessage.getIn(['source', 'type'])]
 
         if (curTo.size) {
             to = curTo
         } else {
-            if (lastMessage) {
-                if (lastMessage.get('from_agent')) {
-                    to = lastMessage.getIn(['source', 'to'])
+            if (ticketLastMessage) {
+                if (ticketLastMessage.get('from_agent')) {
+                    to = ticketLastMessage.getIn(['source', 'to'])
                 } else {
-                    to = List([lastMessage.getIn(['source', 'from'])])
+                    to = List([ticketLastMessage.getIn(['source', 'from'])])
                 }
             }
         }
@@ -167,7 +167,7 @@ export default class ReplyMessageChannel extends React.Component {
         }
 
         const data = {
-            name: splittedText.length > 1 ? splittedText[0] : '',
+            name: splittedText.length > 1 ? _.trim(splittedText[0]) : '',
             id: (this.props.ticket.getIn(['state', 'potentialRequesters']).concat(this.getTargets()).find(
                 receiver => receiver.get('address') === value
             ) || Map()).get('id')
@@ -186,9 +186,12 @@ export default class ReplyMessageChannel extends React.Component {
         }
 
         let optionValues = ticket.getIn(['state', 'potentialRequesters'])
+        const targets = this.getTargets()
 
-        if (!this.props.ticket.getIn(['state', 'query'])) {
-            optionValues = optionValues.concat(this.getTargets())
+        if (!this.props.ticket.getIn(['state', 'query']) &&
+            _.every(targets.map(target => optionValues.indexOf(target) === -1).toJS()) // verify that no element of targets is already in optionValues
+        ) {
+            optionValues = optionValues.concat(targets)
         }
 
         const parentId = ticket.get('messages').size ?
