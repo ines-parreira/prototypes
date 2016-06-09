@@ -16,7 +16,11 @@ export function currentUser(state = initial, action) {
                 moment.tz.setDefault(action.resp.timezone)
             }
             if (window.Raven && window.Raven.setUserContext) {
-                window.Raven.setUserContext(action.resp)
+                window.Raven.setUserContext({
+                    id: action.resp.id,
+                    name: action.resp.name,
+                    email: action.resp.email,
+                })
             }
 
             return Map(action.resp)
