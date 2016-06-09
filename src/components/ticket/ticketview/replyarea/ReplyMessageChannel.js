@@ -217,15 +217,17 @@ export default class ReplyMessageChannel extends React.Component {
         const { ticket, actions } = this.props
         const popupClassNames = this.getClassNames()
 
+        const ticketLastMessage = lastMessage(ticket.get('messages').toJS())
+
         const channelClassNames = {
             email: classnames('item', {
-                disabled: lastMessage(ticket.get('messages').toJS()).source.type !== 'email'
+                disabled: ticketLastMessage ? ticketLastMessage.source.type !== 'email' : false
             }),
             facebookComment: classnames('item', {
-                disabled: !ticket.get('id') || lastMessage(ticket.get('messages').toJS()).source.type !== 'facebook-comment'
+                disabled: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-comment'
             }),
             facebookMessage: classnames('item', {
-                disabled: !ticket.get('id') || lastMessage(ticket.get('messages').toJS()).source.type !== 'facebook-message'
+                disabled: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-message'
             }),
             internal: classnames('item', {
                 disabled: !ticket.get('id')
