@@ -55,13 +55,13 @@ export default class TicketMessage extends React.Component {
                             <li>
                                 To:
                                 <strong>
-                                    {message.source.to.map(dest => dest[SOURCE_VALUE_PROP[message.source.type]]).join(', ')}
+                                    {message.source.to.map(dest => `${dest.name} <${dest[SOURCE_VALUE_PROP[message.source.type]]}>`).join(', ')}
                                 </strong>
                             </li>
                             <li>
                                 From:
                                 <strong>
-                                    {message.source.from[SOURCE_VALUE_PROP[message.source.type]]}
+                                    {`${message.source.from.name} <${message.source.from[SOURCE_VALUE_PROP[message.source.type]]}>`}
                                 </strong>
                             </li>
                             <li>
