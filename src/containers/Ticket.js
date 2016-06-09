@@ -3,6 +3,7 @@ import {browserHistory, withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as mousetrap from 'mousetrap'
+import Mousetrap from 'mousetrap'
 import DocumentTitle from 'react-document-title'
 import TicketView from '../components/ticket/ticketview/TicketView'
 import {Loader} from '../components/Loader'
@@ -65,6 +66,22 @@ class TicketContainer extends React.Component {
         // Have to bind these here so they capture at the correct level
         const macrosVisible = () => this.props.macros.get('visible')
 
+        Mousetrap.prototype.stopCallback = (e, element, combo) => {
+            // if the element has the class "mousetrap" then no need to stop
+            // also, if the combo includes 'mod', then the event should be triggered
+            if ((` ${element.className} `).indexOf(' mousetrap ') > -1 || combo.indexOf('mod') > -1) {
+                return false
+            }
+
+            // stop for input, select, and textarea
+            return (
+                element.tagName === 'INPUT' ||
+                element.tagName === 'SELECT' ||
+                element.tagName === 'TEXTAREA' ||
+                (element.contentEditable && element.contentEditable === 'true')
+            )
+        }
+
         mousetrap.bind('escape', () => {
             if (macrosVisible()) {
                 this.props.actions.macro.setMacrosVisible(false)
@@ -103,20 +120,20 @@ class TicketContainer extends React.Component {
                 browserHistory.push(nextUrl)
             }
         })
-        // mousetrap.bind('mod+enter', (e) => {
-        //     if (e.preventDefault) {
-        //         e.preventDefault()
-        //     }
-        //
-        //     this.submit('closed', true)
-        // })
-        // mousetrap.bind('mod+shift+enter', (e) => {
-        //     if (e.preventDefault) {
-        //         e.preventDefault()
-        //     }
-        //
-        //     this.submit()
-        // })
+        mousetrap.bind('mod+enter', (e) => {
+            if (e.preventDefault) {
+                e.preventDefault()
+            }
+
+            this.submit('closed', true)
+        })
+        mousetrap.bind('mod+shift+enter', (e) => {
+            if (e.preventDefault) {
+                e.preventDefault()
+            }
+
+            this.submit()
+        })
 
         this.bindConfirmToRouter()
         window.onbeforeunload = this.confirmLeaveWhenDirty
@@ -124,6 +141,14 @@ class TicketContainer extends React.Component {
 
     componentWillUnmount() {
         window.onbeforeunload = null
+        mousetrap.unbind('escape')
+        mousetrap.unbind('return')
+        mousetrap.unbind('up')
+        mousetrap.unbind('down')
+        mousetrap.unbind('left')
+        mousetrap.unbind('right')
+        mousetrap.unbind('mod+enter')
+        mousetrap.unbind('mod+shift+enter')
     }
 
     componentWillReceiveProps(nextProps) {

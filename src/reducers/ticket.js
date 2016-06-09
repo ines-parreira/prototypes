@@ -89,7 +89,7 @@ export function ticket(state = ticketInitial, action) {
             return state.setIn(['state', 'loading'], false)
 
         case actions.SUBMIT_TICKET_SUCCESS:
-            if (action.resp.id !== state.get('id')) {
+            if (action.resp.id !== state.get('id') && state.get('id')) {
                 return state
             }
 
