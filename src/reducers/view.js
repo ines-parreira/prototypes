@@ -124,12 +124,12 @@ export function views(state = viewsInitial, action) {
             items = sortViews(fromJS(action.resp.data))
 
             // also populate the active view state
-            const slug = action.currentViewSlug ? action.currentViewSlug : actions.DEFAULT_VIEW
+            const slug = action.currentViewSlug
             const active = items.filter(v => v.get('slug') === slug).get(0)
 
             return state.merge({
                 items,
-                active: active.set('dirty', false),
+                active: active ? active.set('dirty', false) : null,
                 loading: false
             })
         }

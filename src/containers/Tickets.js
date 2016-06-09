@@ -20,8 +20,13 @@ class TicketsContainer extends React.Component {
         const currentViews = this.props.views
         const nextViews = nextProps.views
 
+        if (!currentViews.get('active') && !nextViews.get('active')) {
+            this.props.actions.view.setViewActive(this.props.views.getIn(['items', 0]))
+        }
+
         // if our view changed
-        if (!nextViews.get('active').isEmpty() && (
+        if (currentViews.get('active') && nextViews.get('active') &&
+            !nextViews.get('active').isEmpty() && (
                 currentViews.get('active').isEmpty() ||
                 currentViews.getIn(['active', 'slug']) !== nextViews.getIn(['active', 'slug']) ||
                 currentViews.getIn(['active', 'filters']) !== nextViews.getIn(['active', 'filters']) ||
@@ -57,6 +62,10 @@ class TicketsContainer extends React.Component {
 
         if (this.props.params) {
             slug = this.props.params.view
+        }
+
+        if (!this.props.views.get('active')) {
+            return null
         }
 
         const active = this.props.views.get('active').toJS()
