@@ -4,7 +4,6 @@ import _ from 'lodash'
 export default class SearchableDropdown extends React.Component {
     componentDidMount() {
         const receiverDropdown = $(`#receiver-dropdown-${this.props.suffix}`)
-        const searchInput = $(`#receiver-dropdown-${this.props.suffix} input.search`)
 
         receiverDropdown.dropdown({
             allowAdditions: true,

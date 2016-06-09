@@ -40,12 +40,15 @@ export default class TicketMessage extends React.Component {
             'facebook-comment': 'facebook'
         }
 
+        const legend = !message.source.type.startsWith('facebook') ?
+            `<${message.source.from[SOURCE_VALUE_PROP[message.source.type]]}>` : ''
+
         return (
             <span className="ticket-message-source">
                 <div className="ui dropdown" id="email-dropdown">
                     <span className="text">
                         <i className={`icon ${icons[message.source.type]}`}/>
-                        &lt;{message.source.from[SOURCE_VALUE_PROP[message.source.type]]}&gt;
+                        {legend}
                     </span>
                     <div className="ticket-message-source-details menu transition">
                         <ul className="item">

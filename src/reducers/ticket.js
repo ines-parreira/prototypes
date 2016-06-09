@@ -220,6 +220,8 @@ export function ticket(state = ticketInitial, action) {
                 }
 
                 data[valueProp] = channel.address
+                data.name = data.name ? data.name : ''
+
                 users.push(data)
             }
 
