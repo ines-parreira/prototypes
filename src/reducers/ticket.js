@@ -89,6 +89,23 @@ export function ticket(state = ticketInitial, action) {
             return state.setIn(['state', 'loading'], false)
 
         case actions.SUBMIT_TICKET_SUCCESS:
+            if (action.resp.id !== state.get('id') && state.get('id')) {
+                return state
+            }
+
+            return state.merge(fromJS(action.resp))
+                .set('newMessage', newMessage(
+                    action.resp.channel,
+                    action.resp.messages[action.resp.messages.length - 1].source.type
+                ))
+                .mergeDeep({
+                    state: {
+                        dirty: false,
+                        loading: false,
+                        query: ''
+                    }
+                })
+
         case actions.FETCH_TICKET_SUCCESS:
             return state.merge(fromJS(action.resp))
                 .set('newMessage', newMessage(
@@ -149,7 +166,7 @@ export function ticket(state = ticketInitial, action) {
             return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
 
         case actions.SET_AGENT:
-            return state.set('assignee_user', Map(action.args.get('assignee_user')))
+            return state.set('assignee_user', action.args.get('assignee_user') ? Map(action.args.get('assignee_user')) : null)
 
         case actions.SET_STATUS:
             return state.set('status', action.args.get('status'))

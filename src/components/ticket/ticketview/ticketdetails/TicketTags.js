@@ -52,7 +52,7 @@ export default class TicketTags extends React.Component {
                         id={`tag-dropdown-${this.props.suffix}`}
                         className="ticket-tag-add-btn ui search button input pointing dropdown link item"
                         style={style}
-                        onClick={ () => this.refs.tagSearch.focus() }
+                        onClick={() => this.refs.tagSearch.focus()}
                     >
                         <span>
                             <i className="icon plus" /> ADD TAG
@@ -60,7 +60,7 @@ export default class TicketTags extends React.Component {
 
                         <div className="menu">
                             <div className="ui search input">
-                                  <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..."/>
+                                <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..."/>
                             </div>
                             <div className="hidden item" key="placeholder"></div>
                             {
@@ -78,6 +78,8 @@ export default class TicketTags extends React.Component {
                                             </div>
                                         )
                                     }
+
+                                    return null
                                 })
                             }
                         </div>

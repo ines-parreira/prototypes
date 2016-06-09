@@ -103,20 +103,20 @@ class TicketContainer extends React.Component {
                 browserHistory.push(nextUrl)
             }
         })
-        // mousetrap.bind('mod+enter', (e) => {
-        //     if (e.preventDefault) {
-        //         e.preventDefault()
-        //     }
-        //
-        //     this.submit('closed', true)
-        // })
-        // mousetrap.bind('mod+shift+enter', (e) => {
-        //     if (e.preventDefault) {
-        //         e.preventDefault()
-        //     }
-        //
-        //     this.submit()
-        // })
+        mousetrap.bind('mod+enter', (e) => {
+            if (e.preventDefault) {
+                e.preventDefault()
+            }
+
+            this.submit('closed', true)
+        })
+        mousetrap.bind('mod+shift+enter', (e) => {
+            if (e.preventDefault) {
+                e.preventDefault()
+            }
+
+            this.submit()
+        })
 
         this.bindConfirmToRouter()
         window.onbeforeunload = this.confirmLeaveWhenDirty
@@ -124,6 +124,14 @@ class TicketContainer extends React.Component {
 
     componentWillUnmount() {
         window.onbeforeunload = null
+        mousetrap.unbind('escape')
+        mousetrap.unbind('return')
+        mousetrap.unbind('up')
+        mousetrap.unbind('down')
+        mousetrap.unbind('left')
+        mousetrap.unbind('right')
+        mousetrap.unbind('mod+enter')
+        mousetrap.unbind('mod+shift+enter')
     }
 
     componentWillReceiveProps(nextProps) {
