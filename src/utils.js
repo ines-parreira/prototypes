@@ -3,12 +3,12 @@ import moment from 'moment-timezone'
 
 export function formatDatetime(datetime, timezone, format = 'calendar') {
     try {
-        const raw = moment(datetime).tz(timezone || 'UTC')
+        const raw = timezone ? moment(datetime).tz(timezone || 'UTC') : moment(datetime)
+
         if (format === 'calendar') {
             return raw.calendar()
-        } else {
-            return raw.format(format)
         }
+        return raw.format(format)
     } catch (e) {
         console.error('Failed to format datetime', e, datetime, timezone)
         return datetime
