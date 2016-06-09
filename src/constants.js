@@ -19,10 +19,13 @@ export const BASIC_OPERATORS = {
  * Ticket-related
  */
 
+// This is a utility map to get the right property name when setting the source on a message
+// Basically will be used in: source.setIn(['source', 'to', {PROPERTY_NAME}], identifier/address)
 export const SOURCE_VALUE_PROP = {
     email: 'address',
-    'facebook-message': 'facebook_id',
-    'facebook-comment': 'comment-id'
+    'facebook-message': 'name',
+    'facebook-comment': 'name',
+    'facebook-post': 'name'
 }
 
 /**

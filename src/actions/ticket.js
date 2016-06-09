@@ -47,7 +47,6 @@ export const SET_PUBLIC = 'SET_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
 export const ADD_RECEIVER = 'ADD_RECEIVER'
 export const REMOVE_RECEIVER = 'REMOVE_RECEIVER'
-export const SET_SOURCE_TO = 'SET_SOURCE_TO'
 export const SET_SOURCE_TYPE = 'SET_SOURCE_TYPE'
 
 export const SAVE_INDEX = 'SAVE_INDEX'
@@ -208,13 +207,6 @@ export function removeReceiver(prop) {
     return {
         type: REMOVE_RECEIVER,
         prop
-    }
-}
-
-export function setSourceTo(emails) {
-    return {
-        type: SET_SOURCE_TO,
-        emails
     }
 }
 
