@@ -89,6 +89,23 @@ export function ticket(state = ticketInitial, action) {
             return state.setIn(['state', 'loading'], false)
 
         case actions.SUBMIT_TICKET_SUCCESS:
+            if (action.resp.id !== state.get('id')) {
+                return state
+            }
+
+            return state.merge(fromJS(action.resp))
+                .set('newMessage', newMessage(
+                    action.resp.channel,
+                    action.resp.messages[action.resp.messages.length - 1].source.type
+                ))
+                .mergeDeep({
+                    state: {
+                        dirty: false,
+                        loading: false,
+                        query: ''
+                    }
+                })
+
         case actions.FETCH_TICKET_SUCCESS:
             return state.merge(fromJS(action.resp))
                 .set('newMessage', newMessage(
