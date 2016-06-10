@@ -99,6 +99,8 @@ export default class TicketsView extends React.Component {
                                 <ListActions
                                     views={views}
                                     shouldDisplayBulkActions={tickets.get('selected').size > 0}
+                                    actions={actions.tickets}
+                                    selected={tickets.get('selected')}
                                 />
 
                             </div>

@@ -563,10 +563,3 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
         })
     }
 }
-
-export function saveIndex(currentTicketIndex) {
-    return {
-        type: SAVE_INDEX,
-        currentTicketIndex
-    }
-}

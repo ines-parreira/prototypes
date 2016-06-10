@@ -4,7 +4,6 @@ import TicketTableCell from './TicketTableCell'
 
 export default class TicketTableRow extends React.Component {
     handleClick = () => {
-        // this.props.saveIndex(this.props.curIndex)
         browserHistory.push(`/app/ticket/${this.props.ticket.get('id')}`)
     }
 

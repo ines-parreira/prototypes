@@ -22,8 +22,14 @@ export default class ListActions extends React.Component {
         }
     }
 
-    renderBulkActions(shouldDisplay) {
-        if (!shouldDisplay) {
+    bulkUpdate(key, value) {
+        this.props.actions.bulkUpdate(this.props.selected, key, value)
+    }
+
+    renderBulkActions() {
+        const {shouldDisplayBulkActions} = this.props
+
+        if (!shouldDisplayBulkActions) {
             return null
         }
 
@@ -42,8 +48,8 @@ export default class ListActions extends React.Component {
                         More <i className="dropdown icon"/>
                         <div className="menu">
                             <div className="item">Apply macro...</div>
-                            <div className="item">Mark as high priority</div>
-                            <div className="item">Mark as normal priority</div>
+                            <div className="item" onClick={() => this.bulkUpdate('priority', 'high')}>Mark as high priority</div>
+                            <div className="item" onClick={() => this.bulkUpdate('priority', 'normal')}>Mark as normal priority</div>
                             <div className="divider"></div>
                             <div className="item">Delete tickets</div>
                         </div>
@@ -52,12 +58,12 @@ export default class ListActions extends React.Component {
                 </div>
 
                 <div className="BulkAction ui right floated buttons">
-                    <div className="ui basic grey button">Close</div>
+                    <div className="ui basic grey button" onClick={() => this.bulkUpdate('status', 'closed')}>Close</div>
                     <div id="bulkStatusDropdown" className="ui basic grey floating dropdown icon button item">
                         <i className="dropdown icon"/>
                         <div className="menu">
-                            <div className="item">OPEN</div>
-                            <div className="item">NEW</div>
+                            <div className="item" onClick={() => this.bulkUpdate('status', 'open')}>OPEN</div>
+                            <div className="item" onClick={() => this.bulkUpdate('status', 'new')}>NEW</div>
                         </div>
                     </div>
                 </div>
@@ -102,5 +108,7 @@ export default class ListActions extends React.Component {
 
 ListActions.propTypes = {
     views: PropTypes.object.isRequired,
-    shouldDisplayBulkActions: PropTypes.bool.isRequired
+    shouldDisplayBulkActions: PropTypes.bool.isRequired,
+    actions: PropTypes.object.isRequired, // tickets actions
+    selected: PropTypes.object.isRequired // list of ids of selected tickets
 }
