@@ -60,7 +60,7 @@ export function tickets(state = ticketsInitial, action) {
 
                     return item
                 })
-            ).set('selected', List())
+            )
 
         case actions.BULK_DELETE_SUCCESS:
             return state.set('items', state.get('items').filter(item => action.ids.indexOf(item.get('id')) === -1))

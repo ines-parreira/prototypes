@@ -1,4 +1,5 @@
 import reqwest from 'reqwest'
+import _ from 'lodash'
 import {systemMessage} from './systemMessage'
 
 // Fetching a list of tickets life-cycle
@@ -81,9 +82,27 @@ export function bulkUpdate(ids, key, value) {
         dispatch({
             type: BULK_UPDATE_START
         })
+        dispatch(systemMessage({
+            type: 'loading',
+            msg: 'Updating tickets...'
+        }))
 
-        const data = { ids: ids.toJS() }
-        data[key] = value
+        const data = { ids: ids.toJS(), updates: {} }
+        data.updates[key] = value
+
+        let msg = `${ids.size} tickets' ${key} successfully set to ${value}!`
+
+        switch (key) {
+            case 'tag':
+                msg = `${ids.size} tickets successfully tagged ${value.name}!`
+                break
+            case 'assignee_user':
+                msg = `${ids.size} tickets successfully assigned to ${value.name}!`
+                break;
+            default:
+                break;
+        }
+
 
         return reqwest({
             url: '/api/tickets/',
@@ -99,7 +118,7 @@ export function bulkUpdate(ids, key, value) {
             })
             dispatch(systemMessage({
                 type: 'success',
-                msg: `${ids.size} tickets successfully updated!`
+                msg
             }))
         }).catch((err) => {
             dispatch(systemMessage({
@@ -117,6 +136,10 @@ export function bulkDelete(ids) {
         dispatch({
             type: BULK_DELETE_START
         })
+        dispatch(systemMessage({
+            type: 'loading',
+            msg: 'Deleting tickets...'
+        }))
 
         return reqwest({
             url: '/api/tickets/',

@@ -115,8 +115,8 @@ export default class ListActions extends React.Component {
                     <div id="bulkStatusDropdown" className="ui basic grey floating dropdown icon button item">
                         <i className="dropdown icon"/>
                         <div className="menu">
-                            <div className="item" onClick={() => this.bulkUpdate('status', 'open')}>OPEN</div>
-                            <div className="item" onClick={() => this.bulkUpdate('status', 'new')}>NEW</div>
+                            <div className="item" onClick={() => this.bulkUpdate('status', 'open')}>open</div>
+                            <div className="item" onClick={() => this.bulkUpdate('status', 'new')}>new</div>
                         </div>
                     </div>
                 </div>

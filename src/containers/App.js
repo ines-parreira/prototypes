@@ -16,6 +16,7 @@ class App extends React.Component {
     constructor(props) {
         super(props)
         this.handleDismissClick = this.handleDismissClick.bind(this)
+        this.messageTimeout = null
     }
 
     componentWillMount() {
@@ -74,6 +75,7 @@ class App extends React.Component {
 
     // Show errors, warnings, info and success messages
     renderSystemMessage() {
+        clearTimeout(this.messageTimeout)
         const systemMessage = this.props.systemMessage.toJS()
 
         if (Object.keys(systemMessage).length === 0 || systemMessage.modal) {
@@ -87,11 +89,12 @@ class App extends React.Component {
             error: 'negative',
             warning: 'warning',
             info: 'info',
-            success: 'success'
+            success: 'success',
+            loading: 'info'
         }[systemMessage.type]
 
         if (systemMessage.type === 'info' || systemMessage.type === 'success') {
-            setTimeout(this.handleDismissClick, 4500)
+            this.messageTimeout = setTimeout(this.handleDismissClick, 4500)
         }
 
         return (
