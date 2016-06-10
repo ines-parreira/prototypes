@@ -13,6 +13,8 @@ export const BULK_UPDATE_SUCCESS = 'BULK_UPDATE_SUCCESS'
 export const BULK_APPLY_MACRO = 'BULK_APPLY_MACRO'
 export const BULK_DELETE = 'BULK_DELETE'
 
+export const SAVE_INDEX = 'SAVE_INDEX'
+
 
 export function fetchTicketsPage(views, page) {
     return (dispatch) => {
@@ -118,5 +120,12 @@ export function bulkApplyMacro(macroId) {
 export function bulkDelete() {
     return {
         type: BULK_DELETE
+    }
+}
+
+export function saveIndex(currentTicketIndex) {
+    return {
+        type: SAVE_INDEX,
+        currentTicketIndex
     }
 }

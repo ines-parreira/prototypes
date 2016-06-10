@@ -6,6 +6,7 @@ import * as mousetrap from 'mousetrap'
 import DocumentTitle from 'react-document-title'
 import TicketView from '../components/ticket/ticketview/TicketView'
 import {Loader} from '../components/Loader'
+import * as TicketsActions from '../actions/tickets'
 import * as TicketActions from '../actions/ticket'
 import * as MacroActions from '../actions/macro'
 import * as UserActions from '../actions/user'
@@ -208,7 +209,7 @@ class TicketContainer extends React.Component {
 
         if (nextTicket) {
             nextTicketUrl = `/app/ticket/${nextTicket.id}`
-            this.props.actions.ticket.saveIndex(this.props.tickets.get('currentTicketIndex') + translation)
+            this.props.actions.tickets.saveIndex(this.props.tickets.get('currentTicketIndex') + translation)
         }
 
         return nextTicketUrl
@@ -326,6 +327,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
+            tickets: bindActionCreators(TicketsActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),
             tag: bindActionCreators(TagActions, dispatch),

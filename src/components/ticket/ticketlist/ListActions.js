@@ -17,7 +17,26 @@ export default class ListActions extends React.Component {
 
             $('#bulkTagDropdown').dropdown({
                 hoverable: true,
-                on: 'hover'
+                on: 'hover',
+                onChange: (value) => {
+                    const tag = this.props.tags.find(curTag => curTag.get('name') === value)
+
+                    if (tag) {
+                        this.bulkUpdate('tag', tag.toJS())
+                    }
+                }
+            })
+
+            $('#bulkAssigneeDropdown').dropdown({
+                hoverable: true,
+                on: 'hover',
+                onChange: (value) => {
+                    const agent = this.props.agents.find(curAgent => curAgent.get('id').toString() === value)
+
+                    if (agent) {
+                        this.bulkUpdate('assignee_user', {id: agent.get('id'), name: agent.get('name')})
+                    }
+                }
             })
         }
     }
@@ -27,7 +46,7 @@ export default class ListActions extends React.Component {
     }
 
     renderBulkActions() {
-        const {shouldDisplayBulkActions} = this.props
+        const {shouldDisplayBulkActions, currentUser, tags, agents} = this.props
 
         if (!shouldDisplayBulkActions) {
             return null
@@ -36,11 +55,30 @@ export default class ListActions extends React.Component {
         return (
             <div>
                 <div className="BulkAction ui right floated buttons">
-                    <div id="bulkTagDropdown" className="ui basic grey button floating dropdown">
+
+                    <div
+                        id="bulkTagDropdown"
+                        className="ui basic grey button floating dropdown"
+                        onClick={() => this.refs.tagSearch.focus()}
+                    >
                         Tag <i className="dropdown icon"/>
+
                         <div className="menu">
-                            <div className="item">Refund</div>
-                            <div className="item">Rejected</div>
+                            <div className="ui search input">
+                                <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..."/>
+                            </div>
+                            <div className="hidden item" key="placeholder"></div>
+                            {
+                                tags.map(tag => (
+                                    <div
+                                        className="item"
+                                        key={tag.get('name')}
+                                        data-value={tag.get('name')}
+                                    >
+                                        {tag.get('name')}
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
 
@@ -48,8 +86,15 @@ export default class ListActions extends React.Component {
                         More <i className="dropdown icon"/>
                         <div className="menu">
                             <div className="item">Apply macro...</div>
-                            <div className="item" onClick={() => this.bulkUpdate('priority', 'high')}>Mark as high priority</div>
-                            <div className="item" onClick={() => this.bulkUpdate('priority', 'normal')}>Mark as normal priority</div>
+
+                            <div className="item" onClick={() => this.bulkUpdate('priority', 'high')}>
+                                Mark as high priority
+                            </div>
+
+                            <div className="item" onClick={() => this.bulkUpdate('priority', 'normal')}>
+                                Mark as normal priority
+                            </div>
+
                             <div className="divider"></div>
                             <div className="item">Delete tickets</div>
                         </div>
@@ -58,7 +103,9 @@ export default class ListActions extends React.Component {
                 </div>
 
                 <div className="BulkAction ui right floated buttons">
-                    <div className="ui basic grey button" onClick={() => this.bulkUpdate('status', 'closed')}>Close</div>
+                    <div className="ui basic grey button" onClick={() => this.bulkUpdate('status', 'closed')}>
+                        Close
+                    </div>
                     <div id="bulkStatusDropdown" className="ui basic grey floating dropdown icon button item">
                         <i className="dropdown icon"/>
                         <div className="menu">
@@ -69,11 +116,34 @@ export default class ListActions extends React.Component {
                 </div>
 
                 <div className="BulkAction ui right floated buttons">
-                    <div className="ui basic grey button">Assign to me</div>
-                    <div className="ui basic grey floating dropdown icon button">
-                        <i className="dropdown icon"/>
+                    <div
+                        className="ui basic grey button"
+                        onClick={() => this.bulkUpdate('assignee_user', { id: currentUser.get('id') })}
+                    >
+                        Assign to me
+                    </div>
+                    <div id="bulkAssigneeDropdown" className="ui basic grey floating dropdown icon button">
+                        <i className="dropdown icon" onClick={() => this.refs.agentSearch.focus()}/>
+                        <div className="menu">
+                            <div className="ui search input">
+                                <input id="tag-search" ref="agentSearch" type="text" placeholder="Search tags..."/>
+                            </div>
+                            <div className="hidden item" key="placeholder"></div>
+                            {
+                                agents.map(agent => (
+                                    <div
+                                        className="item"
+                                        key={agent.get('id')}
+                                        data-value={agent.get('id')}
+                                    >
+                                        {agent.get('name')}
+                                    </div>
+                                ))
+                            }
+                        </div>
                     </div>
                 </div>
+
             </div>
         )
     }
@@ -110,5 +180,9 @@ ListActions.propTypes = {
     views: PropTypes.object.isRequired,
     shouldDisplayBulkActions: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired, // tickets actions
-    selected: PropTypes.object.isRequired // list of ids of selected tickets
+    selected: PropTypes.object.isRequired, // list of ids of selected tickets
+
+    currentUser: PropTypes.object.isRequired,
+    tags: PropTypes.object.isRequired,
+    agents: PropTypes.object.isRequired
 }

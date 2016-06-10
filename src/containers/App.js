@@ -6,6 +6,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import {dismissMessage} from '../actions/systemMessage'
 import {fetchUser, fetchUsers} from '../actions/user'
 import {fetchSettings} from '../actions/settings'
+import {fetchTags} from '../actions/tag'
 import TicketsNavbarContainer from './TicketsNavbar'
 import KeyboardHelp from '../components/KeyboardHelp'
 import Mousetrap, * as mousetrap from 'mousetrap'
@@ -23,6 +24,7 @@ class App extends React.Component {
         this.props.fetchSettings()
         this.props.fetchUsers()
         this.props.fetchUsers('agent')
+        this.props.fetchTags()
     }
 
     componentDidMount() {
@@ -166,9 +168,11 @@ App.propTypes = {
 
     // current logged in user
     currentUser: PropTypes.object,
+
     fetchUser: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
+    fetchTags: PropTypes.func.isRequired,
 
     // Injected by React Router
     children: PropTypes.node,
@@ -192,5 +196,6 @@ export default connect(mapStateToProps, {
     dismissMessage,
     fetchUser,
     fetchUsers,
-    fetchSettings
+    fetchSettings,
+    fetchTags
 })(App)

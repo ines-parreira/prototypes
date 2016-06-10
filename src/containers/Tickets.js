@@ -85,12 +85,16 @@ class TicketsContainer extends React.Component {
                         tickets={this.props.tickets}
                         views={this.props.views}
                         schemas={this.props.schemas}
+                        users={this.props.users}
                         currentUser={this.props.currentUser}
+                        tags={this.props.tags.get('items')}
+
                         actions={this.props.actions}
 
                         fetchPage={this.fetchPage}
                         search={this.search}
                         slug={slug}
+
                     />
                 </div>
             </DocumentTitle>
@@ -107,10 +111,13 @@ TicketsContainer.propTypes = {
         }),
         search: PropTypes.string
     }),
-    settings: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
+    tags: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
+    users: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
+    settings: PropTypes.object.isRequired,
+
     actions: PropTypes.object.isRequired,
 
     // React Router
@@ -119,10 +126,11 @@ TicketsContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        users: state.users,
-        views: state.views,
-        schemas: state.schemas,
         tickets: state.tickets,
+        views: state.views,
+        tags: state.tags,
+        schemas: state.schemas,
+        users: state.users,
         currentUser: state.currentUser,
         settings: state.settings
     }
@@ -135,7 +143,7 @@ function mapDispatchToProps(dispatch) {
             ticket: bindActionCreators(TicketActions, dispatch),
             tickets: bindActionCreators(TicketsActions, dispatch),
             schema: bindActionCreators(SchemaActions, dispatch),
-            user: bindActionCreators(UserActions, dispatch),
+            user: bindActionCreators(UserActions, dispatch)
         }
     }
 }

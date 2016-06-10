@@ -101,6 +101,9 @@ export default class TicketsView extends React.Component {
                                     shouldDisplayBulkActions={tickets.get('selected').size > 0}
                                     actions={actions.tickets}
                                     selected={tickets.get('selected')}
+                                    currentUser={currentUser}
+                                    tags={this.props.tags}
+                                    agents={this.props.users.get('agents')}
                                 />
 
                             </div>
@@ -139,11 +142,14 @@ export default class TicketsView extends React.Component {
 }
 
 TicketsView.propTypes = {
-    actions: PropTypes.object.isRequired,
     tickets: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
+    tags: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
+    users: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
+
+    actions: PropTypes.object.isRequired,
 
     fetchPage: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired

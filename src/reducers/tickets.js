@@ -44,22 +44,26 @@ export function tickets(state = ticketsInitial, action) {
         }
 
         case actions.BULK_UPDATE_SUCCESS:
-            return state.set('selected', List()).set('items', state.get('items').map(item => {
-                if (action.key !== 'tags') {
+            return state.set(
+                'items',
+                state.get('items').map(item => {
                     if (state.get('selected').indexOf(item.get('id')) !== -1) {
-                        return item.set(action.key, action.value)
-                    }
-                } else {
-                    if (state.get('selected').indexOf(item.get('id')) !== -1) {
-                        return item.set(
-                            'tags',
-                            item.get('tags').concat(fromJS(action.value))
-                        )
-                    }
-                }
+                        if (action.key === 'tag') {
+                            return item.set(
+                                'tags',
+                                item.get('tags').push(fromJS(action.value))
+                            )
+                        }
 
-                return item
-            }))
+                        return item.set(action.key, fromJS(action.value))
+                    }
+
+                    return item
+                })
+            ).set('selected', List())
+
+        case actions.SAVE_INDEX:
+            return state.set('currentTicketIndex', action.currentTicketIndex)
 
         default:
             return state
