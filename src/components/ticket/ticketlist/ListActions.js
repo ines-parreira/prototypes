@@ -7,17 +7,17 @@ export default class ListActions extends React.Component {
         if (!prevProps.shouldDisplayBulkActions && this.props.shouldDisplayBulkActions) {
             $('#bulkStatusDropdown').dropdown({
                 hoverable: true,
-                on: 'hover'
+                on: 'click'
             })
 
             $('#bulkMoreDropdown').dropdown({
                 hoverable: true,
-                on: 'hover'
+                on: 'click'
             })
 
             $('#bulkTagDropdown').dropdown({
                 hoverable: true,
-                on: 'hover',
+                on: 'click',
                 onChange: (value) => {
                     const tag = this.props.tags.find(curTag => curTag.get('name') === value)
 
@@ -29,7 +29,7 @@ export default class ListActions extends React.Component {
 
             $('#bulkAssigneeDropdown').dropdown({
                 hoverable: true,
-                on: 'hover',
+                on: 'click',
                 onChange: (value) => {
                     const agent = this.props.agents.find(curAgent => curAgent.get('id').toString() === value)
 
@@ -43,6 +43,12 @@ export default class ListActions extends React.Component {
 
     bulkUpdate(key, value) {
         this.props.actions.bulkUpdate(this.props.selected, key, value)
+    }
+
+    bulkDelete() {
+        if (window.confirm(`Are you sure you want to delete ${this.props.selected.size} tickets?`)) {
+            this.props.actions.bulkDelete(this.props.selected)
+        }
     }
 
     renderBulkActions() {
@@ -65,7 +71,7 @@ export default class ListActions extends React.Component {
 
                         <div className="menu">
                             <div className="ui search input">
-                                <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..."/>
+                                <input ref="tagSearch" type="text" placeholder="Search tags..."/>
                             </div>
                             <div className="hidden item" key="placeholder"></div>
                             {
@@ -85,7 +91,7 @@ export default class ListActions extends React.Component {
                     <div id="bulkMoreDropdown" className="ui basic grey button floating dropdown">
                         More <i className="dropdown icon"/>
                         <div className="menu">
-                            <div className="item">Apply macro...</div>
+                            <div className="disabled item">Apply macro...</div>
 
                             <div className="item" onClick={() => this.bulkUpdate('priority', 'high')}>
                                 Mark as high priority
@@ -96,7 +102,7 @@ export default class ListActions extends React.Component {
                             </div>
 
                             <div className="divider"></div>
-                            <div className="item">Delete tickets</div>
+                            <div className="red text item" onClick={() => this.bulkDelete()}>Delete tickets</div>
                         </div>
                     </div>
 
@@ -122,11 +128,15 @@ export default class ListActions extends React.Component {
                     >
                         Assign to me
                     </div>
-                    <div id="bulkAssigneeDropdown" className="ui basic grey floating dropdown icon button">
-                        <i className="dropdown icon" onClick={() => this.refs.agentSearch.focus()}/>
+                    <div
+                        id="bulkAssigneeDropdown"
+                        className="ui basic grey floating dropdown icon button"
+                        onClick={() => this.refs.agentSearch.focus()}
+                    >
+                        <i className="dropdown icon"/>
                         <div className="menu">
                             <div className="ui search input">
-                                <input id="tag-search" ref="agentSearch" type="text" placeholder="Search tags..."/>
+                                <input ref="agentSearch" type="text" placeholder="Search agents..."/>
                             </div>
                             <div className="hidden item" key="placeholder"></div>
                             {

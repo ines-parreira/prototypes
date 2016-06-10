@@ -10,8 +10,10 @@ export const TOGGLE_TICKET_SELECTION = 'TOGGLE_TICKET_SELECTION'
 export const BULK_UPDATE_START = 'BULK_UPDATE_START'
 export const BULK_UPDATE_SUCCESS = 'BULK_UPDATE_SUCCESS'
 
+export const BULK_DELETE_START = 'BULK_DELETE_START'
+export const BULK_DELETE_SUCCESS = 'BULK_DELETE_SUCCESS'
+
 export const BULK_APPLY_MACRO = 'BULK_APPLY_MACRO'
-export const BULK_DELETE = 'BULK_DELETE'
 
 export const SAVE_INDEX = 'SAVE_INDEX'
 
@@ -73,6 +75,7 @@ export function toggleTicketSelection(ticketId) {
     }
 }
 
+
 export function bulkUpdate(ids, key, value) {
     return (dispatch) => {
         dispatch({
@@ -109,6 +112,34 @@ export function bulkUpdate(ids, key, value) {
 }
 
 
+export function bulkDelete(ids) {
+    return (dispatch) => {
+        dispatch({
+            type: BULK_DELETE_START
+        })
+
+        return reqwest({
+            url: '/api/tickets/',
+            method: 'DELETE',
+            data: JSON.stringify({ ids }),
+            contentType: 'application/json'
+        }).then((resp) => {
+            dispatch({
+                type: BULK_DELETE_SUCCESS,
+                ids,
+                resp
+            })
+        }).catch((err) => {
+            dispatch({
+                type: 'error',
+                header: 'Error: couldn\'t delete selected tickets.',
+                msg: err
+            })
+        })
+    }
+}
+
+
 export function bulkApplyMacro(macroId) {
     return {
         type: BULK_APPLY_MACRO,
@@ -116,12 +147,6 @@ export function bulkApplyMacro(macroId) {
     }
 }
 
-
-export function bulkDelete() {
-    return {
-        type: BULK_DELETE
-    }
-}
 
 export function saveIndex(currentTicketIndex) {
     return {

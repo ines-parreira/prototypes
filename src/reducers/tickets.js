@@ -62,6 +62,9 @@ export function tickets(state = ticketsInitial, action) {
                 })
             ).set('selected', List())
 
+        case actions.BULK_DELETE_SUCCESS:
+            return state.set('items', state.get('items').filter(item => action.ids.indexOf(item.get('id')) === -1))
+
         case actions.SAVE_INDEX:
             return state.set('currentTicketIndex', action.currentTicketIndex)
 
