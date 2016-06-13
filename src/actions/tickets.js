@@ -152,6 +152,10 @@ export function bulkDelete(ids) {
                 ids,
                 resp
             })
+            dispatch(systemMessage({
+                type: 'success',
+                msg: `${ids.size} tickets successfully deleted!`
+            }))
         }).catch((err) => {
             dispatch({
                 type: 'error',
