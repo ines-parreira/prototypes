@@ -108,10 +108,10 @@ export function ticket(state = ticketInitial, action) {
 
         case actions.FETCH_TICKET_SUCCESS:
             return state.merge(fromJS(action.resp))
-                .set('newMessage', newMessage(
+                .set('newMessage', state.get('newMessage').mergeDeep(newMessage(
                     action.resp.channel,
                     action.resp.messages[action.resp.messages.length - 1].source.type
-                ))
+                )))
                 .mergeDeep({
                     state: {
                         dirty: false,
