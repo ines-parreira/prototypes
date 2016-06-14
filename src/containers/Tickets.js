@@ -21,8 +21,8 @@ class TicketsContainer extends React.Component {
         const currentViews = this.props.views
         const nextViews = nextProps.views
 
-        if (!currentViews.get('active') && !nextViews.get('active')) {
-            this.props.actions.view.setViewActive(this.props.views.getIn(['items', 0]))
+        if (currentViews.get('active').isEmpty() && nextViews.get('active').isEmpty() && nextViews.get('items').size) {
+            this.props.actions.view.setViewActive(nextViews.getIn(['items', 0]))
         }
 
         // if our view changed
@@ -94,7 +94,6 @@ class TicketsContainer extends React.Component {
                         fetchPage={this.fetchPage}
                         search={this.search}
                         slug={slug}
-
                     />
                 </div>
             </DocumentTitle>

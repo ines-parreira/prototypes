@@ -43,7 +43,11 @@ export function views(state = viewsInitial, action) {
 
     switch (action.type) {
         case actions.SET_VIEW_ACTIVE:
-            return state.set('active', action.view)
+            if (action.view) {
+                return state.set('active', action.view)
+            }
+
+            return state
 
         case actions.UPDATE_VIEW:
             return state.set('active', action.view.set('dirty', true))
@@ -129,7 +133,7 @@ export function views(state = viewsInitial, action) {
 
             return state.merge({
                 items,
-                active: active ? active.set('dirty', false) : null,
+                active: active ? active.set('dirty', false) : Map(),
                 loading: false
             })
         }
