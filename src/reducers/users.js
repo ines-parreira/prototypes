@@ -48,17 +48,7 @@ export function users(state = usersInitial, action) {
             })
 
         case actions.UPDATE_USER_SUCCESS:
-            userIndex = _.findIndex(items, { id: action.userId })
-
-            return state.merge({
-                items: [
-                    ...items.slice(0, userIndex),
-                    action.resp,
-                    ...items.slice(userIndex + 1)
-                ],
-                resp: action.resp
-
-            })
+            return state.setIn(['items', items.findIndex(item => item.get('id') === action.userId)], fromJS(action.resp))
 
         case actions.DELETE_USER_SUCCESS:
             return state.merge({
