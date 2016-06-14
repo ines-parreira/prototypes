@@ -124,7 +124,7 @@ export default class ListActions extends React.Component {
                 <div className="BulkAction ui right floated buttons">
                     <div
                         className="ui basic grey button"
-                        onClick={() => this.bulkUpdate('assignee_user', { id: currentUser.get('id') })}
+                        onClick={() => this.bulkUpdate('assignee_user', { id: currentUser.get('id'), name: currentUser.get('name') })}
                     >
                         Assign to me
                     </div>
