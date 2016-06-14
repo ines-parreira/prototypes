@@ -3,6 +3,10 @@ import {Link} from 'react-router'
 import {compactInteger} from '../utils'
 
 export default class Navbar extends React.Component {
+    componentWillMount() {
+        this.state = { title: 'Tickets' }
+    }
+
     componentDidMount() {
         $('#user-menu', this.refs.navbar).dropdown({
             direction: 'upward'
@@ -43,12 +47,12 @@ export default class Navbar extends React.Component {
         return (
             <div className="navbar" ref="navbar">
                 <div id="main-menu" className="navbar-btn navbar-btn-category ui dropdown">
-                    Tickets
+                    {this.state.title}
                     <i className="icon angle down"/>
                     <div className="menu">
-                        <Link to="/app" className="item">Dashboard</Link>
-                        {/* <Link to="/rules" className="item">Rules</Link> */}
-                        <Link to="/app/users" className="item">Users</Link>
+                        <Link to="/app" className="item" onClick={() => this.setState({ title: 'Tickets' })}>Tickets</Link>
+                        {/* <Link to="/rules" className="item" onClick={() => this.setState({ title: 'Rules' })}>Rules</Link> */}
+                        <Link to="/app/users" className="item" onClick={() => this.setState({ title: 'Users' })}>Users</Link>
                     </div>
                 </div>
 
@@ -102,9 +106,11 @@ export default class Navbar extends React.Component {
 
                     <div className="menu">
                         <a className="item" href="/logout"><i className="sign out icon"/> Sign Out</a>
-                        {/*<a className="disabled item"><i className="edit icon"/> Edit Profile</a>
+                        {/*
+                        <a className="disabled item"><i className="edit icon"/> Edit Profile</a>
                         <a className="disabled item"><i className="globe icon"/> Choose Language</a>
-                        <a className="disabled item"><i className="settings icon"/> Account Settings</a>*/}
+                        <a className="disabled item"><i className="settings icon"/> Account Settings</a
+                        */}
                     </div>
                 </div>
             </div>
