@@ -6,8 +6,10 @@ import {currentUser} from '../currentUser'
 
 expect.extend(expectImmutable)
 
-describe('currentUser', () => {
-    it('return the initial state', () => {
-        expect(currentUser()).toEqualImmutable(Map())
+describe('reducers', () => {
+    describe('currentUser', () => {
+        it('return the initial state', () => {
+            expect(currentUser()).toEqualImmutable(Map())
+        })
     })
 })

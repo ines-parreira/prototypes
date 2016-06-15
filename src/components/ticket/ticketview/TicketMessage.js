@@ -169,7 +169,7 @@ export default class TicketMessage extends React.Component {
                  </div>
                  </div>
                  */}
-                <TicketMessageBody message={message} currentUser={this.props.currentUser}/>
+                <TicketMessageBody message={message} />
                 {this.renderAttachment(message)}
                 <TicketMessageActions message={message}/>
             </div>

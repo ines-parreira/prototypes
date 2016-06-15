@@ -16,7 +16,8 @@ export default class TicketMessageBody extends React.Component {
         if (stripped) {
             quoteButton = (
                 <div className="mail-quote-toggle"
-                     onClick={() => this.setState({ showFullBody: !this.state.showFullBody})}>
+                     onClick={() => this.setState({ showFullBody: !this.state.showFullBody})}
+                >
                     <i className="ellipsis horizontal icon"/>
                 </div>
             )
@@ -27,9 +28,11 @@ export default class TicketMessageBody extends React.Component {
         }
 
         let classNames = 'ticket-message-body'
-        if (!message.body_html) {
+        if (!message.body_html && !message.stripped_html) {
             classNames += ' ticket-message-body-text'
-            body = linkifyStr(body)
+            if (body) {
+                body = linkifyStr(body)
+            }
         }
 
         return (
@@ -42,6 +45,5 @@ export default class TicketMessageBody extends React.Component {
 }
 
 TicketMessageBody.propTypes = {
-    message: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired
+    message: PropTypes.object.isRequired
 }
