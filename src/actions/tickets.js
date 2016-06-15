@@ -94,13 +94,18 @@ export function bulkUpdate(ids, key, value) {
 
         switch (key) {
             case 'tag':
-                msg = `${ids.size} tickets successfully tagged ${value.name}!`
+                msg = `${ids.size} tickets have been tagged "${value.name}".`
+                break
+            case 'status':
+                msg = `${ids.size} tickets have been marked as ${value}.`
                 break
             case 'assignee_user':
-                msg = `${ids.size} tickets successfully assigned to ${value.name}!`
-                break;
+                msg = `${ids.size} tickets have been assigned to ${value.name}!`
+                break
+            case 'priority':
+                msg = `${ids.size} tickets have been marked as ${value} priority.`
             default:
-                break;
+                break
         }
 
 
