@@ -39,7 +39,7 @@ export default class Navbar extends React.Component {
                 </div>
 
                 <div className="navbar-content ui fluid inverted blue large vertical menu">
-                    {this.props.child}
+                    {this.props.children}
                 </div>
 
                 <div id="user-menu" className="navbar-btn ui dropdown">
@@ -67,6 +67,6 @@ export default class Navbar extends React.Component {
 
 Navbar.propTypes = {
     currentUser: PropTypes.object.isRequired,
-    child: PropTypes.object.isRequired,
-    activeContent: PropTypes.string
+    activeContent: PropTypes.string,
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired
 }

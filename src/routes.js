@@ -13,12 +13,12 @@ import NoMatch from './components/NoMatch'
 
 export default (
     <Route path="/app" component={App}>
-        <IndexRoute components={{ content: Dashboard, navbar: TicketsNavbarContainer, activeContent: 'tickets' }}/>
-        <Route path="users" components={{ content: UsersContainer, navbar: null, activeContent: 'users' }}/>
-        <Route path="users/:userId" components={{ content: UserContainer, activeContent: 'users' }}/>
+        <IndexRoute components={{ content: Dashboard, navbar: TicketsNavbarContainer }}/>
+        <Route path="users" components={{ content: UsersContainer }}/>
+        <Route path="users/:userId" components={{ content: UserContainer }}/>
         <Route path="rules" component={RuleContainer}/>
-        <Route path="ticket/:ticketId" components={{ content: TicketContainer, infobar: TicketInfobarContainer, activeContent: 'tickets' }}/>
-        <Route path="tickets/:view" components={{ content: TicketsContainer, navbar: TicketsNavbarContainer, activeContent: 'tickets' }}/>
+        <Route path="ticket/:ticketId" components={{ content: TicketContainer, navbar: TicketsNavbarContainer, infobar: TicketInfobarContainer }}/>
+        <Route path="tickets/:view" components={{ content: TicketsContainer, navbar: TicketsNavbarContainer }}/>
         <Route path="*" component={NoMatch}/>
     </Route>
 )

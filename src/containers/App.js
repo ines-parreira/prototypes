@@ -8,7 +8,6 @@ import {fetchUser, fetchUsers} from '../actions/user'
 import {fetchSettings} from '../actions/settings'
 import {fetchTags} from '../actions/tag'
 import Navbar from '../components/Navbar'
-import TicketsNavbarContainer from './TicketsNavbar'
 import KeyboardHelp from '../components/KeyboardHelp'
 import Mousetrap, * as mousetrap from 'mousetrap'
 import '../../css/main.less'
@@ -144,17 +143,16 @@ class App extends React.Component {
     }
 
     render() {
-        const {params, navbar} = this.props
-        console.log(this.props.activeContent.type)
         return (
             <DocumentTitle title="Gorgias">
                 <div className="App">
 
-                    <Navbar
-                        activeContent={this.props.activeContent.type}
-                        currentUser={this.props.currentUser}
-                        child={navbar ? React.cloneElement(navbar, { params }) : <div></div>}
-                    />
+                     {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}
+                    {this.props.navbar || (
+                        <Navbar activeContent="users" currentUser={this.props.currentUser}>
+                            <div></div>
+                        </Navbar>
+                    )}
 
                     <div className="App-content">
                         <div className="main-content pusher">
