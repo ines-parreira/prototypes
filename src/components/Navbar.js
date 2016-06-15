@@ -1,8 +1,13 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {compactInteger} from '../utils'
+import classnames from 'classnames'
+import _ from 'lodash'
 
 export default class Navbar extends React.Component {
+    componentWillMount() {
+        this.state = { title: _.capitalize(this.props.activeContent) }
+    }
+
     componentDidMount() {
         $('#user-menu', this.refs.navbar).dropdown({
             direction: 'upward'
@@ -10,85 +15,31 @@ export default class Navbar extends React.Component {
         $('#main-menu', this.refs.navbar).dropdown()
     }
 
-    sections(views) {
-        // Populate sections
-        const ret = {
-            favorites: {
-                title: 'FAVORITES',
-                views: []
-            },
-            private: {
-                title: 'PRIVATE',
-                views: []
-            },
-            shared: {
-                title: 'SHARED',
-                views: []
-            }
-        }
-
-        if (!views.isEmpty()) {
-            views.map((v) => {
-                const section = v.get('section') ? v.get('section') : 'shared'
-                ret[section].views.push(v)
-            })
-        }
-        return ret
-    }
-
     render() {
-        const {views, currentUser, setViewActive} = this.props
-        const sections = this.sections(views.get('items'))
+        const {currentUser, activeContent} = this.props
+
+        const ticketsClassNames = classnames('item', {
+            active: activeContent === 'tickets'
+        })
+
+        const usersClassNames = classnames('item', {
+            active: activeContent === 'users'
+        })
 
         return (
             <div className="navbar" ref="navbar">
                 <div id="main-menu" className="navbar-btn navbar-btn-category ui dropdown">
-                    Tickets
+                    {this.state.title}
                     <i className="icon angle down"/>
                     <div className="menu">
-                        <Link to="/app" className="item">Dashboard</Link>
-                        {/* <Link to="/rules" className="item">Rules</Link> */}
-                        <Link to="/app/users" className="item">Users</Link>
+                        <Link to="/app" className={ticketsClassNames} onClick={() => this.setState({ title: 'Tickets' })}>Tickets</Link>
+                        {/* <Link to="/rules" className="item" onClick={() => this.setState({ title: 'Rules' })}>Rules</Link> */}
+                        <Link to="/app/users" className={usersClassNames} onClick={() => this.setState({ title: 'Users' })}>Users</Link>
                     </div>
                 </div>
 
                 <div className="navbar-content ui fluid inverted blue large vertical menu">
-                    {Object.keys(sections).map((sectionId) => {
-                        const section = sections[sectionId]
-                        if (!section.views.length) {
-                            return null
-                        }
-
-
-                        return (
-                            <div key={sectionId} className="item">
-                                <h4 className="">{section.title}</h4>
-                                <div className="menu">
-                                    {section.views.map((v) => {
-                                        const view = v.toJS()
-                                        let classes = 'item'
-
-                                        if (this.props.currentView && view.slug === this.props.currentView.get('slug')) {
-                                            classes = 'active item'
-                                        }
-
-                                        const key = `${view.slug}-${view.id}`
-                                        const count = view.count !== undefined && view.count !== null ? view.count : '?'
-
-                                        return (
-                                            <Link key={key}
-                                                  to={`/app/tickets/${view.slug}`}
-                                                  className={classes}
-                                                  onClick={() => { setViewActive(v) }}
-                                            >
-                                                {view.name} ({compactInteger(count)})
-                                            </Link>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        )
-                    })}
+                    {this.props.children}
                 </div>
 
                 <div id="user-menu" className="navbar-btn ui dropdown">
@@ -102,9 +53,11 @@ export default class Navbar extends React.Component {
 
                     <div className="menu">
                         <a className="item" href="/logout"><i className="sign out icon"/> Sign Out</a>
-                        {/*<a className="disabled item"><i className="edit icon"/> Edit Profile</a>
+                        {/*
+                        <a className="disabled item"><i className="edit icon"/> Edit Profile</a>
                         <a className="disabled item"><i className="globe icon"/> Choose Language</a>
-                        <a className="disabled item"><i className="settings icon"/> Account Settings</a>*/}
+                        <a className="disabled item"><i className="settings icon"/> Account Settings</a
+                        */}
                     </div>
                 </div>
             </div>
@@ -113,8 +66,7 @@ export default class Navbar extends React.Component {
 }
 
 Navbar.propTypes = {
-    views: PropTypes.object,
-    currentView: PropTypes.object,
-    currentUser: PropTypes.object,
-    setViewActive: PropTypes.func
+    currentUser: PropTypes.object.isRequired,
+    activeContent: PropTypes.string,
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired
 }

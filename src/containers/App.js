@@ -7,7 +7,7 @@ import {dismissMessage} from '../actions/systemMessage'
 import {fetchUser, fetchUsers} from '../actions/user'
 import {fetchSettings} from '../actions/settings'
 import {fetchTags} from '../actions/tag'
-import TicketsNavbarContainer from './TicketsNavbar'
+import Navbar from '../components/Navbar'
 import KeyboardHelp from '../components/KeyboardHelp'
 import Mousetrap, * as mousetrap from 'mousetrap'
 import '../../css/main.less'
@@ -146,18 +146,36 @@ class App extends React.Component {
         return (
             <DocumentTitle title="Gorgias">
                 <div className="App">
-                    {this.props.navbar || <TicketsNavbarContainer params={this.props.params}/>}
+
+                     {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}
+                    {this.props.navbar || (
+                        <Navbar activeContent="users" currentUser={this.props.currentUser}>
+                            <div></div>
+                        </Navbar>
+                    )}
+
                     <div className="App-content">
                         <div className="main-content pusher">
                             {this.props.content || this.props.children}
                         </div>
                     </div>
+
                     {this.props.infobar}
+
                     <KeyboardHelp />
+
                     {this.renderModalSystemMessage()}
-                    <ReactCSSTransitionGroup transitionName="fade" transitionAppear transitionAppearTimeout={200} transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+
+                    <ReactCSSTransitionGroup
+                        transitionAppear
+                        transitionName="fade"
+                        transitionAppearTimeout={200}
+                        transitionEnterTimeout={200}
+                        transitionLeaveTimeout={200}
+                    >
                         {this.renderSystemMessage()}
                     </ReactCSSTransitionGroup>
+
                 </div>
             </DocumentTitle>
         )
@@ -184,6 +202,7 @@ App.propTypes = {
     // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
     navbar: PropTypes.node,
     infobar: PropTypes.node,
+    activeContent: PropTypes.object,
 
     content: PropTypes.node
 }

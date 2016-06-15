@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as ViewActions from '../actions/view'
+import TicketsNavbarView from '../components/ticket/TicketsNavbarView'
 import Navbar from '../components/Navbar'
 
 class TicketsNavbarContainer extends React.Component {
@@ -13,26 +14,28 @@ class TicketsNavbarContainer extends React.Component {
 
     render() {
         return (
-            <Navbar views={this.props.views}
+            <Navbar currentUser={this.props.currentUser} activeContent="tickets">
+                <TicketsNavbarView
+                    views={this.props.views}
                     currentView={this.props.views.get('active')}
-                    currentUser={this.props.currentUser}
                     setViewActive={this.props.actions.setViewActive}
-            />
+                />
+            </Navbar>
         )
     }
 }
 
 TicketsNavbarContainer.propTypes = {
+    currentUser: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
     return {
-        views: state.views,
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        views: state.views
     }
 }
 
