@@ -88,15 +88,16 @@ export function ticket(state = ticketInitial, action) {
         case actions.SUBMIT_TICKET_ERROR:
             return state.setIn(['state', 'loading'], false)
 
-        case actions.SUBMIT_TICKET_SUCCESS:
+        case actions.SUBMIT_TICKET_SUCCESS: {
             if (action.resp.id !== state.get('id') && state.get('id')) {
                 return state
             }
 
+            const lastMsg = action.resp.messages[action.resp.messages.length - 1]
             return state.merge(fromJS(action.resp))
                 .set('newMessage', newMessage(
                     action.resp.channel,
-                    action.resp.messages[action.resp.messages.length - 1].source.type
+                    lastMsg.source ? lastMsg.source.type : 'api' // some messages don't have sources - failed imports, api, etc..
                 ))
                 .mergeDeep({
                     state: {
@@ -105,12 +106,13 @@ export function ticket(state = ticketInitial, action) {
                         query: ''
                     }
                 })
-
-        case actions.FETCH_TICKET_SUCCESS:
+        }
+        case actions.FETCH_TICKET_SUCCESS: {
+            const lastMsg = action.resp.messages[action.resp.messages.length - 1]
             return state.merge(fromJS(action.resp))
                 .set('newMessage', state.get('newMessage').mergeDeep(newMessage(
                     action.resp.channel,
-                    action.resp.messages[action.resp.messages.length - 1].source.type
+                    lastMsg.source ? lastMsg.source.type : 'api' // some messages don't have sources - failed imports, api, etc..
                 )))
                 .mergeDeep({
                     state: {
@@ -119,7 +121,7 @@ export function ticket(state = ticketInitial, action) {
                         query: ''
                     }
                 })
-
+        }
         case actions.FETCH_MESSAGE_SUCCESS:
             if (state.get('id') === action.resp.ticket_id) {
                 return state.setIn(
@@ -132,8 +134,7 @@ export function ticket(state = ticketInitial, action) {
 
         /* Macro actions */
 
-        case actions.ADD_TICKET_TAGS:
-        {
+        case actions.ADD_TICKET_TAGS: {
             tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
 
@@ -244,7 +245,7 @@ export function ticket(state = ticketInitial, action) {
             let newState = state
 
             if (!state.getIn(['newMessage', 'receiver'])) {
-                newState = state.setIn(['newMessage', 'receiver'], fromJS({ id: action.receiver.id }))
+                newState = state.setIn(['newMessage', 'receiver'], fromJS({id: action.receiver.id}))
             }
 
             return newState.mergeDeep({
