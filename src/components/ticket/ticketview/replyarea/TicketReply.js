@@ -36,8 +36,9 @@ export default class TicketReply extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // clear if the state is empty
-        if (nextProps.contentState !== this.props.contentState) {
+        // update the state if the we have a change that doesn't come from typing stuff
+        if (nextProps.contentState === null || (
+            this.state && !nextProps.contentState.equals(this.state.editorState.getCurrentContent()))) {
             this.setState(this.getEditorState(nextProps))
         }
     }
@@ -48,8 +49,8 @@ export default class TicketReply extends React.Component {
     }
 
     // throttle the updating of the state because it's slow otherwise when we type
-    updateMessageText = _.throttle((editorState) => {
-        const contentState = editorState.getCurrentContent()
+    updateMessageText = _.throttle(() => {
+        const contentState = this.state.editorState.getCurrentContent()
         this.props.actions.ticket.setResponseText(this.props.currentUser, Map({contentState}))
     }, 500)
 
@@ -118,7 +119,7 @@ export default class TicketReply extends React.Component {
         }
 
         const contentState = props.contentState ? props.contentState : ContentState.createFromText('')
-        const editorState =  EditorState.moveFocusToEnd(EditorState.createWithContent(contentState))
+        const editorState = EditorState.createWithContent(contentState)
 
         return {
             editorState,
