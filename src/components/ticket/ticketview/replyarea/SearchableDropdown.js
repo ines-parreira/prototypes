@@ -11,11 +11,18 @@ export default class SearchableDropdown extends React.Component {
             onRemove: this.props.removeValue
         })
 
-        $(`#receiver-dropdown-${this.props.suffix} input.search`)
-            .on('keyup', _.throttle((e) => {
-                this.props.search(e.target.value)
-            }, this.props.searchDebounceTime || 200)
-        ).attr('tabindex', 2)
+        const searchInput = $(`#receiver-dropdown-${this.props.suffix} input.search`)
+
+        searchInput.on('keyup', _.throttle((e) => {
+            this.props.search(e.target.value)
+        }, this.props.searchDebounceTime || 200))
+
+        searchInput.on('blur', (e) => {
+            receiverDropdown.dropdown('set selected', e.target.value)
+            searchInput.val('')
+        })
+
+        searchInput.attr('tabindex', 2)
 
         receiverDropdown.dropdown('set exactly', this.props.defaultValues.toJS())
     }
