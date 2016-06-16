@@ -133,6 +133,7 @@ class TicketContainer extends React.Component {
         mousetrap.unbind('right')
         mousetrap.unbind('mod+enter')
         mousetrap.unbind('mod+shift+enter')
+        this.props.actions.ticket.clearTicket()
     }
 
     componentWillReceiveProps(nextProps) {
@@ -140,9 +141,8 @@ class TicketContainer extends React.Component {
             /**
              * Fetch required data when loading a ticket.
              */
+            this.props.actions.ticket.clearTicket()
             this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
-            this.props.actions.macro.fetchMacros()
-            this.props.actions.tag.fetchTags()
         } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
             /**
              * Redirect to the new page when submitting a new ticket.

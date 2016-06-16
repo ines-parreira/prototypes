@@ -19,6 +19,8 @@ export const SUBMIT_TICKET_ERROR = 'SUBMIT_TICKET_ERROR'
 export const FETCH_TICKET_START = 'FETCH_TICKET_START'
 export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
 
+export const CLEAR_TICKET = 'CLEAR_TICKET'
+
 // Fetching a single ticketMessage to get action results
 export const FETCH_MESSAGE_START = 'FETCH_MESSAGE_START'
 export const FETCH_MESSAGE_SUCCESS = 'FETCH_MESSAGE_SUCCESS'
@@ -559,5 +561,11 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
                 msg: 'Please try again in a few moments. If the problem persists contact us.'
             }))
         })
+    }
+}
+
+export function clearTicket() {
+    return {
+        type: CLEAR_TICKET
     }
 }
