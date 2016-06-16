@@ -5,6 +5,13 @@ import {formatDatetime} from '../utils'
 
 describe('utils', () => {
     describe('formatDatetime', () => {
+
+        /* We reset the moment language with its default value.
+        *  Because others tests could edit this setting.
+        *  We ensure we use the default value for these tests.
+        **/
+        before(() => moment.locale('en'))
+
         it('invalid', () => {
             // to disable warning
             moment.createFromInputFallback = function (config) {
