@@ -30,7 +30,7 @@ export default class TicketView extends React.Component {
              *
              * For that, we need to make sure :
              */
-        nextProps.view && // that we have a view from which to extract constraints
+        nextProps.view && !nextProps.view.isEmpty() && // that we have a view from which to extract constraints
         !nextProps.ticket.get('id') && // that we're on a Ticket being created
         !nextProps.ticket.getIn(['state', 'dirty']) && // that this code hasn't been executed yet
         nextProps.tags.get('items').size && nextProps.users.get('agents').size // that we've got all the data needed
