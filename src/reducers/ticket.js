@@ -107,6 +107,7 @@ export function ticket(state = ticketInitial, action) {
                     }
                 })
         }
+
         case actions.FETCH_TICKET_SUCCESS: {
             const lastMsg = action.resp.messages[action.resp.messages.length - 1]
             return state.merge(fromJS(action.resp))
@@ -122,6 +123,7 @@ export function ticket(state = ticketInitial, action) {
                     }
                 })
         }
+
         case actions.FETCH_MESSAGE_SUCCESS:
             if (state.get('id') === action.resp.ticket_id) {
                 return state.setIn(
@@ -131,6 +133,9 @@ export function ticket(state = ticketInitial, action) {
             }
 
             return state
+
+        case actions.CLEAR_TICKET:
+            return ticketInitial
 
         /* Macro actions */
 
