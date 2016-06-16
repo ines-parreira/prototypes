@@ -141,7 +141,10 @@ class TicketContainer extends React.Component {
             /**
              * Fetch required data when loading a ticket.
              */
-            this.props.actions.ticket.clearTicket()
+            if (this.props.params.ticketId !== 'new') {
+                // Don't clear when creating a new ticket: looks better this way
+                this.props.actions.ticket.clearTicket()
+            }
             this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
         } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
             /**
