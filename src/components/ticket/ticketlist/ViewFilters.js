@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {findProperty} from '../../../utils'
 import {BASIC_OPERATORS} from '../../../constants'
 
-const resolveObjectPath = function (node) {
+const resolveObjectPath = (node) => {
     switch (node.type) {
         case 'MemberExpression':
             return `${resolveObjectPath(node.object)}.${resolveObjectPath(node.property)}`
@@ -16,10 +16,14 @@ const resolveObjectPath = function (node) {
 const Left = ({view, objectPath}) => {
     // just remove the first object name. Ex: ticket.requester.id ==> requester.id
     const suffixPath = objectPath.split('.').slice(1).join('.')
-
     // now find our field and return it's title
     const field = view.get('fields').find(f => f.get('name') === suffixPath)
     return <span className="ui mini basic light blue item button">{field.get('title')}</span>
+}
+
+Left.propTypes = {
+    view: PropTypes.object.isRequired,
+    objectPath: PropTypes.string.isRequired
 }
 
 const Operator = ({operators, selected, index, onChange}) => {
@@ -33,6 +37,11 @@ const Operator = ({operators, selected, index, onChange}) => {
         </select>
     )
 }
+Operator.propTypes = {
+    index: PropTypes.string.isRequired,
+    operators: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
+}
 
 const Right = ({node}) => {
     let value = node.value
@@ -41,12 +50,20 @@ const Right = ({node}) => {
     }
     return <span className="ui mini basic light blue button right-expression">{value}</span>
 }
+Right.propTypes = {
+    node: PropTypes.object.isRequired
+}
+
 
 const RemoveCallExpression = ({index, onClick}) => {
     return <i className="right floated remove circle red large action icon" onClick={() => onClick(index)}/>
 }
+RemoveCallExpression.propTypes = {
+    index: PropTypes.number.isRequired,
+    onClick: PropTypes.func.isRequired
+}
 
-const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index}) => {
+export const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index}) => {
     const left = node.arguments[0]
     const right = node.arguments[1]
     const operator = node.callee
@@ -56,7 +73,7 @@ const CallExpression = ({view, schemas, node, updateOperator, removeCondition, i
     const operators = property ? property.meta.operators : BASIC_OPERATORS
 
     return (
-        <div>
+        <div className="CallExpression">
             <Left objectPath={objectPath} view={view}/>
             <Operator operators={operators} selected={operator.name} index={index} onChange={updateOperator}/>
             <Right node={right}/>
@@ -83,6 +100,9 @@ const OperatorLabel = ({operator}) => {
 
     return <span className="ui light blue mini button OperatorLabel">{operatorLabels[operator]}</span>
 }
+OperatorLabel.propTypes = {
+    operator: PropTypes.string.isRequired
+}
 
 export default class ViewFilters extends React.Component {
     removeCondition = (index) => {
@@ -96,7 +116,7 @@ export default class ViewFilters extends React.Component {
 
     render() {
         const {view, schemas} = this.props
-        if (schemas.isEmpty()) {
+        if (!view || !schemas || schemas.isEmpty()) {
             return null
         }
 

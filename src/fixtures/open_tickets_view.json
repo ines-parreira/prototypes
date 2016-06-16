@@ -1,0 +1,375 @@
+{
+  "id": 4,
+  "type": "ticket-list",
+  "slug": "open-tickets",
+  "name": "Open Tickets",
+  "decoration": null,
+  "filters": "eq(ticket.status, \"open\")",
+  "filters_ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "CallExpression",
+          "callee": {
+            "type": "Identifier",
+            "name": "eq",
+            "loc": {
+              "start": {
+                "column": 0,
+                "line": 1
+              },
+              "end": {
+                "column": 2,
+                "line": 1
+              }
+            }
+          },
+          "loc": {
+            "start": {
+              "column": 0,
+              "line": 1
+            },
+            "end": {
+              "column": 25,
+              "line": 1
+            }
+          },
+          "arguments": [
+            {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "ticket",
+                "loc": {
+                  "start": {
+                    "column": 3,
+                    "line": 1
+                  },
+                  "end": {
+                    "column": 9,
+                    "line": 1
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "status",
+                "loc": {
+                  "start": {
+                    "column": 10,
+                    "line": 1
+                  },
+                  "end": {
+                    "column": 16,
+                    "line": 1
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "column": 3,
+                  "line": 1
+                },
+                "end": {
+                  "column": 16,
+                  "line": 1
+                }
+              }
+            },
+            {
+              "type": "Literal",
+              "raw": "\"open\"",
+              "loc": {
+                "start": {
+                  "column": 18,
+                  "line": 1
+                },
+                "end": {
+                  "column": 24,
+                  "line": 1
+                }
+              },
+              "value": "open"
+            }
+          ]
+        },
+        "loc": {
+          "start": {
+            "column": 0,
+            "line": 1
+          },
+          "end": {
+            "column": 25,
+            "line": 1
+          }
+        }
+      }
+    ],
+    "sourceType": "script",
+    "loc": {
+      "start": {
+        "column": 0,
+        "line": 1
+      },
+      "end": {
+        "column": 25,
+        "line": 1
+      }
+    }
+  },
+  "search": null,
+  "user": {
+    "id": 2,
+    "email": "alex@gorgias.io",
+    "name": "Alex Plugaru"
+  },
+  "display_order": 4,
+  "fields": [
+    {
+      "type": "priority",
+      "name": "priority",
+      "title": "Priority",
+      "visible": true,
+      "display_order": -1,
+      "width": 60
+    },
+    {
+      "type": "composite",
+      "name": "ticket-details",
+      "title": "Details",
+      "visible": true,
+      "display_order": 1,
+      "width": 360
+    },
+    {
+      "type": "plain",
+      "name": "subject",
+      "title": "Subject",
+      "visible": false,
+      "display_order": 2,
+      "width": 240
+    },
+    {
+      "type": "address",
+      "name": "messages.source.from.address",
+      "title": "From",
+      "visible": false,
+      "display_order": 2,
+      "width": 120
+    },
+    {
+      "type": "address",
+      "name": "messages.source.to.address",
+      "title": "To",
+      "visible": false,
+      "display_order": 2,
+      "width": 120
+    },
+    {
+      "type": "tags",
+      "name": "tags.name",
+      "title": "Tags",
+      "filter": {
+        "queryPath": "query.prefix[\"tags.name\"]",
+        "doc_type": "ticket",
+        "enum_query": {
+          "size": 0,
+          "aggs": {
+            "default": {
+              "terms": {
+                "field": "tags.name",
+                "size": 10
+              }
+            }
+          }
+        },
+        "query": {
+          "query": {
+            "prefix": {
+              "tags.name": ""
+            }
+          },
+          "aggs": {
+            "default": {
+              "terms": {
+                "field": "tags.name",
+                "size": 10
+              }
+            }
+          }
+        }
+      },
+      "visible": false,
+      "display_order": 99,
+      "width": 180
+    },
+    {
+      "type": "user",
+      "name": "requester.id",
+      "title": "Requester",
+      "filter": {
+        "queryPath": "query.multi_match.query",
+        "doc_type": "user",
+        "enum_query": {
+          "_source": [
+            "id",
+            "name",
+            "email"
+          ],
+          "size": 10
+        },
+        "query": {
+          "query": {
+            "multi_match": {
+              "fuzziness": 3,
+              "fields": [
+                "name",
+                "email"
+              ],
+              "query": ""
+            }
+          },
+          "size": 10,
+          "_source": [
+            "id",
+            "name",
+            "email"
+          ]
+        }
+      },
+      "visible": true,
+      "display_order": 99,
+      "width": 180
+    },
+    {
+      "type": "agent",
+      "name": "assignee_user.id",
+      "title": "Assignee",
+      "filter": {
+        "queryPath": "query.multi_match.query",
+        "doc_type": "user",
+        "enum_query": {
+          "_source": [
+            "id",
+            "name",
+            "email"
+          ],
+          "size": 10
+        },
+        "query": {
+          "query": {
+            "multi_match": {
+              "fuzziness": 3,
+              "fields": [
+                "name",
+                "email"
+              ],
+              "query": ""
+            }
+          },
+          "size": 10,
+          "_source": [
+            "id",
+            "name",
+            "email"
+          ]
+        }
+      },
+      "visible": false,
+      "display_order": 99,
+      "width": 180
+    },
+    {
+      "type": "status",
+      "name": "status",
+      "title": "Status",
+      "filter": {
+        "enum": [
+          "new",
+          "open",
+          "closed"
+        ]
+      },
+      "visible": false,
+      "display_order": 99,
+      "width": 120
+    },
+    {
+      "type": "channel",
+      "name": "via",
+      "title": "Via",
+      "filter": {
+        "enum": [
+          "email",
+          "phone",
+          "sms",
+          "chat",
+          "twitter",
+          "facebook",
+          "api",
+          "form",
+          "helpdesk",
+          "app",
+          "rule"
+        ]
+      },
+      "visible": false,
+      "display_order": 99,
+      "width": 120
+    },
+    {
+      "type": "channel",
+      "name": "channel",
+      "title": "Channel",
+      "filter": {
+        "enum": [
+          "email",
+          "phone",
+          "sms",
+          "chat",
+          "twitter",
+          "facebook",
+          "api"
+        ]
+      },
+      "visible": false,
+      "display_order": 99,
+      "width": 120
+    },
+    {
+      "type": "datetime",
+      "name": "created_datetime",
+      "title": "Created",
+      "filter": {
+        "sort": {
+          "created_datetime": "desc"
+        }
+      },
+      "visible": true,
+      "display_order": 1000,
+      "width": 180
+    },
+    {
+      "type": "datetime",
+      "name": "updated_datetime",
+      "title": "Updated",
+      "filter": {
+        "sort": {
+          "updated_datetime": "desc"
+        }
+      },
+      "visible": true,
+      "display_order": 1001,
+      "width": 180
+    }
+  ],
+  "group_by": null,
+  "order_by": "updated_datetime",
+  "order_dir": "desc",
+  "count": 30,
+  "created_datetime": "2016-06-16T11:44:14.984884+00:00",
+  "deactivated_datetime": null
+}
