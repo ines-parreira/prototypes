@@ -34,6 +34,11 @@ export default class ReplyMessageChannel extends React.Component {
         let to = List()
         const curTo = ticket.getIn(['newMessage', 'source', 'to'])
         const ticketLastMessage = ticket.get('messages').last()
+
+        if (ticketLastMessage.getIn(['source', 'type']) === 'internal-note') {
+            return to
+        }
+
         const valueProp = SOURCE_VALUE_PROP[ticketLastMessage.getIn(['source', 'type'])]
 
         if (curTo.size) {
@@ -249,7 +254,10 @@ export default class ReplyMessageChannel extends React.Component {
                             </div>
                             <div
                                 className={channelClassNames.internal}
-                                onClick={() => actions.ticket.setPublic(false)}
+                                onClick={() => {
+                                    actions.ticket.setSourceType('internal-note')
+                                    return actions.ticket.setPublic(false)
+                                    }}
                             >
                                 Send as internal note
                             </div>

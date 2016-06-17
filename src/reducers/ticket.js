@@ -51,6 +51,18 @@ const ticketInitial = Map({
     newMessage: newMessage('email', 'email')
 })
 
+/**
+ * A utility function that gives the source type we should set on a new message based on the
+ * source type of the message we're responding to.
+ */
+function getSourceTypeOfResponse(type) {
+    if (type === 'facebook-post') {
+        return 'facebook-comment'
+    }
+    return type
+}
+
+
 export function ticket(state = ticketInitial, action) {
     const valueProp = SOURCE_VALUE_PROP[state.getIn(['newMessage', 'source', 'type'])]
     let tags
@@ -97,7 +109,7 @@ export function ticket(state = ticketInitial, action) {
             return state.merge(fromJS(action.resp))
                 .set('newMessage', newMessage(
                     action.resp.channel,
-                    lastMsg.source ? lastMsg.source.type : 'api' // some messages don't have sources - failed imports, api, etc..
+                    lastMsg.source ? getSourceTypeOfResponse(lastMsg.source.type) : 'api' // some messages don't have sources - failed imports, api, etc..
                 ))
                 .mergeDeep({
                     state: {
@@ -113,7 +125,7 @@ export function ticket(state = ticketInitial, action) {
             return state.merge(fromJS(action.resp))
                 .set('newMessage', state.get('newMessage').mergeDeep(newMessage(
                     action.resp.channel,
-                    lastMsg.source ? lastMsg.source.type : 'api' // some messages don't have sources - failed imports, api, etc..
+                    lastMsg.source ? getSourceTypeOfResponse(lastMsg.source.type) : 'api' // some messages don't have sources - failed imports, api, etc..
                 )))
                 .mergeDeep({
                     state: {
