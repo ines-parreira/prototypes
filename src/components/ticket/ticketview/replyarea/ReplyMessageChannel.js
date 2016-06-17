@@ -73,8 +73,8 @@ export default class ReplyMessageChannel extends React.Component {
             default: 'action icon',
             private: 'action icon comment yellow',
             email: 'action icon mail blue',
-            'facebook-message': 'action icon facebook square blue',
-            'facebook-comment': 'action icon facebook blue'
+            'facebook-comment': 'action icon facebook square blue',
+            'facebook-message': 'action icon facebook square blue'
         }
 
         if (!identity.id && !identity.email) {
@@ -226,16 +226,16 @@ export default class ReplyMessageChannel extends React.Component {
 
         const channelClassNames = {
             email: classnames('item', {
-                disabled: ticketLastMessage ? ticketLastMessage.source.type !== 'email' : false
+                hidden: ticketLastMessage ? ticketLastMessage.source.type !== 'email' : false
             }),
             facebookComment: classnames('item', {
-                disabled: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-comment'
+                hidden: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-comment'
             }),
             facebookMessage: classnames('item', {
-                disabled: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-message'
+                hidden: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-message'
             }),
             internal: classnames('item', {
-                disabled: !ticket.get('id')
+                hidden: !ticket.get('id')
             })
         }
 
