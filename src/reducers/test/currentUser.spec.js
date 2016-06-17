@@ -14,6 +14,8 @@ describe('reducers', () => {
     describe('currentUser', () => {
         jsdom()
 
+        const initialState = Map()
+
         // Fake response to simulate the `/api/users/:id` response
         const fakeResponse = {
             username: 'fake_username',
@@ -21,27 +23,50 @@ describe('reducers', () => {
             timezone: 'America/Chicago',
         }
 
+        // Fake another response to simulate the `/api/users/:id` response
+        const fakeOtherResponse = {
+            username: 'fake_other_username',
+            language: 'fr',
+            timezone: 'Australia/Sydney',
+        }
+
         // Dispatch the `FETCH_CURRENT_USER_SUCCESS` action in the reducer with a fake response
-        const dispatchFetchCurrentUserSuccess = (response) => (
-            currentUser([], {type: actions.FETCH_CURRENT_USER_SUCCESS, resp: response})
+        const dispatchFetchCurrentUserSuccess = (state = initialState, response) => (
+            currentUser(state, { type: actions.FETCH_CURRENT_USER_SUCCESS, resp: response })
         )
 
         it('should return the initial state', () => {
-            expect(currentUser(undefined, {})).toEqualImmutable(Map())
+            expect(currentUser(undefined, {})).toEqualImmutable(initialState)
         })
 
         it('should return the current user as state', () => {
-            expect(dispatchFetchCurrentUserSuccess(fakeResponse)).toEqualImmutable(Map(fakeResponse))
+            expect(
+                dispatchFetchCurrentUserSuccess(undefined, fakeResponse)
+            ).toEqualImmutable(
+                Map(fakeResponse)
+            )
+
+            expect(
+                dispatchFetchCurrentUserSuccess(Map(fakeResponse), fakeOtherResponse)
+            ).toEqualImmutable(
+                Map(fakeOtherResponse)
+            )
         })
 
         it('should set the current user language as default moment language', () => {
-            dispatchFetchCurrentUserSuccess(fakeResponse)
+            dispatchFetchCurrentUserSuccess(undefined, fakeResponse)
             expect(moment().locale()).toBe(fakeResponse.language)
+
+            dispatchFetchCurrentUserSuccess(Map(fakeResponse), fakeOtherResponse)
+            expect(moment().locale()).toBe(fakeOtherResponse.language)
         })
 
         it('should set the current user timezone as default moment timezone', () => {
-            dispatchFetchCurrentUserSuccess(fakeResponse)
+            dispatchFetchCurrentUserSuccess(undefined, fakeResponse)
             expect(moment().tz()).toBe(fakeResponse.timezone)
+
+            dispatchFetchCurrentUserSuccess(Map(fakeResponse), fakeOtherResponse)
+            expect(moment().tz()).toBe(fakeOtherResponse.timezone)
         })
     })
 })
