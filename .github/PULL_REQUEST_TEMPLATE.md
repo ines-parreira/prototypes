@@ -1,19 +1,19 @@
-Status: :warning: not ready for merge :warning: / :white_check_mark: ready for merge :white_check_mark:
-Connects to #
+#### Status: :warning: / :white_check_mark:
+#### Connects to #
 
-### Features:
+#### Features:
 - 
 
-### Fixs:
+#### Fixs:
 - 
 
-### Questions:
+#### Questions:
 - 
 
-### Testing:
+#### Testing:
 - `git checkout [branch-name]`
 
-### Validation status:
+#### Validation status:
 - [ ] (developer name)
 - [ ] (reviewer name)
 
