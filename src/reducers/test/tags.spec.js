@@ -10,11 +10,15 @@ expect.extend(expectImmutable)
 
 describe('reducers', () => {
     describe('tags', () => {
+        const initialState = Map({ items: List() })
+
+        // Simulates current tags in state
         const currentFakeTags = [
             { name: 'current_fake_name' },
             { name: 'other_current_fake_name' }
         ]
 
+        // Simulates the arrival of new tags
         const newFakeTags = [
             { name: 'new_fake_name' },
             { name: 'other_new_fake_name' }
@@ -24,27 +28,47 @@ describe('reducers', () => {
             expect(
                 tags(undefined, {})
             ).toEqualImmutable(
-                Map({ items: List() })
+                initialState
             )
         })
 
         it('should replace current tags with tags from server', () => {
-            expect(
-                tags(Map({ items: List(currentFakeTags) }), {
+            const fetchTagsFromServer = (state) => (
+                tags(state, {
                     type: actions.FETCH_TAG_LIST_SUCCESS,
                     resp: { data: newFakeTags },
                 })
+            )
+
+            expect(
+                fetchTagsFromServer(initialState)
+            ).toEqualImmutable(
+                Map({ items: List(newFakeTags) })
+            )
+
+            expect(
+                fetchTagsFromServer(Map({ items: List(currentFakeTags) }))
             ).toEqualImmutable(
                 Map({ items: List(newFakeTags) })
             )
         })
 
         it('should add tags', () => {
-            expect(
-                tags(Map({ items: List(currentFakeTags) }), {
+            const addTags = (state) => (
+                tags(state, {
                     type: actions.ADD_TAGS,
                     tags: newFakeTags,
                 })
+            )
+
+            expect(
+                addTags(initialState)
+            ).toEqualImmutable(
+                Map({ items: List(newFakeTags) })
+            )
+
+            expect(
+                addTags(Map({ items: List(currentFakeTags) }))
             ).toEqualImmutable(
                 Map({ items: List(currentFakeTags.concat(newFakeTags)) })
             )
