@@ -104,6 +104,7 @@ export function bulkUpdate(ids, key, value) {
                 break
             case 'priority':
                 msg = `${ids.size} tickets have been marked as ${value} priority.`
+                break
             default:
                 break
         }

@@ -10,6 +10,7 @@
     "test:debug": "mocha --compilers js:babel-register --debug --recursive g/static/**/*.spec.js",
     "test:cover": "babel-node ./node_modules/.bin/isparta cover ./node_modules/.bin/_mocha -- --compilers js:babel-register --recursive g/static/**/*.spec.js",
     "test:watch": "npm test -- --watch",
+    "eslint": "eslint --quiet g/static/private/js",
     "build": "NODE_ENV=production webpack -p",
     "serve": "webpack-dev-server --progress --colors --inline --host 0.0.0.0",
     "serve-maps": "webpack-dev-server --progress --colors --inline -d --host 0.0.0.0"

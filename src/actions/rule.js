@@ -12,44 +12,34 @@ export const RULES_ADD_ACTION_CODE_AST = 'RULES_ADD_ACTION_CODE_AST'
 
 
 /* Actions */
-export function addRuleStart(type, code) {
-    return {
-        type: ADD_RULE_START,
-        title: type,
-        code
-    }
-}
+export const addRuleStart = (type, code) => ({
+    type: ADD_RULE_START,
+    title: type,
+    code
+})
 
-export function addRuleEnd(rule) {
-    return {
-        type: ADD_RULE_END,
-        rule
-    }
-}
+export const addRuleEnd = (rule) => ({
+    type: ADD_RULE_END,
+    rule
+})
 
-export function requestRules(url) {
-    return {
-        type: RULES_REQUESTS_POSTS,
-        url
-    }
-}
+export const requestRules = (url) => ({
+    type: RULES_REQUESTS_POSTS,
+    url
+})
 
-export function receiveRules(rules) {
-    return {
-        type: RULES_RECEIVE_POSTS,
-        rules: rules
-    }
-}
+export const receiveRules = (rules) => ({
+    type: RULES_RECEIVE_POSTS,
+    rules
+})
 
-export function modifyCodeast(index, path, value, operation) {
-    return {
-        type: RULES_UPDATE_CODE_AST,
-        index,
-        path,
-        value,
-        operation,
-    }
-}
+export const modifyCodeast = (index, path, value, operation) => ({
+    type: RULES_UPDATE_CODE_AST,
+    index,
+    path,
+    value,
+    operation
+})
 
 // Submit rule
 export function submitRule(url, comment) {
@@ -57,7 +47,7 @@ export function submitRule(url, comment) {
         dispatch(addRuleStart(comment.type, comment.code))
 
         return reqwest({
-            url: url,
+            url,
             type: 'json',
             method: 'POST',
             data: JSON.stringify(comment),
@@ -79,7 +69,7 @@ export function fetchRules(url) {
         dispatch(requestRules(url))
 
         return reqwest({
-            url: url,
+            url,
             type: 'json',
             method: 'GET',
             contentType: 'application/json'

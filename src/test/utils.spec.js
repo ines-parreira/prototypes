@@ -5,18 +5,19 @@ import {formatDatetime} from '../utils'
 
 describe('utils', () => {
     describe('formatDatetime', () => {
-
         /* We reset the moment language with its default value.
-        *  Because others tests could edit this setting.
-        *  We ensure we use the default value for these tests.
-        **/
+         *  Because others tests could edit this setting.
+         *  We ensure we use the default value for these tests.
+         **/
         before(() => moment.locale('en'))
 
         it('invalid', () => {
             // to disable warning
             moment.createFromInputFallback = function (config) {
                 // unreliable string magic, or
+                /* eslint-disable */
                 config._d = new Date(config._i);
+                /* eslint-enable */
             };
             expect(formatDatetime('test')).toBe('Invalid date')
         })
@@ -30,5 +31,4 @@ describe('utils', () => {
             expect(formatDatetime('2016-06-09T07:30:07+00:00', 'Europe/Paris', 'YYYY-DD-MM HH:mm')).toBe('2016-09-06 09:30')
         })
     })
-
 })
