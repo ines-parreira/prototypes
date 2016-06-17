@@ -12,6 +12,9 @@ describe('reducers', () => {
     describe('systemMessage', () => {
         const initialState = Map()
 
+        // Simulates a message system
+        const message = { type: 'fake_type', header: 'fake_header', label: 'fake_label'}
+
         it('should return the initial state', () => {
             expect(
                 systemMessage(undefined, {})
@@ -21,10 +24,8 @@ describe('reducers', () => {
         })
 
         it('should set the sent system message as state', () => {
-            const message = { type: 'fake_type', header: 'fake_header', label: 'fake_label'}
-
             expect(
-                systemMessage([], {
+                systemMessage(initialState, {
                     type: actions.SYSTEM_MESSAGE,
                     message,
                 })
@@ -35,7 +36,7 @@ describe('reducers', () => {
 
         it('should reset the system message with the initial state', () => {
             expect(
-                systemMessage([], {
+                systemMessage(Map(message), {
                     type: actions.DISMISS_SYSTEM_MESSAGE,
                 })
             ).toEqualImmutable(
