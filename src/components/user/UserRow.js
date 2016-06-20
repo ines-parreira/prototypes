@@ -2,14 +2,20 @@ import React, {PropTypes} from 'react'
 import UserForm from './UserForm'
 
 export default class UserRow extends React.Component {
+    deleteUser(userName, userId) {
+        if (window.confirm(`Are you sure you want to delete user ${userName}?`)) {
+            this.context.deleteUser(userId)
+        }
+    }
+
     render() {
         const {user} = this.props
-        const {updateUser, deleteUser} = this.context
+        const {updateUser} = this.context
 
         let label
         const userRoles = []
 
-        user.roles.map((v) => userRoles.push(v.name))
+        user.get('roles').map((v) => userRoles.push(v.get('name')))
 
         if (userRoles && userRoles.indexOf('admin') !== -1) {
             label = <div className="ui blue label">ADMIN</div>
@@ -34,9 +40,9 @@ export default class UserRow extends React.Component {
                     </div>
                     <div className="eight wide column details">
                         <div className="ui header">
-                            <span className="subject">{user.name}</span>
+                            <span className="subject">{user.get('name')}</span>
                             <div className="body sub header">
-                                {user.email}
+                                {user.get('email')}
                             </div>
                         </div>
                     </div>
@@ -44,12 +50,15 @@ export default class UserRow extends React.Component {
                         {label}
                     </div>
                     <div className="five wide column">
-                        <button className="ui inverted red basic button right" onClick={() => { deleteUser(user.id) }}>
+                        <button
+                            className="ui inverted red basic button right"
+                            onClick={() => { this.deleteUser(user.get('name'), user.get('id')) }}
+                        >
                             Delete
                         </button>
                         <button
                             className="ui inverted blue basic button right"
-                            onClick={() => { $(`#userform-${user.id}`).modal('show') }}
+                            onClick={() => { $(`#userform-${user.get('id')}`).modal('show') }}
                         >
                             Edit
                         </button>

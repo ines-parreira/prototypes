@@ -14,7 +14,6 @@ const usersInitial = Map({
 export function users(state = usersInitial, action) {
     const items = state.get('items')
     let newState = state
-    let userIndex
 
     switch (action.type) {
 
@@ -33,16 +32,9 @@ export function users(state = usersInitial, action) {
                 resp: action.resp
             })
 
-        case actions.FETCH_USER_AGENT_LIST_SUCCESS:
-            return state.merge({
-                agents: action.resp.data,
-                loading: false,
-                resp: action.resp
-            })
-
         case actions.CREATE_NEW_USER_SUCCESS:
             return state.merge({
-                items: _.concat(action.resp, items),
+                items: items.push(fromJS(action.resp)),
                 loading: false,
                 resp: action.resp
             })
@@ -52,7 +44,7 @@ export function users(state = usersInitial, action) {
 
         case actions.DELETE_USER_SUCCESS:
             return state.merge({
-                items: state.get('items').filter((item) => item.id !== action.userId),
+                items: state.get('items').filter((item) => item.get('id') !== action.userId),
                 resp: action.resp
             })
 

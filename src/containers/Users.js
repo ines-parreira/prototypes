@@ -16,10 +16,6 @@ class UsersContainer extends React.Component {
         }
     }
 
-    componentWillMount() {
-        this.props.actions.user.fetchUsers()
-    }
-
     search = (query, params, stringQuery) => {
         if (!stringQuery) {
             this.props.actions.user.fetchUsers()
@@ -32,7 +28,7 @@ class UsersContainer extends React.Component {
     render() {
         const {users} = this.props
 
-        if (!users) {
+        if (!users.get('items')) {
             return null
         }
 
@@ -40,7 +36,7 @@ class UsersContainer extends React.Component {
             <DocumentTitle title="Users">
                 <div className="UsersContainer">
                     <UsersView
-                        items={users.get('items').toJS()}
+                        items={users.get('items')}
                         search={this.search}
                         isLoading={users.get('loading')}
                     />

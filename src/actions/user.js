@@ -9,9 +9,6 @@ export const FETCH_CURRENT_USER_SUCCESS = 'FETCH_CURRENT_USER_SUCCESS'
 export const FETCH_USER_LIST_START = 'FETCH_USER_LIST_START'
 export const FETCH_USER_LIST_SUCCESS = 'FETCH_USER_LIST_SUCCESS'
 
-export const FETCH_USER_AGENT_LIST_START = 'FETCH_USER_AGENT_LIST_START'
-export const FETCH_USER_AGENT_LIST_SUCCESS = 'FETCH_USER_AGENT_LIST_SUCCESS'
-
 export const CREATE_NEW_USER_START = 'CREATE_NEW_USER_START'
 export const CREATE_NEW_USER_SUCCESS = 'CREATE_NEW_USER_SUCCESS'
 
@@ -151,19 +148,12 @@ export function updateUser(data, userId) {
             type: UPDATE_USER_START
         })
 
-        const newData = Object.assign({}, data)
-
-        if (data.role) {
-            newData.roles = [data.role.slice(0)]
-            delete newData.role
-        }
-
         return reqwest({
             url: `/api/users/${userId}/`,
             type: 'json',
             method: 'PUT',
             contentType: 'application/json',
-            data: JSON.stringify(newData)
+            data: JSON.stringify(data)
         }).then((resp) => {
             dispatch({
                 type: UPDATE_USER_SUCCESS,
