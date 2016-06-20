@@ -1,6 +1,19 @@
 import React, {PropTypes} from 'react'
 
 export default class TicketReplyAction extends React.Component {
+
+    setValue(arg, value, title) {
+        const category = title === 'Headers' ? 'headers' : 'params'
+        const index = this.props.action.getIn(['arguments', category]).indexOf(arg)
+
+        if (index !== -1) {
+            this.props.update(
+                this.props.index,
+                this.props.action.get('arguments').setIn([category, index, 'value'], value)
+            )
+        }
+    }
+
     renderArgs(title, args) {
         if (args.size) {
             return (
@@ -21,22 +34,11 @@ export default class TicketReplyAction extends React.Component {
                 </div>
             )
         }
-    }
-
-    setValue(arg, value, title) {
-        const category = title === 'Headers' ? 'headers' : 'params'
-        const index = this.props.action.getIn(['arguments', category]).indexOf(arg)
-
-        if (index !== -1) {
-            this.props.update(
-                this.props.index,
-                this.props.action.get('arguments').setIn([category, index, 'value'], value)
-            )
-        }
+        return null
     }
 
     render() {
-        const { action, remove } = this.props
+        const {action, remove} = this.props
         const headersArgs = action.getIn(['arguments', 'headers']).filter(curAction => curAction.get('editable'))
         const paramsArgs = action.getIn(['arguments', 'params']).filter(curAction => curAction.get('editable'))
 

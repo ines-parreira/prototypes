@@ -1,11 +1,10 @@
 import React, {PropTypes} from 'react'
-
 import UserRow from './UserRow'
 
 export default class UserList extends React.Component {
     render() {
-        const { items } = this.props
-        const { sortUsers } = this.context
+        const {items} = this.props
+        const {sortUsers} = this.context
 
         return (
             <div className="UserList">
@@ -19,11 +18,16 @@ export default class UserList extends React.Component {
                         </div>
                         <div className="eight wide column">
                             USERS
-                            <i id="users-name-sort" className="sort action icon" onClick={() => {sortUsers('name')}}/>
+                            <i id="users-name-sort"
+                               className="sort action icon"
+                               onClick={() => { sortUsers('name') }}
+                            />
                         </div>
                         <div className="two wide column">
                             ROLE
-                            <i id="users-role-sort" className="sort action icon" onClick={() => {sortUsers('roles')}}/>
+                            <i id="users-role-sort" className="sort action icon"
+                               onClick={() => { sortUsers('roles') }}
+                            />
                         </div>
                     </div>
                 </div>

@@ -39,7 +39,7 @@ export default class TicketView extends React.Component {
             const exp = filtersAst.getIn(['body', 0, 'expression']).toJS()
 
             const fields = {}
-            const walk = function (node) {
+            const walk = (node) => {
                 switch (node.type) {
                     case 'LogicalExpression':
                         if (node.operator !== '&&') {
@@ -73,6 +73,7 @@ export default class TicketView extends React.Component {
                         throw Error('Unknown node type', node)
 
                 }
+                return null
             }
 
             walk(exp)

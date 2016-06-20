@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 import _ from 'lodash'
 
 export default class SearchableDropdown extends React.Component {
@@ -55,8 +55,7 @@ export default class SearchableDropdown extends React.Component {
                     // If there is an addition item ('Add...'), delete it
                     this.refs.dropdownMenu.removeChild(this.refs.dropdownMenu.children[child])
                 } else if (
-                    _.includes(this.refs.dropdownMenu.children[child].classList, 'selected') &&
-                    !_.includes(this.refs.dropdownMenu.children[child].classList, 'filtered')
+                    _.includes(this.refs.dropdownMenu.children[child].classList, 'selected') && !_.includes(this.refs.dropdownMenu.children[child].classList, 'filtered')
                 ) {
                     // If there's a non-filtered (i.e. displayed) selected item, we're good
                     hasSelected = true
@@ -66,8 +65,7 @@ export default class SearchableDropdown extends React.Component {
             if (!hasSelected) {
                 // If we don't have this selected item, we need to define the first non-filtered item as selected
                 for (const child in this.refs.dropdownMenu.children) {
-                    if (this.refs.dropdownMenu.children[child].classList &&
-                        !_.includes(this.refs.dropdownMenu.children[child].classList, 'filtered')
+                    if (this.refs.dropdownMenu.children[child].classList && !_.includes(this.refs.dropdownMenu.children[child].classList, 'filtered')
                     ) {
                         this.refs.dropdownMenu.children[child].classList.add('selected')
                         break
@@ -82,7 +80,7 @@ export default class SearchableDropdown extends React.Component {
     }
 
     render() {
-        const { optionValues, existingValues, suffix, enabled, valueProp } = this.props
+        const {optionValues, existingValues, suffix, enabled, valueProp} = this.props
         const isPopulated = $(`#receiver-dropdown-${this.props.suffix}`).dropdown('get value').length
 
         return (

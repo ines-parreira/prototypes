@@ -5,6 +5,11 @@ import {ACTION_TEMPLATES} from './../../../../constants'
 
 
 export default class TicketMacros extends React.Component {
+    openModalOnSelectedMacro(selectedMacroId) {
+        this.props.previewMacroInModal(selectedMacroId)
+        this.props.openModal()
+    }
+
     renderMacroListItem = (macro) => {
         const containerOpts = {
             key: macro.get('id'),
@@ -48,7 +53,8 @@ export default class TicketMacros extends React.Component {
                     addTagsActions.map((action) =>
                         action.get('arguments').map((arg, i) =>
                             <div key={`action-tag-${action.id}-${i}`}
-                                 className="ui label ticket-tag no-icon">{arg.get('name')}</div>
+                                 className="ui label ticket-tag no-icon"
+                            >{arg.get('name')}</div>
                         )
                     )
                 }
@@ -116,10 +122,6 @@ export default class TicketMacros extends React.Component {
         )
     }
 
-    openModalOnSelectedMacro(selectedMacroId) {
-        this.props.previewMacroInModal(selectedMacroId)
-        this.props.openModal()
-    }
 
     renderSelectedMacro = () => {
         const macro = this.props.selected
@@ -152,7 +154,8 @@ export default class TicketMacros extends React.Component {
             <div className="macro-preview">
                 <div>
                     <a className="ui right floated basic label"
-                       onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}>
+                       onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}
+                    >
                         MANAGE MACROS
                     </a>
                     {this.renderSetStatus(setStatusAction)}
@@ -187,7 +190,8 @@ export default class TicketMacros extends React.Component {
                 <div className="no-macro-container">
                     <h4>You don't have any macros yet.</h4>
                     <div className="ui large light blue labeled icon fluid button"
-                         onClick={() => this.props.openModal()}>
+                         onClick={() => this.props.openModal()}
+                    >
                         <i className="plus icon"/>
                         CREATE A NEW MACRO
                     </div>

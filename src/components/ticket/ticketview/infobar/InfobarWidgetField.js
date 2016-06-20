@@ -9,7 +9,7 @@ export default class InfobarWidgetField extends React.Component {
         let fieldValue = null
 
         switch (field.type) {
-            case 'field':
+            case 'field': {
                 const fieldRawVal = field.value.value
                 if (!fieldRawVal) {
                     break
@@ -38,7 +38,8 @@ export default class InfobarWidgetField extends React.Component {
                         break
                 }
                 break
-            case 'widget':
+            }
+            case 'widget': {
                 let widget = null
                 for (const w of widgets) {
                     if (w.id === parseInt(field.value.value, 10)) {
@@ -57,17 +58,15 @@ export default class InfobarWidgetField extends React.Component {
                 const obj = object.getIn(path.slice(1))
 
                 if (widget.type === 'list') {
-                    fieldValue = obj.map((o, i) => {
-                        return (
-                            <InfobarWidget
+                    fieldValue = obj.map((o, i) => (
+                        <InfobarWidget
                                 key={`${widget.id}-${i}`}
                                 object={o}
                                 widget={widget}
                                 widgets={widgets}
                                 currentUser={currentUser}
-                            />
-                        )
-                    })
+                        />
+                    ))
                 } else {
                     fieldValue = (
                         <InfobarWidget
@@ -79,13 +78,14 @@ export default class InfobarWidgetField extends React.Component {
                     )
                 }
                 break
+            }
             default:
                 break
         }
 
         let fieldLabel = null
         if (field.label) {
-           fieldLabel = <span className="field-label">{field.label}:</span>
+            fieldLabel = <span className="field-label">{field.label}:</span>
         }
         return (
             <div className="field">

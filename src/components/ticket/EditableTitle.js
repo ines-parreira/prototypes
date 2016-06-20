@@ -1,6 +1,18 @@
 import React, {PropTypes} from 'react'
 
 export default class EditableTitle extends React.Component {
+    componentDidMount() {
+        if (this.props.focus) {
+            this.toggleEditMode()
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.focus && nextProps.focus) {
+            this.toggleEditMode()
+        }
+    }
+
     onKeyDown(e) {
         if (e.keyCode === 13) {
             e.preventDefault()
@@ -25,18 +37,6 @@ export default class EditableTitle extends React.Component {
         const titleObject = this.refs.title
         this.reinitTitle(titleObject)
         this.props.update(titleObject.innerText)
-    }
-
-    componentDidMount() {
-        if (this.props.focus) {
-            this.toggleEditMode()
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (!this.props.focus && nextProps.focus) {
-            this.toggleEditMode()
-        }
     }
 
     reinitTitle(subjectObject) {

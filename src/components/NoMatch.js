@@ -4,7 +4,7 @@ export default class NoMatch extends React.Component {
     render() {
         return (
             <div className="ui  search">
-               Not found
+                Not found
             </div>
         )
     }

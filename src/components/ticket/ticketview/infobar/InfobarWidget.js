@@ -26,15 +26,14 @@ export default class InfobarWidget extends React.Component {
                     {header}
                     <div className="fields">
                         {widget.fields.map((field) => (
-                                <InfobarWidgetField
-                                    key={field.id}
-                                    object={object}
-                                    field={field}
-                                    widgets={widgets}
-                                    currentUser={currentUser}
-                                />
-                            )
-                        )}
+                            <InfobarWidgetField
+                                key={field.id}
+                                object={object}
+                                field={field}
+                                widgets={widgets}
+                                currentUser={currentUser}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>

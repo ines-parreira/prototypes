@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {List, fromJS} from 'immutable'
 import InfobarWidget from './InfobarWidget'
-//import Search from '../../Search'
+// import Search from '../../Search'
 
 export default class TicketInfobar extends React.Component {
     render() {
@@ -15,8 +15,8 @@ export default class TicketInfobar extends React.Component {
         const bottomWidgets = items.filter(w => w.type === 'bottom').sortBy(w => w.order)
         const contentWidgets = items.filter(w => ['top', 'bottom'].indexOf(w.type) === -1).sortBy(w => w.order)
 
-        const renderWidgets = (widgetList) => {
-            return widgetList.map(w => {
+        const renderWidgets = (widgetList) => (
+            widgetList.map(w => {
                 let object = null
 
                 if (w.object_path) {
@@ -33,35 +33,33 @@ export default class TicketInfobar extends React.Component {
                 }
 
                 if (w.type === 'list') {
-                    return object.map((o, i) => {
-                        return (
-                            <InfobarWidget
-                                key={`infobar-widget-${w.id}-${i}`}
-                                object={o}
-                                widget={w}
-                                widgets={widgetList}
-                                currentUser={currentUser}
-                            />
-                        )
-                    })
-                } else {
-                    return (
+                    return object.map((o, i) => (
                         <InfobarWidget
-                            key={`infobar-widget-${w.id}`}
-                            object={object}
+                            key={`infobar-widget-${w.id}-${i}`}
+                            object={o}
                             widget={w}
                             widgets={widgetList}
                             currentUser={currentUser}
                         />
-                    )
+                    ))
                 }
+                return (
+                    <InfobarWidget
+                        key={`infobar-widget-${w.id}`}
+                        object={object}
+                        widget={w}
+                        widgets={widgetList}
+                        currentUser={currentUser}
+                    />
+                )
             })
-        }
+        )
+
         return (
             <div className="infobar-content">
-                {/*<div className="infobar-top infobar-box infobar-search">
+                {/* <div className="infobar-top infobar-box infobar-search">
                  <Search id="ticket"/>
-                 </div>*/}
+                 </div> */}
                 <div className="infobar-top infobar-box">
                     <h2>{ticket.get('requester').name}</h2>
                     {renderWidgets(topWidgets)}

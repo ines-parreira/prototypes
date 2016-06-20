@@ -73,6 +73,5 @@ describe('reducers', () => {
                 Map({ items: List(currentFakeTags.concat(newFakeTags)) })
             )
         })
-
     })
 })

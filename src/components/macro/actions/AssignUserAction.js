@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import { Map } from 'immutable'
+import {Map} from 'immutable'
 import TicketAssignee from './../../ticket/ticketview/ticketdetails/TicketAssignee'
 
 export default class AssignUserAction extends React.Component {
@@ -11,9 +11,9 @@ export default class AssignUserAction extends React.Component {
     }
 
     render() {
-        const { action, agents, deleteAction } = this.props
+        const {action, agents, deleteAction} = this.props
         return (
-           <div className="assignee">
+            <div className="assignee">
                 <i
                     className="right floated remove circle red large action icon"
                     onClick={() => deleteAction(action.get('id'))}

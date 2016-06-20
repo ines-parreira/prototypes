@@ -78,11 +78,11 @@ export default class TicketMessage extends React.Component {
     }
 
     render() {
-        const {message, currentUser, ticket} = this.props
+        const {message, currentUser} = this.props
 
-        const messages = ticket.get('messages')
-        const currentMessageIndex = messages.findIndex((o) => o.get('id') === message.id)
-        const previousMessage = currentMessageIndex > 0 ? messages.get(currentMessageIndex - 1) : null
+        // const messages = ticket.get('messages')
+        // const currentMessageIndex = messages.findIndex((o) => o.get('id') === message.id)
+        // const previousMessage = currentMessageIndex > 0 ? messages.get(currentMessageIndex - 1) : null
 
         let createdDatetime = ''
         if (message.created_datetime) {
@@ -118,7 +118,8 @@ export default class TicketMessage extends React.Component {
                     <div className="content">
                         <div className="center" style={{ color: 'red' }}>
                             <div className={`ui segment ${this.props.loading ? 'loading' : ''}`}
-                                 style={{ margin: 'auto', width: '50%'}}>
+                                 style={{ margin: 'auto', width: '50%'}}
+                            >
                                 This message wasn't send: one or more actions failed.
                                 <div style={{ margin: '1em auto'}}>
                                     <TicketMessageActions message={message}/>
@@ -140,6 +141,7 @@ export default class TicketMessage extends React.Component {
                             if (message.from_agent) {
                                 return (<span className="agent-label ui medium yellow label">A</span>)
                             }
+                            return null
                         })()}
 
                         <span className="ticket-message-author ui medium header">

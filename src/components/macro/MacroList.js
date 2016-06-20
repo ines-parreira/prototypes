@@ -13,7 +13,7 @@ export default class MacroList extends React.Component {
     }
 
     render() {
-        const { macros, currentMacro, actions } = this.props
+        const {macros, currentMacro, actions} = this.props
 
         /** Used to replace the list of all macros with the list of macros corresponding to the current search term,
          *  if there is a current search term.
@@ -31,7 +31,7 @@ export default class MacroList extends React.Component {
                                 className="ui icon input full-width prompt"
                                 placeholder="Search for a macro"
                             />
-                          <i className="search icon"/>
+                            <i className="search icon"/>
                         </div>
                     </div>
                     {

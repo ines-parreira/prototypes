@@ -54,9 +54,9 @@ export function views(state = viewsInitial, action) {
 
         case actions.UPDATE_VIEW_FIELD:
             // replace a field with a new field
-            view = view.set('fields', view.get('fields').map((f) => {
-                return (f.get('name') === action.field.get('name')) ? action.field : f
-            }))
+            view = view.set('fields', view.get('fields').map((f) => (
+                (f.get('name') === action.field.get('name')) ? action.field : f
+            )))
 
             return state.set('active', view.set('dirty', true))
 

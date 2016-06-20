@@ -21,7 +21,7 @@ export default class TicketsNavbarView extends React.Component {
         }
 
         if (!views.isEmpty()) {
-            views.map((v) => {
+            views.forEach((v) => {
                 const section = v.get('section') ? v.get('section') : 'shared'
                 ret[section].views.push(v)
             })

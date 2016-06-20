@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 
 export default class TicketAttachments extends React.Component {
     renderAttachmentIcon(contentType) {
@@ -25,16 +25,16 @@ export default class TicketAttachments extends React.Component {
     }
 
     render() {
-        const { attachments } = this.props
+        const {attachments} = this.props
 
         return (
             <div className="attachments enumerable-list">
                 {
                     attachments.map((attachment, idx) => (
                         <div className="ui label" key={idx}>
-                            { this.renderAttachmentIcon(attachment.content_type) }
+                            {this.renderAttachmentIcon(attachment.content_type)}
                             <a href={attachment.url || '#'} target="_blank">{attachment.name}</a>
-                            { this.renderRemoveIcon(idx) }
+                            {this.renderRemoveIcon(idx)}
                         </div>
                     ))
                 }
