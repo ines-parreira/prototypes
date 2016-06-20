@@ -28,14 +28,12 @@ export default class UserList extends React.Component {
                     </div>
                 </div>
                 <div className="ui divided items">
-                    {items.map((user) => {
-                        return (
-                            <UserRow
-                                key={user.id}
-                                user={user}
-                            />
-                        )
-                    })}
+                    {items.map((user) => (
+                        <UserRow
+                            key={user.get('id')}
+                            user={user}
+                        />
+                    ))}
                 </div>
             </div>
         )
@@ -43,7 +41,7 @@ export default class UserList extends React.Component {
 }
 
 UserList.propTypes = {
-    items: PropTypes.array.isRequired
+    items: PropTypes.object.isRequired
 }
 
 UserList.contextTypes = {

@@ -9,9 +9,10 @@ export default class UsersView extends React.Component {
         const {items} = this.props
         const {createUser} = this.context
 
-        if (!items) {
+        if (!items.size) {
             return null
         }
+
         return (
             <div className="UsersView">
                 <div className="ui text menu">
@@ -63,7 +64,7 @@ export default class UsersView extends React.Component {
 }
 
 UsersView.propTypes = {
-    items: PropTypes.array.isRequired,
+    items: PropTypes.object.isRequired,
     search: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired
 }

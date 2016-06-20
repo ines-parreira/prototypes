@@ -4,7 +4,7 @@ export default class UserForm extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {id: `userform-${(this.props.user ? this.props.user.id : 'new')}`}
+        this.state = {id: `userform-${(this.props.user ? this.props.user.get('id') : 'new')}`}
         this.submit = this.submit.bind(this)
         this.close = this.close.bind(this)
     }
@@ -28,19 +28,19 @@ export default class UserForm extends React.Component {
             const sendData = {}
 
 
-            if (this.props.user.name !== data.name) {
+            if (this.props.user.get('name') !== data.name) {
                 sendData.name = data.name
             }
 
-            if (this.props.user.email !== data.email) {
+            if (this.props.user.get('email') !== data.email) {
                 sendData.email = data.email
             }
 
-            if (this.props.user.roles.indexOf(data.role) === -1) {
+            if (this.props.user.get('roles').indexOf(data.role) === -1) {
                 sendData.roles = [data.role]
             }
 
-            this.props.onSubmit(sendData, this.props.user.id)
+            this.props.onSubmit(sendData, this.props.user.get('id'))
         } else {
             this.props.onSubmit(data)
         }
@@ -58,9 +58,9 @@ export default class UserForm extends React.Component {
         const id = this.state.id
         const title = user ? 'Modify a user' : 'Add a user'
 
-        const defaultName = user ? user.name : ''
-        const defaultEmail = user ? user.email : ''
-        const defaultRole = user ? user.roles[0].name : 'user'
+        const defaultName = user ? user.get('name') : ''
+        const defaultEmail = user ? user.get('email') : ''
+        const defaultRole = user ? user.getIn(['roles', 0, 'name']) : 'user'
 
         const submitText = user ? 'Update user' : 'Create user'
 
