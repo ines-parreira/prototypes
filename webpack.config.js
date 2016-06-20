@@ -4,13 +4,14 @@ var path = require('path')
 var webpack = require('webpack')
 
 var __PRODUCTION__ = process.env.NODE_ENV === 'production'
-var HASH = process.env.CIRCLE_SHA1 ? process.env.CIRCLE_SHA1  : '[hash]'
+var HASH = process.env.CIRCLE_SHA1 ? process.env.CIRCLE_SHA1 : '[hash]'
 
 var staticDirectory = './g/static/private/'
 
 var jsMainFile = staticDirectory + 'js/main.js'
 var jsBuildPath = staticDirectory + '_build/js'
 var jsBundleFile = __PRODUCTION__ ? (HASH + '.build.min.js') : 'build.js'
+var jsBundleFileSourceMap = __PRODUCTION__ ? (HASH + '.build.min.js.map') : 'build.js.map'
 
 var plugins = [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/)
@@ -25,9 +26,13 @@ if (__PRODUCTION__) {
 }
 
 module.exports = {
-    devtool: 'eval',
+    devtool: __PRODUCTION__ ? 'cheap-module-source-map' : 'cheap-eval-source-map',
     entry: jsMainFile,
-    output: {path: jsBuildPath, filename: jsBundleFile},
+    output: {
+        path: jsBuildPath,
+        filename: jsBundleFile,
+        sourceMapFilename: jsBundleFileSourceMap
+    },
     plugins: plugins,
     module: {
         loaders: [
