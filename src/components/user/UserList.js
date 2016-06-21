@@ -1,10 +1,18 @@
 import React, {PropTypes} from 'react'
+import {Loader} from '../Loader'
 import UserRow from './UserRow'
 
 export default class UserList extends React.Component {
     render() {
-        const {items} = this.props
+        const {items, isLoading} = this.props
         const {sortUsers} = this.context
+
+        if (items.isEmpty()) {
+            const message = isLoading ? <p>Loading...</p> : <p>No users found</p>
+            return (
+                <Loader message={message} loading={isLoading}/>
+            )
+        }
 
         return (
             <div className="UserList">
@@ -45,7 +53,8 @@ export default class UserList extends React.Component {
 }
 
 UserList.propTypes = {
-    items: PropTypes.object.isRequired
+    items: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool
 }
 
 UserList.contextTypes = {

@@ -6,12 +6,8 @@ import UserForm from './UserForm'
 
 export default class UsersView extends React.Component {
     render() {
-        const {items} = this.props
+        const {items, isLoading} = this.props
         const {createUser} = this.context
-
-        if (!items.size) {
-            return null
-        }
 
         return (
             <div className="UsersView">
@@ -57,6 +53,7 @@ export default class UsersView extends React.Component {
                 </div>
                 <UserList
                     items={items}
+                    isLoading={isLoading}
                 />
             </div>
         )
