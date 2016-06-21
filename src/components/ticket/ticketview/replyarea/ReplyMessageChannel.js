@@ -3,7 +3,8 @@ import classnames from 'classnames'
 import {Map, List} from 'immutable'
 import SearchableDropdown from './SearchableDropdown'
 import {SOURCE_VALUE_PROP} from '../../../../constants'
-import {lastMessage} from '../../../../utils'
+import {firstMessage} from '../../../../utils'
+import {getLastNonInternalNoteMessage} from '../../../../reducers/ticket'
 import _ from 'lodash'
 
 
@@ -21,25 +22,23 @@ export default class ReplyMessageChannel extends React.Component {
      * - if the last message is `from_agent`, the `to` list of this message
      * - if not, the `from` of this message
      *
-     * @param onlyAddrs
+     * @param onlyAddrs: true to get just the displayed value for the 'to' field.
      * @param ticket
      *
      * @returns {List}
      */
     getTargets(onlyAddrs = false, ticket = this.props.ticket) {
+        // TODO@ldirer Currently the dropdown has its value set, triggering onChange, which in turns causes the reducer to set the 'to' field in the source.
+        // This feels a bit awkward. We get the value to display in 'to:' from the *last message* instead of taking it directly from the state.
+
         if (!ticket.get('messages').size) {
             return List()
         }
 
         let to = List()
         const curTo = ticket.getIn(['newMessage', 'source', 'to'])
-        const ticketLastMessage = ticket.get('messages').last()
-
-        if (ticketLastMessage.getIn(['source', 'type']) === 'internal-note') {
-            return to
-        }
-
-        const valueProp = SOURCE_VALUE_PROP[ticketLastMessage.getIn(['source', 'type'])]
+        // We want the last message that was not an internal note.
+        const ticketLastMessage = getLastNonInternalNoteMessage(ticket.get('messages'))
 
         if (curTo.size) {
             to = curTo
@@ -54,6 +53,7 @@ export default class ReplyMessageChannel extends React.Component {
         }
 
         if (onlyAddrs) {
+            const valueProp = SOURCE_VALUE_PROP[ticketLastMessage.getIn(['source', 'type'])]
             to = List(to.map(dest => dest.get(valueProp).toString()))
         }
 
@@ -222,17 +222,18 @@ export default class ReplyMessageChannel extends React.Component {
         const { ticket, actions } = this.props
         const popupClassNames = this.getClassNames()
 
-        const ticketLastMessage = lastMessage(ticket.get('messages').toJS())
+        const ticketFirstMessage = firstMessage(ticket.get('messages').toJS())
+
 
         const channelClassNames = {
             email: classnames('item', {
-                hidden: ticketLastMessage ? ticketLastMessage.source.type !== 'email' : false
+                hidden: !ticket.get('id') ? ticket.channel !== 'email' : false
             }),
             facebookComment: classnames('item', {
-                hidden: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-comment'
+                hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'facebook-post'
             }),
             facebookMessage: classnames('item', {
-                hidden: !ticket.get('id') || ticketLastMessage.source.type !== 'facebook-message'
+                hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'facebook-message'
             }),
             internal: classnames('item', {
                 hidden: !ticket.get('id')
@@ -254,10 +255,7 @@ export default class ReplyMessageChannel extends React.Component {
                             </div>
                             <div
                                 className={channelClassNames.internal}
-                                onClick={() => {
-                                    actions.ticket.setSourceType('internal-note')
-                                    return actions.ticket.setPublic(false)
-                                    }}
+                                onClick={() => actions.ticket.setSourceType('internal-note')}
                             >
                                 Send as internal note
                             </div>
