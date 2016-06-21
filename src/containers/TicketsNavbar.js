@@ -5,11 +5,12 @@ import { bindActionCreators } from 'redux'
 import * as ViewActions from '../actions/view'
 import TicketsNavbarView from '../components/ticket/TicketsNavbarView'
 import Navbar from '../components/Navbar'
+import { DEFAULT_VIEW } from 'constants'
 
 class TicketsNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        this.props.actions.fetchViews(this.props.params.view)
+        this.props.actions.fetchViews(this.props.params.view || DEFAULT_VIEW)
     }
 
     render() {
