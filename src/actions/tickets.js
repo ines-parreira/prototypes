@@ -105,10 +105,31 @@ export function bulkUpdate(ids, key, value) {
             case 'priority':
                 msg = `${ids.size} tickets have been marked as ${value} priority.`
                 break
+            case 'macro':
+                msg = `Macro successfully applied to ${ids.size} tickets.`
+
+                for (const action of value.actions) {
+                    switch (action.name) {
+                        case 'setStatus':
+                            data.updates.status = action.arguments.status
+                            break
+                        case 'setPriority':
+                            data.updates.priority = action.arguments.priority
+                            break
+                        case 'addTags':
+                            data.updates.tags = action.arguments
+                            break
+                        case 'setAssignee':
+                            data.updates.assignee_user = action.arguments.assignee_user
+                            break
+                        default:
+                            break
+                    }
+                }
+                break
             default:
                 break
         }
-
 
         return reqwest({
             url: '/api/tickets/',
@@ -118,8 +139,7 @@ export function bulkUpdate(ids, key, value) {
         }).then((resp) => {
             dispatch({
                 type: BULK_UPDATE_SUCCESS,
-                key,
-                value,
+                updates: data.updates,
                 resp
             })
             dispatch(systemMessage({

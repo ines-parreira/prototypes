@@ -52,9 +52,9 @@ export default class TicketMacros extends React.Component {
                 {
                     addTagsActions.map((action) =>
                         action.get('arguments').map((arg, i) =>
-                            <div key={`action-tag-${action.id}-${i}`}
-                                 className="ui label ticket-tag no-icon"
-                            >{arg.get('name')}</div>
+                            <div key={`action-tag-${action.id}-${i}`} className="ui label ticket-tag no-icon">
+                                {arg.get('name')}
+                            </div>
                         )
                     )
                 }

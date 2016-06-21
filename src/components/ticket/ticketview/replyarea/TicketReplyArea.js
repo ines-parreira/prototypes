@@ -21,7 +21,7 @@ export default class TicketReplyArea extends React.Component {
     }
 
     hideMacros = (e) => {
-        if (e.keyCode === 27) this.props.actions.macro.setMacrosVisible(false)
+        if (e.keyCode === 27 && !this.props.macros.get('isModalOpen')) this.props.actions.macro.setMacrosVisible(false)
         return null
     }
 

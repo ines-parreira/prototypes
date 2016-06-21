@@ -1,44 +1,47 @@
 import React, {PropTypes} from 'react'
 
 import MacroList from './MacroList'
-import SetPriorityAction from './actions/SetPriorityAction'
-import SetStatusAction from './actions/SetStatusAction'
-import SetResponseTextAction from './actions/SetResponseTextAction'
-import AssignUserAction from './actions/AssignUserAction'
-import AddTagsAction from './actions/AddTagsAction'
-import HttpAction from './actions/HttpAction'
+import MacroEdit from './MacroEdit'
+import MacroPreview from './MacroPreview'
+import * as mousetrap from 'mousetrap'
 
-import { DEFAULT_ACTIONS } from './../../constants'
-import * as ticketActions from './../../actions/ticket'
 
 export default class MacroModal extends React.Component {
     componentDidMount() {
         $('#macro-modal').modal({
-            onHidden: this.props.actions.closeModal
+            onHidden: this.props.actions.macro.closeModal
         }).modal('show')
 
-        $('#new-action-popup').dropdown({
-            direction: 'upward',
-            onChange: (value, text) => {
-                if (DEFAULT_ACTIONS.indexOf(text) !== -1) {
-                    this.props.actions.addAction(text)
-                    $('#new-action-popup').dropdown('set text', 'Insert a new action')
-                }
-            }
+        mousetrap.bind('up', (e) => {
+            e.preventDefault()
+            this.props.actions.macro.previewAdjacentMacroInModal('prev', this.props.disableExternalActions)
         })
+        mousetrap.bind('down', (e) => {
+            e.preventDefault()
+            this.props.actions.macro.previewAdjacentMacroInModal('next', this.props.disableExternalActions)
+        })
+
+        if (this.props.selectionMode) {
+            mousetrap.bind('mod+enter', (e) => {
+                e.preventDefault()
+                this.cancel()
+                this.props.actions.tickets.bulkUpdate(this.props.selected, 'macro', this.props.currentMacro.toJS())
+            })
+        }
     }
 
     componentWillUnmount() {
         $('#macro-modal').modal('hide')
+
+        if (!this.props.noUnbind) {
+            mousetrap.unbind('up')
+            mousetrap.unbind('down')
+            mousetrap.unbind('enter')
+        }
     }
 
     create() {
-        this.props.actions.createMacro(this.props.currentMacro)
-        $('#macro-modal').modal('hide')
-    }
-
-    update() {
-        this.props.actions.updateMacro(this.props.currentMacro)
+        this.props.actions.macro.createMacro(this.props.currentMacro)
         $('#macro-modal').modal('hide')
     }
 
@@ -48,151 +51,46 @@ export default class MacroModal extends React.Component {
 
     deleteMacro() {
         if (confirm(`Do you really want to delete the macro ${this.props.currentMacro.get('name')} ?`)) {
-            this.props.actions.deleteMacro(this.props.currentMacro.get('id'))
+            this.props.actions.macro.deleteMacro(this.props.currentMacro.get('id'))
         }
     }
 
     render() {
-        const { macros, currentMacro, actions } = this.props
+        const { macros, currentMacro, actions, selectionMode, selected } = this.props
 
-        const presetActions = currentMacro.get('actions') // .filter(
-        //     action => DEFAULT_ACTIONS.indexOf(action.get('name')) !== -1
-        // )
-
-        const saveButton = currentMacro.get('id') !== 'new' ? (
-            <div className="ui green right floated button" onClick={() => this.update()}>Update macro</div>
+        const rightPart = selectionMode ? (
+            <MacroPreview
+                currentMacro={currentMacro}
+                apply={() => { this.cancel(); actions.tickets.bulkUpdate(selected, 'macro', currentMacro.toJS()) }}
+                cancel={() => this.cancel()}
+            />
         ) : (
-            <div className="ui green right floated button" onClick={() => this.create()}>Create macro</div>
+            <MacroEdit
+                currentMacro={currentMacro}
+                tags={this.props.tags}
+                agents={this.props.agents}
+                actions={actions.macro}
+                cancel={() => this.cancel()}
+            />
         )
-
-        const deleteButton = currentMacro.get('id') !== 'new' ? (
-            <div className="ui basic red left floated button" onClick={() => this.deleteMacro()}>Delete macro</div>
-        ) : null
 
         return (
             <div id="macro-modal" className="MacroModal ui large modal">
                 <i className="close icon"/>
                 <div className="header">
-                    Manage macros
+                    {selectionMode ? 'Macros' : 'Manage macros'}
                 </div>
                 <div className="ui grid container">
                     <div className="five wide left column">
                         <MacroList
                             macros={macros}
                             currentMacro={currentMacro}
-                            actions={actions}
+                            actions={actions.macro}
+                            disableExternalActions={this.props.disableExternalActions}
                         />
                     </div>
                     <div className="eleven wide right column">
-                        <div className="ui vertical segment">
-                            <div>
-                                <h4>MACRO NAME</h4>
-                                <div id="macro-name" className="ui content input">
-                                    <input
-                                        type="text"
-                                        onChange={e => actions.setName(e.target.value)}
-                                        value={currentMacro.get('name') || ''}
-                                    />
-                                </div>
-                                <div className="ui divider"></div>
-                            </div>
-
-                            {
-                                presetActions.map((action, key) => {
-                                    switch (action.get('name')) {
-                                        case ticketActions.SET_STATUS:
-                                            return (
-                                                <SetStatusAction
-                                                    key={key}
-                                                    index={key}
-                                                    action={action}
-                                                    updateActionArgs={actions.updateActionArgs}
-                                                    deleteAction={actions.deleteAction}
-                                                />
-                                            )
-                                        case ticketActions.ADD_TICKET_TAGS:
-                                            return (
-                                                <AddTagsAction
-                                                    key={key}
-                                                    index={key}
-                                                    action={action}
-                                                    tags={this.props.tags}
-                                                    updateActionArgs={actions.updateActionArgs}
-                                                    deleteAction={actions.deleteAction}
-                                                />
-                                            )
-                                        case ticketActions.SET_RESPONSE_TEXT:
-                                            return (
-                                                <SetResponseTextAction
-                                                    key={key}
-                                                    index={key}
-                                                    action={action}
-                                                    updateActionArgs={actions.updateActionArgs}
-                                                    deleteAction={actions.deleteAction}
-                                                />
-                                            )
-                                        case ticketActions.SET_AGENT:
-                                            return (
-                                                <AssignUserAction
-                                                    key={key}
-                                                    index={key}
-                                                    action={action}
-                                                    agents={this.props.agents}
-                                                    updateActionArgs={actions.updateActionArgs}
-                                                    deleteAction={actions.deleteAction}
-                                                />
-                                            )
-                                        case ticketActions.TOGGLE_PRIORITY:
-                                            return (
-                                                <SetPriorityAction
-                                                    key={key}
-                                                    index={key}
-                                                    action={action}
-                                                    updateActionArgs={actions.updateActionArgs}
-                                                    deleteAction={actions.deleteAction}
-                                                />
-                                            )
-                                        case 'http':
-                                            return (
-                                                <HttpAction
-                                                    key={key}
-                                                    index={key}
-                                                    action={action}
-                                                    updateActionArgs={actions.updateActionArgs}
-                                                    updateActionTitle={actions.updateActionTitle}
-                                                    deleteAction={actions.deleteAction}
-                                                />
-                                            )
-
-                                        default:
-                                            return null
-                                    }
-                                })
-                            }
-
-                            <div id="new-action-popup" className="ui floating dropdown labeled search icon light blue button">
-                                <i className="plus icon"/>
-                                <span className="text">Insert a new action</span>
-                                <div className="menu">
-                                    {
-                                        DEFAULT_ACTIONS.map(action => (
-                                            <a key={action} className="item">{action}</a>
-                                        ))
-                                    }
-                                </div>
-                            </div>
-
-                            <div className="ui popup">
-                                <div className="ui vertical menu">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="buttons-bar">
-                            {deleteButton}
-                            {saveButton}
-                            <div className="ui basic grey right floated button" onClick={() => this.cancel()}>cancel</div>
-                        </div>
+                        {rightPart}
                     </div>
                 </div>
             </div>
@@ -202,9 +100,15 @@ export default class MacroModal extends React.Component {
 
 MacroModal.propTypes = {
     macros: PropTypes.object.isRequired,
-    currentMacro: PropTypes.object.isRequired,
+    currentMacro: PropTypes.object,
     tags: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
 
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+
+    disableExternalActions: PropTypes.bool.isRequired,
+    selectionMode: PropTypes.bool.isRequired,
+    selected: PropTypes.object,
+
+    noUnbind: PropTypes.bool
 }

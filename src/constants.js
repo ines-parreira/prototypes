@@ -44,7 +44,7 @@ export const DEFAULT_ACTIONS = [
     'setResponseText',
     'setPriority',
     'http',
-//  'http_integration',
+    // 'http_integration',
     'notify'
 ]
 

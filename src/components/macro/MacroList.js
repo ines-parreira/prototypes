@@ -1,6 +1,10 @@
 import React, {PropTypes} from 'react'
+import ReactDOM from 'react-dom'
 import Immutable from 'immutable'
 import SearchInput from 'react-search-input'
+import classnames from 'classnames'
+
+import {ACTION_TEMPLATES} from '../../constants'
 
 export default class MacroList extends React.Component {
     constructor() {
@@ -8,15 +12,21 @@ export default class MacroList extends React.Component {
         this.state = {searchTerm: ''}
     }
 
+    componentDidMount() {
+        ReactDOM.findDOMNode(this.refs.search).querySelector('input').classList.add('mousetrap')
+    }
+
     searchUpdated = (term) => {
+        this.props.actions.saveSearch(term)
         this.setState({searchTerm: term}) // Necessary for re-render
     }
 
     render() {
-        const {macros, currentMacro, actions} = this.props
+        const { macros, currentMacro, actions, disableExternalActions } = this.props
 
-        /** Used to replace the list of all macros with the list of macros corresponding to the current search term,
-         *  if there is a current search term.
+        /**
+         * Used to replace the list of all macros with the list of macros corresponding to the current search term,
+         * if there is a current search term.
          */
         const curMacros = this.refs.search ? Immutable.fromJS(macros.valueSeq().toJS().filter(this.refs.search.filter(['name']))) : macros
 
@@ -28,22 +38,39 @@ export default class MacroList extends React.Component {
                             <SearchInput
                                 ref="search"
                                 onChange={this.searchUpdated}
-                                className="ui icon input full-width prompt"
+                                className="ui icon input full-width prompt mousetrap"
                                 placeholder="Search for a macro"
                             />
                             <i className="search icon"/>
                         </div>
                     </div>
                     {
-                        curMacros.map(macro => (
-                            <a
-                                className={`item ${macro.get('id') === currentMacro.get('id') ? 'active' : ''}`}
-                                key={macro.get('id')}
-                                onClick={() => actions.previewMacroInModal(macro.get('id'))}
-                            >
-                                {macro.get('name')}
-                            </a>
-                        ))
+                        curMacros.map(macro => {
+                            let isDisabled = false
+
+                            if (disableExternalActions) {
+                                macro.get('actions').forEach(action => {
+                                    if (ACTION_TEMPLATES[action.get('name')].execution === 'back') {
+                                        isDisabled = true
+                                    }
+                                })
+                            }
+
+                            const props = {
+                                key: macro.get('id'),
+                                className: classnames('item', {
+                                    active: macro.get('id') === currentMacro.get('id'),
+                                    disabled: isDisabled
+                                }),
+                                onClick: isDisabled ? null : () => actions.previewMacroInModal(macro.get('id'))
+                            }
+
+                            return (
+                                <a {...props}>
+                                    {macro.get('name')}
+                                </a>
+                            )
+                        })
                     }
                 </div>
                 <div className="button-wrapper">
@@ -57,5 +84,6 @@ export default class MacroList extends React.Component {
 MacroList.propTypes = {
     macros: PropTypes.object.isRequired,
     currentMacro: PropTypes.object,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    disableExternalActions: PropTypes.bool
 }

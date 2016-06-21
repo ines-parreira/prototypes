@@ -2,11 +2,13 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import DocumentTitle from 'react-document-title'
+import * as MacroActions from '../actions/macro'
 import * as TicketActions from '../actions/ticket'
 import * as TicketsActions from '../actions/tickets'
 import * as ViewActions from '../actions/view'
 import * as UserActions from '../actions/user'
 import * as SchemaActions from '../actions/schema'
+import MacrosContainer from './Macros'
 import TicketsView from '../components/ticket/ticketlist/TicketsView'
 import {compactInteger} from '../utils'
 
@@ -97,6 +99,10 @@ class TicketsContainer extends React.Component {
                         search={this.search}
                         slug={slug}
                     />
+                    <MacrosContainer
+                        disableExternalActions selectionMode
+                        selected={this.props.tickets.get('selected')}
+                    />
                 </div>
             </DocumentTitle>
         )
@@ -140,6 +146,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
+            macro: bindActionCreators(MacroActions, dispatch),
             view: bindActionCreators(ViewActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
             tickets: bindActionCreators(TicketsActions, dispatch),

@@ -1,6 +1,5 @@
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
-import jsdom from 'mocha-jsdom'
 
 import { Map } from 'immutable'
 import moment from 'moment'
@@ -12,7 +11,6 @@ expect.extend(expectImmutable)
 
 describe('reducers', () => {
     describe('currentUser', () => {
-        jsdom()
 
         const initialState = Map()
 

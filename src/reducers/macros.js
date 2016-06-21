@@ -2,6 +2,7 @@ import * as actions from '../actions/macro'
 import {fromJS, Map, List} from 'immutable'
 import {DEFAULT_ACTIONS} from '../constants'
 import {createFilter} from 'react-search-input'
+import {ACTION_TEMPLATES} from './../constants'
 
 
 const actionInitial = Map({
@@ -78,7 +79,8 @@ const macroInitial = Map({
 
 const macrosInitial = fromJS({
     state: {
-        query: ''
+        query: '',
+        modalQuery: ''
     },
     visible: true,
     selected: {},
@@ -88,6 +90,14 @@ const macrosInitial = fromJS({
     items: {},
     actions: initialDefaultActions
 })
+
+export function getMacrosWithoutExternalActions(currentMacros) {
+    return currentMacros.filter(
+        macro => macro.get('actions').filter(
+            action => fromJS(ACTION_TEMPLATES).getIn([action.get('name'), 'execution']) === 'back'
+        ).isEmpty()
+    )
+}
 
 export function macros(state = macrosInitial, action) {
     let items
@@ -133,6 +143,30 @@ export function macros(state = macrosInitial, action) {
                 return state.set('selected', curIdx + 1 <= items.size - 1 ? items.get(curIdx + 1) : items.get(0))
             } else if (action.direction === 'prev') {
                 return state.set('selected', curIdx - 1 >= 0 ? items.get(curIdx - 1) : items.get(items.size - 1))
+            }
+
+            return state
+        }
+
+        case actions.PREVIEW_ADJACENT_MACRO_IN_MODAL: {
+            const selectedMacro = state.get('modalSelected')
+
+            items = state.get('items')
+
+            if (action.noExternal) {
+                items = getMacrosWithoutExternalActions(items)
+            }
+
+            items = items.toIndexedSeq().toJS()
+
+            items = fromJS(items.filter(createFilter(state.getIn(['state', 'modalQuery']), ['name'])))
+
+            const curIdx = selectedMacro ? items.findIndex(item => item.get('id') === selectedMacro.get('id')) : 0
+
+            if (action.direction === 'next') {
+                return state.set('modalSelected', curIdx + 1 <= items.size - 1 ? items.get(curIdx + 1) : items.get(0))
+            } else if (action.direction === 'prev') {
+                return state.set('modalSelected', curIdx - 1 >= 0 ? items.get(curIdx - 1) : items.get(items.size - 1))
             }
 
             return state
@@ -188,16 +222,19 @@ export function macros(state = macrosInitial, action) {
             )
 
         case actions.SAVE_SEARCH: {
-            let newState = state.setIn(['state', 'query'], action.query)
+            const queryField = state.get('isModalOpen') ? 'modalQuery' : 'query'
+            const selectedField = state.get('isModalOpen') ? 'modalSelected' : 'selected'
 
-            const selectedMacro = newState.get('selected')
+            let newState = state.setIn(['state', queryField], action.query)
+
+            const selectedMacro = newState.get(selectedField)
             items = newState.get('items').toIndexedSeq().toJS()
-            items = fromJS(items.filter(createFilter(newState.getIn(['state', 'query']), ['name'])))
+            items = fromJS(items.filter(createFilter(newState.getIn(['state', queryField]), ['name'])))
 
             if (!selectedMacro) {
-                newState = newState.set('selected', items.first())
+                newState = newState.set(selectedField, items.first())
             } else if (items.findIndex(item => item.get('id') === selectedMacro.get('id')) === -1) {
-                newState = newState.set('selected', items.first())
+                newState = newState.set(selectedField, items.first())
             }
 
             return newState

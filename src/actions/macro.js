@@ -15,7 +15,9 @@ export const APPLY_MACRO = 'APPLY_MACRO'
 export const PREVIEW_MACRO = 'PREVIEW_MACRO'
 export const SET_MACROS_VISIBILITY = 'SET_MACROS_VISIBILITY'
 export const PREVIEW_ADJACENT_MACRO = 'PREVIEW_ADJACENT_MACRO'
+
 export const PREVIEW_MACRO_IN_MODAL = 'PREVIEW_MACRO_IN_MODAL'
+export const PREVIEW_ADJACENT_MACRO_IN_MODAL = 'PREVIEW_ADJACENT_MACRO_IN_MODAL'
 
 // Macro Management Modal
 export const ADD_NEW_MACRO = 'ADD_NEW_MACRO'
@@ -137,6 +139,14 @@ export function previewAdjacentMacro(direction) {
     return {
         type: PREVIEW_ADJACENT_MACRO,
         direction
+    }
+}
+
+export function previewAdjacentMacroInModal(direction, noExternal) {
+    return {
+        type: PREVIEW_ADJACENT_MACRO_IN_MODAL,
+        direction,
+        noExternal
     }
 }
 

@@ -62,71 +62,84 @@ class TicketContainer extends React.Component {
         this.bindConfirmToRouter()
     }
 
-    componentDidMount() {
+    bindKeys() {
         // Have to bind these here so they capture at the correct level
         const macrosVisible = () => this.props.macros.get('visible')
+        const modalVisible = () => this.props.macros.get('isModalOpen')
 
         mousetrap.bind('escape', () => {
-            if (macrosVisible()) {
+            if (macrosVisible() && !modalVisible()) {
                 this.props.actions.macro.setMacrosVisible(false)
             }
         })
-        mousetrap.bind('return', (e) => {
-            if (macrosVisible()) {
+        mousetrap.bind('enter', (e) => {
+            if (macrosVisible() && !modalVisible()) {
                 e.preventDefault()
                 e.stopPropagation()
                 this.applyMacro(this.props.macros.get('selected'))
             }
         })
         mousetrap.bind('up', (e) => {
-            if (macrosVisible()) {
+            if (macrosVisible() && !modalVisible()) {
                 e.preventDefault()
                 this.props.actions.macro.previewAdjacentMacro('prev')
             }
         })
         mousetrap.bind('down', (e) => {
-            if (macrosVisible()) {
+            if (macrosVisible() && !modalVisible()) {
                 e.preventDefault()
                 this.props.actions.macro.previewAdjacentMacro('next')
             }
         })
         mousetrap.bind('left', () => {
-            const nextUrl = this.computeNextUrl(false)
+            if (!modalVisible()) {
+                const nextUrl = this.computeNextUrl(false)
 
-            if (nextUrl) {
-                browserHistory.push(nextUrl)
+                if (nextUrl) {
+                    browserHistory.push(nextUrl)
+                }
             }
         })
         mousetrap.bind('right', () => {
-            const nextUrl = this.computeNextUrl(true)
+            if (!modalVisible()) {
+                const nextUrl = this.computeNextUrl(true)
 
-            if (nextUrl) {
-                browserHistory.push(nextUrl)
+                if (nextUrl) {
+                    browserHistory.push(nextUrl)
+                }
             }
         })
         mousetrap.bind('mod+enter', (e) => {
-            if (e.preventDefault) {
-                e.preventDefault()
-            }
+            if (!modalVisible()) {
+                if (e.preventDefault) {
+                    e.preventDefault()
+                }
 
-            this.submit('closed', true)
+                this.submit('closed', true)
+            }
         })
         mousetrap.bind('mod+shift+enter', (e) => {
-            if (e.preventDefault) {
-                e.preventDefault()
+            if (!modalVisible()) {
+                if (e.preventDefault) {
+                    e.preventDefault()
+                }
+
+                this.submit()
             }
-
-            this.submit()
         })
+    }
 
+    componentDidMount() {
         this.bindConfirmToRouter()
         window.onbeforeunload = this.confirmLeaveWhenDirty
+
+        this.bindKeys()
     }
 
     componentWillUnmount() {
         window.onbeforeunload = null
         mousetrap.unbind('escape')
-        mousetrap.unbind('return')
+        mousetrap.unbind('enter')
         mousetrap.unbind('up')
         mousetrap.unbind('down')
         mousetrap.unbind('left')
@@ -195,6 +208,10 @@ class TicketContainer extends React.Component {
         const macros = this.props.macros.get('items')
         if (prevMacros.size === 0 && macros.size !== 0) {
             this.props.actions.macro.previewMacro(macros.valueSeq().first())
+        }
+
+        if (prevProps.macros.get('isModalOpen') && !this.props.macros.get('isModalOpen')) {
+            this.bindKeys()
         }
     }
 
@@ -281,7 +298,7 @@ class TicketContainer extends React.Component {
                         applyMacro={this.applyMacro}
                         view={view}
                     />
-                    <MacrosContainer />
+                    <MacrosContainer noUnbind />
                 </div>
             </DocumentTitle>
         )

@@ -1,13 +1,11 @@
 import expect from 'expect'
 import React from 'react'
-import jsdom from 'mocha-jsdom'
 import {Map, fromJS} from 'immutable'
 import TestUtils from 'react-addons-test-utils'
 import ViewFilters, {CallExpression} from '../ViewFilters'
 
 const openapi = require('../../../../fixtures/openapi.json')
 const openTicketsView = require('../../../../fixtures/open_tickets_view.json')
-
 
 function setup(props) {
     const renderer = TestUtils.createRenderer()
@@ -23,7 +21,6 @@ function setup(props) {
 
 describe('components', () => {
     describe('ViewFilters', () => {
-        jsdom()
         it('null with undefined props', () => {
             const {output} = setup()
             expect(output).toBe(null)
