@@ -19,6 +19,10 @@ export function lastMessage(messages) {
     return messages.slice().sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]
 }
 
+export function firstMessage(messages) {
+    return messages.slice().sort((m1, m2) => moment(m1.created_datetime).diff(moment(m2.created_datetime)))[0]
+}
+
 // given a field path. Ex: ticket.requester.id and OpenID schemas => resolve the last property
 export function findProperty(field, schemas) {
     const parts = field.split('.')

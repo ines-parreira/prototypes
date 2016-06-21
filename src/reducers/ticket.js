@@ -51,6 +51,38 @@ const ticketInitial = Map({
     newMessage: newMessage('email', 'email')
 })
 
+/**
+ * Get the most recent message that was not an internal note.
+ * @param messages
+ * @returns {*}
+ */
+export function getLastNonInternalNoteMessage(messages) {
+    return messages.filter((m) => m.getIn(['source', 'type']) !== 'internal-note').last()
+}
+
+/**
+ * A utility function that gives the source type we should set on a **new** message based on the
+ * source type of the message we're responding to.
+ */
+function getSourceTypeOfResponse(messages) {
+    const lastMsg = getLastNonInternalNoteMessage(messages)
+    // some messages don't have sources - failed imports, api, etc..
+    if (!lastMsg.get('source')) {
+        return 'api'
+    }
+
+    switch (lastMsg.getIn(['source', 'type'])) {
+        case 'facebook-post':
+            return 'facebook-comment'
+        case 'internal-note':
+            // We never want the new message to be an internal note by default.
+            // We get the type of the new message by considering the most recent non-internal note message.
+            return getSourceTypeOfResponse(getLastNonInternalNoteMessage(messages))
+        default:
+            return lastMsg.getIn(['source', 'type'])
+    }
+}
+
 export function ticket(state = ticketInitial, action) {
     const valueProp = SOURCE_VALUE_PROP[state.getIn(['newMessage', 'source', 'type'])]
     let tags
@@ -93,12 +125,11 @@ export function ticket(state = ticketInitial, action) {
                 return state
             }
 
-            const lastMsg = action.resp.messages[action.resp.messages.length - 1]
-            return state.merge(fromJS(action.resp))
-                .set('newMessage', newMessage(
-                    action.resp.channel,
-                    lastMsg.source ? lastMsg.source.type : 'api' // some messages don't have sources - failed imports, api, etc..
-                ))
+            const newState = state.merge(fromJS(action.resp))
+            return newState.set('newMessage', newMessage(
+                action.resp.channel,
+                getSourceTypeOfResponse(newState.get('messages'))
+            ))
                 .mergeDeep({
                     state: {
                         dirty: false,
@@ -109,12 +140,11 @@ export function ticket(state = ticketInitial, action) {
         }
 
         case actions.FETCH_TICKET_SUCCESS: {
-            const lastMsg = action.resp.messages[action.resp.messages.length - 1]
-            return state.merge(fromJS(action.resp))
-                .set('newMessage', state.get('newMessage').mergeDeep(newMessage(
-                    action.resp.channel,
-                    lastMsg.source ? lastMsg.source.type : 'api' // some messages don't have sources - failed imports, api, etc..
-                )))
+            const newState = state.merge(fromJS(action.resp))
+            return newState.set('newMessage', newState.get('newMessage').mergeDeep(newMessage(
+                action.resp.channel,
+                getSourceTypeOfResponse(newState.get('messages'))
+            )))
                 .mergeDeep({
                     state: {
                         dirty: false,
@@ -184,8 +214,9 @@ export function ticket(state = ticketInitial, action) {
             } else if (action.sourceType === 'email') {
                 newState = newState.setIn(['newMessage', 'channel'], 'email')
             }
-
-            return newState.setIn(['newMessage', 'source', 'type'], action.sourceType).setIn(['newMessage', 'public'], true)
+            return newState
+                .setIn(['newMessage', 'source', 'type'], action.sourceType)
+                .setIn(['newMessage', 'public'], action.sourceType !== 'internal-note')
         }
 
         case actions.SET_RESPONSE_TEXT: {
