@@ -20,18 +20,20 @@ class TicketsContainer extends React.Component {
     componentWillReceiveProps = (nextProps) => {
         const currentViews = this.props.views
         const nextViews = nextProps.views
+        const currentActive = currentViews.get('active')
+        const nextActive = nextViews.get('active')
 
-        if (currentViews.get('active').isEmpty() && nextViews.get('active').isEmpty() && nextViews.get('items').size) {
+        if (currentActive.isEmpty() && nextActive.isEmpty() && nextViews.get('items').size) {
             this.props.actions.view.setViewActive(nextViews.getIn(['items', 0]))
         }
 
         // if our view changed
-        if (currentViews.get('active') && nextViews.get('active') &&
-            !nextViews.get('active').isEmpty() && (
-                currentViews.get('active').isEmpty() ||
-                currentViews.getIn(['active', 'slug']) !== nextViews.getIn(['active', 'slug']) ||
-                currentViews.getIn(['active', 'filters']) !== nextViews.getIn(['active', 'filters']) ||
-                currentViews.getIn(['active', 'search']) !== nextViews.getIn(['active', 'search'])
+        if (currentActive && nextActive && !nextActive.isEmpty() &&
+            (
+                currentActive.isEmpty() ||
+                // we ignore the fields because they get updated before any filtering is performed
+                // Ex: when fetching the Requester field enum
+                !currentActive.delete('fields').equals(nextActive.delete('fields'))
             )
         ) {
             this.fetchPage(1, nextProps)
