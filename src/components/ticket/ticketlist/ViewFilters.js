@@ -38,7 +38,7 @@ const Operator = ({operators, selected, index, onChange}) => {
     )
 }
 Operator.propTypes = {
-    index: PropTypes.string.isRequired,
+    index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     operators: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
 }
