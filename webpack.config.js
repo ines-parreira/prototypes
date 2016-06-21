@@ -26,7 +26,7 @@ if (__PRODUCTION__) {
 }
 
 module.exports = {
-    devtool: __PRODUCTION__ ? 'cheap-module-source-map' : 'cheap-eval-source-map',
+    devtool: __PRODUCTION__ ? 'source-map' : 'cheap-eval-source-map',
     entry: jsMainFile,
     output: {
         path: jsBuildPath,
