@@ -8,7 +8,7 @@ export default class UserList extends React.Component {
         const {sortUsers} = this.context
 
         if (items.isEmpty()) {
-            const message = isLoading ? <p>Loading...</p> : <p>No users found</p>
+            const message = <p>{isLoading ? 'Loading...' : 'No users found.'}</p>
             return (
                 <Loader message={message} loading={isLoading}/>
             )
