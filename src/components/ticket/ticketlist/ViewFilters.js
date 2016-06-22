@@ -26,20 +26,20 @@ Left.propTypes = {
     objectPath: PropTypes.string.isRequired
 }
 
-const Operator = ({operators, selected, index, onChange}) => {
-    return (
-        <select className="ui simple mini dropdown Operator"
-                defaultValue={selected}
-                onChange={(e) => onChange(index, e)}>
-            {Object.keys(operators).map((o, idx) => (
-                <option key={idx} value={o}>{operators[o].label}</option>
-            ))}
-        </select>
-    )
-}
+const Operator = ({operators, selected, index, onChange}) => (
+    <select className="ui simple mini dropdown Operator"
+            defaultValue={selected}
+            onChange={(e) => onChange(index, e)}
+    >
+        {Object.keys(operators).map((o, idx) => (
+            <option key={idx} value={o}>{operators[o].label}</option>
+        ))}
+    </select>
+)
 Operator.propTypes = {
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     operators: PropTypes.object.isRequired,
+    selected: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
 }
 
@@ -55,9 +55,9 @@ Right.propTypes = {
 }
 
 
-const RemoveCallExpression = ({index, onClick}) => {
-    return <i className="right floated remove circle red large action icon" onClick={() => onClick(index)}/>
-}
+const RemoveCallExpression = ({index, onClick}) => (
+    <i className="right floated remove circle red large action icon" onClick={() => onClick(index)}/>
+)
 RemoveCallExpression.propTypes = {
     index: PropTypes.number.isRequired,
     onClick: PropTypes.func.isRequired
@@ -110,8 +110,7 @@ export default class ViewFilters extends React.Component {
     }
 
     updateOperator = (index, event) => {
-        // this.props.updateFieldFilterOperator(index)
-        console.log('Not implemented yet', index, event.target.value)
+        this.props.updateFieldFilterOperator(index, event.target.value)
     }
 
     render() {
@@ -157,5 +156,6 @@ export default class ViewFilters extends React.Component {
 ViewFilters.propTypes = {
     view: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
-    removeFieldFilter: PropTypes.func.isRequired
+    removeFieldFilter: PropTypes.func.isRequired,
+    updateFieldFilterOperator: PropTypes.func.isRequired
 }
