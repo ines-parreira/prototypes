@@ -35,7 +35,7 @@ export default class TicketMessageBody extends React.Component {
         }
 
         let classNames = 'ticket-message-body'
-        if (!message.body_html && !message.stripped_html) {
+        if (!message.body_html) {
             classNames += ' ticket-message-body-text'
             if (body) {
                 body = linkifyStr(body)
