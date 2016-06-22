@@ -6,7 +6,7 @@ export default class SetResponseTextAction extends React.Component {
 
         this.props.updateActionArgs(
             this.props.index,
-            args.set('body_html', value).set('body_text', value)
+            args.set('body_text', value)
         )
     }
     render() {
@@ -22,7 +22,7 @@ export default class SetResponseTextAction extends React.Component {
                     <div className="field">
                         <textarea
                             onChange={e => this.setResponseText(e.target.value)}
-                            value={action.getIn(['arguments', 'body_html'])}
+                            value={action.getIn(['arguments', 'body_text'])}
                         />
                     </div>
                 </div>
