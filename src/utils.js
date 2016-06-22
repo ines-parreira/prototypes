@@ -1,4 +1,7 @@
-import {has, upperFirst} from 'lodash'
+import {has, upperFirst, isString} from 'lodash'
+import esprima from 'esprima'
+import escodegen from 'escodegen'
+
 import moment from 'moment-timezone'
 
 export function formatDatetime(datetime, timezone, format = 'calendar') {
@@ -14,6 +17,21 @@ export function formatDatetime(datetime, timezone, format = 'calendar') {
         return datetime
     }
 }
+
+export function getAST(code) {
+    if (!isString(code)) {
+        console.error('Not a string:', code)
+    }
+    return esprima.parse(code)
+}
+
+export function getCode(ast) {
+    if (!isString(ast.type)) {
+        console.error('Not an AST:', ast)
+    }
+    return escodegen.generate(ast)
+}
+
 
 export function lastMessage(messages) {
     return messages.slice().sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]

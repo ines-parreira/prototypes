@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import { getCode, getAST } from '../filters/ast'
+import { getCode, getAST } from '../utils'
 
 import { ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST } from '../actions/rule'
 import { DEFAULT_OPTION_CHAINS } from '../components/ast/Widget.js'
