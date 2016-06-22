@@ -13,6 +13,12 @@ export default class Search extends React.Component {
         }, this.props.searchDebounceTime || 200)
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.location && nextProps.location && this.props.location !== nextProps.location) {
+            this.refs.searchInput.value = ''
+        }
+    }
+
     render() {
         const containerClasses = classNames('ui search', this.props.className)
         const inputClasses = classNames('ui small icon fluid input')
@@ -37,12 +43,14 @@ export default class Search extends React.Component {
 
 Search.propTypes = {
     onChange: PropTypes.func.isRequired,
-    query: React.PropTypes.object.isRequired,
-    queryPath: React.PropTypes.string.isRequired,
-    params: React.PropTypes.object,
+    query: PropTypes.object.isRequired,
+    queryPath: PropTypes.string.isRequired,
+    params: PropTypes.object,
 
     className: PropTypes.string,
     placeholder: PropTypes.string,
     autofocus: PropTypes.bool,
-    searchDebounceTime: React.PropTypes.number
+    searchDebounceTime: PropTypes.number,
+
+    location: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
