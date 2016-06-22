@@ -79,6 +79,15 @@ export function resolveLiteral(value, field) {
     }
 }
 
+/**
+ * Return '⌘' if the user is using a Mac, 'Ctrl' otherwise
+ * @returns {string}
+ */
+export function getModifier() {
+    const isMac = navigator.platform.toLowerCase().startsWith('mac')
+    return isMac ? '⌘' : 'Ctrl'
+}
+
 // stolen from: https://github.com/HubSpot/humanize/blob/master/src/humanize.js#L84
 export function compactInteger(input, decimals = 0) {
     decimals = Math.max(decimals, 0);

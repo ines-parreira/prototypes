@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {ACTION_TEMPLATES} from './../../constants'
 import classnames from 'classnames'
+import { getModifier } from './../../utils'
 
 export default class MacroPreview extends React.Component {
     renderSetStatus(setStatusAction) {
@@ -99,6 +100,17 @@ export default class MacroPreview extends React.Component {
         )
     }
 
+    componentDidMount() {
+        const settings = {
+            position: 'top center',
+            variation: 'tiny inverted',
+            delay: 200
+        }
+
+        $('#applyToGroup').popup(settings)
+        $('#cancel').popup(settings)
+    }
+
     render() {
         const {currentMacro, apply, cancel, selected} = this.props
 
@@ -128,8 +140,15 @@ export default class MacroPreview extends React.Component {
                     <div className="macro-data pre">{responseTextAction.getIn(['arguments', 'body_text'])}</div>
                 </div>
                 <div className="buttons-bar">
-                    <div className="ui green right floated button" onClick={apply}>Apply macro to {selected.size} tickets</div>
-                    <div className="ui basic grey right floated button" onClick={cancel}>cancel</div>
+                    <div
+                        id="applyToGroup"
+                        className="ui green right floated button"
+                        onClick={apply}
+                        data-content={`${getModifier()} + Enter`}
+                    >
+                        Apply macro to {selected.size} tickets
+                    </div>
+                    <div id="cancel" className="ui basic grey right floated button" onClick={cancel} data-content="Esc">cancel</div>
                 </div>
             </div>
         )
