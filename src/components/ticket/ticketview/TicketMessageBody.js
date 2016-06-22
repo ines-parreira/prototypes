@@ -12,7 +12,7 @@ export default class TicketMessageBody extends React.Component {
         const {message} = this.props
 
         let body = message.body_html || message.body_text
-        const stripped = message.stripped_html || message.stripped_text
+        const stripped = message.body_html && message.stripped_html ? message.stripped_html : message.stripped_text
 
         let quoteButton = null
         if (stripped) {
