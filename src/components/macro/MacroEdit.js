@@ -33,6 +33,12 @@ export default class MacroEdit extends React.Component {
         $('#macro-modal').modal('hide')
     }
 
+    deleteMacro() {
+        if (confirm(`Do you really want to delete the macro ${this.props.currentMacro.get('name')} ?`)) {
+            this.props.actions.deleteMacro(this.props.currentMacro.get('id'))
+        }
+    }
+
     render() {
         const {currentMacro, actions, cancel} = this.props
 
