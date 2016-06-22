@@ -7,6 +7,7 @@ export default class SetResponseTextAction extends React.Component {
         this.props.updateActionArgs(
             this.props.index,
             args.set('body_text', value).set('body_html', args.get('body_html') ? value : '')
+            // todo(@martin): fix that when we use body_html and body_text correctly
         )
     }
     render() {
