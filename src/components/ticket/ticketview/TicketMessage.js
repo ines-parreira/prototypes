@@ -36,8 +36,8 @@ export default class TicketMessage extends React.Component {
 
         const icons = {
             email: 'mail',
-            'facebook-message': 'square facebook',
-            'facebook-comment': 'facebook'
+            'facebook-message': 'facebook-messenger',
+            'facebook-comment': 'facebook square'
         }
 
         const legend = !message.source.type.startsWith('facebook') ?

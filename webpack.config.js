@@ -46,6 +46,10 @@ module.exports = {
                 loader: 'json-loader'
             },
             {
+                loader: 'file',
+                test: /\.(jpe?g|png|gif|svg)$/i
+            },
+            {
                 test: /\.less$/,
                 loader: 'style!css!less'
             },

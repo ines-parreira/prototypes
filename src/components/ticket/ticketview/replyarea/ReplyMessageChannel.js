@@ -74,7 +74,7 @@ export default class ReplyMessageChannel extends React.Component {
             private: 'action icon comment yellow',
             email: 'action icon mail blue',
             'facebook-comment': 'action icon facebook square blue',
-            'facebook-message': 'action icon facebook square blue'
+            'facebook-message': 'action icon facebook-messenger blue'
         }
 
         if (!identity.id && !identity.email) {
