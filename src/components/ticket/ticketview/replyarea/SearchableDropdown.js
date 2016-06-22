@@ -38,7 +38,8 @@ export default class SearchableDropdown extends React.Component {
     componentDidUpdate(prevProps) {
         const receiverDropdown = $(`#receiver-dropdown-${this.props.suffix}`)
 
-        if (prevProps.parentId !== this.props.parentId) {
+        // Take the ticketId AND the lastMessageId into account
+        if (prevProps.parentId !== this.props.parentId && !prevProps.existingValues.equals(this.props.existingValues)) {
             receiverDropdown.dropdown('refresh')
             receiverDropdown.dropdown('set exactly', this.props.defaultValues.toJS())
         }
@@ -50,7 +51,7 @@ export default class SearchableDropdown extends React.Component {
 
             let hasSelected = false;
 
-            for (const child in this.refs.dropdownMenu.children) {
+            for (const child of Object.keys(this.refs.dropdownMenu.children)) {
                 if (_.includes(this.refs.dropdownMenu.children[child].classList, 'addition')) {
                     // If there is an addition item ('Add...'), delete it
                     this.refs.dropdownMenu.removeChild(this.refs.dropdownMenu.children[child])
@@ -64,7 +65,7 @@ export default class SearchableDropdown extends React.Component {
 
             if (!hasSelected) {
                 // If we don't have this selected item, we need to define the first non-filtered item as selected
-                for (const child in this.refs.dropdownMenu.children) {
+                for (const child of Object.keys(this.refs.dropdownMenu.children)) {
                     if (this.refs.dropdownMenu.children[child].classList && !_.includes(this.refs.dropdownMenu.children[child].classList, 'filtered')
                     ) {
                         this.refs.dropdownMenu.children[child].classList.add('selected')
