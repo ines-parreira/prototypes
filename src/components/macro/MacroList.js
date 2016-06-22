@@ -21,6 +21,18 @@ export default class MacroList extends React.Component {
         this.setState({searchTerm: term}) // Necessary for re-render
     }
 
+    renderCreateMacro() {
+        if (this.props.selectionMode) {
+            return null
+        }
+
+        return (
+            <div className="button-wrapper">
+                <div className="ui basic light blue fluid button" onClick={this.props.actions.addNewMacro}>Create macro</div>
+            </div>
+        )
+    }
+
     render() {
         const { macros, currentMacro, actions, disableExternalActions } = this.props
 
@@ -73,9 +85,7 @@ export default class MacroList extends React.Component {
                         })
                     }
                 </div>
-                <div className="button-wrapper">
-                    <div className="ui basic light blue fluid button" onClick={actions.addNewMacro}>Create macro</div>
-                </div>
+                {this.renderCreateMacro()}
             </div>
         )
     }
@@ -85,5 +95,6 @@ MacroList.propTypes = {
     macros: PropTypes.object.isRequired,
     currentMacro: PropTypes.object,
     actions: PropTypes.object.isRequired,
-    disableExternalActions: PropTypes.bool
+    disableExternalActions: PropTypes.bool,
+    selectionMode: PropTypes.bool
 }

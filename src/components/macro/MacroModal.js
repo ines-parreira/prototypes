@@ -40,19 +40,8 @@ export default class MacroModal extends React.Component {
         }
     }
 
-    create() {
-        this.props.actions.macro.createMacro(this.props.currentMacro)
-        $('#macro-modal').modal('hide')
-    }
-
     cancel() {
         $('#macro-modal').modal('hide')
-    }
-
-    deleteMacro() {
-        if (confirm(`Do you really want to delete the macro ${this.props.currentMacro.get('name')} ?`)) {
-            this.props.actions.macro.deleteMacro(this.props.currentMacro.get('id'))
-        }
     }
 
     render() {
@@ -88,6 +77,7 @@ export default class MacroModal extends React.Component {
                             currentMacro={currentMacro}
                             actions={actions.macro}
                             disableExternalActions={this.props.disableExternalActions}
+                            selectionMode={selectionMode}
                         />
                     </div>
                     <div className="eleven wide right column">
