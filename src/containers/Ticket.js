@@ -249,7 +249,7 @@ class TicketContainer extends React.Component {
             ticket.getIn(['messages', 'actions'])
         }
 
-        if (ticket.get('subject') || window.confirm('Are you sure you want to create a ticket with no subject?')) {
+        if (ticket.get('subject') || ticket.get('id') || window.confirm('Are you sure you want to create a ticket with no subject?')) {
             this.props.actions.ticket.submitTicket(
                 ticket,
                 status,
