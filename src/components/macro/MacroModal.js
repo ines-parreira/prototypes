@@ -40,11 +40,6 @@ export default class MacroModal extends React.Component {
         }
     }
 
-    create() {
-        this.props.actions.macro.createMacro(this.props.currentMacro)
-        $('#macro-modal').modal('hide')
-    }
-
     cancel() {
         $('#macro-modal').modal('hide')
     }
@@ -88,6 +83,7 @@ export default class MacroModal extends React.Component {
                             currentMacro={currentMacro}
                             actions={actions.macro}
                             disableExternalActions={this.props.disableExternalActions}
+                            selectionMode={selectionMode}
                         />
                     </div>
                     <div className="eleven wide right column">
