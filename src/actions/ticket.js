@@ -470,7 +470,7 @@ export function keyIn(...keys) {
     return (v, k) => keySet.has(k)
 }
 
-export function submitTicket(ticket, status, macroActions, currentUser, action) {
+export function submitTicket(ticket, status, macroActions, currentUser, action, resetMessage = true) {
     return (dispatch) => {
         dispatch({
             type: SUBMIT_TICKET_START
@@ -542,6 +542,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, action) 
 
             dispatch({
                 type: SUBMIT_TICKET_SUCCESS,
+                resetMessage,
                 resp
             })
 

@@ -38,7 +38,8 @@ export default class SearchableDropdown extends React.Component {
     componentDidUpdate(prevProps) {
         const receiverDropdown = $(`#receiver-dropdown-${this.props.suffix}`)
 
-        if (this.props.defaultValues !== this.props.existingValues && !this.props.existingValues.size) {
+        // Take the ticketId AND the lastMessageId into account
+        if (prevProps.parentId !== this.props.parentId && !prevProps.existingValues.equals(this.props.existingValues)) {
             receiverDropdown.dropdown('refresh')
             receiverDropdown.dropdown('set exactly', this.props.defaultValues.toJS())
         }

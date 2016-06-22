@@ -235,7 +235,7 @@ class TicketContainer extends React.Component {
         return nextTicketUrl
     }
 
-    submit = (status, next, action) => {
+    submit = (status, next, action, resetMessage = true) => {
         let ticket = this.props.ticket
 
         if (!ticket.get('id')) {
@@ -255,7 +255,8 @@ class TicketContainer extends React.Component {
                 status,
                 this.props.macros.getIn(['appliedMacro', 'actions']),
                 this.props.currentUser,
-                action
+                action,
+                resetMessage
             )
 
             if (next) {

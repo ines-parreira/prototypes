@@ -124,9 +124,9 @@ export default class TicketMessage extends React.Component {
                                 <div style={{ margin: '1em auto'}}>
                                     <TicketMessageActions message={message}/>
                                 </div>
-                                <a onClick={() => this.props.submit(null, null, 'retry')}>retry</a> to execute the
+                                <a onClick={() => this.props.submit(null, null, 'retry', false)}>retry</a> to execute the
                                 failed action(s) automatically, and send the message if it succeeds,<br/>
-                                <a onClick={() => this.props.submit(null, null, 'force')}>ignore failure</a>, execute
+                                <a onClick={() => this.props.submit(null, null, 'force', false)}>ignore failure</a>, execute
                                 the other actions and send the message<br/>
                                 <a onClick={() => this.props.deleteMessage(message.id)}>cancel</a> the message, and
                                 manually undo successful action(s).

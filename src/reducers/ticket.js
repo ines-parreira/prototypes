@@ -125,11 +125,8 @@ export function ticket(state = ticketInitial, action) {
                 return state
             }
 
-            const newState = state.merge(fromJS(action.resp))
-            return newState.set('newMessage', newMessage(
-                action.resp.channel,
-                getSourceTypeOfResponse(newState.get('messages'))
-            ))
+            const newState = state
+                .merge(fromJS(action.resp))
                 .mergeDeep({
                     state: {
                         dirty: false,
@@ -137,6 +134,12 @@ export function ticket(state = ticketInitial, action) {
                         query: ''
                     }
                 })
+
+            return action.resetMessage ? newState.set('newMessage', newMessage(
+                action.resp.channel,
+                getSourceTypeOfResponse(newState.get('messages'))
+            )) : newState
+
         }
 
         case actions.FETCH_TICKET_SUCCESS: {
