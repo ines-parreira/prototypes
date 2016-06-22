@@ -63,6 +63,7 @@ export default class MacroModal extends React.Component {
                 currentMacro={currentMacro}
                 apply={() => { this.cancel(); actions.tickets.bulkUpdate(selected, 'macro', currentMacro.toJS()) }}
                 cancel={() => this.cancel()}
+                selected={selected}
             />
         ) : (
             <MacroEdit
