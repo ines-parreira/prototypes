@@ -117,6 +117,7 @@ export default class TicketsView extends React.Component {
                         resetView={this.resetView}
                         deleteView={this.deleteView}
                         removeFieldFilter={actions.view.removeFieldFilter}
+                        updateFieldFilterOperator={actions.view.updateFieldFilterOperator}
                         submitView={actions.view.submitView}
                         width={this.getWidth()}
                     />

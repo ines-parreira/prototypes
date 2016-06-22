@@ -1,7 +1,6 @@
 import {has, upperFirst, isString} from 'lodash'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
-
 import moment from 'moment-timezone'
 
 export function formatDatetime(datetime, timezone, format = 'calendar') {
@@ -29,7 +28,11 @@ export function getCode(ast) {
     if (!isString(ast.type)) {
         console.error('Not an AST:', ast)
     }
-    return escodegen.generate(ast)
+    return escodegen.generate(ast, {
+        format: {
+            semicolons: false
+        }
+    })
 }
 
 

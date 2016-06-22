@@ -1,7 +1,7 @@
 import esprima from 'esprima'
-import escodegen from 'escodegen'
 import {fromJS, List, Map} from 'immutable'
 import * as actions from '../actions/view'
+import {getCode} from '../utils'
 
 
 const viewsInitial = Map({
@@ -30,10 +30,35 @@ function removeFilterAST(view, index) {
     return ''
 }
 
-// shortcut for sorting items
-function sortViews(items, key = 'display_order') {
-    return items.sort((a, b) => a.get(key) - b.get(key))
+// traverse filters_ast and replace the callee name of the CallExpression found at `index
+// once replaced, we return the new AST
+function updateFilterAST(view, index, operator) {
+    const ast = view.get('filters_ast')
+    let count = 0
+
+    function walk(node) {
+        switch (node.get('type')) {
+            case 'Program':
+                return node.setIn(['body', 0], walk(node.getIn(['body', 0])))
+            case 'ExpressionStatement':
+                return node.set('expression', walk(node.get('expression')))
+            case 'CallExpression':
+                if (count === index) {
+                    return node.setIn(['callee', 'name'], operator)
+                }
+                count++
+                return node
+            default:
+                return node
+        }
+    }
+
+    return walk(ast)
 }
+
+// shortcut for sorting items
+const sortViews = (items, key = 'display_order') =>
+    items.sort((a, b) => a.get(key) - b.get(key))
 
 export function views(state = viewsInitial, action) {
     let items
@@ -46,7 +71,6 @@ export function views(state = viewsInitial, action) {
             if (action.view) {
                 return state.set('active', action.view)
             }
-
             return state
 
         case actions.UPDATE_VIEW:
@@ -63,25 +87,23 @@ export function views(state = viewsInitial, action) {
         case actions.ADD_VIEW_FIELD_FILTER:
             // given a filter and our code+ast => generate new code/ast and save it to the state
             ast = addFilterAST(view, action.filter)
-            code = escodegen.generate(ast.toJS(), {
-                format: {
-                    semicolons: false
-                }
-            })
+            code = getCode(ast.toJS())
             view = view.set('filters_ast', ast).set('filters', code)
             return state.set('active', view.set('dirty', true))
 
         case actions.REMOVE_VIEW_FIELD_FILTER:
             ast = removeFilterAST(view, action.index)
             if (ast) {
-                code = escodegen.generate(ast.toJS(), {
-                    format: {
-                        semicolons: false
-                    }
-                })
+                code = getCode(ast.toJS())
             }
             view = view.set('filters_ast', ast).set('filters', code)
             return state.set('active', view.set('dirty', true))
+
+        case actions.UPDATE_VIEW_FIELD_FILTER_OPERATOR:
+            ast = updateFilterAST(view, action.index, action.operator)
+            code = getCode(ast.toJS())
+            view = view.set('filters_ast', ast).set('filters', code)
+            return state.set('active', view)
 
         case actions.UPDATE_VIEW_FIELD_ENUM_SUCCESS:
             // update our active view with the new data from the API
@@ -97,13 +119,15 @@ export function views(state = viewsInitial, action) {
 
             return state.set('active', view)
 
-        case actions.RESET_VIEW: {
+        case actions.RESET_VIEW:
+        {
             // find the original view from the state and replace the active view
             const original = state.get('items').find(v => v.get('id') === view.get('id'))
             return state.set('active', original.set('dirty', false))
         }
 
-        case actions.SUBMIT_UPDATE_VIEW_SUCCESS: {
+        case actions.SUBMIT_UPDATE_VIEW_SUCCESS:
+        {
             const updatedView = fromJS(action.resp)
             // we need to replace the old view with the new one
             items = state.get('items')
@@ -113,7 +137,8 @@ export function views(state = viewsInitial, action) {
                 active: updatedView.set('dirty', false)
             })
         }
-        case actions.SUBMIT_NEW_VIEW_SUCCESS: {
+        case actions.SUBMIT_NEW_VIEW_SUCCESS:
+        {
             const newView = fromJS(action.resp)
             return state.merge({
                 items: sortViews(state.get('items').push(newView)),
@@ -124,7 +149,8 @@ export function views(state = viewsInitial, action) {
         case actions.FETCH_VIEW_LIST_START:
             return state.set('loading', true)
 
-        case actions.FETCH_VIEW_LIST_SUCCESS: {
+        case actions.FETCH_VIEW_LIST_SUCCESS:
+        {
             items = sortViews(fromJS(action.resp.data))
 
             // also populate the active view state

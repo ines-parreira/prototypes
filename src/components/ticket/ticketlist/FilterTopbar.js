@@ -33,6 +33,7 @@ export default class FilterTopbar extends React.Component {
                         <ViewFilters
                             view={view}
                             removeFieldFilter={this.props.removeFieldFilter}
+                            updateFieldFilterOperator={this.props.updateFieldFilterOperator}
                             schemas={this.props.schemas}
                         />
                     </div>
@@ -67,5 +68,6 @@ FilterTopbar.propTypes = {
     resetView: PropTypes.func.isRequired,
     deleteView: PropTypes.func.isRequired,
     removeFieldFilter: PropTypes.func.isRequired,
+    updateFieldFilterOperator: PropTypes.func.isRequired,
     width: PropTypes.number.isRequired
 }

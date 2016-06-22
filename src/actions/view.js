@@ -9,6 +9,7 @@ export const RESET_VIEW = 'RESET_VIEW'
 export const UPDATE_VIEW_FIELD = 'UPDATE_VIEW_FIELD'
 export const ADD_VIEW_FIELD_FILTER = 'ADD_VIEW_FIELD_FILTER'
 export const REMOVE_VIEW_FIELD_FILTER = 'REMOVE_VIEW_FIELD_FILTER'
+export const UPDATE_VIEW_FIELD_FILTER_OPERATOR = 'UPDATE_VIEW_FIELD_FILTER_OPERATOR'
 export const UPDATE_VIEW_FIELD_ENUM_START = 'UPDATE_VIEW_FIELD_ENUM_START'
 export const UPDATE_VIEW_FIELD_ENUM_SUCCESS = 'UPDATE_VIEW_FIELD_ENUM_SUCCESS'
 
@@ -28,43 +29,40 @@ export const FETCH_VIEW_LIST_SUCCESS = 'FETCH_VIEW_LIST_SUCCESS'
 // Read views
 export const SET_VIEW_ACTIVE = 'SET_VIEW_ACTIVE'
 
-export function setViewActive(view) {
-    return {
-        type: SET_VIEW_ACTIVE,
-        view
-    }
-}
+export const setViewActive = (view) => ({
+    type: SET_VIEW_ACTIVE,
+    view
+})
 
-export function updateView(view) {
-    return {
-        type: UPDATE_VIEW,
-        view
-    }
-}
+export const updateView = (view) => ({
+    type: UPDATE_VIEW,
+    view
+})
 
-export function updateField(field) {
-    return {
-        type: UPDATE_VIEW_FIELD,
-        field
-    }
-}
+export const updateField = (field) => ({
+    type: UPDATE_VIEW_FIELD,
+    field
+})
 
 // add filter for 1 field
-export function addFieldFilter(field, filter) {
-    return {
-        type: ADD_VIEW_FIELD_FILTER,
-        field,
-        filter
-    }
-}
+export const addFieldFilter = (field, filter) => ({
+    type: ADD_VIEW_FIELD_FILTER,
+    field,
+    filter
+})
 
 // remove a filter based on index
-export function removeFieldFilter(index) {
-    return {
-        type: REMOVE_VIEW_FIELD_FILTER,
-        index
-    }
-}
+export const removeFieldFilter = (index) => ({
+    type: REMOVE_VIEW_FIELD_FILTER,
+    index
+})
+
+// remove a filter based on index
+export const updateFieldFilterOperator = (index, operator) => ({
+    type: UPDATE_VIEW_FIELD_FILTER_OPERATOR,
+    index,
+    operator
+})
 
 export function updateFieldEnumSearch(field, query) {
     return (dispatch) => {
@@ -97,11 +95,7 @@ export function updateFieldEnumSearch(field, query) {
     }
 }
 
-export function resetView() {
-    return {
-        type: RESET_VIEW
-    }
-}
+export const resetView = () => ({type: RESET_VIEW})
 
 export function fetchViews(currentViewSlug) {
     const url = '/api/views/'
