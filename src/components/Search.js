@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+
 import _ from 'lodash'
 import classNames from 'classnames'
 
@@ -11,6 +12,12 @@ export default class Search extends React.Component {
             _.set(this.props.query, this.props.queryPath, this.refs.searchInput.value)
             this.props.onChange(this.props.query, this.props.params, this.refs.searchInput.value)
         }, this.props.searchDebounceTime || 200)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.viewSlug && nextProps.viewSlug && this.props.viewSlug !== nextProps.viewSlug) {
+            this.refs.searchInput.value = ''
+        }
     }
 
     render() {
@@ -37,12 +44,14 @@ export default class Search extends React.Component {
 
 Search.propTypes = {
     onChange: PropTypes.func.isRequired,
-    query: React.PropTypes.object.isRequired,
-    queryPath: React.PropTypes.string.isRequired,
-    params: React.PropTypes.object,
+    query: PropTypes.object.isRequired,
+    queryPath: PropTypes.string.isRequired,
+    params: PropTypes.object,
 
     className: PropTypes.string,
     placeholder: PropTypes.string,
     autofocus: PropTypes.bool,
-    searchDebounceTime: React.PropTypes.number
+    searchDebounceTime: PropTypes.number,
+
+    viewSlug: PropTypes.string
 }

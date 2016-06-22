@@ -80,6 +80,7 @@ export default class TicketsView extends React.Component {
                                     }}
                                     placeholder="Search tickets"
                                     searchDebounceTime={400}
+                                    viewSlug={view.get('slug')}
                                 />
                             </div>
                         </div>
