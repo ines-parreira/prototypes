@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react'
-
 import _ from 'lodash'
 import classNames from 'classnames'
 
@@ -15,7 +14,7 @@ export default class Search extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.viewSlug && nextProps.viewSlug && this.props.viewSlug !== nextProps.viewSlug) {
+        if (this.props.location && nextProps.location && this.props.location !== nextProps.location) {
             this.refs.searchInput.value = ''
         }
     }
@@ -53,5 +52,5 @@ Search.propTypes = {
     autofocus: PropTypes.bool,
     searchDebounceTime: PropTypes.number,
 
-    viewSlug: PropTypes.string
+    location: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
