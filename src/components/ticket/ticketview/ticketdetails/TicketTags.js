@@ -5,18 +5,16 @@ import _ from 'lodash'
 
 export default class TicketTags extends React.Component {
     componentDidMount() {
-        $(`#tag-dropdown-${this.props.suffix}`).dropdown({
+        $(this.refs.tagDropdown).dropdown({
             allowAdditions: true,
             onChange: () => {
                 this.update()
             }
         })
-
-        $(document).on('click', `#tag-dropdown-${this.props.suffix} > .menu > .addition.item.selected`, this.update)
     }
 
     update = () => {
-        const tagDropdown = $(`#tag-dropdown-${this.props.suffix}`)
+        const tagDropdown = $(this.refs.tagDropdown)
         const name = tagDropdown.dropdown('get value')
 
         if (!name || name === '') {
@@ -49,7 +47,7 @@ export default class TicketTags extends React.Component {
                     }
 
                     <div
-                        id={`tag-dropdown-${this.props.suffix}`}
+                        ref="tagDropdown"
                         className="ticket-tag-add-btn ui search button input pointing dropdown link item"
                         style={style}
                         onClick={() => this.refs.tagSearch.focus()}
@@ -97,6 +95,5 @@ TicketTags.propTypes = {
     tags: PropTypes.array.isRequired,
     ticketTags: PropTypes.object.isRequired,
     addTag: PropTypes.func.isRequired,
-    removeTag: PropTypes.func.isRequired,
-    suffix: PropTypes.string
+    removeTag: PropTypes.func.isRequired
 }

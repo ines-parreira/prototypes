@@ -3,7 +3,7 @@ import { TICKET_STATUSES } from './../../../../constants'
 
 export default class TicketStatus extends React.Component {
     componentDidMount() {
-        $(`#popup-status-${this.props.suffix}`).popup({
+        $(this.refs.popupStatus).popup({
             inline: true,
             position: this.props.position || 'bottom right',
             hoverable: true,
@@ -16,7 +16,7 @@ export default class TicketStatus extends React.Component {
         return (
             <div className="ticket-status-wrapper">
                 <a
-                    id={`popup-status-${this.props.suffix}`}
+                    ref="popupStatus"
                     className={`ticket-status ticket-details-item ui ${currentStatus} label`}
                 >
                     {currentStatus}
@@ -48,6 +48,5 @@ export default class TicketStatus extends React.Component {
 TicketStatus.propTypes = {
     setStatus: PropTypes.func.isRequired,
     currentStatus: PropTypes.string.isRequired,
-    suffix: PropTypes.string,
     position: PropTypes.string
 }

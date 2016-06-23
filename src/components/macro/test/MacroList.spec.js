@@ -42,7 +42,7 @@ describe('MacroList component with external actions', () => {
 
     it('should display all the macros', () => {
         const macrosList = component.props.children[0].props.children[1]
-        expect(macrosList.size).toBe(3)
+        expect(macrosList.length).toBe(3)
     })
 
     it('should set the currentMacro as active', () => {

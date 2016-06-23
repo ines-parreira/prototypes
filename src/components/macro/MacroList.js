@@ -82,7 +82,7 @@ export default class MacroList extends React.Component {
                                     {macro.get('name')}
                                 </a>
                             )
-                        })
+                        }).toList().toJS()
                     }
                 </div>
                 {this.renderCreateMacro()}

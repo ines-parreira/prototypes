@@ -3,7 +3,7 @@ import React, {PropTypes} from 'react'
 
 export default class TicketAssignee extends React.Component {
     componentDidMount() {
-        const ticketOwnerDropdown = $(`#popup-ticket-owner-${this.props.suffix}`)
+        const ticketOwnerDropdown = $(this.refs.popupTicketOwner)
 
         ticketOwnerDropdown.dropdown({
             inline: true,
@@ -33,7 +33,7 @@ export default class TicketAssignee extends React.Component {
     }
 
     render() {
-        const { currentAssignee, agents, suffix } = this.props
+        const { currentAssignee, agents } = this.props
 
         let divider = null
         let clearItem = null
@@ -45,7 +45,7 @@ export default class TicketAssignee extends React.Component {
 
         return (
             <div
-                id={`popup-ticket-owner-${suffix}`}
+                ref="popupTicketOwner"
                 className="TicketAssignee ticket-owner-btn ticket-details-item ui search button input pointing dropdown link item"
                         onClick={() => this.refs.assigneeSearch.focus()}
             >
@@ -79,7 +79,5 @@ export default class TicketAssignee extends React.Component {
 TicketAssignee.propTypes = {
     currentAssignee: PropTypes.string, // not required because it can be null
     agents: PropTypes.object.isRequired,
-    setAgent: PropTypes.func.isRequired,
-    suffix: PropTypes.string.isRequired
+    setAgent: PropTypes.func.isRequired
 }
-
