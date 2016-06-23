@@ -3,7 +3,6 @@ import TestUtils from 'react-addons-test-utils'
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
 
-import {fromJS} from 'immutable'
 import TicketMessageActions from '../TicketMessageActions'
 
 expect.extend(expectImmutable)

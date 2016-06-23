@@ -13,10 +13,10 @@ export default class TicketMessage extends React.Component {
             on: 'hover',
             action: 'nothing'
         })
-        $('#option-dropdown', this.refs.ticketMessage).dropdown({
-            on: 'hover',
-            action: 'nothing'
-        })
+        // $('#option-dropdown', this.refs.ticketMessage).dropdown({
+        //     on: 'hover',
+        //     action: 'nothing'
+        // })
         $('.actions .label').popup({inline: true})
     }
 

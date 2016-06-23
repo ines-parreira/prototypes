@@ -29,7 +29,7 @@ export default class TicketMessages extends React.Component {
 TicketMessages.propTypes = {
     submit: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
-    messages: PropTypes.object,
+    messages: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     ticket: PropTypes.object
