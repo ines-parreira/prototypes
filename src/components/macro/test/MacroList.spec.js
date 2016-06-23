@@ -9,13 +9,11 @@ import MacroList from '../MacroList'
 
 expect.extend(expectImmutable)
 
-describe('MacroList component with external actions', () => {
-    let component
-
+describe('MacroList component', () => {
     const macros = fromJS([
-        { id: 1, name: 'macro1' },
-        { id: 2, name: 'macro2' },
-        { id: 3, name: 'macro3' }
+        { id: 1, name: 'macro1', actions: [{ name: 'http' }] },
+        { id: 2, name: 'macro2', actions: [{ name: 'setStatus' }] },
+        { id: 3, name: 'macro3', actions: [{ name: 'setStatus' }] }
     ])
 
     const currentMacro = fromJS({ id: 2, name: 'macro2' })
@@ -26,50 +24,116 @@ describe('MacroList component with external actions', () => {
         addNewMacro: () => {}
     }
 
-    before('render element', () => {
-        const renderer = TestUtils.createRenderer()
+    describe('in EditMode with external actions', () => {
+        let component
 
-        renderer.render(
-            <MacroList
-                macros={macros}
-                currentMacro={currentMacro}
-                actions={actions}
-            />
-        )
+        before('render element', () => {
+            const renderer = TestUtils.createRenderer()
 
-        component = renderer.getRenderOutput()
+            renderer.render(
+                <MacroList
+                    macros={macros}
+                    currentMacro={currentMacro}
+                    actions={actions}
+                />
+            )
+
+            component = renderer.getRenderOutput()
+        })
+
+        it('should display all the macros', () => {
+            const macrosList = component.props.children[0].props.children[1]
+            expect(macrosList.length).toBe(3)
+        })
+
+        it('should set the currentMacro as active', () => {
+            const activeItem = component.props.children[0].props.children[1].find(
+                macro => macro.key === currentMacro.get('id').toString()
+            )
+
+            expect(activeItem.props.className).toInclude('item')
+            expect(activeItem.props.className).toInclude('active')
+        })
+
+        it('should save search query in the state when updated', () => {
+            const mountedComponent = TestUtils.renderIntoDocument(
+                <MacroList
+                    macros={macros}
+                    currentMacro={currentMacro}
+                    actions={actions}
+                />
+            )
+
+            const spyMethod = expect.spyOn(mountedComponent, 'setState')
+            const searchInput = ReactDOM.findDOMNode(mountedComponent.refs.search).querySelector('input')
+
+            TestUtils.Simulate.change(searchInput, {target: {value: 'macro1'}}) // set the value of the input
+            mountedComponent.refs.search.props.onChange({target: {value: 'macro1'}}) // and call the callback
+
+            expect(searchInput.value).toBe('macro1')
+            expect(spyMethod).toHaveBeenCalled()
+        })
+
+        it('should display the "Create Macro" button', () => {
+            const createMacroButton = component.props.children[1]
+            expect(createMacroButton).toNotBe(null)
+        })
     })
 
-    it('should display all the macros', () => {
-        const macrosList = component.props.children[0].props.children[1]
-        expect(macrosList.length).toBe(3)
+    describe('in EditMode without external actions', () => {
+        let component
+
+        before('render element', () => {
+            const renderer = TestUtils.createRenderer()
+
+            renderer.render(
+                <MacroList
+                    macros={macros}
+                    currentMacro={currentMacro}
+                    actions={actions}
+                    disableExternalActions
+                />
+            )
+
+            component = renderer.getRenderOutput()
+        })
+
+        it('should disable macros with external actions', () => {
+            const macrosList = component.props.children[0].props.children[1]
+            let numberOfActiveMacros = 0
+
+            for (const macro of macrosList) {
+                if (macro.props.className.indexOf('disabled') === -1) {
+                    numberOfActiveMacros += 1
+                }
+            }
+
+            expect(numberOfActiveMacros).toBe(2)
+        })
     })
 
-    it('should set the currentMacro as active', () => {
-        const activeItem = component.props.children[0].props.children[1].find(
-            macro => macro.key === currentMacro.get('id').toString()
-        )
+    describe('in PreviewMode without external actions', () => {
+        let component
 
-        expect(activeItem.props.className).toInclude('item')
-        expect(activeItem.props.className).toInclude('active')
-    })
+        before('render element', () => {
+            const renderer = TestUtils.createRenderer()
 
-    it('should save search query in the state when updated', () => {
-        const mountedComponent = TestUtils.renderIntoDocument(
-            <MacroList
-                macros={macros}
-                currentMacro={currentMacro}
-                actions={actions}
-            />
-        )
+            renderer.render(
+                <MacroList
+                    macros={macros}
+                    currentMacro={currentMacro}
+                    actions={actions}
+                    disableExternalActions
+                    selectionMode
+                />
+            )
 
-        const spyMethod = expect.spyOn(mountedComponent, 'setState')
-        const searchInput = ReactDOM.findDOMNode(mountedComponent.refs.search).querySelector('input')
+            component = renderer.getRenderOutput()
+        })
 
-        TestUtils.Simulate.change(searchInput, {target: {value: 'macro1'}}) // set the value of the input
-        mountedComponent.refs.search.props.onChange({target: {value: 'macro1'}}) // and call the callback
-
-        expect(searchInput.value).toBe('macro1')
-        expect(spyMethod).toHaveBeenCalled()
+        it('should not display the "Create Macro" button', () => {
+            const createMacroButton = component.props.children[1]
+            expect(createMacroButton).toBe(null)
+        })
     })
 })

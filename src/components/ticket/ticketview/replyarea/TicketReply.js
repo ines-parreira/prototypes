@@ -14,7 +14,6 @@ import TicketAttachments from './TicketAttachments'
 import TicketReplyAction from './TicketReplyAction'
 
 export default class TicketReply extends React.Component {
-
     constructor(props) {
         super(props)
         this.state = this.getEditorState(this.props)

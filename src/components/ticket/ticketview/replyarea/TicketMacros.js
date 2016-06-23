@@ -144,9 +144,9 @@ export default class TicketMacros extends React.Component {
             const html = responseTextAction.getIn(['arguments', 'body_html'])
             const text = responseTextAction.getIn(['arguments', 'body_text'])
             if (text) {
-                textPreview = (<pre className="text-preview">{text}</pre>)
+                textPreview = <pre className="text-preview">{text}</pre>
             } else {
-                textPreview = (<div className="text-preview" dangerouslySetInnerHTML={{__html: html}}/>)
+                textPreview = <div className="text-preview" dangerouslySetInnerHTML={{__html: html}}></div>
             }
         }
 
