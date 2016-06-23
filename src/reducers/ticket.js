@@ -121,6 +121,7 @@ export function ticket(state = ticketInitial, action) {
             return state.setIn(['state', 'loading'], false)
 
         case actions.SUBMIT_TICKET_SUCCESS: {
+            //TODO: what is this for?
             if (action.resp.id !== state.get('id') && state.get('id')) {
                 return state
             }
@@ -139,7 +140,21 @@ export function ticket(state = ticketInitial, action) {
                 action.resp.channel,
                 getSourceTypeOfResponse(newState.get('messages'))
             )) : newState
+        }
 
+        case actions.SUBMIT_TICKET_MESSAGE_SUCCESS: {
+            const newState = state.set('messages', state.get('messages').push(fromJS(action.resp)))
+                .mergeDeep({
+                    state: {
+                        dirty: false,
+                        loading: false,
+                        query: ''
+                    }
+                })
+            return action.resetMessage ? newState.set('newMessage', newMessage(
+                action.resp.channel,
+                getSourceTypeOfResponse(newState.get('messages'))
+            )) : newState
         }
 
         case actions.FETCH_TICKET_SUCCESS: {

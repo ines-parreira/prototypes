@@ -13,6 +13,7 @@ import * as MacroActions from './macro'
 // Reply to a ticket
 export const SUBMIT_TICKET_START = 'SUBMIT_TICKET_START'
 export const SUBMIT_TICKET_SUCCESS = 'SUBMIT_TICKET_SUCCESS'
+export const SUBMIT_TICKET_MESSAGE_SUCCESS = 'SUBMIT_TICKET_MESSAGE_SUCCESS'
 export const SUBMIT_TICKET_ERROR = 'SUBMIT_TICKET_ERROR'
 
 // Fetching a single ticket life-cycle
@@ -522,17 +523,24 @@ export function submitTicket(ticket, status, macroActions, currentUser, action, 
 
         delete data.state
 
+
+        // Here we have 2 possibilities.
+        // * There's no ticket yet and we want to create it.
+        // * There's already a ticket and we just want to add a new message to it.
+
         return reqwest({
-            url: ticket.get('id') ? `/api/tickets/${ticket.get('id')}/${action ? `?action=${action}` : ''}` : '/api/tickets/',
+            url: ticket.get('id') ? `/api/tickets/${ticket.get('id')}/messages/${action ? `?action=${action}` : ''}` : '/api/tickets/',
             type: 'json',
             contentType: 'application/json',
-            method: ticket.get('id') ? 'PUT' : 'POST',
-            data: JSON.stringify(data)
+            method: 'POST',
+            data: ticket.get('id') ? JSON.stringify(lastMessage(data.messages)) : JSON.stringify(data)
         }).then((resp) => {
-            const last = lastMessage(resp.messages)
+            const ticket_id = ticket.get('id') ? ticket.get('id') : resp.id
+            const messageSent = ticket.get('id') ? resp : lastMessage(resp.messages)
 
-            if (last.actions) {
-                setTimeout(() => dispatch(fetchTicketMessage(resp.id, last.id)), 1000)
+
+            if (messageSent.actions) {
+                setTimeout(() => dispatch(fetchTicketMessage(ticket_id, messageSent.id)), 1000)
             } else {
                 dispatch(systemMessage({
                     type: 'success',
@@ -541,7 +549,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, action, 
             }
 
             dispatch({
-                type: SUBMIT_TICKET_SUCCESS,
+                type: ticket.get('id') ? SUBMIT_TICKET_MESSAGE_SUCCESS : SUBMIT_TICKET_SUCCESS,
                 resetMessage,
                 resp
             })
