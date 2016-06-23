@@ -5,8 +5,9 @@ import {stateToHTML} from 'draft-js-export-html'
 import {renderTemplate} from '../components/utils/template'
 import {SOURCE_VALUE_PROP} from '../constants'
 import {lastMessage} from '../utils'
+import _isUndefined from 'lodash/isUndefined'
 
-const newMessage = (channel, sourceType) => fromJS({
+export const newMessage = (channel, sourceType) => fromJS({
     via: 'helpdesk',
     public: true,
     from_agent: true,
@@ -26,7 +27,7 @@ const newMessage = (channel, sourceType) => fromJS({
     macros: List()
 })
 
-const ticketInitial = Map({
+export const ticketInitial = Map({
     state: Map({
         potentialRequesters: List(),
         dirty: false,
@@ -206,7 +207,7 @@ export function ticket(state = ticketInitial, action) {
         }
 
         case actions.FETCH_MESSAGE_SUCCESS:
-            if (state.get('id') === action.resp.ticket_id) {
+            if (!_isUndefined(state.get('id')) && state.get('id') === action.resp.ticket_id) {
                 return state.setIn(
                     ['messages', state.get('messages').findIndex(message => message.get('id') === action.resp.id)],
                     fromJS(action.resp)
@@ -246,7 +247,7 @@ export function ticket(state = ticketInitial, action) {
             return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
 
         case actions.SET_AGENT:
-            return state.set('assignee_user', action.args.get('assignee_user') ? Map(action.args.get('assignee_user')) : null)
+            return state.set('assignee_user', action.args.get('assignee_user') ? action.args.get('assignee_user') : null)
 
         case actions.SET_STATUS:
             if (action.args.get('id') && action.args.get('id') !== state.get('id')) {

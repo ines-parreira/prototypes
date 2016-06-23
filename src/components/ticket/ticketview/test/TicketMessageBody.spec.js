@@ -77,9 +77,14 @@ describe('components', () => {
                 }
             })
             expect(output.props.className).toBe('ticket-message-body ticket-message-body-text')
-            expect(output.props.children[0]).toEqual(<div
-                dangerouslySetInnerHTML={{__html: 'text <a href="http://gorgias.io/" class="linkified" target="_blank">http://gorgias.io/</a>'}}
-            ></div>)
+            expect(output.props.children[0])
+            .toEqual(
+                <div
+                  dangerouslySetInnerHTML={{
+                      __html: 'text <a ' +
+                      'href="http://gorgias.io/" class="linkified" target="_blank">http://gorgias.io/</a>',
+                  }}
+                />)
         })
     })
 })

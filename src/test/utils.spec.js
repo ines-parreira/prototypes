@@ -13,7 +13,7 @@ describe('utils', () => {
 
         it('invalid', () => {
             // to disable warning
-            moment.createFromInputFallback = function (config) {
+            moment.createFromInputFallback = function fallback(config) {
                 // unreliable string magic, or
                 /* eslint-disable */
                 config._d = new Date(config._i);
@@ -28,7 +28,8 @@ describe('utils', () => {
             expect(formatDatetime('2013-05-10 12:00', 'xxx')).toBe('05/10/2013')
         })
         it('iso format - with timezone', () => {
-            expect(formatDatetime('2016-06-09T07:30:07+00:00', 'Europe/Paris', 'YYYY-DD-MM HH:mm')).toBe('2016-09-06 09:30')
+            const time = formatDatetime('2016-06-09T07:30:07+00:00', 'Europe/Paris', 'YYYY-DD-MM HH:mm');
+            expect(time).toBe('2016-09-06 09:30');
         })
     })
 })

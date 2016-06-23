@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import TestUtils from 'react-addons-test-utils'
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
-
 import TicketPriority from '../TicketPriority'
 
 expect.extend(expectImmutable)
@@ -29,7 +28,7 @@ describe('TicketPriority component', () => {
         expect(icon.props.className).toBe('ticket-priority action icon flag')
     })
 
-    it('should call \'togglePriority\ when clicked on', () => {
+    it('should call \'togglePriority\' when clicked on', () => {
         const spy = expect.createSpy()
         const mountedComponent = TestUtils.renderIntoDocument(
             <TicketPriority

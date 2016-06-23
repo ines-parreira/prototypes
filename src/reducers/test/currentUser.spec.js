@@ -11,7 +11,6 @@ expect.extend(expectImmutable)
 
 describe('reducers', () => {
     describe('currentUser', () => {
-
         const initialState = Map()
 
         // Fake response to simulate the `/api/users/:id` response
