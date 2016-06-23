@@ -9,14 +9,14 @@ import TicketAssignee from '../TicketAssignee'
 expect.extend(expectImmutable)
 
 describe('TicketAssignee component', () => {
+    const agents = fromJS([
+        { id: 1, name: 'agent1' },
+        { id: 2, name: 'agent2' },
+        { id: 3, name: 'agent3' }
+    ])
+
     describe('with assignee', () => {
         let component
-
-        const agents = fromJS([
-            { id: 1, name: 'agent1' },
-            { id: 2, name: 'agent2' },
-            { id: 3, name: 'agent3' }
-        ])
 
         before('render element', () => {
             const renderer = TestUtils.createRenderer()
@@ -46,12 +46,6 @@ describe('TicketAssignee component', () => {
 
     describe('without assignee', () => {
         let component
-
-        const agents = fromJS([
-            { id: 1, name: 'agent1' },
-            { id: 2, name: 'agent2' },
-            { id: 3, name: 'agent3' }
-        ])
 
         before('render element', () => {
             const renderer = TestUtils.createRenderer()
