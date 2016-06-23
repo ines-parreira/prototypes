@@ -174,7 +174,6 @@ export default class TicketView extends React.Component {
                                     ticketTags={ticket.get('tags')}
                                     addTag={actions.ticket.addTags}
                                     removeTag={actions.ticket.removeTag}
-                                    suffix=""
                                 />
                             </div>
 
@@ -188,7 +187,6 @@ export default class TicketView extends React.Component {
                                     currentAssignee={ticket.getIn(['assignee_user', 'name'])}
                                     agents={users.get('agents')}
                                     setAgent={actions.ticket.setAgent}
-                                    suffix=""
                                 />
 
                                 <span className="ticket-id ticket-details-item">
