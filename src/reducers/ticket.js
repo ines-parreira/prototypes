@@ -121,7 +121,6 @@ export function ticket(state = ticketInitial, action) {
             return state.setIn(['state', 'loading'], false)
 
         case actions.SUBMIT_TICKET_SUCCESS: {
-            //TODO: what is this for?
             if (action.resp.id !== state.get('id') && state.get('id')) {
                 return state
             }
@@ -143,6 +142,10 @@ export function ticket(state = ticketInitial, action) {
         }
 
         case actions.SUBMIT_TICKET_MESSAGE_SUCCESS: {
+            // If we changed the displayed ticket (e.g. submit and close), we dont want to change the state.
+            if (action.resp.ticket_id !== state.get('id') && state.get('id')) {
+                return state
+            }
             const newState = state.set('messages', state.get('messages').push(fromJS(action.resp)))
                 .mergeDeep({
                     state: {
