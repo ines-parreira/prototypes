@@ -117,7 +117,13 @@ export function ticket(state = ticketInitial, action) {
         case actions.SUBMIT_TICKET_START:
             return state.setIn(['state', 'loading'], true)
 
+        case actions.SUBMIT_TICKET_MESSAGE_START:
+            return state.setIn(['state', 'loading'], true)
+
         case actions.SUBMIT_TICKET_ERROR:
+            return state.setIn(['state', 'loading'], false)
+
+        case actions.SUBMIT_TICKET_MESSAGE_ERROR:
             return state.setIn(['state', 'loading'], false)
 
         case actions.SUBMIT_TICKET_SUCCESS: {
@@ -139,7 +145,36 @@ export function ticket(state = ticketInitial, action) {
                 action.resp.channel,
                 getSourceTypeOfResponse(newState.get('messages'))
             )) : newState
+        }
 
+        case actions.SUBMIT_TICKET_MESSAGE_SUCCESS: {
+            // If we changed the displayed ticket (e.g. submit and close), we dont want to change the state.
+            if (action.resp.ticket_id !== state.get('id') && state.get('id')) {
+                return state
+            }
+
+            let newState = state
+            const respMessage = fromJS(action.resp)
+
+            // We can't just concatenate since we might get duplicates. So we merge on message id.
+            const existingIndex = newState.get('messages').findIndex((m) => m.get('id') === respMessage.get('id'))
+            if (existingIndex !== -1) {
+                newState = newState.setIn(['messages', existingIndex], respMessage)
+            } else {
+                newState = newState.set('messages', newState.get('messages').push(respMessage))
+            }
+
+            newState = newState.mergeDeep({
+                    state: {
+                        dirty: false,
+                        loading: false,
+                        query: ''
+                    }
+                })
+            return action.resetMessage ? newState.set('newMessage', newMessage(
+                action.resp.channel,
+                getSourceTypeOfResponse(newState.get('messages'))
+            )) : newState
         }
 
         case actions.FETCH_TICKET_SUCCESS: {
