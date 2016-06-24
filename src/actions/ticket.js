@@ -14,6 +14,8 @@ import * as MacroActions from './macro'
 export const SUBMIT_TICKET_START = 'SUBMIT_TICKET_START'
 export const SUBMIT_TICKET_SUCCESS = 'SUBMIT_TICKET_SUCCESS'
 export const SUBMIT_TICKET_MESSAGE_SUCCESS = 'SUBMIT_TICKET_MESSAGE_SUCCESS'
+export const SUBMIT_TICKET_MESSAGE_START = 'SUBMIT_TICKET_MESSAGE_START'
+export const SUBMIT_TICKET_MESSAGE_ERROR = 'SUBMIT_TICKET_MESSAGE_ERROR'
 export const SUBMIT_TICKET_ERROR = 'SUBMIT_TICKET_ERROR'
 
 // Fetching a single ticket life-cycle
@@ -471,93 +473,152 @@ export function keyIn(...keys) {
     return (v, k) => keySet.has(k)
 }
 
+
+/**
+ * Perform various actions on the ticket data and return a POST-able ticket data structure.
+ * Adds the newMessage to the ticket's messages, attaches actions and sets some source elements on the message.
+ * Also sets some properties on the ticket.
+ */
+function prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser) {
+    const data = ticket.toJS()
+
+    data.status = status || data.status
+    if (data.assignee_user) {
+        data.assignee_user = {id: data.assignee_user.id}
+    }
+
+    // Prepare newMessage to send it.
+    if (data.newMessage) {
+        if (data.messages.length) {
+            const msg = lastMessage(data.messages)
+            data.newMessage.source.from = msg.from_agent ? msg.source.from : msg.source.to[0]
+        } else {
+            data.newMessage.source.from = {
+                name: currentUser.get('name'),
+                address: getAddress(data.channel, currentUser.toJS())
+            }
+        }
+
+        if (!data.newMessage.sender) {
+            data.newMessage.sender = currentUser.filter(keyIn('email', 'id', 'name'))
+        }
+
+        if (data.newMessage.body_text.length > 0) {
+            if (macroActions) {
+                data.newMessage.actions = macroActions.map(curAction => formatAction(
+                    curAction,
+                    Immutable.fromJS(ACTION_TEMPLATES).get(curAction.get('name')),
+                    {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
+                ))
+            }
+            delete data.newMessage.contentState
+            data.messages.push(data.newMessage)
+        } else if (!data.messages.length) {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'You need to write a message.',
+                msg: 'You can\'t create a new ticket without at least a message.'
+            }))
+            return null
+        }
+
+        delete data.newMessage
+    }
+
+    delete data.state
+    return data
+}
+
+/**
+ * Perform actions when we successfully create a new message.
+ */
+function onMessageSent(dispatch, ticket_id, messageSent) {
+    if (messageSent.actions) {
+        setTimeout(() => dispatch(fetchTicketMessage(ticket_id, messageSent.id)), 1000)
+    } else {
+        dispatch(systemMessage({
+            type: 'success',
+            msg: 'Message successfully sent!'
+        }))
+    }
+
+    // reinitialize the current macro
+    dispatch({
+        type: MacroActions.APPLY_MACRO,
+        macro: undefined
+    })
+}
+
+/**
+ *
+ * @param ticket: A ticket with an existing id is expected.
+ * @param action: A parameter to decide on what to do when an action failed. (Retry/ignore/cancel, etc.)
+ */
+export function submitTicketMessage(ticket, status, macroActions, currentUser, action, resetMessage = true) {
+    return (dispatch) => {
+        dispatch({
+            type: SUBMIT_TICKET_MESSAGE_START
+        })
+        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
+
+        const messageToSend = lastMessage(data.messages)
+
+        let url = `/api/tickets/${ticket.get('id')}/messages/`
+        let method = 'POST'
+        if (action) {
+            // In that case the message already exists and we just want to update the actions on it.
+            url = `/api/tickets/${ticket.get('id')}/messages/${messageToSend.id}/${action ? `?action=${action}` : ''}`
+            method = 'PUT'
+        }
+
+        return reqwest({
+            url,
+            type: 'json',
+            contentType: 'application/json',
+            method,
+            data: JSON.stringify(messageToSend)
+        }).then((resp) => {
+            onMessageSent(dispatch, ticket.get('id'), resp, SUBMIT_TICKET_MESSAGE_SUCCESS)
+            dispatch({
+                type: SUBMIT_TICKET_MESSAGE_SUCCESS,
+                resetMessage,
+                resp
+            })
+        }).catch((err) => {
+            dispatch({
+                type: SUBMIT_TICKET_MESSAGE_ERROR
+            })
+            dispatch(systemMessage({
+                type: 'error',
+                err,
+                header: 'Error: Message was not sent',
+                msg: 'Please try again in a few moments. If the problem persists contact us.'
+            }))
+        })
+    }
+}
+
 export function submitTicket(ticket, status, macroActions, currentUser, action, resetMessage = true) {
     return (dispatch) => {
         dispatch({
             type: SUBMIT_TICKET_START
         })
 
-        const data = ticket.toJS()
-        data.status = status || data.status
-
-        if (data.newMessage) {
-            if (data.messages.length) {
-                const msg = lastMessage(data.messages)
-                data.newMessage.source.from = msg.from_agent ? msg.source.from : msg.source.to[0]
-            } else {
-                data.newMessage.source.from = {
-                    name: currentUser.get('name'),
-                    address: getAddress(data.channel, currentUser.toJS())
-                }
-            }
-
-            if (!data.newMessage.sender) {
-                data.newMessage.sender = currentUser.filter(keyIn('email', 'id', 'name'))
-            }
-
-            if (data.newMessage.body_text.length > 0) {
-                if (macroActions) {
-                    data.newMessage.actions = macroActions.map(curAction => formatAction(
-                        curAction,
-                        Immutable.fromJS(ACTION_TEMPLATES).get(curAction.get('name')),
-                        {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
-                    ))
-                }
-                delete data.newMessage.contentState
-                data.messages.push(data.newMessage)
-            } else if (!data.messages.length) {
-                dispatch(systemMessage({
-                    type: 'error',
-                    header: 'You need to write a message.',
-                    msg: 'You can\'t create a new ticket without at least a message.'
-                }))
-                return null
-            }
-
-            delete data.newMessage
-        }
-
-        if (data.assignee_user) {
-            data.assignee_user = {id: data.assignee_user.id}
-        }
-
-        delete data.state
-
-
-        // Here we have 2 possibilities.
-        // * There's no ticket yet and we want to create it.
-        // * There's already a ticket and we just want to add a new message to it.
+        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
 
         return reqwest({
-            url: ticket.get('id') ? `/api/tickets/${ticket.get('id')}/messages/${action ? `?action=${action}` : ''}` : '/api/tickets/',
+            url: '/api/tickets/',
             type: 'json',
             contentType: 'application/json',
             method: 'POST',
-            data: ticket.get('id') ? JSON.stringify(lastMessage(data.messages)) : JSON.stringify(data)
+            data: JSON.stringify(data)
         }).then((resp) => {
-            const ticket_id = ticket.get('id') ? ticket.get('id') : resp.id
-            const messageSent = ticket.get('id') ? resp : lastMessage(resp.messages)
-
-
-            if (messageSent.actions) {
-                setTimeout(() => dispatch(fetchTicketMessage(ticket_id, messageSent.id)), 1000)
-            } else {
-                dispatch(systemMessage({
-                    type: 'success',
-                    msg: 'Message successfully sent!'
-                }))
-            }
-
+            const messageSent = lastMessage(resp.messages)
+            onMessageSent(dispatch, resp.id, messageSent)
             dispatch({
-                type: ticket.get('id') ? SUBMIT_TICKET_MESSAGE_SUCCESS : SUBMIT_TICKET_SUCCESS,
+                type: SUBMIT_TICKET_SUCCESS,
                 resetMessage,
                 resp
-            })
-
-            // reinitialize the current macro
-            dispatch({
-                type: MacroActions.APPLY_MACRO,
-                macro: undefined
             })
         }).catch((err) => {
             dispatch({

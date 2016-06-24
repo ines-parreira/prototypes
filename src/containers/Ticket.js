@@ -236,7 +236,13 @@ class TicketContainer extends React.Component {
     }
 
     submit = (status, next, action, resetMessage = true) => {
+
         let ticket = this.props.ticket
+
+        if (ticket.getIn(['state', 'loading'])) {
+            // We're already submitting something, we dont want to POST twice.
+            return null
+        }
 
         if (!ticket.get('id')) {
             ticket = ticket.set('sender', {id: this.props.currentUser.get('id')})
@@ -249,8 +255,20 @@ class TicketContainer extends React.Component {
             ticket.getIn(['messages', 'actions'])
         }
 
-        if (ticket.get('subject') || ticket.get('id') || window.confirm('Are you sure you want to create a ticket with no subject?')) {
-            this.props.actions.ticket.submitTicket(
+        // The ticket does not exist yet.
+        if (!ticket.get('id')) {
+            if (ticket.get('subject') || window.confirm('Are you sure you want to create a ticket with no subject?')) {
+                this.props.actions.ticket.submitTicket(
+                    ticket,
+                    status,
+                    this.props.macros.getIn(['appliedMacro', 'actions']),
+                    this.props.currentUser,
+                    action,
+                    resetMessage
+                )
+            }
+        } else {
+            this.props.actions.ticket.submitTicketMessage(
                 ticket,
                 status,
                 this.props.macros.getIn(['appliedMacro', 'actions']),
@@ -258,20 +276,21 @@ class TicketContainer extends React.Component {
                 action,
                 resetMessage
             )
-
-            if (next) {
-                /**
-                 * `next` is a boolean indicating whether the agent want to be redirected to the next ticket.
-                 *
-                 * If he does, we first try to get the naive next ticket (the ticket at the current index + 1).
-                 * If the ticket doesnt exist, then we can't redirect the agent.
-                 * If it does, we save the new index (the old index + 1) as the new current index, then we push
-                 * the new state to the application.
-                 */
-                const nextTicketUrl = this.computeNextUrl(true)
-                this.forcePush(nextTicketUrl)
-            }
         }
+
+        if (next) {
+            /**
+             * `next` is a boolean indicating whether the agent want to be redirected to the next ticket.
+             *
+             * If he does, we first try to get the naive next ticket (the ticket at the current index + 1).
+             * If the ticket doesnt exist, then we can't redirect the agent.
+             * If it does, we save the new index (the old index + 1) as the new current index, then we push
+             * the new state to the application.
+             */
+            const nextTicketUrl = this.computeNextUrl(true)
+            this.forcePush(nextTicketUrl)
+        }
+
     }
 
     render() {
