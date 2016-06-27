@@ -4,6 +4,7 @@ import TicketTableCell from './TicketTableCell'
 
 export default class TicketTableRow extends React.Component {
     handleClick = () => {
+        this.props.saveIndex()
         browserHistory.push(`/app/ticket/${this.props.ticket.get('id')}`)
     }
 
@@ -46,5 +47,6 @@ TicketTableRow.propTypes = {
     view: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     toggleTicketSelection: PropTypes.func.isRequired,
-    selected: PropTypes.bool.isRequired
+    selected: PropTypes.bool.isRequired,
+    saveIndex: PropTypes.func.isRequired
 }
