@@ -14,6 +14,12 @@ export default class TicketSubmitButtons extends React.Component {
         $('#simpleSubmit').popup(settings)
     }
 
+    submit = (status, next) => {
+        $('#submitAndClose').popup('hide')
+        $('#simpleSubmit').popup('hide')
+        this.props.submit(status, next)
+    }
+
     render = () => {
         const subAndCloseClassName = classNames('ui', 'green', 'button', {hidden: this.props.ticket.get('status') === 'closed', loading: this.props.ticket.getIn(['state', 'loading'])})
         const subClassName = classNames('ui', 'basic', 'green', 'button', {disabled: !this.props.ticket.getIn(['state', 'dirty']), loading: this.props.ticket.getIn(['state', 'loading'])})
@@ -23,7 +29,7 @@ export default class TicketSubmitButtons extends React.Component {
                     id="submitAndClose"
                     className={subAndCloseClassName}
                     tabIndex="4"
-                    onClick={this.props.submit('closed', true)}
+                    onClick={() => this.submit('closed', true)}
                     data-html={`${getModifier()} + Enter`}
                 >
                     Send &amp; Close
@@ -32,7 +38,7 @@ export default class TicketSubmitButtons extends React.Component {
                     id="simpleSubmit"
                     className={subClassName}
                     tabIndex="5"
-                    onClick={this.props.submit()}
+                    onClick={() => this.submit()}
                     data-html={`${getModifier()} + Shift + Enter`}
                 >
                     Send

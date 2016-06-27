@@ -116,11 +116,6 @@ export default class TicketView extends React.Component {
         this.props.actions.ticket.deleteMessage(this.props.ticket.get('id'), messageId)
     }
 
-    submit = (status, next) => ((e) => {
-        e.preventDefault()
-        this.props.submit(status, next)
-    })
-
     render = () => {
         const {ticket, tags, users, actions} = this.props
 
@@ -233,7 +228,7 @@ export default class TicketView extends React.Component {
 
                 <TicketSubmitButtons
                     ticket={ticket}
-                    submit={this.submit}
+                    submit={this.props.submit}
                 />
 
             </div>
