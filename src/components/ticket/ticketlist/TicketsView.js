@@ -136,6 +136,8 @@ export default class TicketsView extends React.Component {
                     updateFieldEnumSearch={this.updateFieldEnumSearch}
                     fetchPage={fetchPage}
 
+                    saveIndex={this.props.actions.tickets.saveIndex}
+
                     toggleTicketSelection={actions.tickets.toggleTicketSelection}
                 />
             </div>

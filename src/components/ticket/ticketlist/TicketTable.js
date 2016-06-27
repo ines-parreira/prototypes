@@ -57,7 +57,7 @@ export default class TicketTable extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                    {tickets.get('items').map(ticket => (
+                    {tickets.get('items').map((ticket, index) => (
                         <TicketTableRow
                             key={ticket.get('id')}
                             view={view}
@@ -65,6 +65,7 @@ export default class TicketTable extends React.Component {
                             currentUser={currentUser}
                             toggleTicketSelection={this.props.toggleTicketSelection}
                             selected={tickets.get('selected').indexOf(ticket.get('id')) !== -1}
+                            saveIndex={() => this.props.saveIndex(index)}
                         />
                     ))}
                     </tbody>
@@ -94,6 +95,8 @@ TicketTable.propTypes = {
     addFieldFilter: PropTypes.func.isRequired,
     updateFieldEnumSearch: PropTypes.func.isRequired,
     fetchPage: PropTypes.func.isRequired,
+
+    saveIndex: PropTypes.func.isRequired,
 
     toggleTicketSelection: PropTypes.func.isRequired
 }

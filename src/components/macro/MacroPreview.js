@@ -111,8 +111,14 @@ export default class MacroPreview extends React.Component {
         $('#cancel').popup(settings)
     }
 
+    apply = () => {
+        $('#applyToGroup').popup('hide')
+        $('#cancel').popup('hide')
+        this.props.apply()
+    }
+
     render() {
-        const {currentMacro, apply, cancel, selected} = this.props
+        const {currentMacro, cancel, selected} = this.props
 
         if (!currentMacro) {
             return null
@@ -143,7 +149,7 @@ export default class MacroPreview extends React.Component {
                     <div
                         id="applyToGroup"
                         className="ui green right floated button"
-                        onClick={apply}
+                        onClick={this.apply}
                         data-content={`${getModifier()} + Enter`}
                     >
                         Apply macro to {selected.size} tickets
