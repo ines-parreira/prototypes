@@ -297,8 +297,8 @@ class TicketContainer extends React.Component {
         const view = this.props.views.get('active')
 
         if (
-            this.props.params.ticketId !== 'new' && this.props.ticket.get('messages').isEmpty()
-            || this.props.params.ticketId === 'new' && this.props.ticket.get('id')
+            (this.props.params.ticketId !== 'new' && !this.props.ticket.get('id')) ||
+            (this.props.params.ticketId === 'new' && this.props.ticket.get('id'))
         ) {
             return <Loader />
         }

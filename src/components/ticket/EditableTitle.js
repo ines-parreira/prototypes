@@ -10,6 +10,8 @@ export default class EditableTitle extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (!this.props.focus && nextProps.focus) {
             this.toggleEditMode()
+        } else if (this.props.focus && !nextProps.focus) {
+            this.reinitTitle()
         }
     }
 
@@ -23,7 +25,7 @@ export default class EditableTitle extends React.Component {
         if (e.keyCode === 13 || e.keyCode === 27) {
             e.preventDefault()
 
-            this.reinitTitle(this.refs.title)
+            this.reinitTitle()
 
             if (e.keyCode === 13) {
                 this.refs.title.blur()
@@ -34,14 +36,16 @@ export default class EditableTitle extends React.Component {
     }
 
     onBlur() {
-        const titleObject = this.refs.title
-        this.reinitTitle(titleObject)
-        this.props.update(titleObject.innerText)
+        this.reinitTitle()
+        this.props.update(this.refs.title.innerText)
     }
 
-    reinitTitle(subjectObject) {
+    reinitTitle() {
+        const subjectObject = this.refs.title
+
         subjectObject.classList.remove('edit-mode')
         subjectObject.setAttribute('contentEditable', 'false')
+        subjectObject.blur()
     }
 
     toggleEditMode = () => {
