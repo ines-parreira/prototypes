@@ -27,15 +27,12 @@ export default class PlainColumnHeader extends React.Component {
             })
         }
 
-        return (
-            <i className={orderClasses} onClick={onClick}/>
-        )
+        return <i className={orderClasses} onClick={onClick}/>
     }
 
     render = () => {
         const field = this.props.field.toJS()
-        const onClick = this.props.onClick || (() => {
-            })
+        const onClick = this.props.onClick || (() => {})
 
         // One small exception for priority which is displayed without header
         if (field.name === 'priority') {

@@ -156,10 +156,11 @@ export function views(state = viewsInitial, action) {
             // also populate the active view state
             const slug = action.currentViewSlug
             const active = items.filter(v => v.get('slug') === slug).get(0)
+            console.log(slug, active)
 
             return state.merge({
                 items,
-                active: active ? active.set('dirty', false) : Map(),
+                active: active ? active.set('dirty', false) : state.get('active'),
                 loading: false
             })
         }

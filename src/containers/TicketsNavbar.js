@@ -10,7 +10,7 @@ import { DEFAULT_VIEW } from './../constants'
 class TicketsNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        this.props.actions.fetchViews(this.props.params.view || DEFAULT_VIEW)
+        this.props.actions.fetchViews(this.props.params.view)
     }
 
     render() {
