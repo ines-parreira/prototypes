@@ -16,6 +16,9 @@ class TicketsContainer extends React.Component {
     componentWillMount() {
         this.props.actions.schema.fetch()
         this.fetchPage()
+        if (this.props.views.get('active').isEmpty() && this.props.views.get('items').size) {
+            this.props.actions.view.setViewActive(this.props.views.getIn(['items', 0]))
+        }
     }
 
     // Test if we need to re-fetch the data
@@ -51,7 +54,7 @@ class TicketsContainer extends React.Component {
     }
 
     search = (query, params, stringQuery) => {
-        /** populate users state from search results now **/
+        /** populate tickets state from search results now **/
 
         const view = this.props.views.get('active')
 

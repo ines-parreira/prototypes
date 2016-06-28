@@ -159,7 +159,7 @@ export function views(state = viewsInitial, action) {
 
             return state.merge({
                 items,
-                active: active ? active.set('dirty', false) : Map(),
+                active: active ? active.set('dirty', false) : state.get('active'),
                 loading: false
             })
         }

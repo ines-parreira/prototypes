@@ -38,7 +38,7 @@ export default class ColumnHeader extends React.Component {
             return null
         }
 
-        /*
+        /**
          * Important to maintain this structure when implementing Portals:
          *
          *   <Portal>
