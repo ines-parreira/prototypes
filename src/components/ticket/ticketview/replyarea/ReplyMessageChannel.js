@@ -141,7 +141,7 @@ export default class ReplyMessageChannel extends React.Component {
         const data = {
             name: splittedText.length > 1 ? _.trim(splittedText[0]) : '',
             id: (this.props.ticket.getIn(['state', 'potentialRequesters']).concat(this.getTargets()).find(
-                receiver => receiver.get('address') === value
+                receiver => receiver.get(fieldName) === value
             ) || Map()).get('id')
         }
 

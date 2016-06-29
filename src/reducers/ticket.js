@@ -41,11 +41,7 @@ const ticketInitial = Map({
     assignee_user: null,
     status: 'new',
     sender: null,
-    requester: Map({
-        id: null,
-        name: null,
-        email: null
-    }),
+    requester: null,
     receiver: null,
     priority: 'normal',
     tags: List(),
@@ -324,7 +320,15 @@ export function ticket(state = ticketInitial, action) {
             let newState = state
 
             if (!state.getIn(['newMessage', 'receiver'])) {
-                newState = state.setIn(['newMessage', 'receiver'], fromJS({id: action.receiver.id}))
+                newState = newState.setIn(['newMessage', 'receiver'], fromJS({id: action.receiver.id}))
+            }
+
+            if (!state.get('receiver')) {
+                newState = newState.set('receiver', fromJS({id: action.receiver.id}))
+            }
+
+            if (!state.get('requester')) {
+                newState = newState.set('requester', fromJS({id: action.receiver.id}))
             }
 
             return newState.mergeDeep({
