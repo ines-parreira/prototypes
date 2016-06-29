@@ -2,6 +2,7 @@
 
 var path = require('path')
 var webpack = require('webpack')
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var __PRODUCTION__ = process.env.NODE_ENV === 'production'
 var HASH = process.env.CIRCLE_SHA1 ? process.env.CIRCLE_SHA1 : '[hash]'
@@ -9,12 +10,16 @@ var HASH = process.env.CIRCLE_SHA1 ? process.env.CIRCLE_SHA1 : '[hash]'
 var staticDirectory = './g/static/private/'
 
 var jsMainFile = staticDirectory + 'js/main.js'
-var jsBuildPath = staticDirectory + '_build/js'
+var buildDir = staticDirectory + '_build/'
 var jsBundleFile = __PRODUCTION__ ? (HASH + '.build.min.js') : 'build.js'
 var jsBundleFileSourceMap = __PRODUCTION__ ? (HASH + '.build.min.js.map') : 'build.js.map'
+var styleBundleFile = __PRODUCTION__ ? (HASH + '.build.min.css') : 'build.css'
 
 var plugins = [
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/)
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/),
+    new ExtractTextPlugin(styleBundleFile, {
+        allChunks: true
+    })
 ]
 
 if (__PRODUCTION__) {
@@ -29,7 +34,7 @@ module.exports = {
     devtool: __PRODUCTION__ ? 'cheap-module-source-map' : 'cheap-eval-source-map',
     entry: jsMainFile,
     output: {
-        path: jsBuildPath,
+        path: buildDir,
         filename: jsBundleFile,
         sourceMapFilename: jsBundleFileSourceMap
     },
@@ -46,12 +51,12 @@ module.exports = {
                 loader: 'json-loader'
             },
             {
-                loader: 'file',
-                test: /\.(jpe?g|png|gif|svg)$/i
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loader: 'file-loader'
             },
             {
                 test: /\.less$/,
-                loader: 'style!css!less'
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
             },
             {
                 test: /plugin\.css$/,
