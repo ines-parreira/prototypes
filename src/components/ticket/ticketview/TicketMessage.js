@@ -36,12 +36,13 @@ export default class TicketMessage extends React.Component {
 
         const icons = {
             email: 'mail',
+            chat: 'comments',
             'facebook-message': 'facebook-messenger',
             'facebook-comment': 'facebook square',
             'facebook-post': 'facebook square'
         }
 
-        const legend = !message.source.type.startsWith('facebook') ?
+        const legend = !message.source.type.startsWith('facebook') && message.source.type !== 'chat' ?
             `<${message.source.from[SOURCE_VALUE_PROP[message.source.type]]}>` : ''
 
         return (
