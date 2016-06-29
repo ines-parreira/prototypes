@@ -66,7 +66,6 @@ export default class ReplyMessageChannel extends React.Component {
      * @returns {string}
      */
     getClassNames() {
-        const identity = this.resolveReceiver()
         const message = this.props.ticket.get('newMessage')
         const channel = message.getIn(['source', 'type'])
         const popupChannelClassNames = {
@@ -78,46 +77,13 @@ export default class ReplyMessageChannel extends React.Component {
             'facebook-message': 'action icon facebook-messenger blue'
         }
 
-        if (!identity.id && !identity.email) {
-            return popupChannelClassNames.email
-        } else if (!message.get('public')) {
+        if (!message.get('public')) {
             return popupChannelClassNames.private
-        } else if (Object.keys(popupChannelClassNames).indexOf(channel)) {
+        } else if (Object.keys(popupChannelClassNames).indexOf(channel) !== -1) {
             return popupChannelClassNames[channel]
         }
 
         return popupChannelClassNames.default
-    }
-
-    /**
-     * This gives us the name and the mail of the receiver depending on what is available in tickets.
-     * This function is used in getReceiverData.
-     *
-     * @returns {{name: string, email: string}}
-     */
-    resolveReceiver() {
-        const { ticket } = this.props
-
-        let res = {
-            name: 'select a receiver',
-            email: ''
-        }
-
-        if (ticket.getIn(['newMessage', 'receiver', 'id']) || ticket.getIn(['newMessage', 'receiver', 'email'])) {
-            res = {
-                id: ticket.getIn(['newMessage', 'receiver', 'id']),
-                name: ticket.getIn(['newMessage', 'receiver', 'name']),
-                email: ticket.getIn(['newMessage', 'receiver', 'email'])
-            }
-        } else if (ticket.getIn(['requester', 'id'])) {
-            res = {
-                id: ticket.getIn(['requester', 'id']),
-                name: ticket.getIn(['requester', 'name']),
-                email: ticket.getIn(['requester', 'email'])
-            }
-        }
-
-        return res
     }
 
     /**
@@ -227,10 +193,10 @@ export default class ReplyMessageChannel extends React.Component {
 
         const channelClassNames = {
             email: classnames('item', {
-                hidden: !ticket.get('id') ? ticket.channel !== 'email' : false
+                hidden: !ticket.get('id') ? false : ticketFirstMessage.source.type !== 'email'
             }),
             chat: classnames('item', {
-                hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'chat'
+                hidden: !ticket.get('id') ? false : ticketFirstMessage.source.type !== 'chat'
             }),
             facebookComment: classnames('item', {
                 hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'facebook-post'
