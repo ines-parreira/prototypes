@@ -73,6 +73,7 @@ export default class ReplyMessageChannel extends React.Component {
             default: 'action icon',
             private: 'action icon comment yellow',
             email: 'action icon mail blue',
+            chat: 'action icon purple comments',
             'facebook-comment': 'action icon facebook square blue',
             'facebook-message': 'action icon facebook-messenger blue'
         }
@@ -224,10 +225,12 @@ export default class ReplyMessageChannel extends React.Component {
 
         const ticketFirstMessage = firstMessage(ticket.get('messages').toJS())
 
-
         const channelClassNames = {
             email: classnames('item', {
                 hidden: !ticket.get('id') ? ticket.channel !== 'email' : false
+            }),
+            chat: classnames('item', {
+                hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'chat'
             }),
             facebookComment: classnames('item', {
                 hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'facebook-post'
@@ -253,10 +256,10 @@ export default class ReplyMessageChannel extends React.Component {
                             <div className={channelClassNames.email} onClick={() => actions.ticket.setSourceType('email')}>
                                 Send as email
                             </div>
-                            <div
-                                className={channelClassNames.internal}
-                                onClick={() => actions.ticket.setSourceType('internal-note')}
-                            >
+                            <div className={channelClassNames.chat} onClick={() => actions.ticket.setSourceType('chat')}>
+                                Send as chat message
+                            </div>
+                            <div className={channelClassNames.internal} onClick={() => actions.ticket.setSourceType('internal-note')}>
                                 Send as internal note
                             </div>
                             <div className={channelClassNames.facebookComment} onClick={() => actions.ticket.setSourceType('facebook-comment')}>

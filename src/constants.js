@@ -25,6 +25,7 @@ export const BASIC_OPERATORS = {
 // Basically will be used in: source.setIn(['source', 'to', {PROPERTY_NAME}], identifier/address)
 export const SOURCE_VALUE_PROP = {
     email: 'address',
+    chat: 'smooch_id',
     'facebook-message': 'name',
     'facebook-comment': 'name',
     'facebook-post': 'name'
