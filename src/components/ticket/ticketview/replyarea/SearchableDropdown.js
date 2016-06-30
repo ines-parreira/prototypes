@@ -51,12 +51,12 @@ export default class SearchableDropdown extends React.Component {
 
             let hasSelected = false;
 
-            for (const child of Object.keys(this.refs.dropdownMenu.children)) {
-                if (_.includes(this.refs.dropdownMenu.children[child].classList, 'addition')) {
+            for (const child of this.refs.dropdownMenu.children) {
+                if (_.includes(child.classList, 'addition')) {
                     // If there is an addition item ('Add...'), delete it
-                    this.refs.dropdownMenu.removeChild(this.refs.dropdownMenu.children[child])
+                    this.refs.dropdownMenu.removeChild(child)
                 } else if (
-                    _.includes(this.refs.dropdownMenu.children[child].classList, 'selected') && !_.includes(this.refs.dropdownMenu.children[child].classList, 'filtered')
+                    _.includes(child.classList, 'selected') && !_.includes(child.classList, 'filtered')
                 ) {
                     // If there's a non-filtered (i.e. displayed) selected item, we're good
                     hasSelected = true
@@ -66,9 +66,9 @@ export default class SearchableDropdown extends React.Component {
             if (!hasSelected) {
                 // If we don't have this selected item, we need to define the first non-filtered item as selected
                 for (const child of Object.keys(this.refs.dropdownMenu.children)) {
-                    if (this.refs.dropdownMenu.children[child].classList && !_.includes(this.refs.dropdownMenu.children[child].classList, 'filtered')
+                    if (child.classList && !_.includes(child.classList, 'filtered')
                     ) {
-                        this.refs.dropdownMenu.children[child].classList.add('selected')
+                        child.classList.add('selected')
                         break
                     }
                 }
