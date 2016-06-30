@@ -234,6 +234,9 @@ export function ticket(state = ticketInitial, action) {
             return state.set('assignee_user', action.args.get('assignee_user') ? Map(action.args.get('assignee_user')) : null)
 
         case actions.SET_STATUS:
+            if (action.id && action.id !== state.get('id')) {
+                return state
+            }
             return state.set('status', action.args.get('status'))
 
         case actions.SET_PUBLIC:

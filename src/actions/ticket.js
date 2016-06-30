@@ -170,11 +170,12 @@ export function setAgent(assignee_user) {
     }
 }
 
-export function setStatus(status) {
+export function setStatus(status, id = null) {
     return {
         type: SET_STATUS,
         args: Map({
-            status
+            status,
+            id
         })
     }
 }
@@ -583,6 +584,14 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
             method,
             data: JSON.stringify(messageToSend)
         }).then((resp) => {
+            // Update on the ticket.
+            if (status) {
+                // We don't want to update the wrong state if we are redirecting so we specify the id in setStatus.
+                dispatch(setStatus(status, ticket.get('id')))
+                // We need to explicitely do the partial update because we cannot count on the component re-rendering (if we redirect).
+                // The re-rendering is when the autosave is usually performed and the status updated in db.
+                ticketPartialUpdate(ticket.get('id'), {status})(dispatch)
+            }
             onMessageSent(dispatch, ticket.get('id'), resp, SUBMIT_TICKET_MESSAGE_SUCCESS)
             dispatch({
                 type: SUBMIT_TICKET_MESSAGE_SUCCESS,
