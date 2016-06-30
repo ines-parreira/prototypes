@@ -4,6 +4,7 @@ import {convertFromHTML, ContentState} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
 import {renderTemplate} from '../components/utils/template'
 import {SOURCE_VALUE_PROP} from '../constants'
+import {lastMessage} from '../utils'
 
 const newMessage = (channel, sourceType) => fromJS({
     via: 'helpdesk',
@@ -40,11 +41,7 @@ const ticketInitial = Map({
     assignee_user: null,
     status: 'new',
     sender: null,
-    requester: Map({
-        id: null,
-        name: null,
-        email: null
-    }),
+    requester: null,
     receiver: null,
     priority: 'normal',
     tags: List(),
@@ -165,12 +162,13 @@ export function ticket(state = ticketInitial, action) {
             }
 
             newState = newState.mergeDeep({
-                    state: {
-                        dirty: false,
-                        loading: false,
-                        query: ''
-                    }
-                })
+                state: {
+                    dirty: false,
+                    loading: false,
+                    query: ''
+                }
+            })
+
             return action.resetMessage ? newState.set('newMessage', newMessage(
                 action.resp.channel,
                 getSourceTypeOfResponse(newState.get('messages'))
@@ -249,9 +247,12 @@ export function ticket(state = ticketInitial, action) {
 
             if (action.sourceType.startsWith('facebook')) {
                 newState = newState.setIn(['newMessage', 'channel'], 'facebook')
-            } else if (action.sourceType === 'email') {
-                newState = newState.setIn(['newMessage', 'channel'], 'email')
+            } else if (action.sourceType !== 'internal-note') {
+                newState = newState.setIn(['newMessage', 'channel'], action.sourceType)
+            } else {
+                newState = newState.setIn(['newMessage', 'channel'], lastMessage(state.get('messages').toJS()).source.type)
             }
+
             return newState
                 .setIn(['newMessage', 'source', 'type'], action.sourceType)
                 .setIn(['newMessage', 'public'], action.sourceType !== 'internal-note')
@@ -319,7 +320,15 @@ export function ticket(state = ticketInitial, action) {
             let newState = state
 
             if (!state.getIn(['newMessage', 'receiver'])) {
-                newState = state.setIn(['newMessage', 'receiver'], fromJS({id: action.receiver.id}))
+                newState = newState.setIn(['newMessage', 'receiver'], fromJS({id: action.receiver.id}))
+            }
+
+            if (!state.get('receiver')) {
+                newState = newState.set('receiver', fromJS({id: action.receiver.id}))
+            }
+
+            if (!state.get('requester')) {
+                newState = newState.set('requester', fromJS({id: action.receiver.id}))
             }
 
             return newState.mergeDeep({

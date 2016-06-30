@@ -499,6 +499,11 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
             }
         }
 
+        // i.e. if we're creating a new ticket
+        if (!data.messages.length) {
+            data.channel = data.newMessage.channel
+        }
+
         if (!data.newMessage.sender) {
             data.newMessage.sender = currentUser.filter(keyIn('email', 'id', 'name'))
         }

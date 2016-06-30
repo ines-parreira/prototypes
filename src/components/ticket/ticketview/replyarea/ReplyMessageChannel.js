@@ -66,57 +66,24 @@ export default class ReplyMessageChannel extends React.Component {
      * @returns {string}
      */
     getClassNames() {
-        const identity = this.resolveReceiver()
         const message = this.props.ticket.get('newMessage')
         const channel = message.getIn(['source', 'type'])
         const popupChannelClassNames = {
             default: 'action icon',
             private: 'action icon comment yellow',
             email: 'action icon mail blue',
+            chat: 'action icon purple comments',
             'facebook-comment': 'action icon facebook square blue',
             'facebook-message': 'action icon facebook-messenger blue'
         }
 
-        if (!identity.id && !identity.email) {
-            return popupChannelClassNames.email
-        } else if (!message.get('public')) {
+        if (!message.get('public')) {
             return popupChannelClassNames.private
-        } else if (Object.keys(popupChannelClassNames).indexOf(channel)) {
+        } else if (Object.keys(popupChannelClassNames).indexOf(channel) !== -1) {
             return popupChannelClassNames[channel]
         }
 
         return popupChannelClassNames.default
-    }
-
-    /**
-     * This gives us the name and the mail of the receiver depending on what is available in tickets.
-     * This function is used in getReceiverData.
-     *
-     * @returns {{name: string, email: string}}
-     */
-    resolveReceiver() {
-        const { ticket } = this.props
-
-        let res = {
-            name: 'select a receiver',
-            email: ''
-        }
-
-        if (ticket.getIn(['newMessage', 'receiver', 'id']) || ticket.getIn(['newMessage', 'receiver', 'email'])) {
-            res = {
-                id: ticket.getIn(['newMessage', 'receiver', 'id']),
-                name: ticket.getIn(['newMessage', 'receiver', 'name']),
-                email: ticket.getIn(['newMessage', 'receiver', 'email'])
-            }
-        } else if (ticket.getIn(['requester', 'id'])) {
-            res = {
-                id: ticket.getIn(['requester', 'id']),
-                name: ticket.getIn(['requester', 'name']),
-                email: ticket.getIn(['requester', 'email'])
-            }
-        }
-
-        return res
     }
 
     /**
@@ -174,7 +141,7 @@ export default class ReplyMessageChannel extends React.Component {
         const data = {
             name: splittedText.length > 1 ? _.trim(splittedText[0]) : '',
             id: (this.props.ticket.getIn(['state', 'potentialRequesters']).concat(this.getTargets()).find(
-                receiver => receiver.get('address') === value
+                receiver => receiver.get(fieldName) === value
             ) || Map()).get('id')
         }
 
@@ -224,10 +191,12 @@ export default class ReplyMessageChannel extends React.Component {
 
         const ticketFirstMessage = firstMessage(ticket.get('messages').toJS())
 
-
         const channelClassNames = {
             email: classnames('item', {
-                hidden: !ticket.get('id') ? ticket.channel !== 'email' : false
+                hidden: !ticket.get('id') ? false : ticketFirstMessage.source.type !== 'email'
+            }),
+            chat: classnames('item', {
+                hidden: !ticket.get('id') ? false : ticketFirstMessage.source.type !== 'chat'
             }),
             facebookComment: classnames('item', {
                 hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'facebook-post'
@@ -253,10 +222,10 @@ export default class ReplyMessageChannel extends React.Component {
                             <div className={channelClassNames.email} onClick={() => actions.ticket.setSourceType('email')}>
                                 Send as email
                             </div>
-                            <div
-                                className={channelClassNames.internal}
-                                onClick={() => actions.ticket.setSourceType('internal-note')}
-                            >
+                            <div className={channelClassNames.chat} onClick={() => actions.ticket.setSourceType('chat')}>
+                                Send as chat message
+                            </div>
+                            <div className={channelClassNames.internal} onClick={() => actions.ticket.setSourceType('internal-note')}>
                                 Send as internal note
                             </div>
                             <div className={channelClassNames.facebookComment} onClick={() => actions.ticket.setSourceType('facebook-comment')}>
