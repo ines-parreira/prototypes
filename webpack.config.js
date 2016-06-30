@@ -28,6 +28,11 @@ if (__PRODUCTION__) {
             NODE_ENV: JSON.stringify('production')
         }
     }))
+    plugins.push(new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            warnings: false
+        }
+    }))
 }
 
 module.exports = {
