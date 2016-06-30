@@ -4,13 +4,12 @@ import UserForm from './UserForm'
 export default class UserRow extends React.Component {
     deleteUser(userName, userId) {
         if (window.confirm(`Are you sure you want to delete user ${userName}?`)) {
-            this.context.deleteUser(userId)
+            this.props.deleteUser(userId)
         }
     }
 
     render() {
-        const {user} = this.props
-        const {updateUser} = this.context
+        const {user, updateUser} = this.props
 
         let label
         const userRoles = []
@@ -77,10 +76,8 @@ UserRow.propTypes = {
         email: PropTypes.string,
         language: PropTypes.string,
         country: PropTypes.string
-    })
-}
+    }),
 
-UserRow.contextTypes = {
     updateUser: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired
 }

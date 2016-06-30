@@ -51,18 +51,26 @@ export function fetchUsers(role) {
     }
 }
 
-export function search(query, params) {
+export function search(query, params, stringQuery) {
     return (dispatch) => {
         dispatch({
-            type: FETCH_USER_LIST_START
+            type: FETCH_USER_LIST_START,
+            stringQuery,
+            params
         })
+
+        const builtQuery = query
+
+        if (!stringQuery || stringQuery.length < 3) {
+            delete builtQuery.query
+        }
 
         return reqwest({
             url: '/api/search/',
             data: JSON.stringify({
                 doc_type: 'user',
-                query,
-                params,
+                query: builtQuery,
+                params
             }),
             type: 'json',
             method: 'POST',
@@ -195,10 +203,11 @@ export function deleteUser(userId) {
     }
 }
 
-export function sortUsers(sort) {
+export function sortUsers(sortField, sortDirection) {
     return {
         type: SORT_USERS,
-        sort
+        sortField,
+        sortDirection
     }
 }
 

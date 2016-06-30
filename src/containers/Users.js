@@ -5,23 +5,22 @@ import DocumentTitle from 'react-document-title'
 import * as UserActions from '../actions/user'
 import * as SettingsActions from '../actions/settings'
 import UsersView from '../components/user/UsersView'
+import { buildQuery } from './../reducers/users'
+
 
 class UsersContainer extends React.Component {
-    getChildContext() {
-        return {
-            createUser: this.props.actions.user.createUser,
-            updateUser: this.props.actions.user.updateUser,
-            deleteUser: this.props.actions.user.deleteUser,
-            sortUsers: this.props.actions.user.sortUsers
-        }
+    search = (query, params, stringQuery, sort = this.props.users.get('sort')) => {
+        this.props.actions.user.search(buildQuery(stringQuery, sort), params, stringQuery)
     }
 
-    search = (query, params, stringQuery) => {
-        if (!stringQuery) {
-            this.props.actions.user.fetchUsers()
-        } else {
-            // populate users state from search results now
-            this.props.actions.user.search(query, params)
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.users.get('sort').equals(nextProps.users.get('sort'))) {
+            this.search(
+                '',
+                this.props.users.getIn(['search', 'params']),
+                this.props.users.getIn(['search', 'stringQuery']),
+                nextProps.users.get('sort')
+            )
         }
     }
 
@@ -37,8 +36,14 @@ class UsersContainer extends React.Component {
                 <div className="UsersContainer">
                     <UsersView
                         items={users.get('items')}
+                        sort={users.get('sort')}
+                        stringQuery={users.get('stringQuery')}
                         search={this.search}
                         isLoading={users.get('loading')}
+                        createUser={this.props.actions.user.createUser}
+                        updateUser={this.props.actions.user.updateUser}
+                        deleteUser={this.props.actions.user.deleteUser}
+                        sortUsers={this.props.actions.user.sortUsers}
                     />
                 </div>
             </DocumentTitle>
@@ -47,16 +52,7 @@ class UsersContainer extends React.Component {
 }
 
 UsersContainer.propTypes = {
-    users: PropTypes.shape({
-        loading: PropTypes.bool,
-        items: PropTypes.object,
-        resp: PropTypes.shape({
-            meta: PropTypes.object,
-            data: PropTypes.array,
-            uri: PropTypes.string,
-            object: PropTypes.string
-        })
-    }),
+    users: PropTypes.object,
     currentUser: PropTypes.object,
     settings: PropTypes.object,
     actions: PropTypes.object.isRequired,
@@ -66,10 +62,6 @@ UsersContainer.propTypes = {
 }
 
 UsersContainer.childContextTypes = {
-    createUser: PropTypes.func,
-    updateUser: PropTypes.func,
-    deleteUser: PropTypes.func,
-    sortUsers: PropTypes.func
 }
 
 function mapStateToProps(state) {

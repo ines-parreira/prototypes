@@ -1,15 +1,62 @@
 import * as actions from '../actions/user'
-import { Map, List, fromJS } from 'immutable'
+import { fromJS } from 'immutable'
 import _ from 'lodash'
 
-const usersInitial = Map({
-    items: List(),
-    agents: List(),
+export const USER_SEARCH_QUERY = {
+    _source: ['id', 'name', 'email', 'roles'],
+    query: {
+        multi_match: {
+            query: '',
+            fuzziness: 3,
+            fields: ['name', 'email']
+        }
+    },
+    sort: {
+        updated_datetime: {
+            order: 'desc',
+            mode: 'min'
+        }
+    }
+}
+
+export const USER_SEARCH_QUERY_PATH = 'query.multi_match.query'
+
+const usersInitial = fromJS({
+    items: [],
+    agents: [],
     displayItems: [],
-    sort: 'id',
+    sort: {
+        field: 'updated_datetime',
+        direction: 'desc' // can be 'asc' or 'desc'
+    },
+    search: {
+        stringQuery: '',
+        params: {}
+    },
+    stringQuery: '',
     loading: true,
     resp: {}
 })
+
+/**
+ * Build the search query from the stringQuery, params and sort data.
+ *
+ * @param stringQuery the text search query
+ * @param sort the sorting data
+ * @returns {*} the query with all parameters
+ */
+export function buildQuery(stringQuery, sort) {
+    const sortObject = {}
+    sortObject[sort.get('field')] = {
+        order: sort.get('direction'),
+        mode: 'min'
+    }
+
+    const query = Object.assign({}, USER_SEARCH_QUERY)
+    query.sort = sortObject
+    _.set(query, USER_SEARCH_QUERY_PATH, stringQuery)
+    return query
+}
 
 export function users(state = usersInitial, action) {
     const items = state.get('items')
@@ -18,7 +65,16 @@ export function users(state = usersInitial, action) {
     switch (action.type) {
 
         case actions.FETCH_USER_LIST_START:
-            return state.merge({ loading: true })
+            if (action.stringQuery !== undefined) {
+                newState = newState.merge({
+                    search: {
+                        stringQuery: action.stringQuery,
+                        params: action.params
+                    }
+                })
+            }
+
+            return newState.merge({ loading: true })
 
         case actions.FETCH_USER_LIST_SUCCESS:
             if (action.role && action.role === 'agent') {
@@ -48,11 +104,14 @@ export function users(state = usersInitial, action) {
                 resp: action.resp
             })
 
-        case actions.SORT_USERS:
-            return state.merge({
-                items: action.sort !== state.get('sort') ? _.sortBy(state.get('items'), [action.sort]) : _.reverse(state.get('items')),
-                sort: action.sort
+        case actions.SORT_USERS: {
+            return state.mergeDeep({
+                sort: {
+                    field: action.sortField,
+                    direction: action.sortDirection
+                }
             })
+        }
 
         case actions.UPDATE_LIST:
             return state.merge({

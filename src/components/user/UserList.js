@@ -3,9 +3,24 @@ import {Loader} from '../Loader'
 import UserRow from './UserRow'
 
 export default class UserList extends React.Component {
+    sort = (sortField) => {
+        if (this.props.sort.get('field') === sortField) {
+            this.props.sortUsers(sortField, this.props.sort.get('direction') === 'asc' ? 'desc' : 'asc')
+        } else {
+            this.props.sortUsers(sortField, 'desc')
+        }
+    }
+
+    getSortIconClassNames(sortField) {
+        if (sortField === this.props.sort.get('field')) {
+            return this.props.sort.get('direction') === 'asc' ? 'caret up action icon' : 'caret down action icon'
+        }
+
+        return 'sort action icon'
+    }
+
     render() {
         const {items, isLoading} = this.props
-        const {sortUsers} = this.context
 
         if (items.isEmpty()) {
             const message = <p>{isLoading ? 'Loading...' : 'No users found.'}</p>
@@ -27,14 +42,15 @@ export default class UserList extends React.Component {
                         <div className="eight wide column">
                             USERS
                             <i id="users-name-sort"
-                               className="sort action icon"
-                               onClick={() => { sortUsers('name') }}
+                               className={this.getSortIconClassNames('name')}
+                               onClick={() => { this.sort('name') }}
                             />
                         </div>
                         <div className="two wide column">
                             ROLE
-                            <i id="users-role-sort" className="sort action icon"
-                               onClick={() => { sortUsers('roles') }}
+                            <i id="users-role-sort"
+                               className={this.getSortIconClassNames('roles.name')}
+                               onClick={() => { this.sort('roles.name') }}
                             />
                         </div>
                     </div>
@@ -44,6 +60,8 @@ export default class UserList extends React.Component {
                         <UserRow
                             key={user.get('id')}
                             user={user}
+                            updateUser={this.props.updateUser}
+                            deleteUser={this.props.deleteUser}
                         />
                     ))}
                 </div>
@@ -54,9 +72,10 @@ export default class UserList extends React.Component {
 
 UserList.propTypes = {
     items: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool
-}
+    sort: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool,
 
-UserList.contextTypes = {
+    updateUser: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired,
     sortUsers: PropTypes.func.isRequired
 }

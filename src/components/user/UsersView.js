@@ -2,12 +2,12 @@ import React, {PropTypes} from 'react'
 import UserList from './UserList'
 import Search from '../Search'
 import UserForm from './UserForm'
+import { USER_SEARCH_QUERY, USER_SEARCH_QUERY_PATH } from './../../reducers/users'
 
 
 export default class UsersView extends React.Component {
     render() {
-        const {items, isLoading} = this.props
-        const {createUser} = this.context
+        const {items, isLoading, sort, createUser} = this.props
 
         return (
             <div className="UsersView">
@@ -18,17 +18,8 @@ export default class UsersView extends React.Component {
                                 autofocus
                                 onChange={this.props.search}
                                 className="long"
-                                queryPath="query.multi_match.query"
-                                query={{
-                                    _source: ['id', 'name', 'email', 'roles'],
-                                    query: {
-                                        multi_match: {
-                                            query: '',
-                                            fuzziness: 3,
-                                            fields: ['name', 'email']
-                                        }
-                                    }
-                                }}
+                                queryPath={USER_SEARCH_QUERY_PATH}
+                                query={USER_SEARCH_QUERY}
                                 placeholder="Search users"
                                 searchDebounceTime={400}
                             />
@@ -44,8 +35,9 @@ export default class UsersView extends React.Component {
                         <UserForm
                             onSubmit={createUser}
                         />
-                        <button className="ui right floated green button"
-                                onClick={() => { $('#userform-new').modal('show') }}
+                        <button
+                            className="ui right floated green button"
+                            onClick={() => { $('#userform-new').modal('show') }}
                         >
                             ADD USER
                         </button>
@@ -54,6 +46,10 @@ export default class UsersView extends React.Component {
                 <UserList
                     items={items}
                     isLoading={isLoading}
+                    sort={sort}
+                    updateUser={this.props.updateUser}
+                    deleteUser={this.props.deleteUser}
+                    sortUsers={this.props.sortUsers}
                 />
             </div>
         )
@@ -62,10 +58,13 @@ export default class UsersView extends React.Component {
 
 UsersView.propTypes = {
     items: PropTypes.object.isRequired,
+    sort: PropTypes.object.isRequired,
+    stringQuery: PropTypes.string.isRequired,
     search: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired
-}
+    isLoading: PropTypes.bool.isRequired,
 
-UsersView.contextTypes = {
-    createUser: PropTypes.func.isRequired
+    createUser: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired,
+    sortUsers: PropTypes.func.isRequired
 }
