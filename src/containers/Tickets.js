@@ -46,8 +46,8 @@ class TicketsContainer extends React.Component {
     }
 
     fetchPage = (page = 1, props) => {
-        const {tickets, actions, views} = props || this.props
-        if (!(tickets.get('loading') || views.get('active').isEmpty())) {
+        const {actions, views} = props || this.props
+        if (!views.get('active').isEmpty()) {
             return actions.tickets.fetchTicketsPage(views, page)
         }
         return null
