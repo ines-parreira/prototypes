@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import _ from 'lodash'
+import { validateEmail } from './../../../../utils'
 
 export default class SearchableDropdown extends React.Component {
     componentDidMount() {
@@ -18,8 +19,10 @@ export default class SearchableDropdown extends React.Component {
         }, this.props.searchDebounceTime || 200))
 
         searchInput.on('blur', (e) => {
-            receiverDropdown.dropdown('set selected', e.target.value)
-            searchInput.val('')
+            if (this.props.valueProp === 'email' && validateEmail(e.target.value)) {
+                receiverDropdown.dropdown('set selected', e.target.value)
+                searchInput.val('')
+            }
         })
 
         searchInput.attr('tabindex', 2)
