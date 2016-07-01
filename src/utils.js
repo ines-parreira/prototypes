@@ -36,7 +36,7 @@ export function getCode(ast) {
 }
 
 export function validateEmail(email) {
-    const re = /^[^@]+@[^@]+\.[^@]+$/;
+    const re = /[^@]+@[^@]+\.[^@]+/;
     return re.test(email);
 }
 

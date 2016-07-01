@@ -7,7 +7,7 @@ export default class SearchableDropdown extends React.Component {
         const receiverDropdown = $(`#receiver-dropdown-${this.props.suffix}`)
 
         receiverDropdown.dropdown({
-            allowAdditions: true,
+            allowAdditions: this.props.channel === 'email',
             onAdd: this.props.addValue,
             onRemove: this.props.removeValue
         })
@@ -19,7 +19,7 @@ export default class SearchableDropdown extends React.Component {
         }, this.props.searchDebounceTime || 200))
 
         searchInput.on('blur', (e) => {
-            if (this.props.valueProp === 'email' && validateEmail(e.target.value)) {
+            if (this.props.channel === 'email' && validateEmail(e.target.value)) {
                 receiverDropdown.dropdown('set selected', e.target.value)
                 searchInput.val('')
             }
@@ -55,8 +55,8 @@ export default class SearchableDropdown extends React.Component {
             let hasSelected = false;
 
             for (const child of this.refs.dropdownMenu.children) {
-                if (_.includes(child.classList, 'addition')) {
-                    // If there is an addition item ('Add...'), delete it
+                if (_.includes(child.classList, 'addition') || _.includes(child.classList, 'message')) {
+                    // If there is an addition item ('Add...') or a 'No results found' item in addition of other items, delete it
                     this.refs.dropdownMenu.removeChild(child)
                 } else if (
                     _.includes(child.classList, 'selected') && !_.includes(child.classList, 'filtered')
@@ -133,5 +133,6 @@ SearchableDropdown.propTypes = {
     suffix: PropTypes.string.isRequired, // the id suffix
     parentId: PropTypes.string.isRequired, // the id of the parent object, to check if the field needs to be repopulated
 
-    valueProp: PropTypes.string.isRequired // the property to display from the object
+    valueProp: PropTypes.string.isRequired, // the property to display from the object
+    channel: PropTypes.string.isRequired
 }

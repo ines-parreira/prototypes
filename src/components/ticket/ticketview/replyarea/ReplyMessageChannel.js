@@ -181,6 +181,7 @@ export default class ReplyMessageChannel extends React.Component {
                 suffix="to"
                 parentId={parentId.toString()}
                 valueProp={SOURCE_VALUE_PROP[this.props.ticket.getIn(['newMessage', 'source', 'type'])]}
+                channel={this.props.ticket.get('channel')}
             />
         )
     }
