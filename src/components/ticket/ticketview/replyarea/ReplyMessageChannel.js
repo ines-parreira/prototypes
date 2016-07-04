@@ -225,14 +225,14 @@ export default class ReplyMessageChannel extends React.Component {
                             <div className={channelClassNames.chat} onClick={() => actions.ticket.setSourceType('chat')}>
                                 Send as chat message
                             </div>
-                            <div className={channelClassNames.internal} onClick={() => actions.ticket.setSourceType('internal-note')}>
-                                Send as internal note
-                            </div>
                             <div className={channelClassNames.facebookComment} onClick={() => actions.ticket.setSourceType('facebook-comment')}>
                                 Send as Facebook comment
                             </div>
                             <div className={channelClassNames.facebookMessage} onClick={() => actions.ticket.setSourceType('facebook-message')}>
                                 Send as Facebook private message
+                            </div>
+                            <div className={channelClassNames.internal} onClick={() => actions.ticket.setSourceType('internal-note')}>
+                                Send as internal note
                             </div>
                         </div>
                     </div>
