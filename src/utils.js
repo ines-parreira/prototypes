@@ -35,6 +35,10 @@ export function getCode(ast) {
     })
 }
 
+export function validateEmail(email) {
+    const re = /[^@]+@[^@]+\.[^@]+/;
+    return re.test(email);
+}
 
 export function lastMessage(messages) {
     return messages.slice().sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]
