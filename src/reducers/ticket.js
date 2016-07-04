@@ -80,6 +80,21 @@ function getSourceTypeOfResponse(messages) {
     }
 }
 
+
+/**
+ * Map a source type to a channel.
+ * Returns undefined for internal note as we dont have enough information to guess the channel.
+ */
+function getChannelFromSourceType(sourceType) {
+    if (sourceType.startsWith('facebook')) {
+        return 'facebook'
+    } else if (sourceType !== 'internal-note') {
+        return sourceType
+    }
+    return undefined
+}
+
+
 export function ticket(state = ticketInitial, action) {
     const valueProp = SOURCE_VALUE_PROP[state.getIn(['newMessage', 'source', 'type'])]
     let tags
@@ -248,12 +263,12 @@ export function ticket(state = ticketInitial, action) {
         case actions.SET_SOURCE_TYPE: {
             let newState = state
 
-            if (action.sourceType.startsWith('facebook')) {
-                newState = newState.setIn(['newMessage', 'channel'], 'facebook')
-            } else if (action.sourceType !== 'internal-note') {
-                newState = newState.setIn(['newMessage', 'channel'], action.sourceType)
+            if (action.sourceType !== 'internal-note') {
+                newState = newState.setIn(['newMessage', 'channel'], getChannelFromSourceType(action.sourceType))
             } else {
-                newState = newState.setIn(['newMessage', 'channel'], lastMessage(state.get('messages').toJS()).source.type)
+                // For an internal note, we infer the channel from the last non-internal note message.
+                const lastSourceType = getLastNonInternalNoteMessage(state.get('messages')).getIn(['source', 'type'])
+                newState = newState.setIn(['newMessage', 'channel'], getChannelFromSourceType(lastSourceType))
             }
 
             return newState
