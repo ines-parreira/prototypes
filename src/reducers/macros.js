@@ -102,6 +102,7 @@ export function getMacrosWithoutExternalActions(currentMacros) {
 export function macros(state = macrosInitial, action) {
     let items
     let actionIndex
+    let newState = state
 
     switch (action.type) {
         case actions.CLOSE_MODAL:
@@ -118,7 +119,8 @@ export function macros(state = macrosInitial, action) {
             return state.setIn(['items', action.resp.id], fromJS(action.resp))
 
         case actions.DELETE_MACRO_SUCCESS:
-            return state.set('items', state.get('items').delete(action.macroId)).set('modalSelected', state.get('items').first())
+            newState = state.set('items', newState.get('items').delete(action.macroId))
+            return newState.set('modalSelected', newState.get('items').first())
 
         case actions.PREVIEW_MACRO:
             return state.set('selected', state.getIn(['items', action.id]))

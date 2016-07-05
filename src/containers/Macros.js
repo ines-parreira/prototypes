@@ -32,7 +32,7 @@ class MacrosContainer extends React.Component {
     render() {
         const { macros, tags, agents, actions, disableExternalActions, selectionMode, selected } = this.props
 
-        if (!macros.get('isModalOpen') || !macros.get('items').size) {
+        if (!macros.get('isModalOpen')) {
             return null
         }
 
