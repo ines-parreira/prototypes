@@ -7,7 +7,7 @@ export default class SearchableDropdown extends React.Component {
         const receiverDropdown = $(`#receiver-dropdown-${this.props.suffix}`)
 
         receiverDropdown.dropdown({
-            allowAdditions: this.props.channel === 'email',
+            allowAdditions: this.props.sourceType === 'email',
             onAdd: this.props.addValue,
             onRemove: this.props.removeValue
         })
@@ -19,7 +19,7 @@ export default class SearchableDropdown extends React.Component {
         }, this.props.searchDebounceTime || 200))
 
         searchInput.on('blur', (e) => {
-            if (this.props.channel === 'email' && validateEmail(e.target.value)) {
+            if (this.props.sourceType === 'email' && validateEmail(e.target.value)) {
                 receiverDropdown.dropdown('set selected', e.target.value)
                 searchInput.val('')
             }
@@ -134,5 +134,5 @@ SearchableDropdown.propTypes = {
     parentId: PropTypes.string.isRequired, // the id of the parent object, to check if the field needs to be repopulated
 
     valueProp: PropTypes.string.isRequired, // the property to display from the object
-    channel: PropTypes.string.isRequired
+    sourceType: PropTypes.string.isRequired
 }

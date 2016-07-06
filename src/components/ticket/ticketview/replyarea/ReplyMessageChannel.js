@@ -150,6 +150,10 @@ export default class ReplyMessageChannel extends React.Component {
         this.props.actions.ticket.addReceiver(data)
     }
 
+    setSourceType(sourceType) {
+        this.props.actions.ticket.setSourceType(sourceType)
+    }
+
     renderTo(ticket, actions) {
         const valueProp = SOURCE_VALUE_PROP[ticket.getIn(['newMessage', 'source', 'type'])]
 
@@ -169,6 +173,12 @@ export default class ReplyMessageChannel extends React.Component {
         const parentId = ticket.get('messages').size ?
             `${ticket.get('id')} - ${ticket.get('messages').last().get('id')}` : 'new'
 
+        const disabledChannels = ['facebook-post', 'facebook-message', 'chat']
+
+        const isInputEnabled =
+            disabledChannels.indexOf(this.props.ticket.getIn(['newMessage', 'source', 'type'])) === -1 ||
+            !ticket.get('id')
+
         return (
             <SearchableDropdown
                 defaultValues={this.getTargets(true)}
@@ -177,11 +187,11 @@ export default class ReplyMessageChannel extends React.Component {
                 search={v => this.updatePotentialRequesters(v)}
                 addValue={(v, t) => this.addValue(v, t)}
                 removeValue={actions.ticket.removeReceiver}
-                enabled={this.props.ticket.get('channel') !== 'facebook'}
+                enabled={isInputEnabled}
                 suffix="to"
                 parentId={parentId.toString()}
                 valueProp={SOURCE_VALUE_PROP[this.props.ticket.getIn(['newMessage', 'source', 'type'])]}
-                channel={this.props.ticket.get('channel')}
+                sourceType={this.props.ticket.getIn(['newMessage', 'source', 'type'])}
             />
         )
     }
@@ -220,19 +230,19 @@ export default class ReplyMessageChannel extends React.Component {
                             className="ui vertical menu"
                             style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
                         >
-                            <div className={channelClassNames.email} onClick={() => actions.ticket.setSourceType('email')}>
+                            <div className={channelClassNames.email} onClick={() => this.setSourceType('email')}>
                                 Send as email
                             </div>
-                            <div className={channelClassNames.chat} onClick={() => actions.ticket.setSourceType('chat')}>
+                            <div className={channelClassNames.chat} onClick={() => this.setSourceType('chat')}>
                                 Send as chat message
                             </div>
-                            <div className={channelClassNames.facebookComment} onClick={() => actions.ticket.setSourceType('facebook-comment')}>
+                            <div className={channelClassNames.facebookComment} onClick={() => this.setSourceType('facebook-comment')}>
                                 Send as Facebook comment
                             </div>
-                            <div className={channelClassNames.facebookMessage} onClick={() => actions.ticket.setSourceType('facebook-message')}>
+                            <div className={channelClassNames.facebookMessage} onClick={() => this.setSourceType('facebook-message')}>
                                 Send as Facebook private message
                             </div>
-                            <div className={channelClassNames.internal} onClick={() => actions.ticket.setSourceType('internal-note')}>
+                            <div className={channelClassNames.internal} onClick={() => this.setSourceType('internal-note')}>
                                 Send as internal note
                             </div>
                         </div>

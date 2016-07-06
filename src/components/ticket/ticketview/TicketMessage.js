@@ -79,6 +79,24 @@ export default class TicketMessage extends React.Component {
         )
     }
 
+    renderMeta(message) {
+        if (!message.meta || !message.meta.current_page) {
+            return null
+        }
+
+        let displayString = message.meta.current_page
+
+        if (displayString.length > 28) {
+            displayString = `...${displayString.substr(displayString.length - 25)}`
+        }
+
+        return (
+            <span className="ticket-message-from">
+                from <a target="_blank" href={message.meta.current_page}><strong>{displayString}</strong></a>
+            </span>
+        )
+    }
+
     render() {
         const {message, currentUser} = this.props
 
@@ -151,6 +169,7 @@ export default class TicketMessage extends React.Component {
                         </span>
 
                         {this.renderSource(message)}
+                        {this.renderMeta(message)}
                     </div>
                     <div className="ticket-message-time">
                         {createdDatetime}
