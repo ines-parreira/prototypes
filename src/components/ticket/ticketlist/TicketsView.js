@@ -58,23 +58,41 @@ export default class TicketsView extends React.Component {
                                     autofocus
                                     onChange={search}
                                     className="long"
-                                    queryPath="multi_match.query"
+                                    queryPath="bool.should.0.multi_match.query,bool.should.1.nested.query.multi_match.query"
                                     query={{
-                                        multi_match: {
-                                            query: '',
-                                            fuzziness: 3,
-                                            type: 'phrase_prefix',
-                                            fields: [
-                                                'subject^3',
-                                                'requester.name',
-                                                'requester.email',
-                                                'sender.name',
-                                                'sender.email',
-                                                'messages.sender.name',
-                                                'messages.sender.email',
-                                                'messages.receiver.name',
-                                                'messages.receiver.email',
-                                                'messages.body_*'
+                                        bool: {
+                                            should: [
+                                                {
+                                                    multi_match: {
+                                                        query: '',
+                                                        type: 'phrase_prefix',
+                                                        fields: [
+                                                            'subject^3',
+                                                            'requester.name',
+                                                            'requester.email',
+                                                            'sender.name',
+                                                            'sender.email'
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    nested: {
+                                                        path: 'messages',
+                                                        query: {
+                                                            multi_match: {
+                                                                query: '',
+                                                                fuzziness: 3,
+                                                                fields: [
+                                                                    'messages.sender.name',
+                                                                    'messages.sender.email',
+                                                                    'messages.receiver.name',
+                                                                    'messages.receiver.email',
+                                                                    'messages.body_*'
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             ]
                                         }
                                     }}

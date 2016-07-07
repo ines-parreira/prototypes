@@ -8,7 +8,9 @@ export default class Search extends React.Component {
 
         // search every XXXms
         this.throttledSearch = _.throttle(() => {
-            _.set(this.props.query, this.props.queryPath, this.refs.searchInput.value)
+            for (const path of this.props.queryPath.split(',')) {
+                _.set(this.props.query, path, this.refs.searchInput.value)
+            }
             this.props.onChange(this.props.query, this.props.params, this.refs.searchInput.value)
         }, this.props.searchDebounceTime || 200)
     }
