@@ -81,7 +81,6 @@ export default class TicketsView extends React.Component {
                                                         query: {
                                                             multi_match: {
                                                                 query: '',
-                                                                fuzziness: 3,
                                                                 fields: [
                                                                     'messages.sender.name',
                                                                     'messages.sender.email',
