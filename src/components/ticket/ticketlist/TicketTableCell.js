@@ -21,9 +21,9 @@ export default class TicketTableCell extends React.Component {
     }
 
     truncate = (text, length) => {
-        text = this.stripHTML(text)
-        const slice = text.slice(0, length)
-        return slice !== text ? slice + ' ...' : text
+        const t = this.stripHTML(text)
+        const slice = t.slice(0, length)
+        return slice !== t ? `${slice}...` : t
     }
 
     renderFieldContent() {

@@ -236,12 +236,11 @@ class TicketContainer extends React.Component {
     }
 
     submit = (status, next, action, resetMessage = true) => {
-
         let ticket = this.props.ticket
 
         if (ticket.getIn(['state', 'loading'])) {
             // We're already submitting something, we dont want to POST twice.
-            return null
+            return
         }
 
         if (!ticket.get('id')) {
@@ -290,7 +289,6 @@ class TicketContainer extends React.Component {
             const nextTicketUrl = this.computeNextUrl(true)
             this.forcePush(nextTicketUrl)
         }
-
     }
 
     render() {

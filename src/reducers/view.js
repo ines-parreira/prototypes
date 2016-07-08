@@ -119,15 +119,13 @@ export function views(state = viewsInitial, action) {
 
             return state.set('active', view)
 
-        case actions.RESET_VIEW:
-        {
+        case actions.RESET_VIEW: {
             // find the original view from the state and replace the active view
             const original = state.get('items').find(v => v.get('id') === view.get('id'))
             return state.set('active', original.set('dirty', false))
         }
 
-        case actions.SUBMIT_UPDATE_VIEW_SUCCESS:
-        {
+        case actions.SUBMIT_UPDATE_VIEW_SUCCESS: {
             const updatedView = fromJS(action.resp)
             // we need to replace the old view with the new one
             items = state.get('items')
@@ -137,8 +135,7 @@ export function views(state = viewsInitial, action) {
                 active: updatedView.set('dirty', false)
             })
         }
-        case actions.SUBMIT_NEW_VIEW_SUCCESS:
-        {
+        case actions.SUBMIT_NEW_VIEW_SUCCESS: {
             const newView = fromJS(action.resp)
             return state.merge({
                 items: sortViews(state.get('items').push(newView)),
@@ -149,8 +146,7 @@ export function views(state = viewsInitial, action) {
         case actions.FETCH_VIEW_LIST_START:
             return state.set('loading', true)
 
-        case actions.FETCH_VIEW_LIST_SUCCESS:
-        {
+        case actions.FETCH_VIEW_LIST_SUCCESS: {
             items = sortViews(fromJS(action.resp.data))
 
             // also populate the active view state

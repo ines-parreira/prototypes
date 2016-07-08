@@ -9,7 +9,7 @@ import {CELL_WIDTH} from '../../../constants'
 export default class TicketsView extends React.Component {
     getWidth = () => {
         let width = 0
-        this.props.views.get('active').get('fields').map((field) => {
+        this.props.views.get('active').get('fields').forEach((field) => {
             if (field.get('visible')) {
                 width += field.get('width') ? field.get('width') : CELL_WIDTH
             }

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {List} from 'immutable'
 import {formatDatetime} from '../../../utils'
-import { SOURCE_VALUE_PROP } from '../../../constants'
+import {SOURCE_VALUE_PROP} from '../../../constants'
 import classNames from 'classnames'
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
@@ -112,12 +112,14 @@ export default class TicketMessage extends React.Component {
         let error = false
         let pending = false
 
-        for (const action in message.actions) {
-            if (message.actions[action].status === 'error') {
-                error = true
-                break
-            } else if (message.actions[action].status === 'pending') {
-                pending = true
+        if (message.actions) {
+            for (const action of message.actions) {
+                if (action.status === 'error') {
+                    error = true
+                    break
+                } else if (action.status === 'pending') {
+                    pending = true
+                }
             }
         }
 
@@ -144,9 +146,11 @@ export default class TicketMessage extends React.Component {
                                 <div style={{ margin: '1em auto'}}>
                                     <TicketMessageActions message={message}/>
                                 </div>
-                                <a onClick={() => this.props.submit(null, null, 'retry', false)}>retry</a> to execute the
+                                <a onClick={() => this.props.submit(null, null, 'retry', false)}>retry</a> to execute
+                                the
                                 failed action(s) automatically, and send the message if it succeeds,<br/>
-                                <a onClick={() => this.props.submit(null, null, 'force', false)}>ignore failure</a>, execute
+                                <a onClick={() => this.props.submit(null, null, 'force', false)}>ignore failure</a>,
+                                execute
                                 the other actions and send the message<br/>
                                 <a onClick={() => this.props.deleteMessage(message.id)}>cancel</a> the message, and
                                 manually undo successful action(s).
@@ -192,7 +196,7 @@ export default class TicketMessage extends React.Component {
                  </div>
                  </div>
                  */}
-                <TicketMessageBody message={message} />
+                <TicketMessageBody message={message}/>
                 {this.renderAttachment(message)}
                 <TicketMessageActions message={message}/>
             </div>

@@ -119,6 +119,7 @@ TicketsContainer.propTypes = {
             page: PropTypes.number,
             nb_pages: PropTypes.number
         }),
+        get: PropTypes.func,
         search: PropTypes.string
     }),
     views: PropTypes.object.isRequired,

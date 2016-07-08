@@ -423,10 +423,10 @@ export function formatAction(action, template, context) {
 
     let newArgs = Map()
 
-    action.get('arguments').map((value, key) => {
+    action.get('arguments').forEach((value, key) => {
         if (template.getIn(['arguments', key, 'type']) === 'listDict') {
             newArgs = newArgs.set(key, Map({}))
-            value.map(element => {
+            value.forEach(element => {
                 newArgs = newArgs.setIn(
                     [key, renderTemplate(element.get('key'), context)],
                     renderTemplate(element.get('value'), context)

@@ -1,8 +1,7 @@
 import * as actions from '../actions/macro'
 import {fromJS, Map, List} from 'immutable'
-import {DEFAULT_ACTIONS} from '../constants'
+import {DEFAULT_ACTIONS, ACTION_TEMPLATES} from '../constants'
 import {createFilter} from 'react-search-input'
-import {ACTION_TEMPLATES} from './../constants'
 
 
 const actionInitial = Map({
@@ -227,7 +226,7 @@ export function macros(state = macrosInitial, action) {
             const queryField = state.get('isModalOpen') ? 'modalQuery' : 'query'
             const selectedField = state.get('isModalOpen') ? 'modalSelected' : 'selected'
 
-            let newState = state.setIn(['state', queryField], action.query)
+            newState = state.setIn(['state', queryField], action.query)
 
             const selectedMacro = newState.get(selectedField)
             items = newState.get('items').toIndexedSeq().toJS()

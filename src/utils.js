@@ -36,8 +36,8 @@ export function getCode(ast) {
 }
 
 export function validateEmail(email) {
-    const re = /[^@]+@[^@]+\.[^@]+/;
-    return re.test(email);
+    const re = /[^@]+@[^@]+\.[^@]+/
+    return re.test(email)
 }
 
 export function lastMessage(messages) {
@@ -114,57 +114,57 @@ export function getModifier() {
 }
 
 // stolen from: https://github.com/HubSpot/humanize/blob/master/src/humanize.js#L84
-export function compactInteger(input, decimals = 0) {
-    decimals = Math.max(decimals, 0);
-    const number = parseInt(input, 10);
-    const signString = number < 0 ? '-' : '';
-    const unsignedNumber = Math.abs(number);
-    const unsignedNumberString = String(unsignedNumber);
-    const numberLength = unsignedNumberString.length;
-    const numberLengths = [13, 10, 7, 4];
-    const bigNumPrefixes = ['T', 'B', 'M', 'k'];
+export function compactInteger(input, dec = 0) {
+    const decimals = Math.max(dec, 0)
+    const number = parseInt(input, 10)
+    const signString = number < 0 ? '-' : ''
+    const unsignedNumber = Math.abs(number)
+    const unsignedNumberString = String(unsignedNumber)
+    const numberLength = unsignedNumberString.length
+    const numberLengths = [13, 10, 7, 4]
+    const bigNumPrefixes = ['T', 'B', 'M', 'k']
 
     // small numbers
     if (unsignedNumber < 1000) {
-        return `${signString}${unsignedNumberString}`;
+        return `${signString}${unsignedNumberString}`
     }
 
     // really big numbers
     if (numberLength > numberLengths[0] + 3) {
-        return number.toExponential(decimals).replace('e+', 'x10^');
+        return number.toExponential(decimals).replace('e+', 'x10^')
     }
 
     // 999 < unsignedNumber < 999,999,999,999,999
-    let length;
+    let length
     for (let i = 0; i < numberLengths.length; i++) {
-        const _length = numberLengths[i];
-        if (numberLength >= _length) {
-            length = _length;
-            break;
+        const l = numberLengths[i]
+        if (numberLength >= l) {
+            length = l
+            break
         }
     }
 
-    const decimalIndex = numberLength - length + 1;
-    const unsignedNumberCharacterArray = unsignedNumberString.split('');
+    const decimalIndex = numberLength - length + 1
+    const unsignedNumberCharacterArray = unsignedNumberString.split('')
 
-    const wholePartArray = unsignedNumberCharacterArray.slice(0, decimalIndex);
-    const decimalPartArray = unsignedNumberCharacterArray.slice(decimalIndex, decimalIndex + decimals + 1);
+    const wholePartArray = unsignedNumberCharacterArray.slice(0, decimalIndex)
+    const decimalPartArray = unsignedNumberCharacterArray.slice(decimalIndex, decimalIndex + decimals + 1)
 
-    const wholePart = wholePartArray.join('');
+    const wholePart = wholePartArray.join('')
 
     // pad decimalPart if necessary
-    let decimalPart = decimalPartArray.join('');
+    let decimalPart = decimalPartArray.join('')
     if (decimalPart.length < decimals) {
-        decimalPart += `${Array(decimals - decimalPart.length + 1).join('0')}`;
+        decimalPart += `${(new Array(decimals - decimalPart.length + 1)).join('0')}`
     }
 
-    let output;
+    let output
     if (decimals === 0) {
-        output = `${signString}${wholePart}${bigNumPrefixes[numberLengths.indexOf(length)]}`;
+        output = `${signString}${wholePart}${bigNumPrefixes[numberLengths.indexOf(length)]}`
     } else {
-        const outputNumber = Number(`${wholePart}.${decimalPart}`).toFixed(decimals);
-        output = `${signString}${outputNumber}${bigNumPrefixes[numberLengths.indexOf(length)]}`;
+        const outputNumber = Number(`${wholePart}.${decimalPart}`).toFixed(decimals)
+        output = `${signString}${outputNumber}${bigNumPrefixes[numberLengths.indexOf(length)]}`
     }
 
-    return output;
+    return output
 }

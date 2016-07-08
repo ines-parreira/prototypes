@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {browserHistory, history} from 'react-router'
+import {browserHistory} from 'react-router'
 import TicketTableCell from './TicketTableCell'
 
 export default class TicketTableRow extends React.Component {

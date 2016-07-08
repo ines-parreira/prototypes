@@ -51,10 +51,10 @@ export default class FilterDropdown extends React.Component {
             }
 
             return (
-                    <div key={idx}
-                         className="item"
-                         onClick={() => this.onClick(value)}
-                    >{renderValue}</div>
+                <div key={idx}
+                     className="item"
+                     onClick={() => this.onClick(value)}
+                >{renderValue}</div>
             )
         })
     }

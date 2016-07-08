@@ -1,7 +1,7 @@
+
 import expect from 'expect'
 import moment from 'moment'
 import {formatDatetime} from '../utils'
-
 
 describe('utils', () => {
     describe('formatDatetime', () => {

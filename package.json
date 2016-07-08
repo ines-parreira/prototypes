@@ -6,7 +6,7 @@
   "private": true,
   "repository": "https://github.com/gorgias/gorgias",
   "scripts": {
-    "lint": "eslint g/static/**/**.spec.js",
+    "lint": "eslint --quiet g/static/private/js",
     "pretest": "npm run lint",
     "test": "mocha --compilers js:babel-register -r jsdom-global/register --recursive g/static/**/*.spec.js",
     "test:debug": "mocha --compilers js:babel-register -r jsdom-global/register --debug --recursive g/static/**/*.spec.js",

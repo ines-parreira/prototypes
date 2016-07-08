@@ -4,7 +4,6 @@ import {convertFromHTML, ContentState} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
 import {renderTemplate} from '../components/utils/template'
 import {SOURCE_VALUE_PROP} from '../constants'
-import {lastMessage} from '../utils'
 import _isUndefined from 'lodash/isUndefined'
 
 export const newMessage = (channel, sourceType) => fromJS({
