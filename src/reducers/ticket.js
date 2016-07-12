@@ -246,7 +246,7 @@ export function ticket(state = ticketInitial, action) {
             return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
 
         case actions.SET_AGENT:
-            return state.set('assignee_user', action.args.get('assignee_user') ? action.args.get('assignee_user') : null)
+            return state.set('assignee_user', action.args.get('assignee_user') ? fromJS(action.args.get('assignee_user')) : null)
 
         case actions.SET_STATUS:
             if (action.args.get('id') && action.args.get('id') !== state.get('id')) {
