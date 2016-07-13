@@ -12,6 +12,14 @@ export default class TicketReplyArea extends React.Component {
     }
 
     componentDidMount() {
+        $(this.refs.popupClearMacros).popup({
+            inline: true,
+            variation: 'inverted',
+            position: 'top right',
+            hoverable: true,
+            on: 'hover'
+        })
+
         window.addEventListener('keydown', this.hideMacros)
         $('.mousetrap input').addClass('mousetrap')
     }
@@ -81,12 +89,16 @@ export default class TicketReplyArea extends React.Component {
                         className="ui transparent input full-width mousetrap"
                         placeholder="Search for a macro"
                     />
-                    <a className={classNames({ hidden: !macrosVisible })}>
+                    <a className={classNames({ hidden: !macrosVisible, 'clear-macros': true})} ref="popupClearMacros">
                         <i
-                            className="clear-macros right close icon"
+                            className="right close icon"
                             onClick={() => setMacrosVisible(false)}
                         />
                     </a>
+
+                    <div className="ui popup clear-macros-popup">
+                        <strong>Esc</strong> to close the macro list.
+                    </div>
                 </div>
                 {this.renderChild(macros)}
             </div>

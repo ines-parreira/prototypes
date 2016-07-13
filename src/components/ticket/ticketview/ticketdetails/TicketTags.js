@@ -34,57 +34,55 @@ export default class TicketTags extends React.Component {
         if (!ticketTags.size) { style = { paddingLeft: 0 } }
 
         return (
-            <div className="ui labels">
-                <div>
+            <div className="ui labels ticket-tags-wrapper">
 
-                    {
-                        ticketTags.map((tag, i) => (
-                            <div key={i} className="ticket-tag ui label">
-                                {tag.get('name')}
-                                <i className="icon close" onClick={() => removeTag(i)}/>
-                            </div>
-                        ))
-                    }
-
-                    <div
-                        ref="tagDropdown"
-                        className="ticket-tag-add-btn ui search button input pointing dropdown link item"
-                        style={style}
-                        onClick={() => this.refs.tagSearch.focus()}
-                    >
-                        <span>
-                            <i className="icon plus" /> ADD TAG
-                        </span>
-
-                        <div className="menu">
-                            <div className="ui search input">
-                                <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..."/>
-                            </div>
-                            <div className="hidden item" key="placeholder"></div>
-                            {
-
-                                tags.map(tag => {
-                                    if (!existingTagNames.contains(tag.name)) {
-                                        return (
-                                            <div
-                                                className="item"
-                                                key={tag.name}
-                                                data-value={tag.name}
-                                                onClick={this.update}
-                                            >
-                                                {tag.name}
-                                            </div>
-                                        )
-                                    }
-
-                                    return null
-                                })
-                            }
+                {
+                    ticketTags.map((tag, i) => (
+                        <div key={i} className="ticket-tag ui label">
+                            {tag.get('name')}
+                            <i className="icon close" onClick={() => removeTag(i)}/>
                         </div>
+                    ))
+                }
+
+                <div
+                    ref="tagDropdown"
+                    className="ticket-tag-add-btn ui search button input pointing dropdown link item"
+                    style={style}
+                    onClick={() => this.refs.tagSearch.focus()}
+                >
+                    <span>
+                        <i className="icon plus" /> ADD TAG
+                    </span>
+
+                    <div className="menu">
+                        <div className="ui search input">
+                            <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..."/>
+                        </div>
+                        <div className="hidden item" key="placeholder"></div>
+                        {
+
+                            tags.map(tag => {
+                                if (!existingTagNames.contains(tag.name)) {
+                                    return (
+                                        <div
+                                            className="item"
+                                            key={tag.name}
+                                            data-value={tag.name}
+                                            onClick={this.update}
+                                        >
+                                            {tag.name}
+                                        </div>
+                                    )
+                                }
+
+                                return null
+                            })
+                        }
                     </div>
-
-
                 </div>
+
+
             </div>
         )
     }

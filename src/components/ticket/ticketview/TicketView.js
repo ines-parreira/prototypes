@@ -163,7 +163,12 @@ export default class TicketView extends React.Component {
                     <div className="ui grid">
                         <div className="row">
 
-                            <div className="eight wide column">
+                            <div className="eleven wide column">
+                                <TicketStatus
+                                    currentStatus={ticket.get('status')}
+                                    setStatus={actions.ticket.setStatus}
+                                />
+
                                 <TicketTags
                                     tags={tags.get('items').toJS()}
                                     ticketTags={ticket.get('tags')}
@@ -172,7 +177,7 @@ export default class TicketView extends React.Component {
                                 />
                             </div>
 
-                            <div className="eight wide column ticket-details">
+                            <div className="five wide column ticket-details">
                                 <TicketPriority
                                     priority={ticket.get('priority')}
                                     togglePriority={actions.ticket.togglePriority}
@@ -187,11 +192,6 @@ export default class TicketView extends React.Component {
                                 <span className="ticket-id ticket-details-item">
                                     {ticketId}
                                 </span>
-
-                                <TicketStatus
-                                    currentStatus={ticket.get('status')}
-                                    setStatus={actions.ticket.setStatus}
-                                />
                             </div>
 
                         </div>
@@ -199,38 +199,41 @@ export default class TicketView extends React.Component {
 
                 </div>
 
-                <TicketMessages
-                    currentUser={this.props.currentUser}
-                    messages={ticket.get('messages')}
-                    submit={this.props.submit}
-                    deleteMessage={this.deleteMessage}
-                    loading={ticket.getIn(['state', 'loading'])}
-                    ticket={ticket}
-                />
+                <div className="ticket-content">
 
-                <ReplyMessageChannel
-                    ticket={this.props.ticket}
-                    actions={this.props.actions}
-                    settings={this.props.settings}
-                />
+                    <TicketMessages
+                        currentUser={this.props.currentUser}
+                        messages={ticket.get('messages')}
+                        submit={this.props.submit}
+                        deleteMessage={this.deleteMessage}
+                        loading={ticket.getIn(['state', 'loading'])}
+                        ticket={ticket}
+                    />
 
-                <TicketReplyArea
-                    actions={this.props.actions}
-                    applyMacro={this.props.applyMacro}
-                    previewMacro={this.props.actions.macro.previewMacro}
-                    previewMacroInModal={this.props.actions.macro.previewMacroInModal}
-                    openModal={this.props.actions.macro.openModal}
-                    currentUser={this.props.currentUser}
-                    users={this.props.users}
-                    macros={this.props.macros}
-                    ticket={this.props.ticket}
-                />
+                    <ReplyMessageChannel
+                        ticket={this.props.ticket}
+                        actions={this.props.actions}
+                        settings={this.props.settings}
+                    />
 
-                <TicketSubmitButtons
-                    ticket={ticket}
-                    submit={this.props.submit}
-                />
+                    <TicketReplyArea
+                        actions={this.props.actions}
+                        applyMacro={this.props.applyMacro}
+                        previewMacro={this.props.actions.macro.previewMacro}
+                        previewMacroInModal={this.props.actions.macro.previewMacroInModal}
+                        openModal={this.props.actions.macro.openModal}
+                        currentUser={this.props.currentUser}
+                        users={this.props.users}
+                        macros={this.props.macros}
+                        ticket={this.props.ticket}
+                    />
 
+                    <TicketSubmitButtons
+                        ticket={ticket}
+                        submit={this.props.submit}
+                    />
+
+                </div>
             </div>
         )
     }

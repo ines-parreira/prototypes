@@ -43,7 +43,7 @@ export default class TicketMessage extends React.Component {
         }
 
         const legend = !message.source.type.startsWith('facebook') && message.source.type !== 'chat' ?
-            `<${message.source.from[SOURCE_VALUE_PROP[message.source.type]]}>` : ''
+            `${message.source.from[SOURCE_VALUE_PROP[message.source.type]]}` : ''
 
         return (
             <span className="ticket-message-source">
@@ -129,6 +129,9 @@ export default class TicketMessage extends React.Component {
             'raw',
             'segment',
             {
+                'ticket-message-agent': message.from_agent
+            },
+            {
                 internal: !message.public,
                 loading: pending && !error
             }
@@ -168,7 +171,7 @@ export default class TicketMessage extends React.Component {
                             return null
                         })()}
 
-                        <span className="ticket-message-author ui medium header">
+                        <span className="ticket-message-author ui small header">
                             {message.sender.name}
                         </span>
 

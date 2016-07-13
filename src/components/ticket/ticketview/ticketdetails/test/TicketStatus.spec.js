@@ -24,14 +24,14 @@ describe('TicketStatus component', () => {
         component = renderer.getRenderOutput()
     })
 
-    it('should display the status', () => {
+    it('should display the quick status action', () => {
         const label = component.props.children[0]
-        expect(label.props.className).toBe('ticket-status ticket-details-item ui new label')
-        expect(label.props.children).toBe('new')
+        expect(label.props.className).toContain('ticket-status-action')
+        expect(label.props.children).toBe('CLOSE')
     })
 
     it('should have all statuses as options', () => {
-        const statusList = component.props.children[1].props.children.props.children
+        const statusList = component.props.children[2].props.children.props.children
         expect(statusList.length).toBe(TICKET_STATUSES.length)
     })
 })

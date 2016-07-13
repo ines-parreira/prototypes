@@ -11,16 +11,31 @@ export default class TicketStatus extends React.Component {
         })
     }
 
+    componentDidUpdate() {
+        // when the status changes, hide the popup
+        $(this.refs.popupStatus).popup('hide')
+    }
+
+    setQuickStatus(status) {
+        let newStatus = 'closed'
+        if (status === 'closed') {
+            newStatus = 'open'
+        }
+
+        this.props.setStatus(newStatus)
+    }
+
     render() {
         const { setStatus, currentStatus } = this.props
         return (
             <div className="ticket-status-wrapper">
-                <a
-                    ref="popupStatus"
-                    className={`ticket-status ticket-details-item ui ${currentStatus} label`}
-                >
-                    {currentStatus}
-                </a>
+                <button type="button" className="g-label ticket-status-action" onClick={() => this.setQuickStatus(currentStatus)}>
+                    {currentStatus === 'closed' ? 'OPEN' : 'CLOSE'}
+                </button>
+
+                <button type="button" className="g-label ticket-status-dropdown" ref="popupStatus">
+                    <i className="caret down icon"></i>
+                </button>
 
                 <div className="ui popup">
                     <div
