@@ -21,7 +21,7 @@ export default class InfobarWidgetField extends React.Component {
                         const urlText = fieldVal.length > 28 ? `${fieldVal.slice(0, 25)}...` : fieldVal
                         fieldValue = (
                             <span className="field-value">
-                                <a href="{fieldVal}" target="_blank">{urlText}</a>
+                                <a href={fieldVal} target="_blank">{urlText}</a>
                             </span>
                         )
                         break
