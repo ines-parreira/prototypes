@@ -31,6 +31,14 @@ export const SOURCE_VALUE_PROP = {
     'facebook-post': 'name'
 }
 
+export const USER_VALUE_PROP = {
+    email: 'email',
+    chat: null,
+    'facebook-message': 'name',
+    'facebook-comment': 'name',
+    'facebook-post': 'name'
+}
+
 /**
  * Templates for custom actions.
  * Those templates are used by the front-end to generate the UI to create a new action (in the Macros Management).

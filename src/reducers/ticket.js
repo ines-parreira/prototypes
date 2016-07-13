@@ -58,6 +58,22 @@ export function getLastNonInternalNoteMessage(messages) {
 }
 
 /**
+ * Get the most recent messages which have the matching sourceType
+ * @param messages
+ * @param sourceType
+ * @returns {*}
+ */
+export function getLastSameSourceTypeMessage(messages, sourceType) {
+    const msg = messages.filter((m) => m.getIn(['source', 'type']) === sourceType).last()
+
+    if (!msg && sourceType === 'facebook-comment') {
+        return messages.filter((m) => m.getIn(['source', 'type']) === 'facebook-post').last()
+    }
+
+    return msg
+}
+
+/**
  * A utility function that gives the source type we should set on a **new** message based on the
  * source type of the message we're responding to.
  */
@@ -375,6 +391,11 @@ export function ticket(state = ticketInitial, action) {
 
             return newState
         }
+
+        case actions.CLEAR_RECEIVERS:
+            return state
+                .setIn(['newMessage', 'source', 'to'], List())
+                .setIn(['newMessage', 'receiver'], null)
 
         case actions.MARK_TICKET_DIRTY:
             return state.setIn(['state', 'dirty'], true)

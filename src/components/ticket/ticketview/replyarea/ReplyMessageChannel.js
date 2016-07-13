@@ -4,7 +4,7 @@ import {Map, List} from 'immutable'
 import SearchableDropdown from './SearchableDropdown'
 import {SOURCE_VALUE_PROP} from '../../../../constants'
 import {firstMessage} from '../../../../utils'
-import {getLastNonInternalNoteMessage} from '../../../../reducers/ticket'
+import {getLastSameSourceTypeMessage} from '../../../../reducers/ticket'
 import _ from 'lodash'
 
 
@@ -38,7 +38,11 @@ export default class ReplyMessageChannel extends React.Component {
         let to = List()
         const curTo = ticket.getIn(['newMessage', 'source', 'to'])
         // We want the last message that was not an internal note.
-        const ticketLastMessage = getLastNonInternalNoteMessage(ticket.get('messages'))
+        const ticketLastMessage = getLastSameSourceTypeMessage(ticket.get('messages'), ticket.getIn(['newMessage', 'source', 'type']))
+
+        if (!ticketLastMessage) {
+            return List()
+        }
 
         if (curTo.size) {
             to = curTo
@@ -53,7 +57,7 @@ export default class ReplyMessageChannel extends React.Component {
         }
 
         if (onlyAddrs) {
-            const valueProp = SOURCE_VALUE_PROP[ticketLastMessage.getIn(['source', 'type'])]
+            const valueProp = SOURCE_VALUE_PROP[ticket.getIn(['newMessage', 'source', 'type'])]
             to = List(to.map(dest => dest.get(valueProp).toString()))
         }
 
@@ -203,9 +207,7 @@ export default class ReplyMessageChannel extends React.Component {
         const ticketFirstMessage = firstMessage(ticket.get('messages').toJS())
 
         const channelClassNames = {
-            email: classnames('item', {
-                hidden: !ticket.get('id') ? false : ticketFirstMessage.source.type !== 'email'
-            }),
+            email: 'item',
             chat: classnames('item', {
                 hidden: !ticket.get('id') ? false : ticketFirstMessage.source.type !== 'chat'
             }),

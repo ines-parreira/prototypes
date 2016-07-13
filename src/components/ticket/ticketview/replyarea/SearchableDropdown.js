@@ -47,6 +47,16 @@ export default class SearchableDropdown extends React.Component {
             receiverDropdown.dropdown('set exactly', this.props.defaultValues.toJS())
         }
 
+        if (prevProps.sourceType !== this.props.sourceType) {
+            receiverDropdown.dropdown({
+                allowAdditions: this.props.sourceType === 'email',
+                onAdd: this.props.addValue,
+                onRemove: this.props.removeValue
+            })
+
+            receiverDropdown.dropdown('set exactly', this.props.defaultValues.toJS())
+        }
+
         if (this.refs.dropdownMenu.children.length < 2) {
             this.refs.dropdownMenu.style.border = 'none'
         } else {

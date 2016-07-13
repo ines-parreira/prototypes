@@ -302,7 +302,7 @@ class TicketContainer extends React.Component {
         }
 
         return (
-            <DocumentTitle title={`${this.props.ticket.get('subject')}`}>
+            <DocumentTitle title={`${this.props.ticket.get('id') ? this.props.ticket.get('subject') : 'New ticket'}`}>
                 <div className="TicketContainer">
                     <TicketView
                         actions={this.props.actions}

@@ -5,7 +5,7 @@ import {browserHistory} from 'react-router'
 import Immutable, {Map, Set} from 'immutable'
 
 import {systemMessage} from './systemMessage'
-import {ACTION_TEMPLATES} from './../constants'
+import {ACTION_TEMPLATES, USER_VALUE_PROP, SOURCE_VALUE_PROP} from './../constants'
 import {renderTemplate} from '../components/utils/template'
 import {lastMessage} from '../utils'
 import * as MacroActions from './macro'
@@ -46,9 +46,10 @@ export const RECORD_MACRO = 'RECORD_MACRO'
 
 export const SET_PUBLIC = 'SET_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
+export const SET_SOURCE_TYPE = 'SET_SOURCE_TYPE'
 export const ADD_RECEIVER = 'ADD_RECEIVER'
 export const REMOVE_RECEIVER = 'REMOVE_RECEIVER'
-export const SET_SOURCE_TYPE = 'SET_SOURCE_TYPE'
+export const CLEAR_RECEIVERS = 'CLEAR_RECEIVERS'
 
 export const SETUP_NEW_TICKET = 'SETUP_NEW_TICKET'
 
@@ -210,10 +211,19 @@ export function removeReceiver(prop) {
     }
 }
 
-export function setSourceType(sourceType) {
+export function clearReceivers() {
     return {
-        type: SET_SOURCE_TYPE,
-        sourceType
+        type: CLEAR_RECEIVERS
+    }
+}
+
+export function setSourceType(sourceType) {
+    return (dispatch) => {
+        dispatch(clearReceivers())
+        dispatch({
+            type: SET_SOURCE_TYPE,
+            sourceType
+        })
     }
 }
 
@@ -492,7 +502,18 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
     if (data.newMessage) {
         if (data.messages.length) {
             const msg = lastMessage(data.messages)
-            data.newMessage.source.from = msg.from_agent ? msg.source.from : msg.source.to[0]
+
+            if (data.newMessage.source.type === msg.source.type) {
+                data.newMessage.source.from = msg.from_agent ? msg.source.from : msg.source.to[0]
+            } else {
+                data.newMessage.source.from = { name: currentUser.get('name') }
+
+                const addr = currentUser.get(USER_VALUE_PROP[data.newMessage.source.type])
+
+                if (addr) {
+                    data.newMessage.source.from[SOURCE_VALUE_PROP[data.newMessage.source.type]] = addr
+                }
+            }
         } else {
             data.newMessage.source.from = {
                 name: currentUser.get('name'),
