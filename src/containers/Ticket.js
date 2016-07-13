@@ -225,7 +225,7 @@ class TicketContainer extends React.Component {
             this.props.tickets.get('currentTicketIndex') + translation
         ]
 
-        let nextTicketUrl = null
+        let nextTicketUrl = `/app/tickets/${this.props.views.getIn(['active', 'slug'])}`
 
         if (nextTicket) {
             nextTicketUrl = `/app/ticket/${nextTicket.id}`
