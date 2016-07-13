@@ -67,7 +67,7 @@ export default class ListActions extends React.Component {
     }
 
     bulkUpdate(key, value) {
-        this.props.actions.tickets.bulkUpdate(this.props.selected, key, value)
+        this.props.actions.tickets.bulkUpdate(this.props.selected, key, value, this.props.views)
     }
 
     bulkDelete() {
