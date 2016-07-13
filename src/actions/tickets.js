@@ -77,7 +77,7 @@ export function toggleTicketSelection(ticketId) {
 }
 
 
-export function bulkUpdate(ids, key, value) {
+export function bulkUpdate(ids, key, value, views) {
     return (dispatch) => {
         dispatch({
             type: BULK_UPDATE_START
@@ -142,6 +142,7 @@ export function bulkUpdate(ids, key, value) {
                 updates: data.updates,
                 resp
             })
+            setTimeout(() => dispatch(fetchTicketsPage(views, 1)), 800)
             dispatch(systemMessage({
                 type: 'success',
                 msg

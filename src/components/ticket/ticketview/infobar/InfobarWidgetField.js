@@ -17,7 +17,7 @@ export default class InfobarWidgetField extends React.Component {
                 const fieldVal = renderTemplate(field.value.value, {self: object.toJS()})
 
                 switch (field.value.type) {
-                    case 'url':
+                    case 'url': {
                         const urlText = fieldVal.length > 28 ? `${fieldVal.slice(0, 25)}...` : fieldVal
                         fieldValue = (
                             <span className="field-value">
@@ -25,18 +25,21 @@ export default class InfobarWidgetField extends React.Component {
                             </span>
                         )
                         break
-                    case 'datetime':
+                    }
+                    case 'datetime': {
                         fieldValue = (
                             <span className="field-value datetime">
                                 {formatDatetime(fieldVal, currentUser.get('timezone'), 'DD-MM-YYYY hh:mm')}
                             </span>
                         )
                         break
-                    default:
+                    }
+                    default: {
                         fieldValue = (
                             <span className="field-value">{fieldVal}</span>
                         )
                         break
+                    }
                 }
                 break
             }

@@ -40,12 +40,12 @@ describe('TicketTags component', () => {
     })
 
     it('should display current tags', () => {
-        const ticketTagsList = component.props.children.props.children[0]
+        const ticketTagsList = component.props.children[0]
         expect(ticketTagsList.size).toBe(ticketTags.size)
     })
 
     it('should have all tags as options, except those in ticketTags', () => {
-        const tagsList = component.props.children.props.children[1].props.children[1].props.children[2]
+        const tagsList = component.props.children[1].props.children[1].props.children[2]
         let actualTagsListLength = 0
 
         for (const tag of tagsList) {
