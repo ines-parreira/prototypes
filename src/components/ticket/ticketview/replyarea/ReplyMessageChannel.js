@@ -58,7 +58,10 @@ export default class ReplyMessageChannel extends React.Component {
 
         if (onlyAddrs) {
             const valueProp = SOURCE_VALUE_PROP[ticket.getIn(['newMessage', 'source', 'type'])]
-            to = List(to.map(dest => dest.get(valueProp).toString()))
+
+            if (valueProp) {
+                to = List(to.map(dest => dest.get(valueProp).toString()))
+            }
         }
 
         return to
@@ -77,6 +80,7 @@ export default class ReplyMessageChannel extends React.Component {
             private: 'action icon comment yellow',
             email: 'action icon mail blue',
             chat: 'action icon purple comments',
+            api: 'action icon code',
             'facebook-comment': 'action icon facebook square blue',
             'facebook-message': 'action icon facebook-messenger blue'
         }
@@ -177,7 +181,7 @@ export default class ReplyMessageChannel extends React.Component {
         const parentId = ticket.get('messages').size ?
             `${ticket.get('id')} - ${ticket.get('messages').last().get('id')}` : 'new'
 
-        const disabledChannels = ['facebook-post', 'facebook-message', 'chat']
+        const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api']
 
         const isInputEnabled =
             disabledChannels.indexOf(this.props.ticket.getIn(['newMessage', 'source', 'type'])) === -1 ||

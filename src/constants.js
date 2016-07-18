@@ -26,6 +26,7 @@ export const BASIC_OPERATORS = {
 export const SOURCE_VALUE_PROP = {
     email: 'address',
     chat: 'smooch_id',
+    api: null,
     'facebook-message': 'name',
     'facebook-comment': 'name',
     'facebook-post': 'name'
@@ -34,6 +35,7 @@ export const SOURCE_VALUE_PROP = {
 export const USER_VALUE_PROP = {
     email: 'email',
     chat: null,
+    api: null,
     'facebook-message': 'name',
     'facebook-comment': 'name',
     'facebook-post': 'name'
