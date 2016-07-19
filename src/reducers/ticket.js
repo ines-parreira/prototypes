@@ -145,8 +145,19 @@ export function ticket(state = ticketInitial, action) {
         case actions.SUBMIT_TICKET_START:
             return state.setIn(['state', 'loading'], true)
 
-        case actions.SUBMIT_TICKET_MESSAGE_START:
-            return state.setIn(['state', 'loading'], true)
+        case actions.SUBMIT_TICKET_MESSAGE_START: {
+            let newState = state.setIn(['state', 'loading'], true)
+
+            // if the ticket is un-assigned,
+            // auto-assign it to the current user.
+            if (!newState.getIn(['assignee_user', 'email'])) {
+                const sender = action.currentUser.filter(actions.keyIn('email', 'id', 'name'))
+
+                newState = newState.set('assignee_user', sender)
+            }
+
+            return newState
+        }
 
         case actions.SUBMIT_TICKET_ERROR:
             return state.setIn(['state', 'loading'], false)

@@ -584,7 +584,8 @@ function onMessageSent(dispatch, ticket_id, messageSent) {
 export function submitTicketMessage(ticket, status, macroActions, currentUser, action, resetMessage = true) {
     return (dispatch) => {
         dispatch({
-            type: SUBMIT_TICKET_MESSAGE_START
+            type: SUBMIT_TICKET_MESSAGE_START,
+            currentUser
         })
         const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
 

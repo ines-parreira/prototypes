@@ -492,6 +492,24 @@ describe('Ticket reducer', () => {
         )
     })
 
+    // TODO
+    it('should assign un-assigned ticket to the replying user', () => {
+        const sender = Map({
+            id: 'bar',
+            email: 'foo@bar',
+            name: 'foo bar'
+        })
+
+        expect(
+            ticket(initialState, {
+                type: actions.SUBMIT_TICKET_MESSAGE_START,
+                currentUser: sender
+            })
+        ).toEqualImmutable(
+            initialState.set('assignee_user', sender).setIn(['state', 'loading'], true)
+        )
+    })
+
     describe('function getLastSameSourceTypeMessage', () => {
         it('should return the last message of matching sourceType', () => {
             const messages = fromJS([
