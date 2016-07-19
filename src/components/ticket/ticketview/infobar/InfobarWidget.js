@@ -5,11 +5,8 @@ import InfobarWidgetField from './InfobarWidgetField'
 export default class InfobarWidget extends React.Component {
     render() {
         const {widget, widgets, object, currentUser} = this.props
-        if (!object) {
-            return null
-        }
 
-        if (!widget.root) {
+        if (!object || !widget.root) {
             return null
         }
 

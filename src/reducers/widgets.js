@@ -1,5 +1,6 @@
 import * as actions from '../actions/widget'
 import { Map } from 'immutable'
+import _ from 'lodash'
 
 
 const widgetsInitial = Map({
@@ -12,6 +13,10 @@ export function widgets(state = widgetsInitial, action) {
         case actions.FETCH_WIDGETS_START:
             return state
         case actions.FETCH_WIDGETS_SUCCESS:
+            for (const widget of action.resp.data) {
+                widget.fields = _.sortBy(widget.fields, v => v.order)
+            }
+
             return Map({
                 items: action.resp.data,
                 meta: action.resp.meta
