@@ -1,6 +1,4 @@
-/**
- * View-related
- */
+// View related
 
 export const DEFAULT_VIEW = 'my-tickets'
 
@@ -16,6 +14,7 @@ export const BASIC_OPERATORS = {
         label: 'is not'
     }
 }
+
 
 /**
  * Ticket-related
@@ -42,11 +41,53 @@ export const USER_VALUE_PROP = {
 }
 
 /**
+ * Integration-related
+ */
+
+export const ACTIVE_INTEGRATIONS = ['facebook', 'http']
+
+// Semantic icons for integration types.
+export const INTEGRATION_TYPE_TO_ICON = {
+    email: 'mail icon',
+    facebook: 'facebook square icon',
+    http: 'feed icon',
+    twitter: 'twitter icon',
+    segment: 'square icon'
+}
+
+
+// A list of integration types along with descriptions that will be displayed in the integrations summary
+export const INTEGRATION_TYPE_DESCRIPTIONS = [
+    // {
+    //     type: 'email',
+    //     description: 'Connect your support inboxes'
+    // },
+    {
+        type: 'facebook',
+        description: 'Connect your Facebook page'
+    },
+    // {
+    //     type: 'http',
+    //     description: 'Connect to anything over http'
+    // },
+    // {
+    //     type: 'twitter',
+    //     description: 'Connect your twitter account'
+    // },
+    // {
+    //     type: 'segment',
+    //     description: 'Sync data with all your apps'
+    // }
+]
+
+
+/**
  * Templates for custom actions.
  * Those templates are used by the front-end to generate the UI to create a new action (in the Macros Management).
  * Once it has been filled and saved by the user, it is saved in the Action table.
  * Then, when the macro will be used, the fields with no value will show up to be filled by the agent using the macro.
  */
+
 
 export const DEFAULT_ACTIONS = [
     'addTags',

@@ -312,8 +312,7 @@ export function fetchTicketDetails(ticketId, data) {
             url,
             data,
             type: 'json',
-            method: 'GET',
-            contentType: 'application/json'
+            method: 'GET'
         }).then((resp) => {
             if (_.isEmpty(resp)) {
                 console.error('No results for', url)

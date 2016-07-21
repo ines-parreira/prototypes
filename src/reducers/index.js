@@ -13,6 +13,7 @@ import { users } from './users'
 import { settings } from './settings'
 import { tags } from './tags'
 import { macros } from './macros'
+import { integrationSettings } from './integrationSettings'
 import { views } from './view'
 
 const rootReducer = combineReducers({
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     users,
     tags,
     macros,
+    integrationSettings,
     routing
 })
 

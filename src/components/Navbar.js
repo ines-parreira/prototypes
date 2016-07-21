@@ -26,6 +26,10 @@ export default class Navbar extends React.Component {
             active: activeContent === 'users'
         })
 
+        const settingsClassNames = classnames('item', {
+            active: activeContent === 'settings'
+        })
+
         return (
             <div className="navbar" ref="navbar">
                 <div id="main-menu" className="navbar-btn navbar-btn-category ui dropdown">
@@ -35,6 +39,7 @@ export default class Navbar extends React.Component {
                         <Link to="/app" className={ticketsClassNames} onClick={() => this.setState({ title: 'Tickets' })}>Tickets</Link>
                         {/* <Link to="/rules" className="item" onClick={() => this.setState({ title: 'Rules' })}>Rules</Link> */}
                         <Link to="/app/users" className={usersClassNames} onClick={() => this.setState({ title: 'Users' })}>Users</Link>
+                        <Link to="/app/settings/integrations" className={settingsClassNames} onClick={() => this.setState({ title: 'Integrations' })}>Integrations</Link>
                     </div>
                 </div>
 
