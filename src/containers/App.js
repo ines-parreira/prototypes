@@ -7,11 +7,13 @@ import {dismissMessage} from '../actions/systemMessage'
 import {fetchUser, fetchUsers} from '../actions/user'
 import {fetchSettings} from '../actions/settings'
 import {fetchTags} from '../actions/tag'
+import {pollActivity} from '../actions/activity'
 import Navbar from '../components/Navbar'
 import KeyboardHelp from '../components/KeyboardHelp'
 import Mousetrap, * as mousetrap from 'mousetrap'
 import '../../css/main.less'
 
+let pollInterval = null
 class App extends React.Component {
     constructor(props) {
         super(props)
@@ -26,6 +28,14 @@ class App extends React.Component {
         this.props.fetchUsers()
         this.props.fetchUsers('agent')
         this.props.fetchTags()
+
+        if (pollInterval) {
+            clearInterval(pollInterval)
+        }
+        pollInterval = setInterval(() =>
+            this.props.pollActivity(this.props.activity.get('pendingEvents')), 5000)
+        // call it the first time without polling
+        this.props.pollActivity(this.props.activity.get('pendingEvents'))
     }
 
     componentDidMount() {
@@ -147,7 +157,7 @@ class App extends React.Component {
             <DocumentTitle title="Gorgias">
                 <div className="App">
 
-                     {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}
+                    {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}
                     {this.props.navbar || (
                         <Navbar activeContent="settings" currentUser={this.props.currentUser}>
                             <div></div>
@@ -189,11 +199,13 @@ App.propTypes = {
 
     // current logged in user
     currentUser: PropTypes.object,
+    activity: PropTypes.object,
 
     fetchUser: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
     fetchSettings: PropTypes.func.isRequired,
     fetchTags: PropTypes.func.isRequired,
+    pollActivity: PropTypes.func.isRequired,
 
     // Injected by React Router
     children: PropTypes.node,
@@ -210,7 +222,8 @@ App.propTypes = {
 function mapStateToProps(state) {
     return {
         systemMessage: state.systemMessage,
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        activity: state.activity
     }
 }
 
@@ -219,5 +232,6 @@ export default connect(mapStateToProps, {
     fetchUser,
     fetchUsers,
     fetchSettings,
-    fetchTags
+    fetchTags,
+    pollActivity
 })(App)

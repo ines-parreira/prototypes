@@ -1,4 +1,5 @@
 import * as actions from '../actions/ticket'
+import {SUBMIT_ACTIVITY_SUCCESS} from '../actions/activity'
 import {Map, List, fromJS} from 'immutable'
 import {convertFromHTML, ContentState} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
@@ -20,7 +21,6 @@ export const newMessage = (channel, sourceType) => fromJS({
     subject: '',
     body_text: '',
     body_html: '',
-    contentState: null,
     channel,
     attachments: List(),
     macros: List()
@@ -32,7 +32,10 @@ export const ticketInitial = Map({
         dirty: false,
         loading: false,
         attachmentLoading: false,
-        query: ''
+        query: '',
+        fromMacro: false,
+        contentState: null,
+        latestEventDatetime: null
     }),
     messages: List(),
     subject: '',
@@ -141,9 +144,8 @@ export function ticket(state = ticketInitial, action) {
                 state.getIn(['newMessage', 'macros']).push({id: action.macro.get('id')})
             )
 
-        case actions.DELETE_TICKET_MESSAGE_START:
-        case actions.SUBMIT_TICKET_START:
-            return state.setIn(['state', 'loading'], true)
+        case actions.RECEIVED_MACRO:
+            return state.setIn(['state', 'fromMacro'], false)
 
         case actions.SUBMIT_TICKET_MESSAGE_START: {
             let newState = state.setIn(['state', 'loading'], true)
@@ -159,9 +161,10 @@ export function ticket(state = ticketInitial, action) {
             return newState
         }
 
+        case actions.SUBMIT_TICKET_START:
+        case actions.DELETE_TICKET_MESSAGE_START:
+            return state.setIn(['state', 'loading'], true)
         case actions.SUBMIT_TICKET_ERROR:
-            return state.setIn(['state', 'loading'], false)
-
         case actions.SUBMIT_TICKET_MESSAGE_ERROR:
             return state.setIn(['state', 'loading'], false)
 
@@ -176,6 +179,8 @@ export function ticket(state = ticketInitial, action) {
                     state: {
                         dirty: false,
                         loading: false,
+                        contentState: null,
+                        fromMacro: false,
                         query: ''
                     }
                 })
@@ -207,6 +212,8 @@ export function ticket(state = ticketInitial, action) {
                 state: {
                     dirty: false,
                     loading: false,
+                    contentState: null,
+                    fromMacro: false,
                     query: ''
                 }
             })
@@ -246,7 +253,6 @@ export function ticket(state = ticketInitial, action) {
             return ticketInitial
 
         /* Macro actions */
-
         case actions.ADD_TICKET_TAGS: {
             tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
@@ -305,38 +311,44 @@ export function ticket(state = ticketInitial, action) {
 
         case actions.SET_RESPONSE_TEXT: {
             let contentState = action.args.get('contentState')
-            const text = contentState ? contentState.getPlainText() : action.args.get('body_text', '')
-            const html = contentState ? stateToHTML(contentState) : action.args.get('body_html', '')
-            const sender = action.currentUser.filter(actions.keyIn('email', 'id', 'name'))
+            let text = ''
+            let html = ''
 
-            const ticketState = state.toJS()
-            const currentUser = sender.toJS()
+            if (action.fromMacro) {
+                const ticketState = state.toJS()
+                const sender = action.currentUser.filter(actions.keyIn('email', 'id', 'name'))
+                const currentUser = sender.toJS()
 
-            const expandedText = fromJS(renderTemplate(text, {
-                ticket: ticketState,
-                current_user: currentUser
-            }))
+                text = renderTemplate(action.args.get('body_text', ''), {
+                    ticket: ticketState,
+                    current_user: currentUser
+                })
 
-            const expandedHTML = fromJS(renderTemplate(html, {
-                ticket: ticketState,
-                current_user: currentUser
-            }))
-
-            if (!contentState) {
-                // we use text first because it's more stable
-                if (expandedText) {
-                    contentState = ContentState.createFromText(expandedText)
+                if (text) {
+                    contentState = ContentState.createFromText(text)
                 } else {
                     // fallback to html
-                    contentState = ContentState.createFromBlockArray(convertFromHTML(expandedHTML))
+                    html = renderTemplate(action.args.get('body_html', ''), {
+                        ticket: ticketState,
+                        current_user: currentUser
+                    })
+                    contentState = ContentState.createFromBlockArray(convertFromHTML(html))
                 }
+            } else if (contentState) {
+                text = contentState.getPlainText()
+                html = stateToHTML(contentState)
             }
 
-            return state.set('newMessage', state.get('newMessage').merge({
-                contentState,
-                body_text: expandedText,
-                body_html: expandedHTML
-            })).setIn(['state', 'dirty'], expandedText !== '' || state.getIn(['state', 'dirty']))
+            return state.mergeDeep({
+                newMessage: {
+                    body_text: text,
+                    body_html: html
+                },
+                state: {
+                    fromMacro: action.fromMacro,
+                    dirty: text !== ''
+                }
+            }).setIn(['state', 'contentState'], contentState)
         }
 
         case actions.SETUP_NEW_TICKET:
@@ -409,7 +421,7 @@ export function ticket(state = ticketInitial, action) {
                 .setIn(['newMessage', 'receiver'], null)
 
         case actions.MARK_TICKET_DIRTY:
-            return state.setIn(['state', 'dirty'], true)
+            return state.setIn(['state', 'dirty'], action.dirty)
 
         case actions.DELETE_TICKET_MESSAGE_SUCCESS:
             return state.set(
@@ -419,6 +431,23 @@ export function ticket(state = ticketInitial, action) {
                 )
             ).setIn(['state', 'loading'], false)
 
+        case SUBMIT_ACTIVITY_SUCCESS: {
+            // See if we have an event for our ticket
+            const event = fromJS(action.resp.events).find((e) => (
+                e.get('object_type') === 'Ticket' && e.get('object_id') === state.get('id')
+            ))
+            if (event) {
+                const latestEventDatetime = state.getIn(['state', 'latestEventDatetime'])
+                const eventDatetime = event.get('created_datetime')
+                let newState = state.setIn(['state', 'latestEventDatetime'], eventDatetime)
+
+                if (latestEventDatetime && eventDatetime !== latestEventDatetime) {
+                    newState = newState.set('messages', event.getIn(['object', 'messages']))
+                }
+                return newState
+            }
+            return state
+        }
         default:
             return state
     }

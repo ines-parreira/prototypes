@@ -15,6 +15,7 @@ import { tags } from './tags'
 import { macros } from './macros'
 import { integrationSettings } from './integrationSettings'
 import { views } from './view'
+import { activity } from './activity'
 
 const rootReducer = combineReducers({
     systemMessage,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
     schemas,
     rules,
     views,
+    activity,
     users,
     tags,
     macros,

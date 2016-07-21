@@ -166,7 +166,8 @@ export function applyMacroAction(action, currentUser) {
     return {
         type: name,
         args: action.get('arguments'),
-        currentUser
+        currentUser,
+        fromMacro: true
     }
 }
 
@@ -176,7 +177,7 @@ export function applyMacro(macro, currentUser) {
             type: APPLY_MACRO,
             macro
         })
-        macro.get('actions').map(action => dispatch(applyMacroAction(action, currentUser)))
+        macro.get('actions').forEach(action => dispatch(applyMacroAction(action, currentUser)))
         dispatch({
             type: RECORD_MACRO,
             macro

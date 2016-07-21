@@ -1,9 +1,9 @@
-import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
+import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import * as ViewActions from '../actions/view'
 import TicketsNavbarView from '../components/ticket/TicketsNavbarView'
+import ActivityWidget from '../components/ActivityWidget'
 import Navbar from '../components/Navbar'
 
 class TicketsNavbarContainer extends React.Component {
@@ -15,6 +15,7 @@ class TicketsNavbarContainer extends React.Component {
     render() {
         return (
             <Navbar currentUser={this.props.currentUser} activeContent="tickets">
+                <ActivityWidget activity={this.props.activity}/>
                 <TicketsNavbarView
                     views={this.props.views}
                     currentView={this.props.views.get('active')}
@@ -28,6 +29,7 @@ class TicketsNavbarContainer extends React.Component {
 TicketsNavbarContainer.propTypes = {
     currentUser: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
+    activity: PropTypes.object,
     actions: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired
 }
@@ -35,6 +37,7 @@ TicketsNavbarContainer.propTypes = {
 function mapStateToProps(state) {
     return {
         currentUser: state.currentUser,
+        activity: state.activity,
         views: state.views
     }
 }

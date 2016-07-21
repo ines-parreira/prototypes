@@ -13,7 +13,7 @@ export default class TicketMacros extends React.Component {
     renderMacroListItem = (macro) => {
         const containerOpts = {
             key: macro.get('id'),
-            className: classnames('item macro-item', {active: macro.get('id') === this.props.selected.get('id')}),
+            className: classnames('item macro-item', {active: macro.get('id') === this.props.macros.get('selected').get('id')}),
             onMouseEnter: () => this.props.previewMacro(macro),
             onClick: () => this.props.applyMacro(macro),
         }
@@ -124,7 +124,7 @@ export default class TicketMacros extends React.Component {
 
 
     renderSelectedMacro = () => {
-        const macro = this.props.selected
+        const macro = this.props.macros.get('selected')
 
         if (!macro || macro.isEmpty()) {
             return null
@@ -170,11 +170,17 @@ export default class TicketMacros extends React.Component {
     }
 
     render() {
+        const items = this.props.macros.get('items')
+
+        if (!this.props.macros.get('visible')) {
+            return null
+        }
+
         let content = (
             <div className="ui grid">
                 <div className="macro-list four wide column">
                     <div className="ui aligned selection relaxed list">
-                        {this.props.items.map(this.renderMacroListItem)}
+                        {items.map(this.renderMacroListItem).toList()}
                     </div>
                 </div>
                 <div className="macro-preview-container twelve wide column">
@@ -185,7 +191,7 @@ export default class TicketMacros extends React.Component {
             </div>
         )
 
-        if (!this.props.items.size) {
+        if (!items.size) {
             content = (
                 <div className="no-macro-container">
                     <h4>You don't have any macros yet.</h4>
@@ -207,8 +213,7 @@ export default class TicketMacros extends React.Component {
 }
 
 TicketMacros.propTypes = {
-    items: PropTypes.object.isRequired,
-    selected: PropTypes.object,
+    macros: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     previewMacro: PropTypes.func.isRequired,
     previewMacroInModal: PropTypes.func.isRequired,

@@ -18,7 +18,10 @@ import MacrosContainer from './Macros' // import that to fetch tags list
 class TicketContainer extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { unbindConfirmationHook: () => {} }
+        this.state = {
+            unbindConfirmationHook: () => {
+            }
+        }
     }
 
     componentWillMount() {
@@ -30,6 +33,92 @@ class TicketContainer extends React.Component {
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers('agent')
+    }
+
+    componentDidMount() {
+        this.bindConfirmToRouter()
+        window.onbeforeunload = this.confirmLeaveWhenDirty
+
+        this.bindKeys()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.params.ticketId !== this.props.params.ticketId && nextProps.params.ticketId !== 'new') {
+            /**
+             * Fetch required data when loading a ticket.
+             */
+            if (this.props.params.ticketId !== 'new') {
+                // Don't clear when creating a new ticket: looks better this way
+                this.props.actions.ticket.clearTicket()
+            }
+            this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
+        } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
+            /**
+             * Redirect to the new page when submitting a new ticket.
+             */
+            this.forcePush(`/app/ticket/${nextProps.ticket.get('id')}/`)
+        } else if (
+            this.props.ticket.get('id') &&
+            this.props.ticket.get('id') !== 'new' &&
+            this.props.ticket.get('id') === nextProps.ticket.get('id') &&
+            this.props.ticket.get('id').toString() === this.props.params.ticketId
+        ) {
+            /**
+             * This is the autosave. Here, we check changes to the ticket state, and if there's any we make a
+             * partial update to save only what has changed.
+             */
+
+            const data = {}
+
+            if (this.props.ticket.get('status') !== nextProps.ticket.get('status')) {
+                data.status = nextProps.ticket.get('status')
+            }
+
+            if (this.props.ticket.get('tags').size !== nextProps.ticket.get('tags').size) {
+                data.tags = nextProps.ticket.get('tags')
+            }
+
+            if (this.props.ticket.get('priority') !== nextProps.ticket.get('priority')) {
+                data.priority = nextProps.ticket.get('priority')
+            }
+
+            if (this.props.ticket.getIn(['assignee_user', 'id']) !== nextProps.ticket.getIn(['assignee_user', 'id'])) {
+                data.assignee_user = {id: nextProps.ticket.getIn(['assignee_user', 'id'])}
+            }
+
+            if (this.props.ticket.get('subject') !== nextProps.ticket.get('subject')) {
+                data.subject = nextProps.ticket.get('subject')
+            }
+
+            if (Object.keys(data).length) {
+                this.props.actions.ticket.ticketPartialUpdate(nextProps.ticket.get('id'), data)
+            }
+        }
+    }
+
+    componentDidUpdate = (prevProps) => {
+        const prevMacros = prevProps.macros.get('items')
+        const macros = this.props.macros.get('items')
+        if (prevMacros.size === 0 && macros.size !== 0) {
+            this.props.actions.macro.previewMacro(macros.valueSeq().first())
+        }
+
+        if (prevProps.macros.get('isModalOpen') && !this.props.macros.get('isModalOpen')) {
+            this.bindKeys()
+        }
+    }
+
+    componentWillUnmount() {
+        window.onbeforeunload = null
+        mousetrap.unbind('escape')
+        mousetrap.unbind('enter')
+        mousetrap.unbind('up')
+        mousetrap.unbind('down')
+        mousetrap.unbind('left')
+        mousetrap.unbind('right')
+        mousetrap.unbind('mod+enter')
+        mousetrap.unbind('mod+shift+enter')
+        this.props.actions.ticket.clearTicket()
     }
 
     confirmLeaveWhenDirty = (e, suffix = '') => {
@@ -50,10 +139,12 @@ class TicketContainer extends React.Component {
     }
 
     bindConfirmToRouter() {
-        this.setState({ unbindConfirmationHook: this.props.router.setRouteLeaveHook(
-            this.props.route,
-            (e) => this.confirmLeaveWhenDirty(e, '\n\nAre you sure you want to leave this page?')
-        )})
+        this.setState({
+            unbindConfirmationHook: this.props.router.setRouteLeaveHook(
+                this.props.route,
+                (e) => this.confirmLeaveWhenDirty(e, '\n\nAre you sure you want to leave this page?')
+            )
+        })
     }
 
     forcePush(url) {
@@ -114,8 +205,7 @@ class TicketContainer extends React.Component {
                 if (e.preventDefault) {
                     e.preventDefault()
                 }
-
-                this.submit('closed', true)
+                this.submit()
             }
         })
         mousetrap.bind('mod+shift+enter', (e) => {
@@ -123,96 +213,9 @@ class TicketContainer extends React.Component {
                 if (e.preventDefault) {
                     e.preventDefault()
                 }
-
-                this.submit()
+                this.submit('closed', true)
             }
         })
-    }
-
-    componentDidMount() {
-        this.bindConfirmToRouter()
-        window.onbeforeunload = this.confirmLeaveWhenDirty
-
-        this.bindKeys()
-    }
-
-    componentWillUnmount() {
-        window.onbeforeunload = null
-        mousetrap.unbind('escape')
-        mousetrap.unbind('enter')
-        mousetrap.unbind('up')
-        mousetrap.unbind('down')
-        mousetrap.unbind('left')
-        mousetrap.unbind('right')
-        mousetrap.unbind('mod+enter')
-        mousetrap.unbind('mod+shift+enter')
-        this.props.actions.ticket.clearTicket()
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.params.ticketId !== this.props.params.ticketId && nextProps.params.ticketId !== 'new') {
-            /**
-             * Fetch required data when loading a ticket.
-             */
-            if (this.props.params.ticketId !== 'new') {
-                // Don't clear when creating a new ticket: looks better this way
-                this.props.actions.ticket.clearTicket()
-            }
-            this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
-        } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
-            /**
-             * Redirect to the new page when submitting a new ticket.
-             */
-            this.forcePush(`/app/ticket/${nextProps.ticket.get('id')}/`)
-        } else if (
-            this.props.ticket.get('id') &&
-            this.props.ticket.get('id') !== 'new' &&
-            this.props.ticket.get('id') === nextProps.ticket.get('id') &&
-            this.props.ticket.get('id').toString() === this.props.params.ticketId
-        ) {
-            /**
-             * This is the autosave. Here, we check changes to the ticket state, and if there's any we make a
-             * partial update to save only what has changed.
-             */
-
-            const data = {}
-
-            if (this.props.ticket.get('status') !== nextProps.ticket.get('status')) {
-                data.status = nextProps.ticket.get('status')
-            }
-
-            if (this.props.ticket.get('tags').size !== nextProps.ticket.get('tags').size) {
-                data.tags = nextProps.ticket.get('tags')
-            }
-
-            if (this.props.ticket.get('priority') !== nextProps.ticket.get('priority')) {
-                data.priority = nextProps.ticket.get('priority')
-            }
-
-            if (this.props.ticket.getIn(['assignee_user', 'id']) !== nextProps.ticket.getIn(['assignee_user', 'id'])) {
-                data.assignee_user = { id: nextProps.ticket.getIn(['assignee_user', 'id']) }
-            }
-
-            if (this.props.ticket.get('subject') !== nextProps.ticket.get('subject')) {
-                data.subject = nextProps.ticket.get('subject')
-            }
-
-            if (Object.keys(data).length) {
-                this.props.actions.ticket.ticketPartialUpdate(nextProps.ticket.get('id'), data)
-            }
-        }
-    }
-
-    componentDidUpdate = (prevProps) => {
-        const prevMacros = prevProps.macros.get('items')
-        const macros = this.props.macros.get('items')
-        if (prevMacros.size === 0 && macros.size !== 0) {
-            this.props.actions.macro.previewMacro(macros.valueSeq().first())
-        }
-
-        if (prevProps.macros.get('isModalOpen') && !this.props.macros.get('isModalOpen')) {
-            this.bindKeys()
-        }
     }
 
     applyMacro = (macro) => {
@@ -221,9 +224,8 @@ class TicketContainer extends React.Component {
 
     computeNextUrl(ascending) {
         const translation = ascending ? 1 : -1
-        const nextTicket = this.props.tickets.get('items').toJS()[
-            this.props.tickets.get('currentTicketIndex') + translation
-        ]
+        const nextIndex = this.props.tickets.get('currentTicketIndex') + translation
+        const nextTicket = this.props.tickets.get('items').toJS()[nextIndex]
 
         let nextTicketUrl = `/app/tickets/${this.props.views.getIn(['active', 'slug'])}`
 
@@ -244,10 +246,16 @@ class TicketContainer extends React.Component {
         }
 
         if (!ticket.get('id')) {
-            ticket = ticket.set('sender', {id: this.props.currentUser.get('id')})
-                .set('requester', ticket.getIn(['newMessage', 'receiver']))
-                .set('receiver', ticket.getIn(['newMessage', 'receiver']))
-                .setIn(['newMessage', 'sender'], {id: this.props.currentUser.get('id')})
+            const receiver = ticket.getIn(['newMessage', 'receiver'])
+            const sender = {id: this.props.currentUser.get('id')}
+            ticket = ticket.mergeDeep({
+                sender,
+                requester: receiver,
+                receiver,
+                newMessage: {
+                    sender
+                }
+            })
         }
 
         if (action === 'force') {
@@ -279,7 +287,7 @@ class TicketContainer extends React.Component {
 
         if (next) {
             /**
-             * `next` is a boolean indicating whether the agent want to be redirected to the next ticket.
+             * `next` is a boolean indicating whether the agent wants to be redirected to the next ticket.
              *
              * If he does, we first try to get the naive next ticket (the ticket at the current index + 1).
              * If the ticket doesnt exist, then we can't redirect the agent.
@@ -316,7 +324,7 @@ class TicketContainer extends React.Component {
                         applyMacro={this.applyMacro}
                         view={view}
                     />
-                    <MacrosContainer noUnbind />
+                    <MacrosContainer noUnbind/>
                 </div>
             </DocumentTitle>
         )

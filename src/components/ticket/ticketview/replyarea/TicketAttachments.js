@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react'
 
 export default class TicketAttachments extends React.Component {
+    // only re-render if we have a different set of attachments
+    shouldComponentUpdate = (nextProps) => !this.props.attachments.equals(nextProps.attachments)
+
     renderAttachmentIcon(contentType) {
         let iconType = 'attach'
 
@@ -26,6 +29,9 @@ export default class TicketAttachments extends React.Component {
 
     render() {
         const {attachments} = this.props
+        if (attachments.isEmpty()) {
+            return null
+        }
 
         return (
             <div className="attachments enumerable-list">

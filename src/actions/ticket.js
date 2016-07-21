@@ -3,11 +3,11 @@ import React from 'react'
 import _ from 'lodash'
 import {browserHistory} from 'react-router'
 import Immutable, {Map, Set} from 'immutable'
-
 import {systemMessage} from './systemMessage'
 import {ACTION_TEMPLATES, USER_VALUE_PROP, SOURCE_VALUE_PROP} from './../constants'
 import {renderTemplate} from '../components/utils/template'
 import {lastMessage} from '../utils'
+import {TICKET_VIEWED} from './activity'
 import * as MacroActions from './macro'
 
 // Reply to a ticket
@@ -43,6 +43,7 @@ export const SET_TAGS = 'SET_TAGS'
 export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
 
 export const RECORD_MACRO = 'RECORD_MACRO'
+export const RECEIVED_MACRO = 'RECEIVED_MACRO'
 
 export const SET_PUBLIC = 'SET_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
@@ -108,6 +109,12 @@ export function recordMacro(macro) {
     return {
         type: RECORD_MACRO,
         macro
+    }
+}
+
+export function receivedMacro() {
+    return {
+        type: RECEIVED_MACRO
     }
 }
 
@@ -256,13 +263,15 @@ export function setResponseText(currentUser, args) {
     return {
         type: SET_RESPONSE_TEXT,
         args,
-        currentUser
+        currentUser,
+        fromMacro: false
     }
 }
 
-export function markTicketDirty() {
+export function markTicketDirty(dirty = true) {
     return {
-        type: MARK_TICKET_DIRTY
+        type: MARK_TICKET_DIRTY,
+        dirty
     }
 }
 
@@ -320,6 +329,10 @@ export function fetchTicketDetails(ticketId, data) {
             dispatch({
                 type: FETCH_TICKET_SUCCESS,
                 resp
+            })
+            dispatch({
+                type: TICKET_VIEWED,
+                ticketId
             })
         }).catch((err) => {
             dispatch(systemMessage({
@@ -505,7 +518,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
             if (data.newMessage.source.type === msg.source.type) {
                 data.newMessage.source.from = msg.from_agent ? msg.source.from : msg.source.to[0]
             } else {
-                data.newMessage.source.from = { name: currentUser.get('name') }
+                data.newMessage.source.from = {name: currentUser.get('name')}
 
                 const addr = currentUser.get(USER_VALUE_PROP[data.newMessage.source.type])
 

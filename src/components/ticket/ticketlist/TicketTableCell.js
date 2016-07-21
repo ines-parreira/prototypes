@@ -1,31 +1,9 @@
 import React, {PropTypes} from 'react'
 import _ from 'lodash'
+import {truncate, stripHTML} from '../../../utils'
 import {RenderLabel, TagLabel} from '../../utils/labels'
 
 export default class TicketTableCell extends React.Component {
-    stripHTML = (text) => {
-        try {
-            const doc = document.implementation.createHTMLDocument()
-            const body = doc.createElement('div')
-            body.innerHTML = text
-
-            const removeElements = body.querySelectorAll('style,script')
-            for (let i = 0; i < removeElements.length; i++) {
-                removeElements[i].remove()
-            }
-            return body.textContent || body.innerText
-        } catch (e) {
-            console.error(`Failed stripHTML: ${e}`, text)
-            return text
-        }
-    }
-
-    truncate = (text, length) => {
-        const t = this.stripHTML(text)
-        const slice = t.slice(0, length)
-        return slice !== t ? `${slice}...` : t
-    }
-
     renderFieldContent() {
         const {ticket} = this.props
         const field = this.props.field.toJS()
@@ -66,7 +44,7 @@ export default class TicketTableCell extends React.Component {
                     }
 
                     // Optionally show how many messages a ticket has in the subject
-                    let subject = this.truncate(ticket.get('subject'), 50)
+                    let subject = truncate(stripHTML(ticket.get('subject')), 50)
                     const messageCount = this.props.ticket.get('messages').size
                     if (messageCount > 1) {
                         subject = `(${messageCount}) ${subject}`
@@ -76,7 +54,7 @@ export default class TicketTableCell extends React.Component {
                         <div className="ui header">
                             <span className="subject">{subject}</span>
                             <div className="body sub header">
-                                {this.truncate(firstMessage.body_html ? firstMessage.body_html : firstMessage.body_text, 50)}
+                                {truncate(firstMessage.body_html ? stripHTML(firstMessage.body_html) : firstMessage.body_text, 50)}
                             </div>
                         </div>
                     )

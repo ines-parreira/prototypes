@@ -1,17 +1,25 @@
 import React, {PropTypes} from 'react'
-import {fromJS, Map} from 'immutable'
+import {Map} from 'immutable'
 import _ from 'lodash'
+import classNames from 'classnames'
 import {EditorState, ContentState, RichUtils, convertFromHTML} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
-import createMentionPlugin from 'draft-js-mention-plugin'
-import createLinkifyPlugin from 'draft-js-linkify-plugin'
-import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createDndPlugin from 'draft-js-dnd-plugin'
+import createEmojiPlugin from 'draft-js-emoji-plugin'
+import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-linkify-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
 import TicketAttachments from './TicketAttachments'
 import TicketReplyAction from './TicketReplyAction'
+
+const dndPlugin = createDndPlugin()
+const linkifyPlugin = createLinkifyPlugin()
+const emojiPlugin = createEmojiPlugin({
+    emojiSuggestions: 'emoji-suggestions'
+})
+const {EmojiSuggestions} = emojiPlugin
+const plugins = [emojiPlugin, dndPlugin, linkifyPlugin]
 
 export default class TicketReply extends React.Component {
     constructor(props) {
@@ -19,26 +27,24 @@ export default class TicketReply extends React.Component {
         this.state = this.getEditorState(this.props)
     }
 
-    state = {
-        editorState: EditorState.createEmpty()
-    }
-
     componentDidMount() {
-        // we're listening from stuff that comes from the extension
+        // we're listening from stuff that comes from the Gorgias Chrome Extension
         window.addEventListener('message', this.onMessage, false)
-
-        if (this.props.autoFocus) {
-            this.refs.editor.focus()
-        }
-
         $('.TicketReply .ui.accordion').accordion('open', 0)
     }
 
     componentWillReceiveProps(nextProps) {
-        // update the state if the we have a change that doesn't come from typing stuff
-        if (nextProps.contentState === null || (
-            this.state && !nextProps.contentState.equals(this.state.editorState.getCurrentContent()))) {
+        // update the state if the we have a change that doesn't come from typing stuff (from macros for example)
+        if (nextProps.contentState === null || nextProps.fromMacro) {
             this.setState(this.getEditorState(nextProps))
+            // Mark the fromMacro as false so we don't get the same macro twice
+            this.props.actions.ticket.receivedMacro()
+        }
+
+        // Manage autofocus: Autofocus on the editor if the edit area becomes visible
+        // Note: When using a macro don't autofocus - macro should manage that
+        if (nextProps.autoFocus && nextProps.visible && nextProps.visible !== this.props.visible && !nextProps.fromMacro) {
+            this.refs.editor.focus()
         }
     }
 
@@ -47,11 +53,17 @@ export default class TicketReply extends React.Component {
         window.removeEventListener('message', this.onMessage, false)
     }
 
-    // throttle the updating of the state because it's slow otherwise when we type
-    updateMessageText = _.throttle(() => {
-        const contentState = this.state.editorState.getCurrentContent()
+    getEditorState(props) {
+        const contentState = props.contentState ? props.contentState : ContentState.createFromText('')
+        const editorState = EditorState.createWithContent(contentState)
+        return {editorState}
+    }
+
+    // throttle the updating of the redux because it's slow otherwise when we type
+    updateMessageText = _.throttle((editorState) => {
+        const contentState = editorState.getCurrentContent()
         this.props.actions.ticket.setResponseText(this.props.currentUser, Map({contentState}))
-    }, 500)
+    }, 300)
 
     // store the content before the tab (completion from the extension), this allows us to manage the state correctly
     textBeforeTab = ''
@@ -67,7 +79,6 @@ export default class TicketReply extends React.Component {
             this.textBeforeTab = ''
             return
         }
-
         this.setState({editorState})
         this.updateMessageText(editorState)
     }
@@ -96,35 +107,6 @@ export default class TicketReply extends React.Component {
         }
     }
 
-    dndPlugin = createDndPlugin()
-
-    getEditorState(props) {
-        // No point in reinitializing the plugins once initiated
-        let plugins
-        if (!(this.state && this.state.plugins)) {
-            const mentions = fromJS(
-                props.users.get('agents', [])
-                    .map(user => fromJS({name: user.get('name'), link: '', avatar: ''})
-                    ))
-
-            plugins = [
-                createMentionPlugin({mentions}),
-                createLinkifyPlugin({
-                    target: '_blank'
-                }),
-                createEmojiPlugin(),
-                this.dndPlugin
-            ]
-        }
-
-        const contentState = props.contentState ? props.contentState : ContentState.createFromText('')
-        const editorState = EditorState.createWithContent(contentState)
-
-        return {
-            editorState,
-            plugins
-        }
-    }
 
     // This is for handling things like Bold, Italic, etc..
     handleKeyCommand = (command) => {
@@ -157,17 +139,11 @@ export default class TicketReply extends React.Component {
     }
 
     handleDroppedFiles = (selection, files) => {
-        this.dndPlugin.handleDroppedFiles(
-            selection,
-            files,
-            {
-                getEditorState: () => this.state.editorState,
-                setEditorState: this.onChange
-            }
-        )
-
+        dndPlugin.handleDroppedFiles(selection, files, {
+            getEditorState: () => this.state.editorState,
+            setEditorState: this.onChange
+        })
         this.handleFiles(files)
-
         return false
     }
 
@@ -195,14 +171,12 @@ export default class TicketReply extends React.Component {
     }
 
     render() {
-        const {ticket, appliedMacro, actions} = this.props
-        let internal = ''
+        const {ticket, visible, appliedMacro, actions} = this.props
+        const className = classNames('TicketReply search ui raised segment', {
+            internal: ticket.get('newMessage') && !ticket.getIn(['newMessage', 'public']),
+            hidden: !visible
+        })
 
-        if (ticket.get('newMessage') && !ticket.getIn(['newMessage', 'public'])) {
-            internal = 'internal'
-        }
-
-        const className = `TicketReply search ui raised segment ${internal}`
         const httpActions = appliedMacro ?
             appliedMacro.get('actions').filter(action => action.get('name') === 'http') : []
 
@@ -220,12 +194,13 @@ export default class TicketReply extends React.Component {
                             ref="editor"
                             tabIndex="4"
                             editorState={this.state.editorState}
-                            plugins={this.state.plugins}
+                            plugins={plugins}
                             onChange={this.onChange}
                             onTab={this.onTab}
                             handleKeyCommand={this.handleKeyCommand}
                             handleDroppedFiles={this.handleDroppedFiles}
                         />
+                        <EmojiSuggestions />
                     </div>
                 </form>
 
@@ -255,9 +230,12 @@ export default class TicketReply extends React.Component {
 TicketReply.propTypes = {
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
+    visible: PropTypes.bool,
     currentUser: PropTypes.object.isRequired,
     appliedMacro: PropTypes.object,
     users: PropTypes.object.isRequired,
     contentState: PropTypes.object,
+    fromMacro: PropTypes.bool,
+    receivedMacro: PropTypes.func,
     autoFocus: PropTypes.bool.isRequired
 }

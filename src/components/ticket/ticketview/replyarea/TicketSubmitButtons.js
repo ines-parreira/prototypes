@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
-import { getModifier } from './../../../../utils'
+import {getModifier} from './../../../../utils'
 
 export default class TicketSubmitButtons extends React.Component {
     componentDidMount() {
@@ -9,39 +9,37 @@ export default class TicketSubmitButtons extends React.Component {
             position: 'bottom center',
             delay: 200
         }
-
-        $('#submitAndClose').popup(settings)
-        $('#simpleSubmit').popup(settings)
+        $('.TicketSubmitButtons button').popup(settings)
     }
 
     submit = (status, next) => {
-        $('#submitAndClose').popup('hide')
-        $('#simpleSubmit').popup('hide')
+        $('.TicketSubmitButtons button').popup('hide')
         this.props.submit(status, next)
     }
 
-    render = () => {
-        const subAndCloseClassName = classNames('ui', 'green', 'button', {hidden: this.props.ticket.get('status') === 'closed', loading: this.props.ticket.getIn(['state', 'loading'])})
-        const subClassName = classNames('ui', 'basic', 'green', 'button', {disabled: !this.props.ticket.getIn(['state', 'dirty']), loading: this.props.ticket.getIn(['state', 'loading'])})
+    render() {
+        const ticketState = this.props.ticket.get('state')
+        const commonClasses = ['ui', 'green', 'button', {
+            loading: ticketState.get('loading'),
+            disabled: !ticketState.get('dirty')
+        }]
         return (
             <div className="TicketSubmitButtons">
                 <button
-                    id="submitAndClose"
-                    className={subAndCloseClassName}
+                    className={classNames(...commonClasses)}
                     tabIndex="4"
-                    onClick={() => this.submit('closed', true)}
+                    onClick={() => this.submit()}
                     data-html={`${getModifier()} + Enter`}
                 >
-                    Send &amp; Close
+                    Send
                 </button>
                 <button
-                    id="simpleSubmit"
-                    className={subClassName}
+                    className={classNames(...commonClasses, 'basic')}
                     tabIndex="5"
-                    onClick={() => this.submit()}
+                    onClick={() => this.submit('closed', true)}
                     data-html={`${getModifier()} + Shift + Enter`}
                 >
-                    Send
+                    Send &amp; Close
                 </button>
             </div>
         )

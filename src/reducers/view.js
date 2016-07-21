@@ -64,7 +64,7 @@ export function views(state = viewsInitial, action) {
     let items
     let ast = ''
     let code = ''
-    let view = state.get('active')
+    let active = state.get('active')
 
     switch (action.type) {
         case actions.SET_VIEW_ACTIVE:
@@ -78,37 +78,37 @@ export function views(state = viewsInitial, action) {
 
         case actions.UPDATE_VIEW_FIELD:
             // replace a field with a new field
-            view = view.set('fields', view.get('fields').map((f) => (
+            active = active.set('fields', active.get('fields').map((f) => (
                 (f.get('name') === action.field.get('name')) ? action.field : f
             )))
 
-            return state.set('active', view.set('dirty', true))
+            return state.set('active', active.set('dirty', true))
 
         case actions.ADD_VIEW_FIELD_FILTER:
             // given a filter and our code+ast => generate new code/ast and save it to the state
-            ast = addFilterAST(view, action.filter)
+            ast = addFilterAST(active, action.filter)
             code = getCode(ast.toJS())
-            view = view.set('filters_ast', ast).set('filters', code)
-            return state.set('active', view.set('dirty', true))
+            active = active.set('filters_ast', ast).set('filters', code)
+            return state.set('active', active.set('dirty', true))
 
         case actions.REMOVE_VIEW_FIELD_FILTER:
-            ast = removeFilterAST(view, action.index)
+            ast = removeFilterAST(active, action.index)
             if (ast) {
                 code = getCode(ast.toJS())
             }
-            view = view.set('filters_ast', ast).set('filters', code)
-            return state.set('active', view.set('dirty', true))
+            active = active.set('filters_ast', ast).set('filters', code)
+            return state.set('active', active.set('dirty', true))
 
         case actions.UPDATE_VIEW_FIELD_FILTER_OPERATOR:
-            ast = updateFilterAST(view, action.index, action.operator)
+            ast = updateFilterAST(active, action.index, action.operator)
             code = getCode(ast.toJS())
-            view = view.set('filters_ast', ast).set('filters', code)
-            return state.set('active', view)
+            active = active.set('filters_ast', ast).set('filters', code)
+            return state.set('active', active)
 
         case actions.UPDATE_VIEW_FIELD_ENUM_SUCCESS:
             // update our active view with the new data from the API
             // to do that we need to change all the fields with a new list of fields
-            view = view.set('fields', view.get('fields').map(f => {
+            active = active.set('fields', active.get('fields').map(f => {
                 // names of fields are unique
                 if (f.get('name') === action.field.get('name')) {
                     const filter = action.field.get('filter').set('enum', action.resp.data)
@@ -117,11 +117,11 @@ export function views(state = viewsInitial, action) {
                 return f
             }))
 
-            return state.set('active', view)
+            return state.set('active', active)
 
         case actions.RESET_VIEW: {
             // find the original view from the state and replace the active view
-            const original = state.get('items').find(v => v.get('id') === view.get('id'))
+            const original = state.get('items').find(v => v.get('id') === active.get('id'))
             return state.set('active', original.set('dirty', false))
         }
 
@@ -146,12 +146,16 @@ export function views(state = viewsInitial, action) {
         case actions.FETCH_VIEW_LIST_START:
             return state.set('loading', true)
 
+        case actions.UPDATE_VIEW_LIST:
+            return state.set('items', sortViews(fromJS(action.items)))
+
         case actions.FETCH_VIEW_LIST_SUCCESS: {
             items = sortViews(fromJS(action.resp.data))
 
             // also populate the active view state
-            const slug = action.currentViewSlug
-            const active = items.filter(v => v.get('slug') === slug).get(0)
+            if (action.currentViewSlug) {
+                active = items.find(v => v.get('slug') === action.currentViewSlug)
+            }
 
             return state.merge({
                 items,

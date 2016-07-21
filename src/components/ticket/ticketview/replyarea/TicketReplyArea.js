@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import Immutable from 'immutable'
+import {fromJS} from 'immutable'
 import classNames from 'classnames'
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
@@ -29,7 +29,9 @@ export default class TicketReplyArea extends React.Component {
     }
 
     hideMacros = (e) => {
-        if (e.keyCode === 27 && !this.props.macros.get('isModalOpen')) this.props.actions.macro.setMacrosVisible(false)
+        if (e.keyCode === 27 && !this.props.macros.get('isModalOpen')) {
+            this.props.actions.macro.setMacrosVisible(false)
+        }
         return null
     }
 
@@ -38,43 +40,15 @@ export default class TicketReplyArea extends React.Component {
         this.setState({searchTerm: term}) // Necessary for re-render
     }
 
-    renderChild = (macros) => {
-        if (this.props.macros.get('visible')) {
-            return (
-                <TicketMacros
-                    items={macros}
-                    selected={this.props.macros.get('selected')}
-                    applyMacro={this.props.applyMacro}
-                    previewMacro={this.props.previewMacro}
-                    previewMacroInModal={this.props.previewMacroInModal}
-                    openModal={this.props.openModal}
-                />
-            )
-        }
-
-        return (
-            <TicketReply
-                actions={this.props.actions}
-                ticket={this.props.ticket}
-                currentUser={this.props.currentUser}
-                appliedMacro={this.props.macros.get('appliedMacro')}
-                users={this.props.users}
-                contentState={this.props.ticket.getIn(['newMessage', 'contentState'])}
-                autoFocus={!!this.props.ticket.get('id')}
-            />
-        )
-    }
-
     render = () => {
         const setMacrosVisible = this.props.actions.macro.setMacrosVisible
         const macrosVisible = this.props.macros.get('visible')
-        let macros = this.props.macros.get('items')
 
-        macros = macros.valueSeq()
-
-        if (this.refs.search) {
+        let macros = this.props.macros
+        if (this.refs.search && this.refs.search.state.searchTerm && macros.get('items').size) {
             const filters = ['name']
-            macros = Immutable.fromJS(macros.toJS().filter(this.refs.search.filter(filters)))
+            const items = macros.get('items').valueSeq().toJS()
+            macros = macros.set('items', fromJS(items.filter(this.refs.search.filter(filters))))
         }
 
         return (
@@ -100,7 +74,26 @@ export default class TicketReplyArea extends React.Component {
                         <strong>Esc</strong> to close the macro list.
                     </div>
                 </div>
-                {this.renderChild(macros)}
+
+                <TicketMacros
+                    macros={macros}
+                    applyMacro={this.props.applyMacro}
+                    previewMacro={this.props.previewMacro}
+                    previewMacroInModal={this.props.previewMacroInModal}
+                    openModal={this.props.openModal}
+                />
+
+                <TicketReply
+                    visible={!this.props.macros.get('visible')}
+                    actions={this.props.actions}
+                    ticket={this.props.ticket}
+                    currentUser={this.props.currentUser}
+                    appliedMacro={this.props.macros.get('appliedMacro')}
+                    users={this.props.users}
+                    contentState={this.props.ticket.getIn(['state', 'contentState'])}
+                    fromMacro={this.props.ticket.getIn(['state', 'fromMacro'])}
+                    autoFocus={!!this.props.ticket.get('id')}
+                />
             </div>
         )
     }

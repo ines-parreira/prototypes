@@ -168,3 +168,26 @@ export function compactInteger(input, dec = 0) {
 
     return output
 }
+
+export function stripHTML(text) {
+    try {
+        const doc = document.implementation.createHTMLDocument()
+        const body = doc.createElement('div')
+        body.innerHTML = text
+
+        const removeElements = body.querySelectorAll('style,script')
+        const n = removeElements.length;
+        for (let i = 0; i < n; i++) {
+            removeElements[i].remove()
+        }
+        return body.textContent || body.innerText
+    } catch (e) {
+        console.error(`Failed stripHTML: ${e}`, text)
+        return text
+    }
+}
+
+export function truncate(text, length) {
+    const slice = text.slice(0, length)
+    return slice !== text ? `${slice} ...` : text
+}

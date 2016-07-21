@@ -475,7 +475,7 @@ describe('Ticket reducer', () => {
         const expected = initialState.setIn(['state', 'dirty'], true)
 
         expect(
-            ticket(initialState, {type: actions.MARK_TICKET_DIRTY})
+            ticket(initialState, {type: actions.MARK_TICKET_DIRTY, dirty: true})
         ).toEqualImmutable(
             expected
         )
