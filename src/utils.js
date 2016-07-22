@@ -73,6 +73,7 @@ export function findProperty(field, schemas) {
             }
         }
     }
+
     return prop
 }
 

@@ -18,7 +18,7 @@ const Left = ({view, objectPath}) => {
     const suffixPath = objectPath.split('.').slice(1).join('.')
     // now find our field and return it's title
     const field = view.get('fields').find(f => f.get('name') === suffixPath)
-    return <span className="ui mini basic light blue item button">{field.get('title')}</span>
+    return <span className="ui mini basic light blue item button">{field ? field.get('title') : suffixPath}</span>
 }
 
 Left.propTypes = {
