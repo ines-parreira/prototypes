@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import classNames from 'classnames'
 import {truncate} from '../utils'
+import {ACTIVITY_DISPLAY_COUNT} from '../constants'
 
 const ActivityWidgetItem = ({object, count}) => {
     // Is the current link active or not?
@@ -78,7 +79,7 @@ export default class ActivityWidget extends React.Component {
                 <div className="item">
                     <h4>RECENT ACTIVITY</h4>
                     <div className="menu">
-                        {events.slice(0, 5).map(e => (
+                        {events.slice(0, ACTIVITY_DISPLAY_COUNT - 1).map(e => (
                             <ActivityWidgetItem
                                 key={e.get('object_id')}
                                 object={e.get('object')}

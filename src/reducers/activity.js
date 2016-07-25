@@ -27,7 +27,7 @@ export function activity(state = activityInitial, action) {
                     }))
                 }
             } else {
-                // we have a previous state, which means we that should recalculate the counter
+                // we have a previous state, which means that we should recalculate the counter
                 for (const e of events.toJS()) {
                     const counter = objectsCounter.get(e.object_id)
                     // increase the counter if the datetime of the event for the same object differs from the
@@ -36,7 +36,7 @@ export function activity(state = activityInitial, action) {
                     //       added really fast only the last one is taken into account
                     if (counter && counter.get('created_datetime') !== e.created_datetime) {
                         let count = counter.get('count') + 1
-                        // if we are already on the ticket, the just reset the counter
+                        // if we are already on the ticket, then just reset the counter
                         if (window.location.pathname === `/app/ticket/${e.object_id}`) {
                             count = 0
                         }
