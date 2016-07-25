@@ -442,7 +442,11 @@ export function ticket(state = ticketInitial, action) {
                 let newState = state.setIn(['state', 'latestEventDatetime'], eventDatetime)
 
                 if (latestEventDatetime && eventDatetime !== latestEventDatetime) {
-                    newState = newState.set('messages', event.getIn(['object', 'messages']))
+                    let newMessages = event.getIn(['object', 'messages'])
+                    if (newMessages) {
+                        newMessages = newMessages.sort((a, b) => new Date(a.get('created_datetime')) - new Date(b.get('created_datetime')))
+                    }
+                    newState = newState.set('messages', newMessages)
                 }
                 return newState
             }

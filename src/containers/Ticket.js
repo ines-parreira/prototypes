@@ -6,6 +6,7 @@ import * as mousetrap from 'mousetrap'
 import DocumentTitle from 'react-document-title'
 import TicketView from '../components/ticket/ticketview/TicketView'
 import {Loader} from '../components/Loader'
+import * as ActivityActions from '../actions/activity'
 import * as TicketsActions from '../actions/tickets'
 import * as TicketActions from '../actions/ticket'
 import * as MacroActions from '../actions/macro'
@@ -52,6 +53,7 @@ class TicketContainer extends React.Component {
                 this.props.actions.ticket.clearTicket()
             }
             this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
+            this.props.actions.activity.pollActivity(this.props.activity.get('pendingEvents'))
         } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
             /**
              * Redirect to the new page when submitting a new ticket.
@@ -338,6 +340,7 @@ TicketContainer.propTypes = {
         ticketId: PropTypes.string
     }).isRequired,
 
+    activity: PropTypes.object,
     ticket: PropTypes.object,
     tickets: PropTypes.object,
     macros: PropTypes.object,
@@ -358,6 +361,7 @@ TicketContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        activity: state.activity,
         ticket: state.ticket,
         tickets: state.tickets,
         macros: state.macros,
@@ -373,6 +377,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
+            activity: bindActionCreators(ActivityActions, dispatch),
             tickets: bindActionCreators(TicketsActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),

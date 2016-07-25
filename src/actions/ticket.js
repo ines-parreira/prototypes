@@ -315,6 +315,11 @@ export function fetchTicketDetails(ticketId, data) {
             type: FETCH_TICKET_START
         })
 
+        dispatch({
+            type: TICKET_VIEWED,
+            ticketId
+        })
+
         const url = `/api/tickets/${ticketId}/`
 
         return reqwest({
@@ -329,10 +334,6 @@ export function fetchTicketDetails(ticketId, data) {
             dispatch({
                 type: FETCH_TICKET_SUCCESS,
                 resp
-            })
-            dispatch({
-                type: TICKET_VIEWED,
-                ticketId
             })
         }).catch((err) => {
             dispatch(systemMessage({

@@ -18,7 +18,7 @@ export function activity(state = activityInitial, action) {
             let objectsCounter = state.get('objectsCounter')
 
             // set the objectCounter
-            if (state.get('events').isEmpty()) {
+            if (state.get('objectsCounter').isEmpty()) {
                 // set objectsCounter to 0 by default
                 for (const e of events.toJS()) {
                     objectsCounter = objectsCounter.set(e.object_id, Map({
@@ -27,7 +27,7 @@ export function activity(state = activityInitial, action) {
                     }))
                 }
             } else {
-                // we have a previous state, which means that should recalculate the counter
+                // we have a previous state, which means we that should recalculate the counter
                 for (const e of events.toJS()) {
                     const counter = objectsCounter.get(e.object_id)
                     // increase the counter if the datetime of the event for the same object differs from the
@@ -35,8 +35,13 @@ export function activity(state = activityInitial, action) {
                     // Note: this has the drawback of missing some counts. For example when a lot of events are
                     //       added really fast only the last one is taken into account
                     if (counter && counter.get('created_datetime') !== e.created_datetime) {
+                        let count = counter.get('count') + 1
+                        // if we are already on the ticket, the just reset the counter
+                        if (window.location.pathname === `/app/ticket/${e.object_id}`) {
+                            count = 0
+                        }
                         objectsCounter = objectsCounter.set(e.object_id, Map({
-                            count: counter.get('count') + 1,
+                            count,
                             created_datetime: e.created_datetime
                         }))
                     }
@@ -61,7 +66,13 @@ export function activity(state = activityInitial, action) {
             }))
 
             // and reset the counter for this ticket because we just viewed it
-            const objectsCounter = state.get('objectsCounter').setIn([objectId, 'count'], 0)
+            let objectsCounter = state.get('objectsCounter')
+            let objCount = objectsCounter.get(objectId)
+            if (!objCount) {
+                objCount = Map({})
+            }
+            objectsCounter = objectsCounter.set(objectId, objCount.merge({count: 0}))
+
             return state.merge({
                 pendingEvents,
                 objectsCounter

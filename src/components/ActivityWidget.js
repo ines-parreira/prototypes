@@ -26,6 +26,7 @@ const ActivityWidgetItem = ({object, count}) => {
         mail: chanType === 'email',
         comments: chanType === 'chat',
         facebook: chanType === 'facebook' || chanType === 'facebook-post',
+        comment: chanType === 'internal-note',
         'facebook-messenger': chanType === 'facebook-message'
     })
 
@@ -37,16 +38,18 @@ const ActivityWidgetItem = ({object, count}) => {
     if (object.getIn(['requester', 'name'])) {
         title = object.getIn(['requester', 'name'])
     }
+    title = truncate(title, 20)
 
     let counterLabel = null
     if (count) {
         counterLabel = (<div className="ui mini red circular label">{count}</div>)
+        title = (<strong>{title}</strong>)
     }
 
     return (
         <Link to={objectURL} className={linkClasses} title={title}>
             <i className={iconClasses}/>
-            {truncate(title, 20)}
+            {title}
             {counterLabel}
         </Link>
     )
@@ -69,12 +72,13 @@ export default class ActivityWidget extends React.Component {
         if (!events || events.isEmpty()) {
             return null
         }
+
         return (
             <div className="ActivityWidget">
                 <div className="item">
                     <h4>RECENT ACTIVITY</h4>
                     <div className="menu">
-                        {events.map(e => (
+                        {events.slice(0, 5).map(e => (
                             <ActivityWidgetItem
                                 key={e.get('object_id')}
                                 object={e.get('object')}
