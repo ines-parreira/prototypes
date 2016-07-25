@@ -77,7 +77,7 @@ export function users(state = usersInitial, action) {
             return newState.merge({ loading: true })
 
         case actions.FETCH_USER_LIST_SUCCESS:
-            if (action.role && action.role === 'agent') {
+            if (action.roles && action.roles.indexOf('agent') !== -1) {
                 newState = newState.set('agents', fromJS(action.resp.data))
             } else {
                 newState = newState.set('items', fromJS(action.resp.data))

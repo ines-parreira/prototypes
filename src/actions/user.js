@@ -23,15 +23,20 @@ export const SORT_USERS = 'SORT_USERS'
 export const UPDATE_LIST = 'UPDATE_LIST'
 
 
-export function fetchUsers(role) {
+export function fetchUsers(roles) {
     return (dispatch) => {
         dispatch({
             type: FETCH_USER_LIST_START
         })
 
-        const roles = role ? `?roles=${role}` : ''
+        let rolesParam = ''
+
+        if (roles && roles instanceof Array) {
+            rolesParam = `?roles[]=${roles.join('&roles[]=')}`
+        }
+
         return reqwest({
-            url: `/api/users/${roles}`,
+            url: `/api/users/${rolesParam}`,
             type: 'json',
             method: 'GET',
             contentType: 'application/json'
@@ -39,7 +44,7 @@ export function fetchUsers(role) {
             dispatch({
                 type: FETCH_USER_LIST_SUCCESS,
                 resp,
-                role
+                roles
             })
         }).catch((err) => {
             dispatch(systemMessage({
