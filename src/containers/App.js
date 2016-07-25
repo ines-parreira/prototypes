@@ -88,12 +88,15 @@ class App extends React.Component {
         clearTimeout(this.messageTimeout)
         const systemMessage = this.props.systemMessage.toJS()
 
-        if (Object.keys(systemMessage).length === 0 || systemMessage.modal) {
+        if (Object.keys(systemMessage).length === 0) {
             return null
         }
 
         const msg = typeof systemMessage.msg === 'string' ? <p>{systemMessage.msg}</p> : systemMessage.msg
 
+        if (systemMessage.modal) {
+            return this.renderModalSystemMessage(systemMessage, msg)
+        }
         const messageType = {
             neutral: '',
             error: 'negative',
@@ -116,15 +119,7 @@ class App extends React.Component {
         )
     }
 
-    renderModalSystemMessage() {
-        const systemMessage = this.props.systemMessage.toJS()
-
-        if (Object.keys(systemMessage).length === 0 || !systemMessage.modal) {
-            return null
-        }
-
-        const msg = typeof systemMessage.msg === 'string' ? <p>{systemMessage.msg}</p> : systemMessage.msg
-
+    renderModalSystemMessage(systemMessage, msg) {
         return (
             <div id="system-message" className="ui modal">
                 <i className="close icon" onClick={e => this.handleDismissClick(e, true)}/>

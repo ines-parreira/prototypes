@@ -42,7 +42,7 @@ export function fetchIntegration(integrationId) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch integration',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -75,7 +75,7 @@ export function fetchIntegrations() {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch integrations',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -96,7 +96,7 @@ export function deleteintegration(integration) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'error: failed to delete the integration',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -135,7 +135,7 @@ export function facebookLogin() {
                     dispatch(systemMessage({
                         type: 'error',
                         header: 'Error: failed to POST facebook token to the backend',
-                        msg: err
+                        internalMessage: err
                     }))
                 })
             } else {
@@ -191,7 +191,7 @@ function updateOrCreateIntegrationRequest(integration, action) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to add integration.',
-                msg: err
+                internalMessage: err
             }))
         })
     }

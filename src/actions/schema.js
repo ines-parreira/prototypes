@@ -24,7 +24,7 @@ export function fetch() {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to fetch schemas.',
-                msg: err
+                internalMessage: err
             }))
         })
     }

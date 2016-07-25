@@ -45,7 +45,7 @@ export function fetchUsers(role) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch users',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -84,7 +84,7 @@ export function search(query, params, stringQuery) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to search users',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -110,7 +110,7 @@ export function fetchUser(userId) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to fetch user.',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -144,7 +144,7 @@ export function createUser(data) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to create the new user',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -172,7 +172,7 @@ export function updateUser(data, userId) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to update the user',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -197,7 +197,7 @@ export function deleteUser(userId) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to update the user',
-                msg: err
+                internalMessage: err
             }))
         })
     }
