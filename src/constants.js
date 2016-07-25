@@ -1,6 +1,7 @@
 // View related
 
 export const DEFAULT_VIEW = 'my-tickets'
+export const ACTIVITY_DISPLAY_COUNT = 6
 
 export const CELL_WIDTH = 60
 
