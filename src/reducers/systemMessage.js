@@ -6,6 +6,7 @@ const initial = Map()
 export function systemMessage(state = initial, action) {
     switch (action.type) {
         case actions.SYSTEM_MESSAGE:
+            // Note that some fields in the action message are here for debugging convenience only (e.g internalMessage)
             return Map(action.message)
         case actions.DISMISS_SYSTEM_MESSAGE:
             return initial
