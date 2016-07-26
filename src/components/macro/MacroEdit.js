@@ -12,8 +12,31 @@ import { DEFAULT_ACTIONS } from './../../constants'
 
 export default class MacroEdit extends React.Component {
     componentDidMount() {
-        $('#new-action-popup').dropdown({
-            direction: 'upward',
+        const $container = this.refs.btnNewAction.parentNode
+
+        $(this.refs.btnNewAction).dropdown({
+            direction: 'bottom',
+            onShow: () => {
+                // manually check if there is enough space
+                // to show the dropdown at the bottom.
+                // the direction: 'auto' setting does not work as intended,
+                // for overflow auto containers.
+                const dropdownHeight = 220
+
+                const containerRect = $container.getBoundingClientRect()
+                const btnRect = this.refs.btnNewAction.getBoundingClientRect()
+
+                const btnTop = btnRect.top - containerRect.top
+                const bottomSpace = containerRect.height - btnRect.height - btnTop
+
+                // in case we set it at the top previously
+                this.refs.btnNewAction.classList.remove('upward')
+
+                // show it at the top
+                if (bottomSpace < dropdownHeight) {
+                    this.refs.btnNewAction.classList.add('upward')
+                }
+            },
             onChange: (value, text) => {
                 if (DEFAULT_ACTIONS.indexOf(text) !== -1) {
                     this.props.actions.addAction(text)
@@ -148,7 +171,7 @@ export default class MacroEdit extends React.Component {
                         })
                     }
 
-                    <div id="new-action-popup" className="ui floating dropdown labeled search icon light blue button">
+                    <div className="ui floating dropdown labeled search icon light blue button" ref="btnNewAction">
                         <i className="plus icon"/>
                         <span className="text">Insert a new action</span>
                         <div className="menu">

@@ -121,7 +121,7 @@ export default class TicketView extends React.Component {
     }
 
     render = () => {
-        const {ticket, tags, users, actions} = this.props
+        const {ticket, tags, users, actions, computeNextUrl} = this.props
 
         let ticketId = ''
 
@@ -164,13 +164,14 @@ export default class TicketView extends React.Component {
                         focus={!ticket.get('id')}
                     />
 
-                    <div className="ui grid">
+                    <div className="ui grid ticket-header-details">
                         <div className="row">
 
                             <div className="eleven wide column">
                                 <TicketStatus
                                     currentStatus={ticket.get('status')}
                                     setStatus={actions.ticket.setStatus}
+                                    computeNextUrl={computeNextUrl}
                                 />
 
                                 <TicketTags
@@ -253,5 +254,6 @@ TicketView.propTypes = {
     settings: PropTypes.object.isRequired,
     view: PropTypes.object,
     submit: PropTypes.func.isRequired,
-    applyMacro: PropTypes.func.isRequired
+    applyMacro: PropTypes.func.isRequired,
+    computeNextUrl: PropTypes.func.isRequired
 }

@@ -93,7 +93,9 @@ export default class TicketMessage extends React.Component {
 
         return (
             <span className="ticket-message-from">
-                from <a target="_blank" href={message.meta.current_page}><strong>{displayString}</strong></a>
+                from <a target="_blank" href={message.meta.current_page}>
+                    {displayString}
+                </a>
             </span>
         )
     }

@@ -23,6 +23,8 @@ class TicketContainer extends React.Component {
             unbindConfirmationHook: () => {
             }
         }
+
+        this.computeNextUrl = this.computeNextUrl.bind(this)
     }
 
     componentWillMount() {
@@ -326,6 +328,7 @@ class TicketContainer extends React.Component {
                         settings={this.props.settings}
                         submit={this.submit}
                         applyMacro={this.applyMacro}
+                        computeNextUrl={this.computeNextUrl}
                         view={view}
                     />
                     <MacrosContainer noUnbind/>

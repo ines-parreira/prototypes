@@ -135,6 +135,14 @@ export function ticketPartialUpdate(ticketId, args) {
                 type: TICKET_PARTIAL_UPDATE_SUCCESS,
                 resp
             })
+
+            // show a success message if we closed the ticket
+            if (args.status === 'closed') {
+                dispatch(systemMessage({
+                    type: 'success',
+                    msg: 'The ticket has been closed.'
+                }))
+            }
         }).catch((err) => {
             dispatch({
                 type: 'error',

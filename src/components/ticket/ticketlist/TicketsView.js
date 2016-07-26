@@ -51,7 +51,7 @@ export default class TicketsView extends React.Component {
                 <div style={style}>
                     <div className="sticky-header">
 
-                        <div className="ui text menu">
+                        <div className="ui text menu sticky-header-search">
                             <div className="left menu item"></div>
                             <div className="right menu item">
                                 <Search

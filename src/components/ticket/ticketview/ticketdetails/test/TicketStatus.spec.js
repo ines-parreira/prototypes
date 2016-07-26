@@ -31,7 +31,7 @@ describe('TicketStatus component', () => {
     })
 
     it('should have all statuses as options', () => {
-        const statusList = component.props.children[2].props.children.props.children
+        const statusList = component.props.children[1].props.children.props.children
         expect(statusList.length).toBe(TICKET_STATUSES.length)
     })
 })

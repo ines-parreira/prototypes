@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import { TICKET_STATUSES } from './../../../../constants'
+import {browserHistory} from 'react-router'
 
 export default class TicketStatus extends React.Component {
     componentDidMount() {
@@ -7,7 +8,8 @@ export default class TicketStatus extends React.Component {
             inline: true,
             position: this.props.position || 'bottom right',
             hoverable: true,
-            on: 'click'
+            on: 'click',
+            popup: '.ticket-status-popup'
         })
     }
 
@@ -23,21 +25,32 @@ export default class TicketStatus extends React.Component {
         }
 
         this.props.setStatus(newStatus)
+
+        // when closing the ticket, jump to the next one
+        if (newStatus === 'closed') {
+            const nextUrl = this.props.computeNextUrl(true)
+
+            if (nextUrl) {
+                // redirect to the next ticket after a while.
+                // time also needed for the notification to stay up,
+                // otherwise the redirect will hide it.
+                setTimeout(() => {
+                    browserHistory.push(nextUrl)
+                }, 500)
+            }
+        }
     }
 
     render() {
         const { setStatus, currentStatus } = this.props
+
         return (
-            <div className="ticket-status-wrapper">
-                <button type="button" className="g-label ticket-status-action" onClick={() => this.setQuickStatus(currentStatus)}>
+            <div className="ticket-status-wrapper ui buttons">
+                <button type="button" className="ticket-status-action ui basic grey button" onClick={() => this.setQuickStatus(currentStatus)}>
                     {currentStatus === 'closed' ? 'OPEN' : 'CLOSE'}
                 </button>
 
-                <button type="button" className="g-label ticket-status-dropdown" ref="popupStatus">
-                    <i className="caret down icon"></i>
-                </button>
-
-                <div className="ui popup">
+                <div className="ui popup ticket-status-popup">
                     <div
                         className="ui vertical menu"
                         style={{ textAlign: 'left', border: 'none', width: 'inherit' }}
@@ -55,6 +68,10 @@ export default class TicketStatus extends React.Component {
 
                     </div>
                 </div>
+
+                <button className="ticket-status-dropdown ui basic grey floating dropdown icon button" ref="popupStatus">
+                    <i className="dropdown icon"></i>
+                </button>
             </div>
         )
     }
@@ -62,6 +79,7 @@ export default class TicketStatus extends React.Component {
 
 TicketStatus.propTypes = {
     setStatus: PropTypes.func.isRequired,
+    computeNextUrl: PropTypes.func.isRequired,
     currentStatus: PropTypes.string.isRequired,
     position: PropTypes.string
 }
