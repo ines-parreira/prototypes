@@ -99,7 +99,7 @@ export default class TicketMessage extends React.Component {
     }
 
     render() {
-        const {message, currentUser} = this.props
+        const {message} = this.props
 
         // const messages = ticket.get('messages')
         // const currentMessageIndex = messages.findIndex((o) => o.get('id') === message.id)
@@ -107,7 +107,7 @@ export default class TicketMessage extends React.Component {
 
         let createdDatetime = ''
         if (message.created_datetime) {
-            createdDatetime = formatDatetime(message.created_datetime, currentUser.get('timezone'))
+            createdDatetime = formatDatetime(message.created_datetime)
         }
 
         let error = false
@@ -223,7 +223,6 @@ TicketMessage.propTypes = {
         actions: PropTypes.array
     }).isRequired,
     loading: PropTypes.bool.isRequired,
-    currentUser: PropTypes.object.isRequired,
     submit: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
     ticket: PropTypes.object

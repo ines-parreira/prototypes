@@ -38,6 +38,7 @@ export const ticketInitial = Map({
         latestEventDatetime: null
     }),
     messages: List(),
+    customer_ratings: List(),
     subject: '',
     via: 'helpdesk',
     channel: 'email',

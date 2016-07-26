@@ -2,10 +2,12 @@ import {has, upperFirst, isString} from 'lodash'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
+import sanitizeHtml from 'sanitize-html'
 
 export function formatDatetime(datetime, timezone, format = 'calendar') {
     try {
-        const raw = timezone ? moment(datetime).tz(timezone || 'UTC') : moment(datetime)
+        // Note the timezone should be set when the user first logs in.
+        const raw = timezone ? moment(datetime).tz(timezone) : moment(datetime)
 
         if (format === 'calendar') {
             return raw.calendar()
@@ -191,4 +193,15 @@ export function stripHTML(text) {
 export function truncate(text, length) {
     const slice = text.slice(0, length)
     return slice !== text ? `${slice} ...` : text
+}
+
+/** sanitizeHtml with a sensible config. */
+export function sanitizeHtmlDefault(html) {
+    return sanitizeHtml(html, {
+        allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
+            'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
+            'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre'],
+        allowedAttributes: false,
+        nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title']
+    })
 }

@@ -10,9 +10,9 @@ expect.extend(expectImmutable)
 
 describe('TicketMessages component', () => {
     const messages = fromJS([
-        { id: 1 },
-        { id: 2 },
-        { id: 3 }
+        {id: 1},
+        {id: 2},
+        {id: 3}
     ])
 
     describe('with messages', () => {
@@ -27,6 +27,9 @@ describe('TicketMessages component', () => {
                     deleteMessage={() => {}}
                     messages={messages}
                     loading={false}
+                    ticket={fromJS({
+                        customer_ratings: []
+                    })}
                 />
             )
 
@@ -51,6 +54,9 @@ describe('TicketMessages component', () => {
                     deleteMessage={() => {}}
                     messages={Map()}
                     loading={false}
+                    ticket={fromJS({
+                        customer_ratings: []
+                    })}
                 />
             )
 
