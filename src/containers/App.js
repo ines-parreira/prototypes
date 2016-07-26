@@ -111,11 +111,19 @@ class App extends React.Component {
         }
 
         return (
-            <div id="system-message" className={`ui ${messageType} message`}>
-                <i className="close icon" onClick={this.handleDismissClick}/>
-                <div className="header">{systemMessage.header}</div>
-                {msg}
-            </div>
+            <ReactCSSTransitionGroup
+                transitionAppear
+                transitionName="fade"
+                transitionAppearTimeout={200}
+                transitionEnterTimeout={200}
+                transitionLeaveTimeout={200}
+            >
+                <div id="system-message" className={`ui ${messageType} message`}>
+                    <i className="close icon" onClick={this.handleDismissClick}/>
+                    <div className="header">{systemMessage.header}</div>
+                    {msg}
+                </div>
+            </ReactCSSTransitionGroup>
         )
     }
 
@@ -169,17 +177,7 @@ class App extends React.Component {
 
                     <KeyboardHelp />
 
-                    {this.renderModalSystemMessage()}
-
-                    <ReactCSSTransitionGroup
-                        transitionAppear
-                        transitionName="fade"
-                        transitionAppearTimeout={200}
-                        transitionEnterTimeout={200}
-                        transitionLeaveTimeout={200}
-                    >
-                        {this.renderSystemMessage()}
-                    </ReactCSSTransitionGroup>
+                    {this.renderSystemMessage()}
 
                 </div>
             </DocumentTitle>
