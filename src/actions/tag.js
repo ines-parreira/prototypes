@@ -33,7 +33,7 @@ export function fetchTags() {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch tags',
-                msg: err
+                internalMessage: err
             }))
         })
     }

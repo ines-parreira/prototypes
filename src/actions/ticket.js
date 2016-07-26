@@ -92,7 +92,7 @@ export function addAttachments(attachments) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to upload files. Please try again later.',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -139,7 +139,7 @@ export function ticketPartialUpdate(ticketId, args) {
             dispatch({
                 type: 'error',
                 header: `Error: failed to update ticket ${ticketId}`,
-                msg: err
+                internalMessage: err
             })
         })
     }
@@ -254,7 +254,7 @@ export function updatePotentialRequesters(query) {
         dispatch(systemMessage({
             type: 'error',
             header: 'Error: failed to do the search. Please try again..',
-            msg: err
+            internalMessage: err
         }))
     })
 }
@@ -303,7 +303,7 @@ export function deleteMessage(ticketId, messageId) {
             dispatch({
                 type: 'error',
                 header: `Error: failed to deleted message ${messageId} from ticket ${ticketId}`,
-                msg: err
+                internalMessage: err
             })
         })
     }
@@ -339,7 +339,7 @@ export function fetchTicketDetails(ticketId, data) {
             dispatch(systemMessage({
                 type: 'error',
                 header: `Error: Failed to fetch ticket ${ticketId}`,
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -409,7 +409,7 @@ export function fetchTicketMessage(ticketId, messageId) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch message. Please try again..',
-                msg: err
+                internalMessage: err
             }))
         })
     }

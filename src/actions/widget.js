@@ -29,7 +29,7 @@ export function fetchWidgets() {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to fetch widgets.',
-                msg: err.toString()
+                internalMessage: err
             }))
         })
     }

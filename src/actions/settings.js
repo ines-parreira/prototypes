@@ -24,7 +24,7 @@ export function fetchSettings() {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch settings',
-                msg: err
+                internalMessage: err
             }))
         })
     }

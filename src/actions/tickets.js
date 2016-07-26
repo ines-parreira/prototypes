@@ -62,7 +62,7 @@ export function fetchTicketsPage(views, page) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to fetch list of tickets.',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -151,7 +151,7 @@ export function bulkUpdate(ids, key, value, views) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to update list of tickets',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -187,7 +187,7 @@ export function bulkDelete(ids) {
             dispatch({
                 type: 'error',
                 header: 'Error: couldn\'t delete selected tickets.',
-                msg: err
+                internalMessage: err
             })
         })
     }

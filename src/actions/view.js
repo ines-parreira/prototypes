@@ -90,7 +90,7 @@ export function updateFieldEnumSearch(field, query) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to do the search. Please try again..',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -123,7 +123,7 @@ export function fetchViews(currentViewSlug) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to fetch views.',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -158,7 +158,7 @@ export function submitView(view) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to submit view. Please try again',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -185,7 +185,7 @@ export function deleteView(view) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: Failed to delete views.',
-                msg: err
+                internalMessage: err
             }))
         })
     }

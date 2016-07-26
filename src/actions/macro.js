@@ -205,7 +205,7 @@ export function fetchMacros() {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch macros',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -232,7 +232,7 @@ export function createMacro(macro) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch macros',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -259,7 +259,7 @@ export function updateMacro(macro) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch macros',
-                msg: err
+                internalMessage: err
             }))
         })
     }
@@ -286,7 +286,7 @@ export function deleteMacro(macroId) {
             dispatch(systemMessage({
                 type: 'error',
                 header: 'Error: failed to fetch macros',
-                msg: err
+                internalMessage: err
             }))
         })
     }
