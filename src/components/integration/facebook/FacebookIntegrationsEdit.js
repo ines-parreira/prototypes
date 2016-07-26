@@ -6,7 +6,7 @@ import WrapInFacebookLogin from './WrapInFacebookLogin'
 class FacebookIntegrationsEdit extends React.Component {
 
     render() {
-        const {integrations, actions} = this.props
+        const {integrations, actions, loading} = this.props
 
         const longTypeDescription = 'Facebook is a popular social network where customers can interact with companies. This integration creates tickets when customers post on your Facebook page or send you a message on Messenger.'
 
@@ -33,6 +33,7 @@ class FacebookIntegrationsEdit extends React.Component {
                 createIntegration={actions.facebookLogin}
                 createIntegrationButtonText="ADD PAGE"
                 integrationToItemDisplay={integrationToItemDisplay}
+                loading={loading}
             />
         )
     }
@@ -42,6 +43,7 @@ class FacebookIntegrationsEdit extends React.Component {
 FacebookIntegrationsEdit.propTypes = {
     // An object that contains the integrations for the relevant type along with display info.
     integrations: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired
 }
 

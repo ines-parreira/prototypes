@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import FacebookPage from './FacebookPage'
-import { browserHistory } from 'react-router'
+import { Link } from 'react-router'
 
 
 export default class FacebookPages extends React.Component {
@@ -12,9 +12,9 @@ export default class FacebookPages extends React.Component {
             <div className="ui grid FacebookPagesView">
                 <div className="sixteen wide column">
                     <div className="ui large breadcrumb">
-                        <a className="section" onClick={() => browserHistory.push('/app/settings/integrations')}>Integrations</a>
+                        <Link to="/app/settings/integrations">Integrations</Link>
                         <i className="right angle icon divider"/>
-                        <a className="section">Facebook</a>
+                        <Link to="/app/settings/integrations/facebook" className="section">Facebook</Link>
                         <i className="right angle icon divider"/>
                         <a className="active section">Add page</a>
                     </div>

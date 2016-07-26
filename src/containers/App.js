@@ -11,6 +11,7 @@ import {pollActivity} from '../actions/activity'
 import Navbar from '../components/Navbar'
 import KeyboardHelp from '../components/KeyboardHelp'
 import Mousetrap, * as mousetrap from 'mousetrap'
+import sanitizeHtmlDefault from '../utils'
 import '../../css/main.less'
 
 let pollInterval = null
@@ -92,7 +93,13 @@ class App extends React.Component {
             return null
         }
 
-        const msg = typeof systemMessage.msg === 'string' ? <p>{systemMessage.msg}</p> : systemMessage.msg
+        let msg
+        if (typeof systemMessage.msg === 'string') {
+            const body = sanitizeHtmlDefault(systemMessage.msg)
+            msg = <div dangerouslySetInnerHTML={{__html: body}}></div>
+        } else {
+            msg = systemMessage.msg
+        }
 
         if (systemMessage.modal) {
             return this.renderModalSystemMessage(systemMessage, msg)
@@ -133,7 +140,7 @@ class App extends React.Component {
                 <i className="close icon" onClick={e => this.handleDismissClick(e, true)}/>
                 <div className="header">{systemMessage.header}</div>
                 <div className="content">
-                    {systemMessage.options.title}
+                    {systemMessage.options.title || ''}
                     <div>{msg}</div>
                 </div>
                 <div className="actions">
@@ -141,14 +148,20 @@ class App extends React.Component {
                         Discard
                     </div>
                     {
-                        systemMessage.options.actions.map((action, idx) => (
-                            <div key={idx}
-                                 className={action.className}
-                                 onClick={(e) => { this.handleDismissClick(e, true); action.onClick() }}
-                            >
-                                {action.msg}
-                            </div>
-                        ))
+                        () => {
+                            // Render actions if any.
+                            if (systemMessage.options.actions) {
+                                return systemMessage.options.actions.map((action, idx) => (
+                                    <div key={idx}
+                                         className={action.className}
+                                         onClick={(e) => { this.handleDismissClick(e, true); action.onClick() }}
+                                    >
+                                        {action.msg}
+                                    </div>
+                                ))
+                            }
+                            return null
+                        }
                     }
                 </div>
             </div>

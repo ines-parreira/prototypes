@@ -135,7 +135,7 @@ export default class TicketReply extends React.Component {
             file: document.getElementById('file-input').files[i] || o
         }))
 
-        this.props.actions.ticket.addAttachments(atts)
+        this.props.actions.ticket.addAttachments(this.props.ticket, atts)
     }
 
     handleDroppedFiles = (selection, files) => {

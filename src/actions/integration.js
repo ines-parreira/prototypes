@@ -106,10 +106,46 @@ export function deleteintegration(integration) {
     }
 }
 
+
+function onFacebookLoginSuccess(dispatch) {
+    return (response) => {
+        if (response.authResponse) {
+            reqwest({
+                url: `/callbacks/facebook/receive-access-token?user_id=${response.authResponse.userID}&access_token=${response.authResponse.accessToken}`,
+                method: 'POST'
+            }).then((resp) => {
+                // Tell the reducer to update the state and proceed to next step.
+                dispatch(
+                    {
+                        type: FACEBOOK_LOGIN_SUCCESS,
+                        resp
+                    }
+                )
+                browserHistory.push('/app/settings/integrations/facebook/new')
+            }).catch((err) => {
+                dispatch(systemMessage({
+                    type: 'error',
+                    header: 'Error: failed to POST facebook token to the backend',
+                    internalMessage: err
+                }))
+            })
+        } else {
+            dispatch(systemMessage({
+                type: 'error',
+                header: 'Error: user canceled login or did not fully authorize',
+                msg: 'Error: user canceled login or did not fully authorize'
+            }))
+        }
+    }
+}
+
+
 /**
  * We want to login the user, ask for relevant permissions and then display the list of pages so s/he can choose the
  * ones to import.
  * @returns {function()}
+ *
+ * See https://developers.facebook.com/docs/facebook-login/web
  */
 export function facebookLogin() {
     return (dispatch) => {
@@ -117,35 +153,16 @@ export function facebookLogin() {
             type: FACEBOOK_LOGIN
         });
 
-        FB.login((response) => { // eslint-disable-line no-undef
-            if (response.authResponse) {
-                reqwest({
-                    url: `/callbacks/facebook/receive-access-token?user_id=${response.authResponse.userID}&access_token=${response.authResponse.accessToken}`,
-                    method: 'POST'
-                }).then((resp) => {
-                    // Tell the reducer to update the state and proceed to next step.
-                    dispatch(
-                        {
-                            type: FACEBOOK_LOGIN_SUCCESS,
-                            resp
-                        }
-                    )
-                    browserHistory.push('/app/settings/integrations/facebook/new')
-                }).catch((err) => {
-                    dispatch(systemMessage({
-                        type: 'error',
-                        header: 'Error: failed to POST facebook token to the backend',
-                        internalMessage: err
-                    }))
-                })
+        // eslint-disable-next-line no-undef
+        FB.getLoginStatus((res) => {
+            if (res.status === 'connected') {
+                onFacebookLoginSuccess(dispatch)(res)
             } else {
-                dispatch(systemMessage({
-                    type: 'error',
-                    header: 'Error: user canceled login or did not fully authorize',
-                    msg: 'Error: user canceled login or did not fully authorize'
-                }))
+                // login popup
+                // eslint-disable-next-line no-undef
+                FB.login(onFacebookLoginSuccess(dispatch), {scope: 'manage_pages,publish_pages,read_page_mailboxes'})
             }
-        }, {scope: 'manage_pages,publish_pages,pages_messaging,read_page_mailboxes'})
+        })
     }
 }
 

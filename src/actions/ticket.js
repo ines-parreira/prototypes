@@ -9,6 +9,7 @@ import {renderTemplate} from '../components/utils/template'
 import {lastMessage} from '../utils'
 import {TICKET_VIEWED} from './activity'
 import * as MacroActions from './macro'
+import {getSourceTypeOfResponse} from '../reducers/ticket'
 
 // Reply to a ticket
 export const SUBMIT_TICKET_START = 'SUBMIT_TICKET_START'
@@ -65,11 +66,37 @@ export const ADD_ATTACHMENT_START = 'ADD_ATTACHMENT_START'
 export const ADD_ATTACHMENT_SUCCESS = 'ADD_ATTACHMENT_SUCCESS'
 export const DELETE_ATTACHMENT = 'DELETE_ATTACHMENT'
 
-export function addAttachments(attachments) {
+export function addAttachments(ticket, atts) {
     return (dispatch) => {
         dispatch({
             type: ADD_ATTACHMENT_START
         })
+
+        let attachments = atts
+
+        if (getSourceTypeOfResponse(ticket.get('messages')) === 'facebook-comment') {
+            // We have specific constraints on attachments.
+
+            const attsFiltered = atts.filter(
+                (att) => (att.content_type.startsWith('image')) || (att.content_type.startsWith('video')))
+
+            const previousAtts = ticket.getIn(['newMessage', 'attachments'])
+            if ((previousAtts.size > 0) || (atts.length > 1) || atts.length !== attsFiltered.length) {
+                dispatch(systemMessage({
+                    modal: true,
+                    type: 'error',
+                    options: {},
+                    header: 'We could not add all of your attachments!',
+                    msg: `Facebook comments have limitations on attachments:
+                    <ul>
+                        <li>You cannot send more than one attachment.</li>
+                        <li>You can only send images or videos.</li>
+                    </ul>`
+                }))
+            }
+
+            attachments = previousAtts.size > 0 ? [] : attsFiltered.slice(0, 1)
+        }
 
         const formData = new window.FormData()
 

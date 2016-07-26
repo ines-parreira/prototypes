@@ -81,7 +81,7 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
  * A utility function that gives the source type we should set on a **new** message based on the
  * source type of the message we're responding to.
  */
-function getSourceTypeOfResponse(messages) {
+export function getSourceTypeOfResponse(messages) {
     const lastMsg = getLastNonInternalNoteMessage(messages)
     // some messages don't have sources - failed imports, api, etc..
     if (!lastMsg.get('source')) {

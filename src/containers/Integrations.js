@@ -31,6 +31,7 @@ class IntegrationsContainer extends React.Component {
             integration: integrationSettings.get('integration'),
             facebookIntegrations: integrationSettings.get('integrations').filter(integration => integration.get('type') === 'facebook'),
             facebookAppId: settings.getIn(['data', 'facebook_app_id']),
+            loading: integrationSettings.getIn(['state', 'loadingIntegrations']),
             actions
         }
 
@@ -55,12 +56,16 @@ class IntegrationsContainer extends React.Component {
                         actions={allProps.actions}
                         integrations={allProps.integrations}
                         facebookAppId={allProps.facebookAppId}
+                        loading={allProps.loading}
                     />)
                 }
                 break;
 
             case 'http':
-                child = <HttpIntegrationsEdit actions={allProps.actions} integrations={allProps.integrations}/>
+                child = (<HttpIntegrationsEdit actions={allProps.actions}
+                                              integrations={allProps.integrations}
+                                              loading={allProps.loading}
+                />)
                 break;
             default:
                 child = null

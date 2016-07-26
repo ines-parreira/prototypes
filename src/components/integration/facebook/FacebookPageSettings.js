@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import { browserHistory } from 'react-router'
+import { Link } from 'react-router'
 
 export default class FacebookPageSettings extends React.Component {
     disable = () => {
@@ -24,9 +24,9 @@ export default class FacebookPageSettings extends React.Component {
                 <div className="sixteen wide column">
 
                     <div className="ui large breadcrumb">
-                        <a className="section" onClick={() => browserHistory.push('/app/settings/integrations')}>Integrations</a>
+                        <Link to="/app/settings/integrations">Integrations</Link>
                         <i className="right angle icon divider"/>
-                        <a className="section">Facebook</a>
+                        <Link to="/app/settings/integrations/facebook" className="section">Facebook</Link>
                         <i className="right angle icon divider"/>
                         <a className="active section">{isUpdate ? page.get('name') : 'Add page'}</a>
                     </div>

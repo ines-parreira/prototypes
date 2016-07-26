@@ -6,7 +6,8 @@ const integrationSettingsInitial = fromJS({
     integrations: [],
     integration: {},
     state: {
-        loading: false
+        loadingFacebookLogin: false,
+        loadingIntegrations: false
     }
 })
 
@@ -28,8 +29,12 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
             // The integration to edit.
             return state.set('integration', fromJS(action.resp))
 
+        case actions.FETCH_INTEGRATIONS_START:
+            return state.setIn(['state', 'loadingIntegrations'], true)
+
         case actions.FETCH_INTEGRATIONS_SUCCESS:
-            return state.set('integrations', fromJS(action.resp.data))
+            return (state.set('integrations', fromJS(action.resp.data))
+                .setIn(['state', 'loadingIntegrations'], false))
 
         case actions.TOGGLE_PRIVATE_MESSAGES_ENABLED:
             return state.setIn(['integration', 'facebook', 'settings', 'private_messages_enabled'],
@@ -44,7 +49,7 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
                 !state.getIn(['integration', 'facebook', 'settings', 'import_history_enabled']))
 
         case actions.FACEBOOK_LOGIN:
-            return state.setIn(['state', 'loading'], true)
+            return state.setIn(['state', 'loadingFacebookLogin'], true)
 
         case actions.FACEBOOK_LOGIN_SUCCESS:
             // We can't just concatenate since we might get duplicates if we call it several times. So we merge on page id.
@@ -57,7 +62,7 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
                 }
             }
 
-            return newState.setIn(['state', 'loading'], false)
+            return newState.setIn(['state', 'loadingFacebookLogin'], false)
 
         case actions.UPDATE_INTEGRATION_SUCCESS:
         default:
