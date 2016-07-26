@@ -36,7 +36,8 @@ export default class TicketView extends React.Component {
         nextProps.tags.get('items').size && nextProps.users.get('agents').size // that we've got all the data needed
         ) {
             const filtersAst = nextProps.view.get('filters_ast')
-            const exp = filtersAst.getIn(['body', 0, 'expression']).toJS()
+
+            const exp = filtersAst.getIn(['body', 0, 'expression'])
 
             const fields = {}
             const walk = (node) => {
@@ -76,7 +77,10 @@ export default class TicketView extends React.Component {
                 return null
             }
 
-            walk(exp)
+            // exp can be undefined if our AST is empty.
+            if (exp) {
+                walk(exp.toJS())
+            }
 
             // Since it's the agent clicking on the 'New Ticket' it's automatically assigned to them
             nextProps.actions.ticket.setAgent(nextProps.currentUser)

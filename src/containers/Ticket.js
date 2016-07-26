@@ -169,7 +169,9 @@ class TicketContainer extends React.Component {
             if (macrosVisible() && !modalVisible()) {
                 e.preventDefault()
                 e.stopPropagation()
-                this.applyMacro(this.props.macros.get('selected'))
+                if (this.props.macros.get('selected')) {
+                    this.applyMacro(this.props.macros.get('selected'))
+                }
             }
         })
         mousetrap.bind('up', (e) => {

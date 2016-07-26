@@ -9,7 +9,8 @@ import Navbar from '../components/Navbar'
 class TicketsNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        this.props.actions.fetchViews(this.props.params.view)
+        const viewSlug = this.props.params.view ? this.props.params.view : this.props.location.query.view
+        this.props.actions.fetchViews(viewSlug)
     }
 
     render() {
@@ -31,7 +32,10 @@ TicketsNavbarContainer.propTypes = {
     views: PropTypes.object.isRequired,
     activity: PropTypes.object,
     actions: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
+    location: PropTypes.shape({
+        query: PropTypes.object
+    })
 }
 
 function mapStateToProps(state) {
