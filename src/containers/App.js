@@ -11,7 +11,7 @@ import {pollActivity} from '../actions/activity'
 import Navbar from '../components/Navbar'
 import KeyboardHelp from '../components/KeyboardHelp'
 import Mousetrap, * as mousetrap from 'mousetrap'
-import sanitizeHtmlDefault from '../utils'
+import {sanitizeHtmlDefault} from '../utils'
 import '../../css/main.less'
 
 let pollInterval = null
