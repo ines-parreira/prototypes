@@ -578,7 +578,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
             data.newMessage.sender = currentUser.filter(keyIn('email', 'id', 'name'))
         }
 
-        if (data.newMessage.body_text.length > 0) {
+        if ((data.newMessage.body_text.length > 0) || (data.newMessage.attachments.length > 0)) {
             if (macroActions) {
                 data.newMessage.actions = macroActions.map(curAction => formatAction(
                     curAction,
