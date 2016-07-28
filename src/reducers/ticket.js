@@ -58,6 +58,12 @@ export const ticketInitial = Map({
  * @returns {*}
  */
 export function getLastNonInternalNoteMessage(messages) {
+    // in case we don't get any messages,
+    // return an empty map, to avoid errors with .get().
+    if (!messages.size) {
+        return new Map()
+    }
+
     return messages.filter((m) => m.getIn(['source', 'type']) !== 'internal-note').last()
 }
 
