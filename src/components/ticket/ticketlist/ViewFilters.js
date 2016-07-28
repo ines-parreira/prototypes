@@ -119,7 +119,7 @@ export default class ViewFilters extends React.Component {
             return null
         }
 
-        if (!view.get('filters_ast')) {
+        if (!view.get('filters_ast') || !view.getIn(['filters_ast', 'body']).size) {
             return (<div className="no-filters">No filters selected</div>)
         }
 
