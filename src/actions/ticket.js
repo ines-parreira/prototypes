@@ -9,7 +9,6 @@ import {renderTemplate} from '../components/utils/template'
 import {lastMessage} from '../utils'
 import {TICKET_VIEWED} from './activity'
 import * as MacroActions from './macro'
-import {getSourceTypeOfResponse} from '../reducers/ticket'
 
 // Reply to a ticket
 export const SUBMIT_TICKET_START = 'SUBMIT_TICKET_START'
@@ -74,7 +73,7 @@ export function addAttachments(ticket, atts) {
 
         let attachments = atts
 
-        if (getSourceTypeOfResponse(ticket.get('messages')) === 'facebook-comment') {
+        if (ticket.getIn(['newMessage', 'source', 'type']) === 'facebook-comment') {
             // We have specific constraints on attachments.
 
             const attsFiltered = atts.filter(
