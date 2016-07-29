@@ -34,7 +34,7 @@ export default class TicketReply extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // update the state if the we have a change that doesn't come from typing stuff (from macros for example)
+        // update the state if we have a change that doesn't come from typing stuff (from macros for example)
         if (nextProps.contentState === null || nextProps.fromMacro) {
             this.setState(this.getEditorState(nextProps))
             // Mark the fromMacro as false so we don't get the same macro twice
