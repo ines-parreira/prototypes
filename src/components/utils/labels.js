@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
-import {formatDatetime} from '../../utils'
 import classNames from 'classnames'
+import {merge} from 'lodash'
+import {formatDatetime} from '../../utils'
 
 export const AgentLabel = ({agent}) => (
     <span>
@@ -46,6 +47,48 @@ export const ChannelLabel = ({channel}) => (
 ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 
 
+export class DatetimeLabel extends React.Component {
+    static propTypes = {
+        datetime: PropTypes.string,
+        settings: PropTypes.object
+    }
+
+    componentDidMount() {
+        let settings = {
+            hoverable: true,
+            variation: 'tiny inverted',
+            delay: {
+                show: 200,
+                hide: 100
+            }
+        }
+
+        if (this.props.settings) {
+            settings = merge(settings, this.props.settings)
+        }
+        $(this.refs.tooltip).popup(settings)
+    }
+
+    componentWillUnmount() {
+        $(this.refs.tooltip).popup('destroy')
+    }
+
+    render() {
+        const {datetime} = this.props
+        let labelDatetime = ''
+        let tooltipDatetime = ''
+        if (datetime) {
+            labelDatetime = formatDatetime(datetime)
+            tooltipDatetime = formatDatetime(datetime, null, 'YYYY-MM-DD HH:mm')
+        }
+        return (
+            <div ref="tooltip" data-html={tooltipDatetime}>
+                {labelDatetime}
+            </div>
+        )
+    }
+}
+
 export const RenderLabel = (field, value) => {
     if (!value) {
         return null
@@ -58,7 +101,7 @@ export const RenderLabel = (field, value) => {
         case 'tags':
             return value
         case 'datetime':
-            return formatDatetime(value)
+            return <DatetimeLabel datetime={value}/>
         case 'status':
             return <StatusLabel status={value}/>
         case 'priority':

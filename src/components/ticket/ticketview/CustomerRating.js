@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
-import {sanitizeHtmlDefault, formatDatetime} from '../../../utils'
+import {sanitizeHtmlDefault} from '../../../utils'
+import {DatetimeLabel} from '../../utils/labels'
 
 export default class CustomerRating extends React.Component {
 
@@ -12,8 +13,6 @@ export default class CustomerRating extends React.Component {
             // The user did not answer the survey
             return null
         }
-
-        const ratingDatetime = formatDatetime(rating.get('rating_datetime'))
 
         const RATING_SCORE_TO_MESSAGE = {0: 'BAD', 5: 'OKAY', 10: 'GREAT'}
         const RATING_SCORE_TO_ICON_CLASS = {0: 'thumbs down icon', 5: 'meh icon', 10: 'thumbs up icon'}
@@ -38,7 +37,7 @@ export default class CustomerRating extends React.Component {
                         {`${RATING_SCORE_TO_MESSAGE[rating.get('rating')]} RATING`}
                     </div>
                     <div className="ticket-message-time">
-                        {ratingDatetime}
+                        <DatetimeLabel datetime={rating.get('rating_datetime')} />
                     </div>
                 </div>
                 <div

@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react'
 import {List} from 'immutable'
-import {formatDatetime} from '../../../utils'
 import {SOURCE_VALUE_PROP} from '../../../constants'
 import classNames from 'classnames'
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
+import {DatetimeLabel} from '../../utils/labels'
 
 export default class TicketMessage extends React.Component {
     componentDidMount() {
@@ -107,11 +107,6 @@ export default class TicketMessage extends React.Component {
         // const currentMessageIndex = messages.findIndex((o) => o.get('id') === message.id)
         // const previousMessage = currentMessageIndex > 0 ? messages.get(currentMessageIndex - 1) : null
 
-        let createdDatetime = ''
-        if (message.created_datetime) {
-            createdDatetime = formatDatetime(message.created_datetime)
-        }
-
         let error = false
         let pending = false
 
@@ -144,12 +139,12 @@ export default class TicketMessage extends React.Component {
             <div className={className} ref="ticketMessage">
                 <div className={`ui inverted dimmer ${error ? 'active' : ''}`} data-opacity="0">
                     <div className="content">
-                        <div className="center" style={{ color: 'red' }}>
+                        <div className="center" style={{color: 'red'}}>
                             <div className={`ui segment ${this.props.loading ? 'loading' : ''}`}
-                                 style={{ margin: 'auto', width: '50%'}}
+                                 style={{margin: 'auto', width: '50%'}}
                             >
                                 This message wasn't send: one or more actions failed.
-                                <div style={{ margin: '1em auto'}}>
+                                <div style={{margin: '1em auto'}}>
                                     <TicketMessageActions message={message}/>
                                 </div>
                                 <a onClick={() => this.props.submit(null, null, 'retry', false)}>retry</a> to execute
@@ -182,7 +177,9 @@ export default class TicketMessage extends React.Component {
                         {this.renderMeta(message)}
                     </div>
                     <div className="ticket-message-time">
-                        {createdDatetime}
+                        <DatetimeLabel datetime={message.created_datetime} settings={{
+                            position: 'top left'
+                        }}/>
                     </div>
                 </div>
                 {/*

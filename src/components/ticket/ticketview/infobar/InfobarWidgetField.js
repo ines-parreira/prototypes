@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {renderTemplate} from '../../../utils/template'
-import {formatDatetime} from '../../../../utils'
+import {DatetimeLabel} from '../../../utils/labels'
 import InfobarWidget from './InfobarWidget'
 
 export default class InfobarWidgetField extends React.Component {
@@ -29,7 +29,7 @@ export default class InfobarWidgetField extends React.Component {
                     case 'datetime': {
                         fieldValue = (
                             <span className="field-value datetime">
-                                {formatDatetime(fieldVal, undefined, 'DD-MM-YYYY hh:mm')}
+                                <DatetimeLabel datetime={fieldVal} />
                             </span>
                         )
                         break
