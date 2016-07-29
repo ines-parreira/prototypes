@@ -320,6 +320,7 @@ export function ticket(state = ticketInitial, action) {
             let contentState = action.args.get('contentState')
             let text = ''
             let html = ''
+            let blocks = []
 
             if (action.fromMacro) {
                 const ticketState = state.toJS()
@@ -331,20 +332,27 @@ export function ticket(state = ticketInitial, action) {
                     current_user: currentUser
                 })
 
+                html = renderTemplate(action.args.get('body_html', ''), {
+                    ticket: ticketState,
+                    current_user: currentUser
+                })
+
                 if (text) {
-                    contentState = ContentState.createFromText(text)
+                    blocks = ContentState.createFromText(text).getBlocksAsArray()
                 } else {
-                    // fallback to html
-                    html = renderTemplate(action.args.get('body_html', ''), {
-                        ticket: ticketState,
-                        current_user: currentUser
-                    })
-                    contentState = ContentState.createFromBlockArray(convertFromHTML(html))
+                    blocks = convertFromHTML(html)
                 }
-            } else if (contentState) {
-                text = contentState.getPlainText()
-                html = stateToHTML(contentState)
+
+
+                if (state.getIn(['state', 'contentState']).hasText()) {
+                    blocks = state.getIn(['state', 'contentState']).getBlocksAsArray().concat(blocks)
+                }
+
+                contentState = ContentState.createFromBlockArray(blocks)
             }
+
+            text = contentState.getPlainText()
+            html = stateToHTML(contentState)
 
             return state.mergeDeep({
                 newMessage: {
@@ -356,6 +364,7 @@ export function ticket(state = ticketInitial, action) {
                     dirty: text !== ''
                 }
             }).setIn(['state', 'contentState'], contentState)
+            // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
         }
 
         case actions.SETUP_NEW_TICKET:
