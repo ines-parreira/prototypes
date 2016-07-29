@@ -29,13 +29,18 @@ export function activity(state = activityInitial, action) {
                 // we have a previous state, which means that we should recalculate the counter
                 for (const e of events.toJS()) {
                     const counter = objectsCounter.get(e.object_id)
+                    // ticket-viewed events should not increase the counter
+                    if (e.type === 'ticket-viewed') {
+                        continue
+                    }
+
                     if (!counter) {
                         // if we haven't seen this object before set it with 1 counter
                         objectsCounter = objectsCounter.set(e.object_id, Map({
                             count: 1,
                             created_datetime: e.created_datetime
                         }))
-                    } else if (counter.get('created_datetime') !== e.created_datetime) {
+                    } else if (counter.get('created_datetime') && counter.get('created_datetime') !== e.created_datetime) {
                         // increase the counter if the datetime of the event for the same object differs from the
                         // previous state.
                         // Note: this has the drawback of missing some counts. For example when a lot of events are

@@ -55,7 +55,6 @@ class TicketContainer extends React.Component {
                 this.props.actions.ticket.clearTicket()
             }
             this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
-            this.props.actions.activity.pollActivity(this.props.activity.get('pendingEvents'))
         } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
             /**
              * Redirect to the new page when submitting a new ticket.

@@ -32,25 +32,24 @@ const ActivityWidgetItem = ({object, count}) => {
     })
 
     // The text of the link should try to use the `ticket.requester` or `ticket.subject` or finally `Ticket 123`
-    let title = `Ticket ${object.get('id')}`
-    if (object.get('subject')) {
-        title = object.get('title')
-    }
+    let text = object.get('subject') || `Ticket ${object.get('id')}`
+    const title = text
+
     if (object.getIn(['requester', 'name'])) {
-        title = object.getIn(['requester', 'name'])
+        text = object.getIn(['requester', 'name'])
     }
-    title = truncate(title, 20)
+    text = truncate(text, 20)
 
     let counterLabel = null
     if (count) {
         counterLabel = (<div className="ui mini red circular label">{count}</div>)
-        title = (<strong>{title}</strong>)
+        text = (<strong title={title}>{text}</strong>)
     }
 
     return (
         <Link to={objectURL} className={linkClasses} title={title}>
             <i className={iconClasses}/>
-            {title}
+            {text}
             {counterLabel}
         </Link>
     )
@@ -79,7 +78,7 @@ export default class ActivityWidget extends React.Component {
                 <div className="item">
                     <h4>RECENT ACTIVITY</h4>
                     <div className="menu">
-                        {events.slice(0, ACTIVITY_DISPLAY_COUNT - 1).map(e => (
+                        {events.slice(0, ACTIVITY_DISPLAY_COUNT).map(e => (
                             <ActivityWidgetItem
                                 key={e.get('object_id')}
                                 object={e.get('object')}
