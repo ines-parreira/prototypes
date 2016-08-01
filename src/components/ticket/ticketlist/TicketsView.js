@@ -44,11 +44,9 @@ export default class TicketsView extends React.Component {
             return null
         }
 
-        const style = {maxWidth: this.getWidth(), width: this.getWidth()}
-
         return (
-            <div className="TicketsView" style={style}>
-                <div style={style}>
+            <div className="TicketsView">
+                <div>
                     <div className="sticky-header">
 
                         <div className="ui text menu sticky-header-search">
