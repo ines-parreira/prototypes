@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react'
 
 export default class TicketReplyAction extends React.Component {
-
     setValue(arg, value, title) {
         const category = title === 'Headers' ? 'headers' : 'params'
         const index = this.props.action.getIn(['arguments', category]).indexOf(arg)
@@ -49,7 +48,7 @@ export default class TicketReplyAction extends React.Component {
                         {action.get('title')}
                         <i className="icon close" onClick={() => remove(this.props.index)}/>
                     </div>
-                    <div className={`content ui grid ${headersArgs.size + paramsArgs.size ? '' : 'hidden'}`}>
+                    <div className={`active content ui grid ${headersArgs.size + paramsArgs.size ? '' : 'hidden'}`}>
                         {this.renderArgs('Headers', headersArgs)}
                         {this.renderArgs('Parameters', paramsArgs)}
                     </div>
