@@ -13,8 +13,10 @@ export default class TicketMessages extends React.Component {
         if (messages.size === 0) {
             return null
         }
+        // We concatenate messages and customer ratings.
+        // Ratings have a 'rating_datetime' which is equivalent to created_datetime.
         const allMessages = messages.concat(ticket.get('customer_ratings')
-            .map((cr) => cr.set('isCustomerRating', true)))
+            .map((cr) => cr.set('isCustomerRating', true).set('created_datetime', cr.get('rating_datetime'))))
             .sortBy((m) => m.get('created_datetime'))
         return (
             <div className="TicketMessages">
