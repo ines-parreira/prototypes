@@ -27,7 +27,7 @@ class App extends React.Component {
         this.props.fetchUser(0)
         this.props.fetchSettings()
         this.props.fetchUsers()
-        this.props.fetchUsers(['agent', 'admin'])
+        this.props.fetchUsers(['agent'])
         this.props.fetchTags()
 
         if (pollInterval) {

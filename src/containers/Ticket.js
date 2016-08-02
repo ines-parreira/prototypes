@@ -35,7 +35,7 @@ class TicketContainer extends React.Component {
         }
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
-        this.props.actions.user.fetchUsers(['agent', 'admin'])
+        this.props.actions.user.fetchUsers(['agent'])
     }
 
     componentDidMount() {
