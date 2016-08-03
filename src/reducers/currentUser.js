@@ -1,5 +1,5 @@
 import * as types from '../constants/user'
-import {Map} from 'immutable'
+import {Map, fromJS} from 'immutable'
 import moment from 'moment'
 
 const initial = Map()
@@ -27,7 +27,13 @@ export function currentUser(state = initial, action) {
                 })
             }
 
-            return Map(action.resp)
+            return fromJS(action.resp)
+        case actions.UPDATE_USER_SUCCESS:
+            if (action.userId === state.get('id')) {
+                return fromJS(action.resp)
+            }
+            return state
+
         default:
             return state
     }
