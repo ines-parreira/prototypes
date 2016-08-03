@@ -61,6 +61,10 @@ export default class InfobarWidgetField extends React.Component {
                 const path = widget.object_path.split('.')
                 const obj = object.getIn(path.slice(1))
 
+                if (!obj) {
+                    break
+                }
+
                 if (widget.type === 'list') {
                     fieldValue = obj.map((o, i) => (
                         <InfobarWidget
