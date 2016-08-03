@@ -45,97 +45,99 @@ export default class TicketsView extends React.Component {
         }
 
         return (
-            <div className="TicketsView">
-                <div>
-                    <div className="sticky-header">
+            <div className="tickets-view">
+                <div className="tickets-view-header-container">
+                    <div className="tickets-view-header" style={{ maxWidth: this.getWidth() }}>
+                        <div className="sticky-header">
 
-                        <div className="ui text menu sticky-header-search">
-                            <div className="left menu item"></div>
-                            <div className="right menu item">
-                                <Search
-                                    autofocus
-                                    onChange={search}
-                                    className="long"
-                                    queryPath="bool.should.0.multi_match.query,bool.should.1.nested.query.multi_match.query"
-                                    query={{
-                                        bool: {
-                                            should: [
-                                                {
-                                                    multi_match: {
-                                                        query: '',
-                                                        type: 'phrase_prefix',
-                                                        fields: [
-                                                            'subject^3',
-                                                            'requester.name',
-                                                            'requester.email',
-                                                            'sender.name',
-                                                            'sender.email'
-                                                        ]
-                                                    }
-                                                },
-                                                {
-                                                    nested: {
-                                                        path: 'messages',
-                                                        query: {
-                                                            multi_match: {
-                                                                query: '',
-                                                                fields: [
-                                                                    'messages.sender.name',
-                                                                    'messages.sender.email',
-                                                                    'messages.receiver.name',
-                                                                    'messages.receiver.email',
-                                                                    'messages.body_*'
-                                                                ]
+                            <div className="ui text menu sticky-header-search">
+                                <div className="left menu item"></div>
+                                <div className="right menu item">
+                                    <Search
+                                        autofocus
+                                        onChange={search}
+                                        className="long"
+                                        queryPath="bool.should.0.multi_match.query,bool.should.1.nested.query.multi_match.query"
+                                        query={{
+                                            bool: {
+                                                should: [
+                                                    {
+                                                        multi_match: {
+                                                            query: '',
+                                                            type: 'phrase_prefix',
+                                                            fields: [
+                                                                'subject^3',
+                                                                'requester.name',
+                                                                'requester.email',
+                                                                'sender.name',
+                                                                'sender.email'
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        nested: {
+                                                            path: 'messages',
+                                                            query: {
+                                                                multi_match: {
+                                                                    query: '',
+                                                                    fields: [
+                                                                        'messages.sender.name',
+                                                                        'messages.sender.email',
+                                                                        'messages.receiver.name',
+                                                                        'messages.receiver.email',
+                                                                        'messages.body_*'
+                                                                    ]
+                                                                }
                                                             }
                                                         }
                                                     }
-                                                }
-                                            ]
-                                        }
-                                    }}
-                                    placeholder="Search tickets"
-                                    searchDebounceTime={400}
-                                    location={view.get('id')}
-                                />
+                                                ]
+                                            }
+                                        }}
+                                        placeholder="Search tickets"
+                                        searchDebounceTime={400}
+                                        location={view.get('id')}
+                                    />
+                                </div>
                             </div>
+
+                            <div className="ui grid view-header">
+                                <div className="six wide column">
+
+                                    <EditableTitle
+                                        title={view.get('name') || ''}
+                                        placeholder="View name"
+                                        update={this.updateViewName}
+                                    />
+
+                                </div>
+                                <div className="ten wide column">
+
+                                    <ListActions
+                                        views={views}
+                                        shouldDisplayBulkActions={tickets.get('selected').size > 0}
+                                        actions={actions}
+                                        selected={tickets.get('selected')}
+                                        currentUser={currentUser}
+                                        tags={this.props.tags}
+                                        agents={this.props.users.get('agents')}
+                                    />
+
+                                </div>
+                            </div>
+
                         </div>
-
-                        <div className="ui grid view-header">
-                            <div className="six wide column">
-
-                                <EditableTitle
-                                    title={view.get('name') || ''}
-                                    placeholder="View name"
-                                    update={this.updateViewName}
-                                />
-
-                            </div>
-                            <div className="ten wide column">
-
-                                <ListActions
-                                    views={views}
-                                    shouldDisplayBulkActions={tickets.get('selected').size > 0}
-                                    actions={actions}
-                                    selected={tickets.get('selected')}
-                                    currentUser={currentUser}
-                                    tags={this.props.tags}
-                                    agents={this.props.users.get('agents')}
-                                />
-
-                            </div>
-                        </div>
-
+                        <FilterTopbar
+                            views={views}
+                            schemas={schemas}
+                            resetView={this.resetView}
+                            deleteView={this.deleteView}
+                            removeFieldFilter={actions.view.removeFieldFilter}
+                            updateFieldFilterOperator={actions.view.updateFieldFilterOperator}
+                            submitView={actions.view.submitView}
+                            width={this.getWidth()}
+                        />
                     </div>
-                    <FilterTopbar
-                        views={views}
-                        schemas={schemas}
-                        resetView={this.resetView}
-                        deleteView={this.deleteView}
-                        removeFieldFilter={actions.view.removeFieldFilter}
-                        updateFieldFilterOperator={actions.view.updateFieldFilterOperator}
-                        submitView={actions.view.submitView}
-                        width={this.getWidth()}
-                    />
                 </div>
 
                 <TicketTable

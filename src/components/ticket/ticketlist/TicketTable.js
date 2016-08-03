@@ -25,7 +25,7 @@ export default class TicketTable extends React.Component {
         }
 
         return (
-            <div className="TicketTable">
+            <div className="ticket-table">
                 <table className="ui selectable very basic padded table" ref="table">
                     <thead>
                         <tr>
