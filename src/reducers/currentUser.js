@@ -28,7 +28,7 @@ export function currentUser(state = initial, action) {
             }
 
             return fromJS(action.resp)
-        case actions.UPDATE_USER_SUCCESS:
+        case types.UPDATE_USER_SUCCESS:
             if (action.userId === state.get('id')) {
                 return fromJS(action.resp)
             }
