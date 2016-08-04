@@ -1,31 +1,26 @@
-import reqwest from 'reqwest'
-import { systemMessage } from './systemMessage'
-
-export const FETCH_SETTINGS_START = 'FETCH_SETTINGS_START'
-export const FETCH_SETTINGS_SUCCESS = 'FETCH_SETTINGS_SUCCESS'
+import axios from 'axios'
+import * as types from '../constants/settings'
 
 export function fetchSettings() {
     return (dispatch) => {
         dispatch({
-            type: FETCH_SETTINGS_START
+            type: types.FETCH_SETTINGS_START
         })
 
-        return reqwest({
-            url: '/api/settings/',
-            type: 'json',
-            method: 'GET',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch({
-                type: FETCH_SETTINGS_SUCCESS,
-                resp
+        axios.get('/api/settings/')
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.FETCH_SETTINGS_SUCCESS,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to fetch settings',
-                internalMessage: err
-            }))
-        })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_SETTINGS_ERROR,
+                    error,
+                    reason: 'Failed to fetch settings'
+                })
+            })
     }
 }

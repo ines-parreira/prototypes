@@ -13,7 +13,7 @@ export default class TicketInfobar extends React.Component {
         const items = List(widgets.get('items'))
         const topWidgets = items.filter(w => w.type === 'top').sortBy(w => w.order)
         const bottomWidgets = items.filter(w => w.type === 'bottom').sortBy(w => w.order)
-        const contentWidgets = items.filter(w => ['top', 'bottom'].indexOf(w.type) === -1).sortBy(w => w.order)
+        const contentWidgets = items.filter(w => !~['top', 'bottom'].indexOf(w.type)).sortBy(w => w.order)
 
         const renderWidgets = (widgetList) => (
             widgetList.map(w => {

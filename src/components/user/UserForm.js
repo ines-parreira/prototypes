@@ -36,7 +36,7 @@ export default class UserForm extends React.Component {
                 sendData.email = data.email
             }
 
-            if (this.props.user.get('roles').indexOf(data.role) === -1) {
+            if (!~this.props.user.get('roles').indexOf(data.role)) {
                 sendData.roles = [data.role]
             }
 

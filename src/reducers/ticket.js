@@ -1,5 +1,6 @@
 import * as actions from '../actions/ticket'
-import {SUBMIT_ACTIVITY_SUCCESS} from '../actions/activity'
+import * as types from '../constants/ticket'
+import {SUBMIT_ACTIVITY_SUCCESS} from '../constants/activity'
 import {Map, List, fromJS} from 'immutable'
 import {convertFromHTML, ContentState} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
@@ -126,10 +127,10 @@ export function ticket(state = ticketInitial, action) {
     let tags
 
     switch (action.type) {
-        case actions.ADD_ATTACHMENT_START:
+        case types.ADD_ATTACHMENT_START:
             return state.setIn(['state', 'attachmentLoading'], true)
 
-        case actions.ADD_ATTACHMENT_SUCCESS:
+        case types.ADD_ATTACHMENT_SUCCESS:
             return state.mergeDeep({
                 newMessage: {
                     attachments: state.getIn(['newMessage', 'attachments']).concat(action.resp)
@@ -140,21 +141,21 @@ export function ticket(state = ticketInitial, action) {
                 }
             })
 
-        case actions.DELETE_ATTACHMENT:
+        case types.DELETE_ATTACHMENT:
             return state
                 .setIn(['newMessage', 'attachments'], state.getIn(['newMessage', 'attachments']).delete(action.index))
                 .setIn(['state', 'dirty'], true)
 
-        case actions.RECORD_MACRO:
+        case types.RECORD_MACRO:
             return state.setIn(
                 ['newMessage', 'macros'],
                 state.getIn(['newMessage', 'macros']).push({id: action.macro.get('id')})
             )
 
-        case actions.RECEIVED_MACRO:
+        case types.RECEIVED_MACRO:
             return state.setIn(['state', 'fromMacro'], false)
 
-        case actions.SUBMIT_TICKET_MESSAGE_START: {
+        case types.SUBMIT_TICKET_MESSAGE_START: {
             let newState = state.setIn(['state', 'loading'], true)
 
             // if the ticket is un-assigned,
@@ -168,14 +169,14 @@ export function ticket(state = ticketInitial, action) {
             return newState
         }
 
-        case actions.SUBMIT_TICKET_START:
-        case actions.DELETE_TICKET_MESSAGE_START:
+        case types.SUBMIT_TICKET_START:
+        case types.DELETE_TICKET_MESSAGE_START:
             return state.setIn(['state', 'loading'], true)
-        case actions.SUBMIT_TICKET_ERROR:
-        case actions.SUBMIT_TICKET_MESSAGE_ERROR:
+        case types.SUBMIT_TICKET_ERROR:
+        case types.SUBMIT_TICKET_MESSAGE_ERROR:
             return state.setIn(['state', 'loading'], false)
 
-        case actions.SUBMIT_TICKET_SUCCESS: {
+        case types.SUBMIT_TICKET_SUCCESS: {
             if (action.resp.id !== state.get('id') && state.get('id')) {
                 return state
             }
@@ -198,7 +199,7 @@ export function ticket(state = ticketInitial, action) {
             )) : newState
         }
 
-        case actions.SUBMIT_TICKET_MESSAGE_SUCCESS: {
+        case types.SUBMIT_TICKET_MESSAGE_SUCCESS: {
             // If we changed the displayed ticket (e.g. submit and close), we dont want to change the state.
             if (action.resp.ticket_id !== state.get('id') && state.get('id')) {
                 return state
@@ -209,7 +210,7 @@ export function ticket(state = ticketInitial, action) {
 
             // We can't just concatenate since we might get duplicates. So we merge on message id.
             const existingIndex = newState.get('messages').findIndex((m) => m.get('id') === respMessage.get('id'))
-            if (existingIndex !== -1) {
+            if (~existingIndex) {
                 newState = newState.setIn(['messages', existingIndex], respMessage)
             } else {
                 newState = newState.set('messages', newState.get('messages').push(respMessage))
@@ -231,7 +232,7 @@ export function ticket(state = ticketInitial, action) {
             )) : newState
         }
 
-        case actions.FETCH_TICKET_SUCCESS: {
+        case types.FETCH_TICKET_SUCCESS: {
             const newState = state.merge(fromJS(action.resp))
             return newState.set('newMessage', newState.get('newMessage').mergeDeep(newMessage(
                 action.resp.channel,
@@ -246,7 +247,7 @@ export function ticket(state = ticketInitial, action) {
                 })
         }
 
-        case actions.FETCH_MESSAGE_SUCCESS:
+        case types.FETCH_MESSAGE_SUCCESS:
             if (!_isUndefined(state.get('id')) && state.get('id') === action.resp.ticket_id) {
                 return state.setIn(
                     ['messages', state.get('messages').findIndex(message => message.get('id') === action.resp.id)],
@@ -256,11 +257,11 @@ export function ticket(state = ticketInitial, action) {
 
             return state
 
-        case actions.CLEAR_TICKET:
+        case types.CLEAR_TICKET:
             return ticketInitial
 
         /* Macro actions */
-        case actions.ADD_TICKET_TAGS: {
+        case types.ADD_TICKET_TAGS: {
             tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
 
@@ -272,35 +273,35 @@ export function ticket(state = ticketInitial, action) {
 
             return state.set('tags', tags)
         }
-        case actions.REMOVE_TICKET_TAG:
+        case types.REMOVE_TICKET_TAG:
             return state.set('tags', state.get('tags').delete(action.index))
 
-        case actions.SET_TAGS:
+        case types.SET_TAGS:
             return state.set('tags', fromJS(action.args.get('tags')))
 
-        case actions.TOGGLE_PRIORITY:
+        case types.TOGGLE_PRIORITY:
             if (action.args.get('priority')) {
                 return state.set('priority', action.args.get('priority'))
             }
 
             return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
 
-        case actions.SET_AGENT:
+        case types.SET_AGENT:
             return state.set('assignee_user', action.args.get('assignee_user') ? fromJS(action.args.get('assignee_user')) : null)
 
-        case actions.SET_STATUS:
+        case types.SET_STATUS:
             if (action.args.get('id') && action.args.get('id') !== state.get('id')) {
                 return state
             }
             return state.set('status', action.args.get('status'))
 
-        case actions.SET_PUBLIC:
+        case types.SET_PUBLIC:
             return state.setIn(['newMessage', 'public'], action.isPublic)
 
-        case actions.SET_SUBJECT:
+        case types.SET_SUBJECT:
             return state.set('subject', action.args.get('subject'))
 
-        case actions.SET_SOURCE_TYPE: {
+        case types.SET_SOURCE_TYPE: {
             let newState = state
 
             if (action.sourceType !== 'internal-note') {
@@ -316,7 +317,7 @@ export function ticket(state = ticketInitial, action) {
                 .setIn(['newMessage', 'public'], action.sourceType !== 'internal-note')
         }
 
-        case actions.SET_RESPONSE_TEXT: {
+        case types.SET_RESPONSE_TEXT: {
             let contentState = action.args.get('contentState')
             let text = ''
             let html = ''
@@ -367,10 +368,10 @@ export function ticket(state = ticketInitial, action) {
             // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
         }
 
-        case actions.SETUP_NEW_TICKET:
+        case types.SETUP_NEW_TICKET:
             return ticketInitial
 
-        case actions.UPDATE_POTENTIAL_REQUESTERS: {
+        case types.UPDATE_POTENTIAL_REQUESTERS: {
             const users = []
 
             for (const channel of action.resp.data) {
@@ -389,7 +390,7 @@ export function ticket(state = ticketInitial, action) {
                 .setIn(['state', 'query'], action.query)
         }
 
-        case actions.ADD_RECEIVER: {
+        case types.ADD_RECEIVER: {
             let newState = state
 
             if (!state.getIn(['newMessage', 'receiver'])) {
@@ -416,7 +417,7 @@ export function ticket(state = ticketInitial, action) {
             })
         }
 
-        case actions.REMOVE_RECEIVER: {
+        case types.REMOVE_RECEIVER: {
             let newState = state.setIn(
                 ['newMessage', 'source', 'to'],
                 state.getIn(['newMessage', 'source', 'to']).filter(
@@ -431,15 +432,15 @@ export function ticket(state = ticketInitial, action) {
             return newState
         }
 
-        case actions.CLEAR_RECEIVERS:
+        case types.CLEAR_RECEIVERS:
             return state
                 .setIn(['newMessage', 'source', 'to'], List())
                 .setIn(['newMessage', 'receiver'], null)
 
-        case actions.MARK_TICKET_DIRTY:
+        case types.MARK_TICKET_DIRTY:
             return state.setIn(['state', 'dirty'], action.dirty)
 
-        case actions.DELETE_TICKET_MESSAGE_SUCCESS:
+        case types.DELETE_TICKET_MESSAGE_SUCCESS:
             return state.set(
                 'messages',
                 state.get('messages').delete(

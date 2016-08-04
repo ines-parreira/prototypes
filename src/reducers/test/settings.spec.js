@@ -4,7 +4,7 @@ import expectImmutable from 'expect-immutable'
 import { Map } from 'immutable'
 
 import { settings } from '../settings'
-import * as actions from '../../actions/settings'
+import * as types from '../../constants/settings'
 
 expect.extend(expectImmutable)
 
@@ -35,7 +35,7 @@ describe('reducers', () => {
         it('should start the settings fetching', () => {
             const startFetchSettings = (state) => (
                 settings(state, {
-                    type: actions.FETCH_SETTINGS_START,
+                    type: types.FETCH_SETTINGS_START,
                 })
             )
 
@@ -69,7 +69,7 @@ describe('reducers', () => {
         it('should fetch the settings from server', () => {
             const fetchSettingsWithSuccess = (state, response) => (
                 settings(state, {
-                    type: actions.FETCH_SETTINGS_SUCCESS,
+                    type: types.FETCH_SETTINGS_SUCCESS,
                     resp: response,
                 })
             )

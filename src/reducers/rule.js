@@ -1,8 +1,8 @@
 import Immutable from 'immutable'
-import { getCode, getAST } from '../utils'
+import {getCode, getAST} from '../utils'
 
-import { ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST } from '../actions/rule'
-import { DEFAULT_OPTION_CHAINS } from '../components/ast/Widget.js'
+import {ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST} from '../constants/rule'
+import {DEFAULT_OPTION_CHAINS} from '../components/ast/Widget.js'
 
 const initialState = Immutable.List([])
 
@@ -113,7 +113,7 @@ export function rules(state = initialState, action) {
 
         case RULES_UPDATE_CODE_AST:
         {
-            const { index, path, value, operation } = action
+            const {index, path, value, operation} = action
             const stateitem = Immutable.fromJS(state.get(index))
             const pathFull = path.unshift('code_ast')
 
@@ -131,11 +131,7 @@ export function rules(state = initialState, action) {
                 // Do the updates only in the Ifstatement.test
                 if (pathFull.contains('test')) {
                     let index = pathFull.lastIndexOf('arguments')
-                    if (index === -1) {
-                        index = pathFull.lastIndexOf('callee')
-                    }
-
-                    if (index !== -1) {
+                    if (~index) {
                         const pathParentCallExpression = pathFull.setSize(pathFull.count() - index - 1)
                         const possiblePaths = inOrderGetLeaves(stateitemNew, pathParentCallExpression)
 
@@ -151,6 +147,8 @@ export function rules(state = initialState, action) {
                                 shouldUpdate = true
                             }
                         }
+                    } else {
+                        index = pathFull.lastIndexOf('callee')
                     }
                 } else {
                     /*
@@ -158,7 +156,7 @@ export function rules(state = initialState, action) {
                      * */
                     const index = pathFull.lastIndexOf('arguments')
                     const index2 = pathFull.lastIndexOf(1)
-                    if (index !== -1 && index2 != -1 && (index - index2 === 1)) {
+                    if (~index && ~index2 && (index - index2 === 1)) {
                         const pathParentCallExpression = pathFull.setSize(pathFull.count() - index - 1)
                         const calleeName = stateitemNew.getIn(pathParentCallExpression.push('callee', 'name'))
                         if (calleeName === 'Action') {

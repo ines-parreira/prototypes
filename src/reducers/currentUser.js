@@ -1,4 +1,4 @@
-import * as actions from '../actions/user'
+import * as types from '../constants/user'
 import {Map} from 'immutable'
 import moment from 'moment'
 
@@ -10,7 +10,7 @@ export function currentUser(state = initial, action) {
     }
 
     switch (action.type) {
-        case actions.FETCH_CURRENT_USER_SUCCESS:
+        case types.FETCH_CURRENT_USER_SUCCESS:
             // set default locale and timezone
             if (action.resp.language) {
                 moment.locale(action.resp.language)

@@ -1,5 +1,5 @@
-import * as actions from '../actions/user'
-import { fromJS } from 'immutable'
+import * as types from '../constants/user'
+import {fromJS} from 'immutable'
 import _ from 'lodash'
 
 export const USER_SEARCH_QUERY = {
@@ -64,7 +64,7 @@ export function users(state = usersInitial, action) {
 
     switch (action.type) {
 
-        case actions.FETCH_USER_LIST_START:
+        case types.FETCH_USER_LIST_START:
             if (action.stringQuery !== undefined) {
                 newState = newState.merge({
                     search: {
@@ -74,10 +74,10 @@ export function users(state = usersInitial, action) {
                 })
             }
 
-            return newState.merge({ loading: true })
+            return newState.merge({loading: true})
 
-        case actions.FETCH_USER_LIST_SUCCESS:
-            if (action.roles && action.roles.indexOf('agent') !== -1) {
+        case types.FETCH_USER_LIST_SUCCESS:
+            if (action.roles && ~action.roles.indexOf('agent')) {
                 newState = newState.set('agents', fromJS(action.resp.data))
             } else {
                 newState = newState.set('items', fromJS(action.resp.data))
@@ -88,23 +88,23 @@ export function users(state = usersInitial, action) {
                 resp: action.resp
             })
 
-        case actions.CREATE_NEW_USER_SUCCESS:
+        case types.CREATE_NEW_USER_SUCCESS:
             return state.merge({
                 items: items.push(fromJS(action.resp)),
                 loading: false,
                 resp: action.resp
             })
 
-        case actions.UPDATE_USER_SUCCESS:
+        case types.UPDATE_USER_SUCCESS:
             return state.setIn(['items', items.findIndex(item => item.get('id') === action.userId)], fromJS(action.resp))
 
-        case actions.DELETE_USER_SUCCESS:
+        case types.DELETE_USER_SUCCESS:
             return state.merge({
                 items: state.get('items').filter((item) => item.get('id') !== action.userId),
                 resp: action.resp
             })
 
-        case actions.SORT_USERS: {
+        case types.SORT_USERS: {
             return state.mergeDeep({
                 sort: {
                     field: action.sortField,
@@ -113,7 +113,7 @@ export function users(state = usersInitial, action) {
             })
         }
 
-        case actions.UPDATE_LIST:
+        case types.UPDATE_LIST:
             return state.merge({
                 items: action.list
             })

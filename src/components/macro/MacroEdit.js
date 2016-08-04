@@ -38,7 +38,7 @@ export default class MacroEdit extends React.Component {
                 }
             },
             onChange: (value, text) => {
-                if (DEFAULT_ACTIONS.indexOf(text) !== -1) {
+                if (~DEFAULT_ACTIONS.indexOf(text)) {
                     this.props.actions.addAction(text)
                     $('#new-action-popup').dropdown('set text', 'Insert a new action')
                 }
@@ -70,7 +70,7 @@ export default class MacroEdit extends React.Component {
         }
 
         const presetActions = currentMacro.get('actions').filter(
-            action => DEFAULT_ACTIONS.indexOf(action.get('name')) !== -1
+            action => ~DEFAULT_ACTIONS.indexOf(action.get('name'))
         )
 
         const saveButton = currentMacro.get('id') !== 'new' ? (

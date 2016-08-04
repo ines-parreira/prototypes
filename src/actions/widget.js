@@ -1,37 +1,31 @@
-import reqwest from 'reqwest'
-import {systemMessage} from './systemMessage'
-
-
-// Fetching a list of tickets life-cycle
-export const FETCH_WIDGETS_START = 'FETCH_WIDGETS_START'
-export const FETCH_WIDGETS_SUCCESS = 'FETCH_WIDGETS_SUCCESS'
-
+import axios from 'axios'
+import * as types from '../constants/widget'
 
 export function fetchWidgets() {
-    const url = '/api/widgets/'
-
     return (dispatch) => {
         dispatch({
-            type: FETCH_WIDGETS_START
+            type: types.FETCH_WIDGETS_START
         })
 
-        return reqwest({
-            url,
-            type: 'json',
-            method: 'GET',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch({
-                type: FETCH_WIDGETS_SUCCESS,
-                resp
-            })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: Failed to fetch widgets.',
-                internalMessage: err
-            }))
+        axios.get('/api/widgets/', {
+            data: {
+                type: 'ticket-list'
+            }
         })
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.FETCH_WIDGETS_SUCCESS,
+                    resp
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_WIDGETS_ERROR,
+                    error,
+                    reason: 'Failed to fetch widgets'
+                })
+            })
     }
 }
 

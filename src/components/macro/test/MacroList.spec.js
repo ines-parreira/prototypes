@@ -103,7 +103,7 @@ describe('MacroList component', () => {
             let numberOfActiveMacros = 0
 
             for (const macro of macrosList) {
-                if (macro.props.className.indexOf('disabled') === -1) {
+                if (!~macro.props.className.indexOf('disabled')) {
                     numberOfActiveMacros += 1
                 }
             }

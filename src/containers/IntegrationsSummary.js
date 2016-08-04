@@ -8,7 +8,6 @@ import {getIntegrationsSummary} from '../reducers/integrationSettings'
 import IntegrationsSummary from '../components/integration/IntegrationsSummary'
 
 class IntegrationsSummaryContainer extends React.Component {
-
     componentWillMount() {
         this.props.actions.fetchIntegrations()
     }
@@ -30,13 +29,11 @@ class IntegrationsSummaryContainer extends React.Component {
     }
 }
 
-
 IntegrationsSummaryContainer.propTypes = {
     integrationSettings: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired
 }
-
 
 function mapStateToProps(state) {
     return {
@@ -45,12 +42,10 @@ function mapStateToProps(state) {
     }
 }
 
-
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(IntegrationsActions, dispatch)
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntegrationsSummaryContainer)

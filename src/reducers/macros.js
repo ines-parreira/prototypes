@@ -1,7 +1,7 @@
-import * as actions from '../actions/macro'
+import {createFilter} from 'react-search-input'
+import * as types from '../constants/macro'
 import {fromJS, Map, List} from 'immutable'
 import {DEFAULT_ACTIONS, ACTION_TEMPLATES} from '../constants'
-import {createFilter} from 'react-search-input'
 
 
 const actionInitial = Map({
@@ -104,36 +104,36 @@ export function macros(state = macrosInitial, action) {
     let newState = state
 
     switch (action.type) {
-        case actions.CLOSE_MODAL:
+        case types.CLOSE_MODAL:
             return state.set('isModalOpen', false)
 
-        case actions.OPEN_MODAL:
+        case types.OPEN_MODAL:
             return state.set('isModalOpen', true)
 
-        case actions.ADD_NEW_MACRO:
+        case types.ADD_NEW_MACRO:
             return state.set('modalSelected', macroInitial)
 
-        case actions.CREATE_MACRO_SUCCESS:
-        case actions.UPDATE_MACRO_SUCCESS:
+        case types.CREATE_MACRO_SUCCESS:
+        case types.UPDATE_MACRO_SUCCESS:
             return state.setIn(['items', action.resp.id], fromJS(action.resp))
 
-        case actions.DELETE_MACRO_SUCCESS:
+        case types.DELETE_MACRO_SUCCESS:
             newState = state.set('items', newState.get('items').delete(action.macroId))
             return newState.set('modalSelected', newState.get('items').first())
 
-        case actions.PREVIEW_MACRO:
+        case types.PREVIEW_MACRO:
             return state.set('selected', state.getIn(['items', action.id]))
 
-        case actions.PREVIEW_MACRO_IN_MODAL:
+        case types.PREVIEW_MACRO_IN_MODAL:
             return state.set('modalSelected', state.getIn(['items', action.macroId])).set('isModalOpen', true)
 
-        case actions.APPLY_MACRO:
+        case types.APPLY_MACRO:
             return state.set('visible', false).set('appliedMacro', action.macro)
 
-        case actions.SET_MACROS_VISIBILITY:
+        case types.SET_MACROS_VISIBILITY:
             return state.set('visible', action.visible)
 
-        case actions.PREVIEW_ADJACENT_MACRO: {
+        case types.PREVIEW_ADJACENT_MACRO: {
             const selectedMacro = state.get('selected')
             items = state.get('items').toIndexedSeq().toJS()
             items = fromJS(items.filter(createFilter(state.getIn(['state', 'query']), ['name'])))
@@ -149,7 +149,7 @@ export function macros(state = macrosInitial, action) {
             return state
         }
 
-        case actions.PREVIEW_ADJACENT_MACRO_IN_MODAL: {
+        case types.PREVIEW_ADJACENT_MACRO_IN_MODAL: {
             const selectedMacro = state.get('modalSelected')
 
             items = state.get('items')
@@ -173,7 +173,7 @@ export function macros(state = macrosInitial, action) {
             return state
         }
 
-        case actions.FETCH_MACRO_LIST_SUCCESS: {
+        case types.FETCH_MACRO_LIST_SUCCESS: {
             items = Map()
             for (const macro of action.resp.data) {
                 items = items.set(macro.id, fromJS(macro))
@@ -184,25 +184,25 @@ export function macros(state = macrosInitial, action) {
             })
         }
 
-        case actions.UPDATE_ACTION_ARGS:
+        case types.UPDATE_ACTION_ARGS:
             return state.setIn(['modalSelected', 'actions', action.actionIndex, 'arguments'], action.value)
 
-        case actions.UPDATE_ACTION_ARGS_ON_APPLIED:
+        case types.UPDATE_ACTION_ARGS_ON_APPLIED:
             return state.setIn(['appliedMacro', 'actions', action.actionIndex, 'arguments'], action.value)
 
-        case actions.DELETE_ACTION_ON_APPLIED:
+        case types.DELETE_ACTION_ON_APPLIED:
             return state.setIn(
                 ['appliedMacro', 'actions'],
                 state.getIn(['appliedMacro', 'actions']).delete(action.actionIndex)
             )
 
-        case actions.UPDATE_ACTION_TITLE:
+        case types.UPDATE_ACTION_TITLE:
             return state.setIn(['modalSelected', 'actions', action.actionIndex, 'title'], action.title)
 
-        case actions.SET_NAME:
+        case types.SET_NAME:
             return state.setIn(['modalSelected', 'name'], action.name)
 
-        case actions.DELETE_ACTION:
+        case types.DELETE_ACTION:
             actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
                 curAction => curAction.get('id') === action.actionId
             )
@@ -212,8 +212,8 @@ export function macros(state = macrosInitial, action) {
                 state.getIn(['modalSelected', 'actions']).delete(actionIndex)
             )
 
-        case actions.ADD_ACTION:
-            if (DEFAULT_ACTIONS.indexOf(action.actionType) === -1) {
+        case types.ADD_ACTION:
+            if (!~DEFAULT_ACTIONS.indexOf(action.actionType)) {
                 return state
             }
 
@@ -222,7 +222,7 @@ export function macros(state = macrosInitial, action) {
                 state.getIn(['modalSelected', 'actions']).push(state.getIn(['actions', action.actionType]))
             )
 
-        case actions.SAVE_SEARCH: {
+        case types.SAVE_SEARCH: {
             const queryField = state.get('isModalOpen') ? 'modalQuery' : 'query'
             const selectedField = state.get('isModalOpen') ? 'modalSelected' : 'selected'
 
@@ -234,7 +234,7 @@ export function macros(state = macrosInitial, action) {
 
             if (!selectedMacro) {
                 newState = newState.set(selectedField, items.first())
-            } else if (items.findIndex(item => item.get('id') === selectedMacro.get('id')) === -1) {
+            } else if (!~items.findIndex(item => item.get('id') === selectedMacro.get('id'))) {
                 newState = newState.set(selectedField, items.first())
             }
 

@@ -18,7 +18,7 @@ let pollInterval = null
 class App extends React.Component {
     constructor(props) {
         super(props)
-        this.handleDismissClick = this.handleDismissClick.bind(this)
+        this._handleDismissClick = this._handleDismissClick.bind(this)
         this.messageTimeout = null
     }
 
@@ -72,7 +72,7 @@ class App extends React.Component {
         }
     }
 
-    handleDismissClick(e, modal = false) {
+    _handleDismissClick(e, modal = false) {
         if (e) {
             e.preventDefault()
         }
@@ -85,7 +85,7 @@ class App extends React.Component {
     }
 
     // Show errors, warnings, info and success messages
-    renderSystemMessage() {
+    _renderSystemMessage() {
         clearTimeout(this.messageTimeout)
         const systemMessage = this.props.systemMessage.toJS()
 
@@ -102,7 +102,7 @@ class App extends React.Component {
         }
 
         if (systemMessage.modal) {
-            return this.renderModalSystemMessage(systemMessage, msg)
+            return this._renderModalSystemMessage(systemMessage, msg)
         }
         const messageType = {
             neutral: '',
@@ -114,7 +114,7 @@ class App extends React.Component {
         }[systemMessage.type]
 
         if (systemMessage.type === 'info' || systemMessage.type === 'success') {
-            this.messageTimeout = setTimeout(this.handleDismissClick, 4500)
+            this.messageTimeout = setTimeout(this._handleDismissClick, 4500)
         }
 
         return (
@@ -126,7 +126,7 @@ class App extends React.Component {
                 transitionLeaveTimeout={200}
             >
                 <div id="system-message" className={`ui ${messageType} message`}>
-                    <i className="close icon" onClick={this.handleDismissClick}/>
+                    <i className="close icon" onClick={this._handleDismissClick}/>
                     <div className="header">{systemMessage.header}</div>
                     {msg}
                 </div>
@@ -134,17 +134,17 @@ class App extends React.Component {
         )
     }
 
-    renderModalSystemMessage(systemMessage, msg) {
+    _renderModalSystemMessage(systemMessage, msg) {
         return (
             <div id="system-message" className="ui modal">
-                <i className="close icon" onClick={e => this.handleDismissClick(e, true)}/>
+                <i className="close icon" onClick={e => this._handleDismissClick(e, true)}/>
                 <div className="header">{systemMessage.header}</div>
                 <div className="content">
                     {systemMessage.options.title || ''}
                     <div>{msg}</div>
                 </div>
                 <div className="actions">
-                    <div className="ui button" onClick={e => this.handleDismissClick(e, true)}>
+                    <div className="ui button" onClick={e => this._handleDismissClick(e, true)}>
                         Discard
                     </div>
                     {
@@ -154,7 +154,7 @@ class App extends React.Component {
                                 return systemMessage.options.actions.map((action, idx) => (
                                     <div key={idx}
                                          className={action.className}
-                                         onClick={(e) => { this.handleDismissClick(e, true); action.onClick() }}
+                                         onClick={(e) => { this._handleDismissClick(e, true); action.onClick() }}
                                     >
                                         {action.msg}
                                     </div>
@@ -190,7 +190,7 @@ class App extends React.Component {
 
                     <KeyboardHelp />
 
-                    {this.renderSystemMessage()}
+                    {this._renderSystemMessage()}
 
                 </div>
             </DocumentTitle>

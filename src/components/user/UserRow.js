@@ -16,9 +16,9 @@ export default class UserRow extends React.Component {
 
         user.get('roles').map((v) => userRoles.push(v.get('name')))
 
-        if (userRoles && userRoles.indexOf('admin') !== -1) {
+        if (userRoles && ~userRoles.indexOf('admin')) {
             label = <div className="ui blue label">ADMIN</div>
-        } else if (userRoles && userRoles.indexOf('agent') !== -1) {
+        } else if (userRoles && ~userRoles.indexOf('agent')) {
             label = <div className="ui yellow label">AGENT</div>
         } else {
             label = <div className="ui grey label">USER</div>

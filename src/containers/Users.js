@@ -9,19 +9,19 @@ import { buildQuery } from './../reducers/users'
 
 
 class UsersContainer extends React.Component {
-    search = (query, params, stringQuery, sort = this.props.users.get('sort')) => {
-        this.props.actions.user.search(buildQuery(stringQuery, sort), params, stringQuery)
-    }
-
     componentWillReceiveProps(nextProps) {
         if (!this.props.users.get('sort').equals(nextProps.users.get('sort'))) {
-            this.search(
+            this._search(
                 '',
                 this.props.users.getIn(['search', 'params']),
                 this.props.users.getIn(['search', 'stringQuery']),
                 nextProps.users.get('sort')
             )
         }
+    }
+
+    _search = (query, params, stringQuery, sort = this.props.users.get('sort')) => {
+        this.props.actions.user.search(buildQuery(stringQuery, sort), params, stringQuery)
     }
 
     render() {
@@ -38,7 +38,7 @@ class UsersContainer extends React.Component {
                         items={users.get('items')}
                         sort={users.get('sort')}
                         stringQuery={users.get('stringQuery')}
-                        search={this.search}
+                        search={this._search}
                         isLoading={users.get('loading')}
                         createUser={this.props.actions.user.createUser}
                         updateUser={this.props.actions.user.updateUser}

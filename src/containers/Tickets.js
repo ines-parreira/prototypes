@@ -15,10 +15,7 @@ import {compactInteger} from '../utils'
 class TicketsContainer extends React.Component {
     componentWillMount() {
         this.props.actions.schema.fetch()
-        this.fetchPage()
-        if (this.props.views.get('active').isEmpty() && this.props.views.get('items').size) {
-            this.props.actions.view.setViewActive(this.props.views.getIn(['items', 0]))
-        }
+        this._fetchPage()
     }
 
     // Test if we need to re-fetch the data
@@ -28,7 +25,7 @@ class TicketsContainer extends React.Component {
         const currentActive = currentViews.get('active')
         const nextActive = nextViews.get('active')
 
-        if (currentActive.isEmpty() && nextActive.isEmpty() && nextViews.get('items').size) {
+        if (!nextProps.params && nextViews.get('items').size) {
             this.props.actions.view.setViewActive(nextViews.getIn(['items', 0]))
         }
 
@@ -41,11 +38,11 @@ class TicketsContainer extends React.Component {
                 !currentActive.delete('fields').equals(nextActive.delete('fields'))
             )
         ) {
-            this.fetchPage(1, nextProps)
+            this._fetchPage(1, nextProps)
         }
     }
 
-    fetchPage = (page = 1, props) => {
+    _fetchPage = (page = 1, props) => {
         const {actions, views} = props || this.props
         if (!views.get('active').isEmpty()) {
             return actions.tickets.fetchTicketsPage(views, page)
@@ -53,7 +50,7 @@ class TicketsContainer extends React.Component {
         return null
     }
 
-    search = (query, params, stringQuery) => {
+    _search = (query, params, stringQuery) => {
         /** populate tickets state from search results now **/
 
         const view = this.props.views.get('active')
@@ -98,8 +95,8 @@ class TicketsContainer extends React.Component {
 
                         actions={this.props.actions}
 
-                        fetchPage={this.fetchPage}
-                        search={this.search}
+                        fetchPage={this._fetchPage}
+                        search={this._search}
                         slug={slug}
                     />
                     <MacrosContainer

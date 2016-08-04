@@ -107,7 +107,7 @@ export default class SearchableDropdown extends React.Component {
                 <div className="menu" ref="dropdownMenu">
                     {
                         optionValues.map(requester => {
-                            if (!isPopulated || existingValues.indexOf(requester.get(valueProp)) === -1) {
+                            if (!isPopulated || !~existingValues.indexOf(requester.get(valueProp))) {
                                 return (
                                     <div
                                         key={`${requester.get('id')}-${requester.get(valueProp)}`}

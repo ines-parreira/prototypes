@@ -1,5 +1,5 @@
 import {Map, fromJS} from 'immutable'
-import * as actions from '../actions/integration.js'
+import * as types from '../constants/integration.js'
 import {INTEGRATION_TYPE_DESCRIPTIONS} from '../constants'
 
 const integrationSettingsInitial = fromJS({
@@ -22,40 +22,40 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
     let newState = state
 
     switch (action.type) {
-        case actions.SELECT_FACEBOOK_PAGE:
+        case types.SELECT_FACEBOOK_PAGE:
             return state.set('integration', Map({}).merge(integrations.find((v) => v.getIn(['facebook', 'page_id']) === action.pageId)))
 
-        case actions.FETCH_INTEGRATION_SUCCESS:
+        case types.FETCH_INTEGRATION_SUCCESS:
             // The integration to edit.
             return state.set('integration', fromJS(action.resp))
 
-        case actions.FETCH_INTEGRATIONS_START:
+        case types.FETCH_INTEGRATIONS_START:
             return state.setIn(['state', 'loadingIntegrations'], true)
 
-        case actions.FETCH_INTEGRATIONS_SUCCESS:
+        case types.FETCH_INTEGRATIONS_SUCCESS:
             return (state.set('integrations', fromJS(action.resp.data))
                 .setIn(['state', 'loadingIntegrations'], false))
 
-        case actions.TOGGLE_PRIVATE_MESSAGES_ENABLED:
+        case types.TOGGLE_PRIVATE_MESSAGES_ENABLED:
             return state.setIn(['integration', 'facebook', 'settings', 'private_messages_enabled'],
                 !state.getIn(['integration', 'facebook', 'settings', 'private_messages_enabled']))
 
-        case actions.TOGGLE_POSTS_ENABLED:
+        case types.TOGGLE_POSTS_ENABLED:
             return state.setIn(['integration', 'facebook', 'settings', 'posts_enabled'],
                 !state.getIn(['integration', 'facebook', 'settings', 'posts_enabled']))
 
-        case actions.TOGGLE_IMPORT_HISTORY_ENABLED:
+        case types.TOGGLE_IMPORT_HISTORY_ENABLED:
             return state.setIn(['integration', 'facebook', 'settings', 'import_history_enabled'],
                 !state.getIn(['integration', 'facebook', 'settings', 'import_history_enabled']))
 
-        case actions.FACEBOOK_LOGIN:
+        case types.FACEBOOK_LOGIN:
             return state.setIn(['state', 'loadingFacebookLogin'], true)
 
-        case actions.FACEBOOK_LOGIN_SUCCESS:
+        case types.FACEBOOK_LOGIN_SUCCESS:
             // We can't just concatenate since we might get duplicates if we call it several times. So we merge on page id.
             for (const pageIntegration of action.resp.data) {
                 const existingIndex = newState.get('integrations').findIndex((int) => int.getIn(['facebook', 'page_id']) === pageIntegration.facebook.page_id)
-                if (existingIndex !== -1) {
+                if (~existingIndex) {
                     newState = newState.setIn(['integrations', existingIndex], fromJS(pageIntegration))
                 } else {
                     newState = newState.set('integrations', newState.get('integrations').push(fromJS(pageIntegration)))
@@ -64,7 +64,7 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
 
             return newState.setIn(['state', 'loadingFacebookLogin'], false)
 
-        case actions.UPDATE_INTEGRATION_SUCCESS:
+        case types.UPDATE_INTEGRATION_SUCCESS:
         default:
             return state
     }

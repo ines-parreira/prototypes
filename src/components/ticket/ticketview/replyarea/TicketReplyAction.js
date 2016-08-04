@@ -5,7 +5,7 @@ export default class TicketReplyAction extends React.Component {
         const category = title === 'Headers' ? 'headers' : 'params'
         const index = this.props.action.getIn(['arguments', category]).indexOf(arg)
 
-        if (index !== -1) {
+        if (~index) {
             this.props.update(
                 this.props.index,
                 this.props.action.get('arguments').setIn([category, index, 'value'], value)

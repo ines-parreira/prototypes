@@ -87,7 +87,7 @@ export default class ReplyMessageChannel extends React.Component {
 
         if (!message.get('public')) {
             return popupChannelClassNames.private
-        } else if (Object.keys(popupChannelClassNames).indexOf(channel) !== -1) {
+        } else if (~Object.keys(popupChannelClassNames).indexOf(channel)) {
             return popupChannelClassNames[channel]
         }
 
@@ -142,7 +142,7 @@ export default class ReplyMessageChannel extends React.Component {
         const splittedText = typeof text === 'string' ? text.split('&lt;') : []
         const fieldName = SOURCE_VALUE_PROP[this.props.ticket.getIn(['newMessage', 'source', 'type'])]
 
-        if (this.props.ticket.getIn(['newMessage', 'source', 'to']).map(r => r.get(fieldName)).indexOf(value) !== -1) {
+        if (~this.props.ticket.getIn(['newMessage', 'source', 'to']).map(r => r.get(fieldName)).indexOf(value)) {
             return
         }
 
@@ -173,7 +173,7 @@ export default class ReplyMessageChannel extends React.Component {
         const targets = this.getTargets()
 
         if (!this.props.ticket.getIn(['state', 'query']) &&
-            _.every(targets.map(target => optionValues.indexOf(target) === -1).toJS()) // verify that no element of targets is already in optionValues
+            _.every(targets.map(target => !~optionValues.indexOf(target)).toJS()) // verify that no element of targets is already in optionValues
         ) {
             optionValues = optionValues.concat(targets)
         }
@@ -184,7 +184,7 @@ export default class ReplyMessageChannel extends React.Component {
         const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api']
 
         const isInputEnabled =
-            disabledChannels.indexOf(this.props.ticket.getIn(['newMessage', 'source', 'type'])) === -1 ||
+            !~disabledChannels.indexOf(this.props.ticket.getIn(['newMessage', 'source', 'type'])) ||
             !ticket.get('id')
 
         return (

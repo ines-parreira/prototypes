@@ -54,9 +54,6 @@ export default class Widget extends React.Component {
             }
         }
 
-
-        console.log(left.toJS())
-
         // widget data used for rendering
         let widget = {
             type: 'select',

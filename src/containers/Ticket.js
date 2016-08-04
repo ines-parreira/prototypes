@@ -24,7 +24,7 @@ class TicketContainer extends React.Component {
             }
         }
 
-        this.computeNextUrl = this.computeNextUrl.bind(this)
+        this._computeNextUrl = this._computeNextUrl.bind(this)
     }
 
     componentWillMount() {
@@ -39,10 +39,10 @@ class TicketContainer extends React.Component {
     }
 
     componentDidMount() {
-        this.bindConfirmToRouter()
-        window.onbeforeunload = this.confirmLeaveWhenDirty
+        this._bindConfirmToRouter()
+        window.onbeforeunload = this._confirmLeaveWhenDirty
 
-        this.bindKeys()
+        this._bindKeys()
     }
 
     componentWillReceiveProps(nextProps) {
@@ -59,7 +59,7 @@ class TicketContainer extends React.Component {
             /**
              * Redirect to the new page when submitting a new ticket.
              */
-            this.forcePush(`/app/ticket/${nextProps.ticket.get('id')}/`)
+            this._forcePush(`/app/ticket/${nextProps.ticket.get('id')}/`)
         } else if (
             this.props.ticket.get('id') &&
             this.props.ticket.get('id') !== 'new' &&
@@ -107,7 +107,7 @@ class TicketContainer extends React.Component {
         }
 
         if (prevProps.macros.get('isModalOpen') && !this.props.macros.get('isModalOpen')) {
-            this.bindKeys()
+            this._bindKeys()
         }
     }
 
@@ -124,7 +124,7 @@ class TicketContainer extends React.Component {
         this.props.actions.ticket.clearTicket()
     }
 
-    confirmLeaveWhenDirty = (e, suffix = '') => {
+    _confirmLeaveWhenDirty = (e, suffix = '') => {
         /**
          * When using window.onbeforeunload, the text '\n\n Are you sure you want to reload this page?' is not
          * removable. So we need to deal with it and try to be as consistent as possible when using
@@ -141,22 +141,22 @@ class TicketContainer extends React.Component {
         return null
     }
 
-    bindConfirmToRouter() {
+    _bindConfirmToRouter() {
         this.setState({
             unbindConfirmationHook: this.props.router.setRouteLeaveHook(
                 this.props.route,
-                (e) => this.confirmLeaveWhenDirty(e, '\n\nAre you sure you want to leave this page?')
+                (e) => this._confirmLeaveWhenDirty(e, '\n\nAre you sure you want to leave this page?')
             )
         })
     }
 
-    forcePush(url) {
+    _forcePush(url) {
         this.state.unbindConfirmationHook()
         browserHistory.push(url)
-        this.bindConfirmToRouter()
+        this._bindConfirmToRouter()
     }
 
-    bindKeys() {
+    _bindKeys() {
         // Have to bind these here so they capture at the correct level
         const macrosVisible = () => this.props.macros.get('visible')
         const modalVisible = () => this.props.macros.get('isModalOpen')
@@ -171,7 +171,7 @@ class TicketContainer extends React.Component {
                 e.preventDefault()
                 e.stopPropagation()
                 if (this.props.macros.get('selected')) {
-                    this.applyMacro(this.props.macros.get('selected'))
+                    this._applyMacro(this.props.macros.get('selected'))
                 }
             }
         })
@@ -189,7 +189,7 @@ class TicketContainer extends React.Component {
         })
         mousetrap.bind('left', () => {
             if (!modalVisible()) {
-                const nextUrl = this.computeNextUrl(false)
+                const nextUrl = this._computeNextUrl(false)
 
                 if (nextUrl) {
                     browserHistory.push(nextUrl)
@@ -198,7 +198,7 @@ class TicketContainer extends React.Component {
         })
         mousetrap.bind('right', () => {
             if (!modalVisible()) {
-                const nextUrl = this.computeNextUrl(true)
+                const nextUrl = this._computeNextUrl(true)
 
                 if (nextUrl) {
                     browserHistory.push(nextUrl)
@@ -210,7 +210,7 @@ class TicketContainer extends React.Component {
                 if (e.preventDefault) {
                     e.preventDefault()
                 }
-                this.submit()
+                this._submit()
             }
         })
         mousetrap.bind('mod+shift+enter', (e) => {
@@ -218,16 +218,16 @@ class TicketContainer extends React.Component {
                 if (e.preventDefault) {
                     e.preventDefault()
                 }
-                this.submit('closed', true)
+                this._submit('closed', true)
             }
         })
     }
 
-    applyMacro = (macro) => {
+    _applyMacro = (macro) => {
         this.props.actions.macro.applyMacro(macro, this.props.currentUser)
     }
 
-    computeNextUrl(ascending) {
+    _computeNextUrl(ascending) {
         const translation = ascending ? 1 : -1
         const nextIndex = this.props.tickets.get('currentTicketIndex') + translation
         const nextTicket = this.props.tickets.get('items').toJS()[nextIndex]
@@ -242,7 +242,7 @@ class TicketContainer extends React.Component {
         return nextTicketUrl
     }
 
-    submit = (status, next, action, resetMessage = true) => {
+    _submit = (status, next, action, resetMessage = true) => {
         let ticket = this.props.ticket
 
         if (ticket.getIn(['state', 'loading'])) {
@@ -299,8 +299,8 @@ class TicketContainer extends React.Component {
              * If it does, we save the new index (the old index + 1) as the new current index, then we push
              * the new state to the application.
              */
-            const nextTicketUrl = this.computeNextUrl(true)
-            this.forcePush(nextTicketUrl)
+            const nextTicketUrl = this._computeNextUrl(true)
+            this._forcePush(nextTicketUrl)
         }
     }
 
@@ -325,9 +325,9 @@ class TicketContainer extends React.Component {
                         tags={this.props.tags}
                         users={this.props.users}
                         settings={this.props.settings}
-                        submit={this.submit}
-                        applyMacro={this.applyMacro}
-                        computeNextUrl={this.computeNextUrl}
+                        submit={this._submit}
+                        applyMacro={this._applyMacro}
+                        computeNextUrl={this._computeNextUrl}
                         view={view}
                     />
                     <MacrosContainer noUnbind/>

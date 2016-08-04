@@ -45,7 +45,7 @@ Operator.propTypes = {
 
 const Right = ({node}) => {
     let value = node.value
-    if (node.raw.indexOf('current_user') !== -1) {
+    if (~node.raw.indexOf('current_user')) {
         value = 'Me'
     }
     return <span className="ui mini basic light blue button right-expression">{value}</span>

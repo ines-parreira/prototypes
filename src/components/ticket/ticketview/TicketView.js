@@ -60,7 +60,7 @@ export default class TicketView extends React.Component {
 
                         break
                     case 'CallExpression': {
-                        if (['eq', 'contains'].indexOf(node.callee.name) === -1) {
+                        if (!~['eq', 'contains'].indexOf(node.callee.name)) {
                             break
                         }
 
@@ -99,7 +99,7 @@ export default class TicketView extends React.Component {
 
                 switch (field) {
                     case 'ticket.tags.name': {
-                        const newTags = nextProps.tags.get('items').filter(t => values.indexOf(t.get('name')) !== -1)
+                        const newTags = nextProps.tags.get('items').filter(t => ~values.indexOf(t.get('name')))
                         nextProps.actions.ticket.addTags(newTags)
                         break
                     }

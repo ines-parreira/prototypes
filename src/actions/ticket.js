@@ -1,74 +1,20 @@
-import reqwest from 'reqwest'
+import axios from 'axios'
 import React from 'react'
 import _ from 'lodash'
 import {browserHistory} from 'react-router'
 import Immutable, {Map, Set} from 'immutable'
 import {systemMessage} from './systemMessage'
-import {ACTION_TEMPLATES, USER_VALUE_PROP, SOURCE_VALUE_PROP} from './../constants'
+import {ACTION_TEMPLATES, USER_VALUE_PROP, SOURCE_VALUE_PROP} from '../constants'
 import {renderTemplate} from '../components/utils/template'
 import {lastMessage} from '../utils'
-import {TICKET_VIEWED} from './activity'
-import * as MacroActions from './macro'
-
-// Reply to a ticket
-export const SUBMIT_TICKET_START = 'SUBMIT_TICKET_START'
-export const SUBMIT_TICKET_SUCCESS = 'SUBMIT_TICKET_SUCCESS'
-export const SUBMIT_TICKET_MESSAGE_SUCCESS = 'SUBMIT_TICKET_MESSAGE_SUCCESS'
-export const SUBMIT_TICKET_MESSAGE_START = 'SUBMIT_TICKET_MESSAGE_START'
-export const SUBMIT_TICKET_MESSAGE_ERROR = 'SUBMIT_TICKET_MESSAGE_ERROR'
-export const SUBMIT_TICKET_ERROR = 'SUBMIT_TICKET_ERROR'
-
-// Fetching a single ticket life-cycle
-export const FETCH_TICKET_START = 'FETCH_TICKET_START'
-export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
-
-export const CLEAR_TICKET = 'CLEAR_TICKET'
-
-// Fetching a single ticketMessage to get action results
-export const FETCH_MESSAGE_START = 'FETCH_MESSAGE_START'
-export const FETCH_MESSAGE_SUCCESS = 'FETCH_MESSAGE_SUCCESS'
-
-export const TICKET_PARTIAL_UPDATE_START = 'TICKET_PARTIAL_UPDATE_START'
-export const TICKET_PARTIAL_UPDATE_SUCCESS = 'TICKET_PARTIAL_UPDATE_SUCCESS'
-
-// Macro actions
-export const ADD_TICKET_TAGS = 'addTags'
-export const TOGGLE_PRIORITY = 'setPriority'
-export const SET_RESPONSE_TEXT = 'setResponseText'
-export const SET_STATUS = 'setStatus'
-export const SET_AGENT = 'assignUser'
-
-export const SET_TAGS = 'SET_TAGS'
-
-export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
-
-export const RECORD_MACRO = 'RECORD_MACRO'
-export const RECEIVED_MACRO = 'RECEIVED_MACRO'
-
-export const SET_PUBLIC = 'SET_PUBLIC'
-export const SET_SUBJECT = 'SET_SUBJECT'
-export const SET_SOURCE_TYPE = 'SET_SOURCE_TYPE'
-export const ADD_RECEIVER = 'ADD_RECEIVER'
-export const REMOVE_RECEIVER = 'REMOVE_RECEIVER'
-export const CLEAR_RECEIVERS = 'CLEAR_RECEIVERS'
-
-export const SETUP_NEW_TICKET = 'SETUP_NEW_TICKET'
-
-export const UPDATE_POTENTIAL_REQUESTERS = 'UPDATE_POTENTIAL_REQUESTERS'
-export const MARK_TICKET_DIRTY = 'MARK_TICKET_DIRTY'
-
-export const DELETE_TICKET_MESSAGE_START = 'DELETE_TICKET_MESSAGE_START'
-export const DELETE_TICKET_MESSAGE_SUCCESS = 'DELETE_TICKET_MESSAGE_SUCCESS'
-
-// Action related to attachments
-export const ADD_ATTACHMENT_START = 'ADD_ATTACHMENT_START'
-export const ADD_ATTACHMENT_SUCCESS = 'ADD_ATTACHMENT_SUCCESS'
-export const DELETE_ATTACHMENT = 'DELETE_ATTACHMENT'
+import {TICKET_VIEWED} from '../constants/activity'
+import {APPLY_MACRO} from '../constants/macro'
+import * as types from '../constants/ticket'
 
 export function addAttachments(ticket, atts) {
     return (dispatch) => {
         dispatch({
-            type: ADD_ATTACHMENT_START
+            type: types.ADD_ATTACHMENT_START
         })
 
         let attachments = atts
@@ -103,99 +49,93 @@ export function addAttachments(ticket, atts) {
             formData.append(attachment.name, attachment.file)
         }
 
-        return reqwest({
-            url: '/api/upload/',
-            method: 'POST',
-            crossOrigin: true,
-            processData: false,
-            data: formData
-        }).then((resp) => {
-            dispatch({
-                type: ADD_ATTACHMENT_SUCCESS,
-                resp
+        axios.post('/api/upload/', formData)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.ADD_ATTACHMENT_SUCCESS,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: Failed to upload files. Please try again later.',
-                internalMessage: err
-            }))
-        })
+            .catch(error => {
+                dispatch({
+                    type: types.ADD_ATTACHMENT_ERROR,
+                    error,
+                    reason: 'Failed to upload files. Please try again later'
+                })
+            })
     }
 }
 
 export function deleteAttachment(index) {
     return {
-        type: DELETE_ATTACHMENT,
+        type: types.DELETE_ATTACHMENT,
         index
     }
 }
 
 export function recordMacro(macro) {
     return {
-        type: RECORD_MACRO,
+        type: types.RECORD_MACRO,
         macro
     }
 }
 
 export function receivedMacro() {
     return {
-        type: RECEIVED_MACRO
+        type: types.RECEIVED_MACRO
     }
 }
 
 export function ticketPartialUpdate(ticketId, args) {
     return (dispatch) => {
         dispatch({
-            type: TICKET_PARTIAL_UPDATE_START
+            type: types.TICKET_PARTIAL_UPDATE_START
         })
 
-        return reqwest({
-            method: 'PUT',
-            url: `/api/tickets/${ticketId}/`,
-            data: JSON.stringify(args),
-            type: 'json',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch({
-                type: TICKET_PARTIAL_UPDATE_SUCCESS,
-                resp
-            })
+        axios.put(`/api/tickets/${ticketId}/`, args)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
+                    resp
+                })
 
-            // show a success message if we closed the ticket
-            if (args.status === 'closed') {
-                dispatch(systemMessage({
-                    type: 'success',
-                    msg: 'The ticket has been closed.'
-                }))
-            }
-        }).catch((err) => {
-            dispatch({
-                type: 'error',
-                header: `Error: failed to update ticket ${ticketId}`,
-                internalMessage: err
+                // show a success message if we closed the ticket
+                if (args.status === 'closed') {
+                    dispatch(systemMessage({
+                        type: 'success',
+                        msg: 'The ticket has been closed.'
+                    }))
+                }
             })
-        })
+            .catch(error => {
+                dispatch({
+                    type: types.TICKET_PARTIAL_UPDATE_ERROR,
+                    error,
+                    reason: `Failed to update ticket ${ticketId}`
+                })
+            })
     }
 }
 
 export function addTags(tags) {
     return {
-        type: ADD_TICKET_TAGS,
+        type: types.ADD_TICKET_TAGS,
         args: tags
     }
 }
 
 export function removeTag(index) {
     return {
-        type: REMOVE_TICKET_TAG,
+        type: types.REMOVE_TICKET_TAG,
         index
     }
 }
 
 export function togglePriority(priority) { // here, the priority argument is optional
     return {
-        type: TOGGLE_PRIORITY,
+        type: types.TOGGLE_PRIORITY,
         args: Map({
             priority: priority.isString ? priority : null
         })
@@ -205,7 +145,7 @@ export function togglePriority(priority) { // here, the priority argument is opt
 /* eslint "camelcase": "off" */
 export function setAgent(assignee_user) {
     return {
-        type: SET_AGENT,
+        type: types.SET_AGENT,
         args: Map({
             assignee_user
         })
@@ -214,7 +154,7 @@ export function setAgent(assignee_user) {
 
 export function setStatus(status, id = null) {
     return {
-        type: SET_STATUS,
+        type: types.SET_STATUS,
         args: Map({
             status,
             id
@@ -224,14 +164,14 @@ export function setStatus(status, id = null) {
 
 export function setPublic(isPublic) {
     return {
-        type: SET_PUBLIC,
+        type: types.SET_PUBLIC,
         isPublic
     }
 }
 
 export function setSubject(subject) {
     return {
-        type: SET_SUBJECT,
+        type: types.SET_SUBJECT,
         args: Map({
             subject
         })
@@ -240,21 +180,21 @@ export function setSubject(subject) {
 
 export function addReceiver(receiver) {
     return {
-        type: ADD_RECEIVER,
+        type: types.ADD_RECEIVER,
         receiver
     }
 }
 
 export function removeReceiver(prop) {
     return {
-        type: REMOVE_RECEIVER,
+        type: types.REMOVE_RECEIVER,
         prop
     }
 }
 
 export function clearReceivers() {
     return {
-        type: CLEAR_RECEIVERS
+        type: types.CLEAR_RECEIVERS
     }
 }
 
@@ -262,40 +202,39 @@ export function setSourceType(sourceType) {
     return (dispatch) => {
         dispatch(clearReceivers())
         dispatch({
-            type: SET_SOURCE_TYPE,
+            type: types.SET_SOURCE_TYPE,
             sourceType
         })
     }
 }
 
 export function updatePotentialRequesters(query) {
-    return (dispatch) => reqwest({
-        url: '/api/search/',
-        data: JSON.stringify({
+    return (dispatch) => {
+        axios.post('/api/search/', {
             doc_type: 'user_channel',
             query
-        }),
-        type: 'json',
-        method: 'POST',
-        contentType: 'application/json'
-    }).then(resp => {
-        dispatch({
-            type: UPDATE_POTENTIAL_REQUESTERS,
-            resp,
-            query
         })
-    }).catch((err) => {
-        dispatch(systemMessage({
-            type: 'error',
-            header: 'Error: failed to do the search. Please try again..',
-            internalMessage: err
-        }))
-    })
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.UPDATE_POTENTIAL_REQUESTERS,
+                    resp,
+                    query
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: 'ERROR',
+                    error,
+                    reason: 'Failed to do the search. Please try again..'
+                })
+            })
+    }
 }
 
 export function setResponseText(currentUser, args) {
     return {
-        type: SET_RESPONSE_TEXT,
+        type: types.SET_RESPONSE_TEXT,
         args,
         currentUser,
         fromMacro: false
@@ -304,49 +243,45 @@ export function setResponseText(currentUser, args) {
 
 export function markTicketDirty(dirty = true) {
     return {
-        type: MARK_TICKET_DIRTY,
+        type: types.MARK_TICKET_DIRTY,
         dirty
     }
 }
 
 export function setupNewTicket() {
     return {
-        type: SETUP_NEW_TICKET
+        type: types.SETUP_NEW_TICKET
     }
 }
 
 export function deleteMessage(ticketId, messageId) {
     return (dispatch) => {
         dispatch({
-            type: DELETE_TICKET_MESSAGE_START
+            type: types.DELETE_TICKET_MESSAGE_START
         })
 
-        const url = `/api/tickets/${ticketId}/messages/${messageId}/`
-
-        return reqwest({
-            url,
-            type: 'json',
-            method: 'DELETE',
-            contentType: 'application/json'
-        }).then(() => {
-            dispatch({
-                type: DELETE_TICKET_MESSAGE_SUCCESS,
-                messageId
+        axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
+            .then((json = {}) => json.data)
+            .then(() => {
+                dispatch({
+                    type: types.DELETE_TICKET_MESSAGE_SUCCESS,
+                    messageId
+                })
             })
-        }).catch((err) => {
-            dispatch({
-                type: 'error',
-                header: `Error: failed to deleted message ${messageId} from ticket ${ticketId}`,
-                internalMessage: err
+            .catch(error => {
+                dispatch({
+                    type: types.DELETE_TICKET_MESSAGE_ERROR,
+                    error,
+                    reason: `Failed to delete message ${messageId} from ticket ${ticketId}`
+                })
             })
-        })
     }
 }
 
 export function fetchTicketDetails(ticketId, data) {
     return (dispatch) => {
         dispatch({
-            type: FETCH_TICKET_START
+            type: types.FETCH_TICKET_START
         })
 
         dispatch({
@@ -356,96 +291,94 @@ export function fetchTicketDetails(ticketId, data) {
 
         const url = `/api/tickets/${ticketId}/`
 
-        return reqwest({
-            url,
-            data,
-            type: 'json',
-            method: 'GET'
-        }).then((resp) => {
-            if (_.isEmpty(resp)) {
-                console.error('No results for', url)
-            }
-            dispatch({
-                type: FETCH_TICKET_SUCCESS,
-                resp
+        axios.get(url, {data})
+            .then((json = {}) => json.data)
+            .then(resp => {
+                if (_.isEmpty(resp)) {
+                    console.error('No results for', url)
+                }
+
+                dispatch({
+                    type: types.FETCH_TICKET_SUCCESS,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: `Error: Failed to fetch ticket ${ticketId}`,
-                internalMessage: err
-            }))
-        })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_TICKET_ERROR,
+                    error,
+                    reason: `Failed to fetch ticket ${ticketId}`
+                })
+            })
     }
 }
 
 export function fetchTicketMessage(ticketId, messageId) {
     return (dispatch) => {
         dispatch({
-            type: FETCH_MESSAGE_START
+            type: types.FETCH_MESSAGE_START
         })
 
-        return reqwest({
-            url: `/api/tickets/${ticketId}/messages/${messageId}/`,
-            method: 'GET',
-            contentType: 'application/json'
-        }).then((resp) => {
-            const hasFailure = resp.actions.find(action => action.status === 'error')
-            const hasPending = resp.actions.find(action => action.status === 'pending')
+        axios.get(`/api/tickets/${ticketId}/messages/${messageId}/`)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                const hasFailure = resp.actions.find(action => action.status === 'error')
+                const hasPending = resp.actions.find(action => action.status === 'pending')
 
-            if (hasFailure) {
-                dispatch(systemMessage({
-                    type: 'error',
-                    header: 'Something went wrong :/',
-                    modal: true,
-                    options: {
-                        title: 'Oops! Some actions failed on your last message:',
-                        actions: [
-                            {
-                                onClick: () => browserHistory.push(`/app/ticket/${resp.ticket_id}`),
-                                className: 'ui green button',
-                                msg: 'Review message'
-                            }
-                        ]
-                    },
-                    msg: (
-                        <div>
-                            <ul>
+                if (hasFailure) {
+                    dispatch(systemMessage({
+                        type: 'error',
+                        header: 'Something went wrong :/',
+                        modal: true,
+                        options: {
+                            title: 'Oops! Some actions failed on your last message:',
+                            actions: [
                                 {
-                                    resp.actions.map((action, idx) => {
-                                        if (ACTION_TEMPLATES[action.name].execution === 'back') {
-                                            return <li key={idx}>{action.title}: {action.status}</li>
-                                        }
-                                        return null
-                                    })
+                                    onClick: () => browserHistory.push(`/app/ticket/${resp.ticket_id}`),
+                                    className: 'ui green button',
+                                    msg: 'Review message'
                                 }
-                            </ul>
-                            <p>
-                                The message hasn't been sent, you should review it right now.
-                            </p>
-                        </div>
-                    )
-                }))
-            } else if (hasPending) {
-                setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId)), 2000)
-            } else {
-                dispatch(systemMessage({
-                    type: 'success',
-                    msg: 'Message successfully sent!'
-                }))
-            }
+                            ]
+                        },
+                        msg: (
+                            <div>
+                                <ul>
+                                    {
+                                        resp.types.map((action, idx) => {
+                                            if (ACTION_TEMPLATES[action.name].execution === 'back') {
+                                                return <li key={idx}>{action.title}: {action.status}</li>
+                                            }
+                                            return null
+                                        })
+                                    }
+                                </ul>
+                                <p>
+                                    The message hasn't been sent, you should review it right now.
+                                </p>
+                            </div>
+                        )
+                    }))
+                } else if (hasPending) {
+                    setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId)), 2000)
+                } else {
+                    dispatch(systemMessage({
+                        type: 'success',
+                        msg: 'Message successfully sent!'
+                    }))
+                }
 
-            dispatch({
-                type: FETCH_MESSAGE_SUCCESS,
-                resp
+                dispatch({
+                    type: types.FETCH_MESSAGE_SUCCESS,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to fetch message. Please try again..',
-                internalMessage: err
-            }))
-        })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_MESSAGE_ERROR,
+                    error,
+                    reason: 'Failed to fetch message. Please try again...'
+                })
+            })
     }
 }
 
@@ -618,107 +551,97 @@ function onMessageSent(dispatch, ticket_id, messageSent) {
 
     // reinitialize the current macro
     dispatch({
-        type: MacroActions.APPLY_MACRO,
+        type: APPLY_MACRO,
         macro: undefined
     })
 }
 
 /**
- *
  * @param ticket: A ticket with an existing id is expected.
  * @param action: A parameter to decide on what to do when an action failed. (Retry/ignore/cancel, etc.)
  */
 export function submitTicketMessage(ticket, status, macroActions, currentUser, action, resetMessage = true) {
     return (dispatch) => {
         dispatch({
-            type: SUBMIT_TICKET_MESSAGE_START,
+            type: types.SUBMIT_TICKET_MESSAGE_START,
             currentUser
         })
+
         const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
 
         const messageToSend = lastMessage(data.messages)
 
-        let url = `/api/tickets/${ticket.get('id')}/messages/`
-        let method = 'POST'
+        let promise
+
         if (action) {
-            // In that case the message already exists and we just want to update the actions on it.
-            url = `/api/tickets/${ticket.get('id')}/messages/${messageToSend.id}/${action ? `?action=${action}` : ''}`
-            method = 'PUT'
+            promise = axios.put(`/api/tickets/${ticket.get('id')}/messages/${messageToSend.id}/${action ? `?action=${action}` : ''}`, messageToSend)
+        } else {
+            promise = axios.post(`/api/tickets/${ticket.get('id')}/messages/`, messageToSend)
         }
 
-        return reqwest({
-            url,
-            type: 'json',
-            contentType: 'application/json',
-            method,
-            data: JSON.stringify(messageToSend)
-        }).then((resp) => {
-            // Update on the ticket.
-            if (status) {
-                // We don't want to update the wrong state if we are redirecting so we specify the id in setStatus.
-                dispatch(setStatus(status, ticket.get('id')))
-                // We need to explicitely do the partial update because we cannot count on the component re-rendering (if we redirect).
-                // The re-rendering is when the autosave is usually performed and the status updated in db.
-                ticketPartialUpdate(ticket.get('id'), {status})(dispatch)
-            }
-            onMessageSent(dispatch, ticket.get('id'), resp, SUBMIT_TICKET_MESSAGE_SUCCESS)
-            dispatch({
-                type: SUBMIT_TICKET_MESSAGE_SUCCESS,
-                resetMessage,
-                resp
+        promise
+            .then((json = {}) => json.data)
+            .then(resp => {
+                // Update on the ticket.
+                if (status) {
+                    // We don't want to update the wrong state if we are redirecting so we specify the id in setStatus.
+                    dispatch(setStatus(status, ticket.get('id')))
+                    // We need to explicitely do the partial update because we cannot count on the component re-rendering (if we redirect).
+                    // The re-rendering is when the autosave is usually performed and the status updated in db.
+                    ticketPartialUpdate(ticket.get('id'), {status})(dispatch)
+                }
+
+                onMessageSent(dispatch, ticket.get('id'), resp, types.SUBMIT_TICKET_MESSAGE_SUCCESS)
+
+                dispatch({
+                    type: types.SUBMIT_TICKET_MESSAGE_SUCCESS,
+                    resetMessage,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch({
-                type: SUBMIT_TICKET_MESSAGE_ERROR
+            .catch(error => {
+                dispatch({
+                    type: types.SUBMIT_TICKET_MESSAGE_ERROR,
+                    error,
+                    reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.'
+                })
             })
-            dispatch(systemMessage({
-                type: 'error',
-                err,
-                header: 'Error: Message was not sent',
-                msg: 'Please try again in a few moments. If the problem persists contact us.'
-            }))
-        })
     }
 }
 
 export function submitTicket(ticket, status, macroActions, currentUser, action, resetMessage = true) {
     return (dispatch) => {
         dispatch({
-            type: SUBMIT_TICKET_START
+            type: types.SUBMIT_TICKET_START
         })
 
         const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
 
-        return reqwest({
-            url: '/api/tickets/',
-            type: 'json',
-            contentType: 'application/json',
-            method: 'POST',
-            data: JSON.stringify(data)
-        }).then((resp) => {
-            const messageSent = lastMessage(resp.messages)
-            onMessageSent(dispatch, resp.id, messageSent)
-            dispatch({
-                type: SUBMIT_TICKET_SUCCESS,
-                resetMessage,
-                resp
+        axios.post('/api/tickets/', data)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                const messageSent = lastMessage(resp.messages)
+
+                onMessageSent(dispatch, resp.id, messageSent)
+
+                dispatch({
+                    type: types.SUBMIT_TICKET_SUCCESS,
+                    resetMessage,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch({
-                type: SUBMIT_TICKET_ERROR
+            .catch(error => {
+                dispatch({
+                    type: types.SUBMIT_TICKET_ERROR,
+                    error,
+                    reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us'
+                })
             })
-            dispatch(systemMessage({
-                type: 'error',
-                err,
-                header: 'Error: Message was not sent',
-                msg: 'Please try again in a few moments. If the problem persists contact us.'
-            }))
-        })
     }
 }
 
 export function clearTicket() {
     return {
-        type: CLEAR_TICKET
+        type: types.CLEAR_TICKET
     }
 }

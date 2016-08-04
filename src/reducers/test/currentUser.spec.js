@@ -5,7 +5,7 @@ import { Map } from 'immutable'
 import moment from 'moment'
 
 import { currentUser } from '../currentUser'
-import * as actions from '../../actions/user'
+import * as types from '../../constants/user'
 
 expect.extend(expectImmutable)
 
@@ -29,7 +29,7 @@ describe('reducers', () => {
 
         // Dispatch the `FETCH_CURRENT_USER_SUCCESS` action in the reducer with a fake response
         const dispatchFetchCurrentUserSuccess = (state = initialState, response) => (
-            currentUser(state, { type: actions.FETCH_CURRENT_USER_SUCCESS, resp: response })
+            currentUser(state, { type: types.FETCH_CURRENT_USER_SUCCESS, resp: response })
         )
 
         it('should return the initial state', () => {

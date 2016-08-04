@@ -5,7 +5,6 @@ import * as WidgetActions from '../actions/widget'
 import Infobar from '../components/Infobar'
 import TicketInfobar from '../components/ticket/ticketview/infobar/TicketInfobar'
 
-
 class TicketsInfobarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only

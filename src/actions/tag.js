@@ -1,14 +1,9 @@
-import reqwest from 'reqwest'
-import {systemMessage} from './systemMessage'
-
-export const FETCH_TAG_LIST_START = 'FETCH_TAG_LIST_START'
-export const FETCH_TAG_LIST_SUCCESS = 'FETCH_TAG_LIST_SUCCESS'
-
-export const ADD_TAGS = 'ADD_TAGS'
+import axios from 'axios'
+import * as types from '../constants/tag'
 
 export function addTags(tags) {
     return {
-        type: ADD_TAGS,
+        type: types.ADD_TAGS,
         tags
     }
 }
@@ -16,25 +11,23 @@ export function addTags(tags) {
 export function fetchTags() {
     return (dispatch) => {
         dispatch({
-            type: FETCH_TAG_LIST_START
+            type: types.FETCH_TAG_LIST_START
         })
 
-        return reqwest({
-            url: '/api/tags/',
-            type: 'json',
-            method: 'GET',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch({
-                type: FETCH_TAG_LIST_SUCCESS,
-                resp
+        axios.get('/api/tags/')
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.FETCH_TAG_LIST_SUCCESS,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to fetch tags',
-                internalMessage: err
-            }))
-        })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_TAG_LIST_ERROR,
+                    error,
+                    reason: 'Failed to fetch tags'
+                })
+            })
     }
 }

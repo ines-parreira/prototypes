@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as IntegrationsActions from '../actions/integration'
 
-
 import FacebookPages from '../components/integration/facebook/FacebookPages'
 import FacebookPageSettings from '../components/integration/facebook/FacebookPageSettings'
 import FacebookIntegrationsEdit from '../components/integration/facebook/FacebookIntegrationsEdit'

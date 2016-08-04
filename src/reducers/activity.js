@@ -1,4 +1,4 @@
-import * as actions from '../actions/activity'
+import * as types from '../constants/activity'
 import {Map, List, fromJS} from 'immutable'
 
 const activityInitial = Map({
@@ -10,7 +10,7 @@ const activityInitial = Map({
 
 export function activity(state = activityInitial, action) {
     switch (action.type) {
-        case actions.SUBMIT_ACTIVITY_SUCCESS: {
+        case types.SUBMIT_ACTIVITY_SUCCESS: {
             // sort by created_datetime the events that come from the API
             const events = fromJS(action.resp.events).sort((a, b) => (
                 new Date(b.get('created_datetime')) - new Date(a.get('created_datetime'))
@@ -66,7 +66,7 @@ export function activity(state = activityInitial, action) {
                 objectsCounter
             })
         }
-        case actions.TICKET_VIEWED: {
+        case types.TICKET_VIEWED: {
             const objectId = parseInt(action.ticketId, 10)
 
             // Collect the pending viewed events to be sent to the server

@@ -1,4 +1,4 @@
-import * as actions from '../actions/settings'
+import * as types from '../constants/settings'
 import {Map} from 'immutable'
 
 const initial = Map({
@@ -9,10 +9,10 @@ const initial = Map({
 
 export function settings(state = initial, action) {
     switch (action.type) {
-        case actions.FETCH_SETTINGS_START:
+        case types.FETCH_SETTINGS_START:
             return state.set('loading', true)
 
-        case actions.FETCH_SETTINGS_SUCCESS:
+        case types.FETCH_SETTINGS_SUCCESS:
             return state.merge({
                 data: action.resp,
                 loading: false,

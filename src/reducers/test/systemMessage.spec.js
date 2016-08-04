@@ -4,7 +4,7 @@ import expectImmutable from 'expect-immutable'
 import { Map } from 'immutable'
 
 import { systemMessage } from '../systemMessage'
-import * as actions from '../../actions/systemMessage'
+import * as types from '../../constants/systemMessage'
 
 expect.extend(expectImmutable)
 
@@ -26,7 +26,7 @@ describe('reducers', () => {
         it('should set the sent system message as state', () => {
             expect(
                 systemMessage(initialState, {
-                    type: actions.SYSTEM_MESSAGE,
+                    type: types.SYSTEM_MESSAGE,
                     message,
                 })
             ).toEqualImmutable(
@@ -37,7 +37,7 @@ describe('reducers', () => {
         it('should reset the system message with the initial state', () => {
             expect(
                 systemMessage(Map(message), {
-                    type: actions.DISMISS_SYSTEM_MESSAGE,
+                    type: types.DISMISS_SYSTEM_MESSAGE,
                 })
             ).toEqualImmutable(
                 initialState

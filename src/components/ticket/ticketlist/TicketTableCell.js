@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import _ from 'lodash'
-import {truncate, stripHTML} from '../../../utils'
+import {truncate, stripHTML, firstMessage as getFirstMessage} from '../../../utils'
 import {RenderLabel, TagLabel} from '../../utils/labels'
 
 export default class TicketTableCell extends React.Component {
@@ -38,7 +38,7 @@ export default class TicketTableCell extends React.Component {
                 break
             case 'composite':
                 if (field.name === 'ticket-details') {
-                    const firstMessage = ticket.get('messages').toJS()[0]
+                    const firstMessage = getFirstMessage(ticket.get('messages').toJS())
                     if (!firstMessage) {
                         break
                     }

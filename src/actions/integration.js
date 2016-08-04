@@ -1,50 +1,29 @@
-import reqwest from 'reqwest'
-import {systemMessage} from './systemMessage'
+import axios from 'axios'
 import {browserHistory} from 'react-router'
-
-export const DELETE_INTEGRATION_SUCCESS = 'DELETE_INTEGRATION_SUCCESS'
-
-export const FETCH_INTEGRATIONS_START = 'FETCH_INTEGRATIONS_START'
-export const FETCH_INTEGRATIONS_SUCCESS = 'FETCH_INTEGRATIONS_SUCCESS'
-
-export const FACEBOOK_LOGIN = 'FACEBOOK_LOGIN'
-export const FACEBOOK_LOGIN_SUCCESS = 'FACEBOOK_LOGIN_SUCCESS'
-export const TOGGLE_PRIVATE_MESSAGES_ENABLED = 'TOGGLE_PRIVATE_MESSAGES_ENABLED'
-export const TOGGLE_POSTS_ENABLED = 'TOGGLE_POSTS_ENABLED'
-export const TOGGLE_IMPORT_HISTORY_ENABLED = 'TOGGLE_IMPORT_HISTORY_ENABLED'
-
-export const UPDATE_INTEGRATION_START = 'UPDATE_INTEGRATION_START'
-export const UPDATE_INTEGRATION_SUCCESS = 'UPDATE_INTEGRATION_SUCCESS'
-
-export const SELECT_FACEBOOK_PAGE = 'SELECT_FACEBOOK_PAGE'
-export const FETCH_INTEGRATION_START = 'FETCH_INTEGRATION_START'
-export const FETCH_INTEGRATION_SUCCESS = 'FETCH_INTEGRATION_SUCCESS'
-
+import * as types from '../constants/integration'
 
 export function fetchIntegration(integrationId) {
     return (dispatch) => {
         dispatch({
-            type: FETCH_INTEGRATION_START,
+            type: types.FETCH_INTEGRATION_START,
             id: integrationId
         })
 
-        return reqwest({
-            url: `/api/integrations/${integrationId}`,
-            type: 'json',
-            method: 'GET',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch({
-                type: FETCH_INTEGRATION_SUCCESS,
-                resp
+        axios.get(`/api/integrations/${integrationId}`)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.FETCH_INTEGRATION_SUCCESS,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to fetch integration',
-                internalMessage: err
-            }))
-        })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_INTEGRATION_ERROR,
+                    error,
+                    reason: 'Failed to fetch integration'
+                })
+            })
     }
 }
 
@@ -58,47 +37,47 @@ export function updateIntegration(integrationType, integrationId) {
 export function fetchIntegrations() {
     return (dispatch) => {
         dispatch({
-            type: FETCH_INTEGRATIONS_START
+            type: types.FETCH_INTEGRATIONS_START
         })
 
-        return reqwest({
-            url: '/api/integrations/',
-            type: 'json',
-            method: 'GET',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch({
-                type: FETCH_INTEGRATIONS_SUCCESS,
-                resp
+        axios.get('/api/integrations/')
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.FETCH_INTEGRATIONS_SUCCESS,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to fetch integrations',
-                internalMessage: err
-            }))
-        })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_INTEGRATIONS_ERROR,
+                    error,
+                    reason: 'Failed to fetch integrations'
+                })
+            })
     }
 }
 
-export function deleteintegration(integration) {
+export function deleteIntegration(integration) {
     if (window.confirm('Are you sure you want to delete this integration?')) {
-        return (dispatch) => reqwest({
-            url: `/api/integrations/${integration.get('id')}/`,
-            method: 'delete'
-        }).then((resp) => {
-            dispatch({
-                type: DELETE_INTEGRATION_SUCCESS,
-                resp
-            })
-            browserHistory.push(`/app/settings/integrations/${integration.get('type')}`)
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'error: failed to delete the integration',
-                internalMessage: err
-            }))
-        })
+        return (dispatch) => {
+            axios.delete(`/api/integrations/${integration.get('id')}/`)
+                .then((json = {}) => json.data)
+                .then(resp => {
+                    dispatch({
+                        type: types.DELETE_INTEGRATION_SUCCESS,
+                        resp
+                    })
+                    browserHistory.push(`/app/settings/integrations/${integration.get('type')}`)
+                })
+                .catch(error => {
+                    dispatch({
+                        type: types.DELETE_INTEGRATION_ERROR,
+                        error,
+                        reason: 'Failed to delete the integration'
+                    })
+                })
+        }
     }
 
     return {
@@ -110,31 +89,28 @@ export function deleteintegration(integration) {
 function onFacebookLoginSuccess(dispatch) {
     return (response) => {
         if (response.authResponse) {
-            reqwest({
-                url: `/callbacks/facebook/receive-access-token?user_id=${response.authResponse.userID}&access_token=${response.authResponse.accessToken}`,
-                method: 'POST'
-            }).then((resp) => {
-                // Tell the reducer to update the state and proceed to next step.
-                dispatch(
-                    {
-                        type: FACEBOOK_LOGIN_SUCCESS,
+            axios.post(`/callbacks/facebook/receive-access-token?user_id=${response.authResponse.userID}&access_token=${response.authResponse.accessToken}`)
+                .then((json = {}) => json.data)
+                .then(resp => {
+                    dispatch({
+                        type: types.FACEBOOK_LOGIN_SUCCESS,
                         resp
-                    }
-                )
-                browserHistory.push('/app/settings/integrations/facebook/new')
-            }).catch((err) => {
-                dispatch(systemMessage({
-                    type: 'error',
-                    header: 'Error: failed to POST facebook token to the backend',
-                    internalMessage: err
-                }))
-            })
+                    })
+                    browserHistory.push('/app/settings/integrations/facebook/new')
+                })
+                .catch(error => {
+                    dispatch({
+                        type: types.FACEBOOK_LOGIN_ERROR,
+                        error,
+                        reason: 'Failed to POST facebook token to the backend'
+                    })
+                })
         } else {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: user canceled login or did not fully authorize',
-                msg: 'Error: user canceled login or did not fully authorize'
-            }))
+            dispatch({
+                type: types.FACEBOOK_LOGIN_ERROR,
+                error: true,
+                reason: 'User canceled login or did not fully authorize'
+            })
         }
     }
 }
@@ -150,7 +126,7 @@ function onFacebookLoginSuccess(dispatch) {
 export function facebookLogin() {
     return (dispatch) => {
         dispatch({
-            type: FACEBOOK_LOGIN
+            type: types.FACEBOOK_LOGIN
         });
 
         // eslint-disable-next-line no-undef
@@ -185,32 +161,36 @@ export function mailLogin() {
 function updateOrCreateIntegrationRequest(integration, action) {
     return (dispatch) => {
         dispatch({
-            type: UPDATE_INTEGRATION_START,
+            type: types.UPDATE_INTEGRATION_START,
             integration
         })
 
-        reqwest({
-            url: integration.get('id') ? `/api/integrations/${integration.get('id')}/${action ? `?action=${action}` : ''}` : '/api/integrations/',
-            method: integration.get('id') ? 'PUT' : 'POST',
-            data: JSON.stringify(integration),
-            type: 'json',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch(
-                {
-                    type: UPDATE_INTEGRATION_SUCCESS,
-                    resp
+        let promise
+
+        if (integration.get('id')) {
+            promise = axios.put(`/api/integrations/${integration.get('id')}/${action ? `?action=${action}` : ''}`, JSON.stringify(integration))
+        } else {
+            promise = axios.post('/api/integrations/', JSON.stringify(integration))
+        }
+
+        promise
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch(
+                    {
+                        type: types.UPDATE_INTEGRATION_SUCCESS,
+                        resp
+                    })
+                fetchIntegrations()(dispatch)
+                browserHistory.push(`/app/settings/integrations/${integration.get('type')}`)
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.UPDATE_INTEGRATION_ERROR,
+                    error,
+                    reason: 'Failed to add integration'
                 })
-            // Re-fetch everything so we get the latest data from the db in the app
-            fetchIntegrations()(dispatch)
-            browserHistory.push(`/app/settings/integrations/${integration.get('type')}`)
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to add integration.',
-                internalMessage: err
-            }))
-        })
+            })
     }
 }
 
@@ -222,7 +202,6 @@ export function deactivateIntegration(integration) {
         updateOrCreateIntegrationRequest(newIntegration)(dispatch)
     }
 }
-
 
 /**
  * Called when we create an integration or when we edit the settings.
@@ -243,7 +222,7 @@ export function updateOrCreateIntegration(integration, action) {
 export function selectFacebookPage(pageId) {
     browserHistory.push('/app/settings/integrations/facebook/new/addpage')
     return {
-        type: SELECT_FACEBOOK_PAGE,
+        type: types.SELECT_FACEBOOK_PAGE,
         pageId
     }
 }
@@ -251,18 +230,18 @@ export function selectFacebookPage(pageId) {
 
 export function togglePrivateMessagesEnabled() {
     return {
-        type: TOGGLE_PRIVATE_MESSAGES_ENABLED
+        type: types.TOGGLE_PRIVATE_MESSAGES_ENABLED
     }
 }
 
 export function togglePostsEnabled() {
     return {
-        type: TOGGLE_POSTS_ENABLED
+        type: types.TOGGLE_POSTS_ENABLED
     }
 }
 
 export function toggleImportHistoryEnabled() {
     return {
-        type: TOGGLE_IMPORT_HISTORY_ENABLED
+        type: types.TOGGLE_IMPORT_HISTORY_ENABLED
     }
 }

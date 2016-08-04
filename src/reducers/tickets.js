@@ -1,6 +1,5 @@
-import * as actions from '../actions/tickets'
+import * as types from '../constants/tickets'
 import {fromJS, Map, List} from 'immutable'
-
 
 const ticketsInitial = Map({
     items: List(),
@@ -13,19 +12,22 @@ const ticketsInitial = Map({
 
 export function tickets(state = ticketsInitial, action) {
     switch (action.type) {
-        case actions.FETCH_TICKET_LIST_VIEW_START:
+        case types.FETCH_TICKET_LIST_VIEW_START:
             return state.set('loading', true)
 
-        case actions.FETCH_TICKET_LIST_VIEW_SUCCESS:
+        case types.FETCH_TICKET_LIST_VIEW_SUCCESS: {
+            const payload = action.data
+
             return state.merge({
                 selected: List(),
-                items: fromJS(action.resp.data),
-                resp_meta: fromJS(action.resp.meta),
+                items: fromJS(payload.data),
+                resp_meta: fromJS(payload.meta),
                 loading: false,
                 search: state.get('search')
             })
+        }
 
-        case actions.TOGGLE_TICKET_SELECTION: {
+        case types.TOGGLE_TICKET_SELECTION: {
             if (action.ticketId === 'all') {
                 if (state.get('selected').size < state.get('items').size) {
                     return state.set('selected', state.get('items').map(item => item.get('id')))
@@ -36,32 +38,34 @@ export function tickets(state = ticketsInitial, action) {
 
             const idx = state.get('selected').indexOf(action.ticketId)
 
-            if (idx !== -1) {
+            if (~idx) {
                 return state.set('selected', state.get('selected').delete(idx))
             }
 
             return state.set('selected', state.get('selected').push(action.ticketId))
         }
 
-        case actions.BULK_UPDATE_SUCCESS:
+        case types.BULK_UPDATE_SUCCESS: {
+            const updates = action.updates
+
             return state.set(
                 'items',
                 state.get('items').map(item => {
                     let newItem = item
 
                     // updates only tickets which are selected
-                    if (state.get('selected').indexOf(newItem.get('id')) !== -1) {
+                    if (~state.get('selected').indexOf(newItem.get('id'))) {
                         // for each selected ticket, apply to it all updates which were send to the backend
-                        for (const key of Object.keys(action.updates)) {
+                        for (const key of Object.keys(updates)) {
                             if (key === 'tag') {
                                 newItem = newItem.set(
                                     'tags',
-                                    newItem.get('tags').push(fromJS(action.updates[key]))
+                                    newItem.get('tags').push(fromJS(updates[key]))
                                 )
                             } else if (key === 'tags') {
                                 newItem = newItem.set(
                                     'tags',
-                                    newItem.get('tags').concat(fromJS(action.updates[key]))
+                                    newItem.get('tags').concat(fromJS(updates[key]))
                                 )
                             } else if (key === 'macro') {
                                 /**
@@ -71,7 +75,7 @@ export function tickets(state = ticketsInitial, action) {
                                  */
                                 newItem = newItem.set('messages', newItem.get('messages').push(Map()))
                             } else {
-                                newItem = newItem.set(key, fromJS(action.updates[key]))
+                                newItem = newItem.set(key, fromJS(updates[key]))
                             }
                         }
                     }
@@ -79,14 +83,18 @@ export function tickets(state = ticketsInitial, action) {
                     return newItem
                 })
             )
+        }
 
-        case actions.BULK_DELETE_SUCCESS:
+        case types.BULK_DELETE_SUCCESS: {
+            const ids = action.ids
+
             return state.merge({
-                items: state.get('items').filter(item => action.ids.indexOf(item.get('id')) === -1),
+                items: state.get('items').filter(item => !~ids.indexOf(item.get('id'))),
                 selected: List()
             })
+        }
 
-        case actions.SAVE_INDEX:
+        case types.SAVE_INDEX:
             return state.set('currentTicketIndex', action.currentTicketIndex)
 
         default:

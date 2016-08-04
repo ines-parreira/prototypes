@@ -1,66 +1,39 @@
-import reqwest from 'reqwest'
+import axios from 'axios'
 import {systemMessage} from './systemMessage'
-
-export const DEFAULT_VIEW = 'my-tickets'
-
-// Basic operations on the views
-export const UPDATE_VIEW = 'UPDATE_VIEW'
-export const RESET_VIEW = 'RESET_VIEW'
-export const UPDATE_VIEW_FIELD = 'UPDATE_VIEW_FIELD'
-export const ADD_VIEW_FIELD_FILTER = 'ADD_VIEW_FIELD_FILTER'
-export const REMOVE_VIEW_FIELD_FILTER = 'REMOVE_VIEW_FIELD_FILTER'
-export const UPDATE_VIEW_FIELD_FILTER_OPERATOR = 'UPDATE_VIEW_FIELD_FILTER_OPERATOR'
-export const UPDATE_VIEW_FIELD_ENUM_START = 'UPDATE_VIEW_FIELD_ENUM_START'
-export const UPDATE_VIEW_FIELD_ENUM_SUCCESS = 'UPDATE_VIEW_FIELD_ENUM_SUCCESS'
-
-// Fetch individual view definitions
-export const FETCH_VIEW_START = 'FETCH_VIEW_START'
-export const FETCH_VIEW_SUCCESS = 'FETCH_VIEW_SUCCESS'
-
-// Update individual view definitions
-export const SUBMIT_VIEW_START = 'SUBMIT_VIEW_START'
-export const SUBMIT_NEW_VIEW_SUCCESS = 'SUBMIT_NEW_VIEW_SUCCESS'
-export const SUBMIT_UPDATE_VIEW_SUCCESS = 'SUBMIT_UPDATE_VIEW_SUCCESS'
-
-// Fetch list views
-export const FETCH_VIEW_LIST_START = 'FETCH_VIEW_LIST_START'
-export const FETCH_VIEW_LIST_SUCCESS = 'FETCH_VIEW_LIST_SUCCESS'
-export const UPDATE_VIEW_LIST = 'UPDATE_VIEW_LIST'
-
-// Read views
-export const SET_VIEW_ACTIVE = 'SET_VIEW_ACTIVE'
+import {DEFAULT_VIEW} from '../constants'
+import * as types from '../constants/view'
 
 export const setViewActive = (view) => ({
-    type: SET_VIEW_ACTIVE,
+    type: types.SET_VIEW_ACTIVE,
     view
 })
 
 export const updateView = (view) => ({
-    type: UPDATE_VIEW,
+    type: types.UPDATE_VIEW,
     view
 })
 
 export const updateField = (field) => ({
-    type: UPDATE_VIEW_FIELD,
+    type: types.UPDATE_VIEW_FIELD,
     field
 })
 
 // add filter for 1 field
 export const addFieldFilter = (field, filter) => ({
-    type: ADD_VIEW_FIELD_FILTER,
+    type: types.ADD_VIEW_FIELD_FILTER,
     field,
     filter
 })
 
 // remove a filter based on index
 export const removeFieldFilter = (index) => ({
-    type: REMOVE_VIEW_FIELD_FILTER,
+    type: types.REMOVE_VIEW_FIELD_FILTER,
     index
 })
 
 // remove a filter based on index
 export const updateFieldFilterOperator = (index, operator) => ({
-    type: UPDATE_VIEW_FIELD_FILTER_OPERATOR,
+    type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,
     index,
     operator
 })
@@ -68,99 +41,93 @@ export const updateFieldFilterOperator = (index, operator) => ({
 export function updateFieldEnumSearch(field, query) {
     return (dispatch) => {
         dispatch({
-            type: UPDATE_VIEW_FIELD_ENUM_START
+            type: types.UPDATE_VIEW_FIELD_ENUM_START
         })
 
-        return reqwest({
-            url: '/api/search/',
-            data: JSON.stringify({
-                doc_type: field.getIn(['filter', 'doc_type']),
-                query
-            }),
-            type: 'json',
-            method: 'POST',
-            contentType: 'application/json'
-        }).then(resp => {
-            dispatch({
-                type: UPDATE_VIEW_FIELD_ENUM_SUCCESS,
-                field,
-                resp
-            })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: failed to do the search. Please try again..',
-                internalMessage: err
-            }))
+        axios.post('/api/search/', {
+            doc_type: field.getIn(['filter', 'doc_type']),
+            query
         })
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.UPDATE_VIEW_FIELD_ENUM_SUCCESS,
+                    field,
+                    resp
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.UPDATE_VIEW_FIELD_ENUM_ERROR,
+                    error,
+                    reason: 'Failed to select this filter'
+                })
+            })
     }
 }
 
-export const resetView = () => ({type: RESET_VIEW})
+export const resetView = () => ({type: types.RESET_VIEW})
 
 export function fetchViews(currentViewSlug) {
-    const url = '/api/views/'
-    const data = {type: 'ticket-list'}
-    const type = 'list'
     return (dispatch) => {
         dispatch({
-            type: type === 'list' ? FETCH_VIEW_LIST_START : FETCH_VIEW_START
+            type: types.FETCH_VIEW_LIST_START
         })
 
-        return reqwest({
-            url,
-            data,
-            type: 'json',
-            method: 'GET',
-            contentType: 'application/json',
-        }).then((resp) => {
-            dispatch({
-                type: type === 'list' ? FETCH_VIEW_LIST_SUCCESS : FETCH_VIEW_SUCCESS,
-                resp,
-                currentViewSlug
-            })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: Failed to fetch views.',
-                internalMessage: err
-            }))
+        axios.get('/api/views/', {
+            data: {
+                type: 'ticket-list'
+            }
         })
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.FETCH_VIEW_LIST_SUCCESS,
+                    resp,
+                    currentViewSlug
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_VIEW_LIST_ERROR,
+                    error,
+                    reason: 'Failed to fetch views'
+                })
+            })
     }
 }
 
 export function submitView(view) {
-    let url = '/api/views/'
-    let method = 'POST'
-
-    if (view.get('id')) {
-        url = `/api/views/${view.get('id')}/`
-        method = 'PUT'
-    }
-
     return (dispatch) => {
         dispatch({
-            type: SUBMIT_VIEW_START
+            type: types.SUBMIT_VIEW_START
         })
 
-        return reqwest({
-            url,
-            method,
-            data: JSON.stringify(view.delete('dirty').toJS()),
-            type: 'json',
-            contentType: 'application/json'
-        }).then((resp) => {
-            dispatch({
-                type: view.get('id') ? SUBMIT_UPDATE_VIEW_SUCCESS : SUBMIT_NEW_VIEW_SUCCESS,
-                resp
+        const isUpdate = view.get('id')
+
+        let promise
+
+        if (isUpdate) {
+            promise = axios.put(`/api/views/${view.get('id')}/`, view.delete('dirty').toJS())
+        } else {
+            promise = axios.post('/api/views/', view.delete('dirty').toJS())
+        }
+
+        promise
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: isUpdate ? types.SUBMIT_UPDATE_VIEW_SUCCESS : types.SUBMIT_NEW_VIEW_SUCCESS,
+                    resp
+                })
             })
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: Failed to submit view. Please try again',
-                internalMessage: err
-            }))
-        })
+            .catch(error => {
+                dispatch({
+                    type: isUpdate ? types.SUBMIT_UPDATE_VIEW_ERROR : types.SUBMIT_NEW_VIEW_ERROR,
+                    error,
+                    reason: 'Failed to submit view. Please try again'
+                })
+            })
     }
 }
 
@@ -174,20 +141,20 @@ export function deleteView(view) {
     }
 
     if (window.confirm('Are you sure you want to delete this view?')) {
-        return (dispatch) => reqwest({
-            url: `/api/views/${view.get('id')}/`,
-            type: 'json',
-            method: 'DELETE',
-            contentType: 'application/json'
-        }).then(() => {
-            dispatch(fetchViews(DEFAULT_VIEW))
-        }).catch((err) => {
-            dispatch(systemMessage({
-                type: 'error',
-                header: 'Error: Failed to delete views.',
-                internalMessage: err
-            }))
-        })
+        return (dispatch) => {
+            axios.delete(`/api/views/${view.get('id')}/`)
+                .then((json = {}) => json.data)
+                .then(() => {
+                    dispatch(fetchViews(DEFAULT_VIEW))
+                })
+                .catch(error => {
+                    dispatch({
+                        type: 'ERROR',
+                        error,
+                        reason: 'Failed to delete views'
+                    })
+                })
+        }
     }
     return {
         type: 'NOOP' // action always needs a type

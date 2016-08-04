@@ -4,7 +4,7 @@ import expectImmutable from 'expect-immutable'
 import { List, Map } from 'immutable'
 
 import { tags } from '../tags'
-import * as actions from '../../actions/tag'
+import * as types from '../../constants/tag'
 
 expect.extend(expectImmutable)
 
@@ -35,7 +35,7 @@ describe('reducers', () => {
         it('should replace current tags with tags from server', () => {
             const fetchTagsFromServer = (state) => (
                 tags(state, {
-                    type: actions.FETCH_TAG_LIST_SUCCESS,
+                    type: types.FETCH_TAG_LIST_SUCCESS,
                     resp: { data: newFakeTags },
                 })
             )
@@ -56,7 +56,7 @@ describe('reducers', () => {
         it('should add tags', () => {
             const addTags = (state) => (
                 tags(state, {
-                    type: actions.ADD_TAGS,
+                    type: types.ADD_TAGS,
                     tags: newFakeTags,
                 })
             )

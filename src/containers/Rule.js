@@ -10,7 +10,7 @@ import * as SchemaActions from '../actions/schema'
 class RuleContainer extends React.Component {
     constructor() {
         super()
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this._handleSubmit = this._handleSubmit.bind(this)
     }
 
     componentWillMount() {
@@ -18,7 +18,7 @@ class RuleContainer extends React.Component {
         this.props.actions.schema.fetch()
     }
 
-    handleSubmit(e) {
+    _handleSubmit(e) {
         e.preventDefault()
         const type = this.refs.type.value.trim()
         const code = this.refs.code.value.trim()
@@ -56,7 +56,7 @@ class RuleContainer extends React.Component {
                     actions={actions}
                 />
                 <h3 className="ui header">Add a new rule</h3>
-                <RuleForm actions={actions} handleSubmit={this.handleSubmit}/>
+                <RuleForm actions={actions} handleSubmit={this._handleSubmit}/>
             </div>
         )
     }
