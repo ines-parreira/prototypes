@@ -345,7 +345,7 @@ export function ticket(state = ticketInitial, action) {
                 }
 
 
-                if (state.getIn(['state', 'contentState']).hasText()) {
+                if (state.getIn(['state', 'contentState']) && state.getIn(['state', 'contentState']).hasText()) {
                     blocks = state.getIn(['state', 'contentState']).getBlocksAsArray().concat(blocks)
                 }
 
