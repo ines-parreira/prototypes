@@ -31,12 +31,14 @@ export default class TicketStatus extends React.Component {
             const nextUrl = this.props.computeNextUrl(true)
 
             if (nextUrl) {
-                // redirect to the next ticket after a while.
-                // time also needed for the notification to stay up,
+                this.props.hideTicket()
+
+                // redirect to the next ticket after the transition is done.
+                // timeout also needed for the notification to stay up,
                 // otherwise the redirect will hide it.
                 setTimeout(() => {
                     browserHistory.push(nextUrl)
-                }, 500)
+                }, 300)
             }
         }
     }
@@ -81,5 +83,6 @@ TicketStatus.propTypes = {
     setStatus: PropTypes.func.isRequired,
     computeNextUrl: PropTypes.func.isRequired,
     currentStatus: PropTypes.string.isRequired,
+    hideTicket: PropTypes.func.isRequired,
     position: PropTypes.string
 }

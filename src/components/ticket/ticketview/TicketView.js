@@ -9,6 +9,7 @@ import TicketPriority from './ticketdetails/TicketPriority'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 import TicketStatus from './ticketdetails/TicketStatus'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
+import classNames from 'classnames'
 
 export default class TicketView extends React.Component {
     // USED ONLY BY THE COMMENTED DROPDOWN BELOW
@@ -18,6 +19,14 @@ export default class TicketView extends React.Component {
     //         action: 'nothing'
     //     })
     // }
+    constructor() {
+        super()
+        this.state = {
+            ticketHidden: false
+        }
+
+        this.hideTicket = this.hideTicket.bind(this)
+    }
 
     componentWillReceiveProps(nextProps) {
         if (
@@ -120,8 +129,14 @@ export default class TicketView extends React.Component {
         this.props.actions.ticket.deleteMessage(this.props.ticket.get('id'), messageId)
     }
 
+    hideTicket() {
+        this.setState({
+            ticketHidden: true
+        })
+    }
+
     render = () => {
-        const {ticket, tags, users, actions, computeNextUrl} = this.props
+        const {ticket, tags, users, actions, computeNextUrl, hidden} = this.props
 
         let ticketId = ''
 
@@ -129,8 +144,14 @@ export default class TicketView extends React.Component {
             ticketId = `#${ticket.get('id')}`
         }
 
+        // for testing,
+        // get hidden from props.
+        const ticketHidden = hidden || this.state.ticketHidden
+
         return (
-            <div className="ticket-view">
+            <div className={classNames('ticket-view', {
+                'transition out fade right': ticketHidden
+            })}>
                 <div className="ticket-header">
 
                     {/*
@@ -172,6 +193,7 @@ export default class TicketView extends React.Component {
                                     currentStatus={ticket.get('status')}
                                     setStatus={actions.ticket.setStatus}
                                     computeNextUrl={computeNextUrl}
+                                    hideTicket={this.hideTicket}
                                 />
 
                                 <TicketTags
@@ -255,5 +277,6 @@ TicketView.propTypes = {
     view: PropTypes.object,
     submit: PropTypes.func.isRequired,
     applyMacro: PropTypes.func.isRequired,
-    computeNextUrl: PropTypes.func.isRequired
+    computeNextUrl: PropTypes.func.isRequired,
+    hidden: PropTypes.bool
 }
