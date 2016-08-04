@@ -15,7 +15,8 @@ function addFilterAST(view, filter) {
     // generate a new call expression for the new filter as a string
     const newCallExprCode = `${filter.operator}(${filter.left}, ${filter.right})`
     // since we only ever have AND operators just concatenate existing expressions
-    const newCode = `${view.get('filters')} && ${newCallExprCode}`
+    const oldCode = view.get('filters') ? `${view.get('filters')} && ` : ''
+    const newCode = `${oldCode}${newCallExprCode}`
     return fromJS(esprima.parse(newCode))
 }
 
@@ -42,6 +43,8 @@ function updateFilterAST(view, index, operator) {
                 return node.setIn(['body', 0], walk(node.getIn(['body', 0])))
             case 'ExpressionStatement':
                 return node.set('expression', walk(node.get('expression')))
+            case 'LogicalExpression':
+                return node.set('left', walk(node.get('left'))).set('right', walk(node.get('right')))
             case 'CallExpression':
                 if (count === index) {
                     return node.setIn(['callee', 'name'], operator)
