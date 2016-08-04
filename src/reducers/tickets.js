@@ -7,16 +7,21 @@ const ticketsInitial = Map({
     resp_meta: Map(),
     loading: false,
     search: '',
-    currentTicketIndex: null
+    currentTicketIndex: null,
+    viewId: null
 })
 
 export function tickets(state = ticketsInitial, action) {
     switch (action.type) {
         case types.FETCH_TICKET_LIST_VIEW_START:
-            return state.set('loading', true)
+            return ticketsInitial.set('loading', true).set('viewId', action.viewId)
 
         case types.FETCH_TICKET_LIST_VIEW_SUCCESS: {
             const payload = action.data
+
+            if (state.get('viewId') !== action.viewId) {
+                return state
+            }
 
             return state.merge({
                 selected: List(),

@@ -4,8 +4,11 @@ import * as types from '../constants/tickets'
 
 export function fetchTicketsPage(views, page) {
     return (dispatch) => {
+        const activeView = views.get('active')
+
         dispatch({
-            type: types.FETCH_TICKET_LIST_VIEW_START
+            type: types.FETCH_TICKET_LIST_VIEW_START,
+            viewId: activeView.get('id')
         })
 
         let promise
@@ -14,13 +17,13 @@ export function fetchTicketsPage(views, page) {
         // this will allow us to test a view before submitting it to the DB
         if (views.getIn(['active', 'dirty'])) {
             promise = axios.put('/api/tickets/view/', {
-                view: views.get('active').delete('dirty').toJS(),
+                view: activeView.delete('dirty').toJS(),
                 page
             })
         } else {
             promise = axios.get('/api/tickets/', {
                 params: {
-                    view: views.get('active').get('slug'),
+                    view: activeView.get('slug'),
                     page
                 }
             })
@@ -31,7 +34,8 @@ export function fetchTicketsPage(views, page) {
             .then(data => {
                 dispatch({
                     type: types.FETCH_TICKET_LIST_VIEW_SUCCESS,
-                    data
+                    data,
+                    viewId: activeView.get('id')
                 })
             })
             .catch(error => {
