@@ -21,7 +21,7 @@ export const USER_SEARCH_QUERY = {
 
 export const USER_SEARCH_QUERY_PATH = 'query.multi_match.query'
 
-const usersInitial = fromJS({
+export const usersInitial = fromJS({
     items: [],
     agents: [],
     displayItems: [],

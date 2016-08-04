@@ -1,18 +1,16 @@
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
 
-import { Map } from 'immutable'
+import {Map} from 'immutable'
 import moment from 'moment'
 
-import { currentUser } from '../currentUser'
+import {currentUser as reducer, currentUserInitial as initialState} from '../currentUser'
 import * as types from '../../constants/user'
 
 expect.extend(expectImmutable)
 
 describe('reducers', () => {
     describe('currentUser', () => {
-        const initialState = Map()
-
         // Fake response to simulate the `/api/users/:id` response
         const fakeResponse = {
             username: 'fake_username',
@@ -29,11 +27,11 @@ describe('reducers', () => {
 
         // Dispatch the `FETCH_CURRENT_USER_SUCCESS` action in the reducer with a fake response
         const dispatchFetchCurrentUserSuccess = (state = initialState, response) => (
-            currentUser(state, { type: types.FETCH_CURRENT_USER_SUCCESS, resp: response })
+            reducer(state, { type: types.FETCH_CURRENT_USER_SUCCESS, resp: response })
         )
 
         it('should return the initial state', () => {
-            expect(currentUser(undefined, {})).toEqualImmutable(initialState)
+            expect(reducer(undefined, {})).toEqualImmutable(initialState)
         })
 
         it('should return the current user as state', () => {

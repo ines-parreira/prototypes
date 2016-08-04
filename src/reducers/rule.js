@@ -1,10 +1,10 @@
-import Immutable from 'immutable'
-import {getCode, getAST} from '../utils'
+import { fromJS, List } from 'immutable'
+import { getCode, getAST } from '../utils'
 
 import {ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST} from '../constants/rule'
 import {DEFAULT_OPTION_CHAINS} from '../components/ast/Widget.js'
 
-const initialState = Immutable.List([])
+export const initialState = List([])
 
 /**
  * In Order traversal the SYNTAXTREE from CURRENTPATH. Return a list
@@ -14,11 +14,11 @@ function inOrderGetLeaves(syntaxTree, currentPath) {
     const currentNode = syntaxTree.getIn(currentPath)
 
     if (currentNode.get('type') === 'Identifier') {
-        return Immutable.List([]).push(currentPath.push('name'))
+        return List([]).push(currentPath.push('name'))
     }
 
     if (currentNode.get('type') === 'Literal') {
-        return Immutable.List([]).push(currentPath.push('value'))
+        return List([]).push(currentPath.push('value'))
     }
 
     if (currentNode.get('type') === 'CallExpression') {
@@ -39,7 +39,7 @@ function inOrderGetLeaves(syntaxTree, currentPath) {
         const pathLeft = currentPath.push('left')
         const pathRight = currentPath.push('right')
 
-        const leavesOperator = Immutable.List([]).push(pathOperator)
+        const leavesOperator = List([]).push(pathOperator)
         const leavesLeft = inOrderGetLeaves(syntaxTree, pathLeft)
         const leavesRight = inOrderGetLeaves(syntaxTree, pathRight)
 
@@ -109,18 +109,18 @@ export function rules(state = initialState, action) {
                 return ruleItem
             })
 
-            return Immutable.List(ruleList)
+            return List(ruleList)
 
         case RULES_UPDATE_CODE_AST:
         {
-            const {index, path, value, operation} = action
-            const stateitem = Immutable.fromJS(state.get(index))
+            const { index, path, value, operation } = action
+            const stateItem = fromJS(state.get(index))
             const pathFull = path.unshift('code_ast')
 
-            let stateitemNew
+            let stateItemNew
 
             if (operation === 'UPDATE') {
-                stateitemNew = stateitem.updateIn(pathFull.toJS(), val=>value)
+                stateItemNew = stateItem.updateIn(pathFull.toJS(), val=>value)
                 /* When we do an update for a node, the possible choices after that
                  * node should be invalidated.
                  * e.g. if(equal(ticket.status,'open')){}
@@ -133,14 +133,14 @@ export function rules(state = initialState, action) {
                     let index = pathFull.lastIndexOf('arguments')
                     if (~index) {
                         const pathParentCallExpression = pathFull.setSize(pathFull.count() - index - 1)
-                        const possiblePaths = inOrderGetLeaves(stateitemNew, pathParentCallExpression)
+                        const possiblePaths = inOrderGetLeaves(stateItemNew, pathParentCallExpression)
 
                         let shouldUpdate = false
 
                         // Update all the leaves on the right side of this one.
                         for (const pathItem of possiblePaths) {
                             if (shouldUpdate) {
-                                stateitemNew = stateitemNew.updateIn(pathItem, val=>'')
+                                stateItemNew = stateItemNew.updateIn(pathItem, val=>'')
                             }
 
                             if (pathFull.equals(pathItem)) {
@@ -158,15 +158,15 @@ export function rules(state = initialState, action) {
                     const index2 = pathFull.lastIndexOf(1)
                     if (~index && ~index2 && (index - index2 === 1)) {
                         const pathParentCallExpression = pathFull.setSize(pathFull.count() - index - 1)
-                        const calleeName = stateitemNew.getIn(pathParentCallExpression.push('callee', 'name'))
+                        const calleeName = stateItemNew.getIn(pathParentCallExpression.push('callee', 'name'))
                         if (calleeName === 'Action') {
                             const pathArgument1 = pathParentCallExpression.push('arguments', 1, 'value')
-                            const argument1 = stateitemNew.getIn(pathArgument1.toJS())
+                            const argument1 = stateItemNew.getIn(pathArgument1.toJS())
                             const pathAction = ['_action', argument1]
-                            const actionDict = Immutable.fromJS(DEFAULT_OPTION_CHAINS).getIn(pathAction).toJS()
+                            const actionDict = fromJS(DEFAULT_OPTION_CHAINS).getIn(pathAction).toJS()
                             const objectExpression = getObjectExpression(actionDict)
 
-                            stateitemNew = stateitemNew.updateIn(pathParentCallExpression.push('arguments', 2).toJS(), val=>objectExpression)
+                            stateItemNew = stateItemNew.updateIn(pathParentCallExpression.push('arguments', 2).toJS(), val=>objectExpression)
                         }
                     }
                 }
@@ -175,7 +175,7 @@ export function rules(state = initialState, action) {
             if (operation === 'INSERT') {
                 const lastIndex = pathFull.last() + 1
                 const pathNew = pathFull.pop()
-                const valueP = stateitem.getIn(pathNew.toJS())
+                const valueP = stateItem.getIn(pathNew.toJS())
 
                 /*
                  * In the case of pathNew = ["code_ast", "body", 0, "alternate", "body"]
@@ -195,26 +195,26 @@ export function rules(state = initialState, action) {
                  * */
                 if ((valueP === undefined) && (pathNew.get(pathNew.size - 2) === 'alternate')) {
                     const pathElse = pathNew.pop()
-                    stateitemNew = stateitem.updateIn(pathElse.toJS(), val=>Immutable.fromJS({
+                    stateItemNew = stateItem.updateIn(pathElse.toJS(), val=>fromJS({
                         type: "BlockStatement",
                         body: [value],
                     }))
                 } else {
-                    stateitemNew = stateitem.updateIn(pathNew.toJS(), list=>list.splice(lastIndex, 0, value))
+                    stateItemNew = stateItem.updateIn(pathNew.toJS(), list=>list.splice(lastIndex, 0, value))
                 }
             }
             if (operation === 'DELETE') {
                 const lastIndex = pathFull.last()
                 const pathNew = pathFull.pop()
-                stateitemNew = stateitem.updateIn(pathNew.toJS(), list=>list.delete(lastIndex))
+                stateItemNew = stateItem.updateIn(pathNew.toJS(), list=>list.delete(lastIndex))
             }
 
             /* Add logical AND operation in TEST block of IFSTATEMENT.
              */
             if (operation === 'UPDATE_LOGICAL_AND') {
-                const test = stateitem.getIn(pathFull.toJS())
+                const test = stateItem.getIn(pathFull.toJS())
                 value.right = test.toJS()
-                stateitemNew = stateitem.updateIn(pathFull.toJS(), val=>value)
+                stateItemNew = stateItem.updateIn(pathFull.toJS(), val=>value)
             }
 
             /* Operating on the syntax tree to delete the binary expression.
@@ -229,20 +229,20 @@ export function rules(state = initialState, action) {
                 const pathNew = pathFull.pop()
 
                 if (lastIndex === 'left') {
-                    const right = stateitem.getIn(pathNew.push('right').toJS())
-                    stateitemNew = stateitem.updateIn(pathNew.toJS(), val=>right)
+                    const right = stateItem.getIn(pathNew.push('right').toJS())
+                    stateItemNew = stateItem.updateIn(pathNew.toJS(), val=>right)
                 } else if (lastIndex === 'right') {
-                    const left = stateitem.getIn(pathNew.push('left').toJS())
-                    stateitemNew = stateitem.updateIn(pathNew.toJS(), val=>left)
+                    const left = stateItem.getIn(pathNew.push('left').toJS())
+                    stateItemNew = stateItem.updateIn(pathNew.toJS(), val=>left)
                 } else {
                     // We shouldn't reach here normally.
                     return state
                 }
             }
 
-            let stateitemObj = stateitemNew.toJS()
-            stateitemObj.code = getCode(stateitemObj.code_ast)
-            const stateNew = state.set(index, stateitemObj)
+            let stateItemObj = stateItemNew.toJS()
+            stateItemObj.code = getCode(stateItemObj.code_ast)
+            const stateNew = state.set(index, stateItemObj)
             return stateNew
         }
 

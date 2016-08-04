@@ -3,15 +3,13 @@ import expectImmutable from 'expect-immutable'
 
 import { Map } from 'immutable'
 
-import { settings } from '../settings'
+import { settings as reducer, initial as initialState } from '../settings'
 import * as types from '../../constants/settings'
 
 expect.extend(expectImmutable)
 
 describe('reducers', () => {
     describe('settings', () => {
-        const initialState = Map({ data: Map(), loading: false, loaded: false})
-
         // Simulates the `/api/settings/` response
         const fakeResponse = {
             fake_property: 'fake_value',
@@ -26,7 +24,7 @@ describe('reducers', () => {
 
         it('should return the initial state', () => {
             expect(
-                settings(undefined, {})
+                reducer(undefined, {})
             ).toEqualImmutable(
                 initialState
             )
@@ -34,7 +32,7 @@ describe('reducers', () => {
 
         it('should start the settings fetching', () => {
             const startFetchSettings = (state) => (
-                settings(state, {
+                reducer(state, {
                     type: types.FETCH_SETTINGS_START,
                 })
             )
@@ -42,11 +40,8 @@ describe('reducers', () => {
             expect(
                 startFetchSettings(initialState)
             ).toEqualImmutable(
-                Map({
-                    data: Map(),
-                    loading: true,
-                    loaded: false,
-                })
+                initialState
+                    .set('loading', true)
             )
 
             expect(
@@ -68,9 +63,9 @@ describe('reducers', () => {
 
         it('should fetch the settings from server', () => {
             const fetchSettingsWithSuccess = (state, response) => (
-                settings(state, {
+                reducer(state, {
                     type: types.FETCH_SETTINGS_SUCCESS,
-                    resp: response,
+                    resp: response
                 })
             )
 

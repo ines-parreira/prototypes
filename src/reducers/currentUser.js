@@ -2,9 +2,9 @@ import * as types from '../constants/user'
 import {Map, fromJS} from 'immutable'
 import moment from 'moment'
 
-const initial = Map()
+export const currentUserInitial = Map()
 
-export function currentUser(state = initial, action) {
+export function currentUser(state = currentUserInitial, action) {
     if (!action) {
         return state
     }

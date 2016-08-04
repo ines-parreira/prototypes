@@ -1,7 +1,7 @@
 import * as types from '../constants/settings'
 import {Map} from 'immutable'
 
-const initial = Map({
+export const initial = Map({
     data: Map(),
     loading: false,
     loaded: false

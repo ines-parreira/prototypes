@@ -3,15 +3,13 @@ import expectImmutable from 'expect-immutable'
 
 import { List, Map } from 'immutable'
 
-import { tags } from '../tags'
+import { tags as reducer, tagsInitial as initialState } from '../tags'
 import * as types from '../../constants/tag'
 
 expect.extend(expectImmutable)
 
 describe('reducers', () => {
     describe('tags', () => {
-        const initialState = Map({ items: List() })
-
         // Simulates current tags in state
         const currentFakeTags = [
             { name: 'current_fake_name' },
@@ -26,7 +24,7 @@ describe('reducers', () => {
 
         it('should return the initial state', () => {
             expect(
-                tags(undefined, {})
+                reducer(undefined, {})
             ).toEqualImmutable(
                 initialState
             )
@@ -34,9 +32,9 @@ describe('reducers', () => {
 
         it('should replace current tags with tags from server', () => {
             const fetchTagsFromServer = (state) => (
-                tags(state, {
+                reducer(state, {
                     type: types.FETCH_TAG_LIST_SUCCESS,
-                    resp: { data: newFakeTags },
+                    resp: { data: newFakeTags }
                 })
             )
 
@@ -55,9 +53,9 @@ describe('reducers', () => {
 
         it('should add tags', () => {
             const addTags = (state) => (
-                tags(state, {
+                reducer(state, {
                     type: types.ADD_TAGS,
-                    tags: newFakeTags,
+                    tags: newFakeTags
                 })
             )
 
