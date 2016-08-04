@@ -64,7 +64,7 @@ export default class TicketTable extends React.Component {
                             ticket={ticket}
                             currentUser={currentUser}
                             toggleTicketSelection={this.props.toggleTicketSelection}
-                            selected={~tickets.get('selected').indexOf(ticket.get('id'))}
+                            selected={!!~tickets.get('selected').indexOf(ticket.get('id'))}
                             saveIndex={() => this.props.saveIndex(index)}
                         />
                     ))}
