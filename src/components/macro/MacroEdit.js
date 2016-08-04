@@ -7,7 +7,7 @@ import AssignUserAction from './actions/AssignUserAction'
 import AddTagsAction from './actions/AddTagsAction'
 import HttpAction from './actions/HttpAction'
 
-import * as ticketActions from './../../actions/ticket'
+import * as ticketTypes from './../../constants/ticket'
 import { DEFAULT_ACTIONS } from './../../constants'
 
 export default class MacroEdit extends React.Component {
@@ -101,7 +101,7 @@ export default class MacroEdit extends React.Component {
                     {
                         presetActions.map((action, key) => {
                             switch (action.get('name')) {
-                                case ticketActions.SET_STATUS:
+                                case ticketTypes.SET_STATUS:
                                     return (
                                         <SetStatusAction
                                             key={key}
@@ -111,7 +111,7 @@ export default class MacroEdit extends React.Component {
                                             deleteAction={actions.deleteAction}
                                         />
                                     )
-                                case ticketActions.ADD_TICKET_TAGS:
+                                case ticketTypes.ADD_TICKET_TAGS:
                                     return (
                                         <AddTagsAction
                                             key={key}
@@ -122,7 +122,7 @@ export default class MacroEdit extends React.Component {
                                             deleteAction={actions.deleteAction}
                                         />
                                     )
-                                case ticketActions.SET_RESPONSE_TEXT:
+                                case ticketTypes.SET_RESPONSE_TEXT:
                                     return (
                                         <SetResponseTextAction
                                             key={key}
@@ -132,7 +132,7 @@ export default class MacroEdit extends React.Component {
                                             deleteAction={actions.deleteAction}
                                         />
                                     )
-                                case ticketActions.SET_AGENT:
+                                case ticketTypes.SET_AGENT:
                                     return (
                                         <AssignUserAction
                                             key={key}
@@ -143,7 +143,7 @@ export default class MacroEdit extends React.Component {
                                             deleteAction={actions.deleteAction}
                                         />
                                     )
-                                case ticketActions.TOGGLE_PRIORITY:
+                                case ticketTypes.TOGGLE_PRIORITY:
                                     return (
                                         <SetPriorityAction
                                             key={key}
