@@ -3,6 +3,12 @@ import _ from 'lodash'
 import { validateEmail } from './../../../../utils'
 
 export default class SearchableDropdown extends React.Component {
+
+    componentWillMount() {
+        // http://stackoverflow.com/questions/31283360/are-htmlcollection-and-nodelist-iterables
+        // Using `for of` with HTMLCollection does not work with Chrome < 51, we're polyfilling to make it work.
+        HTMLCollection.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
+    }
     componentDidMount() {
         const receiverDropdown = $(`#receiver-dropdown-${this.props.suffix}`)
 
