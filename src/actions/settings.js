@@ -7,7 +7,7 @@ export function fetchSettings() {
             type: types.FETCH_SETTINGS_START
         })
 
-        axios.get('/api/settings/')
+        return axios.get('/api/settings/')
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({

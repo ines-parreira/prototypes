@@ -36,7 +36,7 @@ export function submitRule(url, comment) {
     return (dispatch) => {
         dispatch(addRuleStart(comment.type, comment.code))
 
-        axios.post(url, comment)
+        return axios.post(url, comment)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch(addRuleEnd(resp))
@@ -55,7 +55,7 @@ export function fetchRules(url) {
     return (dispatch) => {
         dispatch(requestRules(url))
 
-        axios.get(url)
+        return axios.get(url)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch(receiveRules(resp.data))

@@ -29,7 +29,7 @@ export function fetchTicketsPage(views, page) {
             })
         }
 
-        promise
+        return promise
             .then((json = {}) => json.data)
             .then(data => {
                 dispatch({
@@ -110,7 +110,7 @@ export function bulkUpdate(ids, key, value, views) {
             msg: 'Updating tickets...'
         }))
 
-        axios.put('/api/tickets/', data)
+        return axios.put('/api/tickets/', data)
             .then((json = {}) => json.data)
             .then(() => {
                 dispatch({
@@ -146,7 +146,7 @@ export function bulkDelete(ids) {
             msg: 'Deleting tickets...'
         }))
 
-        axios.delete('/api/tickets/', {
+        return axios.delete('/api/tickets/', {
             data: {ids}
         })
             .then((json = {}) => json.data)

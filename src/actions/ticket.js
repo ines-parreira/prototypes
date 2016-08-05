@@ -49,7 +49,7 @@ export function addAttachments(ticket, atts) {
             formData.append(attachment.name, attachment.file)
         }
 
-        axios.post('/api/upload/', formData)
+        return axios.post('/api/upload/', formData)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -93,7 +93,7 @@ export function ticketPartialUpdate(ticketId, args) {
             type: types.TICKET_PARTIAL_UPDATE_START
         })
 
-        axios.put(`/api/tickets/${ticketId}/`, args)
+        return axios.put(`/api/tickets/${ticketId}/`, args)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -260,7 +260,7 @@ export function deleteMessage(ticketId, messageId) {
             type: types.DELETE_TICKET_MESSAGE_START
         })
 
-        axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
+        return axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
             .then((json = {}) => json.data)
             .then(() => {
                 dispatch({
@@ -291,7 +291,7 @@ export function fetchTicketDetails(ticketId, data) {
 
         const url = `/api/tickets/${ticketId}/`
 
-        axios.get(url, {data})
+        return axios.get(url, {data})
             .then((json = {}) => json.data)
             .then(resp => {
                 if (_.isEmpty(resp)) {
@@ -319,7 +319,7 @@ export function fetchTicketMessage(ticketId, messageId) {
             type: types.FETCH_MESSAGE_START
         })
 
-        axios.get(`/api/tickets/${ticketId}/messages/${messageId}/`)
+        return axios.get(`/api/tickets/${ticketId}/messages/${messageId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
                 const hasFailure = resp.actions.find(action => action.status === 'error')
@@ -579,7 +579,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
             promise = axios.post(`/api/tickets/${ticket.get('id')}/messages/`, messageToSend)
         }
 
-        promise
+        return promise
             .then((json = {}) => json.data)
             .then(resp => {
                 // Update on the ticket.
@@ -617,7 +617,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, action, 
 
         const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
 
-        axios.post('/api/tickets/', data)
+        return axios.post('/api/tickets/', data)
             .then((json = {}) => json.data)
             .then(resp => {
                 const messageSent = lastMessage(resp.messages)

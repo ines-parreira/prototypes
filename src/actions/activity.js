@@ -8,7 +8,7 @@ export function pollActivity(pendingEvents) {
             type: types.SUBMIT_ACTIVITY_START
         })
 
-        axios.post('/api/activity/', pendingEvents.toJS())
+        return axios.post('/api/activity/', pendingEvents.toJS())
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({

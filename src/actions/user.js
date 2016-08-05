@@ -14,7 +14,7 @@ export function fetchUsers(roles) {
             rolesParam = `?roles[]=${roles.join('&roles[]=')}`
         }
 
-        axios.get(`/api/users/${rolesParam}`)
+        return axios.get(`/api/users/${rolesParam}`)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -47,7 +47,7 @@ export function search(query, params, stringQuery) {
             delete builtQuery.query
         }
 
-        axios.post('/api/search/', {
+        return axios.post('/api/search/', {
             doc_type: 'user',
             query: builtQuery,
             params
@@ -77,7 +77,7 @@ export function fetchUser(userId) {
 
         const isCurrentUser = userId === 0
 
-        axios.get(`/api/users/${userId}/`)
+        return axios.get(`/api/users/${userId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -108,7 +108,7 @@ export function createUser(data) {
 
         newData.password = ''
 
-        axios.post('/api/users/', newData)
+        return axios.post('/api/users/', newData)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -137,7 +137,7 @@ export function updateUser(data, userId) {
             type: types.UPDATE_USER_START
         })
 
-        axios.put(`/api/users/${userId}/`, data)
+        return axios.put(`/api/users/${userId}/`, data)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -167,7 +167,7 @@ export function deleteUser(userId) {
             type: types.DELETE_USER_START
         })
 
-        axios.delete(`/api/users/${userId}/`)
+        return axios.delete(`/api/users/${userId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({

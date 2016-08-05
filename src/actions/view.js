@@ -44,7 +44,7 @@ export function updateFieldEnumSearch(field, query) {
             type: types.UPDATE_VIEW_FIELD_ENUM_START
         })
 
-        axios.post('/api/search/', {
+        return axios.post('/api/search/', {
             doc_type: field.getIn(['filter', 'doc_type']),
             query
         })
@@ -74,7 +74,7 @@ export function fetchViews(currentViewSlug) {
             type: types.FETCH_VIEW_LIST_START
         })
 
-        axios.get('/api/views/', {
+        return axios.get('/api/views/', {
             data: {
                 type: 'ticket-list'
             }
@@ -113,7 +113,7 @@ export function submitView(view) {
             promise = axios.post('/api/views/', view.delete('dirty').toJS())
         }
 
-        promise
+        return promise
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({

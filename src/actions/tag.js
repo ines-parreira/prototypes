@@ -14,7 +14,7 @@ export function fetchTags() {
             type: types.FETCH_TAG_LIST_START
         })
 
-        axios.get('/api/tags/')
+        return axios.get('/api/tags/')
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({

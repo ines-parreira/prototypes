@@ -7,7 +7,7 @@ export function fetchWidgets() {
             type: types.FETCH_WIDGETS_START
         })
 
-        axios.get('/api/widgets/', {
+        return axios.get('/api/widgets/', {
             data: {
                 type: 'ticket-list'
             }

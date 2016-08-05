@@ -7,7 +7,7 @@ export function fetch() {
             type: types.FETCH_SCHEMAS_START
         })
 
-        axios.get('/doc/openapi.json')
+        return axios.get('/doc/openapi.json')
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({

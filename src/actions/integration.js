@@ -9,7 +9,7 @@ export function fetchIntegration(integrationId) {
             id: integrationId
         })
 
-        axios.get(`/api/integrations/${integrationId}`)
+        return axios.get(`/api/integrations/${integrationId}`)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -40,7 +40,7 @@ export function fetchIntegrations() {
             type: types.FETCH_INTEGRATIONS_START
         })
 
-        axios.get('/api/integrations/')
+        return axios.get('/api/integrations/')
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -173,7 +173,7 @@ function updateOrCreateIntegrationRequest(integration, action) {
             promise = axios.post('/api/integrations/', JSON.stringify(integration))
         }
 
-        promise
+        return promise
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch(
@@ -193,7 +193,6 @@ function updateOrCreateIntegrationRequest(integration, action) {
             })
     }
 }
-
 
 export function deactivateIntegration(integration) {
     return (dispatch) => {

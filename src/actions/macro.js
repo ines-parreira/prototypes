@@ -150,7 +150,7 @@ export function fetchMacros() {
             type: types.FETCH_MACRO_LIST_START
         })
 
-        axios.get('/api/macros/')
+        return axios.get('/api/macros/')
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -174,7 +174,7 @@ export function createMacro(macro) {
             type: types.CREATE_MACRO_START
         })
 
-        axios.post('/api/macros/', macro.delete('id').toJS())
+        return axios.post('/api/macros/', macro.delete('id').toJS())
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -198,7 +198,7 @@ export function updateMacro(macro) {
             type: types.UPDATE_MACRO_START
         })
 
-        axios.put(`/api/macros/${macro.get('id')}/`, macro.toJS())
+        return axios.put(`/api/macros/${macro.get('id')}/`, macro.toJS())
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -222,7 +222,7 @@ export function deleteMacro(macroId) {
             type: types.DELETE_MACRO_START
         })
 
-        axios.delete(`/api/macros/${macroId}/`)
+        return axios.delete(`/api/macros/${macroId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
