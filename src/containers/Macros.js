@@ -23,9 +23,11 @@ class MacrosContainer extends React.Component {
             )
         ) {
             // set the first macro without external actions as 'selected'
-            nextProps.actions.macro.previewMacroInModal(
-                getMacrosWithoutExternalActions(nextProps.macros.get('items')).first().get('id')
-            )
+            const selectedMacro = getMacrosWithoutExternalActions(nextProps.macros.get('items')).first()
+
+            if (selectedMacro) {
+                nextProps.actions.macro.previewMacroInModal(selectedMacro.get('id'))
+            }
         }
     }
 

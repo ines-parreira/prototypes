@@ -71,7 +71,7 @@ export default class MacroList extends React.Component {
                             const props = {
                                 key: macro.get('id'),
                                 className: classnames('item', {
-                                    active: macro.get('id') === currentMacro.get('id'),
+                                    active: currentMacro && macro.get('id') === currentMacro.get('id'),
                                     disabled: isDisabled
                                 }),
                                 onClick: isDisabled ? null : () => actions.previewMacroInModal(macro.get('id'))

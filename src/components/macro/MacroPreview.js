@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { getModifier } from './../../utils'
 
 export default class MacroPreview extends React.Component {
-    renderSetStatus(setStatusAction) {
+    _renderSetStatus(setStatusAction) {
         if (setStatusAction) {
             return (
                 <div className="macro-data">
@@ -19,7 +19,7 @@ export default class MacroPreview extends React.Component {
         return null
     }
 
-    renderAddTags(addTagsActions) {
+    _renderAddTags(addTagsActions) {
         if (!addTagsActions || !addTagsActions.size) {
             return null
         }
@@ -40,7 +40,7 @@ export default class MacroPreview extends React.Component {
         )
     }
 
-    renderAssignUser(assignUserAction) {
+    _renderAssignUser(assignUserAction) {
         if (!assignUserAction) {
             return null
         }
@@ -61,7 +61,7 @@ export default class MacroPreview extends React.Component {
         )
     }
 
-    renderSetPriority(setPriorityAction) {
+    _renderSetPriority(setPriorityAction) {
         if (!setPriorityAction) {
             return null
         }
@@ -83,7 +83,7 @@ export default class MacroPreview extends React.Component {
         )
     }
 
-    renderExternalActions(externalActions) {
+    _renderExternalActions(externalActions) {
         if (!externalActions || !externalActions.size) {
             return null
         }
@@ -121,7 +121,13 @@ export default class MacroPreview extends React.Component {
         const {currentMacro, cancel, selected} = this.props
 
         if (!currentMacro) {
-            return null
+            return (
+                <div className="MacroPreview">
+                    <div className="no-macro-container">
+                        <h4>You don't have any macro you can apply on a batch of tickets.</h4>
+                    </div>
+                </div>
+            )
         }
 
         const addTagsActions = currentMacro.get('actions').filter(action => action.get('name') === 'addTags')
@@ -138,11 +144,11 @@ export default class MacroPreview extends React.Component {
                 <div className="ui vertical segment">
                     <div><h4>{currentMacro.get('name') || ''}</h4></div>
 
-                    {this.renderSetStatus(setStatusAction)}
-                    {this.renderAddTags(addTagsActions)}
-                    {this.renderAssignUser(assignUserAction)}
-                    {this.renderSetPriority(setPriorityAction)}
-                    {this.renderExternalActions(externalActions)}
+                    {this._renderSetStatus(setStatusAction)}
+                    {this._renderAddTags(addTagsActions)}
+                    {this._renderAssignUser(assignUserAction)}
+                    {this._renderSetPriority(setPriorityAction)}
+                    {this._renderExternalActions(externalActions)}
                     <div className="macro-data pre">{responseTextAction.getIn(['arguments', 'body_text'])}</div>
                 </div>
                 <div className="buttons-bar">

@@ -50,7 +50,7 @@ export default class MacroModal extends React.Component {
         const rightPart = selectionMode ? (
             <MacroPreview
                 currentMacro={currentMacro}
-                apply={() => { this.cancel(); actions.tickets.bulkUpdate(selected, 'macro', currentMacro.toJS()) }}
+                apply={() => { this.cancel(); actions.tickets.bulkUpdate(selected, 'macro', currentMacro ? currentMacro.toJS() : null) }}
                 cancel={() => this.cancel()}
                 selected={selected}
             />

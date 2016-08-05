@@ -84,7 +84,7 @@ const macrosInitial = fromJS({
     visible: true,
     selected: {},
     isModalOpen: false,
-    modalSelected: macroInitial,
+    modalSelected: null,
     appliedMacro: null,
     items: {},
     actions: initialDefaultActions
