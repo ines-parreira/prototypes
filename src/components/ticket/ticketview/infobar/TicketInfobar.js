@@ -6,9 +6,10 @@ import InfobarWidget from './InfobarWidget'
 export default class TicketInfobar extends React.Component {
     render() {
         const {ticket, widgets, currentUser} = this.props
-        if (!ticket || !widgets.get('items').length) {
+        if (!ticket || !widgets.get('items').size) {
             return null
         }
+
 
         const items = List(widgets.get('items'))
         const topWidgets = items.filter(w => w.type === 'top').sortBy(w => w.order)
@@ -61,15 +62,15 @@ export default class TicketInfobar extends React.Component {
                  <Search id="ticket"/>
                  </div> */}
                 <div className="infobar-top infobar-box">
-                    <h2>{ticket.get('requester').name}</h2>
-                    {renderWidgets(topWidgets)}
+                    <h2>{ticket.getIn(['requester', 'name'])}</h2>
+                    {renderWidgets(topWidgets.toJS())}
                 </div>
                 <div className="infobar-section-separator"></div>
                 <div className="infobar-middle-content infobar-box ui two stackable cards">
-                    {renderWidgets(contentWidgets)}
+                    {renderWidgets(contentWidgets.toJS())}
                 </div>
                 <div className="infobar-bottom infobar-box">
-                    {renderWidgets(bottomWidgets)}
+                    {renderWidgets(bottomWidgets.toJS())}
                 </div>
             </div>
         )
