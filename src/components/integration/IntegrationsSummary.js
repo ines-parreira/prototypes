@@ -4,10 +4,10 @@ import WrapInFacebookLogin from './facebook/WrapInFacebookLogin'
 
 class IntegrationsSummary extends React.Component {
     render() {
-        const {integrationsSummary, actions} = this.props
+        const {integrationsSummary, actions, typeToLoadingStatus} = this.props
 
         // A map from type to the action that will be on the connect button
-        const typeToConnectAction = {facebook: actions.facebookLogin}
+        const typeToOnClickConnect = {facebook: actions.facebookLogin}
 
         return (
             <div className="IntegrationsSummaryView">
@@ -27,7 +27,8 @@ class IntegrationsSummary extends React.Component {
                                     <IntegrationsSummaryRow
                                         key={c.get('type')}
                                         integrationType={c}
-                                        onClickConnect={typeToConnectAction[c.get('type')]}
+                                        onClickConnect={typeToOnClickConnect[c.get('type')]}
+                                        loading={typeToLoadingStatus[c.get('type')]}
                                     />
                                 ))
                             }
@@ -43,7 +44,8 @@ class IntegrationsSummary extends React.Component {
 
 IntegrationsSummary.propTypes = {
     integrationsSummary: PropTypes.object.isRequired, // A list of possible integrations
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    typeToLoadingStatus: PropTypes.object.isRequired // A map integration type -> loading status to show loaders, etc.
 }
 
 // eslint-disable-next-line no-class-assign

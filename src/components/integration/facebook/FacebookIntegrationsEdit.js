@@ -43,7 +43,7 @@ class FacebookIntegrationsEdit extends React.Component {
 FacebookIntegrationsEdit.propTypes = {
     // An object that contains the integrations for the relevant type along with display info.
     integrations: PropTypes.object.isRequired,
-    loading: PropTypes.bool.isRequired,
+    loading: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 }
 

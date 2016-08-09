@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import _ from 'lodash'
+import classNames from 'classnames'
 import {INTEGRATION_TYPE_TO_ICON} from '../../constants'
 import NoIntegration from './NoIntegration'
 
@@ -13,6 +14,12 @@ export default class IntegrationsEdit extends React.Component {
     render() {
         const {integrations, integrationType, createIntegration, createIntegrationButtonText,
             longTypeDescription, integrationToItemDisplay, loading} = this.props
+
+
+        let createIntegrationButtonClassNames = ['ui', 'right', 'floated', 'green', 'button']
+        if (integrationType === 'facebook') {
+            createIntegrationButtonClassNames = createIntegrationButtonClassNames.concat([{loading: loading.get('facebookLogin')}])
+        }
 
         return (
             <div className="ui grid IntegrationsEditView">
@@ -35,7 +42,7 @@ export default class IntegrationsEdit extends React.Component {
                 </div>
 
                 <div className="three wide column">
-                    <button className="ui right floated green button" onClick={() => createIntegration()}>
+                    <button className={classNames(createIntegrationButtonClassNames)} onClick={() => createIntegration()}>
                         {createIntegrationButtonText}
                     </button>
                 </div>
@@ -54,7 +61,7 @@ export default class IntegrationsEdit extends React.Component {
                         )
 
                         return displayedIntegrations.count() === 0 ?
-                            <NoIntegration type={integrationType} loading={loading}/> : null
+                            <NoIntegration type={integrationType} loading={loading.get('integrations')}/> : null
                     })()}
 
                     {integrations.valueSeq().map(integrationToItemDisplay)}
@@ -72,7 +79,7 @@ IntegrationsEdit.propTypes = {
     createIntegration: PropTypes.func.isRequired, // The callback to create a new integration for this type.
     createIntegrationButtonText: PropTypes.string.isRequired, // The text for the button to create a new integration
     longTypeDescription: PropTypes.string.isRequired, // A long description for the integration.
-    loading: PropTypes.bool.isRequired,
+    loading: PropTypes.object.isRequired,  // A map for different loading status(es)
     // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.
     integrationToItemDisplay: PropTypes.func.isRequired
 }

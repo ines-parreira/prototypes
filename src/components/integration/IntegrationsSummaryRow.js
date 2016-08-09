@@ -1,12 +1,13 @@
 import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
+import classNames from 'classnames'
 import _ from 'lodash'
 import {INTEGRATION_TYPE_TO_ICON} from '../../constants'
 
 
 export default class IntegrationsSummaryRow extends React.Component {
     render() {
-        const {integrationType, onClickConnect, onClickEdit} = this.props
+        const {integrationType, onClickConnect, onClickEdit, loading} = this.props
 
         const triggerEdit = onClickEdit ||
             (() => browserHistory.push(`/app/settings/integrations/${integrationType.get('type')}`))
@@ -14,12 +15,13 @@ export default class IntegrationsSummaryRow extends React.Component {
         const triggerConnect = onClickConnect ||
             (() => browserHistory.push(`/app/settings/integrations/${integrationType.get('type')}/new`))
 
+        const buttonClasses = ['ui', 'basic', 'light', 'blue', 'button', 'right', {loading}]
         const button = integrationType.get('count') <= 0 ? (
-            <button className="ui basic light blue button right" onClick={triggerConnect}>
+            <button className={classNames(buttonClasses)} onClick={triggerConnect}>
                 Connect
             </button>
         ) : (
-            <button className="ui basic light blue button right" onClick={triggerEdit}>
+            <button className={classNames(buttonClasses)} onClick={triggerEdit}>
                 Edit
             </button>
         )
@@ -50,5 +52,6 @@ export default class IntegrationsSummaryRow extends React.Component {
 IntegrationsSummaryRow.propTypes = {
     integrationType: PropTypes.object.isRequired,
     onClickConnect: PropTypes.func,
-    onClickEdit: PropTypes.func
+    onClickEdit: PropTypes.func,
+    loading: PropTypes.bool
 }

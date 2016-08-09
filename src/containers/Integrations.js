@@ -25,12 +25,12 @@ class IntegrationsContainer extends React.Component {
             return null
         }
 
-        const allProps = {
+        const commonProps = {
             integrations: integrationSettings.get('integrations'),
             integration: integrationSettings.get('integration'),
             facebookIntegrations: integrationSettings.get('integrations').filter(integration => integration.get('type') === 'facebook'),
             facebookAppId: settings.getIn(['data', 'facebook_app_id']),
-            loading: integrationSettings.getIn(['state', 'loadingIntegrations']),
+            loading: integrationSettings.getIn(['state', 'loading']),
             actions
         }
 
@@ -44,26 +44,28 @@ class IntegrationsContainer extends React.Component {
         switch (integrationType) {
             case 'facebook':
                 if (integrationId && integrationId !== 'new') {
-                    child = <FacebookPageSettings actions={allProps.actions} integration={allProps.integration}/>
+                    child = (<FacebookPageSettings actions={commonProps.actions} integration={commonProps.integration}
+                                                   loading={commonProps.loading}
+                    />)
                 } else if (integrationId === 'new') {
                     child = (<FacebookPages
-                        actions={allProps.actions}
-                        facebookIntegrations={allProps.facebookIntegrations}
+                        actions={commonProps.actions}
+                        facebookIntegrations={commonProps.facebookIntegrations}
                     />)
                 } else {
                     child = (<FacebookIntegrationsEdit
-                        actions={allProps.actions}
-                        integrations={allProps.integrations}
-                        facebookAppId={allProps.facebookAppId}
-                        loading={allProps.loading}
+                        actions={commonProps.actions}
+                        integrations={commonProps.integrations}
+                        facebookAppId={commonProps.facebookAppId}
+                        loading={commonProps.loading}
                     />)
                 }
                 break;
 
             case 'http':
-                child = (<HttpIntegrationsEdit actions={allProps.actions}
-                                              integrations={allProps.integrations}
-                                              loading={allProps.loading}
+                child = (<HttpIntegrationsEdit actions={commonProps.actions}
+                                              integrations={commonProps.integrations}
+                                              loading={commonProps.loading}
                 />)
                 break;
             default:

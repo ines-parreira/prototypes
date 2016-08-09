@@ -168,9 +168,9 @@ function updateOrCreateIntegrationRequest(integration, action) {
         let promise
 
         if (integration.get('id')) {
-            promise = axios.put(`/api/integrations/${integration.get('id')}/${action ? `?action=${action}` : ''}`, JSON.stringify(integration))
+            promise = axios.put(`/api/integrations/${integration.get('id')}/${action ? `?action=${action}` : ''}`, integration.toJS())
         } else {
-            promise = axios.post('/api/integrations/', JSON.stringify(integration))
+            promise = axios.post('/api/integrations/', integration.toJS())
         }
 
         return promise

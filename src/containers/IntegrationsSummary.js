@@ -22,6 +22,7 @@ class IntegrationsSummaryContainer extends React.Component {
         const allProps = {
             integrationsSummary: getIntegrationsSummary(integrationSettings.get('integrations')),
             facebookAppId: settings.getIn(['data', 'facebook_app_id']),
+            typeToLoadingStatus: {facebook: integrationSettings.getIn(['state', 'loading', 'facebookLogin'])},
             actions
         }
 

@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react'
 import { Link } from 'react-router'
+import classNames from 'classnames'
+import {Loader} from '../../Loader'
 
 export default class FacebookPageSettings extends React.Component {
     disable = () => {
@@ -9,16 +11,16 @@ export default class FacebookPageSettings extends React.Component {
     }
 
     render() {
-        const {actions, integration} = this.props
+        const {actions, integration, loading} = this.props
         const page = integration.get('facebook');
 
-        if (!page) {
-            return null
+        if (loading.get('integration')) {
+            return <Loader/>
         }
-
         // Are we defining the settings for a new page or updating an existing one?
         const isUpdate = !integration.get('deactivated_datetime')
 
+        const submitButtonClassNames = ['ui', 'green', 'button', {loading: loading.get('updateIntegration')}]
         return (
             <div className="ui grid FacebookPageSettingsView">
                 <div className="sixteen wide column">
@@ -80,16 +82,16 @@ export default class FacebookPageSettings extends React.Component {
 
                 <div className="sixteen wide column">
                     <span
-                        className="ui green button"
+                        className={classNames(submitButtonClassNames)}
                         style={!isUpdate ? {display: 'none'} : {}}
-                        onClick={() => actions.updateOrCreateIntegration(integration, 'onboard')}
+                        onClick={() => (!loading.get('updateIntegration') ? actions.updateOrCreateIntegration(integration, 'onboard') : null)}
                     >
                         SAVE CHANGES
                     </span>
                     <span
-                        className="ui green button"
+                        className={classNames(submitButtonClassNames)}
                         style={isUpdate ? {display: 'none'} : {}}
-                        onClick={() => actions.updateOrCreateIntegration(integration, 'onboard')}
+                        onClick={() => (!loading.get('updateIntegration') ? actions.updateOrCreateIntegration(integration, 'onboard') : null)}
                     >
                         ADD PAGE
                     </span>
@@ -103,5 +105,6 @@ export default class FacebookPageSettings extends React.Component {
 
 FacebookPageSettings.propTypes = {
     integration: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    loading: PropTypes.object.isRequired
 }
