@@ -177,7 +177,7 @@ export default class TicketMessage extends React.Component {
                         {this.renderMeta(message)}
                     </div>
                     <div className="ticket-message-time">
-                        <DatetimeLabel datetime={message.created_datetime} settings={{
+                        <DatetimeLabel dateTime={message.created_datetime} settings={{
                             position: 'top left'
                         }}/>
                     </div>

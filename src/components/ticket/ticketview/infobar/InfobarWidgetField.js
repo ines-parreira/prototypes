@@ -29,7 +29,7 @@ export default class InfobarWidgetField extends React.Component {
                     case 'datetime': {
                         fieldValue = (
                             <span className="field-value datetime">
-                                <DatetimeLabel datetime={fieldVal} />
+                                <DatetimeLabel dateTime={fieldVal} />
                             </span>
                         )
                         break

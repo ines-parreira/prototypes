@@ -37,7 +37,7 @@ export default class CustomerRating extends React.Component {
                         {`${RATING_SCORE_TO_MESSAGE[rating.get('rating')]} RATING`}
                     </div>
                     <div className="ticket-message-time">
-                        <DatetimeLabel datetime={rating.get('rating_datetime')} />
+                        <DatetimeLabel dateTime={rating.get('rating_datetime')} />
                     </div>
                 </div>
                 <div
