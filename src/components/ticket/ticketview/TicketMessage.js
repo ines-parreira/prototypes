@@ -29,6 +29,19 @@ export default class TicketMessage extends React.Component {
         return null
     }
 
+    renderSourceList(message, title, field) {
+        if (!(message.source[field] && message.source[field].length)) {
+            return null
+        }
+        return (
+            <li>{title}:
+                <strong>
+                    {message.source[field].map(dest => `${dest.name} <${dest[SOURCE_VALUE_PROP[message.source.type]]}>`).join(', ')}
+                </strong>
+            </li>
+        )
+    }
+
     renderSource(message) {
         if (!message.public) {
             return null
@@ -56,22 +69,23 @@ export default class TicketMessage extends React.Component {
                     <div className="ticket-message-source-details menu transition">
                         <ul className="item">
                             <li>
-                                To:
-                                <strong>
-                                    {message.source.to.map(dest => `${dest.name} <${dest[SOURCE_VALUE_PROP[message.source.type]]}>`).join(', ')}
-                                </strong>
-                            </li>
-                            <li>
                                 From:
                                 <strong>
                                     {`${message.source.from.name} <${message.source.from[SOURCE_VALUE_PROP[message.source.type]]}>`}
                                 </strong>
                             </li>
+                            {this.renderSourceList(message, 'To', 'to')}
+                            {this.renderSourceList(message, 'Cc', 'cc')}
+                            {this.renderSourceList(message, 'Bcc', 'bcc')}
                             <li>
                                 Send via:
                                 <strong>
                                     {message.source.type}
                                 </strong>
+                            </li>
+                            <li>
+                                Date:
+                                <strong>{message.created_datetime}</strong>
                             </li>
                         </ul>
                     </div>
