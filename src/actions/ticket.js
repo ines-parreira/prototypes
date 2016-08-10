@@ -510,6 +510,17 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
             data.newMessage.sender = currentUser.filter(keyIn('email', 'id', 'name'))
         }
 
+        // Facebook does not accept comment with just an attachment.
+        if ((data.newMessage.body_text.length === 0) && (data.newMessage.attachments.length > 0)) {
+            dispatch(systemMessage({
+                modal: true,
+                type: 'error',
+                header: 'Your message cannot be sent.',
+                msg: 'You cannot send an attachment without a message in a Facebook comment.'
+            }))
+            return null
+        }
+
         if ((data.newMessage.body_text.length > 0) || (data.newMessage.attachments.length > 0)) {
             if (macroActions) {
                 data.newMessage.actions = macroActions.map(curAction => formatAction(
