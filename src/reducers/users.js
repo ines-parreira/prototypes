@@ -23,7 +23,7 @@ export const USER_SEARCH_QUERY_PATH = 'query.multi_match.query'
 
 export const usersInitial = fromJS({
     items: [],
-    agents: [],
+    agents: [],  // Note both admins and 'simple' agents are considered agents.
     displayItems: [],
     sort: {
         field: 'updated_datetime',
@@ -77,7 +77,8 @@ export function users(state = usersInitial, action) {
             return newState.merge({loading: true})
 
         case types.FETCH_USER_LIST_SUCCESS:
-            if (action.roles && ~action.roles.indexOf('agent')) {
+            // This is a bit lame but that's the proper definition of an agent.
+            if (action.roles && action.roles.length === 2 && ~action.roles.indexOf('agent') && ~action.roles.indexOf('admin')) {
                 newState = newState.set('agents', fromJS(action.resp.data))
             } else {
                 newState = newState.set('items', fromJS(action.resp.data))
