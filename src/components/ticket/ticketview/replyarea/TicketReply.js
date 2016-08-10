@@ -79,6 +79,7 @@ export default class TicketReply extends React.Component {
             this.textBeforeTab = ''
             return
         }
+
         this.setState({editorState})
         this.updateMessageText(editorState)
     }
