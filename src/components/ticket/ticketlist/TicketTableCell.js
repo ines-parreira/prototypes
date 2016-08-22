@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import _ from 'lodash'
-import {truncate, stripHTML, firstMessage as getFirstMessage} from '../../../utils'
+import {truncate, stripHTML, lastMessage as getLastMessage} from '../../../utils'
 import {RenderLabel, TagLabel} from '../../utils/labels'
 
 export default class TicketTableCell extends React.Component {
@@ -38,8 +38,9 @@ export default class TicketTableCell extends React.Component {
                 break
             case 'composite':
                 if (field.name === 'ticket-details') {
-                    const firstMessage = getFirstMessage(ticket.get('messages').toJS())
-                    if (!firstMessage) {
+                    const previewedMessage = getLastMessage(ticket.get('messages').toJS())
+
+                    if (!previewedMessage) {
                         break
                     }
 
@@ -54,7 +55,7 @@ export default class TicketTableCell extends React.Component {
                         <div className="ui header">
                             <span className="subject">{subject}</span>
                             <div className="body sub header">
-                                {truncate(firstMessage.body_html ? stripHTML(firstMessage.body_html) : firstMessage.body_text, 50)}
+                                {truncate(previewedMessage.body_html ? stripHTML(previewedMessage.body_html) : previewedMessage.body_text, 50)}
                             </div>
                         </div>
                     )
