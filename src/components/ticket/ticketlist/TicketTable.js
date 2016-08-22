@@ -21,15 +21,18 @@ export default class TicketTable extends React.Component {
                 message = <p>No tickets found.<br/><a onClick={this.props.resetView}>Reset view</a></p>
             }
 
-            return <Loader message={message} loading={isLoading} />
+            return <Loader message={message} loading={isLoading}/>
         }
+
+        // temporary remove priority from available fields
+        const updatedView = view.set('fields', view.get('fields').filter(f => f.get('name') !== 'priority'))
 
         return (
             <div className="ticket-table">
                 <table className="ui selectable very basic padded table" ref="table">
                     <thead>
-                        <tr>
-                            <th>
+                    <tr>
+                        <th>
                                 <span className="ui checkbox">
                                     <input type="checkbox"
                                            ref="toggleSelection"
@@ -38,29 +41,29 @@ export default class TicketTable extends React.Component {
                                     />
                                     <label />
                                 </span>
-                            </th>
-                            {view.get('fields').map((field) => (
-                                <ColumnHeader
-                                    key={field.get('name')}
-                                    field={field}
-                                    view={view}
-                                    schemas={this.props.schemas}
-                                    updateView={this.props.updateView}
-                                    addFieldFilter={this.props.addFieldFilter}
-                                    updateFieldEnumSearch={this.props.updateFieldEnumSearch}
-                                />
-                            ))}
-                            <ShowMoreFieldsDropdown
-                                view={view}
-                                updateField={this.props.updateField}
+                        </th>
+                        {updatedView.get('fields').map((field) => (
+                            <ColumnHeader
+                                key={field.get('name')}
+                                field={field}
+                                view={updatedView}
+                                schemas={this.props.schemas}
+                                updateView={this.props.updateView}
+                                addFieldFilter={this.props.addFieldFilter}
+                                updateFieldEnumSearch={this.props.updateFieldEnumSearch}
                             />
-                        </tr>
+                        ))}
+                        <ShowMoreFieldsDropdown
+                            view={updatedView}
+                            updateField={this.props.updateField}
+                        />
+                    </tr>
                     </thead>
                     <tbody>
                     {tickets.get('items').map((ticket, index) => (
                         <TicketTableRow
                             key={ticket.get('id')}
-                            view={view}
+                            view={updatedView}
                             ticket={ticket}
                             currentUser={currentUser}
                             toggleTicketSelection={this.props.toggleTicketSelection}
