@@ -8,42 +8,46 @@ import AddTagsAction from './actions/AddTagsAction'
 import HttpAction from './actions/HttpAction'
 
 import * as ticketTypes from './../../constants/ticket'
-import { DEFAULT_ACTIONS } from './../../constants'
+import {DEFAULT_ACTIONS} from './../../constants'
 
 export default class MacroEdit extends React.Component {
     componentDidMount() {
-        const $container = this.refs.btnNewAction.parentNode
+        const insertNewMacro = this.refs.insertNewMacro
 
-        $(this.refs.btnNewAction).dropdown({
-            direction: 'bottom',
-            onShow: () => {
-                // manually check if there is enough space
-                // to show the dropdown at the bottom.
-                // the direction: 'auto' setting does not work as intended,
-                // for overflow auto containers.
-                const dropdownHeight = 220
+        if (insertNewMacro) {
+            const $container = insertNewMacro.parentNode
 
-                const containerRect = $container.getBoundingClientRect()
-                const btnRect = this.refs.btnNewAction.getBoundingClientRect()
+            $(insertNewMacro).dropdown({
+                direction: 'bottom',
+                onShow: () => {
+                    // manually check if there is enough space
+                    // to show the dropdown at the bottom.
+                    // the direction: 'auto' setting does not work as intended,
+                    // for overflow auto containers.
+                    const dropdownHeight = 220
 
-                const btnTop = btnRect.top - containerRect.top
-                const bottomSpace = containerRect.height - btnRect.height - btnTop
+                    const containerRect = $container.getBoundingClientRect()
+                    const btnRect = insertNewMacro.getBoundingClientRect()
 
-                // in case we set it at the top previously
-                this.refs.btnNewAction.classList.remove('upward')
+                    const btnTop = btnRect.top - containerRect.top
+                    const bottomSpace = containerRect.height - btnRect.height - btnTop
 
-                // show it at the top
-                if (bottomSpace < dropdownHeight) {
-                    this.refs.btnNewAction.classList.add('upward')
+                    // in case we set it at the top previously
+                    insertNewMacro.classList.remove('upward')
+
+                    // show it at the top
+                    if (bottomSpace < dropdownHeight) {
+                        insertNewMacro.classList.add('upward')
+                    }
+                },
+                onChange: (value, text) => {
+                    if (~DEFAULT_ACTIONS.indexOf(text)) {
+                        this.props.actions.addAction(text)
+                        $('#new-action-popup').dropdown('set text', 'Insert a new action')
+                    }
                 }
-            },
-            onChange: (value, text) => {
-                if (~DEFAULT_ACTIONS.indexOf(text)) {
-                    this.props.actions.addAction(text)
-                    $('#new-action-popup').dropdown('set text', 'Insert a new action')
-                }
-            }
-        })
+            })
+        }
     }
 
     create() {
@@ -171,7 +175,9 @@ export default class MacroEdit extends React.Component {
                         })
                     }
 
-                    <div className="ui floating dropdown labeled search icon light blue button" ref="btnNewAction">
+                    <div className="ui floating dropdown labeled search icon light blue button"
+                         ref="insertNewMacro"
+                    >
                         <i className="plus icon"/>
                         <span className="text">Insert a new action</span>
                         <div className="menu">
