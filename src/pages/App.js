@@ -10,7 +10,8 @@ import {fetchTags} from '../state/tags/actions'
 import {pollActivity} from '../state/activity/actions'
 import Navbar from './common/components/Navbar'
 import KeyboardHelp from './common/components/KeyboardHelp'
-import Mousetrap, * as mousetrap from 'mousetrap'
+import Mousetrap from 'mousetrap'
+import * as mousetrap from 'mousetrap'
 import {sanitizeHtmlDefault} from '../utils'
 import '../../css/main.less'
 
@@ -30,11 +31,13 @@ class App extends React.Component {
         this.props.fetchUsers(['agent', 'admin'])
         this.props.fetchTags()
 
-        if (pollInterval) {
-            clearInterval(pollInterval)
+        if (this.props.location.query._activity_polling !== 'false') {
+            if (pollInterval) {
+                clearInterval(pollInterval)
+            }
+            pollInterval = setInterval(() =>
+                this.props.pollActivity(this.props.activity.get('pendingEvents')), 5000)
         }
-        pollInterval = setInterval(() =>
-            this.props.pollActivity(this.props.activity.get('pendingEvents')), 5000)
         // call it the first time without polling
         this.props.pollActivity(this.props.activity.get('pendingEvents'))
     }
@@ -126,7 +129,7 @@ class App extends React.Component {
                 transitionLeaveTimeout={200}
             >
                 <div id="system-message" className={`ui ${messageType} message`}>
-                    <i className="close icon" onClick={this._handleDismissClick} />
+                    <i className="close icon" onClick={this._handleDismissClick}/>
                     <div className="header">{systemMessage.header}</div>
                     {msg}
                 </div>
@@ -137,7 +140,7 @@ class App extends React.Component {
     _renderModalSystemMessage(systemMessage, msg) {
         return (
             <div id="system-message" className="ui modal">
-                <i className="close icon" onClick={e => this._handleDismissClick(e, true)} />
+                <i className="close icon" onClick={e => this._handleDismissClick(e, true)}/>
                 <div className="header">{systemMessage.header}</div>
                 <div className="content">
                     {systemMessage.options.title || ''}
@@ -219,6 +222,7 @@ App.propTypes = {
     // Injected by React Router
     children: PropTypes.node,
     params: PropTypes.object.isRequired,
+    location: PropTypes.object,
 
     // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
     navbar: PropTypes.node,
