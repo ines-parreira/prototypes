@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {debounce as _debounce} from 'lodash'
+import _ from 'lodash'
 import classNames from 'classnames'
 
 export default class Search extends React.Component {
@@ -9,7 +9,7 @@ export default class Search extends React.Component {
         this.isInitialized = false
 
         // search every XXXms
-        this.debouncedSearch = _debounce(() => {
+        this.debouncedSearch = _.debounce(() => {
             for (const path of this.props.queryPath.split(',')) {
                 _.set(this.props.query, path, this.refs.searchInput.value)
             }
