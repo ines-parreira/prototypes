@@ -183,9 +183,16 @@ export default class TicketMessage extends React.Component {
                             return null
                         })()}
 
-                        <span className="ticket-message-author ui small header">
-                            {message.sender.name}
-                        </span>
+                        {(() => {
+                            if (message.sender.name) {
+                                return (
+                                    <span className="ticket-message-author ui small header">
+                                        {message.sender.name}
+                                    </span>
+                                )
+                            }
+                            return null
+                        })()}
 
                         {this.renderSource(message)}
                         {this.renderMeta(message)}

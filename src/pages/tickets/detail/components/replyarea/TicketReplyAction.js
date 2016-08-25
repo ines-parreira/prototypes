@@ -26,6 +26,7 @@ export default class TicketReplyAction extends React.Component {
                                     type="text"
                                     value={arg.get('value')}
                                     onChange={(e) => this.setValue(arg, e.target.value, title)}
+                                    required
                                 />
                             </div>
                         ))

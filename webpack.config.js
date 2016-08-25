@@ -56,7 +56,7 @@ module.exports = {
                 loader: 'json-loader'
             },
             {
-                test: /\.(jpe?g|png|gif|svg)$/i,
+                test: /\.(jpe?g|png|gif)$/i,
                 loader: 'file-loader'
             },
             {
@@ -68,6 +68,11 @@ module.exports = {
                 loaders: [
                     'style', 'css'
                 ]
+            },
+            // custom fonts
+            {
+                test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+                loader: 'file-loader'
             }
         ]
     }

@@ -25,7 +25,7 @@ export default class TicketSubmitButtons extends React.Component {
         }]
         return (
             <div className="TicketSubmitButtons">
-                <button
+                <button type="submit"
                     className={classNames(...commonClasses)}
                     tabIndex="4"
                     onClick={() => this.submit()}
@@ -33,7 +33,7 @@ export default class TicketSubmitButtons extends React.Component {
                 >
                     Send
                 </button>
-                <button
+                <button type="submit"
                     className={classNames(...commonClasses, 'basic')}
                     tabIndex="5"
                     onClick={() => this.submit('closed', true)}

@@ -78,17 +78,27 @@ export default class MacroEdit extends React.Component {
         )
 
         const saveButton = currentMacro.get('id') !== 'new' ? (
-            <div className="ui green right floated button" onClick={() => this.update()}>Update macro</div>
+            <button type="submit" className="ui green right floated button">Update macro</button>
         ) : (
-            <div className="ui green right floated button" onClick={() => this.create()}>Create macro</div>
+            <button type="submit" className="ui green right floated button">Create macro</button>
         )
+
+        const submitAction = (e) => {
+            e.preventDefault()
+
+            if (currentMacro.get('id') !== 'new') {
+                this.update()
+            } else {
+                this.create()
+            }
+        }
 
         const deleteButton = currentMacro.get('id') !== 'new' ? (
             <div className="ui basic red left floated button" onClick={() => this.deleteMacro()}>Delete macro</div>
         ) : null
 
         return (
-            <div className="MacroEdit">
+            <form className="MacroEdit" onSubmit={submitAction}>
                 <div className="ui vertical segment">
                     <div>
                         <h4>MACRO NAME</h4>
@@ -97,6 +107,7 @@ export default class MacroEdit extends React.Component {
                                 type="text"
                                 onChange={e => actions.setName(e.target.value)}
                                 value={currentMacro.get('name') || ''}
+                                required
                             />
                         </div>
                         <div className="ui divider"></div>
@@ -195,7 +206,7 @@ export default class MacroEdit extends React.Component {
                     {saveButton}
                     <div className="ui basic grey right floated button" onClick={cancel}>cancel</div>
                 </div>
-            </div>
+            </form>
         )
     }
 }

@@ -183,7 +183,7 @@ export default class TicketReply extends React.Component {
 
         return (
             <div className={className}>
-                <form
+                <div
                     ref="overlay"
                     className="ui reply form"
                     onDragEnter={() => this.refs.overlay.classList.add('active')}
@@ -203,7 +203,7 @@ export default class TicketReply extends React.Component {
                         />
                         <EmojiSuggestions />
                     </div>
-                </form>
+                </div>
 
                 {this.renderAttachmentInput()}
 

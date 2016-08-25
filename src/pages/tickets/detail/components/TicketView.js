@@ -26,6 +26,8 @@ export default class TicketView extends React.Component {
         }
 
         this.hideTicket = this.hideTicket.bind(this)
+        this.setSubmitParams = this.setSubmitParams.bind(this)
+        this.submitForm = this.submitForm.bind(this)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -135,6 +137,20 @@ export default class TicketView extends React.Component {
         })
     }
 
+    setSubmitParams(...args) {
+        if (this.refs.ticketViewForm.checkValidity()) {
+            this.statusParams = args
+        } else {
+            this.statusParams = []
+        }
+    }
+
+    submitForm(e) {
+        e.preventDefault()
+
+        this.props.submit.apply(this, this.statusParams)
+    }
+
     render = () => {
         const {ticket, tags, users, actions, computeNextUrl, hidden} = this.props
 
@@ -149,9 +165,12 @@ export default class TicketView extends React.Component {
         const ticketHidden = hidden || this.state.ticketHidden
 
         return (
-            <div className={classNames('ticket-view', {
+            <form className={classNames('ticket-view', {
                 'transition out fade right': ticketHidden
-            })}>
+            })}
+                onSubmit={this.submitForm}
+                ref="ticketViewForm"
+            >
                 <div className="ticket-header">
 
                     {/*
@@ -231,7 +250,7 @@ export default class TicketView extends React.Component {
                     <TicketMessages
                         currentUser={this.props.currentUser}
                         messages={ticket.get('messages')}
-                        submit={this.props.submit}
+                        submit={this.setSubmitParams}
                         deleteMessage={this.deleteMessage}
                         loading={ticket.getIn(['state', 'loading'])}
                         ticket={ticket}
@@ -257,11 +276,11 @@ export default class TicketView extends React.Component {
 
                     <TicketSubmitButtons
                         ticket={ticket}
-                        submit={this.props.submit}
+                        submit={this.setSubmitParams}
                     />
 
                 </div>
-            </div>
+            </form>
         )
     }
 }

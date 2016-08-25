@@ -22,6 +22,11 @@ export default class ParametersEditor extends React.Component {
         this.props.updateDict(this.props.list.setIn([index, 'editable'], value))
     }
 
+    getValueRequired(editable) {
+        // if the field is not editable, the value is mandatory.
+        return !editable
+    }
+
     render() {
         const { list } = this.props
 
@@ -42,6 +47,7 @@ export default class ParametersEditor extends React.Component {
                                 type="text"
                                 value={dict.get('value')}
                                 onChange={(e) => this.changeValue(index, e.target.value)}
+                                required={this.getValueRequired(dict.get('editable'))}
                             />
                         </div>
                         <div className="two wide field checkbox">
