@@ -5,7 +5,7 @@ export default class ShowMoreFieldsDropdown extends React.Component {
         $('#showmorefields').popup({
             popup: $('.custom.popup'),
             on: 'click',
-            position: 'bottom right'
+            position: 'bottom center'
         })
     }
 

@@ -19,8 +19,8 @@ class UserListContainer extends React.Component {
         }
     }
 
-    _search = (query, params, stringQuery, sort = this.props.users.get('sort')) => {
-        this.props.actions.user.search(buildQuery(stringQuery, sort), params, stringQuery)
+    _search = (query, stringQuery, sort = this.props.users.get('sort')) => {
+        this.props.actions.user.search(buildQuery(stringQuery, sort), stringQuery)
     }
 
     render() {

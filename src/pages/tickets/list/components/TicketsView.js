@@ -47,7 +47,7 @@ export default class TicketsView extends React.Component {
         return (
             <div className="tickets-view">
                 <div className="tickets-view-header-container">
-                    <div className="tickets-view-header" style={{ maxWidth: this.getWidth() }}>
+                    <div className="tickets-view-header" style={{maxWidth: this.getWidth()}}>
                         <div className="sticky-header">
 
                             <div className="ui text menu sticky-header-search">
@@ -57,6 +57,7 @@ export default class TicketsView extends React.Component {
                                         autofocus
                                         onChange={search}
                                         className="long"
+                                        forcedQuery={view.getIn(['search', 'query'])}
                                         queryPath="bool.should.0.multi_match.query,bool.should.1.nested.query.multi_match.query"
                                         query={{
                                             bool: {
@@ -95,7 +96,6 @@ export default class TicketsView extends React.Component {
                                             }
                                         }}
                                         placeholder="Search tickets"
-                                        searchDebounceTime={400}
                                         location={view.get('id')}
                                     />
                                 </div>

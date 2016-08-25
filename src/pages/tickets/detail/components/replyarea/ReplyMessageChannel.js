@@ -35,7 +35,7 @@ export default class ReplyMessageChannel extends React.Component {
         }
 
         let to = List()
-        const curTo = ticket.getIn(['newMessage', 'source', 'to'])
+        const currentTo = ticket.getIn(['newMessage', 'source', 'to'])
         // We want the last message that was not an internal note.
         const ticketLastMessage = getLastSameSourceTypeMessage(ticket.get('messages'), ticket.getIn(['newMessage', 'source', 'type']))
 
@@ -43,8 +43,8 @@ export default class ReplyMessageChannel extends React.Component {
             return List()
         }
 
-        if (curTo.size) {
-            to = curTo
+        if (currentTo.size) {
+            to = currentTo
         } else {
             if (ticketLastMessage) {
                 if (ticketLastMessage.get('from_agent')) {
