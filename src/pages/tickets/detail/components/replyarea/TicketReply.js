@@ -194,7 +194,7 @@ export default class TicketReply extends React.Component {
                         <Editor
                             ref="editor"
                             tabIndex="4"
-                            spellCheck={true}
+                            spellCheck
                             editorState={this.state.editorState}
                             plugins={plugins}
                             onChange={this.onChange}
