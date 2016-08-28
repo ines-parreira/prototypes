@@ -5,7 +5,7 @@ var webpack = require('webpack')
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var __PRODUCTION__ = process.env.NODE_ENV === 'production'
-var HASH = process.env.CIRCLE_SHA1 ? process.env.CIRCLE_SHA1 : '[hash]'
+var HASH = process.env.GIT_COMMIT ? process.env.GIT_COMMIT : '[hash]'
 
 var staticDirectory = './g/static/private/'
 
