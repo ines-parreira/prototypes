@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 
 import EditableTitle from '../../common/components/EditableTitle'
 import TicketMessages from './TicketMessages'
@@ -25,9 +25,9 @@ export default class TicketView extends React.Component {
             ticketHidden: false
         }
 
+        this._handlePreSubmit = this._handlePreSubmit.bind(this)
+        this._handleSubmit = this._handleSubmit.bind(this)
         this.hideTicket = this.hideTicket.bind(this)
-        this.setSubmitParams = this.setSubmitParams.bind(this)
-        this.submitForm = this.submitForm.bind(this)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -137,17 +137,16 @@ export default class TicketView extends React.Component {
         })
     }
 
-    setSubmitParams(...args) {
-        if (this.refs.ticketViewForm.checkValidity()) {
+    _handlePreSubmit(...args) {
+        if (this.refs.newMessageForm.checkValidity()) {
             this.statusParams = args
         } else {
             this.statusParams = []
         }
     }
 
-    submitForm(e) {
+    _handleSubmit(e) {
         e.preventDefault()
-
         this.props.submit.apply(this, this.statusParams)
     }
 
@@ -165,12 +164,9 @@ export default class TicketView extends React.Component {
         const ticketHidden = hidden || this.state.ticketHidden
 
         return (
-            <form className={classNames('ticket-view', {
+            <div className={classNames('ticket-view', {
                 'transition out fade right': ticketHidden
-            })}
-                onSubmit={this.submitForm}
-                ref="ticketViewForm"
-            >
+            })}>
                 <div className="ticket-header">
 
                     {/*
@@ -250,37 +246,41 @@ export default class TicketView extends React.Component {
                     <TicketMessages
                         currentUser={this.props.currentUser}
                         messages={ticket.get('messages')}
-                        submit={this.setSubmitParams}
+                        submit={this.props.submit}
                         deleteMessage={this.deleteMessage}
                         loading={ticket.getIn(['state', 'loading'])}
                         ticket={ticket}
                     />
 
-                    <ReplyMessageChannel
-                        ticket={this.props.ticket}
-                        actions={this.props.actions}
-                        settings={this.props.settings}
-                    />
+                    <form
+                        onSubmit={this._handleSubmit}
+                        ref="newMessageForm"
+                    >
+                        <ReplyMessageChannel
+                            ticket={this.props.ticket}
+                            actions={this.props.actions}
+                            settings={this.props.settings}
+                        />
 
-                    <TicketReplyArea
-                        actions={this.props.actions}
-                        applyMacro={this.props.applyMacro}
-                        previewMacro={this.props.actions.macro.previewMacro}
-                        previewMacroInModal={this.props.actions.macro.previewMacroInModal}
-                        openModal={this.props.actions.macro.openModal}
-                        currentUser={this.props.currentUser}
-                        users={this.props.users}
-                        macros={this.props.macros}
-                        ticket={this.props.ticket}
-                    />
+                        <TicketReplyArea
+                            actions={this.props.actions}
+                            applyMacro={this.props.applyMacro}
+                            previewMacro={this.props.actions.macro.previewMacro}
+                            previewMacroInModal={this.props.actions.macro.previewMacroInModal}
+                            openModal={this.props.actions.macro.openModal}
+                            currentUser={this.props.currentUser}
+                            users={this.props.users}
+                            macros={this.props.macros}
+                            ticket={this.props.ticket}
+                        />
 
-                    <TicketSubmitButtons
-                        ticket={ticket}
-                        submit={this.setSubmitParams}
-                    />
-
+                        <TicketSubmitButtons
+                            ticket={ticket}
+                            submit={this._handlePreSubmit}
+                        />
+                    </form>
                 </div>
-            </form>
+            </div>
         )
     }
 }

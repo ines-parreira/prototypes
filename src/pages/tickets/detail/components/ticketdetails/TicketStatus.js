@@ -48,7 +48,8 @@ export default class TicketStatus extends React.Component {
 
         return (
             <div className="ticket-status-wrapper ui buttons">
-                <button type="button" className="ticket-status-action ui basic grey button"
+                <button type="button"
+                        className="ticket-status-action ui basic grey button"
                         onClick={() => this.setQuickStatus(currentStatus)}
                 >
                     {currentStatus === 'closed' ? 'OPEN' : 'CLOSE'}
@@ -75,6 +76,7 @@ export default class TicketStatus extends React.Component {
 
                 <button className="ticket-status-dropdown ui basic grey floating dropdown icon button"
                         ref="popupStatus"
+                        type="button"
                 >
                     <i className="dropdown icon"></i>
                 </button>
