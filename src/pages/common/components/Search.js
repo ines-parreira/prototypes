@@ -13,7 +13,7 @@ export default class Search extends React.Component {
             for (const path of this.props.queryPath.split(',')) {
                 _.set(this.props.query, path, this.refs.searchInput.value)
             }
-            this.props.onChange(this.props.query, this.refs.searchInput.value)
+            this.props.onChange(this.props.query, this.props.params, this.refs.searchInput.value)
         }, this.props.searchDebounceTime || 200)
     }
 
@@ -62,6 +62,7 @@ Search.propTypes = {
     onChange: PropTypes.func.isRequired,
     query: PropTypes.object.isRequired,
     queryPath: PropTypes.string.isRequired,
+    params: PropTypes.object,
     forcedQuery: PropTypes.object,
 
     className: PropTypes.string,

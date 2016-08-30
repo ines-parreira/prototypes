@@ -33,11 +33,12 @@ export function fetchUsers(roles) {
     }
 }
 
-export function search(query, stringQuery) {
+export function search(query, params, stringQuery) {
     return (dispatch) => {
         dispatch({
             type: types.FETCH_USER_LIST_START,
-            stringQuery
+            stringQuery,
+            params
         })
 
         const builtQuery = query
@@ -48,7 +49,8 @@ export function search(query, stringQuery) {
 
         return axios.post('/api/search/', {
             doc_type: 'user',
-            query: builtQuery
+            query: builtQuery,
+            params
         })
             .then((json = {}) => json.data)
             .then(resp => {
