@@ -11,12 +11,12 @@ export default class AssignUserAction extends React.Component {
     }
 
     render() {
-        const {action, agents, deleteAction} = this.props
+        const {index, action, agents, deleteAction} = this.props
         return (
             <div className="assignee">
                 <i
                     className="right floated remove circle red large action icon"
-                    onClick={() => deleteAction(action.get('id'))}
+                    onClick={() => deleteAction(index)}
                 />
                 <h4>SET ASSIGNEE</h4>
                 <TicketAssignee

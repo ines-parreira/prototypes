@@ -10,13 +10,14 @@ export default class SetResponseTextAction extends React.Component {
             // todo(@martin): fix that when we use body_html and body_text correctly
         )
     }
+
     render() {
-        const { action, deleteAction } = this.props
+        const {index, action, deleteAction} = this.props
         return (
             <div className="response-text">
                 <i
                     className="right floated remove circle red large action icon"
-                    onClick={() => deleteAction(action.get('id'))}
+                    onClick={() => deleteAction(index)}
                 />
                 <h4>ADD RESPONSE TEXT</h4>
                 <div className="ui form">

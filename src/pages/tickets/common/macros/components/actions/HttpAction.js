@@ -42,26 +42,28 @@ export default class HttpAction extends React.Component {
     }
 
     render() {
-        const { action, deleteAction } = this.props
+        const {index, action, deleteAction} = this.props
 
         return (
             <div className="http">
                 <i
                     className="right floated remove circle red large action icon"
-                    onClick={() => deleteAction(action.get('id'))}
+                    onClick={() => deleteAction(index)}
                 />
                 <h4>SEND HTTP REQUEST</h4>
                 <div className="ui form">
                     <div className="field">
                         <label>Action Title</label>
-                        <input type="text" value={action.get('title')} onChange={(e) => this.setTitle(e.target.value)}/>
+                        <input type="text" value={action.get('title')}
+                               onChange={(e) => this.setTitle(e.target.value)}
+                        />
                     </div>
                     <div className="fields">
                         <div className="three wide field">
                             <label>Method</label>
                             <div id={`method-${this.props.index}`} className="ui selection dropdown">
-                                <input type="hidden" name="gender"/>
-                                <i className="dropdown icon"/>
+                                <input type="hidden" name="gender" />
+                                <i className="dropdown icon" />
                                 <div className="text">{action.getIn(['arguments', 'method']).toUpperCase()}</div>
                                 <div className="menu">
                                     <div className="item" data-value="get">GET</div>

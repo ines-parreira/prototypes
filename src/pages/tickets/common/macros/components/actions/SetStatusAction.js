@@ -6,17 +6,17 @@ export default class SetStatusAction extends React.Component {
     setStatus(status) {
         this.props.updateActionArgs(
             this.props.index,
-            Map({ status })
+            Map({status})
         )
     }
 
     render() {
-        const { action, deleteAction } = this.props
+        const {index, action, deleteAction} = this.props
         return (
             <div className="status">
                 <i
                     className="right floated remove circle red large action icon"
-                    onClick={() => deleteAction(action.get('id'))}
+                    onClick={() => deleteAction(index)}
                 />
                 <h4>SET STATUS</h4>
                 <TicketStatus

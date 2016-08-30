@@ -6,17 +6,17 @@ export default class SetPriorityAction extends React.Component {
     togglePriority() {
         this.props.updateActionArgs(
             this.props.index,
-            Map({ priority: this.props.action.getIn(['arguments', 'priority']) === 'normal' ? 'high' : 'normal'})
+            Map({priority: this.props.action.getIn(['arguments', 'priority']) === 'normal' ? 'high' : 'normal'})
         )
     }
 
     render() {
-        const { action, deleteAction } = this.props
+        const {index, action, deleteAction} = this.props
         return (
             <div className="priority">
                 <i
                     className="right floated remove circle red large action icon"
-                    onClick={() => deleteAction(action.get('id'))}
+                    onClick={() => deleteAction(index)}
                 />
                 <h4>SET PRIORITY</h4>
                 <TicketPriority

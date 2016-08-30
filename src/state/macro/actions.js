@@ -66,10 +66,10 @@ export function addAction(actionType) {
     }
 }
 
-export function deleteAction(actionId) {
+export function deleteAction(actionIndex) {
     return {
         type: types.DELETE_ACTION,
-        actionId
+        actionIndex
     }
 }
 

@@ -22,7 +22,7 @@ export default class AddTagsAction extends React.Component {
             <div className="tags">
                 <i
                     className="right floated remove circle red large action icon"
-                    onClick={() => deleteAction(action.get('id'))}
+                    onClick={() => deleteAction(index)}
                 />
                 <h4>ADD TAGS</h4>
                 <TicketTags

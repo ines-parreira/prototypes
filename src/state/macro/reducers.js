@@ -100,7 +100,6 @@ export function getMacrosWithoutExternalActions(currentMacros) {
 
 export function macros(state = macrosInitial, action) {
     let items
-    let actionIndex
     let newState = state
 
     switch (action.type) {
@@ -178,6 +177,7 @@ export function macros(state = macrosInitial, action) {
             for (const macro of action.resp.data) {
                 items = items.set(macro.id, fromJS(macro))
             }
+
             return state.merge({
                 visible: !!items.size,
                 items
@@ -203,13 +203,9 @@ export function macros(state = macrosInitial, action) {
             return state.setIn(['modalSelected', 'name'], action.name)
 
         case types.DELETE_ACTION:
-            actionIndex = state.getIn(['modalSelected', 'actions']).findIndex(
-                curAction => curAction.get('id') === action.actionId
-            )
-
             return state.setIn(
                 ['modalSelected', 'actions'],
-                state.getIn(['modalSelected', 'actions']).delete(actionIndex)
+                state.getIn(['modalSelected', 'actions']).delete(action.actionIndex)
             )
 
         case types.ADD_ACTION:
