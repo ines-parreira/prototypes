@@ -239,7 +239,7 @@ class TicketDetailContainer extends React.Component {
             nextTicketUrl = `/app/ticket/${nextTicket.id}`
             this.props.actions.tickets.saveIndex(this.props.tickets.get('currentTicketIndex') + translation)
         } else if (!activeView.isEmpty()) {
-            nextTicketUrl = `/app/tickets/${activeView.get('slug')}`
+            nextTicketUrl = `/app/tickets/${activeView.get('id')}/${activeView.get('slug')}`
         }
 
         return nextTicketUrl
