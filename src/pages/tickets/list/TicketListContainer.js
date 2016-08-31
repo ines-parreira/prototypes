@@ -57,7 +57,7 @@ class TicketListContainer extends React.Component {
         if (stringQuery) {
             this.props.actions.view.updateView(view.merge({search: {query, params}}))
         } else if (view.get('search')) {
-            this.props.actions.view.updateView(view.delete('search'))
+            this.props.actions.view.updateView(view.set('search', null))
         }
     }
 
