@@ -23,7 +23,7 @@ export function fetchTicketsPage(views, page) {
         } else {
             promise = axios.get('/api/tickets/', {
                 params: {
-                    view: activeView.get('id'),
+                    view_id: activeView.get('id'),
                     page
                 }
             })
