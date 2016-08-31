@@ -5,7 +5,7 @@ import TicketMessages from './TicketMessages'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
 import TicketTags from './ticketdetails/TicketTags'
-import TicketPriority from './ticketdetails/TicketPriority'
+// import TicketPriority from './ticketdetails/TicketPriority'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 import TicketStatus from './ticketdetails/TicketStatus'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
@@ -30,23 +30,26 @@ export default class TicketView extends React.Component {
         this.hideTicket = this.hideTicket.bind(this)
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (
-            /**
-             * The code below is used to initialize a new Ticket being created with the constraints of the view
-             * on which the Agent want to create a new Ticket.
-             *
-             * For example, if we create a new Ticket on the "My Tickets" view, we want the new ticket to automatically be
-             * assigned to the current user.
-             *
-             * For that, we need to make sure :
-             */
-        nextProps.view && !nextProps.view.isEmpty() && // that we have a view from which to extract constraints
-        !nextProps.ticket.get('id') && // that we're on a Ticket being created
-        !nextProps.ticket.getIn(['state', 'dirty']) && // that this code hasn't been executed yet
-        nextProps.tags.get('items').size && nextProps.users.get('agents').size // that we've got all the data needed
-        ) {
-            const filtersAst = nextProps.view.get('filters_ast')
+    componentDidMount() {
+        /**
+         * The code below is used to initialize a new Ticket being created with the constraints of the view
+         * on which the Agent want to create a new Ticket.
+         *
+         * For example, if we create a new Ticket on the "My Tickets" view, we want the new ticket to automatically be
+         * assigned to the current user.
+         *
+         * For that, we need to make sure :
+         */
+        const shouldInitializeForm = this.props.view && !this.props.view.isEmpty() &&
+            // that we're on a Ticket being created
+            !this.props.ticket.get('id') &&
+            // that this code hasn't been executed yet
+            !this.props.ticket.getIn(['state', 'dirty']) &&
+            // that we've got all the data needed
+            this.props.tags.get('items').size && this.props.users.get('agents').size
+
+        if (shouldInitializeForm) {
+            const filtersAst = this.props.view.get('filters_ast')
 
             const exp = filtersAst.getIn(['body', 0, 'expression'])
 
@@ -94,36 +97,36 @@ export default class TicketView extends React.Component {
             }
 
             // Since it's the agent clicking on the 'New Ticket' it's automatically assigned to them
-            nextProps.actions.ticket.setAgent(nextProps.currentUser)
+            this.props.actions.ticket.setAgent(this.props.currentUser)
             for (const field of Object.keys(fields)) {
                 const values = fields[field]
                 const firstValue = values[0]
 
                 switch (field) {
                     case 'ticket.tags.name': {
-                        const newTags = nextProps.tags.get('items').filter(t => ~values.indexOf(t.get('name')))
-                        nextProps.actions.ticket.addTags(newTags)
+                        const newTags = this.props.tags.get('items').filter(t => ~values.indexOf(t.get('name')))
+                        this.props.actions.ticket.addTags(newTags)
                         break
                     }
                     case 'ticket.status':
-                        nextProps.actions.ticket.setStatus(firstValue)
+                        this.props.actions.ticket.setStatus(firstValue)
                         break
                     case 'ticket.assignee_user.id':
                         if (firstValue !== '{current_user.id}') {
-                            nextProps.actions.ticket.setAgent(nextProps.users.get('agents').find(
+                            this.props.actions.ticket.setAgent(this.props.users.get('agents').find(
                                 curAgent => curAgent.get('id').toString() === firstValue
                             ))
                         }
                         break
                     case 'ticket.priority':
-                        nextProps.actions.ticket.setPriority(firstValue)
+                        this.props.actions.ticket.setPriority(firstValue)
                         break
                     default:
                         break
                 }
             }
 
-            nextProps.actions.ticket.markTicketDirty()
+            this.props.actions.ticket.markTicketDirty()
         }
     }
 
@@ -153,11 +156,7 @@ export default class TicketView extends React.Component {
     render = () => {
         const {ticket, tags, users, actions, computeNextUrl, hidden} = this.props
 
-        let ticketId = ''
-
-        if (ticket.get('id')) {
-            ticketId = `#${ticket.get('id')}`
-        }
+        const isCreating = !ticket.get('id')
 
         // for testing,
         // get hidden from props.
@@ -204,12 +203,18 @@ export default class TicketView extends React.Component {
                         <div className="row">
 
                             <div className="eleven wide column">
-                                <TicketStatus
-                                    currentStatus={ticket.get('status')}
-                                    setStatus={actions.ticket.setStatus}
-                                    computeNextUrl={computeNextUrl}
-                                    hideTicket={this.hideTicket}
-                                />
+                                {(() => {
+                                    if (!isCreating) {
+                                        return (
+                                            <TicketStatus
+                                                currentStatus={ticket.get('status')}
+                                                setStatus={actions.ticket.setStatus}
+                                                computeNextUrl={computeNextUrl}
+                                                hideTicket={this.hideTicket}
+                                            />
+                                        )
+                                    }
+                                })()}
 
                                 <TicketTags
                                     tags={tags.get('items').toJS()}
@@ -220,10 +225,17 @@ export default class TicketView extends React.Component {
                             </div>
 
                             <div className="five wide column ticket-details">
-                                <TicketPriority
-                                    priority={ticket.get('priority')}
-                                    togglePriority={actions.ticket.togglePriority}
-                                />
+
+                                {(() => {
+                                    /*
+                                     return (
+                                     <TicketPriority
+                                     priority={ticket.get('priority')}
+                                     togglePriority={actions.ticket.togglePriority}
+                                     />
+                                     )
+                                     */
+                                })()}
 
                                 <TicketAssignee
                                     currentAssignee={ticket.getIn(['assignee_user', 'name'])}
@@ -231,26 +243,36 @@ export default class TicketView extends React.Component {
                                     setAgent={actions.ticket.setAgent}
                                 />
 
-                                <span className="ticket-id ticket-details-item">
-                                    {ticketId}
-                                </span>
+                                {(() => {
+                                    if (!isCreating) {
+                                        return (
+                                            <span className="ticket-id ticket-details-item">
+                                                #{ticket.get('id')}
+                                            </span>
+                                        )
+                                    }
+                                })()}
                             </div>
 
                         </div>
                     </div>
-
                 </div>
 
                 <div className="ticket-content">
-
-                    <TicketMessages
-                        currentUser={this.props.currentUser}
-                        messages={ticket.get('messages')}
-                        submit={this.props.submit}
-                        deleteMessage={this.deleteMessage}
-                        loading={ticket.getIn(['state', 'loading'])}
-                        ticket={ticket}
-                    />
+                    {(() => {
+                        if (!isCreating) {
+                            return (
+                                <TicketMessages
+                                    currentUser={this.props.currentUser}
+                                    messages={ticket.get('messages')}
+                                    submit={this.props.submit}
+                                    deleteMessage={this.deleteMessage}
+                                    loading={ticket.getIn(['state', 'loading'])}
+                                    ticket={ticket}
+                                />
+                            )
+                        }
+                    })()}
 
                     <form
                         onSubmit={this._handleSubmit}
