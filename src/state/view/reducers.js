@@ -168,6 +168,13 @@ export function views(state = viewsInitial, action) {
             })
         }
 
+        case types.DELETE_VIEW_SUCCESS:
+            return state
+                .merge({
+                    items: state.get('items').filter(item => item.get('id') !== action.viewId),
+                })
+                .set('active', fromJS({}))
+
         case types.SUBMIT_VIEW_START:
         default:
             return state

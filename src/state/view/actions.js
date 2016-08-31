@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {systemMessage} from '../systemMessage/actions'
-import {DEFAULT_VIEW_SLUG} from '../../config'
+import {browserHistory} from 'react-router'
 import * as types from './constants'
 
 export const setViewActive = (view) => ({
@@ -132,20 +132,25 @@ export function submitView(view) {
 }
 
 export function deleteView(view) {
-    if (view.get('slug') === DEFAULT_VIEW_SLUG) {
-        return (dispatch) => dispatch(systemMessage({
-            type: 'error',
-            header: 'This view cannot be deleted.',
-            msg: 'This is a special view that needs to exist in order for the helpdesk to function correctly.'
-        }))
-    }
+    return (dispatch, getState) => {
+        if (getState().views.get('items').size <= 1) {
+            return dispatch(systemMessage({
+                type: 'error',
+                header: 'This view cannot be deleted',
+                msg: 'This is your last view, it needs to exist in order for the helpdesk to function correctly.'
+            }))
+        }
 
-    if (window.confirm('Are you sure you want to delete this view?')) {
-        return (dispatch) => {
+        if (window.confirm('Are you sure you want to delete this view?')) {
             axios.delete(`/api/views/${view.get('id')}/`)
                 .then((json = {}) => json.data)
                 .then(() => {
-                    // dispatch(fetchViews(DEFAULT_VIEW_SLUG))
+                    browserHistory.push('/app')
+
+                    dispatch({
+                        type: types.DELETE_VIEW_SUCCESS,
+                        viewId: view.get('id')
+                    })
                 })
                 .catch(error => {
                     dispatch({
@@ -155,8 +160,5 @@ export function deleteView(view) {
                     })
                 })
         }
-    }
-    return {
-        type: 'NOOP' // action always needs a type
     }
 }

@@ -27,3 +27,5 @@ export const UPDATE_VIEW_LIST = 'UPDATE_VIEW_LIST'
 
 // Read views
 export const SET_VIEW_ACTIVE = 'SET_VIEW_ACTIVE'
+
+export const DELETE_VIEW_SUCCESS = 'DELETE_VIEW_SUCCESS'

@@ -47,7 +47,7 @@ export default class ListActions extends React.Component {
                     if (tag) {
                         this.bulkUpdate('tag', tag.toJS())
                     } else {
-                        this.bulkUpdate('tag', { name: value })
+                        this.bulkUpdate('tag', {name: value})
                     }
                 }
             })
@@ -92,11 +92,11 @@ export default class ListActions extends React.Component {
                         className="ui basic grey button floating dropdown"
                         onClick={() => this.refs.tagSearch.focus()}
                     >
-                        Tag <i className="dropdown icon"/>
+                        Tag <i className="dropdown icon" />
 
                         <div className="menu">
                             <div className="ui search input">
-                                <input ref="tagSearch" type="text" placeholder="Search tags..."/>
+                                <input ref="tagSearch" type="text" placeholder="Search tags..." />
                             </div>
                             <div className="hidden item" key="placeholder"></div>
                             {
@@ -114,7 +114,7 @@ export default class ListActions extends React.Component {
                     </div>
 
                     <div id="bulkMoreDropdown" className="ui basic grey button floating dropdown">
-                        More <i className="dropdown icon"/>
+                        More <i className="dropdown icon" />
                         <div className="menu">
                             <div className="item" data-value="macro">Apply macro...</div>
 
@@ -138,7 +138,7 @@ export default class ListActions extends React.Component {
                         Close
                     </div>
                     <div id="bulkStatusDropdown" className="ui basic grey floating dropdown icon button item">
-                        <i className="dropdown icon"/>
+                        <i className="dropdown icon" />
                         <div className="menu">
                             <div className="item" data-value="open">open</div>
                             <div className="item" data-value="new">new</div>
@@ -149,7 +149,10 @@ export default class ListActions extends React.Component {
                 <div className="BulkAction ui right floated buttons">
                     <div
                         className="ui basic grey button"
-                        onClick={() => this.bulkUpdate('assignee_user', { id: currentUser.get('id'), name: currentUser.get('name') })}
+                        onClick={() => this.bulkUpdate('assignee_user', {
+                            id: currentUser.get('id'),
+                            name: currentUser.get('name')
+                        })}
                     >
                         Assign to me
                     </div>
@@ -158,10 +161,10 @@ export default class ListActions extends React.Component {
                         className="ui basic grey floating dropdown icon button"
                         onClick={() => this.refs.agentSearch.focus()}
                     >
-                        <i className="dropdown icon"/>
+                        <i className="dropdown icon" />
                         <div className="menu">
                             <div className="ui search input">
-                                <input ref="agentSearch" type="text" placeholder="Search agents..."/>
+                                <input ref="agentSearch" type="text" placeholder="Search agents..." />
                             </div>
                             <div className="hidden item" key="placeholder"></div>
                             {
@@ -184,14 +187,16 @@ export default class ListActions extends React.Component {
     }
 
     render() {
-        const { views, shouldDisplayBulkActions } = this.props
+        const {shouldDisplayBulkActions} = this.props
 
         return (
             <div className="ListActions">
 
                 <button
                     className="ui right floated green button"
-                    onClick={() => { browserHistory.push(`/app/ticket/new?view=${views.getIn(['active', 'slug'])}`) }}
+                    onClick={() => {
+                        browserHistory.push('/app/ticket/new')
+                    }}
                 >
                     CREATE TICKET
                 </button>

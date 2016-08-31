@@ -50,7 +50,7 @@ export default class TicketsNavbarView extends React.Component {
                                     const view = v.toJS()
                                     let classes = 'item'
 
-                                    if (currentView && view.slug === currentView.get('slug')) {
+                                    if (currentView && view.id === currentView.get('id')) {
                                         classes = 'active item'
                                     }
 
