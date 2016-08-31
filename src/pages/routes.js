@@ -27,7 +27,9 @@ export default (
             navbar: TicketNavbarContainer,
             infobar: TicketInfobarContainer
         }} />
-        <Route path="tickets/:view" components={{content: TicketListContainer, navbar: TicketNavbarContainer}} />
+        <Route path="tickets/:viewId/:viewSlug"
+               components={{content: TicketListContainer, navbar: TicketNavbarContainer}}
+        />
         <Route path="settings/integrations"
                components={{content: IntegrationListContainer, navbar: IntegrationNavbarContainer}}
         />

@@ -157,8 +157,8 @@ export function views(state = viewsInitial, action) {
             items = sortViews(fromJS(action.resp.data))
 
             // also populate the active view state
-            if (action.currentViewSlug) {
-                active = items.find(item => item.get('slug') === action.currentViewSlug)
+            if (action.currentViewId) {
+                active = items.find(item => item.get('id') === parseInt(action.currentViewId))
             }
 
             return state.merge({

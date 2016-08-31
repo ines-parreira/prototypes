@@ -9,8 +9,8 @@ import Navbar from '../../common/components/Navbar'
 class TicketNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        const viewSlug = this.props.params.view ? this.props.params.view : this.props.location.query.view
-        this.props.actions.fetchViews(viewSlug)
+        const viewId = this.props.params.viewId ? this.props.params.viewId : this.props.location.query.viewId
+        this.props.actions.fetchViews(viewId)
     }
 
     render() {

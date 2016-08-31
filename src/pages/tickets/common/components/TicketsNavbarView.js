@@ -59,9 +59,11 @@ export default class TicketsNavbarView extends React.Component {
 
                                     return (
                                         <Link key={key}
-                                              to={`/app/tickets/${view.slug}`}
+                                              to={`/app/tickets/${view.id}/${view.slug}`}
                                               className={classes}
-                                              onClick={() => { setViewActive(v) }}
+                                              onClick={() => {
+                                                  setViewActive(v)
+                                              }}
                                         >
                                             {view.name} ({compactInteger(count)})
                                         </Link>

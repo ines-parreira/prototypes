@@ -25,7 +25,7 @@ class TicketListContainer extends React.Component {
         const currentActive = currentViews.get('active')
         const nextActive = nextViews.get('active')
 
-        if (!nextProps.params && nextViews.get('items').size && nextViews.get('active').isEmpty()) {
+        if (nextViews.get('items').size && nextViews.get('active').isEmpty()) {
             this.props.actions.view.setViewActive(nextViews.getIn(['items', 0]))
         }
 
@@ -62,12 +62,6 @@ class TicketListContainer extends React.Component {
     }
 
     render() {
-        let slug = ''
-
-        if (this.props.params) {
-            slug = this.props.params.view
-        }
-
         if (!this.props.views.get('active')) {
             return null
         }
@@ -96,7 +90,6 @@ class TicketListContainer extends React.Component {
 
                         fetchPage={this._fetchPage}
                         search={this._search}
-                        slug={slug}
                     />
                     <MacroContainer
                         disableExternalActions selectionMode

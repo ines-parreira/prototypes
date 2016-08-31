@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {systemMessage} from '../systemMessage/actions'
-import {DEFAULT_VIEW} from '../../config'
+import {DEFAULT_VIEW_SLUG} from '../../config'
 import * as types from './constants'
 
 export const setViewActive = (view) => ({
@@ -68,7 +68,7 @@ export function updateFieldEnumSearch(field, query) {
 
 export const resetView = () => ({type: types.RESET_VIEW})
 
-export function fetchViews(currentViewSlug) {
+export function fetchViews(currentViewId) {
     return (dispatch) => {
         dispatch({
             type: types.FETCH_VIEW_LIST_START
@@ -84,7 +84,7 @@ export function fetchViews(currentViewSlug) {
                 dispatch({
                     type: types.FETCH_VIEW_LIST_SUCCESS,
                     resp,
-                    currentViewSlug
+                    currentViewId
                 })
             })
             .catch(error => {
@@ -132,7 +132,7 @@ export function submitView(view) {
 }
 
 export function deleteView(view) {
-    if (view.get('slug') === DEFAULT_VIEW) {
+    if (view.get('slug') === DEFAULT_VIEW_SLUG) {
         return (dispatch) => dispatch(systemMessage({
             type: 'error',
             header: 'This view cannot be deleted.',
@@ -145,7 +145,7 @@ export function deleteView(view) {
             axios.delete(`/api/views/${view.get('id')}/`)
                 .then((json = {}) => json.data)
                 .then(() => {
-                    dispatch(fetchViews(DEFAULT_VIEW))
+                    // dispatch(fetchViews(DEFAULT_VIEW_SLUG))
                 })
                 .catch(error => {
                     dispatch({
