@@ -13,7 +13,7 @@ export function fetchTicketsPage(views, page) {
 
         let promise
 
-        // when a view is dirty, just send the whole view data rather than just the slug
+        // when a view is dirty, just send the whole view data rather than just the id
         // this will allow us to test a view before submitting it to the DB
         if (views.getIn(['active', 'dirty'])) {
             promise = axios.put('/api/tickets/view/', {
@@ -23,7 +23,7 @@ export function fetchTicketsPage(views, page) {
         } else {
             promise = axios.get('/api/tickets/', {
                 params: {
-                    view: activeView.get('slug'),
+                    view: activeView.get('id'),
                     page
                 }
             })

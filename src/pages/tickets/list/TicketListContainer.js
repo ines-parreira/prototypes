@@ -25,7 +25,7 @@ class TicketListContainer extends React.Component {
         const currentActive = currentViews.get('active')
         const nextActive = nextViews.get('active')
 
-        if (nextViews.get('items').size && nextViews.get('active').isEmpty()) {
+        if (!nextProps.params && nextViews.get('items').size && nextViews.get('active').isEmpty()) {
             this.props.actions.view.setViewActive(nextViews.getIn(['items', 0]))
         }
 
