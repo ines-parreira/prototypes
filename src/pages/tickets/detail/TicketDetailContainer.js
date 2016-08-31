@@ -231,12 +231,15 @@ class TicketDetailContainer extends React.Component {
         const translation = ascending ? 1 : -1
         const nextIndex = this.props.tickets.get('currentTicketIndex') + translation
         const nextTicket = this.props.tickets.get('items').toJS()[nextIndex]
+        const activeView = this.props.views.get('active')
 
-        let nextTicketUrl = `/app/tickets/${this.props.views.getIn(['active', 'slug'])}`
+        let nextTicketUrl = '/app'
 
-        if (nextTicket) {
+        if (nextTicket && nextTicket.id) {
             nextTicketUrl = `/app/ticket/${nextTicket.id}`
             this.props.actions.tickets.saveIndex(this.props.tickets.get('currentTicketIndex') + translation)
+        } else if (!activeView.isEmpty()) {
+            nextTicketUrl = `/app/tickets/${activeView.get('slug')}`
         }
 
         return nextTicketUrl
@@ -330,7 +333,7 @@ class TicketDetailContainer extends React.Component {
                         computeNextUrl={this._computeNextUrl}
                         view={view}
                     />
-                    <MacroContainer noUnbind/>
+                    <MacroContainer noUnbind />
                 </div>
             </DocumentTitle>
         )
