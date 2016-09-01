@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware, compose} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import serverErrorHandler from './middlewares/server-error-handler'
 import createLogger from 'redux-logger'
@@ -8,8 +8,10 @@ export default function configureStore(initialState) {
     return createStore(
         rootReducer,
         initialState,
-        compose(
-            applyMiddleware(thunk, serverErrorHandler, createLogger({collapsed: true})),
+        applyMiddleware(
+            thunk,
+            serverErrorHandler,
+            createLogger({collapsed: true})
         )
     )
 }
