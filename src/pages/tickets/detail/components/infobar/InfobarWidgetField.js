@@ -105,7 +105,7 @@ export default class InfobarWidgetField extends React.Component {
 
 InfobarWidgetField.propTypes = {
     object: PropTypes.object,
-    widgets: PropTypes.object,
+    widgets: PropTypes.array,
     currentUser: PropTypes.object,
     field: PropTypes.object
 }

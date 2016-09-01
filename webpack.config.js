@@ -64,7 +64,7 @@ module.exports = {
                 loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
             },
             {
-                test: /plugin\.css$/,
+                test: /\.css$/,
                 loaders: [
                     'style', 'css'
                 ]

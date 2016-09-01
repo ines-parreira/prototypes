@@ -346,80 +346,39 @@ describe('Ticket reducer', () => {
         )
     })
 
-    it('should update potentialRequesters', () => {
-        const data = [
-            {user: {name: 'foobar'}, address: '4 rue du caire'}
-        ]
+    describe('SET_RECEIVERS action', () => {
+        it('should set receivers', () => {
+            const receiver = {
+                id: 3,
+                name: 'Dark Vador',
+                address: 'dark.vador@gmail.com'
+            }
 
-        const query = '/swag/query'
-        const expected = initialState
-            .setIn(['state', 'potentialRequesters'], fromJS([{address: '4 rue du caire', name: 'foobar'}]))
-            .setIn(['state', 'query'], query)
+            const expectedReceiver = fromJS(receiver)
 
-        expect(
-            reducer(initialState, {
-                type: types.UPDATE_POTENTIAL_REQUESTERS,
-                resp: {data},
-                query
-            })
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    describe('ADD_RECEIVER action', () => {
-        it('should add new receiver', () => {
-            const expectedReceiver = Map({id: '123'})
             const expected = initialState.mergeDeep({
                 newMessage: {
-                    receiver: expectedReceiver,
+                    receiver: {id: receiver.id},
                     source: {
-                        to: initialState.getIn(['newMessage', 'source', 'to']).push(Map({id: '123', name: 'foo'})),
+                        to: fromJS([expectedReceiver])
                     }
                 },
-                receiver: expectedReceiver,
-                requester: expectedReceiver,
+                receiver: {id: receiver.id},
+                requester: {id: receiver.id},
                 state: {
                     query: ''
                 }
             })
 
-
             expect(
-                reducer(initialState, {type: types.ADD_RECEIVER, receiver: {id: '123', name: 'foo'}})
+                reducer(initialState, {
+                    type: types.SET_RECEIVERS,
+                    receivers: [receiver]
+                })
             ).toEqualImmutable(
                 expected
             )
         })
-    })
-
-
-    it('should remove receiver', () => {
-        // TODO (@gauthierd-): need a fix for REMOVE_RECEIVER type)
-        // if my memory serves me well
-        // I fail on this test I don't really understand why 😅
-        //
-        // const expected = initialState
-        // const currentTicket = initialState.mergeDeep({
-        //     newMessage: {
-        //         receiver: fromJS({ id: '123' }),
-        //         source: {
-        //             to: initialState
-        //             .getIn(['newMessage', 'source', 'to'])
-        //             .push(fromJS({address: '11', id: '123', name: 'foo'})),
-        //         },
-        //     },
-        //     state: {
-        //         query: '',
-        //     },
-        // })
-        //
-        //
-        // expect(
-        //     reducer(currentTicket, { type: types.REMOVE_RECEIVER, prop: 'address' })
-        // ).toEqualImmutable(
-        //     expected
-        // )
     })
 
     describe('CLEAR_RECEIVERS action', () => {
@@ -493,7 +452,10 @@ describe('Ticket reducer', () => {
                 {id: 5, source: {type: 'email'}}
             ])
 
-            expect(getLastSameSourceTypeMessage(messages, 'chat')).toEqualImmutable(fromJS({id: 4, source: {type: 'chat'}}))
+            expect(getLastSameSourceTypeMessage(messages, 'chat')).toEqualImmutable(fromJS({
+                id: 4,
+                source: {type: 'chat'}
+            }))
         })
     })
 })

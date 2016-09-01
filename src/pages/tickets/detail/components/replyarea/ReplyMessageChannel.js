@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
-import {Map, List} from 'immutable'
-import SearchableDropdown from './SearchableDropdown'
+import {List} from 'immutable'
+import _ from 'lodash'
+import ReceiversDropdown from './ReceiversDropdown'
 import {SOURCE_VALUE_PROP} from '../../../../../config'
 import {firstMessage} from '../../../../../utils'
 import {getLastSameSourceTypeMessage} from '../../../../../state/ticket/reducers'
-import _ from 'lodash'
 
 export default class ReplyMessageChannel extends React.Component {
     componentDidMount() {
@@ -93,14 +93,8 @@ export default class ReplyMessageChannel extends React.Component {
         return popupChannelClassNames.default
     }
 
-    /**
-     * Wrapper around actions.ticket.updatePotentialRequesters, which crafts the query from the value before
-     * sending it to the action.
-     *
-     * @param value: the string query from the user
-     */
-    updatePotentialRequesters(value) {
-        const searchQuery = {
+    _searchQuery(searchValue) {
+        const query = {
             _source: ['id', 'address', 'type', 'user'],
             size: 5,
             query: {
@@ -126,35 +120,9 @@ export default class ReplyMessageChannel extends React.Component {
             }
         }
 
-        _.set(searchQuery, 'query.filtered.query.multi_match.query', value)
+        _.set(query, 'query.filtered.query.multi_match.query', searchValue)
 
-        this.props.actions.ticket.updatePotentialRequesters(searchQuery)
-    }
-
-    /**
-     * Callback passed to the SearchableDropdown component, for when a new value is added.
-     *
-     * @param value: the new value added
-     * @param text: the text matching this value (its displayable pendant) (SemanticUI-specific)
-     */
-    addValue(value, text) {
-        const splittedText = typeof text === 'string' ? text.split('&lt;') : []
-        const fieldName = SOURCE_VALUE_PROP[this.props.ticket.getIn(['newMessage', 'source', 'type'])]
-
-        if (~this.props.ticket.getIn(['newMessage', 'source', 'to']).map(r => r.get(fieldName)).indexOf(value)) {
-            return
-        }
-
-        const data = {
-            name: splittedText.length > 1 ? _.trim(splittedText[0]) : '',
-            id: (this.props.ticket.getIn(['state', 'potentialRequesters']).concat(this.getTargets()).find(
-                receiver => receiver.get(fieldName) === value
-            ) || Map()).get('id')
-        }
-
-        data[fieldName] = value
-
-        this.props.actions.ticket.addReceiver(data)
+        return query
     }
 
     setSourceType(sourceType) {
@@ -168,13 +136,13 @@ export default class ReplyMessageChannel extends React.Component {
             return <p className="receiver-placeholder">your team</p>
         }
 
-        let optionValues = ticket.getIn(['state', 'potentialRequesters'])
+        let initialValues = List()
         const targets = this.getTargets()
 
+        // check that no element of targets is already in initialValues
         if (!this.props.ticket.getIn(['state', 'query']) &&
-            _.every(targets.map(target => !~optionValues.indexOf(target)).toJS()) // verify that no element of targets is already in optionValues
-        ) {
-            optionValues = optionValues.concat(targets)
+            _.every(targets.map(target => !~initialValues.indexOf(target)).toJS())) {
+            initialValues = initialValues.concat(targets)
         }
 
         const parentId = ticket.get('messages').size ?
@@ -186,15 +154,13 @@ export default class ReplyMessageChannel extends React.Component {
             !~disabledChannels.indexOf(this.props.ticket.getIn(['newMessage', 'source', 'type'])) || !ticket.get('id')
 
         return (
-            <SearchableDropdown
-                defaultValues={this.getTargets(true)}
+            <ReceiversDropdown
+                actions={actions}
                 existingValues={ticket.getIn(['newMessage', 'source', 'to']).map(user => user.get(valueProp))}
-                optionValues={optionValues}
-                search={v => this.updatePotentialRequesters(v)}
-                addValue={(v, t) => this.addValue(v, t)}
-                removeValue={actions.ticket.removeReceiver}
+                initialValues={initialValues}
+                generateQuery={v => this._searchQuery(v)}
                 enabled={isInputEnabled}
-                suffix="to"
+                value={this.props.ticket.getIn(['newMessage', 'source', 'to']).toJS()}
                 parentId={parentId.toString()}
                 valueProp={SOURCE_VALUE_PROP[this.props.ticket.getIn(['newMessage', 'source', 'type'])]}
                 sourceType={this.props.ticket.getIn(['newMessage', 'source', 'type'])}

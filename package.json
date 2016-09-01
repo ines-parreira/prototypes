@@ -47,6 +47,7 @@
     "react-router": "^2.5.2",
     "react-router-redux": "^4.0.5",
     "react-search-input": "^0.10.1",
+    "react-select": "^1.0.0-beta14",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",

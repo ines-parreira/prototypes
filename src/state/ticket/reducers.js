@@ -5,7 +5,6 @@ import {Map, List, fromJS} from 'immutable'
 import {convertFromHTML, ContentState} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
 import {renderTemplate} from '../../pages/common/utils/template'
-import {SOURCE_VALUE_PROP} from '../../config'
 import _isUndefined from 'lodash/isUndefined'
 
 export const newMessage = (channel, sourceType) => fromJS({
@@ -23,13 +22,12 @@ export const newMessage = (channel, sourceType) => fromJS({
     body_text: '',
     body_html: '',
     channel,
-    attachments: List(),
-    macros: List()
+    attachments: [],
+    macros: []
 })
 
-export const ticketInitial = Map({
-    state: Map({
-        potentialRequesters: List(),
+export const ticketInitial = fromJS({
+    state: {
         dirty: false,
         loading: false,
         attachmentLoading: false,
@@ -37,9 +35,9 @@ export const ticketInitial = Map({
         fromMacro: false,
         contentState: null,
         latestEventDatetime: null
-    }),
-    messages: List(),
-    customer_ratings: List(),
+    },
+    messages: [],
+    customer_ratings: [],
     subject: '',
     via: 'helpdesk',
     channel: 'email',
@@ -49,7 +47,7 @@ export const ticketInitial = Map({
     requester: null,
     receiver: null,
     priority: 'normal',
-    tags: List(),
+    tags: [],
     newMessage: newMessage('email', 'email')
 })
 
@@ -123,7 +121,6 @@ function getChannelFromSourceType(sourceType) {
 
 
 export function ticket(state = ticketInitial, action) {
-    const valueProp = SOURCE_VALUE_PROP[state.getIn(['newMessage', 'source', 'type'])]
     let tags
 
     switch (action.type) {
@@ -234,10 +231,13 @@ export function ticket(state = ticketInitial, action) {
 
         case types.FETCH_TICKET_SUCCESS: {
             const newState = state.merge(fromJS(action.resp))
-            return newState.set('newMessage', newState.get('newMessage').mergeDeep(newMessage(
-                action.resp.channel,
-                getSourceTypeOfResponse(newState.get('messages'))
-            )))
+            const sourceType = getSourceTypeOfResponse(newState.get('messages'))
+
+            return newState.set('newMessage', newState.get('newMessage')
+                .mergeDeep(newMessage(
+                    getChannelFromSourceType(sourceType),
+                    sourceType
+                )))
                 .mergeDeep({
                     state: {
                         dirty: false,
@@ -371,62 +371,29 @@ export function ticket(state = ticketInitial, action) {
         case types.SETUP_NEW_TICKET:
             return ticketInitial
 
-        case types.UPDATE_POTENTIAL_REQUESTERS: {
-            const users = []
-
-            for (const channel of action.resp.data) {
-                const data = {
-                    ...channel.user
-                }
-
-                data[valueProp] = channel.address
-                data.name = data.name ? data.name : ''
-
-                users.push(data)
-            }
-
-            return state
-                .setIn(['state', 'potentialRequesters'], fromJS(users))
-                .setIn(['state', 'query'], action.query)
-        }
-
-        case types.ADD_RECEIVER: {
+        case types.SET_RECEIVERS: {
             let newState = state
+            const receivers = action.receivers
 
-            if (!state.getIn(['newMessage', 'receiver'])) {
-                newState = newState.setIn(['newMessage', 'receiver'], fromJS({id: action.receiver.id}))
-            }
+            newState = newState.setIn(['newMessage', 'source', 'to'], fromJS(receivers))
 
-            if (!state.get('receiver')) {
-                newState = newState.set('receiver', fromJS({id: action.receiver.id}))
-            }
-
-            if (!state.get('requester')) {
-                newState = newState.set('requester', fromJS({id: action.receiver.id}))
-            }
-
-            return newState.mergeDeep({
-                newMessage: {
-                    source: {
-                        to: newState.getIn(['newMessage', 'source', 'to']).push(fromJS(action.receiver))
-                    }
-                },
-                state: {
-                    query: ''
+            if (receivers.length) {
+                const firstReceiver = receivers[0]
+                if (!newState.getIn(['newMessage', 'receiver'])) {
+                    newState = newState.setIn(['newMessage', 'receiver'], fromJS({id: firstReceiver.id}))
                 }
-            })
-        }
 
-        case types.REMOVE_RECEIVER: {
-            let newState = state.setIn(
-                ['newMessage', 'source', 'to'],
-                state.getIn(['newMessage', 'source', 'to']).filter(
-                    receiver => receiver.get(valueProp) !== action.prop
-                )
-            )
+                if (!newState.get('receiver')) {
+                    newState = newState.set('receiver', fromJS({id: firstReceiver.id}))
+                }
 
-            if (!newState.getIn(['newMessage', 'source', 'to']).size) {
-                newState = newState.setIn(['newMessage', 'receiver'], null)
+                if (!newState.get('requester')) {
+                    newState = newState.set('requester', fromJS({id: firstReceiver.id}))
+                }
+            } else {
+                if (!newState.getIn(['newMessage', 'source', 'to']).size) {
+                    newState = newState.setIn(['newMessage', 'receiver'], null)
+                }
             }
 
             return newState

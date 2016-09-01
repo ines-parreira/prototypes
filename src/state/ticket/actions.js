@@ -178,17 +178,10 @@ export function setSubject(subject) {
     }
 }
 
-export function addReceiver(receiver) {
+export function setReceivers(receivers) {
     return {
-        type: types.ADD_RECEIVER,
-        receiver
-    }
-}
-
-export function removeReceiver(prop) {
-    return {
-        type: types.REMOVE_RECEIVER,
-        prop
+        type: types.SET_RECEIVERS,
+        receivers
     }
 }
 
@@ -208,25 +201,35 @@ export function setSourceType(sourceType) {
     }
 }
 
-export function updatePotentialRequesters(query) {
+/**
+ * Only getting potential requesters and calling a callback
+ * No reducer action after that
+ * @param query
+ * @param callback
+ * @returns {function(*)}
+ */
+export function updatePotentialRequesters(query, callback) {
     return (dispatch) => {
-        axios.post('/api/search/', {
+        return axios.post('/api/search/', {
             doc_type: 'user_channel',
             query
         })
             .then((json = {}) => json.data)
             .then(resp => {
-                dispatch({
-                    type: types.UPDATE_POTENTIAL_REQUESTERS,
-                    resp,
-                    query
+                const response = resp.data.map((result) => {
+                    return {
+                        ...result,
+                        ...result.user
+                    }
                 })
+
+                callback(null, response)
             })
             .catch(error => {
                 dispatch({
                     type: 'ERROR',
                     error,
-                    reason: 'Failed to do the search. Please try again..'
+                    reason: 'Failed to do the search. Please try again...'
                 })
             })
     }

@@ -1,10 +1,12 @@
 import React, {PropTypes} from 'react'
 import {List} from 'immutable'
-import {SOURCE_VALUE_PROP} from '../../../../config'
 import classNames from 'classnames'
+import {isArray as _isArray} from 'lodash'
+import {SOURCE_VALUE_PROP} from '../../../../config'
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
+import {displayUserNameFromSource} from '../../common/utils'
 import {DatetimeLabel} from '../../../common/utils/labels'
 
 export default class TicketMessage extends React.Component {
@@ -23,20 +25,33 @@ export default class TicketMessage extends React.Component {
     renderAttachment(message) {
         if (message.attachments) {
             return (
-                <TicketAttachments attachments={List(message.attachments)} removable={false}/>
+                <TicketAttachments attachments={List(message.attachments)} removable={false} />
             )
         }
         return null
     }
 
-    renderSourceList(message, title, field) {
-        if (!(message.source[field] && message.source[field].length)) {
+    renderSourceList(source, title, field) {
+        let fieldSource = source[field]
+
+        if (!fieldSource) {
             return null
         }
+
+        fieldSource = _isArray(fieldSource) ? fieldSource : [fieldSource]
+
+        if (!fieldSource.length) {
+            return null
+        }
+
         return (
             <li>{title}:
                 <strong>
-                    {message.source[field].map(dest => `${dest.name} <${dest[SOURCE_VALUE_PROP[message.source.type]]}>`).join(', ')}
+                    {
+                        fieldSource.map((user) => {
+                            return displayUserNameFromSource(user, source.type)
+                        }).join(', ')
+                    }
                 </strong>
             </li>
         )
@@ -63,20 +78,15 @@ export default class TicketMessage extends React.Component {
             <span className="ticket-message-source">
                 <div className="ui dropdown" id="email-dropdown">
                     <span className="text">
-                        <i className={`icon ${icons[message.source.type]}`}/>
+                        <i className={`icon ${icons[message.source.type]}`} />
                         {legend}
                     </span>
                     <div className="ticket-message-source-details menu transition">
                         <ul className="item">
-                            <li>
-                                From:
-                                <strong>
-                                    {`${message.source.from.name} <${message.source.from[SOURCE_VALUE_PROP[message.source.type]]}>`}
-                                </strong>
-                            </li>
-                            {this.renderSourceList(message, 'To', 'to')}
-                            {this.renderSourceList(message, 'Cc', 'cc')}
-                            {this.renderSourceList(message, 'Bcc', 'bcc')}
+                            {this.renderSourceList(message.source, 'From', 'from')}
+                            {this.renderSourceList(message.source, 'To', 'to')}
+                            {this.renderSourceList(message.source, 'Cc', 'cc')}
+                            {this.renderSourceList(message.source, 'Bcc', 'bcc')}
                             <li>
                                 Send via:
                                 <strong>
@@ -159,14 +169,14 @@ export default class TicketMessage extends React.Component {
                             >
                                 This message wasn't send: one or more actions failed.
                                 <div style={{margin: '1em auto'}}>
-                                    <TicketMessageActions message={message}/>
+                                    <TicketMessageActions message={message} />
                                 </div>
                                 <a onClick={() => this.props.submit(null, null, 'retry', false)}>retry</a> to execute
                                 the
-                                failed action(s) automatically, and send the message if it succeeds,<br/>
+                                failed action(s) automatically, and send the message if it succeeds,<br />
                                 <a onClick={() => this.props.submit(null, null, 'force', false)}>ignore failure</a>,
                                 execute
-                                the other actions and send the message<br/>
+                                the other actions and send the message<br />
                                 <a onClick={() => this.props.deleteMessage(message.id)}>cancel</a> the message, and
                                 manually undo successful action(s).
                             </div>
@@ -200,7 +210,7 @@ export default class TicketMessage extends React.Component {
                     <div className="ticket-message-time">
                         <DatetimeLabel dateTime={message.created_datetime} settings={{
                             position: 'top left'
-                        }}/>
+                        }} />
                     </div>
                 </div>
                 {/*
@@ -220,9 +230,9 @@ export default class TicketMessage extends React.Component {
                  </div>
                  </div>
                  */}
-                <TicketMessageBody message={message}/>
+                <TicketMessageBody message={message} />
                 {this.renderAttachment(message)}
-                <TicketMessageActions message={message}/>
+                <TicketMessageActions message={message} />
             </div>
         )
     }
