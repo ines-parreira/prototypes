@@ -1,7 +1,15 @@
+import {isUndefined as _isUndefined} from 'lodash'
+
+const Raven = window.Raven
+
 /**
  * Middleware sending redux errors to Sentry
  */
 const crashReporter = () => next => action => {
+    if (_isUndefined(Raven)) {
+        return next(action)
+    }
+
     try {
         if (action.type && !~action.type.indexOf('SUBMIT_ACTIVITY')) {
             Raven.captureBreadcrumb({
