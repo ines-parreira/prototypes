@@ -8,6 +8,10 @@ import UsersView from './components/UsersView'
 import {buildQuery} from '../../../state/users/reducers'
 
 class UserListContainer extends React.Component {
+    componentDidMount() {
+        amplitude.getInstance().logEvent('Opened users view')
+    }
+
     componentWillReceiveProps(nextProps) {
         if (!this.props.users.get('sort').equals(nextProps.users.get('sort'))) {
             this._search(

@@ -1,10 +1,11 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
+import _ from 'lodash'
 import classNames from 'classnames'
 import {truncate} from '../../../utils'
 import {ACTIVITY_DISPLAY_COUNT} from '../../../config'
 
-const ActivityWidgetItem = ({object, count}) => {
+const ActivityWidgetItem = ({object, count, position}) => {
     // Is the current link active or not?
     const objectURL = `/app/ticket/${object.get('id')}`
     const linkClasses = classNames('item', {
@@ -46,18 +47,28 @@ const ActivityWidgetItem = ({object, count}) => {
         text = (<strong title={title}>{text}</strong>)
     }
 
+    const onClick = () => {
+        amplitude.getInstance().logEvent('Clicked on recent activity item', {
+            position,
+            notifications: count,
+            ticket: _.pick(object.toJS(), ['channel'])
+        })
+    }
+
     return (
-        <Link to={objectURL} className={linkClasses} title={title}>
+        <Link onClick={onClick} to={objectURL} className={linkClasses} title={title}>
             <i className={iconClasses}/>
             {text}
             {counterLabel}
         </Link>
     )
 }
+
 ActivityWidgetItem.propTypes = {
-    object: PropTypes.object,
+    object: PropTypes.object.isRequired,
     user: PropTypes.object,
-    count: PropTypes.number
+    count: PropTypes.number.isRequired,
+    position: PropTypes.number.isRequired
 }
 
 export default class ActivityWidget extends React.Component {
@@ -78,12 +89,13 @@ export default class ActivityWidget extends React.Component {
                 <div className="item">
                     <h4>RECENT ACTIVITY</h4>
                     <div className="menu">
-                        {events.slice(0, ACTIVITY_DISPLAY_COUNT).map(e => (
+                        {events.slice(0, ACTIVITY_DISPLAY_COUNT).map((e, index) => (
                             <ActivityWidgetItem
-                                key={e.get('object_id')}
-                                object={e.get('object')}
-                                count={counter.getIn([e.get('object_id'), 'count'])}
-                                user={e.get('user')}
+                              key={e.get('object_id')}
+                              object={e.get('object')}
+                              count={counter.getIn([e.get('object_id'), 'count'])}
+                              user={e.get('user')}
+                              position={index + 1}
                             />
                         )).toList()}
                     </div>

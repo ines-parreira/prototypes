@@ -5,7 +5,8 @@ export default class ShowMoreFieldsDropdown extends React.Component {
         $('#showmorefields').popup({
             popup: $('.custom.popup'),
             on: 'click',
-            position: 'bottom right'
+            position: 'bottom right',
+            onVisible: () => amplitude.getInstance().logEvent('Opened more fields (column options)')
         })
     }
 

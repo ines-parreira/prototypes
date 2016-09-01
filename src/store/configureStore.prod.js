@@ -2,6 +2,7 @@ import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import ravenCrashReporter from './middlewares/raven-crash-reporter'
 import serverErrorHandler from './middlewares/server-error-handler'
+import amplitudeTracker from './middlewares/amplitude-tracker'
 import rootReducer from '../state/reducers'
 
 export default function configureStore(initialState) {
@@ -9,9 +10,10 @@ export default function configureStore(initialState) {
         rootReducer,
         initialState,
         applyMiddleware(
-            ravenCrashReporter,
-            thunk,
-            serverErrorHandler
+          ravenCrashReporter,
+          thunk,
+          serverErrorHandler,
+          amplitudeTracker
         )
     )
 }

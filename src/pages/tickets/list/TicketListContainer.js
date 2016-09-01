@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import DocumentTitle from 'react-document-title'
+import _ from 'lodash'
 import * as MacroActions from '../../../state/macro/actions'
 import * as TicketActions from '../../../state/ticket/actions'
 import * as TicketsActions from '../../../state/tickets/actions'
@@ -31,14 +32,17 @@ class TicketListContainer extends React.Component {
 
         // if our view changed
         if (currentActive && nextActive && !nextActive.isEmpty() &&
-            (
-                currentActive.isEmpty() ||
-                // we ignore the fields because they get updated before any filtering is performed
-                // Ex: when fetching the Requester field enum
-                !currentActive.delete('fields').equals(nextActive.delete('fields'))
-            )
+          (
+            currentActive.isEmpty() ||
+            // we ignore the fields because they get updated before any filtering is performed
+            // Ex: when fetching the Requester field enum
+            !currentActive.delete('fields').equals(nextActive.delete('fields'))
+          )
         ) {
             this._fetchPage(1, nextProps)
+            // Track action on Amplitude when a view is opened
+            amplitude.getInstance().logEvent('Opened view', _.pick(nextActive.toJS(), ['id',
+                'slug']))
         }
     }
 
@@ -85,9 +89,7 @@ class TicketListContainer extends React.Component {
                         users={this.props.users}
                         currentUser={this.props.currentUser}
                         tags={this.props.tags.get('items')}
-
                         actions={this.props.actions}
-
                         fetchPage={this._fetchPage}
                         search={this._search}
                     />

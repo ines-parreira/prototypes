@@ -8,6 +8,8 @@ import * as mousetrap from 'mousetrap'
 
 export default class MacroModal extends React.Component {
     componentDidMount() {
+        amplitude.getInstance().logEvent('Opened macro modal')
+
         $('#macro-modal').modal({
             onHidden: this.props.actions.macro.closeModal
         }).modal('show')

@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import _ from 'lodash'
 import classNames from 'classnames'
 import {getModifier} from '../../../../../utils'
 
@@ -15,6 +16,11 @@ export default class TicketSubmitButtons extends React.Component {
     submit = (status, next) => {
         $('.TicketSubmitButtons button').popup('hide')
         this.props.submit(status, next)
+        // we use `next` var to determine if the ticket is closed after send action
+        amplitude.getInstance().logEvent('Sent message', {
+            ticket: _.pick(this.props.ticket.toJS(), ['id']),
+            andClose: next
+        })
     }
 
     render() {

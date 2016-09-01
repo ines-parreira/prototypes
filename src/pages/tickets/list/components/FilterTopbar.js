@@ -4,11 +4,13 @@ import ViewFilters from './ViewFilters'
 
 export default class FilterTopbar extends React.Component {
     onClickUpdate = () => {
+        amplitude.getInstance().logEvent('Updated view')
         const view = this.props.views.get('active')
         this.props.submitView(view)
     }
 
     onClickNew = () => {
+        amplitude.getInstance().logEvent('Saved as new view')
         // new means it has no id set
         const view = this.props.views.get('active').delete('id')
         this.props.submitView(view)
