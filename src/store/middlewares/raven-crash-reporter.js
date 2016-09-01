@@ -1,8 +1,6 @@
 /**
  * Middleware sending redux errors to Sentry
  */
-// Raven is defined in global
-/* eslint "no-undef": "off" */
 const crashReporter = () => next => action => {
     try {
         if (!~action.type.indexOf('SUBMIT_ACTIVITY')) {
