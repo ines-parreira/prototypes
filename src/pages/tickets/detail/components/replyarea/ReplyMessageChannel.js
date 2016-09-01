@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
-import {List} from 'immutable'
+import {fromJS} from 'immutable'
 import _ from 'lodash'
 import ReceiversDropdown from './ReceiversDropdown'
 import {SOURCE_VALUE_PROP} from '../../../../../config'
@@ -16,54 +16,27 @@ export default class ReplyMessageChannel extends React.Component {
         })
     }
 
-    /**
-     * Return the default `to` of the next message:
-     * - if the last message is `from_agent`, the `to` list of this message
-     * - if not, the `from` of this message
-     *
-     * @param onlyAddrs: true to get just the displayed value for the 'to' field.
-     * @param ticket
-     *
-     * @returns {List}
-     */
-    getTargets(onlyAddrs = false, ticket = this.props.ticket) {
-        // TODO@ldirer Currently the dropdown has its value set, triggering onChange, which in turns causes the reducer to set the 'to' field in the source.
-        // This feels a bit awkward. We get the value to display in 'to:' from the *last message* instead of taking it directly from the state.
+    _initialReceivers() {
+        const ticket = this.props.ticket
+        let receivers = fromJS([])
+        const messages = ticket.get('messages', fromJS([]))
 
-        if (!ticket.get('messages').size) {
-            return List()
+        if (!messages.size) {
+            return receivers
         }
 
-        let to = List()
-        const currentTo = ticket.getIn(['newMessage', 'source', 'to'])
-        // We want the last message that was not an internal note.
-        const ticketLastMessage = getLastSameSourceTypeMessage(ticket.get('messages'), ticket.getIn(['newMessage', 'source', 'type']))
+        const sourceType = ticket.getIn(['newMessage', 'source', 'type'])
+        const lastMessage = getLastSameSourceTypeMessage(messages, sourceType)
 
-        if (!ticketLastMessage) {
-            return List()
-        }
-
-        if (currentTo.size) {
-            to = currentTo
-        } else {
-            if (ticketLastMessage) {
-                if (ticketLastMessage.get('from_agent')) {
-                    to = ticketLastMessage.getIn(['source', 'to'])
-                } else {
-                    to = List([ticketLastMessage.getIn(['source', 'from'])])
-                }
+        if (lastMessage) {
+            if (lastMessage.get('from_agent')) {
+                receivers = lastMessage.getIn(['source', 'to'])
+            } else {
+                receivers = fromJS([lastMessage.getIn(['source', 'from'])])
             }
         }
 
-        if (onlyAddrs) {
-            const valueProp = SOURCE_VALUE_PROP[ticket.getIn(['newMessage', 'source', 'type'])]
-
-            if (valueProp) {
-                to = List(to.map(dest => dest.get(valueProp).toString()))
-            }
-        }
-
-        return to
+        return receivers
     }
 
     /**
@@ -136,15 +109,6 @@ export default class ReplyMessageChannel extends React.Component {
             return <p className="receiver-placeholder">your team</p>
         }
 
-        let initialValues = List()
-        const targets = this.getTargets()
-
-        // check that no element of targets is already in initialValues
-        if (!this.props.ticket.getIn(['state', 'query']) &&
-            _.every(targets.map(target => !~initialValues.indexOf(target)).toJS())) {
-            initialValues = initialValues.concat(targets)
-        }
-
         const parentId = ticket.get('messages').size ?
             `${ticket.get('id')} - ${ticket.get('messages').last().get('id')}` : 'new'
 
@@ -157,7 +121,7 @@ export default class ReplyMessageChannel extends React.Component {
             <ReceiversDropdown
                 actions={actions}
                 existingValues={ticket.getIn(['newMessage', 'source', 'to']).map(user => user.get(valueProp))}
-                initialValues={initialValues}
+                initialValues={this._initialReceivers()}
                 generateQuery={v => this._searchQuery(v)}
                 enabled={isInputEnabled}
                 value={this.props.ticket.getIn(['newMessage', 'source', 'to']).toJS()}

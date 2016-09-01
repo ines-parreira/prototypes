@@ -185,15 +185,8 @@ export function setReceivers(receivers) {
     }
 }
 
-export function clearReceivers() {
-    return {
-        type: types.CLEAR_RECEIVERS
-    }
-}
-
 export function setSourceType(sourceType) {
     return (dispatch) => {
-        dispatch(clearReceivers())
         dispatch({
             type: types.SET_SOURCE_TYPE,
             sourceType

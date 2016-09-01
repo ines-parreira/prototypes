@@ -381,29 +381,6 @@ describe('Ticket reducer', () => {
         })
     })
 
-    describe('CLEAR_RECEIVERS action', () => {
-        it('should clear receivers', () => {
-            const currentState = initialState.mergeDeep({
-                newMessage: {
-                    receiver: {id: 2},
-                    source: {
-                        type: 'email',
-                        from: {},
-                        to: [
-                            {id: 2},
-                            {id: 3},
-                            {id: 4}
-                        ]
-                    }
-                }
-            })
-
-            expect(
-                reducer(currentState, {type: types.CLEAR_RECEIVERS})
-            ).toEqualImmutable(initialState)
-        })
-    })
-
     it('should mark ticket dirty', () => {
         const expected = initialState.setIn(['state', 'dirty'], true)
 

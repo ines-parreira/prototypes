@@ -399,11 +399,6 @@ export function ticket(state = ticketInitial, action) {
             return newState
         }
 
-        case types.CLEAR_RECEIVERS:
-            return state
-                .setIn(['newMessage', 'source', 'to'], List())
-                .setIn(['newMessage', 'receiver'], null)
-
         case types.MARK_TICKET_DIRTY:
             return state.setIn(['state', 'dirty'], action.dirty)
 
