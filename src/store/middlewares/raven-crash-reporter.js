@@ -22,13 +22,11 @@ const crashReporter = () => next => action => {
     } catch (err) {
         console.error('Reporting error to Sentry:', err)
 
-        // Send the report.
+        // Send the report
+        // whole state is too big, can not be sent
+        // state: store.getState()
         Raven.captureException(err, {
-            extra: {
-                actionType: action.type,
-                // whole state is too big, can not be sent
-                // state: store.getState()
-            }
+            extra: action
         })
     }
 }
