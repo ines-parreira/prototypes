@@ -88,6 +88,11 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
  */
 export function getSourceTypeOfResponse(messages) {
     const lastMsg = getLastNonInternalNoteMessage(messages)
+
+    if (!lastMsg) {
+        return 'api'
+    }
+
     // some messages don't have sources - failed imports, api, etc..
     if (!lastMsg.get('source')) {
         return 'api'
