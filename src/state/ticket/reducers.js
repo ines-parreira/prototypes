@@ -57,13 +57,9 @@ export const ticketInitial = fromJS({
  * @returns {*}
  */
 export function getLastNonInternalNoteMessage(messages) {
-    // in case we don't get any messages,
-    // return an empty map, to avoid errors with .get().
-    if (!messages.size) {
-        return new Map()
-    }
+    const filteredMessages = messages.filter((m) => m.getIn(['source', 'type']) !== 'internal-note')
 
-    return messages.filter((m) => m.getIn(['source', 'type']) !== 'internal-note').last()
+    return !!filteredMessages.size && filteredMessages.last()
 }
 
 /**
@@ -101,10 +97,6 @@ export function getSourceTypeOfResponse(messages) {
     switch (lastMsg.getIn(['source', 'type'])) {
         case 'facebook-post':
             return 'facebook-comment'
-        case 'internal-note':
-            // We never want the new message to be an internal note by default.
-            // We get the type of the new message by considering the most recent non-internal note message.
-            return getSourceTypeOfResponse(getLastNonInternalNoteMessage(messages))
         default:
             return lastMsg.getIn(['source', 'type'])
     }
@@ -116,12 +108,15 @@ export function getSourceTypeOfResponse(messages) {
  * Returns undefined for internal note as we dont have enough information to guess the channel.
  */
 function getChannelFromSourceType(sourceType) {
+    if (!sourceType) {
+        return
+    }
+
     if (sourceType.startsWith('facebook')) {
         return 'facebook'
     } else if (sourceType !== 'internal-note') {
         return sourceType
     }
-    return undefined
 }
 
 
