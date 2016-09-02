@@ -89,6 +89,8 @@ export default class ReceiversDropdown extends React.Component {
                     allowCreateConstraint={validateEmail}
                     addLabelText={addLabelText}
                     placeholder="Search a user..."
+                    tabSelectsValue={false}
+                    tabIndex="2"
                 />
             </div>
         )
