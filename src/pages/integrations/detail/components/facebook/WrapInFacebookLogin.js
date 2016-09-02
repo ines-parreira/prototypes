@@ -13,25 +13,25 @@ export default function WrapInFacebookLogin(Component) {
             const {...others, facebookAppId} = this.props
             this.otherProps = others
 
-            window.fbAsyncInit = function () {
+            window.fbAsyncInit = () => {
                 FB.init({ // eslint-disable-line no-undef
                     appId: facebookAppId,
                     xfbml: true,
                     version: 'v2.6'
-                });
-            };
+                })
+            }
 
-            (function (d, s, id) {
-                const fjs = d.getElementsByTagName(s)[0];
+            ((d, s, id) => {
+                const fjs = d.getElementsByTagName(s)[0]
                 if (d.getElementById(id)) {
-                    return;
+                    return
                 }
-                const js = d.createElement(s);
-                js.id = id;
-                // js.src = "//connect.facebook.net/en_US/sdk/debug.js";
-                js.src = '//connect.facebook.net/en_US/sdk.js';
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
+                const js = d.createElement(s)
+                js.id = id
+                // js.src = "//connect.facebook.net/en_US/sdk/debug.js"
+                js.src = '//connect.facebook.net/en_US/sdk.js'
+                fjs.parentNode.insertBefore(js, fjs)
+            })(document, 'script', 'facebook-jssdk')
         }
 
         render() {
@@ -41,7 +41,7 @@ export default function WrapInFacebookLogin(Component) {
             if (!this.otherProps) {
                 return null
             }
-            return <Component {...this.otherProps}/>
+            return <Component {...this.otherProps} />
         }
     }
 

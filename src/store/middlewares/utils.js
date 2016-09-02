@@ -11,7 +11,7 @@ function conjugateToPastSimple(verb) {
         {base: 'pay', pastSimple: 'paid'},
         {base: 'send', pastSimple: 'sent'},
         {base: 'set', pastSimple: 'set'},
-    ];
+    ]
     // check if verb is an irregular verb
     const conjVerb = _.find(IRREGULAR_VERBS, (v) => v.base === verb)
 

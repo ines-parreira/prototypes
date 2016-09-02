@@ -60,14 +60,14 @@ class IntegrationDetailContainer extends React.Component {
                         loading={commonProps.loading}
                     />)
                 }
-                break;
+                break
 
             case 'http':
                 child = (<HttpIntegrationsEdit actions={commonProps.actions}
                                                integrations={commonProps.integrations}
                                                loading={commonProps.loading}
                 />)
-                break;
+                break
             default:
                 child = null
         }

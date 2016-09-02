@@ -75,7 +75,7 @@ export function tickets(state = ticketsInitial, action) {
                             } else if (key === 'macro') {
                                 /**
                                  * We can push an empty Map instead of rebuilding the message because the ticket
-                                 * will be refetched when loading its' TicketView; in the meantime, we just want
+                                 * will be refetched when loading its' TicketView in the meantime, we just want
                                  * the number of messages in the ticket to be updated, for display on the TicketList.
                                  */
                                 newItem = newItem.set('messages', newItem.get('messages').push(Map()))

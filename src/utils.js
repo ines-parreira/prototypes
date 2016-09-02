@@ -179,7 +179,7 @@ export function stripHTML(text) {
         body.innerHTML = text
 
         const removeElements = body.querySelectorAll('style,script')
-        const n = removeElements.length;
+        const n = removeElements.length
         for (let i = 0; i < n; i++) {
             removeElements[i].remove()
         }

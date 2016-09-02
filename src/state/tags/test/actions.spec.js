@@ -15,15 +15,15 @@ const mockServer = new MockAdapter(axios)
 describe('actions', () => {
     describe('tag', () => {
         it('should dispatch add tags action', () => {
-            const store = mockStore(initialState);
-            store.dispatch(actions.addTags(['refund', 'rejected']));
-            const expectedActions = store.getActions();
+            const store = mockStore(initialState)
+            store.dispatch(actions.addTags(['refund', 'rejected']))
+            const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
                 type: types.ADD_TAGS,
                 tags: ['refund', 'rejected']
-            }]);
-        });
+            }])
+        })
 
         it('creates FETCH_TAG_LIST_SUCCESS when fetching tags has been done', () => {
             mockServer

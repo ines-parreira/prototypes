@@ -12,7 +12,7 @@ export default class FacebookPageSettings extends React.Component {
 
     render() {
         const {actions, integration, loading} = this.props
-        const page = integration.get('facebook');
+        const page = integration.get('facebook')
 
         if (loading.get('integration')) {
             return <Loader/>

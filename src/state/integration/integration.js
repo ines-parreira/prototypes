@@ -127,7 +127,7 @@ export function facebookLogin() {
     return (dispatch) => {
         dispatch({
             type: types.FACEBOOK_LOGIN
-        });
+        })
 
         // eslint-disable-next-line no-undef
         FB.getLoginStatus((res) => {

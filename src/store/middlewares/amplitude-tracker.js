@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _ from 'lodash'
 import {Map} from 'immutable'
 import {
   CREATE_NEW_USER_SUCCESS,
@@ -45,10 +45,10 @@ const CONFIG_ACTIONS = [
  * @param store
  */
 const amplitudeTracker = store => next => action => {
-    const ALL_ACTIONS = TRACKED_ACTIONS + CONFIG_ACTIONS;
+    const ALL_ACTIONS = TRACKED_ACTIONS.concat(CONFIG_ACTIONS)
     if (_.includes(ALL_ACTIONS, action.type)) {
         let actionName = humanizeActionType(action.type)
-        let actionProps = Map({action: action.type});
+        let actionProps = Map({action: action.type})
 
         switch (action.type) {
             case FETCH_CURRENT_USER_SUCCESS:
@@ -59,7 +59,7 @@ const amplitudeTracker = store => next => action => {
                     country: action.resp.country,
                     role: action.resp.roles[0].name
                 })
-                break;
+                break
             case UPDATE_USER_SUCCESS:
                 // update information is current user update his information
                 if (store.getState().currentUser.get('id') === action.resp.id) {
@@ -69,12 +69,12 @@ const amplitudeTracker = store => next => action => {
                         role: action.resp.roles[0].name
                     })
                 }
-                break;
+                break
             case FETCH_SETTINGS_SUCCESS:
                 amplitude.getInstance().setUserProperties({
                     account: action.resp.account_domain
                 })
-                break;
+                break
             case SET_STATUS:
                 // temporarily defined its name since action type is not well formatted
                 actionName = 'Updated ticket status'
@@ -82,17 +82,17 @@ const amplitudeTracker = store => next => action => {
                     id: store.getState().ticket.get('id'),
                     status: action.args.get('status')
                 })
-                break;
+                break
             case FETCH_TICKET_SUCCESS:
-                actionProps = actionProps.merge(_.pick(action.resp, ['id']));
-                break;
+                actionProps = actionProps.merge(_.pick(action.resp, ['id']))
+                break
             case ADD_TICKET_TAGS:
                 // temporarily defined its name since action type is not well formatted
                 actionName = 'Added tag'
                 actionProps = actionProps.merge({
                     ticket: _.pick(store.getState().ticket.toJS(), ['id'])
                 })
-                break;
+                break
             case RECORD_MACRO:
                 actionName = 'Used macro'
                 actionProps = actionProps.merge({
@@ -100,14 +100,14 @@ const amplitudeTracker = store => next => action => {
                     name: action.macro.get('name'),
                     ticket: _.pick(store.getState().ticket.toJS(), ['id'])
                 })
-                break;
+                break
             case ADD_ATTACHMENT_SUCCESS:
                 actionProps = actionProps.merge({
                     ticket: _.pick(store.getState().ticket.toJS(), ['id'])
                 })
-                break;
+                break
             default:
-                break;
+                break
         }
         if (_.includes(TRACKED_ACTIONS, action.type)) {
             amplitude.getInstance().logEvent(actionName, actionProps.toJS())

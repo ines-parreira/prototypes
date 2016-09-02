@@ -15,9 +15,9 @@ describe('global utils', () => {
             moment.createFromInputFallback = function fallback(config) {
                 // unreliable string magic, or
                 /* eslint-disable */
-                config._d = new Date(config._i);
+                config._d = new Date(config._i)
                 /* eslint-enable */
-            };
+            }
             expect(utils.formatDatetime('test')).toBe('Invalid date')
         })
 
@@ -30,8 +30,8 @@ describe('global utils', () => {
         })
 
         it('iso format - with timezone', () => {
-            const time = utils.formatDatetime('2016-06-09T07:30:07+00:00', 'Europe/Paris', 'YYYY-DD-MM HH:mm');
-            expect(time).toBe('2016-09-06 09:30');
+            const time = utils.formatDatetime('2016-06-09T07:30:07+00:00', 'Europe/Paris', 'YYYY-DD-MM HH:mm')
+            expect(time).toBe('2016-09-06 09:30')
         })
     })
 

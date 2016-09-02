@@ -158,7 +158,7 @@ class App extends React.Component {
                                     <div key={idx}
                                          className={action.className}
                                          onClick={(e) => {
-                                             this._handleDismissClick(e, true);
+                                             this._handleDismissClick(e, true)
                                              action.onClick()
                                          }}
                                     >
