@@ -48,7 +48,8 @@ export default class ReceiversDropdown extends React.Component {
         this._onChange(users)
     }
 
-    _onChange = (newValue) => {
+    _onChange = (value) => {
+        const newValue = value || []
         const fieldName = this.props.valueProp
 
         this.props.actions.ticket.setReceivers(newValue.map((user) => {
