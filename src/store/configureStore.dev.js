@@ -1,7 +1,7 @@
 import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
-import amplitudeTracker from './middlewares/amplitude-tracker'
-import serverErrorHandler from './middlewares/server-error-handler'
+import amplitudeTracker from './middlewares/amplitudeTracker'
+import serverErrorHandler from './middlewares/serverErrorHandler'
 import createLogger from 'redux-logger'
 import rootReducer from '../state/reducers'
 
