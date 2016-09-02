@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 import expect from 'expect'
 import * as actions from '../actions'
 import * as types from '../constants'
-import {tagsInitial as initialState} from '../reducers'
+import {initialState} from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

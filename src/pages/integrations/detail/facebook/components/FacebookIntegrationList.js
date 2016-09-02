@@ -1,10 +1,9 @@
 import React, {PropTypes} from 'react'
-import IntegrationsEdit from '../IntegrationsEdit'
-import FacebookPage from './FacebookPage'
+import IntegrationList from '../../components/IntegrationList'
+import FacebookPageRow from './FacebookPageRow'
 import WrapInFacebookLogin from './WrapInFacebookLogin'
 
-class FacebookIntegrationsEdit extends React.Component {
-
+class FacebookIntegrationList extends React.Component {
     render() {
         const {integrations, actions, loading} = this.props
         const longTypeDescription = 'Facebook is a popular social network where customers can interact with companies. This integration creates tickets when customers post on your Facebook page or send you a message on Messenger.'
@@ -12,7 +11,7 @@ class FacebookIntegrationsEdit extends React.Component {
         const integrationToItemDisplay = (int) => {
             if (!int.get('deactivated_datetime')) {
                 return (
-                    <FacebookPage
+                    <FacebookPageRow
                         key={int.get('id')}
                         facebookIntegration={int}
                         actions={actions}
@@ -25,12 +24,12 @@ class FacebookIntegrationsEdit extends React.Component {
         }
 
         return (
-            <IntegrationsEdit
+            <IntegrationList
                 integrationType="facebook"
                 integrations={integrations.filter((v) => v.get('type') === 'facebook')}
                 longTypeDescription={longTypeDescription}
                 createIntegration={actions.facebookLogin}
-                createIntegrationButtonText="ADD PAGE"
+                createIntegrationButtonText="Add Facebook page"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />
@@ -39,12 +38,11 @@ class FacebookIntegrationsEdit extends React.Component {
 }
 
 
-FacebookIntegrationsEdit.propTypes = {
-    // An object that contains the integrations for the relevant type along with display info.
+FacebookIntegrationList.propTypes = {
     integrations: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 }
 
 // eslint-disable-next-line no-class-assign
-export default FacebookIntegrationsEdit = WrapInFacebookLogin(FacebookIntegrationsEdit)
+export default FacebookIntegrationList = WrapInFacebookLogin(FacebookIntegrationList)

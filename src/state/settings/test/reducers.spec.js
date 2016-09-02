@@ -1,9 +1,9 @@
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
 
-import { Map } from 'immutable'
+import {Map} from 'immutable'
 
-import { settings as reducer, initial as initialState } from '../reducers'
+import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 
 expect.extend(expectImmutable)

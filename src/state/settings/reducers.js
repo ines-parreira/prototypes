@@ -1,13 +1,13 @@
 import * as types from './constants'
-import {Map} from 'immutable'
+import {fromJS} from 'immutable'
 
-export const initial = Map({
-    data: Map(),
+export const initialState = fromJS({
+    data: {},
     loading: false,
     loaded: false
 })
 
-export function settings(state = initial, action) {
+export default (state = initialState, action) => {
     switch (action.type) {
         case types.FETCH_SETTINGS_START:
             return state.set('loading', true)

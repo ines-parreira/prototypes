@@ -4,20 +4,20 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import {INTEGRATION_TYPE_TO_ICON} from '../../../../config'
 
-export default class IntegrationsSummaryRow extends React.Component {
+export default class IntegrationListRow extends React.Component {
     render() {
         const {integrationType, onClickConnect, onClickEdit, loading} = this.props
 
         const triggerEdit = onClickEdit ||
-            (() => browserHistory.push(`/app/settings/integrations/${integrationType.get('type')}`))
+            (() => browserHistory.push(`/app/integrations/${integrationType.get('type')}`))
 
         const triggerConnect = onClickConnect ||
-            (() => browserHistory.push(`/app/settings/integrations/${integrationType.get('type')}/new`))
+            (() => browserHistory.push(`/app/integrations/${integrationType.get('type')}/new`))
 
         const buttonClasses = ['ui', 'basic', 'light', 'blue', 'button', 'right', {loading}]
         const button = integrationType.get('count') <= 0 ? (
             <button className={classNames(buttonClasses)} onClick={triggerConnect}>
-                Connect
+                Add
             </button>
         ) : (
             <button className={classNames(buttonClasses)} onClick={triggerEdit}>
@@ -26,8 +26,8 @@ export default class IntegrationsSummaryRow extends React.Component {
         )
 
         return (
-            <tr className="IntegrationsSummaryRow">
-                <td>
+            <tr className="IntegrationListRow">
+                <td className="center aligned">
                     <i className={`${INTEGRATION_TYPE_TO_ICON[integrationType.get('type')]} huge`} />
                 </td>
                 <td>
@@ -47,8 +47,7 @@ export default class IntegrationsSummaryRow extends React.Component {
     }
 }
 
-
-IntegrationsSummaryRow.propTypes = {
+IntegrationListRow.propTypes = {
     integrationType: PropTypes.object.isRequired,
     onClickConnect: PropTypes.func,
     onClickEdit: PropTypes.func,

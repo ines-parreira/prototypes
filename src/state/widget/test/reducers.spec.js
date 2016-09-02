@@ -1,9 +1,9 @@
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
 
-import { fromJS } from 'immutable'
+import {fromJS} from 'immutable'
 
-import { widgets as reducer, widgetsInitial as initialState } from '../reducers'
+import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 
 expect.extend(expectImmutable)

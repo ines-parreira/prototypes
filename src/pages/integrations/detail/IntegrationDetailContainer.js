@@ -1,12 +1,13 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import * as IntegrationsActions from '../../../state/integration/integration'
+import * as IntegrationsActions from '../../../state/integrations/actions'
 
-import FacebookPages from './components/facebook/FacebookPages'
-import FacebookPageSettings from './components/facebook/FacebookPageSettings'
-import FacebookIntegrationsEdit from './components/facebook/FacebookIntegrationsEdit'
-import HttpIntegrationsEdit from './components/http/HttpIntegrationsEdit'
+import FacebookAvailablePages from './facebook/components/FacebookAvailablePages'
+import FacebookPageDetail from './facebook/components/FacebookPageDetail'
+import FacebookIntegrationList from './facebook/components/FacebookIntegrationList'
+import HttpIntegrationList from './http/components/HttpIntegrationList'
+import HttpIntegrationDetail from './http/components/HttpIntegrationDetail'
 
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
@@ -18,23 +19,38 @@ class IntegrationDetailContainer extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.params.integrationId && nextProps.params.integrationId !== 'new' && this.props.params.integrationId !== nextProps.params.integrationId) {
+            nextProps.actions.fetchIntegration(nextProps.params.integrationId)
+        }
+    }
+
     render() {
-        const {integrationSettings, actions, settings} = this.props
+        const {
+            integrations,
+            actions,
+            settings
+        } = this.props
 
         if (!settings.get('loaded')) {
             return null
         }
 
+        const isDetail = !!this.props.params.integrationId
+        const isUpdate = isDetail && this.props.params.integrationId !== 'new'
+
         const commonProps = {
-            integrations: integrationSettings.get('integrations'),
-            integration: integrationSettings.get('integration'),
-            facebookIntegrations: integrationSettings.get('integrations').filter(integration => integration.get('type') === 'facebook'),
+            integrations: integrations.get('integrations'),
+            integration: integrations.get('integration'),
+            facebookIntegrations: integrations.get('integrations').filter(integration => integration.get('type') === 'facebook'),
             facebookAppId: settings.getIn(['data', 'facebook_app_id']),
-            loading: integrationSettings.getIn(['state', 'loading']),
+            loading: integrations.getIn(['state', 'loading']),
             actions
         }
 
-        const {integrationType, integrationId} = this.props.params
+        const {
+            integrationType
+        } = this.props.params
 
         if (!integrationType) {
             return null
@@ -43,31 +59,56 @@ class IntegrationDetailContainer extends React.Component {
         let child = null
         switch (integrationType) {
             case 'facebook':
-                if (integrationId && integrationId !== 'new') {
-                    child = (<FacebookPageSettings actions={commonProps.actions} integration={commonProps.integration}
-                                                   loading={commonProps.loading}
-                    />)
-                } else if (integrationId === 'new') {
-                    child = (<FacebookPages
-                        actions={commonProps.actions}
-                        facebookIntegrations={commonProps.facebookIntegrations}
-                    />)
+                if (isDetail) {
+                    if (isUpdate) {
+                        child = (
+                            <FacebookPageDetail
+                                actions={commonProps.actions}
+                                integration={commonProps.integration}
+                                loading={commonProps.loading}
+                            />
+                        )
+                    } else {
+                        child = (
+                            <FacebookAvailablePages
+                                actions={commonProps.actions}
+                                facebookIntegrations={commonProps.facebookIntegrations}
+                            />
+                        )
+                    }
                 } else {
-                    child = (<FacebookIntegrationsEdit
-                        actions={commonProps.actions}
-                        integrations={commonProps.integrations}
-                        facebookAppId={commonProps.facebookAppId}
-                        loading={commonProps.loading}
-                    />)
+                    child = (
+                        <FacebookIntegrationList
+                            actions={commonProps.actions}
+                            integrations={commonProps.integrations}
+                            facebookAppId={commonProps.facebookAppId}
+                            loading={commonProps.loading}
+                        />
+                    )
                 }
                 break
 
             case 'http':
-                child = (<HttpIntegrationsEdit actions={commonProps.actions}
-                                               integrations={commonProps.integrations}
-                                               loading={commonProps.loading}
-                />)
+                if (isDetail) {
+                    child = (
+                        <HttpIntegrationDetail
+                            actions={commonProps.actions}
+                            integration={commonProps.integration}
+                            isUpdate={isUpdate}
+                            loading={commonProps.loading}
+                        />
+                    )
+                } else {
+                    child = (
+                        <HttpIntegrationList
+                            actions={commonProps.actions}
+                            integrations={commonProps.integrations}
+                            loading={commonProps.loading}
+                        />
+                    )
+                }
                 break
+
             default:
                 child = null
         }
@@ -81,25 +122,22 @@ IntegrationDetailContainer.propTypes = {
         integrationType: PropTypes.string.isRequired,
         integrationId: PropTypes.string
     }).isRequired,
-    integrationSettings: PropTypes.object.isRequired,
+    integrations: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired
 }
 
-
 function mapStateToProps(state) {
     return {
-        integrationSettings: state.integrationSettings,
+        integrations: state.integrations,
         settings: state.settings
     }
 }
-
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(IntegrationsActions, dispatch)
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntegrationDetailContainer)

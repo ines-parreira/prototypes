@@ -1,17 +1,16 @@
-import React, { PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import React, {PropTypes} from 'react'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 
 import MacroModal from './components/MacroModal'
 import * as MacroActions from '../../../../state/macro/actions'
 import * as TicketsActions from '../../../../state/tickets/actions'
-import { getMacrosWithoutExternalActions } from '../../../../state/macro/reducers'
+import {getMacrosWithoutExternalActions} from '../../../../state/macro/utils'
 
 class MacroContainer extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (!this.props.macros.get('isModalOpen') &&
-            nextProps.macros.get('isModalOpen') &&
-            !nextProps.macros.get('items').size
+            nextProps.macros.get('isModalOpen') && !nextProps.macros.get('items').size
         ) {
             this.props.actions.macro.fetchMacros()
         }
@@ -32,7 +31,7 @@ class MacroContainer extends React.Component {
     }
 
     render() {
-        const { macros, tags, agents, actions, disableExternalActions, selectionMode, selected } = this.props
+        const {macros, tags, agents, actions, disableExternalActions, selectionMode, selected} = this.props
 
         if (!macros.get('isModalOpen')) {
             return null

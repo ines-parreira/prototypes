@@ -5,8 +5,13 @@ import {systemMessage} from '../../state/systemMessage/actions'
  * @param store
  */
 const serverErrorHandler = store => next => action => {
-    if (action.error) {
-        const message = action.reason || action.error.message || `Unknown error for action ${action.type}`
+    if (action && action.error) {
+        const message = action.reason
+            || action.error.message
+            || action.error.msg
+            || `Unknown error for action ${action.type}`
+
+        console.error('ERROR', message, action.error)
 
         store.dispatch(systemMessage({
             type: 'error',

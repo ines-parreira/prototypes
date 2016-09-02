@@ -30,10 +30,10 @@ export default (
         <Route path="tickets/:viewId/:viewSlug"
                components={{content: TicketListContainer, navbar: TicketNavbarContainer}}
         />
-        <Route path="settings/integrations"
+        <Route path="integrations"
                components={{content: IntegrationListContainer, navbar: IntegrationNavbarContainer}}
         />
-        <Route path="settings/integrations/:integrationType"
+        <Route path="integrations/:integrationType"
                components={{content: IntegrationDetailContainer, navbar: IntegrationNavbarContainer}}
         >
             <Route path=":integrationId" />

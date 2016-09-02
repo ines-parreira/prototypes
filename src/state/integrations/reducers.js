@@ -1,8 +1,7 @@
 import {Map, fromJS} from 'immutable'
 import * as types from './constants.js'
-import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
 
-const integrationSettingsInitial = fromJS({
+const initialState = fromJS({
     integrations: [],
     integration: {},
     state: {
@@ -10,7 +9,8 @@ const integrationSettingsInitial = fromJS({
             facebookLogin: false,
             integration: false,
             integrations: false,
-            updateIntegration: false
+            updateIntegration: false,
+            testing: false
         }
     }
 })
@@ -21,9 +21,8 @@ const integrationSettingsInitial = fromJS({
  * If we see 'flickering' in the frontend we should update the state here instead of waiting for the integrations
  * to be fetched.
  */
-export function integrationSettings(state = integrationSettingsInitial, action) {
+export default (state = initialState, action) => {
     const integrations = state.get('integrations')
-    let newState = state
 
     switch (action.type) {
         case types.SELECT_FACEBOOK_PAGE:
@@ -37,8 +36,8 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
 
         case types.FETCH_INTEGRATION_SUCCESS:
             // The integration to edit.
-            return (state.set('integration', fromJS(action.resp))
-                .setIn(['state', 'loading', 'integration'], false))
+            return state.set('integration', fromJS(action.integration))
+                .setIn(['state', 'loading', 'integration'], false)
 
         case types.FETCH_INTEGRATIONS_START:
             return state.setIn(['state', 'loading', 'integrations'], true)
@@ -47,8 +46,8 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
             return state.setIn(['state', 'loading', 'integrations'], false)
 
         case types.FETCH_INTEGRATIONS_SUCCESS:
-            return (state.set('integrations', fromJS(action.resp.data))
-                .setIn(['state', 'loading', 'integrations'], false))
+            return state.set('integrations', fromJS(action.resp.data))
+                .setIn(['state', 'loading', 'integrations'], false)
 
         case types.TOGGLE_PRIVATE_MESSAGES_ENABLED:
             return state.setIn(['integration', 'facebook', 'settings', 'private_messages_enabled'],
@@ -67,10 +66,13 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
         case types.FACEBOOK_LOGIN_ERROR:
             return state.setIn(['state', 'loading', 'facebookLogin'], false)
 
-        case types.FACEBOOK_LOGIN_SUCCESS:
-            // We can't just concatenate since we might get duplicates if we call it several times. So we merge on page id.
+        case types.FACEBOOK_LOGIN_SUCCESS: {
+            let newState = state
+            // We can't just concatenate since we might get duplicates if we call it several times.
+            // So we merge on page id.
             for (const pageIntegration of action.resp.data) {
-                const existingIndex = newState.get('integrations').findIndex((int) => int.getIn(['facebook', 'page_id']) === pageIntegration.facebook.page_id)
+                const existingIndex = newState.get('integrations')
+                    .findIndex((int) => int.getIn(['facebook', 'page_id']) === pageIntegration.facebook.page_id)
                 if (~existingIndex) {
                     newState = newState.setIn(['integrations', existingIndex], fromJS(pageIntegration))
                 } else {
@@ -79,6 +81,7 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
             }
 
             return newState.setIn(['state', 'loading', 'facebookLogin'], false)
+        }
 
         case types.UPDATE_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'updateIntegration'], true)
@@ -86,42 +89,23 @@ export function integrationSettings(state = integrationSettingsInitial, action) 
             return state.setIn(['state', 'loading', 'updateIntegration'], false)
         case types.UPDATE_INTEGRATION_SUCCESS:
             return state.setIn(['state', 'loading', 'updateIntegration'], false)
+                .set('integration', fromJS(action.resp))
+
+        case types.DELETE_INTEGRATION_SUCCESS:
+            return state.set('integrations',
+                state.get('integrations')
+                    .valueSeq()
+                    .filter(int => int.get('id') !== action.id)
+            )
+
+        case types.TEST_HTTP_INTEGRATION_START:
+            return state.setIn(['state', 'loading', 'testing'], true)
+
+        case types.TEST_HTTP_INTEGRATION_SUCCESS:
+            return state.setIn(['integration', 'testing'], fromJS(action.response))
+                .setIn(['state', 'loading', 'testing'], false)
+
         default:
             return state
     }
-}
-
-
-/**
- * Compute the number of active integrations for each type
- */
-function getIntegrationsCountPerType(integrations) {
-    return integrations
-        .filter((int) => !int.get('deactivated_datetime'))
-        .reduce((accumulator, item) => {
-            const newAccumulator = accumulator
-            if (item.get('type') in accumulator) {
-                newAccumulator[item.get('type')] += 1
-            } else {
-                newAccumulator[item.get('type')] = 1
-            }
-            return newAccumulator
-        }, {})
-}
-
-
-/**
- * We take a global variable with a list of types and their descriptions as objects and we add the number of
- * integrations for each type to these objects.
- * @param integrations
- * @returns {*}
- */
-export function getIntegrationsSummary(integrations) {
-    const counts = getIntegrationsCountPerType(integrations)
-    return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription) => (
-        {
-            ...typeDescription,
-            count: counts[typeDescription.type] || 0
-        })
-    ))
 }

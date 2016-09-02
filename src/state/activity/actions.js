@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {UPDATE_VIEW_LIST} from '../view/constants'
+import {UPDATE_VIEW_LIST} from '../views/constants'
 import * as types from './constants'
 
 export function pollActivity(pendingEvents) {

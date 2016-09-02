@@ -1,20 +1,20 @@
 import * as types from './constants'
 import {fromJS, Map, List} from 'immutable'
 
-const ticketsInitial = Map({
-    items: List(),
-    selected: List(),
-    resp_meta: Map(),
+const initialState = fromJS({
+    items: [],
+    selected: [],
+    resp_meta: {},
     loading: false,
     search: '',
     currentTicketIndex: null,
     viewId: null
 })
 
-export function tickets(state = ticketsInitial, action) {
+export default (state = initialState, action) => {
     switch (action.type) {
         case types.FETCH_TICKET_LIST_VIEW_START:
-            return ticketsInitial.set('loading', true).set('viewId', action.viewId)
+            return initialState.set('loading', true).set('viewId', action.viewId)
 
         case types.FETCH_TICKET_LIST_VIEW_SUCCESS: {
             const payload = action.data

@@ -1,7 +1,8 @@
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
 import {Map, List, fromJS} from 'immutable'
-import {ticket as reducer, newMessage, ticketInitial as initialState, getLastSameSourceTypeMessage} from '../reducers'
+import reducer, {newMessage, initialState} from '../reducers'
+import {getLastSameSourceTypeMessage} from '../utils'
 import * as types from '../constants'
 
 expect.extend(expectImmutable)

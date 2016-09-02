@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import _ from 'lodash'
 import ReceiversDropdown from './ReceiversDropdown'
 import {SOURCE_VALUE_PROP} from '../../../../../config'
 import {firstMessage} from '../../../../../utils'
-import {getLastSameSourceTypeMessage} from '../../../../../state/ticket/reducers'
+import {getLastSameSourceTypeMessage} from '../../../../../state/ticket/utils'
+import _ from 'lodash'
 
 export default class ReplyMessageChannel extends React.Component {
     componentDidMount() {

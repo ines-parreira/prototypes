@@ -5,7 +5,7 @@ import DocumentTitle from 'react-document-title'
 import * as UserActions from '../../../state/users/actions'
 import * as SettingsActions from '../../../state/settings/actions'
 import UsersView from './components/UsersView'
-import {buildQuery} from '../../../state/users/reducers'
+import {buildQuery} from '../../../state/users/utils'
 
 class UserListContainer extends React.Component {
     componentDidMount() {

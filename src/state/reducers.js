@@ -1,37 +1,39 @@
 import {combineReducers} from 'redux'
-import {routerReducer as routing} from 'react-router-redux'
+import {routerReducer} from 'react-router-redux'
+import {reducer as formReducer} from 'redux-form'
 
-import {systemMessage} from './systemMessage/reducers'
-import {currentUser} from './currentUser/reducers'
-import {rules} from './rules/reducers'
-import {schemas} from './schema/reducers'
-import {tickets} from './tickets/reducers'
-import {ticket} from './ticket/reducers'
-import {widgets} from './widget/reducers'
-import {users} from './users/reducers'
-import {settings} from './settings/reducers'
-import {tags} from './tags/reducers'
-import {macros} from './macro/reducers'
-import {integrationSettings} from './integration/reducers'
-import {views} from './view/reducers'
-import {activity} from './activity/reducers'
+import systemMessageReducer from './systemMessage/reducers'
+import currentUserReducer from './currentUser/reducers'
+import rulesReducer from './rules/reducers'
+import schemasReducer from './schema/reducers'
+import ticketsReducer from './tickets/reducers'
+import ticketReducer from './ticket/reducers'
+import widgetsReducer from './widget/reducers'
+import usersReducer from './users/reducers'
+import settingsReducer from './settings/reducers'
+import tagsReducer from './tags/reducers'
+import macrosReducer from './macro/reducers'
+import integrationsReducer from './integrations/reducers'
+import viewsReducer from './views/reducers'
+import activityReducer from './activity/reducers'
 
 const rootReducer = combineReducers({
-    systemMessage,
-    currentUser,
-    settings,
-    tickets,
-    ticket,
-    widgets,
-    schemas,
-    rules,
-    views,
-    activity,
-    users,
-    tags,
-    macros,
-    integrationSettings,
-    routing
+    systemMessage: systemMessageReducer,
+    currentUser: currentUserReducer,
+    settings: settingsReducer,
+    tickets: ticketsReducer,
+    ticket: ticketReducer,
+    widgets: widgetsReducer,
+    schemas: schemasReducer,
+    rules: rulesReducer,
+    views: viewsReducer,
+    activity: activityReducer,
+    users: usersReducer,
+    tags: tagsReducer,
+    macros: macrosReducer,
+    integrations: integrationsReducer,
+    routing: routerReducer,
+    form: formReducer
 })
 
 export default rootReducer

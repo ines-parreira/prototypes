@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import UserList from './UserList'
 import Search from '../../../common/components/Search'
 import UserForm from './UserForm'
-import {USER_SEARCH_QUERY, USER_SEARCH_QUERY_PATH} from '../../../../state/users/reducers'
+import {USER_SEARCH_QUERY, USER_SEARCH_QUERY_PATH} from '../../../../state/users/utils'
 
 export default class UsersView extends React.Component {
     render() {

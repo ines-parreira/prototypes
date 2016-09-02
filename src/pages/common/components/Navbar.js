@@ -28,8 +28,8 @@ export default class Navbar extends React.Component {
             active: activeContent === 'users'
         })
 
-        const settingsClassNames = classnames('item', {
-            active: activeContent === 'settings'
+        const integrationsClassNames = classnames('item', {
+            active: activeContent === 'integrations'
         })
 
         return (
@@ -45,7 +45,7 @@ export default class Navbar extends React.Component {
                         >
                             Users
                         </Link>
-                        <Link to="/app/settings/integrations" className={settingsClassNames}
+                        <Link to="/app/integrations" className={integrationsClassNames}
                               onClick={() => this.setState({title: 'Integrations'})}
                         >
                             Integrations

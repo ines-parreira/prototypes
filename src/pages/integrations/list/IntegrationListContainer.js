@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import * as IntegrationsActions from '../../../state/integration/integration'
-import {getIntegrationsSummary} from '../../../state/integration/reducers'
-import IntegrationsSummary from './components/IntegrationsSummary'
+import * as IntegrationsActions from '../../../state/integrations/actions'
+import {getIntegrationsList} from '../../../state/integrations/utils'
+import IntegrationList from './components/IntegrationList'
 
 class IntegrationListContainer extends React.Component {
     componentWillMount() {
@@ -11,32 +11,32 @@ class IntegrationListContainer extends React.Component {
     }
 
     render() {
-        const {integrationSettings, actions, settings} = this.props
+        const {integrations, actions, settings} = this.props
 
         if (!settings.get('loaded')) {
             return null
         }
 
         const allProps = {
-            integrationsSummary: getIntegrationsSummary(integrationSettings.get('integrations')),
+            integrationsList: getIntegrationsList(integrations.get('integrations')),
             facebookAppId: settings.getIn(['data', 'facebook_app_id']),
-            typeToLoadingStatus: {facebook: integrationSettings.getIn(['state', 'loading', 'facebookLogin'])},
+            typeToLoadingStatus: {facebook: integrations.getIn(['state', 'loading', 'facebookLogin'])},
             actions
         }
 
-        return <IntegrationsSummary {...allProps} />
+        return <IntegrationList {...allProps} />
     }
 }
 
 IntegrationListContainer.propTypes = {
-    integrationSettings: PropTypes.object.isRequired,
+    integrations: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
     return {
-        integrationSettings: state.integrationSettings,
+        integrations: state.integrations,
         settings: state.settings
     }
 }

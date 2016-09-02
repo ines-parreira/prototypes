@@ -1,11 +1,11 @@
 import * as types from './constants'
 import {List, fromJS} from 'immutable'
 
-export const tagsInitial = fromJS({
+export const initialState = fromJS({
     items: []
 })
 
-export function tags(state = tagsInitial, action) {
+export default (state = initialState, action) => {
     switch (action.type) {
         case types.FETCH_TAG_LIST_SUCCESS:
             return state.set('items', List().merge(action.resp.data))

@@ -1,14 +1,14 @@
 import * as types from './constants'
-import {Map, List, fromJS} from 'immutable'
+import {Map, fromJS} from 'immutable'
 
-const activityInitial = Map({
-    events: List(),
+const initialState = fromJS({
+    events: [],
     // Count how many new events since we visited the ticket. Ex: 999: {count: 0, created_datetime: 'now'}
-    objectsCounter: Map(),
-    pendingEvents: List() // events to be sent to the server
+    objectsCounter: {},
+    pendingEvents: [] // events to be sent to the server
 })
 
-export function activity(state = activityInitial, action) {
+export default (state = initialState, action) => {
     switch (action.type) {
         case types.SUBMIT_ACTIVITY_SUCCESS: {
             // sort by created_datetime the events that come from the API
@@ -61,7 +61,7 @@ export function activity(state = activityInitial, action) {
 
             return state.merge({
                 // clean the pending events that we've sent in the action
-                pendingEvents: activityInitial.get('pendingEvents'),
+                pendingEvents: initialState.get('pendingEvents'),
                 events,
                 objectsCounter
             })

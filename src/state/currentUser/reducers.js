@@ -3,11 +3,11 @@ import {Map, fromJS} from 'immutable'
 import moment from 'moment'
 import {isUndefined as _isUndefined} from 'lodash'
 
-export const currentUserInitial = Map()
+export const initialState = Map()
 
 const Raven = window.Raven
 
-export function currentUser(state = currentUserInitial, action) {
+export default (state = initialState, action) => {
     if (!action) {
         return state
     }

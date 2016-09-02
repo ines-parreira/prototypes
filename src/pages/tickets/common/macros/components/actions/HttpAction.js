@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import ParametersEditor from '../ParametersEditor'
+import ParametersEditor from '../../../../../common/components/ParametersEditor'
 
 export default class HttpAction extends React.Component {
     componentDidMount() {
@@ -64,7 +64,9 @@ export default class HttpAction extends React.Component {
                             <div id={`method-${this.props.index}`} className="ui selection dropdown">
                                 <input type="hidden" name="gender" />
                                 <i className="dropdown icon" />
-                                <div className="text">{action.getIn(['arguments', 'method']).toUpperCase()}</div>
+                                <div className="default text">
+                                    {action.getIn(['arguments', 'method']).toUpperCase()}
+                                </div>
                                 <div className="menu">
                                     <div className="item" data-value="get">GET</div>
                                     <div className="item" data-value="post">POST</div>

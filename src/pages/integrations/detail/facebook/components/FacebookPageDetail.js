@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react'
-import { Link } from 'react-router'
+import {Link} from 'react-router'
 import classNames from 'classnames'
 import {Loader} from '../../../../common/components/Loader'
 
-export default class FacebookPageSettings extends React.Component {
+export default class FacebookPageDetail extends React.Component {
     disable = () => {
         if (window.confirm('Are you sure you want to disable this integration?')) {
             this.props.actions.deactivateIntegration(this.props.integration)
@@ -15,21 +15,23 @@ export default class FacebookPageSettings extends React.Component {
         const page = integration.get('facebook')
 
         if (loading.get('integration')) {
-            return <Loader/>
+            return <Loader />
         }
+
         // Are we defining the settings for a new page or updating an existing one?
         const isUpdate = !integration.get('deactivated_datetime')
 
         const submitButtonClassNames = ['ui', 'green', 'button', {loading: loading.get('updateIntegration')}]
+
         return (
             <div className="ui grid FacebookPageSettingsView">
                 <div className="sixteen wide column">
 
                     <div className="ui large breadcrumb">
-                        <Link to="/app/settings/integrations">Integrations</Link>
-                        <i className="right angle icon divider"/>
-                        <Link to="/app/settings/integrations/facebook" className="section">Facebook</Link>
-                        <i className="right angle icon divider"/>
+                        <Link to="/app/integrations">Integrations</Link>
+                        <i className="right angle icon divider" />
+                        <Link to="/app/integrations/facebook" className="section">Facebook</Link>
+                        <i className="right angle icon divider" />
                         <a className="active section">{isUpdate ? page.get('name') : 'Add page'}</a>
                     </div>
 
@@ -83,27 +85,21 @@ export default class FacebookPageSettings extends React.Component {
                 <div className="sixteen wide column">
                     <span
                         className={classNames(submitButtonClassNames)}
-                        style={!isUpdate ? {display: 'none'} : {}}
-                        onClick={() => (!loading.get('updateIntegration') ? actions.updateOrCreateIntegration(integration, 'onboard') : null)}
+                        onClick={() => {
+                            if (!loading.get('updateIntegration')) {
+                                actions.updateOrCreateIntegration(integration, 'onboard')
+                            }
+                        }}
                     >
-                        SAVE CHANGES
-                    </span>
-                    <span
-                        className={classNames(submitButtonClassNames)}
-                        style={isUpdate ? {display: 'none'} : {}}
-                        onClick={() => (!loading.get('updateIntegration') ? actions.updateOrCreateIntegration(integration, 'onboard') : null)}
-                    >
-                        ADD PAGE
+                        {isUpdate ? 'Save changes' : 'Add page'}
                     </span>
                 </div>
-
             </div>
         )
     }
 }
 
-
-FacebookPageSettings.propTypes = {
+FacebookPageDetail.propTypes = {
     integration: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired

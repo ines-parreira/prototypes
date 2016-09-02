@@ -1,14 +1,14 @@
 import {createFilter} from 'react-search-input'
 import * as types from './constants'
 import {fromJS, Map, List} from 'immutable'
-import {DEFAULT_ACTIONS, ACTION_TEMPLATES} from '../../config'
+import {DEFAULT_ACTIONS} from '../../config'
+import {getMacrosWithoutExternalActions} from './utils'
 
-
-const actionInitial = Map({
+const actionInitial = fromJS({
     type: 'user',
     name: '',
     title: '',
-    arguments: Map()
+    arguments: {}
 })
 
 const initialDefaultActions = Map({
@@ -90,15 +90,7 @@ const macrosInitial = fromJS({
     actions: initialDefaultActions
 })
 
-export function getMacrosWithoutExternalActions(currentMacros) {
-    return currentMacros.filter(
-        macro => macro.get('actions').filter(
-            action => fromJS(ACTION_TEMPLATES).getIn([action.get('name'), 'execution']) === 'back'
-        ).isEmpty()
-    )
-}
-
-export function macros(state = macrosInitial, action) {
+export default (state = macrosInitial, action) => {
     let items
     let newState = state
 

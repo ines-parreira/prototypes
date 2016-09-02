@@ -1,15 +1,14 @@
 import React, {PropTypes} from 'react'
+import {browserHistory} from 'react-router'
 
-
-export default class FacebookPage extends React.Component {
-
+export default class FacebookPageRow extends React.Component {
     render() {
-        const { facebookIntegration, actions, onClick, allowEdit } = this.props
+        const {facebookIntegration, onClick, allowEdit} = this.props
         const page = facebookIntegration.get('facebook')
         return (
-            <tr className="FacebookPage" onClick={onClick}>
+            <tr className="FacebookPageRow" onClick={onClick}>
                 <td>
-                    <img alt={page.get('name')} src={page.getIn(['picture', 'data', 'url'])}/>
+                    <img alt={page.get('name')} src={page.getIn(['picture', 'data', 'url'])} />
                 </td>
                 <td>
                     <div className="ui header">
@@ -25,19 +24,17 @@ export default class FacebookPage extends React.Component {
                 </td>
                 <td className="three wide middle aligned column" style={!allowEdit ? {display: 'none'} : {}}>
                     <button className="ui basic light blue floated right button"
-                            onClick={() => actions.updateIntegration('facebook', facebookIntegration.get('id'))}
+                            onClick={() => browserHistory.push(`/app/integrations/facebook/${facebookIntegration.get('id')}`)}
                     >
-                        EDIT
+                        Edit
                     </button>
                 </td>
             </tr>
         )
     }
-
 }
 
-
-FacebookPage.propTypes = {
+FacebookPageRow.propTypes = {
     facebookIntegration: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     onClick: PropTypes.func,

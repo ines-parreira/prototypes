@@ -95,7 +95,6 @@ export function fetchUser(userId) {
     }
 }
 
-
 export function createUser(data) {
     return (dispatch) => {
         dispatch({

@@ -1,5 +1,7 @@
 import axios from 'axios'
+import {sortBy as _sortBy} from 'lodash'
 import {browserHistory} from 'react-router'
+import {systemMessage} from '../systemMessage/actions'
 import * as types from './constants'
 
 export function fetchIntegration(integrationId) {
@@ -14,7 +16,7 @@ export function fetchIntegration(integrationId) {
             .then(resp => {
                 dispatch({
                     type: types.FETCH_INTEGRATION_SUCCESS,
-                    resp
+                    integration: resp
                 })
             })
             .catch(error => {
@@ -27,13 +29,6 @@ export function fetchIntegration(integrationId) {
     }
 }
 
-
-export function updateIntegration(integrationType, integrationId) {
-    browserHistory.push(`/app/settings/integrations/${integrationType}/${integrationId}`)
-    return fetchIntegration(integrationId)
-}
-
-
 export function fetchIntegrations() {
     return (dispatch) => {
         dispatch({
@@ -43,9 +38,15 @@ export function fetchIntegrations() {
         return axios.get('/api/integrations/')
             .then((json = {}) => json.data)
             .then(resp => {
+                const newResp = resp
+
+                if (newResp) {
+                    newResp.data = _sortBy(newResp.data, o => o.name.toLowerCase())
+                }
+
                 dispatch({
                     type: types.FETCH_INTEGRATIONS_SUCCESS,
-                    resp
+                    resp: newResp
                 })
             })
             .catch(error => {
@@ -63,12 +64,18 @@ export function deleteIntegration(integration) {
         return (dispatch) => {
             axios.delete(`/api/integrations/${integration.get('id')}/`)
                 .then((json = {}) => json.data)
-                .then(resp => {
+                .then(() => {
                     dispatch({
                         type: types.DELETE_INTEGRATION_SUCCESS,
-                        resp
+                        id: integration.get('id')
                     })
-                    browserHistory.push(`/app/settings/integrations/${integration.get('type')}`)
+
+                    browserHistory.push(`/app/integrations/${integration.get('type')}`)
+
+                    dispatch(systemMessage({
+                        type: 'success',
+                        msg: 'Integration successfully deleted'
+                    }))
                 })
                 .catch(error => {
                     dispatch({
@@ -85,7 +92,6 @@ export function deleteIntegration(integration) {
     }
 }
 
-
 function onFacebookLoginSuccess(dispatch) {
     return (response) => {
         if (response.authResponse) {
@@ -96,7 +102,7 @@ function onFacebookLoginSuccess(dispatch) {
                         type: types.FACEBOOK_LOGIN_SUCCESS,
                         resp
                     })
-                    browserHistory.push('/app/settings/integrations/facebook/new')
+                    browserHistory.push('/app/integrations/facebook/new')
                 })
                 .catch(error => {
                     dispatch({
@@ -114,7 +120,6 @@ function onFacebookLoginSuccess(dispatch) {
         }
     }
 }
-
 
 /**
  * We want to login the user, ask for relevant permissions and then display the list of pages so s/he can choose the
@@ -136,24 +141,10 @@ export function facebookLogin() {
             } else {
                 // login popup
                 // eslint-disable-next-line no-undef
-                FB.login(onFacebookLoginSuccess(dispatch), {scope: 'manage_pages,publish_pages,read_page_mailboxes'})
+                FB.login(onFacebookLoginSuccess(dispatch), {
+                    scope: 'manage_pages,publish_pages,read_page_mailboxes'
+                })
             }
-        })
-    }
-}
-
-export function twitterLogin() {
-    return (dispatch) => {
-        dispatch({
-            type: 'NOOP'
-        })
-    }
-}
-
-export function mailLogin() {
-    return (dispatch) => {
-        dispatch({
-            type: 'NOOP'
         })
     }
 }
@@ -166,8 +157,9 @@ function updateOrCreateIntegrationRequest(integration, action) {
         })
 
         let promise
+        const isUpdate = integration.get('id')
 
-        if (integration.get('id')) {
+        if (isUpdate) {
             promise = axios.put(`/api/integrations/${integration.get('id')}/${action ? `?action=${action}` : ''}`, integration.toJS())
         } else {
             promise = axios.post('/api/integrations/', integration.toJS())
@@ -176,19 +168,27 @@ function updateOrCreateIntegrationRequest(integration, action) {
         return promise
             .then((json = {}) => json.data)
             .then(resp => {
-                dispatch(
-                    {
-                        type: types.UPDATE_INTEGRATION_SUCCESS,
-                        resp
-                    })
+                dispatch({
+                    type: types.UPDATE_INTEGRATION_SUCCESS,
+                    resp
+                })
+
                 fetchIntegrations()(dispatch)
-                browserHistory.push(`/app/settings/integrations/${integration.get('type')}`)
+
+                if (!isUpdate) {
+                    browserHistory.push(`/app/integrations/${integration.get('type')}/${resp.id}`)
+                }
+
+                dispatch(systemMessage({
+                    type: 'success',
+                    msg: `Integration successfully ${isUpdate ? 'updated' : 'added'}`
+                }))
             })
             .catch(error => {
                 dispatch({
                     type: types.UPDATE_INTEGRATION_ERROR,
                     error,
-                    reason: 'Failed to add integration'
+                    reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration'
                 })
             })
     }
@@ -202,13 +202,20 @@ export function deactivateIntegration(integration) {
     }
 }
 
+export function activateIntegration(integration) {
+    return (dispatch) => {
+        // We set deactivated_datetime using a UTC timestamp
+        const newIntegration = integration.set('deactivated_datetime', null)
+        updateOrCreateIntegrationRequest(newIntegration)(dispatch)
+    }
+}
+
 /**
  * Called when we create an integration or when we edit the settings.
  * @param integration
  * @param action
  * @returns {Function}
  */
-
 export function updateOrCreateIntegration(integration, action) {
     return (dispatch) => {
         // We make sure that the integration is active
@@ -217,15 +224,13 @@ export function updateOrCreateIntegration(integration, action) {
     }
 }
 
-
 export function selectFacebookPage(pageId) {
-    browserHistory.push('/app/settings/integrations/facebook/new/addpage')
+    browserHistory.push('/app/integrations/facebook/new/addpage')
     return {
         type: types.SELECT_FACEBOOK_PAGE,
         pageId
     }
 }
-
 
 export function togglePrivateMessagesEnabled() {
     return {
@@ -242,5 +247,26 @@ export function togglePostsEnabled() {
 export function toggleImportHistoryEnabled() {
     return {
         type: types.TOGGLE_IMPORT_HISTORY_ENABLED
+    }
+}
+
+export function testHttpIntegration(integration) {
+    return (dispatch) => {
+        console.log('fake test', integration)
+
+        dispatch({
+            type: types.TEST_HTTP_INTEGRATION_START
+        })
+
+        setTimeout(() => {
+            dispatch({
+                type: types.TEST_HTTP_INTEGRATION_SUCCESS,
+                response: {
+                    json: {
+                        hello: 'world'
+                    }
+                }
+            })
+        }, 2000)
     }
 }

@@ -4,7 +4,7 @@ import expectImmutable from 'expect-immutable'
 import {Map} from 'immutable'
 import moment from 'moment'
 
-import {currentUser as reducer, currentUserInitial as initialState} from '../reducers'
+import reducer, {initialState} from '../reducers'
 import * as types from '../../users/constants'
 
 expect.extend(expectImmutable)
