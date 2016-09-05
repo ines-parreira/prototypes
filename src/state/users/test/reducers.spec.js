@@ -1,8 +1,6 @@
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
-
-import {List, Map, fromJS} from 'immutable'
-
+import {fromJS} from 'immutable'
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 
@@ -10,7 +8,7 @@ expect.extend(expectImmutable)
 
 describe('reducers', () => {
     describe('users', () => {
-        it('should return the initial state', () => {
+        it('initial state OK', () => {
             expect(
                 reducer(
                     undefined,
@@ -19,18 +17,18 @@ describe('reducers', () => {
             ).toEqualImmutable(initialState)
         })
 
-        it('should remember query if there is any', () => {
+        it('remember query OK', () => {
             const stringQuery = 'Dark Vador'
             const params = {
                 dark: 'vador'
             }
 
-            const expected = initialState.merge({
-                search: {
+            const expected = initialState
+                .setIn(['_internal', 'search'], fromJS({
                     stringQuery,
                     params
-                }
-            })
+                }))
+                .setIn(['_internal', 'loading', 'fetchList'], true)
 
             expect(
                 reducer(
@@ -48,10 +46,13 @@ describe('reducers', () => {
                         type: types.FETCH_USER_LIST_START
                     }
                 )
-            ).toEqualImmutable(initialState)
+            ).toEqualImmutable(
+                initialState
+                    .setIn(['_internal', 'loading', 'fetchList'], true)
+            )
         })
 
-        it('should replace current users with users from server', () => {
+        it('fetch list OK', () => {
             const items = [{
                 name: 'Mario'
             }, {
@@ -62,11 +63,11 @@ describe('reducers', () => {
                 data: items
             }
 
-            const expected = initialState.merge({
-                items,
-                loading: false,
-                resp
-            })
+            const expected = initialState
+                .merge({
+                    items
+                })
+                .setIn(['_internal', 'loading', 'fetchList'], false)
 
             expect(
                 reducer(
@@ -78,18 +79,18 @@ describe('reducers', () => {
             ).toEqualImmutable(expected)
         })
 
-        it('should add a user', () => {
+        it('add OK', () => {
             const user = {
-                name: 'Mario'
+                name: 'Mario',
+                email: 'mario@nintendo.com'
             }
 
             const resp = user
 
-            const expected = initialState.merge({
-                items: List().push(fromJS(resp)),
-                loading: false,
-                resp
-            })
+            const expected = initialState
+                .merge({
+                    items: fromJS([resp])
+                })
 
             expect(
                 reducer(
@@ -101,16 +102,17 @@ describe('reducers', () => {
             ).toEqualImmutable(expected)
         })
 
-        it('should update users list', () => {
+        it('update list OK', () => {
             const items = [{
                 name: 'Mario'
             }, {
                 name: 'Luigi'
             }]
 
-            const expected = initialState.merge({
-                items
-            })
+            const expected = initialState
+                .merge({
+                    items
+                })
 
             expect(
                 reducer(
@@ -122,7 +124,7 @@ describe('reducers', () => {
             ).toEqualImmutable(expected)
         })
 
-        it('should update user', () => {
+        it('update OK', () => {
             expect(
                 reducer(
                     initialState.set('items',
@@ -160,34 +162,35 @@ describe('reducers', () => {
             )
         })
 
-        it('should delete user', () => {
+        it('delete OK', () => {
             expect(
                 reducer(
-                    initialState.set('items',
+                    initialState
+                        .set('items',
+                            fromJS([
+                                {
+                                    id: 1,
+                                    name: 'Mario'
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Luigi'
+                                }
+                            ])),
+                    {
+                        type: types.DELETE_USER_SUCCESS,
+                        userId: 1
+                    }
+                )
+            ).toEqualImmutable(
+                initialState
+                    .set('items',
                         fromJS([
-                            {
-                                id: 1,
-                                name: 'Mario'
-                            },
                             {
                                 id: 2,
                                 name: 'Luigi'
                             }
-                        ])),
-                    {
-                        type: types.DELETE_USER_SUCCESS,
-                        userId: 1,
-                        resp: {}
-                    }
-                )
-            ).toEqualImmutable(
-                initialState.set('items',
-                    fromJS([
-                        {
-                            id: 2,
-                            name: 'Luigi'
-                        }
-                    ])).set('resp', Map())
+                        ]))
             )
         })
     })

@@ -60,7 +60,6 @@ export default class UsersView extends React.Component {
 UsersView.propTypes = {
     items: PropTypes.object.isRequired,
     sort: PropTypes.object.isRequired,
-    stringQuery: PropTypes.string.isRequired,
     search: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
 

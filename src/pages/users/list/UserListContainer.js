@@ -13,17 +13,17 @@ class UserListContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.props.users.get('sort').equals(nextProps.users.get('sort'))) {
+        if (!this.props.users.getIn(['_internal', 'sort']).equals(nextProps.users.getIn(['_internal', 'sort']))) {
             this._search(
                 '',
-                this.props.users.getIn(['search', 'params']),
-                this.props.users.getIn(['search', 'stringQuery']),
-                nextProps.users.get('sort')
+                this.props.users.getIn(['_internal', 'search', 'params']),
+                this.props.users.getIn(['_internal', 'search', 'stringQuery']),
+                nextProps.users.getIn(['_internal', 'sort'])
             )
         }
     }
 
-    _search = (query, params, stringQuery, sort = this.props.users.get('sort')) => {
+    _search = (query, params, stringQuery, sort = this.props.users.getIn(['_internal', 'sort'])) => {
         this.props.actions.user.search(buildQuery(stringQuery, sort), params, stringQuery)
     }
 
@@ -39,10 +39,9 @@ class UserListContainer extends React.Component {
                 <div className="UserListContainer">
                     <UsersView
                         items={users.get('items')}
-                        sort={users.get('sort')}
-                        stringQuery={users.get('stringQuery')}
+                        sort={users.getIn(['_internal', 'sort'])}
                         search={this._search}
-                        isLoading={users.get('loading')}
+                        isLoading={users.getIn(['_internal', 'loading', 'fetchList'])}
                         createUser={this.props.actions.user.createUser}
                         updateUser={this.props.actions.user.updateUser}
                         deleteUser={this.props.actions.user.deleteUser}

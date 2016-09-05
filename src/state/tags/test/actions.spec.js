@@ -10,12 +10,17 @@ import {initialState} from '../reducers'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-const mockServer = new MockAdapter(axios)
-
 describe('actions', () => {
-    describe('tag', () => {
-        it('should dispatch add tags action', () => {
-            const store = mockStore(initialState)
+    describe('tags', () => {
+        let store
+        let mockServer
+
+        beforeEach(() => {
+            store = mockStore(initialState)
+            mockServer = new MockAdapter(axios)
+        })
+
+        it('dispatch add OK', () => {
             store.dispatch(actions.addTags(['refund', 'rejected']))
             const expectedActions = store.getActions()
 
@@ -25,7 +30,7 @@ describe('actions', () => {
             }])
         })
 
-        it('creates FETCH_TAG_LIST_SUCCESS when fetching tags has been done', () => {
+        it('fetch list OK', () => {
             mockServer
                 .onGet('/api/tags/')
                 .reply(200, {
@@ -43,8 +48,6 @@ describe('actions', () => {
                     }
                 }
             ]
-
-            const store = mockStore(initialState)
 
             return store
                 .dispatch(actions.fetchTags())

@@ -118,7 +118,7 @@ export default class MacroPreview extends React.Component {
     }
 
     render() {
-        const {currentMacro, cancel, selected} = this.props
+        const {currentMacro, cancel, selectedItemsIds} = this.props
 
         if (!currentMacro) {
             return (
@@ -158,7 +158,7 @@ export default class MacroPreview extends React.Component {
                         onClick={this.apply}
                         data-content={`${getModifier()} + Enter`}
                     >
-                        Apply macro to {selected.size} tickets
+                        Apply macro to {selectedItemsIds.size} tickets
                     </div>
                     <div id="cancel" className="ui basic grey right floated button" onClick={cancel} data-content="Esc">cancel</div>
                 </div>
@@ -171,5 +171,5 @@ MacroPreview.propTypes = {
     currentMacro: PropTypes.object,
     apply: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
-    selected: PropTypes.object.isRequired
+    selectedItemsIds: PropTypes.object.isRequired
 }

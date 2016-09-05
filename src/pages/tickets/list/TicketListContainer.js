@@ -101,7 +101,7 @@ class TicketListContainer extends React.Component {
                     />
                     <MacroContainer
                         disableExternalActions selectionMode
-                        selected={this.props.tickets.get('selected')}
+                        selectedItemsIds={this.props.tickets.getIn(['_internal', 'selectedItemsIds'])}
                     />
                 </div>
             </DocumentTitle>
@@ -110,15 +110,7 @@ class TicketListContainer extends React.Component {
 }
 
 TicketListContainer.propTypes = {
-    tickets: PropTypes.shape({
-        items: PropTypes.array,
-        resp_meta: PropTypes.shape({
-            page: PropTypes.number,
-            nb_pages: PropTypes.number
-        }),
-        get: PropTypes.func,
-        search: PropTypes.string
-    }),
+    tickets: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
     tags: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,

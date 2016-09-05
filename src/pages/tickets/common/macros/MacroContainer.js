@@ -31,7 +31,7 @@ class MacroContainer extends React.Component {
     }
 
     render() {
-        const {macros, tags, agents, actions, disableExternalActions, selectionMode, selected} = this.props
+        const {macros, tags, agents, actions, disableExternalActions, selectionMode, selectedItemsIds} = this.props
 
         if (!macros.get('isModalOpen')) {
             return null
@@ -47,7 +47,7 @@ class MacroContainer extends React.Component {
                 actions={actions}
                 disableExternalActions={disableExternalActions || false}
                 selectionMode={selectionMode || false}
-                selected={selected}
+                selectedItemsIds={selectedItemsIds}
                 noUnbind={this.props.noUnbind}
             />
         )
@@ -63,7 +63,7 @@ MacroContainer.propTypes = {
 
     disableExternalActions: PropTypes.bool,
     selectionMode: PropTypes.bool,
-    selected: PropTypes.object,
+    selectedItemsIds: PropTypes.object,
 
     noUnbind: PropTypes.bool
 }

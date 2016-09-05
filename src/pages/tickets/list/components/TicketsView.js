@@ -117,9 +117,9 @@ export default class TicketsView extends React.Component {
 
                                     <ListActions
                                         views={views}
-                                        shouldDisplayBulkActions={tickets.get('selected').size > 0}
+                                        shouldDisplayBulkActions={tickets.getIn(['_internal', 'selectedItemsIds']).size > 0}
                                         actions={actions}
-                                        selected={tickets.get('selected')}
+                                        selectedItemsIds={tickets.getIn(['_internal', 'selectedItemsIds'])}
                                         currentUser={currentUser}
                                         tags={this.props.tags}
                                         agents={this.props.users.get('agents')}

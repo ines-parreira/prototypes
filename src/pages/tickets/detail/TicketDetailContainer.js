@@ -228,16 +228,21 @@ class TicketDetailContainer extends React.Component {
     }
 
     _computeNextUrl(ascending) {
+        let nextTicketUrl = '/app'
         const translation = ascending ? 1 : -1
-        const nextIndex = this.props.tickets.get('currentTicketIndex') + translation
+        const currentTicketIndex = this.props.tickets.getIn(['_internal', 'currentTicketIndex'])
+
+        if (!currentTicketIndex) {
+            return nextTicketUrl
+        }
+
+        const nextIndex = currentTicketIndex + translation
         const nextTicket = this.props.tickets.get('items').toJS()[nextIndex]
         const activeView = this.props.views.get('active')
 
-        let nextTicketUrl = '/app'
-
         if (nextTicket && nextTicket.id) {
             nextTicketUrl = `/app/ticket/${nextTicket.id}`
-            this.props.actions.tickets.saveIndex(this.props.tickets.get('currentTicketIndex') + translation)
+            this.props.actions.tickets.saveIndex(nextIndex)
         } else if (!activeView.isEmpty()) {
             nextTicketUrl = `/app/tickets/${activeView.get('id')}/${activeView.get('slug')}`
         }

@@ -1,53 +1,56 @@
 import * as types from './constants'
 import {fromJS, Map, List} from 'immutable'
 
-const initialState = fromJS({
+export const initialState = fromJS({
     items: [],
-    selected: [],
-    resp_meta: {},
-    loading: false,
-    search: '',
-    currentTicketIndex: null,
-    viewId: null
+    _internal: {
+        selectedItemsIds: [],
+        loading: {}
+    }
 })
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case types.FETCH_TICKET_LIST_VIEW_START:
-            return initialState.set('loading', true).set('viewId', action.viewId)
+            return state
+                .setIn(['_internal', 'currentViewId'], action.viewId)
+                .setIn(['_internal', 'loading', 'fetchList'], true)
 
         case types.FETCH_TICKET_LIST_VIEW_SUCCESS: {
-            const payload = action.data
-
-            if (state.get('viewId') !== action.viewId) {
+            // make sure the incoming ticket list is the one the current user is looking at
+            if (state.getIn(['_internal', 'currentViewId']) !== action.viewId) {
                 return state
             }
 
-            return state.merge({
-                selected: List(),
-                items: fromJS(payload.data),
-                resp_meta: fromJS(payload.meta),
-                loading: false,
-                search: state.get('search')
-            })
+            const payload = action.data
+
+            return state
+                .merge({
+                    items: payload.data
+                })
+                .setIn(['_internal', 'selectedItemsIds'], List())
+                .setIn(['_internal', 'pagination'], payload.meta)
+                .setIn(['_internal', 'loading', 'fetchList'], false)
         }
 
         case types.TOGGLE_TICKET_SELECTION: {
             if (action.ticketId === 'all') {
-                if (state.get('selected').size < state.get('items').size) {
-                    return state.set('selected', state.get('items').map(item => item.get('id')))
+                if (state.getIn(['_internal', 'selectedItemsIds']).size < state.get('items').size) {
+                    return state.setIn(['_internal', 'selectedItemsIds'], state.get('items').map(item => item.get('id')))
                 }
 
-                return state.set('selected', List())
+                return state.setIn(['_internal', 'selectedItemsIds'], List())
             }
 
-            const idx = state.get('selected').indexOf(action.ticketId)
+            const idx = state
+                .getIn(['_internal', 'selectedItemsIds'])
+                .indexOf(action.ticketId)
 
             if (~idx) {
-                return state.set('selected', state.get('selected').delete(idx))
+                return state.setIn(['_internal', 'selectedItemsIds'], state.getIn(['_internal', 'selectedItemsIds']).delete(idx))
             }
 
-            return state.set('selected', state.get('selected').push(action.ticketId))
+            return state.setIn(['_internal', 'selectedItemsIds'], state.getIn(['_internal', 'selectedItemsIds']).push(action.ticketId))
         }
 
         case types.BULK_UPDATE_SUCCESS: {
@@ -58,9 +61,9 @@ export default (state = initialState, action) => {
                 state.get('items').map(item => {
                     let newItem = item
 
-                    // updates only tickets which are selected
-                    if (~state.get('selected').indexOf(newItem.get('id'))) {
-                        // for each selected ticket, apply to it all updates which were send to the backend
+                    // updates only tickets which are selectedItemsIds
+                    if (~state.getIn(['_internal', 'selectedItemsIds']).indexOf(newItem.get('id'))) {
+                        // for each selectedItemsIds ticket, apply to it all updates which were send to the backend
                         for (const key of Object.keys(updates)) {
                             if (key === 'tag') {
                                 newItem = newItem.set(
@@ -93,14 +96,16 @@ export default (state = initialState, action) => {
         case types.BULK_DELETE_SUCCESS: {
             const ids = action.ids
 
-            return state.merge({
-                items: state.get('items').filter(item => !~ids.indexOf(item.get('id'))),
-                selected: List()
-            })
+            return state
+                .merge({
+                    items: state.get('items').filter(item => !~ids.indexOf(item.get('id')))
+                })
+                .setIn(['_internal', 'selectedItemsIds'], List())
         }
 
         case types.SAVE_INDEX:
-            return state.set('currentTicketIndex', action.currentTicketIndex)
+            return state
+                .setIn(['_internal', 'currentTicketIndex'], action.currentTicketIndex)
 
         default:
             return state

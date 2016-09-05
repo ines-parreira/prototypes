@@ -12,7 +12,7 @@ export default class TicketTable extends React.Component {
 
     render() {
         const {view, tickets, currentUser} = this.props
-        const isLoading = this.props.tickets.get('loading')
+        const isLoading = this.props.tickets.getIn(['_internal', 'loading', 'fetchList'])
 
         if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty() && !isLoading)) {
             let message = <p>{isLoading ? 'Loading...' : 'This view is empty. Enjoy your day!'}</p>
@@ -37,7 +37,7 @@ export default class TicketTable extends React.Component {
                                     <input type="checkbox"
                                            ref="toggleSelection"
                                            onChange={this.toggleSelectAll}
-                                           checked={tickets.get('items').size === tickets.get('selected').size}
+                                           checked={tickets.get('items').size === tickets.getIn(['_internal', 'selectedItemsIds']).size}
                                     />
                                     <label />
                                 </span>
@@ -67,7 +67,7 @@ export default class TicketTable extends React.Component {
                             ticket={ticket}
                             currentUser={currentUser}
                             toggleTicketSelection={this.props.toggleTicketSelection}
-                            selected={!!~tickets.get('selected').indexOf(ticket.get('id'))}
+                            selected={!!~tickets.getIn(['_internal', 'selectedItemsIds']).indexOf(ticket.get('id'))}
                             saveIndex={() => this.props.saveIndex(index)}
                         />
                     ))}
@@ -75,8 +75,8 @@ export default class TicketTable extends React.Component {
                 </table>
 
                 <SemanticPaginator
-                    page={tickets.getIn(['resp_meta', 'page'])}
-                    totalPages={tickets.getIn(['resp_meta', 'nb_pages'])}
+                    page={tickets.getIn(['_internal', 'pagination', 'page'])}
+                    totalPages={tickets.getIn(['_internal', 'pagination', 'nb_pages'])}
                     onChange={(page) => this.props.fetchPage(page)}
                     radius={1}
                     anchor={2}

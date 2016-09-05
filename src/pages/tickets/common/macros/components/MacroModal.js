@@ -27,7 +27,7 @@ export default class MacroModal extends React.Component {
             mousetrap.bind('mod+enter', (e) => {
                 e.preventDefault()
                 this.cancel()
-                this.props.actions.tickets.bulkUpdate(this.props.selected, 'macro', this.props.currentMacro.toJS())
+                this.props.actions.tickets.bulkUpdate(this.props.selectedItemsIds, 'macro', this.props.currentMacro.toJS())
             })
         }
     }
@@ -47,14 +47,14 @@ export default class MacroModal extends React.Component {
     }
 
     render() {
-        const { macros, currentMacro, actions, selectionMode, selected } = this.props
+        const { macros, currentMacro, actions, selectionMode, selectedItemsIds } = this.props
 
         const rightPart = selectionMode ? (
             <MacroPreview
                 currentMacro={currentMacro}
-                apply={() => { this.cancel(); actions.tickets.bulkUpdate(selected, 'macro', currentMacro ? currentMacro.toJS() : null) }}
+                apply={() => { this.cancel(); actions.tickets.bulkUpdate(selectedItemsIds, 'macro', currentMacro ? currentMacro.toJS() : null) }}
                 cancel={() => this.cancel()}
-                selected={selected}
+                selectedItemsIds={selectedItemsIds}
             />
         ) : (
             <MacroEdit
@@ -101,7 +101,7 @@ MacroModal.propTypes = {
 
     disableExternalActions: PropTypes.bool.isRequired,
     selectionMode: PropTypes.bool.isRequired,
-    selected: PropTypes.object,
+    selectedItemsIds: PropTypes.object,
 
     noUnbind: PropTypes.bool
 }

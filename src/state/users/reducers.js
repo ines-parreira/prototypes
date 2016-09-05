@@ -4,18 +4,17 @@ import {fromJS} from 'immutable'
 export const initialState = fromJS({
     items: [],
     agents: [],  // Note both admins and 'simple' agents are considered agents.
-    displayItems: [],
-    sort: {
-        field: 'updated_datetime',
-        direction: 'desc' // can be 'asc' or 'desc'
-    },
-    search: {
-        stringQuery: '',
-        params: {}
-    },
-    stringQuery: '',
-    loading: true,
-    resp: {}
+    _internal: {
+        sort: {
+            field: 'updated_datetime',
+            direction: 'desc' // can be 'asc' or 'desc'
+        },
+        search: {
+            stringQuery: '',
+            params: {}
+        },
+        loading: {}
+    }
 })
 
 export default (state = initialState, action) => {
@@ -23,18 +22,17 @@ export default (state = initialState, action) => {
     let newState = state
 
     switch (action.type) {
-
         case types.FETCH_USER_LIST_START:
             if (action.stringQuery !== undefined) {
-                newState = newState.merge({
-                    search: {
+                newState = newState
+                    .setIn(['_internal', 'search'], fromJS({
                         stringQuery: action.stringQuery,
                         params: action.params
-                    }
-                })
+                    }))
             }
 
-            return newState.merge({loading: true})
+            return newState
+                .setIn(['_internal', 'loading', 'fetchList'], true)
 
         case types.FETCH_USER_LIST_SUCCESS:
             // This is a bit lame but that's the proper definition of an agent.
@@ -44,40 +42,38 @@ export default (state = initialState, action) => {
                 newState = newState.set('items', fromJS(action.resp.data))
             }
 
-            return newState.merge({
-                loading: false,
-                resp: action.resp
-            })
+            return newState
+                .setIn(['_internal', 'loading', 'fetchList'], false)
 
         case types.CREATE_NEW_USER_SUCCESS:
-            return state.merge({
-                items: items.push(fromJS(action.resp)),
-                loading: false,
-                resp: action.resp
-            })
+            return state
+                .merge({
+                    items: items.push(fromJS(action.resp)),
+                })
 
         case types.UPDATE_USER_SUCCESS:
-            return state.setIn(['items', items.findIndex(item => item.get('id') === action.userId)], fromJS(action.resp))
+            return state
+                .setIn(['items', items.findIndex(item => item.get('id') === action.userId)], fromJS(action.resp))
 
         case types.DELETE_USER_SUCCESS:
-            return state.merge({
-                items: state.get('items').filter((item) => item.get('id') !== action.userId),
-                resp: action.resp
-            })
+            return state
+                .merge({
+                    items: state.get('items').filter((item) => item.get('id') !== action.userId)
+                })
 
         case types.SORT_USERS: {
-            return state.mergeDeep({
-                sort: {
+            return state
+                .setIn(['_internal', 'sort'], fromJS({
                     field: action.sortField,
                     direction: action.sortDirection
-                }
-            })
+                }))
         }
 
         case types.UPDATE_LIST:
-            return state.merge({
-                items: action.list
-            })
+            return state
+                .merge({
+                    items: action.list
+                })
 
         default:
             return state
