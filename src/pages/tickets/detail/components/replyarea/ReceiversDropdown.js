@@ -35,6 +35,7 @@ export default class ReceiversDropdown extends React.Component {
             const value = user[this.props.valueProp]
 
             return {
+                id: user.id,
                 name: user.name,
                 label: displayUserNameFromSource(user, this.props.sourceType),
                 value
@@ -54,6 +55,7 @@ export default class ReceiversDropdown extends React.Component {
 
         this.props.actions.ticket.setReceivers(newValue.map((user) => {
             return {
+                id: user.id,
                 name: user.name,
                 [fieldName]: user.value
             }
