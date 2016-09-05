@@ -16,6 +16,20 @@ export default class ReplyMessageChannel extends React.Component {
         })
     }
 
+    shouldComponentUpdate(nextProps) {
+        const currentTicket = this.props.ticket
+            .deleteIn(['newMessage', 'body_text'])
+            .deleteIn(['newMessage', 'body_html'])
+            .deleteIn(['state', 'contentState'])
+
+        const nextTicket = nextProps.ticket
+            .deleteIn(['newMessage', 'body_text'])
+            .deleteIn(['newMessage', 'body_html'])
+            .deleteIn(['state', 'contentState'])
+
+        return !currentTicket.equals(nextTicket) || !this.props.settings.equals(nextProps.settings)
+    }
+
     _initialReceivers() {
         const ticket = this.props.ticket
         let receivers = fromJS([])

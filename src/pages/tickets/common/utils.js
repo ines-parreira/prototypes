@@ -17,3 +17,17 @@ export function displayUserNameFromSource(user, sourceType) {
 
     return label
 }
+
+export function isTicketDifferent(currentTicket, nextTicket) {
+    const cTicket = currentTicket
+        .deleteIn(['newMessage', 'body_text'])
+        .deleteIn(['newMessage', 'body_html'])
+        .deleteIn(['state', 'contentState'])
+
+    const nTicket = nextTicket
+        .deleteIn(['newMessage', 'body_text'])
+        .deleteIn(['newMessage', 'body_html'])
+        .deleteIn(['state', 'contentState'])
+
+    return !cTicket.equals(nTicket)
+}

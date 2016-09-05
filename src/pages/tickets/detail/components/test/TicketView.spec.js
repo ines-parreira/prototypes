@@ -69,10 +69,6 @@ describe('TicketView component', () => {
             component = renderer.getRenderOutput()
         })
 
-        it('should contain ticket-header', () => {
-            expect(component.props.children[0].props.className).toContain('ticket-header')
-        })
-
         it('should contain ticket-content', () => {
             expect(component.props.children[1].props.className).toContain('ticket-content')
         })

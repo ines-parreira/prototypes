@@ -2,8 +2,13 @@ import React, {PropTypes} from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import {getModifier} from '../../../../../utils'
+import {isTicketDifferent} from './../../../common/utils'
 
 export default class TicketSubmitButtons extends React.Component {
+    shouldComponentUpdate(nextProps) {
+        return isTicketDifferent(this.props.ticket, nextProps.ticket)
+    }
+
     componentDidMount() {
         const settings = {
             variation: 'tiny inverted',

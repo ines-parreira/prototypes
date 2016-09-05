@@ -1,15 +1,13 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 
-import EditableTitle from '../../common/components/EditableTitle'
+import TicketHeader from './TicketHeader'
+
 import TicketMessages from './TicketMessages'
+
+import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
-import TicketTags from './ticketdetails/TicketTags'
-// import TicketPriority from './ticketdetails/TicketPriority'
-import TicketAssignee from './ticketdetails/TicketAssignee'
-import TicketStatus from './ticketdetails/TicketStatus'
-import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
-import classNames from 'classnames'
 
 export default class TicketView extends React.Component {
     // USED ONLY BY THE COMMENTED DROPDOWN BELOW
@@ -166,97 +164,15 @@ export default class TicketView extends React.Component {
             <div className={classNames('ticket-view', {
                 'transition out fade right': ticketHidden
             })}>
-                <div className="ticket-header">
 
-                    {/*
-                     <div className="ticket-actions-btn ui dropdown" id="top-option-dropdown">
-                     <i className="ui icon angle down"/>
-                     <div className="menu transition">
-                     <div className="item">
-                     <a href="#">
-                     Merge
-                     </a>
-                     </div>
-                     <div className="item">
-                     <a href="#">
-                     Mark as spam
-                     </a>
-                     </div>
-                     </div>
-                     </div>
-                     */}
-
-                    {/*
-                     <button className="ticket-previous-btn ui mini button">
-                     NO PREVIOUS TICKETS
-                     </button>
-                     */}
-
-                    <EditableTitle
-                        title={ticket.get('subject')}
-                        placeholder="Subject"
-                        update={actions.ticket.setSubject}
-                        focus={!ticket.get('id')}
-                    />
-
-                    <div className="ui grid ticket-header-details">
-                        <div className="row">
-
-                            <div className="eleven wide column">
-                                {(() => {
-                                    if (!isCreating) {
-                                        return (
-                                            <TicketStatus
-                                                currentStatus={ticket.get('status')}
-                                                setStatus={actions.ticket.setStatus}
-                                                computeNextUrl={computeNextUrl}
-                                                hideTicket={this.hideTicket}
-                                            />
-                                        )
-                                    }
-                                })()}
-
-                                <TicketTags
-                                    tags={tags.get('items').toJS()}
-                                    ticketTags={ticket.get('tags')}
-                                    addTag={actions.ticket.addTags}
-                                    removeTag={actions.ticket.removeTag}
-                                />
-                            </div>
-
-                            <div className="five wide column ticket-details">
-
-                                {(() => {
-                                    /*
-                                     return (
-                                     <TicketPriority
-                                     priority={ticket.get('priority')}
-                                     togglePriority={actions.ticket.togglePriority}
-                                     />
-                                     )
-                                     */
-                                })()}
-
-                                <TicketAssignee
-                                    currentAssignee={ticket.getIn(['assignee_user', 'name'])}
-                                    agents={users.get('agents')}
-                                    setAgent={actions.ticket.setAgent}
-                                />
-
-                                {(() => {
-                                    if (!isCreating) {
-                                        return (
-                                            <span className="ticket-id ticket-details-item">
-                                                #{ticket.get('id')}
-                                            </span>
-                                        )
-                                    }
-                                })()}
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+                <TicketHeader
+                    ticket={ticket}
+                    tags={tags}
+                    agents={users.get('agents')}
+                    actions={actions}
+                    computeNextUrl={computeNextUrl}
+                    hideTicket={this.hideTicket}
+                />
 
                 <div className="ticket-content">
                     {(() => {

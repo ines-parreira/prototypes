@@ -1,8 +1,15 @@
 import React, {PropTypes} from 'react'
 import {List, fromJS} from 'immutable'
 import InfobarWidget from './InfobarWidget'
+import {isTicketDifferent} from './../../../common/utils'
 
 export default class TicketInfobar extends React.Component {
+    shouldComponentUpdate(nextProps) {
+        return isTicketDifferent(this.props.ticket, nextProps.ticket) ||
+            !this.props.widgets.equals(nextProps.widgets) ||
+            !this.props.currentUser.equals(nextProps.currentUser)
+    }
+
     render() {
         const {ticket, widgets, currentUser} = this.props
         if (!ticket || !widgets.get('items').size) {
