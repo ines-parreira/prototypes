@@ -33,6 +33,9 @@ export default class Search extends React.Component {
             }
 
             this.isInitialized = true
+        } else if (this.props.currentQuery && !this.refs.searchInput.value) {
+            const firstPath = this.props.queryPath.split(',')[0]
+            this.refs.searchInput.value = _.get(this.props.currentQuery.toJS(), firstPath)
         }
     }
 
@@ -69,6 +72,8 @@ Search.propTypes = {
     placeholder: PropTypes.string,
     autofocus: PropTypes.bool,
     searchDebounceTime: PropTypes.number,
+
+    currentQuery: PropTypes.object,
 
     location: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }

@@ -16,7 +16,10 @@ import {compactInteger} from '../../../utils'
 class TicketListContainer extends React.Component {
     componentWillMount() {
         this.props.actions.schema.fetch()
-        this._fetchPage()
+
+        if (this.props.views.get('active').isEmpty() && this.props.views.get('items').size) {
+            this.props.actions.view.setViewActive(this.props.views.getIn(['items', 0]))
+        }
     }
 
     // Test if we need to re-fetch the data
@@ -26,23 +29,26 @@ class TicketListContainer extends React.Component {
         const currentActive = currentViews.get('active')
         const nextActive = nextViews.get('active')
 
-        if (nextViews.get('items').size && nextViews.get('active').isEmpty()) {
+        if (_.isEmpty(nextProps.params) && nextViews.get('items').size &&
+            (
+                nextViews.get('active').isEmpty() ||
+                nextViews.getIn(['items', 0, 'id']) !== nextViews.getIn(['active', 'id'])
+            )
+        ) {
             this.props.actions.view.setViewActive(nextViews.getIn(['items', 0]))
         }
 
         // if our view changed
         if (currentActive && nextActive && !nextActive.isEmpty() &&
-          (
-            currentActive.isEmpty() ||
-            // we ignore the fields because they get updated before any filtering is performed
-            // Ex: when fetching the Requester field enum
-            !currentActive.delete('fields').equals(nextActive.delete('fields'))
-          )
+            (
+                currentActive.isEmpty() ||
+                // we ignore the fields because they get updated before any filtering is performed
+                // Ex: when fetching the Requester field enum
+                !currentActive.delete('fields').equals(nextActive.delete('fields'))
+            )
         ) {
             this._fetchPage(1, nextProps)
-            // Track action on Amplitude when a view is opened
-            amplitude.getInstance().logEvent('Opened view', _.pick(nextActive.toJS(), ['id',
-                'slug']))
+            amplitude.getInstance().logEvent('Opened view', _.pick(nextActive.toJS(), ['id', 'slug']))
         }
     }
 
@@ -123,7 +129,8 @@ TicketListContainer.propTypes = {
     actions: PropTypes.object.isRequired,
 
     // React Router
-    params: PropTypes.object
+    params: PropTypes.object,
+    location: PropTypes.object
 }
 
 function mapStateToProps(state) {

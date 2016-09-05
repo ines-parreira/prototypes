@@ -9,7 +9,6 @@ export default class TicketInfobar extends React.Component {
             return null
         }
 
-
         const items = List(widgets.get('items'))
         const topWidgets = items.filter(w => w.type === 'top').sortBy(w => w.order)
         const bottomWidgets = items.filter(w => w.type === 'bottom').sortBy(w => w.order)

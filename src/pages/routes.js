@@ -4,7 +4,6 @@ import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
 import IntegrationListContainer from './integrations/list/IntegrationListContainer'
 
-import WelcomeContainer from './welcome/WelcomeContainer'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import IntegrationNavbarContainer from './integrations/common/IntegrationNavbarContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
@@ -18,7 +17,7 @@ import NoMatch from './common/components/NoMatch'
 
 export default (
     <Route path="/app" component={App}>
-        <IndexRoute components={{content: WelcomeContainer, navbar: TicketNavbarContainer}} />
+        <IndexRoute components={{content: TicketListContainer, navbar: TicketNavbarContainer}} />
         <Route path="users" components={{content: UserListContainer, navbar: UserNavbarContainer}} />
         <Route path="users/:userId" components={{content: UserDetailContainer, navbar: UserNavbarContainer}} />
         <Route path="rules" component={RuleContainer} />
