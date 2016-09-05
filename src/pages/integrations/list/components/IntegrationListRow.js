@@ -6,17 +6,17 @@ import {INTEGRATION_TYPE_TO_ICON} from '../../../../config'
 
 export default class IntegrationListRow extends React.Component {
     render() {
-        const {integrationType, onClickConnect, onClickEdit, loading} = this.props
+        const {integrationType, onClickAdd, onClickEdit, isLoading} = this.props
 
         const triggerEdit = onClickEdit ||
             (() => browserHistory.push(`/app/integrations/${integrationType.get('type')}`))
 
-        const triggerConnect = onClickConnect ||
+        const triggerAdd = onClickAdd ||
             (() => browserHistory.push(`/app/integrations/${integrationType.get('type')}/new`))
 
-        const buttonClasses = ['ui', 'basic', 'light', 'blue', 'button', 'right', {loading}]
+        const buttonClasses = ['ui', 'basic', 'light', 'blue', 'button', 'right', {loading: isLoading}]
         const button = integrationType.get('count') <= 0 ? (
-            <button className={classNames(buttonClasses)} onClick={triggerConnect}>
+            <button className={classNames(buttonClasses)} onClick={triggerAdd}>
                 Add
             </button>
         ) : (
@@ -49,7 +49,7 @@ export default class IntegrationListRow extends React.Component {
 
 IntegrationListRow.propTypes = {
     integrationType: PropTypes.object.isRequired,
-    onClickConnect: PropTypes.func,
+    onClickAdd: PropTypes.func,
     onClickEdit: PropTypes.func,
-    loading: PropTypes.bool
+    isLoading: PropTypes.bool
 }

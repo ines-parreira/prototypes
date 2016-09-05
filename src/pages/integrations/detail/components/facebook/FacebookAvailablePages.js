@@ -26,18 +26,19 @@ export default class FacebookAvailablePages extends React.Component {
                     <table className="ui very basic selectable padded table">
                         <tbody>
                         {
-                            facebookIntegrations.valueSeq().map((p) => {
-                                const existing = !p.get('deactivated_datetime')
-                                return (
-                                    <FacebookPageRow
-                                        key={p.get('id')}
-                                        facebookIntegration={p}
-                                        actions={actions}
-                                        onClick={() => (!existing ? browserHistory.push(`/app/integrations/facebook/${p.get('id')}`) : window.alert('This page is already integrated with Gorgias'))}
-                                    />
-                                )
-                            }
-                            )
+                            facebookIntegrations
+                                .valueSeq()
+                                .map((p) => {
+                                    const existing = !p.get('deactivated_datetime')
+                                    return (
+                                        <FacebookPageRow
+                                            key={p.get('id')}
+                                            facebookIntegration={p}
+                                            actions={actions}
+                                            onClick={() => (!existing ? browserHistory.push(`/app/integrations/facebook/${p.get('id')}`) : window.alert('This page is already integrated with Gorgias'))}
+                                        />
+                                    )
+                                })
                         }
                         </tbody>
                     </table>

@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as IntegrationsActions from '../../../state/integrations/actions'
-import {getIntegrationsList} from '../../../state/integrations/utils'
 import IntegrationList from './components/IntegrationList'
 
 class IntegrationListContainer extends React.Component {
@@ -18,10 +17,9 @@ class IntegrationListContainer extends React.Component {
         }
 
         const allProps = {
-            integrationsList: getIntegrationsList(integrations.get('integrations')),
-            facebookAppId: settings.getIn(['data', 'facebook_app_id']),
-            typeToLoadingStatus: {facebook: integrations.getIn(['state', 'loading', 'facebookLogin'])},
-            actions
+            integrations,
+            actions,
+            facebookAppId: settings.getIn(['data', 'facebook_app_id'])
         }
 
         return <IntegrationList {...allProps} />

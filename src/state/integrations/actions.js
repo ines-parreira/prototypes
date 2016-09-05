@@ -134,13 +134,11 @@ export function facebookLogin() {
             type: types.FACEBOOK_LOGIN
         })
 
-        // eslint-disable-next-line no-undef
         FB.getLoginStatus((res) => {
             if (res.status === 'connected') {
                 onFacebookLoginSuccess(dispatch)(res)
             } else {
                 // login popup
-                // eslint-disable-next-line no-undef
                 FB.login(onFacebookLoginSuccess(dispatch), {
                     scope: 'manage_pages,publish_pages,read_page_mailboxes'
                 })

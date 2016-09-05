@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 
-
 /**
  * A 'Higher order component' that loads the Facebook sdk (required from Facebook login).
  *
@@ -10,11 +9,10 @@ import React, {PropTypes} from 'react'
 export default function WrapInFacebookLogin(Component) {
     class FacebookLoginWrapperComponent extends React.Component {
         componentWillMount() {
-            const {...others, facebookAppId} = this.props
-            this.otherProps = others
+            const {facebookAppId} = this.props
 
             window.fbAsyncInit = () => {
-                FB.init({ // eslint-disable-line no-undef
+                FB.init({
                     appId: facebookAppId,
                     xfbml: true,
                     version: 'v2.6'
@@ -35,13 +33,7 @@ export default function WrapInFacebookLogin(Component) {
         }
 
         render() {
-            const {...others} = this.props
-            this.otherProps = others
-
-            if (!this.otherProps) {
-                return null
-            }
-            return <Component {...this.otherProps} />
+            return <Component {...this.props} />
         }
     }
 

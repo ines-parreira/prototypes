@@ -1,13 +1,29 @@
 import React, {PropTypes} from 'react'
 import IntegrationListRow from './IntegrationListRow'
+import {getIntegrationsList} from '../../../../state/integrations/utils'
 import WrapInFacebookLogin from '../../detail/components/facebook/WrapInFacebookLogin'
 
 class IntegrationList extends React.Component {
+    _isLoading(type) {
+        const integrations = this.props.integrations
+        const loaders = {
+            facebook: integrations.getIn(['state', 'loading', 'facebookLogin'])
+        }
+        return loaders[type]
+    }
+
     render() {
-        const {integrationsList, actions, typeToLoadingStatus} = this.props
+        const {
+            integrations,
+            actions
+        } = this.props
 
         // A map from type to the action that will be on the connect button
-        const typeToOnClickConnect = {facebook: actions.facebookLogin}
+        const typeToOnClickAdd = {
+            facebook: actions.facebookLogin
+        }
+
+        const list = getIntegrationsList(integrations.get('integrations'))
 
         return (
             <div className="IntegrationsListView">
@@ -23,12 +39,12 @@ class IntegrationList extends React.Component {
                         <table className="ui very basic padded table">
                             <tbody>
                             {
-                                integrationsList.map((c) => (
+                                list.map((c) => (
                                     <IntegrationListRow
                                         key={c.get('type')}
                                         integrationType={c}
-                                        onClickConnect={typeToOnClickConnect[c.get('type')]}
-                                        loading={typeToLoadingStatus[c.get('type')]}
+                                        onClickAdd={typeToOnClickAdd[c.get('type')]}
+                                        isLoading={this._isLoading(c.get('type'))}
                                     />
                                 ))
                             }
@@ -42,9 +58,9 @@ class IntegrationList extends React.Component {
 }
 
 IntegrationList.propTypes = {
-    integrationsList: PropTypes.object.isRequired, // A list of possible integrations
+    facebookAppId: PropTypes.string,
+    integrations: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    typeToLoadingStatus: PropTypes.object.isRequired // A map integration type -> loading status to show loaders, etc.
 }
 
 // eslint-disable-next-line no-class-assign

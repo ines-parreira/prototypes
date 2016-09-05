@@ -14,7 +14,7 @@ export default class FacebookPageDetail extends React.Component {
         const {actions, integration, loading} = this.props
         const page = integration.get('facebook')
 
-        if (loading.get('integration')) {
+        if (!page || loading.get('integration')) {
             return <Loader />
         }
 
