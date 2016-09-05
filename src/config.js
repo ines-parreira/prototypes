@@ -49,7 +49,8 @@ export const INTEGRATION_TYPE_TO_ICON = {
     facebook: 'facebook square icon',
     http: 'feed icon',
     twitter: 'twitter icon',
-    segment: 'square icon'
+    segment: 'square icon',
+    smooch: 'comments icon'
 }
 
 
@@ -61,7 +62,11 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     // },
     {
         type: 'facebook',
-        description: 'Connect your Facebook page'
+        description: 'Connect your Facebook pages'
+    },
+    {
+        type: 'smooch',
+        description: 'Chat with your users'
     },
     // {
     //     type: 'http',

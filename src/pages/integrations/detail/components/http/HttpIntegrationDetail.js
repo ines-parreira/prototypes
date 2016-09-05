@@ -153,7 +153,7 @@ class HttpIntegrationDetail extends React.Component {
         }
 
         return (
-            <div className="ui grid FacebookPageSettingsView">
+            <div className="ui grid">
                 <div className="sixteen wide column">
 
                     <div className="ui large breadcrumb">
@@ -180,12 +180,11 @@ class HttpIntegrationDetail extends React.Component {
                                    required
                             />
                         </div>
-                        <div className="required field">
+                        <div className="field">
                             <label>Description</label>
                             <input type="text"
                                    placeholder="Description"
                                    {...description}
-                                   required
                             />
                         </div>
                         <div className="required field">

@@ -52,11 +52,17 @@ export default class IntegrationList extends React.Component {
                     </button>
                 </div>
 
-                <div className="row">
-                    <div className="sixteen wide column">
-                        {longTypeDescription}
-                    </div>
-                </div>
+                {(() => {
+                    if (longTypeDescription) {
+                        return (
+                            <div className="row">
+                                <div className="sixteen wide column">
+                                    {longTypeDescription}
+                                </div>
+                            </div>
+                        )
+                    }
+                })()}
 
                 {(() => {
                     if (displayedIntegrations.count() === 0) {
@@ -81,7 +87,7 @@ IntegrationList.propTypes = {
     integrations: PropTypes.object.isRequired, // The integrations for the relevant type only
     createIntegration: PropTypes.func.isRequired, // The callback to create a new integration for this type.
     createIntegrationButtonText: PropTypes.string.isRequired, // The text for the button to create a new integration
-    longTypeDescription: PropTypes.string.isRequired, // A long description for the integration.
+    longTypeDescription: PropTypes.string,
     loading: PropTypes.object.isRequired,  // A map for different loading status(es)
     // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.
     integrationToItemDisplay: PropTypes.func.isRequired

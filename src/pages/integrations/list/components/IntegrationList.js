@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import IntegrationListRow from './IntegrationListRow'
-import WrapInFacebookLogin from '../../detail/facebook/components/WrapInFacebookLogin'
+import WrapInFacebookLogin from '../../detail/components/facebook/WrapInFacebookLogin'
 
 class IntegrationList extends React.Component {
     render() {

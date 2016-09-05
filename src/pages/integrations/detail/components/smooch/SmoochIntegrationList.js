@@ -1,11 +1,10 @@
 import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
-import IntegrationList from '../../components/IntegrationList'
+import IntegrationList from '../IntegrationList'
 
-export default class HttpIntegrationList extends React.Component {
+export default class SmoochIntegrationList extends React.Component {
     render() {
         const {integrations, actions, loading} = this.props
-        const longTypeDescription = 'HTTP integrations allow you to connect Gorgias to about anything with HTTP bindings.'
 
         const integrationToItemDisplay = (int) => {
             return (
@@ -26,7 +25,7 @@ export default class HttpIntegrationList extends React.Component {
                             Delete
                         </button>
                         <button className="ui basic light blue floated right button"
-                                onClick={() => browserHistory.push(`/app/integrations/http/${int.get('id')}`)}
+                                onClick={() => browserHistory.push(`/app/integrations/smooch/${int.get('id')}`)}
                         >
                             Edit
                         </button>
@@ -37,11 +36,10 @@ export default class HttpIntegrationList extends React.Component {
 
         return (
             <IntegrationList
-                integrationType="http"
-                integrations={integrations.filter((v) => v.get('type') === 'http')}
-                longTypeDescription={longTypeDescription}
-                createIntegration={() => browserHistory.push('/app/integrations/http/new')}
-                createIntegrationButtonText="Add HTTP integration"
+                integrationType="smooch"
+                integrations={integrations.filter((v) => v.get('type') === 'smooch')}
+                createIntegration={() => browserHistory.push('/app/integrations/smooch/new')}
+                createIntegrationButtonText="Add Smooch"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />
@@ -49,7 +47,7 @@ export default class HttpIntegrationList extends React.Component {
     }
 }
 
-HttpIntegrationList.propTypes = {
+SmoochIntegrationList.propTypes = {
     integrations: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired

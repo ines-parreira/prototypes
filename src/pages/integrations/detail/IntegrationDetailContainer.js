@@ -3,11 +3,15 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as IntegrationsActions from '../../../state/integrations/actions'
 
-import FacebookAvailablePages from './facebook/components/FacebookAvailablePages'
-import FacebookPageDetail from './facebook/components/FacebookPageDetail'
-import FacebookIntegrationList from './facebook/components/FacebookIntegrationList'
-import HttpIntegrationList from './http/components/HttpIntegrationList'
-import HttpIntegrationDetail from './http/components/HttpIntegrationDetail'
+import FacebookAvailablePages from './components/facebook/FacebookAvailablePages'
+import FacebookPageDetail from './components/facebook/FacebookPageDetail'
+import FacebookIntegrationList from './components/facebook/FacebookIntegrationList'
+
+import HttpIntegrationList from './components/http/HttpIntegrationList'
+import HttpIntegrationDetail from './components/http/HttpIntegrationDetail'
+
+import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
+import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
 
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
@@ -101,6 +105,27 @@ class IntegrationDetailContainer extends React.Component {
                 } else {
                     child = (
                         <HttpIntegrationList
+                            actions={commonProps.actions}
+                            integrations={commonProps.integrations}
+                            loading={commonProps.loading}
+                        />
+                    )
+                }
+                break
+
+            case 'smooch':
+                if (isDetail) {
+                    child = (
+                        <SmoochIntegrationDetail
+                            actions={commonProps.actions}
+                            integration={commonProps.integration}
+                            isUpdate={isUpdate}
+                            loading={commonProps.loading}
+                        />
+                    )
+                } else {
+                    child = (
+                        <SmoochIntegrationList
                             actions={commonProps.actions}
                             integrations={commonProps.integrations}
                             loading={commonProps.loading}
