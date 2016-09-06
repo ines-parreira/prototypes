@@ -29,14 +29,17 @@ export default (state = initialState, action) => {
                     items: payload.data
                 })
                 .setIn(['_internal', 'selectedItemsIds'], List())
-                .setIn(['_internal', 'pagination'], payload.meta)
+                .setIn(['_internal', 'pagination'], fromJS(payload.meta))
                 .setIn(['_internal', 'loading', 'fetchList'], false)
         }
 
         case types.TOGGLE_TICKET_SELECTION: {
             if (action.ticketId === 'all') {
                 if (state.getIn(['_internal', 'selectedItemsIds']).size < state.get('items').size) {
-                    return state.setIn(['_internal', 'selectedItemsIds'], state.get('items').map(item => item.get('id')))
+                    return state.setIn(
+                        ['_internal', 'selectedItemsIds'],
+                        state.get('items').map(item => item.get('id'))
+                    )
                 }
 
                 return state.setIn(['_internal', 'selectedItemsIds'], List())
@@ -47,10 +50,16 @@ export default (state = initialState, action) => {
                 .indexOf(action.ticketId)
 
             if (~idx) {
-                return state.setIn(['_internal', 'selectedItemsIds'], state.getIn(['_internal', 'selectedItemsIds']).delete(idx))
+                return state.setIn(
+                    ['_internal', 'selectedItemsIds'],
+                    state.getIn(['_internal', 'selectedItemsIds']).delete(idx)
+                )
             }
 
-            return state.setIn(['_internal', 'selectedItemsIds'], state.getIn(['_internal', 'selectedItemsIds']).push(action.ticketId))
+            return state.setIn(
+                ['_internal', 'selectedItemsIds'],
+                state.getIn(['_internal', 'selectedItemsIds']).push(action.ticketId)
+            )
         }
 
         case types.BULK_UPDATE_SUCCESS: {
