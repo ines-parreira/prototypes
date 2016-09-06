@@ -5,10 +5,12 @@ import { Link } from 'react-router'
 import { Field, reduxForm } from 'redux-form'
 
 import classNames from 'classnames'
-import { fromJS } from 'immutable'
+
+import { fromJS, List } from 'immutable'
 
 import { Loader } from '../../../../common/components/Loader'
 import { InputField } from '../../../../common/components/semantic'
+
 
 export const defaultContent = {
     type: 'smooch'
@@ -37,6 +39,7 @@ class SmoochIntegrationDetail extends React.Component {
 
     _handleSubmit = (values) => {
         let doc = fromJS(defaultContent).mergeDeep(values)
+        doc = doc.set('connections', List([doc.get('connections')]))
 
         // if update, set ids for server
         if (this.props.isUpdate) {
@@ -107,7 +110,7 @@ class SmoochIntegrationDetail extends React.Component {
                         />
                         <Field
                             type="text"
-                            name="smooch.webhook_id"
+                            name="connections.data.key.id"
                             label="Key ID"
                             placeholder="Key ID"
                             required
@@ -115,13 +118,12 @@ class SmoochIntegrationDetail extends React.Component {
                         />
                         <Field
                             type="text"
-                            name="smooch.webhook_secret"
+                            name="connections.data.key.secret"
                             label="Secret"
                             placeholder="Secret"
                             required
                             component={InputField}
                         />
-
                         <div className="field">
 
                             <button
