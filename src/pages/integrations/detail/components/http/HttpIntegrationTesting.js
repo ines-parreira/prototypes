@@ -36,6 +36,10 @@ const renderParameters = ({ fields }) => {
     )
 }
 
+renderParameters.propTypes = {
+    fields: React.PropTypes.array.isRequired,
+}
+
 class HttpIntegrationTesting extends React.Component {
 
     componentDidMount() {
