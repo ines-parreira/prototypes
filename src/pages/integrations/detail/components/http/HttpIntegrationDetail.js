@@ -1,24 +1,21 @@
-import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
-import classNames from 'classnames'
-import {fromJS} from 'immutable'
-import {forIn as _forIn} from 'lodash'
-import {reduxForm} from 'redux-form'
-import {Loader} from '../../../../common/components/Loader'
-import HttpIntegrationTesting from './HttpIntegrationTesting'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import React from 'react'
 
-export const fields = [
-    'name',
-    'description',
-    'http.url',
-    'http.method',
-    'http.request_content_type',
-    'http.headers[].key',
-    'http.headers[].value',
-    'http.form[].key',
-    'http.form[].value'
-]
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { Link } from 'react-router'
+
+import { Field, FieldArray, reduxForm } from 'redux-form'
+
+import classNames from 'classnames'
+import { fromJS } from 'immutable'
+import { forIn as _forIn } from 'lodash'
+
+import { Loader } from '../../../../common/components/Loader'
+import { InputField, SelectField } from '../../../../common/components/semantic'
+
+import HttpIntegrationTesting from './HttpIntegrationTesting'
+import HeaderFieldArray from './HeaderFieldArray'
+import ParameterFieldArray from './ParameterFieldArray'
+
 
 export const defaultContent = {
     type: 'http',
@@ -29,31 +26,21 @@ export const defaultContent = {
 }
 
 class HttpIntegrationDetail extends React.Component {
+
     constructor(props) {
         super(props)
 
-        this.state = {
-            isTestShown: false
-        }
-
-        this._handleTest = this._handleTest.bind(this)
-        this._handleSubmit = this._handleSubmit.bind(this)
+        this.state = { isTestShown: false }
 
         // used to know if form has been asynchronously initialized when updating
         this.isInitialized = !props.isUpdate
 
         // populating new integration form
-        if (!props.isUpdate) {
-            props.initializeForm(defaultContent)
-        }
+        if (!props.isUpdate) props.initialize(defaultContent)
     }
 
     componentWillUpdate(nextProps) {
-        const {
-            integration,
-            isUpdate,
-            loading
-        } = nextProps
+        const { integration, isUpdate, loading } = nextProps
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
@@ -62,10 +49,12 @@ class HttpIntegrationDetail extends React.Component {
             // transforming 'headers' and 'form' into arrays
             const transformationList = ['headers', 'form']
             transformationList.forEach((param) => {
-                updatedIntegration.http[param] = this._objectToParameters(updatedIntegration.http[param])
+                updatedIntegration.http[param] = this._objectToParameters(
+                    updatedIntegration.http[param]
+                )
             })
 
-            this.props.initializeForm(updatedIntegration)
+            this.props.initialize(updatedIntegration)
             this.isInitialized = true
         }
     }
@@ -102,13 +91,15 @@ class HttpIntegrationDetail extends React.Component {
         }, {})
     }
 
-    _handleSubmit(data) {
-        let doc = data
+    _handleSubmit = (values) => {
+        // We create a deep copy of values because it is a reference to the redux state
+        // The following transformations DON'T HAVE TO EDIT the redux state
+        let doc = JSON.parse(JSON.stringify(values))
 
         // transforming 'headers' and 'form' into objects
         const transformationList = ['headers', 'form']
         transformationList.forEach((param) => {
-            doc.http[param] = this._parametersToObject(data.http[param])
+            doc.http[param] = this._parametersToObject(doc.http[param])
         })
 
         doc = fromJS(defaultContent).mergeDeep(doc)
@@ -124,33 +115,19 @@ class HttpIntegrationDetail extends React.Component {
         this.props.actions.updateOrCreateIntegration(doc)
     }
 
-    _handleTest(data) {
+    _handleTest = (data) => {
         // sending test to server
         this.props.actions.testHttpIntegration(data)
     }
 
     render() {
-        const {
-            fields: {
-                name,
-                description,
-                http
-            },
-            actions,
-            isUpdate,
-            integration,
-            loading
-        } = this.props
+        const { actions, handleSubmit, integration, isUpdate, loading } = this.props
 
-        const {
-            isTestShown
-        } = this.state
+        const { isTestShown } = this.state
 
         const isSubmitting = loading.get('updateIntegration')
 
-        if (loading.get('integration')) {
-            return <Loader />
-        }
+        if (loading.get('integration')) return <Loader />
 
         return (
             <div className="ui grid">
@@ -169,210 +146,97 @@ class HttpIntegrationDetail extends React.Component {
                 </div>
 
                 <div className="sixteen wide column">
-                    <form className="ui form"
-                          onSubmit={this.props.handleSubmit(this._handleSubmit)}
+                    <form
+                        className="ui form"
+                        onSubmit={handleSubmit(this._handleSubmit)}
                     >
-                        <div className="required field">
-                            <label>Name</label>
-                            <input type="text"
-                                   placeholder="Name"
-                                   {...name}
-                                   required
-                            />
-                        </div>
-                        <div className="field">
-                            <label>Description</label>
-                            <input type="text"
-                                   placeholder="Description"
-                                   {...description}
-                            />
-                        </div>
-                        <div className="required field">
-                            <label>URL</label>
-                            <input type="text"
-                                   placeholder="URL"
-                                   {...http.url}
-                                   required
-                            />
-                        </div>
-                        <div className="required field">
-                            <label>Method</label>
-                            <div className="ui selection dropdown"
-                                 ref={(e) => {
-                                     this._methodSelector = e
-                                     $(this._methodSelector)
-                                         .dropdown({
-                                             onChange: http.method.onChange
-                                         })
-                                 }}
-                            >
-                                <input type="hidden"
-                                       {...http.method}
-                                />
-                                <i className="dropdown icon" />
-                                <div className="default text">Method</div>
-                                <div className="menu">
-                                    <div className="item" data-value="GET">GET</div>
-                                    <div className="item" data-value="POST">POST</div>
-                                    <div className="item" data-value="PUT">PUT</div>
-                                    <div className="item" data-value="DELETE">DELETE</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="required field">
-                            <label>Request content type</label>
-                            <div className="ui selection dropdown"
-                                 ref={(e) => {
-                                     this._methodSelector = e
-                                     $(this._methodSelector)
-                                         .dropdown({
-                                             onChange: http.request_content_type.onChange
-                                         })
-                                 }}
-                            >
-                                <input type="hidden"
-                                       {...http.request_content_type}
-                                />
-                                <i className="dropdown icon" />
-                                <div className="default text">Request content type</div>
-                                <div className="menu">
-                                    <div className="item" data-value="application/json">application/json</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="field">
-                            <label>Headers</label>
-                            {!http.headers.length && <span>No headers</span>}
-                            {http.headers.map((header, index) => {
-                                return (
-                                    <div className="fields"
-                                         key={index}
-                                    >
-                                        <div className="seven wide field">
-                                            <input type="text"
-                                                   placeholder="Key"
-                                                   {...header.key}
-                                            />
-                                        </div>
-                                        <div className="seven wide field">
-                                            <input type="text"
-                                                   placeholder="Value"
-                                                   {...header.value}
-                                            />
-                                        </div>
-                                        <div className="two wide field">
-                                            <button className="ui button red"
-                                                    type="button"
-                                                    onClick={() => {
-                                                        http.headers.removeField(index)
-                                                    }}
-                                            >
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        <div className="field">
-                            <button className="ui button grey basic"
-                                    type="button"
-                                    onClick={http.headers.addField}
-                            >
-                                Add header
-                            </button>
-                        </div>
-                        <div className="field">
-                            <label>Parameters</label>
-                            {!http.form.length && <span>No parameters</span>}
-                            {http.form.map((param, index) => {
-                                return (
-                                    <div className="fields"
-                                         key={index}
-                                    >
-                                        <div className="seven wide field">
-                                            <input type="text"
-                                                   placeholder="Key"
-                                                   {...param.key}
-                                            />
-                                        </div>
-                                        <div className="seven wide field">
-                                            <input type="text"
-                                                   placeholder="Value"
-                                                   {...param.value}
-                                            />
-                                        </div>
-                                        <div className="two wide field">
-                                            <button className="ui button red"
-                                                    type="button"
-                                                    onClick={() => {
-                                                        http.form.removeField(index)
-                                                    }}
-                                            >
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        <div className="field">
-                            <button className="ui button grey basic"
-                                    type="button"
-                                    onClick={http.form.addField}
-                            >
-                                Add parameter
-                            </button>
-                        </div>
+                        <Field
+                            type="text"
+                            name="name"
+                            label="Name"
+                            placeholder="Name"
+                            required
+                            component={InputField}
+                        />
+                        <Field
+                            type="text"
+                            name="description"
+                            label="Description"
+                            placeholder="Description"
+                            component={InputField}
+                        />
+                        <Field
+                            type="text"
+                            name="http.url"
+                            label="URL"
+                            placeholder="URL"
+                            ref="httpUrl"
+                            required
+                            component={InputField}
+                        />
+                        <Field
+                            type="text"
+                            name="http.method"
+                            label="Method"
+                            placeholder="Method"
+                            required
+                            component={SelectField}
+                        >
+                            <option value="" disabled>Method</option>
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </Field>
+                        <Field
+                            type="text"
+                            name="http.request_content_type"
+                            label="Request content type"
+                            placeholder="Request content type"
+                            required
+                            component={SelectField}
+                        >
+                            <option value="application/json">application/json</option>
+                        </Field>
+                        <FieldArray name="http.headers" component={HeaderFieldArray} />
+                        <FieldArray name="http.form" component={ParameterFieldArray} />
+
                         <div className="field">
 
-                            {(() => {
-                                if (isUpdate) {
-                                    return (
-                                        <button className={classNames([
-                                            'ui',
-                                            'teal',
-                                            'button',
-                                            {
-                                                loading: isSubmitting
-                                            }
-                                        ])}
-                                                type="button"
-                                                disabled={isSubmitting}
-                                                onClick={() => {
-                                                    this.setState({isTestShown: !this.state.isTestShown})
-                                                }}
-                                        >
-                                            Test
-                                        </button>
-                                    )
-                                }
-                            })()}
-
-                            <button className={classNames([
-                                'ui',
-                                'green',
-                                'button',
-                                {
-                                    loading: isSubmitting
-                                }
-                            ])}
+                            {isUpdate && (
+                                <button
+                                    className={classNames('ui', 'teal', 'button', {
+                                        loading: isSubmitting
+                                    })}
+                                    type="button"
                                     disabled={isSubmitting}
+                                    onClick={() => {
+                                        this.setState({isTestShown: !this.state.isTestShown})
+                                    }}
+                                >
+                                    Test
+                                </button>
+                            )}
+
+                            <button
+                                type="submit"
+                                className={classNames('ui', 'green', 'button', {
+                                    loading: isSubmitting
+                                })}
+                                disabled={isSubmitting}
                             >
                                 {isUpdate ? 'Save changes' : 'Add integration'}
                             </button>
 
-                            {(() => {
-                                if (isUpdate) {
-                                    return (
-                                        <button className="ui basic light red floated right button"
-                                                onClick={() => actions.deleteIntegration(integration)}
-                                        >
-                                            Delete
-                                        </button>
-                                    )
-                                }
-                            })()}
+                            {isUpdate && (
+                                <button
+                                    type="button"
+                                    className="ui basic light red floated right button"
+                                    onClick={() => actions.deleteIntegration(integration)}
+                                >
+                                    Delete
+                                </button>
+                            )}
                         </div>
                     </form>
 
@@ -382,44 +246,35 @@ class HttpIntegrationDetail extends React.Component {
                             transitionEnterTimeout={200}
                             transitionLeaveTimeout={200}
                         >
-                            {(() => {
-                                if (isTestShown) {
-                                    const url = http.url.value || ''
-
-                                    return (
-                                        <div>
-                                            <br />
-                                            <HttpIntegrationTesting
-                                                url={url}
-                                                integration={integration}
-                                                loading={loading}
-                                                test={this._handleTest}
-                                            />
-                                        </div>
-                                    )
-                                }
-                            })()}
+                            {isTestShown && (
+                                <div>
+                                    <br />
+                                    <HttpIntegrationTesting
+                                        url={this.refs.httpUrl.value || ''}
+                                        integration={this.props.integration}
+                                        loading={this.props.loading}
+                                        test={this._handleTest}
+                                    />
+                                </div>
+                            )}
                         </ReactCSSTransitionGroup>
                     </div>
                 </div>
             </div>
         )
     }
+
 }
 
 HttpIntegrationDetail.propTypes = {
-    fields: PropTypes.object.isRequired,
-    initializeForm: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    integration: PropTypes.object.isRequired,
-    isUpdate: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired
+    initialize: React.PropTypes.func.isRequired,
+    handleSubmit: React.PropTypes.func.isRequired,
+    integration: React.PropTypes.object.isRequired,
+    isUpdate: React.PropTypes.bool.isRequired,
+    actions: React.PropTypes.object.isRequired,
+    loading: React.PropTypes.object.isRequired,
 }
 
-export default reduxForm(
-    {
-        form: 'httpIntegration',
-        fields
-    }
-)(HttpIntegrationDetail)
+export default reduxForm({
+    form: 'httpIntegration',
+})(HttpIntegrationDetail)

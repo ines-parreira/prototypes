@@ -1,16 +1,14 @@
-import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
-import classNames from 'classnames'
-import {fromJS} from 'immutable'
-import {reduxForm} from 'redux-form'
-import {Loader} from '../../../../common/components/Loader'
+import React from 'react'
 
-export const fields = [
-    'name',
-    'description',
-    'smooch.webhook_id',
-    'smooch.webhook_secret'
-]
+import { Link } from 'react-router'
+
+import { Field, reduxForm } from 'redux-form'
+
+import classNames from 'classnames'
+import { fromJS } from 'immutable'
+
+import { Loader } from '../../../../common/components/Loader'
+import { InputField } from '../../../../common/components/semantic'
 
 export const defaultContent = {
     type: 'smooch'
@@ -20,35 +18,25 @@ class SmoochIntegrationDetail extends React.Component {
     constructor(props) {
         super(props)
 
-        this._handleSubmit = this._handleSubmit.bind(this)
-
         // used to know if form has been asynchronously initialized when updating
         this.isInitialized = !props.isUpdate
 
         // populating new integration form
-        if (!props.isUpdate) {
-            props.initializeForm(defaultContent)
-        }
+        if (!props.isUpdate) props.initialize(defaultContent)
     }
 
     componentWillUpdate(nextProps) {
-        const {
-            integration,
-            isUpdate,
-            loading
-        } = nextProps
+        const { integration, isUpdate, loading } = nextProps
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
-            this.props.initializeForm(integration.toJS())
+            this.props.initialize(integration.toJS())
             this.isInitialized = true
         }
     }
 
-    _handleSubmit(data) {
-        let doc = data
-
-        doc = fromJS(defaultContent).mergeDeep(doc)
+    _handleSubmit = (values) => {
+        let doc = fromJS(defaultContent).mergeDeep(values)
 
         // if update, set ids for server
         if (this.props.isUpdate) {
@@ -62,23 +50,11 @@ class SmoochIntegrationDetail extends React.Component {
     }
 
     render() {
-        const {
-            fields: {
-                name,
-                description,
-                smooch
-            },
-            actions,
-            isUpdate,
-            integration,
-            loading
-        } = this.props
+        const { actions, handleSubmit, integration, isUpdate, loading } = this.props
 
         const isSubmitting = loading.get('updateIntegration')
 
-        if (loading.get('integration')) {
-            return <Loader />
-        }
+        if (loading.get('integration')) return <Loader />
 
         return (
             <div className="ui grid">
@@ -110,66 +86,61 @@ class SmoochIntegrationDetail extends React.Component {
                 </div>
 
                 <div className="sixteen wide column">
-                    <form className="ui form"
-                          onSubmit={this.props.handleSubmit(this._handleSubmit)}
+                    <form
+                        className="ui form"
+                        onSubmit={handleSubmit(this._handleSubmit)}
                     >
-                        <div className="required field">
-                            <label>Name</label>
-                            <input type="text"
-                                   placeholder="Name"
-                                   {...name}
-                                   required
-                            />
-                        </div>
-                        <div className="field">
-                            <label>Description</label>
-                            <input type="text"
-                                   placeholder="Description"
-                                   {...description}
-                            />
-                        </div>
-                        <div className="required field">
-                            <label>Key ID</label>
-                            <input type="text"
-                                   placeholder="Key ID"
-                                   {...smooch.webhook_id}
-                                   required
-                            />
-                        </div>
-                        <div className="required field">
-                            <label>Secret</label>
-                            <input type="text"
-                                   placeholder="Secret"
-                                   {...smooch.webhook_secret}
-                                   required
-                            />
-                        </div>
+                        <Field
+                            type="text"
+                            name="name"
+                            label="Name"
+                            placeholder="Name"
+                            required
+                            component={InputField}
+                        />
+                        <Field
+                            type="text"
+                            name="description"
+                            label="Description"
+                            placeholder="Description"
+                            component={InputField}
+                        />
+                        <Field
+                            type="text"
+                            name="smooch.webhook_id"
+                            label="Key ID"
+                            placeholder="Key ID"
+                            required
+                            component={InputField}
+                        />
+                        <Field
+                            type="text"
+                            name="smooch.webhook_secret"
+                            label="Secret"
+                            placeholder="Secret"
+                            required
+                            component={InputField}
+                        />
+
                         <div className="field">
 
-                            <button className={classNames([
-                                'ui',
-                                'green',
-                                'button',
-                                {
-                                    loading: isSubmitting
-                                }
-                            ])}
-                                    disabled={isSubmitting}
+                            <button
+                                className={classNames('ui', 'green', 'button', { loading: isSubmitting })}
+                                disabled={isSubmitting}
                             >
                                 {isUpdate ? 'Save changes' : 'Add integration'}
                             </button>
 
-                            {(() => {
-                                if (isUpdate) {
-                                    return (
-                                        <button className="ui basic light red floated right button"
-                                                onClick={() => actions.deleteIntegration(integration)}
-                                        >
-                                            Delete
-                                        </button>
-                                    )
-                                }
-                            })()}
+                            {
+                                isUpdate && (
+                                    <button
+                                        className="ui basic light red floated right button"
+                                        onClick={() => actions.deleteIntegration(integration)}
+                                    >
+                                        Delete
+                                    </button>
+                                )
+                            }
                         </div>
                     </form>
                 </div>
@@ -179,18 +150,14 @@ class SmoochIntegrationDetail extends React.Component {
 }
 
 SmoochIntegrationDetail.propTypes = {
-    fields: PropTypes.object.isRequired,
-    initializeForm: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    integration: PropTypes.object.isRequired,
-    isUpdate: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired
+    handleSubmit: React.PropTypes.func.isRequired,
+    initialize: React.PropTypes.func.isRequired,
+    integration: React.PropTypes.object.isRequired,
+    isUpdate: React.PropTypes.bool.isRequired,
+    actions: React.PropTypes.object.isRequired,
+    loading: React.PropTypes.object.isRequired,
 }
 
-export default reduxForm(
-    {
-        form: 'smoochIntegration',
-        fields
-    }
-)(SmoochIntegrationDetail)
+export default reduxForm({
+    form: 'smoochIntegration',
+})(SmoochIntegrationDetail)
