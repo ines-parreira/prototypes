@@ -31,7 +31,7 @@ class App extends React.Component {
         this.props.fetchUsers(['agent', 'admin'])
         this.props.fetchTags()
 
-        if (this.props.location.query._activity_polling !== 'false') {
+        if (this.props.location.query._activity_polling !== 'false' && window.DISABLE_ACTIVITY_POLLING !== 'True') {
             if (pollInterval) {
                 clearInterval(pollInterval)
             }
