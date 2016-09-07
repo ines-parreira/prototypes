@@ -6,6 +6,7 @@ import * as mousetrap from 'mousetrap'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
 import {Loader} from '../../common/components/Loader'
+import Timeline from './components/timeline/Timeline'
 import * as ActivityActions from '../../../state/activity/actions'
 import * as TicketsActions from '../../../state/tickets/actions'
 import * as TicketActions from '../../../state/ticket/actions'
@@ -33,6 +34,7 @@ class TicketDetailContainer extends React.Component {
         } else {
             this.props.actions.ticket.setupNewTicket()
         }
+
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers(['agent', 'admin'])
@@ -46,6 +48,27 @@ class TicketDetailContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (
+            nextProps.params.ticketId !== 'new' &&
+            nextProps.ticket.get('requester') &&
+            !nextProps.ticket.getIn(['_internal', 'userHistory', 'triedLoading'])
+        ) {
+            /**
+             * Fetch the ticket's requester history (tickets + events) after the ticket's details have been loaded.
+             */
+            this.props.actions.ticket.fetchUserTickets(nextProps.ticket.getIn(['requester', 'id']))
+            // this.props.actions.ticket.fetchUserEvents(nextProps.ticket.getIn(['requester', 'id']))
+
+            if (
+                nextProps.ticket.getIn(['_internal', 'crossTickets', 'displayHistory']) &&
+                !nextProps.ticket.getIn(['state', 'displayHistory'])
+            ) {
+                // Activate the timeline and clears the crossTickets dict
+                this.props.actions.ticket.toggleHistory(true)
+                this.props.actions.ticket.setCrossTickets()
+            }
+        }
+
         if (nextProps.params.ticketId !== this.props.params.ticketId && nextProps.params.ticketId !== 'new') {
             /**
              * Fetch required data when loading a ticket.
@@ -325,6 +348,11 @@ class TicketDetailContainer extends React.Component {
         return (
             <DocumentTitle title={`${this.props.ticket.get('id') ? this.props.ticket.get('subject') : 'New ticket'}`}>
                 <div className="TicketDetailContainer">
+                    <Timeline
+                        userHistory={this.props.ticket.getIn(['_internal', 'userHistory'])}
+                        isDisplayed={this.props.ticket.getIn(['state', 'displayHistory'])}
+                        actions={this.props.actions.ticket}
+                    />
                     <TicketView
                         actions={this.props.actions}
                         ticket={this.props.ticket}

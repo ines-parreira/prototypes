@@ -160,10 +160,42 @@ export default class TicketView extends React.Component {
         // get hidden from props.
         const ticketHidden = hidden || this.state.ticketHidden
 
+        const itemsCountInHistory = (
+            ticket.getIn(['_internal', 'userHistory', 'tickets']) ?
+                ticket.getIn(['_internal', 'userHistory', 'tickets']).size :
+                0
+        ) + (
+            ticket.getIn(['_internal', 'userHistory', 'events']) ?
+                ticket.getIn(['_internal', 'userHistory', 'events']).size :
+                0
+        )
+
+        const historyButtonLabel = !ticket.getIn(['state', 'displayHistory']) ?
+            <p>
+                <i className="icon arrow circle up"></i>
+                {`Show user history (${itemsCountInHistory})`}
+            </p> :
+            'Hide user history'
+
         return (
             <div className={classNames('ticket-view', {
                 'transition out fade right': ticketHidden
             })}>
+                <button
+                    className={classNames(
+                        'ticket-previous-btn ui small button',
+                        {
+                            transparent: !ticket.get('id') || !ticket.getIn(['_internal', 'userHistory', 'hasHistory'])
+                        }
+                    )}
+                    onClick={() => {
+                        if (ticket.get('id') && ticket.getIn(['_internal', 'userHistory', 'hasHistory'])) {
+                            actions.ticket.toggleHistory()
+                        }
+                    }}
+                >
+                    {historyButtonLabel}
+                </button>
 
                 <TicketHeader
                     ticket={ticket}

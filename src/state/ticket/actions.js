@@ -540,6 +540,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
     }
 
     delete data.state
+    delete data._internal
     return data
 }
 
@@ -650,5 +651,67 @@ export function submitTicket(ticket, status, macroActions, currentUser, action, 
 export function clearTicket() {
     return {
         type: types.CLEAR_TICKET
+    }
+}
+
+export function fetchUserTickets(userId) {
+    return (dispatch) => {
+        dispatch({
+            type: types.FETCH_USER_TICKETS_START
+        })
+
+        return axios.get(`/api/users/${userId}/tickets/?type=requested`)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.FETCH_USER_TICKETS_SUCCESS,
+                    resp
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_USER_TICKETS_ERROR,
+                    error,
+                    reason: 'Couldn\'t fetch user\'s tickets. Please try again in a few minutes.'
+                })
+            })
+    }
+}
+
+export function fetchUserEvents(userId) {
+    return (dispatch) => {
+        dispatch({
+            type: types.FETCH_USER_EVENTS_START
+        })
+
+        return axios.get(`/api/users/${userId}/events/`)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.FETCH_USER_EVENTS_SUCCESS,
+                    resp
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_USER_EVENTS_ERROR,
+                    error,
+                    reason: 'Couldn\'t fetch user\'s events. Please try again in a few minutes.'
+                })
+            })
+    }
+}
+
+export function toggleHistory(state) {
+    return {
+        type: types.TOGGLE_HISTORY,
+        state
+    }
+}
+
+export function setCrossTickets(state = {}) {
+    return {
+        type: types.SET_CROSS_TICKETS,
+        state
     }
 }

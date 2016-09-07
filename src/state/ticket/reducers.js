@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import * as actions from './actions'
 import * as types from './constants'
 import {SUBMIT_ACTIVITY_SUCCESS} from '../activity/constants'
@@ -39,7 +40,21 @@ export const initialState = fromJS({
         query: '',
         fromMacro: false,
         contentState: null,
-        latestEventDatetime: null
+        latestEventDatetime: null,
+        displayHistory: false
+    },
+    _internal: {
+        crossTickets: {
+            // Used to pass information from one ticketView to another without using the URL
+            displayHistory: false
+        },
+        userHistory: {
+            triedLoading: false,
+            isLoading: false,
+            hasHistory: false,
+            tickets: [],
+            events: []
+        }
     },
     messages: [],
     customer_ratings: [],
@@ -194,7 +209,7 @@ export default (state = initialState, action) => {
             return state
 
         case types.CLEAR_TICKET:
-            return initialState
+            return initialState.setIn(['_internal', 'crossTickets'], state.getIn(['_internal', 'crossTickets']))
 
         /* Macro actions */
         case types.ADD_TICKET_TAGS: {
@@ -346,6 +361,48 @@ export default (state = initialState, action) => {
                 )
             ).setIn(['state', 'loading'], false)
 
+        case types.FETCH_USER_TICKETS_START:
+        case types.FETCH_USER_EVENTS_START:
+            return state.mergeDeep({
+                _internal: {
+                    userHistory: {
+                        isLoading: true,
+                        triedLoading: true
+                    }
+                }
+            })
+
+        case types.FETCH_USER_TICKETS_SUCCESS:
+            return state.mergeDeep({
+                _internal: {
+                    userHistory: {
+                        tickets: _.filter(action.resp.data, ticket => ticket.id !== state.get('id')),
+                        isLoading: false,
+                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!(action.resp.meta.item_count - 1)
+                    }
+                }
+            })
+
+        case types.FETCH_USER_EVENTS_SUCCESS:
+            return state.mergeDeep({
+                _internal: {
+                    userHistory: {
+                        events: action.resp.data,
+                        isLoading: false,
+                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!action.resp.meta.item_count
+                    }
+                }
+            })
+
+        case types.TOGGLE_HISTORY:
+            return state.setIn(['state', 'displayHistory'], action.state ?
+                action.state :
+                !state.getIn(['state', 'displayHistory'])
+            )
+
+        case types.SET_CROSS_TICKETS:
+            return state.setIn(['_internal', 'crossTickets'], fromJS(action.state))
+
         case SUBMIT_ACTIVITY_SUCCESS: {
             // See if we have an event for our ticket
             const event = fromJS(action.resp.events).find((e) => (
@@ -367,6 +424,7 @@ export default (state = initialState, action) => {
             }
             return state
         }
+
         default:
             return state
     }
