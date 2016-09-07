@@ -5,7 +5,9 @@ export const initialState = fromJS({
     items: [],
     _internal: {
         selectedItemsIds: [],
-        loading: {}
+        loading: {
+            fetchList: false
+        }
     }
 })
 

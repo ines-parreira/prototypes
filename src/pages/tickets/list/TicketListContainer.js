@@ -44,7 +44,16 @@ class TicketListContainer extends React.Component {
                 currentActive.isEmpty() ||
                 // we ignore the fields because they get updated before any filtering is performed
                 // Ex: when fetching the Requester field enum
-                !currentActive.delete('fields').equals(nextActive.delete('fields'))
+                !currentActive.delete('fields').equals(nextActive.delete('fields')) ||
+                (
+                    // i.e. if we haven't loaded the ticket of the view yet
+                    nextProps.tickets.get('items').size === 0 && nextActive.get('count') !== 0 &&
+                    !nextProps.tickets.getIn(['_internal', 'loading', 'fetchList'])
+                ) ||
+                (
+                    // i.e. if the view has changed since the last time the container was mounted
+                    nextProps.tickets.getIn(['_internal', 'currentViewId']) !== nextActive.get('id')
+                )
             )
         ) {
             this._fetchPage(1, nextProps)
