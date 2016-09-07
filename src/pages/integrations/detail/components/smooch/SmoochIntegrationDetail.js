@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form'
 
 import classNames from 'classnames'
 
-import { fromJS, List } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { Loader } from '../../../../common/components/Loader'
 import { InputField } from '../../../../common/components/semantic'
@@ -39,7 +39,6 @@ class SmoochIntegrationDetail extends React.Component {
 
     _handleSubmit = (values) => {
         let doc = fromJS(defaultContent).mergeDeep(values)
-        doc = doc.set('connections', List([doc.get('connections')]))
 
         // if update, set ids for server
         if (this.props.isUpdate) {
@@ -103,14 +102,7 @@ class SmoochIntegrationDetail extends React.Component {
                         />
                         <Field
                             type="text"
-                            name="description"
-                            label="Description"
-                            placeholder="Description"
-                            component={InputField}
-                        />
-                        <Field
-                            type="text"
-                            name="connections.data.key.id"
+                            name="connections[0].data.key.id"
                             label="Key ID"
                             placeholder="Key ID"
                             required
@@ -118,7 +110,7 @@ class SmoochIntegrationDetail extends React.Component {
                         />
                         <Field
                             type="text"
-                            name="connections.data.key.secret"
+                            name="connections[0].data.key.secret"
                             label="Secret"
                             placeholder="Secret"
                             required
@@ -138,6 +130,7 @@ class SmoochIntegrationDetail extends React.Component {
                                     <button
                                         className="ui basic light red floated right button"
                                         onClick={() => actions.deleteIntegration(integration)}
+                                        type="button"
                                     >
                                         Delete
                                     </button>
