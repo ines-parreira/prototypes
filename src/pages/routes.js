@@ -9,7 +9,7 @@ import IntegrationNavbarContainer from './integrations/common/IntegrationNavbarC
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketNavbarContainer from './tickets/common/TicketNavbarContainer'
 import TicketListContainer from './tickets/list/TicketListContainer'
-import RuleContainer from './rules/RuleContainer'
+import RuleContainer from './rules/list/RuleContainer'
 import UserListContainer from './users/list/UserListContainer'
 import UserNavbarContainer from './users/common/UserNavbarContainer'
 import UserDetailContainer from './users/detail/UserDetailContainer'

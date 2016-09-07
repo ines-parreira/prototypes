@@ -31,10 +31,22 @@ export const modifyCodeast = (index, path, value, operation) => ({
     operation
 })
 
+export const create = (data) => {
+    return dispatch => {
+        return axios.post('/api/rules/', data)
+        .then(response => dispatch(addRuleEnd(response.data)))
+        .catch(error => dispatch({
+            type: 'ERROR',
+            error,
+            reason: 'Unable to create the rule'
+        }))
+    }
+}
+
 // Submit rule
 export function submitRule(url, comment) {
     return (dispatch) => {
-        dispatch(addRuleStart(comment.type, comment.code))
+        dispatch(addRuleStart(comment.type, comment.code)) // Not used
 
         return axios.post(url, comment)
             .then((json = {}) => json.data)
@@ -51,7 +63,8 @@ export function submitRule(url, comment) {
     }
 }
 
-export function fetchRules(url) {
+export function fetchRules() {
+    const url = '/api/rules/'
     return (dispatch) => {
         dispatch(requestRules(url))
 
