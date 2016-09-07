@@ -255,7 +255,7 @@ class TicketDetailContainer extends React.Component {
         const translation = ascending ? 1 : -1
         const currentTicketIndex = this.props.tickets.getIn(['_internal', 'currentTicketIndex'])
 
-        if (!currentTicketIndex) {
+        if (!currentTicketIndex && currentTicketIndex !== 0) {
             return nextTicketUrl
         }
 

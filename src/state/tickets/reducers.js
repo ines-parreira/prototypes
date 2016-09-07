@@ -115,8 +115,7 @@ export default (state = initialState, action) => {
         }
 
         case types.SAVE_INDEX:
-            return state
-                .setIn(['_internal', 'currentTicketIndex'], action.currentTicketIndex)
+            return state.setIn(['_internal', 'currentTicketIndex'], action.currentTicketIndex)
 
         default:
             return state
