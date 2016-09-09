@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as ViewActions from '../../../state/views/actions'
+import * as TicketsActions from '../../../state/tickets/actions'
 import TicketsNavbarView from './components/TicketsNavbarView'
 import ActivityWidget from '../../common/components/ActivityWidget'
 import Navbar from '../../common/components/Navbar'
@@ -10,7 +11,7 @@ class TicketNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
         const viewId = this.props.params.viewId ? this.props.params.viewId : this.props.location.query.viewId
-        this.props.actions.fetchViews(viewId)
+        this.props.actions.views.fetchViews(viewId)
     }
 
     render() {
@@ -20,7 +21,8 @@ class TicketNavbarContainer extends React.Component {
                 <TicketsNavbarView
                     views={this.props.views}
                     currentView={this.props.views.get('active')}
-                    setViewActive={this.props.actions.setViewActive}
+                    setViewActive={this.props.actions.views.setViewActive}
+                    fetchTickets={this.props.actions.tickets.fetchTicketsPage}
                 />
             </Navbar>
         )
@@ -48,7 +50,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(ViewActions, dispatch)
+        actions: {
+            views: bindActionCreators(ViewActions, dispatch),
+            tickets: bindActionCreators(TicketsActions, dispatch)
+        }
     }
 }
 
