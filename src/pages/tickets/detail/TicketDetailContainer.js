@@ -225,6 +225,9 @@ class TicketDetailContainer extends React.Component {
 
                 if (nextUrl) {
                     browserHistory.push(nextUrl)
+                    if (nextUrl.includes('tickets')) {
+                        this.props.actions.tickets.fetchTicketsPage(this.props.views, 1)
+                    }
                 }
             }
         })
@@ -256,7 +259,7 @@ class TicketDetailContainer extends React.Component {
         const currentTicketIndex = this.props.tickets.getIn(['_internal', 'currentTicketIndex'])
 
         if (!currentTicketIndex && currentTicketIndex !== 0) {
-            return nextTicketUrl
+            return false
         }
 
         const nextIndex = currentTicketIndex + translation
