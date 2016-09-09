@@ -48,7 +48,8 @@ class TicketListContainer extends React.Component {
                 (
                     // i.e. if we haven't loaded the ticket of the view yet
                     nextProps.tickets.get('items').size === 0 && nextActive.get('count') !== 0 &&
-                    !nextProps.tickets.getIn(['_internal', 'loading', 'fetchList'])
+                    !nextProps.tickets.getIn(['_internal', 'loading', 'fetchList']) &&
+                    !nextActive.get('search')
                 ) ||
                 (
                     // i.e. if the view has changed since the last time the container was mounted
