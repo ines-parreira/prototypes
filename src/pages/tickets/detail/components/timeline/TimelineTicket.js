@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {StatusLabel} from './../../../../common/utils/labels'
 import {formatDatetime, truncate, stripHTML, lastMessage as getLastMessage} from '../../../../../utils'
 import {browserHistory} from 'react-router'
+import classnames from 'classnames'
 
 
 export default class TimelineTicket extends React.Component {
@@ -32,7 +33,7 @@ export default class TimelineTicket extends React.Component {
 
         return (
             <div
-                className="TimelineTicket ui segment"
+                className={classnames('TimelineTicket ui segment', {current: this.props.current})}
                 onClick={this._goToTicket}
             >
                 <div className="ui stackable grid">
@@ -62,5 +63,6 @@ export default class TimelineTicket extends React.Component {
 
 TimelineTicket.propTypes = {
     ticket: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    current: PropTypes.bool.isRequired
 }

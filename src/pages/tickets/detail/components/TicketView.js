@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { StickyContainer, Sticky } from 'react-sticky'
 import classNames from 'classnames'
 
 import TicketHeader from './TicketHeader'
@@ -181,75 +182,95 @@ export default class TicketView extends React.Component {
             <div className={classNames('ticket-view', {
                 'transition out fade right': ticketHidden
             })}>
-                <button
-                    className={classNames(
-                        'ticket-previous-btn ui small button',
-                        {
-                            transparent: !ticket.get('id') || !ticket.getIn(['_internal', 'userHistory', 'hasHistory'])
-                        }
-                    )}
-                    onClick={() => {
-                        if (ticket.get('id') && ticket.getIn(['_internal', 'userHistory', 'hasHistory'])) {
-                            actions.ticket.toggleHistory()
-                        }
-                    }}
-                >
-                    {historyButtonLabel}
-                </button>
 
-                <TicketHeader
-                    ticket={ticket}
-                    tags={tags}
-                    agents={users.get('agents')}
-                    actions={actions}
-                    computeNextUrl={computeNextUrl}
-                    hideTicket={this.hideTicket}
-                />
-
-                <div className="ticket-content">
-                    {(() => {
-                        if (!isCreating) {
-                            return (
-                                <TicketMessages
-                                    currentUser={this.props.currentUser}
-                                    messages={ticket.get('messages')}
-                                    submit={this.props.submit}
-                                    deleteMessage={this.deleteMessage}
-                                    loading={ticket.getIn(['state', 'loading'])}
-                                    ticket={ticket}
-                                />
-                            )
-                        }
-                    })()}
-
-                    <form
-                        onSubmit={this._handleSubmit}
-                        ref="newMessageForm"
+                <StickyContainer>
+                    <Sticky
+                        topOffset={1}
                     >
-                        <ReplyMessageChannel
-                            ticket={this.props.ticket}
-                            actions={this.props.actions}
-                            settings={this.props.settings}
-                        />
-
-                        <TicketReplyArea
-                            actions={this.props.actions}
-                            applyMacro={this.props.applyMacro}
-                            previewMacro={this.props.actions.macro.previewMacro}
-                            previewMacroInModal={this.props.actions.macro.previewMacroInModal}
-                            openModal={this.props.actions.macro.openModal}
-                            currentUser={this.props.currentUser}
-                            users={this.props.users}
-                            macros={this.props.macros}
-                            ticket={this.props.ticket}
-                        />
-
-                        <TicketSubmitButtons
+                        <div className="previous-btn-container">
+                            <button
+                                className={classNames(
+                                    'ticket-previous-btn ui small button',
+                                    {
+                                        transparent: !ticket.get('id') ||
+                                            !ticket.getIn(['_internal', 'userHistory', 'hasHistory']) ||
+                                            ticket.getIn(['state', 'displayHistory'])
+                                    }
+                                )}
+                                onClick={() => {
+                                    if (
+                                        ticket.get('id') &&
+                                        ticket.getIn(['_internal', 'userHistory', 'hasHistory']) &&
+                                        !ticket.getIn(['state', 'displayHistory'])
+                                    ) {
+                                        actions.ticket.toggleHistory()
+                                        amplitude.getInstance().logEvent('Opened Timeline', {
+                                            nbOfTicketsInTimeline:
+                                                ticket.getIn(['_internal', 'userHistory', 'tickets']).size,
+                                            channel: ticket.get('channel'),
+                                            nbOfMessagesInTicket: ticket.get('messages').size
+                                        })
+                                    }
+                                }}
+                            >
+                                {historyButtonLabel}
+                            </button>
+                        </div>
+                        <TicketHeader
                             ticket={ticket}
-                            submit={this._handlePreSubmit}
+                            tags={tags}
+                            agents={users.get('agents')}
+                            actions={actions}
+                            computeNextUrl={computeNextUrl}
+                            hideTicket={this.hideTicket}
                         />
-                    </form>
-                </div>
+                    </Sticky>
+
+                    <div className="ticket-content">
+                        {(() => {
+                            if (!isCreating) {
+                                return (
+                                    <TicketMessages
+                                        currentUser={this.props.currentUser}
+                                        messages={ticket.get('messages')}
+                                        submit={this.props.submit}
+                                        deleteMessage={this.deleteMessage}
+                                        loading={ticket.getIn(['state', 'loading'])}
+                                        ticket={ticket}
+                                    />
+                                )
+                            }
+                        })()}
+
+                        <form
+                            onSubmit={this._handleSubmit}
+                            ref="newMessageForm"
+                        >
+                            <ReplyMessageChannel
+                                ticket={this.props.ticket}
+                                actions={this.props.actions}
+                                settings={this.props.settings}
+                            />
+
+                            <TicketReplyArea
+                                actions={this.props.actions}
+                                applyMacro={this.props.applyMacro}
+                                previewMacro={this.props.actions.macro.previewMacro}
+                                previewMacroInModal={this.props.actions.macro.previewMacroInModal}
+                                openModal={this.props.actions.macro.openModal}
+                                currentUser={this.props.currentUser}
+                                users={this.props.users}
+                                macros={this.props.macros}
+                                ticket={this.props.ticket}
+                            />
+
+                            <TicketSubmitButtons
+                                ticket={ticket}
+                                submit={this._handlePreSubmit}
+                            />
+                        </form>
+                    </div>
+                </StickyContainer>
             </div>
         )
     }

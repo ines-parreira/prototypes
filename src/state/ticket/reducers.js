@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import * as actions from './actions'
 import * as types from './constants'
 import {SUBMIT_ACTIVITY_SUCCESS} from '../activity/constants'
@@ -376,9 +375,10 @@ export default (state = initialState, action) => {
             return state.mergeDeep({
                 _internal: {
                     userHistory: {
-                        tickets: _.filter(action.resp.data, ticket => ticket.id !== state.get('id')),
+                        tickets: action.resp.data,
                         isLoading: false,
-                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!(action.resp.meta.item_count - 1)
+                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) ||
+                            !!(action.resp.meta.item_count - 1)
                     }
                 }
             })
@@ -389,13 +389,14 @@ export default (state = initialState, action) => {
                     userHistory: {
                         events: action.resp.data,
                         isLoading: false,
-                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!action.resp.meta.item_count
+                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) ||
+                            !!action.resp.meta.item_count
                     }
                 }
             })
 
         case types.TOGGLE_HISTORY:
-            return state.setIn(['state', 'displayHistory'], action.state ?
+            return state.setIn(['state', 'displayHistory'], action.state !== undefined ?
                 action.state :
                 !state.getIn(['state', 'displayHistory'])
             )

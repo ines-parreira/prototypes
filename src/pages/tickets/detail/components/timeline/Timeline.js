@@ -17,6 +17,10 @@ export default class Timeline extends React.Component {
             (obj1, obj2) => obj1.get('created_datetime') > obj2.get('created_datetime')
         )
 
+        if (history.size === 1) {
+            return null
+        }
+
         return (
             <div className="Timeline">
                 <div className="body">
@@ -24,7 +28,14 @@ export default class Timeline extends React.Component {
                         history.map(obj => {
                             if (obj.get('channel')) {
                                 // Then it's a ticket
-                                return <TimelineTicket key={obj.get('id')} ticket={obj} actions={this.props.actions}/>
+                                return (
+                                    <TimelineTicket
+                                        key={obj.get('id')}
+                                        ticket={obj}
+                                        current={this.props.currentTicketId === obj.get('id')}
+                                        actions={this.props.actions}
+                                    />
+                                )
                             }
 
                             return <div key={obj.get('id')}>{obj.get('id')}</div>
@@ -39,5 +50,6 @@ export default class Timeline extends React.Component {
 Timeline.propTypes = {
     userHistory: PropTypes.object.isRequired,
     isDisplayed: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    currentTicketId: PropTypes.number
 }

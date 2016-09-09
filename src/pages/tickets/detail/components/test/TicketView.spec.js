@@ -70,7 +70,7 @@ describe('TicketView component', () => {
         })
 
         it('should contain ticket-content', () => {
-            expect(component.props.children[2].props.className).toContain('ticket-content')
+            expect(component.props.children.props.children[1].props.className).toContain('ticket-content')
         })
 
         it('should not have the hidden classes', () => {

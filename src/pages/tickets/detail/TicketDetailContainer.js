@@ -350,11 +350,12 @@ class TicketDetailContainer extends React.Component {
 
         return (
             <DocumentTitle title={`${this.props.ticket.get('id') ? this.props.ticket.get('subject') : 'New ticket'}`}>
-                <div className="TicketDetailContainer">
+                <div className="TicketDetailContainer" onScroll={() => { this.forceUpdate() }}>
                     <Timeline
                         userHistory={this.props.ticket.getIn(['_internal', 'userHistory'])}
                         isDisplayed={this.props.ticket.getIn(['state', 'displayHistory'])}
                         actions={this.props.actions.ticket}
+                        currentTicketId={this.props.ticket.get('id')}
                     />
                     <TicketView
                         actions={this.props.actions}
