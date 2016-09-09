@@ -33,9 +33,10 @@ export default class Search extends React.Component {
             }
 
             this.isInitialized = true
-        } else if (this.props.currentQuery && !this.refs.searchInput.value) {
+        } else if (this.props.currentQuery && !this.refs.searchInput.value && !this.isInitialized) {
             const firstPath = this.props.queryPath.split(',')[0]
             this.refs.searchInput.value = _.get(this.props.currentQuery.toJS(), firstPath)
+            this.isInitialized = true
         }
     }
 
