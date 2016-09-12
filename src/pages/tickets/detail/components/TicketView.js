@@ -184,9 +184,7 @@ export default class TicketView extends React.Component {
             })}>
 
                 <StickyContainer>
-                    <Sticky
-                        topOffset={1}
-                    >
+                    <Sticky topOffset={1} style={{transform: 'none'}}>
                         <div className="previous-btn-container">
                             <button
                                 className={classNames(
