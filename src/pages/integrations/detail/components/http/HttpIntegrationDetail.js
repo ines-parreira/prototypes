@@ -84,6 +84,7 @@ class HttpIntegrationDetail extends React.Component {
      * @private
      */
     _parametersToObject(params) {
+        if (!params) return {}
         return params.reduce((reduction, param) => {
             const newDeduction = reduction
             newDeduction[param.key] = param.value
