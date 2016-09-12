@@ -10,12 +10,7 @@ export default class Timeline extends React.Component {
             return null
         }
 
-        const tickets = userHistory.get('tickets')
-        const events = userHistory.get('events')
-
-        const history = tickets.concat(events).sort(
-            (obj1, obj2) => obj1.get('created_datetime') > obj2.get('created_datetime')
-        )
+        const history = userHistory.get('tickets')
 
         if (history.size === 1) {
             return null

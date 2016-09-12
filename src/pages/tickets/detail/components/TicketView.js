@@ -202,6 +202,8 @@ export default class TicketView extends React.Component {
                                         !ticket.getIn(['state', 'displayHistory'])
                                     ) {
                                         actions.ticket.toggleHistory()
+                                        document.getElementsByClassName('TicketDetailContainer')[0].scrollTop = 0
+
                                         amplitude.getInstance().logEvent('Opened Timeline', {
                                             nbOfTicketsInTimeline:
                                                 ticket.getIn(['_internal', 'userHistory', 'tickets']).size,
