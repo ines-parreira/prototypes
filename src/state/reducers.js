@@ -16,6 +16,7 @@ import macrosReducer from './macro/reducers'
 import integrationsReducer from './integrations/reducers'
 import viewsReducer from './views/reducers'
 import activityReducer from './activity/reducers'
+import statsReducer from './stats/reducers'
 
 const rootReducer = combineReducers({
     systemMessage: systemMessageReducer,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     tags: tagsReducer,
     macros: macrosReducer,
     integrations: integrationsReducer,
+    stats: statsReducer,
     routing: routerReducer,
     form: formReducer
 })

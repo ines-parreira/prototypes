@@ -32,13 +32,22 @@ export default class Navbar extends React.Component {
             active: activeContent === 'integrations'
         })
 
+        const statsClassNames = classnames('item', {
+            active: activeContent === 'stats'
+        })
+
+
         return (
             <div className="navbar" ref="navbar">
                 <div id="main-menu" className="navbar-btn navbar-btn-category ui dropdown">
                     {this.state.title}
-                    <i className="icon angle down" />
+                    <i className="icon angle down"/>
                     <div className="menu">
-                        <Link to="/app" className={ticketsClassNames} onClick={() => this.setState({title: 'Tickets'})}>Tickets</Link>
+                        <Link to="/app" className={ticketsClassNames}
+                              onClick={() => this.setState({title: 'Tickets'})}
+                        >
+                            Tickets
+                        </Link>
                         {/* <Link to="/rules" className="item" onClick={() => this.setState({title: 'Rules'})}>Rules</Link> */}
                         <Link to="/app/users" className={usersClassNames}
                               onClick={() => this.setState({title: 'Users'})}
@@ -50,6 +59,11 @@ export default class Navbar extends React.Component {
                         >
                             Integrations
                         </Link>
+                        <Link to="/app/stats" className={statsClassNames}
+                              onClick={() => this.setState({title: 'Statistics'})}
+                        >
+                            Statistics
+                        </Link>
                     </div>
                 </div>
 
@@ -58,16 +72,16 @@ export default class Navbar extends React.Component {
                 </div>
 
                 <div id="user-menu" className="navbar-btn ui dropdown">
-                    <i className="ellipsis horizontal icon" />
+                    <i className="ellipsis horizontal icon"/>
                     <div>
                         <h4 className="current-user">
-                            <i className="status green circle icon" title="User online" />
+                            <i className="status green circle icon" title="User online"/>
                             <span className="name" title={currentUser.get('name')}>{currentUser.get('name')}</span>
                         </h4>
                     </div>
 
                     <div className="menu">
-                        <a className="item" href="/logout"><i className="sign out icon" /> Sign Out</a>
+                        <a className="item" href="/logout"><i className="sign out icon"/> Sign Out</a>
                         {/*
                          <a className="disabled item"><i className="edit icon"/> Edit Profile</a>
                          <a className="disabled item"><i className="globe icon"/> Choose Language</a>
