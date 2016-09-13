@@ -1,6 +1,5 @@
 /* eslint  "env/es6": 0, "no-var": 0, "semi": 0 */
 
-var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -12,7 +11,6 @@ var staticDirectory = './g/static/private/'
 var jsMainFile = staticDirectory + 'js/main.js'
 var buildDir = staticDirectory + '_build/'
 var jsBundleFile = __PRODUCTION__ ? (HASH + '.build.min.js') : 'build.js'
-var jsBundleFileSourceMap = __PRODUCTION__ ? (HASH + '.build.min.js.map') : 'build.js.map'
 var styleBundleFile = __PRODUCTION__ ? (HASH + '.build.min.css') : 'build.css'
 
 var plugins = [
@@ -23,25 +21,36 @@ var plugins = [
 ]
 
 if (__PRODUCTION__) {
-    plugins.push(new webpack.DefinePlugin({
-        'process.env': {
-            NODE_ENV: JSON.stringify('production')
-        }
-    }))
-    plugins.push(new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false
-        }
-    }))
+    plugins = plugins.concat([
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                screw_ie8: true, // React doesn't support IE8
+                warnings: false
+            },
+            mangle: {
+                screw_ie8: true
+            },
+            output: {
+                comments: false,
+                screw_ie8: true
+            }
+        })
+    ])
 }
 
 module.exports = {
-    devtool: __PRODUCTION__ ? 'cheap-module-source-map' : 'cheap-eval-source-map',
+    devtool: __PRODUCTION__ ? 'source-map' : 'eval',
     entry: jsMainFile,
     output: {
         path: buildDir,
-        filename: jsBundleFile,
-        sourceMapFilename: jsBundleFileSourceMap
+        filename: jsBundleFile
     },
     plugins: plugins,
     module: {
