@@ -17,7 +17,7 @@ export function fetchTicketsPage(views, page) {
         // this will allow us to test a view before submitting it to the DB
         if (views.getIn(['active', 'dirty'])) {
             promise = axios.put('/api/tickets/view/', {
-                view: activeView.delete('dirty').toJS(),
+                view: activeView.delete('dirty').delete('editMode').toJS(),
                 page
             })
         } else {

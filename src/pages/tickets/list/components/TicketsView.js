@@ -17,7 +17,7 @@ export default class TicketsView extends React.Component {
         return width + CELL_WIDTH  // One extra cell for the row checkbox
     }
 
-    updateView = (view) => this.props.actions.view.updateView(view)
+    updateView = (view, edit) => this.props.actions.view.updateView(view, edit)
 
     resetView = () => this.props.actions.view.resetView()
 
@@ -36,6 +36,15 @@ export default class TicketsView extends React.Component {
 
     updateFieldEnumSearch = (field, query) => this.props.actions.view.updateFieldEnumSearch(field, query)
 
+    viewActionEdit = () => {
+        // updateView enters editMode by default
+        this.props.actions.view.updateView(this.props.views.get('active'))
+    }
+
+    viewActionDelete = () => {
+        this.deleteView(this.props.views.get('active'))
+    }
+
     render() {
         const {views, tickets, currentUser, search, schemas, actions, fetchPage} = this.props
         const view = views.get('active')
@@ -51,7 +60,32 @@ export default class TicketsView extends React.Component {
                         <div className="sticky-header">
 
                             <div className="ui text menu sticky-header-search">
-                                <div className="left menu item"></div>
+                                <div className="left menu item">
+
+                                    <div className="ui dropdown tickets-view-settings" ref={(dropdown) => {
+                                        $(dropdown).dropdown({
+                                            action: () => {
+                                                // HACK action='hide' does not work
+                                                // as described in the docs.
+                                                $(dropdown).dropdown('hide')
+                                            }
+                                        })
+                                    }}>
+                                        <i className="setting icon"></i>
+                                        <div className="text">
+                                            VIEW SETTINGS
+                                        </div>
+                                        <div className="menu">
+                                            <div className="item" onClick={this.viewActionEdit}>
+                                                Edit view
+                                            </div>
+                                            <div className="item" onClick={this.viewActionDelete}>
+                                                Delete view
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                                 <div className="right menu item">
                                     <Search
                                         autofocus
@@ -144,11 +178,13 @@ export default class TicketsView extends React.Component {
                             views={views}
                             schemas={schemas}
                             resetView={this.resetView}
-                            deleteView={this.deleteView}
                             removeFieldFilter={actions.view.removeFieldFilter}
                             updateFieldFilterOperator={actions.view.updateFieldFilterOperator}
                             submitView={actions.view.submitView}
-                            width={this.getWidth()}
+                            currentUser={currentUser}
+                            agents={this.props.users.get('agents')}
+                            tags={this.props.tags}
+                            updateFieldFilter={actions.view.updateFieldFilter}
                         />
                     </div>
                 </div>

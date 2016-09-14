@@ -16,7 +16,7 @@ export default class PlainColumnHeader extends React.Component {
         const onClick = () => updateView(view.merge({
             order_by: field.name,
             order_dir: newOrderDir
-        }))
+        }), false)
 
 
         let orderClasses = 'action sort icon'

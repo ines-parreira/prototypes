@@ -55,7 +55,10 @@ export default class TicketsNavbarView extends React.Component {
                                     }
 
                                     const key = `${view.slug}-${view.id}`
-                                    const count = view.count !== undefined && view.count !== null ? view.count : '?'
+                                    let count = '0'
+                                    if (view.count !== undefined && view.count !== null) {
+                                        count = view.count
+                                    }
 
                                     return (
                                         <Link key={key}

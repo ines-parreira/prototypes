@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {findProperty} from '../../../../utils'
-import {BASIC_OPERATORS} from '../../../../config'
+import {BASIC_OPERATORS, TICKET_STATUSES} from '../../../../config'
+import {fromJS} from 'immutable'
 
 const resolveObjectPath = (node) => {
     switch (node.type) {
@@ -27,9 +28,11 @@ Left.propTypes = {
 }
 
 const Operator = ({operators, selected, index, onChange}) => (
-    <select className="ui simple mini dropdown Operator"
+    <select className="ui mini dropdown Operator"
             defaultValue={selected}
-            onChange={(e) => onChange(index, e)}
+            ref={(select) => window.jQuery && window.jQuery(select).dropdown({
+                onChange: (value) => onChange(index, value)
+            })}
     >
         {Object.keys(operators).map((o, idx) => (
             <option key={idx} value={o}>{operators[o].label}</option>
@@ -43,27 +46,115 @@ Operator.propTypes = {
     onChange: PropTypes.func.isRequired
 }
 
-const Right = ({node}) => {
-    let value = node.value
-    if (~node.raw.indexOf('current_user')) {
-        value = 'Me'
+const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, index}) => {
+    let options = fromJS([])
+
+    // use semantic-ui selects for some filters
+    if (objectPath === 'ticket.assignee_user.id') {
+        options = agents.map((agent) => {
+            if (agent.get('id') === currentUser.get('id')) {
+                // replace my name with 'Me'
+                let me = agent.set('name', 'Me')
+
+                // if we're getting the selected value from the view,
+                // replace the current user id with {current_user.id},
+                // that's the way the filter value is stored in the view.
+                // for the select element to match the active item.
+                if (node.value === '{current_user.id}') {
+                    me = me.set('id', '{current_user.id}')
+                }
+
+                return me
+            }
+
+            return agent
+        })
     }
-    return <span className="ui mini basic light blue button right-expression">{value}</span>
+
+    if (objectPath === 'ticket.tags.name') {
+        options = tags
+    }
+
+    if (objectPath === 'ticket.status') {
+        options = fromJS(TICKET_STATUSES.map((status) => {
+            return {
+                id: status,
+                name: status
+            }
+        }))
+    }
+
+    if (options.size) {
+        return <RightSelect node={node} options={options} updateFieldFilter={updateFieldFilter} index={index}/>
+    }
+
+    return <span className="ui mini basic light blue button right-expression">{node.value}</span>
 }
 Right.propTypes = {
-    node: PropTypes.object.isRequired
+    node: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+
+    agents: PropTypes.object.isRequired,
+    tags: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+
+    updateFieldFilter: PropTypes.func.isRequired,
+    objectPath: PropTypes.string.isRequired
 }
 
+const RightSelect = ({node, options, updateFieldFilter, index}) => {
+    function selectChange(value) {
+        updateFieldFilter(index, value)
+    }
+
+    function uid(i, filterIndex) {
+        return `${filterIndex}-${i}`
+    }
+
+    function createDropdown(select) {
+        if (window.jQuery) {
+            window.jQuery(select).dropdown({
+                onChange: selectChange
+            })
+
+            // semantic-ui doesn't get the selected value the way react sets it.
+            // so we need to manually update it.
+            window.jQuery(select).dropdown('set selected', node.value)
+        }
+    }
+
+    return (
+        <select className="ui search dropdown view-filters-expression-value"
+                value={node.value}
+                onChange={() => {}}
+                ref={createDropdown}
+        >
+            {options.map((option, i) => {
+                return (
+                    <option key={uid(i, index)} value={option.get('id')}>
+                        {option.get('name')}
+                    </option>
+                )
+            })}
+        </select>
+    )
+}
+RightSelect.propTypes = {
+    node: PropTypes.object.isRequired,
+    options: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    updateFieldFilter: PropTypes.func.isRequired
+}
 
 const RemoveCallExpression = ({index, onClick}) => (
-    <i className="right floated remove circle red large action icon" onClick={() => onClick(index)}/>
+    <i className="remove circle red large action icon" onClick={() => onClick(index)}/>
 )
 RemoveCallExpression.propTypes = {
     index: PropTypes.number.isRequired,
     onClick: PropTypes.func.isRequired
 }
 
-export const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index}) => {
+export const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index, agents, tags, currentUser, updateFieldFilter}) => {
     const left = node.arguments[0]
     const right = node.arguments[1]
     const operator = node.callee
@@ -76,7 +167,7 @@ export const CallExpression = ({view, schemas, node, updateOperator, removeCondi
         <div className="CallExpression">
             <Left objectPath={objectPath} view={view}/>
             <Operator operators={operators} selected={operator.name} index={index} onChange={updateOperator}/>
-            <Right node={right}/>
+            <Right node={right} objectPath={objectPath} agents={agents} tags={tags} currentUser={currentUser} updateFieldFilter={updateFieldFilter} index={index}/>
             <RemoveCallExpression onClick={removeCondition} index={index}/>
         </div>
     )
@@ -89,7 +180,13 @@ CallExpression.propTypes = {
     index: PropTypes.number.isRequired,
 
     removeCondition: PropTypes.func.isRequired,
-    updateOperator: PropTypes.func.isRequired
+    updateOperator: PropTypes.func.isRequired,
+
+    agents: PropTypes.object.isRequired,
+    tags: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+
+    updateFieldFilter: PropTypes.func.isRequired
 }
 
 const OperatorLabel = ({operator}) => {
@@ -109,12 +206,12 @@ export default class ViewFilters extends React.Component {
         this.props.removeFieldFilter(index)
     }
 
-    updateOperator = (index, event) => {
-        this.props.updateFieldFilterOperator(index, event.target.value)
+    updateOperator = (index, value) => {
+        this.props.updateFieldFilterOperator(index, value)
     }
 
     render() {
-        const {view, schemas} = this.props
+        const {view, schemas, agents, tags, currentUser, updateFieldFilter} = this.props
         if (!view || !schemas || schemas.isEmpty()) {
             return null
         }
@@ -137,13 +234,22 @@ export default class ViewFilters extends React.Component {
                             index={callExprCounter++}
                             removeCondition={this.removeCondition}
                             updateOperator={this.updateOperator}
+                            agents={agents}
+                            tags={tags}
+                            currentUser={currentUser}
+                            updateFieldFilter={updateFieldFilter}
                         />
                     )
                 case 'LogicalExpression':
-                    return (<div>
-                        {walk(node.left)}
-                        <OperatorLabel operator={node.operator}/>
-                        {walk(node.right)}
+                    return (<div className="view-filters">
+                        <div className="view-filters-item">
+                            {walk(node.left)}
+                            <OperatorLabel operator={node.operator}/>
+                        </div>
+
+                        <div className="view-filters-item">
+                            {walk(node.right)}
+                        </div>
                     </div>)
                 default:
                     throw Error('Unknown type', node)
@@ -157,5 +263,9 @@ ViewFilters.propTypes = {
     view: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
     removeFieldFilter: PropTypes.func.isRequired,
-    updateFieldFilterOperator: PropTypes.func.isRequired
+    updateFieldFilterOperator: PropTypes.func.isRequired,
+    agents: PropTypes.object.isRequired,
+    tags: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    updateFieldFilter: PropTypes.func.isRequired
 }

@@ -8,9 +8,10 @@ export const setViewActive = (view) => ({
     view
 })
 
-export const updateView = (view) => ({
+export const updateView = (view, edit = true) => ({
     type: types.UPDATE_VIEW,
-    view
+    view,
+    edit
 })
 
 export const updateField = (field) => ({
@@ -29,6 +30,13 @@ export const addFieldFilter = (field, filter) => ({
 export const removeFieldFilter = (index) => ({
     type: types.REMOVE_VIEW_FIELD_FILTER,
     index
+})
+
+// update a filter value
+export const updateFieldFilter = (index, value) => ({
+    type: types.UPDATE_VIEW_FIELD_FILTER,
+    index,
+    value
 })
 
 // remove a filter based on index
@@ -99,18 +107,22 @@ export function fetchViews(currentViewId) {
 
 export function submitView(view) {
     return (dispatch) => {
+        const isUpdate = view.get('id')
+
+        if (isUpdate && !window.confirm('You\'re about to edit this view for all users. Are you sure?')) {
+            return
+        }
+
         dispatch({
             type: types.SUBMIT_VIEW_START
         })
 
-        const isUpdate = view.get('id')
-
         let promise
 
         if (isUpdate) {
-            promise = axios.put(`/api/views/${view.get('id')}/`, view.delete('dirty').toJS())
+            promise = axios.put(`/api/views/${view.get('id')}/`, view.delete('dirty').delete('editMode').toJS())
         } else {
-            promise = axios.post('/api/views/', view.delete('dirty').toJS())
+            promise = axios.post('/api/views/', view.delete('dirty').delete('editMode').toJS())
         }
 
         return promise

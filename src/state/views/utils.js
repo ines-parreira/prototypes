@@ -22,24 +22,23 @@ export function removeFilterAST(view, index) {
     return ''
 }
 
-// traverse filters_ast and replace the callee name of the CallExpression found at `index
-// once replaced, we return the new AST
-export function updateFilterAST(view, index, operator) {
-    const ast = view.get('filters_ast')
+// walk and edit the ast tree
+function walk(ast, index, key, value) {
     let count = 0
 
-    function walk(node) {
+    function walker(node) {
         switch (node.get('type')) {
             case 'Program':
-                return node.setIn(['body', 0], walk(node.getIn(['body', 0])))
+                return node.setIn(['body', 0], walker(node.getIn(['body', 0])))
             case 'ExpressionStatement':
-                return node.set('expression', walk(node.get('expression')))
+                return node.set('expression', walker(node.get('expression')))
             case 'LogicalExpression':
-                return node.set('left', walk(node.get('left'))).set('right', walk(node.get('right')))
+                return node.set('left', walker(node.get('left'))).set('right', walker(node.get('right')))
             case 'CallExpression':
                 if (count === index) {
-                    return node.setIn(['callee', 'name'], operator)
+                    return node.setIn(key, value)
                 }
+
                 count++
                 return node
             default:
@@ -47,7 +46,19 @@ export function updateFilterAST(view, index, operator) {
         }
     }
 
-    return walk(ast)
+    return walker(ast)
+}
+
+// traverse filters_ast and replace the callee name of the CallExpression found at `index
+// once replaced, we return the new AST
+export function updateFilterOperator(view, index, operator) {
+    const ast = view.get('filters_ast')
+    return walk(ast, index, ['callee', 'name'], operator)
+}
+
+export function updateFilterValue(view, index, value) {
+    const ast = view.get('filters_ast')
+    return walk(ast, index, ['arguments', 1, 'value'], value)
 }
 
 // shortcut for sorting items

@@ -4,7 +4,8 @@ import {getCode} from '../../utils'
 import {
     addFilterAST,
     removeFilterAST,
-    updateFilterAST,
+    updateFilterOperator,
+    updateFilterValue,
     sortViews
 } from './utils'
 
@@ -28,13 +29,18 @@ export default (state = initialState, action) => {
             return state
 
         case types.UPDATE_VIEW:
-            return state.set('active', action.view.set('dirty', true))
+            // edit is true by default,
+            // for backwards compatibility.
+            return state.set('active', action.view.set('dirty', true).set('editMode', action.edit))
 
         case types.UPDATE_VIEW_FIELD:
             // replace a field with a new field
             active = active.set('fields', active.get('fields').map((f) => (
                 (f.get('name') === action.field.get('name')) ? action.field : f
             )))
+
+            // enter edit mode
+            active = active.set('editMode', true)
 
             return state.set('active', active.set('dirty', true))
 
@@ -53,8 +59,14 @@ export default (state = initialState, action) => {
             active = active.set('filters_ast', ast).set('filters', code)
             return state.set('active', active.set('dirty', true))
 
+        case types.UPDATE_VIEW_FIELD_FILTER:
+            ast = updateFilterValue(active, action.index, action.value)
+            code = getCode(ast.toJS())
+            active = active.set('filters_ast', ast).set('filters', code)
+            return state.set('active', active)
+
         case types.UPDATE_VIEW_FIELD_FILTER_OPERATOR:
-            ast = updateFilterAST(active, action.index, action.operator)
+            ast = updateFilterOperator(active, action.index, action.operator)
             code = getCode(ast.toJS())
             active = active.set('filters_ast', ast).set('filters', code)
             return state.set('active', active)
