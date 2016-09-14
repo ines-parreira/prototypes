@@ -329,16 +329,21 @@ export default (state = initialState, action) => {
 
             if (receivers.length) {
                 const firstReceiver = receivers[0]
+                let storedData = firstReceiver.id
+                    ? {id: firstReceiver.id}
+                    : {email: firstReceiver.address}
+                storedData = fromJS(storedData)
+
                 if (!newState.getIn(['newMessage', 'receiver'])) {
-                    newState = newState.setIn(['newMessage', 'receiver'], fromJS({id: firstReceiver.id}))
+                    newState = newState.setIn(['newMessage', 'receiver'], storedData)
                 }
 
                 if (!newState.get('receiver')) {
-                    newState = newState.set('receiver', fromJS({id: firstReceiver.id}))
+                    newState = newState.set('receiver', storedData)
                 }
 
                 if (!newState.get('requester')) {
-                    newState = newState.set('requester', fromJS({id: firstReceiver.id}))
+                    newState = newState.set('requester', storedData)
                 }
             } else {
                 if (!newState.getIn(['newMessage', 'source', 'to']).size) {
@@ -377,8 +382,7 @@ export default (state = initialState, action) => {
                     userHistory: {
                         tickets: action.resp.data,
                         isLoading: false,
-                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) ||
-                            !!(action.resp.meta.item_count - 1)
+                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!(action.resp.meta.item_count - 1)
                     }
                 }
             })
@@ -389,8 +393,7 @@ export default (state = initialState, action) => {
                     userHistory: {
                         events: action.resp.data,
                         isLoading: false,
-                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) ||
-                            !!action.resp.meta.item_count
+                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!action.resp.meta.item_count
                     }
                 }
             })
