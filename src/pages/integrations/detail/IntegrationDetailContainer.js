@@ -87,6 +87,7 @@ class IntegrationDetailContainer extends React.Component {
                             integrations={commonProps.integrations}
                             facebookAppId={commonProps.facebookAppId}
                             loading={commonProps.loading}
+                            facebookLoginStatus={integrations.getIn(['_internal', 'facebookLoginStatus'])}
                         />
                     )
                 }

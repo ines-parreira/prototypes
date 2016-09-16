@@ -2,10 +2,16 @@ import React, {PropTypes} from 'react'
 import IntegrationList from '../../components/IntegrationList'
 import FacebookPageRow from './FacebookPageRow'
 import WrapInFacebookLogin from './WrapInFacebookLogin'
+import {waitForFB} from '../../../common/utils'
 
 class FacebookIntegrationList extends React.Component {
+    componentDidMount() {
+        // check facebook login status
+        waitForFB(this.props.actions.facebookLoginStatus)
+    }
+
     render() {
-        const {integrations, actions, loading} = this.props
+        const {integrations, actions, facebookLoginStatus, loading} = this.props
         const longTypeDescription = 'Facebook is a popular social network where customers can interact with companies. This integration creates tickets when customers post on your Facebook page or send you a message on Messenger.'
 
         const integrationToItemDisplay = (int) => {
@@ -28,7 +34,7 @@ class FacebookIntegrationList extends React.Component {
                 integrationType="facebook"
                 integrations={integrations.filter((v) => v.get('type') === 'facebook')}
                 longTypeDescription={longTypeDescription}
-                createIntegration={actions.facebookLogin}
+                createIntegration={() => actions.facebookLogin(facebookLoginStatus)}
                 createIntegrationButtonText="Add Facebook page"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
@@ -41,7 +47,8 @@ class FacebookIntegrationList extends React.Component {
 FacebookIntegrationList.propTypes = {
     integrations: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    facebookLoginStatus: PropTypes.string,
 }
 
 // eslint-disable-next-line no-class-assign

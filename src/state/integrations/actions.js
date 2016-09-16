@@ -94,32 +94,48 @@ export function deleteIntegration(integration) {
 
 function onFacebookLoginSuccess(dispatch) {
     return (response) => {
-        if (response.authResponse) {
-            axios.post(`/callbacks/facebook/receive-access-token?user_id=${response.authResponse.userID}&access_token=${response.authResponse.accessToken}`)
-                .then((json = {}) => json.data)
-                .then(resp => {
-                    dispatch({
-                        type: types.FACEBOOK_LOGIN_SUCCESS,
-                        resp
-                    })
-                    browserHistory.push('/app/integrations/facebook/new')
-                })
-                .catch(error => {
-                    dispatch({
-                        type: types.FACEBOOK_LOGIN_ERROR,
-                        error,
-                        reason: 'Failed to POST facebook token to the backend'
-                    })
-                })
-        } else {
+        if (!response) {
+            // no response means that we're already authenticated so just redirect to the pages
             dispatch({
-                type: types.FACEBOOK_LOGIN_ERROR,
-                error: true,
-                reason: 'User canceled login or did not fully authorize'
+                type: types.FACEBOOK_LOGIN_SUCCESS
             })
+            browserHistory.push('/app/integrations/facebook/new')
+        } else {
+            if (response.authResponse) {
+                axios.post(`/callbacks/facebook/receive-access-token?user_id=${response.authResponse.userID}&access_token=${response.authResponse.accessToken}`)
+                    .then((json = {}) => json.data)
+                    .then(resp => {
+                        dispatch({
+                            type: types.FACEBOOK_LOGIN_SUCCESS,
+                            resp
+                        })
+                    })
+                    .catch(error => {
+                        dispatch({
+                            type: types.FACEBOOK_LOGIN_ERROR,
+                            error,
+                            reason: 'Failed to POST facebook token to the backend'
+                        })
+                    })
+            } else {
+                dispatch({
+                    type: types.FACEBOOK_LOGIN_ERROR,
+                    error: true,
+                    reason: 'User canceled login or did not fully authorize'
+                })
+            }
         }
     }
 }
+
+export const facebookLoginStatus = () => ((dispatch) => {
+    FB.getLoginStatus((res) => {
+        dispatch({
+            type: types.FACEBOOK_LOGIN_STATUS,
+            status: res.status
+        })
+    })
+})
 
 /**
  * We want to login the user, ask for relevant permissions and then display the list of pages so s/he can choose the
@@ -128,24 +144,20 @@ function onFacebookLoginSuccess(dispatch) {
  *
  * See https://developers.facebook.com/docs/facebook-login/web
  */
-export function facebookLogin() {
-    return (dispatch) => {
-        dispatch({
-            type: types.FACEBOOK_LOGIN
-        })
+export const facebookLogin = (status) => ((dispatch) => {
+    dispatch({
+        type: types.FACEBOOK_LOGIN
+    })
 
-        FB.getLoginStatus((res) => {
-            if (res.status === 'connected') {
-                onFacebookLoginSuccess(dispatch)(res)
-            } else {
-                // login popup
-                FB.login(onFacebookLoginSuccess(dispatch), {
-                    scope: 'manage_pages,publish_pages,read_page_mailboxes'
-                })
-            }
+    if (status === 'connected') {
+        onFacebookLoginSuccess(dispatch)()
+    } else {
+        // login popup
+        FB.login(onFacebookLoginSuccess(dispatch), {
+            scope: 'manage_pages,publish_pages,read_page_mailboxes'
         })
     }
-}
+})
 
 function updateOrCreateIntegrationRequest(integration, action) {
     return (dispatch) => {

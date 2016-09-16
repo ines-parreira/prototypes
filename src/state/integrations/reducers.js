@@ -12,6 +12,9 @@ const initialState = fromJS({
             updateIntegration: false,
             testing: false
         }
+    },
+    _internal: {
+        facebookLoginStatus: 'unknown'
     }
 })
 
@@ -70,19 +73,21 @@ export default (state = initialState, action) => {
             let newState = state
             // We can't just concatenate since we might get duplicates if we call it several times.
             // So we merge on page id.
-            for (const pageIntegration of action.resp.data) {
-                const existingIndex = newState.get('integrations')
-                    .findIndex((int) => int.getIn(['facebook', 'page_id']) === pageIntegration.facebook.page_id)
-                if (~existingIndex) {
-                    newState = newState.setIn(['integrations', existingIndex], fromJS(pageIntegration))
-                } else {
-                    newState = newState.set('integrations', newState.get('integrations').push(fromJS(pageIntegration)))
+            if (action.resp) {
+                for (const pageIntegration of action.resp.data) {
+                    const existingIndex = newState.get('integrations')
+                        .findIndex((int) => int.getIn(['facebook', 'page_id']) === pageIntegration.facebook.page_id)
+                    if (~existingIndex) {
+                        newState = newState.setIn(['integrations', existingIndex], fromJS(pageIntegration))
+                    } else {
+                        newState = newState.set('integrations', newState.get('integrations').push(fromJS(pageIntegration)))
+                    }
                 }
             }
-
             return newState.setIn(['state', 'loading', 'facebookLogin'], false)
         }
-
+        case types.FACEBOOK_LOGIN_STATUS:
+            return state.setIn(['_internal', 'facebookLoginStatus'], action.status)
         case types.UPDATE_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'updateIntegration'], true)
         case types.UPDATE_INTEGRATION_ERROR:
