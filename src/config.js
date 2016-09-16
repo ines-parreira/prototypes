@@ -68,10 +68,10 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         type: 'smooch',
         description: 'Chat with your users'
     },
-    // {
-    //     type: 'http',
-    //     description: 'Connect to anything over http'
-    // },
+    {
+        type: 'http',
+        description: 'Connect to anything over http'
+    },
     // {
     //     type: 'twitter',
     //     description: 'Connect your twitter account'

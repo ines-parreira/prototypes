@@ -3,7 +3,6 @@ import React from 'react'
 import classNames from 'classnames'
 
 class SelectField extends React.Component {
-
     componentDidMount() {
         $(this.refs.select).dropdown()
     }

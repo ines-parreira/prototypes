@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { Link } from 'react-router'
 
 import { Field, FieldArray, reduxForm } from 'redux-form'
@@ -10,11 +10,10 @@ import { fromJS } from 'immutable'
 import { forIn as _forIn } from 'lodash'
 
 import { Loader } from '../../../../common/components/Loader'
-import { InputField, SelectField } from '../../../../common/components/semantic'
+import { InputField, SelectField, MultiSelectField, TextAreaField } from '../../../../common/components/semantic'
 
-import HttpIntegrationTesting from './HttpIntegrationTesting'
+// import HttpIntegrationTesting from './HttpIntegrationTesting'
 import HeaderFieldArray from './HeaderFieldArray'
-import ParameterFieldArray from './ParameterFieldArray'
 
 
 export const defaultContent = {
@@ -47,7 +46,7 @@ class HttpIntegrationDetail extends React.Component {
             const updatedIntegration = integration.toJS()
 
             // transforming 'headers' and 'form' into arrays
-            const transformationList = ['headers', 'form']
+            const transformationList = ['headers']
             transformationList.forEach((param) => {
                 updatedIntegration.http[param] = this._objectToParameters(
                     updatedIntegration.http[param]
@@ -98,7 +97,7 @@ class HttpIntegrationDetail extends React.Component {
         let doc = JSON.parse(JSON.stringify(values))
 
         // transforming 'headers' and 'form' into objects
-        const transformationList = ['headers', 'form']
+        const transformationList = ['headers']
         transformationList.forEach((param) => {
             doc.http[param] = this._parametersToObject(doc.http[param])
         })
@@ -124,7 +123,7 @@ class HttpIntegrationDetail extends React.Component {
     render() {
         const { actions, handleSubmit, integration, isUpdate, loading } = this.props
 
-        const { isTestShown } = this.state
+        // const { isTestShown } = this.state
 
         const isSubmitting = loading.get('updateIntegration')
 
@@ -200,11 +199,37 @@ class HttpIntegrationDetail extends React.Component {
                             <option value="application/json">application/json</option>
                         </Field>
                         <FieldArray name="http.headers" component={HeaderFieldArray} />
-                        <FieldArray name="http.form" component={ParameterFieldArray} />
+
+                        <Field
+                            type="json"
+                            name="http.form"
+                            label="Parameters"
+                            component={TextAreaField}
+                        />
+
+                        <Field
+                            type="text"
+                            name="http.triggers"
+                            label="Triggers"
+                            placeholder="Triggers"
+                            ref="httpTriggers"
+                            required
+                            component={MultiSelectField}
+                            options={[
+                                {
+                                    label: 'Ticket Created',
+                                    slug: 'ticket-created'
+                                },
+                                {
+                                    label: 'Ticket Updated',
+                                    slug: 'ticket-updated'
+                                }
+                            ]}
+                        />
 
                         <div className="field">
 
-                            {isUpdate && (
+                            {/* isUpdate && (
                                 <button
                                     className={classNames('ui', 'teal', 'button', {
                                         loading: isSubmitting
@@ -217,7 +242,7 @@ class HttpIntegrationDetail extends React.Component {
                                 >
                                     Test
                                 </button>
-                            )}
+                            ) */}
 
                             <button
                                 type="submit"
@@ -241,6 +266,7 @@ class HttpIntegrationDetail extends React.Component {
                         </div>
                     </form>
 
+                    {/*
                     <div>
                         <ReactCSSTransitionGroup
                             transitionName="fade"
@@ -260,6 +286,8 @@ class HttpIntegrationDetail extends React.Component {
                             )}
                         </ReactCSSTransitionGroup>
                     </div>
+                    */}
+
                 </div>
             </div>
         )

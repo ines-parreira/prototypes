@@ -414,9 +414,6 @@
         "response_content_type": {
           "type": "string"
         },
-        "responses_content_type": {
-          "type": "string"
-        },
         "uri": {
           "description": "URI of the object",
           "format": "int32",
