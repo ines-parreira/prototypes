@@ -49,6 +49,10 @@ export default (state = initialState, action) => {
             ast = addFilterAST(active, action.filter)
             code = getCode(ast.toJS())
             active = active.set('filters_ast', ast).set('filters', code)
+
+            // enter edit mode
+            active = active.set('editMode', true)
+
             return state.set('active', active.set('dirty', true))
 
         case types.REMOVE_VIEW_FIELD_FILTER:

@@ -7,6 +7,12 @@ import Search from '../../../common/components/Search'
 import {CELL_WIDTH} from '../../../../config'
 
 export default class TicketsView extends React.Component {
+    constructor() {
+        super()
+
+        this.state = {}
+    }
+
     getWidth = () => {
         let width = 0
         this.props.views.get('active').get('fields').forEach((field) => {
@@ -45,6 +51,43 @@ export default class TicketsView extends React.Component {
         this.deleteView(this.props.views.get('active'))
     }
 
+    componentDidUpdate() {
+        // view was edited,
+        // update the header dimensions.
+        this.setFixedHeader(this.refs.header)
+    }
+
+    getScrollbarWidth() {
+        const $node = document.createElement('div')
+        // default scrollbar width
+        let scrollbarWidth = 20
+
+        $node.setAttribute('style', `
+            position: absolute;
+            left: -50px;
+            top: -50px;
+            visibility: hidden;
+            width: 50px;
+            overflow: scroll;
+        `)
+
+        document.body.appendChild($node)
+        scrollbarWidth = $node.offsetWidth - $node.clientWidth
+        document.body.removeChild($node)
+
+        return scrollbarWidth
+    }
+
+    setFixedHeader($header) {
+        // get header height.
+        // it changes when editing the view.
+        if (!$header) {
+            return
+        }
+
+        this.state.headerHeight = $header.offsetHeight
+    }
+
     render() {
         const {views, tickets, currentUser, search, schemas, actions, fetchPage} = this.props
         const view = views.get('active')
@@ -53,10 +96,19 @@ export default class TicketsView extends React.Component {
             return null
         }
 
+        // for performance, cache the value in state.
+        if (!this.state.scrollbarWidth) {
+            this.state.scrollbarWidth = this.getScrollbarWidth()
+        }
+
         return (
             <div className="tickets-view">
-                <div className="tickets-view-header-container">
-                    <div className="tickets-view-header" style={{maxWidth: this.getWidth()}}>
+                <div className="tickets-view-header-container" ref="header" style={{
+                    width: `calc(100% - ${this.state.scrollbarWidth}px)`
+                }}>
+                    <div className="tickets-view-header" style={{
+                        maxWidth: this.getWidth()
+                    }}>
                         <div className="sticky-header">
 
                             <div className="ui text menu sticky-header-search">
@@ -205,6 +257,10 @@ export default class TicketsView extends React.Component {
                     saveIndex={this.props.actions.tickets.saveIndex}
 
                     toggleTicketSelection={actions.tickets.toggleTicketSelection}
+
+                    style={{
+                        paddingTop: this.state.headerHeight
+                    }}
                 />
             </div>
         )

@@ -11,7 +11,7 @@ export default class TicketTable extends React.Component {
     }
 
     render() {
-        const {view, tickets, currentUser} = this.props
+        const {view, tickets, currentUser, style} = this.props
         const isLoading = this.props.tickets.getIn(['_internal', 'loading', 'fetchList'])
 
         if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty() && !isLoading)) {
@@ -21,14 +21,18 @@ export default class TicketTable extends React.Component {
                 message = <p>No tickets found.<br /><a onClick={this.props.resetView}>Reset view</a></p>
             }
 
-            return <Loader message={message} loading={isLoading} />
+            return (
+                <div className="ticket-table" style={style}>
+                    <Loader message={message} loading={isLoading} />
+                </div>
+            )
         }
 
         // temporary remove priority from available fields
         const updatedView = view.set('fields', view.get('fields').filter(f => f.get('name') !== 'priority'))
 
         return (
-            <div className="ticket-table">
+            <div className="ticket-table" style={style}>
                 <table className="ui selectable very basic padded table" ref="table">
                     <thead>
                         <tr>
@@ -101,5 +105,7 @@ TicketTable.propTypes = {
 
     saveIndex: PropTypes.func.isRequired,
 
-    toggleTicketSelection: PropTypes.func.isRequired
+    toggleTicketSelection: PropTypes.func.isRequired,
+
+    style: PropTypes.object.isRequired
 }

@@ -38,7 +38,7 @@ describe('components', () => {
                 schemas: fromJS(openapi)
             }
             const {output} = setup(props)
-            expect(output.type).toBe(CallExpression)
+            expect(output.props.children.type).toBe(CallExpression)
             TestUtils.renderIntoDocument(output)
             // todo(@xarg): check that document has the relevant dom
         })

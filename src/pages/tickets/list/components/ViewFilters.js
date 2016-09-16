@@ -88,7 +88,7 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
         return <RightSelect node={node} options={options} updateFieldFilter={updateFieldFilter} index={index}/>
     }
 
-    return <span className="ui mini basic light blue button right-expression">{node.value}</span>
+    return <span className="ui mini basic light blue button">{node.value}</span>
 }
 Right.propTypes = {
     node: PropTypes.object.isRequired,
@@ -124,19 +124,21 @@ const RightSelect = ({node, options, updateFieldFilter, index}) => {
     }
 
     return (
-        <select className="ui search dropdown view-filters-expression-value"
-                value={node.value}
-                onChange={() => {}}
-                ref={createDropdown}
-        >
-            {options.map((option, i) => {
-                return (
-                    <option key={uid(i, index)} value={option.get('id')}>
-                        {option.get('name')}
-                    </option>
-                )
-            })}
-        </select>
+        <div className="view-filters-expression-value">
+            <select className="ui search dropdown"
+                    value={node.value}
+                    onChange={() => {}}
+                    ref={createDropdown}
+            >
+                {options.map((option, i) => {
+                    return (
+                        <option key={uid(i, index)} value={option.get('id')}>
+                            {option.get('name')}
+                        </option>
+                    )
+                })}
+            </select>
+        </div>
     )
 }
 RightSelect.propTypes = {
@@ -154,7 +156,7 @@ RemoveCallExpression.propTypes = {
     onClick: PropTypes.func.isRequired
 }
 
-export const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index, agents, tags, currentUser, updateFieldFilter}) => {
+export const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index, agents, tags, currentUser, updateFieldFilter, parentNode}) => {
     const left = node.arguments[0]
     const right = node.arguments[1]
     const operator = node.callee
@@ -169,6 +171,12 @@ export const CallExpression = ({view, schemas, node, updateOperator, removeCondi
             <Operator operators={operators} selected={operator.name} index={index} onChange={updateOperator}/>
             <Right node={right} objectPath={objectPath} agents={agents} tags={tags} currentUser={currentUser} updateFieldFilter={updateFieldFilter} index={index}/>
             <RemoveCallExpression onClick={removeCondition} index={index}/>
+
+            {(() => {
+                if (parentNode) {
+                    return <OperatorLabel operator={parentNode.operator}/>
+                }
+            })()}
         </div>
     )
 }
@@ -186,7 +194,9 @@ CallExpression.propTypes = {
     tags: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
 
-    updateFieldFilter: PropTypes.func.isRequired
+    updateFieldFilter: PropTypes.func.isRequired,
+
+    parentNode: PropTypes.object
 }
 
 const OperatorLabel = ({operator}) => {
@@ -223,33 +233,31 @@ export default class ViewFilters extends React.Component {
         const exp = view.get('filters_ast').toJS().body[0].expression
         // counting call expressions so we can delete them later
         let callExprCounter = 0
-        const walk = (node) => {
+        const walk = (node, parentNode) => {
             switch (node.type) {
                 case 'CallExpression':
                     return (
-                        <CallExpression
-                            node={node}
-                            view={view}
-                            schemas={schemas}
-                            index={callExprCounter++}
-                            removeCondition={this.removeCondition}
-                            updateOperator={this.updateOperator}
-                            agents={agents}
-                            tags={tags}
-                            currentUser={currentUser}
-                            updateFieldFilter={updateFieldFilter}
-                        />
+                        <div className="view-filters-item">
+                            <CallExpression
+                                node={node}
+                                parentNode={parentNode}
+                                view={view}
+                                schemas={schemas}
+                                index={callExprCounter++}
+                                removeCondition={this.removeCondition}
+                                updateOperator={this.updateOperator}
+                                agents={agents}
+                                tags={tags}
+                                currentUser={currentUser}
+                                updateFieldFilter={updateFieldFilter}
+                            />
+                        </div>
                     )
                 case 'LogicalExpression':
-                    return (<div className="view-filters">
-                        <div className="view-filters-item">
-                            {walk(node.left)}
-                            <OperatorLabel operator={node.operator}/>
-                        </div>
+                    return (<div className="view-filters-item">
+                        {walk(node.left, node)}
 
-                        <div className="view-filters-item">
-                            {walk(node.right)}
-                        </div>
+                        {walk(node.right, node)}
                     </div>)
                 default:
                     throw Error('Unknown type', node)
