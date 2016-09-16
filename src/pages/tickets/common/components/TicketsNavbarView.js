@@ -30,7 +30,7 @@ export default class TicketsNavbarView extends React.Component {
     }
 
     render() {
-        const {views, currentView, setViewActive, fetchTickets} = this.props
+        const {views, currentView, setViewActive} = this.props
         const sections = this.sections(views.get('items'))
 
         return (
@@ -66,7 +66,6 @@ export default class TicketsNavbarView extends React.Component {
                                               className={classes}
                                               onClick={() => {
                                                   setViewActive(v)
-                                                  fetchTickets(views, 1)
                                               }}
                                         >
                                             {view.name} ({compactInteger(count)})
@@ -86,6 +85,5 @@ export default class TicketsNavbarView extends React.Component {
 TicketsNavbarView.propTypes = {
     views: PropTypes.object,
     currentView: PropTypes.object,
-    setViewActive: PropTypes.func,
-    fetchTickets: PropTypes.func
+    setViewActive: PropTypes.func
 }

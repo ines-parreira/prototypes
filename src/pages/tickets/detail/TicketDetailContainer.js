@@ -117,7 +117,11 @@ class TicketDetailContainer extends React.Component {
             }
 
             if (Object.keys(data).length) {
-                this.props.actions.ticket.ticketPartialUpdate(nextProps.ticket.get('id'), data)
+                this.props.actions.ticket.ticketPartialUpdate(
+                    nextProps.ticket.get('id'),
+                    data,
+                    this._computeNextUrl(true)
+                )
             }
         }
     }
@@ -225,9 +229,6 @@ class TicketDetailContainer extends React.Component {
 
                 if (nextUrl) {
                     browserHistory.push(nextUrl)
-                    if (nextUrl.includes('tickets')) {
-                        this.props.actions.tickets.fetchTicketsPage(this.props.views, 1)
-                    }
                 }
             }
         })

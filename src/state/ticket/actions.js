@@ -87,7 +87,7 @@ export function receivedMacro() {
     }
 }
 
-export function ticketPartialUpdate(ticketId, args) {
+export function ticketPartialUpdate(ticketId, args, nextUrl = null) {
     return (dispatch) => {
         dispatch({
             type: types.TICKET_PARTIAL_UPDATE_START
@@ -107,6 +107,12 @@ export function ticketPartialUpdate(ticketId, args) {
                         type: 'success',
                         msg: 'The ticket has been closed.'
                     }))
+
+                    // Redirect to the next ticket after the transition is done.
+                    // Timeout also needed for the notification to stay up, otherwise the redirect will hide it.
+                    if (nextUrl) {
+                        setTimeout(() => browserHistory.push(nextUrl), nextUrl.includes('tickets') ? 800 : 300)
+                    }
                 }
             })
             .catch(error => {

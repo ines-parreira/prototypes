@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {TICKET_STATUSES} from '../../../../../config'
-import {browserHistory} from 'react-router'
 
 export default class TicketStatus extends React.Component {
     componentDidMount() {
@@ -32,13 +31,6 @@ export default class TicketStatus extends React.Component {
 
             if (nextUrl) {
                 this.props.hideTicket()
-
-                // redirect to the next ticket after the transition is done.
-                // timeout also needed for the notification to stay up,
-                // otherwise the redirect will hide it.
-                setTimeout(() => {
-                    browserHistory.push(nextUrl)
-                }, 300)
             }
         }
     }

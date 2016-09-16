@@ -20,6 +20,11 @@ class TicketListContainer extends React.Component {
         if (this.props.views.get('active').isEmpty() && this.props.views.get('items').size) {
             this.props.actions.view.setViewActive(this.props.views.getIn(['items', 0]))
         }
+
+        this.props.actions.tickets.fetchTicketsPage(
+            this.props.views,
+            this.props.tickets.getIn(['_internal', 'pagination', 'page'])
+        )
     }
 
     // Test if we need to re-fetch the data
@@ -45,16 +50,8 @@ class TicketListContainer extends React.Component {
                 // we ignore the fields because they get updated before any filtering is performed
                 // Ex: when fetching the Requester field enum
                 !currentActive.delete('fields').equals(nextActive.delete('fields')) ||
-                (
-                    // i.e. if we haven't loaded the ticket of the view yet
-                    nextProps.tickets.get('items').size === 0 && nextActive.get('count') !== 0 &&
-                    !nextProps.tickets.getIn(['_internal', 'loading', 'fetchList']) &&
-                    !nextActive.get('search')
-                ) ||
-                (
-                    // i.e. if the view has changed since the last time the container was mounted
-                    nextProps.tickets.getIn(['_internal', 'currentViewId']) !== nextActive.get('id')
-                )
+                // i.e. if the view has changed since the last time the container was mounted
+                nextProps.tickets.getIn(['_internal', 'currentViewId']) !== nextActive.get('id')
             )
         ) {
             this._fetchPage(1, nextProps)
