@@ -131,7 +131,8 @@ export default class TicketsView extends React.Component {
                                             <div className="item" onClick={this.viewActionEdit}>
                                                 Edit view
                                             </div>
-                                            <div className="item" onClick={this.viewActionDelete}>
+                                            <div className="divider"></div>
+                                            <div className="item tickets-view-settings-delete" onClick={this.viewActionDelete}>
                                                 Delete view
                                             </div>
                                         </div>
@@ -257,6 +258,7 @@ export default class TicketsView extends React.Component {
                     saveIndex={this.props.actions.tickets.saveIndex}
 
                     toggleTicketSelection={actions.tickets.toggleTicketSelection}
+                    getWidth={this.getWidth}
 
                     style={{
                         paddingTop: this.state.headerHeight

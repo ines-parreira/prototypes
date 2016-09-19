@@ -11,13 +11,15 @@ export default class PlainColumnHeader extends React.Component {
             return null
         }
 
+        // editMode can be undefined, but we need it boolean
+        const editMode = !!(view.get('editMode'))
+
         const orderDir = view.get('order_dir')
         const newOrderDir = orderDir === 'desc' ? 'asc' : 'desc'
         const onClick = () => updateView(view.merge({
             order_by: field.name,
             order_dir: newOrderDir
-        }), false)
-
+        }), editMode)
 
         let orderClasses = 'action sort icon'
         if (field.name === view.get('order_by')) {
@@ -44,7 +46,7 @@ export default class PlainColumnHeader extends React.Component {
                   className={classNames(field.name, 'wide', 'field')}
                   onClick={onClick}
             >
-                <span>{field.title} {this.renderOrderIcon()}</span>
+                <span className="plain-column-header-label">{field.title} {this.renderOrderIcon()}</span>
             </span>
         )
     }

@@ -23,7 +23,7 @@ export default class ColumnHeader extends React.Component {
         const targetRect = e.target.getBoundingClientRect()
         this.setState({
             isOpened: true,
-            top: targetRect.top - bodyRect.top,
+            top: targetRect.top + targetRect.height - bodyRect.top,
             left: targetRect.left - bodyRect.left,
             width: targetRect.width
         })

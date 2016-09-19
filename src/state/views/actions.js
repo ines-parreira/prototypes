@@ -153,7 +153,7 @@ export function deleteView(view) {
             }))
         }
 
-        if (window.confirm('Are you sure you want to delete this view?')) {
+        if (window.confirm('You\'re about to delete this view for all users. Are you sure?')) {
             axios.delete(`/api/views/${view.get('id')}/`)
                 .then((json = {}) => json.data)
                 .then(() => {

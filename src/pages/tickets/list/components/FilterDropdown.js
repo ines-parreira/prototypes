@@ -71,7 +71,7 @@ export default class FilterDropdown extends React.Component {
         }
 
         return (
-            <div className="FilterDropdown">
+            <div className="filter-dropdown">
                 <div ref="uicomponent" className="ui simple dropdown active visible">
                     <div className="ui vertical menu visible">
                         {this.renderSearch(field)}

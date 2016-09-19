@@ -19,7 +19,7 @@ const Left = ({view, objectPath}) => {
     const suffixPath = objectPath.split('.').slice(1).join('.')
     // now find our field and return it's title
     const field = view.get('fields').find(f => f.get('name') === suffixPath)
-    return <span className="ui mini basic light blue item button">{field ? field.get('title') : suffixPath}</span>
+    return <span className="ui basic light blue item button">{field ? field.get('title') : suffixPath}</span>
 }
 
 Left.propTypes = {
@@ -28,7 +28,7 @@ Left.propTypes = {
 }
 
 const Operator = ({operators, selected, index, onChange}) => (
-    <select className="ui mini dropdown Operator"
+    <select className="ui dropdown Operator"
             defaultValue={selected}
             ref={(select) => window.jQuery && window.jQuery(select).dropdown({
                 onChange: (value) => onChange(index, value)
@@ -88,7 +88,7 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
         return <RightSelect node={node} options={options} updateFieldFilter={updateFieldFilter} index={index}/>
     }
 
-    return <span className="ui mini basic light blue button">{node.value}</span>
+    return <span className="ui basic light blue button">{node.value}</span>
 }
 Right.propTypes = {
     node: PropTypes.object.isRequired,
@@ -205,7 +205,7 @@ const OperatorLabel = ({operator}) => {
         '||': 'OR'
     }
 
-    return <span className="ui light blue mini button OperatorLabel">{operatorLabels[operator]}</span>
+    return <span className="ui light blue button OperatorLabel">{operatorLabels[operator]}</span>
 }
 OperatorLabel.propTypes = {
     operator: PropTypes.string.isRequired

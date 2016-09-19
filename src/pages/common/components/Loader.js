@@ -10,8 +10,8 @@ export const Loader = ({message, loading = true}) => {
     }
 
     return (
-        <div className="loading-container">
-            <div className="loading">
+        <div className="loader-container">
+            <div className="loader-inner">
                 {content}
             </div>
         </div>

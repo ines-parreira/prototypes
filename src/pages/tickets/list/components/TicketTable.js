@@ -11,7 +11,7 @@ export default class TicketTable extends React.Component {
     }
 
     render() {
-        const {view, tickets, currentUser, style} = this.props
+        const {view, tickets, currentUser, style, getWidth} = this.props
         const isLoading = this.props.tickets.getIn(['_internal', 'loading', 'fetchList'])
 
         if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty() && !isLoading)) {
@@ -23,7 +23,11 @@ export default class TicketTable extends React.Component {
 
             return (
                 <div className="ticket-table" style={style}>
-                    <Loader message={message} loading={isLoading} />
+                    <div style={{
+                        maxWidth: getWidth()
+                    }}>
+                        <Loader message={message} loading={isLoading} />
+                    </div>
                 </div>
             )
         }
@@ -106,6 +110,7 @@ TicketTable.propTypes = {
     saveIndex: PropTypes.func.isRequired,
 
     toggleTicketSelection: PropTypes.func.isRequired,
+    getWidth: PropTypes.func.isRequired,
 
     style: PropTypes.object.isRequired
 }

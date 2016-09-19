@@ -19,8 +19,8 @@ export default class ShowMoreFieldsDropdown extends React.Component {
 
     render() {
         return (
-            <th className="ShowMoreFieldsDropdown">
-                <div id="showmorefields" className="">
+            <th className="show-more-fields-dropdown">
+                <div id="showmorefields" className="show-more-fields-dropdown-icon">
                     <i className="block layout icon" title="Show more fields"/>
                 </div>
                 <div className="ui popup custom">
