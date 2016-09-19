@@ -21,13 +21,18 @@ class TicketsInfobarContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        this.ticketTemplate = nextProps.widgets
+            .get('items')
+            .find((w) => w.get('context', '') === 'ticket', null, fromJS({}))
+            .get('template', fromJS([]))
+
         if (nextProps.widgets.getIn(['_internal', 'hasFetchedWidgets'])) {
             const sources = fromJS({
                 ticket: nextProps.ticket
             })
 
             // if no widgets, generate them from incoming json
-            if (areSourcesReady(sources) && !nextProps.widgets.getIn(['_internal', 'hasGeneratedWidgets'])) {
+            if (areSourcesReady(sources) && this.ticketTemplate.isEmpty() && !nextProps.widgets.getIn(['_internal', 'hasGeneratedWidgets'])) {
                 nextProps.actions.generateAndSetWidgets(sources)
             }
         }
@@ -40,14 +45,9 @@ class TicketsInfobarContainer extends React.Component {
 
         const isEditing = this.props.route.isEditingWidgets
 
-        const ticketWidgetsTemplate = this.props.widgets
-            .get('items')
-            .find((w) => w.get('context') === 'ticket', null, fromJS({}))
-            .get('template', fromJS([]))
-
         const widgets = isEditing
             ? this.props.widgets.getIn(['_internal', 'editedTemplate'])
-            : ticketWidgetsTemplate
+            : this.ticketTemplate || fromJS([])
 
         // for now we want to display the bar all the time, even if empty
         // const shouldDisplayBar = source && !source.isEmpty() && !widgets.isEmpty()
