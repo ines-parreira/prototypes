@@ -1,6 +1,6 @@
-// View related
-
-export const DEFAULT_VIEW_SLUG = 'my-tickets'
+/**
+ * View related
+ */
 export const ACTIVITY_DISPLAY_COUNT = 6
 
 export const CELL_WIDTH = 60
@@ -19,7 +19,6 @@ export const BASIC_OPERATORS = {
 /**
  * Ticket-related
  */
-
 // This is a utility map to get the right property name when setting the source on a message
 // Basically will be used in: source.setIn(['source', 'to', {PROPERTY_NAME}], identifier/address)
 export const SOURCE_VALUE_PROP = {
@@ -38,6 +37,13 @@ export const USER_VALUE_PROP = {
     'facebook-message': 'name',
     'facebook-comment': 'name',
     'facebook-post': 'name'
+}
+
+/**
+ * Widget related
+ */
+export const DEFAULT_SOURCE_PATH = {
+    ticket: 'ticket.requester.customer'
 }
 
 /**

@@ -1,20 +1,18 @@
-import React from 'react'
-
+import React, {PropTypes} from 'react'
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import { Link } from 'react-router'
+import {Link} from 'react-router'
 
-import { Field, FieldArray, reduxForm } from 'redux-form'
+import {Field, FieldArray, reduxForm} from 'redux-form'
 
 import classNames from 'classnames'
-import { fromJS } from 'immutable'
-import { forIn as _forIn } from 'lodash'
+import {fromJS} from 'immutable'
+import _ from 'lodash'
 
-import { Loader } from '../../../../common/components/Loader'
-import { InputField, SelectField, MultiSelectField, TextAreaField } from '../../../../common/components/semantic'
+import {Loader} from '../../../../common/components/Loader'
+import {InputField, SelectField, MultiSelectField, TextAreaField} from '../../../../common/components/semantic'
 
 // import HttpIntegrationTesting from './HttpIntegrationTesting'
 import HeaderFieldArray from './HeaderFieldArray'
-
 
 export const defaultContent = {
     type: 'http',
@@ -25,11 +23,10 @@ export const defaultContent = {
 }
 
 class HttpIntegrationDetail extends React.Component {
-
     constructor(props) {
         super(props)
 
-        this.state = { isTestShown: false }
+        this.state = {isTestShown: false}
 
         // used to know if form has been asynchronously initialized when updating
         this.isInitialized = !props.isUpdate
@@ -39,7 +36,7 @@ class HttpIntegrationDetail extends React.Component {
     }
 
     componentWillUpdate(nextProps) {
-        const { integration, isUpdate, loading } = nextProps
+        const {integration, isUpdate, loading} = nextProps
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
@@ -67,7 +64,7 @@ class HttpIntegrationDetail extends React.Component {
     _objectToParameters(o = {}) {
         const obj = o || {}
         const params = []
-        _forIn(obj, (value, key) => {
+        _.forIn(obj, (value, key) => {
             params.push({
                 key,
                 value
@@ -94,7 +91,7 @@ class HttpIntegrationDetail extends React.Component {
     _handleSubmit = (values) => {
         // We create a deep copy of values because it is a reference to the redux state
         // The following transformations DON'T HAVE TO EDIT the redux state
-        let doc = JSON.parse(JSON.stringify(values))
+        let doc = _.cloneDeep(values)
 
         // transforming 'headers' and 'form' into objects
         const transformationList = ['headers']
@@ -121,13 +118,15 @@ class HttpIntegrationDetail extends React.Component {
     }
 
     render() {
-        const { actions, handleSubmit, integration, isUpdate, loading } = this.props
+        const {actions, handleSubmit, integration, isUpdate, loading} = this.props
 
         // const { isTestShown } = this.state
 
         const isSubmitting = loading.get('updateIntegration')
 
-        if (loading.get('integration')) return <Loader />
+        if (loading.get('integration')) {
+            return <Loader />
+        }
 
         return (
             <div className="ui grid">
@@ -230,19 +229,19 @@ class HttpIntegrationDetail extends React.Component {
                         <div className="field">
 
                             {/* isUpdate && (
-                                <button
-                                    className={classNames('ui', 'teal', 'button', {
-                                        loading: isSubmitting
-                                    })}
-                                    type="button"
-                                    disabled={isSubmitting}
-                                    onClick={() => {
-                                        this.setState({isTestShown: !this.state.isTestShown})
-                                    }}
-                                >
-                                    Test
-                                </button>
-                            ) */}
+                             <button
+                             className={classNames('ui', 'teal', 'button', {
+                             loading: isSubmitting
+                             })}
+                             type="button"
+                             disabled={isSubmitting}
+                             onClick={() => {
+                             this.setState({isTestShown: !this.state.isTestShown})
+                             }}
+                             >
+                             Test
+                             </button>
+                             ) */}
 
                             <button
                                 type="submit"
@@ -267,26 +266,26 @@ class HttpIntegrationDetail extends React.Component {
                     </form>
 
                     {/*
-                    <div>
-                        <ReactCSSTransitionGroup
-                            transitionName="fade"
-                            transitionEnterTimeout={200}
-                            transitionLeaveTimeout={200}
-                        >
-                            {isTestShown && (
-                                <div>
-                                    <br />
-                                    <HttpIntegrationTesting
-                                        url={this.refs.httpUrl.value || ''}
-                                        integration={this.props.integration}
-                                        loading={this.props.loading}
-                                        test={this._handleTest}
-                                    />
-                                </div>
-                            )}
-                        </ReactCSSTransitionGroup>
-                    </div>
-                    */}
+                     <div>
+                     <ReactCSSTransitionGroup
+                     transitionName="fade"
+                     transitionEnterTimeout={200}
+                     transitionLeaveTimeout={200}
+                     >
+                     {isTestShown && (
+                     <div>
+                     <br />
+                     <HttpIntegrationTesting
+                     url={this.refs.httpUrl.value || ''}
+                     integration={this.props.integration}
+                     loading={this.props.loading}
+                     test={this._handleTest}
+                     />
+                     </div>
+                     )}
+                     </ReactCSSTransitionGroup>
+                     </div>
+                     */}
 
                 </div>
             </div>
@@ -296,12 +295,12 @@ class HttpIntegrationDetail extends React.Component {
 }
 
 HttpIntegrationDetail.propTypes = {
-    initialize: React.PropTypes.func.isRequired,
-    handleSubmit: React.PropTypes.func.isRequired,
-    integration: React.PropTypes.object.isRequired,
-    isUpdate: React.PropTypes.bool.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    loading: React.PropTypes.object.isRequired,
+    initialize: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    integration: PropTypes.object.isRequired,
+    isUpdate: PropTypes.bool.isRequired,
+    actions: PropTypes.object.isRequired,
+    loading: PropTypes.object.isRequired,
 }
 
 export default reduxForm({

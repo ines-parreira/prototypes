@@ -1,15 +1,15 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 
-import { Link } from 'react-router'
+import {Link} from 'react-router'
 
-import { Field, reduxForm } from 'redux-form'
+import {Field, reduxForm} from 'redux-form'
 
 import classNames from 'classnames'
 
-import { fromJS } from 'immutable'
+import {fromJS} from 'immutable'
 
-import { Loader } from '../../../../common/components/Loader'
-import { InputField } from '../../../../common/components/semantic'
+import {Loader} from '../../../../common/components/Loader'
+import {InputField} from '../../../../common/components/semantic'
 
 
 export const defaultContent = {
@@ -28,7 +28,7 @@ class SmoochIntegrationDetail extends React.Component {
     }
 
     componentWillUpdate(nextProps) {
-        const { integration, isUpdate, loading } = nextProps
+        const {integration, isUpdate, loading} = nextProps
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
@@ -52,7 +52,7 @@ class SmoochIntegrationDetail extends React.Component {
     }
 
     render() {
-        const { actions, handleSubmit, integration, isUpdate, loading } = this.props
+        const {actions, handleSubmit, integration, isUpdate, loading} = this.props
 
         const isSubmitting = loading.get('updateIntegration')
 
@@ -119,7 +119,7 @@ class SmoochIntegrationDetail extends React.Component {
                         <div className="field">
 
                             <button
-                                className={classNames('ui', 'green', 'button', { loading: isSubmitting })}
+                                className={classNames('ui', 'green', 'button', {loading: isSubmitting})}
                                 disabled={isSubmitting}
                             >
                                 {isUpdate ? 'Save changes' : 'Add integration'}
@@ -145,12 +145,12 @@ class SmoochIntegrationDetail extends React.Component {
 }
 
 SmoochIntegrationDetail.propTypes = {
-    handleSubmit: React.PropTypes.func.isRequired,
-    initialize: React.PropTypes.func.isRequired,
-    integration: React.PropTypes.object.isRequired,
-    isUpdate: React.PropTypes.bool.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    loading: React.PropTypes.object.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    initialize: PropTypes.func.isRequired,
+    integration: PropTypes.object.isRequired,
+    isUpdate: PropTypes.bool.isRequired,
+    actions: PropTypes.object.isRequired,
+    loading: PropTypes.object.isRequired,
 }
 
 export default reduxForm({

@@ -1,44 +1,143 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import * as WidgetActions from '../../../state/widget/actions'
-import Infobar from '../../common/components/Infobar'
-import TicketInfobar from './components/infobar/TicketInfobar'
+import {Link} from 'react-router'
+import * as WidgetActions from '../../../state/widgets/actions'
+import Infobar from './components/infobar/Infobar'
+import InfobarWidgets from './components/infobar/InfobarWidgets'
+import {fromJS} from 'immutable'
+import {areSourcesReady, canDrop} from './components/infobar/utils'
+import {Loader} from '../../common/components/Loader'
 
 class TicketsInfobarContainer extends React.Component {
     componentWillMount() {
-        // fetch the list view only
-        this.props.actions.fetchWidgets({
-            ticket: this.props.ticket,
-            type: 'ticket'
-        })
+        const fetch = this.props.actions.fetchWidgets()
+
+        // if editing, start in edition mode when widgets have been fetched
+        if (this.props.route.isEditingWidgets) {
+            // start edition mode
+            fetch.then(this.props.actions.startEdition)
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.widgets.getIn(['_internal', 'hasFetchedWidgets'])) {
+            const sources = fromJS({
+                ticket: nextProps.ticket
+            })
+
+            // if no widgets, generate them from incoming json
+            if (areSourcesReady(sources) && !nextProps.widgets.getIn(['_internal', 'hasGeneratedWidgets'])) {
+                nextProps.actions.generateAndSetWidgets(sources)
+            }
+        }
     }
 
     render() {
-        // TODO(@xarg): quick fix to not display the sidebar if there is no customer info
-        if (!this.props.ticket.getIn(['requester', 'customer'])) {
-            return null
-        }
+        const sources = fromJS({
+            ticket: this.props.ticket
+        })
 
-        const content = (
-            <TicketInfobar
-                ticket={this.props.ticket}
-                widgets={this.props.widgets}
-                currentUser={this.props.currentUser}
-            />
-        )
+        const isEditing = this.props.route.isEditingWidgets
+
+        const ticketWidgetsTemplate = this.props.widgets
+            .get('items')
+            .find((w) => w.get('context') === 'ticket', null, fromJS({}))
+            .get('template', fromJS([]))
+
+        const widgets = isEditing
+            ? this.props.widgets.getIn(['_internal', 'editedTemplate'])
+            : ticketWidgetsTemplate
+
+        // for now we want to display the bar all the time, even if empty
+        // const shouldDisplayBar = source && !source.isEmpty() && !widgets.isEmpty()
+        //
+        // if (!shouldDisplayBar) {
+        //     return null
+        // }
+
+        const isDragging = this.props.widgets.getIn(['_internal', 'drag', 'isDragging'])
 
         return (
-            <Infobar content={content}/>
+            <Infobar>
+                <div className="infobar-content">
+                    <div className="infobar-box">
+                        {
+                            areSourcesReady(sources) && (
+                                <div>
+                                    {
+                                        // hiding edit button for now
+                                        false && !isEditing && (
+                                            <Link
+                                                className="ui green button"
+                                                onClick={this.props.actions.startEdition}
+                                                to={`/app/ticket/${this.props.params.ticketId}/edit-widgets`}
+                                            >
+                                                Edit
+                                            </Link>
+                                        )
+                                    }
+                                    {
+                                        isEditing && (
+                                            <div className="ui message">
+                                                <p>
+                                                    Currently editing
+                                                </p>
+                                                <Link
+                                                    className="ui red button"
+                                                    onClick={this.props.actions.stopEdition}
+                                                    to={`/app/ticket/${this.props.params.ticketId}`}
+                                                >
+                                                    Stop edition
+                                                </Link>
+                                                <button
+                                                    className="ui green button"
+                                                >
+                                                    Save
+                                                </button>
+                                            </div>
+                                        )
+                                    }
+
+                                    {
+                                        !this.props.widgets.getIn(['_internal', 'hasFetchedWidgets']) ? (
+                                            <Loader />
+                                        ) : (
+                                            <InfobarWidgets
+                                                source={sources}
+                                                title={this.props.ticket.getIn(['requester', 'name'])}
+                                                widgets={widgets}
+                                                editing={isEditing ? {
+                                                    isEditing,
+                                                    isDragging,
+                                                    _internal: this.props.widgets.get('_internal', fromJS({})),
+                                                    actions: this.props.actions,
+                                                    canDrop: (targetAbsolutePath, targetTemplateParent) => {
+                                                        const sourceAbsolutePath = this.props.widgets.getIn(['_internal', 'drag', 'absolutePath'])
+                                                        return isDragging
+                                                            && canDrop(sourceAbsolutePath, widgets, targetAbsolutePath, targetTemplateParent)
+                                                    }
+                                                } : undefined}
+                                            />
+                                        )
+                                    }
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+            </Infobar>
         )
     }
 }
 
 TicketsInfobarContainer.propTypes = {
+    params: PropTypes.object,
     widgets: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired
+    currentUser: PropTypes.object.isRequired,
+    route: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {

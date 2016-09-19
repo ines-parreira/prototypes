@@ -280,7 +280,7 @@ export function deleteMessage(ticketId, messageId) {
     }
 }
 
-export function fetchTicketDetails(ticketId, data) {
+export function fetchTicket(ticketId) {
     return (dispatch) => {
         dispatch({
             type: types.FETCH_TICKET_START
@@ -293,7 +293,7 @@ export function fetchTicketDetails(ticketId, data) {
 
         const url = `/api/tickets/${ticketId}/`
 
-        return axios.get(url, {data})
+        return axios.get(url)
             .then((json = {}) => json.data)
             .then(resp => {
                 if (_.isEmpty(resp)) {

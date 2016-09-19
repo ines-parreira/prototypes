@@ -16,7 +16,6 @@ import * as TagActions from '../../../state/tags/actions'
 import * as SettingsActions from '../../../state/settings/actions'
 import MacroContainer from '../common/macros/MacroContainer' // import that to fetch tags list
 
-
 class TicketDetailContainer extends React.Component {
     constructor(props) {
         super(props)
@@ -30,7 +29,7 @@ class TicketDetailContainer extends React.Component {
 
     componentWillMount() {
         if (this.props.params.ticketId !== 'new') {
-            this.props.actions.ticket.fetchTicketDetails(this.props.params.ticketId)
+            this.props.actions.ticket.fetchTicket(this.props.params.ticketId)
         } else {
             this.props.actions.ticket.setupNewTicket()
         }
@@ -77,7 +76,7 @@ class TicketDetailContainer extends React.Component {
                 // Don't clear when creating a new ticket: looks better this way
                 this.props.actions.ticket.clearTicket()
             }
-            this.props.actions.ticket.fetchTicketDetails(nextProps.params.ticketId)
+            this.props.actions.ticket.fetchTicket(nextProps.params.ticketId)
         } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
             /**
              * Redirect to the new page when submitting a new ticket.

@@ -27,7 +27,7 @@ export const PriorityLabel = ({priority}) => {
         'ticket-priority', priority, 'flag', 'icon',
         {outline: priority !== 'high'},
     )
-    return (<i className={className}/>)
+    return (<i className={className} />)
 }
 PriorityLabel.propTypes = {priority: PropTypes.string.isRequired}
 
@@ -66,6 +66,7 @@ export class DatetimeLabel extends React.Component {
         if (this.props.settings) {
             settings = merge(settings, this.props.settings)
         }
+
         $(this.refs.tooltip).popup(settings)
     }
 
@@ -75,16 +76,20 @@ export class DatetimeLabel extends React.Component {
 
     render() {
         const {dateTime} = this.props
-        let labelDatetime = ''
-        let tooltipDatetime = ''
-        if (dateTime) {
-            labelDatetime = formatDatetime(dateTime)
-            tooltipDatetime = formatDatetime(dateTime, null, 'YYYY-MM-DD HH:mm')
+
+        if (!dateTime) {
+            return null
         }
+
+        const labelDatetime = formatDatetime(dateTime)
+        const tooltipDatetime = formatDatetime(dateTime, null, 'YYYY-MM-DD HH:mm')
+
         return (
-            <div ref="tooltip" data-html={tooltipDatetime}>
+            <span ref="tooltip"
+                  data-html={tooltipDatetime}
+            >
                 {labelDatetime}
-            </div>
+            </span>
         )
     }
 }
@@ -101,17 +106,17 @@ export const RenderLabel = (field, value) => {
         case 'tags':
             return value
         case 'datetime':
-            return <DatetimeLabel dateTime={value}/>
+            return <DatetimeLabel dateTime={value} />
         case 'status':
-            return <StatusLabel status={value}/>
+            return <StatusLabel status={value} />
         case 'priority':
-            return (<PriorityLabel priority={value}/>)
+            return <PriorityLabel priority={value} />
         case 'agent':
-            return (<AgentLabel agent={value}/>)
+            return <AgentLabel agent={value} />
         case 'user':
-            return (<UserLabel user={value}/>)
+            return <UserLabel user={value} />
         case 'channel':
-            return <ChannelLabel channel={value}/>
+            return <ChannelLabel channel={value} />
         default:
             console.error('Invalid field type', field.type)
             return null

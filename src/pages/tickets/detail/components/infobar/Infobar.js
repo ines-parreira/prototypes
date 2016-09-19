@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 
-export default class Infobar extends React.Component {
+class Infobar extends React.Component {
     constructor() {
         super()
 
@@ -79,12 +79,16 @@ export default class Infobar extends React.Component {
         return (
             <div className="infobar" ref="container" style={style}>
                 <div className="infobar-drag-handle"></div>
-                {this.props.content}
+                {
+                    this.props.children
+                }
             </div>
         )
     }
 }
 
 Infobar.propTypes = {
-    content: PropTypes.node
+    children: PropTypes.object
 }
+
+export default Infobar

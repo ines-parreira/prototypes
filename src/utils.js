@@ -12,6 +12,7 @@ export function formatDatetime(datetime, timezone, format = 'calendar') {
         if (format === 'calendar') {
             return raw.calendar()
         }
+
         return raw.format(format)
     } catch (e) {
         console.error('Failed to format datetime', e, datetime, timezone)
@@ -35,11 +36,6 @@ export function getCode(ast) {
             semicolons: false
         }
     })
-}
-
-export function validateEmail(email) {
-    const re = /[^@]+@[^@]+\.[^@]+/
-    return re.test(email)
 }
 
 export function lastMessage(messages) {
