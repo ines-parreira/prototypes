@@ -1,18 +1,15 @@
 import React, {PropTypes} from 'react'
-// import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import {Link} from 'react-router'
-
 import {Field, FieldArray, reduxForm} from 'redux-form'
-
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _ from 'lodash'
-
 import {Loader} from '../../../../common/components/Loader'
 import {InputField, SelectField, MultiSelectField, TextAreaField} from '../../../../common/components/semantic'
+import HeaderFieldArray from './HeaderFieldArray'
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 // import HttpIntegrationTesting from './HttpIntegrationTesting'
-import HeaderFieldArray from './HeaderFieldArray'
 
 export const defaultContent = {
     type: 'http',
@@ -32,7 +29,9 @@ class HttpIntegrationDetail extends React.Component {
         this.isInitialized = !props.isUpdate
 
         // populating new integration form
-        if (!props.isUpdate) props.initialize(defaultContent)
+        if (!props.isUpdate) {
+            props.initialize(defaultContent)
+        }
     }
 
     componentWillUpdate(nextProps) {
@@ -80,7 +79,9 @@ class HttpIntegrationDetail extends React.Component {
      * @private
      */
     _parametersToObject(params) {
-        if (!params) return {}
+        if (!params) {
+            return {}
+        }
         return params.reduce((reduction, param) => {
             const newDeduction = reduction
             newDeduction[param.key] = param.value
@@ -134,9 +135,9 @@ class HttpIntegrationDetail extends React.Component {
 
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider" />
-                        <Link to="/app/integrations/http" className="section">Http</Link>
-                        <i className="right angle icon divider" />
+                        <i className="right angle icon divider"/>
+                        <Link to="/app/integrations/http" className="section">HTTP</Link>
+                        <i className="right angle icon divider"/>
                         <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
                     </div>
 
@@ -144,7 +145,7 @@ class HttpIntegrationDetail extends React.Component {
                     <div>Let's configure this HTTP integration.</div>
                 </div>
 
-                <div className="sixteen wide column">
+                <div className="ten wide column">
                     <form
                         className="ui form"
                         onSubmit={handleSubmit(this._handleSubmit)}
@@ -197,12 +198,12 @@ class HttpIntegrationDetail extends React.Component {
                         >
                             <option value="application/json">application/json</option>
                         </Field>
-                        <FieldArray name="http.headers" component={HeaderFieldArray} />
+                        <FieldArray name="http.headers" component={HeaderFieldArray}/>
 
                         <Field
                             type="json"
                             name="http.form"
-                            label="Parameters"
+                            label="Request Body (JSON)"
                             component={TextAreaField}
                         />
 
@@ -211,6 +212,7 @@ class HttpIntegrationDetail extends React.Component {
                             name="http.triggers"
                             label="Triggers"
                             placeholder="Triggers"
+                            description="This HTTP integration will be executed when any of the events below happened"
                             ref="httpTriggers"
                             required
                             component={MultiSelectField}
@@ -256,7 +258,7 @@ class HttpIntegrationDetail extends React.Component {
                             {isUpdate && (
                                 <button
                                     type="button"
-                                    className="ui basic light red floated right button"
+                                    className="ui basic light floated right red button"
                                     onClick={() => actions.deleteIntegration(integration)}
                                 >
                                     Delete

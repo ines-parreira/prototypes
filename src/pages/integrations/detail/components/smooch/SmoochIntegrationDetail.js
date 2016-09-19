@@ -60,7 +60,7 @@ class SmoochIntegrationDetail extends React.Component {
 
         return (
             <div className="ui grid">
-                <div className="sixteen wide column">
+                <div className="ten wide column">
 
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
@@ -87,7 +87,7 @@ class SmoochIntegrationDetail extends React.Component {
                     </div>
                 </div>
 
-                <div className="sixteen wide column">
+                <div className="ten wide column">
                     <form
                         className="ui form"
                         onSubmit={handleSubmit(this._handleSubmit)}

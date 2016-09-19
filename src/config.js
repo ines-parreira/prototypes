@@ -68,15 +68,18 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     // },
     {
         type: 'facebook',
+        title: 'Facebook',
         description: 'Connect your Facebook pages'
     },
     {
         type: 'smooch',
+        title: 'Smooch',
         description: 'Chat with your users'
     },
     {
         type: 'http',
-        description: 'Connect to anything over http'
+        title: 'HTTP',
+        description: 'Connect to anything over HTTP'
     },
     // {
     //     type: 'twitter',

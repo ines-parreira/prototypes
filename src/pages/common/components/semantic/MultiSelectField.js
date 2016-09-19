@@ -11,12 +11,13 @@ export default class MultiSelectField extends React.Component {
     }
 
     render() {
-        const {input, options, label, required} = this.props
-        const fieldClassName = classNames({ required }, 'field')
+        const {input, options, label, required, description} = this.props
+        const fieldClassName = classNames({required}, 'field')
 
         return (
             <div className={fieldClassName} ref="parent">
                 {label && <label htmlFor={input.name}>{label}</label>}
+                {description ? <p>{description}</p> : null}
                 {
                     options.map((option, idx) => (
                         <div className="inline field" key={idx}>
@@ -44,5 +45,6 @@ MultiSelectField.propTypes = {
     input: PropTypes.object.isRequired,
     options: PropTypes.array.isRequired,
     label: PropTypes.string,
+    description: PropTypes.string,
     required: PropTypes.bool
 }

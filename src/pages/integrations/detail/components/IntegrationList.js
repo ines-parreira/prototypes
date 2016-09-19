@@ -1,9 +1,11 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import _ from 'lodash'
+import {fromJS} from 'immutable'
 import classNames from 'classnames'
 import {INTEGRATION_TYPE_TO_ICON} from '../../../../config'
 import NoIntegration from './NoIntegration'
+import {getIntegrationsList} from '../../../../state/integrations/utils'
 
 /**
  * A generic component to edit integrations of a given type.
@@ -23,6 +25,8 @@ export default class IntegrationList extends React.Component {
         }
 
         const displayedIntegrations = integrations.valueSeq().filter((int) => !int.get('deactivated_datetime'))
+        const integrationTypes = fromJS(getIntegrationsList(integrations))
+        const integrationTitle = integrationTypes.find(i => i.get('type') === integrationType).get('title')
 
         return (
             <div className="ui grid IntegrationEditView">
@@ -30,7 +34,7 @@ export default class IntegrationList extends React.Component {
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
                         <i className="right angle icon divider" />
-                        <a className="active section">{_.capitalize(integrationType)}</a>
+                        <a className="active section">{integrationTitle}</a>
                     </div>
                 </div>
 
@@ -39,7 +43,7 @@ export default class IntegrationList extends React.Component {
                         <i className={`${INTEGRATION_TYPE_TO_ICON[integrationType]} huge`} />
 
                         <div className="content">
-                            {_.capitalize(integrationType)}
+                            {integrationTitle}
                         </div>
                     </h1>
                 </div>

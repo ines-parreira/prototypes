@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
 import classNames from 'classnames'
-import _ from 'lodash'
 import {INTEGRATION_TYPE_TO_ICON} from '../../../../config'
 
 export default class IntegrationListRow extends React.Component {
@@ -28,12 +27,12 @@ export default class IntegrationListRow extends React.Component {
         return (
             <tr className="IntegrationListRow">
                 <td className="center aligned">
-                    <i className={`${INTEGRATION_TYPE_TO_ICON[integrationType.get('type')]} huge`} />
+                    <i className={`${INTEGRATION_TYPE_TO_ICON[integrationType.get('type')]} huge`}/>
                 </td>
                 <td>
                     <div className="ui header">
                         <span className="subject">
-                            {_.capitalize(integrationType.get('type'))}
+                            {integrationType.get('title')}
                             {integrationType.get('count') > 0 ? <span> ({integrationType.get('count')})</span> : ''}
                         </span>
                     </div>
