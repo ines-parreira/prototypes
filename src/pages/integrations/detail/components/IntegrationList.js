@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import _ from 'lodash'
 import {fromJS} from 'immutable'
 import classNames from 'classnames'
 import {INTEGRATION_TYPE_TO_ICON} from '../../../../config'
