@@ -32,6 +32,10 @@ export function isSimpleTemplateWidget(widget) {
     return widget.type !== 'card' && widget.type !== 'list'
 }
 
+export function isUppercase(string) {
+    return string === string.toUpperCase()
+}
+
 /**
  * Return the path to which a source path can be dropped
  * Ex: ticket.orders[].hello.world to ticket.orders[].hello
@@ -126,7 +130,7 @@ export function isEmail(string) {
  */
 export function isBoolean(string) {
     if (_.isBoolean(string)) {
-        return string
+        return true
     }
 
     if (_.isString(string)) {
@@ -258,7 +262,7 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
 
         const response = {
             type,
-            title: humanizeString(key),
+            title: isUppercase(key) ? key : humanizeString(key),
         }
 
         // if is child of list, we do not set its path since the list already has it

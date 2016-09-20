@@ -1,7 +1,26 @@
 import React, {PropTypes} from 'react'
+import _ from 'lodash'
 import TooltipWidgetEditField from '../forms/TooltipWidgetEditField'
 
 class FieldWidget extends React.Component {
+    _displayLabel = (label) => {
+        const defaultLabel = '-'
+
+        if (_.isUndefined(label)) {
+            return defaultLabel
+        }
+
+        if (_.isNull(label)) {
+            return defaultLabel
+        }
+
+        if (_.isString(label) && !label) {
+            return defaultLabel
+        }
+
+        return label
+    }
+
     _startWidgetEdition = (e) => {
         const {
             editing,
@@ -71,7 +90,7 @@ class FieldWidget extends React.Component {
                     {widget.get('title')}:
                 </span>
                 <span className="field-value">
-                    {value || '-'}
+                    {this._displayLabel(value)}
                 </span>
                 {this._renderTools()}
                 {this._renderTooltip()}
