@@ -10,6 +10,12 @@ import {areSourcesReady, canDrop} from './components/infobar/utils'
 import {Loader} from '../../common/components/Loader'
 
 class TicketsInfobarContainer extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.ticketTemplate = fromJS([])
+    }
+
     componentWillMount() {
         const fetch = this.props.actions.fetchWidgets()
 
@@ -22,7 +28,7 @@ class TicketsInfobarContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.ticketTemplate = nextProps.widgets
-            .get('items')
+            .get('items', fromJS([]))
             .find((w) => w.get('context', '') === 'ticket', null, fromJS({}))
             .get('template', fromJS([]))
 
