@@ -377,6 +377,10 @@ export default (state = initialState, action) => {
             })
 
         case types.FETCH_USER_TICKETS_SUCCESS:
+            if (state.getIn(['requester', 'id']) !== action.userId) {
+                return state
+            }
+
             return state.mergeDeep({
                 _internal: {
                     userHistory: {

@@ -671,6 +671,7 @@ export function fetchUserTickets(userId) {
             .then(resp => {
                 dispatch({
                     type: types.FETCH_USER_TICKETS_SUCCESS,
+                    userId,
                     resp
                 })
             })
