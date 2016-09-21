@@ -48,7 +48,7 @@ export default class TicketInfobar extends React.Component {
     render() {
         const {ticket, isEditing} = this.props
 
-        if (!ticket || !ticket.get('requester') || !this.props.widgets.get('items').size) {
+        if (!ticket || !ticket.get('requester')) {
             return null
         }
 
