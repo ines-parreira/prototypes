@@ -5,11 +5,18 @@ const initialState = fromJS({
     events: [],
     // Count how many new events since we visited the ticket. Ex: 999: {count: 0, created_datetime: 'now'}
     objectsCounter: {},
+    finished: true, // whenever the post has activity finished
     pendingEvents: [] // events to be sent to the server
 })
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case types.SUBMIT_ACTIVITY_START:
+            return state.set('finished', false)
+
+        case types.SUBMIT_ACTIVITY_ERROR:
+            return state.set('finished', true)
+
         case types.SUBMIT_ACTIVITY_SUCCESS: {
             // sort by created_datetime the events that come from the API
             const events = fromJS(action.resp.events).sort((a, b) => (
@@ -62,6 +69,7 @@ export default (state = initialState, action) => {
             return state.merge({
                 // clean the pending events that we've sent in the action
                 pendingEvents: initialState.get('pendingEvents'),
+                finished: true,
                 events,
                 objectsCounter
             })

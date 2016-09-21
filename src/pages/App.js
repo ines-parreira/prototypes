@@ -35,8 +35,8 @@ class App extends React.Component {
             if (pollInterval) {
                 clearInterval(pollInterval)
             }
-            pollInterval = setInterval(() =>
-                this.props.pollActivity(this.props.activity.get('pendingEvents')), 5000)
+
+            pollInterval = setInterval(this.props.pollActivity, 5000)
         }
         // call it the first time without polling
         this.props.pollActivity(this.props.activity.get('pendingEvents'))
