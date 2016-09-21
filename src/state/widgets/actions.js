@@ -133,3 +133,9 @@ export function updateFieldEditedWidget(widgetIndex, field, fieldIndex) {
         field
     }
 }
+
+export function resetWidgets() {
+    return {
+        type: types.RESET_WIDGETS
+    }
+}

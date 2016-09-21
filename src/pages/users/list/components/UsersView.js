@@ -14,6 +14,7 @@ export default class UsersView extends React.Component {
                     <div className="right menu item">
                         <div className="item">
                             <Search
+                                bindKey
                                 autofocus
                                 onChange={this.props.search}
                                 className="long"

@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
+import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import classNames from 'classnames'
+import * as mousetrap from 'mousetrap'
 
 export default class Search extends React.Component {
     constructor(props) {
@@ -17,25 +19,43 @@ export default class Search extends React.Component {
         }, this.props.searchDebounceTime || 200)
     }
 
+    componentDidMount() {
+        if (this.props.bindKey) {
+            mousetrap.bind('g s', (e) => {
+                e.preventDefault()
+                const domNode = ReactDOM.findDOMNode(this.refs.searchInput)
+                domNode.focus()
+            })
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.props.bindKey) {
+            mousetrap.unbind('g s')
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
-        const shouldSetValue = !this.isInitialized
-            || (
-                this.props.location
-                && nextProps.location
-                && this.props.location !== nextProps.location
-            )
+        const shouldSetValue = !this.isInitialized || (
+            nextProps.location &&
+            this.props.location !== nextProps.location
+        )
 
         if (shouldSetValue) {
             this.refs.searchInput.value = ''
 
             if (nextProps.forcedQuery) {
-                this.refs.searchInput.value = _.get(nextProps.forcedQuery.toJS(), nextProps.queryPath.split(',')[0])
+                if (typeof nextProps.forcedQuery === 'object') {
+                    this.refs.searchInput.value = _.get(nextProps.forcedQuery.toJS(), nextProps.queryPath.split(',')[0])
+                } else if (typeof nextProps.forcedQuery === 'string') {
+                    this.refs.searchInput.value = nextProps.forcedQuery
+                }
+
+                // `this.debouncedSearch()` is not necessary in the ticket-list context, but I think it's better for
+                // consistency that it gets executed anytime we force a query.
+                this.debouncedSearch()
             }
 
-            this.isInitialized = true
-        } else if (this.props.currentQuery && !this.refs.searchInput.value && !this.isInitialized) {
-            const firstPath = this.props.queryPath.split(',')[0]
-            this.refs.searchInput.value = _.get(this.props.currentQuery.toJS(), firstPath)
             this.isInitialized = true
         }
     }
@@ -67,14 +87,14 @@ Search.propTypes = {
     query: PropTypes.object.isRequired,
     queryPath: PropTypes.string.isRequired,
     params: PropTypes.object,
-    forcedQuery: PropTypes.object,
+    forcedQuery: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 
     className: PropTypes.string,
     placeholder: PropTypes.string,
     autofocus: PropTypes.bool,
+    bindKey: PropTypes.bool,
     searchDebounceTime: PropTypes.number,
 
-    currentQuery: PropTypes.object,
 
     location: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }

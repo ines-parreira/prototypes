@@ -7,7 +7,6 @@ class InfobarWidgets extends React.Component {
     render() {
         const {
             source,
-            title,
             widgets,
             editing
         } = this.props
@@ -24,8 +23,6 @@ class InfobarWidgets extends React.Component {
 
         return (
             <div>
-                <h2>{title}</h2>
-
                 {
                     // add a root empty widget if there is no
                     // and if the dragged component can be dropped there
@@ -61,13 +58,11 @@ class InfobarWidgets extends React.Component {
 InfobarWidgets.propTypes = {
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
-    title: PropTypes.string.isRequired,
     widgets: PropTypes.object.isRequired
 }
 
 InfobarWidgets.defaultProps = {
     source: {},
-    title: ''
 }
 
 export default InfobarWidgets

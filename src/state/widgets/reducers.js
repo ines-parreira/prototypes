@@ -28,6 +28,10 @@ export default (state = initialState, action) => {
                 .setIn(['_internal', 'hasGeneratedWidgets'], false)
         }
 
+        case types.RESET_WIDGETS: {
+            return state.setIn(['_internal', 'hasGeneratedWidgets'], false)
+        }
+
         case types.START_EDITION: {
             const ticketWidgetsTemplate = state
                 .get('items')

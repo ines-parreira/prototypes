@@ -88,7 +88,9 @@ class Infobar extends React.Component {
 }
 
 Infobar.propTypes = {
-    children: PropTypes.object
+    children: PropTypes.object,
+    content: PropTypes.node,
+    actions: PropTypes.object
 }
 
 export default Infobar

@@ -142,6 +142,7 @@ export default class TicketsView extends React.Component {
                                 <div className="right menu item">
                                     <Search
                                         autofocus
+                                        bindKey
                                         onChange={search}
                                         className="long"
                                         forcedQuery={view.getIn(['search', 'query'])}
@@ -194,7 +195,6 @@ export default class TicketsView extends React.Component {
                                         placeholder="Search tickets"
                                         searchDebounceTime={400}
                                         location={view.get('id')}
-                                        currentQuery={view.getIn(['search', 'query'])}
                                     />
                                 </div>
                             </div>
