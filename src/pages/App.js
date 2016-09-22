@@ -31,15 +31,27 @@ class App extends React.Component {
         this.props.fetchUsers(['agent', 'admin'])
         this.props.fetchTags()
 
-        if (this.props.location.query._activity_polling !== 'false' && window.DISABLE_ACTIVITY_POLLING !== 'True') {
+        // activity polling
+        let shouldPoll = true
+        const pollingParameter = this.props.location.query._activity_polling || ''
+        const pollingConfiguration = window.DISABLE_ACTIVITY_POLLING || ''
+
+        if (pollingParameter) {
+            shouldPoll = pollingParameter === 'true'
+        } else if (pollingConfiguration) {
+            shouldPoll = pollingConfiguration === 'False'
+        }
+
+        if (shouldPoll) {
             if (pollInterval) {
                 clearInterval(pollInterval)
             }
 
             pollInterval = setInterval(this.props.pollActivity, 5000)
         }
+
         // call it the first time without polling
-        this.props.pollActivity(this.props.activity.get('pendingEvents'))
+        this.props.pollActivity()
     }
 
     componentDidMount() {
@@ -129,7 +141,7 @@ class App extends React.Component {
                 transitionLeaveTimeout={200}
             >
                 <div id="system-message" className={`ui ${messageType} message`}>
-                    <i className="close icon" onClick={this._handleDismissClick}/>
+                    <i className="close icon" onClick={this._handleDismissClick} />
                     <div className="header">{systemMessage.header}</div>
                     {msg}
                 </div>
@@ -140,7 +152,7 @@ class App extends React.Component {
     _renderModalSystemMessage(systemMessage, msg) {
         return (
             <div id="system-message" className="ui modal">
-                <i className="close icon" onClick={e => this._handleDismissClick(e, true)}/>
+                <i className="close icon" onClick={e => this._handleDismissClick(e, true)} />
                 <div className="header">{systemMessage.header}</div>
                 <div className="content">
                     {systemMessage.options.title || ''}
