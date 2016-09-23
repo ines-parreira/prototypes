@@ -11,6 +11,10 @@ class InfobarWidgets extends React.Component {
             editing
         } = this.props
 
+        if (!widgets) {
+            return null
+        }
+
         // check if widgets configuration has a root widget
         const hasRootWidget = !!widgets.find((value) => {
             return value.get('path') === DEFAULT_SOURCE_PATH
