@@ -5,7 +5,7 @@ import 'react-select/dist/react-select.css'
 import {validateEmail} from '../../../../../utils'
 import {displayUserNameFromSource} from '../../../common/utils'
 
-export default class ReceiversDropdown extends React.Component {
+class ReceiversDropdown extends React.Component {
     constructor(props) {
         super(props)
 
@@ -22,7 +22,7 @@ export default class ReceiversDropdown extends React.Component {
         const shouldSetInitialValues = prevProps.sourceType !== this.props.sourceType
             || (
                 prevProps.parentId !== this.props.parentId
-                && !prevProps.existingValues.equals(this.props.existingValues)
+                && !prevProps.initialValues.equals(this.props.initialValues)
             )
 
         if (shouldSetInitialValues) {
@@ -102,7 +102,6 @@ export default class ReceiversDropdown extends React.Component {
 ReceiversDropdown.propTypes = {
     actions: PropTypes.object.isRequired,
     initialValues: PropTypes.object.isRequired, // the values which should populate the field when it mounts
-    existingValues: PropTypes.object.isRequired, // the list of values already chosen
 
     generateQuery: PropTypes.func.isRequired,
 
@@ -113,3 +112,5 @@ ReceiversDropdown.propTypes = {
     valueProp: PropTypes.string.isRequired, // the property to display from the object
     sourceType: PropTypes.string.isRequired
 }
+
+export default ReceiversDropdown

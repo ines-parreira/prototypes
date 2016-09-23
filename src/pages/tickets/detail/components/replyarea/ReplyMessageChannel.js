@@ -117,8 +117,6 @@ export default class ReplyMessageChannel extends React.Component {
     }
 
     renderTo(ticket, actions) {
-        const valueProp = SOURCE_VALUE_PROP[ticket.getIn(['newMessage', 'source', 'type'])]
-
         if (!ticket.getIn(['newMessage', 'public'])) {
             return <p className="receiver-placeholder">your team</p>
         }
@@ -134,7 +132,6 @@ export default class ReplyMessageChannel extends React.Component {
         return (
             <ReceiversDropdown
                 actions={actions}
-                existingValues={ticket.getIn(['newMessage', 'source', 'to']).map(user => user.get(valueProp))}
                 initialValues={this._initialReceivers()}
                 generateQuery={v => this._searchQuery(v)}
                 enabled={isInputEnabled}
