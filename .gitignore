@@ -34,6 +34,7 @@ __pycache__/
 *.spec
 
 # Installer logs
+.npm/**/*
 pip-log.txt
 pip-delete-this-directory.txt
 
