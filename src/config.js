@@ -39,6 +39,14 @@ export const USER_VALUE_PROP = {
     'facebook-post': 'name'
 }
 
+export const USER_CHANNEL_CLASS = {
+    email: 'icon mail',
+    twitter: 'icon twitter',
+    facebook: 'icon facebook square',
+    chat: 'icon comments',
+    phone: 'icon phone',
+}
+
 /**
  * Widget related
  */

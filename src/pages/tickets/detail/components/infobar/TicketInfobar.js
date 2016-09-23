@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import InfobarWidgets from './InfobarWidgets'
 import {isTicketDifferent} from './../../../common/utils'
 import {canDrop, areSourcesReady} from './utils'
+import {USER_CHANNEL_CLASS} from '../../../../../config'
 
 export default class TicketInfobar extends React.Component {
     constructor(props) {
@@ -15,34 +16,89 @@ export default class TicketInfobar extends React.Component {
         return isTicketDifferent(this.props.ticket, nextProps.ticket) || !this.props.widgets.equals(nextProps.widgets)
     }
 
-    initWidgets(props = this.props) {
+    componentWillMount() {
+        this._initWidgets()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this._initWidgets(nextProps)
+    }
+
+    componentWillUnmount() {
+        this.props.actions.resetWidgets()
+    }
+
+    _initWidgets = (props = this.props) => {
         this.ticketTemplate = props.widgets
             .get('items', fromJS([]))
             .find((w) => w.get('context', '') === 'ticket', null, fromJS({}))
             .get('template', fromJS([]))
 
         if (props.widgets.getIn(['_internal', 'hasFetchedWidgets'])) {
+            const shouldGenerateWidgets = areSourcesReady(props.sources)
+                && this.ticketTemplate.isEmpty()
+                && !props.widgets.getIn(['_internal', 'hasGeneratedWidgets'])
+
             // if no widgets, generate them from incoming json
-            if (
-                areSourcesReady(props.sources) &&
-                this.ticketTemplate.isEmpty() &&
-                !props.widgets.getIn(['_internal', 'hasGeneratedWidgets'])
-            ) {
+            if (shouldGenerateWidgets) {
                 props.actions.generateAndSetWidgets(props.sources)
             }
         }
     }
 
-    componentWillMount() {
-        this.initWidgets()
-    }
+    _renderUserChannels = (ticket) => {
+        return ticket
+            .getIn(['requester', 'channels'], fromJS([]))
+            .map((channel, idx) => {
+                let props = null
+                let addressComponent = null
+                const address = channel.get('address', '')
 
-    componentWillReceiveProps(nextProps) {
-        this.initWidgets(nextProps)
-    }
+                if (!address) {
+                    return
+                }
 
-    componentWillUnmount() {
-        this.props.actions.resetWidgets()
+                switch (channel.get('type')) {
+                    case 'email':
+                        props = {
+                            href: `mailto:${address}`
+                        }
+                        break
+                    case 'twitter':
+                        props = {
+                            href: `https://twitter.com/${address}`,
+                            target: '_blank'
+                        }
+                        break
+                    case 'facebook':
+                        props = {
+                            href: `https://facebook.com/${address}`,
+                            target: '_blank'
+                        }
+                        break
+                    default:
+                        props = null
+                }
+
+                if (props) {
+                    addressComponent = <a {...props}>{address}</a>
+                } else {
+                    addressComponent = <span>{address}</span>
+                }
+
+                const iconClass = USER_CHANNEL_CLASS[channel.get('type')]
+
+                if (!iconClass) {
+                    return
+                }
+
+                return (
+                    <p key={idx} className="user-channel">
+                        <i className={iconClass} />
+                        {addressComponent}
+                    </p>
+                )
+            })
     }
 
     render() {
@@ -58,85 +114,32 @@ export default class TicketInfobar extends React.Component {
             ? this.props.widgets.getIn(['_internal', 'editedTemplate'])
             : this.ticketTemplate || fromJS([])
 
-
-        const userChannelClassNames = {
-            email: 'icon mail',
-            twitter: 'icon twitter',
-            facebook: 'icon facebook square',
-            chat: 'icon comments',
-            phone: 'icon phone',
-        }
-
         return (
             <div>
                 <div className="infobar-top">
                     <h2>{ticket.getIn(['requester', 'name'])}</h2>
-                    {
-                        ticket.getIn(['requester', 'channels'], fromJS([])).map((channel, idx) => {
-                            let props = null
-                            let addressCmp = null
-
-                            switch (channel.get('type')) {
-                                case 'email':
-                                    props = {
-                                        href: `mailto:${channel.get('address')}`
-                                    }
-                                    break
-                                case 'twitter':
-                                    props = {
-                                        href: `https://twitter.com/${channel.get('address')}`,
-                                        target: '_blank'
-                                    }
-                                    break
-                                case 'facebook':
-                                    props = {
-                                        href: `https://facebook.com/${channel.get('address')}`,
-                                        target: '_blank'
-                                    }
-                                    break
-                                default:
-                                    props = null
-                            }
-
-                            if (props) {
-                                addressCmp = <a {...props}>{channel.get('address')}</a>
-                            } else {
-                                addressCmp = <span>{channel.get('address')}</span>
-                            }
-
-                            const iconClass = userChannelClassNames[channel.get('type')]
-
-                            if (!iconClass) {
-                                return undefined
-                            }
-
-                            return (
-                                <p key={idx} className="user-channel">
-                                    <i className={iconClass}/>
-                                    {addressCmp}
-                                </p>
-                            )
-                        })
-                    }
+                    {this._renderUserChannels(ticket)}
                 </div>
-                <div className="infobar-section-separator"></div>
                 {
                     areSourcesReady(this.props.sources) && (
-                        <InfobarWidgets
-                            source={this.props.sources}
-                            widgets={widgets}
-                            editing={isEditing ? {
-                                isEditing,
-                                isDragging,
-                                _internal: this.props.widgets.get('_internal', fromJS({})),
-                                actions: this.props.actions,
-                                canDrop: (targetAbsolutePath, targetTemplateParent) => {
-                                    const sourceAbsolutePath = this.props.widgets.getIn(['_internal', 'drag', 'absolutePath'])
-                                    return isDragging
-                                        && canDrop(sourceAbsolutePath, widgets, targetAbsolutePath, targetTemplateParent)
-                                }
-                            } : undefined}
-                        />
+                        <div>
+                            <div className="infobar-section-separator"></div>
+                            <InfobarWidgets
+                                source={this.props.sources}
+                                widgets={widgets}
+                                editing={isEditing ? {
+                                    isEditing,
+                                    isDragging,
+                                    _internal: this.props.widgets.get('_internal', fromJS({})),
+                                    actions: this.props.actions,
+                                    canDrop: (targetAbsolutePath, targetTemplateParent) => {
+                                        const sourceAbsolutePath = this.props.widgets.getIn(['_internal', 'drag', 'absolutePath'])
+                                        return isDragging
+                                            && canDrop(sourceAbsolutePath, widgets, targetAbsolutePath, targetTemplateParent)
+                                    }
+                                } : undefined}
+                            />
+                        </div>
                     )
                 }
             </div>
