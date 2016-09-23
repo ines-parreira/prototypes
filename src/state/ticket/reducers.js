@@ -103,7 +103,12 @@ export default (state = initialState, action) => {
             return state.setIn(['state', 'fromMacro'], false)
 
         case types.SUBMIT_TICKET_MESSAGE_START: {
-            let newState = state.setIn(['state', 'loading'], true)
+            let newState = state.mergeDeep({
+                state: {
+                    loading: true,
+                    dirty: false
+                }
+            })
 
             // if the ticket is un-assigned,
             // auto-assign it to the current user.
