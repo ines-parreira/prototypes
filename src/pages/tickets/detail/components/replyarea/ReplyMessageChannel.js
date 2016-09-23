@@ -121,8 +121,9 @@ export default class ReplyMessageChannel extends React.Component {
             return <p className="receiver-placeholder">your team</p>
         }
 
-        const parentId = ticket.get('messages').size ?
-            `${ticket.get('id')} - ${ticket.get('messages').last().get('id')}` : 'new'
+        const parentId = ticket.get('messages').size
+            ? `${ticket.get('id', '')} - ${ticket.get('messages', fromJS([])).last().get('id', '')}`
+            : 'new'
 
         const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api']
 

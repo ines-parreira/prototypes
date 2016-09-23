@@ -23,9 +23,13 @@ export default class IntegrationList extends React.Component {
             createIntegrationButtonClassNames = createIntegrationButtonClassNames.concat([{loading: loading.get('facebookLogin')}])
         }
 
-        const displayedIntegrations = integrations.valueSeq().filter((int) => !int.get('deactivated_datetime'))
+        const displayedIntegrations = integrations
+            .valueSeq()
+            .filter(int => !int.get('deactivated_datetime', ''))
         const integrationTypes = fromJS(getIntegrationsList(integrations))
-        const integrationTitle = integrationTypes.find(i => i.get('type') === integrationType).get('title')
+        const integrationTitle = integrationTypes
+            .find(i => i.get('type', '') === integrationType, null, fromJS({}))
+            .get('title')
 
         return (
             <div className="ui grid IntegrationEditView">

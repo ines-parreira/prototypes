@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 import EditableTitle from '../../common/components/EditableTitle'
 import TicketTable from './TicketTable'
 import ListActions from './ListActions'
@@ -15,11 +16,13 @@ export default class TicketsView extends React.Component {
 
     getWidth = () => {
         let width = 0
-        this.props.views.get('active').get('fields').forEach((field) => {
-            if (field.get('visible')) {
-                width += field.get('width') ? field.get('width') : CELL_WIDTH
-            }
-        })
+        this.props.views
+            .getIn(['active', 'fields'], fromJS([]))
+            .forEach((field) => {
+                if (field.get('visible')) {
+                    width += field.get('width') || CELL_WIDTH
+                }
+            })
         return width + CELL_WIDTH  // One extra cell for the row checkbox
     }
 
@@ -114,25 +117,36 @@ export default class TicketsView extends React.Component {
                             <div className="ui text menu sticky-header-search">
                                 <div className="left menu item">
 
-                                    <div className="ui dropdown tickets-view-settings" ref={(dropdown) => {
-                                        $(dropdown).dropdown({
-                                            action: () => {
-                                                // HACK action='hide' does not work
-                                                // as described in the docs.
-                                                $(dropdown).dropdown('hide')
+                                    <div
+                                        className="ui dropdown tickets-view-settings"
+                                        ref={
+                                            (dropdown) => {
+                                                $(dropdown).dropdown({
+                                                    action: () => {
+                                                        // HACK action='hide' does not work
+                                                        // as described in the docs.
+                                                        $(dropdown).dropdown('hide')
+                                                    }
+                                                })
                                             }
-                                        })
-                                    }}>
-                                        <i className="setting icon"></i>
+                                        }
+                                    >
+                                        <i className="setting icon" />
                                         <div className="text">
                                             VIEW SETTINGS
                                         </div>
                                         <div className="menu">
-                                            <div className="item" onClick={this.viewActionEdit}>
+                                            <div
+                                                className="item"
+                                                onClick={this.viewActionEdit}
+                                            >
                                                 Edit view
                                             </div>
                                             <div className="divider"></div>
-                                            <div className="item tickets-view-settings-delete" onClick={this.viewActionDelete}>
+                                            <div
+                                                className="item tickets-view-settings-delete"
+                                                onClick={this.viewActionDelete}
+                                            >
                                                 Delete view
                                             </div>
                                         </div>
@@ -201,28 +215,24 @@ export default class TicketsView extends React.Component {
 
                             <div className="ui grid view-header">
                                 <div className="six wide column">
-
                                     <EditableTitle
                                         title={view.get('name') || ''}
                                         placeholder="View name"
                                         update={this.updateViewName}
                                     />
-
                                 </div>
                                 <div className="ten wide column">
-
                                     <ListActions
                                         views={views}
                                         shouldDisplayBulkActions={
-                                            tickets.getIn(['_internal', 'selectedItemsIds']).size > 0
+                                            tickets.getIn(['_internal', 'selectedItemsIds'], fromJS([])).size > 0
                                         }
                                         actions={actions}
-                                        selectedItemsIds={tickets.getIn(['_internal', 'selectedItemsIds'])}
+                                        selectedItemsIds={tickets.getIn(['_internal', 'selectedItemsIds'], fromJS([]))}
                                         currentUser={currentUser}
                                         tags={this.props.tags}
-                                        agents={this.props.users.get('agents')}
+                                        agents={this.props.users.get('agents', fromJS([]))}
                                     />
-
                                 </div>
                             </div>
 
@@ -235,7 +245,7 @@ export default class TicketsView extends React.Component {
                             updateFieldFilterOperator={actions.view.updateFieldFilterOperator}
                             submitView={actions.view.submitView}
                             currentUser={currentUser}
-                            agents={this.props.users.get('agents')}
+                            agents={this.props.users.get('agents', fromJS([]))}
                             tags={this.props.tags}
                             updateFieldFilter={actions.view.updateFieldFilter}
                         />
