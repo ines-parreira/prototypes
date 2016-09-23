@@ -9,14 +9,6 @@ export default class Search extends React.Component {
         super(props)
 
         this.isInitialized = false
-
-        // search every XXXms
-        this.debouncedSearch = _.debounce(() => {
-            for (const path of this.props.queryPath.split(',')) {
-                _.set(this.props.query, path, this.refs.searchInput.value)
-            }
-            this.props.onChange(this.props.query, this.props.params, this.refs.searchInput.value)
-        }, this.props.searchDebounceTime || 200)
     }
 
     componentDidMount() {
@@ -37,9 +29,9 @@ export default class Search extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const shouldSetValue = !this.isInitialized || (
-            nextProps.location &&
-            this.props.location !== nextProps.location
-        )
+                nextProps.location &&
+                this.props.location !== nextProps.location
+            )
 
         if (shouldSetValue) {
             this.refs.searchInput.value = ''
@@ -51,14 +43,27 @@ export default class Search extends React.Component {
                     this.refs.searchInput.value = nextProps.forcedQuery
                 }
 
-                // `this.debouncedSearch()` is not necessary in the ticket-list context, but I think it's better for
+                // `this._debouncedSearch()` is not necessary in the ticket-list context, but I think it's better for
                 // consistency that it gets executed anytime we force a query.
-                this.debouncedSearch()
+                this._debouncedSearch()
             }
 
             this.isInitialized = true
         }
     }
+
+    // search every XXXms
+    _debouncedSearch = _.debounce(() => {
+        if (!this.refs.searchInput) {
+            return false
+        }
+
+        const paths = this.props.queryPath.split(',')
+        paths.forEach((path) => {
+            _.set(this.props.query, path, this.refs.searchInput.value)
+        })
+        this.props.onChange(this.props.query, this.props.params, this.refs.searchInput.value)
+    }, this.props.searchDebounceTime || 200)
 
     render() {
         const containerClasses = classNames('ui search', this.props.className)
@@ -72,7 +77,7 @@ export default class Search extends React.Component {
                         type="text"
                         ref="searchInput"
                         placeholder={this.props.placeholder || 'Search'}
-                        onChange={this.debouncedSearch}
+                        onChange={this._debouncedSearch}
                         autoFocus={this.props.autofocus}
                     />
                     <i className="search icon" />
