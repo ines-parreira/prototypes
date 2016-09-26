@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _ from 'lodash'
 import {Loader} from '../../../../common/components/Loader'
-import {InputField, SelectField, MultiSelectField, TextAreaField} from '../../../../common/components/semantic'
+import {InputField, SelectField, MultiSelectField, TextAreaField, URLInputField} from '../../../../common/components/semantic'
 import HeaderFieldArray from './HeaderFieldArray'
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
@@ -172,7 +172,7 @@ class HttpIntegrationDetail extends React.Component {
                             placeholder="URL"
                             ref="httpUrl"
                             required
-                            component={InputField}
+                            component={URLInputField}
                         />
                         <Field
                             type="text"
