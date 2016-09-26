@@ -49,6 +49,7 @@ nosetests.xml
 coverage.xml
 *,cover
 npm-debug.log
+.babel.json
 
 # Translations
 *.mo
