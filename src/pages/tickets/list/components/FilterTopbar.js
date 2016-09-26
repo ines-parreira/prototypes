@@ -3,13 +3,16 @@ import ViewFilters from './ViewFilters'
 
 
 export default class FilterTopbar extends React.Component {
-    onClickUpdate = () => {
+    _onClickUpdate = () => {
         amplitude.getInstance().logEvent('Updated view')
         const view = this.props.views.get('active')
-        this.props.submitView(view)
+
+        if (window.confirm('You\'re about to edit this view for all users. Are you sure?')) {
+            this.props.submitView(view)
+        }
     }
 
-    onClickNew = () => {
+    _onClickNew = () => {
         amplitude.getInstance().logEvent('Saved as new view')
 
         let active = this.props.views.get('active')
@@ -50,18 +53,31 @@ export default class FilterTopbar extends React.Component {
                         updateFieldFilter={updateFieldFilter}
                     />
 
-                    <button type="button" className="filter-topbar-close" onClick={this.props.resetView}>
-                        <i className="icon remove large"/>
+                    <button
+                        type="button"
+                        className="filter-topbar-close"
+                        onClick={this.props.resetView}
+                    >
+                        <i className="icon remove large" />
                     </button>
                 </div>
                 <div className="filter-topbar-actions">
-                    <button className="ui button" onClick={this.props.resetView}>
+                    <button
+                        className="ui button"
+                        onClick={this.props.resetView}
+                    >
                         CANCEL
                     </button>
-                    <button className="ui green button right floated" onClick={this.onClickUpdate}>
+                    <button
+                        className="ui green button right floated"
+                        onClick={this._onClickUpdate}
+                    >
                         UPDATE VIEW
                     </button>
-                    <button className="ui button right floated filter-topbar-save-new" onClick={this.onClickNew}>
+                    <button
+                        className="ui button right floated filter-topbar-save-new"
+                        onClick={this._onClickNew}
+                    >
                         SAVE AS NEW VIEW
                     </button>
                 </div>

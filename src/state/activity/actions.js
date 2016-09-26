@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {UPDATE_VIEW_LIST} from '../views/constants'
+import * as viewsTypes from '../views/constants'
 import * as types from './constants'
 
 export const pollActivity = () => (dispatch, getState) => {
@@ -9,7 +9,7 @@ export const pollActivity = () => (dispatch, getState) => {
 
     if (!finished) {
         return dispatch({
-            type: 'NOOP'
+            type: types.SUBMIT_ACTIVITY_DISCARD
         })
     }
 
@@ -27,7 +27,7 @@ export const pollActivity = () => (dispatch, getState) => {
 
             if (resp.views) {
                 dispatch({
-                    type: UPDATE_VIEW_LIST,
+                    type: viewsTypes.UPDATE_VIEW_LIST,
                     items: resp.views
                 })
             }

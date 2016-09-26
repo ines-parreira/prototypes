@@ -107,11 +107,7 @@ export function fetchViews(currentViewId) {
 
 export function submitView(view) {
     return (dispatch) => {
-        const isUpdate = view.get('id')
-
-        if (isUpdate && !window.confirm('You\'re about to edit this view for all users. Are you sure?')) {
-            return
-        }
+        const isUpdate = !!view.get('id', '')
 
         dispatch({
             type: types.SUBMIT_VIEW_START

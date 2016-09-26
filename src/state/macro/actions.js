@@ -90,7 +90,7 @@ export function setMacrosVisible(visible) {
 export function previewMacro(macro) {
     return {
         type: types.PREVIEW_MACRO,
-        id: macro.get('id')
+        id: macro.get('id', '')
     }
 }
 

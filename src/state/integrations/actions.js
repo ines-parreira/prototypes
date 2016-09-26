@@ -88,7 +88,7 @@ export function deleteIntegration(integration) {
     }
 
     return {
-        type: 'noop'
+        type: types.DELETE_INTEGRATION_CANCEL
     }
 }
 
