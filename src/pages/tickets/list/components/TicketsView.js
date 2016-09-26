@@ -6,6 +6,7 @@ import ListActions from './ListActions'
 import FilterTopbar from './FilterTopbar'
 import Search from '../../../common/components/Search'
 import {CELL_WIDTH} from '../../../../config'
+import {slugify} from './utils'
 
 export default class TicketsView extends React.Component {
     constructor() {
@@ -35,7 +36,7 @@ export default class TicketsView extends React.Component {
     updateViewName = (name) => {
         this.updateView(this.props.views.get('active').merge({
             name,
-            slug: name.toLowerCase().trim().replace(/[ ]/g, '-')
+            slug: slugify(name)
         }))
     }
 

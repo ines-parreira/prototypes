@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import ViewFilters from './ViewFilters'
-
+import {slugify} from './utils'
 
 export default class FilterTopbar extends React.Component {
     _onClickUpdate = () => {
@@ -16,17 +16,21 @@ export default class FilterTopbar extends React.Component {
         amplitude.getInstance().logEvent('Saved as new view')
 
         let active = this.props.views.get('active')
-        const original = this.props.views.get('items').find(v => v.get('id') === active.get('id'))
+        const original = this.props.views
+            .get('items')
+            .find(v => v.get('id') === active.get('id'))
 
         // new means it has no id set
         active = active.delete('id')
 
         // if the name wasn't changed, add (copy) to it
         if (original.get('name') === active.get('name')) {
-            const newName = `${active.get('name')} - copy`
-            const newSlug = newName.toLowerCase().trim().replace(/[ ]/g, '-')
+            const newName = `${active.get('name', '')} - copy`
+            const newSlug = slugify(newName)
 
-            active = active.set('name', newName).set('slug', newSlug)
+            active = active
+                .set('name', newName)
+                .set('slug', newSlug)
         }
 
         this.props.submitView(active)
