@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 import _ from 'lodash'
 import moment from 'moment-timezone'
+import {isUrl, isEmail} from '../../../../../utils'
 import {DEFAULT_SOURCE_PATH} from '../../../../../config'
 
 const Raven = window.Raven
@@ -95,32 +96,6 @@ export function isDate(string) {
     ]
 
     return moment(string, formats, true).isValid()
-}
-
-/**
- * Guess if a passed string is a url
- * @param string
- * @returns {boolean|*}
- */
-export function isUrl(string) {
-    if (!_.isString(string)) {
-        return false
-    }
-
-    return !!string.match(new RegExp(/^https?:\/\/.+/i))
-}
-
-/**
- * Guess if a passed string is an email
- * @param string
- * @returns {boolean|*}
- */
-export function isEmail(string) {
-    if (!_.isString(string)) {
-        return false
-    }
-
-    return !!string.match(new RegExp(/[^@]+@[^@]+/i))
 }
 
 /**

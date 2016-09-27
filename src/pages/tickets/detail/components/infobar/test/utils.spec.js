@@ -67,41 +67,6 @@ describe('widgets infobar utils', () => {
         })
     })
 
-    describe('is email', () => {
-        const correct = [
-            'email@example.com',
-            'firstname.lastname@example.com',
-            'email@subdomain.example.com',
-            'firstname+lastname@example.com',
-            'email@123.123.123.123',
-            '1234567890@example.com',
-            'email@example-one.com',
-            '_______@example.com',
-            'email@example.name',
-            'email@example.museum',
-            'email@example.co.jp',
-            'firstname-lastname@example.com',
-            'test@localhost'
-        ]
-
-        const incorrect = [
-            'plainaddress',
-            '@example.com'
-        ]
-
-        it('detection OK', () => {
-            correct.forEach((input) => {
-                expect(utils.isEmail(input)).toBe(true)
-            })
-        })
-
-        it('detection KO', () => {
-            incorrect.forEach((input) => {
-                expect(utils.isEmail(input)).toBe(false)
-            })
-        })
-    })
-
     describe('droppable path', () => {
         const inputs = [
             {

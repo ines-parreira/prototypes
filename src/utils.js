@@ -1,8 +1,34 @@
-import {has, upperFirst, isString} from 'lodash'
+import {has as _has, upperFirst as _upperFirst, isString as _isString} from 'lodash'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
 import sanitizeHtml from 'sanitize-html'
+
+/**
+ * Guess if a passed string is a url
+ * @param string
+ * @returns {boolean|*}
+ */
+export function isUrl(string) {
+    if (!_isString(string)) {
+        return false
+    }
+
+    return !!string.match(new RegExp(/^https?:\/\/.+/i))
+}
+
+/**
+ * Guess if a passed string is an email
+ * @param string
+ * @returns {boolean|*}
+ */
+export function isEmail(string) {
+    if (!_isString(string)) {
+        return false
+    }
+
+    return !!string.match(new RegExp(/[^@]+@[^@]+/i))
+}
 
 export function formatDatetime(datetime, timezone, format = 'calendar') {
     try {
@@ -21,14 +47,14 @@ export function formatDatetime(datetime, timezone, format = 'calendar') {
 }
 
 export function getAST(code) {
-    if (!isString(code)) {
+    if (!_isString(code)) {
         console.error('Not a string:', code)
     }
     return esprima.parse(code)
 }
 
 export function getCode(ast) {
-    if (!isString(ast.type)) {
+    if (!_isString(ast.type)) {
         console.error('Not an AST:', ast)
     }
     return escodegen.generate(ast, {
@@ -50,7 +76,7 @@ export function firstMessage(messages) {
 export function findProperty(field, schemas) {
     const parts = field.split('.')
 
-    let def = schemas.getIn(['definitions', upperFirst(parts.shift())])
+    let def = schemas.getIn(['definitions', _upperFirst(parts.shift())])
     let prop
 
     while (parts.length !== 0) {
@@ -82,7 +108,7 @@ export function equalityOperator(field, schemas) {
             return 'eq'
         case 'string':
             if (prop.meta && prop.meta.operators) {
-                if (has(prop.meta.operators, 'contains')) {
+                if (_has(prop.meta.operators, 'contains')) {
                     return 'contains'
                 }
             }

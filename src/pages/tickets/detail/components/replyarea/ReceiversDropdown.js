@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import _ from 'lodash'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
-import {validateEmail} from '../../../../../utils'
+import {isEmail} from '../../../../../utils'
 import {displayUserNameFromSource} from '../../../common/utils'
 
 class ReceiversDropdown extends React.Component {
@@ -85,7 +85,7 @@ class ReceiversDropdown extends React.Component {
                     loadOptions={this._search}
                     disabled={!enabled}
                     allowCreate={sourceType === 'email'}
-                    allowCreateConstraint={validateEmail}
+                    allowCreateConstraint={isEmail}
                     addLabelText={addLabelText}
                     placeholder="Search a user..."
                     tabSelectsValue={false}
