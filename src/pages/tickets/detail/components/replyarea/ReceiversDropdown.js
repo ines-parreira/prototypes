@@ -20,10 +20,7 @@ class ReceiversDropdown extends React.Component {
 
     componentDidUpdate(prevProps) {
         const shouldSetInitialValues = prevProps.sourceType !== this.props.sourceType
-            || (
-                prevProps.parentId !== this.props.parentId
-                && !prevProps.initialValues.equals(this.props.initialValues)
-            )
+            || prevProps.parentId !== this.props.parentId
 
         if (shouldSetInitialValues) {
             this._setInitialValues()
