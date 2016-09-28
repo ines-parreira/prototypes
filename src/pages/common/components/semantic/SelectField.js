@@ -1,25 +1,40 @@
 import React from 'react'
-
 import classNames from 'classnames'
 
 class SelectField extends React.Component {
     componentDidMount() {
-        $(this.refs.select).dropdown()
+        const {input: {value, onChange}} = this.props
+
+        $(this.refs.select)
+            .dropdown({
+                onChange
+            })
+            .dropdown('set selected', value)
     }
 
     render() {
-        const { children, input, label, placeholder, required } = this.props
-        const fieldClassName = classNames({ required }, 'field')
+        const {children, input, label, placeholder, required} = this.props
+        const fieldClassName = classNames({required}, 'field')
         return (
-            <div className={fieldClassName} ref="select">
-                {label && <label htmlFor={input.name}>{label}</label>}
-                <select className="ui dropdown" {...input} placeholder={placeholder}>
+            <div className={fieldClassName}>
+                {
+                    label && (
+                        <label htmlFor={input.name}>
+                            {label}
+                        </label>
+                    )
+                }
+                <select
+                    ref="select"
+                    className="ui dropdown"
+                    {...input}
+                    placeholder={placeholder}
+                >
                     {children}
                 </select>
             </div>
         )
     }
-
 }
 
 SelectField.defaultProps = {
