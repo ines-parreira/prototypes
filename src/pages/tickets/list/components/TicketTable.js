@@ -42,25 +42,30 @@ export default class TicketTable extends React.Component {
                         <tr>
                             <th>
                                 <span className="ui checkbox">
-                                    <input type="checkbox"
-                                           ref="toggleSelection"
-                                           onChange={this.toggleSelectAll}
-                                           checked={tickets.get('items').size === tickets.getIn(['_internal', 'selectedItemsIds']).size}
+                                    <input
+                                        type="checkbox"
+                                        ref="toggleSelection"
+                                        onChange={this.toggleSelectAll}
+                                        checked={tickets.get('items').size === tickets.getIn(['_internal', 'selectedItemsIds']).size}
                                     />
                                     <label />
                                 </span>
                             </th>
-                            {updatedView.get('fields').map((field) => (
-                                <ColumnHeader
-                                    key={field.get('name')}
-                                    field={field}
-                                    view={updatedView}
-                                    schemas={this.props.schemas}
-                                    updateView={this.props.updateView}
-                                    addFieldFilter={this.props.addFieldFilter}
-                                    updateFieldEnumSearch={this.props.updateFieldEnumSearch}
-                                />
-                            ))}
+                            {
+                                updatedView
+                                    .get('fields')
+                                    .map((field) => (
+                                        <ColumnHeader
+                                            key={field.get('name')}
+                                            field={field}
+                                            view={updatedView}
+                                            schemas={this.props.schemas}
+                                            updateView={this.props.updateView}
+                                            addFieldFilter={this.props.addFieldFilter}
+                                            updateFieldEnumSearch={this.props.updateFieldEnumSearch}
+                                        />
+                                    ))
+                            }
                             <ShowMoreFieldsDropdown
                                 view={updatedView}
                                 updateField={this.props.updateField}
@@ -68,17 +73,21 @@ export default class TicketTable extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                    {tickets.get('items').map((ticket, index) => (
-                        <TicketTableRow
-                            key={ticket.get('id')}
-                            view={updatedView}
-                            ticket={ticket}
-                            currentUser={currentUser}
-                            toggleTicketSelection={this.props.toggleTicketSelection}
-                            selected={!!~tickets.getIn(['_internal', 'selectedItemsIds']).indexOf(ticket.get('id'))}
-                            saveIndex={() => this.props.saveIndex(index)}
-                        />
-                    ))}
+                    {
+                        tickets
+                            .get('items')
+                            .map((ticket, index) => (
+                                <TicketTableRow
+                                    key={ticket.get('id')}
+                                    view={updatedView}
+                                    ticket={ticket}
+                                    currentUser={currentUser}
+                                    toggleTicketSelection={this.props.toggleTicketSelection}
+                                    selected={!!~tickets.getIn(['_internal', 'selectedItemsIds']).indexOf(ticket.get('id'))}
+                                    saveIndex={() => this.props.saveIndex(index)}
+                                />
+                            ))
+                    }
                     </tbody>
                 </table>
 
