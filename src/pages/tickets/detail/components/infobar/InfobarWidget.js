@@ -3,7 +3,7 @@ import moment from 'moment-timezone'
 import _ from 'lodash'
 import {fromJS} from 'immutable'
 import {DatetimeLabel} from '../../../../common/utils/labels'
-import * as utils from './utils'
+import * as utils from '../../../../../utils'
 
 import ListWidget from './widgets/ListWidget'
 import CardWidget from './widgets/CardWidget'
