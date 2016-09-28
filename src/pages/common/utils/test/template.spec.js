@@ -60,14 +60,16 @@ describe('components utils : template', () => {
             })).toBe(`We are the ${formatDatetime(date)}`)
         })
 
-        it('does not interpolate nested missing nested object', () => {
-            expect(() => renderTemplate('Hello {somebody.bestFriend.name}', {
+        it('return passed text if interpolation fails', () => {
+            const text = 'Hello {somebody.bestFriend.name}'
+
+            expect(renderTemplate(text, {
                 somebody: {
                     bestEnemy: {
                         name: 'Michael'
                     }
                 }
-            })).toThrow(Error)
+            })).toBe(text)
         })
     })
 })
