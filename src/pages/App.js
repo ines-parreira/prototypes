@@ -24,13 +24,6 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        // fetch currently logged-in user
-        this.props.fetchUser(0)
-        this.props.fetchSettings()
-        this.props.fetchUsers()
-        this.props.fetchUsers(['agent', 'admin'])
-        this.props.fetchTags()
-
         // activity polling
         let shouldPoll = true
         const pollingParameter = this.props.location.query._activity_polling || ''
@@ -49,9 +42,6 @@ class App extends React.Component {
 
             pollInterval = setInterval(this.props.pollActivity, 5000)
         }
-
-        // call it the first time without polling
-        this.props.pollActivity()
     }
 
     componentDidMount() {

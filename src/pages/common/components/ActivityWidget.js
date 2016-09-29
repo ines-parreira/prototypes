@@ -93,7 +93,7 @@ export default class ActivityWidget extends React.Component {
                             <ActivityWidgetItem
                               key={e.get('object_id')}
                               object={e.get('object')}
-                              count={counter.getIn([e.get('object_id'), 'count'])}
+                              count={counter.getIn([e.get('object_id'), 'count']) || 0}
                               user={e.get('user')}
                               position={index + 1}
                             />
