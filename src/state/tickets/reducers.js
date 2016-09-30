@@ -75,8 +75,13 @@ export default (state = initialState, action) => {
                 .setIn(['_internal', 'selectedItemsIds'], List())
         }
 
-        case types.SAVE_INDEX:
+        case types.SAVE_INDEX: {
             return state.setIn(['_internal', 'currentTicketIndex'], action.currentTicketIndex)
+        }
+
+        case types.SET_PAGE: {
+            return state.setIn(['_internal', 'pagination', 'page'], action.page)
+        }
 
         default:
             return state

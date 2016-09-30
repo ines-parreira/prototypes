@@ -93,8 +93,7 @@ export default class TicketsView extends React.Component {
     }
 
     render() {
-        const {views, tickets, currentUser, search, schemas, actions, fetchPage} = this.props
-
+        const {views, tickets, currentUser, search, schemas, actions, setPage} = this.props
         const view = views.get('active')
 
         if (!view.get('fields')) {
@@ -261,7 +260,7 @@ export default class TicketsView extends React.Component {
                     updateField={this.updateField}
                     addFieldFilter={this.addFieldFilter}
                     updateFieldEnumSearch={this.updateFieldEnumSearch}
-                    fetchPage={fetchPage}
+                    setPage={setPage}
 
                     saveIndex={this.props.actions.tickets.saveIndex}
 
@@ -287,6 +286,6 @@ TicketsView.propTypes = {
 
     actions: PropTypes.object.isRequired,
 
-    fetchPage: PropTypes.func.isRequired,
+    setPage: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired
 }

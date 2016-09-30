@@ -16,3 +16,5 @@ export const BULK_DELETE_ERROR = 'BULK_DELETE_ERROR'
 export const BULK_APPLY_MACRO = 'BULK_APPLY_MACRO'
 
 export const SAVE_INDEX = 'SAVE_INDEX'
+
+export const SET_PAGE = 'SET_PAGE'

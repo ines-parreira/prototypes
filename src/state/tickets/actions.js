@@ -4,10 +4,11 @@ import * as types from './constants'
 
 export function fetchTicketsPage(page) {
     return (dispatch, getState) => {
-        const state = getState()
-        const views = state.views
+        const views = getState().views
 
         const activeView = views.get('active')
+        const viewId = activeView.get('id')
+        const isDirty = views.getIn(['active', 'dirty'], false)
 
         if (!activeView || activeView.isEmpty()) {
             return Promise.resolve()
@@ -15,14 +16,18 @@ export function fetchTicketsPage(page) {
 
         dispatch({
             type: types.FETCH_TICKET_LIST_VIEW_START,
-            viewId: activeView.get('id')
+            viewId
         })
+
+        if (!isDirty && !viewId) {
+            return Promise.resolve()
+        }
 
         let promise
 
         // when a view is dirty, just send the whole view data rather than just the id
         // this will allow us to test a view before submitting it to the DB
-        if (views.getIn(['active', 'dirty'])) {
+        if (isDirty) {
             promise = axios.put('/api/tickets/view/', {
                 view: activeView.delete('dirty').delete('editMode').toJS(),
                 page
@@ -30,7 +35,7 @@ export function fetchTicketsPage(page) {
         } else {
             promise = axios.get('/api/tickets/', {
                 params: {
-                    view_id: activeView.get('id'),
+                    view_id: viewId,
                     page
                 }
             })
@@ -42,7 +47,7 @@ export function fetchTicketsPage(page) {
                 dispatch({
                     type: types.FETCH_TICKET_LIST_VIEW_SUCCESS,
                     data,
-                    viewId: activeView.get('id')
+                    viewId
                 })
             })
             .catch(error => {
@@ -52,6 +57,13 @@ export function fetchTicketsPage(page) {
                     reason: 'Failed to fetch list of tickets'
                 })
             })
+    }
+}
+
+export function setPage(page) {
+    return {
+        type: types.SET_PAGE,
+        page
     }
 }
 

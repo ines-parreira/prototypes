@@ -114,7 +114,7 @@ export default class TicketTable extends React.Component {
                 <SemanticPaginator
                     page={tickets.getIn(['_internal', 'pagination', 'page'])}
                     totalPages={tickets.getIn(['_internal', 'pagination', 'nb_pages'])}
-                    onChange={(page) => this.props.fetchPage(page)}
+                    onChange={(page) => this.props.setPage(page)}
                     radius={1}
                     anchor={2}
                 />
@@ -134,7 +134,7 @@ TicketTable.propTypes = {
     updateField: PropTypes.func.isRequired,
     addFieldFilter: PropTypes.func.isRequired,
     updateFieldEnumSearch: PropTypes.func.isRequired,
-    fetchPage: PropTypes.func.isRequired,
+    setPage: PropTypes.func.isRequired,
 
     saveIndex: PropTypes.func.isRequired,
 

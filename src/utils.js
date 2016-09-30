@@ -138,60 +138,30 @@ export function getModifier() {
     return isMac ? '⌘' : 'Ctrl'
 }
 
-// stolen from: https://github.com/HubSpot/humanize/blob/master/src/humanize.js#L84
-export function compactInteger(input, dec = 0) {
-    const decimals = Math.max(dec, 0)
-    const number = parseInt(input, 10)
-    const signString = number < 0 ? '-' : ''
-    const unsignedNumber = Math.abs(number)
-    const unsignedNumberString = String(unsignedNumber)
-    const numberLength = unsignedNumberString.length
-    const numberLengths = [13, 10, 7, 4]
-    const bigNumPrefixes = ['T', 'B', 'M', 'k']
+export function compactInteger(input, digits = 0) {
+    const si = [
+        {value: 1E18, symbol: 'E'},
+        {value: 1E15, symbol: 'P'},
+        {value: 1E12, symbol: 'T'},
+        {value: 1E9, symbol: 'G'},
+        {value: 1E6, symbol: 'M'},
+        {value: 1E3, symbol: 'k'}
+    ]
+    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
 
-    // small numbers
-    if (unsignedNumber < 1000) {
-        return `${signString}${unsignedNumberString}`
-    }
+    let result = input
+        .toFixed(digits)
+        .replace(rx, '$1')
 
-    // really big numbers
-    if (numberLength > numberLengths[0] + 3) {
-        return number.toExponential(decimals).replace('e+', 'x10^')
-    }
-
-    // 999 < unsignedNumber < 999,999,999,999,999
-    let length
-    for (let i = 0; i < numberLengths.length; i++) {
-        const l = numberLengths[i]
-        if (numberLength >= l) {
-            length = l
-            break
+    si.reverse().forEach((s) => {
+        if (input >= s.value) {
+            result = (input / s.value)
+                    .toFixed(digits)
+                    .replace(rx, '$1') + s.symbol
         }
-    }
+    })
 
-    const decimalIndex = numberLength - length + 1
-    const unsignedNumberCharacterArray = unsignedNumberString.split('')
-
-    const wholePartArray = unsignedNumberCharacterArray.slice(0, decimalIndex)
-    const decimalPartArray = unsignedNumberCharacterArray.slice(decimalIndex, decimalIndex + decimals + 1)
-
-    const wholePart = wholePartArray.join('')
-
-    // pad decimalPart if necessary
-    let decimalPart = decimalPartArray.join('')
-    if (decimalPart.length < decimals) {
-        decimalPart += `${(new Array(decimals - decimalPart.length + 1)).join('0')}`
-    }
-
-    let output
-    if (decimals === 0) {
-        output = `${signString}${wholePart}${bigNumPrefixes[numberLengths.indexOf(length)]}`
-    } else {
-        const outputNumber = Number(`${wholePart}.${decimalPart}`).toFixed(decimals)
-        output = `${signString}${outputNumber}${bigNumPrefixes[numberLengths.indexOf(length)]}`
-    }
-
-    return output
+    return result
 }
 
 export function stripHTML(text) {
