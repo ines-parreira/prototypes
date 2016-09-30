@@ -13,12 +13,28 @@ export default class TicketTable extends React.Component {
 
     render() {
         const {view, tickets, currentUser, style, getWidth} = this.props
-        const isLoading = this.props.tickets.getIn(['_internal', 'loading', 'fetchList'])
+        const isLoading = tickets.getIn(['_internal', 'loading', 'fetchList'])
 
-        if (!(tickets && view && !tickets.get('items').isEmpty() && !view.get('fields').isEmpty() && !isLoading)) {
-            let message = <p>{isLoading ? 'Loading...' : 'This view is empty. Enjoy your day!'}</p>
+        // if loading => show message
+        if (isLoading) {
+            return (
+                <div className="ticket-table" style={style}>
+                    <div style={{
+                        maxWidth: getWidth()
+                    }}>
+                        <Loader
+                            loading={isLoading}
+                        />
+                    </div>
+                </div>
+            )
+        }
 
-            if (view.get('dirty') && !isLoading) {
+        // if empty view or view fields => show message
+        if (tickets.get('items').isEmpty() || view.get('fields').isEmpty()) {
+            let message = <p>This view is empty. Enjoy your day!</p>
+
+            if (view.get('dirty')) {
                 message = <p>No tickets found.<br /><a onClick={this.props.resetView}>Reset view</a></p>
             }
 
@@ -27,7 +43,10 @@ export default class TicketTable extends React.Component {
                     <div style={{
                         maxWidth: getWidth()
                     }}>
-                        <Loader message={message} loading={isLoading} />
+                        <Loader
+                            message={message}
+                            loading={false}
+                        />
                     </div>
                 </div>
             )
@@ -123,4 +142,11 @@ TicketTable.propTypes = {
     getWidth: PropTypes.func.isRequired,
 
     style: PropTypes.object.isRequired
+}
+
+TicketTable.defaultProps = {
+    tickets: fromJS({}),
+    view: fromJS({}),
+    schemas: fromJS({}),
+    currentUser: fromJS({})
 }

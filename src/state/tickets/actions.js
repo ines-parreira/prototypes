@@ -2,9 +2,16 @@ import axios from 'axios'
 import {systemMessage} from '../systemMessage/actions'
 import * as types from './constants'
 
-export function fetchTicketsPage(views, page) {
-    return (dispatch) => {
+export function fetchTicketsPage(page) {
+    return (dispatch, getState) => {
+        const state = getState()
+        const views = state.views
+
         const activeView = views.get('active')
+
+        if (!activeView || activeView.isEmpty()) {
+            return Promise.resolve()
+        }
 
         dispatch({
             type: types.FETCH_TICKET_LIST_VIEW_START,
@@ -55,7 +62,7 @@ export function toggleTicketSelection(ticketId) {
     }
 }
 
-export function bulkUpdate(ids, key, value, views) {
+export function bulkUpdate(ids, key, value) {
     return (dispatch) => {
         const data = {ids: ids.toJS(), updates: {}}
         data.updates[key] = value
@@ -118,7 +125,7 @@ export function bulkUpdate(ids, key, value, views) {
                     updates: data.updates
                 })
 
-                setTimeout(() => dispatch(fetchTicketsPage(views, 1)), 800)
+                setTimeout(() => dispatch(fetchTicketsPage(1)), 800)
 
                 dispatch(systemMessage({
                     type: 'success',

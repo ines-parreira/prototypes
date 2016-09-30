@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import {systemMessage} from '../../state/systemMessage/actions'
 
 /**
@@ -6,9 +7,11 @@ import {systemMessage} from '../../state/systemMessage/actions'
  */
 const serverErrorHandler = store => next => action => {
     if (action && action.error) {
-        const message = action.reason
-            || action.error.message
-            || action.error.msg
+        const error = _.get(action, 'error.response.data.error', '')
+
+        const message =
+            error.msg
+            || action.reason
             || `Unknown error for action ${action.type}`
 
         console.error('ERROR', message, action.error)

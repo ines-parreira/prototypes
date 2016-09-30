@@ -125,6 +125,8 @@ function onFacebookLoginSuccess(dispatch) {
                 })
             }
         }
+
+        return Promise.resolve()
     }
 }
 

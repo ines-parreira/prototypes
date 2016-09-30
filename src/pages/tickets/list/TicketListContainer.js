@@ -17,14 +17,13 @@ class TicketListContainer extends React.Component {
     componentWillMount() {
         this.props.actions.schema.fetch()
 
-        if (this.props.views.get('active').isEmpty() && this.props.views.get('items').size) {
+        if (this.props.views.get('active').isEmpty() && !this.props.views.get('items').isEmpty()) {
             this.props.actions.view.setViewActive(this.props.views.getIn(['items', 0]))
         }
 
-        this.props.actions.tickets.fetchTicketsPage(
-            this.props.views,
-            this.props.tickets.getIn(['_internal', 'pagination', 'page'])
-        )
+        const page = this.props.tickets.getIn(['_internal', 'pagination', 'page'])
+
+        this.props.actions.tickets.fetchTicketsPage(page)
     }
 
     // Test if we need to re-fetch the data
@@ -55,6 +54,7 @@ class TicketListContainer extends React.Component {
             )
         ) {
             this._fetchPage(1, nextProps)
+
             amplitude.getInstance().logEvent('Opened view', _.pick(nextActive.toJS(), ['id', 'slug']))
         }
     }
@@ -62,7 +62,7 @@ class TicketListContainer extends React.Component {
     _fetchPage = (page = 1, props) => {
         const {actions, views} = props || this.props
         if (!views.get('active').isEmpty()) {
-            return actions.tickets.fetchTicketsPage(views, page)
+            return actions.tickets.fetchTicketsPage(page)
         }
         return null
     }

@@ -94,6 +94,7 @@ export default class TicketsView extends React.Component {
 
     render() {
         const {views, tickets, currentUser, search, schemas, actions, fetchPage} = this.props
+
         const view = views.get('active')
 
         if (!view.get('fields')) {
@@ -120,22 +121,18 @@ export default class TicketsView extends React.Component {
 
                                     <div
                                         className="ui dropdown tickets-view-settings"
-                                        ref={
-                                            (dropdown) => {
-                                                $(dropdown).dropdown({
-                                                    action: () => {
-                                                        // HACK action='hide' does not work
-                                                        // as described in the docs.
-                                                        $(dropdown).dropdown('hide')
-                                                    }
-                                                })
-                                            }
-                                        }
+                                        ref={(dropdown) => {
+                                            $(dropdown).dropdown({
+                                                action: () => {
+                                                    // HACK action='hide' does not work
+                                                    // as described in the docs.
+                                                    $(dropdown).dropdown('hide')
+                                                }
+                                            })
+                                        }}
                                     >
                                         <i className="setting icon" />
-                                        <div className="text">
-                                            VIEW SETTINGS
-                                        </div>
+                                        <div className="text">VIEW SETTINGS</div>
                                         <div className="menu">
                                             <div
                                                 className="item"
