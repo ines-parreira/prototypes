@@ -72,7 +72,7 @@ class ReceiversDropdown extends React.Component {
     render() {
         const {sourceType, enabled} = this.props
 
-        const addLabelText = 'AddLine the email address "{label}" ?'
+        const addLabelText = 'Add the email address "{label}" ?'
 
         return (
             <div className="receiver-dropdown">
