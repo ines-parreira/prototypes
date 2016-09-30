@@ -40,7 +40,6 @@ const ActivityWidgetItem = ({object, count, position}) => {
 
     // counter of activity / new messages
     let counterLabel = null
-    count = 30
     if (count) {
         counterLabel = (
             <div className="ui mini red circular label">
