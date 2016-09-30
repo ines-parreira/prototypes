@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 import TicketPriority from '../../../../detail/components/ticketdetails/TicketPriority'
 
 export default class SetPriorityAction extends React.Component {
-    togglePriority() {
+    _togglePriority = () => {
         this.props.updateActionArgs(
             this.props.index,
             Map({priority: this.props.action.getIn(['arguments', 'priority']) === 'normal' ? 'high' : 'normal'})
@@ -18,10 +18,10 @@ export default class SetPriorityAction extends React.Component {
                     className="right floated remove circle red large action icon"
                     onClick={() => deleteAction(index)}
                 />
-                <h4>SET PRIORITY</h4>
+                <h4 className="inline">SET PRIORITY</h4>
                 <TicketPriority
                     priority={action.getIn(['arguments', 'priority'])}
-                    togglePriority={() => this.togglePriority()}
+                    togglePriority={this._togglePriority}
                 />
                 <div className="ui divider"></div>
             </div>

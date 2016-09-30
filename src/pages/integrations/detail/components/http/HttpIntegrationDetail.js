@@ -4,8 +4,15 @@ import {Field, FieldArray, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _ from 'lodash'
+import {AVAILABLE_HTTP_METHODS} from '../../../../../config'
 import {Loader} from '../../../../common/components/Loader'
-import {InputField, SelectField, MultiSelectField, TextAreaField, URLInputField} from '../../../../common/components/semantic'
+import {
+    InputField,
+    SelectField,
+    MultiSelectField,
+    TextAreaField,
+    URLInputField
+} from '../../../../common/components/semantic'
 import HeaderFieldArray from './HeaderFieldArray'
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
@@ -135,9 +142,9 @@ class HttpIntegrationDetail extends React.Component {
 
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider"/>
+                        <i className="right angle icon divider" />
                         <Link to="/app/integrations/http" className="section">HTTP</Link>
-                        <i className="right angle icon divider"/>
+                        <i className="right angle icon divider" />
                         <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
                     </div>
 
@@ -182,11 +189,16 @@ class HttpIntegrationDetail extends React.Component {
                             required
                             component={SelectField}
                         >
-                            <option value="" disabled>Method</option>
-                            <option value="GET">GET</option>
-                            <option value="POST">POST</option>
-                            <option value="PUT">PUT</option>
-                            <option value="DELETE">DELETE</option>
+                            {
+                                AVAILABLE_HTTP_METHODS.map((method) =>
+                                    <option
+                                        key={method}
+                                        value={method}
+                                    >
+                                        {method.toUpperCase()}
+                                    </option>
+                                )
+                            }
                         </Field>
                         <Field
                             type="text"
@@ -198,7 +210,7 @@ class HttpIntegrationDetail extends React.Component {
                         >
                             <option value="application/json">application/json</option>
                         </Field>
-                        <FieldArray name="http.headers" component={HeaderFieldArray}/>
+                        <FieldArray name="http.headers" component={HeaderFieldArray} />
 
                         <Field
                             type="json"

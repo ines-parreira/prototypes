@@ -14,7 +14,7 @@ export default class SetResponseTextAction extends React.Component {
     render() {
         const {index, action, deleteAction} = this.props
         return (
-            <div className="response-text">
+            <div>
                 <i
                     className="right floated remove circle red large action icon"
                     onClick={() => deleteAction(index)}

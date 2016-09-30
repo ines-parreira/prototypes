@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 
 import EditableTitle from './../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
@@ -21,8 +21,28 @@ export default class TicketHeader extends React.Component {
         return !currentTicket.equals(nextTicket) || !currentTags.equals(nextTags) || !currentAgents.equals(nextAgents)
     }
 
+    _setQuickStatus = (status) => {
+        const {actions, computeNextUrl, hideTicket} = this.props
+
+        let newStatus = 'closed'
+        if (status === 'closed') {
+            newStatus = 'open'
+        }
+
+        actions.ticket.setStatus(newStatus)
+
+        // when closing the ticket, jump to the next one
+        if (newStatus === 'closed') {
+            const nextUrl = computeNextUrl(true)
+
+            if (nextUrl) {
+                hideTicket()
+            }
+        }
+    }
+
     render() {
-        const {ticket, tags, agents, actions, computeNextUrl, hideTicket} = this.props
+        const {ticket, tags, agents, actions} = this.props
 
         let ticketId = ''
 
@@ -71,8 +91,7 @@ export default class TicketHeader extends React.Component {
                             <TicketStatus
                                 currentStatus={ticket.get('status')}
                                 setStatus={actions.ticket.setStatus}
-                                computeNextUrl={computeNextUrl}
-                                hideTicket={hideTicket}
+                                setQuickStatus={this._setQuickStatus}
                             />
 
                             <TicketTags

@@ -19,12 +19,12 @@ export default class AddTagsAction extends React.Component {
         const {action, tags, deleteAction, index} = this.props
 
         return (
-            <div className="tags">
+            <div>
                 <i
                     className="right floated remove circle red large action icon"
                     onClick={() => deleteAction(index)}
                 />
-                <h4>ADD TAGS</h4>
+                <h4 className="inline">ADD TAGS</h4>
                 <TicketTags
                     tags={tags.toJS()}
                     ticketTags={action.get('arguments')}

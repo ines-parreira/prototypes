@@ -309,7 +309,6 @@ class TicketDetailContainer extends React.Component {
                     status,
                     this.props.macros.getIn(['appliedMacro', 'actions']),
                     this.props.currentUser,
-                    action,
                     resetMessage
                 )
             }

@@ -1,16 +1,20 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
+import {AVAILABLE_HTTP_METHODS} from '../../../../../../config'
 import ParametersEditor from '../../../../../common/components/ParametersEditor'
 
 export default class HttpAction extends React.Component {
     componentDidMount() {
-        $(`#method-${this.props.index}`).dropdown({
-            onChange: (value) => {
-                this.props.updateActionArgs(
-                    this.props.index,
-                    this.props.action.get('arguments').set('method', value)
-                )
-            }
-        }).dropdown('set value', this.props.action.getIn(['arguments', 'method']))
+        $(this.refs.method)
+            .dropdown({
+                onChange: (value) => {
+                    this.props.updateActionArgs(
+                        this.props.index,
+                        this.props.action.get('arguments', fromJS({})).set('method', value)
+                    )
+                }
+            })
+            .dropdown('set selected', this.props.action.getIn(['arguments', 'method']))
     }
 
     setTitle(title) {
@@ -23,21 +27,21 @@ export default class HttpAction extends React.Component {
     setUrl(url) {
         this.props.updateActionArgs(
             this.props.index,
-            this.props.action.get('arguments').set('url', url)
+            this.props.action.get('arguments', fromJS({})).set('url', url)
         )
     }
 
     setHeaders(headers) {
         this.props.updateActionArgs(
             this.props.index,
-            this.props.action.get('arguments').set('headers', headers)
+            this.props.action.get('arguments', fromJS({})).set('headers', headers)
         )
     }
 
     setParams(params) {
         this.props.updateActionArgs(
             this.props.index,
-            this.props.action.get('arguments').set('params', params)
+            this.props.action.get('arguments', fromJS({})).set('params', params)
         )
     }
 
@@ -54,26 +58,30 @@ export default class HttpAction extends React.Component {
                 <div className="ui form">
                     <div className="field">
                         <label>Action Title</label>
-                        <input type="text" value={action.get('title')}
-                               onChange={(e) => this.setTitle(e.target.value)}
+                        <input
+                            type="text"
+                            value={action.get('title')}
+                            onChange={(e) => this.setTitle(e.target.value)}
                         />
                     </div>
                     <div className="fields">
                         <div className="three wide field">
                             <label>Method</label>
-                            <div id={`method-${this.props.index}`} className="ui selection dropdown">
-                                <input type="hidden" name="gender" />
-                                <i className="dropdown icon" />
-                                <div className="default text">
-                                    {action.getIn(['arguments', 'method']).toUpperCase()}
-                                </div>
-                                <div className="menu">
-                                    <div className="item" data-value="get">GET</div>
-                                    <div className="item" data-value="post">POST</div>
-                                    <div className="item" data-value="put">PUT</div>
-                                    <div className="item" data-value="delete">DELETE</div>
-                                </div>
-                            </div>
+                            <select
+                                ref="method"
+                                className="ui dropdown"
+                            >
+                                {
+                                    AVAILABLE_HTTP_METHODS.map((method) =>
+                                        <option
+                                            key={method}
+                                            value={method}
+                                        >
+                                            {method.toUpperCase()}
+                                        </option>
+                                    )
+                                }
+                            </select>
                         </div>
                         <div className="thirteen wide field">
                             <label>URL</label>

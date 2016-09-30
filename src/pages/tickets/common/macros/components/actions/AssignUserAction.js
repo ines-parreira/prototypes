@@ -13,12 +13,12 @@ export default class AssignUserAction extends React.Component {
     render() {
         const {index, action, agents, deleteAction} = this.props
         return (
-            <div className="assignee">
+            <div>
                 <i
                     className="right floated remove circle red large action icon"
                     onClick={() => deleteAction(index)}
                 />
-                <h4>SET ASSIGNEE</h4>
+                <h4 className="inline">SET ASSIGNEE</h4>
                 <TicketAssignee
                     currentAssignee={action.getIn(['arguments', 'assignee_user', 'name'])}
                     agents={agents}

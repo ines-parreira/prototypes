@@ -588,7 +588,10 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
         let promise
 
         if (action) {
-            promise = axios.put(`/api/tickets/${ticket.get('id')}/messages/${messageToSend.id}/${action ? `?action=${action}` : ''}`, messageToSend)
+            promise = axios.put(
+                `/api/tickets/${ticket.get('id')}/messages/${messageToSend.id}/${action ? `?action=${action}` : ''}`,
+                messageToSend
+            )
         } else {
             promise = axios.post(`/api/tickets/${ticket.get('id')}/messages/`, messageToSend)
         }
@@ -600,7 +603,8 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
                 if (status) {
                     // We don't want to update the wrong state if we are redirecting so we specify the id in setStatus.
                     dispatch(setStatus(status, ticket.get('id')))
-                    // We need to explicitely do the partial update because we cannot count on the component re-rendering (if we redirect).
+                    // We need to explicitly do the partial update because we cannot count on the component
+                    // re-rendering (if we redirect).
                     // The re-rendering is when the autosave is usually performed and the status updated in db.
                     ticketPartialUpdate(ticket.get('id'), {status})(dispatch)
                 }
@@ -623,7 +627,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
     }
 }
 
-export function submitTicket(ticket, status, macroActions, currentUser, action, resetMessage = true) {
+export function submitTicket(ticket, status, macroActions, currentUser, resetMessage = true) {
     return (dispatch) => {
         dispatch({
             type: types.SUBMIT_TICKET_START

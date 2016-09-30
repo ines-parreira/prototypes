@@ -1,4 +1,9 @@
 /**
+ * Action related
+ */
+export const AVAILABLE_HTTP_METHODS = ['get', 'post', 'put', 'delete']
+
+/**
  * View related
  */
 export const ACTIVITY_DISPLAY_COUNT = 6
