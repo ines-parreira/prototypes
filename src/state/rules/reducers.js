@@ -1,40 +1,53 @@
-import {fromJS, List} from 'immutable'
-import {getCode, getAST} from '../../utils'
-import {inOrderGetLeaves, getObjectExpression} from './utils'
+import { fromJS, List } from 'immutable'
 
-import {ADD_RULE_END, RULES_REQUESTS_POSTS, RULES_RECEIVE_POSTS, RULES_UPDATE_CODE_AST} from './constants'
-import {DEFAULT_OPTION_CHAINS} from '../../pages/common/components/ast/Widget.js'
+import { getCode, getAST } from '../../utils'
+import { inOrderGetLeaves, getObjectExpression } from './utils'
+
+import * as types from './constants'
 
 export const initialState = List([])
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case ADD_RULE_END:
+        case types.ADD_RULE_END: {
             const rule = action.rule
-            rule.code_ast = getAST(rule.code)
+            if (rule.code) rule.code_ast = getAST(rule.code)
             return state.push(rule)
+        }
 
-        case RULES_REQUESTS_POSTS:
+        case types.RULES_REQUESTS_POSTS:
             return state
 
-        case RULES_RECEIVE_POSTS:
+        case types.RULES_RECEIVE_POSTS: {
             // Given the code of the rules received from server convert the code to AST
             const ruleList = action.rules.map((ruleItem) => {
-                ruleItem.code_ast = getAST(ruleItem.code)
+                if (ruleItem.code) ruleItem.code_ast = getAST(ruleItem.code)
                 return ruleItem
             })
 
             return List(ruleList)
+        }
 
-        case RULES_UPDATE_CODE_AST: {
-            const {index, path, value, operation} = action
+        case types.RULES_INITIALISE_CODE_AST: {
+            const { index } = action
+            let stateItem = fromJS(state.get(index))
+
+            stateItem = stateItem.set('code_ast', types.DEFAULT_IF_STATEMENT)
+
+            const stateItemObj = stateItem.toJS()
+            stateItemObj.code = getCode(stateItemObj.code_ast)
+            return state.set(index, stateItemObj)
+        }
+
+        case types.RULES_UPDATE_CODE_AST: {
+            const { index, path, value, operation } = action
             const stateItem = fromJS(state.get(index))
             const pathFull = path.unshift('code_ast')
 
             let stateItemNew
 
             if (operation === 'UPDATE') {
-                stateItemNew = stateItem.updateIn(pathFull.toJS(), val=>value)
+                stateItemNew = stateItem.updateIn(pathFull.toJS(), () => value)
                 /* When we do an update for a node, the possible choices after that
                  * node should be invalidated.
                  * e.g. if(equal(ticket.status,'open')){}
@@ -44,52 +57,46 @@ export default (state = initialState, action) => {
 
                 // Do the updates only in the Ifstatement.test
                 if (pathFull.contains('test')) {
-                    let index = pathFull.lastIndexOf('arguments')
-                    if (~index) {
-                        const pathParentCallExpression = pathFull.setSize(pathFull.count() - index - 1)
+                    const argumentsIndex = pathFull.lastIndexOf('arguments')
+
+                    if (~argumentsIndex) {
+                        const pathParentCallExpression = pathFull.setSize(argumentsIndex)
                         const possiblePaths = inOrderGetLeaves(stateItemNew, pathParentCallExpression)
 
                         let shouldUpdate = false
 
-                        // Update all the leaves on the right side of this one.
+                        // Update all the leaves on the right side of this one
                         for (const pathItem of possiblePaths) {
-                            if (shouldUpdate) {
-                                stateItemNew = stateItemNew.updateIn(pathItem, val=>'')
-                            }
-
-                            if (pathFull.equals(pathItem)) {
-                                shouldUpdate = true
-                            }
+                            if (shouldUpdate) stateItemNew = stateItemNew.updateIn(pathItem, () => '')
+                            else shouldUpdate = pathFull.equals(pathItem)
                         }
-                    } else {
-                        index = pathFull.lastIndexOf('callee')
                     }
                 } else {
-                    /*
-                     * Update the arguments for actions when action name is updated.
-                     * */
-                    const index = pathFull.lastIndexOf('arguments')
-                    const index2 = pathFull.lastIndexOf(1)
-                    if (~index && ~index2 && (index - index2 === 1)) {
-                        const pathParentCallExpression = pathFull.setSize(pathFull.count() - index - 1)
-                        const calleeName = stateItemNew.getIn(pathParentCallExpression.push('callee', 'name'))
-                        if (calleeName === 'Action') {
-                            const pathArgument1 = pathParentCallExpression.push('arguments', 1, 'value')
-                            const argument1 = stateItemNew.getIn(pathArgument1.toJS())
-                            const pathAction = ['_action', argument1]
-                            const actionDict = fromJS(DEFAULT_OPTION_CHAINS).getIn(pathAction).toJS()
-                            const objectExpression = getObjectExpression(actionDict)
+                    // Update the arguments for actions when action name is updated
+                    const argumentsIndex = pathFull.lastIndexOf('arguments')
+                    const index2 = pathFull.lastIndexOf(0)
 
-                            stateItemNew = stateItemNew.updateIn(pathParentCallExpression.push('arguments', 2).toJS(), val=>objectExpression)
+                    // We check if this update, edit the first argument of a CallExpression
+                    if (~argumentsIndex && ~index2 && (index2 - argumentsIndex) === 1) {
+                        const pathParentCallExpression = pathFull.setSize(argumentsIndex)
+                        const calleeName = stateItemNew.getIn(pathParentCallExpression.push('callee', 'name'))
+
+                        if (calleeName === 'Action') {
+                            const actionType = stateItemNew.getIn(
+                                pathParentCallExpression.push('arguments', 0, 'value')
+                            )
+                            const pathActionValue = pathParentCallExpression.push('arguments', 1)
+
+                            // We override the second argument by the default value according to the new action type
+                            const expression = getObjectExpression(types.ACTION_DEFAULT_STATE[actionType] || {})
+                            stateItemNew = stateItemNew.updateIn(pathActionValue, () => expression)
                         }
                     }
                 }
             }
 
             if (operation === 'INSERT') {
-                const lastIndex = pathFull.last() + 1
-                const pathNew = pathFull.pop()
-                const valueP = stateItem.getIn(pathNew.toJS())
+                const valueP = stateItem.getIn(pathFull.toJS())
 
                 /*
                  * In the case of pathNew = ["code_ast", "body", 0, "alternate", "body"]
@@ -107,20 +114,18 @@ export default (state = initialState, action) => {
                  *        "body": []
                  *     }
                  * */
-                if ((valueP === undefined) && (pathNew.get(pathNew.size - 2) === 'alternate')) {
-                    const pathElse = pathNew.pop()
-                    stateItemNew = stateItem.updateIn(pathElse.toJS(), val=>fromJS({
-                        type: "BlockStatement",
+                if ((valueP === undefined) && (pathFull.get(pathFull.size - 2) === 'alternate')) {
+                    const pathElse = pathFull.pop()
+                    stateItemNew = stateItem.updateIn(pathElse.toJS(), () => fromJS({
+                        type: 'BlockStatement',
                         body: [value],
                     }))
-                } else {
-                    stateItemNew = stateItem.updateIn(pathNew.toJS(), list=>list.splice(lastIndex, 0, value))
-                }
+                } else stateItemNew = stateItem.updateIn(pathFull.toJS(), list => list.push(value))
             }
             if (operation === 'DELETE') {
                 const lastIndex = pathFull.last()
                 const pathNew = pathFull.pop()
-                stateItemNew = stateItem.updateIn(pathNew.toJS(), list=>list.delete(lastIndex))
+                stateItemNew = stateItem.updateIn(pathNew.toJS(), list => list.delete(lastIndex))
             }
 
             /* Add logical AND operation in TEST block of IFSTATEMENT.
@@ -128,7 +133,7 @@ export default (state = initialState, action) => {
             if (operation === 'UPDATE_LOGICAL_AND') {
                 const test = stateItem.getIn(pathFull.toJS())
                 value.right = test.toJS()
-                stateItemNew = stateItem.updateIn(pathFull.toJS(), val=>value)
+                stateItemNew = stateItem.updateIn(pathFull.toJS(), () => value)
             }
 
             /* Operating on the syntax tree to delete the binary expression.
@@ -144,20 +149,19 @@ export default (state = initialState, action) => {
 
                 if (lastIndex === 'left') {
                     const right = stateItem.getIn(pathNew.push('right').toJS())
-                    stateItemNew = stateItem.updateIn(pathNew.toJS(), val=>right)
+                    stateItemNew = stateItem.updateIn(pathNew.toJS(), () => right)
                 } else if (lastIndex === 'right') {
                     const left = stateItem.getIn(pathNew.push('left').toJS())
-                    stateItemNew = stateItem.updateIn(pathNew.toJS(), val=>left)
+                    stateItemNew = stateItem.updateIn(pathNew.toJS(), () => left)
                 } else {
                     // We shouldn't reach here normally.
                     return state
                 }
             }
 
-            let stateItemObj = stateItemNew.toJS()
+            const stateItemObj = stateItemNew.toJS()
             stateItemObj.code = getCode(stateItemObj.code_ast)
-            const stateNew = state.set(index, stateItemObj)
-            return stateNew
+            return state.set(index, stateItemObj)
         }
 
         default:

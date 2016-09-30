@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
 
 import LogicalExpression from './LogicalExpression'
 import BinaryExpression from './BinaryExpression'
@@ -9,51 +9,27 @@ import CallExpression from './CallExpression'
 import ObjectExpression from './ObjectExpression'
 import UnknownSyntax from '../UnknownSyntax'
 
-export default class Expression extends React.Component {
-    render() {
-        const {type} = this.props
-        switch (type) {
-            case 'BinaryExpression':
-                return (
-                    <BinaryExpression {...this.props} />
-                )
+class Expression extends React.Component {
 
-            case 'LogicalExpression':
-                return (
-                    <LogicalExpression {...this.props} />
-                )
-
-            case 'Literal':
-                return (
-                    <Literal {...this.props} />
-                )
-
-            case 'Identifier':
-                return (
-                    <Identifier {...this.props} />
-                )
-
-            case 'MemberExpression':
-                return (
-                    <MemberExpression {...this.props} />
-                )
-
-            case 'CallExpression':
-                return (
-                    <CallExpression {...this.props} />
-                )
-
-            case 'ObjectExpression':
-                return (
-                    <ObjectExpression {...this.props} />
-                )
-            default:
-                return <UnknownSyntax {... this.props} />
-        }
+    types = {
+        BinaryExpression,
+        LogicalExpression,
+        Literal,
+        Identifier,
+        MemberExpression,
+        CallExpression,
+        ObjectExpression,
     }
+
+    render() {
+        const Component = this.types[this.props.type] || UnknownSyntax
+        return <Component {...this.props} />
+    }
+
 }
 
 Expression.propTypes = {
-    type: PropTypes.string
+    type: React.PropTypes.string.isRequired,
 }
 
+export default Expression

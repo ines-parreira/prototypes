@@ -1,34 +1,40 @@
-import React, {PropTypes} from 'react'
-import Statement from './statement/Statement'
-import {List} from 'immutable'
+import React from 'react'
 
-export default class Program extends React.Component {
-    componentDidMount() {
-       $('.dropdown.button').dropdown()
+import { List } from 'immutable'
+
+import { Statement } from './statements'
+
+class Program extends React.Component {
+
+    _renderBody = () => {
+        const { actions, body, index, schemas } = this.props
+        return body && body.map((statement, key) => (
+            <Statement
+                {...statement}
+                key={key}
+                parent={List(['body', key])}
+                index={index}
+                schemas={schemas}
+                actions={actions}
+            />
+        ))
     }
+
     render() {
-        const {index, actions, body, schemas} = this.props
         return (
-            <div className="Program">
-            {body.map((statement, idx) => {
-                return (
-                    <Statement
-                        {...statement}
-                        key={idx}
-                        parent={List(['body', idx])}
-                        index={index}
-                        schemas={schemas}
-                        actions={actions} />
-                )
-            })}
+            <div className="ui segment Program">
+                {this._renderBody()}
             </div>
         )
     }
+
 }
 
 Program.propTypes = {
-    index: PropTypes.number,
-    schemas: PropTypes.object,
-    actions: PropTypes.object,
-    body: PropTypes.array
+    index: React.PropTypes.number,
+    schemas: React.PropTypes.object,
+    actions: React.PropTypes.object,
+    body: React.PropTypes.array,
 }
+
+export default Program

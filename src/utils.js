@@ -50,7 +50,7 @@ export function getAST(code) {
     if (!_isString(code)) {
         console.error('Not a string:', code)
     }
-    return esprima.parse(code)
+    return esprima.parse(code, { loc: true })
 }
 
 export function getCode(ast) {
@@ -227,3 +227,12 @@ export function sanitizeHtmlDefault(html) {
         nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title']
     })
 }
+
+/**
+ * Convert camelCase text to Title Case text
+ */
+export const camelCaseToTitleCase = (text) => (
+    text.replace(/^[a-z]|[A-Z]/g, (value, index) => {
+        return index === 0 ? value.toUpperCase() : ` ${value.toUpperCase()}`
+    })
+)

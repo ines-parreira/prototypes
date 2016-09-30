@@ -2,11 +2,11 @@ import React, {PropTypes} from 'react'
 import Immutable from 'immutable'
 import {upperFirst} from 'lodash'
 
+import Action from '../actions/Action'
 import Expression from './Expression'
+import Hoverable from '../../Hoverable'
 import ObjectExpression from './ObjectExpression'
-import MatchingObjectsCounter from '../MatchingObjectsCounter'
-import {DeleteBinaryExpression} from '../OperationButtons'
-import Widget from '../Widget'
+import { DeleteBinaryExpression } from '../operations'
 
 import getSyntaxTreeLeaves from '../utils'
 
@@ -19,9 +19,11 @@ import getSyntaxTreeLeaves from '../utils'
 
  In our customized CallExpression
  */
-export default class CallExpression extends React.Component {
+class CallExpression extends React.Component {
     render() {
-        const {callee, index, actions, schemas, parent} = this.props
+        const { actions, callee, index, parent, schemas } = this.props
+        const { hovered } = this.context
+
         const funcArgs = this.props.arguments
         const parentCallee = parent.push('callee')
 
@@ -80,11 +82,7 @@ export default class CallExpression extends React.Component {
                         schemas={schemas}
                         leftsiblings={left}
                     />
-
-                    <MatchingObjectsCounter />
-
-                    {deleteBinaryExpression}
-                    <br />
+                    {hovered && deleteBinaryExpression}
                 </span>
             )
         }
@@ -97,21 +95,23 @@ export default class CallExpression extends React.Component {
             const actionRootLeftSiblings = Immutable.List(['actions'])
             return (
                 <div>
-                    <Widget
+                    <Action
                         value={actionName.value}
-                        parent={parent.push('arguments', 1, 'value')}
+                        parent={parent.push('arguments', 0)}
                         index={index}
                         actions={actions}
                         schemas={schemas}
                         leftsiblings={actionRootLeftSiblings}
-                    />
-                    <ObjectExpression {...actionArguments}
-                                      actions={actions}
-                                      leftsiblings={actionRootLeftSiblings.push(actionName.value)}
-                                      index={index}
-                                      schemas={schemas}
-                                      parent={parent.push('arguments', 2)}
-                    />
+                    >
+                        <ObjectExpression
+                            {...actionArguments}
+                            actions={actions}
+                            leftsiblings={actionRootLeftSiblings.push(actionName.value)}
+                            index={index}
+                            schemas={schemas}
+                            parent={parent.push('arguments', 1)}
+                        />
+                    </Action>
                 </div>
             )
         }
@@ -162,3 +162,9 @@ CallExpression.propTypes = {
     schemas: PropTypes.object.isRequired,
     actions: PropTypes.object
 }
+
+CallExpression.contextTypes = {
+    hovered: React.PropTypes.bool,
+}
+
+export default Hoverable(CallExpression)

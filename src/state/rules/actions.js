@@ -1,5 +1,8 @@
 import axios from 'axios'
+import { List } from 'immutable'
+
 import * as types from './constants'
+import { systemMessage } from '../systemMessage/actions'
 
 /* Actions */
 export const addRuleStart = (type, code) => ({
@@ -31,15 +34,59 @@ export const modifyCodeast = (index, path, value, operation) => ({
     operation
 })
 
+export const initialiseCodeAST = (index) => ({
+    type: types.RULES_INITIALISE_CODE_AST,
+    index,
+})
+
+export const fail = (error, reason) => ({
+    type: 'ERROR',
+    error,
+    reason,
+})
+
+/**
+ * Create a rule
+ * @param data
+ */
 export const create = (data) => {
     return dispatch => {
         return axios.post('/api/rules/', data)
-        .then(response => dispatch(addRuleEnd(response.data)))
-        .catch(error => dispatch({
-            type: 'ERROR',
-            error,
-            reason: 'Unable to create the rule'
-        }))
+            .then(response => dispatch(addRuleEnd(response.data)))
+            .catch(error => dispatch(fail(error, 'Unable to create the rule')))
+    }
+}
+
+/**
+ * Save a rule
+ * @param data
+ */
+export const save = (data) => {
+    return dispatch => {
+        return axios.post('/api/rules/', data)
+            .then(() => dispatch(systemMessage({
+                type: 'success',
+                msg: 'Rule saved!',
+            })))
+            .catch(error => dispatch(fail(error, 'Unable to save the rule')))
+    }
+}
+
+/**
+ * Reset the code ast of a rule
+ * @param index
+ */
+export const reset = (index) => {
+    return (dispatch, getState) => {
+        const { id } = getState().rules.get(index)
+        return axios.get(`/api/rules/${id}`)
+            .then((json = {}) => json.data)
+            .then(response => dispatch(modifyCodeast(
+                index,
+                List([]),
+                response.code_ast,
+                'UPDATE'
+            )))
     }
 }
 

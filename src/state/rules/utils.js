@@ -1,3 +1,5 @@
+import { List } from 'immutable'
+
 /**
  * In Order traversal the SYNTAXTREE from CURRENTPATH. Return a list
  * of possible paths to leaves.
@@ -50,35 +52,22 @@ export function inOrderGetLeaves(syntaxTree, currentPath) {
 }
 
 export function getObjectExpression(actionDict) {
-    let properties = []
+    const properties = Object.keys(actionDict).map((keyItem) => ({
+        type: 'Property',
+        key: {
+            type: 'Identifier',
+            name: keyItem
+        },
+        computed: false,
+        value: {
+            type: 'Literal',
+            value: `${actionDict[keyItem]}`,
+            raw: `\'${actionDict[keyItem]}\'`
+        },
+        kind: 'init',
+        method: false,
+        shorthand: false
+    }))
 
-    for (const keyItem in actionDict) {
-        if (!actionDict.hasOwnProperty(keyItem)) {
-            continue
-        }
-
-        const property = {
-            type: 'Property',
-            key: {
-                type: 'Identifier',
-                name: keyItem
-            },
-            computed: false,
-            value: {
-                type: 'Literal',
-                value: '',
-                raw: '\'\''
-            },
-            kind: 'init',
-            method: false,
-            shorthand: false
-        }
-
-        properties.push(property)
-    }
-
-    return {
-        type: 'ObjectExpression',
-        properties: properties
-    }
+    return { type: 'ObjectExpression', properties }
 }

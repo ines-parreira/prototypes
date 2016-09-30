@@ -1,15 +1,13 @@
 import React from 'react'
 
-class UnknownSyntax extends React.Component {
-    render() {
-        const {type} = this.props
+const UnknownSyntax = ({ type }) => (
+    <div className="unknownstatement ui red label">
+        Unknown {type}
+    </div>
+)
 
-        return (
-            <div className="unknownstatement ui red label">
-                Unknown {type}
-            </div>
-        )
-    }
+UnknownSyntax.propTypes = {
+    type: React.PropTypes.string.isRequired,
 }
 
 export default UnknownSyntax

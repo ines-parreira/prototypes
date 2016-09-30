@@ -29,7 +29,7 @@ export default class TextAreaField extends React.Component {
             }
 
             this.setState({correctJson: correct, text: v || this.default})
-        }
+        } else this.props.input.onChange(v)
     }
 
     render() {
@@ -52,7 +52,7 @@ export default class TextAreaField extends React.Component {
                 {label && <label htmlFor={input.name}>{label}{warning}</label>}
                 <textarea
                     name={input.name}
-                    value={this.state.text || input.value}
+                    value={(type === 'json' && this.state.text) || input.value}
                     placeholder={placeholder}
                     onChange={(e) => this._onChange(e.target.value)}
                 />

@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
 import Widget from './Widget'
 
 /*
@@ -7,26 +7,30 @@ import Widget from './Widget'
  value: string | boolean | null | number | RegExp;
 }
  */
-export default class Literal extends React.Component {
-    render() {
-        const {type, value, index, actions, parent, leftsiblings, schemas} = this.props
-        const parentNew = parent.push('value')
+const Literal = ({ value, index, actions, parent, leftsiblings, schemas }) => {
+    const parentNew = parent.push('value')
 
-        return (
-            <span className="Literal">
-                <Widget
-                    value={value}
-                    parent={parentNew}
-                    index={index}
-                    actions={actions}
-                    schemas={schemas}
-                    leftsiblings={leftsiblings}
-                />
-            </span>
-        )
-    }
+    return (
+        <span className="Literal">
+            <Widget
+                value={value}
+                parent={parentNew}
+                index={index}
+                actions={actions}
+                schemas={schemas}
+                leftsiblings={leftsiblings}
+            />
+        </span>
+    )
 }
 
 Literal.propTypes = {
-    type: PropTypes.string
+    actions: React.PropTypes.object.isRequired,
+    index: React.PropTypes.number.isRequired,
+    leftsiblings: React.PropTypes.object.isRequired,
+    parent: React.PropTypes.object.isRequired,
+    schemas: React.PropTypes.object.isRequired,
+    value: React.PropTypes.string.isRequired,
 }
+
+export default Literal
