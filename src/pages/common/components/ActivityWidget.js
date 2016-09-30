@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import _ from 'lodash'
 import classNames from 'classnames'
-import {truncate} from '../../../utils'
 import {ACTIVITY_DISPLAY_COUNT} from '../../../config'
 
 const ActivityWidgetItem = ({object, count, position}) => {
@@ -41,6 +40,7 @@ const ActivityWidgetItem = ({object, count, position}) => {
 
     // counter of activity / new messages
     let counterLabel = null
+    count = 30
     if (count) {
         counterLabel = (
             <div className="ui mini red circular label">
