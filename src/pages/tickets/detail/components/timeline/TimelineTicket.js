@@ -1,13 +1,13 @@
 import React, {PropTypes} from 'react'
 import {StatusLabel} from './../../../../common/utils/labels'
-import {formatDatetime, truncate, stripHTML, lastMessage as getLastMessage} from '../../../../../utils'
+import {formatDatetime, stripHTML, lastMessage as getLastMessage} from '../../../../../utils'
 import {browserHistory} from 'react-router'
 import classnames from 'classnames'
 
 
 export default class TimelineTicket extends React.Component {
     _goToTicket = () => {
-        this.props.actions.setCrossTickets({ displayHistory: true })
+        this.props.actions.setCrossTickets({displayHistory: true})
         browserHistory.push(`/app/ticket/${this.props.ticket.get('id')}`)
     }
 
@@ -25,30 +25,34 @@ export default class TimelineTicket extends React.Component {
         }
 
         // Optionally show how many messages a ticket has in the subject
-        let subject = truncate(stripHTML(ticket.get('subject')), 50)
+        let subject = stripHTML(ticket.get('subject'))
         const messageCount = this.props.ticket.get('messages').size
         if (messageCount > 1) {
             subject = `(${messageCount}) ${subject}`
         }
 
+        const body = previewedMessage.body_html ? stripHTML(previewedMessage.body_html) : previewedMessage.body_text
+
         return (
             <div
-                className={classnames('TimelineTicket ui segment', {current: this.props.current})}
+                className={classnames('TimelineTicket ui segment', {current: this.props.isCurrent})}
                 onClick={this._goToTicket}
             >
-                <div className="ui stackable grid">
+                <div className="ui grid">
 
                     <div className="ten wide column">
                         <div className="ui header">
-                            <span className="subject">{ticket.get('subject')}</span>
+                            <span className="subject">
+                                {subject}
+                            </span>
                             <div className="body sub header">
-                                {truncate(previewedMessage.body_html ? stripHTML(previewedMessage.body_html) : previewedMessage.body_text, 80)}
+                                {body}
                             </div>
                         </div>
                     </div>
 
                     <div className="two wide column">
-                        <StatusLabel status={ticket.get('status')}/>
+                        <StatusLabel status={ticket.get('status')} />
                     </div>
 
                     <div className="four wide column">
@@ -64,5 +68,5 @@ export default class TimelineTicket extends React.Component {
 TimelineTicket.propTypes = {
     ticket: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    current: PropTypes.bool.isRequired
+    isCurrent: PropTypes.bool.isRequired
 }

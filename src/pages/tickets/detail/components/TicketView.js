@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react'
-import { StickyContainer, Sticky } from 'react-sticky'
+import React, {PropTypes} from 'react'
+import {StickyContainer, Sticky} from 'react-sticky'
 import classNames from 'classnames'
+import {fromJS} from 'immutable'
 
 import TicketHeader from './TicketHeader'
 
@@ -21,7 +22,7 @@ export default class TicketView extends React.Component {
     constructor() {
         super()
         this.state = {
-            ticketHidden: false
+            isTicketHidden: false
         }
 
         this._handlePreSubmit = this._handlePreSubmit.bind(this)
@@ -135,7 +136,7 @@ export default class TicketView extends React.Component {
 
     hideTicket() {
         this.setState({
-            ticketHidden: true
+            isTicketHidden: true
         })
     }
 
@@ -152,6 +153,23 @@ export default class TicketView extends React.Component {
         this.props.submit.apply(this, this.statusParams)
     }
 
+    _renderMessages = (isCreating = false) => {
+        const {ticket} = this.props
+
+        if (!isCreating) {
+            return (
+                <TicketMessages
+                    currentUser={this.props.currentUser}
+                    messages={ticket.get('messages')}
+                    submit={this.props.submit}
+                    deleteMessage={this.deleteMessage}
+                    loading={ticket.getIn(['state', 'loading'])}
+                    ticket={ticket}
+                />
+            )
+        }
+    }
+
     render = () => {
         const {ticket, tags, users, actions, computeNextUrl, hidden} = this.props
 
@@ -159,54 +177,45 @@ export default class TicketView extends React.Component {
 
         // for testing,
         // get hidden from props.
-        const ticketHidden = hidden || this.state.ticketHidden
+        const isTicketHidden = hidden || this.state.isTicketHidden
 
-        const itemsCountInHistory = (
-            ticket.getIn(['_internal', 'userHistory', 'tickets']) ?
-                ticket.getIn(['_internal', 'userHistory', 'tickets']).size :
-                0
-        ) + (
-            ticket.getIn(['_internal', 'userHistory', 'events']) ?
-                ticket.getIn(['_internal', 'userHistory', 'events']).size :
-                0
-        )
+        const itemsCountInHistory = ticket.getIn(['_internal', 'userHistory', 'tickets'], fromJS([])).size
+            + ticket.getIn(['_internal', 'userHistory', 'events'], fromJS([])).size
 
-        const historyButtonLabel = !ticket.getIn(['state', 'displayHistory']) ?
-            <p>
-                <i className="icon arrow circle up"></i>
-                {`Show user history (${itemsCountInHistory})`}
-            </p> :
-            'Hide user history'
+        const historyButtonLabel = !ticket.getIn(['state', 'displayHistory'])
+            ? <p><i className="icon arrow circle up" />Show user history ({itemsCountInHistory})</p>
+            : 'Hide user history'
 
         return (
             <div className={classNames('ticket-view', {
-                'transition out fade right': ticketHidden
+                'transition out fade right': isTicketHidden
             })}>
-
                 <StickyContainer>
-                    <Sticky topOffset={1} style={{transform: 'none'}}>
+                    <Sticky
+                        topOffset={1}
+                        style={{transform: 'none'}}
+                    >
                         <div className="previous-btn-container">
                             <button
                                 className={classNames(
                                     'ticket-previous-btn ui small button',
                                     {
-                                        transparent: !ticket.get('id') ||
-                                            !ticket.getIn(['_internal', 'userHistory', 'hasHistory']) ||
-                                            ticket.getIn(['state', 'displayHistory'])
+                                        transparent: !ticket.get('id')
+                                        || !ticket.getIn(['_internal', 'userHistory', 'hasHistory'])
+                                        || ticket.getIn(['state', 'displayHistory'])
                                     }
                                 )}
                                 onClick={() => {
                                     if (
-                                        ticket.get('id') &&
-                                        ticket.getIn(['_internal', 'userHistory', 'hasHistory']) &&
-                                        !ticket.getIn(['state', 'displayHistory'])
+                                        ticket.get('id')
+                                        && ticket.getIn(['_internal', 'userHistory', 'hasHistory'])
+                                        && !ticket.getIn(['state', 'displayHistory'])
                                     ) {
                                         actions.ticket.toggleHistory()
                                         document.getElementsByClassName('TicketDetailContainer')[0].scrollTop = 0
 
                                         amplitude.getInstance().logEvent('Opened Timeline', {
-                                            nbOfTicketsInTimeline:
-                                                ticket.getIn(['_internal', 'userHistory', 'tickets']).size,
+                                            nbOfTicketsInTimeline: ticket.getIn(['_internal', 'userHistory', 'tickets']).size,
                                             channel: ticket.get('channel'),
                                             nbOfMessagesInTicket: ticket.get('messages').size
                                         })
@@ -227,20 +236,8 @@ export default class TicketView extends React.Component {
                     </Sticky>
 
                     <div className="ticket-content">
-                        {(() => {
-                            if (!isCreating) {
-                                return (
-                                    <TicketMessages
-                                        currentUser={this.props.currentUser}
-                                        messages={ticket.get('messages')}
-                                        submit={this.props.submit}
-                                        deleteMessage={this.deleteMessage}
-                                        loading={ticket.getIn(['state', 'loading'])}
-                                        ticket={ticket}
-                                    />
-                                )
-                            }
-                        })()}
+
+                        {this._renderMessages(isCreating)}
 
                         <form
                             onSubmit={this._handleSubmit}

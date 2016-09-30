@@ -20,20 +20,25 @@ export default class Timeline extends React.Component {
             <div className="Timeline">
                 <div className="body">
                     {
-                        history.map(obj => {
+                        history.map((obj) => {
+                            // if it is a ticket
                             if (obj.get('channel')) {
-                                // Then it's a ticket
                                 return (
                                     <TimelineTicket
                                         key={obj.get('id')}
                                         ticket={obj}
-                                        current={this.props.currentTicketId === obj.get('id')}
+                                        isCurrent={this.props.currentTicketId === obj.get('id')}
                                         actions={this.props.actions}
                                     />
                                 )
                             }
 
-                            return <div key={obj.get('id')}>{obj.get('id')}</div>
+                            // otherwise it is an event
+                            return (
+                                <div key={obj.get('id')}>
+                                    {obj.get('id')}
+                                </div>
+                            )
                         })
                     }
                 </div>

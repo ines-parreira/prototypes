@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react'
 import _ from 'lodash'
-import {truncate, stripHTML, lastMessage as getLastMessage} from '../../../../utils'
+import {stripHTML, lastMessage as getLastMessage} from '../../../../utils'
 import {RenderLabel, TagLabel} from '../../../common/utils/labels'
 
 export default class TicketTableCell extends React.Component {
-    renderFieldContent() {
+    _renderFieldContent = () => {
         const {ticket} = this.props
         const field = this.props.field.toJS()
         let value
@@ -45,17 +45,21 @@ export default class TicketTableCell extends React.Component {
                     }
 
                     // Optionally show how many messages a ticket has in the subject
-                    let subject = truncate(stripHTML(ticket.get('subject')), 50)
+                    let subject = stripHTML(ticket.get('subject'))
                     const messageCount = this.props.ticket.get('messages').size
                     if (messageCount > 1) {
                         subject = `(${messageCount}) ${subject}`
                     }
 
+                    const body = previewedMessage.body_html ? stripHTML(previewedMessage.body_html) : previewedMessage.body_text
+
                     value = (
                         <div className="ui header">
-                            <span className="subject">{subject}</span>
+                            <span className="subject">
+                                {subject}
+                            </span>
                             <div className="body sub header">
-                                {truncate(previewedMessage.body_html ? stripHTML(previewedMessage.body_html) : previewedMessage.body_text, 50)}
+                                {body}
                             </div>
                         </div>
                     )
@@ -71,17 +75,22 @@ export default class TicketTableCell extends React.Component {
 
     render() {
         const {field} = this.props
+
         if (!field.get('visible')) {
             return null
         }
 
-        let style = {}
+        const style = {}
         if (field.get('name') !== 'priority') {
-            style = {minWidth: field.get('width')}
+            style.minWidth = field.get('width')
         }
+
         return (
-            <td style={style} className={field.get('name')}>
-                {this.renderFieldContent()}
+            <td
+                style={style}
+                className={field.get('name')}
+            >
+                {this._renderFieldContent()}
             </td >
         )
     }

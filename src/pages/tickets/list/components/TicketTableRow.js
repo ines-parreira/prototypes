@@ -1,14 +1,15 @@
 import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
+import {fromJS} from 'immutable'
 import TicketTableCell from './TicketTableCell'
 
 export default class TicketTableRow extends React.Component {
-    handleClick = () => {
+    _handleClick = () => {
         this.props.saveIndex()
         browserHistory.push(`/app/ticket/${this.props.ticket.get('id')}`)
     }
 
-    stopPropagation = (ev) => {
+    _stopPropagation = (ev) => {
         // TODO: Do we want to keep :checked state in the DOM?
         ev.stopPropagation()
     }
@@ -21,21 +22,34 @@ export default class TicketTableRow extends React.Component {
         // semantic needs .rows to be a direct child of them, which react-infinite
         // doesn't allow
         return (
-            <tr onClick={this.handleClick}>
+            <tr onClick={this._handleClick}>
                 <td>
-                    <span className="ui fitted checkbox" onClick={this.stopPropagation}>
-                        <input type="checkbox" checked={selected} onChange={() => toggleTicketSelection(ticket.get('id'))}/>
+                    <span
+                        className="ui fitted checkbox"
+                        onClick={this._stopPropagation}
+                    >
+                        <input
+                            type="checkbox"
+                            checked={selected}
+                            onChange={() => {
+                                toggleTicketSelection(ticket.get('id'))
+                            }}
+                        />
                         <label />
                     </span>
                 </td>
-                {view.get('fields', []).map((field) => (
-                    <TicketTableCell
-                        key={`${ticket.id}-${field.get('name')}`}
-                        ticket={ticket}
-                        currentUser={currentUser}
-                        field={field}
-                    />
-                ))}
+                {
+                    view
+                        .get('fields', fromJS([]))
+                        .map((field) => (
+                            <TicketTableCell
+                                key={`${ticket.id}-${field.get('name')}`}
+                                ticket={ticket}
+                                currentUser={currentUser}
+                                field={field}
+                            />
+                        ))
+                }
                 <td></td>
             </tr>
         )

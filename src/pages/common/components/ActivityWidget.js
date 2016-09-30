@@ -32,22 +32,30 @@ const ActivityWidgetItem = ({object, count, position}) => {
         'facebook-messenger': chanType === 'facebook-message'
     })
 
-    // The text of the link should try to use the `ticket.requester` or `ticket.subject` or finally `Ticket 123`
+    // the text of the link should try to use the `ticket.requester` or `ticket.subject` or finally `Ticket 123`
     let text = object.get('subject') || `Ticket ${object.get('id')}`
-    const title = text
 
     if (object.getIn(['requester', 'name'])) {
         text = object.getIn(['requester', 'name'])
     }
-    text = truncate(text, 20)
 
+    // counter of activity / new messages
     let counterLabel = null
     if (count) {
-        counterLabel = (<div className="ui mini red circular label">{count}</div>)
-        text = (<strong title={title}>{text}</strong>)
+        counterLabel = (
+            <div className="ui mini red circular label">
+                {count}
+            </div>
+        )
+        text = (
+            <strong title={text}>
+                {text}
+            </strong>
+        )
     }
 
-    const onClick = () => {
+    // track on click
+    const _onClick = () => {
         amplitude.getInstance().logEvent('Clicked on recent activity item', {
             position,
             notifications: count,
@@ -56,8 +64,13 @@ const ActivityWidgetItem = ({object, count, position}) => {
     }
 
     return (
-        <Link onClick={onClick} to={objectURL} className={linkClasses} title={title}>
-            <i className={iconClasses}/>
+        <Link
+            onClick={_onClick}
+            to={objectURL}
+            className={linkClasses}
+            title={text}
+        >
+            <i className={iconClasses} />
             {text}
             {counterLabel}
         </Link>
@@ -89,15 +102,19 @@ export default class ActivityWidget extends React.Component {
                 <div className="item">
                     <h4>RECENT ACTIVITY</h4>
                     <div className="menu">
-                        {events.slice(0, ACTIVITY_DISPLAY_COUNT).map((e, index) => (
-                            <ActivityWidgetItem
-                              key={e.get('object_id')}
-                              object={e.get('object')}
-                              count={counter.getIn([e.get('object_id'), 'count']) || 0}
-                              user={e.get('user')}
-                              position={index + 1}
-                            />
-                        )).toList()}
+                        {
+                            events
+                                .slice(0, ACTIVITY_DISPLAY_COUNT)
+                                .map((e, index) => (
+                                    <ActivityWidgetItem
+                                        key={e.get('object_id')}
+                                        object={e.get('object')}
+                                        count={counter.getIn([e.get('object_id'), 'count']) || 0}
+                                        user={e.get('user')}
+                                        position={index + 1}
+                                    />
+                                ))
+                        }
                     </div>
                 </div>
             </div>

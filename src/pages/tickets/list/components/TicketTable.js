@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 import TicketTableRow from './TicketTableRow'
 import ColumnHeader from './ColumnHeader'
 import ShowMoreFieldsDropdown from '../../../common/components/ShowMoreFieldsDropdown'
@@ -75,7 +76,7 @@ export default class TicketTable extends React.Component {
                     <tbody>
                     {
                         tickets
-                            .get('items')
+                            .get('items', fromJS([]))
                             .map((ticket, index) => (
                                 <TicketTableRow
                                     key={ticket.get('id')}
