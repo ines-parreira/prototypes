@@ -84,7 +84,7 @@ export const reset = (index) => {
             .then(response => dispatch(modifyCodeast(
                 index,
                 List([]),
-                response.code_ast,
+                response.code_ast || types.DEFAULT_IF_STATEMENT,
                 'UPDATE'
             )))
     }
