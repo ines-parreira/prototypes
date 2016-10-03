@@ -7,9 +7,9 @@ import Select from './widget/Select'
 
 class Widget extends React.Component {
 
-    _handleChange = (event) => {
-        const {actions, index, parent} = this.props
-        actions.rules.modifyCodeast(index, parent, event.target.value, 'UPDATE')
+    _handleChange = (value) => {
+        const { actions, index, parent } = this.props
+        actions.rules.modifyCodeast(index, parent, value, 'UPDATE')
     }
 
     input = (value) => (

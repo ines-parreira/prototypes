@@ -2,29 +2,46 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-const Select = ({ value, options, description, handleChange, isCallee }) => {
-    const _options = []
+class Select extends React.Component {
 
-    if (Array.isArray(options)) {
-        options.map((option) => _options.push([option, option]))
-    } else {
-        Object.keys(options).map((key) => _options.push([key, options[key].label]))
+    componentDidUpdate() {
+        const firstOption = this.refs.select.options[0]
+        if (!this.props.value && firstOption) {
+            this.props.handleChange(firstOption.value)
+        }
     }
 
-    const selectClassName = classNames('ui dropdown', { neutral: isCallee })
+    _handleChange = (event) => {
+        this.props.handleChange(event.target.value)
+    }
 
-    return (
-        <select
-            style={{ backgroundColor: 'white' }}
-            className={selectClassName}
-            data-content={description}
-            value={value}
-            onChange={handleChange}
-        >
-            <option value="" key="-1">-- select --</option>
-            {_options.map((opt) => <option value={opt[0]} key={opt[0]}>{opt[1]}</option>)}
-        </select>
-    )
+    render() {
+        const { value, options, description, isCallee } = this.props
+
+        const selectClassName = classNames('ui dropdown', { neutral: isCallee })
+
+        const _options = []
+
+        if (Array.isArray(options)) {
+            options.map((option) => _options.push([option, option]))
+        } else {
+            Object.keys(options).map((key) => _options.push([key, options[key].label]))
+        }
+
+        return (
+            <select
+                style={{ backgroundColor: 'white' }}
+                className={selectClassName}
+                data-content={description}
+                value={value}
+                onChange={this._handleChange}
+                ref="select"
+            >
+                {_options.map((opt) => <option value={opt[0]} key={opt[0]}>{opt[1]}</option>)}
+            </select>
+        )
+    }
+
 }
 
 Select.propTypes = {
