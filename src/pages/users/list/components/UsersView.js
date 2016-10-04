@@ -69,3 +69,7 @@ UsersView.propTypes = {
     deleteUser: PropTypes.func.isRequired,
     sortUsers: PropTypes.func.isRequired
 }
+
+UsersView.defaultProps = {
+    isLoading: false
+}

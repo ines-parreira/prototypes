@@ -41,7 +41,7 @@ class UserListContainer extends React.Component {
                         items={users.get('items')}
                         sort={users.getIn(['_internal', 'sort'])}
                         search={this._search}
-                        isLoading={users.getIn(['_internal', 'loading', 'fetchList'])}
+                        isLoading={users.getIn(['_internal', 'loading', 'fetchList'], false)}
                         createUser={this.props.actions.user.createUser}
                         updateUser={this.props.actions.user.updateUser}
                         deleteUser={this.props.actions.user.deleteUser}

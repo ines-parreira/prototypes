@@ -24,6 +24,9 @@ class App extends React.Component {
     }
 
     componentWillMount() {
+        this.props.fetchUsers()
+        this.props.fetchUsers(['agent', 'admin'])
+
         // activity polling
         let shouldPoll = true
         const pollingParameter = this.props.location.query._activity_polling || ''
