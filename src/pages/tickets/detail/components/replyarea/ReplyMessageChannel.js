@@ -9,7 +9,7 @@ import _ from 'lodash'
 
 export default class ReplyMessageChannel extends React.Component {
     componentDidMount() {
-        $('#next-message-channel-popup').dropdown({
+        $(this.refs.messageChannel).dropdown({
             position: 'bottom left',
             hoverable: true,
             on: 'click'
@@ -118,7 +118,7 @@ export default class ReplyMessageChannel extends React.Component {
 
     renderTo(ticket, actions) {
         if (!ticket.getIn(['newMessage', 'public'])) {
-            return <p className="receiver-placeholder">your team</p>
+            return <div className="receiver-placeholder">Your team</div>
         }
 
         const parentId = ticket.get('messages').size
@@ -169,32 +169,44 @@ export default class ReplyMessageChannel extends React.Component {
         return (
             <div className="ReplyMessageChannel">
                 <div className="channel-picker">
-
-                    <div id="next-message-channel-popup" className="ui dropdown">
-                        <i id="popup-message-channel" className={popupClassNames} />
+                    <div
+                        ref="messageChannel"
+                        className="ui dropdown"
+                    >
+                        <i className={popupClassNames} />
+                        <i className="icon caret down" />
                         <div
                             className="ui vertical menu"
-                            style={{textAlign: 'left', border: 'none', width: 'inherit'}}
+                            style={{textAlign: 'left', border: 'none', width: 'inherit', marginTop: '8px'}}
                         >
-                            <div className={channelClassNames.email} onClick={() => this.setSourceType('email')}>
+                            <div
+                                className={channelClassNames.email}
+                                onClick={() => this.setSourceType('email')}
+                            >
                                 Send as email
                             </div>
-                            <div className={channelClassNames.chat} onClick={() => this.setSourceType('chat')}>
+                            <div
+                                className={channelClassNames.chat}
+                                onClick={() => this.setSourceType('chat')}
+                            >
                                 Send as chat message
                             </div>
-                            <div className={channelClassNames.facebookComment}
-                                 onClick={() => this.setSourceType('facebook-comment')}
+                            <div
+                                className={channelClassNames.facebookComment}
+                                onClick={() => this.setSourceType('facebook-comment')}
                             >
                                 Send as Facebook comment
                             </div>
-                            <div className={channelClassNames.facebookMessage}
-                                 onClick={() => this.setSourceType('facebook-message')}
+                            <div
+                                className={channelClassNames.facebookMessage}
+                                onClick={() => this.setSourceType('facebook-message')}
 
                             >
                                 Send as Facebook private message
                             </div>
-                            <div className={channelClassNames.internal}
-                                 onClick={() => this.setSourceType('internal-note')}
+                            <div
+                                className={channelClassNames.internal}
+                                onClick={() => this.setSourceType('internal-note')}
                             >
                                 Send as internal note
                             </div>
@@ -205,7 +217,6 @@ export default class ReplyMessageChannel extends React.Component {
                 </div>
 
                 {this.renderTo(ticket, actions)}
-
             </div>
         )
     }
