@@ -5,8 +5,7 @@ import {
     addFilterAST,
     removeFilterAST,
     updateFilterOperator,
-    updateFilterValue,
-    sortViews
+    updateFilterValue
 } from './utils'
 
 const initialState = fromJS({
@@ -101,7 +100,7 @@ export default (state = initialState, action) => {
             items = state.get('items')
             const replaceIndex = items.findIndex(v => (v.get('id') === updatedView.get('id')))
             return state.merge({
-                items: sortViews(items.delete(replaceIndex).push(updatedView)),
+                items: items.delete(replaceIndex).push(updatedView),
                 active: updatedView.set('dirty', false)
             })
         }
@@ -109,7 +108,7 @@ export default (state = initialState, action) => {
         case types.SUBMIT_NEW_VIEW_SUCCESS: {
             const newView = fromJS(action.resp)
             return state.merge({
-                items: sortViews(state.get('items').push(newView)),
+                items: state.get('items').push(newView),
                 active: newView.set('dirty', false)
             })
         }
@@ -118,10 +117,10 @@ export default (state = initialState, action) => {
             return state.set('loading', true)
 
         case types.UPDATE_VIEW_LIST:
-            return state.set('items', sortViews(fromJS(action.items)))
+            return state.set('items', fromJS(action.items))
 
         case types.FETCH_VIEW_LIST_SUCCESS: {
-            items = sortViews(fromJS(action.resp.data))
+            items = fromJS(action.resp.data)
 
             // also populate the active view state
             if (action.currentViewId) {

@@ -60,8 +60,3 @@ export function updateFilterValue(view, index, value) {
     const ast = view.get('filters_ast')
     return walk(ast, index, ['arguments', 1, 'value'], value)
 }
-
-// shortcut for sorting items
-export function sortViews(items, key = 'display_order') {
-    return items.sort((a, b) => a.get(key) - b.get(key))
-}
