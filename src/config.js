@@ -1,7 +1,8 @@
 /**
  * Action related
  */
-export const AVAILABLE_HTTP_METHODS = ['get', 'post', 'put', 'delete']
+// remember to keep them uppercase in the array below
+export const AVAILABLE_HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
 
 /**
  * View related

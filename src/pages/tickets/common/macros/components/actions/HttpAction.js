@@ -77,7 +77,7 @@ export default class HttpAction extends React.Component {
                                             key={method}
                                             value={method}
                                         >
-                                            {method.toUpperCase()}
+                                            {method}
                                         </option>
                                     )
                                 }

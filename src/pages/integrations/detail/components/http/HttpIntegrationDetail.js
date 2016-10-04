@@ -22,7 +22,8 @@ export const defaultContent = {
     type: 'http',
     http: {
         method: 'GET',
-        request_content_type: 'application/json'
+        request_content_type: 'application/json',
+        response_content_type: 'application/json',
     }
 }
 
@@ -195,7 +196,7 @@ class HttpIntegrationDetail extends React.Component {
                                         key={method}
                                         value={method}
                                     >
-                                        {method.toUpperCase()}
+                                        {method}
                                     </option>
                                 )
                             }
@@ -204,7 +205,15 @@ class HttpIntegrationDetail extends React.Component {
                             type="text"
                             name="http.request_content_type"
                             label="Request content type"
-                            placeholder="Request content type"
+                            required
+                            component={SelectField}
+                        >
+                            <option value="application/json">application/json</option>
+                        </Field>
+                        <Field
+                            type="text"
+                            name="http.response_content_type"
+                            label="Response content type"
                             required
                             component={SelectField}
                         >
