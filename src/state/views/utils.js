@@ -35,11 +35,11 @@ function walk(ast, index, key, value) {
             case 'LogicalExpression':
                 return node.set('left', walker(node.get('left'))).set('right', walker(node.get('right')))
             case 'CallExpression':
-                if (count === index) {
+                count++
+                if ((count - 1) === index) {
                     return node.setIn(key, value)
                 }
 
-                count++
                 return node
             default:
                 return node
