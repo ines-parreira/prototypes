@@ -1,4 +1,4 @@
-import {has as _has, upperFirst as _upperFirst, isString as _isString} from 'lodash'
+import {has as _has, upperFirst as _upperFirst, isString as _isString, isNumber as _isNumber} from 'lodash'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
@@ -50,7 +50,7 @@ export function getAST(code) {
     if (!_isString(code)) {
         console.error('Not a string:', code)
     }
-    return esprima.parse(code, { loc: true })
+    return esprima.parse(code, {loc: true})
 }
 
 export function getCode(ast) {
@@ -139,6 +139,10 @@ export function getModifier() {
 }
 
 export function compactInteger(input, digits = 0) {
+    if (!_isNumber(input)) {
+        return input
+    }
+
     const si = [
         {value: 1E18, symbol: 'E'},
         {value: 1E15, symbol: 'P'},

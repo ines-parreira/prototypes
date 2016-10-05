@@ -102,12 +102,13 @@ class TicketListContainer extends React.Component {
             return null
         }
 
-        const active = this.props.views.get('active').toJS()
+        const active = this.props.views.get('active', fromJS({}))
         let title = 'Loading...'
-        if (Object.keys(active).length) {
-            title = `${active.name}`
-            if (active.count > 0) {
-                title = `(${compactInteger(active.count)}) ${title}`
+
+        if (!active.isEmpty()) {
+            title = active.get('name')
+            if (active.get('count', 0) > 0) {
+                title = `(${compactInteger(active.get('count', 0))}) ${title}`
             }
         }
 
