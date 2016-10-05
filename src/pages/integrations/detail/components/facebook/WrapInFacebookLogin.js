@@ -26,8 +26,8 @@ export default function WrapInFacebookLogin(Component) {
                 }
                 const js = d.createElement(s)
                 js.id = id
-                // js.src = "//connect.facebook.net/en_US/sdk/debug.js"
-                js.src = '//connect.facebook.net/en_US/sdk.js'
+                // js.src = "//connect.facebook.net/en_US/sdk/debug.js?version=v2.6"
+                js.src = '//connect.facebook.net/en_US/sdk.js?version=v2.6'
                 fjs.parentNode.insertBefore(js, fjs)
             })(document, 'script', 'facebook-jssdk')
         }
