@@ -45,6 +45,8 @@ class App extends React.Component {
 
             pollInterval = setInterval(this.props.pollActivity, 5000)
         }
+
+        this.props.pollActivity()
     }
 
     componentDidMount() {
