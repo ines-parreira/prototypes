@@ -1,6 +1,5 @@
 import * as actions from './actions'
 import * as types from './constants'
-import {SUBMIT_ACTIVITY_SUCCESS} from '../activity/constants'
 import {Map, List, fromJS} from 'immutable'
 import {convertFromHTML, ContentState} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
@@ -415,28 +414,6 @@ export default (state = initialState, action) => {
 
         case types.SET_CROSS_TICKETS:
             return state.setIn(['_internal', 'crossTickets'], fromJS(action.state))
-
-        case SUBMIT_ACTIVITY_SUCCESS: {
-            // See if we have an event for our ticket
-            const event = fromJS(action.resp.events).find((e) => (
-                e.get('object_type') === 'Ticket' && e.get('object_id') === state.get('id')
-            ))
-            if (event) {
-                const latestEventDatetime = state.getIn(['state', 'latestEventDatetime'])
-                const eventDatetime = event.get('created_datetime')
-                let newState = state.setIn(['state', 'latestEventDatetime'], eventDatetime)
-
-                if (latestEventDatetime && eventDatetime !== latestEventDatetime) {
-                    let newMessages = event.getIn(['object', 'messages'])
-                    if (newMessages) {
-                        newMessages = newMessages.sort((a, b) => new Date(a.get('created_datetime')) - new Date(b.get('created_datetime')))
-                    }
-                    newState = newState.set('messages', newMessages)
-                }
-                return newState
-            }
-            return state
-        }
 
         default:
             return state

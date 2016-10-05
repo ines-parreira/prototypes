@@ -1,13 +1,14 @@
 import axios from 'axios'
 import * as viewsTypes from '../views/constants'
+import * as ticketActions from '../ticket/actions'
 import * as types from './constants'
 
 export const pollActivity = () => (dispatch, getState) => {
-    const {activity} = getState()
-    const finished = activity.get('finished')
+    const {activity, ticket} = getState()
+    const loading = activity.get('loading')
     const pendingEvents = activity.get('pendingEvents').toJS()
 
-    if (!finished) {
+    if (loading) {
         return dispatch({
             type: types.SUBMIT_ACTIVITY_DISCARD
         })
@@ -31,6 +32,13 @@ export const pollActivity = () => (dispatch, getState) => {
                     items: resp.views
                 })
             }
+
+            // Re-fetch the current ticket if it has something new
+            resp.tickets.forEach((recentTicket) => {
+                if (recentTicket.id === ticket.get('id') && recentTicket.has_something_new) {
+                    dispatch(ticketActions.fetchTicket(recentTicket.id, false))
+                }
+            })
         })
         .catch(error => {
             dispatch({

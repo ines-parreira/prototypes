@@ -1,27 +1,16 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import _ from 'lodash'
 import classNames from 'classnames'
-import {ACTIVITY_DISPLAY_COUNT} from '../../../config'
 
-const ActivityWidgetItem = ({object, count, position}) => {
+const ActivityWidgetItem = ({recentTicket, position}) => {
     // Is the current link active or not?
-    const objectURL = `/app/ticket/${object.get('id')}`
+    const objectURL = `/app/ticket/${recentTicket.get('id')}`
+    const isActive = window.location.pathname === objectURL
     const linkClasses = classNames('item', {
-        active: window.location.pathname === objectURL
+        active: isActive
     })
 
-    // figure out what icon to show based on ticket message source
-    const messages = object.get('messages')
-    let chanType = ''
-    if (messages) {
-        chanType = messages.last().getIn(['source', 'type'])
-    }
-
-    // if the source didn't give us anything fallback to the channel
-    if (!chanType) {
-        chanType = object.get('channel')
-    }
+    const chanType = recentTicket.get('channel')
 
     const iconClasses = classNames('action icon', {
         mail: chanType === 'email',
@@ -31,21 +20,12 @@ const ActivityWidgetItem = ({object, count, position}) => {
         'facebook-messenger': chanType === 'facebook-message'
     })
 
-    // the text of the link should try to use the `ticket.requester` or `ticket.subject` or finally `Ticket 123`
-    let text = object.get('subject') || `Ticket ${object.get('id')}`
-
-    if (object.getIn(['requester', 'name'])) {
-        text = object.getIn(['requester', 'name'])
-    }
+    let text = recentTicket.get('subject')
 
     // counter of activity / new messages
     let counterLabel = null
-    if (count) {
-        counterLabel = (
-            <div className="ui mini red circular label">
-                {count}
-            </div>
-        )
+    if (recentTicket.get('has_something_new') && !isActive) {
+        counterLabel = <div className="ui tiny red circular label"/>
         text = (
             <strong title={text}>
                 {text}
@@ -57,8 +37,7 @@ const ActivityWidgetItem = ({object, count, position}) => {
     const _onClick = () => {
         amplitude.getInstance().logEvent('Clicked on recent activity item', {
             position,
-            notifications: count,
-            ticket: _.pick(object.toJS(), ['channel'])
+            ticket: recentTicket.toJS()
         })
     }
 
@@ -77,9 +56,7 @@ const ActivityWidgetItem = ({object, count, position}) => {
 }
 
 ActivityWidgetItem.propTypes = {
-    object: PropTypes.object.isRequired,
-    user: PropTypes.object,
-    count: PropTypes.number.isRequired,
+    recentTicket: PropTypes.object.isRequired,
     position: PropTypes.number.isRequired
 }
 
@@ -89,10 +66,9 @@ export default class ActivityWidget extends React.Component {
     }
 
     render() {
-        const events = this.props.activity.get('events')
-        const counter = this.props.activity.get('objectsCounter')
+        const tickets = this.props.activity.get('tickets')
 
-        if (!events || events.isEmpty()) {
+        if (!tickets || tickets.isEmpty()) {
             return null
         }
 
@@ -102,17 +78,13 @@ export default class ActivityWidget extends React.Component {
                     <h4>RECENT ACTIVITY</h4>
                     <div className="menu">
                         {
-                            events
-                                .slice(0, ACTIVITY_DISPLAY_COUNT)
-                                .map((e, index) => (
-                                    <ActivityWidgetItem
-                                        key={e.get('object_id')}
-                                        object={e.get('object')}
-                                        count={counter.getIn([e.get('object_id'), 'count']) || 0}
-                                        user={e.get('user')}
-                                        position={index + 1}
-                                    />
-                                ))
+                            tickets.map((e, index) => (
+                                <ActivityWidgetItem
+                                    key={e.get('id')}
+                                    recentTicket={e}
+                                    position={index + 1}
+                                />
+                            ))
                         }
                     </div>
                 </div>
