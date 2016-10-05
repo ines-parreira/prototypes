@@ -1,23 +1,27 @@
-/* eslint  "env/es6": 0, "no-var": 0, "semi": 0 */
+const webpack = require('webpack')
+const path = require('path')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const ManifestPlugin = require('webpack-manifest-plugin')
+const pkg = require('./package.json')
 
-var webpack = require('webpack')
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const __PRODUCTION__ = process.env.NODE_ENV === 'production'
+const HASH = process.env.GIT_COMMIT ? process.env.GIT_COMMIT : '[hash]'
 
-var __PRODUCTION__ = process.env.NODE_ENV === 'production'
-var HASH = process.env.GIT_COMMIT ? process.env.GIT_COMMIT : '[hash]'
+const srcDir = './g/static/private'
+const jsBundleFile = __PRODUCTION__ ? `${HASH}.build.min.js` : 'build.js'
+const styleBundleFile = __PRODUCTION__ ? `${HASH}.build.min.css` : 'build.css'
 
-var staticDirectory = './g/static/private/'
-
-var jsMainFile = staticDirectory + 'js/main.js'
-var buildDir = staticDirectory + '_build/'
-var jsBundleFile = __PRODUCTION__ ? (HASH + '.build.min.js') : 'build.js'
-var styleBundleFile = __PRODUCTION__ ? (HASH + '.build.min.css') : 'build.css'
-
-var plugins = [
+let plugins = [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/),
     new ExtractTextPlugin(styleBundleFile, {
         allChunks: true
-    })
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendors',
+        filename: __PRODUCTION__ ? '[hash].[name].min.js' : '[name].js',
+        minChunks: 2
+    }),
+    new ManifestPlugin()
 ]
 
 if (__PRODUCTION__) {
@@ -45,19 +49,28 @@ if (__PRODUCTION__) {
     ])
 }
 
+// compile a list of vendors from our package dependencies. Filter semantic because it's special..
+const vendors = Object.keys(pkg.dependencies).filter(m => m !== 'semantic-ui')
 module.exports = {
     devtool: __PRODUCTION__ ? 'source-map' : 'eval',
-    entry: jsMainFile,
+    entry: {
+        build: `${srcDir}/js/main.js`,
+        vendors,
+    },
     output: {
-        path: buildDir,
+        path: `${srcDir}/_build`,
+        pathinfo: true,
         filename: jsBundleFile
     },
-    plugins: plugins,
+    noParse: vendors.map((name) => {
+        return path.join(__dirname, 'node_modules', name)
+    }),
+    plugins,
     module: {
         loaders: [
             {
-                test: /.jsx?$/,
-                loader: 'babel-loader',
+                test: /\.js$/,
+                loader: 'babel',
                 exclude: /node_modules/
             },
             {
