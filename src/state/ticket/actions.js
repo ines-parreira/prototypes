@@ -346,7 +346,7 @@ export function fetchTicketMessage(ticketId, messageId) {
                             <div>
                                 <ul>
                                     {
-                                        resp.types.map((action, idx) => {
+                                        resp.actions.map((action, idx) => {
                                             if (ACTION_TEMPLATES[action.name].execution === 'back') {
                                                 return <li key={idx}>{action.title}: {action.status}</li>
                                             }
