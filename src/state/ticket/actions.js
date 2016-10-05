@@ -583,6 +583,13 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
 
         const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
 
+        if (!data || _.isNull(data)) {
+            return dispatch({
+                type: types.SUBMIT_TICKET_MESSAGE_ERROR,
+                reason: 'Message was not sent. Sent data is invalid.'
+            })
+        }
+
         const messageToSend = lastMessage(data.messages)
 
         let promise
