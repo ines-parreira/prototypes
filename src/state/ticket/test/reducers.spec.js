@@ -364,8 +364,6 @@ describe('Ticket reducer', () => {
                         to: fromJS([expectedReceiver])
                     }
                 },
-                receiver: {id: receiver.id},
-                requester: {id: receiver.id},
                 state: {
                     query: ''
                 }
