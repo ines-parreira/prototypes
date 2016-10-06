@@ -50,8 +50,10 @@ export const notify = (message) => (dispatch, getState) => {
         finalMessage.autoDismiss = Math.round(readingTime)
     }
 
+    const notificationsState = ((getState() || {}).notifications || [])
+
     // close previous notifications that were closeOnNext = true
-    getState().notifications.forEach((notification) => {
+    notificationsState.forEach((notification) => {
         if (notification.closeOnNext) {
             dispatch(Notifications.hide(notification.uid))
         }
