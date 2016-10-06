@@ -69,7 +69,7 @@ export default class TicketTableCell extends React.Component {
             default:
                 value = ticket.getIn(field.name.split('.'))
         }
-        return RenderLabel(field, value)
+        return RenderLabel(field, value, this.props.currentUser.get('timezone'))
     }
 
     render() {

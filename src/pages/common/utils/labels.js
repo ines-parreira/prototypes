@@ -50,7 +50,8 @@ ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 export class DatetimeLabel extends React.Component {
     static propTypes = {
         dateTime: PropTypes.string,
-        settings: PropTypes.object
+        settings: PropTypes.object,
+        timezone: PropTypes.string
     }
 
     componentDidMount() {
@@ -75,14 +76,14 @@ export class DatetimeLabel extends React.Component {
     }
 
     render() {
-        const {dateTime} = this.props
+        const {dateTime, timezone} = this.props
 
         if (!dateTime) {
             return null
         }
 
-        const labelDatetime = formatDatetime(dateTime)
-        const tooltipDatetime = formatDatetime(dateTime, null, 'YYYY-MM-DD HH:mm')
+        const labelDatetime = formatDatetime(dateTime, timezone)
+        const tooltipDatetime = formatDatetime(dateTime, timezone, 'L LT')
 
         return (
             <span ref="tooltip"
@@ -94,7 +95,7 @@ export class DatetimeLabel extends React.Component {
     }
 }
 
-export const RenderLabel = (field, value) => {
+export const RenderLabel = (field, value, timezone = null) => {
     if (!value) {
         return null
     }
@@ -107,7 +108,7 @@ export const RenderLabel = (field, value) => {
         case 'tags':
             return <TagLabel tag={value} />
         case 'datetime':
-            return <DatetimeLabel dateTime={value} />
+            return <DatetimeLabel dateTime={value} timezone={timezone} />
         case 'status':
             return <StatusLabel status={value} />
         case 'priority':

@@ -4,10 +4,8 @@ import {sanitizeHtmlDefault} from '../../../../utils'
 import {DatetimeLabel} from '../../../common/utils/labels'
 
 export default class CustomerRating extends React.Component {
-
-
     render() {
-        const {rating} = this.props
+        const {rating, currentUser} = this.props
 
         if (!rating.get('rating_datetime')) {
             // The user did not answer the survey
@@ -37,7 +35,7 @@ export default class CustomerRating extends React.Component {
                         {`${RATING_SCORE_TO_MESSAGE[rating.get('rating')]} RATING`}
                     </div>
                     <div className="ticket-message-time">
-                        <DatetimeLabel dateTime={rating.get('rating_datetime')} />
+                        <DatetimeLabel dateTime={rating.get('rating_datetime')} timezone={currentUser.get('timezone')} />
                     </div>
                 </div>
                 <div
@@ -59,5 +57,6 @@ export default class CustomerRating extends React.Component {
 }
 
 CustomerRating.propTypes = {
-    rating: PropTypes.object.isRequired
+    rating: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired
 }

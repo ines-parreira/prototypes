@@ -13,7 +13,7 @@ class SelectField extends React.Component {
     }
 
     render() {
-        const {children, input, label, placeholder, required} = this.props
+        const {children, input, label, placeholder, required, tooltip} = this.props
         const fieldClassName = classNames({required}, 'field')
         return (
             <div className={fieldClassName}>
@@ -21,12 +21,13 @@ class SelectField extends React.Component {
                     label && (
                         <label htmlFor={input.name}>
                             {label}
+                            {tooltip}
                         </label>
                     )
                 }
                 <select
                     ref="select"
-                    className="ui dropdown"
+                    className="ui search dropdown"
                     {...input}
                     placeholder={placeholder}
                 >
@@ -47,6 +48,7 @@ SelectField.propTypes = {
     label: React.PropTypes.string,
     placeholder: React.PropTypes.string,
     required: React.PropTypes.bool,
+    tooltip: React.PropTypes.node
 }
 
 export default SelectField

@@ -51,7 +51,7 @@ export default class FilterDropdown extends React.Component {
                 // Special treat for tags, because we don't want the TagLabels in the Dropdown options
                 renderValue = value.name
             } else if (typeof value === 'object') {
-                renderValue = RenderLabel(field, value)
+                renderValue = RenderLabel(field, value, this.props.timezone)
             }
 
             return (
@@ -91,5 +91,6 @@ FilterDropdown.propTypes = {
     field: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
     addFieldFilter: PropTypes.func.isRequired,
-    updateFieldEnumSearch: PropTypes.func.isRequired
+    updateFieldEnumSearch: PropTypes.func.isRequired,
+    timezone: PropTypes.string
 }

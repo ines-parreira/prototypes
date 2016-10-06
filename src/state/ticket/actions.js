@@ -614,9 +614,9 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
                 if (status) {
                     // We don't want to update the wrong state if we are redirecting so we specify the id in setStatus.
                     dispatch(setStatus(status, ticket.get('id')))
-                    // We need to explicitly do the partial update because we cannot count on the component
-                    // re-rendering (if we redirect).
-                    // The re-rendering is when the autosave is usually performed and the status updated in db.
+                    // We need to explicitely do the partial update because we cannot count on the component
+                    // re-rendering (if we redirect). The re-rendering is when the autosave is usually performed and
+                    // the status updated in db.
                     ticketPartialUpdate(ticket.get('id'), {status})(dispatch)
                 }
 

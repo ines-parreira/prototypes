@@ -17,7 +17,7 @@ class UserDetailContainer extends React.Component {
         return (
             <div className="UserDetailContainer">
                 <UserView
-                    User={this.props.User}
+                    user={this.props.user}
                     currentUser={this.props.currentUser}
                     update={this.update}
                     submit={this.submit}
@@ -32,7 +32,7 @@ UserDetailContainer.propTypes = {
         userId: PropTypes.string
     }).isRequired,
 
-    User: PropTypes.object,
+    user: PropTypes.object,
     currentUser: PropTypes.object,
 
     actions: PropTypes.object.isRequired,
@@ -40,7 +40,7 @@ UserDetailContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        User: state.User,
+        user: state.user,
         currentUser: state.currentUser
     }
 }

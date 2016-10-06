@@ -5,8 +5,17 @@ import {notify} from '../../state/notifications/actions'
  * Middleware displaying errors from server when the error property exists
  * @param store
  */
+
+const IGNORED_PREFIXS = [
+    'redux-form'
+]
+
 const serverErrorHandler = store => next => action => {
-    if (action && action.error) {
+    const shouldDisplayError = action
+        && action.error
+        && !_.some(IGNORED_PREFIXS, (prefix) => action.type.startsWith(prefix))
+
+    if (shouldDisplayError) {
         const error = _.get(action, 'error.response.data.error', '')
 
         const message =

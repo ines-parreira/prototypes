@@ -1,9 +1,13 @@
-import * as types from '../users/constants'
-import {Map, fromJS} from 'immutable'
-import moment from 'moment'
+import * as userTypes from '../users/constants'
+import * as types from './constants'
+import {fromJS} from 'immutable'
 import {isUndefined as _isUndefined} from 'lodash'
 
-export const initialState = Map()
+export const initialState = fromJS({
+    _internal: {
+        loading: false
+    }
+})
 
 const Raven = window.Raven
 
@@ -13,16 +17,12 @@ export default (state = initialState, action) => {
     }
 
     switch (action.type) {
-        case types.FETCH_CURRENT_USER_SUCCESS:
-            // set default locale and timezone
-            if (action.resp.language) {
-                moment.locale(action.resp.language)
-            }
+        case userTypes.FETCH_CURRENT_USER_START:
+        case userTypes.UPDATE_CURRENT_USER_START:
+        case types.CHANGE_PASSWORD_START:
+            return state.setIn(['_internal', 'loading'], true)
 
-            if (action.resp.timezone) {
-                moment.tz.setDefault(action.resp.timezone)
-            }
-
+        case userTypes.FETCH_CURRENT_USER_SUCCESS:
             if (!_isUndefined(Raven) && Raven.setUserContext) {
                 const user = action.resp
 
@@ -33,13 +33,15 @@ export default (state = initialState, action) => {
                 })
             }
 
-            return fromJS(action.resp)
+            return fromJS(action.resp).setIn(['_internal', 'loading'], false)
 
-        case types.UPDATE_USER_SUCCESS:
-            if (action.userId === state.get('id')) {
-                return fromJS(action.resp)
-            }
-            return state
+        case userTypes.UPDATE_CURRENT_USER_SUCCESS:
+            return fromJS(action.resp).setIn(['_internal', 'loading'], false)
+
+        case types.CHANGE_PASSWORD_ERROR:
+        case types.CHANGE_PASSWORD_SUCCESS:
+        case userTypes.UPDATE_CURRENT_USER_ERROR:
+            return state.setIn(['_internal', 'loading'], false)
 
         default:
             return state

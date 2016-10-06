@@ -84,6 +84,7 @@ export default class TicketTable extends React.Component {
                                             updateView={this.props.updateView}
                                             addFieldFilter={this.props.addFieldFilter}
                                             updateFieldEnumSearch={this.props.updateFieldEnumSearch}
+                                            timezone={currentUser.get('timezone')}
                                         />
                                     ))
                             }

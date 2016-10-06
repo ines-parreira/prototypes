@@ -22,21 +22,26 @@ export default class TicketMessages extends React.Component {
             <div className="TicketMessages">
                 {allMessages.map((message, index) => {
                     if (message.get('isCustomerRating')) {
-                        return (<CustomerRating key={`${index.toString()}_rating`}
-                                                rating={message}
-                                                currentUser={this.props.currentUser}
-                        />)
+                        return (
+                            <CustomerRating
+                                key={`${index.toString()}_rating`}
+                                rating={message}
+                                currentUser={this.props.currentUser}
+                            />
+                        )
                     }
 
-                    return (<TicketMessage
+                    return (
+                        <TicketMessage
                             key={message.get('id')}
                             message={message.toJS()}
-                            currentUser={this.props.currentUser}
                             submit={this.props.submit}
                             deleteMessage={this.props.deleteMessage}
                             loading={this.props.loading}
                             ticket={this.props.ticket}
-                    />)
+                            currentUser={this.props.currentUser}
+                        />
+                    )
                 }
                 )}
             </div>

@@ -5,6 +5,21 @@
 export const AVAILABLE_HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
 
 /**
+ * Timeformat related
+ */
+
+export const AVAILABLE_LANGUAGES = [
+    {
+        localeName: 'en',
+        displayName: 'English US'
+    },
+    {
+        localeName: 'fr',
+        displayName: 'French'
+    },
+]
+
+/**
  * View related
  */
 export const ACTIVITY_DISPLAY_COUNT = 6

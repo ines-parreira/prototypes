@@ -7,6 +7,7 @@ import Infobar from './components/infobar/Infobar'
 import TicketInfobar from './components/infobar/TicketInfobar'
 import {fromJS} from 'immutable'
 import {Loader} from '../../common/components/Loader'
+import {isTicketDifferent} from './../common/utils'
 
 import * as InfobarActions from '../../../state/infobar/actions'
 import InfobarSearchResultsList from '../../common/components/InfobarSearchResultsList'
@@ -24,6 +25,12 @@ class TicketsInfobarContainer extends React.Component {
             // start edition mode
             fetch.then(this.props.actions.startEdition)
         }
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return isTicketDifferent(this.props.ticket, nextProps.ticket) ||
+            !this.props.widgets.equals(nextProps.widgets) ||
+            !this.props.infobar.equals(nextProps.infobar)
     }
 
     componentWillReceiveProps(nextProps) {

@@ -2,7 +2,8 @@ import React, {PropTypes} from 'react'
 import {Map} from 'immutable'
 import _ from 'lodash'
 import classNames from 'classnames'
-import {EditorState, ContentState, RichUtils, convertFromHTML} from 'draft-js'
+import {EditorState, ContentState, SelectionState, RichUtils} from 'draft-js'
+import {convertFromHTML} from 'draft-convert'
 import Editor from 'draft-js-plugins-editor'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
@@ -12,6 +13,7 @@ import 'draft-js-linkify-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
 import TicketAttachments from './TicketAttachments'
 import TicketReplyAction from './TicketReplyAction'
+
 
 const dndPlugin = createDndPlugin()
 const linkifyPlugin = createLinkifyPlugin()
@@ -24,67 +26,108 @@ const plugins = [emojiPlugin, dndPlugin, linkifyPlugin]
 export default class TicketReply extends React.Component {
     constructor(props) {
         super(props)
-        this.state = this.getEditorState(this.props)
+        this.state = this._getEditorState(this.props)
+        this.isInitialized = false
     }
 
     componentDidMount() {
-        // we're listening from stuff that comes from the Gorgias Chrome Extension
-        window.addEventListener('message', this.onMessage, false)
+        // we're listening to stuff that comes from the Gorgias Chrome Extension
+        window.addEventListener('message', this._onMessage, false)
         $('.TicketReply .ui.accordion').accordion('open', 0)
     }
 
     componentWillReceiveProps(nextProps) {
         // update the state if we have a change that doesn't come from typing stuff (from macros for example)
         if (nextProps.contentState === null || nextProps.fromMacro) {
-            this.setState(this.getEditorState(nextProps))
+            this.isInitialized = false
+            this.setState(this._getEditorState(nextProps))
             // Mark the fromMacro as false so we don't get the same macro twice
             this.props.actions.ticket.receivedMacro()
         }
+    }
 
+    componentDidUpdate(prevProps) {
         // Manage autofocus: Autofocus on the editor if the edit area becomes visible
         // Note: When using a macro don't autofocus - macro should manage that
-        if (nextProps.autoFocus && nextProps.visible && nextProps.visible !== this.props.visible && !nextProps.fromMacro) {
+        if (
+            this.props.autoFocus &&
+            (
+                (
+                    // If the editor wasnt visible before but is visible now
+                    this.props.visible && this.props.visible !== prevProps.visible
+                ) || (
+                    // If the editor was read-only before and is editable again now
+                    !this.props.ticket.getIn(['state', 'loading']) &&
+                    this.props.ticket.getIn(['state', 'loading']) !== prevProps.ticket.getIn(['state', 'loading']))
+            ) &&
+            !this.props.fromMacro
+        ) {
             this.refs.editor.focus()
         }
     }
 
     componentWillUnmount() {
         // We should remove the listener so we don't explode the browser
-        window.removeEventListener('message', this.onMessage, false)
+        window.removeEventListener('message', this._onMessage, false)
     }
 
-    getEditorState(props) {
-        const contentState = props.contentState ? props.contentState : ContentState.createFromText('')
-        const editorState = EditorState.createWithContent(contentState)
+    _getEditorState(props) {
+        let defaultContent = ContentState.createFromText('')
+
+        if ( // We check both signature_html and signature_text, because sometimes the signature_html is not null
+             // when it should be (ex. : signature_text = '', signature_html = '<div><br></div>').
+            props.ticket.get('channel') === 'email'
+            && props.currentUser.get('signature_html')
+            && props.currentUser.get('signature_text')
+        ) {
+            defaultContent = convertFromHTML(`<br>${props.currentUser.get('signature_html')}`)
+        }
+
+        const contentState = props.contentState ? props.contentState : defaultContent
+        const editorState = EditorState.acceptSelection(
+            EditorState.createWithContent(contentState),
+            SelectionState.createEmpty(contentState.getFirstBlock().getKey())
+        )
+
         return {editorState}
     }
 
     // throttle the updating of the redux because it's slow otherwise when we type
-    updateMessageText = _.throttle((editorState) => {
+    _updateMessageText = _.throttle((editorState) => {
         const contentState = editorState.getCurrentContent()
-        this.props.actions.ticket.setResponseText(this.props.currentUser, Map({contentState}))
+        const selectionState = editorState.getSelection()
+        this.props.actions.ticket.setResponseText(this.props.currentUser, Map({contentState, selectionState}))
     }, 300)
 
     // store the content before the tab (completion from the extension), this allows us to manage the state correctly
     textBeforeTab = ''
-    onTab = () => {
+    _onTab = () => {
         this.textBeforeTab = this.refs.editor.refs.editor.refs.editor.innerText
     }
 
-    onChange = (editorState) => {
+    _onChange = (editorState) => {
         // don't update the state if the change came from the extension
         if (this.textBeforeTab !== '' &&
             this.refs.editor && this.refs.editor.refs.editor.refs.editor.innerText !== this.textBeforeTab) {
-            // we do this to let onMessage be called which will itself call onChange
+            // we do this to let _onMessage be called which will itself call _onChange
             this.textBeforeTab = ''
             return
         }
 
-        this.setState({editorState})
-        this.updateMessageText(editorState)
+        let res = editorState
+
+        // When initializing the state, the Editor component move the focus to the end
+        // This is to prevent this behavior.
+        if (!this.isInitialized && editorState.getCurrentContent().equals(this.state.editorState.getCurrentContent())) {
+            this.isInitialized = true
+            res = EditorState.forceSelection(editorState, this.state.editorState.getSelection())
+        }
+
+        this.setState({editorState: res})
+        this._updateMessageText(res)
     }
 
-    onMessage = (event) => {
+    _onMessage = (event) => {
         // We're waiting for an event from Gorgias extension - that the template has been inserted
         if (!(event.data.source && event.data.source === 'gorgias-extension')) {
             return
@@ -100,26 +143,24 @@ export default class TicketReply extends React.Component {
 
             // const browserSelection = window.getSelection()
             // const selectionState = SelectionState.createEmpty()
-            const contentBlocks = convertFromHTML(actualHTML)
-            const contentState = ContentState.createFromBlockArray(contentBlocks)
+            const contentState = convertFromHTML(actualHTML)
             const editorState = EditorState.moveFocusToEnd(EditorState.createWithContent(contentState))
 
-            this.onChange(editorState)
+            this._onChange(editorState)
         }
     }
 
-
     // This is for handling things like Bold, Italic, etc..
-    handleKeyCommand = (command) => {
+    _handleKeyCommand = (command) => {
         const newState = RichUtils.handleKeyCommand(this.state.editorState, command)
         if (newState) {
-            this.onChange(newState)
+            this._onChange(newState)
             return true
         }
         return false
     }
 
-    handleFiles(files) {
+    _handleFiles(files) {
         let newFiles = []
 
         if (files.constructor.name === 'FileList') {
@@ -139,16 +180,16 @@ export default class TicketReply extends React.Component {
         this.props.actions.ticket.addAttachments(this.props.ticket, atts)
     }
 
-    handleDroppedFiles = (selection, files) => {
+    _handleDroppedFiles = (selection, files) => {
         dndPlugin.handleDroppedFiles(selection, files, {
             getEditorState: () => this.state.editorState,
-            setEditorState: this.onChange
+            setEditorState: this._onChange
         })
-        this.handleFiles(files)
+        this._handleFiles(files)
         return false
     }
 
-    renderAttachmentInput = () => {
+    _renderAttachmentInput = () => {
         if (this.props.ticket.getIn(['state', 'attachmentLoading'])) {
             return (
                 <div className="attachments-pseudobar">
@@ -164,7 +205,7 @@ export default class TicketReply extends React.Component {
                     <input
                         type="file"
                         id="file-input"
-                        onChange={(e) => this.handleFiles(e.target.files)}
+                        onChange={(e) => this._handleFiles(e.target.files)}
                     />
                 </div>
             </div>
@@ -195,18 +236,19 @@ export default class TicketReply extends React.Component {
                             ref="editor"
                             tabIndex="4"
                             spellCheck
+                            readOnly={ticket.getIn(['state', 'loading'])}
                             editorState={this.state.editorState}
                             plugins={plugins}
-                            onChange={this.onChange}
-                            onTab={this.onTab}
-                            handleKeyCommand={this.handleKeyCommand}
-                            handleDroppedFiles={this.handleDroppedFiles}
+                            onChange={this._onChange}
+                            onTab={this._onTab}
+                            handleKeyCommand={this._handleKeyCommand}
+                            handleDroppedFiles={this._handleDroppedFiles}
                         />
                         <EmojiSuggestions />
                     </div>
                 </div>
 
-                {this.renderAttachmentInput()}
+                {this._renderAttachmentInput()}
 
                 <TicketAttachments
                     removable

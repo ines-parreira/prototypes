@@ -67,6 +67,7 @@ export default class ColumnHeader extends React.Component {
                         addFieldFilter={this.props.addFieldFilter}
                         updateFieldEnumSearch={this.props.updateFieldEnumSearch}
                         onClose={this.onClose}
+                        timezone={this.props.timezone}
                     />
                 </div>
             </Portal>
@@ -104,5 +105,6 @@ ColumnHeader.propTypes = {
 
     addFieldFilter: PropTypes.func.isRequired, // called when a value is selected in the dropdown
     updateFieldEnumSearch: PropTypes.func.isRequired, // called when the field has to get enum data from the API
-    updateView: PropTypes.func.isRequired
+    updateView: PropTypes.func.isRequired,
+    timezone: PropTypes.string // for the Timezone in FilterDropdown
 }

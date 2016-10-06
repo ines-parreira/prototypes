@@ -12,6 +12,8 @@ import RuleContainer from './rules/list/RuleContainer'
 import UserListContainer from './users/list/UserListContainer'
 import UserNavbarContainer from './users/common/UserNavbarContainer'
 import UserDetailContainer from './users/detail/UserDetailContainer'
+import YourProfileContainer from './users/yourProfile/YourProfileContainer'
+import ChangePasswordContainer from './users/yourProfile/ChangePasswordContainer'
 import StatsContainer from './stats/list/StatsContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
@@ -20,6 +22,8 @@ import WidgetsEditorContainer from './tickets/detail/WidgetsEditorContainer'
 export default (
     <Route path="/app" component={App}>
         <IndexRoute components={{content: TicketListContainer, navbar: TicketNavbarContainer}} />
+        <Route path="your-profile" components={{content: YourProfileContainer, navbar: UserNavbarContainer}} />
+        <Route path="your-profile/change-password" components={{content: ChangePasswordContainer, navbar: UserNavbarContainer}} />
         <Route path="users" components={{content: UserListContainer, navbar: UserNavbarContainer}} />
         <Route path="users/:userId" components={{content: UserDetailContainer, navbar: UserNavbarContainer}} />
         <Route path="ticket/:ticketId" components={{

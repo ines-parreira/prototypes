@@ -5,11 +5,16 @@ import {Map, List, fromJS} from 'immutable'
 import {convertFromHTML, ContentState} from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
 import {renderTemplate} from '../../pages/common/utils/template'
+
 import _isUndefined from 'lodash/isUndefined'
+import _take from 'lodash/take'
+import _takeRight from 'lodash/takeRight'
+import _findIndex from 'lodash/findIndex'
+
 import {
     getLastNonInternalNoteMessage,
     getSourceTypeOfResponse,
-    getChannelFromSourceType
+    getChannelFromSourceType,
 } from './utils'
 
 export const newMessage = (channel, sourceType) => fromJS({
@@ -39,6 +44,7 @@ export const initialState = fromJS({
         query: '',
         fromMacro: false,
         contentState: null,
+        selectionState: null,
         latestEventDatetime: null,
         displayHistory: false
     },
@@ -247,7 +253,10 @@ export default (state = initialState, action) => {
             return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
 
         case types.SET_AGENT:
-            return state.set('assignee_user', action.args.get('assignee_user') ? fromJS(action.args.get('assignee_user')) : null)
+            return state.set(
+                'assignee_user',
+                action.args.get('assignee_user') ? fromJS(action.args.get('assignee_user')) : null
+            )
 
         case types.SET_STATUS:
             if (action.args.get('id') && action.args.get('id') !== state.get('id')) {
@@ -278,6 +287,7 @@ export default (state = initialState, action) => {
         }
 
         case types.SET_RESPONSE_TEXT: {
+            const selectionState = action.args.get('selectionState')
             let contentState = action.args.get('contentState')
             let text = ''
             let html = ''
@@ -306,7 +316,25 @@ export default (state = initialState, action) => {
 
 
                 if (state.getIn(['state', 'contentState']) && state.getIn(['state', 'contentState']).hasText()) {
-                    blocks = state.getIn(['state', 'contentState']).getBlocksAsArray().concat(blocks)
+                    const currBlocks = state.getIn(['state', 'contentState']).getBlocksAsArray()
+                    const select = state.getIn(['state', 'selectionState'])
+
+                    if (select) {
+                        // Here we cut the current content at the cursor position to insert the macro.
+                        // Ex. : content is [1, 2, 3, 4, 5], we want to insert the macro ['a', 'b'] at index 2
+                        const idx = _findIndex(currBlocks, {key: select.anchorKey})
+
+                        // We first take the `index` first items (e.g. [1, 2])
+                        const left = _take(currBlocks, idx)
+                        // Then the `length - index` last items (e.g. [3, 4, 5])
+                        const right = _takeRight(currBlocks, currBlocks.length - idx + 1)
+
+                        // Then we concat the new array to the left part, and the right part to the result of this
+                        blocks = left.concat(blocks).concat(right)
+                        // => [1, 2, 'a', 'b', 3, 4, 5]
+                    } else {
+                        blocks = currBlocks.concat(blocks)
+                    }
                 }
 
                 contentState = ContentState.createFromBlockArray(blocks)
@@ -315,17 +343,25 @@ export default (state = initialState, action) => {
             text = contentState.getPlainText()
             html = stateToHTML(contentState)
 
-            return state.mergeDeep({
+            const textWithoutSignature = text.replace(action.currentUser.get('signature_text', ''), '').trim()
+
+            let newState = state.mergeDeep({
                 newMessage: {
                     body_text: text,
                     body_html: html
                 },
                 state: {
                     fromMacro: action.fromMacro,
-                    dirty: text !== ''
+                    dirty: textWithoutSignature !== ''
                 }
             }).setIn(['state', 'contentState'], contentState)
             // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
+
+            if (selectionState) {
+                newState = newState.setIn(['state', 'selectionState'], selectionState)
+            }
+
+            return newState
         }
 
         case types.SETUP_NEW_TICKET:
@@ -396,7 +432,10 @@ export default (state = initialState, action) => {
                     userHistory: {
                         tickets: action.resp.data,
                         isLoading: false,
-                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!(action.resp.meta.item_count - 1)
+                        hasHistory: (
+                            state.getIn(['_internal', 'userHistory', 'hasHistory']) ||
+                            !!(action.resp.meta.item_count - 1)
+                        )
                     }
                 }
             })
@@ -407,7 +446,10 @@ export default (state = initialState, action) => {
                     userHistory: {
                         events: action.resp.data,
                         isLoading: false,
-                        hasHistory: state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!action.resp.meta.item_count
+                        hasHistory: (
+                            state.getIn(['_internal', 'userHistory', 'hasHistory']) ||
+                            !!action.resp.meta.item_count
+                        )
                     }
                 }
             })

@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import InfobarWidgets from './InfobarWidgets'
-import {isTicketDifferent} from './../../../common/utils'
 import {canDrop, areSourcesReady} from './utils'
 import {USER_CHANNEL_CLASS} from '../../../../../config'
 
@@ -10,10 +9,6 @@ export default class TicketInfobar extends React.Component {
         super(props)
 
         this.ticketTemplate = fromJS([])
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return isTicketDifferent(this.props.ticket, nextProps.ticket) || !this.props.widgets.equals(nextProps.widgets)
     }
 
     componentWillMount() {

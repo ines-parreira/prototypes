@@ -208,9 +208,13 @@ export default class TicketMessage extends React.Component {
                         {this.renderMeta(message)}
                     </div>
                     <div className="ticket-message-time">
-                        <DatetimeLabel dateTime={message.created_datetime} settings={{
-                            position: 'top left'
-                        }} />
+                        <DatetimeLabel
+                            dateTime={message.created_datetime}
+                            settings={{
+                                position: 'top left'
+                            }}
+                            timezone={this.props.currentUser.get('timezone')}
+                        />
                     </div>
                 </div>
                 {/*
@@ -255,5 +259,6 @@ TicketMessage.propTypes = {
     loading: PropTypes.bool.isRequired,
     submit: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
-    ticket: PropTypes.object
+    ticket: PropTypes.object,
+    currentUser: PropTypes.object.isRequired
 }

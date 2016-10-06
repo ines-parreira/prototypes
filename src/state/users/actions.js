@@ -71,11 +71,11 @@ export function search(query, params, stringQuery) {
 
 export function fetchUser(userId) {
     return (dispatch) => {
-        dispatch({
-            type: types.FETCH_USER_START
-        })
-
         const isCurrentUser = userId === 0
+
+        dispatch({
+            type: isCurrentUser ? types.FETCH_CURRENT_USER_START : types.FETCH_USER_START
+        })
 
         return axios.get(`/api/users/${userId}/`)
             .then((json = {}) => json.data)
@@ -132,15 +132,17 @@ export function createUser(data) {
 
 export function updateUser(data, userId) {
     return (dispatch) => {
+        const isCurrentUser = userId === 0
+
         dispatch({
-            type: types.UPDATE_USER_START
+            type: isCurrentUser ? types.UPDATE_CURRENT_USER_START : types.UPDATE_USER_START
         })
 
         return axios.put(`/api/users/${userId}/`, data)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
-                    type: types.UPDATE_USER_SUCCESS,
+                    type: isCurrentUser ? types.UPDATE_CURRENT_USER_SUCCESS : types.UPDATE_USER_SUCCESS,
                     userId,
                     resp
                 })
@@ -152,7 +154,7 @@ export function updateUser(data, userId) {
             })
             .catch(error => {
                 dispatch({
-                    type: types.UPDATE_USER_ERROR,
+                    type: isCurrentUser ? types.UPDATE_CURRENT_USER_ERROR : types.UPDATE_USER_ERROR,
                     error,
                     reason: 'Failed to update the user'
                 })
