@@ -88,7 +88,6 @@ class ReceiversDropdown extends React.Component {
                     allowCreateConstraint={isEmail}
                     addLabelText={addLabelText}
                     placeholder="Search a user..."
-                    tabSelectsValue={false}
                     tabIndex="2"
                 />
             </div>
