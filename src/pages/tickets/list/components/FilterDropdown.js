@@ -10,7 +10,7 @@ export default class FilterDropdown extends React.Component {
         this.props.addFieldFilter(this.props.field, {
             left,
             operator: equalityOperator(left, this.props.schemas),
-            right: resolveLiteral(newValue, left, this.props.schemas)
+            right: resolveLiteral(newValue, left)
         })
     }
 
@@ -46,7 +46,11 @@ export default class FilterDropdown extends React.Component {
 
         return field.filter.enum.map((value, idx) => {
             let renderValue = value
-            if (typeof value === 'object') {
+
+            if (field.type === 'tags') {
+                // Special treat for tags, because we don't want the TagLabels in the Dropdown options
+                renderValue = value.name
+            } else if (typeof value === 'object') {
                 renderValue = RenderLabel(field, value)
             }
 

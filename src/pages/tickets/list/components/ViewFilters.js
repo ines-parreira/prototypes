@@ -222,6 +222,7 @@ export default class ViewFilters extends React.Component {
 
     render() {
         const {view, schemas, agents, tags, currentUser, updateFieldFilter} = this.props
+
         if (!view || !schemas || schemas.isEmpty()) {
             return null
         }

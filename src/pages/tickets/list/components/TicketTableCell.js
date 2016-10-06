@@ -20,12 +20,11 @@ export default class TicketTableCell extends React.Component {
                 }
                 break
             case 'tags':
-                value = ticket.get('tags').map((tag) => (
+                return ticket.get('tags').map((tag) => (
                     <TagLabel key={`${ticket.get('id')}-${tag.get('id')}`}
                               tag={tag.toJS()}
                     />
-                ))
-                break
+                )).toJS()
             case 'address':
                 if (field.name.startsWith('messages')) {
                     const path = field.name.split('.')

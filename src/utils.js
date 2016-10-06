@@ -121,7 +121,7 @@ export function equalityOperator(field, schemas) {
 export function resolveLiteral(value, field) {
     switch (typeof value) {
         case 'object':
-            return value[field.split('.').reverse()[0]]
+            return resolveLiteral(value[field.split('.').reverse()[0]], field)
         case 'string':
             return `'${value}'`
         default:

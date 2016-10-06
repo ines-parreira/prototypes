@@ -103,8 +103,9 @@ export const RenderLabel = (field, value) => {
         case 'address':
         case 'plain':
         case 'composite':
-        case 'tags':
             return value
+        case 'tags':
+            return <TagLabel tag={value} />
         case 'datetime':
             return <DatetimeLabel dateTime={value} />
         case 'status':

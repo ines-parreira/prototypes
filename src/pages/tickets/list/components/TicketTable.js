@@ -54,6 +54,7 @@ export default class TicketTable extends React.Component {
 
         // temporary remove priority from available fields
         const updatedView = view.set('fields', view.get('fields').filter(f => f.get('name') !== 'priority'))
+        const checked = tickets.get('items').size === tickets.getIn(['_internal', 'selectedItemsIds']).size
 
         return (
             <div className="ticket-table" style={style}>
@@ -66,7 +67,7 @@ export default class TicketTable extends React.Component {
                                         type="checkbox"
                                         ref="toggleSelection"
                                         onChange={this.toggleSelectAll}
-                                        checked={tickets.get('items').size === tickets.getIn(['_internal', 'selectedItemsIds']).size}
+                                        checked={checked}
                                     />
                                     <label />
                                 </span>

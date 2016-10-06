@@ -27,8 +27,10 @@ describe('components utils : labels', () => {
                 },
                 {
                     type: 'tags',
-                    value: 'help',
-                    expected: 'help'
+                    value: {
+                        name: 'help'
+                    },
+                    expected: <labels.TagLabel tag={{name: 'help'}}/>
                 },
                 {
                     type: 'datetime',
