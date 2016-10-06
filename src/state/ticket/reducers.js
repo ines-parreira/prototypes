@@ -383,14 +383,6 @@ export default (state = initialState, action) => {
                 if (!newState.getIn(['newMessage', 'receiver'])) {
                     newState = newState.setIn(['newMessage', 'receiver'], storedData)
                 }
-
-                if (!newState.get('receiver')) {
-                    newState = newState.set('receiver', storedData)
-                }
-
-                if (!newState.get('requester')) {
-                    newState = newState.set('requester', storedData)
-                }
             } else {
                 if (!newState.getIn(['newMessage', 'source', 'to']).size) {
                     newState = newState.setIn(['newMessage', 'receiver'], null)
@@ -433,8 +425,7 @@ export default (state = initialState, action) => {
                         tickets: action.resp.data,
                         isLoading: false,
                         hasHistory: (
-                            state.getIn(['_internal', 'userHistory', 'hasHistory']) ||
-                            !!(action.resp.meta.item_count - 1)
+                            state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!(action.resp.meta.item_count - 1)
                         )
                     }
                 }
@@ -447,8 +438,7 @@ export default (state = initialState, action) => {
                         events: action.resp.data,
                         isLoading: false,
                         hasHistory: (
-                            state.getIn(['_internal', 'userHistory', 'hasHistory']) ||
-                            !!action.resp.meta.item_count
+                            state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!action.resp.meta.item_count
                         )
                     }
                 }
