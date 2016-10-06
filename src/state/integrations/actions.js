@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {sortBy as _sortBy} from 'lodash'
 import {browserHistory} from 'react-router'
-import {systemMessage} from '../systemMessage/actions'
+import {notify} from '../notifications/actions'
 import * as types from './constants'
 
 export function fetchIntegration(integrationId) {
@@ -72,9 +72,9 @@ export function deleteIntegration(integration) {
 
                     browserHistory.push(`/app/integrations/${integration.get('type')}`)
 
-                    dispatch(systemMessage({
+                    dispatch(notify({
                         type: 'success',
-                        msg: 'Integration successfully deleted'
+                        message: 'Integration successfully deleted'
                     }))
                 })
                 .catch(error => {
@@ -191,9 +191,9 @@ function updateOrCreateIntegrationRequest(integration, action) {
                     browserHistory.push(`/app/integrations/${integration.get('type')}/${resp.id}`)
                 }
 
-                dispatch(systemMessage({
+                dispatch(notify({
                     type: 'success',
-                    msg: `Integration successfully ${isUpdate ? 'updated' : 'added'}`
+                    message: `Integration successfully ${isUpdate ? 'updated' : 'added'}`
                 }))
             })
             .catch(error => {

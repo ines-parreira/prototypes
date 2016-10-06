@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux'
 import {routerReducer} from 'react-router-redux'
 import {reducer as formReducer} from 'redux-form'
+import {reducer as notificationsReducer} from 'react-notification-system-redux'
 
-import systemMessageReducer from './systemMessage/reducers'
 import currentUserReducer from './currentUser/reducers'
 import rulesReducer from './rules/reducers'
 import schemasReducer from './schema/reducers'
@@ -20,7 +20,6 @@ import statsReducer from './stats/reducers'
 import infobarReducer from './infobar/reducers'
 
 const rootReducer = combineReducers({
-    systemMessage: systemMessageReducer,
     currentUser: currentUserReducer,
     settings: settingsReducer,
     tickets: ticketsReducer,
@@ -37,7 +36,8 @@ const rootReducer = combineReducers({
     stats: statsReducer,
     infobar: infobarReducer,
     routing: routerReducer,
-    form: formReducer
+    form: formReducer,
+    notifications: notificationsReducer
 })
 
 export default rootReducer

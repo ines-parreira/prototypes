@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {systemMessage} from '../systemMessage/actions'
+import {notify} from '../notifications/actions'
 import {browserHistory} from 'react-router'
 import * as types from './constants'
 
@@ -142,10 +142,10 @@ export function submitView(view) {
 export function deleteView(view) {
     return (dispatch, getState) => {
         if (getState().views.get('items').size <= 1) {
-            return dispatch(systemMessage({
+            return dispatch(notify({
                 type: 'error',
-                header: 'This view cannot be deleted',
-                msg: 'This is your last view, it needs to exist in order for the helpdesk to function correctly.'
+                title: 'This view cannot be deleted',
+                message: 'This is your last view, it needs to exist in order for the helpdesk to function correctly.'
             }))
         }
 

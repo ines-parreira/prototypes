@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as types from './constants'
-import {systemMessage} from '../systemMessage/actions'
+import {notify} from '../notifications/actions'
 
 export function fetchUsers(roles) {
     return (dispatch) => {
@@ -115,9 +115,9 @@ export function createUser(data) {
                     resp
                 })
 
-                dispatch(systemMessage({
+                dispatch(notify({
                     type: 'success',
-                    msg: 'User successfully created'
+                    message: 'User successfully created'
                 }))
             })
             .catch(error => {
@@ -145,9 +145,9 @@ export function updateUser(data, userId) {
                     resp
                 })
 
-                dispatch(systemMessage({
+                dispatch(notify({
                     type: 'success',
-                    msg: 'User successfully updated'
+                    message: 'User successfully updated'
                 }))
             })
             .catch(error => {
@@ -175,9 +175,9 @@ export function deleteUser(userId) {
                     resp
                 })
 
-                dispatch(systemMessage({
+                dispatch(notify({
                     type: 'success',
-                    msg: 'User successfully deleted'
+                    message: 'User successfully deleted'
                 }))
             })
             .catch(error => {

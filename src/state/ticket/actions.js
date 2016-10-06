@@ -3,7 +3,7 @@ import React from 'react'
 import _ from 'lodash'
 import {browserHistory} from 'react-router'
 import Immutable, {Map, Set} from 'immutable'
-import {systemMessage} from '../systemMessage/actions'
+import {notify} from '../notifications/actions'
 import {ACTION_TEMPLATES, USER_VALUE_PROP, SOURCE_VALUE_PROP} from '../../config'
 import {renderTemplate} from '../../pages/common/utils/template'
 import {lastMessage} from '../../utils'
@@ -27,16 +27,19 @@ export function addAttachments(ticket, atts) {
 
             const previousAtts = ticket.getIn(['newMessage', 'attachments'])
             if ((previousAtts.size > 0) || (atts.length > 1) || atts.length !== attsFiltered.length) {
-                dispatch(systemMessage({
-                    modal: true,
+                dispatch(notify({
+                    autoDismiss: false,
                     type: 'error',
-                    options: {},
-                    header: 'We could not add all of your attachments!',
-                    msg: `Facebook comments have limitations on attachments:
-                    <ul>
-                        <li>You cannot send more than one attachment.</li>
-                        <li>You can only send images or videos.</li>
-                    </ul>`
+                    title: 'We could not add all of your attachments !',
+                    children: (
+                        <div>
+                            Facebook comments have limitations on attachments:
+                            <ul>
+                                <li>You cannot send more than one attachment.</li>
+                                <li>You can only send images or videos.</li>
+                            </ul>
+                        </div>
+                    )
                 }))
             }
 
@@ -103,9 +106,9 @@ export function ticketPartialUpdate(ticketId, args, nextUrl = null) {
 
                 // show a success message if we closed the ticket
                 if (args.status === 'closed') {
-                    dispatch(systemMessage({
+                    dispatch(notify({
                         type: 'success',
-                        msg: 'The ticket has been closed.'
+                        message: 'The ticket has been closed.'
                     }))
 
                     // Redirect to the next ticket after the transition is done.
@@ -328,27 +331,21 @@ export function fetchTicketMessage(ticketId, messageId) {
                 const hasPending = resp.actions.find(action => action.status === 'pending')
 
                 if (hasFailure) {
-                    dispatch(systemMessage({
+                    dispatch(notify({
                         type: 'error',
-                        header: 'Something went wrong :/',
-                        modal: true,
-                        options: {
-                            title: 'Oops! Some actions failed on your last message:',
-                            actions: [
-                                {
-                                    onClick: () => browserHistory.push(`/app/ticket/${resp.ticket_id}`),
-                                    className: 'ui green button',
-                                    msg: 'Review message'
-                                }
-                            ]
-                        },
-                        msg: (
+                        title: 'Some actions failed on your last message :/',
+                        autoDismiss: false,
+                        children: (
                             <div>
                                 <ul>
                                     {
                                         resp.actions.map((action, idx) => {
                                             if (ACTION_TEMPLATES[action.name].execution === 'back') {
-                                                return <li key={idx}>{action.title}: {action.status}</li>
+                                                return (
+                                                    <li key={idx}>
+                                                        <b>{action.title}</b>: {action.status}
+                                                    </li>
+                                                )
                                             }
                                             return null
                                         })
@@ -357,15 +354,23 @@ export function fetchTicketMessage(ticketId, messageId) {
                                 <p>
                                     The message hasn't been sent, you should review it right now.
                                 </p>
+                                <div className="buttons">
+                                    <button
+                                        className="ui tiny button green"
+                                        onClick={() => browserHistory.push(`/app/ticket/${resp.ticket_id}`)}
+                                    >
+                                        Review message
+                                    </button>
+                                </div>
                             </div>
                         )
                     }))
                 } else if (hasPending) {
                     setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId)), 2000)
                 } else {
-                    dispatch(systemMessage({
+                    dispatch(notify({
                         type: 'success',
-                        msg: 'Message successfully sent!'
+                        message: 'Message successfully sent!'
                     }))
                 }
 
@@ -514,11 +519,10 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
 
         // Facebook does not accept comment with just an attachment.
         if ((data.newMessage.body_text.length === 0) && (data.newMessage.attachments.length > 0)) {
-            dispatch(systemMessage({
-                modal: true,
+            dispatch(notify({
                 type: 'error',
-                header: 'Your message cannot be sent.',
-                msg: 'You cannot send an attachment without a message in a Facebook comment.'
+                title: 'Your message cannot be sent',
+                message: 'You cannot send an attachment without a message in a Facebook comment.'
             }))
             return null
         }
@@ -534,10 +538,10 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
             delete data.newMessage.contentState
             data.messages.push(data.newMessage)
         } else if (!data.messages.length) {
-            dispatch(systemMessage({
+            dispatch(notify({
                 type: 'error',
-                header: 'You need to write a message.',
-                msg: 'You can\'t create a new ticket without at least a message.'
+                title: 'You need to write a message.',
+                message: 'You can\'t create a new ticket without at least a message.'
             }))
             return null
         }
@@ -557,9 +561,9 @@ function onMessageSent(dispatch, ticket_id, messageSent) {
     if (messageSent.actions) {
         setTimeout(() => dispatch(fetchTicketMessage(ticket_id, messageSent.id)), 1000)
     } else {
-        dispatch(systemMessage({
+        dispatch(notify({
             type: 'success',
-            msg: 'Message successfully sent!'
+            message: 'Message successfully sent!'
         }))
     }
 

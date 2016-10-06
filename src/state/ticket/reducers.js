@@ -202,7 +202,11 @@ export default (state = initialState, action) => {
                 })
         }
 
-        case types.FETCH_MESSAGE_SUCCESS:
+        case types.FETCH_TICKET_ERROR: {
+            return state.setIn(['state', 'loading'], false)
+        }
+
+        case types.FETCH_MESSAGE_SUCCESS: {
             if (!_isUndefined(state.get('id')) && state.get('id') === action.resp.ticket_id) {
                 return state.setIn(
                     ['messages', state.get('messages').findIndex(message => message.get('id') === action.resp.id)],
@@ -211,6 +215,7 @@ export default (state = initialState, action) => {
             }
 
             return state
+        }
 
         case types.CLEAR_TICKET:
             return initialState.setIn(['_internal', 'crossTickets'], state.getIn(['_internal', 'crossTickets']))

@@ -286,3 +286,68 @@ export const ACTION_TEMPLATES = {
         }
     }
 }
+
+/**
+ * Notifications related
+ */
+export const NOTIFICATIONS_STYLE_CONFIG = {
+    Containers: {
+        DefaultStyle: {
+            maxWidth: '500px',
+            width: 'initial',
+            display: 'inline-block'
+        },
+        tc: {
+            left: 0,
+            right: 0
+        }
+    },
+    NotificationItem: {
+        DefaultStyle: {
+            padding: '1em 1.5em',
+            fontSize: '1em'
+        },
+        success: {
+            border: '1px solid #A3C293',
+            backgroundColor: '#FCFFF5',
+            color: '#2C662D'
+        },
+        error: {
+            border: '1px solid #E0B4B4',
+            backgroundColor: '#FFF6F6',
+            color: '#9F3A38'
+        },
+        warning: {
+            border: '1px solid #C9BA9B',
+            backgroundColor: '#FFFA9B',
+            color: '#573A08'
+        },
+        info: {
+            border: '1px solid #A9D5DE',
+            backgroundColor: '#F8FFFF',
+            color: '#276F86'
+        }
+    },
+    Title: {
+        DefaultStyle: {
+            fontSize: '1.14em'
+        },
+        success: {
+            color: '#1A531B'
+        },
+        error: {
+            color: '#912D2B'
+        },
+        warning: {
+            color: '#794B02'
+        },
+        info: {
+            color: '#0E566C'
+        }
+    },
+    Dismiss: {
+        DefaultStyle: {
+            display: 'none'
+        }
+    }
+}

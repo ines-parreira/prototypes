@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {systemMessage} from '../systemMessage/actions'
+import {notify} from '../notifications/actions'
 import * as types from './constants'
 
 export function fetchTicketsPage(page) {
@@ -124,9 +124,11 @@ export function bulkUpdate(ids, key, value) {
             type: types.BULK_UPDATE_START
         })
 
-        dispatch(systemMessage({
-            type: 'loading',
-            msg: 'Updating tickets...'
+        dispatch(notify({
+            type: 'info',
+            autoDismiss: false,
+            closeOnNext: true,
+            message: 'Updating tickets...'
         }))
 
         return axios.put('/api/tickets/', data)
@@ -139,9 +141,9 @@ export function bulkUpdate(ids, key, value) {
 
                 setTimeout(() => dispatch(fetchTicketsPage(1)), 800)
 
-                dispatch(systemMessage({
+                dispatch(notify({
                     type: 'success',
-                    msg: successMessage
+                    message: successMessage
                 }))
             })
             .catch(error => {
@@ -160,9 +162,11 @@ export function bulkDelete(ids) {
             type: types.BULK_DELETE_START
         })
 
-        dispatch(systemMessage({
-            type: 'loading',
-            msg: 'Deleting tickets...'
+        dispatch(notify({
+            type: 'info',
+            autoDismiss: false,
+            closeOnNext: true,
+            message: 'Deleting tickets...'
         }))
 
         return axios.delete('/api/tickets/', {
@@ -175,9 +179,9 @@ export function bulkDelete(ids) {
                     ids
                 })
 
-                dispatch(systemMessage({
+                dispatch(notify({
                     type: 'success',
-                    msg: `${ids.size} tickets successfully deleted!`
+                    message: `${ids.size} tickets successfully deleted!`
                 }))
             })
             .catch(error => {

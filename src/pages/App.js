@@ -2,8 +2,6 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import DocumentTitle from 'react-document-title'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import {dismissMessage} from '../state/systemMessage/actions'
 import {fetchUser, fetchUsers} from '../state/users/actions'
 import {fetchSettings} from '../state/settings/actions'
 import {fetchTags} from '../state/tags/actions'
@@ -12,17 +10,12 @@ import Navbar from './common/components/Navbar'
 import KeyboardHelp from './common/components/KeyboardHelp'
 import Mousetrap from 'mousetrap'
 import * as mousetrap from 'mousetrap'
-import {sanitizeHtmlDefault} from '../utils'
+import Notifications from 'react-notification-system-redux'
+import {NOTIFICATIONS_STYLE_CONFIG} from '../config'
 import '../../css/main.less'
 
 let pollInterval = null
 class App extends React.Component {
-    constructor(props) {
-        super(props)
-        this._handleDismissClick = this._handleDismissClick.bind(this)
-        this.messageTimeout = null
-    }
-
     componentWillMount() {
         this.props.fetchUsers()
         this.props.fetchUsers(['agent', 'admin'])
@@ -74,113 +67,6 @@ class App extends React.Component {
         })
     }
 
-    componentDidUpdate() {
-        if (Object.keys(this.props.systemMessage.toJS()).length !== 0 && this.props.systemMessage.get('modal')) {
-            $('#system-message').modal({
-                detachable: false
-            }).modal('show')
-        }
-    }
-
-    _handleDismissClick(e, modal = false) {
-        if (e) {
-            e.preventDefault()
-        }
-
-        if (modal) {
-            $('#system-message').modal('hide')
-        }
-
-        this.props.dismissMessage()
-    }
-
-    // Show errors, warnings, info and success messages
-    _renderSystemMessage() {
-        clearTimeout(this.messageTimeout)
-        const systemMessage = this.props.systemMessage.toJS()
-
-        if (Object.keys(systemMessage).length === 0) {
-            return null
-        }
-
-        let msg
-        if (typeof systemMessage.msg === 'string') {
-            const body = sanitizeHtmlDefault(systemMessage.msg)
-            msg = <div dangerouslySetInnerHTML={{__html: body}}></div>
-        } else {
-            msg = systemMessage.msg
-        }
-
-        if (systemMessage.modal) {
-            return this._renderModalSystemMessage(systemMessage, msg)
-        }
-        const messageType = {
-            neutral: '',
-            error: 'negative',
-            warning: 'warning',
-            info: 'info',
-            success: 'success',
-            loading: 'info'
-        }[systemMessage.type]
-
-        if (systemMessage.type === 'info' || systemMessage.type === 'success') {
-            this.messageTimeout = setTimeout(this._handleDismissClick, 4500)
-        }
-
-        return (
-            <ReactCSSTransitionGroup
-                transitionAppear
-                transitionName="fade"
-                transitionAppearTimeout={200}
-                transitionEnterTimeout={200}
-                transitionLeaveTimeout={200}
-            >
-                <div id="system-message" className={`ui ${messageType} message`}>
-                    <i className="close icon" onClick={this._handleDismissClick} />
-                    <div className="header">{systemMessage.header}</div>
-                    {msg}
-                </div>
-            </ReactCSSTransitionGroup>
-        )
-    }
-
-    _renderModalSystemMessage(systemMessage, msg) {
-        return (
-            <div id="system-message" className="ui modal">
-                <i className="close icon" onClick={e => this._handleDismissClick(e, true)} />
-                <div className="header">{systemMessage.header}</div>
-                <div className="content">
-                    {systemMessage.options.title || ''}
-                    <div>{msg}</div>
-                </div>
-                <div className="actions">
-                    <div className="ui button" onClick={e => this._handleDismissClick(e, true)}>
-                        Discard
-                    </div>
-                    {
-                        () => {
-                            // Render actions if any.
-                            if (systemMessage.options.actions) {
-                                return systemMessage.options.actions.map((action, idx) => (
-                                    <div key={idx}
-                                         className={action.className}
-                                         onClick={(e) => {
-                                             this._handleDismissClick(e, true)
-                                             action.onClick()
-                                         }}
-                                    >
-                                        {action.msg}
-                                    </div>
-                                ))
-                            }
-                            return null
-                        }
-                    }
-                </div>
-            </div>
-        )
-    }
-
     render() {
         return (
             <DocumentTitle title="Gorgias">
@@ -203,8 +89,10 @@ class App extends React.Component {
 
                     <KeyboardHelp />
 
-                    {this._renderSystemMessage()}
-
+                    <Notifications
+                        notifications={this.props.notifications}
+                        style={NOTIFICATIONS_STYLE_CONFIG}
+                    />
                 </div>
             </DocumentTitle>
         )
@@ -212,10 +100,6 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-    // System Message handling (errors, info, success..)
-    systemMessage: PropTypes.object,
-    dismissMessage: PropTypes.func.isRequired,
-
     // current logged in user
     currentUser: PropTypes.object,
     activity: PropTypes.object,
@@ -236,19 +120,19 @@ App.propTypes = {
     infobar: PropTypes.node,
     activeContent: PropTypes.object,
 
-    content: PropTypes.node
+    content: PropTypes.node,
+    notifications: PropTypes.array
 }
 
 function mapStateToProps(state) {
     return {
-        systemMessage: state.systemMessage,
         currentUser: state.currentUser,
-        activity: state.activity
+        activity: state.activity,
+        notifications: state.notifications
     }
 }
 
 export default connect(mapStateToProps, {
-    dismissMessage,
     fetchUser,
     fetchUsers,
     fetchSettings,

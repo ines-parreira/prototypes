@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { List } from 'immutable'
+import {List} from 'immutable'
 
 import * as types from './constants'
-import { systemMessage } from '../systemMessage/actions'
+import {notify} from '../notifications/actions'
 
 /* Actions */
 export const addRuleStart = (type, code) => ({
@@ -64,9 +64,9 @@ export const create = (data) => {
 export const save = (data) => {
     return dispatch => {
         return axios.post('/api/rules/', data)
-            .then(() => dispatch(systemMessage({
+            .then(() => dispatch(notify({
                 type: 'success',
-                msg: 'Rule saved!',
+                message: 'Rule saved successfully',
             })))
             .catch(error => dispatch(fail(error, 'Unable to save the rule')))
     }
@@ -78,7 +78,7 @@ export const save = (data) => {
  */
 export const reset = (index) => {
     return (dispatch, getState) => {
-        const { id } = getState().rules.get(index)
+        const {id} = getState().rules.get(index)
         return axios.get(`/api/rules/${id}`)
             .then((json = {}) => json.data)
             .then(response => dispatch(modifyCodeast(

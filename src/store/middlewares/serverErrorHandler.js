@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import {systemMessage} from '../../state/systemMessage/actions'
+import {notify} from '../../state/notifications/actions'
 
 /**
  * Middleware displaying errors from server when the error property exists
@@ -16,10 +16,9 @@ const serverErrorHandler = store => next => action => {
 
         console.error('ERROR', message, action.error)
 
-        store.dispatch(systemMessage({
+        store.dispatch(notify({
             type: 'error',
-            header: `Error: ${message}.`,
-            internalMessage: message
+            message: `${message}${_.endsWith(message, '.') ? '' : '.'}`
         }))
     }
 
