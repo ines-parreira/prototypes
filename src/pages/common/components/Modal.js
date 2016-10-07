@@ -9,14 +9,16 @@ import React from 'react'
  * @param {element} children - Elements to display as modal
  */
 class Modal extends React.Component {
-
     static defaultProps = {
         isShow: false,
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.isShow) $(this.refs.modal).modal('show')
-        else $(this.refs.modal).modal('hide')
+        if (nextProps.isShow) {
+            $(this.refs.modal).modal('show')
+        } else {
+            $(this.refs.modal).modal('hide')
+        }
     }
 
     render() {

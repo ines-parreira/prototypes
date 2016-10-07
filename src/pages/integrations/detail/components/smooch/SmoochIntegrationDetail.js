@@ -24,7 +24,9 @@ class SmoochIntegrationDetail extends React.Component {
         this.isInitialized = !props.isUpdate
 
         // populating new integration form
-        if (!props.isUpdate) props.initialize(defaultContent)
+        if (!props.isUpdate) {
+            props.initialize(defaultContent)
+        }
     }
 
     componentWillUpdate(nextProps) {
@@ -56,7 +58,9 @@ class SmoochIntegrationDetail extends React.Component {
 
         const isSubmitting = loading.get('updateIntegration')
 
-        if (loading.get('integration')) return <Loader />
+        if (loading.get('integration')) {
+            return <Loader />
+        }
 
         return (
             <div className="ui grid">

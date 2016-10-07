@@ -11,7 +11,10 @@ class RuleItem extends React.Component {
 
     componentDidMount() {
         const { actions, index, rule } = this.props
-        if (!rule.code) actions.rules.initialiseCodeAST(index)
+
+        if (!rule.code) {
+            actions.rules.initialiseCodeAST(index)
+        }
     }
 
     _handleSubmit = (event) => {
@@ -28,7 +31,10 @@ class RuleItem extends React.Component {
     _handleReset = (event) => {
         event.preventDefault()
         const { actions, index } = this.props
-        if (confirm('Are you sure to reset this rule?')) actions.rules.reset(index)
+
+        if (confirm('Are you sure to reset this rule?')) {
+            actions.rules.reset(index)
+        }
     }
 
     render() {

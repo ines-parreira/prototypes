@@ -7,8 +7,11 @@ class AddActionOrIfStatement extends React.Component {
     componentDidMount() {
         $(this.refs.dropdown).dropdown({
             onChange: (value) => {
-                if (value === 'action') this._addAction()
-                else this._addIfStatement()
+                if (value === 'action') {
+                    this._addAction()
+                } else {
+                    this._addIfStatement()
+                }
             }
         })
     }

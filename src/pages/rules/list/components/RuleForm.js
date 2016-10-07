@@ -23,6 +23,7 @@ class RuleForm extends React.Component {
             disabled: submitting || !valid || pristine,
             loading: submitting,
         })
+
         return (
             <form className="ui form" onSubmit={handleSubmit(this._handleSubmit)}>
                 <Field
@@ -62,7 +63,9 @@ RuleForm.propTypes = {
 const validate = (values) => {
     const errors = {}
 
-    if (!values.title) errors.title = 'Required'
+    if (!values.title) {
+        errors.title = 'Required'
+    }
 
     return errors
 }

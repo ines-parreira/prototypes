@@ -5,7 +5,6 @@ import React from 'react'
  * @param Component
  */
 const Hoverable = Component => class Hovered extends React.Component {
-
     static childContextTypes = {
         hovered: React.PropTypes.bool,
     }
@@ -20,11 +19,15 @@ const Hoverable = Component => class Hovered extends React.Component {
     }
 
     _handleMouseEnter = () => {
-        if (!this.state.hovered) this.setState({ hovered: true })
+        if (!this.state.hovered) {
+            this.setState({ hovered: true })
+        }
     }
 
     _handleMouseLeave = () => {
-        if (this.state.hovered) this.setState({ hovered: false })
+        if (this.state.hovered) {
+            this.setState({ hovered: false })
+        }
     }
 
     render() {
@@ -34,7 +37,6 @@ const Hoverable = Component => class Hovered extends React.Component {
             </span>
         )
     }
-
 }
 
 export default Hoverable

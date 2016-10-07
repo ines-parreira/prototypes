@@ -11,7 +11,11 @@ export default (state = initialState, action) => {
     switch (action.type) {
         case types.ADD_RULE_END: {
             const rule = action.rule
-            if (rule.code) rule.code_ast = getAST(rule.code)
+
+            if (rule.code) {
+                rule.code_ast = getAST(rule.code)
+            }
+
             return state.push(rule)
         }
 
@@ -21,7 +25,10 @@ export default (state = initialState, action) => {
         case types.RULES_RECEIVE_POSTS: {
             // Given the code of the rules received from server convert the code to AST
             const ruleList = action.rules.map((ruleItem) => {
-                if (ruleItem.code) ruleItem.code_ast = getAST(ruleItem.code)
+                if (ruleItem.code) {
+                    ruleItem.code_ast = getAST(ruleItem.code)
+                }
+
                 return ruleItem
             })
 
@@ -67,8 +74,11 @@ export default (state = initialState, action) => {
 
                         // Update all the leaves on the right side of this one
                         for (const pathItem of possiblePaths) {
-                            if (shouldUpdate) stateItemNew = stateItemNew.updateIn(pathItem, () => '')
-                            else shouldUpdate = pathFull.equals(pathItem)
+                            if (shouldUpdate) {
+                                stateItemNew = stateItemNew.updateIn(pathItem, () => '')
+                            } else {
+                                shouldUpdate = pathFull.equals(pathItem)
+                            }
                         }
                     }
                 } else {
@@ -113,14 +123,17 @@ export default (state = initialState, action) => {
                  *        "type": "BlockStatement"
                  *        "body": []
                  *     }
-                 * */
+                 */
+
                 if ((valueP === undefined) && (pathFull.get(pathFull.size - 2) === 'alternate')) {
                     const pathElse = pathFull.pop()
                     stateItemNew = stateItem.updateIn(pathElse.toJS(), () => fromJS({
                         type: 'BlockStatement',
                         body: [value],
                     }))
-                } else stateItemNew = stateItem.updateIn(pathFull.toJS(), list => list.push(value))
+                } else {
+                    stateItemNew = stateItem.updateIn(pathFull.toJS(), list => list.push(value))
+                }
             }
             if (operation === 'DELETE') {
                 const lastIndex = pathFull.last()
@@ -128,21 +141,22 @@ export default (state = initialState, action) => {
                 stateItemNew = stateItem.updateIn(pathNew.toJS(), list => list.delete(lastIndex))
             }
 
-            /* Add logical AND operation in TEST block of IFSTATEMENT.
-             */
+            // Add logical AND operation in TEST block of IFSTATEMENT.
             if (operation === 'UPDATE_LOGICAL_AND') {
                 const test = stateItem.getIn(pathFull.toJS())
                 value.right = test.toJS()
                 stateItemNew = stateItem.updateIn(pathFull.toJS(), () => value)
             }
 
-            /* Operating on the syntax tree to delete the binary expression.
+            /*
+             * Operating on the syntax tree to delete the binary expression.
              * We assume the statement includes only AND. And the order is
              * enforced like:
              * if (ticket.status == 'channel' && (ticket.status == 'channel' && ticket.status == 'new'))
              *
              * This assumption will stay true since in UPDATE_LOGICAL_AND, we force this order.
              */
+
             if (operation === 'DELETE_BINARY_EXPRESSION') {
                 const lastIndex = pathFull.last()
                 const pathNew = pathFull.pop()

@@ -33,7 +33,9 @@ class Widget extends React.Component {
     render() {
         const { value, leftsiblings, schemas, parent } = this.props
 
-        if (!(schemas && schemas.size && leftsiblings && leftsiblings.size)) return null
+        if (!(schemas && schemas.size && leftsiblings && leftsiblings.size)) {
+            return null
+        }
 
         let left = leftsiblings
         // we need to figure out if the path contains '$ref' objects, then resolve them from that
@@ -73,7 +75,9 @@ class Widget extends React.Component {
                 const prop = props[key]
 
                 // only show props that have a meta value
-                if (!prop.hasOwnProperty('meta')) continue
+                if (!prop.hasOwnProperty('meta')) {
+                    continue
+                }
 
                 widget.options.push(key)
                 widget.description = prop.description
@@ -81,20 +85,32 @@ class Widget extends React.Component {
         } else if (left.last() === 'operators') {
             // operators are using simple select widget, all we need is the options
             const operators = schemas.getIn(left)
-            if (operators) widget.options = operators.toJS()
+
+            if (operators) {
+                widget.options = operators.toJS()
+            }
         } else {
             // all other properties
             const right = schemas.getIn(left)
-            if (!right) return this.input(value)
+
+            if (!right) {
+                return this.input(value)
+            }
 
             widget.type = right.getIn(['meta', 'rules', 'widget'])
-            if (!widget.type) return this.input(value)
+
+            if (!widget.type) {
+                return this.input(value)
+            }
 
             widget.description = right.get('description')
-
             widget.options = right.getIn(['meta', 'enum'])
-            if (widget.options) widget.options = widget.options.toJS()
-            else return this.input(value)
+
+            if (widget.options) {
+                widget.options = widget.options.toJS()
+            } else {
+                return this.input(value)
+            }
         }
 
         switch (widget.type) {

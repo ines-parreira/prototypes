@@ -29,7 +29,9 @@ export default class TextAreaField extends React.Component {
             }
 
             this.setState({correctJson: correct, text: v || this.default})
-        } else this.props.input.onChange(v)
+        } else {
+            this.props.input.onChange(v)
+        }
     }
 
     render() {

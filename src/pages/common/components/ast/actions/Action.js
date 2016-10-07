@@ -14,11 +14,18 @@ class Action extends React.Component {
 
     _renderBody = () => {
         const { children, value } = this.props
-        if (!value) return null
+
+        if (!value) {
+            return null
+        }
 
         // Determine the display mode
         const compact = actionsConfig[value] ? actionsConfig[value].compact : false
-        if (compact) return <span>{children}</span>
+
+        if (compact) {
+            return <span>{children}</span>
+        }
+
         return <div className="ui segment">{children}</div>
     }
 
