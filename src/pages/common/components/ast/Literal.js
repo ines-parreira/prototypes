@@ -30,7 +30,7 @@ Literal.propTypes = {
     leftsiblings: React.PropTypes.object.isRequired,
     parent: React.PropTypes.object.isRequired,
     schemas: React.PropTypes.object.isRequired,
-    value: React.PropTypes.string.isRequired,
+    value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool]).isRequired,
 }
 
 export default Literal

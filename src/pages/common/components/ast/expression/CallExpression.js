@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import Immutable from 'immutable'
-import {upperFirst} from 'lodash'
+import { upperFirst } from 'lodash'
 
 import Action from '../actions/Action'
 import Expression from './Expression'
@@ -57,7 +57,7 @@ class CallExpression extends React.Component {
             }
 
             return (
-                <span className="CallExpression">
+                <span>
                     <Expression
                         {...funcArgs[0]}
                         parent={parent.push('arguments', 0)}
@@ -134,7 +134,7 @@ class CallExpression extends React.Component {
 
         // The case for Actions.
         return (
-            <span className="CallExpression">
+            <span>
                 <span className="callee">
                     <Expression
                         {...callee}
@@ -153,18 +153,17 @@ class CallExpression extends React.Component {
 }
 
 CallExpression.propTypes = {
-    type: PropTypes.string,
-    callee: PropTypes.object.isRequired,
+    actions: PropTypes.object,
     arguments: PropTypes.array.isRequired,
+    callee: PropTypes.object.isRequired,
     index: PropTypes.number,
     parent: PropTypes.object,
-
+    type: PropTypes.string,
     schemas: PropTypes.object.isRequired,
-    actions: PropTypes.object
 }
 
 CallExpression.contextTypes = {
-    hovered: React.PropTypes.bool,
+    hovered: PropTypes.bool,
 }
 
 export default Hoverable(CallExpression)

@@ -12,26 +12,23 @@ class Widget extends React.Component {
         actions.rules.modifyCodeast(index, parent, value, 'UPDATE')
     }
 
+    _handleChangeByEvent = (event) => {
+        const { actions, index, parent } = this.props
+        actions.rules.modifyCodeast(index, parent, event.target.value, 'UPDATE')
+    }
+
     input = (value) => (
-        <div className="ui input">
-            <input
-                value={value}
-                onChange={this._handleChange}
-                type="text"
-            />
-        </div>
+        <span className="ui input">
+            <input type="text" value={value} onChange={this._handleChangeByEvent} />
+        </span>
     )
 
     textarea = (value) => (
-        <textarea
-            value={value}
-            onChange={this._handleChange}
-            type="text"
-        />
+        <textarea type="text" value={value} onChange={this._handleChangeByEvent} />
     )
 
     render() {
-        const { value, leftsiblings, schemas, parent } = this.props
+        const { leftsiblings, schemas, value } = this.props
 
         if (!(schemas && schemas.size && leftsiblings && leftsiblings.size)) {
             return null
@@ -92,37 +89,28 @@ class Widget extends React.Component {
         } else {
             // all other properties
             const right = schemas.getIn(left)
-
             if (!right) {
                 return this.input(value)
             }
 
             widget.type = right.getIn(['meta', 'rules', 'widget'])
-
             if (!widget.type) {
                 return this.input(value)
             }
 
-            widget.description = right.get('description')
             widget.options = right.getIn(['meta', 'enum'])
-
             if (widget.options) {
                 widget.options = widget.options.toJS()
             } else {
                 return this.input(value)
             }
+
+            widget.description = right.get('description')
         }
 
         switch (widget.type) {
             case 'select':
-                return (
-                    <Select
-                        {...widget}
-                        style={{ backgroundColor: 'white' }}
-                        isCallee={parent.contains('callee')}
-                        handleChange={this._handleChange}
-                    />
-                )
+                return <Select {...widget} onChange={this._handleChange} />
             case 'input':
                 return this.input(value)
             case 'textarea':
