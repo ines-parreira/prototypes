@@ -67,49 +67,6 @@ describe('widgets infobar utils', () => {
         })
     })
 
-    describe('droppable path', () => {
-        const inputs = [
-            {
-                value: '',
-                expect: ''
-            },
-            {
-                value: 'ticket',
-                expect: ''
-            },
-            {
-                value: 'ticket.requester[]',
-                expect: 'ticket'
-            },
-            {
-                value: 'ticket.requester[].hello',
-                expect: 'ticket.requester[]'
-            },
-            {
-                value: 'ticket.requester[].hello.world',
-                expect: 'ticket.requester[].hello'
-            },
-            {
-                value: 'ticket.requester[].hello[].world',
-                expect: 'ticket.requester[].hello[]'
-            },
-            {
-                value: 'ticket.requester[].hello[]',
-                expect: 'ticket.requester[]'
-            },
-            {
-                value: 'ticket.requester[].hello[][]',
-                expect: 'ticket.requester[]'
-            }
-        ]
-
-        it('transform OK', () => {
-            inputs.forEach((input) => {
-                expect(utils.droppablePath(input.value)).toBe(input.expect)
-            })
-        })
-    })
-
     describe('humanize string', () => {
         const inputs = [
             {
@@ -164,13 +121,6 @@ describe('widgets infobar utils', () => {
                     }
                 }
             }),
-            fromJS({
-                imaginaryKey: {
-                    something: {
-                        really: 'yes'
-                    }
-                }
-            }),
             fromJS({})
         ]
 
@@ -187,6 +137,13 @@ describe('widgets infobar utils', () => {
             }),
             fromJS({
                 imaginaryKey: {}
+            }),
+            fromJS({
+                imaginaryKey: {
+                    something: {
+                        really: 'yes'
+                    }
+                }
             })
         ]
 

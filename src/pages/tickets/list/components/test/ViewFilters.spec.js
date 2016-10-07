@@ -1,11 +1,8 @@
 import expect from 'expect'
 import React from 'react'
-import {Map, fromJS} from 'immutable'
+import {fromJS} from 'immutable'
 import TestUtils from 'react-addons-test-utils'
-import ViewFilters, {CallExpression} from '../ViewFilters'
-
-const openapi = require('../../../../../fixtures/openapi.json')
-const openTicketsView = require('../../../../../fixtures/open_tickets_view.json')
+import ViewFilters from '../ViewFilters'
 
 function setup(props) {
     const renderer = TestUtils.createRenderer()
@@ -27,20 +24,10 @@ describe('components', () => {
         })
         it('message with empty props', () => {
             const {output} = setup({
-                view: Map(),
-                schemas: Map({x: 1})
+                view: fromJS({}),
+                schemas: fromJS({x: 1})
             })
             expect(output).toEqual(<div className="no-filters">No filters selected</div>)
-        })
-        it('open tickets - ok', () => {
-            const props = {
-                view: fromJS(openTicketsView),
-                schemas: fromJS(openapi)
-            }
-            const {output} = setup(props)
-            expect(output.props.children.type).toBe(CallExpression)
-            TestUtils.renderIntoDocument(output)
-            // todo(@xarg): check that document has the relevant dom
         })
     })
 })

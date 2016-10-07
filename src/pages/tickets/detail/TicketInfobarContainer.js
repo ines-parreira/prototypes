@@ -1,30 +1,32 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {Link} from 'react-router'
+import {browserHistory} from 'react-router'
+import classnames from 'classnames'
 import * as WidgetActions from '../../../state/widgets/actions'
 import Infobar from './components/infobar/Infobar'
 import TicketInfobar from './components/infobar/TicketInfobar'
 import {fromJS} from 'immutable'
 import {Loader} from '../../common/components/Loader'
 import {isTicketDifferent} from './../common/utils'
+import {areSourcesReady} from './components/infobar/utils'
 
 import * as InfobarActions from '../../../state/infobar/actions'
 import InfobarSearchResultsList from '../../common/components/InfobarSearchResultsList'
 import Search from './../../common/components/Search'
 
 class TicketsInfobarContainer extends React.Component {
-    componentWillMount() {
-        const fetch = this.props.actions.widgets.fetchWidgets({
-            ticket: this.props.ticket,
-            type: 'ticket'
-        })
+    constructor(props) {
+        super(props)
 
-        // if editing, start in edition mode when widgets have been fetched
-        if (this.props.route.isEditingWidgets) {
-            // start edition mode
-            fetch.then(this.props.actions.startEdition)
-        }
+        this.ticketWidgetsTemplate = fromJS([])
+    }
+
+    componentWillMount() {
+        const {actions} = this.props
+
+        actions.widgets.selectContext('ticket')
+        actions.widgets.fetchWidgets()
     }
 
     shouldComponentUpdate(nextProps) {
@@ -35,7 +37,14 @@ class TicketsInfobarContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.ticket.get('id') !== nextProps.ticket.get('id')) {
-            this.props.actions.infobar.resetSearch()
+            nextProps.actions.infobar.resetSearch()
+        }
+
+        const isEditingParam = !!nextProps.route.isEditingWidgets
+        const isEditing = nextProps.widgets.getIn(['_internal', 'isEditing'])
+
+        if (isEditingParam !== isEditing) {
+            this._toggleEditionMode(isEditingParam)
         }
     }
 
@@ -43,8 +52,10 @@ class TicketsInfobarContainer extends React.Component {
         this.props.actions.infobar.resetSearch()
     }
 
+    /**
+     * Populate infobar state from search results
+     */
     _search = (query, params, stringQuery) => {
-        /** populate infobar state from search results **/
         if (stringQuery) {
             this.props.actions.infobar.search(query, 'user', ['id', 'name', 'email', 'channels'])
         } else {
@@ -52,54 +63,146 @@ class TicketsInfobarContainer extends React.Component {
         }
     }
 
+    /**
+     * Save edited widgets to database
+     */
+    _saveWidgets = () => {
+        const {actions, widgets} = this.props
+
+        const editedItems = widgets.getIn(['_internal', 'editedItems'], fromJS([])).toJS()
+
+        actions.widgets.submitWidgets(editedItems)
+    }
+
+    /**
+     * Cancel widgets edition modifications
+     */
+    _cancelWidgetsUpdates = () => {
+        const {actions} = this.props
+        actions.widgets.startEditionMode('ticket')
+    }
+
+    /**
+     * Set the edition mode to passed one
+     */
+    _toggleEditionMode = (isEditing) => {
+        const {actions, params} = this.props
+
+        if (isEditing) {
+            actions.widgets.startEditionMode('ticket')
+            browserHistory.push(`/app/ticket/${params.ticketId}/edit-widgets`)
+        } else {
+            actions.widgets.stopEditionMode()
+            browserHistory.push(`/app/ticket/${params.ticketId}`)
+        }
+    }
+
+    /**
+     * Render edition options such as save or cancel
+     */
+    _renderWidgetsEditionTools = () => {
+        const {widgets} = this.props
+
+        const isDirty = widgets.getIn(['_internal', 'isDirty'])
+        const isSavingWidgets = widgets.getIn(['_internal', 'loading', 'saving'])
+
+        return (
+            <div className="infobar-footer">
+                <div>
+                    <button
+                        className={classnames('ui green small button', {
+                            loading: isSavingWidgets
+                        })}
+                        disabled={isSavingWidgets || !isDirty}
+                        onClick={this._saveWidgets}
+                    >
+                        Save changes
+                    </button>
+                    <button
+                        className="ui small button"
+                        disabled={isSavingWidgets || !isDirty}
+                        onClick={this._cancelWidgetsUpdates}
+                    >
+                        Cancel changes
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
     render() {
+        const {
+            actions,
+            ticket,
+            widgets,
+            route,
+            infobar,
+            params
+        } = this.props
+
         let sources = fromJS({
-            ticket: this.props.ticket
+            ticket
         })
 
-        const isEditing = this.props.route.isEditingWidgets
+        let content = <Loader />
 
-        // for now we want to display the bar all the time, even if empty
-        // const shouldDisplayBar = source && !source.isEmpty() && !widgets.isEmpty()
-        //
-        // if (!shouldDisplayBar) {
-        //     return null
-        // }
+        const mode = infobar.getIn(['_internal', 'mode'], 'default')
 
-        let content = <div className="ui active loader"/>
+        const isLoading = infobar
+            .getIn(['_internal', 'loading'], fromJS({}))
+            .some(loading => loading)
 
-        if (this.props.ticket.get('requester') && this.props.infobar.getIn(['_internal', 'mode']) === 'default') {
+        const isEditing = widgets.getIn(['_internal', 'isEditing'])
+        const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
+
+        // if there is no complete user to display, search the user name
+        const customer = ticket.getIn(['requester', 'customer'], fromJS({}))
+        const hasCustomer = customer && !customer.isEmpty()
+        const shouldForceSearch = !hasCustomer
+            && ticket.getIn(['requester', 'name'])
+            && mode === 'default'
+        const forcedQuery = shouldForceSearch ? ticket.getIn(['requester', 'name']) : null
+
+        const canEditWidgets = !isLoading
+            && hasFetchedWidgets
+            && areSourcesReady(sources)
+            && mode === 'default'
+            && !forcedQuery
+
+        if (isLoading) {
+            // loading
+            content = <Loader />
+        } else if (mode === 'default' && !forcedQuery) {
+            // current ticket user info
             content = (
-                !this.props.widgets.getIn(['_internal', 'hasFetchedWidgets']) ? (
+                !hasFetchedWidgets ? (
                     <Loader />
                 ) : (
                     <TicketInfobar
                         sources={sources}
                         isEditing={isEditing}
-                        ticket={this.props.ticket}
-                        widgets={this.props.widgets}
-                        actions={this.props.actions.widgets}
+                        ticket={ticket}
+                        widgets={widgets}
+                        actions={actions.widgets}
+                        route={route}
+                        params={params}
                     />
                 )
             )
-        }
-
-        if (
-            this.props.infobar.getIn(['_internal', 'mode']) === 'search' &&
-            !this.props.infobar.getIn(['_internal', 'loading', 'search'])
-        ) {
+        } else if (mode === 'search') {
+            // list of found users
             content = (
                 <InfobarSearchResultsList
-                    searchResults={this.props.infobar.get('searchResults')}
-                    fetchPreviewUser={this.props.actions.infobar.fetchPreviewUser}
+                    searchResults={infobar.get('searchResults')}
+                    fetchPreviewUser={actions.infobar.fetchPreviewUser}
                 />
             )
-        } else if (
-            this.props.infobar.getIn(['_internal', 'mode']) === 'preview' &&
-            !this.props.infobar.getIn(['_internal', 'loading', 'displayedUser'])
-        ) {
+        } else if (mode === 'preview') {
+            // selected user info
+            const tweakedTicket = ticket.set('requester', infobar.get('displayedUser'))
+
             sources = fromJS({
-                ticket: this.props.ticket.set('requester', this.props.infobar.get('displayedUser'))
+                ticket: tweakedTicket
             })
 
             content = (
@@ -107,46 +210,39 @@ class TicketsInfobarContainer extends React.Component {
                     <div className="preview-buttons-wrapper">
                         <div
                             className="ui button left-button"
-                            onClick={() => this.props.actions.infobar.setInfobarMode('search')}
+                            onClick={() => actions.infobar.setInfobarMode('search')}
                         >
-                            <i className="ui arrow left icon"/>
+                            <i className="ui arrow left icon" />
                             BACK
                         </div>
 
                         {/*
-                        <div
-                            className="ui button right-button disabled"
-                            style={{float: 'right'}}
-                        >
-                            MERGE
-                        </div>
-                        */}
+                         <div
+                         className="ui button right-button disabled"
+                         style={{float: 'right'}}
+                         >
+                         MERGE
+                         </div>
+                         */}
                     </div>
                     <TicketInfobar
                         sources={sources}
                         isEditing={isEditing}
-                        ticket={this.props.ticket.set('requester', this.props.infobar.get('displayedUser'))}
-                        widgets={this.props.widgets}
-                        actions={this.props.actions.widgets}
+                        ticket={tweakedTicket}
+                        widgets={widgets}
+                        actions={actions.widgets}
+                        route={route}
+                        params={params}
                     />
                 </div>
             )
-        } else if (!this.props.ticket.get('id')) {
+        } else if (!ticket.get('id')) {
+            // if new ticket
             content = null
         }
 
-        let forcedQuery = null
-
-        if (
-            !this.props.ticket.getIn(['requester', 'customer']) &&
-            this.props.ticket.getIn(['requester', 'name']) &&
-            this.props.infobar.getIn(['_internal', 'mode']) === 'default'
-        ) {
-            forcedQuery = this.props.ticket.getIn(['requester', 'name'])
-        }
-
         return (
-            <Infobar actions={this.props.actions.infobar}>
+            <Infobar>
                 <div className="infobar-content">
                     <div className="infobar-search-wrapper">
                         <Search
@@ -154,8 +250,9 @@ class TicketsInfobarContainer extends React.Component {
                             bindKey
                             onChange={this._search}
                             forcedQuery={forcedQuery}
-                            location={this.props.ticket.get('id')}
+                            location={ticket.get('id')}
                             queryPath="bool.should.0.multi_match.query"
+                            disabled={isEditing}
                             query={{
                                 bool: {
                                     should: [
@@ -170,73 +267,58 @@ class TicketsInfobarContainer extends React.Component {
                                 }
                             }}
                         />
+
+                        <button
+                            className={classnames('ui icon button icon-edit-mode', {
+                                active: isEditing,
+                                disabled: !canEditWidgets
+                            })}
+                            onClick={() => {
+                                if (canEditWidgets) {
+                                    this._toggleEditionMode(!isEditing)
+                                }
+                            }}
+                            title="Manage widgets"
+                        >
+                            <i className="setting icon" />
+                        </button>
                     </div>
                     <div className="infobar-box">
-                        {
-                            // hiding edit button for now
-                            false && !isEditing && (
-                                <Link
-                                    className="ui green button"
-                                    onClick={this.props.actions.startEdition}
-                                    to={`/app/ticket/${this.props.params.ticketId}/edit-widgets`}
-                                >
-                                    Edit
-                                </Link>
-                            )
-                        }
-                        {
-                            isEditing && (
-                                <div className="ui message">
-                                    <p>
-                                        Currently editing
-                                    </p>
-                                    <Link
-                                        className="ui red button"
-                                        onClick={this.props.actions.stopEdition}
-                                        to={`/app/ticket/${this.props.params.ticketId}`}
-                                    >
-                                        Stop edition
-                                    </Link>
-                                    <button
-                                        className="ui green button"
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                            )
-                        }
                         {content}
                     </div>
                 </div>
+                {
+                    isEditing && this._renderWidgetsEditionTools()
+                }
             </Infobar>
         )
     }
 }
 
 TicketsInfobarContainer.propTypes = {
-    params: PropTypes.object,
-    widgets: PropTypes.object.isRequired,
-    ticket: PropTypes.object.isRequired,
-    infobar: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    route: PropTypes.object.isRequired
+    infobar: PropTypes.object.isRequired,
+    params: PropTypes.object,
+    route: PropTypes.object.isRequired,
+    ticket: PropTypes.object.isRequired,
+    widgets: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
     return {
-        widgets: state.widgets,
-        ticket: state.ticket,
+        currentUser: state.currentUser,
         infobar: state.infobar,
-        currentUser: state.currentUser
+        ticket: state.ticket,
+        widgets: state.widgets
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
-            widgets: bindActionCreators(WidgetActions, dispatch),
             infobar: bindActionCreators(InfobarActions, dispatch),
+            widgets: bindActionCreators(WidgetActions, dispatch),
         }
     }
 }

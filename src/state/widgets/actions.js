@@ -1,6 +1,10 @@
 import axios from 'axios'
 import * as types from './constants'
-import {jsonToTemplate} from '../../pages/tickets/detail/components/infobar/utils'
+import {Map} from 'immutable'
+import {notify} from '../notifications/actions'
+import {jsonToWidgets} from '../../pages/tickets/detail/components/infobar/utils'
+import _pick from 'lodash/pick'
+import _size from 'lodash/size'
 
 export function fetchWidgets() {
     return (dispatch) => {
@@ -30,16 +34,16 @@ export function fetchWidgets() {
     }
 }
 
-export function startEdition(context = 'ticket') {
+export function startEditionMode(context = 'ticket') {
     return {
-        type: types.START_EDITION,
+        type: types.START_EDITION_MODE,
         context
     }
 }
 
-export function stopEdition() {
+export function stopEditionMode() {
     return {
-        type: types.STOP_EDITION
+        type: types.STOP_EDITION_MODE
     }
 }
 
@@ -56,22 +60,43 @@ export function stopWidgetEdition() {
     }
 }
 
-export function generateAndSetWidgets(sources) {
+export function generateAndSetWidgets(sources, context = 'ticket') {
     return (dispatch) => {
         // generate template
-        const template = jsonToTemplate(sources.toJS())
+        const items = jsonToWidgets(sources.toJS(), context)
 
         dispatch({
             type: types.GENERATE_AND_SET_WIDGETS,
-            items: template
+            items,
+            context
         })
     }
 }
 
-export function drag(sourceAbsolutePath) {
+export function setEditedWidgets(items) {
+    return {
+        type: types.SET_EDITED_WIDGETS,
+        items
+    }
+}
+
+export function setEditionAsDirty() {
+    return {
+        type: types.SET_EDITION_AS_DIRTY
+    }
+}
+
+export function selectContext(context = 'ticket') {
+    return {
+        type: types.SELECT_CONTEXT,
+        context
+    }
+}
+
+export function drag(group) {
     return {
         type: types.DRAG,
-        absolutePath: sourceAbsolutePath
+        group
     }
 }
 
@@ -81,15 +106,18 @@ export function cancelDrag() {
     }
 }
 
-export function drop(targetAbsolutePath = '', templatePath = '') {
+export function drop(eventType, targetParentTemplatePath = '', key = '', toIndex = 0, fromIndex = 0) {
     return (dispatch, getState) => {
         dispatch({
             type: types.DROP,
-            templatePath,
-            targetAbsolutePath,
-            source: {
+            eventType,
+            key,
+            toIndex,
+            fromIndex,
+            targetParentTemplatePath,
+            source: Map({
                 ticket: getState().ticket
-            }
+            })
         })
     }
 }
@@ -109,28 +137,60 @@ export function removeEditedWidget(templatePath = '', absolutePath = '') {
     }
 }
 
-export function addEditedWidget(widget) {
-    return {
-        type: types.ADD_EDITED_WIDGET,
-        item: widget
-    }
-}
+export function submitWidgets(data) {
+    return (dispatch, getState) => {
+        const context = getState().widgets.get('currentContext', 'ticket')
 
-export function addFieldEditedWidget(widgetIndex, field, fieldIndex) {
-    return {
-        type: types.ADD_FIELD_EDITED_WIDGET,
-        widgetIndex,
-        field,
-        fieldIndex
-    }
-}
+        dispatch({
+            type: types.SUBMIT_WIDGET_START
+        })
 
-export function updateFieldEditedWidget(widgetIndex, field, fieldIndex) {
-    return {
-        type: types.UPDATE_FIELD_EDITED_WIDGET,
-        widgetIndex,
-        fieldIndex,
-        field
+        let items = data || []
+
+        // clear widgets, remove those with empty template
+        items = items.filter((item) => {
+            return _size(item.template || {}) > 0
+        })
+
+        // if no widget, just put an empty one
+        if (!items.length) {
+            items = [{
+                order: 0,
+                type: 'custom',
+                context,
+                template: {}
+            }]
+        }
+
+        // re assign order number and pick only interesting fields
+        items = items.map((item, i) => {
+            const updatedItem = item
+            updatedItem.order = i
+            return _pick(updatedItem, ['id', 'order', 'template', 'context', 'type'])
+        })
+
+        return axios
+            .put('/api/widgets/', items)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.SUBMIT_WIDGET_SUCCESS,
+                    items: resp.data,
+                    context
+                })
+
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Widgets successfully updated'
+                }))
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.SUBMIT_WIDGET_ERROR,
+                    error,
+                    reason: 'Failed to update widgets'
+                })
+            })
     }
 }
 

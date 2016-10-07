@@ -186,11 +186,6 @@ export function stripHTML(text) {
     }
 }
 
-export function truncate(text, length) {
-    const slice = text.slice(0, length)
-    return slice !== text ? `${slice} ...` : text
-}
-
 /** sanitizeHtml with a sensible config. */
 export function sanitizeHtmlDefault(html) {
     return sanitizeHtml(html, {

@@ -1,0 +1,98 @@
+import React from 'react'
+
+import classNames from 'classnames'
+
+export default class JsonField extends React.Component {
+    constructor(props) {
+        super(props)
+
+        let text = JSON.stringify(props.input.value, undefined, 4)
+
+        if (text === '""') {
+            text = null
+        }
+
+        this.default = 'null'
+        this.state = {
+            isCorrectJson: true,
+            text: text || this.default
+        }
+    }
+
+    _onChange(v) {
+        let correct = true
+
+        try {
+            this.props.input.onChange(JSON.parse(v || this.default))
+        } catch (e) {
+            correct = false
+        }
+
+        this.setState({
+            isCorrectJson: correct,
+            text: v || this.default
+        })
+    }
+
+    _renderWarning = (isCorrectJson) => {
+        if (isCorrectJson) {
+            return
+        }
+
+        return (
+            <div className="ui error message">
+                <p>
+                    <i className="icon warning sign" /> Invalid JSON : changes will not be saved until the JSON is fixed
+                </p>
+            </div>
+        )
+    }
+
+    render() {
+        const {input, label, placeholder, required} = this.props
+
+        // we want our own control of this input, so we do not inherit onChange and value
+        const props = {
+            name: input.name
+        }
+
+        if (required) {
+            props.required = true
+        }
+
+        props.onChange = (e) => this._onChange(e.target.value)
+
+        props.value = this.state.text || input.value
+
+        const fieldClassName = classNames('field', {
+            required,
+            error: !this.state.isCorrectJson
+        })
+
+        return (
+            <div className={fieldClassName}>
+                {
+                    label && (
+                        <label htmlFor={input.name}>{label}</label>
+                    )
+                }
+                <textarea
+                    {...props}
+                    placeholder={placeholder}
+                />
+                {this._renderWarning(this.state.isCorrectJson)}
+            </div>
+        )
+    }
+}
+
+JsonField.defaultProps = {
+    required: false
+}
+
+JsonField.propTypes = {
+    input: React.PropTypes.object.isRequired,
+    label: React.PropTypes.string,
+    placeholder: React.PropTypes.string,
+    required: React.PropTypes.bool,
+}

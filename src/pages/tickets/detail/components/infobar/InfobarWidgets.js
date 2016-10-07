@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react'
 import InfobarWidget from './InfobarWidget'
+import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import {DEFAULT_SOURCE_PATH} from '../../../../../config'
+import DragWrapper from '../common/DragWrapper'
+import {canDisplayWidget} from '../../components/infobar/utils'
 
 class InfobarWidgets extends React.Component {
     render() {
@@ -15,45 +17,49 @@ class InfobarWidgets extends React.Component {
             return null
         }
 
-        // check if widgets configuration has a root widget
-        const hasRootWidget = !!widgets.find((value) => {
-            return value.get('path') === DEFAULT_SOURCE_PATH
+        const isEditing = !!(editing && editing.isEditing)
+
+        const className = classnames('widgets-list', {
+            editing: isEditing,
+            dragging: !!(editing && editing.isDragging)
         })
 
-        const rootWidgetOnDrag = {
-            type: 'card',
-            path: DEFAULT_SOURCE_PATH
-        }
-
         return (
-            <div>
-                {
-                    // add a root empty widget if there is no
-                    // and if the dragged component can be dropped there
-                    !hasRootWidget && editing && editing.isDragging && editing.canDrop(DEFAULT_SOURCE_PATH) && (
-                        <InfobarWidget
-                            source={source}
-                            widget={fromJS(rootWidgetOnDrag)}
-                            editing={editing}
-                        />
-                    )
-                }
+            <div className={className}>
+                <DragWrapper
+                    actions={editing && editing.actions}
+                    sort
+                    group={{
+                        name: 'root',
+                        pull: false,
+                        put: true
+                    }}
+                    isEditing={isEditing}
+                    watchDrop
+                >
+                    {
+                        widgets
+                            .map((widget, i) => {
+                                const passedWidget = widget
+                                    .get('template', fromJS({}))
+                                    .set('templatePath', `${i}.template`)
 
-                {(() => {
-                    return widgets.map((widget, i) => {
-                        const passedWidget = widget
-                            .set('templatePath', i.toString())
+                                if (!canDisplayWidget(passedWidget, source)) {
+                                    return null
+                                }
 
-                        return (
-                            <InfobarWidget
-                                key={i}
-                                source={source}
-                                widget={passedWidget}
-                                editing={editing}
-                            />
-                        )
-                    })
-                })()}
+                                return (
+                                    <InfobarWidget
+                                        key={`${widget.get('order')}-${i}`}
+                                        source={source}
+                                        widget={passedWidget}
+                                        editing={editing}
+                                        isEditing={isEditing}
+                                    />
+                                )
+                            })
+                    }
+                </DragWrapper>
             </div>
         )
     }

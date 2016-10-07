@@ -141,7 +141,7 @@ export default class TicketsView extends React.Component {
                                             </div>
                                             <div className="divider"></div>
                                             <div
-                                                className="item tickets-view-settings-delete"
+                                                className="item text-danger"
                                                 onClick={this.viewActionDelete}
                                             >
                                                 Delete view

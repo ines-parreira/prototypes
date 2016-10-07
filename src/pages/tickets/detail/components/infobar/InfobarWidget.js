@@ -4,10 +4,12 @@ import _ from 'lodash'
 import {fromJS} from 'immutable'
 import {DatetimeLabel} from '../../../../common/utils/labels'
 import * as utils from '../../../../../utils'
+import {prepareWidgetToDisplay} from './utils'
 
-import ListWidget from './widgets/ListWidget'
-import CardWidget from './widgets/CardWidget'
-import FieldWidget from './widgets/FieldWidget'
+import ListInfobarWidget from './widgets/ListInfobarWidget'
+import WrapperInfobarWidget from './widgets/WrapperInfobarWidget'
+import CardInfobarWidget from './widgets/CardInfobarWidget'
+import FieldInfobarWidget from './widgets/FieldInfobarWidget'
 
 class InfobarWidget extends React.Component {
     render() {
@@ -15,34 +17,50 @@ class InfobarWidget extends React.Component {
             parent,
             source,
             widget,
-            editing
+            editing,
+            isEditing
         } = this.props
 
-        // prevent buggy display if source is empty
-        if (!source || source.isEmpty()) {
+        // prevent buggy display if source...
+        // ... is empty
+        if (!source) {
             return null
         }
 
-        // build absolute path of widget
-        const parentPath = !!parent && parent.get('absolutePath', parent.get('path', ''))
-        const ownPath = widget.get('path', '')
-        const absolutePath = parentPath ? `${parentPath}${ownPath ? `.${ownPath}` : ''}` : widget.get('path')
-        let updatedWidget = widget.set('absolutePath', absolutePath)
+        // ... is not an object
+        if (!_.isObject(source)) {
+            return null
+        }
 
-        // get data of widget in shortcuts
-        const path = updatedWidget.get('path', '')
-        const data = path ? source.getIn(path.split('.')) : source
-        const type = updatedWidget.get('type', '')
+        // ... is not immutable
+        if (!source.isEmpty || (source.isEmpty && !_.isFunction(source.isEmpty))) {
+            return null
+        }
+
+        // ... is an empty Immutable
+        if (source.isEmpty()) {
+            return null
+        }
+
+        const {updatedWidget, data, type} = prepareWidgetToDisplay(widget, source, parent)
 
         const isParentList = parent && parent.get('type') === 'list'
 
-        const isEditing = (editing && editing.isEditing) || false
-
         // DISPLAY
         switch (type) {
+            case 'wrapper': {
+                return (
+                    <WrapperInfobarWidget
+                        isEditing={isEditing}
+                        source={data || fromJS({})}
+                        widget={updatedWidget}
+                        editing={editing}
+                    />
+                )
+            }
             case 'list': {
                 return (
-                    <ListWidget
+                    <ListInfobarWidget
                         isEditing={isEditing}
                         isParentList={isParentList}
                         source={data || fromJS({})}
@@ -53,20 +71,14 @@ class InfobarWidget extends React.Component {
             }
             case 'card': {
                 return (
-                    <CardWidget
+                    <CardInfobarWidget
                         isEditing={isEditing}
                         isParentList={isParentList}
                         source={data || fromJS({})}
                         widget={updatedWidget}
                         editing={editing}
+                        parent={parent}
                     />
-                )
-            }
-            case 'message': {
-                return (
-                    <div className={`ui message ${updatedWidget.getIn(['decoration', 'class'], '')}`}>
-                        <p>{updatedWidget.get('title')}</p>
-                    </div>
                 )
             }
             case 'divider': {
@@ -147,7 +159,7 @@ class InfobarWidget extends React.Component {
         }
 
         return (
-            <FieldWidget
+            <FieldInfobarWidget
                 isEditing={isEditing}
                 isParentList={isParentList}
                 value={fieldValue}
@@ -162,7 +174,8 @@ InfobarWidget.propTypes = {
     editing: PropTypes.object,
     parent: PropTypes.object,
     source: PropTypes.object.isRequired,
-    widget: PropTypes.object.isRequired
+    widget: PropTypes.object.isRequired,
+    isEditing: PropTypes.bool.isRequired
 }
 
 export default InfobarWidget

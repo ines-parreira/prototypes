@@ -1,8 +1,31 @@
 import React, {PropTypes} from 'react'
 import _ from 'lodash'
+import classnames from 'classnames'
 import TooltipWidgetEditField from '../forms/TooltipWidgetEditField'
 
-class FieldWidget extends React.Component {
+class FieldInfobarWidget extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.isEdited = false
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {isEditing, editing, widget} = nextProps
+
+        if (editing) {
+            const tp = widget.get('templatePath')
+            const currentlyEditedWidgetPath = editing.state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
+            this.isEdited = isEditing && tp === currentlyEditedWidgetPath
+        }
+    }
+
+    /**
+     * Display label (before the value)
+     * @param label
+     * @returns {*}
+     * @private
+     */
     _displayLabel = (label) => {
         const defaultLabel = '-'
 
@@ -33,7 +56,7 @@ class FieldWidget extends React.Component {
         }
     }
 
-    _removeField = (e) => {
+    _deleteField = (e) => {
         const {editing} = this.props
 
         e.stopPropagation()
@@ -44,30 +67,36 @@ class FieldWidget extends React.Component {
         }
     }
 
+    /**
+     * Render buttons of action for this field
+     * @returns {*}
+     * @private
+     */
     _renderTools = () => {
         const {isEditing} = this.props
+
         if (!isEditing) {
             return null
         }
+
         return (
-            <span style={{float: 'right'}}>
-                <i
-                    className="link write icon"
-                    onClick={(e) => {
-                        e.stopPropagation()
-                    }}
-                />
+            <span className="tools">
                 <i
                     className="red link remove icon"
-                    onClick={this._removeField}
+                    onClick={this._deleteField}
                 />
             </span>
         )
     }
+
+    /**
+     * Render tooltip of edition
+     * @returns {JSX}
+     * @private
+     */
     _renderTooltip = () => {
-        const {isEditing, editing, widget} = this.props
-        const tp = widget.get('templatePath')
-        if (isEditing && tp === editing._internal.get('currentlyEditedWidgetPath', '')) {
+        const {editing, widget} = this.props
+        if (this.isEdited) {
             return (
                 <TooltipWidgetEditField
                     widget={widget}
@@ -75,15 +104,18 @@ class FieldWidget extends React.Component {
                 />
             )
         }
-        return null
     }
 
     render() {
         const {widget, value} = this.props
 
+        const className = classnames('simple-field draggable', {
+            edited: this.isEdited
+        })
+
         return (
             <div
-                className="simple-field"
+                className={className}
                 onClick={this._startWidgetEdition}
             >
                 <span className="field-label">
@@ -99,11 +131,12 @@ class FieldWidget extends React.Component {
     }
 }
 
-FieldWidget.propTypes = {
+FieldInfobarWidget.propTypes = {
     editing: PropTypes.object,
     value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
+        PropTypes.bool,
         PropTypes.object,
     ]).isRequired,
     widget: PropTypes.object.isRequired,
@@ -111,9 +144,9 @@ FieldWidget.propTypes = {
     isParentList: PropTypes.bool.isRequired
 }
 
-FieldWidget.defaultProps = {
+FieldInfobarWidget.defaultProps = {
     isEditing: false,
     isParentList: false
 }
 
-export default FieldWidget
+export default FieldInfobarWidget

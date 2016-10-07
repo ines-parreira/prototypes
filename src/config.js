@@ -71,8 +71,10 @@ export const USER_CHANNEL_CLASS = {
 /**
  * Widget related
  */
-export const DEFAULT_SOURCE_PATH = {
-    ticket: 'ticket.requester.customer'
+export const DEFAULT_SOURCE_PATHS = {
+    ticket: [
+        'ticket.requester.customer'
+    ]
 }
 
 /**

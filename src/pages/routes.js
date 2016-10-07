@@ -17,7 +17,7 @@ import ChangePasswordContainer from './users/yourProfile/ChangePasswordContainer
 import StatsContainer from './stats/list/StatsContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
-import WidgetsEditorContainer from './tickets/detail/WidgetsEditorContainer'
+import SourceWidgetsContainer from './tickets/detail/SourceWidgetsContainer'
 
 export default (
     <Route path="/app" component={App}>
@@ -33,7 +33,7 @@ export default (
         }} />
         <Route path="ticket/:ticketId/edit-widgets"
                components={{
-                   content: WidgetsEditorContainer,
+                   content: SourceWidgetsContainer,
                    navbar: TicketNavbarContainer,
                    infobar: TicketInfobarContainer
                }}

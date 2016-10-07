@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {ACTION_TEMPLATES} from '../../../../../config'
 import classnames from 'classnames'
-import { getModifier } from '../../../../../utils'
+import {getModifier} from '../../../../../utils'
 
 export default class MacroPreview extends React.Component {
     _renderSetStatus(setStatusAction) {
@@ -123,7 +123,7 @@ export default class MacroPreview extends React.Component {
         if (!currentMacro) {
             return (
                 <div className="MacroPreview">
-                    <div className="no-macro-container">
+                    <div className="no-result-container">
                         <h4>You don't have any macro you can apply on a batch of tickets.</h4>
                     </div>
                 </div>
@@ -160,7 +160,9 @@ export default class MacroPreview extends React.Component {
                     >
                         Apply macro to {selectedItemsIds.size} tickets
                     </div>
-                    <div id="cancel" className="ui basic grey right floated button" onClick={cancel} data-content="Esc">cancel</div>
+                    <div id="cancel" className="ui basic grey right floated button" onClick={cancel} data-content="Esc">
+                        cancel
+                    </div>
                 </div>
             </div>
         )

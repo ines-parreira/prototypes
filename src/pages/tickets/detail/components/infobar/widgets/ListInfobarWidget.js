@@ -1,0 +1,110 @@
+import React, {PropTypes} from 'react'
+import classnames from 'classnames'
+
+import InfobarWidget from '../InfobarWidget'
+
+class ListInfobarWidget extends React.Component {
+    render() {
+        const {
+            isEditing,
+            isParentList,
+            source,
+            widget,
+            editing
+        } = this.props
+
+        const updatedWidget = widget
+            .set('absolutePath', `${widget.get('absolutePath')}[]`)
+
+        const passedWidget = updatedWidget
+            .getIn(['widgets', '0'])
+            .set('templatePath', `${updatedWidget.get('templatePath', '')}.widgets.0`)
+
+        const isParentOfCard = updatedWidget.getIn(['widgets', 0, 'type'], '') === 'card'
+
+        // order source
+        let orderedSource = source.toList()
+        const orderByConfig = widget.getIn(['meta', 'orderBy'])
+
+        if (!isEditing && orderByConfig) {
+            // format of config : "-name" would tell order by 'name' DESC
+            const orderByProperty = orderByConfig.slice(1)
+            orderedSource = orderedSource.sort((a, b) => a.get(orderByProperty) - b.get(orderByProperty))
+
+            const orderByDirection = orderByConfig.slice(0, 1)
+            if (orderByDirection === '-') {
+                orderedSource = orderedSource.reverse()
+            }
+        }
+
+        // calculate limit of cards displayed in this array
+        let limit = isEditing ? 1 : widget.getIn(['meta', 'limit'])
+        limit = isParentOfCard ? limit : 1
+        const sourceList = limit ? orderedSource.take(limit) : orderedSource
+
+        let hasExcluded = false
+        let exclusionMessage = ''
+
+        // if there is a limit, explain it under the card
+        if (limit) {
+            const excluded = source.size - limit
+            hasExcluded = excluded > 0
+            exclusionMessage = `${limit} shown above (${excluded} remaining)`
+        }
+
+        const className = classnames('list', {
+            draggable: !isParentList
+        })
+
+        return (
+            <div
+                className={className}
+                data-key={`${widget.get('path')}[]`}
+            >
+                {
+                    sourceList
+                        .map((d, i) => {
+                            return (
+                                <InfobarWidget
+                                    key={i}
+                                    source={d}
+                                    parent={updatedWidget}
+                                    widget={passedWidget}
+                                    editing={editing}
+                                    isEditing={isEditing}
+                                />
+                            )
+                        })
+                }
+                {
+                    !!sourceList.size
+                    && isParentOfCard
+                    && hasExcluded
+                    && (
+                        <div className="ui message blue footer clearfix">
+                            {
+                                hasExcluded && (
+                                    <span>{exclusionMessage}</span>
+                                )
+                            }
+                        </div>
+                    )
+                }
+            </div>
+        )
+    }
+}
+
+ListInfobarWidget.propTypes = {
+    editing: PropTypes.object,
+    source: PropTypes.object.isRequired,
+    widget: PropTypes.object.isRequired,
+    isEditing: PropTypes.bool.isRequired,
+    isParentList: PropTypes.bool.isRequired
+}
+
+ListInfobarWidget.defaultProps = {
+    isEditing: false
+}
+
+export default ListInfobarWidget

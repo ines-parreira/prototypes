@@ -10,7 +10,7 @@ import {
     InputField,
     SelectField,
     MultiSelectField,
-    TextAreaField,
+    JsonField,
     URLInputField
 } from '../../../../common/components/semantic'
 import HeaderFieldArray from './HeaderFieldArray'
@@ -159,7 +159,6 @@ class HttpIntegrationDetail extends React.Component {
                         onSubmit={handleSubmit(this._handleSubmit)}
                     >
                         <Field
-                            type="text"
                             name="name"
                             label="Name"
                             placeholder="Name"
@@ -167,14 +166,12 @@ class HttpIntegrationDetail extends React.Component {
                             component={InputField}
                         />
                         <Field
-                            type="text"
                             name="description"
                             label="Description"
                             placeholder="Description"
                             component={InputField}
                         />
                         <Field
-                            type="text"
                             name="http.url"
                             label="URL"
                             placeholder="URL"
@@ -183,7 +180,6 @@ class HttpIntegrationDetail extends React.Component {
                             component={URLInputField}
                         />
                         <Field
-                            type="text"
                             name="http.method"
                             label="Method"
                             placeholder="Method"
@@ -202,7 +198,6 @@ class HttpIntegrationDetail extends React.Component {
                             }
                         </Field>
                         <Field
-                            type="text"
                             name="http.request_content_type"
                             label="Request content type"
                             required
@@ -219,17 +214,19 @@ class HttpIntegrationDetail extends React.Component {
                         >
                             <option value="application/json">application/json</option>
                         </Field>
-                        <FieldArray name="http.headers" component={HeaderFieldArray} />
 
-                        <Field
-                            type="json"
-                            name="http.form"
-                            label="Request Body (JSON)"
-                            component={TextAreaField}
+                        <FieldArray
+                            name="http.headers"
+                            component={HeaderFieldArray}
                         />
 
                         <Field
-                            type="text"
+                            name="http.form"
+                            label="Request Body (JSON)"
+                            component={JsonField}
+                        />
+
+                        <Field
                             name="http.triggers"
                             label="Triggers"
                             placeholder="Triggers"

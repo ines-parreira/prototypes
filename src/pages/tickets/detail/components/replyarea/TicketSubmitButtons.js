@@ -45,7 +45,7 @@ export default class TicketSubmitButtons extends React.Component {
                     Send
                 </button>
                 <button type="submit"
-                    className={classNames(...commonClasses, 'basic')}
+                    className={classNames(...commonClasses, 'inverted')}
                     tabIndex="5"
                     onClick={() => this.submit('closed', true)}
                     data-html={`${getModifier()} + Shift + Enter`}

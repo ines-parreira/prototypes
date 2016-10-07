@@ -15,7 +15,7 @@ export const initialState = fromJS({
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case types.SEARCH_USERS_START:
+        case types.SEARCH_USERS_START: {
             return state.mergeDeep({
                 _internal: {
                     loading: {
@@ -24,13 +24,15 @@ export default (state = initialState, action) => {
                     mode: 'search'
                 }
             })
+        }
 
-        case types.SEARCH_USERS_SUCCESS:
+        case types.SEARCH_USERS_SUCCESS: {
             return state
                 .setIn(['_internal', 'loading', 'search'], false)
                 .set('searchResults', fromJS(action.resp.data.slice(0, 4))) // we only take the first 5 results
+        }
 
-        case types.RESET_SEARCH:
+        case types.RESET_SEARCH: {
             return state.mergeDeep({
                 _internal: {
                     loading: {
@@ -40,8 +42,9 @@ export default (state = initialState, action) => {
                 },
                 searchResults: []
             })
+        }
 
-        case types.FETCH_PREVIEW_USER_START:
+        case types.FETCH_PREVIEW_USER_START: {
             return state.mergeDeep({
                 _internal: {
                     loading: {
@@ -50,18 +53,17 @@ export default (state = initialState, action) => {
                     mode: 'preview'
                 }
             })
+        }
 
-        case types.FETCH_PREVIEW_USER_SUCCESS:
-            return state.mergeDeep({
-                _internal: {
-                    loading: {
-                        displayedUser: false
-                    }
-                }
-            }).set('displayedUser', fromJS(action.resp))
+        case types.FETCH_PREVIEW_USER_SUCCESS: {
+            return state
+                .setIn(['_internal', 'loading', 'displayedUser'], false)
+                .set('displayedUser', fromJS(action.resp))
+        }
 
-        case types.SET_INFOBAR_MODE:
+        case types.SET_INFOBAR_MODE: {
             return state.setIn(['_internal', 'mode'], action.mode)
+        }
 
         default:
             return state

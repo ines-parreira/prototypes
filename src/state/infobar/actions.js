@@ -1,7 +1,7 @@
 import axios from 'axios'
 import * as types from './constants'
 
-export const search = (query, docType, source) => ((dispatch) => {
+export const search = (query, docType = 'user', source = []) => ((dispatch) => {
     dispatch({
         type: docType === 'user' ? types.SEARCH_USERS_START : types.SEARCH_TICKETS_START
     })
@@ -22,7 +22,7 @@ export const search = (query, docType, source) => ((dispatch) => {
         })
         .catch(error => {
             dispatch({
-                type: 'ERROR',
+                type: docType === 'user' ? types.SEARCH_USERS_ERROR : types.SEARCH_TICKETS_ERROR,
                 error,
                 reason: 'Failed to do the search. Please try again...'
             })
@@ -48,7 +48,7 @@ export const fetchPreviewUser = (userId) => ((dispatch) => {
         })
         .catch(error => {
             dispatch({
-                type: 'ERROR',
+                type: types.FETCH_PREVIEW_USER_ERROR,
                 error,
                 reason: 'Couldn\'t fetch the user. Please try again in a few minutes.'
             })

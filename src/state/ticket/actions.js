@@ -283,10 +283,11 @@ export function deleteMessage(ticketId, messageId) {
     }
 }
 
-export function fetchTicket(ticketId) {
+export function fetchTicket(ticketId, displayLoading = true) {
     return (dispatch) => {
         dispatch({
-            type: types.FETCH_TICKET_START
+            type: types.FETCH_TICKET_START,
+            displayLoading
         })
 
         dispatch({

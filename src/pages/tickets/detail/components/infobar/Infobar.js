@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react'
 
 class Infobar extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.cursorX = null
         this.originalWidth = 0
@@ -12,10 +12,7 @@ class Infobar extends React.Component {
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'
 
-        let width = window.localStorage.getItem('infobar-width')
-        if (!width) {
-            width = this.minWidth
-        }
+        const width = window.localStorage.getItem('infobar-width') || this.minWidth
 
         this.state = {width}
     }
@@ -77,8 +74,12 @@ class Infobar extends React.Component {
         }
 
         return (
-            <div className="infobar" ref="container" style={style}>
-                <div className="infobar-drag-handle"></div>
+            <div
+                className="infobar"
+                ref="container"
+                style={style}
+            >
+                <div className="infobar-drag-handle" />
                 {
                     this.props.children
                 }
@@ -88,9 +89,10 @@ class Infobar extends React.Component {
 }
 
 Infobar.propTypes = {
-    children: PropTypes.object,
-    content: PropTypes.node,
-    actions: PropTypes.object
+    children: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ])
 }
 
 export default Infobar

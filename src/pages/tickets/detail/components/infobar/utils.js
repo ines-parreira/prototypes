@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import _ from 'lodash'
 import moment from 'moment-timezone'
 import {isUrl, isEmail} from '../../../../../utils'
-import {DEFAULT_SOURCE_PATH} from '../../../../../config'
+import {DEFAULT_SOURCE_PATHS} from '../../../../../config'
 
 const Raven = window.Raven
 
@@ -30,7 +30,7 @@ export function isObject(value) {
  * @returns {boolean}
  */
 export function isSimpleTemplateWidget(widget) {
-    return widget.type !== 'card' && widget.type !== 'list'
+    return !['card', 'list'].includes(widget.get('type'))
 }
 
 export function isUppercase(string) {
@@ -38,26 +38,29 @@ export function isUppercase(string) {
 }
 
 /**
- * Return the path to which a source path can be dropped
- * Ex: ticket.orders[].hello.world to ticket.orders[].hello
+ * Remove last "[]" from the passed path
+ * Ex: ticket.orders[] to ticket.orders
  * @param path
  * @returns {*}
  */
-export function droppablePath(path) {
+export function stripLastListsFromPath(path = '') {
     let newPath = path
 
-    // list and their objects are considered the same thing
-    // if we find one or more [] at the end, we remove them
     while (_.endsWith(newPath, '[]')) {
         newPath = newPath.slice(0, -2)
     }
 
-    // build the resulting path
-    return _.chain(newPath)
-        .split('.')
-        .initial()
-        .join('.')
-        .value()
+    return newPath
+}
+
+/**
+ * Return true if passed absolute path is a root source
+ * Ex : ticket.requester.customer
+ * @param group (= absolute path OR 'root')
+ * @returns {*}
+ */
+export function isRootSource(group) {
+    return group === 'root'
 }
 
 /**
@@ -69,7 +72,7 @@ export function humanizeString(text) {
     return _.chain(text)
         .trim('.-_')
         .replace(/([A-Z])/g, ' $1')
-        .replace(/[_\s]+/g, ' ')
+        .replace(/[_.\s]+/g, ' ')
         .toLower()
         .upperFirst()
         .value()
@@ -127,34 +130,69 @@ export function renderTemplate(text, context = {}) {
             interpolate: /{([\s\S]+?)}/g
         })(context)
     } catch (e) {
-        return ''
+        return text
     }
 }
 
 /**
  * Return true if sources exist and are not empty
  * @param sources
+ * @param everySources
  * @returns {*|boolean}
  */
-export function areSourcesReady(sources) {
+export function areSourcesReady(sources, everySources = true) {
     // for every source
     return sources.every((source, key) => {
         // get the path we have to search in
         // ex : ticket.requester.customer -> requester.customer (because ticket is already in source)
-        const sourcePath = _.get(DEFAULT_SOURCE_PATH, key, '')
+        const sourcePaths = _.get(DEFAULT_SOURCE_PATHS, key)
 
-        // we remove the first property of the source origin path since we are searching directly in the source
-        // ex : we transform ticket.requester.customer into ['requester', 'customer']
-        const immutableSourcePath = sourcePath.split('.').slice(1)
-
-        const sourceData = source.getIn(immutableSourcePath, fromJS({}))
-
-        if (!sourceData) {
+        if (!sourcePaths) {
             return false
         }
 
-        return !sourceData.isEmpty()
+        const condition = everySources ? 'every' : 'some'
+
+        return sourcePaths[condition]((sourcePath) => {
+            // we remove the first property of the source origin path since we are searching directly in the source
+            // ex : we transform ticket.requester.customer into ['requester', 'customer']
+            const immutableSourcePath = sourcePath.split('.').slice(1)
+
+            const sourceData = source.getIn(immutableSourcePath, fromJS({}))
+
+            if (!sourceData) {
+                return false
+            }
+
+            return !sourceData.isEmpty()
+        })
     })
+}
+
+/**
+ * Return true if can display the passed widget according to passed source
+ * Passed widget should be a wrapper
+ * @param widget
+ * @param source
+ * @returns {boolean}
+ */
+export function canDisplayWidget(widget, source) {
+    if (widget.get('type') !== 'wrapper') {
+        return false
+    }
+
+    const splitPath = widget.get('path', '').split('.')
+
+    if (!splitPath.length) {
+        return false
+    }
+
+    // ex : ticket, user, etc.
+    const initialSourceName = splitPath[0]
+
+    return areSourcesReady(fromJS({
+        [initialSourceName]: source.get(initialSourceName, fromJS({}))
+    }))
 }
 
 /**
@@ -221,18 +259,18 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
         // other kind of field
         let type = 'text'
 
-        if (isDate(value)) {
-            type = 'date'
-        } else if (isUrl(value)) {
-            type = 'url'
-        } else if (isEmail(value)) {
-            type = 'email'
-        } else if (isBoolean(value)) {
-            type = 'boolean'
+        if (_.isArray(value)) {
+            type = 'array'
         } else if (key === 'birthday') {
             type = 'age'
-        } else if (_.isArray(value)) {
-            type = 'array'
+        } else if (isBoolean(value)) {
+            type = 'boolean'
+        } else if (isEmail(value)) {
+            type = 'email'
+        } else if (isUrl(value)) {
+            type = 'url'
+        } else if (isDate(value)) {
+            type = 'date'
         }
 
         const response = {
@@ -251,13 +289,17 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
 
         console.error(message)
 
-        Raven.captureException(err, {
-            extra: {
-                description: message,
-                json: value,
-                key
-            }
-        })
+        if (Raven) {
+            Raven.captureException(err, {
+                extra: {
+                    description: message,
+                    json: value,
+                    key
+                }
+            })
+        } else {
+            console.error('Here are some details', value, key)
+        }
 
         return {}
     }
@@ -269,65 +311,56 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
  * @param context
  * @returns {*}
  */
-export function jsonToTemplate(json, context = 'ticket') {
+export function jsonToWidgets(json, context = 'ticket') {
     const defaultResponse = []
 
     try {
-        const sourcePath = _.get(DEFAULT_SOURCE_PATH, context, '')
-        const source = _.get(json, sourcePath.split('.'), {})
+        const sourcePaths = _.get(DEFAULT_SOURCE_PATHS, context, '')
 
-        let template = jsonToWidget(source)
+        const response = sourcePaths
+            .map((sourcePath, i) => {
+                const source = _.get(json, sourcePath.split('.'), {})
 
-        if (!template || !_.size(template)) {
-            return defaultResponse
-        }
+                let template = jsonToWidget(source)
 
-        // since the source json is one big object
-        // we dont want one big card to wrap thw other widgets
-        // so lets keep the first widget children widgets``
-        template = template.widgets
+                if (!template || !_.size(template)) {
+                    return null
+                }
 
-        // get simple attributes (like text, url, etc.) at root in separate object
-        const simpleWidgets = _.filter(template, isSimpleTemplateWidget)
+                // set each widget in a wrapper
+                template = {
+                    type: 'wrapper',
+                    title: humanizeString(sourcePath),
+                    path: sourcePath,
+                    widgets: [template]
+                }
 
-        // put simple attribute in a separate card
-        if (simpleWidgets.length) {
-            // remove isolated attributes from json
-            template = _.reject(template, isSimpleTemplateWidget)
-            // add new object for isolated attributes
-            template.unshift({
-                type: 'card',
-                path: '',
-                widgets: simpleWidgets
+                return {
+                    type: 'custom',
+                    order: i,
+                    context,
+                    template
+                }
             })
-        }
 
-        if (sourcePath) {
-            // prefix the source path to every root widgets
-            // ex : path: 'orders' becomes path: 'ticket.requester.customer.orders' in context 'ticket'
-            template = template.map((w) => {
-                const widget = w
-                widget.path = widget.path ? `${sourcePath}.${widget.path}` : sourcePath
-                return widget
-            })
-        }
-
-        return [{
-            context,
-            template
-        }]
+        // remove null widgets
+        return _.compact(response)
     } catch (err) {
         const message = 'Conversion of json to infobar widgets template failed'
 
         console.error(message)
 
-        Raven.captureException(err, {
-            extra: {
-                description: message,
-                json,
-                context
-            }
-        })
+        if (Raven) {
+            Raven.captureException(err, {
+                extra: {
+                    description: message,
+                    json,
+                    context
+                }
+            })
+        } else {
+            console.error('Here are some details', json, context)
+        }
 
         return defaultResponse
     }
@@ -335,54 +368,42 @@ export function jsonToTemplate(json, context = 'ticket') {
 
 /**
  * Return true if you can drop something at source path to a card in target path
- * @param sourceAbsolutePath
- * @param widgets
+ * @param group (= absolute path OR 'root')
  * @param targetAbsolutePath
- * @param targetTemplateParent
  * @returns {boolean}
  */
-export function canDrop(sourceAbsolutePath, widgets = fromJS([]), targetAbsolutePath, targetTemplateParent) {
-    const sourceDroppablePath = droppablePath(sourceAbsolutePath)
-
-    const propertyName = _.chain(sourceAbsolutePath)
-        .split('.')
-        .last()
-        .trim('.[]')
-        .value()
-
-    // used to check that the source property does not already exist in the target
-    let widgetsList = fromJS([])
-    // if no root widget, take all widgets of root properties
-    if (_.isUndefined(targetTemplateParent)) {
-        widgetsList = widgets
-    } else {
-        // take widgets from its path
-        // Ex: 'customer.child' widgets when moving a 'child' property such as 'name' or 'age'
-        widgetsList = widgets
-            .getIn(targetTemplateParent.split('.'))
-            .get('widgets', fromJS([]))
-
-        // if path of target is root, take root widget + all widgets of root properties
-        if (!targetAbsolutePath) {
-            widgetsList = widgets.concat(widgetsList)
-        }
+export function canDrop(group = '', targetAbsolutePath = '') {
+    // root source
+    if (isRootSource(group)) {
+        return !targetAbsolutePath
     }
 
-    /**
-     * Ex :
-     * sourceAbsolutePath ; 'user.orders[].name'
-     * sourceDroppablePath : 'user.orders[]'
-     * targetAbsolutePath : 'user.orders[]'
-     */
+    return group === targetAbsolutePath
+}
 
-    // source parent object is same object as the target
-    return sourceDroppablePath === targetAbsolutePath
-        // object can not be dropped to itself (only inside its parent)
-        && sourceAbsolutePath !== targetAbsolutePath
-        // check that the source object is in the target object
-        && sourceAbsolutePath.includes(targetAbsolutePath)
-        // check that the dragged property does not already exists in the target
-        && !widgetsList.find((child) => {
-            return child.get('path', '') === propertyName
-        })
+/**
+ * Format some data from widget before it is display
+ * @param widget
+ * @param source
+ * @param parent
+ * @returns {{updatedWidget: *, data: *, type: *, path: *}}
+ */
+export function prepareWidgetToDisplay(widget = fromJS({}), source = fromJS({}), parent) {
+    // build absolute path of widget
+    const parentPath = !!parent && parent.get('absolutePath', parent.get('path', ''))
+    const ownPath = widget.get('path', '')
+    const absolutePath = parentPath ? `${parentPath}${ownPath ? `.${ownPath}` : ''}` : widget.get('path')
+    const updatedWidget = widget.set('absolutePath', absolutePath)
+
+    // get data of widget in shortcuts
+    const path = updatedWidget.get('path', '')
+    const data = path ? source.getIn(path.split('.')) : source
+    const type = updatedWidget.get('type', '')
+
+    return {
+        updatedWidget,
+        data,
+        type,
+        path
+    }
 }

@@ -193,13 +193,14 @@ export default class TicketMacros extends React.Component {
 
         if (!items.size) {
             content = (
-                <div className="no-macro-container">
+                <div className="no-result-container">
                     <h4>You don't have any macros yet.</h4>
-                    <div className="ui large light blue labeled icon fluid button"
-                         onClick={() => this.props.openModal()}
+                    <div
+                        className="ui small light labeled icon blue button"
+                        onClick={() => this.props.openModal()}
                     >
                         <i className="plus icon" />
-                        CREATE A NEW MACRO
+                        Create a new macro
                     </div>
                 </div>
             )

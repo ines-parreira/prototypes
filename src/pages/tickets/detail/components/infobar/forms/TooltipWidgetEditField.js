@@ -1,10 +1,13 @@
 import React, {PropTypes} from 'react'
+import ReactDOM from 'react-dom'
 import {Field, reduxForm} from 'redux-form'
 import {InputField, SelectField} from '../../../../../common/components/semantic'
 
 class TooltipWidgetEditField extends React.Component {
     componentDidMount() {
         const {widget} = this.props
+
+        document.addEventListener('click', this._onClickOutside, false)
 
         // populating the form
         this.props.initialize({
@@ -13,8 +16,18 @@ class TooltipWidgetEditField extends React.Component {
         })
     }
 
+    componentWillUnmount() {
+        document.removeEventListener('click', this._onClickOutside, false)
+    }
+
     _preventPropagation = (e) => {
         e.stopPropagation()
+    }
+
+    _onClickOutside = (e) => {
+        if (!ReactDOM.findDOMNode(this).contains(e.target)) {
+            this._closePopup(e)
+        }
     }
 
     _closePopup = (e) => {
@@ -43,23 +56,19 @@ class TooltipWidgetEditField extends React.Component {
                         onSubmit={handleSubmit(this._handleSubmit)}
                     >
                         <Field
-                            type="text"
+                            label="Title"
                             name="title"
-                            placeholder="Label"
                             required
                             component={InputField}
                         />
                         <Field
-                            type="text"
+                            label="Type"
                             name="type"
-                            placeholder="Type"
                             required
                             component={SelectField}
                         >
-                            <option value="" disabled>Type</option>
                             <option value="text">Text</option>
                             <option value="date">Date</option>
-                            <option value="datetime">Datetime</option>
                             <option value="age">Age</option>
                             <option value="url">Url</option>
                             <option value="email">Email</option>
@@ -77,7 +86,7 @@ class TooltipWidgetEditField extends React.Component {
                             </div>
                             <div className="field">
                                 <button
-                                    className="ui tiny fluid orange basic button"
+                                    className="ui tiny fluid basic button"
                                     type="button"
                                     onClick={this._closePopup}
                                 >

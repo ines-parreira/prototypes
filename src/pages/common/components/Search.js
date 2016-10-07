@@ -67,7 +67,9 @@ export default class Search extends React.Component {
 
     render() {
         const containerClasses = classNames('ui search', this.props.className)
-        const inputClasses = classNames('ui small icon fluid input')
+        const inputClasses = classNames('ui small icon fluid input', {
+            disabled: this.props.disabled
+        })
 
         return (
             <div className={containerClasses}>
@@ -79,6 +81,7 @@ export default class Search extends React.Component {
                         placeholder={this.props.placeholder || 'Search'}
                         onChange={this._debouncedSearch}
                         autoFocus={this.props.autofocus}
+                        disabled={this.props.disabled}
                     />
                     <i className="search icon" />
                 </div>
@@ -93,6 +96,7 @@ Search.propTypes = {
     queryPath: PropTypes.string.isRequired,
     params: PropTypes.object,
     forcedQuery: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    disabled: PropTypes.bool,
 
     className: PropTypes.string,
     placeholder: PropTypes.string,
@@ -100,6 +104,9 @@ Search.propTypes = {
     bindKey: PropTypes.bool,
     searchDebounceTime: PropTypes.number,
 
-
     location: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+}
+
+Search.defaultProps = {
+    disabled: false
 }

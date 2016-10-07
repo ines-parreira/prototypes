@@ -97,7 +97,6 @@ class SmoochIntegrationDetail extends React.Component {
                         onSubmit={handleSubmit(this._handleSubmit)}
                     >
                         <Field
-                            type="text"
                             name="name"
                             label="Name"
                             placeholder="Name"
@@ -105,7 +104,6 @@ class SmoochIntegrationDetail extends React.Component {
                             component={InputField}
                         />
                         <Field
-                            type="text"
                             name="connections[0].data.key.id"
                             label="Key ID"
                             placeholder="Key ID"
@@ -113,7 +111,6 @@ class SmoochIntegrationDetail extends React.Component {
                             component={InputField}
                         />
                         <Field
-                            type="text"
                             name="connections[0].data.key.secret"
                             label="Secret"
                             placeholder="Secret"

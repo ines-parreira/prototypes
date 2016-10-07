@@ -1,30 +1,11 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import classnames from 'classnames'
-import {renderTemplate} from '../utils'
+import DragWrapper from '../../common/DragWrapper'
 
 import InfobarWidget from '../InfobarWidget'
 
-class CardWidget extends React.Component {
-    _dragOrDropCard = (e) => {
-        const {widget, editing} = this.props
-
-        const ap = widget.get('absolutePath')
-        const tp = widget.get('templatePath')
-
-        e.stopPropagation()
-        if (editing) {
-            if (editing.isDragging) {
-                if (editing.canDrop(ap, tp)) {
-                    editing.actions.drop(ap, tp)
-                }
-            } else {
-                editing.actions.drag(ap)
-            }
-        }
-    }
-
-    _deleteCard = (e) => {
+class WrapperInfobarWidget extends React.Component {
+    _deleteWrapper = (e) => {
         const {widget, editing} = this.props
 
         const ap = widget.get('absolutePath')
@@ -39,7 +20,6 @@ class CardWidget extends React.Component {
     render() {
         const {
             isEditing,
-            isParentList,
             source,
             widget,
             editing
@@ -48,29 +28,20 @@ class CardWidget extends React.Component {
         const ap = widget.get('absolutePath')
         const tp = widget.get('templatePath')
 
-        const className = classnames({
-            ui: true,
-            card: true,
-            droppable: editing && editing.canDrop(ap, tp)
-        })
-
         return (
-            <div className={className}
-                 onClick={this._dragOrDropCard}
-            >
+            <div className="ui card wrapper draggable">
                 <div className="content">
                     {
-                        (widget.get('title') || isEditing) && (
+                        isEditing
+                        && (
                             <div className="header clearfix">
                                 {
-                                    renderTemplate(widget.get('title', ''), source.toJS())
-                                }
-                                {
-                                    isEditing && !isParentList && (
-                                        <span style={{float: 'right'}}>
+                                    isEditing
+                                    && (
+                                        <span className="tools">
                                             <i
                                                 className="red link remove icon"
-                                                onClick={this._deleteCard}
+                                                onClick={this._deleteWrapper}
                                             />
                                         </span>
                                     )
@@ -78,7 +49,19 @@ class CardWidget extends React.Component {
                             </div>
                         )
                     }
-                    <div>
+
+                    <DragWrapper
+                        actions={editing && editing.actions}
+                        sort
+                        group={{
+                            name: ap,
+                            pull: false,
+                            put: true
+                        }}
+                        templatePath={tp}
+                        isEditing={isEditing}
+                        watchDrop
+                    >
                         {
                             widget
                                 .get('widgets', fromJS([]))
@@ -88,33 +71,28 @@ class CardWidget extends React.Component {
 
                                     return (
                                         <InfobarWidget
-                                            key={i}
+                                            key={`${passedWidget.get('path')}-${i}`}
                                             source={source}
                                             parent={widget}
                                             widget={passedWidget}
                                             editing={editing}
+                                            isEditing={isEditing}
                                         />
                                     )
                                 })
                         }
-                    </div>
+                    </DragWrapper>
                 </div>
             </div>
         )
     }
 }
 
-CardWidget.propTypes = {
+WrapperInfobarWidget.propTypes = {
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
-    isEditing: PropTypes.bool.isRequired,
-    isParentList: PropTypes.bool.isRequired
+    isEditing: PropTypes.bool.isRequired
 }
 
-CardWidget.defaultProps = {
-    isEditing: false,
-    isParentList: false
-}
-
-export default CardWidget
+export default WrapperInfobarWidget

@@ -190,6 +190,13 @@ export default (state = initialState, action) => {
             )) : newState
         }
 
+        case types.FETCH_TICKET_START: {
+            if (action.displayLoading) {
+                return state.setIn(['state', 'loading'], true)
+            }
+            return state
+        }
+
         case types.FETCH_TICKET_SUCCESS: {
             const newState = state.merge(fromJS(action.resp))
             const sourceType = getSourceTypeOfResponse(newState.get('messages'))

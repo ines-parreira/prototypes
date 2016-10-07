@@ -30,9 +30,11 @@ Left.propTypes = {
 const Operator = ({operators, selected, index, onChange}) => (
     <select className="ui dropdown Operator"
             defaultValue={selected}
-            ref={(select) => window.jQuery && window.jQuery(select).dropdown({
-                onChange: (value) => onChange(index, value)
-            })}
+            ref={(select) => {
+                $(select).dropdown({
+                    onChange: (value) => onChange(index, value)
+                })
+            }}
     >
         {Object.keys(operators).map((o, idx) => (
             <option key={idx} value={o}>{operators[o].label}</option>
@@ -85,7 +87,7 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
     }
 
     if (options.size) {
-        return <RightSelect node={node} options={options} updateFieldFilter={updateFieldFilter} index={index}/>
+        return <RightSelect node={node} options={options} updateFieldFilter={updateFieldFilter} index={index} />
     }
 
     return <span className="ui basic light blue button">{node.value}</span>
@@ -112,31 +114,31 @@ const RightSelect = ({node, options, updateFieldFilter, index}) => {
     }
 
     function createDropdown(select) {
-        if (window.jQuery) {
-            window.jQuery(select).dropdown({
+        $(select)
+            .dropdown({
                 onChange: selectChange
             })
-
-            // semantic-ui doesn't get the selected value the way react sets it.
-            // so we need to manually update it.
-            window.jQuery(select).dropdown('set selected', node.value)
-        }
+            .dropdown('set selected', node.value)
     }
 
     return (
         <div className="view-filters-expression-value">
             <select className="ui search dropdown"
                     value={node.value}
-                    onChange={() => {}}
                     ref={createDropdown}
             >
-                {options.map((option, i) => {
-                    return (
-                        <option key={uid(i, index)} value={option.get('id')}>
-                            {option.get('name')}
-                        </option>
-                    )
-                })}
+                {
+                    options.map((option, i) => {
+                        return (
+                            <option
+                                key={uid(i, index)}
+                                value={option.get('id')}
+                            >
+                                {option.get('name')}
+                            </option>
+                        )
+                    })
+                }
             </select>
         </div>
     )
@@ -149,7 +151,7 @@ RightSelect.propTypes = {
 }
 
 const RemoveCallExpression = ({index, onClick}) => (
-    <i className="remove circle red large action icon" onClick={() => onClick(index)}/>
+    <i className="remove circle red large action icon" onClick={() => onClick(index)} />
 )
 RemoveCallExpression.propTypes = {
     index: PropTypes.number.isRequired,
@@ -167,16 +169,30 @@ export const CallExpression = ({view, schemas, node, updateOperator, removeCondi
 
     return (
         <div className="CallExpression">
-            <Left objectPath={objectPath} view={view}/>
-            <Operator operators={operators} selected={operator.name} index={index} onChange={updateOperator}/>
-            <Right node={right} objectPath={objectPath} agents={agents} tags={tags} currentUser={currentUser} updateFieldFilter={updateFieldFilter} index={index}/>
-            <RemoveCallExpression onClick={removeCondition} index={index}/>
-
-            {(() => {
-                if (parentNode) {
-                    return <OperatorLabel operator={parentNode.operator}/>
-                }
-            })()}
+            <Left
+                objectPath={objectPath}
+                view={view}
+            />
+            <Operator
+                operators={operators}
+                selected={operator.name}
+                index={index}
+                onChange={updateOperator}
+            />
+            <Right
+                node={right}
+                objectPath={objectPath}
+                agents={agents}
+                tags={tags}
+                currentUser={currentUser}
+                updateFieldFilter={updateFieldFilter}
+                index={index}
+            />
+            <RemoveCallExpression
+                onClick={removeCondition}
+                index={index}
+            />
+            {parentNode && <OperatorLabel operator={parentNode.operator} />}
         </div>
     )
 }

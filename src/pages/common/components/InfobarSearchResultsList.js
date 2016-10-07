@@ -25,15 +25,19 @@ export default class InfobarSearchResultsList extends React.Component {
                                     <div className="ui grid">
                                         <div className="twelve wide column">
                                             <h3>{user.get('name')}</h3>
-                                            <p>{user.get('email')}</p>
+                                            {
+                                                user.get('email', '') && (
+                                                    <p>{user.get('email')}</p>
+                                                )
+                                            }
                                         </div>
                                         {/*
-                                        <div className="four wide column">
-                                            <div className="ui grey label">
-                                                MERGE
-                                            </div>
-                                        </div>
-                                        */}
+                                         <div className="four wide column">
+                                         <div className="ui grey label">
+                                         MERGE
+                                         </div>
+                                         </div>
+                                         */}
                                     </div>
                                 </div>
                             )

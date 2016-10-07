@@ -1,14 +1,16 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import InfobarWidgets from './InfobarWidgets'
-import {canDrop, areSourcesReady} from './utils'
+import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
+import {itemsWithContext} from '../../../../../state/widgets/utils'
 import {USER_CHANNEL_CLASS} from '../../../../../config'
 
 export default class TicketInfobar extends React.Component {
     constructor(props) {
         super(props)
 
-        this.ticketTemplate = fromJS([])
+        this.ticketWidgets = fromJS([])
+        this.isInitialized = false
     }
 
     componentWillMount() {
@@ -23,24 +25,73 @@ export default class TicketInfobar extends React.Component {
         this.props.actions.resetWidgets()
     }
 
-    _initWidgets = (props = this.props) => {
-        this.ticketTemplate = props.widgets
-            .get('items', fromJS([]))
-            .find((w) => w.get('context', '') === 'ticket', null, fromJS({}))
-            .get('template', fromJS([]))
+    /**
+     * Generate widgets and set them
+     */
+    _generateWidgets = () => {
+        const {actions, ticket, widgets} = this.props
+        const context = widgets.get('currentContext', '')
 
-        if (props.widgets.getIn(['_internal', 'hasFetchedWidgets'])) {
-            const shouldGenerateWidgets = areSourcesReady(props.sources)
-                && this.ticketTemplate.isEmpty()
-                && !props.widgets.getIn(['_internal', 'hasGeneratedWidgets'])
+        const sources = fromJS({
+            ticket
+        })
+
+        const items = jsonToWidgets(sources.toJS(), context)
+        actions.setEditedWidgets(items)
+        actions.setEditionAsDirty()
+    }
+
+    /**
+     * Initialize widgets and editable widgets
+     * @param props
+     * @private
+     */
+    _initWidgets = (props = this.props) => {
+        const {actions, isEditing, ticket, widgets} = props
+
+        const context = widgets.get('currentContext', '')
+
+        const currentItems = itemsWithContext(widgets.get('items', fromJS([])), context)
+
+        // null = should generate a new widgets template
+        // empty array = user wanted no widgets
+        const hasWidgets = !currentItems.isEmpty()
+
+        this.ticketWidgets = hasWidgets ? currentItems : fromJS([])
+
+        if (widgets.getIn(['_internal', 'hasFetchedWidgets'])) {
+            const sources = fromJS({
+                ticket
+            })
+
+            const shouldGenerateWidgets = areSourcesReady(sources)
+                && !hasWidgets
+                && !widgets.getIn(['_internal', 'hasGeneratedWidgets'])
 
             // if no widgets, generate them from incoming json
             if (shouldGenerateWidgets) {
-                props.actions.generateAndSetWidgets(props.sources)
+                actions.generateAndSetWidgets(sources, context)
+            }
+
+            const shouldSetEditedItems = !this.isInitialized
+                && isEditing
+                && hasWidgets
+
+            // if editing, set template to edit when ready
+            if (shouldSetEditedItems) {
+                // start edition mode
+                actions.setEditedWidgets(currentItems)
+                this.isInitialized = true
             }
         }
     }
 
+    /**
+     * Render user channels like facebook, email address, etc.
+     * @param ticket
+     * @returns {*}
+     * @private
+     */
     _renderUserChannels = (ticket) => {
         return ticket
             .getIn(['requester', 'channels'], fromJS([]))
@@ -88,7 +139,10 @@ export default class TicketInfobar extends React.Component {
                 }
 
                 return (
-                    <p key={idx} className="user-channel">
+                    <p
+                        key={idx}
+                        className="user-channel"
+                    >
                         <i className={iconClass} />
                         {addressComponent}
                     </p>
@@ -96,44 +150,79 @@ export default class TicketInfobar extends React.Component {
             })
     }
 
+    /**
+     * Render a button that generates a widget template as edited template
+     * @returns {JSX}
+     * @private
+     */
+    _renderGenerateButton = () => {
+        return (
+            <div className="no-result-container">
+                <h4>You're not showing any widgets here yet.</h4>
+                <div
+                    className="ui small light blue button"
+                    onClick={this._generateWidgets}
+                >
+                    Generate default widgets
+                </div>
+            </div>
+        )
+    }
+
     render() {
-        const {ticket, isEditing} = this.props
+        const {
+            actions,
+            ticket,
+            isEditing,
+            widgets,
+            sources
+        } = this.props
 
         if (!ticket || !ticket.get('requester')) {
             return null
         }
 
-        const isDragging = this.props.widgets.getIn(['_internal', 'drag', 'isDragging'])
+        const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
 
-        const widgets = isEditing
-            ? this.props.widgets.getIn(['_internal', 'editedTemplate'])
-            : this.ticketTemplate || fromJS([])
+        const ticketWidgets = isEditing
+            ? this.props.widgets.getIn(['_internal', 'editedItems'])
+            : this.ticketWidgets
+
+        const shouldSuggestTemplateGeneration = isEditing
+            && !isDragging
+            && ticketWidgets.size <= 1
+            && ticketWidgets.getIn([0, 'template'], fromJS({})) === fromJS({})
 
         return (
-            <div>
+            <div className="flex-vertical">
                 <div className="infobar-top">
                     <h2>{ticket.getIn(['requester', 'name'])}</h2>
                     {this._renderUserChannels(ticket)}
                 </div>
                 {
                     areSourcesReady(this.props.sources) && (
-                        <div>
+                        <div className="flex-vertical">
                             <div className="infobar-section-separator"></div>
-                            <InfobarWidgets
-                                source={this.props.sources}
-                                widgets={widgets}
-                                editing={isEditing ? {
-                                    isEditing,
-                                    isDragging,
-                                    _internal: this.props.widgets.get('_internal', fromJS({})),
-                                    actions: this.props.actions,
-                                    canDrop: (targetAbsolutePath, targetTemplateParent) => {
-                                        const sourceAbsolutePath = this.props.widgets.getIn(['_internal', 'drag', 'absolutePath'])
-                                        return isDragging
-                                            && canDrop(sourceAbsolutePath, widgets, targetAbsolutePath, targetTemplateParent)
-                                    }
-                                } : undefined}
-                            />
+                            {
+                                shouldSuggestTemplateGeneration
+                                    ? this._renderGenerateButton()
+                                    : (
+                                    <InfobarWidgets
+                                        source={sources}
+                                        widgets={ticketWidgets}
+                                        editing={isEditing ? {
+                                            isEditing,
+                                            isDragging,
+                                            actions,
+                                            state: widgets,
+                                            canDrop: (targetAbsolutePath) => {
+                                                const group = widgets.getIn(['_internal', 'drag', 'group'])
+                                                return canDrop(group, targetAbsolutePath)
+                                            }
+                                        } : undefined}
+                                    />
+                                )
+                            }
                         </div>
                     )
                 }
@@ -143,9 +232,17 @@ export default class TicketInfobar extends React.Component {
 }
 
 TicketInfobar.propTypes = {
-    sources: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
     isEditing: PropTypes.bool,
+    params: PropTypes.object,
+    route: PropTypes.object.isRequired,
+    sources: PropTypes.object.isRequired,
     ticket: PropTypes.object,
-    widgets: PropTypes.object,
-    actions: PropTypes.object.isRequired
+    widgets: PropTypes.object
+}
+
+TicketInfobar.defaultProps = {
+    params: {
+        ticketId: null
+    }
 }

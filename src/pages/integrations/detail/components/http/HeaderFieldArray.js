@@ -1,44 +1,45 @@
 import React from 'react'
 
-import { Field } from 'redux-form'
-import { InputField } from '../../../../common/components/semantic'
+import {Field} from 'redux-form'
+import {InputField} from '../../../../common/components/semantic'
 
-const HeaderFieldArray = ({ fields }) => (
+const HeaderFieldArray = ({fields}) => (
     <div className="field">
         <label>Headers</label>
-        {!fields.length && <div>No header</div>}
-        {fields.map((header, index) =>
-            <div className="fields" key={index}>
-                <div className="seven wide field">
+        {
+            !fields.length
+            && <p>No header</p>
+        }
+        {
+            fields.map((header, index) =>
+                <div className="fields" key={index}>
                     <Field
-                        type="text"
+                        className="seven wide"
                         name={`${header}.key`}
                         placeholder="Key"
                         component={InputField}
                     />
-                </div>
-                <div className="seven wide field">
                     <Field
-                        type="text"
+                        className="seven wide"
                         name={`${header}.value`}
                         placeholder="Value"
                         component={InputField}
                     />
+                    <div className="two wide field">
+                        <button
+                            className="ui tiny red button"
+                            type="button"
+                            onClick={() => fields.remove(index)}
+                        >
+                            Remove
+                        </button>
+                    </div>
                 </div>
-                <div className="two wide field">
-                    <button
-                        className="ui red button"
-                        type="button"
-                        onClick={() => fields.remove(index)}
-                    >
-                        Remove
-                    </button>
-                </div>
-            </div>
-        )}
+            )
+        }
         <button
             type="button"
-            className="ui grey basic button"
+            className="ui tiny blue button"
             onClick={() => fields.push({})}
         >
             Add Header

@@ -48,9 +48,9 @@ class TicketDetailContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (
-            nextProps.params.ticketId !== 'new' &&
-            nextProps.ticket.get('requester') &&
-            !nextProps.ticket.getIn(['_internal', 'userHistory', 'triedLoading'])
+            nextProps.params.ticketId !== 'new'
+            && nextProps.ticket.get('requester')
+            && !nextProps.ticket.getIn(['_internal', 'userHistory', 'triedLoading'])
         ) {
             /**
              * Fetch the ticket's requester history (tickets + events) after the ticket's details have been loaded.
@@ -59,8 +59,7 @@ class TicketDetailContainer extends React.Component {
             // this.props.actions.ticket.fetchUserEvents(nextProps.ticket.getIn(['requester', 'id']))
 
             if (
-                nextProps.ticket.getIn(['_internal', 'crossTickets', 'displayHistory']) &&
-                !nextProps.ticket.getIn(['state', 'displayHistory'])
+                nextProps.ticket.getIn(['_internal', 'crossTickets', 'displayHistory']) && !nextProps.ticket.getIn(['state', 'displayHistory'])
             ) {
                 // Activate the timeline and clears the crossTickets dict
                 this.props.actions.ticket.toggleHistory(true)
@@ -68,7 +67,10 @@ class TicketDetailContainer extends React.Component {
             }
         }
 
-        if (nextProps.params.ticketId !== this.props.params.ticketId && nextProps.params.ticketId !== 'new') {
+        if (
+            nextProps.params.ticketId !== this.props.params.ticketId
+            && nextProps.params.ticketId !== 'new'
+        ) {
             /**
              * Fetch required data when loading a ticket.
              */
@@ -83,10 +85,10 @@ class TicketDetailContainer extends React.Component {
              */
             this._forcePush(`/app/ticket/${nextProps.ticket.get('id')}/`)
         } else if (
-            this.props.ticket.get('id') &&
-            this.props.ticket.get('id') !== 'new' &&
-            this.props.ticket.get('id') === nextProps.ticket.get('id') &&
-            this.props.ticket.get('id').toString() === this.props.params.ticketId
+            this.props.ticket.get('id')
+            && this.props.ticket.get('id') !== 'new'
+            && this.props.ticket.get('id') === nextProps.ticket.get('id')
+            && this.props.ticket.get('id').toString() === this.props.params.ticketId
         ) {
             /**
              * This is the autosave. Here, we check changes to the ticket state, and if there's any we make a
@@ -147,7 +149,6 @@ class TicketDetailContainer extends React.Component {
         mousetrap.unbind('right')
         mousetrap.unbind('mod+enter')
         mousetrap.unbind('mod+shift+enter')
-        this.props.actions.ticket.clearTicket()
     }
 
     _confirmLeaveWhenDirty = (e, suffix = '') => {
@@ -342,15 +343,21 @@ class TicketDetailContainer extends React.Component {
         const view = this.props.views.get('active')
 
         if (
-            (this.props.params.ticketId !== 'new' && !this.props.ticket.get('id')) ||
-            (this.props.params.ticketId === 'new' && this.props.ticket.get('id'))
+            (this.props.params.ticketId !== 'new' && !this.props.ticket.get('id'))
+            || (this.props.params.ticketId === 'new' && this.props.ticket.get('id'))
+            || this.props.ticket.getIn(['state', 'loading'], false)
         ) {
             return <Loader />
         }
 
         return (
             <DocumentTitle title={`${this.props.ticket.get('id') ? this.props.ticket.get('subject') : 'New ticket'}`}>
-                <div className="TicketDetailContainer" onScroll={() => { this.forceUpdate() }}>
+                <div
+                    className="TicketDetailContainer"
+                    onScroll={() => {
+                        this.forceUpdate()
+                    }}
+                >
                     <Timeline
                         userHistory={this.props.ticket.getIn(['_internal', 'userHistory'])}
                         isDisplayed={this.props.ticket.getIn(['state', 'displayHistory'])}
