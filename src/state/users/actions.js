@@ -105,8 +105,6 @@ export function createUser(data) {
         newData.roles = [data.role]
         delete newData.role
 
-        newData.password = ''
-
         return axios.post('/api/users/', newData)
             .then((json = {}) => json.data)
             .then(resp => {
