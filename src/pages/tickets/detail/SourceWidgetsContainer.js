@@ -80,10 +80,10 @@ class SourceWidgetsContainer extends React.Component {
                 <div className="source-widgets">
                     <div className="ui card data-fields">
                         <div className="header">
-                            <div className="title">Data fields</div>
+                            <div className="title">Customer data</div>
                             <div>
-                                The following data comes from your server, after you configured &nbsp;
-                                <Link to="/app/integrations/http" target="_blank"><b>HTTP integrations</b></Link>.
+                                The following data comes from your server, after you configured <Link
+                                to="/app/integrations/http" target="_blank"><b>HTTP integrations</b></Link>.
                             </div>
                         </div>
                         <div className="content">

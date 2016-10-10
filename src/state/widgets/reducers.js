@@ -51,6 +51,7 @@ export default (state = initialState, action) => {
                 .set('currentContext', action.context)
                 .setIn(['_internal', 'isEditing'], true)
                 .setIn(['_internal', 'editedItems'], ticketWidgets)
+                .setIn(['_internal', 'isDirty'], false)
         }
 
         case types.STOP_EDITION_MODE: {

@@ -123,7 +123,7 @@ class TicketsInfobarContainer extends React.Component {
                         disabled={isSavingWidgets || !isDirty}
                         onClick={this._cancelWidgetsUpdates}
                     >
-                        Cancel changes
+                        Cancel
                     </button>
                 </div>
             </div>

@@ -94,6 +94,8 @@ class CardInfobarWidget extends React.Component {
             draggable: !isParentList
         })
 
+        const childWidgets = widget.get('widgets', fromJS([]))
+
         return (
             <div
                 className={className}
@@ -136,38 +138,47 @@ class CardInfobarWidget extends React.Component {
                         )
                     }
 
-                    <DragWrapper
-                        actions={editing && editing.actions}
-                        sort
-                        group={{
-                            name: ap,
-                            pull: false,
-                            put: true
-                        }}
-                        templatePath={tp}
-                        isEditing={isEditing}
-                        watchDrop
-                    >
-                        {
-                            widget
-                                .get('widgets', fromJS([]))
-                                .map((w, i) => {
-                                    const passedWidget = w
-                                        .set('templatePath', `${tp}.widgets.${i}`)
+                    {
+                        !source.isEmpty() ? (
+                            <DragWrapper
+                                actions={editing && editing.actions}
+                                sort
+                                group={{
+                                    name: ap,
+                                    pull: false,
+                                    put: true
+                                }}
+                                templatePath={tp}
+                                isEditing={isEditing}
+                                watchDrop
+                            >
+                                {
+                                    childWidgets
+                                        .map((w, i) => {
+                                            const passedWidget = w
+                                                .set('templatePath', `${tp}.widgets.${i}`)
 
-                                    return (
-                                        <InfobarWidget
-                                            key={`${passedWidget.get('path')}-${i}`}
-                                            source={source}
-                                            parent={widget}
-                                            widget={passedWidget}
-                                            editing={editing}
-                                            isEditing={isEditing}
-                                        />
-                                    )
-                                })
-                        }
-                    </DragWrapper>
+                                            return (
+                                                <InfobarWidget
+                                                    key={`${passedWidget.get('path')}-${i}`}
+                                                    source={source}
+                                                    parent={widget}
+                                                    widget={passedWidget}
+                                                    editing={editing}
+                                                    isEditing={isEditing}
+                                                />
+                                            )
+                                        })
+                                }
+                            </DragWrapper>
+                        ) : (
+                            <div className="simple-field">
+                                <span className="field-label">
+                                    <i>No data</i>
+                                </span>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         )
