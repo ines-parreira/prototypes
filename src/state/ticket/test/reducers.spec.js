@@ -414,7 +414,7 @@ describe('Ticket reducer', () => {
                 currentUser: sender
             })
         ).toEqualImmutable(
-            initialState.set('assignee_user', sender).setIn(['state', 'loading'], true)
+            initialState.set('assignee_user', sender)
         )
     })
 
