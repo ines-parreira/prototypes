@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 
+import {DatetimeLabel} from '../../../common/utils/labels'
 import RuleItem from '../../detail/components/RuleItem'
 
 class RuleTableRow extends React.Component {
@@ -25,7 +26,7 @@ class RuleTableRow extends React.Component {
     }
 
     render() {
-        const { rule } = this.props
+        const {currentUser, rule} = this.props
         return (
             <tbody>
                 <tr onClick={this._toggleItem}>
@@ -37,7 +38,12 @@ class RuleTableRow extends React.Component {
                             </div>
                         </div>
                     </td>
-                    <td>{rule.updated_datetime}</td>
+                    <td>
+                        <DatetimeLabel
+                            dateTime={rule.updated_datetime}
+                            timezone={currentUser.get('timezone')}
+                        />
+                    </td>
                 </tr>
                 {this.state.showDetail && this._renderDetail()}
             </tbody>
@@ -47,10 +53,11 @@ class RuleTableRow extends React.Component {
 }
 
 RuleTableRow.propTypes = {
-    actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
-    rule: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
+    currentUser: PropTypes.object,
+    index: PropTypes.number.isRequired,
+    rule: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
 }
 
 export default RuleTableRow

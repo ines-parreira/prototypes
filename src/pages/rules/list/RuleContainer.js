@@ -8,6 +8,7 @@ import * as RuleActions from '../../../state/rules/actions'
 import * as SchemaActions from '../../../state/schema/actions'
 
 const mapStateToProps = (state) => ({
+    currentUser: state.currentUser,
     rules: state.rules,
     schemas: state.schemas,
 })

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 
 import Modal from '../../../common/components/Modal'
 import PageHeader from '../../../common/components/PageHeader'
@@ -32,7 +32,7 @@ class RulesView extends React.Component {
     }
 
     render() {
-        const {rules, schemas, actions} = this.props
+        const {actions, currentUser, rules, schemas} = this.props
 
         return (
             <div className="view">
@@ -44,7 +44,7 @@ class RulesView extends React.Component {
                         Create new rule
                     </button>
                 </PageHeader>
-                <RuleTable rules={rules} schemas={schemas} actions={actions} />
+                <RuleTable actions={actions} currentUser={currentUser} rules={rules} schemas={schemas} />
                 <Modal isShow={this.state.showForm} header="Create New Rule">
                     <RuleForm onSubmit={this._handleSubmit} onCancel={this._hideForm} />
                 </Modal>
@@ -55,9 +55,10 @@ class RulesView extends React.Component {
 }
 
 RulesView.propTypes = {
-    actions: React.PropTypes.object,
-    rules: React.PropTypes.object,
-    schemas: React.PropTypes.object,
+    actions: PropTypes.object,
+    currentUser: PropTypes.object,
+    rules: PropTypes.object,
+    schemas: PropTypes.object,
 }
 
 export default RulesView

@@ -19,6 +19,10 @@ export default (state = initialState, action) => {
             return state.push(rule)
         }
 
+        case types.REMOVE_RULE: {
+            return state.remove(action.index)
+        }
+
         case types.RULES_REQUESTS_POSTS:
             return state
 

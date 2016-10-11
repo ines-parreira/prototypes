@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 
 import RuleTableRow from './RuleTableRow'
 
-const RuleTable = ({ rules, schemas, actions }) => (
+const RuleTable = ({actions, currentUser, rules, schemas}) => (
     <table className="ui selectable very basic padded table">
         <thead>
             <tr>
@@ -13,11 +13,12 @@ const RuleTable = ({ rules, schemas, actions }) => (
         {
             rules.map((rule, index) =>
                 <RuleTableRow
+                    actions={actions}
+                    currentUser={currentUser}
                     key={index}
                     index={index}
                     rule={rule}
                     schemas={schemas}
-                    actions={actions}
                 />
             )
         }
@@ -25,9 +26,10 @@ const RuleTable = ({ rules, schemas, actions }) => (
 )
 
 RuleTable.propTypes = {
-    actions: React.PropTypes.object.isRequired,
-    rules: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
+    currentUser: PropTypes.object,
+    rules: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
 }
 
 export default RuleTable

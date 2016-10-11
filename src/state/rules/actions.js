@@ -63,12 +63,34 @@ export const create = (data) => {
  */
 export const save = (data) => {
     return dispatch => {
-        return axios.post('/api/rules/', data)
+        return axios.put(`/api/rules/${data.id}/`, data)
             .then(() => dispatch(notify({
                 type: 'success',
                 message: 'Rule saved successfully',
             })))
             .catch(error => dispatch(fail(error, 'Unable to save the rule')))
+    }
+}
+
+/**
+ * Delete a rule
+ * @param index
+ */
+export const remove = (index) => {
+    return (dispatch, getState) => {
+        const {id} = getState().rules.get(index)
+        return axios.put(`/api/rules/${id}/`, {deleted_datetime: new Date()})
+            .then(() => {
+                dispatch(({
+                    type: types.REMOVE_RULE,
+                    index,
+                }))
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Rule removed successfully',
+                }))
+            })
+            .catch(error => dispatch(fail(error, 'Unable to remove the rule')))
     }
 }
 

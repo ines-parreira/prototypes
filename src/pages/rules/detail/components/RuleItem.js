@@ -37,6 +37,15 @@ class RuleItem extends React.Component {
         }
     }
 
+    _handleRemove = (event) => {
+        event.preventDefault()
+        const {actions, index} = this.props
+
+        if (confirm('Are you sure to delete this rule?')) {
+            actions.rules.remove(index)
+        }
+    }
+
     render() {
         const { index, rule, actions, schemas } = this.props
         return (
@@ -49,6 +58,13 @@ class RuleItem extends React.Component {
                     </div>
                     <Program {...rule.code_ast} index={index} schemas={schemas} actions={actions} />
                     <div className="ui right aligned segment">
+                        <button
+                            type="button"
+                            className="ui left floated icon red button"
+                            onClick={this._handleRemove}
+                        >
+                            <i className="trash icon" />
+                        </button>
                         <button
                             type="button"
                             className="ui button"
