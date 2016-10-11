@@ -111,7 +111,6 @@ export default (state = initialState, action) => {
         case types.SUBMIT_TICKET_MESSAGE_START: {
             let newState = state.mergeDeep({
                 state: {
-                    loading: true,
                     dirty: false
                 }
             })
