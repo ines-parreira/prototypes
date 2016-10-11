@@ -6,7 +6,10 @@ const initialState = fromJS({
     // Count how many new events since we visited the ticket. Ex: 999: {count: 0, created_datetime: 'now'}
     objectsCounter: {},
     finished: true, // whenever the post has activity finished
-    pendingEvents: [] // events to be sent to the server
+    pendingEvents: [], // events to be sent to the server
+
+    git_commit: '',
+    newVersion: false
 })
 
 export default (state = initialState, action) => {
@@ -66,12 +69,16 @@ export default (state = initialState, action) => {
                 }
             }
 
+            // see if the latest git_commit is different
+            const newVersion = (action.resp.git_commit !== '' && action.resp.git_commit !== state.get('git_commit'))
+
             return state.merge({
                 // clean the pending events that we've sent in the action
                 pendingEvents: initialState.get('pendingEvents'),
                 finished: true,
                 events,
-                objectsCounter
+                objectsCounter,
+                newVersion
             })
         }
         case types.TICKET_VIEWED: {

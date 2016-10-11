@@ -12,6 +12,9 @@ import Mousetrap from 'mousetrap'
 import * as mousetrap from 'mousetrap'
 import Notifications from 'react-notification-system-redux'
 import {NOTIFICATIONS_STYLE_CONFIG} from '../config'
+import NewVersionNotification from './common/components/NewVersionNotification'
+import classNames from 'classnames'
+
 import '../../css/main.less'
 
 let pollInterval = null
@@ -70,7 +73,10 @@ class App extends React.Component {
     render() {
         return (
             <DocumentTitle title="Gorgias">
-                <div className="App">
+                <div className={classNames('App', {
+                    'show-new-version-notification': this.props.activity.get('newVersion')
+                })}>
+                    <NewVersionNotification />
 
                     {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}
                     {this.props.navbar || (
