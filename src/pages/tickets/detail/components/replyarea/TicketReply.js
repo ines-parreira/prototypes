@@ -174,7 +174,7 @@ export default class TicketReply extends React.Component {
             name: o.name,
             size: o.size,
             content_type: o.type,
-            file: document.getElementById('file-input').files[i] || o
+            file: files[i] || o
         }))
 
         this.props.actions.ticket.addAttachments(this.props.ticket, atts)
