@@ -220,3 +220,7 @@ TicketMacros.propTypes = {
     previewMacroInModal: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired
 }
+
+TicketMacros.defaultProps = {
+    macros: fromJS({})
+}
