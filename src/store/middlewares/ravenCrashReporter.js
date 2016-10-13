@@ -11,7 +11,7 @@ const crashReporter = () => next => action => {
     }
 
     try {
-        if (action.type && !~action.type.indexOf('SUBMIT_ACTIVITY')) {
+        if (action.type && action.type !== 'SUBMIT_ACTIVITY_SUCCESS') {
             Raven.captureBreadcrumb({
                 category: 'redux',
                 message: action.type
