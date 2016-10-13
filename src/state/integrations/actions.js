@@ -96,7 +96,7 @@ export function deleteIntegration(integration) {
 
 function onFacebookLoginSuccess(dispatch) {
     return (response) => {
-        if (!response) {
+        if (!response || response.status === 'connected') {
             // no response means that we're already authenticated so just redirect to the pages
             dispatch({
                 type: types.FACEBOOK_LOGIN_SUCCESS
@@ -148,7 +148,9 @@ export const facebookLoginStatus = () => ((dispatch) => {
  *
  * See https://developers.facebook.com/docs/facebook-login/web
  */
-export const facebookLogin = (status) => ((dispatch) => {
+export const facebookLogin = () => ((dispatch, getState) => {
+    const status = getState().integrations.getIn(['_internal', 'facebookLoginStatus'])
+
     dispatch({
         type: types.FACEBOOK_LOGIN
     })

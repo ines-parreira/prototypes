@@ -2,14 +2,8 @@ import React, {PropTypes} from 'react'
 import IntegrationListRow from './IntegrationListRow'
 import {getIntegrationsList} from '../../../../state/integrations/utils'
 import WrapInFacebookLogin from '../../detail/components/facebook/WrapInFacebookLogin'
-import {waitForFB} from '../../common/utils'
 
 class IntegrationList extends React.Component {
-    componentDidMount() {
-        // check facebook login status
-        waitForFB(this.props.actions.facebookLoginStatus)
-    }
-
     _isLoading(type) {
         const integrations = this.props.integrations
         const loaders = {
@@ -26,7 +20,7 @@ class IntegrationList extends React.Component {
 
         // A map from type to the action that will be on the connect button
         const typeToOnClickAdd = {
-            facebook: () => actions.facebookLogin(this.props.integrations.getIn(['_internal', 'facebookLoginStatus']))
+            facebook: () => actions.facebookLogin()
         }
 
         const list = getIntegrationsList(integrations.get('integrations'))

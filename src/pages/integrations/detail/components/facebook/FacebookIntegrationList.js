@@ -2,14 +2,8 @@ import React, {PropTypes} from 'react'
 import IntegrationList from '../../components/IntegrationList'
 import FacebookPageRow from './FacebookPageRow'
 import WrapInFacebookLogin from './WrapInFacebookLogin'
-import {waitForFB} from '../../../common/utils'
 
 class FacebookIntegrationList extends React.Component {
-    componentDidMount() {
-        // check facebook login status
-        waitForFB(this.props.actions.facebookLoginStatus)
-    }
-
     render() {
         const {integrations, actions, facebookLoginStatus, loading} = this.props
         const longTypeDescription = 'Facebook is a popular social network where customers can interact with companies. This integration creates tickets when customers post on your Facebook page or send you a message on Messenger.'

@@ -1,48 +1,60 @@
 import React, {PropTypes} from 'react'
 
+import {Loader} from '../../../../common/components/Loader'
+
 /**
  * A 'Higher order component' that loads the Facebook sdk (required from Facebook login).
  *
- * @param Component
- * @returns {FacebookLoginWrapperComponent}
+ * @param InnerComponent
  */
-export default function WrapInFacebookLogin(Component) {
-    class FacebookLoginWrapperComponent extends React.Component {
-        componentWillMount() {
-            const {facebookAppId} = this.props
 
-            window.fbAsyncInit = () => {
-                FB.init({
-                    appId: facebookAppId,
-                    xfbml: true,
-                    version: 'v2.6'
-                })
+const WrapInFacebookLogin = InnerComponent => class FacebookConnected extends React.Component {
+    static defaultProps = {
+        version: 'v2.6'
+    }
+
+    static propTypes = {
+        ...InnerComponent.propTypes,
+        facebookAppId: PropTypes.string.isRequired,
+    }
+
+    constructor() {
+        super()
+        this.state = {SDKLoaded: false}
+    }
+
+    componentWillMount() {
+        const {facebookAppId, version} = this.props
+
+        if (typeof FB !== 'undefined') {
+            this.setState({SDKLoaded: true})
+        }
+
+        window.fbAsyncInit = () => {
+            FB.init({appId: facebookAppId, xfbml: true, version})
+            this.setState({SDKLoaded: true})
+            this.props.actions.facebookLoginStatus()
+        }
+
+        ((d, s, id) => {
+            const fjs = d.getElementsByTagName(s)[0]
+            if (d.getElementById(id)) {
+                return
             }
-
-            ((d, s, id) => {
-                const fjs = d.getElementsByTagName(s)[0]
-                if (d.getElementById(id)) {
-                    return
-                }
-                const js = d.createElement(s)
-                js.id = id
-                // js.src = "//connect.facebook.net/en_US/sdk/debug.js?version=v2.6"
-                js.src = '//connect.facebook.net/en_US/sdk.js?version=v2.6'
-                fjs.parentNode.insertBefore(js, fjs)
-            })(document, 'script', 'facebook-jssdk')
-        }
-
-        render() {
-            return <Component {...this.props} />
-        }
+            const js = d.createElement(s)
+            js.id = id
+            // js.src = `//connect.facebook.net/en_US/sdk/debug.js?version=${version}`
+            js.src = `//connect.facebook.net/en_US/sdk.js?version=${version}`
+            fjs.parentNode.insertBefore(js, fjs)
+        })(document, 'script', 'facebook-jssdk')
     }
 
-    const wrappedPropTypes = Component.propTypes
-
-    FacebookLoginWrapperComponent.propTypes = {
-        ...wrappedPropTypes,
-        facebookAppId: PropTypes.string.isRequired
+    render() {
+        // Since the FB object might not be yet loaded (it's script is injected on runtime), wait until it's ready
+        return this.state.SDKLoaded
+            ? <InnerComponent {...this.props} />
+            : <Loader message="Facebook SDK ... (Please, refresh this page, if the loading doesn't disappear)" />
     }
-
-    return FacebookLoginWrapperComponent
 }
+
+export default WrapInFacebookLogin
