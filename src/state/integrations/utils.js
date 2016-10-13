@@ -6,7 +6,6 @@ import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
  */
 function getIntegrationsCountPerType(integrations) {
     return integrations
-        .filter((int) => !int.get('deactivated_datetime'))
         .reduce((accumulator, item) => {
             const newAccumulator = accumulator
             if (item.get('type') in accumulator) {

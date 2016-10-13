@@ -272,6 +272,15 @@ class HttpIntegrationDetail extends React.Component {
                             >
                                 {isUpdate ? 'Save changes' : 'Add integration'}
                             </button>
+                            {isUpdate && (
+                                <button
+                                    type="button"
+                                    className="ui basic light floated orange button"
+                                    onClick={() => actions.deactivateIntegration(integration)}
+                                >
+                                    Deactivate
+                                </button>
+                            )}
 
                             {isUpdate && (
                                 <button

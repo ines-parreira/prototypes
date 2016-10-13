@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {browserHistory} from 'react-router'
+import {Link, browserHistory} from 'react-router'
 import classNames from 'classnames'
 import {INTEGRATION_TYPE_TO_ICON} from '../../../../config'
 
@@ -7,8 +7,9 @@ export default class IntegrationListRow extends React.Component {
     render() {
         const {integrationType, onClickAdd, onClickEdit, isLoading} = this.props
 
+        const editLink = `/app/integrations/${integrationType.get('type')}`
         const triggerEdit = onClickEdit ||
-            (() => browserHistory.push(`/app/integrations/${integrationType.get('type')}`))
+            (() => browserHistory.push(editLink))
 
         const triggerAdd = onClickAdd ||
             (() => browserHistory.push(`/app/integrations/${integrationType.get('type')}/new`))
@@ -32,7 +33,7 @@ export default class IntegrationListRow extends React.Component {
                 <td>
                     <div className="ui header">
                         <span className="subject">
-                            {integrationType.get('title')}
+                            <Link to={editLink}>{integrationType.get('title')}</Link>
                             {integrationType.get('count') > 0 ? <span> ({integrationType.get('count')})</span> : ''}
                         </span>
                     </div>

@@ -1,4 +1,5 @@
 import {Map, fromJS} from 'immutable'
+import moment from 'moment'
 import * as types from './constants.js'
 
 const initialState = fromJS({
@@ -48,9 +49,11 @@ export default (state = initialState, action) => {
         case types.FETCH_INTEGRATIONS_ERROR:
             return state.setIn(['state', 'loading', 'integrations'], false)
 
-        case types.FETCH_INTEGRATIONS_SUCCESS:
-            return state.set('integrations', fromJS(action.resp.data))
+        case types.FETCH_INTEGRATIONS_SUCCESS: {
+            const data = fromJS(action.resp.data).sortBy(i => moment(i.get('deactivated_datetime'))).reverse()
+            return state.set('integrations', data)
                 .setIn(['state', 'loading', 'integrations'], false)
+        }
 
         case types.TOGGLE_PRIVATE_MESSAGES_ENABLED:
             return state.setIn(['integration', 'facebook', 'settings', 'private_messages_enabled'],

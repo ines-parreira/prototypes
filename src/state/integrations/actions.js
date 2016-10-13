@@ -2,6 +2,7 @@ import axios from 'axios'
 import {sortBy as _sortBy} from 'lodash'
 import {browserHistory} from 'react-router'
 import {notify} from '../notifications/actions'
+import moment from 'moment'
 import * as types from './constants'
 
 export function fetchIntegration(integrationId) {
@@ -58,6 +59,7 @@ export function fetchIntegrations() {
             })
     }
 }
+
 
 export function deleteIntegration(integration) {
     if (window.confirm('Are you sure you want to delete this integration?')) {
@@ -209,14 +211,13 @@ function updateOrCreateIntegrationRequest(integration, action) {
 export function deactivateIntegration(integration) {
     return (dispatch) => {
         // We set deactivated_datetime using a UTC timestamp
-        const newIntegration = integration.set('deactivated_datetime', new Date().getTime())
+        const newIntegration = integration.set('deactivated_datetime', moment().format())
         updateOrCreateIntegrationRequest(newIntegration)(dispatch)
     }
 }
 
 export function activateIntegration(integration) {
     return (dispatch) => {
-        // We set deactivated_datetime using a UTC timestamp
         const newIntegration = integration.set('deactivated_datetime', null)
         updateOrCreateIntegrationRequest(newIntegration)(dispatch)
     }

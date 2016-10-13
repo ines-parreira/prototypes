@@ -23,9 +23,6 @@ export default class IntegrationList extends React.Component {
             createIntegrationButtonClassNames = createIntegrationButtonClassNames.concat([{loading: loading.get('facebookLogin')}])
         }
 
-        const displayedIntegrations = integrations
-            .valueSeq()
-            .filter(int => !int.get('deactivated_datetime', ''))
         const integrationTypes = fromJS(getIntegrationsList(integrations))
         const integrationTitle = integrationTypes
             .find(i => i.get('type', '') === integrationType, null, fromJS({}))
@@ -72,14 +69,14 @@ export default class IntegrationList extends React.Component {
                 })()}
 
                 {(() => {
-                    if (displayedIntegrations.count() === 0) {
+                    if (integrations.count() === 0) {
                         return <NoIntegration type={integrationType} loading={loading.get('integrations')} />
                     }
 
                     return (
                         <table className="ui very basic padded table">
                             <tbody>
-                            {displayedIntegrations.valueSeq().map(integrationToItemDisplay)}
+                            {integrations.valueSeq().map(integrationToItemDisplay)}
                             </tbody>
                         </table>
                     )

@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {browserHistory} from 'react-router'
+import {Link, browserHistory} from 'react-router'
 import IntegrationList from '../IntegrationList'
 
 export default class SmoochIntegrationList extends React.Component {
@@ -7,12 +7,12 @@ export default class SmoochIntegrationList extends React.Component {
         const {integrations, actions, loading} = this.props
 
         const integrationToItemDisplay = (int) => {
+            const editLink = `/app/integrations/smooch/${int.get('id')}`
             return (
                 <tr key={int.get('id')}>
                     <td>
                         <div className="ui header">
-                            <span className="subject">{int.get('name')}</span>
-
+                            <Link className="subject" to={editLink}>{int.get('name')}</Link>
                             <div className="body sub header">
                                 {int.get('description')}
                             </div>
@@ -25,7 +25,7 @@ export default class SmoochIntegrationList extends React.Component {
                             Delete
                         </button>
                         <button className="ui basic light blue floated right button"
-                                onClick={() => browserHistory.push(`/app/integrations/smooch/${int.get('id')}`)}
+                                onClick={() => browserHistory.push(editLink)}
                         >
                             Edit
                         </button>
