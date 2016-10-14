@@ -15,155 +15,141 @@ import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail
 
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
-        this.props.actions.fetchIntegrations()
+        const {actions, params} = this.props
+        actions.fetchIntegrations()
 
-        // We need this to allow the user to refresh the settings page. If we don't fetch the state is empty on refresh.
-        if (this.props.params.integrationId && this.props.params.integrationId !== 'new') {
-            this.props.actions.fetchIntegration(this.props.params.integrationId)
+        // We need this to allow the user to refresh the settings page.
+        // If we don't fetch it, the state is empty on refresh.
+        if (params.integrationId && params.integrationId !== 'new') {
+            actions.fetchIntegration(params.integrationId, params.integrationType)
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.params.integrationId && nextProps.params.integrationId !== 'new' && this.props.params.integrationId !== nextProps.params.integrationId) {
-            nextProps.actions.fetchIntegration(nextProps.params.integrationId)
+        const {actions, params} = this.props
+        const {params: nextParams} = nextProps
+        if (
+            nextParams.integrationId &&
+            nextParams.integrationId !== 'new' &&
+            params.integrationId !== nextParams.integrationId
+        ) {
+            actions.fetchIntegration(nextParams.integrationId)
         }
     }
 
     render() {
-        const {
-            integrations,
-            actions,
-            settings
-        } = this.props
+        const {actions, integrations, params, settings} = this.props
 
         if (!settings.get('loaded')) {
             return null
         }
 
-        const isDetail = !!this.props.params.integrationId
-        const isUpdate = isDetail && this.props.params.integrationId !== 'new'
-
+        const isDetail = !!params.integrationId
+        const isUpdate = isDetail && params.integrationId !== 'new'
         const commonProps = {
-            integrations: integrations.get('integrations'),
             integration: integrations.get('integration'),
-            facebookIntegrations: integrations.get('integrations').filter(integration => integration.get('type') === 'facebook'),
-            facebookAppId: settings.getIn(['data', 'facebook_app_id']),
+            integrations: integrations.get('integrations'),
             loading: integrations.getIn(['state', 'loading']),
-            actions
         }
 
-        const {
-            integrationType
-        } = this.props.params
-
-        if (!integrationType) {
-            return null
-        }
-
-        let child = null
-        switch (integrationType) {
+        switch (params.integrationType) {
             case 'facebook':
                 if (isDetail) {
                     if (isUpdate) {
-                        child = (
+                        return (
                             <FacebookPageDetail
-                                actions={commonProps.actions}
+                                actions={actions}
                                 integration={commonProps.integration}
                                 loading={commonProps.loading}
                             />
                         )
-                    } else {
-                        child = (
-                            <FacebookAvailablePages
-                                actions={commonProps.actions}
-                                facebookIntegrations={commonProps.facebookIntegrations}
-                            />
-                        )
                     }
-                } else {
-                    child = (
-                        <FacebookIntegrationList
-                            actions={commonProps.actions}
-                            integrations={commonProps.integrations}
-                            facebookAppId={commonProps.facebookAppId}
-                            loading={commonProps.loading}
-                            facebookLoginStatus={integrations.getIn(['_internal', 'facebookLoginStatus'])}
+
+                    const facebookIntegrations = commonProps.integrations.filter(i => i.get('type') === 'facebook')
+                    return (
+                        <FacebookAvailablePages
+                            actions={actions}
+                            facebookIntegrations={facebookIntegrations}
                         />
                     )
                 }
-                break
+
+                return (
+                    <FacebookIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        facebookAppId={settings.getIn(['data', 'facebook_app_id'])}
+                        loading={commonProps.loading}
+                        facebookLoginStatus={integrations.getIn(['_internal', 'facebookLoginStatus'])}
+                    />
+                )
 
             case 'http':
                 if (isDetail) {
-                    child = (
+                    return (
                         <HttpIntegrationDetail
-                            actions={commonProps.actions}
+                            actions={actions}
                             integration={commonProps.integration}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
                         />
                     )
                 } else {
-                    child = (
+                    return (
                         <HttpIntegrationList
-                            actions={commonProps.actions}
+                            actions={actions}
                             integrations={commonProps.integrations}
                             loading={commonProps.loading}
                         />
                     )
                 }
-                break
 
             case 'smooch':
                 if (isDetail) {
-                    child = (
+                    return (
                         <SmoochIntegrationDetail
-                            actions={commonProps.actions}
+                            actions={actions}
                             integration={commonProps.integration}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
                         />
                     )
                 } else {
-                    child = (
+                    return (
                         <SmoochIntegrationList
-                            actions={commonProps.actions}
+                            actions={actions}
                             integrations={commonProps.integrations}
                             loading={commonProps.loading}
                         />
                     )
                 }
-                break
 
             default:
-                child = null
+                return null
         }
-
-        return child
     }
 }
 
 IntegrationDetailContainer.propTypes = {
+    actions: PropTypes.object.isRequired,
+    integrations: PropTypes.object.isRequired,
     params: PropTypes.shape({
         integrationType: PropTypes.string.isRequired,
         integrationId: PropTypes.string
     }).isRequired,
-    integrations: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    settings: PropTypes.object.isRequired
+    settings: PropTypes.object.isRequired,
 }
 
-function mapStateToProps(state) {
-    return {
-        integrations: state.integrations,
-        settings: state.settings
-    }
-}
+const mapStateToProps = (state) => ({
+    integrations: state.integrations,
+    settings: state.settings,
+})
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(IntegrationsActions, dispatch)
-    }
-}
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(IntegrationsActions, dispatch),
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(IntegrationDetailContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(IntegrationDetailContainer)

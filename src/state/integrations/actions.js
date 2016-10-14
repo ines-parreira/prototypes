@@ -5,7 +5,7 @@ import {notify} from '../notifications/actions'
 import moment from 'moment'
 import * as types from './constants'
 
-export function fetchIntegration(integrationId) {
+export function fetchIntegration(integrationId, integrationType) {
     return (dispatch) => {
         dispatch({
             type: types.FETCH_INTEGRATION_START,
@@ -21,6 +21,8 @@ export function fetchIntegration(integrationId) {
                 })
             })
             .catch(error => {
+                // We redirect to the integrations home page if we can't find the wanted integration on the server
+                browserHistory.replace(`/app/integrations/${integrationType}`)
                 dispatch({
                     type: types.FETCH_INTEGRATION_ERROR,
                     error,
