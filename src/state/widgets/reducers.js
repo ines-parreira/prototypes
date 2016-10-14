@@ -169,7 +169,6 @@ export default (state = initialState, action) => {
                     context,
                     template: {
                         type: 'wrapper',
-                        title: humanizeString(strippedSourceAbsolutePath),
                         path: strippedSourceAbsolutePath,
                         widgets: [widget]
                     }

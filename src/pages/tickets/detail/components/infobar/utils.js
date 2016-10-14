@@ -330,7 +330,6 @@ export function jsonToWidgets(json, context = 'ticket') {
                 // set each widget in a wrapper
                 template = {
                     type: 'wrapper',
-                    title: humanizeString(sourcePath),
                     path: sourcePath,
                     widgets: [template]
                 }
