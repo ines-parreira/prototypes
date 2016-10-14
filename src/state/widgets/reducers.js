@@ -2,7 +2,6 @@ import * as types from './constants'
 import {fromJS} from 'immutable'
 import _ from 'lodash'
 import {
-    humanizeString,
     isRootSource,
     stripLastListsFromPath,
     jsonToWidget
