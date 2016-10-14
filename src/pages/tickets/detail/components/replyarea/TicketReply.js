@@ -161,23 +161,15 @@ export default class TicketReply extends React.Component {
     }
 
     _handleFiles(files) {
-        let newFiles = []
+        const newFiles = []
 
-        if (files.constructor.name === 'FileList') {
-            newFiles = _.values(files)
-        } else {
-            newFiles = files
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i]
+            const {name, size, type} = file
+            newFiles.push({url: null, name, size, content_type: type, file})
         }
 
-        const atts = newFiles.map((o, i) => ({
-            url: null,
-            name: o.name,
-            size: o.size,
-            content_type: o.type,
-            file: files[i] || o
-        }))
-
-        this.props.actions.ticket.addAttachments(this.props.ticket, atts)
+        this.props.actions.ticket.addAttachments(this.props.ticket, newFiles)
     }
 
     _handleDroppedFiles = (selection, files) => {
@@ -204,6 +196,7 @@ export default class TicketReply extends React.Component {
                     <i className="large attach icon" />
                     <input
                         type="file"
+                        multiple
                         id="file-input"
                         onChange={(e) => this._handleFiles(e.target.files)}
                     />
