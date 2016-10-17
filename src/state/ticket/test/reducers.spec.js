@@ -1,6 +1,6 @@
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
-import {Map, List, fromJS} from 'immutable'
+import {fromJS} from 'immutable'
 import reducer, {newMessage, initialState} from '../reducers'
 import {getLastSameSourceTypeMessage} from '../utils'
 import * as types from '../constants'
@@ -16,8 +16,8 @@ describe('Ticket reducer', () => {
         )
     })
 
-    it('should return new state with attachmentLoading to true', () => {
-        const expected = initialState.setIn(['state', 'attachmentLoading'], true)
+    it('should return new state with attachment loading to true', () => {
+        const expected = initialState.setIn(['_internal', 'loading', 'addAttachment'], true)
 
         expect(
             reducer(initialState, {type: types.ADD_ATTACHMENT_START})
@@ -33,9 +33,9 @@ describe('Ticket reducer', () => {
             },
             state: {
                 dirty: true,
-                attachmentLoading: false,
             }
         })
+            .setIn(['_internal', 'loading', 'addAttachment'], false)
 
         expect(
             reducer(initialState, {type: types.ADD_ATTACHMENT_SUCCESS, resp: ['resp']})
@@ -69,7 +69,7 @@ describe('Ticket reducer', () => {
         )
 
         expect(
-            reducer(initialState, {type: types.RECORD_MACRO, macro: Map({id: '666'})})
+            reducer(initialState, {type: types.RECORD_MACRO, macro: fromJS({id: '666'})})
         ).toEqualImmutable(
             expected
         )
@@ -77,13 +77,15 @@ describe('Ticket reducer', () => {
 
 
     it('should return correct loading state equal true', () => {
-        const expected = initialState.setIn(['state', 'loading'], true)
+        let expected = initialState.setIn(['_internal', 'loading', 'deleteMessage'], true)
 
         expect(
             reducer(initialState, {type: types.DELETE_TICKET_MESSAGE_START})
         ).toEqualImmutable(
             expected
         )
+
+        expected = initialState.setIn(['_internal', 'loading', 'submitMessage'], true)
 
         expect(
             reducer(initialState, {type: types.SUBMIT_TICKET_START})
@@ -93,7 +95,7 @@ describe('Ticket reducer', () => {
     })
 
     it('should return loading state equal false', () => {
-        const expected = initialState.setIn(['state', 'loading'], false)
+        const expected = initialState.setIn(['_internal', 'loading', 'submitMessage'], false)
 
         expect(
             reducer(initialState, {type: types.SUBMIT_TICKET_ERROR})
@@ -117,7 +119,6 @@ describe('Ticket reducer', () => {
             .mergeDeep({
                 state: {
                     dirty: false,
-                    loading: false,
                     query: ''
                 }
             })
@@ -135,14 +136,13 @@ describe('Ticket reducer', () => {
             .mergeDeep({
                 state: {
                     dirty: false,
-                    loading: false,
                     query: ''
                 },
-                messages: List([Map(newMessage('email', 'email'))])
+                messages: fromJS([newMessage('email', 'email')])
             })
 
         const currentTicket = initialState.mergeDeep({
-            messages: List([Map(newMessage('email', 'email'))])
+            messages: fromJS([newMessage('email', 'email')])
         })
 
         expect(
@@ -217,7 +217,7 @@ describe('Ticket reducer', () => {
         const expected = initialState.set('tags', fromJS(tags))
 
         expect(
-            reducer(initialState, {type: types.SET_TAGS, args: Map({tags})})
+            reducer(initialState, {type: types.SET_TAGS, args: fromJS({tags})})
         ).toEqualImmutable(
             expected
         )
@@ -228,14 +228,14 @@ describe('Ticket reducer', () => {
         const expected = initialState.set('priority', 'high')
 
         expect(
-            reducer(initialState, {type: types.TOGGLE_PRIORITY, args: Map()})
+            reducer(initialState, {type: types.TOGGLE_PRIORITY, args: fromJS({})})
         ).toEqualImmutable(
             expected
         )
     })
 
     it('should update action.args.priority if exists', () => {
-        const args = Map({priority: 'normal'})
+        const args = fromJS({priority: 'normal'})
         const expected = initialState.set('priority', 'normal')
 
         expect(
@@ -246,19 +246,16 @@ describe('Ticket reducer', () => {
     })
 
     it('should set assignee_user to null if args.assignee_user is undefined', () => {
-        // const args = Map({ assignee_user: 'Dimitri Payet' })
-        // const expected = initialState.set('assignee_user', args)
-
         expect(
-            reducer(initialState, {type: types.SET_AGENT, args: Map()})
+            reducer(initialState, {type: types.SET_AGENT, args: fromJS({})})
         ).toEqualImmutable(
             initialState
         )
     })
 
     it('should set assignee_user if args.assignee_user exists', () => {
-        const args = Map({assignee_user: 'Dimitri Payet'})
-        const expected = initialState.set('assignee_user', 'Dimitri Payet')
+        const args = fromJS({assignee_user: 'Gordon Ramsay'})
+        const expected = initialState.set('assignee_user', 'Gordon Ramsay')
 
         expect(
             reducer(initialState, {type: types.SET_AGENT, args})
@@ -268,7 +265,7 @@ describe('Ticket reducer', () => {
     })
 
     it('should set new ticket status', () => {
-        const args = Map({status: 'old'})
+        const args = fromJS({status: 'old'})
         const expected = initialState.set('status', 'old')
 
         expect(
@@ -289,7 +286,7 @@ describe('Ticket reducer', () => {
     })
 
     it('should set subject', () => {
-        const args = Map({subject: 'the cake is a lie'})
+        const args = fromJS({subject: 'the cake is a lie'})
         const expected = initialState.set('subject', 'the cake is a lie')
 
         expect(
@@ -316,7 +313,7 @@ describe('Ticket reducer', () => {
         // we need to have at least 1 message before setting the internal note
         // otherwise we can't set the source type correctly
         const state = initialState.set('messages',
-            List([initialState.get('newMessage').setIn(['source', 'type'], 'email')]))
+            fromJS([initialState.get('newMessage').setIn(['source', 'type'], 'email')]))
         const expected = state.mergeDeep({
             newMessage: {
                 source: {
@@ -390,8 +387,8 @@ describe('Ticket reducer', () => {
         )
     })
 
-    it('should remove correct message + change state to loading', () => {
-        const currentTicket = initialState.set('messages', List([Map({id: 'foo', txt: 'coucou'})]))
+    it('should remove correct message', () => {
+        const currentTicket = initialState.set('messages', fromJS([{id: 'foo', txt: 'coucou'}]))
 
         expect(
             reducer(currentTicket, {type: types.DELETE_TICKET_MESSAGE_SUCCESS, messageId: 'foo'})
@@ -402,7 +399,7 @@ describe('Ticket reducer', () => {
 
     // TODO
     it('should assign un-assigned ticket to the replying user', () => {
-        const sender = Map({
+        const sender = fromJS({
             id: 'bar',
             email: 'foo@bar',
             name: 'foo bar'
@@ -414,7 +411,9 @@ describe('Ticket reducer', () => {
                 currentUser: sender
             })
         ).toEqualImmutable(
-            initialState.set('assignee_user', sender)
+            initialState
+                .set('assignee_user', sender)
+                .setIn(['_internal', 'loading', 'submitMessage'], true)
         )
     })
 

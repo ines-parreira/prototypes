@@ -39,8 +39,6 @@ export const newMessage = (channel, sourceType) => fromJS({
 export const initialState = fromJS({
     state: {
         dirty: false,
-        loading: false,
-        attachmentLoading: false,
         query: '',
         fromMacro: false,
         contentState: null,
@@ -59,6 +57,12 @@ export const initialState = fromJS({
             hasHistory: false,
             tickets: [],
             events: []
+        },
+        loading: {
+            addAttachment: false,
+            fetchTicket: false,
+            submitMessage: false,
+            deleteMessage: false,
         }
     },
     messages: [],
@@ -81,7 +85,7 @@ export default (state = initialState, action) => {
 
     switch (action.type) {
         case types.ADD_ATTACHMENT_START:
-            return state.setIn(['state', 'attachmentLoading'], true)
+            return state.setIn(['_internal', 'loading', 'addAttachment'], true)
 
         case types.ADD_ATTACHMENT_SUCCESS:
             return state.mergeDeep({
@@ -89,10 +93,13 @@ export default (state = initialState, action) => {
                     attachments: state.getIn(['newMessage', 'attachments']).concat(action.resp)
                 },
                 state: {
-                    dirty: true,
-                    attachmentLoading: false
+                    dirty: true
                 }
             })
+                .setIn(['_internal', 'loading', 'addAttachment'], false)
+
+        case types.ADD_ATTACHMENT_ERROR:
+            return state.setIn(['_internal', 'loading', 'addAttachment'], false)
 
         case types.DELETE_ATTACHMENT:
             return state
@@ -114,6 +121,7 @@ export default (state = initialState, action) => {
                     dirty: false
                 }
             })
+                .setIn(['_internal', 'loading', 'submitMessage'], true)
 
             // if the ticket is un-assigned,
             // auto-assign it to the current user.
@@ -127,11 +135,17 @@ export default (state = initialState, action) => {
         }
 
         case types.SUBMIT_TICKET_START:
-        case types.DELETE_TICKET_MESSAGE_START:
-            return state.setIn(['state', 'loading'], true)
+            return state.setIn(['_internal', 'loading', 'submitMessage'], true)
+
         case types.SUBMIT_TICKET_ERROR:
         case types.SUBMIT_TICKET_MESSAGE_ERROR:
-            return state.setIn(['state', 'loading'], false)
+            return state.setIn(['_internal', 'loading', 'submitMessage'], false)
+
+        case types.DELETE_TICKET_MESSAGE_START:
+            return state.setIn(['_internal', 'loading', 'deleteMessage'], true)
+
+        case types.DELETE_TICKET_MESSAGE_ERROR:
+            return state.setIn(['_internal', 'loading', 'deleteMessage'], false)
 
         case types.SUBMIT_TICKET_SUCCESS: {
             if (action.resp.id !== state.get('id') && state.get('id')) {
@@ -143,12 +157,12 @@ export default (state = initialState, action) => {
                 .mergeDeep({
                     state: {
                         dirty: false,
-                        loading: false,
                         contentState: null,
                         fromMacro: false,
                         query: ''
                     }
                 })
+                .setIn(['_internal', 'loading', 'submitMessage'], false)
 
             return action.resetMessage ? newState.set('newMessage', newMessage(
                 action.resp.channel,
@@ -176,12 +190,12 @@ export default (state = initialState, action) => {
             newState = newState.mergeDeep({
                 state: {
                     dirty: false,
-                    loading: false,
                     contentState: null,
                     fromMacro: false,
                     query: ''
                 }
             })
+                .setIn(['_internal', 'loading', 'submitMessage'], false)
 
             return action.resetMessage ? newState.set('newMessage', newMessage(
                 action.resp.channel,
@@ -191,7 +205,7 @@ export default (state = initialState, action) => {
 
         case types.FETCH_TICKET_START: {
             if (action.displayLoading) {
-                return state.setIn(['state', 'loading'], true)
+                return state.setIn(['_internal', 'loading', 'fetchTicket'], true)
             }
             return state
         }
@@ -200,22 +214,21 @@ export default (state = initialState, action) => {
             const newState = state.merge(fromJS(action.resp))
             const sourceType = getSourceTypeOfResponse(newState.get('messages'))
 
-            return newState.set('newMessage', newState.get('newMessage')
-                .mergeDeep(newMessage(
-                    getChannelFromSourceType(sourceType),
-                    sourceType
-                )))
+            return newState.set('newMessage', newMessage(
+                getChannelFromSourceType(sourceType),
+                sourceType
+            ))
                 .mergeDeep({
                     state: {
                         dirty: false,
-                        loading: false,
                         query: ''
                     }
                 })
+                .setIn(['_internal', 'loading', 'fetchTicket'], false)
         }
 
         case types.FETCH_TICKET_ERROR: {
-            return state.setIn(['state', 'loading'], false)
+            return state.setIn(['_internal', 'loading', 'fetchTicket'], false)
         }
 
         case types.FETCH_MESSAGE_SUCCESS: {
@@ -402,12 +415,14 @@ export default (state = initialState, action) => {
             return state.setIn(['state', 'dirty'], action.dirty)
 
         case types.DELETE_TICKET_MESSAGE_SUCCESS:
-            return state.set(
-                'messages',
-                state.get('messages').delete(
-                    state.get('messages').findIndex(message => message.get('id') === action.messageId)
+            return state
+                .set(
+                    'messages',
+                    state.get('messages').delete(
+                        state.get('messages').findIndex(message => message.get('id') === action.messageId)
+                    )
                 )
-            ).setIn(['state', 'loading'], false)
+                .setIn(['_internal', 'loading', 'deleteMessage'], false)
 
         case types.FETCH_USER_TICKETS_START:
         case types.FETCH_USER_EVENTS_START:

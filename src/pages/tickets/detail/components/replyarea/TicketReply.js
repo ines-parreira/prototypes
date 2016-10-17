@@ -57,10 +57,9 @@ export default class TicketReply extends React.Component {
                     this.props.visible && this.props.visible !== prevProps.visible
                 ) || (
                     // If the editor was read-only before and is editable again now
-                    !this.props.ticket.getIn(['state', 'loading']) &&
-                    this.props.ticket.getIn(['state', 'loading']) !== prevProps.ticket.getIn(['state', 'loading']))
-            ) &&
-            !this.props.fromMacro
+                !this.props.ticket.getIn(['_internal', 'loading', 'submitMessage']) &&
+                this.props.ticket.getIn(['_internal', 'loading', 'submitMessage']) !== prevProps.ticket.getIn(['_internal', 'loading', 'submitMessage']))
+            ) && !this.props.fromMacro
         ) {
             this.refs.editor.focus()
         }
@@ -75,10 +74,10 @@ export default class TicketReply extends React.Component {
         let defaultContent = ContentState.createFromText('')
 
         if ( // We check both signature_html and signature_text, because sometimes the signature_html is not null
-             // when it should be (ex. : signature_text = '', signature_html = '<div><br></div>').
-            props.ticket.get('channel') === 'email'
-            && props.currentUser.get('signature_html')
-            && props.currentUser.get('signature_text')
+        // when it should be (ex. : signature_text = '', signature_html = '<div><br></div>').
+        props.ticket.get('channel') === 'email'
+        && props.currentUser.get('signature_html')
+        && props.currentUser.get('signature_text')
         ) {
             defaultContent = convertFromHTML(`<br>${props.currentUser.get('signature_html')}`)
         }
@@ -182,7 +181,7 @@ export default class TicketReply extends React.Component {
     }
 
     _renderAttachmentInput = () => {
-        if (this.props.ticket.getIn(['state', 'attachmentLoading'])) {
+        if (this.props.ticket.getIn(['_internal', 'loading', 'addAttachment'])) {
             return (
                 <div className="attachments-pseudobar">
                     <div className="ui small active loader"></div>
@@ -229,7 +228,7 @@ export default class TicketReply extends React.Component {
                             ref="editor"
                             tabIndex="4"
                             spellCheck
-                            readOnly={ticket.getIn(['state', 'loading'])}
+                            readOnly={ticket.getIn(['_internal', 'loading', 'submitMessage'])}
                             editorState={this.state.editorState}
                             plugins={plugins}
                             onChange={this._onChange}

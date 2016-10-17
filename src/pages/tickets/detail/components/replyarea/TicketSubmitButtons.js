@@ -31,9 +31,10 @@ export default class TicketSubmitButtons extends React.Component {
     render() {
         const ticketState = this.props.ticket.get('state')
         const commonClasses = ['ui', 'green', 'button', {
-            loading: ticketState.get('loading'),
+            loading: this.props.ticket.getIn(['_internal', 'loading', 'submitMessage']),
             disabled: !ticketState.get('dirty')
         }]
+
         return (
             <div className="TicketSubmitButtons">
                 <button
