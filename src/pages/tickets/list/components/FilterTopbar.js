@@ -72,18 +72,20 @@ export default class FilterTopbar extends React.Component {
                     >
                         CANCEL
                     </button>
-                    <button
-                        className="ui green button right floated"
-                        onClick={this._onClickUpdate}
-                    >
-                        UPDATE VIEW
-                    </button>
-                    <button
-                        className="ui button right floated filter-topbar-save-new"
-                        onClick={this._onClickNew}
-                    >
-                        SAVE AS NEW VIEW
-                    </button>
+                    <div className="ui right floated">
+                        <button
+                            className="ui button"
+                            onClick={this._onClickNew}
+                        >
+                            SAVE AS NEW VIEW
+                        </button>
+                        <button
+                            className="ui green button"
+                            onClick={this._onClickUpdate}
+                        >
+                            UPDATE VIEW
+                        </button>
+                    </div>
                 </div>
             </div>
         )

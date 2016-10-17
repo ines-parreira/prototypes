@@ -32,6 +32,20 @@ export default (state = initialState, action) => {
             // for backwards compatibility.
             return state.set('active', action.view.set('dirty', true).set('editMode', action.edit))
 
+        case types.SET_FIELD_VISIBILITY: {
+            const fields = active
+                .get('fields', fromJS({}))
+                .map((f) => {
+                    return f.get('name') === action.name ? f.set('visible', action.state) : f
+                })
+
+            active = active
+                .set('fields', fields)
+                .set('editMode', true)
+
+            return state.set('active', active)
+        }
+
         case types.UPDATE_VIEW_FIELD:
             // replace a field with a new field
             active = active.set('fields', active.get('fields').map((f) => (

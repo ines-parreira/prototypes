@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {setFieldVisibility} from '../../../state/views/actions'
 
-export default class ShowMoreFieldsDropdown extends React.Component {
+class ShowMoreFieldsDropdown extends React.Component {
     componentDidMount = () => {
         $(this.refs.showmoreButton)
             .popup({
@@ -13,11 +16,9 @@ export default class ShowMoreFieldsDropdown extends React.Component {
             })
     }
 
-    setVisible(field) {
+    _setFieldVisibility = (name, state) => {
         $(this.refs.showmoreButton).popup('hide')
-        return this.props.updateField(
-            field.set('visible', !field.get('visible'))
-        )
+        return this.props.setFieldVisibility(name, state)
     }
 
     render() {
@@ -51,7 +52,9 @@ export default class ShowMoreFieldsDropdown extends React.Component {
                                                     type="checkbox"
                                                     name={field.get('name')}
                                                     checked={field.get('visible')}
-                                                    onChange={() => this.setVisible(field)}
+                                                    onChange={() => {
+                                                        this._setFieldVisibility(field.get('name'), !field.get('visible'))
+                                                    }}
                                                 />
                                                 <label htmlFor="field-visibility-{field.get('name')}">
                                                     {field.get('title')}
@@ -69,6 +72,14 @@ export default class ShowMoreFieldsDropdown extends React.Component {
 }
 
 ShowMoreFieldsDropdown.propTypes = {
-    updateField: PropTypes.func,
+    setFieldVisibility: PropTypes.func,
     view: PropTypes.object
 }
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setFieldVisibility: bindActionCreators(setFieldVisibility, dispatch)
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ShowMoreFieldsDropdown)

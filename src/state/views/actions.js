@@ -14,9 +14,10 @@ export const updateView = (view, edit = true) => ({
     edit
 })
 
-export const updateField = (field) => ({
-    type: types.UPDATE_VIEW_FIELD,
-    field
+export const setFieldVisibility = (name, state) => ({
+    type: types.SET_FIELD_VISIBILITY,
+    name,
+    state
 })
 
 // add filter for 1 field

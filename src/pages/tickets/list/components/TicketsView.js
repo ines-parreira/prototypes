@@ -40,8 +40,6 @@ export default class TicketsView extends React.Component {
         }))
     }
 
-    updateField = (field) => this.props.actions.view.updateField(field)
-
     addFieldFilter = (field, filter) => this.props.actions.view.addFieldFilter(field, filter)
 
     updateFieldEnumSearch = (field, query) => this.props.actions.view.updateFieldEnumSearch(field, query)
@@ -257,7 +255,6 @@ export default class TicketsView extends React.Component {
 
                     resetView={this.resetView}
                     updateView={this.updateView}
-                    updateField={this.updateField}
                     addFieldFilter={this.addFieldFilter}
                     updateFieldEnumSearch={this.updateFieldEnumSearch}
                     setPage={setPage}
