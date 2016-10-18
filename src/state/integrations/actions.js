@@ -98,7 +98,7 @@ export function deleteIntegration(integration) {
 
 function onFacebookLoginSuccess(dispatch) {
     return (response) => {
-        if (!response || response.status === 'connected') {
+        if (!response) {
             // no response means that we're already authenticated so just redirect to the pages
             dispatch({
                 type: types.FACEBOOK_LOGIN_SUCCESS

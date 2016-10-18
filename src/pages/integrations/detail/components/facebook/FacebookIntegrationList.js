@@ -6,7 +6,8 @@ import WrapInFacebookLogin from './WrapInFacebookLogin'
 class FacebookIntegrationList extends React.Component {
     render() {
         const {integrations, actions, facebookLoginStatus, loading} = this.props
-        const longTypeDescription = 'Facebook is a popular social network where customers can interact with companies. This integration creates tickets when customers post on your Facebook page or send you a message on Messenger.'
+        const longTypeDescription = `Facebook is a popular social network where customers can interact with companies.
+This integration creates tickets when customers post on your Facebook page or send you a message on Messenger.`
 
         const integrationToItemDisplay = (int) => {
             if (!int.get('deactivated_datetime')) {
@@ -19,7 +20,6 @@ class FacebookIntegrationList extends React.Component {
                     />
                 )
             }
-
             return null
         }
 
