@@ -116,6 +116,12 @@ export function saveSearch(query) {
     }
 }
 
+export function clearAppliedMacro() {
+    return {
+        type: types.CLEAR_APPLIED_MACRO
+    }
+}
+
 export function applyMacroAction(action, currentUser) {
     const {type, name} = action.toJS()
     if (type === 'user' && !DEFAULT_ACTIONS.includes(name)) {

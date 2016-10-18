@@ -124,6 +124,11 @@ class TicketDetailContainer extends React.Component {
                     this._computeNextUrl(true)
                 )
             }
+        } else if (this.props.ticket.get('id') !== nextProps.ticket.get('id')) {
+            // new ticket loaded
+
+            // clear applied macro in macros
+            this.props.actions.macro.clearAppliedMacro()
         }
     }
 

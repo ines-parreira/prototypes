@@ -229,6 +229,9 @@ export default (state = macrosInitial, action) => {
             return newState
         }
 
+        case types.CLEAR_APPLIED_MACRO:
+            return state.set('appliedMacro', null)
+
         default:
             return state
     }
