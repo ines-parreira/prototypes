@@ -45,7 +45,8 @@ export default class ReplyMessageChannel extends React.Component {
     }
 
     /**
-     * This function gather and builds the data needed to render the receiver (name, mail, className of the icon, and its channel)
+     * This function gather and builds the data needed to render the receiver
+     * (name, mail, className of the icon, and its channel).
      *
      * @returns {string}
      */
@@ -144,7 +145,7 @@ export default class ReplyMessageChannel extends React.Component {
         const channelClassNames = {
             email: 'item',
             chat: classnames('item', {
-                hidden: !ticket.get('id') ? false : ticketFirstMessage.source.type !== 'chat'
+                hidden: !ticket.get('id') ? true : ticketFirstMessage.source.type !== 'chat'
             }),
             facebookComment: classnames('item', {
                 hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'facebook-post'
