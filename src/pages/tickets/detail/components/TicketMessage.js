@@ -71,26 +71,38 @@ export default class TicketMessage extends React.Component {
             'facebook-post': 'facebook square'
         }
 
-        const legend = !message.source.type.startsWith('facebook') && message.source.type !== 'chat' && message.source.type !== 'api' ?
-            `${message.source.from[SOURCE_VALUE_PROP[message.source.type]]}` : ''
+        const source = Object.assign({}, {
+            type: '',
+            from: {},
+            to: []
+        }, message.source)
+
+        let legend = ''
+        const hasLegend = !source.type.startsWith('facebook')
+            && source.type !== 'chat'
+            && source.type !== 'api'
+
+        if (hasLegend) {
+            legend = `${source.from[SOURCE_VALUE_PROP[source.type]]}`
+        }
 
         return (
             <span className="ticket-message-source">
                 <div className="ui dropdown" id="email-dropdown">
                     <span className="text">
-                        <i className={`icon ${icons[message.source.type]}`} />
+                        <i className={`icon ${icons[source.type]}`} />
                         {legend}
                     </span>
                     <div className="ticket-message-source-details menu transition">
                         <ul className="item">
-                            {this.renderSourceList(message.source, 'From', 'from')}
-                            {this.renderSourceList(message.source, 'To', 'to')}
-                            {this.renderSourceList(message.source, 'Cc', 'cc')}
-                            {this.renderSourceList(message.source, 'Bcc', 'bcc')}
+                            {this.renderSourceList(source, 'From', 'from')}
+                            {this.renderSourceList(source, 'To', 'to')}
+                            {this.renderSourceList(source, 'Cc', 'cc')}
+                            {this.renderSourceList(source, 'Bcc', 'bcc')}
                             <li>
                                 Send via:
                                 <strong>
-                                    {message.source.type}
+                                    {source.type}
                                 </strong>
                             </li>
                             <li>
@@ -186,23 +198,21 @@ export default class TicketMessage extends React.Component {
 
                 <div className="ticket-message-header">
                     <div className="ticket-message-header-details">
-                        {(() => {
-                            if (message.from_agent) {
-                                return (<span className="agent-label ui medium yellow label">A</span>)
-                            }
-                            return null
-                        })()}
+                        {
+                            message.from_agent
+                            && (
+                                <span className="agent-label ui medium yellow label">A</span>
+                            )
+                        }
 
-                        {(() => {
-                            if (message.sender.name) {
-                                return (
-                                    <span className="ticket-message-author ui small header">
-                                        {message.sender.name}
-                                    </span>
-                                )
-                            }
-                            return null
-                        })()}
+                        {
+                            message.sender.name
+                            && (
+                                <span className="ticket-message-author ui small header">
+                                    {message.sender.name}
+                                </span>
+                            )
+                        }
 
                         {this.renderSource(message)}
                         {this.renderMeta(message)}
@@ -243,19 +253,7 @@ export default class TicketMessage extends React.Component {
 }
 
 TicketMessage.propTypes = {
-    message: PropTypes.shape({
-        sender: PropTypes.shape({
-            id: PropTypes.number,
-            name: PropTypes.string,
-            email: PropTypes.string
-        }),
-        from_agent: PropTypes.bool.isRequired,
-        body_text: PropTypes.string.isRequired,
-        body_html: PropTypes.string.isRequired,
-        created_datetime: PropTypes.string.isRequired,
-        attachments: PropTypes.array,
-        actions: PropTypes.array
-    }).isRequired,
+    message: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     submit: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
