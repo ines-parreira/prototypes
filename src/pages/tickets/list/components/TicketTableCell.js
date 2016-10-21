@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react'
-import _ from 'lodash'
-import {stripHTML, lastMessage as getLastMessage} from '../../../../utils'
+import {fromJS} from 'immutable'
+import {displayUserNameFromSource} from '../../common/utils'
+import {stripHTML, lastMessage as getLastMessage, firstMessage as getFirstMessage} from '../../../../utils'
 import {RenderLabel, TagLabel} from '../../../common/utils/labels'
+import _get from 'lodash/get'
 
 export default class TicketTableCell extends React.Component {
     _renderFieldContent = () => {
@@ -21,23 +23,42 @@ export default class TicketTableCell extends React.Component {
                 break
             case 'tags':
                 return ticket.get('tags').map((tag) => (
-                    <TagLabel key={`${ticket.get('id')}-${tag.get('id')}`}
-                              tag={tag.toJS()}
+                    <TagLabel
+                        key={`${ticket.get('id')}-${tag.get('id')}`}
+                        tag={tag.toJS()}
                     />
                 )).toJS()
             case 'address':
                 if (field.name.startsWith('messages')) {
+                    const firstMessage = getFirstMessage(ticket.get('messages', fromJS([])).toJS())
+
+                    if (!firstMessage) {
+                        break
+                    }
+
                     const path = field.name.split('.')
+                    // remove "messages", lets keep the last message as the message we want to use
+                    path.shift()
 
-                    // insert a '0' in the path so that we look in the first message (messages.0. ...)
-                    path.splice(path.indexOf('messages') + 1, 0, '0')
+                    // "to" is an array so we want the first element in it
+                    if (path.includes('to')) {
+                        path.splice(path.indexOf('to') + 1, 0, 0)
+                    }
 
-                    value = _.get(ticket.toJS(), path)
+                    // remove the "address" property, it depends actually on the type of the message
+                    if (field.name.endsWith('address')) {
+                        path.pop()
+                    }
+
+                    // get the part of "source" that we want
+                    value = _get(firstMessage, path, '')
+                    // display the user based on the message type
+                    value = displayUserNameFromSource(value, firstMessage.source.type)
                 }
                 break
             case 'composite':
                 if (field.name === 'ticket-details') {
-                    const previewedMessage = getLastMessage(ticket.get('messages').toJS())
+                    const previewedMessage = getLastMessage(ticket.get('messages'), fromJS([]).toJS())
 
                     if (!previewedMessage) {
                         break
@@ -69,6 +90,7 @@ export default class TicketTableCell extends React.Component {
             default:
                 value = ticket.getIn(field.name.split('.'))
         }
+
         return RenderLabel(field, value, this.props.currentUser.get('timezone'))
     }
 
