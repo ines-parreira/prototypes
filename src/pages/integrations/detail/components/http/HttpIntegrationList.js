@@ -9,6 +9,8 @@ export default class HttpIntegrationList extends React.Component {
         const longTypeDescription = `HTTP integrations allow you to connect Gorgias to about anything with 
 HTTP bindings.`
 
+        const isSubmitting = loading.get('updateIntegration')
+
         const integrationToItemDisplay = (int) => {
             const active = !int.get('deactivated_datetime')
             const rowClasses = classNames({
@@ -26,8 +28,10 @@ HTTP bindings.`
             )
             let rmBtn = (
                 <button
-                    className="ui basic light red floated right button"
-                    onClick={() => actions.deactivateIntegration(int)}
+                    className={classNames('ui basic light red floated right button', {
+                        loading: isSubmitting
+                    })}
+                    onClick={() => !isSubmitting && actions.deactivateIntegration(int)}
                 >
                     Deactivate
                 </button>
@@ -36,8 +40,10 @@ HTTP bindings.`
             if (!active) {
                 primaryBtn = (
                     <button
-                        className="ui basic light blue floated right button"
-                        onClick={() => actions.activateIntegration(int)}
+                        className={classNames('ui basic light blue floated right button', {
+                            loading: isSubmitting
+                        })}
+                        onClick={() => !isSubmitting && actions.activateIntegration(int)}
                     >
                         Re-Activate
                     </button>
@@ -52,7 +58,6 @@ HTTP bindings.`
                     </button>
                 )
             }
-
 
             return (
                 <tr key={int.get('id')} className={rowClasses}>

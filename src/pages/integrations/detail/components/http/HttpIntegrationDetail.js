@@ -133,6 +133,8 @@ class HttpIntegrationDetail extends React.Component {
 
         const isSubmitting = loading.get('updateIntegration')
 
+        const isActive = !integration.get('deactivated_datetime')
+
         if (loading.get('integration')) {
             return <Loader />
         }
@@ -265,20 +267,33 @@ class HttpIntegrationDetail extends React.Component {
 
                             <button
                                 type="submit"
-                                className={classNames('ui', 'green', 'button', {
+                                className={classNames('ui green button', {
                                     loading: isSubmitting
                                 })}
                                 disabled={isSubmitting}
                             >
                                 {isUpdate ? 'Save changes' : 'Add integration'}
                             </button>
-                            {isUpdate && (
+                            {isUpdate && isActive && (
                                 <button
                                     type="button"
-                                    className="ui basic light floated orange button"
-                                    onClick={() => actions.deactivateIntegration(integration)}
+                                    className={classNames('ui basic light floated orange button', {
+                                        loading: isSubmitting
+                                    })}
+                                    onClick={() => !isSubmitting && actions.deactivateIntegration(integration)}
                                 >
                                     Deactivate
+                                </button>
+                            )}
+                            {isUpdate && !isActive && (
+                                <button
+                                    type="button"
+                                    className={classNames('ui basic light blue floated button', {
+                                        loading: isSubmitting
+                                    })}
+                                    onClick={() => !isSubmitting && actions.activateIntegration(integration)}
+                                >
+                                    Re-Activate
                                 </button>
                             )}
 
