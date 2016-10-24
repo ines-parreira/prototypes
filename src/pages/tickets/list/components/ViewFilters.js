@@ -165,7 +165,7 @@ export const CallExpression = ({view, schemas, node, updateOperator, removeCondi
 
     const objectPath = resolveObjectPath(left)
     const property = findProperty(objectPath, schemas)
-    const operators = property ? property.meta.operators : BASIC_OPERATORS
+    const operators = property && property.meta ? property.meta.operators : BASIC_OPERATORS
 
     return (
         <div className="CallExpression">

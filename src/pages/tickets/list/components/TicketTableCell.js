@@ -58,7 +58,7 @@ export default class TicketTableCell extends React.Component {
                 break
             case 'composite':
                 if (field.name === 'ticket-details') {
-                    const previewedMessage = getLastMessage(ticket.get('messages'), fromJS([]).toJS())
+                    const previewedMessage = getLastMessage(ticket.get('messages', fromJS([])).toJS())
 
                     if (!previewedMessage) {
                         break
