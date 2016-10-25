@@ -69,5 +69,5 @@ target/
 # js build files
 g/static/*/_build/*
 
-# docker-compsoe env_file
+# docker-compose env_file
 .env
