@@ -10,6 +10,7 @@ import * as TicketsActions from '../../../state/tickets/actions'
 import * as ViewActions from '../../../state/views/actions'
 import * as UserActions from '../../../state/users/actions'
 import * as SchemaActions from '../../../state/schema/actions'
+import * as TagsActions from '../../../state/tags/actions'
 import MacroContainer from '../common/macros/MacroContainer'
 import TicketsView from './components/TicketsView'
 import {compactInteger} from '../../../utils'
@@ -31,6 +32,7 @@ class TicketListContainer extends React.Component {
         this.props.actions.tickets.fetchTicketsPage(
             this.props.tickets.getIn(['_internal', 'pagination', 'page'], 1)
         )
+        this.props.actions.tags.fetchTags()
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -167,6 +169,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
+            tags: bindActionCreators(TagsActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),
             view: bindActionCreators(ViewActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
