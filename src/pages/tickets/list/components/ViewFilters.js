@@ -73,6 +73,7 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
         })
     }
 
+    // we want tags names as key, not their ID, like 'refund', 'billing', etc.
     if (objectPath === 'ticket.tags.name') {
         options = tags.map((tag) => {
             const name = tag.get('name')
@@ -83,6 +84,7 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
         })
     }
 
+    // we want status as keys, like 'open', 'close', etc.
     if (objectPath === 'ticket.status') {
         options = fromJS(TICKET_STATUSES.map((status) => {
             return {
