@@ -227,6 +227,7 @@ export default (state = initialState, action) => {
             ))
                 .mergeDeep({
                     state: {
+                        contentState: null,
                         dirty: false,
                         query: ''
                     }
