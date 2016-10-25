@@ -12,6 +12,12 @@ const actionInitial = fromJS({
 })
 
 const initialDefaultActions = Map({
+    addAttachments: actionInitial.merge({
+        name: 'addAttachments',
+        arguments: {
+            attachments: []
+        }
+    }),
     setStatus: actionInitial.merge({
         name: 'setStatus',
         arguments: Map({status: 'new'})
@@ -77,6 +83,9 @@ const macroInitial = Map({
 })
 
 const macrosInitial = fromJS({
+    _internal: {
+        loading: {}
+    },
     state: {
         query: '',
         modalQuery: ''
@@ -160,7 +169,6 @@ export default (state = macrosInitial, action) => {
             } else if (action.direction === 'prev') {
                 return state.set('modalSelected', curIdx - 1 >= 0 ? items.get(curIdx - 1) : items.get(items.size - 1))
             }
-
             return state
         }
 
@@ -231,6 +239,50 @@ export default (state = macrosInitial, action) => {
 
         case types.CLEAR_APPLIED_MACRO:
             return state.set('appliedMacro', null)
+        case types.ADD_ATTACHMENTS_MACRO_START: {
+            const currentMacroId = state.getIn(['modalSelected', 'id'])
+            // add a loading status
+            return newState.updateIn(
+                ['_internal', 'loading', currentMacroId, 'addAttachments'],
+                fromJS([]),
+                addAttachments => addAttachments.push(true)
+            )
+        }
+        case types.ADD_ATTACHMENTS_MACRO_ERROR: {
+            const currentMacroId = state.getIn(['modalSelected', 'id'])
+            // remove a loading status
+            return state.updateIn(
+                ['_internal', 'loading', currentMacroId, 'addAttachments'],
+                fromJS([]),
+                addAttachments => addAttachments.pop()
+            )
+        }
+        case types.ADD_ATTACHMENTS_MACRO_SUCCESS: {
+            const currentMacroId = state.getIn(['modalSelected', 'id'])
+            let filesUploaded = state.getIn(
+                ['modalSelected', 'actions', action.actionIndex, 'arguments', 'attachments']
+            )
+            filesUploaded = filesUploaded.concat(fromJS(action.files))
+            // update attachments
+            newState = newState.setIn(
+                ['modalSelected', 'actions', action.actionIndex, 'arguments', 'attachments'], filesUploaded
+            )
+            // remove a loading status
+            return newState.updateIn(
+                ['_internal', 'loading', currentMacroId, 'addAttachments'],
+                fromJS([]),
+                addAttachments => addAttachments.pop()
+            )
+        }
+
+        case types.DELETE_ATTACHMENT_MACRO:
+            return newState.deleteIn([
+                'modalSelected',
+                'actions',
+                action.actionIndex,
+                'arguments',
+                'attachments',
+                action.fileIndex])
 
         default:
             return state

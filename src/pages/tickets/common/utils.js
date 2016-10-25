@@ -33,3 +33,21 @@ export function isTicketDifferent(currentTicket, nextTicket) {
 
     return !cTicket.equals(nTicket)
 }
+
+/**
+ * Map file format like 'image/png' to the semantic ui
+ * @param {string} format E.G : 'image/png'
+ * @returns {string}
+ */
+export function mapFileFormatToSemanticIcon(format) {
+    const icon = 'file'
+
+    switch (true) {
+        case /(png|jpe?g)/.test(format):
+            return `${icon} image outline`
+        case /pdf/.test(format):
+            return `${icon} pdf outline`
+        default:
+            return `${icon} text outline`
+    }
+}

@@ -98,6 +98,13 @@ export default (state = initialState, action) => {
             })
                 .setIn(['_internal', 'loading', 'addAttachment'], false)
 
+        case types.ADD_ATTACHMENTS:
+            return state.updateIn(
+                ['newMessage', 'attachments'],
+                fromJS([]),
+                (attachements => attachements.concat(action.args.get('attachments').toJS()))
+            )
+
         case types.ADD_ATTACHMENT_ERROR:
             return state.setIn(['_internal', 'loading', 'addAttachment'], false)
 

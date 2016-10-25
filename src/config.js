@@ -135,6 +135,7 @@ export const DEFAULT_ACTIONS = [
     'assignUser',
     'setResponseText',
     'setPriority',
+    'addAttachments',
     'http',
     // 'http_integration',
     'notify'
@@ -153,6 +154,17 @@ export const ACTION_STATUS = ['pending', 'running', 'success', 'error', 'cancele
 
 
 export const ACTION_TEMPLATES = {
+    addAttachments: {
+        execution: 'front',
+        name: 'addAttachments',
+        title: '',
+        arguments: {
+            attachments: {
+                type: 'listDict',
+                default: []
+            }
+        }
+    },
     setStatus: {
         execution: 'front',
         name: 'setStatus',

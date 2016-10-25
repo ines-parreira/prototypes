@@ -51,7 +51,6 @@ export function addAttachments(ticket, atts) {
         for (const attachment of attachments) {
             formData.append(attachment.name, attachment.file)
         }
-
         return axios.post('/api/upload/', formData)
             .then((json = {}) => json.data)
             .then(resp => {

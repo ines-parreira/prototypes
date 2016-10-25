@@ -39,6 +39,7 @@ class MacroContainer extends React.Component {
 
         return (
             <MacroModal
+                loading={macros.getIn(['_internal', 'loading'])}
                 macros={macros.get('items')}
                 newMacro={macros.get('newMacro')}
                 currentMacro={macros.get('modalSelected')}

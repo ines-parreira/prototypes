@@ -47,8 +47,7 @@ export default class MacroModal extends React.Component {
     }
 
     render() {
-        const { macros, currentMacro, actions, selectionMode, selectedItemsIds } = this.props
-
+        const {loading, macros, currentMacro, actions, selectionMode, selectedItemsIds } = this.props
         const rightPart = selectionMode ? (
             <MacroPreview
                 currentMacro={currentMacro}
@@ -58,6 +57,7 @@ export default class MacroModal extends React.Component {
             />
         ) : (
             <MacroEdit
+                loading={loading}
                 currentMacro={currentMacro}
                 tags={this.props.tags}
                 agents={this.props.agents}
@@ -92,6 +92,7 @@ export default class MacroModal extends React.Component {
 }
 
 MacroModal.propTypes = {
+    loading: PropTypes.object.isRequired,
     macros: PropTypes.object.isRequired,
     currentMacro: PropTypes.object,
     tags: PropTypes.object.isRequired,

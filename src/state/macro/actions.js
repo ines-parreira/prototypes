@@ -203,7 +203,6 @@ export function updateMacro(macro) {
         dispatch({
             type: types.UPDATE_MACRO_START
         })
-
         return axios.put(`/api/macros/${macro.get('id')}/`, macro.toJS())
             .then((json = {}) => json.data)
             .then(resp => {
@@ -244,5 +243,44 @@ export function deleteMacro(macroId) {
                     reason: 'Failed to delete macro'
                 })
             })
+    }
+}
+
+// Add attachments for macro "addAttachements" Action
+export function addAttachments(actionIndex, files) {
+    return (dispatch) => {
+        dispatch({
+            type: types.ADD_ATTACHMENTS_MACRO_START
+        })
+
+        const formData = new window.FormData()
+        for (const file of files) {
+            formData.append(file.name, file)
+        }
+
+        return axios.post('/api/upload/', formData)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.ADD_ATTACHMENTS_MACRO_SUCCESS,
+                    actionIndex,
+                    files: resp
+                })
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.ADD_ATTACHMENTS_MACRO_ERROR,
+                    error,
+                    reason: 'Failed to upload files. Please try again later'
+                })
+            })
+    }
+}
+
+export function removeAttachment(actionIndex, fileIndex) {
+    return {
+        type: types.DELETE_ATTACHMENT_MACRO,
+        actionIndex,
+        fileIndex
     }
 }

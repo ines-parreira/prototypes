@@ -6,9 +6,12 @@ import SetResponseTextAction from './actions/SetResponseTextAction'
 import AssignUserAction from './actions/AssignUserAction'
 import AddTagsAction from './actions/AddTagsAction'
 import HttpAction from './actions/HttpAction'
+import AddAttachmentsAction from './actions/AddAttachmentsAction'
 
 import * as ticketTypes from '../../../../../state/ticket/constants'
 import {DEFAULT_ACTIONS} from '../../../../../config'
+
+import {humanizeString} from '../../../detail/components/infobar/utils'
 
 export default class MacroEdit extends React.Component {
     componentDidMount() {
@@ -40,9 +43,12 @@ export default class MacroEdit extends React.Component {
                         insertNewMacro.classList.add('upward')
                     }
                 },
-                onChange: (value, text) => {
-                    if (~DEFAULT_ACTIONS.indexOf(text)) {
-                        this.props.actions.addAction(text)
+                onChange: (value, text, $choice) => {
+                    // extract value of item select because default value `text` is humanized
+                    // and will not match with one of `DEFAULT_ACTIONS`
+                    const action = $choice[0].attributes['data-value'].value
+                    if (DEFAULT_ACTIONS.includes(action)) {
+                        this.props.actions.addAction(action)
                         $('#new-action-popup').dropdown('set text', 'Insert a new action')
                     }
                 }
@@ -67,7 +73,7 @@ export default class MacroEdit extends React.Component {
     }
 
     render() {
-        const {currentMacro, actions, cancel} = this.props
+        const {loading, currentMacro, actions, cancel} = this.props
 
         if (!currentMacro) {
             return null
@@ -115,6 +121,11 @@ export default class MacroEdit extends React.Component {
 
                     {
                         presetActions.map((action, key) => {
+                            // get loading status for the each action of the current macro
+                            // `loadingStatus` can be an boolean in most of case but
+                            // for files upload, we use a list of boolean
+                            const loadingStatus = loading.getIn([currentMacro.get('id'), action.get('name')], false)
+                            const isLoading = (loadingStatus && !loadingStatus.isEmpty())
                             switch (action.get('name')) {
                                 case ticketTypes.SET_STATUS:
                                     return (
@@ -179,7 +190,17 @@ export default class MacroEdit extends React.Component {
                                             deleteAction={actions.deleteAction}
                                         />
                                     )
-
+                                case ticketTypes.ADD_ATTACHMENTS:
+                                    return (
+                                        <AddAttachmentsAction key={key}
+                                            index={key}
+                                            action={action}
+                                            isLoading={isLoading}
+                                            addAttachments={actions.addAttachments}
+                                            removeAttachment={actions.removeAttachment}
+                                            deleteAction={actions.deleteAction}
+                                        />
+                                    )
                                 default:
                                     return null
                             }
@@ -187,14 +208,14 @@ export default class MacroEdit extends React.Component {
                     }
 
                     <div className="ui floating dropdown labeled search icon light blue button"
-                         ref="insertNewMacro"
+                        ref="insertNewMacro"
                     >
-                        <i className="plus icon" />
+                        <i className="plus icon"/>
                         <span className="text">Insert a new action</span>
                         <div className="menu">
                             {
                                 DEFAULT_ACTIONS.map(action => (
-                                    <a key={action} className="item">{action}</a>
+                                    <a key={action} data-value={action} className="item">{humanizeString(action)}</a>
                                 ))
                             }
                         </div>
@@ -212,6 +233,7 @@ export default class MacroEdit extends React.Component {
 }
 
 MacroEdit.propTypes = {
+    loading: PropTypes.object.isRequired,
     currentMacro: PropTypes.object,
     tags: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,

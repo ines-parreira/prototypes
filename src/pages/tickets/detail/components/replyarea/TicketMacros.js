@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {ACTION_TEMPLATES} from '../../../../../config'
+import {mapFileFormatToSemanticIcon} from '../../../common/utils'
 
 export default class TicketMacros extends React.Component {
     openModalOnSelectedMacro(selectedMacroId) {
@@ -24,6 +25,23 @@ export default class TicketMacros extends React.Component {
                 <div className="content">
                     <div className="">{macro.get('name')}</div>
                 </div>
+            </div>
+        )
+    }
+
+    _renderAddAttachments = (attachments) => {
+        if (!attachments) {
+            return null
+        }
+        return (
+            <div className="macro-data">
+                <div className="ui label macro-legend">ATTACH FILES:</div>
+                {attachments.getIn(['arguments', 'attachments']).map((file, index) => (
+                    <div key={index} className="ui label mb5i">
+                        <i className={`${mapFileFormatToSemanticIcon(file.get('content_type'))} icon`}/>
+                        {file.get('name')}
+                    </div>
+                ))}
             </div>
         )
     }
@@ -135,6 +153,7 @@ export default class TicketMacros extends React.Component {
         const setStatusAction = macro.get('actions').find(action => action.get('name') === 'setStatus')
         const setPriorityAction = macro.get('actions').find(action => action.get('name') === 'setPriority')
         const assignUserAction = macro.get('actions').find(action => action.get('name') === 'assignUser')
+        const addAttachmentsActions = macro.get('actions').find(action => action.get('name') === 'addAttachments')
         const externalActions = macro.get('actions').filter(
             action => fromJS(ACTION_TEMPLATES).getIn([action.get('name'), 'execution']) === 'back'
         )
@@ -163,6 +182,7 @@ export default class TicketMacros extends React.Component {
                     {this.renderAssignUser(assignUserAction)}
                     {this.renderSetPriority(setPriorityAction)}
                     {this.renderExternalActions(externalActions)}
+                    {this._renderAddAttachments(addAttachmentsActions)}
                     {textPreview}
                 </div>
             </div>
