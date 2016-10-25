@@ -74,7 +74,13 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
     }
 
     if (objectPath === 'ticket.tags.name') {
-        options = tags
+        options = tags.map((tag) => {
+            const name = tag.get('name')
+            return fromJS({
+                id: name,
+                name
+            })
+        })
     }
 
     if (objectPath === 'ticket.status') {
