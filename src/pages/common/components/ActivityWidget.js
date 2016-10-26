@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import _ from 'lodash'
+import {fromJS} from 'immutable'
 import classNames from 'classnames'
 import {ACTIVITY_DISPLAY_COUNT} from '../../../config'
 
@@ -12,15 +13,15 @@ const ActivityWidgetItem = ({object, count, position}) => {
     })
 
     // figure out what icon to show based on ticket message source
-    const messages = object.get('messages')
+    const messages = object.get('messages', fromJS([]))
     let chanType = ''
-    if (messages) {
+    if (!messages.isEmpty()) {
         chanType = messages.last().getIn(['source', 'type'])
     }
 
     // if the source didn't give us anything fallback to the channel
     if (!chanType) {
-        chanType = object.get('channel')
+        chanType = object.get('channel', 'unknown')
     }
 
     const iconClasses = classNames('action icon', {
@@ -28,15 +29,12 @@ const ActivityWidgetItem = ({object, count, position}) => {
         comments: chanType === 'chat',
         facebook: chanType === 'facebook' || chanType === 'facebook-post',
         comment: chanType === 'internal-note',
-        'facebook-messenger': chanType === 'facebook-message'
+        'facebook-messenger': chanType === 'facebook-message',
+        help: chanType === 'unknown',
     })
 
     // the text of the link should try to use the `ticket.requester` or `ticket.subject` or finally `Ticket 123`
-    let text = object.get('subject') || `Ticket ${object.get('id')}`
-
-    if (object.getIn(['requester', 'name'])) {
-        text = object.getIn(['requester', 'name'])
-    }
+    let text = object.getIn(['requester', 'name']) || object.get('subject') || `Ticket ${object.get('id')}`
 
     // counter of activity / new messages
     let counterLabel = null
