@@ -51,13 +51,18 @@ class UserDetailContainer extends React.Component {
             return <Loader message="Loading history..." />
         }
 
-        if (users.getIn(['userHistory', 'triedLoading'], true) && !users.getIn(['userHistory', 'hasHistory'], false)) {
+        const historyLength = users.getIn(['userHistory', 'tickets'], fromJS([])).size
+
+        if (users.getIn(['userHistory', 'triedLoading'], true) && !historyLength) {
             return <p>The user has no activity recorded</p>
         }
+
         return (
             <Timeline
                 isDisplayed
                 userHistory={this.props.users.get('userHistory')}
+                revert
+                displayAll
             />
         )
     }

@@ -1,18 +1,23 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 import TimelineTicket from './TimelineTicket'
 
 export default class Timeline extends React.Component {
     render() {
-        const {userHistory, isDisplayed} = this.props
+        const {userHistory, isDisplayed, revert, displayAll} = this.props
 
-        if (!userHistory.get('hasHistory') || !isDisplayed) {
+        if (!isDisplayed) {
             return null
         }
 
-        const history = userHistory.get('tickets')
-
-        if (history.size === 1) {
+        if (!userHistory.get('hasHistory') && !displayAll) {
             return null
+        }
+
+        let history = userHistory.get('tickets', fromJS([]))
+
+        if (revert) {
+            history = history.reverse()
         }
 
         return (
@@ -50,11 +55,15 @@ Timeline.propTypes = {
     userHistory: PropTypes.object.isRequired,
     isDisplayed: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
-    currentTicketId: PropTypes.number
+    currentTicketId: PropTypes.number,
+    revert: PropTypes.bool.isRequired,
+    displayAll: PropTypes.bool.isRequired,
 }
 
 Timeline.defaultProps = {
     isDisplayed: false,
     actions: {},
-    currentTicketId: 0
+    currentTicketId: 0,
+    revert: false,
+    displayAll: false,
 }
