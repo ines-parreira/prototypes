@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import * as ViewActions from '../../../state/views/actions'
+import * as ViewsActions from '../../../state/views/actions'
 import TicketsNavbarView from './components/TicketsNavbarView'
 import ActivityWidget from '../../common/components/ActivityWidget'
 import Navbar from '../../common/components/Navbar'
@@ -20,7 +20,6 @@ class TicketNavbarContainer extends React.Component {
                 <TicketsNavbarView
                     views={this.props.views}
                     currentView={this.props.views.get('active')}
-                    setViewActive={this.props.actions.setViewActive}
                 />
             </Navbar>
         )
@@ -48,7 +47,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(ViewActions, dispatch)
+        actions: bindActionCreators(ViewsActions, dispatch)
     }
 }
 

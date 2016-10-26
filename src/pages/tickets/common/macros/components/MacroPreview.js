@@ -10,7 +10,7 @@ export default class MacroPreview extends React.Component {
             return (
                 <div className="macro-data">
                     <div className="ui label macro-legend">SET STATUS:</div>
-                    <div className={`ui label ticket-status ${setStatusAction.getIn(['arguments', 'status'])}`}>
+                    <div className={`ui label ticket-status smaller ${setStatusAction.getIn(['arguments', 'status'])}`}>
                         {setStatusAction.getIn(['arguments', 'status'])}
                     </div>
                 </div>

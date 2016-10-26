@@ -24,10 +24,19 @@ export default class TicketView extends React.Component {
         this.state = {
             isTicketHidden: false
         }
+    }
 
-        this._handlePreSubmit = this._handlePreSubmit.bind(this)
-        this._handleSubmit = this._handleSubmit.bind(this)
-        this.hideTicket = this.hideTicket.bind(this)
+    componentWillMount() {
+        const shouldDisplayHistoryOnNextPage = this.props.ticket.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
+        const displayHistory = this.props.ticket.getIn(['_internal', 'displayHistory'])
+
+        if (shouldDisplayHistoryOnNextPage !== displayHistory) {
+            this.props.actions.ticket.toggleHistory(shouldDisplayHistoryOnNextPage)
+        }
+
+        if (shouldDisplayHistoryOnNextPage) {
+            this.props.actions.ticket.displayHistoryOnNextPage(false)
+        }
     }
 
     componentDidMount() {
@@ -134,13 +143,13 @@ export default class TicketView extends React.Component {
         this.props.actions.ticket.deleteMessage(this.props.ticket.get('id'), messageId)
     }
 
-    hideTicket() {
+    hideTicket = () => {
         this.setState({
             isTicketHidden: true
         })
     }
 
-    _handlePreSubmit(...args) {
+    _handlePreSubmit = (...args) => {
         if (this.refs.newMessageForm.checkValidity()) {
             this.statusParams = args
         } else {
@@ -148,7 +157,7 @@ export default class TicketView extends React.Component {
         }
     }
 
-    _handleSubmit(e) {
+    _handleSubmit = (e) => {
         e.preventDefault()
         this.props.submit.apply(this, this.statusParams)
     }
@@ -179,10 +188,10 @@ export default class TicketView extends React.Component {
         // get hidden from props.
         const isTicketHidden = hidden || this.state.isTicketHidden
 
-        const itemsCountInHistory = ticket.getIn(['_internal', 'userHistory', 'tickets'], fromJS([])).size
-            + ticket.getIn(['_internal', 'userHistory', 'events'], fromJS([])).size
+        const itemsCountInHistory = users.getIn(['userHistory', 'tickets'], fromJS([])).size
+            + users.getIn(['userHistory', 'events'], fromJS([])).size
 
-        const historyButtonLabel = !ticket.getIn(['state', 'displayHistory'])
+        const historyButtonLabel = !ticket.getIn(['_internal', 'displayHistory'])
             ? <p><i className="icon arrow circle up" />Show user history ({itemsCountInHistory})</p>
             : 'Hide user history'
 
@@ -201,21 +210,23 @@ export default class TicketView extends React.Component {
                                     'ticket-previous-btn ui small button',
                                     {
                                         transparent: !ticket.get('id')
-                                        || !ticket.getIn(['_internal', 'userHistory', 'hasHistory'])
-                                        || ticket.getIn(['state', 'displayHistory'])
+                                        || !users.getIn(['userHistory', 'hasHistory'])
+                                        || ticket.getIn(['_internal', 'displayHistory'])
+                                        || users.getIn(['_internal', 'loading', 'history'])
                                     }
                                 )}
                                 onClick={() => {
-                                    if (
+                                    const shouldOpenHistory =
                                         ticket.get('id')
-                                        && ticket.getIn(['_internal', 'userHistory', 'hasHistory'])
-                                        && !ticket.getIn(['state', 'displayHistory'])
-                                    ) {
-                                        actions.ticket.toggleHistory()
+                                        && users.getIn(['userHistory', 'hasHistory'])
+                                        && !ticket.getIn(['_internal', 'displayHistory'])
+
+                                    if (shouldOpenHistory) {
+                                        actions.ticket.toggleHistory(true)
                                         document.getElementsByClassName('TicketDetailContainer')[0].scrollTop = 0
 
                                         amplitude.getInstance().logEvent('Opened Timeline', {
-                                            nbOfTicketsInTimeline: ticket.getIn(['_internal', 'userHistory', 'tickets']).size,
+                                            nbOfTicketsInTimeline: users.getIn(['userHistory', 'tickets']).size,
                                             channel: ticket.get('channel'),
                                             nbOfMessagesInTicket: ticket.get('messages').size
                                         })

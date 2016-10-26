@@ -1,136 +1,91 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import DocumentTitle from 'react-document-title'
 import {fromJS} from 'immutable'
-import _ from 'lodash'
-import * as MacroActions from '../../../state/macro/actions'
-import * as TicketActions from '../../../state/ticket/actions'
-import * as TicketsActions from '../../../state/tickets/actions'
-import * as ViewActions from '../../../state/views/actions'
-import * as UserActions from '../../../state/users/actions'
-import * as SchemaActions from '../../../state/schema/actions'
-import * as TagsActions from '../../../state/tags/actions'
+import {bindActionCreators} from 'redux'
+import {fetchTags} from '../../../state/tags/actions'
 import MacroContainer from '../common/macros/MacroContainer'
-import TicketsView from './components/TicketsView'
+import ComplexTableWrapper from '../../common/components/complexTable/ComplexTableWrapper'
 import {compactInteger} from '../../../utils'
+import TicketListActions from './components/TicketListActions'
 
 class TicketListContainer extends React.Component {
     componentWillMount() {
-        this.props.actions.schema.fetch()
-        const hasViewIdParameter = !!this.props.params.viewId
-
-        // set active view as the first one
-        const shouldSetFirstViewAsActive = !hasViewIdParameter
-            && !this.props.views.get('items').isEmpty()
-
-        if (shouldSetFirstViewAsActive) {
-            this.props.actions.view.setViewActive(this.props.views.getIn(['items', 0]))
-            this._setPage(1)
-        }
-
-        this.props.actions.tickets.fetchTicketsPage(
-            this.props.tickets.getIn(['_internal', 'pagination', 'page'], 1)
-        )
-        this.props.actions.tags.fetchTags()
-    }
-
-    componentWillReceiveProps = (nextProps) => {
-        const currentViews = this.props.views
-        const nextViews = nextProps.views
-        const currentActive = currentViews.get('active', fromJS({}))
-        const nextActive = nextViews.get('active', fromJS({}))
-
-        const isLoading = nextProps.views.get('loading')
-
-        const hasViewIdParameter = !!this.props.params.viewId
-
-        // set active view as the first one
-        const shouldSetFirstViewAsActive = !hasViewIdParameter
-            && nextViews.get('items').size
-            && nextActive.isEmpty()
-
-        if (shouldSetFirstViewAsActive) {
-            this.props.actions.view.setViewActive(nextViews.getIn(['items', 0]))
-        }
-
-        // if the active view changed, fetch it again
-        const currentPage = this.props.tickets.getIn(['_internal', 'pagination', 'page'], 1)
-        let nextPage = nextProps.tickets.getIn(['_internal', 'pagination', 'page'], 1)
-
-        // we ignore the fields because they get updated before any filtering is performed
-        // ex: when fetching the Requester field enum
-        const viewHasChanged = !currentActive.delete('fields').equals(nextActive.delete('fields'))
-
-        const shouldFetchTickets = !isLoading
-            && !nextActive.isEmpty()
-            && (
-                viewHasChanged
-                // if the view has changed since the last time the container was mounted
-                || nextProps.tickets.getIn(['_internal', 'currentViewId']) !== nextActive.get('id')
-                // page changed
-                || currentPage !== nextPage
-            )
-
-        // if view change or is edited, set active page to first page
-        if (currentActive.get('id') !== nextActive.get('id') || viewHasChanged) {
-            this._setPage(1, nextProps)
-            nextPage = 1
-        }
-
-        if (shouldFetchTickets) {
-            nextProps.actions.tickets.fetchTicketsPage(nextPage)
-            amplitude.getInstance().logEvent('Opened view', _.pick(nextActive.toJS(), ['id', 'slug']))
-        }
-    }
-
-    _setPage = (page = 1) => {
-        this.props.actions.tickets.setPage(page)
-    }
-
-    _search = (query, params, stringQuery) => {
-        /** populate tickets state from search results now **/
-        const view = this.props.views.get('active')
-
-        if (stringQuery) {
-            this.props.actions.view.updateView(view.merge({search: {query, params}}))
-        } else if (view.get('search')) {
-            this.props.actions.view.updateView(view.set('search', null))
-        }
+        this.props.fetchTags()
     }
 
     render() {
-        if (!this.props.views.get('active')) {
-            return null
-        }
-
-        const active = this.props.views.get('active', fromJS({}))
+        const activeView = this.props.views.get('active', fromJS({}))
         let title = 'Loading...'
 
-        if (!active.isEmpty()) {
-            title = active.get('name')
-            if (active.get('count', 0) > 0) {
-                title = `(${compactInteger(active.get('count', 0))}) ${title}`
+        if (!activeView.isEmpty()) {
+            title = activeView.get('name')
+            if (activeView.get('count', 0) > 0) {
+                title = `(${compactInteger(activeView.get('count', 0))}) ${title}`
             }
         }
 
         return (
             <DocumentTitle title={title}>
                 <div className="TicketListContainer">
-                    <TicketsView
-                        tickets={this.props.tickets}
-                        views={this.props.views}
-                        schemas={this.props.schemas}
-                        users={this.props.users}
-                        currentUser={this.props.currentUser}
-                        tags={this.props.tags.get('items')}
-                        actions={this.props.actions}
-                        setPage={this._setPage}
-                        search={this._search}
+                    <ComplexTableWrapper
+                        askedViewId={this.props.params.viewId}
+                        viewsType="ticket-list"
+                        items={this.props.tickets.get('items', fromJS([]))}
+                        fields={activeView.get('fields', fromJS([]))}
+                        hasBulkActions
+                        ActionsComponent={TicketListActions}
+                        queryPath="bool.should.0.multi_match.query,bool.should.1.multi_match.query,bool.should.2.nested.query.multi_match.query"
+                        searchQuery={{
+                            bool: {
+                                should: [
+                                    {
+                                        multi_match: {
+                                            query: '',
+                                            operator: 'and',
+                                            fields: [
+                                                'subject^3',
+                                                'requester.name',
+                                                'sender.name',
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        multi_match: {
+                                            query: '',
+                                            type: 'phrase_prefix',
+                                            fields: [
+                                                'requester.email',
+                                                'sender.email'
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        nested: {
+                                            path: 'messages',
+                                            query: {
+                                                multi_match: {
+                                                    query: '',
+                                                    type: 'phrase_prefix',
+                                                    fields: [
+                                                        'messages.source.from.name',
+                                                        'messages.source.from.email',
+                                                        'messages.source.to.name',
+                                                        'messages.source.to.email',
+                                                        'messages.body_*'
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }}
                     />
                     <MacroContainer
+                        activeView={activeView}
                         disableExternalActions selectionMode
-                        selectedItemsIds={this.props.tickets.getIn(['_internal', 'selectedItemsIds'])}
+                        selectedItemsIds={this.props.views.getIn(['_internal', 'selectedItemsIds'])}
                     />
                 </div>
             </DocumentTitle>
@@ -146,8 +101,7 @@ TicketListContainer.propTypes = {
     users: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
     settings: PropTypes.object.isRequired,
-
-    actions: PropTypes.object.isRequired,
+    fetchTags: PropTypes.func.isRequired,
 
     // React Router
     params: PropTypes.object,
@@ -168,15 +122,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: {
-            tags: bindActionCreators(TagsActions, dispatch),
-            macro: bindActionCreators(MacroActions, dispatch),
-            view: bindActionCreators(ViewActions, dispatch),
-            ticket: bindActionCreators(TicketActions, dispatch),
-            tickets: bindActionCreators(TicketsActions, dispatch),
-            schema: bindActionCreators(SchemaActions, dispatch),
-            user: bindActionCreators(UserActions, dispatch)
-        }
+        fetchTags: bindActionCreators(fetchTags, dispatch),
     }
 }
 

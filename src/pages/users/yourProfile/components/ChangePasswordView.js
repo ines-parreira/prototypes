@@ -3,7 +3,7 @@ import {Field, reduxForm} from 'redux-form'
 import {Link} from 'react-router'
 import classNames from 'classnames'
 
-import {InputField} from '../../../common/components/semantic'
+import {InputField} from '../../../common/components/formFields'
 
 
 const validate = (values) => {

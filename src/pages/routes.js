@@ -6,26 +6,43 @@ import IntegrationListContainer from './integrations/list/IntegrationListContain
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import IntegrationNavbarContainer from './integrations/common/IntegrationNavbarContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
+import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbarContainer from './tickets/common/TicketNavbarContainer'
 import TicketListContainer from './tickets/list/TicketListContainer'
 import RuleContainer from './rules/list/RuleContainer'
 import UserListContainer from './users/list/UserListContainer'
 import UserNavbarContainer from './users/common/UserNavbarContainer'
 import UserDetailContainer from './users/detail/UserDetailContainer'
+import UserSourceContainer from './users/detail/UserSourceContainer'
+import UserInfobarContainer from './users/detail/UserInfobarContainer'
 import YourProfileContainer from './users/yourProfile/YourProfileContainer'
 import ChangePasswordContainer from './users/yourProfile/ChangePasswordContainer'
 import StatsContainer from './stats/list/StatsContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
-import SourceWidgetsContainer from './tickets/detail/SourceWidgetsContainer'
 
 export default (
     <Route path="/app" component={App}>
         <IndexRoute components={{content: TicketListContainer, navbar: TicketNavbarContainer}} />
         <Route path="your-profile" components={{content: YourProfileContainer, navbar: UserNavbarContainer}} />
-        <Route path="your-profile/change-password" components={{content: ChangePasswordContainer, navbar: UserNavbarContainer}} />
+        <Route path="your-profile/change-password"
+               components={{content: ChangePasswordContainer, navbar: UserNavbarContainer}}
+        />
         <Route path="users" components={{content: UserListContainer, navbar: UserNavbarContainer}} />
-        <Route path="users/:userId" components={{content: UserDetailContainer, navbar: UserNavbarContainer}} />
+        <Route path="users/:viewId/:viewSlug" components={{content: UserListContainer, navbar: UserNavbarContainer}} />
+        <Route path="user/:userId" components={{
+            content: UserDetailContainer,
+            navbar: UserNavbarContainer,
+            infobar: UserInfobarContainer
+        }} />
+        <Route path="user/:userId/edit-widgets"
+               components={{
+                   content: UserSourceContainer,
+                   navbar: UserNavbarContainer,
+                   infobar: UserInfobarContainer
+               }}
+               isEditingWidgets
+        />
         <Route path="ticket/:ticketId" components={{
             content: TicketDetailContainer,
             navbar: TicketNavbarContainer,
@@ -33,7 +50,7 @@ export default (
         }} />
         <Route path="ticket/:ticketId/edit-widgets"
                components={{
-                   content: SourceWidgetsContainer,
+                   content: TicketSourceContainer,
                    navbar: TicketNavbarContainer,
                    infobar: TicketInfobarContainer
                }}

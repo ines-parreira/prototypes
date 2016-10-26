@@ -252,12 +252,6 @@ export function markTicketDirty(dirty = true) {
     }
 }
 
-export function setupNewTicket() {
-    return {
-        type: types.SETUP_NEW_TICKET
-    }
-}
-
 export function deleteMessage(ticketId, messageId) {
     return (dispatch) => {
         dispatch({
@@ -670,57 +664,13 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
 }
 
 export function clearTicket() {
-    return {
-        type: types.CLEAR_TICKET
-    }
-}
+    return (dispatch, getState) => {
+        const shouldDisplayHistoryOnNextPage = getState().ticket.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
 
-export function fetchUserTickets(userId) {
-    return (dispatch) => {
         dispatch({
-            type: types.FETCH_USER_TICKETS_START
+            type: types.CLEAR_TICKET,
+            shouldDisplayHistoryOnNextPage
         })
-
-        return axios.get(`/api/users/${userId}/tickets/?type=requested`)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                dispatch({
-                    type: types.FETCH_USER_TICKETS_SUCCESS,
-                    userId,
-                    resp
-                })
-            })
-            .catch(error => {
-                dispatch({
-                    type: types.FETCH_USER_TICKETS_ERROR,
-                    error,
-                    reason: 'Couldn\'t fetch user\'s tickets. Please try again in a few minutes.'
-                })
-            })
-    }
-}
-
-export function fetchUserEvents(userId) {
-    return (dispatch) => {
-        dispatch({
-            type: types.FETCH_USER_EVENTS_START
-        })
-
-        return axios.get(`/api/users/${userId}/events/`)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                dispatch({
-                    type: types.FETCH_USER_EVENTS_SUCCESS,
-                    resp
-                })
-            })
-            .catch(error => {
-                dispatch({
-                    type: types.FETCH_USER_EVENTS_ERROR,
-                    error,
-                    reason: 'Couldn\'t fetch user\'s events. Please try again in a few minutes.'
-                })
-            })
     }
 }
 
@@ -731,9 +681,9 @@ export function toggleHistory(state) {
     }
 }
 
-export function setCrossTickets(state = {}) {
+export function displayHistoryOnNextPage(state = true) {
     return {
-        type: types.SET_CROSS_TICKETS,
+        type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
         state
     }
 }

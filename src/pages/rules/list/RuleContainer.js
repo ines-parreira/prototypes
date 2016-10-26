@@ -5,7 +5,6 @@ import {bindActionCreators} from 'redux'
 import RulesView from './components/RulesView'
 
 import * as RuleActions from '../../../state/rules/actions'
-import * as SchemaActions from '../../../state/schema/actions'
 
 const mapStateToProps = (state) => ({
     currentUser: state.currentUser,
@@ -16,7 +15,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     actions: {
         rules: bindActionCreators(RuleActions, dispatch),
-        schemas: bindActionCreators(SchemaActions, dispatch),
     },
 })
 

@@ -12,7 +12,7 @@ import {
     MultiSelectField,
     JsonField,
     URLInputField
-} from '../../../../common/components/semantic'
+} from '../../../../common/components/formFields'
 import HeaderFieldArray from './HeaderFieldArray'
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
@@ -112,7 +112,7 @@ class HttpIntegrationDetail extends React.Component {
 
         // if update, set ids for server
         if (this.props.isUpdate) {
-            const integration = this.props.integration
+            const {integration} = this.props
             doc = doc
                 .set('id', integration.get('id'))
                 .setIn(['http', 'id'], integration.getIn(['http', 'id']))

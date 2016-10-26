@@ -51,7 +51,7 @@ export default class TicketMacros extends React.Component {
             return (
                 <div className="macro-data">
                     <div className="ui label macro-legend">SET STATUS:</div>
-                    <div className={`ui label ticket-status ${setStatusAction.getIn(['arguments', 'status'])}`}>
+                    <div className={`ui label smaller ticket-status ${setStatusAction.getIn(['arguments', 'status'])}`}>
                         {setStatusAction.getIn(['arguments', 'status'])}
                     </div>
                 </div>

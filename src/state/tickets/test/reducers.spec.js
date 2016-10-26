@@ -4,7 +4,7 @@ import expectImmutable from 'expect-immutable'
 import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
-import * as types from '../constants'
+import * as viewTypes from '../../views/constants'
 
 expect.extend(expectImmutable)
 
@@ -38,13 +38,12 @@ describe('reducers', () => {
                 .merge({
                     items
                 })
-                .setIn(['_internal', 'pagination'], resp.meta)
-                .setIn(['_internal', 'loading', 'fetchList'], false)
 
             expect(
                 reducer(
                     initialState, {
-                        type: types.FETCH_TICKET_LIST_VIEW_SUCCESS,
+                        type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
+                        viewType: 'ticket-list',
                         data: resp
                     }
                 )
@@ -72,7 +71,8 @@ describe('reducers', () => {
                     initialState
                         .set('items', fromJS(tickets)),
                     {
-                        type: types.BULK_DELETE_SUCCESS,
+                        type: viewTypes.BULK_DELETE_SUCCESS,
+                        viewType: 'ticket-list',
                         ids: [1, 2]
                     }
                 )

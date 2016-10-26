@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 
-import EditableTitle from './../../common/components/EditableTitle'
+import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
 import TicketPriority from './ticketdetails/TicketPriority'
 import TicketStatus from './ticketdetails/TicketStatus'

@@ -125,7 +125,7 @@ export default (state = macrosInitial, action) => {
             return state.set('selected', state.getIn(['items', action.id]))
 
         case types.PREVIEW_MACRO_IN_MODAL:
-            return state.set('modalSelected', state.getIn(['items', action.macroId])).set('isModalOpen', true)
+            return state.set('modalSelected', state.getIn(['items', action.macroId]))
 
         case types.APPLY_MACRO:
             return state.set('visible', false).set('appliedMacro', action.macro)

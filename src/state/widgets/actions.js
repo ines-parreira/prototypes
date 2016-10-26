@@ -2,7 +2,7 @@ import axios from 'axios'
 import * as types from './constants'
 import {Map} from 'immutable'
 import {notify} from '../notifications/actions'
-import {jsonToWidgets} from '../../pages/tickets/detail/components/infobar/utils'
+import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
 

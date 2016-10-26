@@ -8,7 +8,7 @@ import moment from 'moment-timezone'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
 
-import {InputField, RichTextAreaField, SelectField} from '../../../common/components/semantic'
+import {InputField, RichTextAreaField, SelectField} from '../../../common/components/formFields'
 
 
 class YourProfileView extends React.Component {
@@ -51,7 +51,7 @@ class YourProfileView extends React.Component {
         normalizedValues.signature_html = values.signature.html
         delete normalizedValues.signature
 
-        this.props.actions.updateUser(normalizedValues, 0)
+        this.props.actions.submitUser(normalizedValues, 0)
     }
 
     render() {

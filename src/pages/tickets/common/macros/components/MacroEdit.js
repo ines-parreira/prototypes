@@ -11,7 +11,7 @@ import AddAttachmentsAction from './actions/AddAttachmentsAction'
 import * as ticketTypes from '../../../../../state/ticket/constants'
 import {DEFAULT_ACTIONS} from '../../../../../config'
 
-import {humanizeString} from '../../../detail/components/infobar/utils'
+import {humanizeString} from '../../../../common/components/infobar/utils'
 
 export default class MacroEdit extends React.Component {
     componentDidMount() {

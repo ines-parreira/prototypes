@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {Field} from 'redux-form'
-import {InputField} from '../../../../common/components/semantic'
+import {InputField} from '../../../../common/components/formFields'
 
 const HeaderFieldArray = ({fields}) => (
     <div className="field">

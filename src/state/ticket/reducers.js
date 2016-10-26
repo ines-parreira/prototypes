@@ -43,27 +43,17 @@ export const initialState = fromJS({
         fromMacro: false,
         contentState: null,
         selectionState: null,
-        latestEventDatetime: null,
-        displayHistory: false
+        latestEventDatetime: null
     },
     _internal: {
-        crossTickets: {
-            // Used to pass information from one ticketView to another without using the URL
-            displayHistory: false
-        },
-        userHistory: {
-            triedLoading: false,
-            isLoading: false,
-            hasHistory: false,
-            tickets: [],
-            events: []
-        },
+        displayHistory: false,
+        shouldDisplayHistoryOnNextPage: false,
         loading: {
             addAttachment: false,
             fetchTicket: false,
             submitMessage: false,
             deleteMessage: false,
-        }
+        },
     },
     messages: [],
     customer_ratings: [],
@@ -250,8 +240,10 @@ export default (state = initialState, action) => {
             return state
         }
 
-        case types.CLEAR_TICKET:
-            return initialState.setIn(['_internal', 'crossTickets'], state.getIn(['_internal', 'crossTickets']))
+        case types.CLEAR_TICKET: {
+            return initialState
+                .set('_internal', state.get('_internal'))
+        }
 
         /* Macro actions */
         case types.ADD_TICKET_TAGS: {
@@ -391,9 +383,6 @@ export default (state = initialState, action) => {
             return newState
         }
 
-        case types.SETUP_NEW_TICKET:
-            return initialState
-
         case types.SET_RECEIVERS: {
             let newState = state
             const receivers = action.receivers
@@ -432,55 +421,16 @@ export default (state = initialState, action) => {
                 )
                 .setIn(['_internal', 'loading', 'deleteMessage'], false)
 
-        case types.FETCH_USER_TICKETS_START:
-        case types.FETCH_USER_EVENTS_START:
-            return state.mergeDeep({
-                _internal: {
-                    userHistory: {
-                        isLoading: true,
-                        triedLoading: true
-                    }
-                }
-            })
+        case types.TOGGLE_HISTORY: {
+            const displayHistory = action.state !== undefined
+                ? action.state
+                : !state.getIn(['_internal', 'displayHistory'])
 
-        case types.FETCH_USER_TICKETS_SUCCESS:
-            if (state.getIn(['requester', 'id']) !== action.userId) {
-                return state
-            }
+            return state.setIn(['_internal', 'displayHistory'], displayHistory)
+        }
 
-            return state.mergeDeep({
-                _internal: {
-                    userHistory: {
-                        tickets: action.resp.data,
-                        isLoading: false,
-                        hasHistory: (
-                            state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!(action.resp.meta.item_count - 1)
-                        )
-                    }
-                }
-            })
-
-        case types.FETCH_USER_EVENTS_SUCCESS:
-            return state.mergeDeep({
-                _internal: {
-                    userHistory: {
-                        events: action.resp.data,
-                        isLoading: false,
-                        hasHistory: (
-                            state.getIn(['_internal', 'userHistory', 'hasHistory']) || !!action.resp.meta.item_count
-                        )
-                    }
-                }
-            })
-
-        case types.TOGGLE_HISTORY:
-            return state.setIn(['state', 'displayHistory'], action.state !== undefined ?
-                action.state :
-                !state.getIn(['state', 'displayHistory'])
-            )
-
-        case types.SET_CROSS_TICKETS:
-            return state.setIn(['_internal', 'crossTickets'], fromJS(action.state))
+        case types.DISPLAY_HISTORY_ON_NEXT_PAGE:
+            return state.setIn(['_internal', 'shouldDisplayHistoryOnNextPage'], fromJS(action.state))
 
         case SUBMIT_ACTIVITY_SUCCESS: {
             // See if we have an event for our ticket

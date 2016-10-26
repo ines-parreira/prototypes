@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
+import {fromJS} from 'immutable'
 import {compactInteger} from '../../../../utils'
 
 export default class TicketsNavbarView extends React.Component {
@@ -31,8 +32,12 @@ export default class TicketsNavbarView extends React.Component {
     }
 
     render() {
-        const {views, currentView, setViewActive} = this.props
-        const sections = this._sections(views.get('items'))
+        const {views, currentView} = this.props
+        const displayedViews = views
+            .get('items', fromJS([]))
+            .filter((view) => view.get('type') === 'ticket-list')
+
+        const sections = this._sections(displayedViews)
 
         return (
             <div>
@@ -74,9 +79,6 @@ export default class TicketsNavbarView extends React.Component {
                                                         <Link key={key}
                                                               to={`/app/tickets/${view.id}/${view.slug}`}
                                                               className={classes}
-                                                              onClick={() => {
-                                                                  setViewActive(v)
-                                                              }}
                                                         >
                                                             {view.name} ({compactInteger(count)})
                                                         </Link>
@@ -96,6 +98,5 @@ export default class TicketsNavbarView extends React.Component {
 
 TicketsNavbarView.propTypes = {
     views: PropTypes.object,
-    currentView: PropTypes.object,
-    setViewActive: PropTypes.func
+    currentView: PropTypes.object
 }

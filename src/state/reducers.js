@@ -5,7 +5,7 @@ import {reducer as notificationsReducer} from 'react-notification-system-redux'
 
 import currentUserReducer from './currentUser/reducers'
 import rulesReducer from './rules/reducers'
-import schemasReducer from './schema/reducers'
+import schemasReducer from './schemas/reducers'
 import ticketsReducer from './tickets/reducers'
 import ticketReducer from './ticket/reducers'
 import widgetsReducer from './widgets/reducers'

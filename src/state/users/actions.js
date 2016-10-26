@@ -1,4 +1,5 @@
 import axios from 'axios'
+import _isUndefined from 'lodash/isUndefined'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
 
@@ -95,67 +96,47 @@ export function fetchUser(userId) {
     }
 }
 
-export function createUser(data) {
-    return (dispatch) => {
-        dispatch({
-            type: types.CREATE_NEW_USER_START
-        })
-
-        const newData = Object.assign({}, data)
-        newData.roles = [data.role]
-        delete newData.role
-
-        return axios.post('/api/users/', newData)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                dispatch({
-                    type: types.CREATE_NEW_USER_SUCCESS,
-                    resp
-                })
-
-                dispatch(notify({
-                    type: 'success',
-                    message: 'User successfully created'
-                }))
-            })
-            .catch(error => {
-                dispatch({
-                    type: types.CREATE_NEW_USER_ERROR,
-                    error,
-                    reason: 'Failed to create the new user'
-                })
-            })
-    }
-}
-
-export function updateUser(data, userId) {
+export function submitUser(data, userId) {
     return (dispatch) => {
         const isCurrentUser = userId === 0
+        const isUpdate = !_isUndefined(userId)
+        let promise
 
         dispatch({
-            type: isCurrentUser ? types.UPDATE_CURRENT_USER_START : types.UPDATE_USER_START
+            type: isCurrentUser ? types.SUBMIT_CURRENT_USER_START : types.SUBMIT_USER_START
         })
 
-        return axios.put(`/api/users/${userId}/`, data)
+        if (isUpdate) {
+            promise = axios.put(`/api/users/${userId}/`, data)
+        } else {
+            promise = axios.post('/api/users/', data)
+        }
+
+        return promise
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
-                    type: isCurrentUser ? types.UPDATE_CURRENT_USER_SUCCESS : types.UPDATE_USER_SUCCESS,
+                    type: isCurrentUser ? types.SUBMIT_CURRENT_USER_SUCCESS : types.SUBMIT_USER_SUCCESS,
+                    isUpdate,
                     userId,
                     resp
                 })
 
                 dispatch(notify({
                     type: 'success',
-                    message: 'User successfully updated'
+                    message: `User successfully ${isUpdate ? 'updated' : 'created'}`
                 }))
+
+                return resp
             })
             .catch(error => {
                 dispatch({
-                    type: isCurrentUser ? types.UPDATE_CURRENT_USER_ERROR : types.UPDATE_USER_ERROR,
+                    type: isCurrentUser ? types.SUBMIT_CURRENT_USER_ERROR : types.SUBMIT_USER_ERROR,
                     error,
-                    reason: 'Failed to update the user'
+                    reason: `Failed to ${isUpdate ? 'update' : 'create'} user`
                 })
+
+                return error
             })
     }
 }
@@ -190,18 +171,39 @@ export function deleteUser(userId) {
     }
 }
 
-export function sortUsers(sortField, sortDirection) {
-    return {
-        type: types.SORT_USERS,
-        sortField,
-        sortDirection
+export function fetchUserHistory(userId, options) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.FETCH_USER_HISTORY_START,
+            userId,
+        })
+
+        return axios.get(`/api/users/${userId}/tickets/?type=requested`)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                const state = getState()
+
+                let shouldTriggerSuccess = true
+                if (options.successCondition) {
+                    shouldTriggerSuccess = options.successCondition(state)
+                }
+
+                if (shouldTriggerSuccess) {
+                    dispatch({
+                        type: types.FETCH_USER_HISTORY_SUCCESS,
+                        userId,
+                        resp
+                    })
+                }
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.FETCH_USER_HISTORY_ERROR,
+                    error,
+                    reason: 'Couldn\'t fetch user\'s tickets. Please try again in a few minutes.'
+                })
+            })
     }
 }
 
-export function updateList(list) {
-    return {
-        type: types.UPDATE_LIST,
-        list
-    }
-}
-
+export const clearUser = () => ({type: types.CLEAR_USER})

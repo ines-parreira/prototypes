@@ -205,3 +205,19 @@ export const camelCaseToTitleCase = (text) => (
         return index === 0 ? value.toUpperCase() : ` ${value.toUpperCase()}`
     })
 )
+
+/**
+ * Slugify a string
+ * @param string
+ * @returns {*}
+ */
+export function slugify(string) {
+    if (!_isString(string)) {
+        return string
+    }
+
+    return string
+        .toLowerCase()
+        .trim()
+        .replace(/[ ]/g, '-')
+}

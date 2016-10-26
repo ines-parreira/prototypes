@@ -11,7 +11,14 @@ import {
 const initialState = fromJS({
     items: [],
     active: {},
-    loading: false
+    loading: false,
+    _internal: {
+        currentViewId: null,
+        selectedItemsIds: [],
+        loading: {
+            fetchList: false
+        }
+    }
 })
 
 export default (state = initialState, action) => {
@@ -21,16 +28,18 @@ export default (state = initialState, action) => {
     let active = state.get('active')
 
     switch (action.type) {
-        case types.SET_VIEW_ACTIVE:
+        case types.SET_VIEW_ACTIVE: {
             if (action.view) {
                 return state.set('active', action.view)
             }
             return state
+        }
 
-        case types.UPDATE_VIEW:
+        case types.UPDATE_VIEW: {
             // edit is true by default,
             // for backwards compatibility.
             return state.set('active', action.view.set('dirty', true).set('editMode', action.edit))
+        }
 
         case types.SET_FIELD_VISIBILITY: {
             const fields = active
@@ -46,18 +55,7 @@ export default (state = initialState, action) => {
             return state.set('active', active)
         }
 
-        case types.UPDATE_VIEW_FIELD:
-            // replace a field with a new field
-            active = active.set('fields', active.get('fields').map((f) => (
-                (f.get('name') === action.field.get('name')) ? action.field : f
-            )))
-
-            // enter edit mode
-            active = active.set('editMode', true)
-
-            return state.set('active', active.set('dirty', true))
-
-        case types.ADD_VIEW_FIELD_FILTER:
+        case types.ADD_VIEW_FIELD_FILTER: {
             // given a filter and our code+ast => generate new code/ast and save it to the state
             ast = addFilterAST(active, action.filter)
             code = getCode(ast.toJS())
@@ -67,28 +65,32 @@ export default (state = initialState, action) => {
             active = active.set('editMode', true)
 
             return state.set('active', active.set('dirty', true))
+        }
 
-        case types.REMOVE_VIEW_FIELD_FILTER:
+        case types.REMOVE_VIEW_FIELD_FILTER: {
             ast = removeFilterAST(active, action.index)
             if (ast) {
                 code = getCode(ast.toJS())
             }
             active = active.set('filters_ast', ast).set('filters', code)
             return state.set('active', active.set('dirty', true))
+        }
 
-        case types.UPDATE_VIEW_FIELD_FILTER:
+        case types.UPDATE_VIEW_FIELD_FILTER: {
             ast = updateFilterValue(active, action.index, action.value)
             code = getCode(ast.toJS())
             active = active.set('filters_ast', ast).set('filters', code)
             return state.set('active', active)
+        }
 
-        case types.UPDATE_VIEW_FIELD_FILTER_OPERATOR:
+        case types.UPDATE_VIEW_FIELD_FILTER_OPERATOR: {
             ast = updateFilterOperator(active, action.index, action.operator)
             code = getCode(ast.toJS())
             active = active.set('filters_ast', ast).set('filters', code)
             return state.set('active', active)
+        }
 
-        case types.UPDATE_VIEW_FIELD_ENUM_SUCCESS:
+        case types.UPDATE_VIEW_FIELD_ENUM_SUCCESS: {
             // update our active view with the new data from the API
             // to do that we need to change all the fields with a new list of fields
             active = active.set('fields', active.get('fields').map(f => {
@@ -101,6 +103,7 @@ export default (state = initialState, action) => {
             }))
 
             return state.set('active', active)
+        }
 
         case types.RESET_VIEW: {
             // find the original view from the state and replace the active view
@@ -127,11 +130,13 @@ export default (state = initialState, action) => {
             })
         }
 
-        case types.FETCH_VIEW_LIST_START:
+        case types.FETCH_VIEW_LIST_START: {
             return state.set('loading', true)
+        }
 
-        case types.UPDATE_VIEW_LIST:
+        case types.UPDATE_VIEW_LIST: {
             return state.set('items', fromJS(action.items))
+        }
 
         case types.FETCH_VIEW_LIST_SUCCESS: {
             items = fromJS(action.resp.data)
@@ -148,14 +153,64 @@ export default (state = initialState, action) => {
             })
         }
 
-        case types.DELETE_VIEW_SUCCESS:
+        case types.DELETE_VIEW_SUCCESS: {
             return state
                 .merge({
                     items: state.get('items').filter(item => item.get('id') !== action.viewId),
                 })
-                .set('active', fromJS({}))
+        }
 
-        case types.SUBMIT_VIEW_START:
+        case types.FETCH_LIST_VIEW_START: {
+            return state
+                .setIn(['_internal', 'currentViewId'], action.viewId)
+                .setIn(['_internal', 'loading', 'fetchList'], true)
+                .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
+        }
+
+        case types.FETCH_LIST_VIEW_SUCCESS: {
+            const payload = action.data
+
+            return state
+                .setIn(['_internal', 'pagination'], fromJS(payload.meta))
+                .setIn(['_internal', 'loading', 'fetchList'], false)
+        }
+
+        case types.TOGGLE_SELECTION: {
+            const currentlySelected = state.getIn(['_internal', 'selectedItemsIds'], fromJS([]))
+
+            // if it is a "select all" action where we select every items
+            if (action.selectedAll) {
+                if (currentlySelected.size < action.idOrIds.size) {
+                    return state.setIn(['_internal', 'selectedItemsIds'], action.idOrIds)
+                }
+
+                return state.setIn(['_internal', 'selectedItemsIds'], fromJS([]))
+            }
+
+            const idx = currentlySelected.indexOf(action.idOrIds)
+
+            // if already selected, deselect it
+            if (~idx) {
+                return state.setIn(['_internal', 'selectedItemsIds'], currentlySelected.delete(idx))
+            }
+
+            // otherwise select it
+            return state.setIn(['_internal', 'selectedItemsIds'], currentlySelected.push(action.idOrIds))
+        }
+
+        case types.BULK_DELETE_SUCCESS: {
+            return state
+                .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
+        }
+
+        case types.SAVE_INDEX: {
+            return state.setIn(['_internal', 'currentItemIndex'], action.currentItemIndex)
+        }
+
+        case types.SET_PAGE: {
+            return state.setIn(['_internal', 'pagination', 'page'], action.page)
+        }
+
         default:
             return state
     }

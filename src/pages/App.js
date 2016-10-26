@@ -20,7 +20,6 @@ import '../../css/main.less'
 let pollInterval = null
 class App extends React.Component {
     componentWillMount() {
-        this.props.fetchUsers()
         this.props.fetchUsers(['agent', 'admin'])
 
         // activity polling

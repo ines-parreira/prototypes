@@ -1,39 +1,42 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 
 import MacroList from './MacroList'
 import MacroEdit from './MacroEdit'
 import MacroPreview from './MacroPreview'
 import * as mousetrap from 'mousetrap'
 
-
 export default class MacroModal extends React.Component {
     componentDidMount() {
+        const {activeView, currentMacro, actions, selectionMode, selectedItemsIds} = this.props
+
         amplitude.getInstance().logEvent('Opened macro modal')
 
-        $('#macro-modal').modal({
-            onHidden: this.props.actions.macro.closeModal
+        $(this.refs.macroModal).modal({
+            onHidden: actions.macro.closeModal
         }).modal('show')
 
         mousetrap.bind('up', (e) => {
             e.preventDefault()
-            this.props.actions.macro.previewAdjacentMacroInModal('prev', this.props.disableExternalActions)
+            actions.macro.previewAdjacentMacroInModal('prev', this.props.disableExternalActions)
         })
         mousetrap.bind('down', (e) => {
             e.preventDefault()
-            this.props.actions.macro.previewAdjacentMacroInModal('next', this.props.disableExternalActions)
+            actions.macro.previewAdjacentMacroInModal('next', this.props.disableExternalActions)
         })
 
-        if (this.props.selectionMode) {
+        if (selectionMode) {
             mousetrap.bind('mod+enter', (e) => {
                 e.preventDefault()
                 this.cancel()
-                this.props.actions.tickets.bulkUpdate(this.props.selectedItemsIds, 'macro', this.props.currentMacro.toJS())
+                const value = currentMacro ? currentMacro.toJS() : null
+                actions.views.bulkUpdate(activeView, selectedItemsIds, 'macro', value)
             })
         }
     }
 
     componentWillUnmount() {
-        $('#macro-modal').modal('hide')
+        $(this.refs.macroModal).modal('hide')
 
         if (!this.props.noUnbind) {
             mousetrap.unbind('up')
@@ -42,17 +45,22 @@ export default class MacroModal extends React.Component {
         }
     }
 
-    cancel() {
-        $('#macro-modal').modal('hide')
+    cancel = () => {
+        $(this.refs.macroModal).modal('hide')
     }
 
     render() {
-        const {loading, macros, currentMacro, actions, selectionMode, selectedItemsIds } = this.props
+        const {loading, activeView, macros, currentMacro, actions, selectionMode, selectedItemsIds } = this.props
+
         const rightPart = selectionMode ? (
             <MacroPreview
                 currentMacro={currentMacro}
-                apply={() => { this.cancel(); actions.tickets.bulkUpdate(selectedItemsIds, 'macro', currentMacro ? currentMacro.toJS() : null) }}
-                cancel={() => this.cancel()}
+                apply={() => {
+                    this.cancel()
+                    const value = currentMacro ? currentMacro.toJS() : null
+                    actions.views.bulkUpdate(activeView, selectedItemsIds, 'macro', value)
+                }}
+                cancel={this.cancel}
                 selectedItemsIds={selectedItemsIds}
             />
         ) : (
@@ -62,13 +70,16 @@ export default class MacroModal extends React.Component {
                 tags={this.props.tags}
                 agents={this.props.agents}
                 actions={actions.macro}
-                cancel={() => this.cancel()}
+                cancel={this.cancel}
             />
         )
 
         return (
-            <div id="macro-modal" className="MacroModal ui large modal">
-                <i className="close icon"/>
+            <div
+                ref="macroModal"
+                className="MacroModal ui large modal"
+            >
+                <i className="close icon" />
                 <div className="header">
                     {selectionMode ? 'Macros' : 'Manage macros'}
                 </div>
@@ -93,6 +104,7 @@ export default class MacroModal extends React.Component {
 
 MacroModal.propTypes = {
     loading: PropTypes.object.isRequired,
+    activeView: PropTypes.object,
     macros: PropTypes.object.isRequired,
     currentMacro: PropTypes.object,
     tags: PropTypes.object.isRequired,
@@ -105,4 +117,8 @@ MacroModal.propTypes = {
     selectedItemsIds: PropTypes.object,
 
     noUnbind: PropTypes.bool
+}
+
+MacroModal.defaultProps = {
+    activeView: fromJS({})
 }

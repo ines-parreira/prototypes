@@ -1,10 +1,11 @@
 import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import {fromJS} from 'immutable'
 
 import MacroModal from './components/MacroModal'
+import * as ViewsActions from '../../../../state/views/actions'
 import * as MacroActions from '../../../../state/macro/actions'
-import * as TicketsActions from '../../../../state/tickets/actions'
 import {getMacrosWithoutExternalActions} from '../../../../state/macro/utils'
 
 class MacroContainer extends React.Component {
@@ -31,7 +32,16 @@ class MacroContainer extends React.Component {
     }
 
     render() {
-        const {macros, tags, agents, actions, disableExternalActions, selectionMode, selectedItemsIds} = this.props
+        const {
+            activeView,
+            macros,
+            tags,
+            agents,
+            actions,
+            disableExternalActions,
+            selectionMode,
+            selectedItemsIds
+        } = this.props
 
         if (!macros.get('isModalOpen')) {
             return null
@@ -40,6 +50,7 @@ class MacroContainer extends React.Component {
         return (
             <MacroModal
                 loading={macros.getIn(['_internal', 'loading'])}
+                activeView={activeView}
                 macros={macros.get('items')}
                 newMacro={macros.get('newMacro')}
                 currentMacro={macros.get('modalSelected')}
@@ -57,6 +68,7 @@ class MacroContainer extends React.Component {
 
 
 MacroContainer.propTypes = {
+    activeView: PropTypes.object,
     macros: PropTypes.object.isRequired,
     tags: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
@@ -67,6 +79,10 @@ MacroContainer.propTypes = {
     selectedItemsIds: PropTypes.object,
 
     noUnbind: PropTypes.bool
+}
+
+MacroContainer.defaultProps = {
+    activeView: fromJS({})
 }
 
 function mapStateToProps(state) {
@@ -80,8 +96,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
+            views: bindActionCreators(ViewsActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),
-            tickets: bindActionCreators(TicketsActions, dispatch),
         }
     }
 }

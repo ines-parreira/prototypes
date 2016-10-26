@@ -24,8 +24,6 @@ export const AVAILABLE_LANGUAGES = [
  */
 export const ACTIVITY_DISPLAY_COUNT = 6
 
-export const CELL_WIDTH = 60
-
 export const TICKET_STATUSES = ['open', 'new', 'closed']
 
 export const BASIC_OPERATORS = {
@@ -34,6 +32,23 @@ export const BASIC_OPERATORS = {
     },
     neq: {
         label: 'is not'
+    }
+}
+
+export const VIEW_TYPE_CONFIGURATION = {
+    'ticket-list': {
+        routeItem: 'ticket', // UI route for this object
+        routeList: 'tickets', // UI route for the list of those objects
+        api: 'tickets', // api endpoint for this object
+        singular: 'ticket', // singular version for sentences
+        plural: 'tickets' // plural version for sentences
+    },
+    'user-list': {
+        routeItem: 'user',
+        routeList: 'users',
+        api: 'users',
+        singular: 'user',
+        plural: 'users'
     }
 }
 
@@ -74,6 +89,9 @@ export const USER_CHANNEL_CLASS = {
 export const DEFAULT_SOURCE_PATHS = {
     ticket: [
         'ticket.requester.customer'
+    ],
+    user: [
+        'user.customer'
     ]
 }
 
@@ -89,7 +107,6 @@ export const INTEGRATION_TYPE_TO_ICON = {
     segment: 'square icon',
     smooch: 'comments icon'
 }
-
 
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
@@ -232,7 +249,7 @@ export const ACTION_TEMPLATES = {
         arguments: {
             method: {
                 type: 'string',
-                enum: ['GET', 'PUT', 'POST', 'DELETE'],
+                enum: AVAILABLE_HTTP_METHODS,
                 default: 'GET',
             },
             url: {

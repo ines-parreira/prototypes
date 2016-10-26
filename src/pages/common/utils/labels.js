@@ -33,7 +33,7 @@ PriorityLabel.propTypes = {priority: PropTypes.string.isRequired}
 
 
 export const StatusLabel = ({status}) => (
-    <span className={`ticket-status ticket-details-item ui ${status} label`}>
+    <span className={`ticket-status smaller ticket-details-item ui ${status} label`}>
         {status}
     </span>
 )

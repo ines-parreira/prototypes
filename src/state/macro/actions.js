@@ -2,6 +2,7 @@ import axios from 'axios'
 import {DEFAULT_ACTIONS} from '../../config'
 import {RECORD_MACRO} from '../ticket/constants'
 import * as types from './constants'
+import {notify} from '../notifications/actions'
 
 export function deleteActionOnApplied(actionIndex) {
     return {
@@ -187,6 +188,11 @@ export function createMacro(macro) {
                     type: types.CREATE_MACRO_SUCCESS,
                     resp
                 })
+
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Macro created'
+                }))
             })
             .catch(error => {
                 dispatch({
@@ -210,6 +216,11 @@ export function updateMacro(macro) {
                     type: types.UPDATE_MACRO_SUCCESS,
                     resp
                 })
+
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Macro updated'
+                }))
             })
             .catch(error => {
                 dispatch({
@@ -235,6 +246,11 @@ export function deleteMacro(macroId) {
                     macroId,
                     resp
                 })
+
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Macro deleted'
+                }))
             })
             .catch(error => {
                 dispatch({

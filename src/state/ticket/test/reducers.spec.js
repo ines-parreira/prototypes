@@ -338,7 +338,7 @@ describe('Ticket reducer', () => {
         const expected = initialState
 
         expect(
-            reducer(initialState, {type: types.SETUP_NEW_TICKET})
+            reducer(initialState, {type: types.CLEAR_TICKET})
         ).toEqualImmutable(
             expected
         )

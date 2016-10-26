@@ -9,7 +9,7 @@ import classNames from 'classnames'
 import {fromJS} from 'immutable'
 
 import {Loader} from '../../../../common/components/Loader'
-import {InputField} from '../../../../common/components/semantic'
+import {InputField} from '../../../../common/components/formFields'
 
 
 export const defaultContent = {

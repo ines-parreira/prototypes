@@ -34,14 +34,14 @@ describe('actions', () => {
                 })
 
             return store
-                .dispatch(actions.createUser(userData))
+                .dispatch(actions.submitUser(userData))
                 .then(() => {
                     // we do not care here about system messages and other disruptions
-                    const triggeredActions = store.getActions().filter(action => ~action.type.indexOf('NEW_USER'))
+                    const triggeredActions = store.getActions().filter(action => action.type.includes('SUBMIT_USER'))
 
                     expect(triggeredActions.length).toEqual(2)
 
-                    expect(triggeredActions[1].type).toEqual(types.CREATE_NEW_USER_SUCCESS)
+                    expect(triggeredActions[1].type).toEqual(types.SUBMIT_USER_SUCCESS)
 
                     expect(triggeredActions[1].resp).toExist()
                 })
@@ -62,14 +62,14 @@ describe('actions', () => {
                 })
 
             return store
-                .dispatch(actions.updateUser(userData, userData.id))
+                .dispatch(actions.submitUser(userData, userData.id))
                 .then(() => {
                     // we do not care here about system messages and other disruptions
-                    const triggeredActions = store.getActions().filter(action => ~action.type.indexOf('UPDATE_USER'))
+                    const triggeredActions = store.getActions().filter(action => action.type.includes('SUBMIT_USER'))
 
                     expect(triggeredActions.length).toEqual(2)
 
-                    expect(triggeredActions[1].type).toEqual(types.UPDATE_USER_SUCCESS)
+                    expect(triggeredActions[1].type).toEqual(types.SUBMIT_USER_SUCCESS)
 
                     expect(triggeredActions[1].resp).toExist()
                 })

@@ -38,7 +38,7 @@ export default class IntegrationList extends React.Component {
                     </div>
                 </div>
 
-                <div className="twelve wide column">
+                <div className="ui sixteen wide column flex-spaced-row">
                     <h1 className="ui header">
                         <i className={`${INTEGRATION_TYPE_TO_ICON[integrationType]} huge`} />
 
@@ -46,41 +46,38 @@ export default class IntegrationList extends React.Component {
                             {integrationTitle}
                         </div>
                     </h1>
+
+                    <div>
+                        <button className={classNames(createIntegrationButtonClassNames)}
+                                onClick={createIntegration}
+                        >
+                            {createIntegrationButtonText}
+                        </button>
+                    </div>
                 </div>
 
-                <div className="four wide column">
-                    <button className={classNames(createIntegrationButtonClassNames)}
-                            onClick={createIntegration}
-                    >
-                        {createIntegrationButtonText}
-                    </button>
-                </div>
-
-                {(() => {
-                    if (longTypeDescription) {
-                        return (
-                            <div className="row">
-                                <div className="sixteen wide column">
-                                    {longTypeDescription}
-                                </div>
+                {
+                    longTypeDescription
+                    && (
+                        <div className="row">
+                            <div className="sixteen wide column">
+                                {longTypeDescription}
                             </div>
-                        )
-                    }
-                })()}
+                        </div>
+                    )
+                }
 
-                {(() => {
-                    if (integrations.count() === 0) {
-                        return <NoIntegration type={integrationType} loading={loading.get('integrations')} />
-                    }
-
-                    return (
+                {
+                    integrations.count() === 0
+                        ? <NoIntegration type={integrationType} loading={loading.get('integrations')} />
+                        : (
                         <table className="ui very basic padded table">
                             <tbody>
                             {integrations.valueSeq().map(integrationToItemDisplay)}
                             </tbody>
                         </table>
                     )
-                })()}
+                }
             </div>
         )
     }

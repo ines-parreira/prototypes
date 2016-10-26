@@ -15,7 +15,6 @@ class RulesView extends React.Component {
 
     componentWillMount() {
         this.props.actions.rules.fetchRules()
-        this.props.actions.schemas.fetch()
     }
 
     _showForm = () => {

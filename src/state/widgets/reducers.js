@@ -5,7 +5,7 @@ import {
     isRootSource,
     stripLastListsFromPath,
     jsonToWidget
-} from '../../pages/tickets/detail/components/infobar/utils'
+} from '../../pages/common/components/infobar/utils'
 import {itemsWithContext, itemsWithUpdatedWidgets, reorderWidgets} from './utils'
 
 export const initialState = fromJS({
@@ -147,8 +147,6 @@ export default (state = initialState, action) => {
             // generate the widget we are going to put with the others
             let widget = fromJS(jsonToWidget(isDraggingARootSource ? preparedData[key] : preparedData))
 
-            const context = state.get('currentContext', '')
-
             // path where to put generated widgets
             // if dragging a root source, dragged items are real widgets items (coming from server)
             // otherwise they are templates widget (with the template syntax)
@@ -160,6 +158,7 @@ export default (state = initialState, action) => {
 
             // if is a dragging source, wrap it in a wrapper
             if (isDraggingARootSource) {
+                const context = state.get('currentContext', '')
                 const strippedSourceAbsolutePath = stripLastListsFromPath(sourceAbsolutePath)
 
                 widget = fromJS({

@@ -6,9 +6,9 @@ import * as mousetrap from 'mousetrap'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
 import {Loader} from '../../common/components/Loader'
-import Timeline from './components/timeline/Timeline'
+import Timeline from '../../common/components/timeline/Timeline'
 import * as ActivityActions from '../../../state/activity/actions'
-import * as TicketsActions from '../../../state/tickets/actions'
+import * as ViewsActions from '../../../state/views/actions'
 import * as TicketActions from '../../../state/ticket/actions'
 import * as MacroActions from '../../../state/macro/actions'
 import * as UserActions from '../../../state/users/actions'
@@ -23,20 +23,17 @@ class TicketDetailContainer extends React.Component {
             unbindConfirmationHook: () => {
             }
         }
-
-        this._computeNextUrl = this._computeNextUrl.bind(this)
     }
 
     componentWillMount() {
-        if (this.props.params.ticketId !== 'new') {
-            this.props.actions.ticket.fetchTicket(this.props.params.ticketId)
-        } else {
-            this.props.actions.ticket.setupNewTicket()
-        }
-
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers(['agent', 'admin'])
+        this.props.actions.ticket.clearTicket()
+
+        if (this.props.params.ticketId !== 'new') {
+            this.props.actions.ticket.fetchTicket(this.props.params.ticketId)
+        }
     }
 
     componentDidMount() {
@@ -47,24 +44,20 @@ class TicketDetailContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        /**
+         * Fetch the ticket's requester history (tickets + events) after the ticket's details have been loaded.
+         */
         if (
             nextProps.params.ticketId !== 'new'
             && nextProps.ticket.get('requester')
-            && !nextProps.ticket.getIn(['_internal', 'userHistory', 'triedLoading'])
+            && !nextProps.users.getIn(['userHistory', 'triedLoading'])
         ) {
-            /**
-             * Fetch the ticket's requester history (tickets + events) after the ticket's details have been loaded.
-             */
-            this.props.actions.ticket.fetchUserTickets(nextProps.ticket.getIn(['requester', 'id']))
-            // this.props.actions.ticket.fetchUserEvents(nextProps.ticket.getIn(['requester', 'id']))
-
-            if (
-                nextProps.ticket.getIn(['_internal', 'crossTickets', 'displayHistory']) && !nextProps.ticket.getIn(['state', 'displayHistory'])
-            ) {
-                // Activate the timeline and clears the crossTickets dict
-                this.props.actions.ticket.toggleHistory(true)
-                this.props.actions.ticket.setCrossTickets()
-            }
+            const askedUserId = nextProps.ticket.getIn(['requester', 'id'], '')
+            this.props.actions.user.fetchUserHistory(askedUserId, {
+                successCondition(state) {
+                    return state.ticket.getIn(['requester', 'id'], '').toString() === askedUserId.toString()
+                }
+            })
         }
 
         if (
@@ -259,10 +252,10 @@ class TicketDetailContainer extends React.Component {
         this.props.actions.macro.applyMacro(macro, this.props.currentUser)
     }
 
-    _computeNextUrl(ascending) {
+    _computeNextUrl = (ascending) => {
         let nextTicketUrl = '/app'
         const translation = ascending ? 1 : -1
-        const currentTicketIndex = this.props.tickets.getIn(['_internal', 'currentTicketIndex'])
+        const currentTicketIndex = this.props.views.getIn(['_internal', 'currentItemIndex'])
 
         if (!currentTicketIndex && currentTicketIndex !== 0) {
             return false
@@ -274,7 +267,7 @@ class TicketDetailContainer extends React.Component {
 
         if (nextTicket && nextTicket.id) {
             nextTicketUrl = `/app/ticket/${nextTicket.id}`
-            this.props.actions.tickets.saveIndex(nextIndex)
+            this.props.actions.views.saveIndex(nextIndex)
         } else if (!activeView.isEmpty()) {
             nextTicketUrl = `/app/tickets/${activeView.get('id')}/${activeView.get('slug')}`
         }
@@ -352,7 +345,7 @@ class TicketDetailContainer extends React.Component {
             || (this.props.params.ticketId === 'new' && this.props.ticket.get('id'))
             || this.props.ticket.getIn(['_internal', 'loading', 'fetchTicket'])
         ) {
-            return <Loader />
+            return <Loader message="Loading ticket..." />
         }
 
         return (
@@ -364,8 +357,8 @@ class TicketDetailContainer extends React.Component {
                     }}
                 >
                     <Timeline
-                        userHistory={this.props.ticket.getIn(['_internal', 'userHistory'])}
-                        isDisplayed={this.props.ticket.getIn(['state', 'displayHistory'])}
+                        userHistory={this.props.users.get('userHistory')}
+                        isDisplayed={this.props.ticket.getIn(['_internal', 'displayHistory'])}
                         actions={this.props.actions.ticket}
                         currentTicketId={this.props.ticket.get('id')}
                     />
@@ -434,7 +427,7 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: {
             activity: bindActionCreators(ActivityActions, dispatch),
-            tickets: bindActionCreators(TicketsActions, dispatch),
+            views: bindActionCreators(ViewsActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),
             tag: bindActionCreators(TagActions, dispatch),
