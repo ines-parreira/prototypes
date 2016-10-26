@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {Link} from 'react-router'
 import InfobarWidgets from './InfobarWidgets'
+import ProfileImage from './../ProfileImage'
 import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
 import {itemsWithContext} from '../../../../state/widgets/utils'
 import {USER_CHANNEL_CLASS} from '../../../../config'
@@ -188,11 +189,14 @@ export default class InfobarUserInfo extends React.Component {
         return (
             <div className="flex-vertical">
                 <div className="infobar-top">
-                    <h2>
-                        <Link to={`/app/user/${user.get('id')}`}>
-                            {user.get('name', '')}
-                        </Link>
-                    </h2>
+                    <div className="user-profile">
+                        <ProfileImage email={user.get('email', '')} name={user.get('name', '')}/>
+                        <h2>
+                            <Link to={`/app/user/${user.get('id')}`}>
+                                {user.get('name', '')}
+                            </Link>
+                        </h2>
+                    </div>
                     {this._renderUserChannels(user.get('channels', fromJS([])))}
                 </div>
                 {
