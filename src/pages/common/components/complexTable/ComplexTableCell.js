@@ -98,7 +98,7 @@ export default class ComplexTableCell extends React.Component {
                         : previewedMessage.body_text
 
                     value = (
-                        <div className="ui header ellipsis">
+                        <div className="ui header">
                             <span className="subject">
                                 {subject}
                             </span>
@@ -124,9 +124,9 @@ export default class ComplexTableCell extends React.Component {
         const {field} = this.props
 
         return (
-            <td className={field.get('name')}>
+            <td className={`${field.get('name')} table-cell`}>
                 {this._renderFieldContent()}
-            </td >
+            </td>
         )
     }
 }
