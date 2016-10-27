@@ -5,12 +5,13 @@ import RightSelect from './RightSelect'
 
 const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, index}) => {
     let options = fromJS([])
-    // use semantic-ui selects for some filters
+
     if (objectPath === 'ticket.assignee_user.id') {
         options = agents.map((agent) => {
             if (agent.get('id') === currentUser.get('id')) {
                 // replace my name with 'Me'
                 let me = agent.set('name', 'Me')
+
                 // if we're getting the selected value from the view,
                 // replace the current user id with {current_user.id},
                 // that's the way the filter value is stored in the view.
@@ -18,11 +19,14 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
                 if (node.raw === '"{current_user.id}"') {
                     me = me.set('id', '{current_user.id}')
                 }
+
                 return me
             }
+
             return agent
         })
     }
+
     // we want tags names as key, not their ID, like 'refund', 'billing', etc.
     if (objectPath === 'ticket.tags.name') {
         options = tags.map((tag) => {
@@ -33,6 +37,7 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
             })
         })
     }
+
     // we want status as keys, like 'open', 'close', etc.
     if (objectPath === 'ticket.status') {
         options = fromJS(TICKET_STATUSES.map((status) => {
@@ -42,9 +47,18 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
             }
         }))
     }
+
     if (options.size) {
-        return <RightSelect node={node} options={options} updateFieldFilter={updateFieldFilter} index={index}/>
+        return (
+            <RightSelect
+                node={node}
+                options={options}
+                updateFieldFilter={updateFieldFilter}
+                index={index}
+            />
+        )
     }
+
     return <span className="ui basic light blue button">{node.value}</span>
 }
 Right.propTypes = {
