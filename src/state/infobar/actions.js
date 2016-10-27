@@ -42,7 +42,7 @@ export const fetchUserPicture = (email) => ((dispatch) => {
 
     // s = 50 means the picture's width=height=50px; d=404 means if there's no image, returns a 404 error
     const GRAVATAR_URL = `https://www.gravatar.com/avatar/${md5(email)}?d=404&s=50`
-    const GOOGLE_URL = `http://picasaweb.google.com/data/entry/api/user/${encodeURIComponent(email)}?alt=json`
+    const GOOGLE_URL = `https://picasaweb.google.com/data/entry/api/user/${encodeURIComponent(email)}?alt=json`
 
     return axios.get(GRAVATAR_URL)
         .then(() => {
