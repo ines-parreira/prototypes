@@ -122,7 +122,10 @@ export default class Infobar extends React.Component {
 
         const isLoading = infobar
             .getIn(['_internal', 'loading'], fromJS({}))
-            .some(loading => loading)
+            .some((loading, key) => {
+                // only match loading.search or loading.displayedUser
+                return ['search', 'displayedUser'].includes(key) ? loading : false
+            })
 
         const isEditing = widgets.getIn(['_internal', 'isEditing']) && this.props.isRouteEditingWidgets
         const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
@@ -152,6 +155,8 @@ export default class Infobar extends React.Component {
                 ) : (
                     <InfobarUserInfo
                         actions={actions.widgets}
+                        fetchUserPicture={actions.infobar.fetchUserPicture}
+                        infobar={infobar}
                         isEditing={isEditing}
                         sources={sources}
                         user={user}
@@ -197,6 +202,8 @@ export default class Infobar extends React.Component {
                     </div>
                     <InfobarUserInfo
                         actions={actions.widgets}
+                        fetchUserPicture={actions.infobar.fetchUserPicture}
+                        infobar={infobar}
                         isEditing={isEditing}
                         sources={tweakedSources}
                         user={tweakedUser}

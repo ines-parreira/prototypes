@@ -5,12 +5,14 @@ export const initialState = fromJS({
     _internal: {
         loading: {
             search: false,
-            displayedUser: false
+            displayedUser: false,
+            displayedUserPictureUrl: false
         },
         mode: 'default' // can be 'default' for ticket.requester, 'search' for searchResults and 'preview' for user data
     },
     searchResults: [],
-    displayedUser: {}
+    displayedUser: {},
+    displayedUserPictureUrl: null
 })
 
 export default (state = initialState, action) => {
@@ -59,6 +61,22 @@ export default (state = initialState, action) => {
             return state
                 .setIn(['_internal', 'loading', 'displayedUser'], false)
                 .set('displayedUser', fromJS(action.resp))
+        }
+
+        case types.FETCH_USER_PICTURE_START: {
+            return state.setIn(['_internal', 'loading', 'displayedUserPictureUrl'], true)
+        }
+
+        case types.FETCH_USER_PICTURE_SUCCESS: {
+            return state
+                .set('displayedUserPictureUrl', action.url)
+                .setIn(['_internal', 'loading', 'displayedUserPictureUrl'], false)
+        }
+
+        case types.FETCH_USER_PICTURE_ERROR: {
+            return state
+                .set('displayedUserPictureUrl', null)
+                .setIn(['_internal', 'loading', 'displayedUserPictureUrl'], false)
         }
 
         case types.SET_INFOBAR_MODE: {

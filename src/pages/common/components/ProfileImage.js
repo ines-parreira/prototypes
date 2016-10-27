@@ -1,16 +1,18 @@
 import React, {PropTypes} from 'react'
-import md5 from 'md5'
 import _split from 'lodash/split'
 
 
 export default class ProfileImage extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {error: false}
+    componentWillMount = () => {
+        if (!this.props.isLoading && this.props.email) {
+            this.props.fetchUserPicture(this.props.email)
+        }
     }
 
-    _onError = () => {
-        this.setState({error: true})
+    componentWillReceiveProps = (nextProps) => {
+        if (!this.props.url && !this.props.isLoading && !this.props.email && nextProps.email) {
+            this.props.fetchUserPicture(nextProps.email)
+        }
     }
 
     _getInitials = (name) => {
@@ -28,27 +30,29 @@ export default class ProfileImage extends React.Component {
     }
 
     render() {
-        const {email, name} = this.props
+        const {name, url, isLoading} = this.props
 
-        if (this.state.error) {
+        if (url && !isLoading) {
             return (
-                <div className="initials">{this._getInitials(name)}</div>
+                <img
+                    src={url}
+                    alt="profile"
+                />
             )
         }
 
-        const baseUrl = `https://www.gravatar.com/avatar/${md5(email)}?d=404&s=50`
-
         return (
-            <img
-                src={baseUrl}
-                alt="profile"
-                onError={this._onError}
-            />
+            <div className="initials">
+                {!isLoading && this._getInitials(name)}
+            </div>
         )
     }
 }
 
 ProfileImage.propTypes = {
+    name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired
+    url: PropTypes.string,
+    isLoading: PropTypes.bool,
+    fetchUserPicture: PropTypes.func.isRequired
 }

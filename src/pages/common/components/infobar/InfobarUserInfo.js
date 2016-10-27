@@ -165,6 +165,8 @@ export default class InfobarUserInfo extends React.Component {
     render() {
         const {
             actions,
+            fetchUserPicture,
+            infobar,
             user,
             isEditing,
             widgets,
@@ -190,7 +192,13 @@ export default class InfobarUserInfo extends React.Component {
             <div className="flex-vertical">
                 <div className="infobar-top">
                     <div className="user-profile">
-                        <ProfileImage email={user.get('email', '')} name={user.get('name', '')}/>
+                        <ProfileImage
+                            name={user.get('name', '')}
+                            email={user.get('email', '')}
+                            url={infobar.get('displayedUserPictureUrl')}
+                            isLoading={infobar.getIn(['_internal', 'loading', 'displayedUserPictureUrl'])}
+                            fetchUserPicture={fetchUserPicture}
+                        />
                         <h2>
                             <Link to={`/app/user/${user.get('id')}`}>
                                 {user.get('name', '')}
@@ -233,6 +241,8 @@ export default class InfobarUserInfo extends React.Component {
 
 InfobarUserInfo.propTypes = {
     actions: PropTypes.object.isRequired,
+    fetchUserPicture: PropTypes.func.isRequired,
+    infobar: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     sources: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
