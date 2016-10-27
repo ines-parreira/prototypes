@@ -241,8 +241,11 @@ export default (state = initialState, action) => {
         }
 
         case types.CLEAR_TICKET: {
-            return initialState
-                .set('_internal', state.get('_internal'))
+            // @todo(martin): re-set `crossTickets` in _internal
+            return initialState.setIn(
+                ['_internal', 'shouldDisplayHistoryOnNextPage'],
+                state.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
+            )
         }
 
         /* Macro actions */
