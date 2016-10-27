@@ -18,6 +18,7 @@ const HeaderFieldArray = ({fields}) => (
                         name={`${header}.key`}
                         placeholder="Key"
                         component={InputField}
+                        format={(value) => value.trim()}
                     />
                     <Field
                         className="seven wide"
