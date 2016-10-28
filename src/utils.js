@@ -90,7 +90,7 @@ export function findProperty(field, schemas) {
 
         // if current property has its own meta then we use them insta of using these of its definition
         if (prop.meta) {
-            break;
+            break
         }
         // if we have a ref then we need to redo the whole definition thing
         if (typeof prop.$ref !== 'undefined') {
