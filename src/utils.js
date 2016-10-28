@@ -88,6 +88,10 @@ export function findProperty(field, schemas) {
 
         prop = prop.toJS()
 
+        // if current property has its own meta then we use them insta of using these of its definition
+        if (prop.meta) {
+            break;
+        }
         // if we have a ref then we need to redo the whole definition thing
         if (typeof prop.$ref !== 'undefined') {
             def = schemas.getIn(['definitions', prop.$ref.replace('#/definitions/', '')])
