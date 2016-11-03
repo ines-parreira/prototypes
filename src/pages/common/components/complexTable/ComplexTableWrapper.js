@@ -11,6 +11,7 @@ import Search from '../Search'
 import {VIEW_TYPE_CONFIGURATION} from '../../../../config'
 import {slugify} from '../../../../utils'
 import _pick from 'lodash/pick'
+import _merge from 'lodash/merge'
 
 class ComplexTableWrapper extends React.Component {
     constructor(props) {
@@ -19,7 +20,9 @@ class ComplexTableWrapper extends React.Component {
     }
 
     componentWillMount() {
-        this._updateList()
+        this._updateList(_merge({}, this.props, {
+            forceFetch: true
+        }))
     }
 
     componentDidMount() {
@@ -104,8 +107,12 @@ class ComplexTableWrapper extends React.Component {
         // check if the view id edited (dirty)
         const viewHasChanged = !currentActive.delete('fields').equals(nextActive.delete('fields'))
 
-        // should go to first page if view is edited or if view id changed (switched to new view)
-        const shouldGoToFirstPage = currentActive.get('id') !== nextActive.get('id') || viewHasChanged
+        // should go to first page if view is edited
+        // or if view id changed (switched to new view)
+        // or if fetch is forced
+        const shouldGoToFirstPage = currentActive.get('id') !== nextActive.get('id')
+            || viewHasChanged
+            || nextProps.forceFetch
 
         // set active page to first page
         if (shouldGoToFirstPage) {
