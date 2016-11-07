@@ -7,20 +7,35 @@ class RuleTableRow extends React.Component {
 
     constructor() {
         super()
-        this.state = { showDetail: false }
+        this.state = {showDetail: false}
     }
 
     _toggleItem = () => {
-        this.setState({ showDetail: !this.state.showDetail })
+        this.setState({showDetail: !this.state.showDetail})
     }
 
     _renderDetail = () => {
-        const { index, rule, schemas, actions } = this.props
+        const {index, rule, schemas, actions} = this.props
+        if (!this.state.showDetail) {
+            return null
+        }
         return (
             <tr className="no-hover">
                 <td colSpan="100%">
-                    <RuleItem index={index} rule={rule} schemas={schemas} actions={actions} />
+                    <RuleItem index={index} rule={rule} schemas={schemas} actions={actions}/>
                 </td>
+            </tr>
+        )
+    }
+
+    _renderSeparator() {
+        if (this.state.showDetail) {
+            return null
+        }
+
+        return (
+            <tr className="no-hover">
+                <td colSpan="100%" style={{padding: 0}}>&nbsp;</td>
             </tr>
         )
     }
@@ -45,7 +60,7 @@ class RuleTableRow extends React.Component {
                         />
                     </td>
                 </tr>
-                {this.state.showDetail && this._renderDetail()}
+                {this._renderDetail()}
             </tbody>
         )
     }

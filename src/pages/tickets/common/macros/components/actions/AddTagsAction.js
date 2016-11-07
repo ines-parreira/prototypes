@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 import TicketTags from '../../../../detail/components/ticketdetails/TicketTags'
 
 export default class AddTagsAction extends React.Component {
@@ -17,6 +18,7 @@ export default class AddTagsAction extends React.Component {
 
     render() {
         const {action, tags, deleteAction, index} = this.props
+        const ticketTags = fromJS(action.getIn(['arguments', 'tags']).split(',').map(t => ({name: t})))
 
         return (
             <div>
@@ -27,8 +29,8 @@ export default class AddTagsAction extends React.Component {
                 <h4 className="inline">ADD TAGS</h4>
                 <TicketTags
                     tags={tags.toJS()}
-                    ticketTags={action.get('arguments')}
-                    addTag={value => this.addTags(value)}
+                    ticketTags={ticketTags}
+                    addTags={value => this.addTags(value)}
                     removeTag={tagIndex => this.removeTag(tagIndex)}
                     suffix={`macro-modal-${index}`}
                 />

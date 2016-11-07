@@ -1,5 +1,7 @@
 export const ADD_RULE_START = 'ADD_RULE_START'
 export const ADD_RULE_END = 'ADD_RULE_END'
+export const DEACTIVATE_RULE = 'DEACTIVATE_RULE'
+export const ACTIVATE_RULE = 'ACTIVATE_RULE'
 export const REMOVE_RULE = 'REMOVE_RULE'
 
 export const RULES_REQUESTS_POSTS = 'RULES_REQUESTS_POSTS'
@@ -9,6 +11,13 @@ export const RULES_UPDATE_CODE_AST = 'RULES_UPDATE_CODE_AST'
 export const RULES_ADD_ACTION_CODE_AST = 'RULES_ADD_ACTION_CODE_AST'
 export const RULES_INITIALISE_CODE_AST = 'RULES_INITIALISE_CODE_AST'
 
+// Map between rules and objects in the rule code
+export const OBJECT_DEFINITIONS = {
+    ticket: 'Ticket',
+    message: 'TicketMessage',
+    event: 'Event',
+    user: 'User'
+}
 
 /* Constants for action default state */
 const NOTIFY_ACTION_DEFAULT = {
@@ -18,17 +27,27 @@ const NOTIFY_ACTION_DEFAULT = {
 }
 
 const ADD_TAGS_ACTION_DEFAULT = {
-    tag: '',
+    names: '',
+}
+
+const SET_TAGS_ACTION_DEFAULT = {
+    names: '',
 }
 
 const SET_STATUS_ACTION_DEFAULT = {
-    status: '',
+    status: 'closed',
+}
+
+const SET_PRIORITY_ACTION_DEFAULT = {
+    priority: 'high',
 }
 
 export const ACTION_DEFAULT_STATE = {
     notify: NOTIFY_ACTION_DEFAULT,
-    addTag: ADD_TAGS_ACTION_DEFAULT,
+    addTags: ADD_TAGS_ACTION_DEFAULT,
+    setTags: SET_TAGS_ACTION_DEFAULT,
     setStatus: SET_STATUS_ACTION_DEFAULT,
+    setPriority: SET_PRIORITY_ACTION_DEFAULT,
 }
 
 export const DEFAULT_IF_STATEMENT = {

@@ -2,17 +2,17 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Navbar from '../../common/components/Navbar'
 
-class StatsNavbarContainer extends React.Component {
+class RulesNavbarContainer extends React.Component {
     render() {
         return (
-            <Navbar currentUser={this.props.currentUser} activeContent="statistics">
+            <Navbar currentUser={this.props.currentUser} activeContent="rules">
                 <div></div>
             </Navbar>
         )
     }
 }
 
-StatsNavbarContainer.propTypes = {
+RulesNavbarContainer.propTypes = {
     currentUser: PropTypes.object.isRequired
 }
 
@@ -22,4 +22,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(StatsNavbarContainer)
+export default connect(mapStateToProps)(RulesNavbarContainer)

@@ -1,54 +1,60 @@
 import React from 'react'
 
-import { List } from 'immutable'
-import { drop } from 'lodash'
+import {List} from 'immutable'
+import drop from 'lodash/drop'
 
 import Select from './widget/Select'
+import StatusSelect from './widget/StatusSelect'
+import TagSelect from './widget/TagSelect'
 
 class Widget extends React.Component {
 
     _handleChange = (value) => {
-        const { actions, index, parent } = this.props
+        const {actions, index, parent} = this.props
         actions.rules.modifyCodeast(index, parent, value, 'UPDATE')
     }
 
     _handleChangeByEvent = (event) => {
-        const { actions, index, parent } = this.props
+        const {actions, index, parent} = this.props
         actions.rules.modifyCodeast(index, parent, event.target.value, 'UPDATE')
     }
 
-    input = (value) => (
+    _input = (value) => (
         <span className="ui input">
-            <input type="text" value={value} onChange={this._handleChangeByEvent} />
+            <input type="text" value={value} onChange={this._handleChangeByEvent}/>
         </span>
     )
 
-    textarea = (value) => (
-        <textarea type="text" value={value} onChange={this._handleChangeByEvent} />
+    _textarea = (value) => (
+        <textarea type="text" value={value} onChange={this._handleChangeByEvent}/>
     )
 
-    render() {
-        const { leftsiblings, schemas, value } = this.props
-
-        if (!(schemas && schemas.size && leftsiblings && leftsiblings.size)) {
-            return null
-        }
-
-        let left = leftsiblings
-        // we need to figure out if the path contains '$ref' objects, then resolve them from that
+    _resolveLeft(left, schemas) {
+        // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
         const path = []
-        for (const item of leftsiblings.toJS()) {
+        for (const item of left.toJS()) {
             path.push(item)
             const schema = schemas.getIn(path)
 
             if (schema && schema.has('$ref')) {
                 // get the remaining path
-                const obj = schema.get('$ref').split('/')[2]
-                const newLeft = List(['definitions', obj, 'properties'])
-                const newRight = List(drop(leftsiblings.toJS(), path.length))
-                left = newLeft.concat(newRight)
+                const def = schema.get('$ref').split('/')[2]
+                const newLeft = List(['definitions', def, 'properties'])
+                const newRight = List(drop(left.toJS(), path.length))
+                return this._resolveLeft(newLeft.concat(newRight), schemas)
             }
         }
+        return left
+    }
+
+    render() {
+        const {leftsiblings, schemas, value} = this.props
+
+        if (!(schemas && schemas.size && leftsiblings && leftsiblings.size)) {
+            return null
+        }
+
+        const left = this._resolveLeft(leftsiblings, schemas)
 
         // widget data used for rendering
         const widget = {
@@ -59,11 +65,11 @@ class Widget extends React.Component {
         }
 
         // todo(@xarg): should be defined in the schema what values are allowed
-        const allowedObjects = ['ticket', 'event']
+        const rootObjects = ['ticket', 'message', 'event']
 
         if (left.size === 1 && left.get(0) === 'definitions') {
             // we are at the root here, only allow some values
-            widget.options = allowedObjects
+            widget.options = rootObjects
         } else if (left.last() === 'properties') {
             // are special because they are defining the props
             // that available on the top level objects: ticket, event, etc..
@@ -71,52 +77,53 @@ class Widget extends React.Component {
             for (const key of Object.keys(props)) {
                 const prop = props[key]
 
-                // only show props that have a meta value
-                if (!prop.hasOwnProperty('meta')) {
-                    continue
+                // only show props that have a meta value or a refs
+                if (prop.hasOwnProperty('meta')) {
+                    widget.options.push(key)
+                    widget.description = prop.description
+                } else if (prop.hasOwnProperty('$ref')) {
+                    widget.options.push(key)
+                    widget.description = ''
                 }
-
-                widget.options.push(key)
-                widget.description = prop.description
             }
         } else if (left.last() === 'operators') {
             // operators are using simple select widget, all we need is the options
             const operators = schemas.getIn(left)
-
             if (operators) {
                 widget.options = operators.toJS()
             }
+        } else if (left.first() === 'actions') {
+            widget.type = `${left.last()}-select`
         } else {
             // all other properties
             const right = schemas.getIn(left)
             if (!right) {
-                return this.input(value)
+                return this._input(value)
             }
 
-            widget.type = right.getIn(['meta', 'rules', 'widget'])
-            if (!widget.type) {
-                return this.input(value)
-            }
+            widget.type = right.getIn(['meta', 'rules', 'widget']) || 'input'
 
-            widget.options = right.getIn(['meta', 'enum'])
-            if (widget.options) {
-                widget.options = widget.options.toJS()
-            } else {
-                return this.input(value)
-            }
+            const options = right.getIn(['meta', 'enum'])
+            widget.options = options ? options.toJS() : []
 
             widget.description = right.get('description')
         }
 
-        switch (widget.type) {
+        const widgetType = this.props.type || widget.type
+
+        switch (widgetType) {
             case 'select':
-                return <Select {...widget} onChange={this._handleChange} />
+                return <Select {...widget} onChange={this._handleChange}/>
+            case 'tag-select':
+                return <TagSelect {...widget} onChange={this._handleChange}/>
+            case 'status-select':
+                return <StatusSelect {...widget} onChange={this._handleChange}/>
             case 'input':
-                return this.input(value)
+                return this._input(value)
             case 'textarea':
-                return this.textarea(value)
+                return this._textarea(value)
             default:
-                throw Error(`Unknown widget type: ${widget.type}`)
+                return this._input(value)
         }
     }
 }
@@ -127,6 +134,7 @@ Widget.propTypes = {
     parent: React.PropTypes.object,
     schemas: React.PropTypes.object,
     actions: React.PropTypes.object,
+    type: React.PropTypes.string,
     leftsiblings: React.PropTypes.object,
 }
 

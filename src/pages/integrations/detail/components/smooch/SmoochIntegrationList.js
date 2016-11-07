@@ -19,16 +19,18 @@ export default class SmoochIntegrationList extends React.Component {
                         </div>
                     </td>
                     <td className="eight wide column">
-                        <button className="ui basic light red floated right button"
-                                onClick={() => actions.deleteIntegration(int)}
-                        >
-                            Delete
-                        </button>
-                        <button className="ui basic light blue floated right button"
-                                onClick={() => browserHistory.push(editLink)}
-                        >
-                            Edit
-                        </button>
+                        <div className="floated right">
+                            <button className="ui basic light blue button"
+                                    onClick={() => browserHistory.push(editLink)}
+                            >
+                                Edit
+                            </button>
+                            <button className="ui basic light red button"
+                                    onClick={() => actions.deleteIntegration(int)}
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </td>
                 </tr>
             )

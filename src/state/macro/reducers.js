@@ -1,6 +1,6 @@
 import {createFilter} from 'react-search-input'
 import * as types from './constants'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {DEFAULT_ACTIONS} from '../../config'
 import {getMacrosWithoutExternalActions} from './utils'
 
@@ -20,66 +20,66 @@ const initialDefaultActions = Map({
     }),
     setStatus: actionInitial.merge({
         name: 'setStatus',
-        arguments: Map({status: 'new'})
+        arguments: {status: 'new'}
     }),
     addTags: actionInitial.merge({
         name: 'addTags',
-        arguments: List()
+        arguments: {tags: ''}
     }),
     setResponseText: actionInitial.merge({
         name: 'setResponseText',
-        arguments: Map({
+        arguments: {
             body_text: '',
             body_html: ''
-        })
+        }
     }),
     assignUser: actionInitial.merge({
         name: 'assignUser',
-        arguments: Map({
+        arguments: {
             assignee_user: null
-        })
+        }
     }),
     setPriority: actionInitial.merge({
         name: 'setPriority',
-        arguments: Map({
+        arguments: {
             priority: 'normal'
-        })
+        }
     }),
     http: actionInitial.merge({
         execution: 'back',
         name: 'http',
-        arguments: Map({
+        arguments: {
             method: 'GET',
             url: '',
-            headers: List(),
-            params: List(),
+            headers: [],
+            params: [],
             contentType: 'application/json'
-        })
+        }
     }),
     httpIntegration: actionInitial.merge({
         execution: 'back',
         name: 'http_integration',
-        arguments: Map({
+        arguments: {
             integrationId: null
-        })
+        }
     }),
     notify: actionInitial.merge({
         execution: 'back',
         name: 'notify',
-        arguments: Map({
+        arguments: {
             email: '',
             subject: '{ticket.subject}',
             content: '{ticket.last_message.body_text}'
-        })
+        }
     })
 })
 
-const macroInitial = Map({
+const macroInitial = fromJS({
     id: 'new',
     name: 'New macro',
-    actions: List([
+    actions: [
         initialDefaultActions.get('setResponseText')
-    ])
+    ]
 })
 
 const macrosInitial = fromJS({

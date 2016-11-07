@@ -253,14 +253,21 @@ export default (state = initialState, action) => {
             tags = state.get('tags', List())
             const existingTagNames = tags.map((x) => x.get('name'))
 
-            for (const tag of action.args) {
-                if (!existingTagNames.includes(tag.get('name'))) {
-                    tags = tags.push(Map(tag))
-                }
+            let newTags = action.args.get('tags')
+            if (newTags) {
+                newTags = newTags.split(',').map(t => t.trim())
+            } else {
+                newTags = []
             }
 
+            for (const tag of newTags) {
+                if (!existingTagNames.includes(tag)) {
+                    tags = tags.push(Map({name: tag}))
+                }
+            }
             return state.set('tags', tags)
         }
+
         case types.REMOVE_TICKET_TAG:
             return state.set('tags', state.get('tags').delete(action.index))
 

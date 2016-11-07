@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import Widget from './Widget'
 
 /*
@@ -25,12 +25,12 @@ const Literal = ({ value, index, actions, parent, leftsiblings, schemas }) => {
 }
 
 Literal.propTypes = {
-    actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
-    leftsiblings: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
-    value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool]).isRequired,
+    actions: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    leftsiblings: PropTypes.object.isRequired,
+    parent: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
 }
 
 export default Literal

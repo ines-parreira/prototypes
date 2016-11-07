@@ -1,10 +1,8 @@
 import React from 'react'
-
-import { upperFirst } from 'lodash'
-
 import Expression from '../expression/Expression'
 
 import getSyntaxTreeLeaves from '../utils'
+import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
 
 /*
  interface MemberExpression <: Expression, Pattern {
@@ -12,15 +10,19 @@ import getSyntaxTreeLeaves from '../utils'
  object: Expression;
  property: Expression;
  computed: boolean;
-}
+ }
  */
-const MemberExpression = ({ object, property, index, actions, parent, leftsiblings, schemas }) => {
+const MemberExpression = ({object, property, index, actions, parent, leftsiblings, schemas}) => {
     let left
     if (leftsiblings) {
         left = leftsiblings.push(...getSyntaxTreeLeaves(object))
-        // we need to title the first object after the definition definitions, ticket => definitions, Ticket
+        // We need to match the object definision ticket => definitions, Ticket
         // this is needed to match the swagger spec structure
-        left = left.set(1, upperFirst(left.get(1)))
+        const definition = OBJECT_DEFINITIONS[left.get(1)]
+        if (!definition) {
+            console.error(`Definition not found for ${left.get(1)}`, left)
+        }
+        left = left.set(1, definition)
         // each object in the swagger spec has properties
         if (left.get(2) !== 'properties') {
             left = left.splice(2, 0, 'properties')

@@ -1,10 +1,11 @@
 import React from 'react'
 
-import { Field, reduxForm, reset } from 'redux-form'
+import {Field, reduxForm, reset} from 'redux-form'
 
 import classNames from 'classnames'
 
-import { InputField, TextAreaField } from '../../../common/components/formFields'
+import InputField from '../../../common/components/formFields/InputField'
+import TextAreaField from '../../../common/components/formFields/TextAreaField'
 
 class RuleForm extends React.Component {
 
@@ -18,34 +19,45 @@ class RuleForm extends React.Component {
     }
 
     render() {
-        const { handleSubmit, pristine, submitting, valid } = this.props
+        const {handleSubmit, pristine, submitting, valid} = this.props
         const submitButtonClassName = classNames('ui positive button', {
             disabled: submitting || !valid || pristine,
             loading: submitting,
         })
 
         return (
-            <form className="ui form" onSubmit={handleSubmit(this._handleSubmit)}>
-                <Field
-                    type="text"
-                    name="title"
-                    placeholder="Rule name"
-                    required
-                    component={InputField}
-                />
-                <Field
-                    type="text"
-                    name="description"
-                    placeholder="Description"
-                    component={TextAreaField}
-                />
-                <button type="submit" className={submitButtonClassName}>
-                    Submit
-                </button>
-                <button type="button" className="ui button" onClick={this._handleCancel}>
-                    Cancel
-                </button>
-            </form>
+            <div ref="modal">
+                <div className="header">
+                    Create new Rule
+                    <i
+                        className="remove action icon modal-close"
+                        onClick={this.props.onCancel}
+                    />
+                </div>
+                <form className="ui form" onSubmit={handleSubmit(this._handleSubmit)}>
+                    <div className="content">
+                        <Field
+                            type="text"
+                            name="title"
+                            placeholder="Rule name"
+                            required
+                            component={InputField}
+                        />
+                        <Field
+                            type="text"
+                            name="description"
+                            placeholder="Description"
+                            component={TextAreaField}
+                        />
+                        <button type="submit" className={submitButtonClassName}>
+                            Create new rule
+                        </button>
+                        <button type="button" className="ui button" onClick={this._handleCancel}>
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
         )
     }
 }

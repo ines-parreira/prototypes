@@ -1,28 +1,29 @@
 import React, {PropTypes} from 'react'
 import Immutable from 'immutable'
-import { upperFirst } from 'lodash'
+import {upperFirst} from 'lodash'
 
 import Action from '../actions/Action'
 import Expression from './Expression'
 import Hoverable from '../../Hoverable'
 import ObjectExpression from './ObjectExpression'
-import { DeleteBinaryExpression } from '../operations'
+import {DeleteBinaryExpression} from '../operations'
 
 import getSyntaxTreeLeaves from '../utils'
+import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
 
 /*
  Standard interface CallExpression <: Expression {
  type: "CallExpression";
  callee: Expression;
  arguments: [ Expression ];
-}
+ }
 
  In our customized CallExpression
  */
 class CallExpression extends React.Component {
     render() {
-        const { actions, callee, index, parent, schemas } = this.props
-        const { hovered } = this.context
+        const {actions, callee, index, parent, schemas} = this.props
+        const {hovered} = this.context
 
         const funcArgs = this.props.arguments
         const parentCallee = parent.push('callee')
@@ -48,9 +49,17 @@ class CallExpression extends React.Component {
             const root = Immutable.List(['definitions'])
             let left = root.push(...getSyntaxTreeLeaves(funcArgs[0]))
 
-            // we need to title the first object after the definition definitions, ticket => definitions, Ticket
+            // we find the first object after the definitions, Ex: ticket => Ticket
             // this is needed to match the swagger spec structure
-            left = left.set(1, upperFirst(left.get(1)))
+            let definition = left.get(1)
+            // We shave some hardcoded definitions
+            if (OBJECT_DEFINITIONS.hasOwnProperty(definition)) {
+                definition = OBJECT_DEFINITIONS[definition]
+            } else {
+                // if we can't find it just try to uppercase the first letter
+                definition = upperFirst(definition)
+            }
+            left = left.set(1, definition)
             // each object in the swagger spec has properties
             if (left.get(2) !== 'properties') {
                 left = left.splice(2, 0, 'properties')

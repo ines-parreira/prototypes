@@ -2,12 +2,16 @@ import React from 'react'
 
 import Property from '../Property'
 
-/* interface ObjectExpression <: Expression {
- type: "ObjectExpression";
- properties: [ Property ];
-}
+/* The ObjectExpression is usually reserved for actions.
+
+ Example:
+
+ Action('notify', {
+ subject: "1234"
+ })
+
  */
-const ObjectExpression = ({ properties, leftsiblings, parent, actions, index, schemas }) => {
+const ObjectExpression = ({properties, leftsiblings, parent, actions, index, schemas, config}) => {
     const propertiesComp = properties.map((property, idx) => {
         let leftsiblings2
         if (leftsiblings !== undefined) {
@@ -15,6 +19,7 @@ const ObjectExpression = ({ properties, leftsiblings, parent, actions, index, sc
         }
 
         const parentProperty = parent.push('properties', idx)
+        const argConfig = config ? config[property.key.name] : null
         return (
             <Property
                 {...property}
@@ -24,6 +29,7 @@ const ObjectExpression = ({ properties, leftsiblings, parent, actions, index, sc
                 parent={parentProperty}
                 actions={actions}
                 schemas={schemas}
+                config={argConfig}
                 index={index}
             />
         )
@@ -41,6 +47,7 @@ ObjectExpression.propTypes = {
     parent: React.PropTypes.object.isRequired,
     properties: React.PropTypes.array.isRequired,
     schemas: React.PropTypes.object.isRequired,
+    config: React.PropTypes.object,
 }
 
 export default ObjectExpression

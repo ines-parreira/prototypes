@@ -97,7 +97,7 @@ export default class TicketHeader extends React.Component {
                             <TicketTags
                                 tags={tags.get('items').toJS()}
                                 ticketTags={ticket.get('tags')}
-                                addTag={actions.ticket.addTags}
+                                addTags={actions.ticket.addTags}
                                 removeTag={actions.ticket.removeTag}
                             />
                         </div>

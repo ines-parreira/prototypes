@@ -3,7 +3,7 @@ import React, {PropTypes} from 'react'
 import RuleTableRow from './RuleTableRow'
 
 const RuleTable = ({actions, currentUser, rules, schemas}) => (
-    <table className="ui selectable very basic padded table">
+    <table className="ui selectable basic padded table">
         <thead>
             <tr>
                 <th>Details</th>

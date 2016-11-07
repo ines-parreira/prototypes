@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
 import Expression from '../expression/Expression'
 
@@ -54,14 +54,14 @@ const LogicalExpression = ({ operator, left, right, index, parent, actions, left
 
 
 LogicalExpression.propTypes = {
-    actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
-    left: React.PropTypes.object.isRequired,
-    leftsiblings: React.PropTypes.object.isRequired,
-    operator: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    right: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    left: PropTypes.object.isRequired,
+    leftsiblings: PropTypes.object,
+    operator: PropTypes.string.isRequired,
+    parent: PropTypes.object.isRequired,
+    right: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
 }
 
 export default LogicalExpression

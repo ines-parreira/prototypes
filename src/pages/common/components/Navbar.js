@@ -1,7 +1,11 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import classnames from 'classnames'
 import _ from 'lodash'
+
+// A <Link /> with some default styles
+const NavLink = (props) => (
+    <Link {...props} activeClassName="active" className="item"/>
+)
 
 export default class Navbar extends React.Component {
     componentWillMount() {
@@ -18,52 +22,43 @@ export default class Navbar extends React.Component {
     }
 
     render() {
-        const {currentUser, activeContent} = this.props
-
-        const ticketsClassNames = classnames('item', {
-            active: activeContent === 'tickets'
-        })
-
-        const usersClassNames = classnames('item', {
-            active: activeContent === 'users'
-        })
-
-        const integrationsClassNames = classnames('item', {
-            active: activeContent === 'integrations'
-        })
-
-        const statsClassNames = classnames('item', {
-            active: activeContent === 'stats'
-        })
-
-
+        const {currentUser} = this.props
         return (
             <div className="navbar" ref="navbar">
                 <div id="main-menu" className="navbar-btn navbar-btn-category ui dropdown">
                     {this.state.title}
                     <i className="icon angle down"/>
                     <div className="menu">
-                        <Link to="/app" className={ticketsClassNames}
-                              onClick={() => this.setState({title: 'Tickets'})}
+                        <NavLink
+                            to="/app/tickets"
+                            onClick={() => this.setState({title: 'Tickets'})}
                         >
                             Tickets
-                        </Link>
-                        {/* <Link to="/rules" className="item" onClick={() => this.setState({title: 'Rules'})}>Rules</Link> */}
-                        <Link to="/app/users" className={usersClassNames}
-                              onClick={() => this.setState({title: 'Users'})}
+                        </NavLink>
+                        <NavLink
+                            to="/app/users"
+                            onClick={() => this.setState({title: 'Users'})}
                         >
                             Users
-                        </Link>
-                        <Link to="/app/integrations" className={integrationsClassNames}
-                              onClick={() => this.setState({title: 'Integrations'})}
+                        </NavLink>
+                        <NavLink
+                            to="/app/integrations"
+                            onClick={() => this.setState({title: 'Integrations'})}
                         >
                             Integrations
-                        </Link>
-                        <Link to="/app/stats" className={statsClassNames}
-                              onClick={() => this.setState({title: 'Statistics'})}
+                        </NavLink>
+                        <NavLink
+                            to="/app/stats"
+                            onClick={() => this.setState({title: 'Statistics'})}
                         >
                             Statistics
-                        </Link>
+                        </NavLink>
+                        <NavLink
+                            to="/app/rules"
+                            onClick={() => this.setState({title: 'Rules'})}
+                        >
+                            Rules
+                        </NavLink>
                     </div>
                 </div>
 

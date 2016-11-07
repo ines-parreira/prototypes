@@ -68,13 +68,13 @@ export default class TicketMacros extends React.Component {
             <div className="macro-data">
                 <div className="ui label macro-legend">ADD TAGS:</div>
                 {
-                    addTagsActions.map((action) =>
-                        action.get('arguments').map((arg, i) =>
+                    addTagsActions.map((action) => (
+                        action.getIn(['arguments', 'tags']).split(',').map((tag, i) => (
                             <div key={`action-tag-${action.id}-${i}`} className="ui label ticket-tag no-icon">
-                                {arg.get('name')}
+                                {tag}
                             </div>
-                        )
-                    )
+                        ))
+                    ))
                 }
             </div>
         )

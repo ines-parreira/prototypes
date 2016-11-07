@@ -73,6 +73,51 @@ export const save = (data) => {
 }
 
 /**
+ * Activate a rule
+ * @param index
+ */
+export const activate = (index) => {
+    return (dispatch, getState) => {
+        const {id} = getState().rules.get(index)
+        return axios.put(`/api/rules/${id}/`, {deactivated_datetime: null})
+            .then(() => {
+                dispatch(({
+                    type: types.ACTIVATE_RULE,
+                    index,
+                }))
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Rule deactivated successfully',
+                }))
+            })
+            .catch(error => dispatch(fail(error, 'Unable to deactivate the rule')))
+    }
+}
+
+
+/**
+ * Deactivate a rule
+ * @param index
+ */
+export const deactivate = (index) => {
+    return (dispatch, getState) => {
+        const {id} = getState().rules.get(index)
+        return axios.put(`/api/rules/${id}/`, {deactivated_datetime: new Date()})
+            .then(() => {
+                dispatch(({
+                    type: types.DEACTIVATE_RULE,
+                    index,
+                }))
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Rule deactivated successfully',
+                }))
+            })
+            .catch(error => dispatch(fail(error, 'Unable to deactivate the rule')))
+    }
+}
+
+/**
  * Delete a rule
  * @param index
  */

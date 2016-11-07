@@ -1,6 +1,5 @@
-import React, { PropTypes } from 'react'
-import { Map } from 'immutable'
-import _ from 'lodash'
+import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 
 
 export default class TicketTags extends React.Component {
@@ -21,21 +20,21 @@ export default class TicketTags extends React.Component {
             return
         }
 
-        const tag = _.first(this.props.tags.filter(curTag => curTag.name === name)) || { name }
-        this.props.addTag([Map(tag)])
+        this.props.addTags(fromJS({tags: name}))
         tagDropdown.dropdown('clear')
     }
 
     render = () => {
-        const { tags, ticketTags, removeTag } = this.props
+        const {tags, ticketTags, removeTag} = this.props
         const existingTagNames = this.props.ticketTags.map(x => x.get('name'))
-        let style = {}
 
-        if (!ticketTags.size) { style = { paddingLeft: 0 } }
+        let style = {}
+        if (!ticketTags.size) {
+            style = {paddingLeft: 0}
+        }
 
         return (
             <div className="ui labels ticket-tags-wrapper">
-
                 {
                     ticketTags.map((tag, i) => (
                         <div key={i} className="ticket-tag ui label">
@@ -44,7 +43,6 @@ export default class TicketTags extends React.Component {
                         </div>
                     ))
                 }
-
                 <div
                     ref="tagDropdown"
                     className="ticket-tag-add-btn ui search button input pointing dropdown link item"
@@ -52,7 +50,7 @@ export default class TicketTags extends React.Component {
                     onClick={() => this.refs.tagSearch.focus()}
                 >
                     <span>
-                        <i className="icon plus" /> ADD TAG
+                        <i className="icon plus"/> ADD TAG
                     </span>
 
                     <div className="menu">
@@ -62,12 +60,12 @@ export default class TicketTags extends React.Component {
                         <div className="hidden item" key="placeholder"></div>
                         {
 
-                            tags.map(tag => {
+                            tags.map((tag, i) => {
                                 if (!existingTagNames.contains(tag.name)) {
                                     return (
                                         <div
                                             className="item"
-                                            key={tag.name}
+                                            key={i}
                                             data-value={tag.name}
                                             onClick={this.update}
                                         >
@@ -92,6 +90,6 @@ export default class TicketTags extends React.Component {
 TicketTags.propTypes = {
     tags: PropTypes.array.isRequired,
     ticketTags: PropTypes.object.isRequired,
-    addTag: PropTypes.func.isRequired,
+    addTags: PropTypes.func.isRequired,
     removeTag: PropTypes.func.isRequired
 }

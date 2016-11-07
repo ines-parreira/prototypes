@@ -189,8 +189,11 @@ describe('Ticket reducer', () => {
     })
 
     it('should add tags to ticket', () => {
-        const args = fromJS([{name: 'npm'}, {name: 'drama'}])
-        const expected = initialState.set('tags', args)
+        const args = fromJS({tags: 'npm,drama'})
+        const expected = initialState.set('tags', [
+            {name: 'npm'},
+            {name: 'drama'},
+        ])
 
         expect(
             reducer(initialState, {type: types.ADD_TICKET_TAGS, args})

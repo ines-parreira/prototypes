@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { camelCaseToTitleCase } from '../../../../../utils'
-
 import { actionsConfig } from './Action'
 
 class ActionSelect extends React.Component {
@@ -18,23 +16,24 @@ class ActionSelect extends React.Component {
     }
 
     render() {
+        const { value } = this.props
+        const selectedActionName = actionsConfig[value] && actionsConfig[value].name
         return (
             <div
                 className="ui floating dropdown right labeled search icon positive button"
                 ref="actionSelect"
             >
                 <i className="caret down icon" />
-                <span className="text">{camelCaseToTitleCase(this.props.value) || 'Select Action'}</span>
+                <span className="text">{selectedActionName || value || 'Select Action'}</span>
                 <div className="menu">
-                    {Object.keys(actionsConfig).map((action, index) => (
-                        <div
-                            key={index}
-                            className="item"
-                            data-value={action}
-                        >
-                            {camelCaseToTitleCase(action)}
-                        </div>
-                    ))}
+                    {Object.keys(actionsConfig).map((action, index) => {
+                        const actionName = actionsConfig[action] && actionsConfig[action].name
+                        return (
+                            <div key={index} className="item" data-value={action}>
+                                {actionName || action}
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         )

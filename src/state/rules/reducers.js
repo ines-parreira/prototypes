@@ -1,7 +1,7 @@
-import { fromJS, List } from 'immutable'
+import {fromJS, List} from 'immutable'
 
-import { getCode, getAST } from '../../utils'
-import { inOrderGetLeaves, getObjectExpression } from './utils'
+import {getCode, getAST} from '../../utils'
+import {inOrderGetLeaves, getObjectExpression} from './utils'
 
 import * as types from './constants'
 
@@ -40,18 +40,21 @@ export default (state = initialState, action) => {
         }
 
         case types.RULES_INITIALISE_CODE_AST: {
-            const { index } = action
+            const {index} = action
             let stateItem = fromJS(state.get(index))
 
             stateItem = stateItem.set('code_ast', types.DEFAULT_IF_STATEMENT)
 
             const stateItemObj = stateItem.toJS()
             stateItemObj.code = getCode(stateItemObj.code_ast)
+            // We need this in order to get the AST options such as (loc).
+            // This will be used later on for doing debugging for example.
+            stateItemObj.code_ast = getAST(stateItemObj.code)
             return state.set(index, stateItemObj)
         }
 
         case types.RULES_UPDATE_CODE_AST: {
-            const { index, path, value, operation } = action
+            const {index, path, value, operation} = action
             const stateItem = fromJS(state.get(index))
             const pathFull = path.unshift('code_ast')
 
@@ -96,14 +99,12 @@ export default (state = initialState, action) => {
                         const calleeName = stateItemNew.getIn(pathParentCallExpression.push('callee', 'name'))
 
                         if (calleeName === 'Action') {
-                            const actionType = stateItemNew.getIn(
-                                pathParentCallExpression.push('arguments', 0, 'value')
+                            // We override the second argument with the default value of the new action type
+                            // This is done so we have a default value for a newly created action
+                            stateItemNew = stateItemNew.updateIn(
+                                pathParentCallExpression.push('arguments', 1),
+                                () => getObjectExpression(types.ACTION_DEFAULT_STATE[value] || {})
                             )
-                            const pathActionValue = pathParentCallExpression.push('arguments', 1)
-
-                            // We override the second argument by the default value according to the new action type
-                            const expression = getObjectExpression(types.ACTION_DEFAULT_STATE[actionType] || {})
-                            stateItemNew = stateItemNew.updateIn(pathActionValue, () => expression)
                         }
                     }
                 }
@@ -179,6 +180,7 @@ export default (state = initialState, action) => {
 
             const stateItemObj = stateItemNew.toJS()
             stateItemObj.code = getCode(stateItemObj.code_ast)
+            stateItemObj.code_ast = getAST(stateItemObj.code)  // To apply, ast syntax options (loc, ...)
             return state.set(index, stateItemObj)
         }
 

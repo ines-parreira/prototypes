@@ -200,7 +200,7 @@ export const ACTION_TEMPLATES = {
         title: '',
         arguments: {
             tags: {
-                type: 'array'
+                type: 'string'
             }
         }
     },

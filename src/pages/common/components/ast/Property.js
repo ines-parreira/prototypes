@@ -8,19 +8,20 @@ import Widget from './Widget'
  key: Literal | Identifier;
  value: Expression;
  kind: "init" | "get" | "set";
-}
+ }
  */
-const Property = ({ theKey, value, actions, leftsiblings, parent, index, schemas }) => (
+const Property = ({theKey, value, actions, leftsiblings, parent, index, schemas, config}) => (
     <div className="field">
         <div className="ui labeled input">
-            <div className="ui label">{theKey.name}</div>
+            <div className="ui label">{(config && config.name) || theKey.name}</div>
             <Widget
-               value={value.value}
-               parent={parent.push('value', 'value')}
-               leftsiblings={leftsiblings}
-               actions={actions}
-               index={index}
-               schemas={schemas}
+                value={value.value}
+                type={config ? config.widget : null}
+                parent={parent.push('value', 'value')}
+                leftsiblings={leftsiblings}
+                actions={actions}
+                index={index}
+                schemas={schemas}
             />
         </div>
     </div>
@@ -34,6 +35,7 @@ Property.propTypes = {
     schemas: React.PropTypes.object.isRequired,
     theKey: React.PropTypes.object.isRequired,
     value: React.PropTypes.object.isRequired,
+    config: React.PropTypes.object,
 }
 
 export default Property

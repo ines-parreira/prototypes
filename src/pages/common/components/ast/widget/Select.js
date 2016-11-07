@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 
 import classNames from 'classnames'
+import { List } from 'immutable'
 
 class Select extends React.Component {
 
@@ -28,10 +29,12 @@ class Select extends React.Component {
     _getOptions = (options) => {
         const _options = []
 
-        if (Array.isArray(options)) {
-            options.map((option) => _options.push([option, option]))
-        } else {
-            Object.keys(options).map((key) => _options.push([key, options[key].label]))
+        if (options) {
+            if (Array.isArray(options) || List.isList(options)) {
+                options.map((option) => _options.push([option, option]))
+            } else {
+                Object.keys(options).map((key) => _options.push([key, options[key].label]))
+            }
         }
 
         return _options
@@ -57,7 +60,7 @@ Select.propTypes = {
     className: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     options: PropTypes.any.isRequired,
-    value: PropTypes.string,
+    value: PropTypes.any,
 }
 
 export default Select

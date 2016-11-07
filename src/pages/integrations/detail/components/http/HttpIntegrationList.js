@@ -19,7 +19,7 @@ HTTP bindings.`
             const editLink = `/app/integrations/http/${int.get('id')}`
             let primaryBtn = (
                 <button
-                    className="ui basic light blue floated right button"
+                    className="ui basic light blue button"
                     onClick={() => browserHistory.push(editLink)}
                 >
                     Edit
@@ -28,7 +28,7 @@ HTTP bindings.`
             )
             let rmBtn = (
                 <button
-                    className={classNames('ui basic light red floated right button', {
+                    className={classNames('ui basic light red button', {
                         loading: isSubmitting
                     })}
                     onClick={() => !isSubmitting && actions.deactivateIntegration(int)}
@@ -40,7 +40,7 @@ HTTP bindings.`
             if (!active) {
                 primaryBtn = (
                     <button
-                        className={classNames('ui basic light blue floated right button', {
+                        className={classNames('ui basic light blue button', {
                             loading: isSubmitting
                         })}
                         onClick={() => !isSubmitting && actions.activateIntegration(int)}
@@ -51,7 +51,7 @@ HTTP bindings.`
 
                 rmBtn = (
                     <button
-                        className="ui basic light red floated right button"
+                        className="ui basic light red button"
                         onClick={() => actions.deleteIntegration(int)}
                     >
                         Delete
@@ -72,8 +72,10 @@ HTTP bindings.`
                         </div>
                     </td>
                     <td className="eight wide column">
-                        {rmBtn}
-                        {primaryBtn}
+                        <div className="floated right">
+                            {primaryBtn}
+                            {rmBtn}
+                        </div>
                     </td>
                 </tr>
             )

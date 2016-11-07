@@ -20,57 +20,125 @@ import ChangePasswordContainer from './users/yourProfile/ChangePasswordContainer
 import StatsContainer from './stats/list/StatsContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
+import RulesNavbarContainer from './rules/common/RulesNavbarContainer'
 
 export default (
     <Route path="/app" component={App}>
-        <IndexRoute components={{content: TicketListContainer, navbar: TicketNavbarContainer}} />
-        <Route path="your-profile" components={{content: YourProfileContainer, navbar: UserNavbarContainer}} />
-        <Route path="your-profile/change-password"
-               components={{content: ChangePasswordContainer, navbar: UserNavbarContainer}}
+        <IndexRoute
+            components={{
+                content: TicketListContainer,
+                navbar: TicketNavbarContainer
+            }}
         />
-        <Route path="users" components={{content: UserListContainer, navbar: UserNavbarContainer}} />
-        <Route path="users/:viewId/:viewSlug" components={{content: UserListContainer, navbar: UserNavbarContainer}} />
-        <Route path="user/:userId" components={{
-            content: UserDetailContainer,
-            navbar: UserNavbarContainer,
-            infobar: UserInfobarContainer
-        }} />
-        <Route path="user/:userId/edit-widgets"
-               components={{
-                   content: UserSourceContainer,
-                   navbar: UserNavbarContainer,
-                   infobar: UserInfobarContainer
-               }}
-               isEditingWidgets
+        <Route
+            path="your-profile"
+            components={{
+                content: YourProfileContainer,
+                navbar: UserNavbarContainer
+            }}
         />
-        <Route path="ticket/:ticketId" components={{
-            content: TicketDetailContainer,
-            navbar: TicketNavbarContainer,
-            infobar: TicketInfobarContainer
-        }} />
-        <Route path="ticket/:ticketId/edit-widgets"
-               components={{
-                   content: TicketSourceContainer,
-                   navbar: TicketNavbarContainer,
-                   infobar: TicketInfobarContainer
-               }}
-               isEditingWidgets
+        <Route
+            path="your-profile/change-password"
+            components={{
+                content: ChangePasswordContainer,
+                navbar: UserNavbarContainer
+            }}
         />
-        <Route path="tickets/:viewId/:viewSlug"
-               components={{content: TicketListContainer, navbar: TicketNavbarContainer}}
+        <Route
+            path="users"
+            components={{
+                content: UserListContainer,
+                navbar: UserNavbarContainer
+            }}
         />
-        <Route path="integrations"
-               components={{content: IntegrationListContainer, navbar: IntegrationNavbarContainer}}
+        <Route
+            path="users/:viewId/:viewSlug"
+            components={{
+                content: UserListContainer,
+                navbar: UserNavbarContainer
+            }}
         />
-        <Route path="integrations/:integrationType"
-               components={{content: IntegrationDetailContainer, navbar: IntegrationNavbarContainer}}
+        <Route
+            path="user/:userId"
+            components={{
+                content: UserDetailContainer,
+                navbar: UserNavbarContainer,
+                infobar: UserInfobarContainer
+            }}
+        />
+        <Route
+            path="user/:userId/edit-widgets"
+            components={{
+                content: UserSourceContainer,
+                navbar: UserNavbarContainer,
+                infobar: UserInfobarContainer
+            }}
+            isEditingWidgets
+        />
+        <Route
+            path="ticket/:ticketId"
+            components={{
+                content: TicketDetailContainer,
+                navbar: TicketNavbarContainer,
+                infobar: TicketInfobarContainer
+            }}
+        />
+        <Route
+            path="ticket/:ticketId/edit-widgets"
+            components={{
+                content: TicketSourceContainer,
+                navbar: TicketNavbarContainer,
+                infobar: TicketInfobarContainer
+            }}
+            isEditingWidget
+        />
+        <Route
+            path="tickets"
+            components={{
+                content: TicketListContainer,
+                navbar: TicketNavbarContainer
+            }}
+        />
+        <Route
+            path="tickets/:viewId/:viewSlug"
+            components={{
+                content: TicketListContainer,
+                navbar: TicketNavbarContainer
+            }}
+        />
+        <Route
+            path="integrations"
+            components={{
+                content: IntegrationListContainer,
+                navbar: IntegrationNavbarContainer
+            }}
+        />
+        <Route
+            path="integrations/:integrationType"
+            components={{
+                content: IntegrationDetailContainer,
+                navbar: IntegrationNavbarContainer
+            }}
         >
-            <Route path=":integrationId" />
+            <Route path=":integrationId"/>
         </Route>
-        <Route path="rules" component={RuleContainer} />
-        <Route path="stats"
-               components={{content: StatsContainer, navbar: StatsNavbarContainer}}
+        <Route
+            path="rules"
+            components={{
+                content: RuleContainer,
+                navbar: RulesNavbarContainer
+            }}
         />
-        <Route path="*" component={NoMatch} />
+        <Route
+            path="stats"
+            components={{
+                content: StatsContainer,
+                navbar: StatsNavbarContainer
+            }}
+        />
+        <Route
+            path="*"
+            component={NoMatch}
+        />
     </Route>
 )
