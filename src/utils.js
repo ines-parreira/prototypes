@@ -88,7 +88,8 @@ export function findProperty(field, schemas) {
 
         prop = prop.toJS()
 
-        // if current property has its own meta then we use them insta of using these of its definition
+        // if the current nested property has a `meta` field,
+        // then we use it instead of the `meta` of it's definition
         if (prop.meta) {
             break
         }
