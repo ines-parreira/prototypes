@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux'
 import classNames from 'classnames'
 import _isUndefined from 'lodash/isUndefined'
 import _isError from 'lodash/isError'
+import _find from 'lodash/find'
 import {submitUser} from '../../../../state/users/actions'
 import {InputField, SelectField} from '../../../common/components/formFields'
 import UserChannelAddressField from './UserChannelAddressField'
@@ -59,9 +60,25 @@ class UserForm extends React.Component {
     _docToForm = (doc = {}) => {
         const channels = doc.channels || []
 
+        // if the user has a "email" property which is not in its channels, add it as an email channel
+        // this should not exist but some users apparently have email in "email" not in "channels"
+        const email = doc.email
+        if (email) {
+            const hasEmailAsChannel = _find(channels, {address: email})
+            if (!hasEmailAsChannel) {
+                channels.push({
+                    type: 'email',
+                    address: email,
+                })
+            }
+        }
+
+        // divide channels by their types in separated groups
+        // ex: email, twitter, etc.
         updatableChannels.forEach((updatableChannel) => {
             doc[updatableChannel] = channels.filter((channel) => channel.type === updatableChannel)
 
+            // if a type of channel has no address, add an empty one
             if (!doc[updatableChannel].length) {
                 doc[updatableChannel] = [{
                     channel: updatableChannel,
@@ -70,6 +87,7 @@ class UserForm extends React.Component {
             }
         })
 
+        // display a role even if the user can have multiple ones
         const roles = doc.roles || []
         doc.role = roles.length ? roles[0].name : 'user'
 
