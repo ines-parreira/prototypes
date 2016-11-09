@@ -59,7 +59,7 @@ export default class EditableTitle extends React.Component {
     render() {
         const {title, placeholder} = this.props
         return (
-            <h1 id="title"
+            <h1
                 ref="title"
                 tabIndex="1"
                 placeholder={placeholder}
@@ -68,7 +68,9 @@ export default class EditableTitle extends React.Component {
                 onKeyDown={(e) => this.onKeyDown(e)}
                 onKeyUp={(e) => this.onKeyUp(e)}
                 onBlur={(e) => this.onBlur(e)}
-            >{title}</h1>
+            >
+                {title}
+            </h1>
         )
     }
 
