@@ -53,12 +53,14 @@ export default class Navbar extends React.Component {
                         >
                             Statistics
                         </NavLink>
-                        <NavLink
+                        {/**
+                         <NavLink
                             to="/app/rules"
                             onClick={() => this.setState({title: 'Rules'})}
                         >
                             Rules
                         </NavLink>
+                        */}
                     </div>
                 </div>
 
