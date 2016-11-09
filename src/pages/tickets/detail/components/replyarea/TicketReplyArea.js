@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import ReactDOM from 'react-dom'
 import {fromJS} from 'immutable'
 import classNames from 'classnames'
 import TicketReply from './TicketReply'
@@ -21,11 +22,26 @@ export default class TicketReplyArea extends React.Component {
         })
 
         window.addEventListener('keydown', this.hideMacros)
-        $('.mousetrap input').addClass('mousetrap')
     }
 
     componentWillUnmount() {
         window.removeEventListener('keydown', this.hideMacros)
+    }
+
+    componentDidUpdate() {
+        // focus the macro search field when macros are visible.
+        const searchNode = ReactDOM.findDOMNode(this.refs.search)
+        const macrosVisible = this.props.macros.get('visible')
+
+        // macros are visible,
+        // and the macro visibility changed
+        // (otherwise we trigger focus for each re-render triggered by activity).
+        if (macrosVisible && this.macrosVisible !== macrosVisible) {
+            searchNode.firstChild.focus()
+        }
+
+        // set the current visibility on the instance
+        this.macrosVisible = macrosVisible
     }
 
     hideMacros = (e) => {
@@ -57,13 +73,13 @@ export default class TicketReplyArea extends React.Component {
                     <SearchInput
                         ref="search"
                         tabIndex="3"
-                        autoFocus={!!this.props.ticket.get('id')}
                         onFocus={() => setMacrosVisible(true)}
                         onChange={this.searchUpdated}
-                        className="ui transparent input full-width mousetrap"
+                        className="ui transparent input full-width shortcuts-enable"
                         placeholder="Search for a macro"
+                        autoFocus={!!this.props.ticket.get('id')}
                     />
-                    <a className={classNames({ hidden: !macrosVisible, 'clear-macros': true})} ref="popupClearMacros">
+                    <a className={classNames({hidden: !macrosVisible, 'clear-macros': true})} ref="popupClearMacros">
                         <i
                             className="right close icon"
                             onClick={() => setMacrosVisible(false)}
@@ -92,7 +108,7 @@ export default class TicketReplyArea extends React.Component {
                     users={this.props.users}
                     contentState={this.props.ticket.getIn(['state', 'contentState'])}
                     fromMacro={this.props.ticket.getIn(['state', 'fromMacro'])}
-                    autoFocus={!!this.props.ticket.get('id')}
+                    autoFocus={!macrosVisible}
                 />
             </div>
         )

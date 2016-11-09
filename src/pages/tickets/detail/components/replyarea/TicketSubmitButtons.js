@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
-import {getModifier} from '../../../../../utils'
 import {isTicketDifferent} from './../../../common/utils'
+import shortcutManager from '../../../../common/utils/shortcutManager'
+import keymap from '../../../../common/utils/keymap'
 
 export default class TicketSubmitButtons extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -42,7 +43,7 @@ export default class TicketSubmitButtons extends React.Component {
                     className={classNames(...commonClasses)}
                     tabIndex="4"
                     onClick={() => this.submit()}
-                    data-html={`${getModifier()} + Enter`}
+                    data-html={shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_TICKET)}
                 >
                     Send
                 </button>
@@ -51,7 +52,7 @@ export default class TicketSubmitButtons extends React.Component {
                     className={classNames(...commonClasses, 'basic')}
                     tabIndex="5"
                     onClick={() => this.submit('closed', true)}
-                    data-html={`${getModifier()} + Shift + Enter`}
+                    data-html={shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_CLOSE_TICKET)}
                 >
                     Send &amp; Close
                 </button>

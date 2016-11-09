@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import classNames from 'classnames'
-import * as mousetrap from 'mousetrap'
+import shortcutManager from '../utils/shortcutManager'
 
 export default class Search extends React.Component {
     constructor(props) {
@@ -13,17 +13,21 @@ export default class Search extends React.Component {
 
     componentDidMount() {
         if (this.props.bindKey) {
-            mousetrap.bind('g s', (e) => {
-                e.preventDefault()
-                const domNode = ReactDOM.findDOMNode(this.refs.searchInput)
-                domNode.focus()
+            shortcutManager.bind('Search', {
+                FOCUS_SEARCH: {
+                    action: (e) => {
+                        e.preventDefault()
+                        const domNode = ReactDOM.findDOMNode(this.refs.searchInput)
+                        domNode.focus()
+                    }
+                }
             })
         }
     }
 
     componentWillUnmount() {
         if (this.props.bindKey) {
-            mousetrap.unbind('g s')
+            shortcutManager.unbind('Search')
         }
     }
 

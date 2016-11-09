@@ -130,12 +130,12 @@ export function resolveLiteral(value, field) {
 }
 
 /**
- * Return '⌘' if the user is using a Mac, 'Ctrl' otherwise
+ * Return '⌘' if the user is using a Mac, Ctrl/Meta otherwise
  * @returns {string}
  */
-export function getModifier() {
+export function getModifier(defaultKey = 'Ctrl') {
     const isMac = navigator.platform.toLowerCase().startsWith('mac')
-    return isMac ? '⌘' : 'Ctrl'
+    return isMac ? '⌘' : defaultKey
 }
 
 export function compactInteger(input, digits = 0) {
@@ -220,4 +220,41 @@ export function slugify(string) {
         .toLowerCase()
         .trim()
         .replace(/[ ]/g, '-')
+}
+
+/**
+ * Check if element is editable (form elements, contentEditable)
+ */
+export function isEditable(element) {
+    return !!(element.tagName === 'INPUT' ||
+            element.tagName === 'SELECT' ||
+            element.tagName === 'TEXTAREA' ||
+            (element.contentEditable && element.contentEditable === 'true'))
+}
+
+/**
+ * Find the closest parent that matches the selector
+ */
+export function closest(element, selector) {
+    let $matches
+    let $elem = element
+
+    // loop through parents
+    while ($elem && $elem !== document) {
+        if ($elem.parentNode) {
+            // find all siblings that match the selector
+            $matches = $elem.parentNode.querySelectorAll(selector)
+            // check if our element is matched (poor-man's Element.matches())
+            if ([].indexOf.call($matches, $elem) !== -1) {
+                return $elem
+            }
+
+            // go up the tree
+            $elem = $elem.parentNode
+        } else {
+            return null
+        }
+    }
+
+    return null
 }

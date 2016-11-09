@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {browserHistory, withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import * as mousetrap from 'mousetrap'
+import shortcutManager from '../../common/utils/shortcutManager'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
 import {Loader} from '../../common/components/Loader'
@@ -139,14 +139,8 @@ class TicketDetailContainer extends React.Component {
 
     componentWillUnmount() {
         window.onbeforeunload = null
-        mousetrap.unbind('escape')
-        mousetrap.unbind('enter')
-        mousetrap.unbind('up')
-        mousetrap.unbind('down')
-        mousetrap.unbind('left')
-        mousetrap.unbind('right')
-        mousetrap.unbind('mod+enter')
-        mousetrap.unbind('mod+shift+enter')
+
+        shortcutManager.unbind('TicketDetailContainer')
     }
 
     _confirmLeaveWhenDirty = (e, suffix = '') => {
@@ -186,64 +180,90 @@ class TicketDetailContainer extends React.Component {
         const macrosVisible = () => this.props.macros.get('visible')
         const modalVisible = () => this.props.macros.get('isModalOpen')
 
-        mousetrap.bind('escape', () => {
-            if (macrosVisible() && !modalVisible()) {
-                this.props.actions.macro.setMacrosVisible(false)
-            }
-        })
-        mousetrap.bind('enter', (e) => {
-            if (macrosVisible() && !modalVisible()) {
-                e.preventDefault()
-                e.stopPropagation()
-                if (this.props.macros.get('selected')) {
-                    this._applyMacro(this.props.macros.get('selected'))
+        shortcutManager.bind('TicketDetailContainer', {
+            SHOW_MACROS: {
+                action: (e) => {
+                    if (!macrosVisible() && !modalVisible()) {
+                        e.preventDefault()
+                        this.props.actions.macro.setMacrosVisible(true)
+                    }
                 }
-            }
-        })
-        mousetrap.bind('up', (e) => {
-            if (macrosVisible() && !modalVisible()) {
-                e.preventDefault()
-                this.props.actions.macro.previewAdjacentMacro('prev')
-            }
-        })
-        mousetrap.bind('down', (e) => {
-            if (macrosVisible() && !modalVisible()) {
-                e.preventDefault()
-                this.props.actions.macro.previewAdjacentMacro('next')
-            }
-        })
-        mousetrap.bind('left', () => {
-            if (!modalVisible()) {
-                const nextUrl = this._computeNextUrl(false)
+            },
+            HIDE_MACROS: {
+                action: () => {
+                    if (macrosVisible() && !modalVisible()) {
+                        this.props.actions.macro.setMacrosVisible(false)
+                    }
+                }
+            },
+            APPLY_MACRO: {
+                action: (e) => {
+                    if (macrosVisible() && !modalVisible()) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        if (this.props.macros.get('selected')) {
+                            this._applyMacro(this.props.macros.get('selected'))
+                        }
+                    }
+                }
+            },
+            PREVIEW_PREV_MACRO: {
+                action: (e) => {
+                    if (macrosVisible() && !modalVisible()) {
+                        e.preventDefault()
+                        this.props.actions.macro.previewAdjacentMacro('prev')
+                    }
+                }
+            },
+            PREVIEW_NEXT_MACRO: {
+                action: (e) => {
+                    if (macrosVisible() && !modalVisible()) {
+                        e.preventDefault()
+                        this.props.actions.macro.previewAdjacentMacro('next')
+                    }
+                }
+            },
+            GO_BACK: {
+                action: () => {
+                    if (!modalVisible()) {
+                        const nextUrl = this._computeNextUrl(false)
 
-                if (nextUrl) {
-                    browserHistory.push(nextUrl)
+                        if (nextUrl) {
+                            browserHistory.push(nextUrl)
+                        }
+                    }
                 }
-            }
-        })
-        mousetrap.bind('right', () => {
-            if (!modalVisible()) {
-                const nextUrl = this._computeNextUrl(true)
+            },
+            GO_FORWARD: {
+                action: () => {
+                    if (!modalVisible()) {
+                        const nextUrl = this._computeNextUrl(true)
 
-                if (nextUrl) {
-                    browserHistory.push(nextUrl)
+                        if (nextUrl) {
+                            browserHistory.push(nextUrl)
+                        }
+                    }
                 }
-            }
-        })
-        mousetrap.bind('mod+enter', (e) => {
-            if (!modalVisible()) {
-                if (e.preventDefault) {
-                    e.preventDefault()
+            },
+            SUBMIT_TICKET: {
+                action: (e) => {
+                    if (!modalVisible()) {
+                        if (e.preventDefault) {
+                            e.preventDefault()
+                        }
+                        this._submit()
+                    }
                 }
-                this._submit()
-            }
-        })
-        mousetrap.bind('mod+shift+enter', (e) => {
-            if (!modalVisible()) {
-                if (e.preventDefault) {
-                    e.preventDefault()
+            },
+            SUBMIT_CLOSE_TICKET: {
+                action: (e) => {
+                    if (!modalVisible()) {
+                        if (e.preventDefault) {
+                            e.preventDefault()
+                        }
+                        this._submit('closed', true)
+                    }
                 }
-                this._submit('closed', true)
             }
         })
     }
@@ -375,7 +395,7 @@ class TicketDetailContainer extends React.Component {
                         computeNextUrl={this._computeNextUrl}
                         view={view}
                     />
-                    <MacroContainer noUnbind />
+                    <MacroContainer />
                 </div>
             </DocumentTitle>
         )

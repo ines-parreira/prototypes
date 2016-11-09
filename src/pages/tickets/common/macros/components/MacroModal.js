@@ -4,45 +4,47 @@ import {fromJS} from 'immutable'
 import MacroList from './MacroList'
 import MacroEdit from './MacroEdit'
 import MacroPreview from './MacroPreview'
-import * as mousetrap from 'mousetrap'
+import shortcutManager from '../../../../common/utils/shortcutManager'
 
 export default class MacroModal extends React.Component {
     componentDidMount() {
-        const {activeView, currentMacro, actions, selectionMode, selectedItemsIds} = this.props
-
         amplitude.getInstance().logEvent('Opened macro modal')
 
         $(this.refs.macroModal).modal({
-            onHidden: actions.macro.closeModal
+            onHidden: this.props.actions.macro.closeModal
         }).modal('show')
 
-        mousetrap.bind('up', (e) => {
-            e.preventDefault()
-            actions.macro.previewAdjacentMacroInModal('prev', this.props.disableExternalActions)
-        })
-        mousetrap.bind('down', (e) => {
-            e.preventDefault()
-            actions.macro.previewAdjacentMacroInModal('next', this.props.disableExternalActions)
-        })
+        shortcutManager.bind('MacroModal', {
+            PREVIEW_PREV_MACRO: {
+                action: (e) => {
+                    e.preventDefault()
+                    this.props.actions.macro.previewAdjacentMacroInModal('prev', this.props.disableExternalActions)
+                }
+            },
+            PREVIEW_NEXT_MACRO: {
+                action: (e) => {
+                    e.preventDefault()
+                    this.props.actions.macro.previewAdjacentMacroInModal('next', this.props.disableExternalActions)
+                }
+            },
+            APPLY_MACRO: {
+                action: (e) => {
+                    if (!this.props.selectionMode) {
+                        return
+                    }
 
-        if (selectionMode) {
-            mousetrap.bind('mod+enter', (e) => {
-                e.preventDefault()
-                this.cancel()
-                const value = currentMacro ? currentMacro.toJS() : null
-                actions.views.bulkUpdate(activeView, selectedItemsIds, 'macro', value)
-            })
-        }
+                    e.preventDefault()
+                    this.cancel()
+                    this.props.actions.tickets.bulkUpdate(this.props.selectedItemsIds, 'macro', this.props.currentMacro.toJS())
+                }
+            }
+        })
     }
 
     componentWillUnmount() {
         $(this.refs.macroModal).modal('hide')
 
-        if (!this.props.noUnbind) {
-            mousetrap.unbind('up')
-            mousetrap.unbind('down')
-            mousetrap.unbind('enter')
-        }
+        shortcutManager.unbind('MacroModal')
     }
 
     cancel = () => {
@@ -114,9 +116,7 @@ MacroModal.propTypes = {
 
     disableExternalActions: PropTypes.bool.isRequired,
     selectionMode: PropTypes.bool.isRequired,
-    selectedItemsIds: PropTypes.object,
-
-    noUnbind: PropTypes.bool
+    selectedItemsIds: PropTypes.object
 }
 
 MacroModal.defaultProps = {

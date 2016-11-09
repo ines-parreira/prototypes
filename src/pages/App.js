@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {browserHistory} from 'react-router'
 import DocumentTitle from 'react-document-title'
 import {fetchUser, fetchUsers} from '../state/users/actions'
 import {fetchSettings} from '../state/settings/actions'
@@ -8,12 +7,11 @@ import {fetchTags} from '../state/tags/actions'
 import {pollActivity} from '../state/activity/actions'
 import Navbar from './common/components/Navbar'
 import KeyboardHelp from './common/components/KeyboardHelp'
-import Mousetrap from 'mousetrap'
-import * as mousetrap from 'mousetrap'
 import Notifications from 'react-notification-system-redux'
 import {NOTIFICATIONS_STYLE_CONFIG} from '../config'
 import NewVersionNotification from './common/components/NewVersionNotification'
 import classNames from 'classnames'
+import shortcutManager from './common/utils/shortcutManager'
 
 import '../../css/main.less'
 
@@ -45,28 +43,11 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        // Some global keyboard shortcuts
+        shortcutManager.bind('App')
+    }
 
-        Mousetrap.prototype.stopCallback = (e, element, combo) => {
-            // if the element has the class "mousetrap" then no need to stop
-            // also, if the combo includes 'mod', then the event should be triggered
-            if ((` ${element.className} `).indexOf(' mousetrap ') > -1 || combo.indexOf('mod') > -1) {
-                return false
-            }
-
-            // stop for input, select, and textarea
-            return (
-                element.tagName === 'INPUT' ||
-                element.tagName === 'SELECT' ||
-                element.tagName === 'TEXTAREA' ||
-                (element.contentEditable && element.contentEditable === 'true')
-            )
-        }
-
-        // Go home (or dashboard)
-        mousetrap.bind('g h', () => {
-            browserHistory.push('/app')
-        })
+    componentWillUnmount() {
+        shortcutManager.unbind('App')
     }
 
     render() {

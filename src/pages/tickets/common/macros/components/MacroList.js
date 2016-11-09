@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react'
-import ReactDOM from 'react-dom'
 import Immutable from 'immutable'
 import SearchInput from 'react-search-input'
 import classnames from 'classnames'
@@ -10,10 +9,6 @@ export default class MacroList extends React.Component {
     constructor() {
         super()
         this.state = {searchTerm: ''}
-    }
-
-    componentDidMount() {
-        ReactDOM.findDOMNode(this.refs.search).querySelector('input').classList.add('mousetrap')
     }
 
     searchUpdated = (term) => {
@@ -50,7 +45,7 @@ export default class MacroList extends React.Component {
                             <SearchInput
                                 ref="search"
                                 onChange={this.searchUpdated}
-                                className="ui icon input full-width prompt mousetrap"
+                                className="ui icon input full-width prompt shortcuts-enable"
                                 placeholder="Search for a macro"
                             />
                             <i className="search icon"/>

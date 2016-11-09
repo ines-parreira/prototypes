@@ -60,7 +60,6 @@ class MacroContainer extends React.Component {
                 disableExternalActions={disableExternalActions || false}
                 selectionMode={selectionMode || false}
                 selectedItemsIds={selectedItemsIds}
-                noUnbind={this.props.noUnbind}
             />
         )
     }
@@ -76,9 +75,7 @@ MacroContainer.propTypes = {
 
     disableExternalActions: PropTypes.bool,
     selectionMode: PropTypes.bool,
-    selectedItemsIds: PropTypes.object,
-
-    noUnbind: PropTypes.bool
+    selectedItemsIds: PropTypes.object
 }
 
 MacroContainer.defaultProps = {

@@ -2,7 +2,8 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {ACTION_TEMPLATES} from '../../../../../config'
 import classnames from 'classnames'
-import {getModifier} from '../../../../../utils'
+import shortcutManager from '../../../../common/utils/shortcutManager'
+import keymap from '../../../../common/utils/keymap'
 
 export default class MacroPreview extends React.Component {
     _renderSetStatus(setStatusAction) {
@@ -156,7 +157,7 @@ export default class MacroPreview extends React.Component {
                         id="applyToGroup"
                         className="ui green right floated button"
                         onClick={this.apply}
-                        data-content={`${getModifier()} + Enter`}
+                        data-content={shortcutManager.getActionKeys(keymap.MacroModal.actions.APPLY_MACRO)}
                     >
                         Apply macro to {selectedItemsIds.size} tickets
                     </div>
