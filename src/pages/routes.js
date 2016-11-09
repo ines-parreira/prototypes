@@ -90,7 +90,7 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketInfobarContainer
             }}
-            isEditingWidget
+            isEditingWidgets
         />
         <Route
             path="tickets"
