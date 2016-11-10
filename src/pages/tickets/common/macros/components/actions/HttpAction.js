@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {AVAILABLE_HTTP_METHODS} from '../../../../../../config'
 import ParametersEditor from '../../../../../common/components/ParametersEditor'
+import JsonField from './../../../../../common/components/formFields/JsonField'
 
 export default class HttpAction extends React.Component {
     componentDidMount() {
@@ -17,31 +18,106 @@ export default class HttpAction extends React.Component {
             .dropdown('set selected', this.props.action.getIn(['arguments', 'method']))
     }
 
-    setTitle(title) {
+    _setTitle = (title) => {
         this.props.updateActionTitle(
             this.props.index,
             title
         )
     }
 
-    setUrl(url) {
+    _setUrl = (url) => {
         this.props.updateActionArgs(
             this.props.index,
             this.props.action.get('arguments', fromJS({})).set('url', url)
         )
     }
 
-    setHeaders(headers) {
+    _setHeaders = (headers) => {
         this.props.updateActionArgs(
             this.props.index,
             this.props.action.get('arguments', fromJS({})).set('headers', headers)
         )
     }
 
-    setParams(params) {
+    _setParams = (params) => {
         this.props.updateActionArgs(
             this.props.index,
             this.props.action.get('arguments', fromJS({})).set('params', params)
+        )
+    }
+
+    _setJson = (json) => {
+        this.props.updateActionArgs(
+            this.props.index,
+            this.props.action.get('arguments', fromJS({})).set('json', json)
+        )
+    }
+
+    _setForm = (form) => {
+        this.props.updateActionArgs(
+            this.props.index,
+            this.props.action.get('arguments', fromJS({})).set('form', form)
+        )
+    }
+
+    _setContentType = (contentType) => {
+        this.props.updateActionArgs(
+            this.props.index,
+            this.props.action.get('arguments', fromJS({})).set('content_type', contentType)
+        )
+    }
+
+    _renderBody = (action) => {
+        if (action.getIn(['arguments', 'method']) === 'GET') {
+            return null
+        }
+
+        let field = (
+            <JsonField
+                input={{
+                    value: action.getIn(['arguments', 'json']),
+                    onChange: this._setJson
+                }}
+            />
+        )
+
+        const isFormData = action.getIn(['arguments', 'content_type']) === 'multipart/form-data'
+
+        if (isFormData) {
+            field = (
+                <ParametersEditor
+                    list={action.getIn(['arguments', 'form'], fromJS([]))}
+                    updateDict={this._setForm}
+                />
+            )
+        }
+
+        return (
+            <div className="field">
+                <label>Body</label>
+                <div className="inline fields">
+                    <div className="action field">
+                        <div
+                            className="ui radio checkbox"
+                            onClick={() => this._setContentType('multipart/form-data')}
+                        >
+                            <input type="radio" checked={isFormData} readOnly/>
+                            <label>multipart/form-data</label>
+                        </div>
+                    </div>
+                    <div className="action field">
+                        <div
+                            className="ui radio checkbox"
+                            onClick={() => this._setContentType('application/json')}
+                        >
+                            <input type="radio" checked={!isFormData} readOnly/>
+                            <label>application/json</label>
+                        </div>
+                    </div>
+                </div>
+
+                {field}
+            </div>
         )
     }
 
@@ -61,7 +137,7 @@ export default class HttpAction extends React.Component {
                         <input
                             type="text"
                             value={action.get('title')}
-                            onChange={(e) => this.setTitle(e.target.value)}
+                            onChange={(e) => this._setTitle(e.target.value)}
                         />
                     </div>
                     <div className="fields">
@@ -88,24 +164,25 @@ export default class HttpAction extends React.Component {
                             <input
                                 type="text"
                                 value={action.getIn(['arguments', 'url'])}
-                                onChange={e => this.setUrl(e.target.value)}
+                                onChange={e => this._setUrl(e.target.value)}
                             />
                         </div>
+                    </div>
+                    <div className="field">
+                        <label>URL Parameters</label>
+                        <ParametersEditor
+                            list={action.getIn(['arguments', 'params'])}
+                            updateDict={this._setParams}
+                        />
                     </div>
                     <div className="field">
                         <label>Headers</label>
                         <ParametersEditor
                             list={action.getIn(['arguments', 'headers'])}
-                            updateDict={headers => this.setHeaders(headers)}
+                            updateDict={this._setHeaders}
                         />
                     </div>
-                    <div className="field">
-                        <label>Parameters</label>
-                        <ParametersEditor
-                            list={action.getIn(['arguments', 'params'])}
-                            updateDict={params => this.setParams(params)}
-                        />
-                    </div>
+                    {this._renderBody(action)}
                 </div>
                 <div className="ui divider"></div>
             </div>

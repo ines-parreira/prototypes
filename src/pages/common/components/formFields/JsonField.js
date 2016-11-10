@@ -23,15 +23,21 @@ export default class JsonField extends React.Component {
         let correct = true
 
         try {
-            this.props.input.onChange(JSON.parse(v || this.default))
+            this.props.input.onChange(JSON.parse(v || ''))
         } catch (e) {
             correct = false
         }
 
         this.setState({
             isCorrectJson: correct,
-            text: v || this.default
+            text: v || ''
         })
+    }
+
+    _onBlur = (e) => {
+        if (e.target.value === '') {
+            this._onChange(this.default)
+        }
     }
 
     _renderWarning = (isCorrectJson) => {
@@ -53,7 +59,7 @@ export default class JsonField extends React.Component {
 
         // we want our own control of this input, so we do not inherit onChange and value
         const props = {
-            name: input.name
+            onBlur: this._onBlur
         }
 
         if (required) {
@@ -62,7 +68,7 @@ export default class JsonField extends React.Component {
 
         props.onChange = (e) => this._onChange(e.target.value)
 
-        props.value = this.state.text || input.value
+        props.value = this.state.text
 
         const fieldClassName = classNames('field', {
             required,

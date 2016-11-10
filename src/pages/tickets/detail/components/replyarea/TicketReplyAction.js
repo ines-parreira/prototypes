@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
+import classname from 'classnames'
 
 export default class TicketReplyAction extends React.Component {
-    setValue(arg, value, title) {
-        const category = title === 'Headers' ? 'headers' : 'params'
+    setValue(arg, value, category) {
         const index = this.props.action.getIn(['arguments', category]).indexOf(arg)
 
         if (~index) {
@@ -14,10 +15,10 @@ export default class TicketReplyAction extends React.Component {
         }
     }
 
-    renderArgs(title, args) {
+    renderArgs(title, args, category) {
         if (args.size) {
             return (
-                <div className="six wide column">
+                <div className="eight wide column">
                     <h5>{title}</h5>
                     {
                         args.map((arg, key) => (
@@ -26,7 +27,7 @@ export default class TicketReplyAction extends React.Component {
                                 <input
                                     type="text"
                                     value={arg.get('value')}
-                                    onChange={(e) => this.setValue(arg, e.target.value, title)}
+                                    onChange={(e) => this.setValue(arg, e.target.value, category)}
                                     required
                                 />
                             </div>
@@ -40,8 +41,19 @@ export default class TicketReplyAction extends React.Component {
 
     render() {
         const {action, remove, ticketId} = this.props
-        const headersArgs = action.getIn(['arguments', 'headers']).filter(curAction => curAction.get('editable'))
-        const paramsArgs = action.getIn(['arguments', 'params']).filter(curAction => curAction.get('editable'))
+
+        const headersArgs = action.getIn(['arguments', 'headers'], fromJS([]))
+            .filter(curAction => curAction.get('editable'))
+
+        const paramsArgs = action.getIn(['arguments', 'params'], fromJS([]))
+            .filter(curAction => curAction.get('editable'))
+
+        const formData = action.getIn(['arguments', 'content_type']) === 'multipart/form-data'
+            ? action.getIn(['arguments', 'form'], fromJS([])).filter(curAction => curAction.get('editable'))
+            : fromJS([])
+
+        const shouldDisplayArgs = headersArgs.size + paramsArgs.size + formData.size
+        const className = classname('ui active content grid', {hidden: !shouldDisplayArgs})
 
         return (
             <div className="TicketReplyAction">
@@ -50,9 +62,10 @@ export default class TicketReplyAction extends React.Component {
                         {action.get('title')}
                         <i className="icon close" onClick={() => remove(this.props.index, ticketId)}/>
                     </div>
-                    <div className={`active content ui grid ${headersArgs.size + paramsArgs.size ? '' : 'hidden'}`}>
-                        {this.renderArgs('Headers', headersArgs)}
-                        {this.renderArgs('Parameters', paramsArgs)}
+                    <div className={className}>
+                        {this.renderArgs('Headers', headersArgs, 'headers')}
+                        {this.renderArgs('URL Parameters', paramsArgs, 'params')}
+                        {this.renderArgs('Form Data', formData, 'form')}
                     </div>
                 </div>
             </div>

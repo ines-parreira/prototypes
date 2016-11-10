@@ -292,9 +292,31 @@ export const ACTION_TEMPLATES = {
                     type: 'object'
                 }
             },
+            form: {
+                type: 'listDict',
+                default: [],
+                items: {
+                    schema: {
+                        key: {
+                            type: 'string'
+                        },
+                        value: {
+                            type: 'string'
+                        },
+                        editable: {
+                            type: 'bool'
+                        }
+                    },
+                    type: 'object'
+                }
+            },
+            json: {
+                type: 'dict',
+                format: 'json'
+            },
             contentType: {
                 type: 'string',
-                value: 'application/json'  // immutable since 'value' is set
+                default: 'application/json'
             }
         }
     },
