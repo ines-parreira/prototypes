@@ -68,10 +68,11 @@ export const fetchUserPicture = (email) => ((dispatch) => {
                         })
                     }
                 })
-                .catch(error => {
+                .catch(() => {
+                    // DO NOT ADD AN ERROR FIELD HERE: it's on purpose, we don't want an error message to be
+                    // displayed if there's no picture for a user
                     return dispatch({
                         type: types.FETCH_USER_PICTURE_ERROR,
-                        error,
                     })
                 })
         })
