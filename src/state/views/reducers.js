@@ -80,14 +80,14 @@ export default (state = initialState, action) => {
             ast = updateFilterValue(active, action.index, action.value)
             code = getCode(ast.toJS())
             active = active.set('filters_ast', ast).set('filters', code)
-            return state.set('active', active)
+            return state.set('active', active.set('dirty', true))
         }
 
         case types.UPDATE_VIEW_FIELD_FILTER_OPERATOR: {
             ast = updateFilterOperator(active, action.index, action.operator)
             code = getCode(ast.toJS())
             active = active.set('filters_ast', ast).set('filters', code)
-            return state.set('active', active)
+            return state.set('active', active.set('dirty', true))
         }
 
         case types.UPDATE_VIEW_FIELD_ENUM_SUCCESS: {
