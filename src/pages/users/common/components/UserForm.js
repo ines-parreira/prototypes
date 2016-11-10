@@ -7,6 +7,7 @@ import classNames from 'classnames'
 import _isUndefined from 'lodash/isUndefined'
 import _isError from 'lodash/isError'
 import _find from 'lodash/find'
+import _clone from 'lodash/clone'
 import {submitUser} from '../../../../state/users/actions'
 import {InputField, SelectField} from '../../../common/components/formFields'
 import UserChannelAddressField from './UserChannelAddressField'
@@ -48,7 +49,7 @@ class UserForm extends React.Component {
         if (this.props.isUpdate) {
             this._initializeWithData(this.props.user.toJS())
         } else {
-            this._initializeWithData(defaultContent)
+            this._initializeWithData(_clone(defaultContent))
         }
     }
 
