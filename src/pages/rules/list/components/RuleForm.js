@@ -6,6 +6,7 @@ import classNames from 'classnames'
 
 import InputField from '../../../common/components/formFields/InputField'
 import TextAreaField from '../../../common/components/formFields/TextAreaField'
+import formSender from '../../../common/utils/formSender'
 
 class RuleForm extends React.Component {
 
@@ -15,7 +16,7 @@ class RuleForm extends React.Component {
     }
 
     _handleSubmit = (values) => {
-        this.props.onSubmit(values)
+        return formSender(this.props.onSubmit(values))
     }
 
     render() {
@@ -72,18 +73,7 @@ RuleForm.propTypes = {
     valid: React.PropTypes.bool.isRequired,
 }
 
-const validate = (values) => {
-    const errors = {}
-
-    if (!values.title) {
-        errors.title = 'Required'
-    }
-
-    return errors
-}
-
 export default reduxForm({
     form: 'ruleDetail',
     onSubmitSuccess: (_, dispatch) => dispatch(reset('ruleDetail')),
-    validate,
 })(RuleForm)

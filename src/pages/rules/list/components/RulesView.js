@@ -26,7 +26,7 @@ class RulesView extends React.Component {
 
     _handleSubmit = (values) => {
         this._hideForm()
-        this.props.actions.rules.create(values)
+        return this.props.actions.rules.create(values)
     }
 
     render() {

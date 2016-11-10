@@ -7,7 +7,7 @@ export const changePassword = (oldPassword, newPassword) => (dispatch => {
 
     return axios.put('/api/users/0/', {
         old_password: oldPassword,
-        new_password: newPassword
+        new_password: newPassword,
     })
         .then((json = {}) => json.data)
         .then(resp => {
@@ -21,7 +21,7 @@ export const changePassword = (oldPassword, newPassword) => (dispatch => {
             }))
         })
         .catch(error => {
-            dispatch({
+            return dispatch({
                 type: types.CHANGE_PASSWORD_ERROR,
                 error,
                 reason: 'Failed to modify your password'

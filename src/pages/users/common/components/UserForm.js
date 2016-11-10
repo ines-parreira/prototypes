@@ -5,12 +5,13 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import classNames from 'classnames'
 import _isUndefined from 'lodash/isUndefined'
-import _isError from 'lodash/isError'
 import _find from 'lodash/find'
 import _clone from 'lodash/clone'
+import _isError from 'lodash/isError'
 import {submitUser} from '../../../../state/users/actions'
-import {InputField, SelectField} from '../../../common/components/formFields'
+import {InputField, SelectField, ErrorHandlerField} from '../../../common/components/formFields'
 import UserChannelAddressField from './UserChannelAddressField'
+import formSender from '../../../common/utils/formSender'
 
 export const defaultContent = {
     roles: [{
@@ -149,7 +150,7 @@ class UserForm extends React.Component {
             promise = this.props.onSubmit(this._formToDoc(doc).toJS())
         }
 
-        return promise.then((response) => {
+        return formSender(promise).then((response) => {
             if (!_isError(response)) {
                 if (this.props.onSuccess) {
                     this.props.onSuccess()
@@ -206,6 +207,11 @@ class UserForm extends React.Component {
                         }
 
                         <p><b>Please set below at least one contact information for this user</b></p>
+
+                        <Field
+                            name="channels"
+                            component={ErrorHandlerField}
+                        />
 
                         <FieldArray
                             name="email"

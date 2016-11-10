@@ -33,9 +33,10 @@ export const pollActivity = () => (dispatch, getState) => {
             }
         })
         .catch(error => {
-            dispatch({
-                type: types.SUBMIT_ACTIVITY_ERROR
-            })
             console.error('Failed polling activity', error)
+            return dispatch({
+                type: types.SUBMIT_ACTIVITY_ERROR,
+                error,
+            })
         })
 }

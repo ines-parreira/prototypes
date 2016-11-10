@@ -25,7 +25,7 @@ export function fetchUsers(roles) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_USER_LIST_ERROR,
                     error,
                     reason: 'Failed to fetch users'
@@ -61,7 +61,7 @@ export function search(query, params, stringQuery) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_USER_LIST_ERROR,
                     error,
                     reason: 'Failed to search users'
@@ -87,7 +87,7 @@ export function fetchUser(userId) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: isCurrentUser ? types.FETCH_CURRENT_USER_ERROR : types.FETCH_USER_ERROR,
                     error,
                     reason: 'Failed to fetch user'
@@ -130,13 +130,11 @@ export function submitUser(data, userId) {
                 return resp
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: isCurrentUser ? types.SUBMIT_CURRENT_USER_ERROR : types.SUBMIT_USER_ERROR,
                     error,
                     reason: `Failed to ${isUpdate ? 'update' : 'create'} user`
                 })
-
-                return error
             })
     }
 }
@@ -162,7 +160,7 @@ export function deleteUser(userId) {
                 }))
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.DELETE_USER_ERROR,
                     error,
                     reason: 'Failed to update the user'
@@ -197,7 +195,7 @@ export function fetchUserHistory(userId, options) {
                 }
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_USER_HISTORY_ERROR,
                     error,
                     reason: 'Couldn\'t fetch user\'s tickets. Please try again in a few minutes.'

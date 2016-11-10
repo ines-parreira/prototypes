@@ -23,7 +23,7 @@ export function fetchStats(startDatetime, endDatetime) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: 'ERROR',
                     error,
                     reason: 'Unable to receive stats'

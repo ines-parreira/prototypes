@@ -1,15 +1,13 @@
 import React from 'react'
-
-import { Field, FieldArray, reduxForm } from 'redux-form'
-
+import {Field, FieldArray, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 
-import { Loader } from '../../../../common/components/Loader'
-import { InputField } from '../../../../common/components/formFields'
+import {Loader} from '../../../../common/components/Loader'
+import {InputField} from '../../../../common/components/formFields'
 
 const variableRegexp = /{(.*?)}/g
 
-const renderParameters = ({ fields }) => {
+const renderParameters = ({fields}) => {
     if (fields.length) {
         return (
             <div>
@@ -61,7 +59,7 @@ class HttpIntegrationTesting extends React.Component {
     }
 
     render() {
-        const { url, integration, loading, test } = this.props
+        const {url, integration, handleSubmit, loading, test} = this.props
 
         const isTesting = loading.get('testing')
         const serverResponse = integration.get('testing')
@@ -69,17 +67,20 @@ class HttpIntegrationTesting extends React.Component {
         return (
             <div className="ui grid">
                 <div className="four wide column">
-                    <form className="ui form"
-                          onSubmit={this.props.handleSubmit(test)}
+                    <form
+                        className="ui form"
+                        onSubmit={handleSubmit(test)}
                     >
-                        <FieldArray name="parameters" component={renderParameters} />
-
+                        <FieldArray
+                            name="parameters"
+                            component={renderParameters}
+                        />
                         <button
                             className={classNames('ui', 'green', 'button', {
                                 loading: isTesting
                             })}
                             disabled={isTesting}
-                            style={{ marginTop: '16px' }}
+                            style={{marginTop: '16px'}}
                         >
                             Launch test
                         </button>

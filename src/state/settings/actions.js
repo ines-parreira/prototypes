@@ -16,7 +16,7 @@ export function fetchSettings() {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_SETTINGS_ERROR,
                     error,
                     reason: 'Failed to fetch settings'

@@ -60,7 +60,7 @@ export function addAttachments(ticket, atts) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.ADD_ATTACHMENT_ERROR,
                     error,
                     reason: 'Failed to upload files. Please try again later'
@@ -118,7 +118,7 @@ export function ticketPartialUpdate(ticketId, args, nextUrl = null) {
                 }
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.TICKET_PARTIAL_UPDATE_ERROR,
                     error,
                     reason: `Failed to update ticket ${ticketId}`
@@ -227,7 +227,7 @@ export function updatePotentialRequesters(query, callback) {
                 callback(null, response)
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: 'ERROR',
                     error,
                     reason: 'Failed to do the search. Please try again...'
@@ -267,7 +267,7 @@ export function deleteMessage(ticketId, messageId) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.DELETE_TICKET_MESSAGE_ERROR,
                     error,
                     reason: `Failed to delete message ${messageId} from ticket ${ticketId}`
@@ -303,7 +303,7 @@ export function fetchTicket(ticketId, displayLoading = true) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_TICKET_ERROR,
                     error,
                     reason: `Failed to fetch ticket ${ticketId}`
@@ -374,7 +374,7 @@ export function fetchTicketMessage(ticketId, messageId) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_MESSAGE_ERROR,
                     error,
                     reason: 'Failed to fetch message. Please try again...'
@@ -623,7 +623,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.SUBMIT_TICKET_MESSAGE_ERROR,
                     error,
                     reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.'
@@ -654,7 +654,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.SUBMIT_TICKET_ERROR,
                     error,
                     reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us'

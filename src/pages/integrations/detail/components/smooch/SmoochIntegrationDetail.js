@@ -1,16 +1,13 @@
 import React, {PropTypes} from 'react'
-
 import {Link} from 'react-router'
-
 import {Field, reduxForm} from 'redux-form'
-
 import classNames from 'classnames'
-
 import {fromJS} from 'immutable'
+import _clone from 'lodash/clone'
 
 import {Loader} from '../../../../common/components/Loader'
 import {InputField} from '../../../../common/components/formFields'
-
+import formSender from '../../../../common/utils/formSender'
 
 export const defaultContent = {
     type: 'smooch'
@@ -25,7 +22,7 @@ class SmoochIntegrationDetail extends React.Component {
 
         // populating new integration form
         if (!props.isUpdate) {
-            props.initialize(defaultContent)
+            props.initialize(_clone(defaultContent))
         }
     }
 
@@ -50,7 +47,7 @@ class SmoochIntegrationDetail extends React.Component {
                 .setIn(['smooch', 'id'], integration.getIn(['smooch', 'id']))
         }
 
-        this.props.actions.updateOrCreateIntegration(doc)
+        return formSender(this.props.actions.updateOrCreateIntegration(doc))
     }
 
     render() {

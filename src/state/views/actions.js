@@ -68,7 +68,7 @@ export function updateFieldEnumSearch(field, query) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.UPDATE_VIEW_FIELD_ENUM_ERROR,
                     error,
                     reason: 'Failed to select this filter'
@@ -95,7 +95,7 @@ export function fetchViews(currentViewId) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_VIEW_LIST_ERROR,
                     error,
                     reason: 'Failed to fetch views'
@@ -129,7 +129,7 @@ export function submitView(view) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: isUpdate ? types.SUBMIT_UPDATE_VIEW_ERROR : types.SUBMIT_NEW_VIEW_ERROR,
                     error,
                     reason: 'Failed to submit view. Please try again'
@@ -169,7 +169,7 @@ export function deleteView(view) {
                     })
                 })
                 .catch(error => {
-                    dispatch({
+                    return dispatch({
                         type: 'ERROR',
                         error,
                         reason: `Failed to delete the view ${view.get('name')}`
@@ -237,7 +237,7 @@ export function fetchPage(page = 1) {
                 }
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_LIST_VIEW_ERROR,
                     error,
                     reason: `Failed to fetch list of ${viewConfig.plural}`
@@ -349,7 +349,7 @@ export function bulkUpdate(activeView, ids, key, value) {
                 }))
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.BULK_UPDATE_ERROR,
                     error,
                     reason: `Failed to update list of ${viewConfig.plural}`
@@ -391,7 +391,7 @@ export function bulkDelete(activeView, ids) {
                 }))
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.BULK_DELETE_ERROR,
                     error,
                     reason: `Couldn\'t delete selected ${viewConfig.plural}`

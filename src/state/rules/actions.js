@@ -53,7 +53,9 @@ export const create = (data) => {
     return dispatch => {
         return axios.post('/api/rules/', data)
             .then(response => dispatch(addRuleEnd(response.data)))
-            .catch(error => dispatch(fail(error, 'Unable to create the rule')))
+            .catch(error => {
+                return dispatch(fail(error, 'Unable to create the rule'))
+            })
     }
 }
 
@@ -68,7 +70,9 @@ export const save = (data) => {
                 type: 'success',
                 message: 'Rule saved successfully',
             })))
-            .catch(error => dispatch(fail(error, 'Unable to save the rule')))
+            .catch(error => {
+                return dispatch(fail(error, 'Unable to save the rule'))
+            })
     }
 }
 
@@ -90,7 +94,9 @@ export const activate = (index) => {
                     message: 'Rule deactivated successfully',
                 }))
             })
-            .catch(error => dispatch(fail(error, 'Unable to deactivate the rule')))
+            .catch(error => {
+                return dispatch(fail(error, 'Unable to deactivate the rule'))
+            })
     }
 }
 
@@ -113,7 +119,9 @@ export const deactivate = (index) => {
                     message: 'Rule deactivated successfully',
                 }))
             })
-            .catch(error => dispatch(fail(error, 'Unable to deactivate the rule')))
+            .catch(error => {
+                return dispatch(fail(error, 'Unable to deactivate the rule'))
+            })
     }
 }
 
@@ -135,7 +143,9 @@ export const remove = (index) => {
                     message: 'Rule removed successfully',
                 }))
             })
-            .catch(error => dispatch(fail(error, 'Unable to remove the rule')))
+            .catch(error => {
+                return dispatch(fail(error, 'Unable to remove the rule'))
+            })
     }
 }
 
@@ -168,11 +178,7 @@ export function submitRule(url, comment) {
                 dispatch(addRuleEnd(resp))
             })
             .catch(error => {
-                dispatch({
-                    type: 'ERROR',
-                    error,
-                    reason: 'Unable to submit the rule'
-                })
+                return dispatch(fail(error, 'Unable to submit the rule'))
             })
     }
 }
@@ -188,11 +194,7 @@ export function fetchRules() {
                 dispatch(receiveRules(resp.data))
             })
             .catch(error => {
-                dispatch({
-                    type: 'ERROR',
-                    error,
-                    reason: 'Unable to receive rules'
-                })
+                return dispatch(fail(error, 'Unable to receive rules'))
             })
     }
 }

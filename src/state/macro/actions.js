@@ -166,7 +166,7 @@ export function fetchMacros() {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_MACRO_LIST_ERROR,
                     error,
                     reason: 'Failed to fetch macros'
@@ -195,7 +195,7 @@ export function createMacro(macro) {
                 }))
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.CREATE_MACRO_ERROR,
                     error,
                     reason: 'Failed to create macro'
@@ -223,7 +223,7 @@ export function updateMacro(macro) {
                 }))
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.UPDATE_MACRO_ERROR,
                     error,
                     reason: 'Failed to update macro'
@@ -253,7 +253,7 @@ export function deleteMacro(macroId) {
                 }))
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.DELETE_MACRO_ERROR,
                     error,
                     reason: 'Failed to delete macro'
@@ -284,7 +284,7 @@ export function addAttachments(actionIndex, files) {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.ADD_ATTACHMENTS_MACRO_ERROR,
                     error,
                     reason: 'Failed to upload files. Please try again later'

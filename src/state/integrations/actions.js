@@ -23,7 +23,7 @@ export function fetchIntegration(integrationId, integrationType) {
             .catch(error => {
                 // We redirect to the integrations home page if we can't find the wanted integration on the server
                 browserHistory.replace(`/app/integrations/${integrationType}`)
-                dispatch({
+                return dispatch({
                     type: types.FETCH_INTEGRATION_ERROR,
                     error,
                     reason: 'Failed to fetch integration'
@@ -53,7 +53,7 @@ export function fetchIntegrations() {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_INTEGRATIONS_ERROR,
                     error,
                     reason: 'Failed to fetch integrations'
@@ -82,7 +82,7 @@ export function deleteIntegration(integration) {
                     }))
                 })
                 .catch(error => {
-                    dispatch({
+                    return dispatch({
                         type: types.DELETE_INTEGRATION_ERROR,
                         error,
                         reason: 'Failed to delete the integration'
@@ -115,7 +115,7 @@ function onFacebookLoginSuccess(dispatch) {
                         })
                     })
                     .catch(error => {
-                        dispatch({
+                        return dispatch({
                             type: types.FACEBOOK_LOGIN_ERROR,
                             error,
                             reason: 'Failed to POST facebook token to the backend'
@@ -203,7 +203,7 @@ function updateOrCreateIntegrationRequest(integration, action) {
                 }))
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.UPDATE_INTEGRATION_ERROR,
                     error,
                     reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration'
@@ -216,14 +216,14 @@ export function deactivateIntegration(integration) {
     return (dispatch) => {
         // We set deactivated_datetime using a UTC timestamp
         const newIntegration = integration.set('deactivated_datetime', moment().format())
-        updateOrCreateIntegrationRequest(newIntegration)(dispatch)
+        return updateOrCreateIntegrationRequest(newIntegration)(dispatch)
     }
 }
 
 export function activateIntegration(integration) {
     return (dispatch) => {
         const newIntegration = integration.set('deactivated_datetime', null)
-        updateOrCreateIntegrationRequest(newIntegration)(dispatch)
+        return updateOrCreateIntegrationRequest(newIntegration)(dispatch)
     }
 }
 
@@ -237,7 +237,7 @@ export function updateOrCreateIntegration(integration, action) {
     return (dispatch) => {
         // We make sure that the integration is active
         const newIntegration = integration.set('deactivated_datetime', null)
-        updateOrCreateIntegrationRequest(newIntegration, action)(dispatch)
+        return updateOrCreateIntegrationRequest(newIntegration, action)(dispatch)
     }
 }
 

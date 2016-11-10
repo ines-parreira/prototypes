@@ -7,6 +7,7 @@ import _ from 'lodash'
 import moment from 'moment-timezone'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
+import formSender from '../../../common/utils/formSender'
 
 import {InputField, RichTextAreaField, SelectField} from '../../../common/components/formFields'
 
@@ -51,7 +52,7 @@ class YourProfileView extends React.Component {
         normalizedValues.signature_html = values.signature.html
         delete normalizedValues.signature
 
-        this.props.actions.submitUser(normalizedValues, 0)
+        return formSender(this.props.actions.submitUser(normalizedValues, 0))
     }
 
     render() {
@@ -59,14 +60,12 @@ class YourProfileView extends React.Component {
 
         return (
             <div className="ui grid">
-                <div className="sixteen wide column">
+                <div className="twelve wide column">
                     <h1>Your profile</h1>
-                    <div>
+                    <p>
                         Update your profile information.
-                    </div>
-                </div>
+                    </p>
 
-                <div className="six wide column">
                     <form
                         className="ui form"
                         onSubmit={handleSubmit(this._handleSubmit)}
@@ -109,7 +108,7 @@ class YourProfileView extends React.Component {
                                     data-content="Changing the language also changes the time format."
                                     data-variation="inverted"
                                 >
-                                    <i className="help circle link icon"/>
+                                    <i className="help circle link icon" />
                                 </span>
                             )}
                         >
@@ -142,7 +141,7 @@ class YourProfileView extends React.Component {
                             </Link>
                         </div>
 
-                        <br/><br/>
+                        <br /><br />
 
                         <div className="field">
 

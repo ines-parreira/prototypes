@@ -23,7 +23,7 @@ export function fetchTags() {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_TAG_LIST_ERROR,
                     error,
                     reason: 'Failed to fetch tags'

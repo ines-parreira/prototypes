@@ -23,7 +23,7 @@ export const search = (query, docType = 'user', source = []) => ((dispatch) => {
             })
         })
         .catch(error => {
-            dispatch({
+            return dispatch({
                 type: docType === 'user' ? types.SEARCH_USERS_ERROR : types.SEARCH_TICKETS_ERROR,
                 error,
                 reason: 'Failed to do the search. Please try again...'
@@ -68,9 +68,10 @@ export const fetchUserPicture = (email) => ((dispatch) => {
                         })
                     }
                 })
-                .catch(() => {
-                    dispatch({
+                .catch(error => {
+                    return dispatch({
                         type: types.FETCH_USER_PICTURE_ERROR,
+                        error,
                     })
                 })
         })
@@ -90,7 +91,7 @@ export const fetchPreviewUser = (userId) => ((dispatch) => {
             })
         })
         .catch(error => {
-            dispatch({
+            return dispatch({
                 type: types.FETCH_PREVIEW_USER_ERROR,
                 error,
                 reason: 'Couldn\'t fetch the user. Please try again in a few minutes.'

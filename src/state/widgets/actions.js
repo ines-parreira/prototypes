@@ -25,7 +25,7 @@ export function fetchWidgets() {
                 })
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_WIDGETS_ERROR,
                     error,
                     reason: 'Failed to fetch widgets'
@@ -185,7 +185,7 @@ export function submitWidgets(data) {
                 }))
             })
             .catch(error => {
-                dispatch({
+                return dispatch({
                     type: types.SUBMIT_WIDGET_ERROR,
                     error,
                     reason: 'Failed to update widgets'

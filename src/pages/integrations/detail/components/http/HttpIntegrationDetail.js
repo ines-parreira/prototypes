@@ -3,7 +3,9 @@ import {Link} from 'react-router'
 import {Field, FieldArray, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
-import _ from 'lodash'
+import _clone from 'lodash/clone'
+import _cloneDeep from 'lodash/cloneDeep'
+import _forIn from 'lodash/forIn'
 import {AVAILABLE_HTTP_METHODS} from '../../../../../config'
 import {Loader} from '../../../../common/components/Loader'
 import {
@@ -14,6 +16,7 @@ import {
     URLInputField
 } from '../../../../common/components/formFields'
 import HeaderFieldArray from './HeaderFieldArray'
+import formSender from '../../../../common/utils/formSender'
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 // import HttpIntegrationTesting from './HttpIntegrationTesting'
@@ -38,7 +41,7 @@ class HttpIntegrationDetail extends React.Component {
 
         // populating new integration form
         if (!props.isUpdate) {
-            props.initialize(defaultContent)
+            props.initialize(_clone(defaultContent))
         }
     }
 
@@ -71,7 +74,7 @@ class HttpIntegrationDetail extends React.Component {
     _objectToParameters(o = {}) {
         const obj = o || {}
         const params = []
-        _.forIn(obj, (value, key) => {
+        _forIn(obj, (value, key) => {
             params.push({
                 key,
                 value
@@ -100,7 +103,7 @@ class HttpIntegrationDetail extends React.Component {
     _handleSubmit = (values) => {
         // We create a deep copy of values because it is a reference to the redux state
         // The following transformations DON'T HAVE TO EDIT the redux state
-        let doc = _.cloneDeep(values)
+        let doc = _cloneDeep(values)
 
         // transforming 'headers' and 'form' into objects
         const transformationList = ['headers']
@@ -118,7 +121,7 @@ class HttpIntegrationDetail extends React.Component {
                 .setIn(['http', 'id'], integration.getIn(['http', 'id']))
         }
 
-        this.props.actions.updateOrCreateIntegration(doc)
+        return formSender(this.props.actions.updateOrCreateIntegration(doc))
     }
 
     _handleTest = (data) => {
