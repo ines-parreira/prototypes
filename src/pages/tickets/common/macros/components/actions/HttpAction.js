@@ -81,6 +81,10 @@ export default class HttpAction extends React.Component {
             />
         )
 
+        if (!action.getIn(['arguments', 'content_type'])) {
+            this._setContentType('application/json') // JSON by default
+        }
+
         const isFormData = action.getIn(['arguments', 'content_type']) === 'multipart/form-data'
 
         if (isFormData) {

@@ -12,7 +12,8 @@ export default class JsonField extends React.Component {
             text = null
         }
 
-        this.default = 'null'
+        this.default = ''
+
         this.state = {
             isCorrectJson: true,
             text: text || this.default
@@ -25,7 +26,11 @@ export default class JsonField extends React.Component {
         try {
             this.props.input.onChange(JSON.parse(v || ''))
         } catch (e) {
-            correct = false
+            if (v !== '') {
+                correct = false
+            } else {
+                this.props.input.onChange('')
+            }
         }
 
         this.setState({

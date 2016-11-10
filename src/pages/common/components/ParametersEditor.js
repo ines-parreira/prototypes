@@ -55,7 +55,7 @@ export default class ParametersEditor extends React.Component {
                                         onClick={() => this.changeValue('editable', index, !dict.get('editable'))}
                                         title={title}
                                     />
-                                    <i className="close action icon" onClick={() => this.deleteRow(index)} />
+                                    <i className="red close action icon" onClick={() => this.deleteRow(index)} />
                                 </div>
                             </div>
                         )
