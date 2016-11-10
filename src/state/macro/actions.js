@@ -3,15 +3,20 @@ import {DEFAULT_ACTIONS} from '../../config'
 import {RECORD_MACRO} from '../ticket/constants'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
+import ticketReplyCache from '../../pages/common/utils/ticketReplyCache'
 
-export function deleteActionOnApplied(actionIndex) {
+export function deleteActionOnApplied(actionIndex, ticketId) {
+    ticketReplyCache.set(ticketId, ticketReplyCache.get(ticketId).getIn(['macro', 'actions']).delete(actionIndex))
+
     return {
         type: types.DELETE_ACTION_ON_APPLIED,
         actionIndex
     }
 }
 
-export function updateActionArgsOnApplied(actionIndex, value) {
+export function updateActionArgsOnApplied(actionIndex, value, ticketId) {
+    ticketReplyCache.set(ticketId, ticketReplyCache.get(ticketId).setIn(['macro', 'actions', actionIndex, 'arguments'], value))
+
     return {
         type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
         actionIndex,
@@ -117,9 +122,10 @@ export function saveSearch(query) {
     }
 }
 
-export function clearAppliedMacro() {
+export function fetchTicketReplyMacro(ticketId) {
     return {
-        type: types.CLEAR_APPLIED_MACRO
+        type: types.FETCH_TICKET_REPLY_MACRO,
+        macro: ticketReplyCache.get(ticketId).get('macro')
     }
 }
 
@@ -137,7 +143,9 @@ export function applyMacroAction(action, currentUser) {
     }
 }
 
-export function applyMacro(macro, currentUser) {
+export function applyMacro(macro, currentUser, ticketId) {
+    ticketReplyCache.set(ticketId, {macro})
+
     return (dispatch) => {
         dispatch({
             type: types.APPLY_MACRO,
@@ -148,6 +156,14 @@ export function applyMacro(macro, currentUser) {
             type: RECORD_MACRO,
             macro
         })
+    }
+}
+
+export function clearAppliedMacro(ticketId) {
+    ticketReplyCache.set(ticketId, {macro: null})
+
+    return {
+        type: types.CLEAR_APPLIED_MACRO
     }
 }
 

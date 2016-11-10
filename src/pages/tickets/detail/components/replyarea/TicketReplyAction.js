@@ -8,7 +8,8 @@ export default class TicketReplyAction extends React.Component {
         if (~index) {
             this.props.update(
                 this.props.index,
-                this.props.action.get('arguments').setIn([category, index, 'value'], value)
+                this.props.action.get('arguments').setIn([category, index, 'value'], value),
+                this.props.ticketId
             )
         }
     }
@@ -38,7 +39,7 @@ export default class TicketReplyAction extends React.Component {
     }
 
     render() {
-        const {action, remove} = this.props
+        const {action, remove, ticketId} = this.props
         const headersArgs = action.getIn(['arguments', 'headers']).filter(curAction => curAction.get('editable'))
         const paramsArgs = action.getIn(['arguments', 'params']).filter(curAction => curAction.get('editable'))
 
@@ -47,7 +48,7 @@ export default class TicketReplyAction extends React.Component {
                 <div className="ui accordion">
                     <div className="title ui yellow label">
                         {action.get('title')}
-                        <i className="icon close" onClick={() => remove(this.props.index)}/>
+                        <i className="icon close" onClick={() => remove(this.props.index, ticketId)}/>
                     </div>
                     <div className={`active content ui grid ${headersArgs.size + paramsArgs.size ? '' : 'hidden'}`}>
                         {this.renderArgs('Headers', headersArgs)}
@@ -63,5 +64,6 @@ TicketReplyAction.propTypes = {
     action: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     update: PropTypes.func.isRequired,
-    remove: PropTypes.func.isRequired
+    remove: PropTypes.func.isRequired,
+    ticketId: PropTypes.number
 }

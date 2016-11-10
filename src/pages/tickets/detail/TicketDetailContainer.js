@@ -17,12 +17,14 @@ import * as SettingsActions from '../../../state/settings/actions'
 import MacroContainer from '../common/macros/MacroContainer' // import that to fetch tags list
 
 class TicketDetailContainer extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            unbindConfirmationHook: () => {
-            }
-        }
+    _fetchTicketData(id) {
+        this.props.actions.ticket.fetchTicket(id)
+
+        // get cached ticket reply message
+        this.props.actions.ticket.fetchTicketReplyMessage(id)
+
+        // get cached reply macros
+        this.props.actions.macro.fetchTicketReplyMacro(id)
     }
 
     componentWillMount() {
@@ -32,14 +34,11 @@ class TicketDetailContainer extends React.Component {
         this.props.actions.ticket.clearTicket()
 
         if (this.props.params.ticketId !== 'new') {
-            this.props.actions.ticket.fetchTicket(this.props.params.ticketId)
+            this._fetchTicketData(this.props.params.ticketId)
         }
     }
 
     componentDidMount() {
-        this._bindConfirmToRouter()
-        window.onbeforeunload = this._confirmLeaveWhenDirty
-
         this._bindKeys()
     }
 
@@ -71,7 +70,8 @@ class TicketDetailContainer extends React.Component {
                 // Don't clear when creating a new ticket: looks better this way
                 this.props.actions.ticket.clearTicket()
             }
-            this.props.actions.ticket.fetchTicket(nextProps.params.ticketId)
+
+            this._fetchTicketData(nextProps.params.ticketId)
         } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
             /**
              * Redirect to the new page when submitting a new ticket.
@@ -117,11 +117,6 @@ class TicketDetailContainer extends React.Component {
                     this._computeNextUrl(true)
                 )
             }
-        } else if (this.props.ticket.get('id') !== nextProps.ticket.get('id')) {
-            // new ticket loaded
-
-            // clear applied macro in macros
-            this.props.actions.macro.clearAppliedMacro()
         }
     }
 
@@ -143,36 +138,8 @@ class TicketDetailContainer extends React.Component {
         shortcutManager.unbind('TicketDetailContainer')
     }
 
-    _confirmLeaveWhenDirty = (e, suffix = '') => {
-        /**
-         * When using window.onbeforeunload, the text '\n\n Are you sure you want to reload this page?' is not
-         * removable. So we need to deal with it and try to be as consistent as possible when using
-         * router.setRouteLeaveHook.
-         *
-         * Using the suffix, we have:
-         *  - window.onbeforeunload:    'You have unsaved changes! \n\n Are you sure you want to reload this page?'
-         *  - router.setRouteLeaveHook: 'You have unsaved changes! \n\n Are you sure you want to leave this page?'
-         */
-
-        if (this.props.ticket.getIn(['state', 'dirty'])) {
-            return `You have unsaved changes! ${suffix}`
-        }
-        return null
-    }
-
-    _bindConfirmToRouter() {
-        this.setState({
-            unbindConfirmationHook: this.props.router.setRouteLeaveHook(
-                this.props.route,
-                (e) => this._confirmLeaveWhenDirty(e, '\n\nAre you sure you want to leave this page?')
-            )
-        })
-    }
-
     _forcePush(url) {
-        this.state.unbindConfirmationHook()
         browserHistory.push(url)
-        this._bindConfirmToRouter()
     }
 
     _bindKeys() {
@@ -269,7 +236,7 @@ class TicketDetailContainer extends React.Component {
     }
 
     _applyMacro = (macro) => {
-        this.props.actions.macro.applyMacro(macro, this.props.currentUser)
+        this.props.actions.macro.applyMacro(macro, this.props.currentUser, this.props.ticket.get('id'))
     }
 
     _computeNextUrl = (ascending) => {
@@ -341,6 +308,9 @@ class TicketDetailContainer extends React.Component {
                 action,
                 resetMessage
             )
+
+            // clear applied action after submitting message
+            this.props.actions.macro.clearAppliedMacro(ticket.get('id'))
         }
 
         if (next) {

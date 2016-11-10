@@ -22,6 +22,11 @@ export default class TicketReplyArea extends React.Component {
         })
 
         window.addEventListener('keydown', this.hideMacros)
+
+        // hide the macros if we have cached content
+        if (this.props.ticket.getIn(['state', 'contentState'])) {
+            this.props.actions.macro.setMacrosVisible(false)
+        }
     }
 
     componentWillUnmount() {
@@ -67,6 +72,8 @@ export default class TicketReplyArea extends React.Component {
             macros = macros.set('items', fromJS(items.filter(this.refs.search.filter(filters))))
         }
 
+        const contentState = this.props.ticket.getIn(['state', 'contentState'])
+
         return (
             <div className="TicketReplyArea ui segments">
                 <div className="search ui raised segment">
@@ -77,7 +84,7 @@ export default class TicketReplyArea extends React.Component {
                         onChange={this.searchUpdated}
                         className="ui transparent input full-width shortcuts-enable"
                         placeholder="Search for a macro"
-                        autoFocus={!!this.props.ticket.get('id')}
+                        autoFocus={!!this.props.ticket.get('id') && !contentState}
                     />
                     <a className={classNames({hidden: !macrosVisible, 'clear-macros': true})} ref="popupClearMacros">
                         <i
@@ -106,7 +113,7 @@ export default class TicketReplyArea extends React.Component {
                     currentUser={this.props.currentUser}
                     appliedMacro={this.props.macros.get('appliedMacro')}
                     users={this.props.users}
-                    contentState={this.props.ticket.getIn(['state', 'contentState'])}
+                    contentState={contentState}
                     fromMacro={this.props.ticket.getIn(['state', 'fromMacro'])}
                     autoFocus={!macrosVisible}
                 />

@@ -10,6 +10,8 @@ import {lastMessage} from '../../utils'
 import {TICKET_VIEWED} from '../activity/constants'
 import {APPLY_MACRO} from '../macro/constants'
 import * as types from './constants'
+import ticketReplyCache from '../../pages/common/utils/ticketReplyCache'
+import {convertFromRaw, convertToRaw} from 'draft-js'
 
 export function addAttachments(ticket, atts) {
     return (dispatch) => {
@@ -236,7 +238,16 @@ export function updatePotentialRequesters(query, callback) {
     }
 }
 
-export function setResponseText(currentUser, args) {
+export function setResponseText(currentUser, args, ticketId) {
+    let contentState = null
+    // check if contentState has any text
+    if (args.get('contentState').hasText()) {
+        contentState = convertToRaw(args.get('contentState'))
+    }
+
+    // cache response
+    ticketReplyCache.set(ticketId, {contentState})
+
     return {
         type: types.SET_RESPONSE_TEXT,
         args,
@@ -309,6 +320,20 @@ export function fetchTicket(ticketId, displayLoading = true) {
                     reason: `Failed to fetch ticket ${ticketId}`
                 })
             })
+    }
+}
+
+export function fetchTicketReplyMessage(ticketId) {
+    const cached = ticketReplyCache.get(ticketId).get('contentState')
+    let contentState = null
+
+    if (cached) {
+        contentState = convertFromRaw(cached.toJS())
+    }
+
+    return {
+        type: types.FETCH_TICKET_REPLY,
+        contentState
     }
 }
 

@@ -217,12 +217,15 @@ export default (state = initialState, action) => {
             ))
                 .mergeDeep({
                     state: {
-                        contentState: null,
                         dirty: false,
                         query: ''
                     }
                 })
                 .setIn(['_internal', 'loading', 'fetchTicket'], false)
+        }
+
+        case types.FETCH_TICKET_REPLY: {
+            return state.setIn(['state', 'contentState'], action.contentState)
         }
 
         case types.FETCH_TICKET_ERROR: {

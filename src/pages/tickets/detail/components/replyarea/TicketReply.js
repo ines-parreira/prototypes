@@ -63,6 +63,13 @@ export default class TicketReply extends React.Component {
         ) {
             this.refs.editor.focus()
         }
+
+        // manually trigger the change event if from macro,
+        // to save state.
+        // otherwise text added by macros is not cached.
+        if (this.props.fromMacro) {
+            this._onChange(this.state.editorState)
+        }
     }
 
     componentWillUnmount() {
@@ -95,7 +102,7 @@ export default class TicketReply extends React.Component {
     _updateMessageText = _.throttle((editorState) => {
         const contentState = editorState.getCurrentContent()
         const selectionState = editorState.getSelection()
-        this.props.actions.ticket.setResponseText(this.props.currentUser, Map({contentState, selectionState}))
+        this.props.actions.ticket.setResponseText(this.props.currentUser, Map({contentState, selectionState}), this.props.ticket.get('id'))
     }, 300)
 
     // store the content before the tab (completion from the extension), this allows us to manage the state correctly
@@ -118,12 +125,24 @@ export default class TicketReply extends React.Component {
         // When initializing the state, the Editor component move the focus to the end
         // This is to prevent this behavior.
         if (!this.isInitialized && editorState.getCurrentContent().equals(this.state.editorState.getCurrentContent())) {
-            this.isInitialized = true
             res = EditorState.forceSelection(editorState, this.state.editorState.getSelection())
         }
 
-        this.setState({editorState: res})
-        this._updateMessageText(res)
+        // the editor triggers a change event when focused
+        // (on load - if not a macro),
+        // causing issues with changing contentState.
+        // (eg. after clearing contentState in the reducer,
+        // the change event will rewrite it with the text in the editor -
+        // the previous data).
+        // set state only after the first change.
+        if (this.isInitialized || this.props.fromMacro) {
+            this.setState({editorState: res})
+            this._updateMessageText(res)
+        }
+
+        if (!this.isInitialized) {
+            this.isInitialized = true
+        }
     }
 
     _onMessage = (event) => {
@@ -255,6 +274,7 @@ export default class TicketReply extends React.Component {
                             action={action}
                             update={actions.macro.updateActionArgsOnApplied}
                             remove={actions.macro.deleteActionOnApplied}
+                            ticketId={ticket.get('id')}
                         />
                     ))
                 }

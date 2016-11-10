@@ -90,7 +90,7 @@ const macrosInitial = fromJS({
         query: '',
         modalQuery: ''
     },
-    visible: true,
+    visible: false,
     selected: {},
     isModalOpen: false,
     modalSelected: null,
@@ -129,6 +129,9 @@ export default (state = macrosInitial, action) => {
 
         case types.APPLY_MACRO:
             return state.set('visible', false).set('appliedMacro', action.macro)
+
+        case types.CLEAR_APPLIED_MACRO:
+            return state.set('appliedMacro', null)
 
         case types.SET_MACROS_VISIBILITY:
             return state.set('visible', action.visible)
@@ -179,7 +182,6 @@ export default (state = macrosInitial, action) => {
             }
 
             return state.merge({
-                visible: !!items.size,
                 items
             })
         }
@@ -237,8 +239,8 @@ export default (state = macrosInitial, action) => {
             return newState
         }
 
-        case types.CLEAR_APPLIED_MACRO:
-            return state.set('appliedMacro', null)
+        case types.FETCH_TICKET_REPLY_MACRO:
+            return state.set('appliedMacro', action.macro)
         case types.ADD_ATTACHMENTS_MACRO_START: {
             const currentMacroId = state.getIn(['modalSelected', 'id'])
             // add a loading status
