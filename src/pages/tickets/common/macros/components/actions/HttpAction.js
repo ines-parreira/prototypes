@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {AVAILABLE_HTTP_METHODS} from '../../../../../../config'
 import ParametersEditor from '../../../../../common/components/ParametersEditor'
 import JsonField from './../../../../../common/components/formFields/JsonField'
+import {JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from './../../../../../../state/macro/utils'
 
 export default class HttpAction extends React.Component {
     componentDidMount() {
@@ -81,11 +82,7 @@ export default class HttpAction extends React.Component {
             />
         )
 
-        if (!action.getIn(['arguments', 'content_type'])) {
-            this._setContentType('application/json') // JSON by default
-        }
-
-        const isFormData = action.getIn(['arguments', 'content_type']) === 'multipart/form-data'
+        const isFormData = action.getIn(['arguments', 'content_type']) === FORM_CONTENT_TYPE
 
         if (isFormData) {
             field = (
@@ -103,19 +100,19 @@ export default class HttpAction extends React.Component {
                     <div className="action field">
                         <div
                             className="ui radio checkbox"
-                            onClick={() => this._setContentType('multipart/form-data')}
+                            onClick={() => this._setContentType(FORM_CONTENT_TYPE)}
                         >
                             <input type="radio" checked={isFormData} readOnly/>
-                            <label>multipart/form-data</label>
+                            <label>{FORM_CONTENT_TYPE}</label>
                         </div>
                     </div>
                     <div className="action field">
                         <div
                             className="ui radio checkbox"
-                            onClick={() => this._setContentType('application/json')}
+                            onClick={() => this._setContentType(JSON_CONTENT_TYPE)}
                         >
                             <input type="radio" checked={!isFormData} readOnly/>
-                            <label>application/json</label>
+                            <label>{JSON_CONTENT_TYPE}</label>
                         </div>
                     </div>
                 </div>

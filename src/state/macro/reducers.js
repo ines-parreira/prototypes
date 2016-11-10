@@ -2,7 +2,7 @@ import {createFilter} from 'react-search-input'
 import * as types from './constants'
 import {fromJS, Map} from 'immutable'
 import {DEFAULT_ACTIONS} from '../../config'
-import {getMacrosWithoutExternalActions} from './utils'
+import {getMacrosWithoutExternalActions, JSON_CONTENT_TYPE} from './utils'
 
 const actionInitial = fromJS({
     type: 'user',
@@ -53,7 +53,7 @@ const initialDefaultActions = Map({
             url: '',
             headers: [],
             params: [],
-            contentType: 'application/json'
+            content_type: JSON_CONTENT_TYPE
         }
     }),
     httpIntegration: actionInitial.merge({

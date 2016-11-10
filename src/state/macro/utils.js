@@ -1,6 +1,9 @@
 import {fromJS} from 'immutable'
 import {ACTION_TEMPLATES} from '../../config'
 
+export const JSON_CONTENT_TYPE = 'application/json'
+export const FORM_CONTENT_TYPE = 'multipart/form-data'
+
 export function getMacrosWithoutExternalActions(currentMacros) {
     return currentMacros.filter(
         macro => macro.get('actions').filter(

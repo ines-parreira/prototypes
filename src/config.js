@@ -314,7 +314,7 @@ export const ACTION_TEMPLATES = {
                 type: 'dict',
                 format: 'json'
             },
-            contentType: {
+            content_type: {
                 type: 'string',
                 default: 'application/json'
             }
