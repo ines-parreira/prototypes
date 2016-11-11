@@ -147,7 +147,7 @@ export default class Infobar extends React.Component {
         if (isLoading) {
             // loading
             content = <Loader />
-        } else if (mode === 'default' && !forcedQuery) {
+        } else if (mode === 'default') {
             // current user info
             content = (
                 !hasFetchedWidgets ? (
