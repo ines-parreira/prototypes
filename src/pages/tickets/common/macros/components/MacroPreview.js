@@ -4,6 +4,7 @@ import {ACTION_TEMPLATES} from '../../../../../config'
 import classnames from 'classnames'
 import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
+import {AgentLabel} from '../../../../common/utils/labels'
 
 export default class MacroPreview extends React.Component {
     _renderSetStatus(setStatusAction) {
@@ -53,10 +54,7 @@ export default class MacroPreview extends React.Component {
                     key={`action-assign-${assignUserAction.id}`}
                     className="ticket-owner-btn ticket-details-item"
                 >
-                    <span className="agent-label ui medium yellow label">A</span>
-                    <span className="secondary-action">
-                        {assignUserAction.getIn(['arguments', 'assignee_user', 'name']).toUpperCase()}
-                    </span>
+                    <AgentLabel name={assignUserAction.getIn(['arguments', 'assignee_user', 'name'])} />
                 </span>
             </div>
         )

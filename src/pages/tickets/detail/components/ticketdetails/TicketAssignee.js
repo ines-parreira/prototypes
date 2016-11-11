@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-
+import {AgentLabel} from '../../../../common/utils/labels'
 
 export default class TicketAssignee extends React.Component {
     componentDidMount() {
@@ -21,19 +21,14 @@ export default class TicketAssignee extends React.Component {
 
     renderTicketOwner(currentAssignee) {
         if (currentAssignee) {
-            return (
-                <span>
-                    <span className="agent-label ui medium yellow label">A</span>
-                    <span className="secondary-action">{currentAssignee.toUpperCase()}</span>
-                </span>
-            )
+            return <AgentLabel name={currentAssignee} />
         }
 
         return <span className="secondary-action">UNASSIGNED</span>
     }
 
     render() {
-        const { currentAssignee, agents } = this.props
+        const {currentAssignee, agents} = this.props
 
         let divider = null
         let clearItem = null
@@ -47,13 +42,17 @@ export default class TicketAssignee extends React.Component {
             <div
                 ref="popupTicketOwner"
                 className="TicketAssignee ticket-owner-btn ticket-details-item ui search button input pointing dropdown link item"
-                        onClick={() => this.refs.assigneeSearch.focus()}
+                onClick={() => this.refs.assigneeSearch.focus()}
             >
                 {this.renderTicketOwner(currentAssignee)}
 
                 <div className="ui vertical menu">
                     <div className="ui search input">
-                        <input id="ticket-owner-input" ref="assigneeSearch" type="text" placeholder="Search agents..."/>
+                        <input
+                            ref="assigneeSearch"
+                            type="text"
+                            placeholder="Search agents..."
+                        />
                     </div>
                     <div className="hidden item"></div>
                     {

@@ -103,6 +103,7 @@ export default class TicketHeader extends React.Component {
                         </div>
 
                         <div className="five wide column ticket-details">
+
                             <TicketPriority
                                 priority={ticket.get('priority')}
                                 togglePriority={actions.ticket.togglePriority}
@@ -118,10 +119,8 @@ export default class TicketHeader extends React.Component {
                                 {ticketId}
                             </span>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         )
     }

@@ -30,41 +30,41 @@ describe('components utils : labels', () => {
                     value: {
                         name: 'help'
                     },
-                    expected: <labels.TagLabel tag={{name: 'help'}}/>
+                    expected: <labels.TagLabel tag={{name: 'help'}} />
                 },
                 {
                     type: 'datetime',
                     value: '2016-01-15',
-                    expected: <labels.DatetimeLabel dateTime="2016-01-15"/>
+                    expected: <labels.DatetimeLabel dateTime="2016-01-15" />
                 },
                 {
                     type: 'status',
                     value: 'open',
-                    expected: <labels.StatusLabel status="open"/>
+                    expected: <labels.StatusLabel status="open" />
                 },
                 {
                     type: 'priority',
                     value: 'high',
-                    expected: <labels.PriorityLabel priority="high"/>
+                    expected: <labels.PriorityLabel priority="high" />
                 },
                 {
                     type: 'agent',
                     value: {
                         name: 'Mario'
                     },
-                    expected: <labels.AgentLabel agent={{name: 'Mario'}}/>
+                    expected: <labels.AgentLabel name="Mario" />
                 },
                 {
                     type: 'user',
                     value: {
                         name: 'Luigi'
                     },
-                    expected: <labels.UserLabel user={{name: 'Luigi'}}/>
+                    expected: <labels.UserLabel user={{name: 'Luigi'}} />
                 },
                 {
                     type: 'channel',
                     value: 'email',
-                    expected: <labels.ChannelLabel channel="email"/>
+                    expected: <labels.ChannelLabel channel="email" />
                 },
                 {
                     type: 'thisshouldreturnnull',

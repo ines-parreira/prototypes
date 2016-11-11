@@ -20,7 +20,7 @@ export default class ProfileImage extends React.Component {
             return ''
         }
 
-        const splittedName = _split(name, ' ')
+        const splittedName = _split(name, ' ').filter(elt => elt.length > 0)
 
         if (splittedName.length > 1) {
             return `${splittedName[0][0]}${splittedName[1][0]}`

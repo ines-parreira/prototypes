@@ -27,6 +27,10 @@ export const defaultContent = {
         method: 'GET',
         request_content_type: 'application/json',
         response_content_type: 'application/json',
+        triggers: {
+            'ticket-created': true,
+            'ticket-updated': true
+        }
     }
 }
 

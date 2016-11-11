@@ -7,7 +7,7 @@ import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
 import {displayUserNameFromSource} from '../../common/utils'
-import {DatetimeLabel} from '../../../common/utils/labels'
+import {DatetimeLabel, AgentLabel} from '../../../common/utils/labels'
 
 export default class TicketMessage extends React.Component {
     componentDidMount() {
@@ -198,12 +198,7 @@ export default class TicketMessage extends React.Component {
 
                 <div className="ticket-message-header">
                     <div className="ticket-message-header-details">
-                        {
-                            message.from_agent
-                            && (
-                                <span className="agent-label ui medium yellow label">A</span>
-                            )
-                        }
+                        {message.from_agent && <AgentLabel />}
 
                         {
                             message.sender.name

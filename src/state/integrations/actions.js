@@ -178,7 +178,10 @@ function updateOrCreateIntegrationRequest(integration, action) {
         const isUpdate = integration.get('id')
 
         if (isUpdate) {
-            promise = axios.put(`/api/integrations/${integration.get('id')}/${action ? `?action=${action}` : ''}`, integration.toJS())
+            promise = axios.put(
+                `/api/integrations/${integration.get('id')}/${action ? `?action=${action}` : ''}`,
+                integration.toJS()
+            )
         } else {
             promise = axios.post('/api/integrations/', integration.toJS())
         }
@@ -194,7 +197,7 @@ function updateOrCreateIntegrationRequest(integration, action) {
                 fetchIntegrations()(dispatch)
 
                 if (!isUpdate) {
-                    browserHistory.push(`/app/integrations/${integration.get('type')}/${resp.id}`)
+                    browserHistory.push(`/app/integrations/${integration.get('type')}/`)
                 }
 
                 dispatch(notify({

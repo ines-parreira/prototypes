@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {ACTION_TEMPLATES} from '../../../../../config'
 import {mapFileFormatToSemanticIcon} from '../../../common/utils'
+import {AgentLabel} from '../../../../common/utils/labels'
 
 export default class TicketMacros extends React.Component {
     openModalOnSelectedMacro(selectedMacroId) {
@@ -38,7 +39,7 @@ export default class TicketMacros extends React.Component {
                 <div className="ui label macro-legend">ATTACH FILES:</div>
                 {attachments.getIn(['arguments', 'attachments']).map((file, index) => (
                     <div key={index} className="ui label mb5i">
-                        <i className={`${mapFileFormatToSemanticIcon(file.get('content_type'))} icon`}/>
+                        <i className={`${mapFileFormatToSemanticIcon(file.get('content_type'))} icon`} />
                         {file.get('name')}
                     </div>
                 ))}
@@ -92,10 +93,7 @@ export default class TicketMacros extends React.Component {
                     key={`action-assign-${assignUserAction.id}`}
                     className="ticket-owner-btn ticket-details-item"
                 >
-                    <span className="agent-label ui medium yellow label">A</span>
-                    <span className="secondary-action">
-                        {assignUserAction.getIn(['arguments', 'assignee_user', 'name']).toUpperCase()}
-                    </span>
+                    <AgentLabel name={assignUserAction.getIn(['arguments', 'assignee_user', 'name'])} />
                 </span>
             </div>
         )

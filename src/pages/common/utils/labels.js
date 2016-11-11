@@ -3,13 +3,15 @@ import classNames from 'classnames'
 import {merge} from 'lodash'
 import {formatDatetime} from '../../../utils'
 
-export const AgentLabel = ({agent}) => (
-    <span>
-        <span className="agent-label ui mini yellow label">A</span>
-        <span className="secondary-action">{agent.name}</span>
+export const AgentLabel = ({name}) => (
+    <span className="agent-label">
+        <span className="agent-id-label ui medium yellow label">A</span>
+        {name && <span className="secondary-action">{name.toUpperCase()}</span>}
     </span>
 )
-AgentLabel.propTypes = {agent: PropTypes.object.isRequired}
+AgentLabel.propTypes = {
+    name: PropTypes.string,
+}
 
 export const UserLabel = ({user}) => (
     <span>{user.name}</span>
@@ -114,7 +116,7 @@ export const RenderLabel = (field, value, timezone = null) => {
         case 'priority':
             return <PriorityLabel priority={value} />
         case 'agent':
-            return <AgentLabel agent={value} />
+            return <AgentLabel name={value.name} />
         case 'user':
             return <UserLabel user={value} />
         case 'channel':

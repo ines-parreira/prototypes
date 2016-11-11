@@ -206,7 +206,9 @@ class UserForm extends React.Component {
                             )
                         }
 
-                        <p><b>Please set below at least one contact information for this user</b></p>
+                        <p style={{marginTop: '30px'}}>
+                            <b>Please set below at least one contact information for this user :</b>
+                        </p>
 
                         <Field
                             name="channels"
