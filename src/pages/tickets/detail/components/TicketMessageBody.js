@@ -20,10 +20,11 @@ export default class TicketMessageBody extends React.Component {
             // we're ignoring whitespaces because mailgun sends stripped_html without spaces
             if (stripped.replace(/\s+/g, '') !== body.replace(/\s+/g, '')) {
                 quoteButton = (
-                    <div className="mail-quote-toggle"
-                         onClick={() => this.setState({ showFullBody: !this.state.showFullBody})}
+                    <div
+                        className="mail-quote-toggle"
+                        onClick={() => this.setState({showFullBody: !this.state.showFullBody})}
                     >
-                        <i className="ellipsis horizontal icon"/>
+                        <i className="ellipsis horizontal icon" />
                     </div>
                 )
             }
