@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classname from 'classnames'
+import {FORM_CONTENT_TYPE} from './../../../../../state/macro/utils'
 
 export default class TicketReplyAction extends React.Component {
     setValue(arg, value, category) {
@@ -48,7 +49,7 @@ export default class TicketReplyAction extends React.Component {
         const paramsArgs = action.getIn(['arguments', 'params'], fromJS([]))
             .filter(curAction => curAction.get('editable'))
 
-        const formData = action.getIn(['arguments', 'content_type']) === 'multipart/form-data'
+        const formData = action.getIn(['arguments', 'content_type']) === FORM_CONTENT_TYPE
             ? action.getIn(['arguments', 'form'], fromJS([])).filter(curAction => curAction.get('editable'))
             : fromJS([])
 
