@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
     let items
     let ast = ''
     let code = ''
-    let active = state.get('active')
+    let active = state.get('active', fromJS({}))
 
     switch (action.type) {
         case types.SET_VIEW_ACTIVE: {
@@ -107,7 +107,7 @@ export default (state = initialState, action) => {
 
         case types.RESET_VIEW: {
             // find the original view from the state and replace the active view
-            const original = state.get('items').find(v => v.get('id') === active.get('id'))
+            const original = state.get('items').find(v => v.get('id') === active.get('id'), null, fromJS({}))
             return state.set('active', original.set('dirty', false))
         }
 
@@ -143,7 +143,7 @@ export default (state = initialState, action) => {
 
             // also populate the active view state
             if (action.currentViewId) {
-                active = items.find(item => item.get('id') === parseInt(action.currentViewId))
+                active = items.find(item => item.get('id') === parseInt(action.currentViewId), null, fromJS({}))
             }
 
             return state.merge({

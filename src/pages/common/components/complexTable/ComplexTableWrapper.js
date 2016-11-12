@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as ViewsActions from '../../../../state/views/actions'
+import {Loader} from '../Loader'
 
 import EditableTitle from '../EditableTitle'
 import ComplexTable from './ComplexTable'
@@ -52,10 +53,9 @@ class ComplexTableWrapper extends React.Component {
     }
 
     _updateList = (nextProps = this.props) => {
-        const currentViews = this.props.views
         const nextViews = nextProps.views
-        const currentActive = currentViews.get('active', fromJS({}))
-        const nextActive = nextViews.get('active', fromJS({}))
+        const currentActive = this.props.activeView
+        const nextActive = nextProps.activeView
 
         // the asked view id (the one in the url)
         let askedViewId = nextProps.askedViewId
@@ -134,7 +134,7 @@ class ComplexTableWrapper extends React.Component {
     }
 
     _search = (query, params, stringQuery) => {
-        const activeView = this.props.views.get('active')
+        const activeView = this.props.activeView
 
         if (stringQuery) {
             this.props.actions.views.updateView(activeView.merge({search: {query, params}}))
@@ -216,13 +216,23 @@ class ComplexTableWrapper extends React.Component {
             hasBulkActions,
             currentUser,
             agents,
+            activeView,
+            hasActiveView,
         } = this.props
+
+        if (!hasActiveView) {
+            return (
+                <Loader
+                    loading={false}
+                    message="This view does not exist"
+                />
+            )
+        }
 
         if (fields.isEmpty()) {
             return null
         }
 
-        const activeView = views.get('active')
         const viewConfig = VIEW_TYPE_CONFIGURATION[viewsType]
 
         if (activeView.get('type') !== viewsType) {
@@ -242,7 +252,6 @@ class ComplexTableWrapper extends React.Component {
                         <div className="sticky-header">
                             <div className="ui text menu sticky-header-search">
                                 <div className="left menu item">
-
                                     <div
                                         className="ui dropdown complex-list-settings"
                                         ref={(dropdown) => {
@@ -273,7 +282,6 @@ class ComplexTableWrapper extends React.Component {
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div className="right menu item">
                                     <Search
@@ -362,6 +370,8 @@ ComplexTableWrapper.propTypes = {
     users: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
+    activeView: PropTypes.object.isRequired,
+    hasActiveView: PropTypes.bool.isRequired,
 
     actions: PropTypes.shape({
         views: PropTypes.object.isRequired,
@@ -386,6 +396,8 @@ ComplexTableWrapper.defaultProps = {
 }
 
 function mapStateToProps(state) {
+    const activeView = state.views.get('active', fromJS({}))
+
     return {
         views: state.views,
         schemas: state.schemas,
@@ -393,6 +405,8 @@ function mapStateToProps(state) {
         currentUser: state.currentUser,
         tags: state.tags.get('items', fromJS([])),
         agents: state.users.get('agents', fromJS([])),
+        activeView,
+        hasActiveView: !activeView.isEmpty(),
     }
 }
 

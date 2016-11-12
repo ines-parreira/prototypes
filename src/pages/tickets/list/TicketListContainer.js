@@ -17,12 +17,15 @@ class TicketListContainer extends React.Component {
     render() {
         const activeView = this.props.views.get('active', fromJS({}))
         let title = 'Loading...'
+        const hasActiveView = !activeView.isEmpty()
 
-        if (!activeView.isEmpty()) {
+        if (hasActiveView) {
             title = activeView.get('name')
             if (activeView.get('count', 0) > 0) {
                 title = `(${compactInteger(activeView.get('count', 0))}) ${title}`
             }
+        } else {
+            title = 'Wrong view'
         }
 
         return (
