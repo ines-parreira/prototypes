@@ -271,6 +271,7 @@ class TicketDetailContainer extends React.Component {
             return
         }
 
+        // The ticket does not exist yet.
         if (!ticket.get('id')) {
             const receiver = ticket.getIn(['newMessage', 'receiver'])
             const sender = {id: this.props.currentUser.get('id')}
@@ -282,14 +283,7 @@ class TicketDetailContainer extends React.Component {
                     sender
                 }
             })
-        }
 
-        if (action === 'force') {
-            ticket.getIn(['messages', 'actions'])
-        }
-
-        // The ticket does not exist yet.
-        if (!ticket.get('id')) {
             if (ticket.get('subject') || window.confirm('Are you sure you want to create a ticket with no subject?')) {
                 this.props.actions.ticket.submitTicket(
                     ticket,
