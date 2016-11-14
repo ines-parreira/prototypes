@@ -52,6 +52,11 @@ class Action extends React.Component {
 
         // Determine the display mode
         const config = actionsConfig[value]
+
+        if (!config) {
+            return null
+        }
+
         if (config.compact) {
             return <span>{children}</span>
         }
