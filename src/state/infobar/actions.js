@@ -35,7 +35,7 @@ export const resetSearch = () => ({
     type: types.RESET_SEARCH
 })
 
-export const fetchUserPicture = (email) => ((dispatch) => {
+export const fetchUserPicture = (email = '') => ((dispatch) => {
     dispatch({
         type: types.FETCH_USER_PICTURE_START
     })
