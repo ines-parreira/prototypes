@@ -77,6 +77,24 @@ class CardInfobarWidget extends React.Component {
         }
     }
 
+    _renderTitle = (widget, source) => {
+        const title = widget.get('title', '')
+        const link = widget.getIn(['meta', 'link'])
+
+        if (link) {
+            return (
+                <a
+                    href={renderTemplate(link, source)}
+                    target="_blank"
+                >
+                    {renderTemplate(title, source)}
+                </a>
+            )
+        }
+
+        return renderTemplate(title, source)
+    }
+
     render() {
         const {
             isEditing,
@@ -108,7 +126,7 @@ class CardInfobarWidget extends React.Component {
                             <div className="header clearfix">
                                 {
                                     widget.get('title')
-                                        ? renderTemplate(widget.get('title', ''), source.toJS())
+                                        ? this._renderTitle(widget, source.toJS())
                                         : <span className="placeholder">Title</span>
                                 }
                                 {
