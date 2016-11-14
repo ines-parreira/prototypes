@@ -117,7 +117,10 @@ class InfobarWidget extends React.Component {
                 case 'url': {
                     if (utils.isUrl(data)) {
                         fieldValue = (
-                            <a href={data} target="_blank">
+                            <a
+                                href={data}
+                                target="_blank"
+                            >
                                 {data.length > 60 ? `${data.slice(0, 57)}...` : data}
                             </a>
                         )

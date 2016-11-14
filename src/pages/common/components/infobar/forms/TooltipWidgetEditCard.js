@@ -11,28 +11,35 @@ class TooltipWidgetEditCard extends React.Component {
 
         document.addEventListener('click', this._onClickOutside, false)
 
+        const cardModel = {
+            title: widget.get('title', ''),
+            // we need to specify the initial values for each field
+            // otherwise they will not be sent if they are empty
+            meta: fromJS({
+                link: ''
+            }).merge(widget.get('meta', fromJS({}))).toJS()
+        }
+
+        const listModel = {
+            // we need to specify the initial values for each field
+            // otherwise they will not be sent if they are empty
+            meta: fromJS({
+                limit: '',
+                orderBy: ''
+            }).merge(parent.get('meta', fromJS({}))).toJS()
+        }
+
         // populating the form
         if (isParentList) {
             // editing the parent list AND the card inside that list
             this.props.initialize({
-                card: {
-                    title: widget.get('title', ''),
-                },
-                list: {
-                    // we really need to specify the initial values for each field
-                    // otherwise they will not be sent if they are empty
-                    meta: fromJS({
-                        limit: '',
-                        orderBy: ''
-                    }).merge(parent.get('meta', fromJS({}))).toJS()
-                }
+                card: cardModel,
+                list: listModel,
             })
         } else {
             // editing only the card
             this.props.initialize({
-                card: {
-                    title: widget.get('title', ''),
-                },
+                card: cardModel,
             })
         }
     }
@@ -102,6 +109,13 @@ class TooltipWidgetEditCard extends React.Component {
                         <Field
                             label="Title"
                             name="card.title"
+                            placeholder="Order {id}"
+                            component={InputField}
+                        />
+                        <Field
+                            label="Link"
+                            name="card.meta.link"
+                            placeholder="http://myapi.com/{id}"
                             component={InputField}
                         />
                         {
