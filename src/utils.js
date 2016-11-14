@@ -65,11 +65,27 @@ export function getCode(ast) {
 }
 
 export function lastMessage(messages) {
-    return messages.slice().sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]
+    if (!messages) {
+        return {}
+    }
+
+    if (!messages.length) {
+        return {}
+    }
+
+    return messages.sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]
 }
 
 export function firstMessage(messages) {
-    return messages.slice().sort((m1, m2) => moment(m1.created_datetime).diff(moment(m2.created_datetime)))[0]
+    if (!messages) {
+        return {}
+    }
+
+    if (!messages.length) {
+        return {}
+    }
+
+    return messages.sort((m1, m2) => moment(m1.created_datetime).diff(moment(m2.created_datetime)))[0]
 }
 
 // given a field path. Ex: ticket.requester.id and OpenID schemas => resolve the last property
@@ -226,10 +242,13 @@ export function slugify(string) {
  * Check if element is editable (form elements, contentEditable)
  */
 export function isEditable(element) {
-    return !!(element.tagName === 'INPUT' ||
-            element.tagName === 'SELECT' ||
-            element.tagName === 'TEXTAREA' ||
-            (element.contentEditable && element.contentEditable === 'true'))
+    return element.tagName === 'INPUT'
+        || element.tagName === 'SELECT'
+        || element.tagName === 'TEXTAREA'
+        || (
+            !!element.contentEditable
+            && element.contentEditable === 'true'
+        )
 }
 
 /**
