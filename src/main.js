@@ -6,6 +6,10 @@ import {browserHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import configureStore from './store/configureStore'
 import moment from 'moment-timezone'
+import Promise from 'promise-polyfill'
+
+// polyfill for Promise
+window.Promise = window.Promise || Promise
 
 const initMoment = (currentUser) => {
     // set default locale and timezone
@@ -39,6 +43,6 @@ if (initialState.currentUser) {
 }
 
 render(
-    <Root history={history} store={store}/>,
+    <Root history={history} store={store} />,
     document.getElementById('App')
 )

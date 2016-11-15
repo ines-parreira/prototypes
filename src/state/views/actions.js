@@ -184,7 +184,7 @@ export function fetchPage(page = 1) {
     return (dispatch, getState) => {
         let views = getState().views
 
-        const activeView = views.get('active')
+        const activeView = views.get('active', fromJS({}))
         const viewId = activeView.get('id')
         const isDirty = views.getIn(['active', 'dirty'], false)
 

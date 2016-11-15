@@ -14,23 +14,25 @@ const ActivityWidgetItem = ({object, count, position}) => {
 
     // figure out what icon to show based on ticket message source
     const messages = object.get('messages', fromJS([]))
-    let chanType = ''
+    let channel = ''
+
     if (!messages.isEmpty()) {
-        chanType = messages.last().getIn(['source', 'type'])
+        const lastMessage = messages.last() || fromJS({})
+        channel = lastMessage.getIn(['source', 'type'])
     }
 
     // if the source didn't give us anything fallback to the channel
-    if (!chanType) {
-        chanType = object.get('channel', 'unknown')
+    if (!channel) {
+        channel = object.get('channel', 'unknown')
     }
 
     const iconClasses = classNames('action icon', {
-        mail: chanType === 'email',
-        comments: chanType === 'chat',
-        facebook: chanType === 'facebook' || chanType === 'facebook-post',
-        comment: chanType === 'internal-note',
-        'facebook-messenger': chanType === 'facebook-message',
-        help: chanType === 'unknown',
+        mail: channel === 'email',
+        comments: channel === 'chat',
+        facebook: channel === 'facebook' || channel === 'facebook-post',
+        comment: channel === 'internal-note',
+        'facebook-messenger': channel === 'facebook-message',
+        help: channel === 'unknown',
     })
 
     // the text of the link should try to use the `ticket.requester` or `ticket.subject` or finally `Ticket 123`

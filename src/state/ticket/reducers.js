@@ -447,9 +447,14 @@ export default (state = initialState, action) => {
 
         case SUBMIT_ACTIVITY_SUCCESS: {
             // See if we have an event for our ticket
-            const event = fromJS(action.resp.events).find((e) => (
-                e.get('object_type') === 'Ticket' && e.get('object_id') === state.get('id')
-            ))
+            const event = fromJS(action.resp.events).find((e) => {
+                if (!e) {
+                    return false
+                }
+
+                return e.get('object_type') === 'Ticket' && e.get('object_id') === state.get('id')
+            })
+
             if (event) {
                 const latestEventDatetime = state.getIn(['state', 'latestEventDatetime'])
                 const eventDatetime = event.get('created_datetime')
@@ -464,6 +469,7 @@ export default (state = initialState, action) => {
                 }
                 return newState
             }
+
             return state
         }
 
