@@ -104,6 +104,11 @@ export function findProperty(field, schemas) {
 
         prop = prop.toJS()
 
+        // if the current nested property has a `meta` field,
+        // then we use it instead of the `meta` of it's definition
+        if (prop.meta) {
+            break
+        }
         // if we have a ref then we need to redo the whole definition thing
         if (typeof prop.$ref !== 'undefined') {
             def = schemas.getIn(['definitions', prop.$ref.replace('#/definitions/', '')])
@@ -129,6 +134,8 @@ export function equalityOperator(field, schemas) {
                 }
             }
             return 'eq'
+        case 'array':
+            return 'contains'
         default:
             return 'eq'
     }
