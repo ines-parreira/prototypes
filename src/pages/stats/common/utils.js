@@ -54,36 +54,39 @@ export const timesFromPeriod = (period) => {
     let startDatetime = moment()
     let endDatetime = moment()
 
-    if (period.endsWith('week')) {
-        startDatetime = startDatetime.startOf('week')
-        endDatetime = endDatetime.endOf('week')
+    if (period === 'last-7-days') {
+        startDatetime = startDatetime.subtract(1, 'week')
+        endDatetime = endDatetime.subtract(1, 'day')
     }
 
     if (period === 'past-week') {
-        startDatetime = startDatetime.subtract(1, 'week')
-        endDatetime = endDatetime.subtract(1, 'week')
+        startDatetime = startDatetime.subtract(1, 'week').startOf('week')
+        endDatetime = endDatetime.subtract(1, 'week').endOf('week')
     }
 
-    if (period.includes('month') || period.includes('year')) {
-        startDatetime = startDatetime.startOf('month')
-        endDatetime = endDatetime.endOf('month')
+    if (period === 'last-month') {
+        startDatetime = startDatetime.subtract(1, 'month')
+        endDatetime = endDatetime.subtract(1, 'day')
     }
 
     if (period === 'past-month') {
-        startDatetime = startDatetime.subtract(1, 'month')
-        endDatetime = endDatetime.subtract(1, 'month')
+        startDatetime = startDatetime.subtract(1, 'month').startOf('month')
+        endDatetime = endDatetime.subtract(1, 'month').endOf('month')
     }
 
     if (period === 'last-3-months') {
-        startDatetime = startDatetime.subtract(2, 'month')
+        startDatetime = startDatetime.subtract(3, 'month')
+        endDatetime = endDatetime.subtract(1, 'day')
     }
 
     if (period === 'last-6-months') {
         startDatetime = startDatetime.subtract(5, 'month')
+        endDatetime = endDatetime.subtract(1, 'day')
     }
 
     if (period === 'last-year') {
         startDatetime = startDatetime.subtract(1, 'year')
+        endDatetime = endDatetime.subtract(1, 'day')
     }
 
     return {

@@ -7,7 +7,7 @@ export const initialState = fromJS({
             stats: false
         },
         meta: {
-            period: 'this-month'
+            period: 'last-7-days'
         },
         filters: {}
     }

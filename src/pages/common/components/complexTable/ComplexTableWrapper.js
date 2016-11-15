@@ -72,7 +72,7 @@ class ComplexTableWrapper extends React.Component {
             .filter((view) => {
                 return view.get('type') === nextProps.viewsType
             })
-        const firstAvailableView = availableViews.first()
+        const firstAvailableView = availableViews.first() || fromJS({})
 
         // set the first available view as active if...
         // ...there is no asked id (no id in the url)

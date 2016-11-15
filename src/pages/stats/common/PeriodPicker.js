@@ -68,9 +68,9 @@ export default class PeriodPicker extends React.Component {
 
         const periodPickerOptions = [
             ['today', 'Today'],
-            ['this-week', 'This week'],
+            ['last-7-days', 'Last 7 days'],
             ['past-week', 'Past week'],
-            ['this-month', 'This month'],
+            ['last-month', 'Last month'],
             ['past-month', 'Past month'],
             ['last-3-months', 'Last 3 months'],
             ['last-6-months', 'Last 6 months'],
