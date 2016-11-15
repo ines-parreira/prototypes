@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {TICKET_STATUSES} from '../../../../../config'
 import RightSelect from './RightSelect'
 
-const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, index}) => {
+const Right = ({node, objectPath, agents, tags, currentUser, onChange, index}) => {
     let options = fromJS([])
 
     if (objectPath === 'ticket.assignee_user.id') {
@@ -53,7 +53,7 @@ const Right = ({node, objectPath, agents, tags, currentUser, updateFieldFilter, 
             <RightSelect
                 node={node}
                 options={options}
-                updateFieldFilter={updateFieldFilter}
+                onChange={onChange}
                 index={index}
             />
         )
@@ -67,7 +67,7 @@ Right.propTypes = {
     agents: PropTypes.object.isRequired,
     tags: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    updateFieldFilter: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
     objectPath: PropTypes.string.isRequired
 }
 

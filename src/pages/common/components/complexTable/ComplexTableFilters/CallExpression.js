@@ -45,7 +45,7 @@ const CallExpression = ({view, schemas, node, updateOperator, removeCondition, i
                 agents={agents}
                 tags={tags}
                 currentUser={currentUser}
-                updateFieldFilter={updateFieldFilter}
+                onChange={updateFieldFilter}
                 index={index}
             />
             <RemoveCallExpression

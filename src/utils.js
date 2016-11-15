@@ -118,6 +118,8 @@ export function equalityOperator(field, schemas) {
                 }
             }
             return 'eq'
+        case 'array':
+            return 'contains'
         default:
             return 'eq'
     }
