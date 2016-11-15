@@ -36,10 +36,12 @@ export default (state = initialState, action) => {
             return state.set('items', fromJS(payload.data))
         }
 
+        // THE FOLLOWING FUNCTION IS ONLY USED TO FETCH AGENTS AND ADMINS
         case types.FETCH_USER_LIST_SUCCESS: {
             let newState = state
+
             // This is a bit lame but that's the proper definition of an agent.
-            if (action.roles && action.roles.length === 2 && action.roles.includes('agent') && action.roles.includes('admin')) {
+            if (action.roles && action.roles.includes('agent') && action.roles.includes('admin')) {
                 newState = newState.set('agents', fromJS(action.resp.data))
             }
 

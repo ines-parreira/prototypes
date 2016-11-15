@@ -1,16 +1,17 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import _ from 'lodash'
+import _capitalize from 'lodash/capitalize'
 
 // A <Link /> with some default styles
 const NavLink = (props) => (
-    <Link {...props} activeClassName="active" className="item"/>
+    <Link {...props} activeClassName="active" className="item" />
 )
 
-export default class Navbar extends React.Component {
+class Navbar extends React.Component {
     componentWillMount() {
         this.state = {
-            title: _.capitalize(this.props.activeContent)
+            title: _capitalize(this.props.activeContent)
         }
     }
 
@@ -23,11 +24,12 @@ export default class Navbar extends React.Component {
 
     render() {
         const {currentUser} = this.props
+
         return (
             <div className="navbar" ref="navbar">
                 <div id="main-menu" className="navbar-btn navbar-btn-category ui dropdown">
                     {this.state.title}
-                    <i className="icon angle down"/>
+                    <i className="icon angle down" />
                     <div className="menu">
                         <NavLink
                             to="/app/tickets"
@@ -69,17 +71,17 @@ export default class Navbar extends React.Component {
                 </div>
 
                 <div id="user-menu" className="navbar-btn ui dropdown">
-                    <i className="ellipsis horizontal icon"/>
+                    <i className="ellipsis horizontal icon" />
                     <div>
                         <h4 className="current-user">
-                            <i className="status green circle icon" title="User online"/>
+                            <i className="status green circle icon" title="User online" />
                             <span className="name" title={currentUser.get('name')}>{currentUser.get('name')}</span>
                         </h4>
                     </div>
 
                     <div className="menu">
-                        <Link className="item" to="/app/your-profile"><i className="user icon"/> Your profile</Link>
-                        <a className="item" href="/logout"><i className="sign out icon"/> Sign Out</a>
+                        <Link className="item" to="/app/your-profile"><i className="user icon" /> Your profile</Link>
+                        <a className="item" href="/logout"><i className="sign out icon" /> Sign Out</a>
                         {/*
                          <a className="disabled item"><i className="globe icon"/> Choose Language</a>
                          <a className="disabled item"><i className="settings icon"/> Account Settings</a
@@ -96,3 +98,10 @@ Navbar.propTypes = {
     activeContent: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired
 }
+
+const mapStateToProps = (state) => ({
+    currentUser: state.currentUser
+})
+
+export default connect(mapStateToProps)(Navbar)
+

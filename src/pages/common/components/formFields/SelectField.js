@@ -74,7 +74,8 @@ class SelectField extends React.Component {
     }
 
     render() {
-        const {children, input, label, placeholder, required, tooltip} = this.props
+        const {children, input, multiple, label, inline, placeholder, required, tooltip} = this.props
+        let {selectClassName} = this.props
         // we do not deal with value and onChange since Semantic is breaking <select>
         // into its own HTML and JS scripts
         const props = input
@@ -85,7 +86,17 @@ class SelectField extends React.Component {
 
         const fieldClassName = classNames('field', {
             clearable: !required && this.state.isClearable,
-            required
+            inline,
+            required,
+        })
+
+        if (!selectClassName) {
+            selectClassName = 'search'
+        }
+
+        selectClassName = classNames('ui dropdown', {
+            [selectClassName]: true,
+            multiple,
         })
 
         return (
@@ -100,7 +111,7 @@ class SelectField extends React.Component {
                 }
                 <select
                     ref="select"
-                    className="ui search dropdown"
+                    className={selectClassName}
                     {...props}
                     placeholder={placeholder}
                 >
@@ -115,7 +126,9 @@ class SelectField extends React.Component {
 
 SelectField.defaultProps = {
     required: false,
-    direction: 'auto'
+    direction: 'auto',
+    inline: false,
+    multiple: false,
 }
 
 SelectField.propTypes = {
@@ -126,6 +139,9 @@ SelectField.propTypes = {
     required: React.PropTypes.bool,
     tooltip: React.PropTypes.node,
     direction: React.PropTypes.string,
+    inline: React.PropTypes.bool,
+    multiple: React.PropTypes.bool,
+    selectClassName: React.PropTypes.string,
 }
 
 export default SelectField

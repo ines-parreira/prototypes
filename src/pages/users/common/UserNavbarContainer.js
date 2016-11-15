@@ -14,7 +14,7 @@ class UserNavbarContainer extends React.Component {
 
     render() {
         return (
-            <Navbar currentUser={this.props.currentUser} activeContent="users">
+            <Navbar activeContent="users">
                 <UsersNavbarView
                     views={this.props.views}
                     currentView={this.props.views.get('active')}
@@ -25,7 +25,6 @@ class UserNavbarContainer extends React.Component {
 }
 
 UserNavbarContainer.propTypes = {
-    currentUser: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
@@ -34,17 +33,12 @@ UserNavbarContainer.propTypes = {
     })
 }
 
-function mapStateToProps(state) {
-    return {
-        currentUser: state.currentUser,
-        views: state.views
-    }
-}
+const mapStateToProps = (state) => ({
+    views: state.views
+})
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(ViewsActions, dispatch)
-    }
-}
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(ViewsActions, dispatch)
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserNavbarContainer)

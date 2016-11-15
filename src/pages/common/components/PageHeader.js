@@ -8,9 +8,8 @@ import React from 'react'
  * @param {element} children - Elements to display to the right of header
  */
 class PageHeader extends React.Component {
-
     _renderChildren = () => (
-        <div className="ten wide column">
+        <div>
             {this.props.children}
         </div>
     )
@@ -18,15 +17,14 @@ class PageHeader extends React.Component {
     render() {
         const {title, children} = this.props
         return (
-            <div className="ui grid">
-                <div className="six wide column">
+            <div className="ui sixteen wide column flex-spaced-row no-wrap">
+                <div>
                     <h1 className="ui header">{title}</h1>
                 </div>
                 {children && this._renderChildren()}
             </div>
         )
     }
-
 }
 
 PageHeader.propTypes = {

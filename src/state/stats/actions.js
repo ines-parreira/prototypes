@@ -1,18 +1,58 @@
 import axios from 'axios'
+import {fromJS} from 'immutable'
 import * as types from './constants'
+import _merge from 'lodash/merge'
+import {timesFromPeriod} from '../../pages/stats/common/utils'
 
-export function fetchStats(startDatetime, endDatetime) {
-    let url = '/api/stats/?'
-    if (startDatetime) {
-        url += `start=${startDatetime}&`
+export function setMeta(meta = {}) {
+    return {
+        type: types.SET_STATS_META,
+        meta
     }
-    if (endDatetime) {
-        url += `end=${endDatetime}`
+}
+
+export function setFilter(filterName, values) {
+    return {
+        type: types.SET_STATS_FILTER,
+        name: filterName,
+        values,
     }
-    return (dispatch) => {
-        dispatch(dispatch({
+}
+
+export function fetchStats(newMeta = {}) {
+    return (dispatch, getState) => {
+        let url = '/api/stats/'
+        const statsState = getState().stats
+
+        // get current meta
+        const meta = statsState.getIn(['_internal', 'meta'], fromJS({}))
+
+        // get current filters
+        const filters = statsState.getIn(['_internal', 'filters'], fromJS({}))
+
+        // merge with passed meta
+        const params = meta.merge(newMeta).toJS()
+
+        // if there is only a period set but no dates, let's add them
+        if (params.period && (!params.start_datetime || !params.end_datetime)) {
+            const {startDatetime, endDatetime} = timesFromPeriod(params.period)
+            _merge(params, {
+                start_datetime: startDatetime.format(),
+                end_datetime: endDatetime.format(),
+            })
+        }
+
+        // update stats meta to match what is asked to server
+        dispatch(setMeta(params))
+
+        params.filters = filters.toJS()
+
+        // pass meta info in url as get params
+        url += `?${$.param(params)}`
+
+        dispatch({
             type: types.FETCH_STATS_START
-        }))
+        })
 
         return axios.get(url)
             .then((json = {}) => json.data)
@@ -24,7 +64,7 @@ export function fetchStats(startDatetime, endDatetime) {
             })
             .catch(error => {
                 return dispatch({
-                    type: 'ERROR',
+                    type: types.FETCH_STATS_ERROR,
                     error,
                     reason: 'Unable to receive stats'
                 })

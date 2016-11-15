@@ -19,6 +19,10 @@ export const Loader = ({message, loading = true}) => {
 }
 
 Loader.propTypes = {
-    loading: PropTypes.bool,
+    loading: PropTypes.bool.isRequired,
     message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
+}
+
+Loader.defaultProps = {
+    loading: false,
 }

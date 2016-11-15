@@ -3,6 +3,8 @@ import _isUndefined from 'lodash/isUndefined'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
 
+// THE FOLLOWING FUNCTION IS ONLY USED TO FETCH AGENTS AND ADMINS
+// SHOULD BE UPDATED TO AN AGENTS SPECIFIC REDUCER
 export function fetchUsers(roles) {
     return (dispatch) => {
         dispatch({
@@ -29,42 +31,6 @@ export function fetchUsers(roles) {
                     type: types.FETCH_USER_LIST_ERROR,
                     error,
                     reason: 'Failed to fetch users'
-                })
-            })
-    }
-}
-
-export function search(query, params, stringQuery) {
-    return (dispatch) => {
-        dispatch({
-            type: types.FETCH_USER_LIST_START,
-            stringQuery,
-            params
-        })
-
-        const builtQuery = query
-
-        if (!stringQuery || stringQuery.length < 3) {
-            delete builtQuery.query
-        }
-
-        return axios.post('/api/search/', {
-            doc_type: 'user',
-            query: builtQuery,
-            params
-        })
-            .then((json = {}) => json.data)
-            .then(resp => {
-                dispatch({
-                    type: types.FETCH_USER_LIST_SUCCESS,
-                    resp
-                })
-            })
-            .catch(error => {
-                return dispatch({
-                    type: types.FETCH_USER_LIST_ERROR,
-                    error,
-                    reason: 'Failed to search users'
                 })
             })
     }

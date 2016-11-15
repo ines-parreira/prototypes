@@ -15,7 +15,7 @@ class TicketNavbarContainer extends React.Component {
 
     render() {
         return (
-            <Navbar currentUser={this.props.currentUser} activeContent="tickets">
+            <Navbar activeContent="tickets">
                 <ActivityWidget activity={this.props.activity} />
                 <TicketsNavbarView
                     views={this.props.views}
@@ -27,7 +27,6 @@ class TicketNavbarContainer extends React.Component {
 }
 
 TicketNavbarContainer.propTypes = {
-    currentUser: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
     activity: PropTypes.object,
     actions: PropTypes.object.isRequired,
@@ -37,18 +36,13 @@ TicketNavbarContainer.propTypes = {
     })
 }
 
-function mapStateToProps(state) {
-    return {
-        currentUser: state.currentUser,
-        activity: state.activity,
-        views: state.views
-    }
-}
+const mapStateToProps = (state) => ({
+    activity: state.activity,
+    views: state.views
+})
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(ViewsActions, dispatch)
-    }
-}
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(ViewsActions, dispatch)
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketNavbarContainer)

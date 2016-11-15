@@ -17,7 +17,8 @@ import UserSourceContainer from './users/detail/UserSourceContainer'
 import UserInfobarContainer from './users/detail/UserInfobarContainer'
 import YourProfileContainer from './users/yourProfile/YourProfileContainer'
 import ChangePasswordContainer from './users/yourProfile/ChangePasswordContainer'
-import StatsContainer from './stats/list/StatsContainer'
+import OverviewStatsContainer from './stats/overview/OverviewStatsContainer'
+import SimpleStatsContainer from './stats/simple/SimpleStatsContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
 import RulesNavbarContainer from './rules/common/RulesNavbarContainer'
@@ -132,7 +133,14 @@ export default (
         <Route
             path="stats"
             components={{
-                content: StatsContainer,
+                content: OverviewStatsContainer,
+                navbar: StatsNavbarContainer
+            }}
+        />
+        <Route
+            path="stats/:type"
+            components={{
+                content: SimpleStatsContainer,
                 navbar: StatsNavbarContainer
             }}
         />
