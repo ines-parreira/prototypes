@@ -42,8 +42,8 @@ export default class SimpleStatsView extends React.Component {
                         data-content={tooltipDelta}
                         data-variation="wide inverted"
                     >
-                    {renderDifference(value)}
-                </span>
+                        {renderDifference(value)}
+                    </span>
                 )
             }
             case 'percent': {
