@@ -25,6 +25,11 @@ class MergeUsersContainer extends React.Component {
     }
 }
 
+MergeUsersContainer.defaultProps = {
+    display: false,
+    isLoading: false
+}
+
 MergeUsersContainer.propTypes = {
     destinationUser: PropTypes.object.isRequired,
     sourceUser: PropTypes.object.isRequired,
