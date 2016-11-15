@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import {timesFromPeriod} from './utils'
 
@@ -87,6 +88,7 @@ export default class PeriodPicker extends React.Component {
                         endDate={endDatetime}
                         onChange={this._handleDateChange}
                         disabled={isDisabled}
+                        maxDate={endDatetime}
                     />
                 </div>
                 <div className="ui input">
@@ -97,6 +99,8 @@ export default class PeriodPicker extends React.Component {
                         endDate={endDatetime}
                         onChange={(v) => this._handleDateChange(v, false)}
                         disabled={isDisabled}
+                        minDate={startDatetime}
+                        maxDate={moment()}
                     />
                 </div>
                 <div className="field inline">
