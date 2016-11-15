@@ -19,7 +19,7 @@ export const pollActivity = () => (dispatch, getState) => {
 
     return axios.post('/api/activity/', pendingEvents, {timeout: 10000})
         .then((json = {}) => json.data)
-        .then(resp => {
+        .then((resp = {}) => {
             dispatch({
                 type: types.SUBMIT_ACTIVITY_SUCCESS,
                 resp
