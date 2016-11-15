@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import * as types from './constants'
+import * as userTypes from './../users/constants'
 
 export const initialState = fromJS({
     _internal: {
@@ -7,6 +8,9 @@ export const initialState = fromJS({
             search: false,
             displayedUser: false,
             displayedUserPictureUrl: false
+        },
+        mergeUsersModal: {
+            display: false
         },
         mode: 'default' // can be 'default' for ticket.requester, 'search' for searchResults and 'preview' for user data
     },
@@ -81,6 +85,25 @@ export default (state = initialState, action) => {
 
         case types.SET_INFOBAR_MODE: {
             return state.setIn(['_internal', 'mode'], action.mode)
+        }
+
+        case types.TOGGLE_MERGE_USERS_MODAL: {
+            const value = action.value !== undefined
+                ? action.value
+                : !state.getIn(['_internal', 'mergeUsersModal', 'display'])
+
+            return state.setIn(['_internal', 'mergeUsersModal', 'display'], value)
+        }
+
+        case userTypes.MERGE_USERS_SUCCESS: {
+            return state.mergeDeep({
+                _internal: {
+                    loading: {
+                        mergeUsersModal: false
+                    },
+                    mode: 'default'
+                }
+            })
         }
 
         default:

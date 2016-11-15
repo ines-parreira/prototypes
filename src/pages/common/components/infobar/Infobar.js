@@ -1,9 +1,11 @@
 import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
 import classnames from 'classnames'
+import {fromJS} from 'immutable'
+
 import InfobarLayout from './InfobarLayout'
 import InfobarUserInfo from './InfobarUserInfo'
-import {fromJS} from 'immutable'
+import MergeUsersContainer from './../mergeUsers/MergeUsersContainer'
 import {Loader} from '../Loader'
 import {areSourcesReady} from './utils'
 
@@ -11,6 +13,14 @@ import InfobarSearchResultsList from './InfobarSearchResultsList'
 import Search from '../Search'
 
 export default class Infobar extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            shouldResetSearch: false
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.props.identifier !== nextProps.identifier) {
             nextProps.actions.infobar.resetSearch()
@@ -22,6 +32,13 @@ export default class Infobar extends React.Component {
         if (isEditingParam !== isEditing) {
             this._toggleEditionMode(isEditingParam)
         }
+
+        const wasMerging = this.props.infobar.getIn(['_internal', 'mergeUsersModal', 'display'])
+        const isMerging = nextProps.infobar.getIn(['_internal', 'mergeUsersModal', 'display'])
+        const modeIsDefault = nextProps.infobar.getIn(['_internal', 'mode']) === 'default'
+
+        // e.g. if we just succeeded a merging
+        this.setState({shouldResetSearch: wasMerging && !isMerging && modeIsDefault})
     }
 
     componentWillUnmount() {
@@ -191,14 +208,12 @@ export default class Infobar extends React.Component {
                             BACK
                         </div>
 
-                        {/*
-                         <div
-                         className="ui button right-button disabled"
-                         style={{float: 'right'}}
-                         >
-                         MERGE
-                         </div>
-                         */}
+                        <div
+                            className="ui button right-button"
+                            onClick={() => actions.infobar.toggleMergeUsersModal()}
+                        >
+                            MERGE
+                        </div>
                     </div>
                     <InfobarUserInfo
                         actions={actions.widgets}
@@ -208,6 +223,11 @@ export default class Infobar extends React.Component {
                         sources={tweakedSources}
                         user={tweakedUser}
                         widgets={widgets}
+                    />
+                    <MergeUsersContainer
+                        display={infobar.getIn(['_internal', 'mergeUsersModal', 'display'])}
+                        destinationUser={user}
+                        sourceUser={tweakedUser}
                     />
                 </div>
             )
@@ -223,6 +243,7 @@ export default class Infobar extends React.Component {
                         <Search
                             placeholder="Search users..."
                             bindKey
+                            shouldResetInput={this.state.shouldResetSearch}
                             onChange={this._search}
                             forcedQuery={forcedQuery}
                             location={identifier}

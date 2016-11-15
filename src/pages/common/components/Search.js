@@ -25,12 +25,6 @@ export default class Search extends React.Component {
         }
     }
 
-    componentWillUnmount() {
-        if (this.props.bindKey) {
-            shortcutManager.unbind('Search')
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
         const shouldSetValue = !this.isInitialized || (
                 nextProps.location &&
@@ -53,6 +47,16 @@ export default class Search extends React.Component {
             }
 
             this.isInitialized = true
+        }
+
+        if (!this.props.shouldResetInput && nextProps.shouldResetInput) {
+            this.refs.searchInput.value = ''
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.props.bindKey) {
+            shortcutManager.unbind('Search')
         }
     }
 
@@ -100,6 +104,7 @@ Search.propTypes = {
     queryPath: PropTypes.string.isRequired,
     params: PropTypes.object,
     forcedQuery: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    shouldResetInput: PropTypes.bool,
     disabled: PropTypes.bool,
 
     className: PropTypes.string,

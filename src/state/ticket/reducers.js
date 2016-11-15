@@ -1,5 +1,6 @@
 import * as actions from './actions'
 import * as types from './constants'
+import * as userTypes from './../users/constants'
 import {SUBMIT_ACTIVITY_SUCCESS} from '../activity/constants'
 import {Map, List, fromJS} from 'immutable'
 import {convertFromHTML, ContentState} from 'draft-js'
@@ -463,13 +464,22 @@ export default (state = initialState, action) => {
                 if (latestEventDatetime && eventDatetime !== latestEventDatetime) {
                     let newMessages = event.getIn(['object', 'messages'])
                     if (newMessages) {
-                        newMessages = newMessages.sort((a, b) => new Date(a.get('created_datetime')) - new Date(b.get('created_datetime')))
+                        newMessages = newMessages.sort(
+                            (a, b) => new Date(a.get('created_datetime')) - new Date(b.get('created_datetime'))
+                        )
                     }
                     newState = newState.set('messages', newMessages)
                 }
                 return newState
             }
 
+            return state
+        }
+
+        case userTypes.MERGE_USERS_SUCCESS: {
+            if (action.resp && state.getIn(['requester', 'id']) === action.resp.id) {
+                return state.set('requester', fromJS(action.resp))
+            }
             return state
         }
 

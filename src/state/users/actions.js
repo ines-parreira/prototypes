@@ -170,4 +170,33 @@ export function fetchUserHistory(userId, options) {
     }
 }
 
+export function mergeUsers(baseUserId, mergeUserId, data) {
+    return (dispatch) => {
+        dispatch({
+            type: types.MERGE_USERS_START
+        })
+
+        return axios.put(`/api/users/${baseUserId}/merge/${mergeUserId}/`, data)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.MERGE_USERS_SUCCESS,
+                    resp
+                })
+
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Users successfully merged. Search data is being updated, it might take a few minutes.'
+                }))
+            })
+            .catch(error => {
+                dispatch({
+                    type: types.MERGE_USERS_ERROR,
+                    error,
+                    reason: 'Couldn\'t merge users. Please try again in a few minutes.'
+                })
+            })
+    }
+}
+
 export const clearUser = () => ({type: types.CLEAR_USER})

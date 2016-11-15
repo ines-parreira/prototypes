@@ -23,9 +23,14 @@ export const DELETE_USER_START = 'DELETE_USER_START'
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'
 export const DELETE_USER_ERROR = 'DELETE_USER_ERROR'
 
-// Action related to user history (timeline)
+// Actions related to user history (timeline)
 export const FETCH_USER_HISTORY_START = 'FETCH_USER_HISTORY_START'
 export const FETCH_USER_HISTORY_SUCCESS = 'FETCH_USER_HISTORY_SUCCESS'
 export const FETCH_USER_HISTORY_ERROR = 'FETCH_USER_HISTORY_ERROR'
+
+// Actions related to merging users
+export const MERGE_USERS_START = 'MERGE_USERS_START'
+export const MERGE_USERS_SUCCESS = 'MERGE_USERS_SUCCESS'
+export const MERGE_USERS_ERROR = 'MERGE_USERS_ERROR'
 
 export const CLEAR_USER = 'CLEAR_USER'

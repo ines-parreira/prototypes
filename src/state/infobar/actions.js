@@ -104,3 +104,8 @@ export const setInfobarMode = (mode) => ({
     type: types.SET_INFOBAR_MODE,
     mode
 })
+
+export const toggleMergeUsersModal = (value) => ({
+    type: types.TOGGLE_MERGE_USERS_MODAL,
+    value
+})

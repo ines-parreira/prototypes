@@ -17,7 +17,8 @@ export const initialState = fromJS({
         loading: {
             history: false,
             active: false,
-            submitUser: false
+            submitUser: false,
+            merge: false
         }
     }
 })
@@ -41,7 +42,12 @@ export default (state = initialState, action) => {
             let newState = state
 
             // This is a bit lame but that's the proper definition of an agent.
-            if (action.roles && action.roles.includes('agent') && action.roles.includes('admin')) {
+            if (
+                action.roles
+                && action.roles.length === 2
+                && action.roles.includes('agent')
+                && action.roles.includes('admin')
+            ) {
                 newState = newState.set('agents', fromJS(action.resp.data))
             }
 
@@ -137,6 +143,21 @@ export default (state = initialState, action) => {
                 .filter(item => !action.ids.includes(item.get('id')))
 
             return state.set('items', newItems)
+        }
+
+        case types.MERGE_USERS_START: {
+            return state.setIn(['_internal', 'loading', 'merge'], true)
+        }
+
+        case types.MERGE_USERS_ERROR:
+        case types.MERGE_USERS_SUCCESS: {
+            let newState = state.setIn(['_internal', 'loading', 'merge'], false)
+
+            if (action.resp && state.getIn(['active', 'id']) === action.resp.id) {
+                newState = newState.set('active', fromJS(action.resp))
+            }
+
+            return newState
         }
 
         default:
