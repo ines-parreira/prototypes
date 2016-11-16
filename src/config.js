@@ -79,6 +79,8 @@ export const USER_CHANNEL_CLASS = {
     email: 'icon mail',
     twitter: 'icon twitter',
     facebook: 'icon facebook square',
+    'facebook-account': 'icon facebook square',
+    'facebook-message': 'icon facebook-messenger',
     chat: 'icon comments',
     phone: 'icon phone',
 }
