@@ -12,6 +12,15 @@ import MultiSelectBinaryChoiceField from './../formFields/MultiSelectBinaryChoic
 
 class MergeUsersModal extends React.Component {
     componentDidMount = () => {
+        amplitude.getInstance().logEvent('Opened MergeUsers Modal', {
+            destinationUserChannelType: this.props.destinationUser.get('channels').map(channel => channel.get('type'))
+                .toList()
+                .toJS(),
+            sourceUser: this.props.sourceUser.get('channels').map(channel => channel.get('type'))
+                .toList()
+                .toJS()
+        })
+
         const initData = {
             user: this.props.destinationUser.map((v, k) => {
                 if (!v) {
@@ -50,6 +59,10 @@ class MergeUsersModal extends React.Component {
     _handleSubmit = (data) => {
         // submit user to merge
         if (confirm('This action is irreversible. Are you sure you want to merge those users?')) {
+            amplitude.getInstance().logEvent('Confirmed MergeUser', {
+                finalUser: data.user.channels.map(channel => channel.type)
+            })
+
             this.props.mergeUsers(
                 this.props.destinationUser.get('id'),
                 this.props.sourceUser.get('id'),
