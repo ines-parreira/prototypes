@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {fromJS} from 'immutable'
 import {DEFAULT_ACTIONS} from '../../config'
 import {RECORD_MACRO} from '../ticket/constants'
 import * as types from './constants'
@@ -6,7 +7,11 @@ import {notify} from '../notifications/actions'
 import ticketReplyCache from '../../pages/common/utils/ticketReplyCache'
 
 export function deleteActionOnApplied(actionIndex, ticketId) {
-    ticketReplyCache.set(ticketId, ticketReplyCache.get(ticketId).getIn(['macro', 'actions']).delete(actionIndex))
+    ticketReplyCache.set(ticketId,
+        ticketReplyCache
+            .getIn([ticketId, 'macro', 'actions'], fromJS([]))
+            .delete(actionIndex)
+    )
 
     return {
         type: types.DELETE_ACTION_ON_APPLIED,
@@ -15,7 +20,11 @@ export function deleteActionOnApplied(actionIndex, ticketId) {
 }
 
 export function updateActionArgsOnApplied(actionIndex, value, ticketId) {
-    ticketReplyCache.set(ticketId, ticketReplyCache.get(ticketId).setIn(['macro', 'actions', actionIndex, 'arguments'], value))
+    ticketReplyCache.set(ticketId,
+        ticketReplyCache
+            .get(ticketId, fromJS({}))
+            .setIn(['macro', 'actions', actionIndex, 'arguments'], value)
+    )
 
     return {
         type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
