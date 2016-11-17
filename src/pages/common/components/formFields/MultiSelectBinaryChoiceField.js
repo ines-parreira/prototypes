@@ -4,6 +4,7 @@ import _isEqual from 'lodash/isEqual'
 import _find from 'lodash/find'
 import _findIndex from 'lodash/findIndex'
 import _forEach from 'lodash/forEach'
+import _compact from 'lodash/compact'
 
 
 class MultiSelectBinaryChoiceField extends React.Component {
@@ -25,7 +26,7 @@ class MultiSelectBinaryChoiceField extends React.Component {
     _onChange(value, forceAdd = false) {
         const newVal = this.props.input.value || []
 
-        const index = _findIndex(newVal, (channel) => channel.address === value.address && channel.type === value.type)
+        const index = _findIndex(_compact(newVal), channel => channel.address === value.address && channel.type === value.type)
 
         if (index === -1) {
             newVal.push(value)
