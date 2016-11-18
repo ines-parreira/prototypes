@@ -41,8 +41,11 @@ export default class TicketReply extends React.Component {
         if (nextProps.contentState === null || nextProps.fromMacro) {
             this.isInitialized = false
             this.setState(this._getEditorState(nextProps))
-            // Mark the fromMacro as false so we don't get the same macro twice
-            this.props.actions.ticket.receivedMacro()
+
+            if (nextProps.fromMacro) {
+                // Mark the fromMacro as false so we don't get the same macro twice
+                this.props.actions.ticket.receivedMacro()
+            }
         }
     }
 
@@ -102,7 +105,10 @@ export default class TicketReply extends React.Component {
     _updateMessageText = _.throttle((editorState) => {
         const contentState = editorState.getCurrentContent()
         const selectionState = editorState.getSelection()
-        this.props.actions.ticket.setResponseText(this.props.currentUser, Map({contentState, selectionState}), this.props.ticket.get('id'))
+        this.props.actions.ticket.setResponseText(this.props.currentUser, Map({
+            contentState,
+            selectionState
+        }), this.props.ticket.get('id'))
     }, 300)
 
     // store the content before the tab (completion from the extension), this allows us to manage the state correctly
