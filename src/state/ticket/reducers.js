@@ -448,7 +448,7 @@ export default (state = initialState, action) => {
 
         case SUBMIT_ACTIVITY_SUCCESS: {
             // See if we have an event for our ticket
-            const event = fromJS(action.resp.events).find((e) => {
+            const event = fromJS(action.resp.events || []).find((e) => {
                 if (!e) {
                     return false
                 }
