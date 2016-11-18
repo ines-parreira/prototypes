@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
 
         case types.SUBMIT_ACTIVITY_SUCCESS: {
             // sort by created_datetime the events that come from the API
-            const events = fromJS(action.resp.events || {}).sort((a, b) => (
+            const events = fromJS(action.resp.events || []).sort((a, b) => (
                 new Date(b.get('created_datetime')) - new Date(a.get('created_datetime'))
             ))
 
