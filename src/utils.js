@@ -3,6 +3,7 @@ import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
 import sanitizeHtml from 'sanitize-html'
+import {stateToHTML as _stateToHTML} from 'draft-js-export-html'
 
 /**
  * Guess if a passed string is a url
@@ -283,4 +284,14 @@ export function closest(element, selector) {
     }
 
     return null
+}
+
+/**
+ * Single stateToHTML config for the entire app (same options everywhere if needed)
+ * @param contentState
+ */
+export function stateToHTML(contentState) {
+    // allows to set options to stateToHTML rendering library that will apply on the entire app
+    const options = {}
+    return _stateToHTML(contentState, options)
 }

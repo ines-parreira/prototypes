@@ -4,7 +4,7 @@ import * as userTypes from './../users/constants'
 import {SUBMIT_ACTIVITY_SUCCESS} from '../activity/constants'
 import {Map, List, fromJS} from 'immutable'
 import {convertFromHTML, ContentState} from 'draft-js'
-import {stateToHTML} from 'draft-js-export-html'
+import {stateToHTML} from '../../utils'
 import {renderTemplate} from '../../pages/common/utils/template'
 
 import _isUndefined from 'lodash/isUndefined'

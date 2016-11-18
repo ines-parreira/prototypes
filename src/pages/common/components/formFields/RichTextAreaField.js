@@ -3,21 +3,19 @@ import classNames from 'classnames'
 
 import {EditorState, RichUtils, ContentState, convertFromHTML} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
-import {stateToHTML} from 'draft-js-export-html'
+import {stateToHTML} from '../../../../utils'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
-import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-linkify-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
 const dndPlugin = createDndPlugin()
 const linkifyPlugin = createLinkifyPlugin()
-const emojiPlugin = createEmojiPlugin({
-    emojiSuggestions: 'emoji-suggestions'
-})
-const plugins = [emojiPlugin, dndPlugin, linkifyPlugin]
+const emojiPlugin = createEmojiPlugin()
 
+const {EmojiSuggestions} = emojiPlugin
+const plugins = [emojiPlugin, dndPlugin, linkifyPlugin]
 
 export default class RichTextAreaField extends React.Component {
     constructor(props) {
@@ -75,13 +73,16 @@ export default class RichTextAreaField extends React.Component {
 
         if (this.state) {
             editor = (
-                <Editor
-                    editorState={this.state.editorState}
-                    onChange={this._onChange}
-                    plugins={plugins}
-                    placeholder={placeholder}
-                    handleKeyCommand={this._handleKeyCommand}
-                />
+                <div>
+                    <Editor
+                        editorState={this.state.editorState}
+                        onChange={this._onChange}
+                        plugins={plugins}
+                        placeholder={placeholder}
+                        handleKeyCommand={this._handleKeyCommand}
+                    />
+                    <EmojiSuggestions />
+                </div>
             )
         }
 

@@ -6,8 +6,7 @@ import * as mousetrap from 'mousetrap'
 import _merge from 'lodash/merge'
 import _clone from 'lodash/clone'
 import keymap from './keymap'
-import {isEditable, closest} from '../../../utils'
-import {getModifier} from '../../../utils'
+import {getModifier, isEditable, closest} from '../../../utils'
 
 class ShortcutManager {
     constructor() {
