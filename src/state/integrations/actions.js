@@ -106,10 +106,13 @@ function onFacebookLoginSuccess(dispatch) {
             browserHistory.push('/app/integrations/facebook/new')
         } else {
             if (response.authResponse) {
-                axios.post(`/callbacks/facebook/receive-access-token?user_id=${response.authResponse.userID}&access_token=${response.authResponse.accessToken}`)
+                const params = encodeURI(`user_id=${response.authResponse.userID}&` +
+                    `access_token=${response.authResponse.accessToken}`)
+                axios.post(`/callbacks/facebook/receive-access-token?${params}`)
                     .then((json = {}) => json.data)
                     .then(resp => {
-                        dispatch({
+                        browserHistory.push('/app/integrations/facebook/new')
+                        return dispatch({
                             type: types.FACEBOOK_LOGIN_SUCCESS,
                             resp
                         })
@@ -118,14 +121,14 @@ function onFacebookLoginSuccess(dispatch) {
                         return dispatch({
                             type: types.FACEBOOK_LOGIN_ERROR,
                             error,
-                            reason: 'Failed to POST facebook token to the backend'
+                            reason: 'Failed to add Facebook pages, please try again.'
                         })
                     })
             } else {
-                dispatch({
+                return dispatch({
                     type: types.FACEBOOK_LOGIN_ERROR,
                     error: true,
-                    reason: 'User canceled login or did not fully authorize'
+                    reason: 'Failed to add Facebook pages: Login was canceled or authorization was refused.'
                 })
             }
         }
@@ -151,19 +154,28 @@ export const facebookLoginStatus = () => ((dispatch) => {
  * See https://developers.facebook.com/docs/facebook-login/web
  */
 export const facebookLogin = () => ((dispatch, getState) => {
-    const status = getState().integrations.getIn(['_internal', 'facebookLoginStatus'])
+    const integrations = getState().integrations
+    const status = integrations.getIn(['_internal', 'facebookLoginStatus'])
+    const facebookPages = integrations.get('integrations').filter(i => i.get('facebook'))
+    const connections = facebookPages.map(i => i.get('connections')).flatten(true)
 
     dispatch({
         type: types.FACEBOOK_LOGIN
     })
 
-    if (status === 'connected') {
-        onFacebookLoginSuccess(dispatch)()
-    } else {
+    const shouldLogin = !(
+        status === 'connected' &&
+        facebookPages && facebookPages.size &&
+        connections && connections.size === facebookPages.size
+    )
+
+    if (shouldLogin) {
         // login popup
         FB.login(onFacebookLoginSuccess(dispatch), {
             scope: 'manage_pages,publish_pages,read_page_mailboxes'
         })
+    } else {
+        onFacebookLoginSuccess(dispatch)()
     }
 })
 
