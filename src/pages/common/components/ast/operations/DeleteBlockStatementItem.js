@@ -3,8 +3,8 @@ import React from 'react'
 export class DeleteBlockStatementItem extends React.Component {
 
     _handleClick = () => {
-        const { actions, index, parent } = this.props
-        actions.rules.modifyCodeast(index, parent, null, 'DELETE')
+        const { actions, rule, parent } = this.props
+        actions.rules.modifyCodeast(rule.get('id'), parent, null, 'DELETE')
     }
 
     render() {
@@ -22,8 +22,8 @@ export class DeleteBlockStatementItem extends React.Component {
 }
 
 DeleteBlockStatementItem.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     parent: React.PropTypes.object.isRequired,
 }
 

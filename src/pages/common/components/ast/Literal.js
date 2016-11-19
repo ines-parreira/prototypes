@@ -7,7 +7,7 @@ import Widget from './Widget'
  value: string | boolean | null | number | RegExp;
 }
  */
-const Literal = ({ value, index, actions, parent, leftsiblings, schemas }) => {
+const Literal = ({ value, rule, actions, parent, leftsiblings, schemas }) => {
     const parentNew = parent.push('value')
 
     return (
@@ -15,7 +15,7 @@ const Literal = ({ value, index, actions, parent, leftsiblings, schemas }) => {
             <Widget
                 value={value}
                 parent={parentNew}
-                index={index}
+                rule={rule}
                 actions={actions}
                 schemas={schemas}
                 leftsiblings={leftsiblings}
@@ -25,8 +25,8 @@ const Literal = ({ value, index, actions, parent, leftsiblings, schemas }) => {
 }
 
 Literal.propTypes = {
+    rule: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
     leftsiblings: PropTypes.object.isRequired,
     parent: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,

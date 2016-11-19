@@ -13,7 +13,7 @@ import getSyntaxTreeLeaves from '../utils'
  right: Expression;
 }
  */
-const BinaryExpression = ({ operator, left, right, index, actions, schemas, parent, leftsiblings }) => {
+const BinaryExpression = ({ operator, left, right, rule, actions, schemas, parent, leftsiblings }) => {
     const parentLeft = parent.push('left')
     const parentRight = parent.push('right')
     const parentOperator = parent.push('operator')
@@ -32,7 +32,7 @@ const BinaryExpression = ({ operator, left, right, index, actions, schemas, pare
                 <Expression
                     {...left}
                     parent={parentLeft}
-                    index={index}
+                    rule={rule}
                     actions={actions}
                     leftsiblings={leftsiblings}
                 />
@@ -41,7 +41,7 @@ const BinaryExpression = ({ operator, left, right, index, actions, schemas, pare
                 <Widget
                     value={operator}
                     parent={parentOperator}
-                    index={index}
+                    rule={rule}
                     actions={actions}
                     schemas={schemas}
                     leftsiblings={leftsiblings2}
@@ -51,7 +51,7 @@ const BinaryExpression = ({ operator, left, right, index, actions, schemas, pare
                 <Expression
                     {...right}
                     parent={parentRight}
-                    index={index}
+                    rule={rule}
                     actions={actions}
                     schemas={schemas}
                     leftsiblings={leftsiblings3}
@@ -62,8 +62,8 @@ const BinaryExpression = ({ operator, left, right, index, actions, schemas, pare
 }
 
 BinaryExpression.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     left: React.PropTypes.object.isRequired,
     leftsiblings: React.PropTypes.object.isRequired,
     operator: React.PropTypes.object.isRequired,

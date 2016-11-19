@@ -10,7 +10,7 @@ import Widget from './Widget'
  kind: "init" | "get" | "set";
  }
  */
-const Property = ({theKey, value, actions, leftsiblings, parent, index, schemas, config}) => (
+const Property = ({theKey, value, actions, leftsiblings, parent, rule, schemas, config}) => (
     <div className="field">
         <div className="ui labeled input">
             <div className="ui label">{(config && config.name) || theKey.name}</div>
@@ -20,7 +20,7 @@ const Property = ({theKey, value, actions, leftsiblings, parent, index, schemas,
                 parent={parent.push('value', 'value')}
                 leftsiblings={leftsiblings}
                 actions={actions}
-                index={index}
+                rule={rule}
                 schemas={schemas}
             />
         </div>
@@ -28,8 +28,8 @@ const Property = ({theKey, value, actions, leftsiblings, parent, index, schemas,
 )
 
 Property.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     leftsiblings: React.PropTypes.object.isRequired,
     parent: React.PropTypes.object.isRequired,
     schemas: React.PropTypes.object.isRequired,

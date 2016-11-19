@@ -11,7 +11,7 @@ import Property from '../Property'
  })
 
  */
-const ObjectExpression = ({properties, leftsiblings, parent, actions, index, schemas, config}) => {
+const ObjectExpression = ({properties, leftsiblings, parent, actions, rule, schemas, config}) => {
     const propertiesComp = properties.map((property, idx) => {
         let leftsiblings2
         if (leftsiblings !== undefined) {
@@ -30,7 +30,7 @@ const ObjectExpression = ({properties, leftsiblings, parent, actions, index, sch
                 actions={actions}
                 schemas={schemas}
                 config={argConfig}
-                index={index}
+                rule={rule}
             />
         )
     })
@@ -42,7 +42,7 @@ const ObjectExpression = ({properties, leftsiblings, parent, actions, index, sch
 
 ObjectExpression.propTypes = {
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
+    rule: React.PropTypes.object.isRequired,
     leftsiblings: React.PropTypes.object.isRequired,
     parent: React.PropTypes.object.isRequired,
     properties: React.PropTypes.array.isRequired,

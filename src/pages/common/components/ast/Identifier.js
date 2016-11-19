@@ -8,7 +8,7 @@ import Widget from './Widget'
  name: string;
 }
  */
-const Identifier = ({ name, parent, index, actions, schemas, leftsiblings }) => {
+const Identifier = ({ name, parent, rule, actions, schemas, leftsiblings }) => {
     const parentNew = parent.push('name')
 
     switch (name) {
@@ -22,7 +22,7 @@ const Identifier = ({ name, parent, index, actions, schemas, leftsiblings }) => 
                     <Widget
                         value={name}
                         parent={parentNew}
-                        index={index}
+                        rule={rule}
                         actions={actions}
                         leftsiblings={leftsiblings}
                         schemas={schemas}
@@ -33,8 +33,8 @@ const Identifier = ({ name, parent, index, actions, schemas, leftsiblings }) => 
 }
 
 Identifier.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     leftsiblings: React.PropTypes.object.isRequired,
     name: React.PropTypes.string.isRequired,
     parent: React.PropTypes.object.isRequired,

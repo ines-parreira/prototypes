@@ -2,34 +2,29 @@ import React, {PropTypes} from 'react'
 
 import RuleTableRow from './RuleTableRow'
 
-const RuleTable = ({actions, currentUser, rules, schemas}) => (
+const RuleTable = ({actions, rules}) => (
     <table className="ui selectable basic padded table">
         <thead>
             <tr>
                 <th>Details</th>
-                <th>Updated</th>
+                <th className="right aligned">Updated</th>
             </tr>
         </thead>
         {
-            rules.map((rule, index) =>
+            rules.map((rule, i) =>
                 <RuleTableRow
                     actions={actions}
-                    currentUser={currentUser}
-                    key={index}
-                    index={index}
+                    key={i}
                     rule={rule}
-                    schemas={schemas}
                 />
-            )
+            ).toList()
         }
     </table>
 )
 
 RuleTable.propTypes = {
     actions: PropTypes.object.isRequired,
-    currentUser: PropTypes.object,
     rules: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired,
 }
 
 export default RuleTable

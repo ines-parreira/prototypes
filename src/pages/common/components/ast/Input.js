@@ -3,8 +3,8 @@ import React from 'react'
 class Input extends React.Component {
 
     _handleChange = (event) => {
-        const { actions, index, parent } = this.props
-        actions.modifyCodeast(index, parent, event.target.value, 'UPDATE')
+        const { actions, rule, parent } = this.props
+        actions.modifyCodeast(rule.get('id'), parent, event.target.value, 'UPDATE')
     }
 
     render() {
@@ -27,8 +27,8 @@ class Input extends React.Component {
 }
 
 Input.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     parent: React.PropTypes.object.isRequired,
     value: React.PropTypes.string.isRequired,
     widgetType: React.PropTypes.string.isRequired,

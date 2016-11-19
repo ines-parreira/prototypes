@@ -12,7 +12,7 @@ import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
  computed: boolean;
  }
  */
-const MemberExpression = ({object, property, index, actions, parent, leftsiblings, schemas}) => {
+const MemberExpression = ({object, property, rule, actions, parent, leftsiblings, schemas}) => {
     let left
     if (leftsiblings) {
         left = leftsiblings.push(...getSyntaxTreeLeaves(object))
@@ -34,7 +34,7 @@ const MemberExpression = ({object, property, index, actions, parent, leftsibling
             <Expression
                 {...object}
                 parent={parent.push('object')}
-                index={index}
+                rule={rule}
                 actions={actions}
                 schemas={schemas}
                 leftsiblings={leftsiblings}
@@ -42,7 +42,7 @@ const MemberExpression = ({object, property, index, actions, parent, leftsibling
             <Expression
                 {...property}
                 parent={parent.push('property')}
-                index={index}
+                rule={rule}
                 actions={actions}
                 leftsiblings={left}
                 schemas={schemas}
@@ -52,8 +52,8 @@ const MemberExpression = ({object, property, index, actions, parent, leftsibling
 }
 
 MemberExpression.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     leftsiblings: React.PropTypes.object.isRequired,
     object: React.PropTypes.object.isRequired,
     parent: React.PropTypes.object.isRequired,

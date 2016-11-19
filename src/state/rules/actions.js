@@ -26,17 +26,20 @@ export const receiveRules = (rules) => ({
     rules
 })
 
-export const modifyCodeast = (index, path, value, operation) => ({
-    type: types.RULES_UPDATE_CODE_AST,
-    index,
-    path,
-    value,
-    operation
-})
+export const modifyCodeast = (id, path, value, operation) => (dispatch, getState) => (
+    dispatch({
+        type: types.RULES_UPDATE_CODE_AST,
+        schemas: getState().schemas,
+        id,
+        path,
+        value,
+        operation,
+    })
+)
 
-export const initialiseCodeAST = (index) => ({
+export const initialiseCodeAST = (id) => ({
     type: types.RULES_INITIALISE_CODE_AST,
-    index,
+    id,
 })
 
 export const fail = (error, reason) => ({
@@ -49,15 +52,11 @@ export const fail = (error, reason) => ({
  * Create a rule
  * @param data
  */
-export const create = (data) => {
-    return dispatch => {
-        return axios.post('/api/rules/', data)
-            .then(response => dispatch(addRuleEnd(response.data)))
-            .catch(error => {
-                return dispatch(fail(error, 'Unable to create the rule'))
-            })
-    }
-}
+export const create = (data) => (dispatch) => (
+    axios.post('/api/rules/', data)
+        .then(response => dispatch(addRuleEnd(response.data)))
+        .catch(error => dispatch(fail(error, 'Unable to create the rule')))
+)
 
 /**
  * Save a rule
@@ -78,94 +77,82 @@ export const save = (data) => {
 
 /**
  * Activate a rule
- * @param index
+ * @param id rule id
  */
-export const activate = (index) => {
-    return (dispatch, getState) => {
-        const {id} = getState().rules.get(index)
-        return axios.put(`/api/rules/${id}/`, {deactivated_datetime: null})
-            .then(() => {
-                dispatch(({
-                    type: types.ACTIVATE_RULE,
-                    index,
-                }))
-                dispatch(notify({
-                    type: 'success',
-                    message: 'Rule deactivated successfully',
-                }))
-            })
-            .catch(error => {
-                return dispatch(fail(error, 'Unable to deactivate the rule'))
-            })
-    }
-}
+export const activate = (id) => (dispatch) => (
+    axios.put(`/api/rules/${id}/`, {deactivated_datetime: null})
+        .then(() => {
+            dispatch(({
+                type: types.ACTIVATE_RULE,
+                id,
+            }))
+            dispatch(notify({
+                type: 'success',
+                message: 'Rule activated successfully',
+            }))
+        })
+        .catch(error => {
+            return dispatch(fail(error, 'Unable to activate the rule'))
+        })
+)
 
 
 /**
  * Deactivate a rule
- * @param index
+ * @param id
  */
-export const deactivate = (index) => {
-    return (dispatch, getState) => {
-        const {id} = getState().rules.get(index)
-        return axios.put(`/api/rules/${id}/`, {deactivated_datetime: new Date()})
-            .then(() => {
-                dispatch(({
-                    type: types.DEACTIVATE_RULE,
-                    index,
-                }))
-                dispatch(notify({
-                    type: 'success',
-                    message: 'Rule deactivated successfully',
-                }))
-            })
-            .catch(error => {
-                return dispatch(fail(error, 'Unable to deactivate the rule'))
-            })
-    }
-}
+export const deactivate = (id) => (dispatch) => (
+    axios.put(`/api/rules/${id}/`, {deactivated_datetime: new Date()})
+        .then(() => {
+            dispatch(({
+                type: types.DEACTIVATE_RULE,
+                id,
+            }))
+            dispatch(notify({
+                type: 'success',
+                message: 'Rule deactivated successfully',
+            }))
+        })
+        .catch(error => {
+            return dispatch(fail(error, 'Unable to deactivate the rule'))
+        })
+)
 
 /**
  * Delete a rule
- * @param index
+ * @param id
  */
-export const remove = (index) => {
-    return (dispatch, getState) => {
-        const {id} = getState().rules.get(index)
-        return axios.put(`/api/rules/${id}/`, {deleted_datetime: new Date()})
-            .then(() => {
-                dispatch(({
-                    type: types.REMOVE_RULE,
-                    index,
-                }))
-                dispatch(notify({
-                    type: 'success',
-                    message: 'Rule removed successfully',
-                }))
-            })
-            .catch(error => {
-                return dispatch(fail(error, 'Unable to remove the rule'))
-            })
-    }
-}
+export const remove = (id) => (dispatch) => (
+    axios.delete(`/api/rules/${id}/`)
+        .then(() => {
+            dispatch(({
+                type: types.REMOVE_RULE,
+                id,
+            }))
+            dispatch(notify({
+                type: 'success',
+                message: 'Rule deleted successfully',
+            }))
+        })
+        .catch(error => {
+            return dispatch(fail(error, 'Unable to delete the rule'))
+        })
+)
 
 /**
  * Reset the code ast of a rule
- * @param index
+ * @param id
  */
-export const reset = (index) => {
-    return (dispatch, getState) => {
-        const {id} = getState().rules.get(index)
-        return axios.get(`/api/rules/${id}`)
-            .then((json = {}) => json.data)
-            .then(response => dispatch(modifyCodeast(
-                index,
-                List([]),
-                response.code_ast || types.DEFAULT_IF_STATEMENT,
-                'UPDATE'
-            )))
-    }
-}
+export const reset = (id) => (dispatch) => (
+    axios.get(`/api/rules/${id}`)
+        .then((json = {}) => json.data)
+        .then(response => dispatch(modifyCodeast(
+            id,
+            List([]),
+            response.code_ast || types.DEFAULT_IF_STATEMENT,
+            'UPDATE'
+        )))
+)
 
 // Submit rule
 export function submitRule(url, comment) {

@@ -14,7 +14,7 @@ class AddLogicalAndCondition extends React.Component {
                 type: 'CallExpression',
                 callee: {
                     type: 'Identifier',
-                    name: 'equal'
+                    name: 'eq'
                 },
                 arguments: [
                     {
@@ -39,8 +39,8 @@ class AddLogicalAndCondition extends React.Component {
             right: null,
         }
 
-        const { actions, index, parent } = this.props
-        actions.rules.modifyCodeast(index, parent, actionNode, 'UPDATE_LOGICAL_AND')
+        const { actions, rule, parent } = this.props
+        actions.rules.modifyCodeast(rule.get('id'), parent, actionNode, 'UPDATE_LOGICAL_AND')
     }
 
     render() {
@@ -60,8 +60,8 @@ class AddLogicalAndCondition extends React.Component {
 }
 
 AddLogicalAndCondition.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     parent: React.PropTypes.object.isRequired,
     title: React.PropTypes.string.isRequired,
 }

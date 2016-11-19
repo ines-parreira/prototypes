@@ -6,14 +6,14 @@ import Program from '../../../common/components/ast/Program'
 class RuleItem extends React.Component {
     constructor() {
         super()
-        this.state = {showCode: true}
+        this.state = {showCode: false}
     }
 
     componentDidMount() {
-        const {actions, index, rule} = this.props
+        const {actions, rule} = this.props
 
-        if (!rule.code) {
-            actions.rules.initialiseCodeAST(index)
+        if (!rule.get('code')) {
+            actions.rules.initialiseCodeAST(rule.get('id'))
         }
     }
 
@@ -22,43 +22,43 @@ class RuleItem extends React.Component {
 
         event.preventDefault()
         actions.rules.save({
-            id: rule.id,
-            title: rule.title,
-            code: rule.code,
-            code_ast: rule.code_ast,
+            id: rule.get('id'),
+            title: rule.get('title'),
+            code: rule.get('code'),
+            code_ast: rule.get('code_ast'),
         })
     }
 
     _handleReset = (event) => {
-        const {actions, index} = this.props
+        const {actions, rule} = this.props
         event.preventDefault()
 
         if (confirm('Are you sure you want to reset this rule?')) {
-            actions.rules.reset(index)
+            actions.rules.reset(rule.get('id'))
         }
     }
 
     _handleActivate = (event) => {
-        const {actions, index} = this.props
+        const {actions, rule} = this.props
         event.preventDefault()
-        actions.rules.activate(index)
+        actions.rules.activate(rule.get('id'))
     }
 
     _handleDeactivate = (event) => {
-        const {actions, index} = this.props
+        const {actions, rule} = this.props
         event.preventDefault()
 
         if (confirm('Are you sure you want to deactivate this rule?')) {
-            actions.rules.deactivate(index)
+            actions.rules.deactivate(rule.get('id'))
         }
     }
 
     _handleRemove = (event) => {
-        const {actions, index} = this.props
+        const {actions, rule} = this.props
         event.preventDefault()
 
         if (confirm('Are you sure you want to delete this rule?')) {
-            actions.rules.remove(index)
+            actions.rules.remove(rule.get('id'))
         }
     }
 
@@ -70,16 +70,16 @@ class RuleItem extends React.Component {
 
     _renderToggleCode() {
         const toggleClasses = classNames('angle cursor icon', {
-            up: !this.state.showCode,
-            down: this.state.showCode
+            up: this.state.showCode,
+            down: !this.state.showCode
         })
         return (
             <div>
                 <a className="ui red ribbon label" title="The code behind the scenes" onClick={this._handleToggleCode}>
-                    <i className="code icon"/> Code
+                    <i className="code icon" /> Code
                 </a>
                 <a className="ui floated right" title="Toggle code" onClick={this._handleToggleCode}>
-                    <i className={toggleClasses}/>
+                    <i className={toggleClasses} />
                 </a>
             </div>
         )
@@ -87,10 +87,11 @@ class RuleItem extends React.Component {
 
     _renderCode() {
         const {rule} = this.props
+        const code = rule.get('code')
         if (this.state.showCode) {
             return (
                 <pre>
-                    <code>{rule.code && rule.code.trim()}</code>
+                    <code>{code && code.trim()}</code>
                 </pre>
             )
         }
@@ -129,7 +130,7 @@ class RuleItem extends React.Component {
             </button>
         )
 
-        if (rule.deactivated_datetime) {
+        if (rule.get('deactivated_datetime')) {
             rmBtn = (
                 <button
                     type="button"
@@ -161,8 +162,11 @@ class RuleItem extends React.Component {
 
 
     render() {
-        const {index, rule, actions, schemas} = this.props
-
+        const {rule, actions} = this.props
+        let codeAST = rule.get('code_ast')
+        if (codeAST) {
+            codeAST = codeAST.toJS()
+        }
 
         return (
             <div className="item">
@@ -172,7 +176,11 @@ class RuleItem extends React.Component {
                         <p />
                         {this._renderCode()}
                     </div>
-                    <Program {...rule.code_ast} index={index} schemas={schemas} actions={actions}/>
+                    <Program
+                        {...codeAST}
+                        rule={rule}
+                        actions={actions}
+                    />
                     {this._renderButtons()}
                 </div>
             </div>
@@ -181,10 +189,8 @@ class RuleItem extends React.Component {
 }
 
 RuleItem.propTypes = {
-    index: React.PropTypes.number,
     rule: React.PropTypes.object,
     actions: React.PropTypes.object,
-    schemas: React.PropTypes.object,
 }
 
 export default RuleItem

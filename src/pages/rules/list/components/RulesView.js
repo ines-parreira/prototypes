@@ -6,7 +6,7 @@ import PageHeader from '../../../common/components/PageHeader'
 import RuleForm from './RuleForm'
 import RuleTable from './RuleTable'
 
-class RulesView extends React.Component {
+export default class RulesView extends React.Component {
     constructor() {
         super()
         this.state = {showForm: false}
@@ -30,7 +30,10 @@ class RulesView extends React.Component {
     }
 
     render() {
-        const {actions, currentUser, rules, schemas} = this.props
+        const {actions, rules} = this.props
+
+        const activeRules = rules.filter(r => !r.get('deactivated_datetime'))
+        const inactiveRules = rules.filter(r => r.get('deactivated_datetime'))
 
         return (
             <div className="view">
@@ -52,12 +55,26 @@ class RulesView extends React.Component {
                         the text 'refund' or send a satisfaction survey after the ticket was closed for more than 48h.
                     </p>
                 </div>
-                <RuleTable
-                    actions={actions}
-                    currentUser={currentUser}
-                    rules={rules}
-                    schemas={schemas}
-                />
+                {activeRules && !activeRules.isEmpty() && (
+                    <div>
+                        <h4>Active Rules</h4>
+                        <RuleTable
+                            actions={actions}
+                            rules={activeRules}
+                        />
+
+                    </div>
+                )}
+                {inactiveRules && !inactiveRules.isEmpty() && (
+                    <div>
+                        <h4>Inactive Rules</h4>
+                        <RuleTable
+                            actions={actions}
+                            rules={inactiveRules}
+                        />
+                    </div>
+                )}
+
                 <Modal
                     header="Create New Rule"
                     isOpen={this.state.showForm}
@@ -75,9 +92,5 @@ class RulesView extends React.Component {
 
 RulesView.propTypes = {
     actions: PropTypes.object,
-    currentUser: PropTypes.object,
     rules: PropTypes.object,
-    schemas: PropTypes.object,
 }
-
-export default RulesView

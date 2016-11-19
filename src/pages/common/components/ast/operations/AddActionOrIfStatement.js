@@ -39,8 +39,8 @@ class AddActionOrIfStatement extends React.Component {
             }
         }
 
-        const { actions, index, parent } = this.props
-        actions.rules.modifyCodeast(index, parent.push('body'), actionNode, 'INSERT')
+        const { actions, rule, parent } = this.props
+        actions.rules.modifyCodeast(rule.get('id'), parent.push('body'), actionNode, 'INSERT')
     }
 
     _addIfStatement = () => {
@@ -82,8 +82,8 @@ class AddActionOrIfStatement extends React.Component {
             }
         }
 
-        const { actions, index, parent } = this.props
-        actions.rules.modifyCodeast(index, parent.push('body'), actionNode, 'INSERT')
+        const { actions, rule, parent } = this.props
+        actions.rules.modifyCodeast(rule.get('id'), parent.push('body'), actionNode, 'INSERT')
     }
 
     render() {
@@ -107,8 +107,8 @@ class AddActionOrIfStatement extends React.Component {
 }
 
 AddActionOrIfStatement.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     parent: React.PropTypes.object.isRequired,
     title: React.PropTypes.string.isRequired,
 }

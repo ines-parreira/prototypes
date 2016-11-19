@@ -72,12 +72,12 @@ class Action extends React.Component {
     }
 
     render() {
-        const {actions, index, parent, value} = this.props
+        const {actions, rule, parent, value} = this.props
         return (
             <div className="action">
                 <ActionSelect
                     actions={actions}
-                    index={index}
+                    rule={rule}
                     parent={parent.push('value')}
                     value={value}
                 />
@@ -89,11 +89,11 @@ class Action extends React.Component {
 }
 
 Action.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
     children: React.PropTypes.oneOfType(
         [React.PropTypes.array, React.PropTypes.element]
     ).isRequired,
-    index: React.PropTypes.number.isRequired,
     parent: React.PropTypes.object.isRequired,
     value: React.PropTypes.string,
 }

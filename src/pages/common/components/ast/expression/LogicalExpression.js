@@ -12,7 +12,7 @@ import getSyntaxTreeLeaves from '../utils'
  right: Expression;
 }
  */
-const LogicalExpression = ({ operator, left, right, index, parent, actions, leftsiblings, schemas }) => {
+const LogicalExpression = ({ operator, left, right, rule, parent, actions, leftsiblings, schemas }) => {
     let leftsiblings2
     let leftsiblings3
 
@@ -27,7 +27,7 @@ const LogicalExpression = ({ operator, left, right, index, parent, actions, left
                 <Expression
                     {...left}
                     parent={parent.push('left')}
-                    index={index}
+                    rule={rule}
                     actions={actions}
                     schemas={schemas}
                     leftsiblings={leftsiblings}
@@ -41,7 +41,7 @@ const LogicalExpression = ({ operator, left, right, index, parent, actions, left
                     <Expression
                         {...right}
                         parent={parent.push('right')}
-                        index={index}
+                        rule={rule}
                         actions={actions}
                         schemas={schemas}
                         leftsiblings={leftsiblings3}
@@ -54,8 +54,8 @@ const LogicalExpression = ({ operator, left, right, index, parent, actions, left
 
 
 LogicalExpression.propTypes = {
+    rule: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
     left: PropTypes.object.isRequired,
     leftsiblings: PropTypes.object,
     operator: PropTypes.string.isRequired,

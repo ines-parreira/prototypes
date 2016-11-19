@@ -3,24 +3,25 @@ import React from 'react'
 import {List} from 'immutable'
 import drop from 'lodash/drop'
 
-import Select from './widget/Select'
+import Select from './widget/ReactSelect'
 import StatusSelect from './widget/StatusSelect'
+import PrioritySelect from './widget/PrioritySelect'
 import TagSelect from './widget/TagSelect'
 
 class Widget extends React.Component {
 
     _handleChange = (value) => {
-        const {actions, index, parent} = this.props
-        actions.rules.modifyCodeast(index, parent, value, 'UPDATE')
+        const {actions, rule, parent} = this.props
+        actions.rules.modifyCodeast(rule.get('id'), parent, value, 'UPDATE')
     }
 
     _handleChangeByEvent = (event) => {
-        const {actions, index, parent} = this.props
-        actions.rules.modifyCodeast(index, parent, event.target.value, 'UPDATE')
+        const {actions, rule, parent} = this.props
+        actions.rules.modifyCodeast(rule.get('id'), parent, event.target.value, 'UPDATE')
     }
 
     _input = (value) => (
-        <span className="ui input">
+        <span className="ui input" style={{verticalAlign: 'middle'}}>
             <input type="text" value={value} onChange={this._handleChangeByEvent}/>
         </span>
     )
@@ -36,12 +37,21 @@ class Widget extends React.Component {
             path.push(item)
             const schema = schemas.getIn(path)
 
-            if (schema && schema.has('$ref')) {
-                // get the remaining path
-                const def = schema.get('$ref').split('/')[2]
-                const newLeft = List(['definitions', def, 'properties'])
-                const newRight = List(drop(left.toJS(), path.length))
-                return this._resolveLeft(newLeft.concat(newRight), schemas)
+            if (schema) {
+                let ref = ''
+                if (schema.get('type') === 'array') {
+                    ref = schema.getIn(['items', '$ref'])
+                } else if (schema.has('$ref')) {
+                    ref = schema.get('$ref')
+                }
+
+                if (ref) {
+                    const def = ref.split('/')[2]
+                    // get the remaining path
+                    const newLeft = List(['definitions', def, 'properties'])
+                    const newRight = List(drop(left.toJS(), path.length))
+                    return this._resolveLeft(newLeft.concat(newRight), schemas)
+                }
             }
         }
         return left
@@ -118,6 +128,8 @@ class Widget extends React.Component {
                 return <TagSelect {...widget} onChange={this._handleChange}/>
             case 'status-select':
                 return <StatusSelect {...widget} onChange={this._handleChange}/>
+            case 'priority-select':
+                return <PrioritySelect {...widget} onChange={this._handleChange}/>
             case 'input':
                 return this._input(value)
             case 'textarea':
@@ -129,8 +141,8 @@ class Widget extends React.Component {
 }
 
 Widget.propTypes = {
+    rule: React.PropTypes.object,
     value: React.PropTypes.any,
-    index: React.PropTypes.number,
     parent: React.PropTypes.object,
     schemas: React.PropTypes.object,
     actions: React.PropTypes.object,

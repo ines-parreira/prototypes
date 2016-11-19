@@ -7,9 +7,7 @@ import RulesView from './components/RulesView'
 import * as RuleActions from '../../../state/rules/actions'
 
 const mapStateToProps = (state) => ({
-    currentUser: state.currentUser,
     rules: state.rules,
-    schemas: state.schemas,
 })
 
 const mapDispatchToProps = (dispatch) => ({

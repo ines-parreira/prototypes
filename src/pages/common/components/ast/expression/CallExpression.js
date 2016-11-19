@@ -22,7 +22,7 @@ import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
  */
 class CallExpression extends React.Component {
     render() {
-        const {actions, callee, index, parent, schemas} = this.props
+        const {actions, callee, rule, parent, schemas} = this.props
         const {hovered} = this.context
 
         const funcArgs = this.props.arguments
@@ -35,7 +35,7 @@ class CallExpression extends React.Component {
             deleteBinaryExpression = (
                 <DeleteBinaryExpression
                     parent={parent}
-                    index={index}
+                    rule={rule}
                     actions={actions}
                 />
             )
@@ -70,7 +70,7 @@ class CallExpression extends React.Component {
                     <Expression
                         {...funcArgs[0]}
                         parent={parent.push('arguments', 0)}
-                        index={index}
+                        rule={rule}
                         actions={actions}
                         schemas={schemas}
                         leftsiblings={root}
@@ -78,7 +78,7 @@ class CallExpression extends React.Component {
                     <Expression
                         {...callee}
                         parent={parentCallee}
-                        index={index}
+                        rule={rule}
                         actions={actions}
                         schemas={schemas}
                         leftsiblings={left.push('meta', 'operators')}
@@ -86,7 +86,7 @@ class CallExpression extends React.Component {
                     <Expression
                         {...funcArgs[1]}
                         parent={parent.push('arguments', 1)}
-                        index={index}
+                        rule={rule}
                         actions={actions}
                         schemas={schemas}
                         leftsiblings={left}
@@ -107,7 +107,7 @@ class CallExpression extends React.Component {
                     <Action
                         value={actionName.value}
                         parent={parent.push('arguments', 0)}
-                        index={index}
+                        rule={rule}
                         actions={actions}
                         schemas={schemas}
                         leftsiblings={actionRootLeftSiblings}
@@ -116,7 +116,7 @@ class CallExpression extends React.Component {
                             {...actionArguments}
                             actions={actions}
                             leftsiblings={actionRootLeftSiblings.push(actionName.value)}
-                            index={index}
+                            rule={rule}
                             schemas={schemas}
                             parent={parent.push('arguments', 1)}
                         />
@@ -134,7 +134,7 @@ class CallExpression extends React.Component {
                     {...argumentItem}
                     key={idx}
                     parent={parentArguments}
-                    index={index}
+                    rule={rule}
                     actions={actions}
                     schemas={schemas}
                 />
@@ -148,7 +148,7 @@ class CallExpression extends React.Component {
                     <Expression
                         {...callee}
                         parent={parentCallee}
-                        index={index}
+                        rule={rule}
                         actions={actions}
                         schemas={schemas}
                     />
@@ -162,10 +162,10 @@ class CallExpression extends React.Component {
 }
 
 CallExpression.propTypes = {
+    rule: PropTypes.object.isRequired,
     actions: PropTypes.object,
     arguments: PropTypes.array.isRequired,
     callee: PropTypes.object.isRequired,
-    index: PropTypes.number,
     parent: PropTypes.object,
     type: PropTypes.string,
     schemas: PropTypes.object.isRequired,

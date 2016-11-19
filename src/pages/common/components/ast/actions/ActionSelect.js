@@ -11,8 +11,8 @@ class ActionSelect extends React.Component {
     }
 
     _handleChange = (value) => {
-        const { actions, index, parent } = this.props
-        actions.rules.modifyCodeast(index, parent, value, 'UPDATE')
+        const { actions, rule, parent } = this.props
+        actions.rules.modifyCodeast(rule.get('id'), parent, value, 'UPDATE')
     }
 
     render() {
@@ -26,10 +26,10 @@ class ActionSelect extends React.Component {
                 <i className="caret down icon" />
                 <span className="text">{selectedActionName || value || 'Select Action'}</span>
                 <div className="menu">
-                    {Object.keys(actionsConfig).map((action, index) => {
+                    {Object.keys(actionsConfig).map((action, i) => {
                         const actionName = actionsConfig[action] && actionsConfig[action].name
                         return (
-                            <div key={index} className="item" data-value={action}>
+                            <div key={i} className="item" data-value={action}>
                                 {actionName || action}
                             </div>
                         )
@@ -42,8 +42,8 @@ class ActionSelect extends React.Component {
 }
 
 ActionSelect.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     parent: React.PropTypes.object.isRequired,
     value: React.PropTypes.string,
 }

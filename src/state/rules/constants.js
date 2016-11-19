@@ -27,11 +27,11 @@ const NOTIFY_ACTION_DEFAULT = {
 }
 
 const ADD_TAGS_ACTION_DEFAULT = {
-    names: '',
+    tags: '',
 }
 
 const SET_TAGS_ACTION_DEFAULT = {
-    names: '',
+    tags: '',
 }
 
 const SET_STATUS_ACTION_DEFAULT = {

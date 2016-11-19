@@ -8,25 +8,25 @@ import Statement from './Statement'
  * Test Expression of the IF Statement
  *
  * @param actions
- * @param index
+ * @param rule
  * @param parent
  * @param schemas
  * @param test
  * @param context
  * @constructor
  */
-let TestExpression = ({actions, index, parent, schemas, test}) => (
+let TestExpression = ({actions, rule, parent, schemas, test}) => (
     <div className="test">
         <AddLogicalAndCondition
             actions={actions}
-            index={index}
+            rule={rule}
             parent={parent.push('test')}
             title="IF"
         />
         <Expression
             {...test}
             parent={parent.push('test')}
-            index={index}
+            rule={rule}
             actions={actions}
             schemas={schemas}
         />
@@ -35,7 +35,7 @@ let TestExpression = ({actions, index, parent, schemas, test}) => (
 
 TestExpression.propTypes = {
     actions: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
+    rule: React.PropTypes.object.isRequired,
     parent: React.PropTypes.object.isRequired,
     schemas: React.PropTypes.object.isRequired,
     test: React.PropTypes.object.isRequired,
@@ -46,23 +46,23 @@ TestExpression.propTypes = {
  *
  * @param actions
  * @param consequent
- * @param index
+ * @param rule
  * @param parent
  * @param schemas
  * @constructor
  */
-let ConsequentStatement = ({actions, consequent, index, parent, schemas}) => (
+let ConsequentStatement = ({actions, consequent, rule, parent, schemas}) => (
     <div className="consequent">
         <AddActionOrIfStatement
             actions={actions}
-            index={index}
+            rule={rule}
             parent={parent.push('consequent')}
             title="THEN"
         />
         <Statement
             {...consequent}
             parent={parent.push('consequent')}
-            index={index}
+            rule={rule}
             actions={actions}
             schemas={schemas}
         />
@@ -70,9 +70,9 @@ let ConsequentStatement = ({actions, consequent, index, parent, schemas}) => (
 )
 
 ConsequentStatement.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
     consequent: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     parent: React.PropTypes.object.isRequired,
     schemas: React.PropTypes.object.isRequired,
 }
@@ -82,23 +82,23 @@ ConsequentStatement.propTypes = {
  *
  * @param actions
  * @param alternate
- * @param index
+ * @param rule
  * @param parent
  * @param schemas
  * @constructor
  */
-let AlternateStatement = ({actions, alternate, index, parent, schemas}) => (
+let AlternateStatement = ({actions, alternate, rule, parent, schemas}) => (
     <div className="alternate">
         <AddActionOrIfStatement
             actions={actions}
-            index={index}
+            rule={rule}
             parent={parent.push('alternate')}
             title="ELSE"
         />
         <Statement
             {...alternate}
             parent={parent.push('alternate')}
-            index={index}
+            rule={rule}
             actions={actions}
             schemas={schemas}
         />
@@ -106,9 +106,9 @@ let AlternateStatement = ({actions, alternate, index, parent, schemas}) => (
 )
 
 AlternateStatement.propTypes = {
+    rule: React.PropTypes.object.isRequired,
     actions: React.PropTypes.object.isRequired,
     alternate: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
     parent: React.PropTypes.object.isRequired,
     schemas: React.PropTypes.object.isRequired,
 }
@@ -119,20 +119,20 @@ AlternateStatement.propTypes = {
  * @param actions
  * @param alternate {Statement}
  * @param consequent {Statement}
- * @param index
+ * @param rule
  * @param parent
  * @param schemas
  * @param test {Expression}
  * @constructor
  */
-const IfStatement = ({ actions, alternate, consequent, index, parent, schemas, test }) => {
+const IfStatement = ({ actions, alternate, consequent, rule, parent, schemas, test }) => {
     const _alternate = alternate || { type: 'BlockStatement', body: [] }
 
     return (
         <div className="IfStatement">
             <TestExpression
                 actions={actions}
-                index={index}
+                rule={rule}
                 parent={parent}
                 schemas={schemas}
                 test={test}
@@ -140,14 +140,14 @@ const IfStatement = ({ actions, alternate, consequent, index, parent, schemas, t
             <ConsequentStatement
                 actions={actions}
                 consequent={consequent}
-                index={index}
+                rule={rule}
                 parent={parent}
                 schemas={schemas}
             />
             <AlternateStatement
                 actions={actions}
                 alternate={_alternate}
-                index={index}
+                rule={rule}
                 parent={parent}
                 schemas={schemas}
             />
@@ -156,10 +156,10 @@ const IfStatement = ({ actions, alternate, consequent, index, parent, schemas, t
 }
 
 IfStatement.propTypes = {
+    rule: React.PropTypes.object,
     test: React.PropTypes.object,
     consequent: React.PropTypes.object,
     alternate: React.PropTypes.object,
-    index: React.PropTypes.number,
     parent: React.PropTypes.object,
     schemas: React.PropTypes.object,
     actions: React.PropTypes.object,

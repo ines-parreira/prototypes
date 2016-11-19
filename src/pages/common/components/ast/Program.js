@@ -1,20 +1,24 @@
 import React from 'react'
 
-import { List } from 'immutable'
+import {List} from 'immutable'
 
-import { Statement } from './statements'
+import {Statement} from './statements'
 
 class Program extends React.Component {
 
     _renderBody = () => {
-        const { actions, body, index, schemas } = this.props
-        return body && body.map((statement, key) => (
+        const {actions, body, rule} = this.props
+
+        if (!body) {
+            return
+        }
+
+        return body.map((statement, key) => (
             <Statement
                 {...statement}
                 key={key}
                 parent={List(['body', key])}
-                index={index}
-                schemas={schemas}
+                rule={rule}
                 actions={actions}
             />
         ))
@@ -27,13 +31,11 @@ class Program extends React.Component {
             </div>
         )
     }
-
 }
 
 Program.propTypes = {
-    index: React.PropTypes.number,
-    schemas: React.PropTypes.object,
-    actions: React.PropTypes.object,
+    rule: React.PropTypes.object.isRequired,
+    actions: React.PropTypes.object.isRequired,
     body: React.PropTypes.array,
 }
 

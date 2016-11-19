@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 
 import {DatetimeLabel} from '../../../common/utils/labels'
 import RuleItem from '../../detail/components/RuleItem'
 
 class RuleTableRow extends React.Component {
-
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {showDetail: false}
     }
 
@@ -15,27 +15,18 @@ class RuleTableRow extends React.Component {
     }
 
     _renderDetail = () => {
-        const {index, rule, schemas, actions} = this.props
+        const {rule, actions} = this.props
         if (!this.state.showDetail) {
             return null
         }
         return (
             <tr className="no-hover">
                 <td colSpan="100%">
-                    <RuleItem index={index} rule={rule} schemas={schemas} actions={actions}/>
+                    <RuleItem
+                        rule={rule}
+                        actions={actions}
+                    />
                 </td>
-            </tr>
-        )
-    }
-
-    _renderSeparator() {
-        if (this.state.showDetail) {
-            return null
-        }
-
-        return (
-            <tr className="no-hover">
-                <td colSpan="100%" style={{padding: 0}}>&nbsp;</td>
             </tr>
         )
     }
@@ -44,18 +35,18 @@ class RuleTableRow extends React.Component {
         const {currentUser, rule} = this.props
         return (
             <tbody>
-                <tr onClick={this._toggleItem}>
+                <tr onClick={this._toggleItem} style={{cursor: 'pointer'}}>
                     <td>
                         <div className="ui header">
-                            <span className="subject">{rule.title}</span>
+                            <span className="subject">{rule.get('title')}</span>
                             <div className="sub header">
-                                {rule.description}
+                                {rule.get('description')}
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td className="right aligned">
                         <DatetimeLabel
-                            dateTime={rule.updated_datetime}
+                            dateTime={rule.get('updated_datetime')}
                             timezone={currentUser.get('timezone')}
                         />
                     </td>
@@ -64,15 +55,16 @@ class RuleTableRow extends React.Component {
             </tbody>
         )
     }
-
 }
 
 RuleTableRow.propTypes = {
     actions: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
-    index: PropTypes.number.isRequired,
     rule: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired,
 }
 
-export default RuleTableRow
+const mapStateToProps = (state) => ({
+    currentUser: state.currentUser,
+})
+
+export default connect(mapStateToProps)(RuleTableRow)

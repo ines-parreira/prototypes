@@ -1,26 +1,39 @@
-import {fromJS, List} from 'immutable'
-
+import {fromJS} from 'immutable'
+import fromPairs from 'lodash/fromPairs'
 import {getCode, getAST} from '../../utils'
-import {inOrderGetLeaves, getObjectExpression} from './utils'
+import {updateCallExpression, getObjectExpression} from './utils'
 
 import * as types from './constants'
 
-export const initialState = List([])
+export const initialState = fromJS({})
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case types.ADD_RULE_END: {
             const rule = action.rule
-
             if (rule.code) {
                 rule.code_ast = getAST(rule.code)
             }
 
-            return state.push(rule)
+            return state.set(rule.id.toString(), fromJS(rule))
+        }
+
+        case types.ACTIVATE_RULE: {
+            return state.update(
+                action.id.toString(),
+                r => r.set('deactivated_datetime', null)
+            )
+        }
+
+        case types.DEACTIVATE_RULE: {
+            return state.update(
+                action.id.toString(),
+                r => r.set('deactivated_datetime', (new Date()).toISOString())
+            )
         }
 
         case types.REMOVE_RULE: {
-            return state.remove(action.index)
+            return state.remove(action.id.toString())
         }
 
         case types.RULES_REQUESTS_POSTS:
@@ -28,65 +41,59 @@ export default (state = initialState, action) => {
 
         case types.RULES_RECEIVE_POSTS: {
             // Given the code of the rules received from server convert the code to AST
-            const ruleList = action.rules.map((ruleItem) => {
+            const rules = action.rules.map((ruleItem) => {
                 if (ruleItem.code) {
                     ruleItem.code_ast = getAST(ruleItem.code)
                 }
 
-                return ruleItem
+                return [ruleItem.id, ruleItem]
             })
-
-            return List(ruleList)
+            return fromJS(fromPairs(rules))
         }
 
         case types.RULES_INITIALISE_CODE_AST: {
-            const {index} = action
-            let stateItem = fromJS(state.get(index))
+            const {id} = action
+            let stateItem = state.get(id.toString())
 
-            stateItem = stateItem.set('code_ast', types.DEFAULT_IF_STATEMENT)
+            let ast = types.DEFAULT_IF_STATEMENT
+            const code = getCode(ast)
+            ast = getAST(code)
 
-            const stateItemObj = stateItem.toJS()
-            stateItemObj.code = getCode(stateItemObj.code_ast)
-            // We need this in order to get the AST options such as (loc).
-            // This will be used later on for doing debugging for example.
-            stateItemObj.code_ast = getAST(stateItemObj.code)
-            return state.set(index, stateItemObj)
+            stateItem = stateItem.set('code_ast', fromJS(ast))
+            stateItem = stateItem.set('code', code)
+            return state.set(id.toString(), stateItem)
         }
 
         case types.RULES_UPDATE_CODE_AST: {
-            const {index, path, value, operation} = action
-            const stateItem = fromJS(state.get(index))
+            const {id, path, value, operation, schemas} = action
+            const stateItem = state.get(id.toString())
             const pathFull = path.unshift('code_ast')
 
             let stateItemNew
 
             if (operation === 'UPDATE') {
+                // First update the value directly based on the full path
                 stateItemNew = stateItem.updateIn(pathFull.toJS(), () => value)
+
                 /* When we do an update for a node, the possible choices after that
-                 * node should be invalidated.
-                 * e.g. if(equal(ticket.status,'open')){}
-                 * When "status" is changed to "channel", both the "equal" and "open" should
-                 * be invalidated.
+                 * node will be generated with a default value
+                 * Ex: if(eq(ticket.status,'open')){}
+                 * When "status" is changed to "channel", the expression is transformed to:
+                 * if (eq(ticket.channel, 'email')){}
                  */
 
-                // Do the updates only in the Ifstatement.test
+                // Do the updates only in the IfStatement.test
                 if (pathFull.contains('test')) {
                     const argumentsIndex = pathFull.lastIndexOf('arguments')
-
                     if (~argumentsIndex) {
                         const pathParentCallExpression = pathFull.setSize(argumentsIndex)
-                        const possiblePaths = inOrderGetLeaves(stateItemNew, pathParentCallExpression)
-
-                        let shouldUpdate = false
-
-                        // Update all the leaves on the right side of this one
-                        for (const pathItem of possiblePaths) {
-                            if (shouldUpdate) {
-                                stateItemNew = stateItemNew.updateIn(pathItem, () => '')
-                            } else {
-                                shouldUpdate = pathFull.equals(pathItem)
-                            }
-                        }
+                        // generate a new CallExpression with some default values based on the schema
+                        stateItemNew = updateCallExpression(
+                            stateItemNew,
+                            pathParentCallExpression,
+                            pathFull,
+                            schemas
+                        )
                     }
                 } else {
                     // Update the arguments for actions when action name is updated
@@ -181,7 +188,7 @@ export default (state = initialState, action) => {
             const stateItemObj = stateItemNew.toJS()
             stateItemObj.code = getCode(stateItemObj.code_ast)
             stateItemObj.code_ast = getAST(stateItemObj.code)  // To apply, ast syntax options (loc, ...)
-            return state.set(index, stateItemObj)
+            return state.set(id.toString(), fromJS(stateItemObj))
         }
 
         default:
