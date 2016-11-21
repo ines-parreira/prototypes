@@ -8,9 +8,10 @@ import ticketReplyCache from '../../pages/common/utils/ticketReplyCache'
 
 export function deleteActionOnApplied(actionIndex, ticketId) {
     ticketReplyCache.set(ticketId,
-        ticketReplyCache
-            .getIn([ticketId, 'macro', 'actions'], fromJS([]))
-            .delete(actionIndex)
+        ticketReplyCache.
+        get(ticketId).
+        getIn(['macro', 'actions'], fromJS([])).
+        delete(actionIndex)
     )
 
     return {

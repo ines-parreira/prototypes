@@ -203,8 +203,11 @@ export default class TicketReply extends React.Component {
         return (
             <div className="attachments-pseudobar">
                 <div className="fake-fileinput">
-                    <i className="large attach icon" />
+                    <label htmlFor="attachments-input">
+                        <i className="large attach icon"/>
+                    </label>
                     <input
+                        id="attachments-input"
                         type="file"
                         multiple
                         onChange={(e) => this._handleFiles(e.target.files)}
