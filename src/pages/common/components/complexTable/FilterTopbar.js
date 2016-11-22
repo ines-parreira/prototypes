@@ -72,6 +72,10 @@ export default class FilterTopbar extends React.Component {
                     >
                         CANCEL
                     </button>
+                    <span className="ml15 text-light-black">
+                        <i className="info circle icon"/>
+                        Click on a column's name to add a filter.
+                    </span>
                     <div className="ui right floated">
                         <button
                             className="ui button"
