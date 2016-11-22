@@ -9,6 +9,7 @@ export default class SetResponseTextAction extends React.Component {
                 const initialText = this.props.action.getIn(['arguments', 'body_text'], '')
                 const text = initialText.slice(0, cursorPosition) + `{${variable}}` + initialText.slice(cursorPosition)
                 this._setResponseText(text)
+                $(this.refs.textarea).focus()
             }
         })
     }
