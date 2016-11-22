@@ -16,7 +16,7 @@ import _flattenDeep from 'lodash/flattenDeep'
  * @param errors
  * @returns {*}
  */
-const formatErrors = (errors) => {
+export const formatErrors = (errors) => {
     if (!errors) {
         return ''
     }
