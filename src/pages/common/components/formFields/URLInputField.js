@@ -1,5 +1,5 @@
 import React from 'react'
-
+import ErrorMessage from '../../../common/components/ErrorMessage'
 import classNames from 'classnames'
 import _ from 'lodash'
 
@@ -50,11 +50,19 @@ class URLInputField extends React.Component {
         }
 
         this.state.url = trimmedUrl
-        this.props.input.onChange(`${this.state.protocol}${trimmedUrl}`)
+
+        let res = trimmedUrl
+
+        // add protocol only if there is an url after it
+        if (res) {
+            res = `${this.state.protocol}${trimmedUrl}`
+        }
+
+        this.props.input.onChange(res)
     }
 
     render() {
-        const {input, label, placeholder, required} = this.props
+        const {input, label, meta, placeholder, required} = this.props
         const fieldClassName = classNames({required}, 'field')
 
         return (
@@ -63,7 +71,7 @@ class URLInputField extends React.Component {
                 <div className="ui labeled input">
                     <div ref="urlDropdown" className="ui dropdown label">
                         <div className="text">http://</div>
-                        <i className="dropdown icon"/>
+                        <i className="dropdown icon" />
                         <div className="menu">
                             <div className="item">http://</div>
                             <div className="item">https://</div>
@@ -75,6 +83,8 @@ class URLInputField extends React.Component {
                         placeholder={placeholder}
                     />
                 </div>
+                {meta.invalid && <ErrorMessage errors={meta.error} />}
+                {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
             </div>
         )
     }
@@ -87,6 +97,7 @@ URLInputField.defaultProps = {
 
 URLInputField.propTypes = {
     input: React.PropTypes.object.isRequired,
+    meta: React.PropTypes.object.isRequired,
     label: React.PropTypes.string,
     placeholder: React.PropTypes.string,
     required: React.PropTypes.bool,

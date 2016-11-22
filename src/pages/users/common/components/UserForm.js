@@ -9,8 +9,9 @@ import _find from 'lodash/find'
 import _clone from 'lodash/clone'
 import _isError from 'lodash/isError'
 import {submitUser} from '../../../../state/users/actions'
-import {InputField, SelectField, ErrorHandlerField} from '../../../common/components/formFields'
+import {InputField, SelectField} from '../../../common/components/formFields'
 import UserChannelAddressField from './UserChannelAddressField'
+import ErrorMessage from '../../../common/components/ErrorMessage'
 import formSender from '../../../common/utils/formSender'
 
 export const defaultContent = {
@@ -150,7 +151,9 @@ class UserForm extends React.Component {
             promise = this.props.onSubmit(this._formToDoc(doc).toJS())
         }
 
-        return formSender(promise).then((response) => {
+        return formSender(promise, {
+            globals: ['channels']
+        }).then((response) => {
             if (!_isError(response)) {
                 if (this.props.onSuccess) {
                     this.props.onSuccess()
@@ -163,6 +166,7 @@ class UserForm extends React.Component {
 
     render() {
         const {handleSubmit, user, isUpdate, isUserStaff, submitting} = this.props
+        let {error} = this.props
 
         const title = isUpdate ? `Update user : ${user.get('name')}` : 'Add user'
 
@@ -181,6 +185,8 @@ class UserForm extends React.Component {
                     onSubmit={handleSubmit(this._handleSubmit)}
                 >
                     <div className="content">
+                        <ErrorMessage errors={error} />
+
                         <Field
                             name="name"
                             label="Name"
@@ -209,11 +215,6 @@ class UserForm extends React.Component {
                         <p style={{marginTop: '30px'}}>
                             <b>Please set below at least one contact information for this user :</b>
                         </p>
-
-                        <Field
-                            name="channels"
-                            component={ErrorHandlerField}
-                        />
 
                         <FieldArray
                             name="email"
@@ -281,6 +282,7 @@ UserForm.propTypes = {
     user: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
+    error: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
 }
 
 UserForm.defaultProps = {

@@ -1,6 +1,6 @@
 import React from 'react'
-
 import classNames from 'classnames'
+import ErrorMessage from '../../../common/components/ErrorMessage'
 
 export default class JsonField extends React.Component {
     constructor(props) {
@@ -50,13 +50,13 @@ export default class JsonField extends React.Component {
             return
         }
 
-        return (
-            <div className="ui error message">
-                <p>
-                    <i className="icon warning sign" /> Invalid JSON : changes will not be saved until the JSON is fixed
-                </p>
-            </div>
+        const error = (
+            <span>
+                <i className="icon warning sign" /> Invalid JSON : changes will not be saved until the JSON is fixed
+            </span>
         )
+
+        return <ErrorMessage errors={error} />
     }
 
     render() {

@@ -5,8 +5,13 @@ import _find from 'lodash/find'
 import _findIndex from 'lodash/findIndex'
 import _forEach from 'lodash/forEach'
 import _compact from 'lodash/compact'
+import ErrorMessage from '../../../common/components/ErrorMessage'
 
-
+/**
+ * Allow to pick values from multiples sources and build a single one.
+ * Multiple values can be picked from each source
+ * ex: used in merge users feature for merging channels
+ */
 class MultiSelectBinaryChoiceField extends React.Component {
     componentWillReceiveProps(nextProps) {
         const {requiredValue} = nextProps
@@ -78,16 +83,8 @@ class MultiSelectBinaryChoiceField extends React.Component {
                         }
                     </div>
                 </div>
-                {
-                    meta.invalid && meta.error && (
-                        <div className="ui error message"><p>{meta.error}</p></div>
-                    )
-                }
-                {
-                    meta.touched && meta.warning && (
-                        <div className="ui warning message"><p>{meta.warning}</p></div>
-                    )
-                }
+                {meta.invalid && <ErrorMessage errors={meta.error} />}
+                {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
             </div>
         )
     }

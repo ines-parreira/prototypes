@@ -1,7 +1,10 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
 
-
+/**
+ * Allow to select multiple values, display as a list of togglable properties
+ * ex: used in HTTP integrations on triggers
+ */
 export default class MultiSelectField extends React.Component {
     _onChange(value, slug) {
         const newVal = this.props.input.value || {}

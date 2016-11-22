@@ -24,7 +24,7 @@ export const initialState = fromJS({
 })
 
 export default (state = initialState, action) => {
-    const items = state.get('items')
+    const items = state.get('items', fromJS([]))
 
     switch (action.type) {
         case viewsTypes.FETCH_LIST_VIEW_SUCCESS: {
@@ -81,8 +81,9 @@ export default (state = initialState, action) => {
 
             if (action.isUpdate) {
                 const responseUser = fromJS(action.resp)
-                newState = newState
-                    .setIn(['items', items.findIndex(item => item.get('id') === action.userId)], responseUser)
+                newState = newState.set('items',
+                    items.set(items.findIndex(item => item.get('id') === action.userId), responseUser)
+                )
 
                 if (action.userId === state.getIn(['active', 'id'])) {
                     newState = newState.set('active', responseUser)

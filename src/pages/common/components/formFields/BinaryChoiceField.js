@@ -1,7 +1,13 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
+import ErrorMessage from '../../../common/components/ErrorMessage'
 
+/**
+ * Allow to pick values from multiples sources and build a single one.
+ * Only one value can be picked from each source
+ * ex: used in merge users feature for merging names
+ */
 const BinaryChoiceField = ({input, options, meta, label, type, tooltip}) => {
     if (type === 'json' && input.value === '') {
         // Unfortunately necessary because of https://github.com/erikras/redux-form/issues/2062
@@ -51,16 +57,8 @@ const BinaryChoiceField = ({input, options, meta, label, type, tooltip}) => {
                     {secondOption.label || '(no value)'}
                 </div>
             </div>
-            {
-                meta.invalid && meta.error && (
-                    <div className="ui error message"><p>{meta.error}</p></div>
-                )
-            }
-            {
-                meta.touched && meta.warning && (
-                    <div className="ui warning message"><p>{meta.warning}</p></div>
-                )
-            }
+            {meta.invalid && <ErrorMessage errors={meta.error} />}
+            {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
         </div>
     )
 }

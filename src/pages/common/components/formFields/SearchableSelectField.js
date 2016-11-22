@@ -4,6 +4,7 @@ import classnames from 'classnames'
 /**
  * Accepts a list of values to search and bulk select
  * Field value is an array of items values
+ * ex: used in stats to select filters
  */
 class SearchableSelectField extends React.Component {
     constructor(props) {

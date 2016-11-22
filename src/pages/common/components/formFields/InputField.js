@@ -1,6 +1,7 @@
 import React from 'react'
 import _noop from 'lodash/noop'
 import classNames from 'classnames'
+import ErrorMessage from '../../../common/components/ErrorMessage'
 
 const InputField = ({type, input, meta, className, label, placeholder, required, buttons}) => {
     const hasButtons = !!buttons.length
@@ -43,16 +44,8 @@ const InputField = ({type, input, meta, className, label, placeholder, required,
                     )
                 }
             </div>
-            {
-                meta.invalid && meta.error && (
-                    <div className="ui error message"><p>{meta.error}</p></div>
-                )
-            }
-            {
-                meta.touched && meta.warning && (
-                    <div className="ui warning message"><p>{meta.warning}</p></div>
-                )
-            }
+            {meta.invalid && <ErrorMessage errors={meta.error} />}
+            {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
         </div>
     )
 }

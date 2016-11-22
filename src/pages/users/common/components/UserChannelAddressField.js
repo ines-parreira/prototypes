@@ -1,6 +1,7 @@
 import React from 'react'
 import {Field} from 'redux-form'
 import {InputField} from '../../../common/components/formFields'
+import ErrorMessage from '../../../common/components/ErrorMessage'
 
 const UserContactField = ({
     fields,
@@ -13,11 +14,7 @@ const UserContactField = ({
     return (
         <div className="field fields-array">
             {label && <label>{label}</label>}
-            {
-                meta.invalid && meta.error && (
-                    <div className="ui error message"><p>{meta.error}</p></div>
-                )
-            }
+            {meta.invalid && <ErrorMessage errors={meta.error} />}
             {
                 fields.map((contact, index) =>
                     <Field
@@ -27,7 +24,7 @@ const UserContactField = ({
                         placeholder={placeholder}
                         buttons={[{
                             className: 'basic icon',
-                            label: <i className="trash outline large icon"/>,
+                            label: <i className="trash outline large icon" />,
                             onClick() {
                                 fields.remove(index)
                             }
