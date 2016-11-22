@@ -26,7 +26,11 @@ export default class ParametersEditor extends React.Component {
             <div className="dict-editor">
                 {
                     list.map((dict, index) => {
-                        const className = classnames('ui circular action write icon', {inverted: dict.get('editable')})
+                        const className = classnames('ui circular action write icon', {
+                            grey: !dict.get('editable'),
+                            'blue inverted': dict.get('editable'),
+                        })
+
                         const title = dict.get('editable')
                             ? 'Click to make this field not editable'
                             : 'Click to make this field editable'
@@ -53,7 +57,9 @@ export default class ParametersEditor extends React.Component {
                                     <i
                                         className={className}
                                         onClick={() => this.changeValue('editable', index, !dict.get('editable'))}
-                                        title={title}
+                                        data-content={title}
+                                        data-variation="inverted"
+                                        ref={e => $(e).popup()}
                                     />
                                     <i className="red close action icon" onClick={() => this.deleteRow(index)} />
                                 </div>

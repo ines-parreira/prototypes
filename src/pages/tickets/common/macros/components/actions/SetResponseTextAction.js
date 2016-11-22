@@ -1,13 +1,64 @@
 import React, {PropTypes} from 'react'
 
 export default class SetResponseTextAction extends React.Component {
-    setResponseText(value) {
+    componentDidMount() {
+        $(this.refs.insertVariableDropdown).dropdown({
+            onChange: (variable) => {
+                // insert variable in text area
+                const cursorPosition = $(this.refs.textarea).prop('selectionStart')
+                const initialText = this.props.action.getIn(['arguments', 'body_text'], '')
+                const text = initialText.slice(0, cursorPosition) + `{${variable}}` + initialText.slice(cursorPosition)
+                this._setResponseText(text)
+            }
+        })
+    }
+
+    _setResponseText(value) {
         const args = this.props.action.get('arguments')
 
         this.props.updateActionArgs(
             this.props.index,
             args.set('body_text', value).set('body_html', args.get('body_html') ? value : '')
             // todo(@martin): fix that when we use body_html and body_text correctly
+        )
+    }
+
+    _renderInsertVariable = () => {
+        return (
+            <div
+                ref="insertVariableDropdown"
+                className="ui dropdown"
+            >
+                Insert variable
+                <i className="dropdown icon" />
+                <div className="menu">
+                    <div className="header">Ticket requester</div>
+                    <div
+                        className="item"
+                        data-value="ticket.requester.firstname"
+                    >
+                        First name
+                    </div>
+                    <div
+                        className="item"
+                        data-value="ticket.requester.lastname"
+                    >
+                        Last name
+                    </div>
+                    <div
+                        className="item"
+                        data-value="ticket.requester.name"
+                    >
+                        Full name
+                    </div>
+                    <div
+                        className="item"
+                        data-value="ticket.requester.email"
+                    >
+                        Email
+                    </div>
+                </div>
+            </div>
         )
     }
 
@@ -22,9 +73,13 @@ export default class SetResponseTextAction extends React.Component {
                 <h4>ADD RESPONSE TEXT</h4>
                 <div className="ui form">
                     <div className="field">
+                        <div className="textarea-toolbar">
+                            {this._renderInsertVariable()}
+                        </div>
                         <textarea
-                            onChange={e => this.setResponseText(e.target.value)}
-                            value={action.getIn(['arguments', 'body_text'])}
+                            onChange={e => this._setResponseText(e.target.value)}
+                            value={action.getIn(['arguments', 'body_text'], '')}
+                            ref="textarea"
                         />
                     </div>
                 </div>

@@ -9,12 +9,7 @@ export default class HttpAction extends React.Component {
     componentDidMount() {
         $(this.refs.method)
             .dropdown({
-                onChange: (value) => {
-                    this.props.updateActionArgs(
-                        this.props.index,
-                        this.props.action.get('arguments', fromJS({})).set('method', value)
-                    )
-                }
+                onChange: value => this._setArgument('method', value)
             })
             .dropdown('set selected', this.props.action.getIn(['arguments', 'method']))
     }
@@ -26,45 +21,10 @@ export default class HttpAction extends React.Component {
         )
     }
 
-    _setUrl = (url) => {
+    _setArgument = (name, value) => {
         this.props.updateActionArgs(
             this.props.index,
-            this.props.action.get('arguments', fromJS({})).set('url', url)
-        )
-    }
-
-    _setHeaders = (headers) => {
-        this.props.updateActionArgs(
-            this.props.index,
-            this.props.action.get('arguments', fromJS({})).set('headers', headers)
-        )
-    }
-
-    _setParams = (params) => {
-        this.props.updateActionArgs(
-            this.props.index,
-            this.props.action.get('arguments', fromJS({})).set('params', params)
-        )
-    }
-
-    _setJson = (json) => {
-        this.props.updateActionArgs(
-            this.props.index,
-            this.props.action.get('arguments', fromJS({})).set('json', json)
-        )
-    }
-
-    _setForm = (form) => {
-        this.props.updateActionArgs(
-            this.props.index,
-            this.props.action.get('arguments', fromJS({})).set('form', form)
-        )
-    }
-
-    _setContentType = (contentType) => {
-        this.props.updateActionArgs(
-            this.props.index,
-            this.props.action.get('arguments', fromJS({})).set('content_type', contentType)
+            this.props.action.get('arguments', fromJS({})).set(name, value)
         )
     }
 
@@ -77,7 +37,7 @@ export default class HttpAction extends React.Component {
             <JsonField
                 input={{
                     value: action.getIn(['arguments', 'json']),
-                    onChange: this._setJson
+                    onChange: v => this._setArgument('json', v)
                 }}
             />
         )
@@ -88,7 +48,7 @@ export default class HttpAction extends React.Component {
             field = (
                 <ParametersEditor
                     list={action.getIn(['arguments', 'form'], fromJS([]))}
-                    updateDict={this._setForm}
+                    updateDict={d => this._setArgument('form', d)}
                 />
             )
         }
@@ -100,18 +60,18 @@ export default class HttpAction extends React.Component {
                     <div className="action field">
                         <div
                             className="ui radio checkbox"
-                            onClick={() => this._setContentType(FORM_CONTENT_TYPE)}
+                            onClick={() => this._setArgument('content_type', FORM_CONTENT_TYPE)}
                         >
-                            <input type="radio" checked={isFormData} readOnly/>
+                            <input type="radio" checked={isFormData} readOnly />
                             <label>{FORM_CONTENT_TYPE}</label>
                         </div>
                     </div>
                     <div className="action field">
                         <div
                             className="ui radio checkbox"
-                            onClick={() => this._setContentType(JSON_CONTENT_TYPE)}
+                            onClick={() => this._setArgument('content_type', JSON_CONTENT_TYPE)}
                         >
-                            <input type="radio" checked={!isFormData} readOnly/>
+                            <input type="radio" checked={!isFormData} readOnly />
                             <label>{JSON_CONTENT_TYPE}</label>
                         </div>
                     </div>
@@ -165,7 +125,7 @@ export default class HttpAction extends React.Component {
                             <input
                                 type="text"
                                 value={action.getIn(['arguments', 'url'])}
-                                onChange={e => this._setUrl(e.target.value)}
+                                onChange={e => this._setArgument('url', e.target.value)}
                             />
                         </div>
                     </div>
@@ -173,14 +133,14 @@ export default class HttpAction extends React.Component {
                         <label>URL Parameters</label>
                         <ParametersEditor
                             list={action.getIn(['arguments', 'params'])}
-                            updateDict={this._setParams}
+                            updateDict={d => this._setArgument('params', d)}
                         />
                     </div>
                     <div className="field">
                         <label>Headers</label>
                         <ParametersEditor
                             list={action.getIn(['arguments', 'headers'])}
-                            updateDict={this._setHeaders}
+                            updateDict={d => this._setArgument('headers', d)}
                         />
                     </div>
                     {this._renderBody(action)}
