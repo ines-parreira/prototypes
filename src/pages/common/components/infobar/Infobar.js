@@ -26,9 +26,11 @@ export default class Infobar extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        let newState = this.state
+
         if (this.props.identifier !== nextProps.identifier) {
             nextProps.actions.infobar.resetSearch()
-            this.state = {data: this.state.data.set('isInitialized', false)}
+            newState = {data: newState.data.set('isInitialized', false)}
         }
 
         const isEditingParam = !!nextProps.isRouteEditingWidgets
@@ -43,7 +45,7 @@ export default class Infobar extends React.Component {
         const modeIsDefault = nextProps.infobar.getIn(['_internal', 'mode']) === 'default'
 
         // e.g. if we just succeeded a merging
-        this.setState({data: this.state.data.set('shouldResetSearch', wasMerging && !isMerging && modeIsDefault)})
+        newState = {data: newState.data.set('shouldResetSearch', wasMerging && !isMerging && modeIsDefault)}
 
         // Initialization (force search if there's no customer data, auto-open result if there's just one)
         if (!this.state.data.get('isInitialized') && !nextProps.user.isEmpty()) {
@@ -55,19 +57,25 @@ export default class Infobar extends React.Component {
             const results = nextProps.infobar.get('searchResults')
 
             if (shouldForceSearch) {
-                this.setState({data: this.state.data.set('shouldForceSearch', true)})
+                newState = {data: newState.data.set('shouldForceSearch', true)}
             } else {
-                this.setState({data: this.state.data.set('isInitialized', true)})
+                newState = {data: newState.data.set('isInitialized', true)}
             }
 
             if (results.size >= 1) {
                 if (results.size === 1) {
-                    nextProps.actions.infobar.fetchPreviewUser(results.getIn([0, 'id']))
+                    nextProps.actions.infobar.setInfobarMode('default')
+                    newState = {data: newState.data.merge({
+                        shouldForceSearch: false,
+                        shouldResetSearch: true
+                    })}
                 }
 
-                this.setState({data: this.state.data.set('isInitialized', true)})
+                newState = {data: newState.data.set('isInitialized', true)}
             }
         }
+
+        this.setState(newState)
     }
 
     componentWillUnmount() {
