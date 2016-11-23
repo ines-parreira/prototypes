@@ -60,7 +60,7 @@ class App extends React.Component {
 
                     {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}
                     {this.props.navbar || (
-                        <Navbar activeContent="settings" currentUser={this.props.currentUser}>
+                        <Navbar activeContent="settings">
                             <div></div>
                         </Navbar>
                     )}
