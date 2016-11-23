@@ -17,13 +17,18 @@ export default class Infobar extends React.Component {
         super(props)
 
         this.state = {
-            shouldResetSearch: false
+            data: fromJS({
+                shouldForceSearch: false,
+                shouldResetSearch: false,
+                isInitialized: false
+            })
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.identifier !== nextProps.identifier) {
             nextProps.actions.infobar.resetSearch()
+            this.state = {data: this.state.data.set('isInitialized', false)}
         }
 
         const isEditingParam = !!nextProps.isRouteEditingWidgets
@@ -38,7 +43,31 @@ export default class Infobar extends React.Component {
         const modeIsDefault = nextProps.infobar.getIn(['_internal', 'mode']) === 'default'
 
         // e.g. if we just succeeded a merging
-        this.setState({shouldResetSearch: wasMerging && !isMerging && modeIsDefault})
+        this.setState({data: this.state.data.set('shouldResetSearch', wasMerging && !isMerging && modeIsDefault)})
+
+        // Initialization (force search if there's no customer data, auto-open result if there's just one)
+        if (!this.state.data.get('isInitialized') && !nextProps.user.isEmpty()) {
+            const customer = nextProps.user.get('customer', fromJS({}))
+            const hasCustomer = customer && !customer.isEmpty()
+
+            const shouldForceSearch = !hasCustomer && nextProps.user.get('name', '')
+
+            const results = nextProps.infobar.get('searchResults')
+
+            if (shouldForceSearch) {
+                this.setState({data: this.state.data.set('shouldForceSearch', true)})
+            } else {
+                this.setState({data: this.state.data.set('isInitialized', true)})
+            }
+
+            if (results.size >= 1) {
+                if (results.size === 1) {
+                    nextProps.actions.infobar.fetchPreviewUser(results.getIn([0, 'id']))
+                }
+
+                this.setState({data: this.state.data.set('isInitialized', true)})
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -148,11 +177,7 @@ export default class Infobar extends React.Component {
         const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
 
         // if there is no complete user to display, search the user name
-        const customer = user.get('customer', fromJS({}))
-        const hasCustomer = customer && !customer.isEmpty()
-        const shouldForceSearch = !hasCustomer
-            && user.get('name', '')
-            && mode === 'default'
+        const shouldForceSearch = this.state.data.get('shouldForceSearch') && !this.state.data.get('isInitialized')
         const forcedQuery = shouldForceSearch ? user.get('name', '') : null
 
         const canEditWidgets = !isLoading
@@ -160,6 +185,8 @@ export default class Infobar extends React.Component {
             && areSourcesReady(sources)
             && mode === 'default'
             && !forcedQuery
+
+        const defaultUserId = sources.getIn(['ticket', 'requester', 'id'], null) || sources.getIn(['user', 'id'], null)
 
         if (isLoading) {
             // loading
@@ -184,14 +211,31 @@ export default class Infobar extends React.Component {
         } else if (mode === 'search') {
             // list of found users
             content = (
-                <InfobarSearchResultsList
-                    searchResults={infobar.get('searchResults')}
-                    fetchPreviewUser={actions.infobar.fetchPreviewUser}
-                />
+                <div>
+                    <div className="preview-buttons-wrapper">
+                        <div
+                            className="ui button left-button"
+                            onClick={() => actions.infobar.resetSearch()}
+                        >
+                            <i className="ui arrow left icon" />
+                            BACK
+                        </div>
+                    </div>
+                    <InfobarSearchResultsList
+                        searchResults={infobar.get('searchResults')}
+                        defaultUserId={defaultUserId}
+                        fetchPreviewUser={actions.infobar.fetchPreviewUser}
+                    />
+                </div>
             )
         } else if (mode === 'preview') {
             // selected user info
             const tweakedUser = infobar.get('displayedUser')
+            const isDefaultUser = tweakedUser.get('id') === defaultUserId
+
+            const mergeClassName = classnames('ui button right-button', {
+                disabled: isDefaultUser
+            })
 
             const tweakedSources = sources
                 .setIn(['ticket', 'requester'], tweakedUser)
@@ -207,9 +251,8 @@ export default class Infobar extends React.Component {
                             <i className="ui arrow left icon" />
                             BACK
                         </div>
-
                         <div
-                            className="ui button right-button"
+                            className={mergeClassName}
                             onClick={() => actions.infobar.toggleMergeUsersModal()}
                         >
                             MERGE
@@ -223,6 +266,7 @@ export default class Infobar extends React.Component {
                         sources={tweakedSources}
                         user={tweakedUser}
                         widgets={widgets}
+                        isDefaultUser={isDefaultUser}
                     />
                     <MergeUsersContainer
                         display={infobar.getIn(['_internal', 'mergeUsersModal', 'display'])}
@@ -243,7 +287,7 @@ export default class Infobar extends React.Component {
                         <Search
                             placeholder="Search users..."
                             bindKey
-                            shouldResetInput={this.state.shouldResetSearch}
+                            shouldResetInput={this.state.data.get('shouldResetSearch')}
                             onChange={this._search}
                             forcedQuery={forcedQuery}
                             location={identifier}

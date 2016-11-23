@@ -170,7 +170,8 @@ export default class InfobarUserInfo extends React.Component {
             user,
             isEditing,
             widgets,
-            sources
+            sources,
+            isDefaultUser
         } = this.props
 
         if (!user || user.isEmpty()) {
@@ -202,6 +203,13 @@ export default class InfobarUserInfo extends React.Component {
                         <h2>
                             <Link to={`/app/user/${user.get('id')}`}>
                                 {user.get('name', '')}
+                                {
+                                    isDefaultUser && (
+                                        <span className="ui light blue horizontal label right middle">
+                                            Current User
+                                        </span>
+                                    )
+                                }
                             </Link>
                         </h2>
                     </div>
@@ -246,7 +254,8 @@ InfobarUserInfo.propTypes = {
     isEditing: PropTypes.bool.isRequired,
     sources: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-    widgets: PropTypes.object
+    widgets: PropTypes.object,
+    isDefaultUser: PropTypes.bool
 }
 
 InfobarUserInfo.defaultProps = {

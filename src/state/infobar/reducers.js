@@ -35,7 +35,7 @@ export default (state = initialState, action) => {
         case types.SEARCH_USERS_SUCCESS: {
             return state
                 .setIn(['_internal', 'loading', 'search'], false)
-                .set('searchResults', fromJS(action.resp.data.slice(0, 4))) // we only take the first 5 results
+                .set('searchResults', fromJS(action.resp.data.slice(0, 8))) // we only take the first 8 results
         }
 
         case types.RESET_SEARCH: {
@@ -45,9 +45,8 @@ export default (state = initialState, action) => {
                         search: false
                     },
                     mode: 'default'
-                },
-                searchResults: []
-            })
+                }
+            }).set('searchResults', fromJS([]))
         }
 
         case types.FETCH_PREVIEW_USER_START: {
