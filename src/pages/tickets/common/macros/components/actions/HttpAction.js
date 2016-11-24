@@ -93,12 +93,13 @@ export default class HttpAction extends React.Component {
                 />
                 <h4>SEND HTTP REQUEST</h4>
                 <div className="ui form">
-                    <div className="field">
+                    <div className="field required">
                         <label>Action Title</label>
                         <input
                             type="text"
                             value={action.get('title')}
                             onChange={(e) => this._setTitle(e.target.value)}
+                            required="required"
                         />
                     </div>
                     <div className="fields">
@@ -120,12 +121,13 @@ export default class HttpAction extends React.Component {
                                 }
                             </select>
                         </div>
-                        <div className="thirteen wide field">
+                        <div className="thirteen wide field required">
                             <label>URL</label>
                             <input
                                 type="text"
                                 value={action.getIn(['arguments', 'url'])}
                                 onChange={e => this._setArgument('url', e.target.value)}
+                                required="required"
                             />
                         </div>
                     </div>
