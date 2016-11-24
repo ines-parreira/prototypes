@@ -265,7 +265,7 @@ class TicketDetailContainer extends React.Component {
     _submit = (status, next, action, resetMessage = true) => {
         let ticket = this.props.ticket
 
-        if (ticket.getIn(['_internal', 'loading', 'submitMessage']) || !ticket.getIn(['state', 'dirty'])) {
+        if (ticket.getIn(['_internal', 'loading', 'submitMessage']) || (!ticket.getIn(['state', 'dirty']) && !action)) {
             // We're already submitting something, we dont want to POST twice.
             // Or the ticket isn't dirty, and we don't want to send an empty message.
             return

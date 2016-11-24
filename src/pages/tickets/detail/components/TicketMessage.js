@@ -8,6 +8,7 @@ import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
 import {displayUserNameFromSource} from '../../common/utils'
 import {DatetimeLabel, AgentLabel} from '../../../common/utils/labels'
+import HardWarning from './HardWarning'
 
 export default class TicketMessage extends React.Component {
     componentDidMount() {
@@ -19,7 +20,7 @@ export default class TicketMessage extends React.Component {
         //     on: 'hover',
         //     action: 'nothing'
         // })
-        $('.actions .label').popup({inline: true})
+        $('.actions .label').popup({inline: true, hoverable: true, position: 'top left'})
     }
 
     renderAttachment(message) {
@@ -136,12 +137,32 @@ export default class TicketMessage extends React.Component {
         )
     }
 
-    render() {
-        const {message} = this.props
+    _renderMessageNotSent(messageId, ticketId) {
+        return (
+            <HardWarning
+                message="This message was not sent: error while sending the message."
+                messageId={messageId}
+                ticketId={ticketId}
+                retry cancel
+            />
+        )
+    }
 
-        // const messages = ticket.get('messages')
-        // const currentMessageIndex = messages.findIndex((o) => o.get('id') === message.id)
-        // const previousMessage = currentMessageIndex > 0 ? messages.get(currentMessageIndex - 1) : null
+    _renderActionFailed(messageId, ticketId) {
+        const rMsg = 'Retry to execute the failed action(s) automatically, and send the message if it succeeds.'
+        return (
+            <HardWarning
+                message="This message was not sent: one or more actions failed."
+                retryTooltipMessage={rMsg}
+                messageId={messageId}
+                ticketId={ticketId}
+                retry force cancel
+            />
+        )
+    }
+
+    render() {
+        const {message, ticket} = this.props
 
         let error = false
         let pending = false
@@ -157,45 +178,24 @@ export default class TicketMessage extends React.Component {
             }
         }
 
-        const className = classNames(
-            'ticket-message',
-            'ui',
-            'raw',
-            'segment',
+        const loading = (pending && !error) || this.props.loading
+
+        const className = classNames('ui raw segment ticket-message',
             {
-                'ticket-message-agent': message.from_agent
-            },
-            {
+                'ticket-message-agent': message.from_agent,
                 internal: !message.public,
-                loading: pending && !error
+                loading
             }
         )
 
         return (
             <div className={className} ref="ticketMessage">
-                <div className={`ui inverted dimmer ${error ? 'active' : ''}`} data-opacity="0">
-                    <div className="content">
-                        <div className="center" style={{color: 'red'}}>
-                            <div className={`ui segment ${this.props.loading ? 'loading' : ''}`}
-                                 style={{margin: 'auto', width: '50%'}}
-                            >
-                                This message wasn't send: one or more actions failed.
-                                <div style={{margin: '1em auto'}}>
-                                    <TicketMessageActions message={message} />
-                                </div>
-                                <a onClick={() => this.props.submit(null, null, 'retry', false)}>retry</a> to execute
-                                the
-                                failed action(s) automatically, and send the message if it succeeds,<br />
-                                <a onClick={() => this.props.submit(null, null, 'force', false)}>ignore failure</a>,
-                                execute
-                                the other actions and send the message<br />
-                                <a onClick={() => this.props.deleteMessage(message.id)}>cancel</a> the message, and
-                                manually undo successful action(s).
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                {
+                    !loading && error && this._renderActionFailed(message.id, ticket.get('id'))
+                }
+                {
+                    !loading && message.failed_datetime && this._renderMessageNotSent(message.id, ticket.get('id'))
+                }
                 <div className="ticket-message-header">
                     <div className="ticket-message-header-details">
                         {message.from_agent && <AgentLabel />}

@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 import TicketMessage from './TicketMessage'
 import CustomerRating from './CustomerRating'
 
@@ -6,6 +7,8 @@ import CustomerRating from './CustomerRating'
 export default class TicketMessages extends React.Component {
     shouldComponentUpdate(nextProps) {
         return !nextProps.messages.equals(this.props.messages)
+            || !nextProps.ticket.getIn(['_internal', 'loading'])
+                .equals(this.props.ticket.getIn(['_internal', 'loading']))
     }
 
     render() {
@@ -37,7 +40,10 @@ export default class TicketMessages extends React.Component {
                             message={message.toJS()}
                             submit={this.props.submit}
                             deleteMessage={this.props.deleteMessage}
-                            loading={this.props.loading}
+                            loading={
+                                !!this.props.loadingState.get('updateMessage', fromJS([]))
+                                .find(msgId => msgId === message.get('id'))
+                            }
                             ticket={this.props.ticket}
                             currentUser={this.props.currentUser}
                         />
@@ -54,6 +60,6 @@ TicketMessages.propTypes = {
     deleteMessage: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
-    loading: PropTypes.bool.isRequired,
+    loadingState: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired
 }

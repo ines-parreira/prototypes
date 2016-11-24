@@ -38,7 +38,7 @@ const ObjectComponent = ({data, root = false, last = false}) => {
 
     return (
         <div className="object">
-            <span>{root && data.size > 1 && leftBracket}</span>
+            <span>{root && leftBracket}</span>
             <div className="content">
             {
                 data.map((v, k) => {

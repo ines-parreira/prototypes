@@ -26,7 +26,7 @@ describe('TicketMessages component', () => {
                     submit={() => {}}
                     deleteMessage={() => {}}
                     messages={messages}
-                    loading={false}
+                    loadingState={fromJS({updateMessage: []})}
                     ticket={fromJS({
                         customer_ratings: []
                     })}
@@ -53,7 +53,7 @@ describe('TicketMessages component', () => {
                     submit={() => {}}
                     deleteMessage={() => {}}
                     messages={Map()}
-                    loading={false}
+                    loadingState={fromJS({updateMessage: []})}
                     ticket={fromJS({
                         customer_ratings: []
                     })}

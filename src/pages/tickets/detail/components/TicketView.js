@@ -172,7 +172,7 @@ export default class TicketView extends React.Component {
                     messages={ticket.get('messages')}
                     submit={this.props.submit}
                     deleteMessage={this.deleteMessage}
-                    loading={ticket.getIn(['_internal', 'loading', 'submitMessage'])}
+                    loadingState={ticket.getIn(['_internal', 'loading'])}
                     ticket={ticket}
                 />
             )

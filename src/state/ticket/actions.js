@@ -337,7 +337,7 @@ export function fetchTicketReplyMessage(ticketId) {
     }
 }
 
-export function fetchTicketMessage(ticketId, messageId) {
+export function fetchTicketMessage(ticketId, messageId, sendNotification = true) {
     return (dispatch) => {
         dispatch({
             type: types.FETCH_MESSAGE_START
@@ -346,19 +346,24 @@ export function fetchTicketMessage(ticketId, messageId) {
         return axios.get(`/api/tickets/${ticketId}/messages/${messageId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
-                const hasFailure = resp.actions.find(action => action.status === 'error')
-                const hasPending = resp.actions.find(action => action.status === 'pending')
+                const hasActions = !!resp.actions
+                const hasPending = hasActions ?
+                    !!resp.actions.find(action => action.status === 'pending')
+                    : false
+                const hasFailure = hasActions ?
+                    !!resp.actions.find(action => action.status === 'error') || resp.failed_datetime
+                    : !!resp.failed_datetime
 
                 if (hasFailure) {
                     dispatch(notify({
                         type: 'error',
-                        title: 'Some actions failed on your last message :/',
+                        title: 'Something went wrong on your last message :/',
                         autoDismiss: false,
                         children: (
                             <div>
                                 <ul>
                                     {
-                                        resp.actions.map((action, idx) => {
+                                        hasActions && resp.actions.map((action, idx) => {
                                             if (ACTION_TEMPLATES[action.name].execution === 'back') {
                                                 return (
                                                     <li key={idx}>
@@ -384,9 +389,9 @@ export function fetchTicketMessage(ticketId, messageId) {
                             </div>
                         )
                     }))
-                } else if (hasPending) {
-                    setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId)), 2000)
-                } else {
+                } else if (hasPending || (!resp.sent_datetime && !resp.failed_datetime)) {
+                    setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId, sendNotification)), 2000)
+                } else if (sendNotification) {
                     dispatch(notify({
                         type: 'success',
                         message: 'Message successfully sent!'
@@ -577,14 +582,18 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
  * Perform actions when we successfully create a new message.
  */
 function onMessageSent(dispatch, ticket_id, messageSent) {
-    if (messageSent.actions) {
-        setTimeout(() => dispatch(fetchTicketMessage(ticket_id, messageSent.id)), 1000)
-    } else {
+    const hasPending = messageSent.actions ?
+        !!messageSent.actions.find(action => action.status === 'pending')
+        : false
+
+    if (!hasPending) {
         dispatch(notify({
             type: 'success',
             message: 'Message successfully sent!'
         }))
     }
+
+    setTimeout(() => dispatch(fetchTicketMessage(ticket_id, messageSent.id, hasPending)), 1000)
 
     // reinitialize the current macro
     dispatch({
@@ -639,7 +648,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
                     ticketPartialUpdate(ticket.get('id'), {status})(dispatch)
                 }
 
-                onMessageSent(dispatch, ticket.get('id'), resp, types.SUBMIT_TICKET_MESSAGE_SUCCESS)
+                onMessageSent(dispatch, ticket.get('id'), resp)
 
                 dispatch({
                     type: types.SUBMIT_TICKET_MESSAGE_SUCCESS,
@@ -650,6 +659,41 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
             .catch(error => {
                 return dispatch({
                     type: types.SUBMIT_TICKET_MESSAGE_ERROR,
+                    error,
+                    reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.'
+                })
+            })
+    }
+}
+
+export function updateTicketMessage(ticketId, messageId, data, action = null) {
+    return (dispatch) => {
+        dispatch({
+            type: types.UPDATE_TICKET_MESSAGE_START,
+            messageId
+        })
+
+        let url = `/api/tickets/${ticketId}/messages/${messageId}/`
+
+        if (action) {
+            url = `${url}?action=${action}`
+        }
+
+        return axios.put(url, data)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.UPDATE_TICKET_MESSAGE_SUCCESS,
+                    messageId,
+                    resp
+                })
+
+                dispatch(fetchTicketMessage(ticketId, messageId))
+            })
+            .catch(error => {
+                return dispatch({
+                    type: types.UPDATE_TICKET_MESSAGE_ERROR,
+                    messageId,
                     error,
                     reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.'
                 })

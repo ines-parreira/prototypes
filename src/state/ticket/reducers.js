@@ -54,6 +54,7 @@ export const initialState = fromJS({
             fetchTicket: false,
             submitMessage: false,
             deleteMessage: false,
+            updateMessageIds: [] // store the ids of all the messages being updated
         },
     },
     messages: [],
@@ -114,22 +115,26 @@ export default (state = initialState, action) => {
             return state.setIn(['state', 'fromMacro'], false)
 
         case types.SUBMIT_TICKET_MESSAGE_START: {
-            let newState = state.mergeDeep({
+            return state.mergeDeep({
                 state: {
                     dirty: false
+                },
+                _internal: {
+                    loading: {
+                        submitMessage: true
+                    }
                 }
             })
-                .setIn(['_internal', 'loading', 'submitMessage'], true)
+        }
 
-            // if the ticket is un-assigned,
-            // auto-assign it to the current user.
-            if (!newState.get('assignee_user')) {
-                const sender = action.currentUser.filter(actions.keyIn('email', 'id', 'name'))
-
-                newState = newState.set('assignee_user', sender)
-            }
-
-            return newState
+        case types.UPDATE_TICKET_MESSAGE_START: {
+            return state.mergeDeep({
+                _internal: {
+                    loading: {
+                        updateMessageIds: [action.messageId]
+                    }
+                }
+            })
         }
 
         case types.SUBMIT_TICKET_START:
@@ -238,6 +243,9 @@ export default (state = initialState, action) => {
                 return state.setIn(
                     ['messages', state.get('messages').findIndex(message => message.get('id') === action.resp.id)],
                     fromJS(action.resp)
+                ).setIn(
+                    ['_internal', 'loading', 'updateMessageIds'],
+                    state.getIn(['_internal', 'loading', 'updateMessageIds']).filter(v => v !== action.resp.id)
                 )
             }
 
