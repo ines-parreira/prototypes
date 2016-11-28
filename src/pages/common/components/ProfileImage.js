@@ -10,7 +10,12 @@ export default class ProfileImage extends React.Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (!this.props.url && !this.props.isLoading && !this.props.email && nextProps.email) {
+        const shouldReload =
+            (!nextProps.pictureObject.get('url') || nextProps.pictureObject.get('email') !== nextProps.email)
+            && !nextProps.isLoading
+            && !this.props.email && nextProps.email
+
+        if (shouldReload) {
             this.props.fetchUserPicture(nextProps.email)
         }
     }
@@ -30,12 +35,12 @@ export default class ProfileImage extends React.Component {
     }
 
     render() {
-        const {name, url, isLoading} = this.props
+        const {name, email, pictureObject, isLoading} = this.props
 
-        if (url && !isLoading) {
+        if (pictureObject.get('url') && pictureObject.get('email') === email && !isLoading) {
             return (
                 <img
-                    src={url}
+                    src={pictureObject.get('url')}
                     alt="profile"
                 />
             )
@@ -52,7 +57,7 @@ export default class ProfileImage extends React.Component {
 ProfileImage.propTypes = {
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-    url: PropTypes.string,
+    pictureObject: PropTypes.object.isRequired,
     isLoading: PropTypes.bool,
     fetchUserPicture: PropTypes.func.isRequired
 }

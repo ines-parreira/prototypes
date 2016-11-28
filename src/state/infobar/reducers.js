@@ -14,9 +14,12 @@ export const initialState = fromJS({
         },
         mode: 'default' // can be 'default' for ticket.requester, 'search' for searchResults and 'preview' for user data
     },
+    picture: {
+        url: null,
+        email: null
+    },
     searchResults: [],
-    displayedUser: {},
-    displayedUserPictureUrl: null
+    displayedUser: {}
 })
 
 export default (state = initialState, action) => {
@@ -72,8 +75,11 @@ export default (state = initialState, action) => {
 
         case types.FETCH_USER_PICTURE_SUCCESS: {
             return state
-                .set('displayedUserPictureUrl', action.url)
                 .setIn(['_internal', 'loading', 'displayedUserPictureUrl'], false)
+                .set('picture', fromJS({
+                    url: action.url,
+                    email: action.email
+                }))
         }
 
         case types.FETCH_USER_PICTURE_ERROR: {

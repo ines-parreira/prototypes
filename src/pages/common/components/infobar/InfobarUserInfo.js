@@ -196,7 +196,7 @@ export default class InfobarUserInfo extends React.Component {
                         <ProfileImage
                             name={user.get('name', '')}
                             email={user.get('email', '')}
-                            url={infobar.get('displayedUserPictureUrl')}
+                            pictureObject={infobar.get('picture')}
                             isLoading={infobar.getIn(['_internal', 'loading', 'displayedUserPictureUrl'])}
                             fetchUserPicture={fetchUserPicture}
                         />

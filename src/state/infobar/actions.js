@@ -48,7 +48,8 @@ export const fetchUserPicture = (email = '') => ((dispatch) => {
         .then(() => {
             dispatch({
                 type: types.FETCH_USER_PICTURE_SUCCESS,
-                url: GRAVATAR_URL
+                url: GRAVATAR_URL,
+                email
             })
         })
         .catch(() => {
@@ -60,7 +61,8 @@ export const fetchUserPicture = (email = '') => ((dispatch) => {
                     if (thumbnailUrl) {
                         dispatch({
                             type: types.FETCH_USER_PICTURE_SUCCESS,
-                            url: thumbnailUrl
+                            url: thumbnailUrl,
+                            email
                         })
                     } else {
                         dispatch({
