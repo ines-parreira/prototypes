@@ -75,7 +75,7 @@ describe('TicketMessageActions component', () => {
 
         // Canceled
         const action3Label = component.props.children[2].props.children[0]
-        expect(action3Label.props.className).toContain('teal')
+        expect(action3Label.props.className).toContain('red')
 
         const action3Icon = action3Label.props.children[0]
         expect(action3Icon.props.className).toBe('icon ban')
@@ -86,25 +86,5 @@ describe('TicketMessageActions component', () => {
 
         const action4Icon = action4Label.props.children[0]
         expect(action4Icon.props.className).toBe('icon circle check')
-    })
-
-    it('should display the action\'s arguments in a popup', () => {
-        const popup = component.props.children[0].props.children[1]
-        const headersList = popup.props.children[0]
-        const paramsList = popup.props.children[1]
-
-        expect(headersList.length).toBe(Object.keys(args.headers).length)
-
-        Object.keys(args.headers).forEach((key, index) => {
-            expect(headersList[index].props.children[0]).toBe(key)
-            expect(headersList[index].props.children[2]).toBe(args.headers[key])
-        })
-
-        expect(paramsList.length).toBe(Object.keys(args.params).length)
-
-        Object.keys(args.params).forEach((key, index) => {
-            expect(paramsList[index].props.children[0]).toBe(key)
-            expect(paramsList[index].props.children[2]).toBe(args.params[key])
-        })
     })
 })
