@@ -3,22 +3,24 @@ import {fromJS} from 'immutable'
 import TicketTags from '../../../../detail/components/ticketdetails/TicketTags'
 
 export default class AddTagsAction extends React.Component {
-    addTags(tags) {
-        let newTags = this.props.action.get('arguments')
-        newTags = newTags.concat(tags)
-        this.props.updateActionArgs(this.props.index, newTags)
+    splitIncomingTags = () => this.props.args.get('tags').split(',').filter(t => !!t)
+
+    addTags = (tags) => {
+        let newTags = this.splitIncomingTags()
+        newTags = newTags.concat(tags.get('tags')).join(',')
+        this.props.updateActionArgs(this.props.index, fromJS({tags: newTags}))
     }
 
-    removeTag(tagIndex) {
-        this.props.updateActionArgs(
-            this.props.index,
-            this.props.action.get('arguments').delete(tagIndex)
-        )
+    removeTag = (tagIndex) => {
+        let newTags = this.splitIncomingTags()
+        newTags.splice(tagIndex, 1)
+        newTags = newTags.join(',')
+        this.props.updateActionArgs(this.props.index, fromJS({tags: newTags}))
     }
 
     render() {
-        const {action, tags, deleteAction, index} = this.props
-        const ticketTags = fromJS(action.getIn(['arguments', 'tags']).split(',').map(t => ({name: t})))
+        const {tags, deleteAction, index} = this.props
+        const ticketTags = fromJS(this.splitIncomingTags().map(t => ({name: t})))
 
         return (
             <div>
@@ -30,8 +32,8 @@ export default class AddTagsAction extends React.Component {
                 <TicketTags
                     tags={tags.toJS()}
                     ticketTags={ticketTags}
-                    addTags={value => this.addTags(value)}
-                    removeTag={tagIndex => this.removeTag(tagIndex)}
+                    addTags={this.addTags}
+                    removeTag={this.removeTag}
                     suffix={`macro-modal-${index}`}
                 />
                 <div className="ui divider"></div>
@@ -41,7 +43,7 @@ export default class AddTagsAction extends React.Component {
 }
 
 AddTagsAction.propTypes = {
-    action: PropTypes.object.isRequired,
+    args: PropTypes.object,
     tags: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     updateActionArgs: PropTypes.func.isRequired,

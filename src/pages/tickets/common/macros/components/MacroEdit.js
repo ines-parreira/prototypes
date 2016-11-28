@@ -142,7 +142,7 @@ export default class MacroEdit extends React.Component {
                                         <AddTagsAction
                                             key={key}
                                             index={key}
-                                            action={action}
+                                            args={action.get('arguments')}
                                             tags={this.props.tags}
                                             updateActionArgs={actions.updateActionArgs}
                                             deleteAction={actions.deleteAction}

@@ -29,7 +29,7 @@ export default class TicketTags extends React.Component {
         const existingTagNames = this.props.ticketTags.map(x => x.get('name'))
 
         let style = {}
-        if (!ticketTags.size) {
+        if (ticketTags.isEmpty()) {
             style = {paddingLeft: 0}
         }
 
