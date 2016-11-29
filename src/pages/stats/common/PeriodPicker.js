@@ -129,4 +129,6 @@ PeriodPicker.propTypes = {
 
 PeriodPicker.defaultProps = {
     isDisabled: false,
+    startDatetime: moment().format(),
+    endDatetime: moment().format(),
 }
