@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import {fromJS} from 'immutable'
 import * as IntegrationsActions from '../../../state/integrations/actions'
 
 import FacebookAvailablePages from './components/facebook/FacebookAvailablePages'
@@ -47,9 +48,9 @@ class IntegrationDetailContainer extends React.Component {
         const isDetail = !!params.integrationId
         const isUpdate = isDetail && params.integrationId !== 'new'
         const commonProps = {
-            integration: integrations.get('integration'),
-            integrations: integrations.get('integrations'),
-            loading: integrations.getIn(['state', 'loading']),
+            integration: integrations.get('integration', fromJS({})),
+            integrations: integrations.get('integrations', fromJS([])),
+            loading: integrations.getIn(['state', 'loading'], fromJS({})),
         }
 
         switch (params.integrationType) {

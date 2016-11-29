@@ -4,7 +4,7 @@ import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
 /**
  * Compute the number of active integrations for each type
  */
-function getIntegrationsCountPerType(integrations) {
+function getIntegrationsCountPerType(integrations = []) {
     return integrations
         .reduce((accumulator, item) => {
             const newAccumulator = accumulator
@@ -23,7 +23,7 @@ function getIntegrationsCountPerType(integrations) {
  * @param integrations
  * @returns {*}
  */
-export function getIntegrationsList(integrations) {
+export function getIntegrationsList(integrations = []) {
     const counts = getIntegrationsCountPerType(integrations)
     return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription) => (
         {

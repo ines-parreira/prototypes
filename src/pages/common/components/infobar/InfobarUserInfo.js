@@ -1,13 +1,15 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {Link} from 'react-router'
+import {connect} from 'react-redux'
 import InfobarWidgets from './InfobarWidgets'
+import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
 import ProfileImage from './../ProfileImage'
 import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
 import {itemsWithContext} from '../../../../state/widgets/utils'
 import {USER_CHANNEL_CLASS} from '../../../../config'
 
-export default class InfobarUserInfo extends React.Component {
+class InfobarUserInfo extends React.Component {
     constructor(props) {
         super(props)
 
@@ -78,6 +80,78 @@ export default class InfobarUserInfo extends React.Component {
                 this.isInitialized = true
             }
         }
+    }
+
+    /**
+     * Display widgets because the user has customer data
+     * @private
+     */
+    _renderWidgets = () => {
+        const {
+            actions,
+            isEditing,
+            widgets,
+            sources,
+        } = this.props
+
+        const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
+
+        const contextWidgets = isEditing
+            ? this.props.widgets.getIn(['_internal', 'editedItems'])
+            : this.contextWidgets
+
+        const shouldSuggestTemplateGeneration = isEditing
+            && !isDragging
+            && contextWidgets.size <= 1
+            && contextWidgets.getIn([0, 'template'], fromJS({})) === fromJS({})
+
+        return (
+            <div className="flex-vertical">
+                <div className="infobar-section-separator"></div>
+                {
+                    shouldSuggestTemplateGeneration
+                        ? this._renderGenerateButton()
+                        : (
+                        <div>
+                            <InfobarWidgets
+                                source={sources}
+                                widgets={contextWidgets}
+                                editing={isEditing ? {
+                                    isEditing,
+                                    isDragging,
+                                    actions,
+                                    state: widgets,
+                                    canDrop: (targetAbsolutePath) => {
+                                        const group = widgets.getIn(['_internal', 'drag', 'group'])
+                                        return canDrop(group, targetAbsolutePath)
+                                    }
+                                } : undefined}
+                            />
+                        </div>
+                    )
+                }
+            </div>
+        )
+    }
+
+    /**
+     * Suggest to add integrations if no customer data
+     * @returns {boolean|XML}
+     * @private
+     */
+    _renderSuggestion = () => {
+        const {
+            hasIntegrations,
+        } = this.props
+
+        return (
+            !hasIntegrations && (
+                <div className="flex-vertical">
+                    <div className="infobar-section-separator"></div>
+                    <InfobarAddIntegrationSuggestion />
+                </div>
+            )
+        )
     }
 
     /**
@@ -164,30 +238,16 @@ export default class InfobarUserInfo extends React.Component {
 
     render() {
         const {
-            actions,
             fetchUserPicture,
             infobar,
             user,
-            isEditing,
-            widgets,
             sources,
-            isDefaultUser
+            isDefaultUser,
         } = this.props
 
         if (!user || user.isEmpty()) {
             return null
         }
-
-        const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
-
-        const contextWidgets = isEditing
-            ? this.props.widgets.getIn(['_internal', 'editedItems'])
-            : this.contextWidgets
-
-        const shouldSuggestTemplateGeneration = isEditing
-            && !isDragging
-            && contextWidgets.size <= 1
-            && contextWidgets.getIn([0, 'template'], fromJS({})) === fromJS({})
 
         return (
             <div className="flex-vertical">
@@ -216,31 +276,7 @@ export default class InfobarUserInfo extends React.Component {
                     {this._renderUserChannels(user.get('channels', fromJS([])))}
                 </div>
                 {
-                    areSourcesReady(sources) && (
-                        <div className="flex-vertical">
-                            <div className="infobar-section-separator"></div>
-                            {
-                                shouldSuggestTemplateGeneration
-                                    ? this._renderGenerateButton()
-                                    : (
-                                    <InfobarWidgets
-                                        source={sources}
-                                        widgets={contextWidgets}
-                                        editing={isEditing ? {
-                                            isEditing,
-                                            isDragging,
-                                            actions,
-                                            state: widgets,
-                                            canDrop: (targetAbsolutePath) => {
-                                                const group = widgets.getIn(['_internal', 'drag', 'group'])
-                                                return canDrop(group, targetAbsolutePath)
-                                            }
-                                        } : undefined}
-                                    />
-                                )
-                            }
-                        </div>
-                    )
+                    areSourcesReady(sources) ? this._renderWidgets() : this._renderSuggestion()
                 }
             </div>
         )
@@ -250,6 +286,7 @@ export default class InfobarUserInfo extends React.Component {
 InfobarUserInfo.propTypes = {
     actions: PropTypes.object.isRequired,
     fetchUserPicture: PropTypes.func.isRequired,
+    hasIntegrations: PropTypes.bool.isRequired,
     infobar: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     sources: PropTypes.object.isRequired,
@@ -262,3 +299,9 @@ InfobarUserInfo.defaultProps = {
     isRequired: false,
     user: fromJS({})
 }
+
+const mapStateToProps = (state) => ({
+    hasIntegrations: !state.integrations.get('integrations', fromJS([])).isEmpty(),
+})
+
+export default connect(mapStateToProps)(InfobarUserInfo)

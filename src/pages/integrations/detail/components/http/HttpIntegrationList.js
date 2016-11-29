@@ -28,7 +28,7 @@ HTTP bindings.`
             )
             let rmBtn = (
                 <button
-                    className={classNames('ui basic light red button', {
+                    className={classNames('ui basic light orange button', {
                         loading: isSubmitting
                     })}
                     onClick={() => !isSubmitting && actions.deactivateIntegration(int)}

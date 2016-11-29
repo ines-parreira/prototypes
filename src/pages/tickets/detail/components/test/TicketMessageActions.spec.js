@@ -25,11 +25,11 @@ describe('TicketMessageActions component', () => {
 
     const message = {
         actions: [
-            { name: 'setResponseText' },
-            { name: 'http', status: 'pending', title: 'action1', arguments: args },
-            { name: 'http', status: 'error', title: 'action2', arguments: args },
-            { name: 'http', status: 'canceled', title: 'action3', arguments: args },
-            { name: 'http', status: 'success', title: 'action4', arguments: args }
+            {name: 'setResponseText'},
+            {name: 'http', status: 'pending', title: 'action1', arguments: args},
+            {name: 'http', status: 'error', title: 'action2', arguments: args},
+            {name: 'http', status: 'canceled', title: 'action3', arguments: args},
+            {name: 'http', status: 'success', title: 'action4', arguments: args}
         ]
     }
 

@@ -68,12 +68,15 @@ export default class IntegrationList extends React.Component {
                 }
 
                 {
-                    integrations.count() === 0
-                        ? <NoIntegration type={integrationType} loading={loading.get('integrations')} />
-                        : (
+                    integrations.isEmpty() ? (
+                        <NoIntegration
+                            type={integrationType}
+                            loading={loading.get('integrations', false)}
+                        />
+                    ) : (
                         <table className="ui very basic padded table">
                             <tbody>
-                            {integrations.valueSeq().map(integrationToItemDisplay)}
+                                {integrations.valueSeq().map(integrationToItemDisplay)}
                             </tbody>
                         </table>
                     )
