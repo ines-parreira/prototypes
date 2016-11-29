@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
+import classnames from 'classnames'
 import IntegrationList from '../IntegrationList'
 
 export default class SmoochIntegrationList extends React.Component {
@@ -8,6 +9,16 @@ export default class SmoochIntegrationList extends React.Component {
 
         const integrationToItemDisplay = (int) => {
             const editLink = `/app/integrations/smooch/${int.get('id')}`
+            const isLoading = int.get('id') === loading.get('delete')
+
+            const editClassName = classnames('ui basic light blue button', {
+                'loading disabled': isLoading
+            })
+
+            const deleteClassName = classnames('ui basic light red button', {
+                'loading disabled': isLoading
+            })
+
             return (
                 <tr key={int.get('id')}>
                     <td>
@@ -20,13 +31,13 @@ export default class SmoochIntegrationList extends React.Component {
                     </td>
                     <td className="eight wide column">
                         <div className="floated right">
-                            <button className="ui basic light blue button"
-                                    onClick={() => browserHistory.push(editLink)}
+                            <button className={editClassName}
+                                    onClick={() => !isLoading && browserHistory.push(editLink)}
                             >
                                 Edit
                             </button>
-                            <button className="ui basic light red button"
-                                    onClick={() => actions.deleteIntegration(int)}
+                            <button className={deleteClassName}
+                                    onClick={() => !isLoading && actions.deleteIntegration(int)}
                             >
                                 Delete
                             </button>

@@ -66,11 +66,7 @@ export function getCode(ast) {
 }
 
 export function lastMessage(messages) {
-    if (!messages) {
-        return {}
-    }
-
-    if (!messages.length) {
+    if (!messages || !messages.length) {
         return {}
     }
 

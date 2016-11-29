@@ -50,6 +50,30 @@ class SmoochIntegrationDetail extends React.Component {
         return formSender(this.props.actions.updateOrCreateIntegration(doc))
     }
 
+    _renderInstructions = (isUpdate) => {
+        const {integration} = this.props
+
+        if (!isUpdate || !integration.get('id')) {
+            return null
+        }
+
+        return (
+            <div>
+                <p>
+                    To add the Smooch widget on your website, copy the following code at the bottom of it:
+                </p>
+                <pre className="ui info message">
+                    {'<script src="https://cdn.smooch.io/smooch.min.js"></script>\n'}
+                    {`<script>Smooch.init({appToken: '${integration.getIn(['smooch', 'app_token'])}'});</script>`}
+                </pre>
+                <p>
+                    For advanced customization,
+                    check out <a href="http://docs.smooch.io/javascript/" target="_blank">Smooch's documentation</a>.
+                </p>
+            </div>
+        )
+    }
+
     render() {
         const {actions, handleSubmit, integration, isUpdate, loading} = this.props
 
@@ -81,11 +105,7 @@ class SmoochIntegrationDetail extends React.Component {
                         </p>
                     </div>
                     <br />
-                    <div>
-                        <p>
-                            To configure this integration, go to your app settings in Smooch and copy the following keys
-                        </p>
-                    </div>
+                    {this._renderInstructions(isUpdate)}
                 </div>
 
                 <div className="ten wide column">
@@ -97,20 +117,6 @@ class SmoochIntegrationDetail extends React.Component {
                             name="name"
                             label="Name"
                             placeholder="Name"
-                            required
-                            component={InputField}
-                        />
-                        <Field
-                            name="connections[0].data.key.id"
-                            label="Key ID"
-                            placeholder="Key ID"
-                            required
-                            component={InputField}
-                        />
-                        <Field
-                            name="connections[0].data.key.secret"
-                            label="Secret"
-                            placeholder="Secret"
                             required
                             component={InputField}
                         />
