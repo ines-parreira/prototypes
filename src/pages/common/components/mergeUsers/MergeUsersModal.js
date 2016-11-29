@@ -73,14 +73,17 @@ class MergeUsersModal extends React.Component {
     }
 
     _generateChannelOptions = (user) => (
-        user.get('channels').map((channel, idx) => ({
-            label: (
-                <div key={idx}>
-                    <i className={USER_CHANNEL_CLASS[channel.get('type')]}/> {channel.get('address')}
-                </div>
-            ),
-            value: channel.toJS()
-        }))
+        user
+            .get('channels', fromJS([]))
+            .filter(channel => !!channel) // removing falsey values
+            .map((channel, idx) => ({
+                label: (
+                    <div key={idx}>
+                        <i className={USER_CHANNEL_CLASS[channel.get('type')]} /> {channel.get('address')}
+                    </div>
+                ),
+                value: channel.toJS()
+            }))
             .toList()
             .toJS()
     )
@@ -127,11 +130,11 @@ class MergeUsersModal extends React.Component {
                             component={BinaryChoiceField}
                             options={[
                                 {
-                                    label: <span><i className="user icon"/>{destinationUser.get('name') || ''}</span>,
+                                    label: <span><i className="user icon" />{destinationUser.get('name') || ''}</span>,
                                     value: destinationUser.get('name') || ''
                                 },
                                 {
-                                    label: <span><i className="user icon"/>{sourceUser.get('name') || ''}</span>,
+                                    label: <span><i className="user icon" />{sourceUser.get('name') || ''}</span>,
                                     value: sourceUser.get('name') || ''
                                 }
                             ]}
@@ -147,16 +150,16 @@ class MergeUsersModal extends React.Component {
                                     data-content={emailTooltipText}
                                     data-variation="wide inverted"
                                 >
-                                    <i className="help circle link icon"/>
+                                    <i className="help circle link icon" />
                                 </span>
                             )}
                             options={[
                                 {
-                                    label: <span><i className="mail icon"/>{destinationUser.get('email') || ''}</span>,
+                                    label: <span><i className="mail icon" />{destinationUser.get('email') || ''}</span>,
                                     value: destinationUser.get('email') || ''
                                 },
                                 {
-                                    label: <span><i className="mail icon"/>{sourceUser.get('email') || ''}</span>,
+                                    label: <span><i className="mail icon" />{sourceUser.get('email') || ''}</span>,
                                     value: sourceUser.get('email') || ''
                                 }
                             ]}
@@ -170,7 +173,7 @@ class MergeUsersModal extends React.Component {
                                     data-content={contactTooltipText}
                                     data-variation="wide inverted"
                                 >
-                                    <i className="help circle link icon"/>
+                                    <i className="help circle link icon" />
                                 </span>
                             )}
                             name="user.channels"
@@ -180,6 +183,7 @@ class MergeUsersModal extends React.Component {
                                 this._generateChannelOptions(destinationUser),
                                 this._generateChannelOptions(sourceUser)
                             ]}
+                            propertiesToCompare={['address', 'type']}
                         />
                         <Field
                             type="json"
@@ -188,11 +192,11 @@ class MergeUsersModal extends React.Component {
                             component={BinaryChoiceField}
                             options={[
                                 {
-                                    label: <JSONTree data={destinationUser.get('customer')}/>,
+                                    label: <JSONTree data={destinationUser.get('customer')} />,
                                     value: _isEmpty(baseCustomer) ? null : baseCustomer
                                 },
                                 {
-                                    label: <JSONTree data={sourceUser.get('customer')}/>,
+                                    label: <JSONTree data={sourceUser.get('customer')} />,
                                     value: _isEmpty(mergeCustomer) ? null : mergeCustomer
                                 }
                             ]}

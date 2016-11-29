@@ -4,7 +4,9 @@ import _isEqual from 'lodash/isEqual'
 import _find from 'lodash/find'
 import _findIndex from 'lodash/findIndex'
 import _forEach from 'lodash/forEach'
+import _pick from 'lodash/pick'
 import _compact from 'lodash/compact'
+import _isUndefined from 'lodash/isUndefined'
 import ErrorMessage from '../../../common/components/ErrorMessage'
 
 /**
@@ -29,13 +31,25 @@ class MultiSelectBinaryChoiceField extends React.Component {
     }
 
     _onChange(value, forceAdd = false) {
-        const newVal = this.props.input.value || []
+        if (_isUndefined(value)) {
+            return
+        }
 
-        const index = _findIndex(_compact(newVal), channel => channel.address === value.address && channel.type === value.type)
+        const newVal = _compact(this.props.input.value) || []
 
-        if (index === -1) {
+        // compare whole value by default
+        let referenceValue = value
+
+        // reduce properties to compare in value to get a match
+        if (this.props.propertiesToCompare.length) {
+            referenceValue = _pick(value, this.props.propertiesToCompare)
+        }
+
+        const index = _findIndex(newVal, referenceValue)
+
+        if (index === -1) { // if property not in list, add
             newVal.push(value)
-        } else if (!forceAdd) {
+        } else if (!forceAdd) { // if property is already in list, remove it
             newVal.splice(index, 1)
         }
 
@@ -51,7 +65,7 @@ class MultiSelectBinaryChoiceField extends React.Component {
 
             return (
                 <div
-                    key={`0-${idx}`}
+                    key={idx}
                     className={className}
                     onClick={disabled ? null : () => this._onChange(option.value)}
                 >
@@ -72,16 +86,16 @@ class MultiSelectBinaryChoiceField extends React.Component {
                     )
                 }
                 <div className="options">
-                    <div className="option-container">
-                        {
-                            this._expandOptionsSet(options[0])
-                        }
-                    </div>
-                    <div className="option-container">
-                        {
-                            this._expandOptionsSet(options[1])
-                        }
-                    </div>
+                    {
+                        options.map((option, idx) => (
+                            <div
+                                className="option-container"
+                                key={idx}
+                            >
+                                {this._expandOptionsSet(option)}
+                            </div>
+                        ))
+                    }
                 </div>
                 {meta.invalid && <ErrorMessage errors={meta.error} />}
                 {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
@@ -96,7 +110,12 @@ MultiSelectBinaryChoiceField.propTypes = {
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
     requiredValue: PropTypes.object,
-    tooltip: PropTypes.object
+    tooltip: PropTypes.object,
+    propertiesToCompare: PropTypes.array.isRequired,
+}
+
+MultiSelectBinaryChoiceField.defaultProps = {
+    propertiesToCompare: [],
 }
 
 export default MultiSelectBinaryChoiceField
