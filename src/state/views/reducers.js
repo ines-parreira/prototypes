@@ -16,7 +16,8 @@ const initialState = fromJS({
         currentViewId: null,
         selectedItemsIds: [],
         loading: {
-            fetchList: false
+            fetchList: false,
+            fetchListDiscreet: false,
         }
     }
 })
@@ -161,10 +162,18 @@ export default (state = initialState, action) => {
         }
 
         case types.FETCH_LIST_VIEW_START: {
-            return state
-                .setIn(['_internal', 'currentViewId'], action.viewId)
-                .setIn(['_internal', 'loading', 'fetchList'], true)
-                .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
+            let newState = state.setIn(['_internal', 'currentViewId'], action.viewId)
+
+            if (action.discreet) {
+                newState = newState
+                    .setIn(['_internal', 'loading', 'fetchListDiscreet'], true)
+            } else {
+                newState = newState
+                    .setIn(['_internal', 'loading', 'fetchList'], true)
+                    .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
+            }
+
+            return newState
         }
 
         case types.FETCH_LIST_VIEW_SUCCESS: {
@@ -173,7 +182,12 @@ export default (state = initialState, action) => {
             return state
                 .setIn(['_internal', 'pagination'], fromJS(payload.meta))
                 .setIn(['_internal', 'loading', 'fetchList'], false)
+                .setIn(['_internal', 'loading', 'fetchListDiscreet'], false)
         }
+
+        case types.FETCH_LIST_VIEW_ERROR:
+            return state.setIn(['_internal', 'loading', 'fetchList'], false)
+                .setIn(['_internal', 'loading', 'fetchListDiscreet'], false)
 
         case types.TOGGLE_SELECTION: {
             const currentlySelected = state.getIn(['_internal', 'selectedItemsIds'], fromJS([]))

@@ -180,7 +180,7 @@ export function deleteView(view) {
 }
 
 
-export function fetchPage(page = 1) {
+export function fetchPage(page, discreet = false) {
     return (dispatch, getState) => {
         let views = getState().views
 
@@ -192,6 +192,10 @@ export function fetchPage(page = 1) {
             return Promise.resolve()
         }
 
+        if (!page) {
+            page = views.getIn(['_internal', 'pagination', 'page'], 1)
+        }
+
         const activeViewType = activeView.get('type', 'ticket-list')
         const viewConfig = VIEW_TYPE_CONFIGURATION[activeViewType]
 
@@ -201,7 +205,8 @@ export function fetchPage(page = 1) {
 
         dispatch({
             type: types.FETCH_LIST_VIEW_START,
-            viewId
+            viewId,
+            discreet,
         })
 
         let promise
@@ -226,13 +231,15 @@ export function fetchPage(page = 1) {
             .then((json = {}) => json.data)
             .then(data => {
                 views = getState().views
+                const isCurrent = views.getIn(['_internal', 'currentViewId']) === viewId
+                    && views.getIn(['_internal', 'pagination', 'page']) === data.meta.page
 
                 // make sure the incoming ticket list is the one the current user is looking at
-                if (views.getIn(['_internal', 'currentViewId']) === viewId) {
+                if (isCurrent) {
                     dispatch({
                         type: types.FETCH_LIST_VIEW_SUCCESS,
                         viewType: activeViewType,
-                        data
+                        data,
                     })
                 }
             })
