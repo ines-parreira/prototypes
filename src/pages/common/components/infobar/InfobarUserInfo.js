@@ -301,7 +301,10 @@ InfobarUserInfo.defaultProps = {
 }
 
 const mapStateToProps = (state) => ({
-    hasIntegrations: !state.integrations.get('integrations', fromJS([])).isEmpty(),
+    hasIntegrations: !state.integrations
+        .get('integrations', fromJS([]))
+        .filter(i => i.get('type') === 'http')
+        .isEmpty(),
 })
 
 export default connect(mapStateToProps)(InfobarUserInfo)

@@ -51,7 +51,7 @@ const InfobarAddIntegrationSuggestion = () => (
                         <div className="no-result-container suggestion">
                             <h3>Display customer data here<br />by adding an integration</h3>
                             <Link
-                                to="/app/integrations"
+                                to="/app/integrations/http"
                                 className="ui small light blue button"
                             >
                                 Add integration
