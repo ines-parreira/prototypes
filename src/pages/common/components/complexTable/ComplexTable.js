@@ -1,10 +1,11 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import ComplexTableRow from './ComplexTableRow'
-import ColumnHeader from './ColumnHeaderWrapper'
+import ColumnHeaderWrapper from './ColumnHeaderWrapper'
 import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
 import SemanticPaginator from '../SemanticPaginator'
 import {Loader} from '../Loader'
+import {viewFields} from '../../../../utils'
 
 export default class ComplexTable extends React.Component {
     _toggleSelectAll = () => {
@@ -13,7 +14,7 @@ export default class ComplexTable extends React.Component {
     }
 
     render() {
-        const {view, views, viewConfig, items, currentUser, fields, style, hasBulkActions} = this.props
+        const {view, views, viewConfig, items, fields, style, hasBulkActions} = this.props
         const isLoading = views.getIn(['_internal', 'loading', 'fetchList'])
 
         // if loading => show message
@@ -30,7 +31,7 @@ export default class ComplexTable extends React.Component {
         }
 
         // if empty view or view fields => show message
-        if (items.isEmpty() || fields.isEmpty()) {
+        if (items.isEmpty()) {
             let message = <p>This view is empty. Enjoy your day!</p>
 
             if (view.get('dirty')) {
@@ -49,12 +50,10 @@ export default class ComplexTable extends React.Component {
             )
         }
 
-        // temporary remove priority from available fields
-        const displayedFields = fields.filter((f) => f.get('visible', false)).filter(f => f.get('name') !== 'priority')
-        const updatedView = view.set('fields', view.get('fields').filter(f => f.get('name') !== 'priority'))
+        const displayedFields = fields.filter(f => view.get('fields', fromJS([])).contains(f.get('name')))
 
         const selectedItemsIds = views.getIn(['_internal', 'selectedItemsIds'], fromJS([]))
-        const checked = items.size === selectedItemsIds.size
+        const allItemsChecked = items.size === selectedItemsIds.size
 
         return (
             <div className="complex-list-table" style={style}>
@@ -72,7 +71,7 @@ export default class ComplexTable extends React.Component {
                                             <input
                                                 type="checkbox"
                                                 ref="toggleSelection"
-                                                checked={checked}
+                                                checked={allItemsChecked}
                                             />
                                             <label />
                                         </span>
@@ -82,39 +81,39 @@ export default class ComplexTable extends React.Component {
                             {
                                 displayedFields
                                     .map((field) => (
-                                        <ColumnHeader
+                                        <ColumnHeaderWrapper
                                             key={field.get('name')}
                                             viewConfig={viewConfig}
                                             field={field}
-                                            view={updatedView}
+                                            view={view}
                                             schemas={this.props.schemas}
                                             updateView={this.props.updateView}
                                             addFieldFilter={this.props.addFieldFilter}
-                                            updateFieldEnumSearch={this.props.updateFieldEnumSearch}
-                                            timezone={currentUser.get('timezone')}
                                         />
                                     ))
                             }
-                            <ShowMoreFieldsDropdown view={updatedView} />
+                            <ShowMoreFieldsDropdown
+                                fields={viewFields(view.get('type'))}
+                                visibleFields={view.get('fields', fromJS([]))}
+                            />
                         </tr>
                     </thead>
                     <tbody>
-                    {
-                        items
-                            .map((item, index) => (
-                                <ComplexTableRow
-                                    hasBulkActions={hasBulkActions}
-                                    viewConfig={viewConfig}
-                                    key={item.get('id')}
-                                    fields={displayedFields}
-                                    item={item}
-                                    currentUser={currentUser}
-                                    toggleSelection={this.props.toggleSelection}
-                                    selected={selectedItemsIds.includes(item.get('id'))}
-                                    saveIndex={() => this.props.saveIndex(index)}
-                                />
-                            ))
-                    }
+                        {
+                            items
+                                .map((item, index) => (
+                                    <ComplexTableRow
+                                        hasBulkActions={hasBulkActions}
+                                        viewConfig={viewConfig}
+                                        key={item.get('id')}
+                                        fields={displayedFields}
+                                        item={item}
+                                        toggleSelection={this.props.toggleSelection}
+                                        selected={selectedItemsIds.includes(item.get('id'))}
+                                        saveIndex={() => this.props.saveIndex(index)}
+                                    />
+                                ))
+                        }
                     </tbody>
                 </table>
 
@@ -137,12 +136,10 @@ ComplexTable.propTypes = {
     view: PropTypes.object.isRequired,
     fields: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
 
     resetView: PropTypes.func.isRequired,
     updateView: PropTypes.func.isRequired,
     addFieldFilter: PropTypes.func.isRequired,
-    updateFieldEnumSearch: PropTypes.func.isRequired,
     setPage: PropTypes.func.isRequired,
 
     saveIndex: PropTypes.func.isRequired,
@@ -158,6 +155,5 @@ ComplexTable.defaultProps = {
     view: fromJS({}),
     views: fromJS({}),
     schemas: fromJS({}),
-    currentUser: fromJS({}),
     hasBulkActions: false
 }

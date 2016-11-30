@@ -1,6 +1,7 @@
 import React from 'react'
 import TestUtils from 'react-addons-test-utils'
 import expect from 'expect'
+import {fromJS} from 'immutable'
 import expectImmutable from 'expect-immutable'
 import * as labels from '../labels'
 
@@ -11,29 +12,12 @@ describe('components utils : labels', () => {
         describe('distribution', () => {
             [
                 {
-                    type: 'address',
-                    value: 'localhost',
-                    expected: 'localhost'
-                },
-                {
-                    type: 'plain',
-                    value: 'hello',
-                    expected: 'hello'
-                },
-                {
-                    type: 'composite',
-                    value: 'hello',
-                    expected: 'hello'
-                },
-                {
                     type: 'tags',
-                    value: {
-                        name: 'help'
-                    },
-                    expected: <labels.TagLabel tag={{name: 'help'}} />
+                    value: 'help',
+                    expected: <labels.TagLabel name="help" />
                 },
                 {
-                    type: 'datetime',
+                    type: 'created',
                     value: '2016-01-15',
                     expected: <labels.DatetimeLabel dateTime="2016-01-15" />
                 },
@@ -48,18 +32,18 @@ describe('components utils : labels', () => {
                     expected: <labels.PriorityLabel priority="high" />
                 },
                 {
-                    type: 'agent',
+                    type: 'assignee',
                     value: {
                         name: 'Mario'
                     },
                     expected: <labels.AgentLabel name="Mario" />
                 },
                 {
-                    type: 'user',
+                    type: 'requester',
                     value: {
                         name: 'Luigi'
                     },
-                    expected: <labels.UserLabel user={{name: 'Luigi'}} />
+                    expected: <labels.UserLabel name="Luigi" />
                 },
                 {
                     type: 'channel',
@@ -75,16 +59,15 @@ describe('components utils : labels', () => {
                 const renderer = TestUtils.createRenderer()
 
                 const renderedComponent = labels.RenderLabel({
-                    type: element.type
-                }, element.value)
+                    field: fromJS({name: element.type}),
+                    value: fromJS(element.value),
+                })
 
                 // if renderedComponent is an element, let's render it with the TestUtils renderer
                 let rendered
 
                 if (TestUtils.isElement(renderedComponent)) {
-                    renderer.render(
-                        renderedComponent
-                    )
+                    renderer.render(renderedComponent)
 
                     rendered = renderer.getRenderOutput()
                 } else {

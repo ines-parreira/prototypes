@@ -4,6 +4,8 @@ import escodegen from 'escodegen'
 import moment from 'moment-timezone'
 import sanitizeHtml from 'sanitize-html'
 import {stateToHTML as _stateToHTML} from 'draft-js-export-html'
+import Immutable, {fromJS} from 'immutable'
+import {VIEW_FIELDS} from './config'
 
 /**
  * Guess if a passed string is a url
@@ -142,10 +144,10 @@ export function equalityOperator(field, schemas) {
     }
 }
 
-export function resolveLiteral(value, field) {
+export function resolveLiteral(value, path) {
     switch (typeof value) {
         case 'object':
-            return resolveLiteral(value[field.split('.').reverse()[0]], field)
+            return resolveLiteral(value[path.split('.').reverse()[0]], path)
         case 'string':
             return `'${value}'`
         default:
@@ -294,4 +296,29 @@ export function stateToHTML(contentState) {
     // allows to set options to stateToHTML rendering library that will apply on the entire app
     const options = {}
     return _stateToHTML(contentState, options)
+}
+
+/**
+ * Return view fields for a specific view type
+ * @param viewType
+ */
+export const viewFields = (viewType) => fromJS(VIEW_FIELDS).get(viewType, fromJS([]))
+
+/**
+ * Return true if passed object is immutable (from Immutable JS)
+ * @param object
+ */
+export const isImmutable = object => Immutable.Iterable.isIterable(object)
+
+/**
+ * Return field path
+ * @param field
+ * @returns {*|string|string|string}
+ */
+export const fieldPath = (field = {}) => {
+    if (isImmutable(field)) {
+        field = field.toJS()
+    }
+
+    return field.path || field.name
 }

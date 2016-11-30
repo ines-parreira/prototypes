@@ -6,126 +6,145 @@ import {RenderLabel, TagLabel} from '../../../common/utils/labels'
 import _get from 'lodash/get'
 
 export default class ComplexTableCell extends React.Component {
-    _renderFieldContent = () => {
-        const {item} = this.props
-        const field = this.props.field.toJS()
-        let value
+    _valueFieldContent = () => {
+        const {field, viewType, item} = this.props
+        const fieldName = field.get('name')
 
-        // customize values of some fields
-        switch (field.type) {
-            case 'agent':
-            case 'user': {
-                // ticket.requester.id => ticket.requester
-                value = item.getIn(field.name.split('.').slice(0, -1))
-                if (value) {
-                    value = value.toJS()
-                }
-                break
-            }
-            case 'tags': {
-                return item.get('tags').map((tag) => (
-                    <TagLabel
-                        key={`${item.get('id')}-${tag.get('id')}`}
-                        tag={tag.toJS()}
-                    />
-                )).toJS()
-            }
-            case 'roles': {
-                let label
-                const userRoles = item
-                    .get('roles', fromJS([]))
-                    .map((v) => v.get('name'))
+        switch (viewType) {
+            case 'ticket-list': {
+                switch (fieldName) {
+                    case 'priority':
+                        return item.get('priority')
+                    case 'subject':
+                        return item.get('subject')
+                    case 'status':
+                        return item.get('status')
+                    case 'via':
+                        return item.get('via')
+                    case 'channel':
+                        return item.get('channel')
+                    case 'created':
+                        return item.get('created_datetime')
+                    case 'updated':
+                        return item.get('updated_datetime')
+                    case 'requester':
+                        return item.get('requester') || fromJS({})
+                    case 'assignee':
+                        return item.get('assignee_user') || fromJS({})
+                    case 'details': {
+                        const previewedMessage = getLastMessage(item.get('messages', fromJS([])).toJS())
 
-                if (userRoles.includes('staff')) {
-                    label = <div className="ui red smaller label">Staff</div>
-                } else if (userRoles.includes('admin')) {
-                    label = <div className="ui blue smaller label">Admin</div>
-                } else if (userRoles.includes('agent')) {
-                    label = <div className="ui yellow smaller label">Agent</div>
-                } else {
-                    label = <div className="ui grey smaller label">User</div>
-                }
+                        if (!previewedMessage) {
+                            break
+                        }
 
-                return label
-            }
-            // ticket message address
-            case 'address': {
-                if (field.name.startsWith('messages')) {
-                    const firstMessage = getFirstMessage(item.get('messages', fromJS([])).toJS())
+                        // Optionally show how many messages a ticket has in the subject
+                        let subject = stripHTML(item.get('subject'))
+                        const messageCount = this.props.item.get('messages').size
+                        if (messageCount > 1) {
+                            subject = `(${messageCount}) ${subject}`
+                        }
 
-                    if (!firstMessage) {
-                        break
-                    }
+                        const body = previewedMessage.body_html
+                            ? stripHTML(previewedMessage.body_html)
+                            : previewedMessage.body_text
 
-                    const path = field.name.split('.')
-                    // remove "messages", lets keep the last message as the message we want to use
-                    path.shift()
-
-                    // "to" is an array so we want the first element in it
-                    if (path.includes('to')) {
-                        path.splice(path.indexOf('to') + 1, 0, 0)
-                    }
-
-                    // remove the "address" property, it depends actually on the type of the message
-                    if (field.name.endsWith('address')) {
-                        path.pop()
-                    }
-
-                    // get the part of "source" that we want
-                    value = _get(firstMessage, path, '')
-                    // display the user based on the message type
-                    value = displayUserNameFromSource(value, firstMessage.source.type)
-                }
-                break
-            }
-            case 'composite': {
-                if (field.name === 'ticket-details') {
-                    const previewedMessage = getLastMessage(item.get('messages', fromJS([])).toJS())
-
-                    if (!previewedMessage) {
-                        break
-                    }
-
-                    // Optionally show how many messages a ticket has in the subject
-                    let subject = stripHTML(item.get('subject'))
-                    const messageCount = this.props.item.get('messages').size
-                    if (messageCount > 1) {
-                        subject = `(${messageCount}) ${subject}`
-                    }
-
-                    const body = previewedMessage.body_html
-                        ? stripHTML(previewedMessage.body_html)
-                        : previewedMessage.body_text
-
-                    value = (
-                        <div className="ui header">
-                            <span className="subject">
-                                {subject}
-                            </span>
-                            <div className="body sub header">
-                                {body}
+                        return (
+                            <div className="ui header">
+                                <span className="subject">
+                                    {subject}
+                                </span>
+                                <div className="body sub header">
+                                    {body}
+                                </div>
                             </div>
-                        </div>
-                    )
-                } else {
-                    console.error('Invalid composite field in view', field)
+                        )
+                    }
+                    case 'from': {
+                        const firstMessage = getFirstMessage(item.get('messages', fromJS([])).toJS())
+
+                        if (!firstMessage) {
+                            break
+                        }
+
+                        const path = 'source.from'
+
+                        // get the part of "source" that we want
+                        const source = _get(firstMessage, path, '')
+                        // display the user based on the message type
+                        return displayUserNameFromSource(source, firstMessage.source.type)
+                    }
+                    case 'to': {
+                        const firstMessage = getFirstMessage(item.get('messages', fromJS([])).toJS())
+
+                        if (!firstMessage) {
+                            break
+                        }
+
+                        const path = 'source.to.0'
+
+                        // get the part of "source" that we want
+                        const source = _get(firstMessage, path, '')
+                        // display the user based on the message type
+                        return displayUserNameFromSource(source, firstMessage.source.type)
+                    }
+                    case 'tags': {
+                        return (
+                            <div>
+                                {
+                                    item
+                                        .get('tags', fromJS([]))
+                                        .map((tag) => (
+                                            <TagLabel
+                                                key={`${item.get('id')}-${tag.get('id')}`}
+                                                name={tag.get('name')}
+                                            />
+                                        ))
+                                }
+                            </div>
+                        )
+                    }
+                    default: {
+                        console.error('Invalid field type in complex table cell', fieldName)
+                    }
                 }
                 break
             }
-            default: {
-                value = item.getIn(field.name.split('.'))
+            case 'user-list': {
+                switch (fieldName) {
+                    case 'name':
+                        return item.get('name')
+                    case 'email':
+                        return item.get('email')
+                    case 'created':
+                        return item.get('created_datetime')
+                    case 'updated':
+                        return item.get('updated_datetime')
+                    case 'roles': {
+                        return item.get('roles', fromJS([]))
+                    }
+                    default: {
+                        console.error('Invalid field type in complex table cell', fieldName)
+                    }
+                }
+                break
             }
+            default:
+                console.error('Invalid view type in complex table cell', viewType)
         }
 
-        return RenderLabel(field, value, this.props.currentUser.get('timezone'))
+        return item
     }
 
     render() {
         const {field} = this.props
 
         return (
-            <td className={`${field.get('name')} table-cell`}>
-                {this._renderFieldContent()}
+            <td className={`table-cell ${field.get('name')}`}>
+                <RenderLabel
+                    field={field}
+                    value={this._valueFieldContent()}
+                />
             </td>
         )
     }
@@ -134,5 +153,5 @@ export default class ComplexTableCell extends React.Component {
 ComplexTableCell.propTypes = {
     item: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired
+    viewType: PropTypes.string.isRequired,
 }

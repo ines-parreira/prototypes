@@ -67,10 +67,14 @@ export default class Search extends React.Component {
         }
 
         const paths = this.props.queryPath.split(',')
+        const query = this.props.query
+        const value = this.refs.searchInput.value
+
         paths.forEach((path) => {
-            _.set(this.props.query, path, this.refs.searchInput.value)
+            _.set(query, path, value)
         })
-        this.props.onChange(this.props.query, this.props.params, this.refs.searchInput.value)
+
+        this.props.onChange(query, value, this.props.params)
     }, this.props.searchDebounceTime || 200)
 
     render() {

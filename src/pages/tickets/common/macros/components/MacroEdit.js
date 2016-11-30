@@ -211,7 +211,7 @@ export default class MacroEdit extends React.Component {
                         ref="insertNewMacro"
                     >
                         <i className="plus icon"/>
-                        <span className="text">Insert a new action</span>
+                        Insert a new action
                         <div className="menu">
                             {
                                 DEFAULT_ACTIONS.map(action => (

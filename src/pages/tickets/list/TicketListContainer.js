@@ -35,7 +35,6 @@ class TicketListContainer extends React.Component {
                         askedViewId={this.props.params.viewId}
                         viewsType="ticket-list"
                         items={this.props.tickets.get('items', fromJS([]))}
-                        fields={activeView.get('fields', fromJS([]))}
                         hasBulkActions
                         ActionsComponent={TicketListActions}
                         queryPath="bool.should.0.multi_match.query,bool.should.1.multi_match.query,bool.should.2.nested.query.multi_match.query"

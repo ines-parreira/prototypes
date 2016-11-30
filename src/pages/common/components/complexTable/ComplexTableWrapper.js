@@ -10,7 +10,7 @@ import ComplexTable from './ComplexTable'
 import FilterTopbar from './FilterTopbar'
 import Search from '../Search'
 import {VIEW_TYPE_CONFIGURATION} from '../../../../config'
-import {slugify} from '../../../../utils'
+import {slugify, viewFields} from '../../../../utils'
 import _pick from 'lodash/pick'
 import _merge from 'lodash/merge'
 
@@ -133,7 +133,7 @@ class ComplexTableWrapper extends React.Component {
         this.props.actions.views.setPage(page)
     }
 
-    _search = (query, params, stringQuery) => {
+    _search = (query, stringQuery, params) => {
         const activeView = this.props.activeView
 
         if (stringQuery) {
@@ -157,8 +157,6 @@ class ComplexTableWrapper extends React.Component {
     }
 
     addFieldFilter = (field, filter) => this.props.actions.views.addFieldFilter(field, filter)
-
-    updateFieldEnumSearch = (field, query) => this.props.actions.views.updateFieldEnumSearch(field, query)
 
     viewActionEdit = () => {
         // updateView enters editMode by default
@@ -227,10 +225,6 @@ class ComplexTableWrapper extends React.Component {
                     message="This view does not exist"
                 />
             )
-        }
-
-        if (fields.isEmpty()) {
-            return null
         }
 
         const viewConfig = VIEW_TYPE_CONFIGURATION[viewsType]
@@ -303,7 +297,11 @@ class ComplexTableWrapper extends React.Component {
                                 <EditableTitle
                                     title={activeView.get('name') || ''}
                                     placeholder="View name"
-                                    update={this.updateViewName}
+                                    update={(name) => {
+                                        if (name !== activeView.get('name')) {
+                                            this.updateViewName(name)
+                                        }
+                                    }}
                                 />
                                 {
                                     ActionsComponent
@@ -339,13 +337,11 @@ class ComplexTableWrapper extends React.Component {
                     items={items}
                     fields={fields}
                     schemas={schemas}
-                    currentUser={currentUser}
                     hasBulkActions={hasBulkActions}
 
                     resetView={this.resetView}
                     updateView={this.updateView}
                     addFieldFilter={this.addFieldFilter}
-                    updateFieldEnumSearch={this.updateFieldEnumSearch}
                     setPage={this._setPage}
 
                     saveIndex={this.props.actions.views.saveIndex}
@@ -395,7 +391,7 @@ ComplexTableWrapper.defaultProps = {
     hasBulkActions: false
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
     const activeView = state.views.get('active', fromJS({}))
 
     return {
@@ -407,6 +403,7 @@ function mapStateToProps(state) {
         agents: state.users.get('agents', fromJS([])),
         activeView,
         hasActiveView: !activeView.isEmpty(),
+        fields: viewFields(ownProps.viewsType)
     }
 }
 

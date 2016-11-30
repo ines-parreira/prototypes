@@ -28,7 +28,6 @@ class UserListContainer extends React.Component {
                         askedViewId={this.props.params.viewId}
                         viewsType="user-list"
                         items={this.props.users.get('items', fromJS([]))}
-                        fields={activeView.get('fields', fromJS([]))}
                         hasBulkActions
                         ActionsComponent={UserListActions}
                         queryPath="bool.should.0.multi_match.query"

@@ -26,15 +26,11 @@ export default class ColumnHeaderWrapper extends React.Component {
             left: targetRect.left - bodyRect.left,
             width: targetRect.width
         })
-
-        if (this.props.field.getIn(['filter', 'enum_query'])) {
-            this.props.updateFieldEnumSearch(this.props.field, this.props.field.getIn(['filter', 'enum_query']))
-        }
     }
 
     renderDropdown = () => {
         if (!this.props.field.get('filter')) {
-            return null
+            return
         }
 
         /**
@@ -55,9 +51,10 @@ export default class ColumnHeaderWrapper extends React.Component {
         }
 
         return (
-            <Portal closeOnOutsideClick
-                    isOpened={this.state.isOpened}
-                    onClose={this.onClose}
+            <Portal
+                closeOnOutsideClick
+                isOpened={this.state.isOpened}
+                onClose={this.onClose}
             >
                 <div style={portalStyle}>
                     <FilterDropdown
@@ -65,9 +62,7 @@ export default class ColumnHeaderWrapper extends React.Component {
                         field={this.props.field}
                         schemas={this.props.schemas}
                         addFieldFilter={this.props.addFieldFilter}
-                        updateFieldEnumSearch={this.props.updateFieldEnumSearch}
                         onClose={this.onClose}
-                        timezone={this.props.timezone}
                     />
                 </div>
             </Portal>
@@ -102,7 +97,5 @@ ColumnHeaderWrapper.propTypes = {
     schemas: PropTypes.object.isRequired,
 
     addFieldFilter: PropTypes.func.isRequired, // called when a value is selected in the dropdown
-    updateFieldEnumSearch: PropTypes.func.isRequired, // called when the field has to get enum data from the API
     updateView: PropTypes.func.isRequired,
-    timezone: PropTypes.string // for the Timezone in FilterDropdown
 }

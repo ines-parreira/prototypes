@@ -85,7 +85,7 @@ export default class Infobar extends React.Component {
     /**
      * Populate infobar state from search results
      */
-    _search = (query, params, stringQuery) => {
+    _search = (query, stringQuery) => {
         if (stringQuery) {
             this.props.actions.infobar.search(query, 'user', ['id', 'name', 'email', 'channels'])
         } else {

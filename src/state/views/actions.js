@@ -49,7 +49,8 @@ export const updateFieldFilterOperator = (index, operator) => ({
     operator
 })
 
-export function updateFieldEnumSearch(field, query) {
+// not a real redux action, is used to return data, not to be used in the reducer
+export function fieldEnumSearch(field, query) {
     return (dispatch) => {
         dispatch({
             type: types.UPDATE_VIEW_FIELD_ENUM_START
@@ -66,6 +67,7 @@ export function updateFieldEnumSearch(field, query) {
                     field,
                     resp
                 })
+                return fromJS(resp.data)
             })
             .catch(error => {
                 return dispatch({

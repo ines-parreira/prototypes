@@ -22,6 +22,8 @@ class ShowMoreFieldsDropdown extends React.Component {
     }
 
     render() {
+        const {visibleFields} = this.props
+
         return (
             <th className="show-more-fields-dropdown">
                 <div className="show-more-fields-dropdown-icon">
@@ -38,30 +40,32 @@ class ShowMoreFieldsDropdown extends React.Component {
                     <div className="ui form">
                         <div className="grouped fields">
                             {
-                                this.props.view
-                                    .get('fields')
-                                    .sortBy(f => f.get('display_order'))
-                                    .map((field) => (
-                                        <div
-                                            className="field"
-                                            key={field.get('name')}
-                                        >
-                                            <div className="ui checkbox">
-                                                <input
-                                                    id="field-visibility-{field.get('name')}"
-                                                    type="checkbox"
-                                                    name={field.get('name')}
-                                                    checked={field.get('visible')}
-                                                    onChange={() => {
-                                                        this._setFieldVisibility(field.get('name'), !field.get('visible'))
-                                                    }}
-                                                />
-                                                <label htmlFor="field-visibility-{field.get('name')}">
-                                                    {field.get('title')}
-                                                </label>
+                                this.props.fields
+                                    .map((field) => {
+                                        const isChecked = visibleFields.includes(field.get('name'))
+
+                                        return (
+                                            <div
+                                                className="field"
+                                                key={field.get('name')}
+                                            >
+                                                <div className="ui checkbox">
+                                                    <input
+                                                        id="field-visibility-{field.get('name')}"
+                                                        type="checkbox"
+                                                        name={field.get('name')}
+                                                        checked={isChecked}
+                                                        onChange={() => {
+                                                            this._setFieldVisibility(field.get('name'), !isChecked)
+                                                        }}
+                                                    />
+                                                    <label htmlFor="field-visibility-{field.get('name')}">
+                                                        {field.get('title')}
+                                                    </label>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))
+                                        )
+                                    })
                             }
                         </div>
                     </div>
@@ -73,7 +77,8 @@ class ShowMoreFieldsDropdown extends React.Component {
 
 ShowMoreFieldsDropdown.propTypes = {
     setFieldVisibility: PropTypes.func,
-    view: PropTypes.object
+    fields: PropTypes.object,
+    visibleFields: PropTypes.object.isRequired,
 }
 
 function mapDispatchToProps(dispatch) {

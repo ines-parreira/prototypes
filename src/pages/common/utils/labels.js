@@ -1,54 +1,104 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 import classNames from 'classnames'
 import {merge} from 'lodash'
-import {formatDatetime} from '../../../utils'
+import _isObject from 'lodash/isObject'
+import _isArray from 'lodash/isArray'
+import {formatDatetime, isImmutable} from '../../../utils'
 
-export const AgentLabel = ({name}) => (
-    <span className="agent-label">
-        <span className="agent-id-label ui medium yellow label">A</span>
-        {name && <span className="secondary-action">{name.toUpperCase()}</span>}
-    </span>
-)
-AgentLabel.propTypes = {
-    name: PropTypes.string,
-}
+/**
+ * AGENT
+ */
+export const AgentLabel = ({name = ''}) => {
+    if (!name) {
+        return null
+    }
 
-export const UserLabel = ({user}) => (
-    <span>{user.name}</span>
-)
-UserLabel.propTypes = {user: PropTypes.object.isRequired}
-
-export const TagLabel = ({tag}) => (
-    <button className="ui light blue mini basic label">{tag.name}</button>
-)
-TagLabel.propTypes = {tag: PropTypes.object.isRequired}
-
-
-export const PriorityLabel = ({priority}) => {
-    const className = classNames(
-        'ticket-priority', priority, 'flag', 'icon',
-        {outline: priority !== 'high'},
+    return (
+        <span className="agent-label">
+            <span className="agent-id-label ui medium yellow label">A</span>
+            <span className="secondary-action">{name.toUpperCase()}</span>
+        </span>
     )
-    return (<i className={className} />)
+}
+AgentLabel.propTypes = {name: PropTypes.string}
+
+/**
+ * USER
+ */
+export const UserLabel = ({name = ''}) => <span>{name}</span>
+UserLabel.propTypes = {name: PropTypes.string}
+
+/**
+ * TAG
+ */
+export const TagLabel = ({name = ''}) => <button className="ui light blue mini basic label">{name}</button>
+TagLabel.propTypes = {name: PropTypes.string}
+
+/**
+ * PRIORITY
+ */
+export const PriorityLabel = ({priority}) => {
+    const className = classNames('ticket-priority flag icon', priority, {
+        outline: priority !== 'high'
+    })
+    return <i className={className} />
 }
 PriorityLabel.propTypes = {priority: PropTypes.string.isRequired}
 
-
+/**
+ * STATUS
+ */
 export const StatusLabel = ({status}) => (
-    <span className={`ticket-status smaller ticket-details-item ui ${status} label`}>
+    <span className={`ticket-status smaller ticket-details-item ui label ${status}`}>
         {status}
     </span>
 )
 StatusLabel.propTypes = {status: PropTypes.string.isRequired}
 
+/**
+ * CHANNEL
+ */
 export const ChannelLabel = ({channel}) => (
-    <span className={`ticket-channel ui ${channel} label`}>
+    <span className={`ticket-channel ui label ${channel}`}>
         {channel}
     </span>
 )
 ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 
+/**
+ * ROLE
+ */
+export const RoleLabel = ({roles = 'user'}) => {
+    if (!_isArray(roles)) {
+        roles = [roles]
+    }
 
+    // if there are roles in the incoming array
+    if (roles.length) {
+        // if roles are objects (like {name: 'refund'})
+        if (_isObject(roles[0])) {
+            if (roles[0].name) {
+                roles = roles.map(v => v.name)
+            }
+        }
+    }
+
+    if (roles.includes('staff')) {
+        return <div className="ui red smaller label">Staff</div>
+    } else if (roles.includes('admin')) {
+        return <div className="ui blue smaller label">Admin</div>
+    } else if (roles.includes('agent')) {
+        return <div className="ui yellow smaller label">Agent</div>
+    }
+
+    return <div className="ui grey smaller label">User</div>
+}
+RoleLabel.propTypes = {roles: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.string]).isRequired}
+
+/**
+ * DATETIME
+ */
 export class DatetimeLabel extends React.Component {
     static propTypes = {
         dateTime: PropTypes.string,
@@ -81,48 +131,65 @@ export class DatetimeLabel extends React.Component {
         const {dateTime, timezone} = this.props
 
         if (!dateTime) {
-            return null
+            return
         }
 
         const labelDatetime = formatDatetime(dateTime, timezone)
         const tooltipDatetime = formatDatetime(dateTime, timezone, 'L LT')
 
         return (
-            <span ref="tooltip"
-                  data-html={tooltipDatetime}
+            <span
+                ref="tooltip"
+                data-html={tooltipDatetime}
             >
                 {labelDatetime}
             </span>
         )
     }
 }
+const mapStateToProps = (state) => ({
+    timezone: state.currentUser.get('timezone'),
+})
+connect(mapStateToProps)(DatetimeLabel)
 
-export const RenderLabel = (field, value, timezone = null) => {
+
+export const RenderLabel = ({field, value}) => {
     if (!value) {
         return null
     }
 
-    switch (field.type) {
-        case 'address':
-        case 'plain':
-        case 'composite':
-            return value
+    if (React.isValidElement(value)) {
+        return value
+    }
+
+    switch (field.get('name')) {
         case 'tags':
-            return <TagLabel tag={value} />
-        case 'datetime':
-            return <DatetimeLabel dateTime={value} timezone={timezone} />
+            return <TagLabel name={value} />
+        case 'created':
+        case 'updated':
+            return (
+                <DatetimeLabel
+                    dateTime={value}
+                />
+            )
         case 'status':
             return <StatusLabel status={value} />
         case 'priority':
             return <PriorityLabel priority={value} />
-        case 'agent':
-            return <AgentLabel name={value.name} />
-        case 'user':
-            return <UserLabel user={value} />
+        case 'assignee':
+            return <AgentLabel name={value.get('name')} />
+        case 'requester':
+            return <UserLabel name={value.get('name')} />
+        case 'roles':
+            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value} />
+        case 'via':
         case 'channel':
             return <ChannelLabel channel={value} />
         default:
-            console.error('Invalid field type', field.type)
-            return null
+            return <span>{value}</span>
     }
+}
+RenderLabel.propTypes = {
+    field: PropTypes.object.isRequired,
+    value: PropTypes.oneOfType([PropTypes.node, PropTypes.object]),
 }

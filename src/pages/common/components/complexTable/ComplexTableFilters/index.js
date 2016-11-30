@@ -1,1 +1,1 @@
-export default from './ComplexTableFilters'
+export default from './ViewFilters'

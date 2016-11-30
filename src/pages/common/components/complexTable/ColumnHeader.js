@@ -1,5 +1,6 @@
 import React, {PropTypes, Component} from 'react'
 import classNames from 'classnames'
+import {fieldPath} from '../../../../utils'
 
 export default class ColumnHeader extends Component {
     static propTypes = {
@@ -11,18 +12,18 @@ export default class ColumnHeader extends Component {
 
     renderOrderIcon = (orderOnClick) => {
         const {view} = this.props
-        const field = this.props.field.toJS()
+        const field = this.props.field
         const orderDir = view.get('order_dir')
         let orderClasses = 'action sort icon'
 
-        if (field.name === view.get('order_by')) {
+        if (view.get('order_by') === fieldPath(field)) {
             orderClasses = classNames(orderClasses, 'caret', {
                 up: orderDir === 'desc',
                 down: orderDir === 'asc'
             })
         }
 
-        return <i className={orderClasses} onClick={orderOnClick}/>
+        return <i className={orderClasses} onClick={orderOnClick} />
     }
 
     render = () => {
@@ -30,7 +31,7 @@ export default class ColumnHeader extends Component {
         const field = this.props.field.toJS()
 
         // One small exception for priority which is displayed without header
-        if (field.name === 'priority') {
+        if (fieldPath(field) === 'priority') {
             return null
         }
 
@@ -40,12 +41,13 @@ export default class ColumnHeader extends Component {
         const editMode = !!view.get('editMode')
         const orderDir = view.get('order_dir')
         const newOrderDir = orderDir === 'desc' ? 'asc' : 'desc'
-        let onClick = () => {}
+        let onClick = () => {
+        }
         let orderOnClick = null
 
         if (isSortable) {
             orderOnClick = () => updateView(view.merge({
-                order_by: field.name,
+                order_by: fieldPath(field),
                 order_dir: newOrderDir
             }), editMode)
             onClick = orderOnClick
@@ -57,7 +59,7 @@ export default class ColumnHeader extends Component {
 
         return (
             <span
-                className={classNames(field.name, 'wide', 'field')}
+                className={classNames(fieldPath(field), 'wide', 'field')}
                 onClick={isFilterable ? onClick : orderOnClick}
             >
                 <span className="plain-column-header-label">

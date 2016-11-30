@@ -43,11 +43,11 @@ export default (state = initialState, action) => {
         }
 
         case types.SET_FIELD_VISIBILITY: {
-            const fields = active
-                .get('fields', fromJS({}))
-                .map((f) => {
-                    return f.get('name') === action.name ? f.set('visible', action.state) : f
-                })
+            const visibleFields = active.get('fields', fromJS([]))
+
+            const fields = action.state
+                ? visibleFields.push(action.name)
+                : visibleFields.delete(visibleFields.indexOf(action.name))
 
             active = active
                 .set('fields', fields)
@@ -89,21 +89,6 @@ export default (state = initialState, action) => {
             code = getCode(ast.toJS())
             active = active.set('filters_ast', ast).set('filters', code)
             return state.set('active', active.set('dirty', true))
-        }
-
-        case types.UPDATE_VIEW_FIELD_ENUM_SUCCESS: {
-            // update our active view with the new data from the API
-            // to do that we need to change all the fields with a new list of fields
-            active = active.set('fields', active.get('fields').map(f => {
-                // names of fields are unique
-                if (f.get('name') === action.field.get('name')) {
-                    const filter = action.field.get('filter').set('enum', action.resp.data)
-                    return action.field.set('filter', filter)
-                }
-                return f
-            }))
-
-            return state.set('active', active)
         }
 
         case types.RESET_VIEW: {

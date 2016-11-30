@@ -16,7 +16,7 @@ const Right = ({node, objectPath, agents, tags, currentUser, onChange, index}) =
                 // replace the current user id with {current_user.id},
                 // that's the way the filter value is stored in the view.
                 // for the select element to match the active item.
-                if (node.raw === '"{current_user.id}"') {
+                if (node.raw.includes('{current_user.id}')) {
                     me = me.set('id', '{current_user.id}')
                 }
 

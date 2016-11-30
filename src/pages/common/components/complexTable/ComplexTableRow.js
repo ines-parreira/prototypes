@@ -15,7 +15,7 @@ export default class ComplexTableRow extends React.Component {
 
     render() {
         // const style = {maxWidth: this.props.width}
-        const {fields, item, currentUser, selected, hasBulkActions} = this.props
+        const {fields, item, selected, viewConfig, hasBulkActions} = this.props
 
         return (
             <tr onClick={this._handleClick}>
@@ -39,8 +39,8 @@ export default class ComplexTableRow extends React.Component {
                             <ComplexTableCell
                                 key={`${item.id}-${field.get('name')}`}
                                 item={item}
-                                currentUser={currentUser}
                                 field={field}
+                                viewType={viewConfig.type}
                             />
                         ))
                 }
@@ -54,7 +54,6 @@ ComplexTableRow.propTypes = {
     viewConfig: PropTypes.object.isRequired,
     item: PropTypes.object.isRequired,
     fields: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
     toggleSelection: PropTypes.func.isRequired,
     selected: PropTypes.bool.isRequired,
     saveIndex: PropTypes.func.isRequired,

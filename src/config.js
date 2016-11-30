@@ -24,8 +24,6 @@ export const AVAILABLE_LANGUAGES = [
  */
 export const ACTIVITY_DISPLAY_COUNT = 6
 
-export const TICKET_STATUSES = ['open', 'new', 'closed']
-
 export const BASIC_OPERATORS = {
     eq: {
         label: 'is'
@@ -37,6 +35,7 @@ export const BASIC_OPERATORS = {
 
 export const VIEW_TYPE_CONFIGURATION = {
     'ticket-list': {
+        type: 'ticket-list',
         routeItem: 'ticket', // UI route for this object
         routeList: 'tickets', // UI route for the list of those objects
         api: 'tickets', // api endpoint for this object
@@ -44,6 +43,7 @@ export const VIEW_TYPE_CONFIGURATION = {
         plural: 'tickets' // plural version for sentences
     },
     'user-list': {
+        type: 'user-list',
         routeItem: 'user',
         routeList: 'users',
         api: 'users',
@@ -84,6 +84,10 @@ export const USER_CHANNEL_CLASS = {
     chat: 'icon comments',
     phone: 'icon phone',
 }
+
+export const TICKET_STATUSES = ['open', 'new', 'closed']
+export const CHANNELS = ['email', 'phone', 'sms', 'chat', 'twitter', 'facebook', 'api']
+export const VIA = CHANNELS.concat(['form', 'helpdesk', 'app', 'rule'])
 
 /**
  * Widget related
@@ -420,4 +424,178 @@ export const NOTIFICATIONS_STYLE_CONFIG = {
             display: 'none'
         }
     }
+}
+
+export const VIEW_FIELDS = {
+    'ticket-list': [
+        // temporary disable priority in views
+        // {
+        //     name: 'priority',
+        //     title: 'Priority',
+        // },
+        {
+            name: 'details',
+            title: 'Details',
+        },
+        {
+            name: 'subject',
+            title: 'Subject',
+        },
+        {
+            name: 'from',
+            title: 'From',
+        },
+        {
+            name: 'to',
+            title: 'To',
+        },
+        {
+            name: 'tags',
+            title: 'Tags',
+            path: 'tags.name', // specify if different from name and if used in filters
+            filter: {
+                doc_type: 'tag',
+                queryPath: 'stringQuery',
+                query: {
+                    field: 'name',
+                    stringQuery: ''
+                }
+            }
+        },
+        {
+            name: 'requester',
+            title: 'Requester',
+            path: 'requester.id',
+            filter: {
+                doc_type: 'user',
+                queryPath: 'query.multi_match.query',  // lodash set syntax: https://lodash.com/docs#set
+                query: {
+                    _source: ['id', 'name', 'email'],
+                    size: 10,
+                    query: {
+                        multi_match: {
+                            query: '',
+                            fuzziness: 3,
+                            fields: ['name', 'email']
+                        }
+                    }
+                }
+            }
+        },
+        {
+            name: 'assignee',
+            title: 'Assignee',
+            path: 'assignee_user.id',
+            filter: {
+                doc_type: 'user',
+                queryPath: 'query.multi_match.query',  // lodash set syntax: https://lodash.com/docs#set
+                query: {
+                    _source: ['id', 'name', 'email'],
+                    size: 10,
+                    query: {
+                        multi_match: {
+                            query: '',
+                            fuzziness: 3,
+                            fields: ['name', 'email']
+                        }
+                    },
+                    filter: {
+                        bool: {
+                            should: [
+                                {
+                                    match: {
+                                        'roles.name': 'agent'
+                                    }
+                                },
+                                {
+                                    match: {
+                                        'roles.name': 'admin'
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            name: 'status',
+            title: 'Status',
+            filter: {
+                enum: TICKET_STATUSES
+            }
+        },
+        {
+            name: 'via',
+            title: 'Via',
+            filter: {
+                enum: VIA
+            }
+        },
+        {
+            name: 'channel',
+            title: 'Channel',
+            filter: {
+                enum: CHANNELS
+            }
+        },
+        {
+            name: 'created',
+            title: 'Created',
+            path: 'created_datetime',
+            filter: {
+                sort: {
+                    created_datetime: 'desc'
+                }
+            }
+        },
+        {
+            name: 'updated',
+            title: 'Updated',
+            path: 'updated_datetime',
+            filter: {
+                sort: {
+                    updated_datetime: 'desc'
+                }
+            }
+        },
+    ],
+    'user-list': [
+        {
+            name: 'name',
+            title: 'Name',
+        },
+        {
+            name: 'email',
+            title: 'Email',
+        },
+        {
+            name: 'roles',
+            title: 'Role',
+            path: 'roles.name',
+            filter: {
+                enum: ['user', 'agent', 'admin']
+            }
+        },
+        {
+            name: 'created',
+            title: 'Created',
+            path: 'created_datetime',
+            filter: {
+                sort: {
+                    created_datetime: 'desc'
+                }
+            }
+        },
+        {
+            name: 'updated',
+            title: 'Updated',
+            path: 'updated_datetime',
+            filter: {
+                sort: {
+                    updated_datetime: 'desc'
+                }
+            }
+        },
+    ]
 }
