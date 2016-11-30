@@ -66,11 +66,6 @@ export function fetchIntegrations() {
 export function deleteIntegration(integration) {
     if (window.confirm('Are you sure you want to delete this integration?')) {
         return (dispatch) => {
-            dispatch({
-                type: types.DELETE_INTEGRATION_START,
-                id: integration.get('id')
-            })
-
             axios.delete(`/api/integrations/${integration.get('id')}/`)
                 .then((json = {}) => json.data)
                 .then(() => {

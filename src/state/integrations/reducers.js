@@ -11,8 +11,7 @@ const initialState = fromJS({
             integration: false,
             integrations: false,
             updateIntegration: false,
-            testing: false,
-            delete: false
+            testing: false
         }
     },
     _internal: {
@@ -31,10 +30,7 @@ export default (state = initialState, action) => {
 
     switch (action.type) {
         case types.SELECT_FACEBOOK_PAGE:
-            return state.set(
-                'integration',
-                Map({}).merge(integrations.find((v) => v.getIn(['facebook', 'page_id']) === action.pageId))
-            )
+            return state.set('integration', Map({}).merge(integrations.find((v) => v.getIn(['facebook', 'page_id']) === action.pageId)))
 
         case types.FETCH_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'integration'], true)
@@ -87,31 +83,21 @@ export default (state = initialState, action) => {
                     if (~existingIndex) {
                         newState = newState.setIn(['integrations', existingIndex], fromJS(pageIntegration))
                     } else {
-                        newState = newState.set(
-                            'integrations',
-                            newState.get('integrations').push(fromJS(pageIntegration))
-                        )
+                        newState = newState.set('integrations', newState.get('integrations').push(fromJS(pageIntegration)))
                     }
                 }
             }
             return newState.setIn(['state', 'loading', 'facebookLogin'], false)
         }
-
         case types.FACEBOOK_LOGIN_STATUS:
             return state.setIn(['_internal', 'facebookLoginStatus'], action.status)
-
         case types.UPDATE_INTEGRATION_START:
-            return state.setIn(['state', 'loading', 'updateIntegration'], action.integration.get('id', true))
-
+            return state.setIn(['state', 'loading', 'updateIntegration'], true)
         case types.UPDATE_INTEGRATION_ERROR:
             return state.setIn(['state', 'loading', 'updateIntegration'], false)
-
         case types.UPDATE_INTEGRATION_SUCCESS:
             return state.setIn(['state', 'loading', 'updateIntegration'], false)
                 .set('integration', fromJS(action.resp))
-
-        case types.DELETE_INTEGRATION_START:
-            return state.setIn(['state', 'loading', 'delete'], action.id)
 
         case types.DELETE_INTEGRATION_SUCCESS:
             return state.set('integrations',

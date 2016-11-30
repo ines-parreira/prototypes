@@ -514,10 +514,6 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
         if (data.messages.length) {
             const msg = lastMessage(data.messages)
 
-            if (msg.source.extra) {
-                data.newMessage.source.extra = msg.source.extra
-            }
-
             if (data.newMessage.source.type === msg.source.type) {
                 data.newMessage.source.from = msg.from_agent ? msg.source.from : msg.source.to[0]
             } else {

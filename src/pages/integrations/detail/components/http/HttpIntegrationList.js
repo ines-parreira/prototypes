@@ -13,14 +13,10 @@ HTTP bindings.`
 
         const integrationToItemDisplay = (int) => {
             const active = !int.get('deactivated_datetime')
-            const isRowSubmitting = isSubmitting === int.get('id')
-
             const rowClasses = classNames({
                 deactivated: !active
             })
-
             const editLink = `/app/integrations/http/${int.get('id')}`
-
             let primaryBtn = (
                 <button
                     className="ui basic light blue button"
@@ -30,13 +26,12 @@ HTTP bindings.`
                 </button>
 
             )
-
             let rmBtn = (
                 <button
                     className={classNames('ui basic light orange button', {
-                        'loading disabled': isRowSubmitting
+                        loading: isSubmitting
                     })}
-                    onClick={() => !isRowSubmitting && actions.deactivateIntegration(int)}
+                    onClick={() => !isSubmitting && actions.deactivateIntegration(int)}
                 >
                     Deactivate
                 </button>
@@ -46,9 +41,9 @@ HTTP bindings.`
                 primaryBtn = (
                     <button
                         className={classNames('ui basic light blue button', {
-                            'loading disabled': isRowSubmitting
+                            loading: isSubmitting
                         })}
-                        onClick={() => !isRowSubmitting && actions.activateIntegration(int)}
+                        onClick={() => !isSubmitting && actions.activateIntegration(int)}
                     >
                         Re-Activate
                     </button>
