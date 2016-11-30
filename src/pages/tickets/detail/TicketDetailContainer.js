@@ -103,7 +103,11 @@ class TicketDetailContainer extends React.Component {
             }
 
             if (this.props.ticket.getIn(['assignee_user', 'id']) !== nextProps.ticket.getIn(['assignee_user', 'id'])) {
-                data.assignee_user = {id: nextProps.ticket.getIn(['assignee_user', 'id'])}
+                if (!nextProps.ticket.get('assignee_user')) {
+                    data.assignee_user = null
+                } else {
+                    data.assignee_user = {id: nextProps.ticket.getIn(['assignee_user', 'id'])}
+                }
             }
 
             if (this.props.ticket.get('subject') !== nextProps.ticket.get('subject')) {
