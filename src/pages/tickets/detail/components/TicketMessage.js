@@ -178,6 +178,8 @@ export default class TicketMessage extends React.Component {
             }
         }
 
+        console.log('d', message)
+
         const loading = (pending && !error) || this.props.loading
 
         const className = classNames('ui raw segment ticket-message',

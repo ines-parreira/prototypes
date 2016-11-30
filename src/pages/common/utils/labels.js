@@ -10,14 +10,10 @@ import {formatDatetime, isImmutable} from '../../../utils'
  * AGENT
  */
 export const AgentLabel = ({name = ''}) => {
-    if (!name) {
-        return null
-    }
-
     return (
         <span className="agent-label">
             <span className="agent-id-label ui medium yellow label">A</span>
-            <span className="secondary-action">{name.toUpperCase()}</span>
+            {name && <span className="secondary-action">{name.toUpperCase()}</span>}
         </span>
     )
 }
@@ -177,7 +173,7 @@ export const RenderLabel = ({field, value}) => {
         case 'priority':
             return <PriorityLabel priority={value} />
         case 'assignee':
-            return <AgentLabel name={value.get('name')} />
+            return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
         case 'requester':
             return <UserLabel name={value.get('name')} />
         case 'roles':
