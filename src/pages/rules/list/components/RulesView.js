@@ -5,6 +5,7 @@ import PageHeader from '../../../common/components/PageHeader'
 
 import RuleForm from './RuleForm'
 import RuleTable from './RuleTable'
+import {getAST, getCode} from '../../../../utils'
 
 export default class RulesView extends React.Component {
     constructor() {
@@ -26,6 +27,10 @@ export default class RulesView extends React.Component {
 
     _handleSubmit = (values) => {
         this._hideForm()
+        // add some default values for the rule
+        values.code = 'if (eq(event.type, \'ticket-message-created\')) {}'
+        values.code_ast = getAST(values.code)
+        values.code = getCode(values.code_ast)
         return this.props.actions.rules.create(values)
     }
 
