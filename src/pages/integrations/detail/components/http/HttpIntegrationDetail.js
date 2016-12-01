@@ -169,7 +169,7 @@ class HttpIntegrationDetail extends React.Component {
                     >
                         <Field
                             name="name"
-                            label="Name"
+                            label="Integration Name"
                             placeholder="Name"
                             required
                             component={InputField}
@@ -289,7 +289,7 @@ class HttpIntegrationDetail extends React.Component {
                                     })}
                                     onClick={() => !isSubmitting && actions.deactivateIntegration(integration)}
                                 >
-                                    Deactivate
+                                    Deactivate integration
                                 </button>
                             )}
                             {isUpdate && !isActive && (
@@ -300,7 +300,7 @@ class HttpIntegrationDetail extends React.Component {
                                     })}
                                     onClick={() => !isSubmitting && actions.activateIntegration(integration)}
                                 >
-                                    Re-Activate
+                                    Re-Activate integration
                                 </button>
                             )}
 
@@ -310,7 +310,7 @@ class HttpIntegrationDetail extends React.Component {
                                     className="ui basic light floated right red button"
                                     onClick={() => actions.deleteIntegration(integration)}
                                 >
-                                    Delete
+                                    Delete integration
                                 </button>
                             )}
                         </div>

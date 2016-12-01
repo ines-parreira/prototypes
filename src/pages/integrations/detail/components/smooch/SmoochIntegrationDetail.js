@@ -50,6 +50,29 @@ class SmoochIntegrationDetail extends React.Component {
         return formSender(this.props.actions.updateOrCreateIntegration(doc))
     }
 
+    _renderInstructions = (isUpdate) => {
+        const {integration} = this.props
+
+        if (!isUpdate || !integration.get('id')) {
+            return null
+        }
+
+        return (
+            <div>
+                <p>
+                    To add a chat with Smooch to your website, add the following code before the {'</body>'} on your page:
+                </p>
+                <pre className="ui info message">
+                    {'<script src="https://cdn.smooch.io/smooch.min.js"></script>\n'}
+                    {`<script>Smooch.init({appToken: '${integration.getIn(['smooch', 'app_token'])}'});</script>`}
+                </pre>
+                <p>
+                    You can send user data to better identify who you are talking to. Check out <a href="http://docs.smooch.io/javascript/" target="_blank">Smooch's documentation</a> to learn how to do it.
+                </p>
+            </div>
+        )
+    }
+
     render() {
         const {actions, handleSubmit, integration, isUpdate, loading} = this.props
 
@@ -72,20 +95,8 @@ class SmoochIntegrationDetail extends React.Component {
                     </div>
 
                     <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
-                    <div>
-                        <p>
-                            Smooch is a chat widget that you can add to your website.
-                            <br />
-                            Every time a user starts a conversation with you, it opens a ticket in Gorgias where you can
-                            respond to them.
-                        </p>
-                    </div>
                     <br />
-                    <div>
-                        <p>
-                            To configure this integration, go to your app settings in Smooch and copy the following keys
-                        </p>
-                    </div>
+                    {this._renderInstructions(isUpdate)}
                 </div>
 
                 <div className="ten wide column">
@@ -95,22 +106,8 @@ class SmoochIntegrationDetail extends React.Component {
                     >
                         <Field
                             name="name"
-                            label="Name"
+                            label="Integration Name"
                             placeholder="Name"
-                            required
-                            component={InputField}
-                        />
-                        <Field
-                            name="connections[0].data.key.id"
-                            label="Key ID"
-                            placeholder="Key ID"
-                            required
-                            component={InputField}
-                        />
-                        <Field
-                            name="connections[0].data.key.secret"
-                            label="Secret"
-                            placeholder="Secret"
                             required
                             component={InputField}
                         />
@@ -130,7 +127,7 @@ class SmoochIntegrationDetail extends React.Component {
                                         onClick={() => actions.deleteIntegration(integration)}
                                         type="button"
                                     >
-                                        Delete
+                                        Delete integration
                                     </button>
                                 )
                             }
