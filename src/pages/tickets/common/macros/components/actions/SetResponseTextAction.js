@@ -7,7 +7,7 @@ export default class SetResponseTextAction extends React.Component {
                 // insert variable in text area
                 const cursorPosition = $(this.refs.textarea).prop('selectionStart')
                 const initialText = this.props.action.getIn(['arguments', 'body_text'], '')
-                const text = `${initialText.slice(0, cursorPosition)} {${variable}} ${initialText.slice(cursorPosition)}`
+                const text = `${initialText.slice(0, cursorPosition)}{${variable}}${initialText.slice(cursorPosition)}`
                 this._setResponseText(text)
                 $(this.refs.textarea).focus()
             }
@@ -33,30 +33,59 @@ export default class SetResponseTextAction extends React.Component {
                 Insert variable
                 <i className="dropdown icon" />
                 <div className="menu">
-                    <div className="header">Ticket requester</div>
-                    <div
-                        className="item"
-                        data-value="ticket.requester.firstname"
-                    >
-                        First name
+                    <div className="item">
+                        <i className="dropdown icon" />
+                        <span className="text">Ticket requester</span>
+                        <div className="menu">
+                            <div
+                                className="item"
+                                data-value="ticket.requester.firstname"
+                            >
+                                First name
+                            </div>
+                            <div
+                                className="item"
+                                data-value="ticket.requester.lastname"
+                            >
+                                Last name
+                            </div>
+                            <div
+                                className="item"
+                                data-value="ticket.requester.name"
+                            >
+                                Full name
+                            </div>
+                            <div
+                                className="item"
+                                data-value="ticket.requester.email"
+                            >
+                                Email
+                            </div>
+                        </div>
                     </div>
-                    <div
-                        className="item"
-                        data-value="ticket.requester.lastname"
-                    >
-                        Last name
-                    </div>
-                    <div
-                        className="item"
-                        data-value="ticket.requester.name"
-                    >
-                        Full name
-                    </div>
-                    <div
-                        className="item"
-                        data-value="ticket.requester.email"
-                    >
-                        Email
+                    <div className="item">
+                        <i className="dropdown icon" />
+                        <span className="text">Current user</span>
+                        <div className="menu">
+                            <div
+                                className="item"
+                                data-value="current_user.firstname"
+                            >
+                                First name
+                            </div>
+                            <div
+                                className="item"
+                                data-value="current_user.lastname"
+                            >
+                                Last name
+                            </div>
+                            <div
+                                className="item"
+                                data-value="current_user.name"
+                            >
+                                Full name
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

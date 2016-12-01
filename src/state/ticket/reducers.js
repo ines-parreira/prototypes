@@ -336,8 +336,7 @@ export default (state = initialState, action) => {
 
             if (action.fromMacro) {
                 const ticketState = state.toJS()
-                const sender = action.currentUser.filter(actions.keyIn('email', 'id', 'name'))
-                const currentUser = sender.toJS()
+                const currentUser = action.currentUser.filter(actions.keyIn('name', 'firstname', 'lastname')).toJS()
 
                 text = renderTemplate(action.args.get('body_text', ''), {
                     ticket: ticketState,
