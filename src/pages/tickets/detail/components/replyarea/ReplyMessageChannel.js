@@ -41,7 +41,7 @@ export default class ReplyMessageChannel extends React.Component {
             }
         }
 
-        return receivers
+        return receivers.filter(receiver => !!receiver) // remove falsey values
     }
 
     /**

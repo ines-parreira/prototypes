@@ -47,6 +47,10 @@ class ReceiversDropdown extends React.Component {
     }
 
     _onChange = (value) => {
+        if (!this.props.valueProp) {
+            return
+        }
+
         const newValue = value || []
         const fieldName = this.props.valueProp
 
@@ -70,9 +74,11 @@ class ReceiversDropdown extends React.Component {
     }
 
     render() {
-        const {sourceType, enabled} = this.props
+        const {sourceType, enabled, valueProp} = this.props
 
         const addLabelText = 'Add the email address "{label}" ?'
+
+        const placeholder = valueProp ? 'Search a user...' : 'Sorry, no recipient for this type of message...'
 
         return (
             <div className="receiver-dropdown">
@@ -87,7 +93,7 @@ class ReceiversDropdown extends React.Component {
                     allowCreate={sourceType === 'email'}
                     allowCreateConstraint={isEmail}
                     addLabelText={addLabelText}
-                    placeholder="Search a user..."
+                    placeholder={placeholder}
                     tabIndex="2"
                 />
             </div>
@@ -105,7 +111,7 @@ ReceiversDropdown.propTypes = {
     enabled: PropTypes.bool.isRequired, // whether the dropdown should allow user interactions or not
     parentId: PropTypes.string.isRequired, // the id of the parent object, to check if the field needs to be repopulated
 
-    valueProp: PropTypes.string.isRequired, // the property to display from the object
+    valueProp: PropTypes.string, // the property to display from the object
     sourceType: PropTypes.string.isRequired
 }
 
