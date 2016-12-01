@@ -61,6 +61,7 @@ Timeline.propTypes = {
 }
 
 Timeline.defaultProps = {
+    userHistory: fromJS({}),
     isDisplayed: false,
     actions: {},
     currentTicketId: 0,
