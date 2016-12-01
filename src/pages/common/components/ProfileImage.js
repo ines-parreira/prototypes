@@ -55,8 +55,8 @@ export default class ProfileImage extends React.Component {
 }
 
 ProfileImage.propTypes = {
-    name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    email: PropTypes.string,
     pictureObject: PropTypes.object.isRequired,
     isLoading: PropTypes.bool,
     fetchUserPicture: PropTypes.func.isRequired
