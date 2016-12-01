@@ -63,6 +63,7 @@ class TicketListInfobarContainer extends React.Component {
                                             const linkProperties = _pick(step, [
                                                 'href',
                                                 'target',
+                                                'onClick',
                                             ])
 
                                             return (
@@ -109,17 +110,20 @@ const mapStateToProps = (state) => {
             title: 'Add your support inbox',
             isDone: true,
             href: 'http://help.gorgias.io/en/latest/src/helpdesk/00-getting-started.html#how-to-set-up-email-forwarding',
-            target: '_blank'
+            target: '_blank',
+            onClick: () => amplitude.getInstance().logEvent('Clicked add support inbox on Onboarding widget'),
         },
         {
             title: 'Invite team members',
             isDone: hasOtherAgents,
             href: '/app/users',
+            onClick: () => amplitude.getInstance().logEvent('Clicked invite team members on Onboarding widget'),
         },
         {
             title: 'Add an integration',
             isDone: hasIntegrations,
             href: '/app/integrations',
+            onClick: () => amplitude.getInstance().logEvent('Clicked add an integration on Onboarding widget'),
         },
     ]
 
