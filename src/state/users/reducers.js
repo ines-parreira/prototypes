@@ -1,6 +1,7 @@
 import * as types from './constants'
 import * as ticketTypes from '../ticket/constants'
 import * as viewsTypes from '../views/constants'
+import {isAgent} from '../../utils'
 import {fromJS} from 'immutable'
 
 export const initialState = fromJS({
@@ -78,15 +79,36 @@ export default (state = initialState, action) => {
 
         case types.SUBMIT_USER_SUCCESS: {
             let newState = state
+            const responseUser = fromJS(action.resp)
 
             if (action.isUpdate) {
-                const responseUser = fromJS(action.resp)
+                // if updated user is in current items list, update it
                 newState = newState.set('items',
                     items.set(items.findIndex(item => item.get('id') === action.userId), responseUser)
                 )
 
+                // if updated user is the active one, update the active one
                 if (action.userId === state.getIn(['active', 'id'])) {
                     newState = newState.set('active', responseUser)
+                }
+            }
+
+            const existingAgent = newState.get('agents')
+                .findIndex(user => user.get('id') === responseUser.get('id'))
+
+            // if is an agent, add/update in list of agents
+            if (isAgent(responseUser)) {
+                if (~existingAgent) {
+                    newState = newState.setIn(['agents', existingAgent], responseUser)
+                } else {
+                    newState = newState.set('agents', newState.get('agents').push(responseUser))
+                }
+            } else {
+                // otherwise remove him
+                if (~existingAgent) {
+                    newState = newState.set('agents', newState.get('agents')
+                        .filter(user => user.get('id') !== responseUser.get('id'))
+                    )
                 }
             }
 
@@ -96,7 +118,8 @@ export default (state = initialState, action) => {
         case types.DELETE_USER_SUCCESS: {
             return state
                 .merge({
-                    items: state.get('items').filter((item) => item.get('id') !== action.userId)
+                    items: state.get('items').filter(item => item.get('id') !== action.userId),
+                    agents: state.get('agents').filter(item => item.get('id') !== action.userId)
                 })
         }
 

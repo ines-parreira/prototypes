@@ -6,6 +6,7 @@ import sanitizeHtml from 'sanitize-html'
 import {stateToHTML as _stateToHTML} from 'draft-js-export-html'
 import Immutable, {fromJS} from 'immutable'
 import {VIEW_FIELDS} from './config'
+import _isObject from 'lodash/isObject'
 
 /**
  * Guess if a passed string is a url
@@ -317,4 +318,44 @@ export const fieldPath = (field = {}) => {
     }
 
     return field.path || field.name
+}
+
+/**
+ * Test if user is agent
+ * @param user
+ * @returns {*|Array|boolean}
+ */
+export const isAgent = (user) => {
+    if (isImmutable(user)) {
+        user = user.toJS()
+    }
+
+    let roles = user.roles || []
+
+    if (roles[0] && _isObject(roles[0])) {
+        roles = roles.map(role => role.name)
+    }
+
+    return roles.includes('agent')
+        || roles.includes('admin')
+}
+
+
+/**
+ * Test if user is admin
+ * @param user
+ * @returns {*|Array|boolean}
+ */
+export const isAdmin = (user) => {
+    if (isImmutable(user)) {
+        user = user.toJS()
+    }
+
+    let roles = user.roles || []
+
+    if (roles[0] && _isObject(roles[0])) {
+        roles = roles.map(role => role.name)
+    }
+
+    return roles.includes('admin')
 }

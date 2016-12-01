@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
 import {VIEW_TYPE_CONFIGURATION} from '../../config'
+import {fetchUsers} from '../users/actions'
 
 export const setViewActive = (view) => ({
     type: types.SET_VIEW_ACTIVE,
@@ -393,6 +394,11 @@ export function bulkDelete(activeView, ids) {
                     viewType: activeViewType,
                     ids
                 })
+
+                // refetch agents and admins list if it comes from users view
+                if (activeViewType === 'user-list') {
+                    dispatch(fetchUsers(['agent', 'admin']))
+                }
 
                 dispatch(notify({
                     type: 'success',

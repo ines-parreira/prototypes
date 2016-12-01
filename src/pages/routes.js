@@ -22,13 +22,15 @@ import SimpleStatsContainer from './stats/simple/SimpleStatsContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
 import RulesNavbarContainer from './rules/common/RulesNavbarContainer'
+import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
 
 export default (
     <Route path="/app" component={App}>
         <IndexRoute
             components={{
                 content: TicketListContainer,
-                navbar: TicketNavbarContainer
+                navbar: TicketNavbarContainer,
+                infobar: TicketListInfobarContainer,
             }}
         />
         <Route
@@ -97,14 +99,16 @@ export default (
             path="tickets"
             components={{
                 content: TicketListContainer,
-                navbar: TicketNavbarContainer
+                navbar: TicketNavbarContainer,
+                infobar: TicketListInfobarContainer,
             }}
         />
         <Route
             path="tickets/:viewId/:viewSlug"
             components={{
                 content: TicketListContainer,
-                navbar: TicketNavbarContainer
+                navbar: TicketNavbarContainer,
+                infobar: TicketListInfobarContainer,
             }}
         />
         <Route
