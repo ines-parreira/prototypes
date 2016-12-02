@@ -63,6 +63,13 @@ class ReceiversDropdown extends React.Component {
         }))
     }
 
+    _onBlur = (event) => {
+        const value = event.target.value
+        if (isEmail(value)) {
+            this.refs.receiverDropdown.refs.select.selectFocusedOption()
+        }
+    }
+
     _search(input, callback) {
         const queryText = input.toLowerCase()
 
@@ -83,6 +90,7 @@ class ReceiversDropdown extends React.Component {
         return (
             <div className="receiver-dropdown">
                 <Select.Async
+                    ref="receiverDropdown"
                     multi
                     cache={false}
                     name="receiver-dropdown"
@@ -94,6 +102,8 @@ class ReceiversDropdown extends React.Component {
                     allowCreateConstraint={isEmail}
                     addLabelText={addLabelText}
                     placeholder={placeholder}
+                    onBlur={this._onBlur}
+                    onBlurResetsInput={false}
                     tabIndex="2"
                 />
             </div>
