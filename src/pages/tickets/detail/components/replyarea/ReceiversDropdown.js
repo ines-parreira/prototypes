@@ -63,6 +63,34 @@ class ReceiversDropdown extends React.Component {
         }))
     }
 
+    // add email when typing a separator
+    _onInputChange = (value) => {
+        if (!value) {
+            return value
+        }
+
+        const separators = [',', ' ']
+
+        // if last character of input is a separator
+        if (separators.includes(value.slice(-1))) {
+            const stripValue = value.slice(0, -1)
+
+            if (!isEmail(stripValue)) {
+                return value
+            }
+
+            this.refs.receiverDropdown.refs.select.selectValue({
+                label: stripValue,
+                value: stripValue,
+            })
+
+            return ''
+        }
+
+        return value
+    }
+
+    // add email when blurring field
     _onBlur = (event) => {
         const value = event.target.value
         if (isEmail(value)) {
@@ -96,6 +124,7 @@ class ReceiversDropdown extends React.Component {
                     name="receiver-dropdown"
                     value={this._valueFromState(this.props.value)}
                     onChange={this._onChange}
+                    onInputChange={this._onInputChange}
                     loadOptions={this._search}
                     disabled={!enabled}
                     allowCreate={sourceType === 'email'}
