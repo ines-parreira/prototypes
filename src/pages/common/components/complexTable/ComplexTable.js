@@ -56,66 +56,63 @@ export default class ComplexTable extends React.Component {
         const allItemsChecked = items.size === selectedItemsIds.size
 
         return (
-            <div className="complex-list-table" style={style}>
-                <table className="ui selectable very basic table">
-                    <thead>
-                        <tr>
-                            {
-                                hasBulkActions
-                                && (
-                                    <th
-                                        style={{cursor: 'pointer'}}
-                                        onClick={this._toggleSelectAll}
-                                    >
-                                        <span className="ui checkbox">
-                                            <input
-                                                type="checkbox"
-                                                ref="toggleSelection"
-                                                checked={allItemsChecked}
-                                            />
-                                            <label />
-                                        </span>
-                                    </th>
-                                )
-                            }
-                            {
-                                displayedFields
-                                    .map((field) => (
-                                        <ColumnHeaderWrapper
-                                            key={field.get('name')}
-                                            viewConfig={viewConfig}
-                                            field={field}
-                                            view={view}
-                                            schemas={this.props.schemas}
-                                            updateView={this.props.updateView}
-                                            addFieldFilter={this.props.addFieldFilter}
-                                        />
-                                    ))
-                            }
-                            <ShowMoreFieldsDropdown
-                                fields={viewFields(view.get('type'))}
-                                visibleFields={view.get('fields', fromJS([]))}
-                            />
-                        </tr>
-                    </thead>
-                    <tbody>
+            <div className="complex-list-content" style={style}>
+                <div className="complex-list-table ui selectable very basic table">
+                    <div className="complex-list-table-row complex-list-table-header">
                         {
-                            items
-                                .map((item, index) => (
-                                    <ComplexTableRow
-                                        hasBulkActions={hasBulkActions}
+                            hasBulkActions
+                            && (
+                                <div
+                                    className="complex-list-table-col"
+                                    style={{cursor: 'pointer'}}
+                                    onClick={this._toggleSelectAll}
+                                >
+                                    <span className="ui checkbox">
+                                        <input
+                                            type="checkbox"
+                                            ref="toggleSelection"
+                                            checked={allItemsChecked}
+                                        />
+                                        <label />
+                                    </span>
+                                </div>
+                            )
+                        }
+                        {
+                            displayedFields
+                                .map((field) => (
+                                    <ColumnHeaderWrapper
+                                        key={field.get('name')}
                                         viewConfig={viewConfig}
-                                        key={item.get('id')}
-                                        fields={displayedFields}
-                                        item={item}
-                                        toggleSelection={this.props.toggleSelection}
-                                        selected={selectedItemsIds.includes(item.get('id'))}
-                                        saveIndex={() => this.props.saveIndex(index)}
+                                        field={field}
+                                        view={view}
+                                        schemas={this.props.schemas}
+                                        updateView={this.props.updateView}
+                                        addFieldFilter={this.props.addFieldFilter}
                                     />
                                 ))
                         }
-                    </tbody>
-                </table>
+                        <ShowMoreFieldsDropdown
+                            fields={viewFields(view.get('type'))}
+                            visibleFields={view.get('fields', fromJS([]))}
+                        />
+                    </div>
+                    {
+                        items
+                            .map((item, index) => (
+                                <ComplexTableRow
+                                    hasBulkActions={hasBulkActions}
+                                    viewConfig={viewConfig}
+                                    key={item.get('id')}
+                                    fields={displayedFields}
+                                    item={item}
+                                    toggleSelection={this.props.toggleSelection}
+                                    selected={selectedItemsIds.includes(item.get('id'))}
+                                    saveIndex={() => this.props.saveIndex(index)}
+                                />
+                            ))
+                    }
+                </div>
 
                 <SemanticPaginator
                     page={views.getIn(['_internal', 'pagination', 'page'])}

@@ -75,20 +75,25 @@ export default class TicketReply extends React.Component {
         </div>)
     }
 
+    _focusEditor = () => {
+        if (this.refs.editor && this.refs.editor.focus) {
+            this.refs.editor.focus()
+        }
+    }
 
     render() {
         const {ticket, actions} = this.props
-        const className = classNames('TicketReply search ui raised segment', {
+        const className = classNames('TicketReply', {
             internal: ticket.get('newMessage') && !ticket.getIn(['newMessage', 'public']),
         })
 
-
         return (
-            <div className={className}>
+            <div className={className} onClick={this._focusEditor}>
                 <TicketReplyEditor
                     actions={actions}
                     ticket={ticket}
                     handleFiles={this._handleFiles}
+                    ref="editor"
                 />
                 {this._renderActions()}
                 {this._renderAttachments()}

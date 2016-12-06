@@ -63,6 +63,21 @@ export const ChannelLabel = ({channel}) => (
 ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 
 /**
+ * CHANNEL DETAIL
+ */
+export const ChannelDetailLabel = ({channel}) => (
+    <span>
+        {channel.get('user') ? `
+            ${channel.getIn(['user', 'name'])}
+            <${channel.get('address')}>
+        ` : channel.get('address')}
+    </span>
+)
+ChannelDetailLabel.propTypes = {
+    channel: PropTypes.object.isRequired
+}
+
+/**
  * ROLE
  */
 export const RoleLabel = ({roles = 'user'}) => {
@@ -174,6 +189,8 @@ export const RenderLabel = ({field, value}) => {
             return <PriorityLabel priority={value} />
         case 'assignee':
             return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
+        case 'to':
+            return <ChannelDetailLabel channel={value} />
         case 'requester':
             return <UserLabel name={value.get('name')} />
         case 'roles':

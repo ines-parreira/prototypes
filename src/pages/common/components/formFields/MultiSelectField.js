@@ -21,20 +21,22 @@ export default class MultiSelectField extends React.Component {
             <div className={fieldClassName} ref="parent">
                 {label && <label htmlFor={input.name}>{label}</label>}
                 {description ? <p>{description}</p> : null}
-                {
-                    options.map((option, idx) => (
-                        <div className="inline field" key={idx}>
-                            <div className="ui toggle checkbox">
-                                <input
-                                    {...{checked: input.value[option.slug] || false}}
-                                    type="checkbox"
-                                    onChange={(e) => this._onChange(e.target.checked, option.slug)}
-                                />
-                                <label>{option.label}</label>
+                <div className="fields">
+                    {
+                        options.map((option, idx) => (
+                            <div className="field" key={idx}>
+                                <div className="ui toggle checkbox">
+                                    <input
+                                        {...{checked: input.value[option.slug] || false}}
+                                        type="checkbox"
+                                        onChange={(e) => this._onChange(e.target.checked, option.slug)}
+                                    />
+                                    <label>{option.label}</label>
+                                </div>
                             </div>
-                        </div>
-                    ))
-                }
+                        ))
+                    }
+                </div>
             </div>
         )
     }

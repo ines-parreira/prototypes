@@ -26,7 +26,7 @@ class ShowMoreFieldsDropdown extends React.Component {
         const {visibleFields} = this.props
 
         return (
-            <th className="show-more-fields-dropdown">
+            <div className="show-more-fields-dropdown complex-list-table-col">
                 <div className="show-more-fields-dropdown-icon">
                     <i
                         ref="showmoreButton"
@@ -71,7 +71,7 @@ class ShowMoreFieldsDropdown extends React.Component {
                         </div>
                     </div>
                 </div>
-            </th>
+            </div>
         )
     }
 }

@@ -69,17 +69,20 @@ export default class ComplexTableCell extends React.Component {
                         // get the part of "source" that we want
                         const source = item.getIn(['first_source', 'from'], fromJS({})).toJS()
                         // display the user based on the message type
-                        return displayUserNameFromSource(source, item.getIn(['first_source', 'type']))
+                        return fromJS({
+                            name: displayUserNameFromSource(source, firstMessage.source.type)
+                        })
                     }
                     case 'to': {
-                        if (!item.get('first_source')) {
+                        // TODO get the matched channel,
+                        // instead of the first one.
+                        const firstChannel = item.getIn(['receiver', 'channels', 0])
+
+                        if (!firstChannel) {
                             break
                         }
 
-                        // get the part of "source" that we want
-                        const source = item.getIn(['first_source', 'to', 0], fromJS({})).toJS()
-                        // display the user based on the message type
-                        return displayUserNameFromSource(source, item.getIn(['first_source', 'type']))
+                        return firstChannel
                     }
                     case 'tags': {
                         return (
@@ -133,12 +136,12 @@ export default class ComplexTableCell extends React.Component {
         const {field} = this.props
 
         return (
-            <td className={`table-cell ${field.get('name')}`}>
+            <div className={`complex-list-table-col table-cell ${field.get('name')}`}>
                 <RenderLabel
                     field={field}
                     value={this._valueFieldContent()}
                 />
-            </td>
+            </div>
         )
     }
 }

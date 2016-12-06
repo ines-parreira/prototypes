@@ -456,6 +456,22 @@ export const VIEW_FIELDS = {
         {
             name: 'to',
             title: 'To',
+            path: 'receiver.channels.address',
+            filter: {
+                doc_type: 'user_channel',
+                queryPath: 'query.multi_match.query',  // lodash set syntax: https://lodash.com/docs#set
+                query: {
+                    _source: ['id', 'address'],
+                    size: 10,
+                    query: {
+                        multi_match: {
+                            query: '',
+                            fuzziness: 3,
+                            fields: ['address']
+                        }
+                    }
+                }
+            }
         },
         {
             name: 'tags',

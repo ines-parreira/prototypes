@@ -106,6 +106,7 @@ class ReceiversDropdown extends React.Component {
                     onBlur={this._onBlur}
                     onBlurResetsInput={false}
                     tabIndex="2"
+                    required
                 />
             </div>
         )

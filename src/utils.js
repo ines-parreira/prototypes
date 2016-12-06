@@ -234,7 +234,7 @@ export function stripHTML(text) {
 export function sanitizeHtmlDefault(html) {
     return sanitizeHtml(html, {
         allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
-            'nl', 'li', 'b', 'i', 'strong', 'em', 'ins', 'strike', 'code', 'hr', 'br', 'div',
+            'nl', 'li', 'b', 'i', 'u', 'strong', 'em', 'ins', 'strike', 'code', 'hr', 'br', 'div',
             'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre'],
         allowedAttributes: false,
         nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title']

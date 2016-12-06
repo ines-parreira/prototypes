@@ -73,11 +73,12 @@ export default class ColumnHeaderWrapper extends React.Component {
         const {field, view} = this.props
 
         const classes = classnames({
+            'complex-list-table-col': true,
             filterable: field.get('filter')
         })
 
         return (
-            <th className={classes}>
+            <div className={classes}>
                 <ColumnHeader
                     field={field}
                     view={view}
@@ -85,7 +86,7 @@ export default class ColumnHeaderWrapper extends React.Component {
                     onClick={this.onClick}
                 />
                 {this.renderDropdown()}
-            </th>
+            </div>
         )
     }
 }

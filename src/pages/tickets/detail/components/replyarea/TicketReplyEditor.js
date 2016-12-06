@@ -24,7 +24,7 @@ export default class TicketReplyEditor extends React.Component {
     componentDidMount() {
         // We'd like to autofocus the editor, but in componentDidMount the editor element might not be ready
         // so we're using the setTimeout hack to focus the editor here
-        setTimeout(() => this.refs.editor && this.refs.editor.focus(), 1)
+        setTimeout(() => this.focus(), 1)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -32,6 +32,12 @@ export default class TicketReplyEditor extends React.Component {
         const forceUpdate = nextProps.ticket.getIn(['state', 'forceUpdate'])
         if (contentState === null || forceUpdate) {
             this.setState(this._getEditorState(nextProps))
+        }
+    }
+
+    focus() {
+        if (this.refs.editor) {
+            this.refs.editor.focus()
         }
     }
 

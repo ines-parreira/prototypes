@@ -71,8 +71,10 @@ export default class TicketReplyArea extends React.Component {
         }
 
         return (
-            <div className="TicketReplyArea ui segments">
-                <div className="search ui raised segment">
+            <div className={classNames('TicketReplyArea', {
+                'TicketReplyArea-macros-visible': macrosVisible
+            })}>
+                <div className="TicketReplyArea-search">
                     <SearchInput
                         ref="search"
                         tabIndex="3"
@@ -94,7 +96,7 @@ export default class TicketReplyArea extends React.Component {
                     </div>
                 </div>
 
-                {macrosVisible && (
+                <div className="TicketReplyArea-content">
                     <TicketMacros
                         macros={macros}
                         applyMacro={this.props.applyMacro}
@@ -102,16 +104,16 @@ export default class TicketReplyArea extends React.Component {
                         previewMacroInModal={this.props.previewMacroInModal}
                         openModal={this.props.openModal}
                     />
-                )}
-                {!macrosVisible && (
-                    <TicketReply
-                        actions={this.props.actions}
-                        ticket={this.props.ticket}
-                        appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
-                        users={this.props.users}
-                    />
-                )}
 
+                    {!macrosVisible && (
+                        <TicketReply
+                            actions={this.props.actions}
+                            ticket={this.props.ticket}
+                            appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
+                            users={this.props.users}
+                        />
+                    )}
+                </div>
             </div>
         )
     }

@@ -99,7 +99,8 @@ class SmoochIntegrationDetail extends React.Component {
                     </div>
 
                     <h1>{isUpdate ? integration.get('name') : 'Add new chat'}</h1>
-                    <br />
+                    <p>Let's add a Smooch integration, so you can chat with customers on your website.</p>
+
                     {this._renderInstructions(isUpdate)}
                 </div>
 
@@ -111,7 +112,7 @@ class SmoochIntegrationDetail extends React.Component {
                         <Field
                             name="name"
                             label="Integration name"
-                            placeholder="Name"
+                            placeholder="Website chat app"
                             required
                             component={InputField}
                         />

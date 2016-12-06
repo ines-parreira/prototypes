@@ -1,14 +1,10 @@
 import React, {PropTypes} from 'react'
-import {browserHistory} from 'react-router'
+import {Link} from 'react-router'
 import ComplexTableCell from './ComplexTableCell'
 
 export default class ComplexTableRow extends React.Component {
-    _handleClick = () => {
-        this.props.saveIndex()
-        browserHistory.push(`/app/${this.props.viewConfig.routeItem}/${this.props.item.get('id')}`)
-    }
-
     _toggleSelection = (e, id) => {
+        e.preventDefault()
         e.stopPropagation()
         this.props.toggleSelection(id)
     }
@@ -18,11 +14,14 @@ export default class ComplexTableRow extends React.Component {
         const {fields, item, selected, viewConfig, hasBulkActions} = this.props
 
         return (
-            <tr onClick={this._handleClick}>
+            <Link
+                to={`/app/${this.props.viewConfig.routeItem}/${this.props.item.get('id')}`}
+                className="complex-list-table-row"
+            >
                 {
                     hasBulkActions
                     && (
-                        <td onClick={e => this._toggleSelection(e, item.get('id'))}>
+                        <div className="complex-list-table-col" onClick={e => this._toggleSelection(e, item.get('id'))}>
                             <span className="ui checkbox">
                                 <input
                                     type="checkbox"
@@ -30,7 +29,7 @@ export default class ComplexTableRow extends React.Component {
                                 />
                                 <label />
                             </span>
-                        </td>
+                        </div>
                     )
                 }
                 {
@@ -44,8 +43,8 @@ export default class ComplexTableRow extends React.Component {
                             />
                         ))
                 }
-                <td></td>
-            </tr>
+                <div className="complex-list-table-col"></div>
+            </Link>
         )
     }
 }

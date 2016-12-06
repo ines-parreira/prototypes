@@ -220,7 +220,7 @@ export default class TicketMacros extends React.Component {
             )
         }
         return (
-            <div className="TicketMacros search ui raised segment">
+            <div className="TicketMacros">
                 {content}
             </div>
         )
