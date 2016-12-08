@@ -1,12 +1,16 @@
-import {has as _has, upperFirst as _upperFirst, isString as _isString, isNumber as _isNumber} from 'lodash'
+import _has from 'lodash/has'
+import _upperFirst from 'lodash/upperFirst'
+import _isString from 'lodash/isString'
+import _isNumber from 'lodash/isNumber'
+import _isObject from 'lodash/isObject'
+
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
 import sanitizeHtml from 'sanitize-html'
-import {stateToHTML as _stateToHTML} from 'draft-js-export-html'
+import {convertToHTML as _convertToHTML} from 'draft-convert'
 import Immutable, {fromJS} from 'immutable'
 import {VIEW_FIELDS} from './config'
-import _isObject from 'lodash/isObject'
 
 /**
  * Guess if a passed string is a url
@@ -286,13 +290,19 @@ export function closest(element, selector) {
 }
 
 /**
- * Single stateToHTML config for the entire app (same options everywhere if needed)
+ * Single convertToHTML config for the entire app (same options everywhere if needed)
  * @param contentState
  */
-export function stateToHTML(contentState) {
-    // allows to set options to stateToHTML rendering library that will apply on the entire app
-    const options = {}
-    return _stateToHTML(contentState, options)
+export function convertToHTML(contentState) {
+    return _convertToHTML({
+        blockToHTML: {
+            unstyled: {
+                start: '<div>',
+                end: '</div>',
+                empty: '<br>' // when we have an empty block (correspons with a new line, add a line break)
+            }
+        }
+    })(contentState)
 }
 
 /**

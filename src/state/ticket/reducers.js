@@ -1,16 +1,12 @@
-import * as actions from './actions'
 import * as types from './constants'
 import * as userTypes from './../users/constants'
 import {SUBMIT_ACTIVITY_SUCCESS} from '../activity/constants'
 import {Map, List, fromJS} from 'immutable'
-import {convertFromHTML, ContentState} from 'draft-js'
-import {stateToHTML} from '../../utils'
-import {renderTemplate} from '../../pages/common/utils/template'
+import {convertToHTML} from '../../utils'
+import * as responseUtils from './responseUtils'
+import ticketReplyCache from '../ticketReplyCache'
 
 import _isUndefined from 'lodash/isUndefined'
-import _take from 'lodash/take'
-import _takeRight from 'lodash/takeRight'
-import _findIndex from 'lodash/findIndex'
 
 import {
     getLastNonInternalNoteMessage,
@@ -41,7 +37,7 @@ export const initialState = fromJS({
     state: {
         dirty: false,
         query: '',
-        fromMacro: false,
+        signatureAdded: false,
         contentState: null,
         selectionState: null,
         latestEventDatetime: null
@@ -111,13 +107,16 @@ export default (state = initialState, action) => {
                 state.getIn(['newMessage', 'macros']).push({id: action.macro.get('id')})
             )
 
-        case types.RECEIVED_MACRO:
-            return state.setIn(['state', 'fromMacro'], false)
-
         case types.SUBMIT_TICKET_MESSAGE_START: {
+            // Make sure we reset the cache before we send the message
+            ticketReplyCache.delete(state.get('id'))
+
             return state.mergeDeep({
                 state: {
-                    dirty: false
+                    dirty: false,
+                    contentState: null,
+                    selectionState: null,
+                    signatureAdded: false
                 },
                 _internal: {
                     loading: {
@@ -161,7 +160,7 @@ export default (state = initialState, action) => {
                     state: {
                         dirty: false,
                         contentState: null,
-                        fromMacro: false,
+                        selectionState: null,
                         query: ''
                     }
                 })
@@ -194,11 +193,11 @@ export default (state = initialState, action) => {
                 state: {
                     dirty: false,
                     contentState: null,
-                    fromMacro: false,
+                    selectionState: null,
                     query: ''
                 }
-            })
-                .setIn(['_internal', 'loading', 'submitMessage'], false)
+            }).setIn(['_internal', 'loading', 'submitMessage'], false)
+
 
             return action.resetMessage ? newState.set('newMessage', newMessage(
                 action.resp.channel,
@@ -228,10 +227,6 @@ export default (state = initialState, action) => {
                     }
                 })
                 .setIn(['_internal', 'loading', 'fetchTicket'], false)
-        }
-
-        case types.FETCH_TICKET_REPLY: {
-            return state.setIn(['state', 'contentState'], action.contentState)
         }
 
         case types.FETCH_TICKET_ERROR: {
@@ -328,80 +323,42 @@ export default (state = initialState, action) => {
         }
 
         case types.SET_RESPONSE_TEXT: {
-            const selectionState = action.args.get('selectionState')
-            let contentState = action.args.get('contentState')
-            let text = ''
-            let html = ''
-            let blocks = []
+            let contentState = action.args.get('contentState') || state.getIn(['state', 'contentState'])
+            let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
 
-            if (action.fromMacro) {
-                const ticketState = state.toJS()
-                const currentUser = action.currentUser.filter(actions.keyIn('name', 'firstname', 'lastname')).toJS()
-
-                text = renderTemplate(action.args.get('body_text', ''), {
-                    ticket: ticketState,
-                    current_user: currentUser
-                })
-
-                html = renderTemplate(action.args.get('body_html', ''), {
-                    ticket: ticketState,
-                    current_user: currentUser
-                })
-
-                if (text) {
-                    blocks = ContentState.createFromText(text).getBlocksAsArray()
-                } else {
-                    blocks = convertFromHTML(html)
-                }
-
-
-                if (state.getIn(['state', 'contentState']) && state.getIn(['state', 'contentState']).hasText()) {
-                    const currBlocks = state.getIn(['state', 'contentState']).getBlocksAsArray()
-                    const select = state.getIn(['state', 'selectionState'])
-
-                    if (select) {
-                        // Here we cut the current content at the cursor position to insert the macro.
-                        // Ex. : content is [1, 2, 3, 4, 5], we want to insert the macro ['a', 'b'] at index 2
-                        const idx = _findIndex(currBlocks, {key: select.anchorKey})
-
-                        // We first take the `index` first items (e.g. [1, 2])
-                        const left = _take(currBlocks, idx)
-                        // Then the `length - index` last items (e.g. [3, 4, 5])
-                        const right = _takeRight(currBlocks, currBlocks.length - idx + 1)
-
-                        // Then we concat the new array to the left part, and the right part to the result of this
-                        blocks = left.concat(blocks).concat(right)
-                        // => [1, 2, 'a', 'b', 3, 4, 5]
-                    } else {
-                        blocks = currBlocks.concat(blocks)
-                    }
-                }
-
-                contentState = ContentState.createFromBlockArray(blocks)
+            let context = {
+                action,
+                state,
+                contentState,
+                selectionState
             }
 
-            text = contentState.getPlainText()
-            html = stateToHTML(contentState)
+            context = responseUtils.getCache(context)
+            // only deal with signature when email
+            if (state.getIn(['newMessage', 'channel']) === 'email') {
+                context = responseUtils.addSignature(context)
+            }
+            context = responseUtils.applyMacro(context)
+            responseUtils.updateCache(context)
 
-            const textWithoutSignature = text.replace(action.currentUser.get('signature_text', ''), '').trim()
+            contentState = context.contentState
+            selectionState = context.selectionState
 
-            let newState = state.mergeDeep({
+            const dirty = contentState && contentState.hasText() && !responseUtils.onlySignature(contentState,
+                    action.currentUser)
+            return context.state.mergeDeep({
                 newMessage: {
-                    body_text: text,
-                    body_html: html
+                    body_text: contentState ? contentState.getPlainText() : '',
+                    body_html: contentState ? convertToHTML(contentState) : ''
                 },
                 state: {
-                    fromMacro: action.fromMacro,
-                    dirty: textWithoutSignature !== ''
+                    dirty,
+                    signatureAdded: !!context.signatureAdded
                 }
-            }).setIn(['state', 'contentState'], contentState)
+            })
             // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
-
-            if (selectionState) {
-                newState = newState.setIn(['state', 'selectionState'], selectionState)
-            }
-
-            return newState
+                .setIn(['state', 'contentState'], contentState)
+                .setIn(['state', 'selectionState'], selectionState)
         }
 
         case types.SET_RECEIVERS: {

@@ -46,11 +46,24 @@ class TicketReplyCache {
         const id = String(ticketId)
         const defaultTicket = fromJS({
             contentState: null,
+            selectionState: null,
             macro: null
         })
 
         // return immutable
         return this.tickets.get(id) || defaultTicket
+    }
+
+    delete(ticketId = 'new') {
+        // always use strings for ids
+        this.tickets = this.tickets.delete(ticketId.toString())
+
+        // save in storage
+        try {
+            storage.setItem(ticketReplyCache, JSON.stringify(this.tickets.toJS()))
+        } catch (err) {
+            // nothing do to
+        }
     }
 }
 

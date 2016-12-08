@@ -3,6 +3,7 @@ import * as types from './constants'
 import {fromJS, Map} from 'immutable'
 import {DEFAULT_ACTIONS} from '../../config'
 import {getMacrosWithoutExternalActions, JSON_CONTENT_TYPE} from './utils'
+import ticketReplyCache from '../ticketReplyCache'
 
 const actionInitial = fromJS({
     type: 'user',
@@ -90,7 +91,7 @@ const macrosInitial = fromJS({
         query: '',
         modalQuery: ''
     },
-    visible: false,
+    visible: true,
     selected: {},
     isModalOpen: false,
     modalSelected: null,
@@ -127,10 +128,17 @@ export default (state = macrosInitial, action) => {
         case types.PREVIEW_MACRO_IN_MODAL:
             return state.set('modalSelected', state.getIn(['items', action.macroId]))
 
-        case types.APPLY_MACRO:
-            return state.set('visible', false).set('appliedMacro', action.macro)
+        case types.APPLY_MACRO: {
+            ticketReplyCache.set(action.ticketId, {
+                macro: action.macro
+            })
+            return state.set('appliedMacro', action.macro)
+        }
 
         case types.CLEAR_APPLIED_MACRO:
+            ticketReplyCache.set(action.ticketId, {
+                macro: null
+            })
             return state.set('appliedMacro', null)
 
         case types.SET_MACROS_VISIBILITY:
@@ -189,14 +197,22 @@ export default (state = macrosInitial, action) => {
         case types.UPDATE_ACTION_ARGS:
             return state.setIn(['modalSelected', 'actions', action.actionIndex, 'arguments'], action.value)
 
-        case types.UPDATE_ACTION_ARGS_ON_APPLIED:
-            return state.setIn(['appliedMacro', 'actions', action.actionIndex, 'arguments'], action.value)
+        case types.UPDATE_ACTION_ARGS_ON_APPLIED: {
+            const updatedCache = ticketReplyCache
+                .get(action.ticketId)
+                .setIn(['macro', 'actions', action.actionIndex.toString(), 'arguments'], action.value)
+            ticketReplyCache.set(action.ticketId, updatedCache)
+            return state.setIn(['appliedMacro', 'actions', action.actionIndex.toString(), 'arguments'], action.value)
+        }
 
-        case types.DELETE_ACTION_ON_APPLIED:
-            return state.setIn(
-                ['appliedMacro', 'actions'],
-                state.getIn(['appliedMacro', 'actions']).delete(action.actionIndex)
-            )
+        case types.DELETE_ACTION_ON_APPLIED: {
+            const updatedCache = ticketReplyCache
+                .get(action.ticketId)
+                .deleteIn(['macro', 'actions', action.actionIndex.toString()])
+            ticketReplyCache.set(action.ticketId, updatedCache)
+
+            return state.deleteIn(['appliedMacro', 'actions', action.actionIndex.toString()])
+        }
 
         case types.UPDATE_ACTION_TITLE:
             return state.setIn(['modalSelected', 'actions', action.actionIndex, 'title'], action.title)
@@ -239,8 +255,10 @@ export default (state = macrosInitial, action) => {
             return newState
         }
 
-        case types.FETCH_TICKET_REPLY_MACRO:
-            return state.set('appliedMacro', action.macro)
+        case types.FETCH_TICKET_REPLY_MACRO: {
+            const cache = ticketReplyCache.get(action.ticketId).get('macro')
+            return state.set('appliedMacro', cache)
+        }
         case types.ADD_ATTACHMENTS_MACRO_START: {
             const currentMacroId = state.getIn(['modalSelected', 'id'])
             // add a loading status

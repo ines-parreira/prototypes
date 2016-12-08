@@ -1,9 +1,10 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import {EditorState, RichUtils, ContentState, convertFromHTML} from 'draft-js'
+import {EditorState, RichUtils, ContentState} from 'draft-js'
+import {convertFromHTML} from 'draft-convert'
 import Editor from 'draft-js-plugins-editor'
-import {stateToHTML} from '../../../../utils'
+import {convertToHTML} from '../../../../utils'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
@@ -23,7 +24,7 @@ export default class RichTextAreaField extends React.Component {
         let contentState = null
 
         if (props.input.value.html) {
-            contentState = ContentState.createFromBlockArray(convertFromHTML(props.input.value.html))
+            contentState = convertFromHTML(props.input.value.html)
             this.state = {editorState: EditorState.createWithContent(contentState)}
         } else if (props.input.value) {
             contentState = ContentState.createFromText('')
@@ -36,7 +37,7 @@ export default class RichTextAreaField extends React.Component {
             let contentState = null
 
             if (nextProps.input.value.html) {
-                contentState = ContentState.createFromBlockArray(convertFromHTML(nextProps.input.value.html))
+                contentState = convertFromHTML(nextProps.input.value.html)
             } else {
                 contentState = ContentState.createFromText('')
             }
@@ -60,7 +61,7 @@ export default class RichTextAreaField extends React.Component {
             this.setState({editorState})
             this.props.input.onChange({
                 text: editorState.getCurrentContent().getPlainText(),
-                html: stateToHTML(editorState.getCurrentContent())
+                html: convertToHTML(editorState.getCurrentContent())
             })
         }
     }

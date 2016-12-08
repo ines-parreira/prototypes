@@ -1,208 +1,181 @@
-import axios from 'axios'
 import React from 'react'
-import _ from 'lodash'
 import {browserHistory} from 'react-router'
-import Immutable, {Map, Set} from 'immutable'
-import {notify} from '../notifications/actions'
+
+import _isEmpty from 'lodash/isEmpty'
+import _isNull from 'lodash/isNull'
+import _pick from 'lodash/pick'
+import {fromJS} from 'immutable'
+import axios from 'axios'
+
+import * as types from './constants'
 import {ACTION_TEMPLATES, USER_VALUE_PROP, SOURCE_VALUE_PROP} from '../../config'
-import {renderTemplate} from '../../pages/common/utils/template'
-import {lastMessage} from '../../utils'
 import {TICKET_VIEWED} from '../activity/constants'
 import {APPLY_MACRO} from '../macro/constants'
-import * as types from './constants'
-import ticketReplyCache from '../../pages/common/utils/ticketReplyCache'
-import {convertFromRaw, convertToRaw} from 'draft-js'
+import {fetchTicketReplyMacro, setMacrosVisible} from '../macro/actions'
+import {notify} from '../notifications/actions'
+import {renderTemplate} from '../../pages/common/utils/template'
+import {lastMessage} from '../../utils'
 
-export function addAttachments(ticket, atts) {
-    return (dispatch) => {
-        dispatch({
-            type: types.ADD_ATTACHMENT_START
+export const addAttachments = (ticket, atts) => (dispatch) => {
+    dispatch({
+        type: types.ADD_ATTACHMENT_START
+    })
+
+    let attachments = atts
+
+    if (ticket.getIn(['newMessage', 'source', 'type']) === 'facebook-comment') {
+        // We have specific constraints on attachments.
+
+        const attsFiltered = atts.filter(
+            (att) => (att.content_type.startsWith('image')) || (att.content_type.startsWith('video')))
+
+        const previousAtts = ticket.getIn(['newMessage', 'attachments'])
+        if ((previousAtts.size > 0) || (atts.length > 1) || atts.length !== attsFiltered.length) {
+            dispatch(notify({
+                autoDismiss: false,
+                type: 'error',
+                title: 'We could not add all of your attachments !',
+                children: (
+                    <div>
+                        Facebook comments have limitations on attachments:
+                        <ul>
+                            <li>You cannot send more than one attachment.</li>
+                            <li>You can only send images or videos.</li>
+                        </ul>
+                    </div>
+                )
+            }))
+        }
+
+        attachments = previousAtts.size > 0 ? [] : attsFiltered.slice(0, 1)
+    }
+
+    const formData = new window.FormData()
+
+    for (const attachment of attachments) {
+        formData.append(attachment.name, attachment.file)
+    }
+    return axios.post('/api/upload/', formData)
+        .then((json = {}) => json.data)
+        .then(resp => {
+            dispatch({
+                type: types.ADD_ATTACHMENT_SUCCESS,
+                resp
+            })
         })
+        .catch(error => {
+            return dispatch({
+                type: types.ADD_ATTACHMENT_ERROR,
+                error,
+                reason: 'Failed to upload files. Please try again later'
+            })
+        })
+}
 
-        let attachments = atts
+export const deleteAttachment = (index) => ({
+    type: types.DELETE_ATTACHMENT,
+    index
+})
 
-        if (ticket.getIn(['newMessage', 'source', 'type']) === 'facebook-comment') {
-            // We have specific constraints on attachments.
+export const recordMacro = (macro) => ({
+    type: types.RECORD_MACRO,
+    macro
+})
 
-            const attsFiltered = atts.filter(
-                (att) => (att.content_type.startsWith('image')) || (att.content_type.startsWith('video')))
+export const receivedMacro = () => ({
+    type: types.RECEIVED_MACRO
+})
 
-            const previousAtts = ticket.getIn(['newMessage', 'attachments'])
-            if ((previousAtts.size > 0) || (atts.length > 1) || atts.length !== attsFiltered.length) {
+export const ticketPartialUpdate = (ticketId, args, nextUrl = null) => (dispatch) => {
+    dispatch({
+        type: types.TICKET_PARTIAL_UPDATE_START
+    })
+
+    return axios.put(`/api/tickets/${ticketId}/`, args)
+        .then((json = {}) => json.data)
+        .then(resp => {
+            dispatch({
+                type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
+                resp
+            })
+
+            // show a success message if we closed the ticket
+            if (args.status === 'closed') {
                 dispatch(notify({
-                    autoDismiss: false,
-                    type: 'error',
-                    title: 'We could not add all of your attachments !',
-                    children: (
-                        <div>
-                            Facebook comments have limitations on attachments:
-                            <ul>
-                                <li>You cannot send more than one attachment.</li>
-                                <li>You can only send images or videos.</li>
-                            </ul>
-                        </div>
-                    )
+                    type: 'success',
+                    message: 'The ticket has been closed.'
                 }))
-            }
 
-            attachments = previousAtts.size > 0 ? [] : attsFiltered.slice(0, 1)
-        }
-
-        const formData = new window.FormData()
-
-        for (const attachment of attachments) {
-            formData.append(attachment.name, attachment.file)
-        }
-        return axios.post('/api/upload/', formData)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                dispatch({
-                    type: types.ADD_ATTACHMENT_SUCCESS,
-                    resp
-                })
-            })
-            .catch(error => {
-                return dispatch({
-                    type: types.ADD_ATTACHMENT_ERROR,
-                    error,
-                    reason: 'Failed to upload files. Please try again later'
-                })
-            })
-    }
-}
-
-export function deleteAttachment(index) {
-    return {
-        type: types.DELETE_ATTACHMENT,
-        index
-    }
-}
-
-export function recordMacro(macro) {
-    return {
-        type: types.RECORD_MACRO,
-        macro
-    }
-}
-
-export function receivedMacro() {
-    return {
-        type: types.RECEIVED_MACRO
-    }
-}
-
-export function ticketPartialUpdate(ticketId, args, nextUrl = null) {
-    return (dispatch) => {
-        dispatch({
-            type: types.TICKET_PARTIAL_UPDATE_START
-        })
-
-        return axios.put(`/api/tickets/${ticketId}/`, args)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                dispatch({
-                    type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
-                    resp
-                })
-
-                // show a success message if we closed the ticket
-                if (args.status === 'closed') {
-                    dispatch(notify({
-                        type: 'success',
-                        message: 'The ticket has been closed.'
-                    }))
-
-                    // Redirect to the next ticket after the transition is done.
-                    // Timeout also needed for the notification to stay up, otherwise the redirect will hide it.
-                    if (nextUrl) {
-                        setTimeout(() => browserHistory.push(nextUrl), nextUrl.includes('tickets') ? 800 : 300)
-                    }
+                // Redirect to the next ticket after the transition is done.
+                // Timeout also needed for the notification to stay up, otherwise the redirect will hide it.
+                if (nextUrl) {
+                    setTimeout(() => browserHistory.push(nextUrl), nextUrl.includes('tickets') ? 800 : 300)
                 }
-            })
-            .catch(error => {
-                return dispatch({
-                    type: types.TICKET_PARTIAL_UPDATE_ERROR,
-                    error,
-                    reason: `Failed to update ticket ${ticketId}`
-                })
-            })
-    }
-}
-
-export function addTags(tags) {
-    return {
-        type: types.ADD_TICKET_TAGS,
-        args: tags
-    }
-}
-
-export function removeTag(index) {
-    return {
-        type: types.REMOVE_TICKET_TAG,
-        index
-    }
-}
-
-export function togglePriority(priority) { // here, the priority argument is optional
-    return {
-        type: types.TOGGLE_PRIORITY,
-        args: Map({
-            priority: priority.isString ? priority : null
+            }
         })
-    }
+        .catch(error => {
+            return dispatch({
+                type: types.TICKET_PARTIAL_UPDATE_ERROR,
+                error,
+                reason: `Failed to update ticket ${ticketId}`
+            })
+        })
 }
+
+export const addTags = (tags) => ({
+    type: types.ADD_TICKET_TAGS,
+    args: tags
+})
+
+export const removeTag = (index) => ({
+    type: types.REMOVE_TICKET_TAG,
+    index
+})
+
+export const togglePriority = (priority) => ({ // here, the priority argument is optional
+    type: types.TOGGLE_PRIORITY,
+    args: fromJS({
+        priority: priority.isString ? priority : null
+    })
+})
 
 /* eslint "camelcase": "off" */
-export function setAgent(assignee_user) {
-    return {
-        type: types.SET_AGENT,
-        args: Map({
-            assignee_user
-        })
-    }
-}
+export const setAgent = (assignee_user) => ({
+    type: types.SET_AGENT,
+    args: fromJS({
+        assignee_user
+    })
+})
 
-export function setStatus(status, id = null) {
-    return {
-        type: types.SET_STATUS,
-        args: Map({
-            status,
-            id
-        })
-    }
-}
+export const setStatus = (status, id = null) => ({
+    type: types.SET_STATUS,
+    args: fromJS({
+        status,
+        id
+    })
+})
 
-export function setPublic(isPublic) {
-    return {
-        type: types.SET_PUBLIC,
-        isPublic
-    }
-}
+export const setPublic = (isPublic) => ({
+    type: types.SET_PUBLIC,
+    isPublic
+})
 
-export function setSubject(subject) {
-    return {
-        type: types.SET_SUBJECT,
-        args: Map({
-            subject
-        })
-    }
-}
+export const setSubject = (subject) => ({
+    type: types.SET_SUBJECT,
+    args: fromJS({
+        subject
+    })
+})
 
-export function setReceivers(receivers) {
-    return {
-        type: types.SET_RECEIVERS,
-        receivers
-    }
-}
+export const setReceivers = (receivers) => ({
+    type: types.SET_RECEIVERS,
+    receivers
+})
 
-export function setSourceType(sourceType) {
-    return (dispatch) => {
-        dispatch({
-            type: types.SET_SOURCE_TYPE,
-            sourceType
-        })
-    }
-}
+export const setSourceType = (sourceType) => ({
+    type: types.SET_SOURCE_TYPE,
+    sourceType
+})
 
 /**
  * Only getting potential requesters and calling a callback
@@ -211,209 +184,189 @@ export function setSourceType(sourceType) {
  * @param callback
  * @returns {function(*)}
  */
-export function updatePotentialRequesters(query, callback) {
-    return (dispatch) => {
-        return axios.post('/api/search/', {
-            doc_type: 'user_channel',
-            query
+export const updatePotentialRequesters = (query, callback) => (dispatch) => (
+    axios.post('/api/search/', {
+        doc_type: 'user_channel',
+        query
+    })
+        .then((json = {}) => json.data)
+        .then(resp => {
+            const response = resp.data.map((result) => {
+                return {
+                    ...result,
+                    ...result.user
+                }
+            })
+
+            callback(null, response)
         })
-            .then((json = {}) => json.data)
-            .then(resp => {
-                const response = resp.data.map((result) => {
-                    return {
-                        ...result,
-                        ...result.user
-                    }
-                })
-
-                callback(null, response)
+        .catch(error => {
+            return dispatch({
+                type: 'ERROR',
+                error,
+                reason: 'Failed to do the search. Please try again...'
             })
-            .catch(error => {
-                return dispatch({
-                    type: 'ERROR',
-                    error,
-                    reason: 'Failed to do the search. Please try again...'
-                })
-            })
-    }
-}
+        })
+)
 
-export function setResponseText(currentUser, args, ticketId) {
-    let contentState = null
-    // check if contentState has any text
-    if (args.get('contentState').hasText()) {
-        contentState = convertToRaw(args.get('contentState'))
-    }
-
-    // cache response
-    ticketReplyCache.set(ticketId, {contentState})
-
-    return {
+export const setResponseText = (ticketId, args = fromJS({})) => (dispatch, getState) => (
+    dispatch({
         type: types.SET_RESPONSE_TEXT,
         args,
-        currentUser,
+        currentUser: getState().currentUser,
+        ticketId,
         fromMacro: false
-    }
-}
+    })
+)
 
-export function markTicketDirty(dirty = true) {
-    return {
-        type: types.MARK_TICKET_DIRTY,
-        dirty
-    }
-}
+export const markTicketDirty = (dirty = true) => ({
+    type: types.MARK_TICKET_DIRTY,
+    dirty
+})
 
-export function deleteMessage(ticketId, messageId) {
-    return (dispatch) => {
-        dispatch({
-            type: types.DELETE_TICKET_MESSAGE_START
-        })
+export const deleteMessage = (ticketId, messageId) => (dispatch) => {
+    dispatch({
+        type: types.DELETE_TICKET_MESSAGE_START
+    })
 
-        return axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
-            .then((json = {}) => json.data)
-            .then(() => {
-                dispatch({
-                    type: types.DELETE_TICKET_MESSAGE_SUCCESS,
-                    messageId
-                })
+    return axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
+        .then((json = {}) => json.data)
+        .then(() => {
+            dispatch({
+                type: types.DELETE_TICKET_MESSAGE_SUCCESS,
+                messageId
             })
-            .catch(error => {
-                return dispatch({
-                    type: types.DELETE_TICKET_MESSAGE_ERROR,
-                    error,
-                    reason: `Failed to delete message ${messageId} from ticket ${ticketId}`
-                })
+        })
+        .catch(error => {
+            return dispatch({
+                type: types.DELETE_TICKET_MESSAGE_ERROR,
+                error,
+                reason: `Failed to delete message ${messageId} from ticket ${ticketId}`
             })
-    }
+        })
 }
 
-export function fetchTicket(ticketId, displayLoading = true) {
-    return (dispatch) => {
-        dispatch({
-            type: types.FETCH_TICKET_START,
-            displayLoading
-        })
-
-        dispatch({
-            type: TICKET_VIEWED,
-            ticketId
-        })
-
-        const url = `/api/tickets/${ticketId}/`
-
-        return axios.get(url)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                if (_.isEmpty(resp)) {
-                    console.error('No results for', url)
-                }
-
-                dispatch({
-                    type: types.FETCH_TICKET_SUCCESS,
-                    resp
-                })
-            })
-            .catch(error => {
-                return dispatch({
-                    type: types.FETCH_TICKET_ERROR,
-                    error,
-                    reason: `Failed to fetch ticket ${ticketId}`
-                })
-            })
-    }
+export const initializeMessageDraft = (ticketId) => (dispatch) => {
+    // get cached ticket reply message
+    dispatch(setResponseText(ticketId))
+    // get cached macro
+    dispatch(fetchTicketReplyMacro(ticketId))
 }
 
-export function fetchTicketReplyMessage(ticketId) {
-    const cached = ticketReplyCache.get(ticketId).get('contentState')
-    let contentState = null
-
-    if (cached) {
-        contentState = convertFromRaw(cached.toJS())
+export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
+    if (ticketId === 'new') {
+        return dispatch(initializeMessageDraft(ticketId))
     }
 
-    return {
-        type: types.FETCH_TICKET_REPLY,
-        contentState
-    }
+    dispatch({
+        type: types.FETCH_TICKET_START,
+        displayLoading
+    })
+
+    dispatch({
+        type: TICKET_VIEWED,
+        ticketId
+    })
+
+    const url = `/api/tickets/${ticketId}/`
+
+    return axios.get(url)
+        .then((json = {}) => json.data)
+        .then(resp => {
+            if (_isEmpty(resp)) {
+                console.error('No results for', url)
+            }
+
+            dispatch({
+                type: types.FETCH_TICKET_SUCCESS,
+                resp
+            })
+            dispatch(initializeMessageDraft(ticketId))
+        })
+        .catch(error => {
+            return dispatch({
+                type: types.FETCH_TICKET_ERROR,
+                error,
+                reason: `Failed to fetch ticket ${ticketId}`
+            })
+        })
 }
 
-export function fetchTicketMessage(ticketId, messageId, sendNotification = true) {
-    return (dispatch) => {
-        dispatch({
-            type: types.FETCH_MESSAGE_START
-        })
+export const fetchTicketMessage = (ticketId, messageId, sendNotification = true) => (dispatch) => {
+    dispatch({
+        type: types.FETCH_MESSAGE_START
+    })
 
-        return axios.get(`/api/tickets/${ticketId}/messages/${messageId}/`)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                const hasActions = !!resp.actions
-                const hasPending = hasActions ?
-                    !!resp.actions.find(action => action.status === 'pending')
-                    : false
-                const hasFailure = hasActions ?
-                    !!resp.actions.find(action => action.status === 'error') || resp.failed_datetime
-                    : !!resp.failed_datetime
+    return axios.get(`/api/tickets/${ticketId}/messages/${messageId}/`)
+        .then((json = {}) => json.data)
+        .then(resp => {
+            const hasActions = !!resp.actions
+            const hasPending = hasActions ?
+                !!resp.actions.find(action => action.status === 'pending')
+                : false
+            const hasFailure = hasActions ?
+            !!resp.actions.find(action => action.status === 'error') || resp.failed_datetime
+                : !!resp.failed_datetime
 
-                if (hasFailure) {
-                    dispatch(notify({
-                        type: 'error',
-                        title: 'Something went wrong on your last message :/',
-                        autoDismiss: false,
-                        children: (
-                            <div>
-                                <ul>
-                                    {
-                                        hasActions && resp.actions.map((action, idx) => {
-                                            if (ACTION_TEMPLATES[action.name].execution === 'back') {
-                                                return (
-                                                    <li key={idx}>
-                                                        <b>{action.title}</b>: {action.status}
-                                                    </li>
-                                                )
-                                            }
-                                            return null
-                                        })
-                                    }
-                                </ul>
-                                <p>
-                                    The message hasn't been sent, you should review it right now.
-                                </p>
-                                <div className="buttons">
-                                    <button
-                                        className="ui tiny button green"
-                                        onClick={() => browserHistory.push(`/app/ticket/${resp.ticket_id}`)}
-                                    >
-                                        Review message
-                                    </button>
-                                </div>
+            if (hasFailure) {
+                dispatch(notify({
+                    type: 'error',
+                    title: 'Something went wrong on your last message :/',
+                    autoDismiss: false,
+                    children: (
+                        <div>
+                            <ul>
+                                {
+                                    hasActions && resp.actions.map((action, idx) => {
+                                        if (ACTION_TEMPLATES[action.name].execution === 'back') {
+                                            return (
+                                                <li key={idx}>
+                                                    <b>{action.title}</b>: {action.status}
+                                                </li>
+                                            )
+                                        }
+                                        return null
+                                    })
+                                }
+                            </ul>
+                            <p>
+                                The message hasn't been sent, you should review it right now.
+                            </p>
+                            <div className="buttons">
+                                <button
+                                    className="ui tiny button green"
+                                    onClick={() => browserHistory.push(`/app/ticket/${resp.ticket_id}`)}
+                                >
+                                    Review message
+                                </button>
                             </div>
-                        )
-                    }))
-                } else if (hasPending || (!resp.sent_datetime && !resp.failed_datetime)) {
-                    setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId, sendNotification)), 2000)
-                } else if (sendNotification) {
-                    dispatch(notify({
-                        type: 'success',
-                        message: 'Message successfully sent!'
-                    }))
-                }
+                        </div>
+                    )
+                }))
+            } else if (hasPending || (!resp.sent_datetime && !resp.failed_datetime)) {
+                setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId, sendNotification)), 2000)
+            } else if (sendNotification) {
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Message successfully sent!'
+                }))
+            }
 
-                dispatch({
-                    type: types.FETCH_MESSAGE_SUCCESS,
-                    resp
-                })
+            dispatch({
+                type: types.FETCH_MESSAGE_SUCCESS,
+                resp
             })
-            .catch(error => {
-                return dispatch({
-                    type: types.FETCH_MESSAGE_ERROR,
-                    error,
-                    reason: 'Failed to fetch message. Please try again...'
-                })
+        })
+        .catch(error => {
+            return dispatch({
+                type: types.FETCH_MESSAGE_ERROR,
+                error,
+                reason: 'Failed to fetch message. Please try again...'
             })
-    }
+        })
 }
 
-export function formatAction(action, template, context) {
+export const formatAction = (action, template, context) => {
     /**
      * Verify if any argument of the action is a `listDict`, i.e. a data structure as such :
      *
@@ -442,11 +395,11 @@ export function formatAction(action, template, context) {
      *
      */
 
-    let newArgs = Map()
+    let newArgs = fromJS({})
 
     action.get('arguments').forEach((value, key) => {
         if (template.getIn(['arguments', key, 'type']) === 'listDict') {
-            newArgs = newArgs.set(key, Map({}))
+            newArgs = newArgs.set(key, fromJS({}))
             value.forEach(element => {
                 newArgs = newArgs.setIn(
                     [key, renderTemplate(element.get('key'), context)],
@@ -488,11 +441,6 @@ function getAddress(ticketChannel, user) {
     }
 
     return res
-}
-
-export function keyIn(...keys) {
-    const keySet = Set(keys)
-    return (v, k) => keySet.has(k)
 }
 
 
@@ -542,7 +490,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
         }
 
         if (!data.newMessage.sender) {
-            data.newMessage.sender = currentUser.filter(keyIn('email', 'id', 'name'))
+            data.newMessage.sender = fromJS(_pick(currentUser.toJS(), ['email', 'id', 'name']))
         }
 
         // Facebook does not accept comment with just an attachment.
@@ -559,7 +507,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
             if (macroActions) {
                 data.newMessage.actions = macroActions.map(curAction => formatAction(
                     curAction,
-                    Immutable.fromJS(ACTION_TEMPLATES).get(curAction.get('name')),
+                    fromJS(ACTION_TEMPLATES).get(curAction.get('name')),
                     {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
                 ))
             }
@@ -619,7 +567,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
 
         const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
 
-        if (!data || _.isNull(data)) {
+        if (!data || _isNull(data)) {
             return dispatch({
                 type: types.SUBMIT_TICKET_MESSAGE_ERROR,
                 reason: 'Message was not sent. Sent data is invalid.'
@@ -740,6 +688,7 @@ export function clearTicket() {
     return (dispatch, getState) => {
         const shouldDisplayHistoryOnNextPage = getState().ticket.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
 
+        dispatch(setMacrosVisible(true))
         dispatch({
             type: types.CLEAR_TICKET,
             shouldDisplayHistoryOnNextPage

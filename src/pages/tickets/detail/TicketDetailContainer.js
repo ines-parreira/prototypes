@@ -17,25 +17,14 @@ import * as SettingsActions from '../../../state/settings/actions'
 import MacroContainer from '../common/macros/MacroContainer' // import that to fetch tags list
 
 class TicketDetailContainer extends React.Component {
-    _fetchTicketData(id) {
-        this.props.actions.ticket.fetchTicket(id)
-
-        // get cached ticket reply message
-        this.props.actions.ticket.fetchTicketReplyMessage(id)
-
-        // get cached reply macros
-        this.props.actions.macro.fetchTicketReplyMacro(id)
-    }
+    _fetchTicketData = (ticketId) => this.props.actions.ticket.fetchTicket(ticketId)
 
     componentWillMount() {
         this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers(['agent', 'admin'])
         this.props.actions.ticket.clearTicket()
-
-        if (this.props.params.ticketId !== 'new') {
-            this._fetchTicketData(this.props.params.ticketId)
-        }
+        this._fetchTicketData(this.props.params.ticketId)
     }
 
     componentDidMount() {
@@ -240,7 +229,7 @@ class TicketDetailContainer extends React.Component {
     }
 
     _applyMacro = (macro) => {
-        this.props.actions.macro.applyMacro(macro, this.props.currentUser, this.props.ticket.get('id'))
+        this.props.actions.macro.applyMacro(macro, this.props.ticket.get('id'))
     }
 
     _computeNextUrl = (ascending) => {
@@ -333,7 +322,7 @@ class TicketDetailContainer extends React.Component {
             || (this.props.params.ticketId === 'new' && this.props.ticket.get('id'))
             || this.props.ticket.getIn(['_internal', 'loading', 'fetchTicket'])
         ) {
-            return <Loader message="Loading ticket..." />
+            return <Loader message="Loading ticket..."/>
         }
 
         return (

@@ -190,10 +190,6 @@ export default class TicketMacros extends React.Component {
     render() {
         const items = this.props.macros.get('items')
 
-        if (!this.props.macros.get('visible')) {
-            return null
-        }
-
         let content = (
             <div className="ui grid">
                 <div className="macro-list four wide column">

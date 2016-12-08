@@ -19,8 +19,6 @@ export const FETCH_TICKET_ERROR = 'FETCH_TICKET_ERROR'
 
 export const CLEAR_TICKET = 'CLEAR_TICKET'
 
-export const FETCH_TICKET_REPLY = 'FETCH_TICKET_REPLY'
-
 // Fetching a single ticketMessage to get action results
 export const FETCH_MESSAGE_START = 'FETCH_MESSAGE_START'
 export const FETCH_MESSAGE_SUCCESS = 'FETCH_MESSAGE_SUCCESS'
