@@ -196,7 +196,7 @@ export const applyMacro = (context) => {
     }
 
     const ticketState = state.toJS()
-    const currentUser = _pick(action.currentUser.toJS(), ['name', 'firstname', 'lastname'])
+    const currentUser = _pick(action.currentUser.toJS(), ['name', 'firstname', 'lastname', 'email'])
 
     const text = renderTemplate(action.args.get('body_text', ''), {
         ticket: ticketState,

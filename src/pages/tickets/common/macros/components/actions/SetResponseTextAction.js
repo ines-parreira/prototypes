@@ -31,10 +31,10 @@ export default class SetResponseTextAction extends React.Component {
                 className="ui dropdown"
             >
                 Insert variable
-                <i className="dropdown icon" />
+                <i className="dropdown icon"/>
                 <div className="menu">
                     <div className="item">
-                        <i className="dropdown icon" />
+                        <i className="dropdown icon"/>
                         <span className="text">Ticket requester</span>
                         <div className="menu">
                             <div
@@ -64,7 +64,7 @@ export default class SetResponseTextAction extends React.Component {
                         </div>
                     </div>
                     <div className="item">
-                        <i className="dropdown icon" />
+                        <i className="dropdown icon"/>
                         <span className="text">Current user</span>
                         <div className="menu">
                             <div
@@ -84,6 +84,12 @@ export default class SetResponseTextAction extends React.Component {
                                 data-value="current_user.name"
                             >
                                 Full name
+                            </div>
+                            <div
+                                className="item"
+                                data-value="current_user.email"
+                            >
+                                Email
                             </div>
                         </div>
                     </div>
