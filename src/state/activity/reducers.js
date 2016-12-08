@@ -1,5 +1,6 @@
 import * as types from './constants'
 import {Map, fromJS} from 'immutable'
+import {isCurrentlyOnTicket} from '../../utils'
 
 const initialState = fromJS({
     events: [],
@@ -58,7 +59,7 @@ export default (state = initialState, action) => {
 
                         let count = counter.get('count') + 1
                         // if we are already on the ticket, then just reset the counter
-                        if (window.location.pathname === `/app/ticket/${e.object_id}`) {
+                        if (isCurrentlyOnTicket(e.object_id)) {
                             count = 0
                         }
                         objectsCounter = objectsCounter.set(e.object_id, Map({

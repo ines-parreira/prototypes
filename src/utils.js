@@ -369,3 +369,13 @@ export const isAdmin = (user) => {
 
     return roles.includes('admin')
 }
+
+/**
+ * Return true if user is currently on ticket of passed ticket id
+ * @param ticketId
+ * @returns {boolean}
+ */
+export const isCurrentlyOnTicket = (ticketId) => {
+    const objectURL = `/app/ticket/${ticketId}`
+    return window.location.pathname === objectURL
+}

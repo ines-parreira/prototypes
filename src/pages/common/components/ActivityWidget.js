@@ -4,12 +4,12 @@ import _ from 'lodash'
 import {fromJS} from 'immutable'
 import classNames from 'classnames'
 import {ACTIVITY_DISPLAY_COUNT} from '../../../config'
+import {isCurrentlyOnTicket} from '../../../utils'
 
 const ActivityWidgetItem = ({object, count, position}) => {
     // Is the current link active or not?
-    const objectURL = `/app/ticket/${object.get('id')}`
     const linkClasses = classNames('item', {
-        active: window.location.pathname === objectURL
+        active: isCurrentlyOnTicket(object.get('id')),
     })
 
     // figure out what icon to show based on ticket message source
@@ -65,7 +65,7 @@ const ActivityWidgetItem = ({object, count, position}) => {
     return (
         <Link
             onClick={_onClick}
-            to={objectURL}
+            to={`/app/ticket/${object.get('id')}`}
             className={linkClasses}
             title={text}
         >

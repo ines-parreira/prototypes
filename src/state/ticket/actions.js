@@ -15,6 +15,7 @@ import {fetchTicketReplyMacro, setMacrosVisible} from '../macro/actions'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 import {lastMessage} from '../../utils'
+import {isCurrentlyOnTicket} from '../../utils'
 
 export const addAttachments = (ticket, atts) => (dispatch) => {
     dispatch({
@@ -277,11 +278,13 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
                 console.error('No results for', url)
             }
 
-            dispatch({
-                type: types.FETCH_TICKET_SUCCESS,
-                resp
-            })
-            dispatch(initializeMessageDraft(ticketId))
+            if (isCurrentlyOnTicket(ticketId)) {
+                dispatch({
+                    type: types.FETCH_TICKET_SUCCESS,
+                    resp
+                })
+                dispatch(initializeMessageDraft(ticketId))
+            }
         })
         .catch(error => {
             return dispatch({
