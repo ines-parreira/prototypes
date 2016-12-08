@@ -377,5 +377,5 @@ export const isAdmin = (user) => {
  */
 export const isCurrentlyOnTicket = (ticketId) => {
     const objectURL = `/app/ticket/${ticketId}`
-    return window.location.pathname === objectURL
+    return window.location.pathname.includes(objectURL)
 }
