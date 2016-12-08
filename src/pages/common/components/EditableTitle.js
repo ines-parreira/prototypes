@@ -1,76 +1,58 @@
 import React, {PropTypes} from 'react'
+import classnames from 'classnames'
 
 export default class EditableTitle extends React.Component {
-    componentDidMount() {
-        if (this.props.focus) {
-            this.toggleEditMode()
-        }
+    constructor(props) {
+        super(props)
+        this.state = this._stateProps(props)
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.props.focus && nextProps.focus) {
-            this.toggleEditMode()
-        } else if (this.props.focus && !nextProps.focus) {
-            this.reinitTitle()
+        if (this.state.value !== nextProps.title) {
+            this.setState(this._stateProps(nextProps))
         }
     }
 
-    onKeyDown(e) {
-        if (e.keyCode === 13) {
-            e.preventDefault()
+    _stateProps = (props) => ({
+        value: props.title,
+        editMode: !props.title,
+    })
+
+    _onChange = (e) => {
+        this.setState({value: e.target.value})
+    }
+
+    _onBlur = (e) => {
+        const {value} = e.target
+        if (value) {
+            this.setState({editMode: false})
         }
-    }
-
-    onKeyUp(e) {
-        if (e.keyCode === 13 || e.keyCode === 27) {
-            e.preventDefault()
-
-            this.reinitTitle()
-
-            if (e.keyCode === 13) {
-                this.refs.title.blur()
-            } else {
-                this.refs.title.innerText = this.props.title
-            }
-        }
-    }
-
-    onBlur() {
-        this.reinitTitle()
-        this.props.update(this.refs.title.innerText)
-    }
-
-    reinitTitle() {
-        const subjectObject = this.refs.title
-
-        subjectObject.classList.remove('edit-mode')
-        subjectObject.setAttribute('contentEditable', 'false')
-        subjectObject.blur()
-    }
-
-    toggleEditMode = () => {
-        const subjectObject = this.refs.title
-
-        subjectObject.classList.add('edit-mode')
-        subjectObject.setAttribute('contentEditable', 'true')
-        subjectObject.focus()
+        this.props.update(value)
     }
 
     render() {
-        const {title, placeholder} = this.props
+        const {placeholder} = this.props
+        const className = classnames('ui header EditableTitle', {
+            'edit-mode': this.state.editMode
+        })
+
         return (
-            <h1
+            <input
                 ref="title"
+                type="text"
                 tabIndex="1"
+                style={this.props.style}
+                className={className}
+
                 placeholder={placeholder}
-                className="ui header EditableTitle"
-                onClick={() => this.toggleEditMode()}
-                onKeyDown={(e) => this.onKeyDown(e)}
-                onKeyUp={(e) => this.onKeyUp(e)}
-                onBlur={(e) => this.onBlur(e)}
-            >
-                {title}
-            </h1>
+                autoFocus={this.props.focus}
+                value={this.state.value}
+
+                onChange={this._onChange}
+                onFocus={() => this.setState({editMode: true})}
+                onBlur={this._onBlur}
+                onKeyUp={this._onKeyUp}
+            />
         )
     }
 
@@ -80,5 +62,6 @@ EditableTitle.propTypes = {
     title: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     update: PropTypes.func.isRequired,
-    focus: PropTypes.bool
+    focus: PropTypes.bool,
+    style: PropTypes.object
 }

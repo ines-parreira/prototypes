@@ -82,6 +82,7 @@ export default class TicketHeader extends React.Component {
                     placeholder="Subject"
                     update={actions.ticket.setSubject}
                     focus={!ticket.get('id')}
+                    style={{width: '100%'}}
                 />
 
                 <div className="ui grid ticket-header-details">

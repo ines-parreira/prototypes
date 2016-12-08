@@ -240,7 +240,7 @@ class TicketListActions extends React.Component {
         const areBulkActionsDisplayed = this.props.selectedItemsIds.size > 0
 
         return (
-            <div className="flex-spaced-row">
+            <div className="flex-spaced-row bulk-actions">
                 <ReactCSSTransitionGroup
                     transitionName="fade"
                     transitionAppear
