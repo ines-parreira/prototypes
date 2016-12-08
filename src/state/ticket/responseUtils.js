@@ -9,6 +9,9 @@ import {convertToRaw, convertFromRaw, createFromText, ContentState, SelectionSta
 import ticketReplyCache from '../ticketReplyCache'
 import {renderTemplate} from '../../pages/common/utils/template'
 
+const signatureHTMLPrefix = '<div></div><div></div>'
+const signatureTextPrefix = '\n\n'
+
 /**
  * Test if a signature was already add to our content to avoid adding it twice
  *
@@ -16,7 +19,7 @@ import {renderTemplate} from '../../pages/common/utils/template'
  * @param currentUser
  */
 export const isSignatureAdded = (contentState, currentUser = fromJS({})) => (
-    contentState.getPlainText().includes(currentUser.get('signature_text'))
+    contentState.getPlainText().includes(`${signatureTextPrefix}${currentUser.get('signature_text')}`)
 )
 
 /**
@@ -30,7 +33,7 @@ export const onlySignature = (contentState, currentUser = fromJS({})) => {
         return false
     }
 
-    return currentUser.get('signature_text') === contentState.getPlainText()
+    return `${signatureTextPrefix}${currentUser.get('signature_text')}` === contentState.getPlainText()
 }
 
 /**
@@ -155,10 +158,12 @@ export const addSignature = (context) => {
     }
 
     let signatureBlocks = null
-    if (action.currentUser.get('signature_html')) {
-        signatureBlocks = convertFromHTML(action.currentUser.get('signature_html')).getBlocksAsArray()
-    } else if (action.currentUser.get('signature_text')) {
-        signatureBlocks = createFromText(action.currentUser.get('signature_text')).getBlocksAsArray()
+    const signatureHTML = action.currentUser.get('signature_html')
+    const signatureText = action.currentUser.get('signature_text')
+    if (signatureHTML) {
+        signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${signatureHTML}`).getBlocksAsArray()
+    } else if (signatureText) {
+        signatureBlocks = createFromText(`${signatureTextPrefix}${signatureText}`).getBlocksAsArray()
     }
 
     if (!signatureBlocks) {
