@@ -8,7 +8,7 @@ export default class EditableTitle extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.state.value !== nextProps.title) {
+        if (!this.state.editMode && this.state.value !== nextProps.title) {
             this.setState(this._stateProps(nextProps))
         }
     }
