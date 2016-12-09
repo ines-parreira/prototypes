@@ -20,6 +20,7 @@ class ComplexTableWrapper extends React.Component {
     }
 
     componentDidMount() {
+        this._updateList(this.props)
         this.setFixedHeader(this.refs.header)
     }
 
