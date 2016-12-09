@@ -152,10 +152,13 @@ export const addSignature = (context) => {
     if (contentState && contentState.hasText() && !action.fromMacro) {
         return _markSignatureAdded(context)
     }
+
+
     // Only add if the we don't have the signature already
     if (contentState && isSignatureAdded(contentState, action.currentUser)) {
         return _markSignatureAdded(context)
     }
+
 
     let signatureBlocks = null
     const signatureHTML = action.currentUser.get('signature_html')
@@ -182,6 +185,7 @@ export const addSignature = (context) => {
     if (!selectionState) {
         context.selectionState = _selectionBefore(context.contentState.getBlocksAsArray())
     }
+    context.forceUpdate = true
 
     return _markSignatureAdded(context)
 }

@@ -31,7 +31,8 @@ export default class TicketReply extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const contentState = nextProps.ticket.getIn(['state', 'contentState'])
-        if (contentState === null) {
+        const forceUpdate = nextProps.ticket.getIn(['state', 'forceUpdate'])
+        if (contentState === null || forceUpdate) {
             this.setState(this._getEditorState(nextProps))
         }
     }
@@ -44,6 +45,10 @@ export default class TicketReply extends React.Component {
         let editorState = EditorState.createWithContent(ContentState.createFromText(''))
         if (contentState && contentState.hasText()) {
             editorState = EditorState.push(editorState, contentState, 'insert-characters')
+        } else {
+            // This is required because otherwise the cursor has an undefined state for an empty content
+            // See: https://github.com/facebook/draft-js/issues/410
+            editorState = EditorState.moveFocusToEnd(editorState)
         }
 
         if (selectionState) {

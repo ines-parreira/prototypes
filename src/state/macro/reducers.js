@@ -206,11 +206,11 @@ export default (state = macrosInitial, action) => {
         }
 
         case types.DELETE_ACTION_ON_APPLIED: {
-            const updatedCache = ticketReplyCache
-                .get(action.ticketId)
-                .deleteIn(['macro', 'actions', action.actionIndex.toString()])
-            ticketReplyCache.set(action.ticketId, updatedCache)
-
+            const cachedMacro = ticketReplyCache.get(action.ticketId)
+            if (cachedMacro.get('macro')) {
+                const updatedCache = cachedMacro.deleteIn(['macro', 'actions', action.actionIndex.toString()])
+                ticketReplyCache.set(action.ticketId, updatedCache)
+            }
             return state.deleteIn(['appliedMacro', 'actions', action.actionIndex.toString()])
         }
 

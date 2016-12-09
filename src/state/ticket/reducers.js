@@ -38,6 +38,7 @@ export const initialState = fromJS({
         dirty: false,
         query: '',
         signatureAdded: false,
+        forceUpdate: false,
         contentState: null,
         selectionState: null,
         latestEventDatetime: null
@@ -163,6 +164,7 @@ export default (state = initialState, action) => {
                         dirty: false,
                         contentState: null,
                         selectionState: null,
+                        signatureAdded: false,
                         query: ''
                     }
                 })
@@ -196,6 +198,7 @@ export default (state = initialState, action) => {
                     dirty: false,
                     contentState: null,
                     selectionState: null,
+                    signatureAdded: false,
                     query: ''
                 }
             }).setIn(['_internal', 'loading', 'submitMessage'], false)
@@ -355,6 +358,7 @@ export default (state = initialState, action) => {
                 },
                 state: {
                     dirty,
+                    forceUpdate: !!context.forceUpdate,
                     signatureAdded: !!context.signatureAdded
                 }
             })

@@ -610,6 +610,9 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
                     resetMessage,
                     resp
                 })
+
+                // We're trying to add a signature if any
+                dispatch(setResponseText(ticket.get('id')))
             })
             .catch(error => {
                 return dispatch({
