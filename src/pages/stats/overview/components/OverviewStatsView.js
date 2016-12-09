@@ -74,7 +74,6 @@ the user and the first response of the agent. Only tickets with at least 1 respo
                     return {
                         value: v,
                         label: 'Closed tickets',
-                        moreIsBetter: true,
                     }
                 case 'total_ticket_messages_sent':
                     return {
@@ -169,7 +168,7 @@ the user and the first response of the agent. Only tickets with at least 1 respo
                                                     }
                                                 </span>
                                             ) : (
-                                                <span className="value">N/A</span>
+                                                <span className="value">n/a</span>
                                             )
                                         }
                                     </div>
