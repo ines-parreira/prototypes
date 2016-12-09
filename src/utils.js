@@ -377,5 +377,7 @@ export const isAdmin = (user) => {
  */
 export const isCurrentlyOnTicket = (ticketId) => {
     const objectURL = `/app/ticket/${ticketId}`
-    return window.location.pathname.includes(objectURL)
+    const currentUrl = window.location.pathname.split('?')[0]
+
+    return currentUrl.endsWith(objectURL)
 }
