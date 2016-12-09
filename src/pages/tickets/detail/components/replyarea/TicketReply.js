@@ -25,8 +25,9 @@ export default class TicketReply extends React.Component {
     }
 
     componentDidMount() {
-        // Autofocus on editor
-        this.refs.editor.focus()
+        // We'd like to autofocus the editor, but in componentDidMount the editor element might not be ready
+        // so we're using the setTimeout hack to focus the editor here
+        setTimeout(this.refs.editor.focus, 1)
     }
 
     componentWillReceiveProps(nextProps) {
