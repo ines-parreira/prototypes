@@ -13,6 +13,26 @@ export default class EditableTitle extends React.Component {
         }
     }
 
+    _onKeyDown = (e) => {
+        if (e.keyCode === 13) {
+            e.preventDefault()
+        }
+    }
+
+    _onKeyUp = (e) => {
+        if (e.keyCode === 13 || e.keyCode === 27) {
+            e.preventDefault()
+
+            this.setState({
+                editMode: false
+            })
+
+            if (e.keyCode === 13) {
+                this.refs.title.blur()
+            }
+        }
+    }
+
     _stateProps = (props) => ({
         value: props.title,
         editMode: !props.title,
@@ -52,6 +72,7 @@ export default class EditableTitle extends React.Component {
                 onFocus={() => this.setState({editMode: true})}
                 onBlur={this._onBlur}
                 onKeyUp={this._onKeyUp}
+                onKeyDown={this._onKeyDown}
             />
         )
     }
