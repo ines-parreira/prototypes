@@ -137,6 +137,8 @@ export default (state = initialState, action) => {
         }
 
         case types.SUBMIT_TICKET_START:
+            // Make sure we reset the cache before we send the message
+            ticketReplyCache.delete(state.get('id'))
             return state.setIn(['_internal', 'loading', 'submitMessage'], true)
 
         case types.SUBMIT_TICKET_ERROR:
