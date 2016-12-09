@@ -7,7 +7,6 @@ import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
 import {Loader} from '../../common/components/Loader'
 import Timeline from '../../common/components/timeline/Timeline'
-import * as ActivityActions from '../../../state/activity/actions'
 import * as ViewsActions from '../../../state/views/actions'
 import * as TicketActions from '../../../state/ticket/actions'
 import * as MacroActions from '../../../state/macro/actions'
@@ -366,7 +365,6 @@ TicketDetailContainer.propTypes = {
         ticketId: PropTypes.string
     }).isRequired,
 
-    activity: PropTypes.object,
     ticket: PropTypes.object,
     tickets: PropTypes.object,
     macros: PropTypes.object,
@@ -387,7 +385,6 @@ TicketDetailContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        activity: state.activity,
         ticket: state.ticket,
         tickets: state.tickets,
         macros: state.macros,
@@ -403,7 +400,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
-            activity: bindActionCreators(ActivityActions, dispatch),
             views: bindActionCreators(ViewsActions, dispatch),
             ticket: bindActionCreators(TicketActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),

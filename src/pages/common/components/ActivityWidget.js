@@ -1,30 +1,11 @@
 import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
-import _ from 'lodash'
-import {fromJS} from 'immutable'
+import {connect} from 'react-redux'
+import {Link, withRouter} from 'react-router'
 import classNames from 'classnames'
-import {ACTIVITY_DISPLAY_COUNT} from '../../../config'
 import {isCurrentlyOnTicket} from '../../../utils'
 
-const ActivityWidgetItem = ({object, count, position}) => {
-    // Is the current link active or not?
-    const linkClasses = classNames('item', {
-        active: isCurrentlyOnTicket(object.get('id')),
-    })
-
-    // figure out what icon to show based on ticket message source
-    const messages = object.get('messages', fromJS([]))
-    let channel = ''
-
-    if (!messages.isEmpty()) {
-        const lastMessage = messages.last() || fromJS({})
-        channel = lastMessage.getIn(['source', 'type'])
-    }
-
-    // if the source didn't give us anything fallback to the channel
-    if (!channel) {
-        channel = object.get('channel', 'unknown')
-    }
+const ActivityWidgetItem = ({recentTicket, position}) => {
+    const channel = recentTicket.get('channel')
 
     const iconClasses = classNames('action icon', {
         mail: channel === 'email',
@@ -35,64 +16,63 @@ const ActivityWidgetItem = ({object, count, position}) => {
         help: channel === 'unknown',
     })
 
-    // the text of the link should try to use the `ticket.requester` or `ticket.subject` or finally `Ticket 123`
-    let text = object.getIn(['requester', 'name']) || object.get('subject') || `Ticket ${object.get('id')}`
-
-    // counter of activity / new messages
-    let counterLabel = null
-    if (count) {
-        counterLabel = (
-            <div className="ui mini red circular label">
-                {count}
-            </div>
-        )
-        text = (
-            <strong title={text}>
-                {text}
-            </strong>
-        )
-    }
+    const text = recentTicket.get('subject')
 
     // track on click
     const _onClick = () => {
         amplitude.getInstance().logEvent('Clicked on recent activity item', {
             position,
-            notifications: count,
-            ticket: _.pick(object.toJS(), ['channel'])
+            ticket: recentTicket.toJS(),
         })
     }
+
+    // is the current link active or not?
+    const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
+    const linkClasses = classNames('item', {
+        active: isActive,
+        'has-something-new': recentTicket.get('has_something_new') && !isActive,
+    })
 
     return (
         <Link
             onClick={_onClick}
-            to={`/app/ticket/${object.get('id')}`}
+            to={`/app/ticket/${recentTicket.get('id')}`}
             className={linkClasses}
             title={text}
         >
             <i className={iconClasses} />
-            {text}
-            {counterLabel}
+            <span>{text}</span>
         </Link>
     )
 }
 
 ActivityWidgetItem.propTypes = {
-    object: PropTypes.object.isRequired,
-    user: PropTypes.object,
-    count: PropTypes.number.isRequired,
+    recentTicket: PropTypes.object.isRequired,
     position: PropTypes.number.isRequired
 }
 
-export default class ActivityWidget extends React.Component {
+class ActivityWidget extends React.Component {
     static propTypes = {
-        activity: PropTypes.object
+        activity: PropTypes.object,
+        router: PropTypes.object,
+    }
+
+    componentDidMount() {
+        // force redraw on page change, since we care about window.location in ActivityWidgetItem
+        this.unlisten = this.props.router.listen(() => this.forceUpdate())
+    }
+
+    componentWillUnmount() {
+        // unlisten router changes
+        if (this.unlisten) {
+            this.unlisten()
+        }
     }
 
     render() {
-        const events = this.props.activity.get('events')
-        const counter = this.props.activity.get('objectsCounter')
+        const tickets = this.props.activity.get('tickets')
 
-        if (!events || events.isEmpty()) {
+        if (!tickets || tickets.isEmpty()) {
             return null
         }
 
@@ -102,17 +82,13 @@ export default class ActivityWidget extends React.Component {
                     <h4>RECENT ACTIVITY</h4>
                     <div className="menu">
                         {
-                            events
-                                .slice(0, ACTIVITY_DISPLAY_COUNT)
-                                .map((e, index) => (
-                                    <ActivityWidgetItem
-                                        key={e.get('object_id')}
-                                        object={e.get('object')}
-                                        count={counter.getIn([e.get('object_id'), 'count']) || 0}
-                                        user={e.get('user')}
-                                        position={index + 1}
-                                    />
-                                ))
+                            tickets.map((e, index) => (
+                                <ActivityWidgetItem
+                                    key={e.get('id')}
+                                    recentTicket={e}
+                                    position={index + 1}
+                                />
+                            ))
                         }
                     </div>
                 </div>
@@ -120,3 +96,9 @@ export default class ActivityWidget extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    activity: state.activity,
+})
+
+export default withRouter(connect(mapStateToProps)(ActivityWidget))

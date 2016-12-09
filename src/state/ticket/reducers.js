@@ -1,12 +1,12 @@
 import * as types from './constants'
 import * as userTypes from './../users/constants'
-import {SUBMIT_ACTIVITY_SUCCESS} from '../activity/constants'
 import {Map, List, fromJS} from 'immutable'
 import {convertToHTML} from '../../utils'
 import * as responseUtils from './responseUtils'
 import ticketReplyCache from '../ticketReplyCache'
 
 import _isUndefined from 'lodash/isUndefined'
+import _get from 'lodash/get'
 
 import {
     getLastNonInternalNoteMessage,
@@ -218,6 +218,12 @@ export default (state = initialState, action) => {
         }
 
         case types.FETCH_TICKET_SUCCESS: {
+            // if discreet, only update messages
+            if (!action.displayLoading) {
+                const messages = _get(action, ['resp', 'messages'], [])
+                return state.set('messages', state.get('messages', fromJS([])).mergeDeep(messages))
+            }
+
             const newState = state.merge(fromJS(action.resp))
             const sourceType = getSourceTypeOfResponse(newState.get('messages'))
 
@@ -415,36 +421,6 @@ export default (state = initialState, action) => {
 
         case types.DISPLAY_HISTORY_ON_NEXT_PAGE:
             return state.setIn(['_internal', 'shouldDisplayHistoryOnNextPage'], fromJS(action.state))
-
-        case SUBMIT_ACTIVITY_SUCCESS: {
-            // See if we have an event for our ticket
-            const event = fromJS(action.resp.events || []).find((e) => {
-                if (!e) {
-                    return false
-                }
-
-                return e.get('object_type') === 'Ticket' && e.get('object_id') === state.get('id')
-            })
-
-            if (event) {
-                const latestEventDatetime = state.getIn(['state', 'latestEventDatetime'])
-                const eventDatetime = event.get('created_datetime')
-                let newState = state.setIn(['state', 'latestEventDatetime'], eventDatetime)
-
-                if (latestEventDatetime && eventDatetime !== latestEventDatetime) {
-                    let newMessages = event.getIn(['object', 'messages'])
-                    if (newMessages) {
-                        newMessages = newMessages.sort(
-                            (a, b) => new Date(a.get('created_datetime')) - new Date(b.get('created_datetime'))
-                        )
-                    }
-                    newState = newState.set('messages', newMessages)
-                }
-                return newState
-            }
-
-            return state
-        }
 
         case userTypes.MERGE_USERS_SUCCESS: {
             if (action.resp && state.getIn(['requester', 'id']) === action.resp.id) {

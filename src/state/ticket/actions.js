@@ -14,8 +14,7 @@ import {APPLY_MACRO} from '../macro/constants'
 import {fetchTicketReplyMacro, setMacrosVisible} from '../macro/actions'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
-import {lastMessage} from '../../utils'
-import {isCurrentlyOnTicket} from '../../utils'
+import {lastMessage, isCurrentlyOnTicket} from '../../utils'
 
 export const addAttachments = (ticket, atts) => (dispatch) => {
     dispatch({
@@ -261,7 +260,7 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
 
     dispatch({
         type: types.FETCH_TICKET_START,
-        displayLoading
+        displayLoading,
     })
 
     dispatch({
@@ -281,17 +280,18 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
             if (isCurrentlyOnTicket(ticketId)) {
                 dispatch({
                     type: types.FETCH_TICKET_SUCCESS,
-                    resp
+                    resp,
+                    displayLoading,
                 })
                 dispatch(initializeMessageDraft(ticketId))
             }
         })
         .catch(error => {
-            return dispatch({
+            return displayLoading ? dispatch({
                 type: types.FETCH_TICKET_ERROR,
                 error,
                 reason: `Failed to fetch ticket ${ticketId}`
-            })
+            }) : null
         })
 }
 

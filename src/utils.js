@@ -371,13 +371,44 @@ export const isAdmin = (user) => {
 }
 
 /**
- * Return true if user is currently on ticket of passed ticket id
+ * Return true if user is currently on ticket of passed ticket id, based on url
  * @param ticketId
  * @returns {boolean}
  */
-export const isCurrentlyOnTicket = (ticketId) => {
+export const isCurrentlyOnTicket = (ticketId = '') => {
+    if (!ticketId) {
+        return false
+    }
+
     const objectURL = `/app/ticket/${ticketId}`
     const currentUrl = window.location.pathname.split('?')[0]
 
     return currentUrl.endsWith(objectURL)
+}
+
+/**
+ * Return true if user is currently on tickets view of passed view id, based on url
+ * @param viewId
+ * @param viewsState - state branch "views"
+ * @returns {boolean}
+ */
+export const isCurrentlyOnView = (viewId = '', viewsState = {}) => {
+    const prefix = [
+        '/app/tickets',
+        '/app/users',
+    ]
+
+    let urls = prefix.map(p => `${p}/${viewId}`)
+
+    // if no viewId is specified, check root routes to views (without ids)
+    // or if current active view is the asked one
+    if (!viewId || viewsState.getIn(['_internal', 'currentViewId']) === viewId) {
+        urls = urls.concat(prefix)
+    }
+
+    const currentUrl = window.location.pathname.split('?')[0]
+
+    // keep this syntax, no urls.some(url => currentUrl.includes(url)) since we want the pathname to be initiated on
+    // each call of the parent function
+    return urls.some(url => currentUrl.includes(url)) || ['/app', '/app/'].some(url => currentUrl.endsWith(url))
 }

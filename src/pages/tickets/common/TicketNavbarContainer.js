@@ -16,7 +16,7 @@ class TicketNavbarContainer extends React.Component {
     render() {
         return (
             <Navbar activeContent="tickets">
-                <ActivityWidget activity={this.props.activity} />
+                <ActivityWidget />
                 <TicketsNavbarView
                     views={this.props.views}
                     currentView={this.props.views.get('active')}
@@ -28,7 +28,6 @@ class TicketNavbarContainer extends React.Component {
 
 TicketNavbarContainer.propTypes = {
     views: PropTypes.object.isRequired,
-    activity: PropTypes.object,
     actions: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     location: PropTypes.shape({
@@ -37,7 +36,6 @@ TicketNavbarContainer.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-    activity: state.activity,
     views: state.views
 })
 

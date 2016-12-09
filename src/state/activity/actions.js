@@ -2,27 +2,16 @@ import axios from 'axios'
 import {fetchPage} from '../views/actions'
 import * as viewsTypes from '../views/constants'
 import * as types from './constants'
+import * as ticketActions from '../ticket/actions'
+import {shouldUpdateTicket, shouldUpdateView} from './utils'
 
 export const pollActivity = () => (dispatch, getState) => {
-    const {activity, views} = getState()
+    const {activity, views, ticket} = getState()
 
-    const isFetchingView = views.getIn(['_internal', 'loading', 'fetchList'], false)
-        || views.getIn(['_internal', 'loading', 'fetchListDiscreet'], false)
-
-    // don't fetch view if it is currently fetching
-    if (!isFetchingView) {
-        const isEdited = views.getIn(['active', 'editMode'], false)
-
-        if (!isEdited) {
-            dispatch(fetchPage(null, true))
-        }
-    }
-
-    const finished = activity.get('finished')
-    const pendingEvents = activity.get('pendingEvents').toJS()
+    const loading = activity.getIn(['_internal', 'loading'], false)
 
     // don't send activity again if previous one is not done
-    if (!finished) {
+    if (loading) {
         return dispatch({
             type: types.SUBMIT_ACTIVITY_DISCARD
         })
@@ -32,9 +21,26 @@ export const pollActivity = () => (dispatch, getState) => {
         type: types.SUBMIT_ACTIVITY_START
     })
 
-    return axios.post('/api/activity/', pendingEvents, {timeout: 10000})
+    const params = {}
+
+    // TODO @jebarjonet CHECK if something new before fetching
+    // if currently on a view, check if has unseen updates on this view
+    const activeViewId = views.getIn(['active', 'id'])
+    if (shouldUpdateView(activeViewId, views)) {
+        params.queryView = activeViewId
+    }
+
+    // if currently on a ticket, check if has unseen updates on this ticket
+    if (shouldUpdateTicket(ticket.get('id'))) {
+        params.queryTicket = ticket.get('id')
+    }
+
+    return axios.get(`/api/activity/?${$.param(params)}`, {timeout: 10000})
         .then((json = {}) => json.data)
         .then((resp = {}) => {
+            // renaming variables since they are already used in upper scope
+            const {views: _views, ticket: _ticket} = getState()
+
             dispatch({
                 type: types.SUBMIT_ACTIVITY_SUCCESS,
                 resp
@@ -45,6 +51,33 @@ export const pollActivity = () => (dispatch, getState) => {
                     type: viewsTypes.UPDATE_VIEW_LIST,
                     items: resp.views
                 })
+            }
+
+            // TODO @jebarjonet CHECK if something new before fetching
+            // if currently on a view, ask for its auto refresh
+            const _activeViewId = _views.getIn(['active', 'id'])
+            if (shouldUpdateView(_activeViewId, _views)) {
+                const isFetchingView = _views.getIn(['_internal', 'loading', 'fetchList'], false)
+                    || _views.getIn(['_internal', 'loading', 'fetchListDiscreet'], false)
+
+                // don't fetch view if it is currently fetching
+                if (!isFetchingView) {
+                    const isEditing = _views.getIn(['active', 'editMode'], false)
+
+                    if (!isEditing) {
+                        dispatch(fetchPage(null, true))
+                    }
+                }
+            }
+
+            // if currently on a ticket, ask for its auto refresh
+            if (shouldUpdateTicket(_ticket.get('id'))) {
+                const isFetchingView = _ticket.getIn(['_internal', 'loading', 'fetchTicket'], false)
+
+                // don't fetch ticket if it is currently fetching
+                if (!isFetchingView) {
+                    dispatch(ticketActions.fetchTicket(_ticket.get('id'), false))
+                }
             }
         })
         .catch(error => {

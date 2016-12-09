@@ -21,7 +21,6 @@ export function setFilter(filterName, values) {
 
 export function fetchStats(newMeta = {}) {
     return (dispatch, getState) => {
-        let url = '/api/stats/'
         const statsState = getState().stats
 
         // get current meta
@@ -47,14 +46,11 @@ export function fetchStats(newMeta = {}) {
 
         params.filters = filters.toJS()
 
-        // pass meta info in url as get params
-        url += `?${$.param(params)}`
-
         dispatch({
             type: types.FETCH_STATS_START
         })
 
-        return axios.get(url)
+        return axios.get(`/api/stats/?${$.param(params)}`)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
