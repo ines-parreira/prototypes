@@ -34,12 +34,19 @@ export default class ComplexTableCell extends React.Component {
                     case 'details': {
                         const previewedMessage = getLastMessage(item.get('messages', fromJS([])).toJS())
 
+                        let subject = stripHTML(item.get('subject'))
+
                         if (!previewedMessage) {
-                            return <div></div>
+                            return (
+                                <div className="ui header">
+                                    <span className="subject">
+                                        {subject}
+                                    </span>
+                                </div>
+                            )
                         }
 
                         // Optionally show how many messages a ticket has in the subject
-                        let subject = stripHTML(item.get('subject'))
                         const messageCount = this.props.item.get('messages').size
                         if (messageCount > 1) {
                             subject = `(${messageCount}) ${subject}`
