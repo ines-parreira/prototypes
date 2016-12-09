@@ -6,8 +6,7 @@ import {SOURCE_VALUE_PROP} from '../../../../../config'
 import {firstMessage} from '../../../../../utils'
 import {isTicketDifferent} from './../../../common/utils'
 import {getLastSameSourceTypeMessage} from '../../../../../state/ticket/utils'
-import _ from 'lodash'
-import _get from 'lodash/get'
+import _set from 'lodash/set'
 
 export default class ReplyMessageChannel extends React.Component {
     componentDidMount() {
@@ -100,7 +99,7 @@ export default class ReplyMessageChannel extends React.Component {
             }
         }
 
-        _.set(query, 'query.filtered.query.multi_match.query', searchValue)
+        _set(query, 'query.filtered.query.multi_match.query', searchValue)
 
         return query
     }
