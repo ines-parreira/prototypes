@@ -44,7 +44,10 @@ const mapStateToProps = (state, ownProps) => {
         type,
         fields: fromJS(fields),
         // order stats by first value (closed tickets, new tickets, etc.)
-        stats: state.stats.get(type, fromJS({})).sort((a, b) => a.get(1) < b.get(1) ? 1 : -1),
+        stats: state.stats
+            .get(type, fromJS({}))
+            .filter(stat => !!stat.get(0)) // remove non identified stats (null, undefined, etc.)
+            .sort((a, b) => a.get(1) < b.get(1) ? 1 : -1),
         meta: state.stats.getIn(['_internal', 'meta'], fromJS({})),
         isLoading: state.stats.getIn(['_internal', 'loading', 'stats']),
     }
