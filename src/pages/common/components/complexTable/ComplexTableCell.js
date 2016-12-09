@@ -35,7 +35,7 @@ export default class ComplexTableCell extends React.Component {
                         const previewedMessage = getLastMessage(item.get('messages', fromJS([])).toJS())
 
                         if (!previewedMessage) {
-                            break
+                            return <div></div>
                         }
 
                         // Optionally show how many messages a ticket has in the subject

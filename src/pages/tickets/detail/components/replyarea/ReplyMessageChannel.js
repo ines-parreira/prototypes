@@ -7,6 +7,7 @@ import {firstMessage} from '../../../../../utils'
 import {isTicketDifferent} from './../../../common/utils'
 import {getLastSameSourceTypeMessage} from '../../../../../state/ticket/utils'
 import _ from 'lodash'
+import _get from 'lodash/get'
 
 export default class ReplyMessageChannel extends React.Component {
     componentDidMount() {
@@ -141,6 +142,10 @@ export default class ReplyMessageChannel extends React.Component {
         const popupClassNames = this.getClassNames()
 
         const ticketFirstMessage = firstMessage(ticket.get('messages').toJS())
+
+        if (!ticketFirstMessage) {
+            return null
+        }
 
         const channelClassNames = {
             email: 'item',

@@ -74,7 +74,7 @@ export function getCode(ast) {
 
 export function lastMessage(messages) {
     if (!messages || !messages.length) {
-        return {}
+        return
     }
 
     return messages.sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]
@@ -82,11 +82,11 @@ export function lastMessage(messages) {
 
 export function firstMessage(messages) {
     if (!messages) {
-        return {}
+        return
     }
 
     if (!messages.length) {
-        return {}
+        return
     }
 
     return messages.sort((m1, m2) => moment(m1.created_datetime).diff(moment(m2.created_datetime)))[0]

@@ -52,7 +52,7 @@ describe('global utils', () => {
                 }
             ]
 
-            const message = utils.lastMessage(messages)
+            const message = utils.lastMessage(messages) || {}
 
             expect(message.id).toBe(3)
         })
@@ -75,7 +75,7 @@ describe('global utils', () => {
                 }
             ]
 
-            const message = utils.firstMessage(messages)
+            const message = utils.firstMessage(messages) || {}
 
             expect(message.id).toBe(1)
         })
