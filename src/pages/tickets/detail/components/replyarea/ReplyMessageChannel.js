@@ -142,9 +142,9 @@ export default class ReplyMessageChannel extends React.Component {
 
         const ticketFirstMessage = firstMessage(ticket.get('messages').toJS())
 
-        if (!ticketFirstMessage) {
-            return null
-        }
+        // if (!ticketFirstMessage) {
+        //     return null
+        // }
 
         const channelClassNames = {
             email: 'item',
