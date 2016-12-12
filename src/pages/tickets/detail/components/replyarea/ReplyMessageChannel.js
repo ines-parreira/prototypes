@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
+import {connect} from 'react-redux'
 import ReceiversDropdown from './ReceiversDropdown'
 import {SOURCE_VALUE_PROP} from '../../../../../config'
 import {firstMessage} from '../../../../../utils'
@@ -8,7 +9,7 @@ import {isTicketDifferent} from './../../../common/utils'
 import {getLastSameSourceTypeMessage} from '../../../../../state/ticket/utils'
 import _set from 'lodash/set'
 
-export default class ReplyMessageChannel extends React.Component {
+class ReplyMessageChannel extends React.Component {
     componentDidMount() {
         $(this.refs.messageChannel).dropdown({
             position: 'bottom left',
@@ -120,7 +121,8 @@ export default class ReplyMessageChannel extends React.Component {
         const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api']
 
         const isInputEnabled =
-            !~disabledChannels.indexOf(this.props.ticket.getIn(['newMessage', 'source', 'type'])) || !ticket.get('id')
+            !disabledChannels.includes(this.props.ticket.getIn(['newMessage', 'source', 'type']))
+            || !this.props.isUpdate
 
         return (
             <ReceiversDropdown
@@ -137,28 +139,28 @@ export default class ReplyMessageChannel extends React.Component {
     }
 
     render() {
-        const {ticket, actions} = this.props
+        const {ticket, actions, isUpdate} = this.props
         const popupClassNames = this.getClassNames()
 
         const ticketFirstMessage = firstMessage(ticket.get('messages').toJS())
 
-        // if (!ticketFirstMessage) {
-        //     return null
-        // }
+        if (isUpdate && !ticketFirstMessage) {
+            return null
+        }
 
         const channelClassNames = {
             email: 'item',
             chat: classnames('item', {
-                hidden: !ticket.get('id') ? true : ticketFirstMessage.source.type !== 'chat'
+                hidden: !isUpdate ? true : ticketFirstMessage.source.type !== 'chat',
             }),
             facebookComment: classnames('item', {
-                hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'facebook-post'
+                hidden: !isUpdate || ticketFirstMessage.source.type !== 'facebook-post',
             }),
             facebookMessage: classnames('item', {
-                hidden: !ticket.get('id') || ticketFirstMessage.source.type !== 'facebook-message'
+                hidden: !isUpdate || ticketFirstMessage.source.type !== 'facebook-message',
             }),
             internal: classnames('item', {
-                hidden: !ticket.get('id')
+                hidden: !isUpdate,
             })
         }
 
@@ -221,5 +223,14 @@ export default class ReplyMessageChannel extends React.Component {
 ReplyMessageChannel.propTypes = {
     ticket: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    settings: PropTypes.object.isRequired
+    settings: PropTypes.object.isRequired,
+    isUpdate: PropTypes.bool.isRequired,
 }
+
+function mapStateToProps(state, ownProps) {
+    return {
+        isUpdate: !!ownProps.ticket.get('id'),
+    }
+}
+
+export default connect(mapStateToProps)(ReplyMessageChannel)
