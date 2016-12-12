@@ -60,11 +60,6 @@ class TicketDetailContainer extends React.Component {
             }
 
             this._fetchTicketData(nextProps.params.ticketId)
-        } else if (this.props.params.ticketId === 'new' && nextProps.ticket.get('id')) {
-            /**
-             * Redirect to the new page when submitting a new ticket.
-             */
-            this._forcePush(`/app/ticket/${nextProps.ticket.get('id')}/`)
         } else if (
             this.props.ticket.get('id')
             && this.props.ticket.get('id') !== 'new'
@@ -321,7 +316,7 @@ class TicketDetailContainer extends React.Component {
             || (this.props.params.ticketId === 'new' && this.props.ticket.get('id'))
             || this.props.ticket.getIn(['_internal', 'loading', 'fetchTicket'])
         ) {
-            return <Loader message="Loading ticket..."/>
+            return <Loader message="Loading ticket..." />
         }
 
         return (

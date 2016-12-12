@@ -214,7 +214,7 @@ function updateOrCreateIntegrationRequest(integration, action) {
                 fetchIntegrations()(dispatch)
 
                 if (!isUpdate) {
-                    browserHistory.push(`/app/integrations/${integration.get('type')}/`)
+                    browserHistory.push(`/app/integrations/${integration.get('type')}`)
                 }
 
                 dispatch(notify({

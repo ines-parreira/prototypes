@@ -679,6 +679,8 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
                     resetMessage,
                     resp
                 })
+
+                browserHistory.push(`/app/ticket/${resp.id}`)
             })
             .catch(error => {
                 return dispatch({
