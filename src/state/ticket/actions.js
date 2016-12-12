@@ -4,11 +4,11 @@ import {browserHistory} from 'react-router'
 import _isEmpty from 'lodash/isEmpty'
 import _isNull from 'lodash/isNull'
 import _pick from 'lodash/pick'
-import {fromJS} from 'immutable'
 import axios from 'axios'
 
 import * as types from './constants'
-import {ACTION_TEMPLATES, USER_VALUE_PROP, SOURCE_VALUE_PROP} from '../../config'
+import {fromJS} from 'immutable'
+import {ACTION_TEMPLATES} from '../../config'
 import {TICKET_VIEWED} from '../activity/constants'
 import {APPLY_MACRO} from '../macro/constants'
 import {fetchTicketReplyMacro, setMacrosVisible} from '../macro/actions'
@@ -418,41 +418,42 @@ export const formatAction = (action, template, context) => {
 }
 
 /**
- * Return a user's most appropriate address to send a message.
+ * Return the account's most appropriate channel to send a message.
  *
- * @param ticketChannel: the channel of the current ticket
- * @param user: the user from which we want the address
- * @returns {string} the address of the user
+ * @param channelType: type of channel to use: email, facebook, etc
+ * @param channels: channels available
+ * @returns {string} the channel to use
  */
-function getAddress(ticketChannel, user) {
-    let res = null
+function getChannel(channelType, channels = []) {
+    let chan = {
+        name: null,
+        address: null
+    }
 
-    if (user.channels) {
-        for (const channel of user.channels) {
-            if (channel.type === ticketChannel) {
-                if (channel.preferred) {
-                    return channel.address
+    for (const channel of channels) {
+        if (channel.type === channelType) {
+            if (channel.preferred) {
+                return {
+                    name: channel.name,
+                    address: channel.address
                 }
-
-                res = channel.address
+            }
+            chan = {
+                name: channel.name,
+                address: channel.address
             }
         }
     }
 
-    if (!res && ticketChannel === 'email') {
-        res = user.email
-    }
-
-    return res
+    return chan
 }
-
 
 /**
  * Perform various actions on the ticket data and return a POST-able ticket data structure.
  * Adds the newMessage to the ticket's messages, attaches actions and sets some source elements on the message.
  * Also sets some properties on the ticket.
  */
-function prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser) {
+function prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser, currentAccount) {
     const data = ticket.toJS()
 
     data.status = status || data.status
@@ -462,28 +463,32 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
 
     // Prepare newMessage to send it.
     if (data.newMessage) {
-        if (data.messages.length) {
-            const msg = lastMessage(data.messages)
+        const newMsgChannel = data.newMessage.source.type
+        const supportChannel = getChannel(newMsgChannel, currentAccount.get('channels', fromJS({})).toJS())
+        const msg = lastMessage(data.messages, {
+            channel: newMsgChannel
+        })
 
-            if (msg.source.extra) {
-                data.newMessage.source.extra = msg.source.extra
-            }
-
-            if (data.newMessage.source.type === msg.source.type) {
-                data.newMessage.source.from = msg.from_agent ? msg.source.from : msg.source.to[0]
-            } else {
-                data.newMessage.source.from = {name: currentUser.get('name')}
-
-                const addr = currentUser.get(USER_VALUE_PROP[data.newMessage.source.type])
-
-                if (addr) {
-                    data.newMessage.source.from[SOURCE_VALUE_PROP[data.newMessage.source.type]] = addr
-                }
-            }
+        // if there is no message, we use default support channel information
+        // if there is a message:
+        //  - if message is from an agent, previous `from` field is used
+        //  - if message is not from an agent, previous `to` field is used
+        if (!msg || !msg.source) {
+            data.newMessage.source.from = supportChannel
+        } else if (msg.from_agent) {
+            data.newMessage.source.from = msg.source.from
         } else {
             data.newMessage.source.from = {
-                name: currentUser.get('name'),
-                address: getAddress(data.channel, currentUser.toJS())
+                name: msg.source.to[0].name || supportChannel.name,
+                address: msg.source.to[0].address
+            }
+        }
+
+        if (data.messages.length) {
+            const lastMsg = lastMessage(data.messages)
+
+            if (lastMsg.source.extra) {
+                data.newMessage.source.extra = msg.source.extra
             }
         }
 
@@ -562,13 +567,15 @@ function onMessageSent(dispatch, ticket_id, messageSent) {
  * @param action: A parameter to decide on what to do when an action failed. (Retry/ignore/cancel, etc.)
  */
 export function submitTicketMessage(ticket, status, macroActions, currentUser, action, resetMessage = true) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const {currentAccount} = getState()
+
         dispatch({
             type: types.SUBMIT_TICKET_MESSAGE_START,
             currentUser
         })
 
-        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
+        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser, currentAccount)
 
         if (!data || _isNull(data)) {
             return dispatch({
@@ -660,12 +667,14 @@ export function updateTicketMessage(ticketId, messageId, data, action = null) {
 }
 
 export function submitTicket(ticket, status, macroActions, currentUser, resetMessage = true) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const {currentAccount} = getState()
+
         dispatch({
             type: types.SUBMIT_TICKET_START
         })
 
-        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
+        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser, currentAccount)
 
         return axios.post('/api/tickets/', data)
             .then((json = {}) => json.data)

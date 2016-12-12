@@ -3,6 +3,7 @@ import _upperFirst from 'lodash/upperFirst'
 import _isString from 'lodash/isString'
 import _isNumber from 'lodash/isNumber'
 import _isObject from 'lodash/isObject'
+import _filter from 'lodash/filter'
 
 import esprima from 'esprima'
 import escodegen from 'escodegen'
@@ -72,9 +73,18 @@ export function getCode(ast) {
     })
 }
 
-export function lastMessage(messages) {
+/**
+ * Return last message from a list of messages
+ * @param {Array} messages an array of messages
+ * @param {Object} options filters to apply on messages
+ * @returns {Object|Array}
+ */
+export function lastMessage(messages, options) {
     if (!messages || !messages.length) {
         return
+    }
+    if (options) {
+        messages = _filter(messages, options) || []
     }
 
     return messages.sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]

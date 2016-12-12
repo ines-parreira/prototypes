@@ -33,8 +33,8 @@ class ChangePasswordView extends React.Component {
             <div className="ui grid">
                 <div className="twelve wide column">
                     <div className="ui large breadcrumb">
-                        <Link to="/app/your-profile">Your profile</Link>
-                        <i className="right angle icon divider" />
+                        <Link to="/app/settings/your-profile">Your profile</Link>
+                        <i className="right angle icon divider"/>
                         <a className="active section">Change password</a>
                     </div>
 

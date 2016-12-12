@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import _noop from 'lodash/noop'
 import classNames from 'classnames'
 import ErrorMessage from '../../../common/components/ErrorMessage'
@@ -58,14 +58,14 @@ InputField.defaultProps = {
 }
 
 InputField.propTypes = {
-    type: React.PropTypes.string.isRequired,
-    input: React.PropTypes.object.isRequired,
-    meta: React.PropTypes.object.isRequired,
-    className: React.PropTypes.string,
-    label: React.PropTypes.string,
-    placeholder: React.PropTypes.string,
-    required: React.PropTypes.bool,
-    buttons: React.PropTypes.array,
+    type: PropTypes.string.isRequired,
+    input: PropTypes.object.isRequired,
+    meta: PropTypes.object.isRequired,
+    className: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    placeholder: PropTypes.string,
+    required: PropTypes.bool,
+    buttons: PropTypes.array
 }
 
 export default InputField

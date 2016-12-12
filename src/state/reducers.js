@@ -3,6 +3,7 @@ import {routerReducer} from 'react-router-redux'
 import {reducer as formReducer} from 'redux-form'
 import {reducer as notificationsReducer} from 'react-notification-system-redux'
 
+import currentAccountReducer from './currentAccount/reducers'
 import currentUserReducer from './currentUser/reducers'
 import rulesReducer from './rules/reducers'
 import schemasReducer from './schemas/reducers'
@@ -20,6 +21,7 @@ import statsReducer from './stats/reducers'
 import infobarReducer from './infobar/reducers'
 
 const rootReducer = combineReducers({
+    currentAccount: currentAccountReducer,
     currentUser: currentUserReducer,
     settings: settingsReducer,
     tickets: ticketsReducer,

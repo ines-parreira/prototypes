@@ -15,14 +15,17 @@ import UserNavbarContainer from './users/common/UserNavbarContainer'
 import UserDetailContainer from './users/detail/UserDetailContainer'
 import UserSourceContainer from './users/detail/UserSourceContainer'
 import UserInfobarContainer from './users/detail/UserInfobarContainer'
-import YourProfileContainer from './users/yourProfile/YourProfileContainer'
-import ChangePasswordContainer from './users/yourProfile/ChangePasswordContainer'
 import OverviewStatsContainer from './stats/overview/OverviewStatsContainer'
 import SimpleStatsContainer from './stats/simple/SimpleStatsContainer'
+import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
+import ChangePasswordContainer from './settings/yourProfile/ChangePasswordContainer'
+import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
 import RulesNavbarContainer from './rules/common/RulesNavbarContainer'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
+import AccountContainer from './settings/account/AccountContainer'
+import UserRoleRequired from './common/components/UserRoleRequired'
 
 export default (
     <Route path="/app" component={App}>
@@ -31,20 +34,6 @@ export default (
                 content: TicketListContainer,
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
-            }}
-        />
-        <Route
-            path="your-profile"
-            components={{
-                content: YourProfileContainer,
-                navbar: UserNavbarContainer
-            }}
-        />
-        <Route
-            path="your-profile/change-password"
-            components={{
-                content: ChangePasswordContainer,
-                navbar: UserNavbarContainer
             }}
         />
         <Route
@@ -148,9 +137,39 @@ export default (
                 navbar: StatsNavbarContainer
             }}
         />
-        <Route
-            path="*"
-            component={NoMatch}
-        />
+        <Route path="settings">
+            <IndexRoute
+                components={{
+                    content: UserRoleRequired(
+                        AccountContainer,
+                        'admin',
+                        '/app/settings/your-profile'
+                    ),
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="account"
+                components={{
+                    content: UserRoleRequired(AccountContainer, 'admin'),
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="your-profile"
+                components={{
+                    content: YourProfileContainer,
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="your-profile/change-password"
+                components={{
+                    content: ChangePasswordContainer,
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+        </Route>
+        <Route path="*" component={NoMatch}/>
     </Route>
 )

@@ -1,4 +1,5 @@
-import _ from 'lodash'
+import _words from 'lodash/words'
+import _max from 'lodash/max'
 import Notifications from 'react-notification-system-redux'
 
 const AUTHORIZED_NOTIFICATION_TYPES = [
@@ -46,8 +47,8 @@ export const notify = (message) => (dispatch, getState) => {
     if (finalMessage.dismissible && finalMessage.autoDismiss === 0) {
         const wordsPerMinute = 230
         const readText = `${finalMessage.title} ${finalMessage.message}`
-        let readingTime = _.words(readText).length * 60 / wordsPerMinute
-        readingTime = _.max([3, Math.ceil(readingTime)])
+        let readingTime = _words(readText).length * 60 / wordsPerMinute
+        readingTime = _max([3, Math.ceil(readingTime)])
         finalMessage.autoDismiss = readingTime
     }
 

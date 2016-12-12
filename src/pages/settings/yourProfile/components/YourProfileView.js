@@ -135,7 +135,7 @@ class YourProfileView extends React.Component {
                             <Link
                                 type="button"
                                 className="ui basic grey button"
-                                to="/app/your-profile/change-password"
+                                to="/app/settings/your-profile/change-password"
                             >
                                 Change password
                             </Link>
