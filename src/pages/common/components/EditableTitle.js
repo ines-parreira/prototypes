@@ -62,19 +62,15 @@ export default class EditableTitle extends React.Component {
     }
 
     _stateProps = (props) => ({
-        value: props.title,
-        editMode: !props.title,
+        value: props.title
     })
 
     _onChange = (e) => {
         this.setState({value: e.target.value})
     }
 
-    _onBlur = (e) => {
-        const {value} = e.target
-        if (value) {
-            this.setState({editMode: false})
-        }
+    _onBlur = ({target: {value}}) => {
+        this.setState({editMode: false})
         this.props.update(value)
     }
 

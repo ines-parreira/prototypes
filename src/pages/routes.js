@@ -51,7 +51,7 @@ export default (
             }}
         />
         <Route
-            path="users/:viewId/:viewSlug"
+            path="users/:viewId(/:viewSlug)"
             components={{
                 content: UserListContainer,
                 navbar: UserNavbarContainer
@@ -108,7 +108,7 @@ export default (
             }}
         />
         <Route
-            path="tickets/:viewId/:viewSlug"
+            path="tickets/:viewId(/:viewSlug)"
             components={{
                 content: TicketListContainer,
                 navbar: TicketNavbarContainer,
