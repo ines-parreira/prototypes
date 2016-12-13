@@ -36,6 +36,9 @@ function conjugateToPastSimple(verb) {
  */
 export function humanizeActionType(actionType) {
     const EXCLUDED_WORDS = ['success']
+    if (typeof actionType !== 'string') {
+        return actionType
+    }
     let words = actionType.toLowerCase().trim().split('_')
     // remove noise
     words = List(_.pullAll(words, EXCLUDED_WORDS))

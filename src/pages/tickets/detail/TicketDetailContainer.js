@@ -223,7 +223,7 @@ class TicketDetailContainer extends React.Component {
     }
 
     _applyMacro = (macro) => {
-        this.props.actions.macro.applyMacro(macro, this.props.ticket.get('id'))
+        this.props.actions.ticket.applyMacro(macro, this.props.ticket.get('id'))
     }
 
     _computeNextUrl = (ascending) => {
@@ -275,7 +275,7 @@ class TicketDetailContainer extends React.Component {
                 this.props.actions.ticket.submitTicket(
                     ticket,
                     status,
-                    this.props.macros.getIn(['appliedMacro', 'actions']),
+                    this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
                     this.props.currentUser,
                     resetMessage
                 )
@@ -284,14 +284,14 @@ class TicketDetailContainer extends React.Component {
             this.props.actions.ticket.submitTicketMessage(
                 ticket,
                 status,
-                this.props.macros.getIn(['appliedMacro', 'actions']),
+                this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
                 this.props.currentUser,
                 action,
                 resetMessage
             )
 
             // clear applied action after submitting message
-            this.props.actions.macro.clearAppliedMacro(ticket.get('id'))
+            this.props.actions.ticket.clearAppliedMacro(ticket.get('id'))
         }
 
         if (next) {

@@ -41,6 +41,7 @@ export const initialState = fromJS({
         forceUpdate: false,
         contentState: null,
         selectionState: null,
+        appliedMacro: null,
         latestEventDatetime: null
     },
     _internal: {
@@ -84,8 +85,7 @@ export default (state = initialState, action) => {
                 state: {
                     dirty: true
                 }
-            })
-                .setIn(['_internal', 'loading', 'addAttachment'], false)
+            }).setIn(['_internal', 'loading', 'addAttachment'], false)
 
         case types.ADD_ATTACHMENTS:
             return state.updateIn(
@@ -109,15 +109,9 @@ export default (state = initialState, action) => {
             )
 
         case types.SUBMIT_TICKET_MESSAGE_START: {
-            // Make sure we reset the cache before we send the message
-            ticketReplyCache.delete(state.get('id'))
-
             return state.mergeDeep({
                 state: {
-                    dirty: false,
-                    contentState: null,
-                    selectionState: null,
-                    signatureAdded: false
+                    dirty: false
                 },
                 _internal: {
                     loading: {
@@ -157,6 +151,9 @@ export default (state = initialState, action) => {
                 return state
             }
 
+            // Make sure we reset the cache before we send the message
+            ticketReplyCache.delete(state.get('id'))
+
             const newState = state
                 .merge(fromJS(action.resp))
                 .mergeDeep({
@@ -165,6 +162,7 @@ export default (state = initialState, action) => {
                         contentState: null,
                         selectionState: null,
                         signatureAdded: false,
+                        appliedMacro: null,
                         query: ''
                     }
                 })
@@ -192,6 +190,9 @@ export default (state = initialState, action) => {
             } else {
                 newState = newState.set('messages', newState.get('messages').push(respMessage))
             }
+
+             // Make sure we reset the cache before we send the message
+            ticketReplyCache.delete(state.get('id'))
 
             newState = newState.mergeDeep({
                 state: {
@@ -336,15 +337,54 @@ export default (state = initialState, action) => {
                 .setIn(['newMessage', 'public'], action.sourceType !== 'internal-note')
         }
 
+        case types.APPLY_MACRO: {
+            ticketReplyCache.set(action.ticketId, {
+                macro: action.macro
+            })
+            return state.setIn(['state', 'appliedMacro'], action.macro)
+        }
+
+        case types.CLEAR_APPLIED_MACRO: {
+            ticketReplyCache.set(action.ticketId, {
+                macro: null
+            })
+            return state.setIn(['state', 'appliedMacro'], null)
+        }
+
+        case types.UPDATE_ACTION_ARGS_ON_APPLIED: {
+            const updatedCache = ticketReplyCache
+                .get(action.ticketId)
+                .setIn(['macro', 'actions', action.actionIndex.toString(), 'arguments'], action.value)
+            ticketReplyCache.set(action.ticketId, updatedCache)
+            return state.setIn(['state', 'appliedMacro', 'actions', action.actionIndex.toString(), 'arguments'],
+                action.value)
+        }
+
+        case types.DELETE_ACTION_ON_APPLIED: {
+            const cachedMacro = ticketReplyCache.get(action.ticketId)
+            if (cachedMacro.get('macro')) {
+                const updatedCache = cachedMacro.deleteIn(['macro', 'actions', action.actionIndex.toString()])
+                ticketReplyCache.set(action.ticketId, updatedCache)
+            }
+            return state.deleteIn(['state', 'appliedMacro', 'actions', action.actionIndex.toString()])
+        }
+
+        case types.FETCH_TICKET_REPLY_MACRO: {
+            const cache = ticketReplyCache.get(action.ticketId).get('macro')
+            return state.setIn(['state', 'appliedMacro'], cache)
+        }
+
         case types.SET_RESPONSE_TEXT: {
             let contentState = action.args.get('contentState') || state.getIn(['state', 'contentState'])
             let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
+            const appliedMacro = state.getIn(['state', 'appliedMacro'])
 
             let context = {
                 action,
                 state,
                 contentState,
-                selectionState
+                selectionState,
+                appliedMacro
             }
 
             context = responseUtils.getCache(context)

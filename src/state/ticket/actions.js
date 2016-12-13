@@ -8,10 +8,9 @@ import axios from 'axios'
 
 import * as types from './constants'
 import {fromJS} from 'immutable'
-import {ACTION_TEMPLATES} from '../../config'
+import {ACTION_TEMPLATES, DEFAULT_ACTIONS} from '../../config'
+import {setMacrosVisible} from '../macro/actions'
 import {TICKET_VIEWED} from '../activity/constants'
-import {APPLY_MACRO} from '../macro/constants'
-import {fetchTicketReplyMacro, setMacrosVisible} from '../macro/actions'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 import {lastMessage, isCurrentlyOnTicket} from '../../utils'
@@ -245,6 +244,60 @@ export const deleteMessage = (ticketId, messageId) => (dispatch) => {
             })
         })
 }
+
+export const deleteActionOnApplied = (actionIndex, ticketId) => ({
+    type: types.DELETE_ACTION_ON_APPLIED,
+    actionIndex,
+    ticketId
+})
+
+export const updateActionArgsOnApplied = (actionIndex, value, ticketId) => ({
+    type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
+    actionIndex,
+    value,
+    ticketId
+})
+
+export const applyMacroAction = (action, currentUser) => {
+    const {type, name} = action.toJS()
+    if (type === 'user' && !DEFAULT_ACTIONS.includes(name)) {
+        console.error('Applying unknown macro action', name)
+    }
+
+    return {
+        type: name,
+        args: action.get('arguments'),
+        currentUser,
+        fromMacro: true
+    }
+}
+
+export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
+    dispatch({
+        type: types.APPLY_MACRO,
+        macro,
+        ticketId
+    })
+    const currentUser = getState().currentUser
+    macro.get('actions').forEach(action => dispatch(applyMacroAction(action, currentUser)))
+
+    dispatch({
+        type: types.RECORD_MACRO,
+        macro
+    })
+
+    dispatch(setMacrosVisible(false))
+}
+
+export const clearAppliedMacro = (ticketId) => ({
+    type: types.CLEAR_APPLIED_MACRO,
+    ticketId
+})
+
+export const fetchTicketReplyMacro = (ticketId) => ({
+    type: types.FETCH_TICKET_REPLY_MACRO,
+    ticketId
+})
 
 export const initializeMessageDraft = (ticketId) => (dispatch) => {
     // get cached ticket reply message
@@ -555,7 +608,7 @@ function onMessageSent(dispatch, ticket_id, messageSent) {
 
     // reinitialize the current macro
     dispatch({
-        type: APPLY_MACRO,
+        type: types.APPLY_MACRO,
         macro: undefined
     })
 }

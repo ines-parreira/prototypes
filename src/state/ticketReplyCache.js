@@ -3,71 +3,69 @@
 
 import {fromJS} from 'immutable'
 
-const ticketReplyCache = 'gorgias-ticket-reply'
 const storage = window.localStorage
+const TICKET_REPLY_CACHE_KEY = 'gorgias-ticket-reply'
+const defaultTicket = fromJS({
+    contentState: null,
+    selectionState: null,
+    macro: null
+})
 
 class TicketReplyCache {
-    constructor() {
-        this.tickets = fromJS({})
-
+    _items() {
+        let cached = null
         // load from storage
         try {
-            const cached = JSON.parse(storage.getItem(ticketReplyCache))
-
-            if (cached) {
-                this.tickets = fromJS(cached)
-            }
+            cached = JSON.parse(storage.getItem(TICKET_REPLY_CACHE_KEY))
         } catch (err) {
-            //
+            console.error('Failed to read from local storage', err)
         }
+
+        if (cached) {
+            return fromJS(cached)
+        }
+        return fromJS({})
     }
 
     set(ticketId = 'new', ticketDetails) {
         // always use strings for ids
         const id = String(ticketId)
-        const ticket = this.tickets.get(id)
 
         // don't save cache for new tickets
         if (ticketId === 'new') {
             return
         }
 
+        let items = this._items()
+        const ticket = items.get(id)
+
         if (ticket) {
             // merge existing details
-            this.tickets = this.tickets.set(id, ticket.merge(fromJS(ticketDetails)))
+            items = items.set(id, ticket.merge(fromJS(ticketDetails)))
         } else {
-            this.tickets = this.tickets.set(id, fromJS(ticketDetails))
+            items = items.set(id, fromJS(ticketDetails))
         }
 
         // save in storage
         try {
-            storage.setItem(ticketReplyCache, JSON.stringify(this.tickets.toJS()))
+            storage.setItem(TICKET_REPLY_CACHE_KEY, JSON.stringify(items.toJS()))
         } catch (err) {
-            //
+            console.error('Failed to save new state in local storage', err)
         }
     }
 
     get(ticketId = 'new') {
-        const id = String(ticketId)
-        const defaultTicket = fromJS({
-            contentState: null,
-            selectionState: null,
-            macro: null
-        })
-
-        // return immutable
-        return this.tickets.get(id) || defaultTicket
+        return this._items().get(String(ticketId)) || defaultTicket
     }
 
     delete(ticketId = 'new') {
-        // always use strings for ids
-        this.tickets = this.tickets.delete(ticketId.toString())
+        const items = this._items().delete(String(ticketId))
 
         // save in storage
         try {
-            storage.setItem(ticketReplyCache, JSON.stringify(this.tickets.toJS()))
+            storage.setItem(TICKET_REPLY_CACHE_KEY, JSON.stringify(items.toJS()))
         } catch (err) {
-            // nothing do to
+            console.error('Failed to delete from local storage', err)
         }
     }
 }

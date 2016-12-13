@@ -75,9 +75,12 @@ export const getCache = (context) => {
  * @param context
  */
 export const updateCache = (context) => {
-    const {contentState, selectionState, action} = context
+    const {contentState, selectionState, appliedMacro, action} = context
     // We're storing the content state in a persistent storage so we can keep it after page refresh
-    if (contentState && contentState.hasText() && !onlySignature(contentState, action.currentUser)) {
+    if (
+        (contentState && contentState.hasText() && !onlySignature(contentState, action.currentUser)) ||
+        appliedMacro
+    ) {
         // TODO (@xarg): We also need to keep the attachments in the cache
         ticketReplyCache.set(action.ticketId, {
             contentState: convertToRaw(contentState),

@@ -107,7 +107,7 @@ export default class TicketReplyArea extends React.Component {
                     <TicketReply
                         actions={this.props.actions}
                         ticket={this.props.ticket}
-                        appliedMacro={this.props.macros.get('appliedMacro')}
+                        appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
                         users={this.props.users}
                     />
                 )}

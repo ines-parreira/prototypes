@@ -1,22 +1,6 @@
 import axios from 'axios'
-import {DEFAULT_ACTIONS} from '../../config'
-import {RECORD_MACRO} from '../ticket/constants'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
-
-
-export const deleteActionOnApplied = (actionIndex, ticketId) => ({
-    type: types.DELETE_ACTION_ON_APPLIED,
-    actionIndex,
-    ticketId
-})
-
-export const updateActionArgsOnApplied = (actionIndex, value, ticketId) => ({
-    type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
-    actionIndex,
-    value,
-    ticketId
-})
 
 export const updateActionArgs = (actionIndex, value) => ({
     type: types.UPDATE_ACTION_ARGS,
@@ -86,47 +70,6 @@ export const previewAdjacentMacroInModal = (direction, noExternal) => ({
 export const saveSearch = (query) => ({
     type: types.SAVE_SEARCH,
     query
-})
-
-export const fetchTicketReplyMacro = (ticketId) => ({
-    type: types.FETCH_TICKET_REPLY_MACRO,
-    ticketId
-})
-
-export const applyMacroAction = (action, currentUser) => {
-    const {type, name} = action.toJS()
-    if (type === 'user' && !DEFAULT_ACTIONS.includes(name)) {
-        console.error('Applying unknown macro action', name)
-    }
-
-    return {
-        type: name,
-        args: action.get('arguments'),
-        currentUser,
-        fromMacro: true
-    }
-}
-
-export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
-    dispatch({
-        type: types.APPLY_MACRO,
-        macro,
-        ticketId
-    })
-    const currentUser = getState().currentUser
-    macro.get('actions').forEach(action => dispatch(applyMacroAction(action, currentUser)))
-
-    dispatch({
-        type: RECORD_MACRO,
-        macro
-    })
-
-    dispatch(setMacrosVisible(false))
-}
-
-export const clearAppliedMacro = (ticketId) => ({
-    type: types.CLEAR_APPLIED_MACRO,
-    ticketId
 })
 
 export const fetchMacros = () => (dispatch) => {
