@@ -425,10 +425,7 @@ export const formatAction = (action, template, context) => {
  * @returns {string} the channel to use
  */
 function getChannel(channelType, channels = []) {
-    let chan = {
-        name: null,
-        address: null
-    }
+    let chan = {}
 
     for (const channel of channels) {
         if (channel.type === channelType) {
@@ -466,7 +463,8 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
         const newMsgChannel = data.newMessage.source.type
         const supportChannel = getChannel(newMsgChannel, currentAccount.get('channels', fromJS({})).toJS())
         const msg = lastMessage(data.messages, {
-            channel: newMsgChannel
+            channel: newMsgChannel,
+            public: true
         })
 
         // if there is no message, we use default support channel information
@@ -484,7 +482,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
             }
         }
 
-        if (data.messages.length) {
+        if (data.messages.length && msg) {
             const lastMsg = lastMessage(data.messages)
 
             if (lastMsg.source.extra) {
