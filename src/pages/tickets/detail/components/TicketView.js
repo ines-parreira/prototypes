@@ -58,7 +58,7 @@ export default class TicketView extends React.Component {
             this.props.tags.get('items').size && this.props.users.get('agents').size
 
         if (shouldInitializeForm) {
-            const filtersAst = this.props.view.get('filters_ast', fromJS({}))
+            const filtersAst = this.props.view.get('filters_ast', fromJS({})) || fromJS({})
 
             const exp = filtersAst.getIn(['body', 0, 'expression'])
 
