@@ -5,9 +5,11 @@ import * as UsersActions from './../../../../state/users/actions'
 import * as InfobarActions from './../../../../state/infobar/actions'
 import MergeUsersModal from './MergeUsersModal'
 
+import {makeIsLoading} from './../../../../state/users/selectors'
+
 class MergeUsersContainer extends React.Component {
     render() {
-        const {destinationUser, sourceUser, display, actions, isLoading} = this.props
+        const {destinationUser, sourceUser, display, actions, usersIsLoading} = this.props
 
         if (!display) {
             return null
@@ -19,7 +21,7 @@ class MergeUsersContainer extends React.Component {
                 sourceUser={sourceUser}
                 toggleModal={actions.infobar.toggleMergeUsersModal}
                 mergeUsers={actions.users.mergeUsers}
-                isLoading={isLoading}
+                isLoading={usersIsLoading('merge')}
             />
         )
     }
@@ -35,12 +37,12 @@ MergeUsersContainer.propTypes = {
     sourceUser: PropTypes.object.isRequired,
     display: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    usersIsLoading: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
     return {
-        isLoading: state.users.getIn(['_internal', 'loading', 'merge'])
+        usersIsLoading: makeIsLoading(state),
     }
 }
 

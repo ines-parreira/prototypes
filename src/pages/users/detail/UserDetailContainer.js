@@ -10,6 +10,8 @@ import UserForm from '../common/components/UserForm'
 import Timeline from '../../common/components/timeline/Timeline'
 import Modal from '../../common/components/Modal'
 
+import {getActiveUser, makeIsLoading} from '../../../state/users/selectors'
+
 class UserDetailContainer extends React.Component {
     constructor(props) {
         super(props)
@@ -39,15 +41,15 @@ class UserDetailContainer extends React.Component {
         actions.fetchUser(id).then(() => actions.fetchUserHistory(id, {
             successCondition(state) {
                 // its OK to be based on active user since the history is fetched when the user is already fetched
-                return state.users.getIn(['active', 'id'], '').toString() === id.toString()
+                return getActiveUser(state).get('id', '').toString() === id.toString()
             }
         }))
     }
 
     _renderTimeline = () => {
-        const {users} = this.props
+        const {users, usersIsLoading} = this.props
 
-        if (users.getIn(['_internal', 'loading', 'history'], false)) {
+        if (usersIsLoading('history')) {
             return <Loader message="Loading history..." />
         }
 
@@ -76,10 +78,10 @@ class UserDetailContainer extends React.Component {
     }
 
     render() {
-        const {users, activeUser} = this.props
+        const {activeUser, usersIsLoading} = this.props
 
         const shouldDisplayLoader = activeUser.isEmpty()
-            || users.getIn(['_internal', 'loading', 'active'], false)
+            || usersIsLoading('active')
 
         if (shouldDisplayLoader) {
             return <Loader message="Loading user..." />
@@ -130,13 +132,15 @@ UserDetailContainer.propTypes = {
     currentUser: PropTypes.object.isRequired,
 
     actions: PropTypes.object.isRequired,
+    usersIsLoading: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
-        activeUser: state.users.get('active', fromJS({})),
+        activeUser: getActiveUser(state),
         users: state.users,
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        usersIsLoading: makeIsLoading(state),
     }
 }
 

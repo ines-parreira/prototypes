@@ -7,6 +7,7 @@ import MacroModal from './components/MacroModal'
 import * as ViewsActions from '../../../../state/views/actions'
 import * as MacroActions from '../../../../state/macro/actions'
 import {getMacrosWithoutExternalActions} from '../../../../state/macro/utils'
+import {getAgents} from '../../../../state/users/selectors'
 
 class MacroContainer extends React.Component {
     componentWillReceiveProps(nextProps) {
@@ -86,7 +87,7 @@ function mapStateToProps(state) {
     return {
         macros: state.macros,
         tags: state.tags,
-        agents: state.users.get('agents')
+        agents: getAgents(state),
     }
 }
 

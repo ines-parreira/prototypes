@@ -58,6 +58,7 @@
     "redux-form": "^6.1.1",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
+    "reselect": "^2.5.4",
     "sanitize-html": "^1.13.0",
     "semantic-ui": "2.1.8",
     "sortablejs": "1.4.2"

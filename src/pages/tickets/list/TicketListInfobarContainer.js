@@ -8,6 +8,8 @@ import moment from 'moment'
 
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
 
+import {getAgents} from '../../../state/users/selectors'
+
 class TicketListInfobarContainer extends React.Component {
     _hideBoarding = () => {
         window.localStorage.setItem('hideBoarding', true)
@@ -99,7 +101,7 @@ TicketListInfobarContainer.propTypes = {
 
 const mapStateToProps = (state) => {
     const hasIntegrations = !state.integrations.get('integrations', fromJS([])).isEmpty()
-    const hasOtherAgents = state.users.get('agents', fromJS([])).size > 1
+    const hasOtherAgents = getAgents(state).size > 1
     const currentUser = state.currentUser
 
     // display the bar only for 3 days after user creation (if it is an admin)

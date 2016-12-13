@@ -11,6 +11,7 @@ import FilterTopbar from './FilterTopbar'
 import Search from '../Search'
 import {VIEW_TYPE_CONFIGURATION} from '../../../../config'
 import {slugify, viewFields} from '../../../../utils'
+import {getAgents} from '../../../../state/users/selectors'
 import _pick from 'lodash/pick'
 
 // Each of the following properties are required
@@ -469,7 +470,7 @@ function mapStateToProps(state, ownProps) {
         users: state.users,
         currentUser: state.currentUser,
         tags: state.tags.get('items', fromJS([])),
-        agents: state.users.get('agents', fromJS([])),
+        agents: getAgents(state),
         activeView,
         hasActiveView: !activeView.isEmpty(),
         fields: viewFields(ownProps.viewsType)

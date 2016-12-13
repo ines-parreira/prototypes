@@ -328,6 +328,12 @@ export const viewFields = (viewType) => fromJS(VIEW_FIELDS).get(viewType, fromJS
 export const isImmutable = object => Immutable.Iterable.isIterable(object)
 
 /**
+ * Return a passed object as immutable
+ * @param object
+ */
+export const toImmutable = object => isImmutable(object) ? object : fromJS(object)
+
+/**
  * Return field path
  * @param field
  * @returns {*|string|string|string}

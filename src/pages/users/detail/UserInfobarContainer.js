@@ -7,6 +7,8 @@ import {fromJS} from 'immutable'
 import * as WidgetActions from '../../../state/widgets/actions'
 import * as InfobarActions from '../../../state/infobar/actions'
 
+import {getActiveUser, getActiveUserId} from '../../../state/users/selectors'
+
 class UserInfobarContainer extends React.Component {
     componentWillMount() {
         const {actions} = this.props
@@ -18,18 +20,21 @@ class UserInfobarContainer extends React.Component {
     render() {
         const {
             actions,
-            users,
             widgets,
             route,
-            infobar
+            infobar,
+            activeUser,
+            activeUserId,
         } = this.props
 
-        // the || is used to replace null
-        const user = users.get('active', fromJS({})) || fromJS({})
-        const identifier = user.get('id', '').toString()
+        if (!activeUserId) {
+            return null
+        }
+
+        const identifier = activeUserId.toString()
 
         const sources = fromJS({
-            user
+            user: activeUser,
         })
 
         return (
@@ -39,7 +44,7 @@ class UserInfobarContainer extends React.Component {
                 sources={sources}
                 isRouteEditingWidgets={!!route.isEditingWidgets}
                 identifier={identifier}
-                user={user}
+                user={activeUser}
                 widgets={widgets}
                 context="user"
             />
@@ -51,15 +56,17 @@ UserInfobarContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     infobar: PropTypes.object.isRequired,
     route: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired,
-    widgets: PropTypes.object.isRequired
+    activeUser: PropTypes.object.isRequired,
+    widgets: PropTypes.object.isRequired,
+    activeUserId: PropTypes.number,
 }
 
 function mapStateToProps(state) {
     return {
         infobar: state.infobar,
-        users: state.users,
-        widgets: state.widgets
+        widgets: state.widgets,
+        activeUser: getActiveUser(state),
+        activeUserId: getActiveUserId(state),
     }
 }
 

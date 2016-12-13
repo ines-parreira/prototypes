@@ -7,6 +7,8 @@ import * as UsersActions from '../../../state/users/actions'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 
+import {getActiveUser, getActiveUserId} from '../../../state/users/selectors'
+
 class UserSourceContainer extends React.Component {
     componentWillMount() {
         const {actions, params} = this.props
@@ -15,17 +17,20 @@ class UserSourceContainer extends React.Component {
 
     render() {
         const {
-            users,
             widgets,
-            actions
+            actions,
+            activeUser,
+            activeUserId,
         } = this.props
 
-        // the || is used to replace null
-        const user = users.get('active', fromJS({})) || fromJS({})
-        const identifier = user.get('id', '').toString()
+        if (!activeUserId) {
+            return null
+        }
+
+        const identifier = activeUserId.toString()
 
         const sources = fromJS({
-            user
+            user: activeUser,
         })
 
         return (
@@ -42,15 +47,17 @@ class UserSourceContainer extends React.Component {
 
 UserSourceContainer.propTypes = {
     params: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    activeUser: PropTypes.object.isRequired,
+    activeUserId: PropTypes.number,
 }
 
 function mapStateToProps(state) {
     return {
-        users: state.users,
-        widgets: state.widgets
+        widgets: state.widgets,
+        activeUser: getActiveUser(state),
+        activeUserId: getActiveUserId(state),
     }
 }
 

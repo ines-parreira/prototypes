@@ -6,6 +6,8 @@ import _upperFirst from 'lodash/upperFirst'
 import {USER_CHANNEL_CLASS} from '../../../config'
 import OverviewStatsView from './components/OverviewStatsView'
 import {setFilter, fetchStats} from '../../../state/stats/actions'
+import {getDisplayName} from '../../../state/users/helpers'
+import {getAgents} from '../../../state/users/selectors'
 
 const mapStateToProps = (state) => ({
     tags: state.tags.get('items', fromJS([])).map(tag => ({label: tag.get('name'), value: tag.get('id')})).toJS(),
@@ -13,8 +15,8 @@ const mapStateToProps = (state) => ({
         label: _upperFirst(channel.replace('-', ' ')),
         value: channel,
     })),
-    agents: state.users.get('agents', fromJS([])).map(agent => ({
-        label: agent.get('name') || agent.get('email') || `Agent #${agent.get('id')}`,
+    agents: getAgents(state).map(agent => ({
+        label: getDisplayName(agent),
         value: agent.get('id'),
     })).toJS(),
     stats: state.stats.get('overview', fromJS({})),

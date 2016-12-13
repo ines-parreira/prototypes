@@ -1,0 +1,40 @@
+import {fromJS} from 'immutable'
+import {createSelector} from 'reselect'
+
+export const getUsersState = state => state.users || fromJS({})
+
+export const getLoading = createSelector(
+    [getUsersState],
+    state => state.getIn(['_internal', 'loading'], fromJS({}))
+)
+
+// in props usage
+// ex: isMerging: isLoading('merge')(state)
+export const isLoading = name => createSelector(
+    [getLoading],
+    loading => loading.get(name, false)
+)
+
+// in component usage
+// ex: usersIsLoading: makeIsLoading(state)   then : const isMerging = usersIsLoading('merge')
+export const makeIsLoading = state => name => isLoading(name)(state)
+
+export const getUsers = createSelector(
+    [getUsersState],
+    state => state.get('items', fromJS([]))
+)
+
+export const getActiveUser = createSelector(
+    [getUsersState],
+    state => state.get('active', fromJS({})) || fromJS({}) // the || is used to replace null
+)
+
+export const getActiveUserId = createSelector(
+    [getActiveUser],
+    activeUser => activeUser.get('id')
+)
+
+export const getAgents = createSelector(
+    [getUsersState],
+    state => state.get('agents', fromJS([]))
+)

@@ -6,6 +6,7 @@ import {browserHistory} from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import * as ViewsActions from '../../../../state/views/actions'
 import * as MacroActions from '../../../../state/macro/actions'
+import {getAgents} from '../../../../state/users/selectors'
 
 class TicketListActions extends React.Component {
     componentDidUpdate(prevProps) {
@@ -284,7 +285,7 @@ function mapStateToProps(state) {
     return {
         currentUser: state.currentUser,
         tags: state.tags.get('items', fromJS([])),
-        agents: state.users.get('agents', fromJS([])),
+        agents: getAgents(state),
     }
 }
 
