@@ -22,7 +22,6 @@ export default class SettingsNavbar extends React.Component {
             to: 'account',
             text: 'Account'
         }, {
-            requiredRole: 'agent',
             to: 'your-profile',
             text: 'Your profile'
         }]
@@ -32,12 +31,13 @@ export default class SettingsNavbar extends React.Component {
                 <div className="menu">
                     {links.map(({to, text, requiredRole}) => {
                         // hide link if user hasn't the required role
-                        if (!hasRole(roles, requiredRole)) {
+                        if (requiredRole && !hasRole(roles, requiredRole)) {
                             return
                         }
 
-                        const isActive = pathname.split('/').includes(to) ||
-                            (/settings\/?$/.test(pathname) && to === 'account')
+                        const isActive = pathname.split('/').includes(to)
+                            || (/settings\/?$/.test(pathname) && to === 'account')
+
                         return (
                             <Link
                                 key={to}
