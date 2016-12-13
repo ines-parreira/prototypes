@@ -7,9 +7,37 @@ export default class EditableTitle extends React.Component {
         this.state = this._stateProps(props)
     }
 
+    componentDidMount() {
+        setTimeout(() => {
+            if (this.props.select) {
+                this._select()
+            }
+        }, 1)
+    }
+
     componentWillReceiveProps(nextProps) {
         if (!this.state.editMode && this.state.value !== nextProps.title) {
             this.setState(this._stateProps(nextProps))
+
+            setTimeout(() => {
+                if (nextProps.select) {
+                    this._select()
+                } else {
+                    this._blur()
+                }
+            }, 1)
+        }
+    }
+
+    _select = () => {
+        if (this.refs.title && this.refs.title.select) {
+            this.refs.title.select()
+        }
+    }
+
+    _blur = () => {
+        if (this.refs.title && this.refs.title.blur) {
+            this.refs.title.blur()
         }
     }
 
@@ -28,7 +56,7 @@ export default class EditableTitle extends React.Component {
             })
 
             if (e.keyCode === 13) {
-                this.refs.title.blur()
+                this._blur()
             }
         }
     }
@@ -84,5 +112,6 @@ EditableTitle.propTypes = {
     placeholder: PropTypes.string.isRequired,
     update: PropTypes.func.isRequired,
     focus: PropTypes.bool,
+    select: PropTypes.bool,
     style: PropTypes.object
 }

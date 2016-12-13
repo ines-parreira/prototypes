@@ -13,6 +13,57 @@ import {VIEW_TYPE_CONFIGURATION} from '../../../../config'
 import {slugify, viewFields} from '../../../../utils'
 import _pick from 'lodash/pick'
 
+// Each of the following properties are required
+// to use `ComplexTableWrapper` to create a view
+const baseView = fromJS({
+    id: 0,
+    name: 'New view',
+    slug: 'new-view',
+    order_by: 'updated_datetime',
+    display_order: 1,
+    created_datetime: new Date(),
+    order_dir: 'desc',
+    user: {},
+    filters: '',
+    filters_ast: {
+        sourceType: 'script',
+        body: [],
+        loc: {
+            end: {
+                line: 0,
+                column: 0
+            },
+            start: {
+                line: 0,
+                column: 0
+            }
+        },
+        type: 'Program'
+    }
+})
+
+const baseTicketView = baseView.merge({
+    fields: ['priority', 'details', 'tags', 'requester', 'created'],
+    type: 'ticket-list'
+})
+
+const baseUserView = baseView.merge({
+    fields: ['name', 'email', 'roles', 'created'],
+    type: 'user-list'
+})
+
+// Get a base view to give to the `ComplexTableWrapper` for creation of a view
+function getBaseView(viewType) {
+    switch (viewType) {
+        case 'ticket-list':
+            return baseTicketView
+        case 'user-list':
+            return baseUserView
+        default:
+            return baseView
+    }
+}
+
 class ComplexTableWrapper extends React.Component {
     constructor(props) {
         super(props)
@@ -39,7 +90,9 @@ class ComplexTableWrapper extends React.Component {
         // view was edited,
         // update the header dimensions.
         const shouldCalculateHeaderHeight = !this.props.views.get('active', fromJS({})).equals(prevProps.views.get('active', fromJS({})))
-            || !this.props.views.getIn(['_internal', 'selectedItemsIds'], fromJS([])).equals(prevProps.views.getIn(['_internal', 'selectedItemsIds'], fromJS([])))
+            || !this.props.views.getIn(['_internal',
+                'selectedItemsIds'], fromJS([])).equals(prevProps.views.getIn(['_internal',
+                'selectedItemsIds'], fromJS([])))
 
         if (shouldCalculateHeaderHeight) {
             this.setFixedHeader(this.refs.header)
@@ -69,17 +122,31 @@ class ComplexTableWrapper extends React.Component {
         const firstAvailableView = availableViews.first() || fromJS({})
 
         // set the first available view as active if...
-        // ...there is no asked id (no id in the url)
-        const shouldSetFirstAvailableViewAsActive = !hasAskedViewId
+        // ...this not a new view
+        const shouldSetFirstAvailableViewAsActive = nextProps.isUpdate
+            // ...and there is no asked id (no id in the url)
+            && !hasAskedViewId
             // ...and there first available view is not empty
             && !firstAvailableView.isEmpty()
             // ...and the current view is not available
             && !availableViews.find((view) => view.get('id') === currentActive.get('id'))
-
         if (shouldSetFirstAvailableViewAsActive) {
             this.props.actions.views.setViewActive(firstAvailableView)
         }
 
+        // add mode so set a base view as active view
+        if ((this.props.isUpdate || currentActive.get('id') !== 0) && !nextProps.isUpdate) {
+            this.props.actions.views.setViewActive(getBaseView(nextProps.viewsType))
+            // open edit view filters
+            setTimeout(() => {
+                this.viewActionEdit()
+            }, 1)
+        } else if (!this.props.isUpdate && nextProps.isUpdate) {
+            // close edit view filters mode when we leave add mode
+            setTimeout(() => {
+                this.props.actions.views.updateView(this.props.views.get('active'), false)
+            }, 1)
+        }
         // if an id is asked and that the incoming active view is not the asked one
         if (hasAskedViewId && askedViewId !== nextActive.get('id')) {
             // get the available view that is asked
@@ -99,8 +166,9 @@ class ComplexTableWrapper extends React.Component {
         let nextPage = nextProps.views.getIn(['_internal', 'pagination', 'page'], 1)
 
         // check if the view id edited (dirty)
-        const viewHasChanged = !currentActive.delete('fields').equals(nextActive.delete('fields'))
-
+        const prevView = currentActive.delete('fields').delete('name').delete('slug')
+        const nextView = nextActive.delete('fields').delete('name').delete('slug')
+        const viewHasChanged = !prevView.equals(nextView)
         // should go to first page if view is edited
         // or if view id changed (switched to new view)
         const shouldGoToFirstPage = currentActive.get('id') !== nextActive.get('id')
@@ -208,6 +276,7 @@ class ComplexTableWrapper extends React.Component {
             agents,
             activeView,
             hasActiveView,
+            isUpdate
         } = this.props
 
         if (!hasActiveView) {
@@ -238,36 +307,39 @@ class ComplexTableWrapper extends React.Component {
                         <div className="sticky-header">
                             <div className="ui text menu sticky-header-search">
                                 <div className="left menu item">
-                                    <div
-                                        className="ui dropdown complex-list-settings"
-                                        ref={(dropdown) => {
-                                            $(dropdown).dropdown({
-                                                action: () => {
-                                                    // HACK action='hide' does not work
-                                                    // as described in the docs.
-                                                    $(dropdown).dropdown('hide')
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        <i className="setting icon" />
-                                        <div className="text">VIEW SETTINGS</div>
-                                        <div className="menu">
-                                            <div
-                                                className="item"
-                                                onClick={this.viewActionEdit}
-                                            >
-                                                Edit view
-                                            </div>
-                                            <div className="divider"></div>
-                                            <div
-                                                className="item red text"
-                                                onClick={this.viewActionDelete}
-                                            >
-                                                Delete view
+                                    {isUpdate ?
+                                        <div
+                                            className="ui dropdown complex-list-settings"
+                                            ref={(dropdown) => {
+                                                $(dropdown).dropdown({
+                                                    action: () => {
+                                                        // HACK action='hide' does not work
+                                                        // as described in the docs.
+                                                        $(dropdown).dropdown('hide')
+                                                    }
+                                                })
+                                            }}
+                                        >
+                                            <i className="setting icon"/>
+                                            <div className="text">VIEW SETTINGS</div>
+                                            <div className="menu">
+                                                <div
+                                                    className="item"
+                                                    onClick={this.viewActionEdit}
+                                                >
+                                                    Edit view
+                                                </div>
+                                                <div className="divider"></div>
+                                                <div
+                                                    className="item red text"
+                                                    onClick={this.viewActionDelete}
+                                                >
+                                                    Delete view
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        : null
+                                    }
                                 </div>
                                 <div className="right menu item">
                                     <Search
@@ -287,7 +359,8 @@ class ComplexTableWrapper extends React.Component {
 
                             <div className="ui sixteen wide column flex-spaced-row no-wrap view-header">
                                 <EditableTitle
-                                    title={activeView.get('name') || ''}
+                                    select={!isUpdate}
+                                    title={activeView.get('name', '')}
                                     placeholder="View name"
                                     update={(name) => {
                                         if (name !== activeView.get('name')) {
@@ -299,8 +372,10 @@ class ComplexTableWrapper extends React.Component {
                                     ActionsComponent
                                     && (
                                         <ActionsComponent
+                                            hasBulkActions={hasBulkActions}
                                             view={activeView}
-                                            selectedItemsIds={views.getIn(['_internal', 'selectedItemsIds'], fromJS([]))}
+                                            selectedItemsIds={views.getIn(['_internal',
+                                                'selectedItemsIds'], fromJS([]))}
                                         />
                                     )
                                 }
@@ -308,6 +383,7 @@ class ComplexTableWrapper extends React.Component {
 
                         </div>
                         <FilterTopbar
+                            isUpdate={isUpdate}
                             views={views}
                             schemas={schemas}
                             resetView={this.resetView}
@@ -369,6 +445,7 @@ ComplexTableWrapper.propTypes = {
     queryPath: PropTypes.string.isRequired,
     viewsType: PropTypes.string.isRequired,
     askedViewId: PropTypes.string,
+    isUpdate: PropTypes.bool.isRequired,
 
     // a React element not instantiated is a function
     ActionsComponent: PropTypes.func,

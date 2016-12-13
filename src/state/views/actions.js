@@ -5,6 +5,7 @@ import * as types from './constants'
 import {notify} from '../notifications/actions'
 import {VIEW_TYPE_CONFIGURATION} from '../../config'
 import {fetchUsers} from '../users/actions'
+import {getPluralObjectName} from '../../utils'
 
 export const setViewActive = (view) => ({
     type: types.SET_VIEW_ACTIVE,
@@ -110,6 +111,7 @@ export function fetchViews(currentViewId) {
 export function submitView(view) {
     return (dispatch) => {
         const isUpdate = !!view.get('id', '')
+        const objectName = getPluralObjectName(view.get('type', ''))
 
         dispatch({
             type: types.SUBMIT_VIEW_START
@@ -130,6 +132,11 @@ export function submitView(view) {
                     type: isUpdate ? types.SUBMIT_UPDATE_VIEW_SUCCESS : types.SUBMIT_NEW_VIEW_SUCCESS,
                     resp
                 })
+
+                // redirect to the view created
+                if (!isUpdate) {
+                    browserHistory.push(`/app/${objectName}/${resp.id}/${resp.slug}`)
+                }
             })
             .catch(error => {
                 return dispatch({

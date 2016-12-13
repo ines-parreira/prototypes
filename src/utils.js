@@ -422,3 +422,12 @@ export const isCurrentlyOnView = (viewId = '', viewsState = {}) => {
     // each call of the parent function
     return urls.some(url => currentUrl.includes(url)) || ['/app', '/app/'].some(url => currentUrl.endsWith(url))
 }
+
+/**
+ * return plural object name of a given view type
+ * @param {String} viewType E.g: user-list, ticket-list
+ * @returns {String} plural object name E.g: users, tickets
+ */
+export function getPluralObjectName(viewType) {
+    return viewType.replace('-list', 's')
+}

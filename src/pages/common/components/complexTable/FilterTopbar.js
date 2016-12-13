@@ -1,18 +1,30 @@
 import React, {PropTypes} from 'react'
 import ViewFilters from './ComplexTableFilters'
-import {slugify} from '../../../../utils'
+import {browserHistory} from 'react-router'
+import {slugify, getPluralObjectName} from '../../../../utils'
+import classNames from 'classnames'
 
 export default class FilterTopbar extends React.Component {
+    state = {
+        isSubmitting: false
+    }
+
     _onClickUpdate = () => {
         amplitude.getInstance().logEvent('Updated view')
         const activeView = this.props.views.get('active')
 
         if (window.confirm('You\'re about to edit this view for all users. Are you sure?')) {
-            this.props.submitView(activeView)
+            this.setState({
+                isSubmitting: true
+            })
+            this._submitView(activeView)
         }
     }
 
     _onClickNew = () => {
+        this.setState({
+            isSubmitting: true
+        })
         amplitude.getInstance().logEvent('Saved as new view')
 
         let activeView = this.props.views.get('active')
@@ -33,12 +45,50 @@ export default class FilterTopbar extends React.Component {
                 .set('slug', newSlug)
         }
 
-        this.props.submitView(activeView)
+        this._submitView(activeView)
+    }
+
+    _cancel = () => {
+        const {isUpdate, views, resetView} = this.props
+        const objectName = getPluralObjectName(views.getIn(['active', 'type'], 'ticket-list'))
+
+        if (isUpdate) {
+            resetView()
+        } else {
+            browserHistory.push(`/app/${objectName}/`)
+        }
+    }
+
+    _createView = () => {
+        this.setState({
+            isSubmitting: true
+        })
+
+        let activeView = this.props.views.get('active')
+        // new means it has no id set
+        activeView = activeView
+            .delete('id')
+            .set('name', activeView.get('name') || 'New view')
+        activeView = activeView.set('slug', slugify(activeView.get('name')))
+
+        amplitude.getInstance().logEvent('Created a new view')
+
+        this._submitView(activeView)
+    }
+
+    _submitView = (view) => {
+        this.props.submitView(view).then(() => {
+            this.setState({
+                isSubmitting: false
+            })
+        })
     }
 
     render() {
-        const {views, agents, tags, currentUser, updateFieldFilter} = this.props
+        const {isUpdate, views, agents, tags, currentUser, updateFieldFilter} = this.props
+        const {isSubmitting} = this.state
         const activeView = views.get('active')
+        const buttonClass = classNames('ui', 'button', {loading: this.state.isSubmitting})
         if (!activeView.get('editMode')) {
             return null
         }
@@ -60,15 +110,15 @@ export default class FilterTopbar extends React.Component {
                     <button
                         type="button"
                         className="filter-topbar-close"
-                        onClick={this.props.resetView}
+                        onClick={this._cancel}
                     >
-                        <i className="icon remove large" />
+                        <i className="icon remove large"/>
                     </button>
                 </div>
                 <div className="filter-topbar-actions">
                     <button
                         className="ui button"
-                        onClick={this.props.resetView}
+                        onClick={this._cancel}
                     >
                         CANCEL
                     </button>
@@ -77,18 +127,32 @@ export default class FilterTopbar extends React.Component {
                         Click on a column's name to add a filter.
                     </span>
                     <div className="ui right floated">
-                        <button
-                            className="ui button"
-                            onClick={this._onClickNew}
-                        >
-                            SAVE AS NEW VIEW
-                        </button>
-                        <button
-                            className="ui green button"
-                            onClick={this._onClickUpdate}
-                        >
-                            UPDATE VIEW
-                        </button>
+                        {isUpdate ?
+                            <span>
+                                <button
+                                    className={buttonClass}
+                                    disabled={isSubmitting}
+                                    onClick={this._onClickNew}
+                                >
+                                    SAVE AS NEW VIEW
+                                </button>
+                                <button
+                                    className={`${buttonClass} green`}
+                                    disabled={isSubmitting}
+                                    onClick={this._onClickUpdate}
+                                >
+                                    UPDATE VIEW
+                                </button>
+                            </span>
+                            :
+                            <button
+                                className={`${buttonClass} green`}
+                                disabled={isSubmitting}
+                                onClick={this._createView}
+                            >
+                                CREATE VIEW
+                            </button>
+                        }
                     </div>
                 </div>
             </div>
@@ -107,5 +171,6 @@ FilterTopbar.propTypes = {
 
     agents: PropTypes.object.isRequired,
     tags: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired
+    currentUser: PropTypes.object.isRequired,
+    isUpdate: PropTypes.bool.isRequired
 }

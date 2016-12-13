@@ -7,19 +7,33 @@ import {fetchTags} from '../../../state/tags/actions'
 import MacroContainer from '../common/macros/MacroContainer'
 import ComplexTableWrapper from '../../common/components/complexTable/ComplexTableWrapper'
 import {compactInteger} from '../../../utils'
+import {isCreationUrl} from '../../common/utils/url'
 import TicketListActions from './components/TicketListActions'
 
 class TicketListContainer extends React.Component {
+    state = {
+        isUpdate: true
+    }
+
     componentWillMount() {
         this.props.fetchTags()
     }
 
-    render() {
-        const activeView = this.props.views.get('active', fromJS({}))
-        let title = 'Loading...'
-        const hasActiveView = !activeView.isEmpty()
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            isUpdate: !isCreationUrl(nextProps.location.pathname, 'tickets')
+        })
+    }
 
-        if (hasActiveView) {
+    render() {
+        const {isUpdate} = this.state
+        const activeView = this.props.views.get('active', fromJS({}))
+        const hasActiveView = !activeView.isEmpty()
+        let title = 'Loading...'
+
+        if (!isUpdate) {
+            title = 'New view'
+        } else if (hasActiveView) {
             title = activeView.get('name')
             if (activeView.get('count', 0) > 0) {
                 title = `(${compactInteger(activeView.get('count', 0))}) ${title}`
@@ -32,10 +46,11 @@ class TicketListContainer extends React.Component {
             <DocumentTitle title={title}>
                 <div className="TicketListContainer">
                     <ComplexTableWrapper
+                        isUpdate={isUpdate}
                         askedViewId={this.props.params.viewId}
                         viewsType="ticket-list"
                         items={this.props.tickets.get('items', fromJS([]))}
-                        hasBulkActions
+                        hasBulkActions={!activeView.get('editMode', false)}
                         ActionsComponent={TicketListActions}
                         queryPath="bool.should.0.multi_match.query,bool.should.1.multi_match.query,bool.should.2.nested.query.multi_match.query"
                         searchQuery={{

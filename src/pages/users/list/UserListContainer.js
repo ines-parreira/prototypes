@@ -4,6 +4,7 @@ import DocumentTitle from 'react-document-title'
 import {fromJS} from 'immutable'
 import ComplexTableWrapper from '../../common/components/complexTable/ComplexTableWrapper'
 import {compactInteger} from '../../../utils'
+import {isCreationUrl} from '../../common/utils/url'
 import UserListActions from './components/UserListActions'
 
 class UserListContainer extends React.Component {
@@ -11,8 +12,11 @@ class UserListContainer extends React.Component {
         const activeView = this.props.views.get('active', fromJS({}))
         let title = 'Loading...'
         const hasActiveView = !activeView.isEmpty()
+        const isUpdate = !isCreationUrl(this.props.location.pathname, 'users')
 
-        if (hasActiveView) {
+        if (!isUpdate) {
+            title = 'New view'
+        } else if (hasActiveView) {
             title = activeView.get('name')
             if (activeView.get('count', 0) > 0) {
                 title = `(${compactInteger(activeView.get('count', 0))}) ${title}`
@@ -25,10 +29,11 @@ class UserListContainer extends React.Component {
             <DocumentTitle title={title}>
                 <div className="UserListContainer">
                     <ComplexTableWrapper
+                        isUpdate={isUpdate}
                         askedViewId={this.props.params.viewId}
                         viewsType="user-list"
                         items={this.props.users.get('items', fromJS([]))}
-                        hasBulkActions
+                        hasBulkActions={!activeView.get('editMode', false)}
                         ActionsComponent={UserListActions}
                         queryPath="bool.should.0.multi_match.query"
                         searchQuery={{
