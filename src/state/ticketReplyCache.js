@@ -27,6 +27,11 @@ class TicketReplyCache {
         const id = String(ticketId)
         const ticket = this.tickets.get(id)
 
+        // don't save cache for new tickets
+        if (ticketId === 'new') {
+            return
+        }
+
         if (ticket) {
             // merge existing details
             this.tickets = this.tickets.set(id, ticket.merge(fromJS(ticketDetails)))

@@ -54,7 +54,7 @@ export default class TicketReply extends React.Component {
 
         if (selectionState) {
             // hasFocus:false is important here because otherwise the editor will have a very strange behavior
-            editorState = EditorState.acceptSelection(editorState, selectionState.merge({
+            editorState = EditorState.forceSelection(editorState, selectionState.merge({
                 hasFocus: false
             }))
         }

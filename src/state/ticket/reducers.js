@@ -234,6 +234,9 @@ export default (state = initialState, action) => {
                 .mergeDeep({
                     state: {
                         dirty: false,
+                        contentState: null,
+                        selectionState: null,
+                        signatureAdded: false,
                         query: ''
                     }
                 })
