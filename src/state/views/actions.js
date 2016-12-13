@@ -6,6 +6,7 @@ import {notify} from '../notifications/actions'
 import {VIEW_TYPE_CONFIGURATION} from '../../config'
 import {fetchUsers} from '../users/actions'
 import {getPluralObjectName} from '../../utils'
+import _max from 'lodash/max'
 
 export const setViewActive = (view) => ({
     type: types.SET_VIEW_ACTIVE,
@@ -109,7 +110,8 @@ export function fetchViews(currentViewId) {
 }
 
 export function submitView(view) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const {views} = getState()
         const isUpdate = !!view.get('id', '')
         const objectName = getPluralObjectName(view.get('type', ''))
 
@@ -122,7 +124,17 @@ export function submitView(view) {
         if (isUpdate) {
             promise = axios.put(`/api/views/${view.get('id')}/`, view.delete('dirty').delete('editMode').toJS())
         } else {
-            promise = axios.post('/api/views/', view.delete('dirty').delete('editMode').toJS())
+            const orders = views.get('items', fromJS([]))
+                    .filter((item) => item.get('type') === view.get('type'))
+                    .map((item) => item.get('display_order', 0))
+                    .toJS()
+                || [0]
+            promise = axios.post(
+                '/api/views/',
+                view.set('display_order', _max(orders) + 1)
+                    .delete('dirty')
+                    .delete('editMode')
+                    .toJS())
         }
 
         return promise
@@ -188,7 +200,6 @@ export function deleteView(view) {
         }
     }
 }
-
 
 export function fetchPage(page, discreet = false) {
     return (dispatch, getState) => {

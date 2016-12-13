@@ -3,6 +3,8 @@
     &:focus {
         display:               inline-block;
         float:                 right;
+        position:              relative;
+        top:                   -2px; // perfect position
         padding:               0 2px; // perfect circle
         color:                 rgba(255, 255, 255, 0.5);
         outline:               none;
@@ -11,9 +13,11 @@
         -webkit-border-radius: 50px;
         -moz-border-radius:    50px;
         border-radius:         50px;
+        transition:            color .2s, border-color .2s;
         font-size:             10px;
     }
-    &:hover {
+    &:hover,
+    &.active {
         color:        #ffffff;
         border-color: #ffffff;
     }

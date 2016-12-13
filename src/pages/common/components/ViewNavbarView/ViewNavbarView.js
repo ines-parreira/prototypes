@@ -25,44 +25,49 @@ class ViewNavbarView extends Component {
         const displayedViews = views
             .get('items', fromJS([]))
             .filter((view) => view.get('type') === viewType)
+        const plusButtonClass = classnames(css['plus-button'], {
+            [css.active]: !currentView.get('id')
+        })
 
         return (
-            <div className="item">
-                <h4>
-                    VIEWS
-                    <Link to={`/app/${objectName}/new`} className={css['plus-button']}>
-                        <span
-                            ref="plusButton"
-                            data-position="top center"
-                            data-content="Create new view"
-                        >
-                            <i className="plus icon m0i"/>
-                        </span>
-                    </Link>
-                </h4>
-                <div className="menu">
-                    {displayedViews.map((_view) => {
-                        const view = _view.toJS()
-                        const key = `${view.slug}-${view.id}`
-                        let classes = classnames('item', {
-                            active: currentView && currentView.get('id') === view.id
-                        })
-                        let count = 0
-
-                        if (view.count !== undefined && view.count !== null) {
-                            count = view.count
-                        }
-
-                        return (
-                            <Link
-                                key={key}
-                                to={`/app/${objectName}/${view.id}/${view.slug}`}
-                                className={classes}
+            <div>
+                <div className="item">
+                    <h4>
+                        VIEWS
+                        <Link to={`/app/${objectName}/new`} className={plusButtonClass}>
+                            <span
+                                ref="plusButton"
+                                data-position="top center"
+                                data-content="Create new view"
                             >
-                                {`${view.name} (${compactInteger(count)})`}
-                            </Link>
-                        )
-                    })}
+                                <i className="plus icon m0i"/>
+                            </span>
+                        </Link>
+                    </h4>
+                    <div className="menu">
+                        {displayedViews.map((_view) => {
+                            const view = _view.toJS()
+                            const key = `${view.slug}-${view.id}`
+                            let classes = classnames('item', {
+                                active: currentView && currentView.get('id') === view.id
+                            })
+                            let count = 0
+
+                            if (view.count !== undefined && view.count !== null) {
+                                count = view.count
+                            }
+
+                            return (
+                                <Link
+                                    key={key}
+                                    to={`/app/${objectName}/${view.id}/${view.slug}`}
+                                    className={classes}
+                                >
+                                    {`${view.name} (${compactInteger(count)})`}
+                                </Link>
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
         )
