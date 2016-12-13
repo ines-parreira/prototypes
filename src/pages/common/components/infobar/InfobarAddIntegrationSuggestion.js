@@ -53,7 +53,7 @@ const InfobarAddIntegrationSuggestion = () => (
                             <Link
                                 to="/app/integrations/http"
                                 className="ui small light blue button"
-                                onClick={amplitude.getInstance().logEvent('Clicked add integration on add integration widget')}
+                                onClick={() => amplitude.getInstance().logEvent('Clicked add integration on add integration widget')}
                             >
                                 Add integration
                             </Link>

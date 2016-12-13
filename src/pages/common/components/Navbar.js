@@ -83,8 +83,9 @@ class Navbar extends React.Component {
                         >
                             Rules
                         </NavLink>
-                        <NavLink to="/app/settings"
-                                 onClick={() => this.setState({title: 'Settings'})}
+                        <NavLink
+                            to="/app/settings"
+                            onClick={() => this.setState({title: 'Settings'})}
                         >
                             Settings
                         </NavLink>
