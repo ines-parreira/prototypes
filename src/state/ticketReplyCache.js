@@ -3,69 +3,182 @@
 
 import {fromJS} from 'immutable'
 
-const storage = window.localStorage
-const TICKET_REPLY_CACHE_KEY = 'gorgias-ticket-reply'
-const defaultTicket = fromJS({
+const CACHE_KEY_SEPARATOR = '~'
+const CACHE_KEY_PREFIX = `G${CACHE_KEY_SEPARATOR}`
+export const CACHE_MAX_ITEMS = 5
+
+export const defaultTicket = fromJS({
     contentState: null,
     selectionState: null,
     macro: null
 })
 
-class TicketReplyCache {
-    _items() {
-        let cached = null
-        // load from storage
-        try {
-            cached = JSON.parse(storage.getItem(TICKET_REPLY_CACHE_KEY))
-        } catch (err) {
-            console.error('Failed to read from local storage', err)
-        }
-
-        if (cached) {
-            return fromJS(cached)
-        }
-        return fromJS({})
+export class TicketReplyCache {
+    constructor(storage = window.localStorage) {
+        this.storage = storage
     }
 
+    /**
+     * Get all our cached keys
+     * @returns {Array}
+     * @private
+     */
+    _keys() {
+        const keys = []
+        for (let i = 0; i < this.storage.length; i++) {
+            const key = this.storage.key(i)
+
+            if (key.startsWith(CACHE_KEY_PREFIX)) {
+                keys.push(key)
+            }
+        }
+        return keys
+    }
+
+    /**
+     * Return the id of our key
+     *
+     * @param key
+     * @returns {*}
+     * @private
+     */
+    _id(key) {
+        return key.split(CACHE_KEY_SEPARATOR)[1]
+    }
+
+    /**
+     * Get timestamp given a key
+     *
+     * @param key
+     * @returns {Number}
+     * @private
+     */
+    _timestamp(key) {
+        return parseInt(key.split(CACHE_KEY_SEPARATOR)[2])
+    }
+
+    /**
+     * Remove the oldest item in the cache
+     *
+     * @private
+     */
+    _evict(cacheKeys) {
+        // We've reached the maximum storage so we'll have to remove the oldest item from storage
+        let oldestKey = cacheKeys[0]
+        for (const key of cacheKeys.slice(1)) {
+            if (this._timestamp(oldestKey) > this._timestamp(key)) {
+                oldestKey = key
+            }
+        }
+        this._deleteByKey(oldestKey)
+    }
+
+    /**
+     * Delete an individual item from the storage
+     *
+     * @param key
+     * @private
+     */
+    _deleteByKey(key) {
+        try {
+            this.storage.removeItem(key)
+        } catch (err) {
+            console.error('Failed to remove item from local storage')
+        }
+    }
+
+    /**
+     * Delete an individual item based on it's id
+     *
+     * @param id
+     * @param keys
+     * @private
+     */
+    _deleteById(id, keys) {
+        for (const key of keys) {
+            if (this._id(key) === id) {
+                this._deleteByKey(key)
+                return
+            }
+        }
+    }
+
+    /**
+     * Set a value for a given key
+     *
+     * @param ticketId
+     * @param ticketDetails
+     */
     set(ticketId = 'new', ticketDetails) {
         // always use strings for ids
         const id = String(ticketId)
+        const timestamp = (new Date()).getTime()
 
         // don't save cache for new tickets
-        if (ticketId === 'new') {
+        if (id === 'new') {
             return
         }
 
-        let items = this._items()
-        const ticket = items.get(id)
+        const cacheKeys = this._keys()
+        if (cacheKeys.length >= CACHE_MAX_ITEMS) {
+            this._evict(cacheKeys)
+        }
 
-        if (ticket) {
+        let ticket = this.get(id, cacheKeys)
+        if (ticket && !ticket.equals(defaultTicket)) {
             // merge existing details
-            items = items.set(id, ticket.merge(fromJS(ticketDetails)))
+            ticket = ticket.merge(fromJS(ticketDetails))
+            // And delete the old key
+            this._deleteById(id, cacheKeys)
         } else {
-            items = items.set(id, fromJS(ticketDetails))
+            ticket = fromJS(ticketDetails)
         }
 
         // save in storage
         try {
-            storage.setItem(TICKET_REPLY_CACHE_KEY, JSON.stringify(items.toJS()))
+            this.storage.setItem(`${CACHE_KEY_PREFIX}${id}${CACHE_KEY_SEPARATOR}${timestamp}`, JSON.stringify(ticket.toJS()))
         } catch (err) {
             console.error('Failed to save new state in local storage', err)
         }
     }
 
-    get(ticketId = 'new') {
-        return this._items().get(String(ticketId)) || defaultTicket
+    get(ticketId = 'new', keys) {
+        const id = String(ticketId)
+        if (id === 'new') {
+            return defaultTicket
+        }
+
+        let cacheKeys = []
+        if (keys) {
+            cacheKeys = keys
+        } else {
+            cacheKeys = this._keys()
+        }
+
+        for (const key of cacheKeys) {
+            if (this._id(key) === id) {
+                try {
+                    return fromJS(JSON.parse(this.storage.getItem(key)))
+                } catch (err) {
+                    console.error('Failed to fetch item from local storage')
+                    return defaultTicket
+                }
+            }
+        }
+        return defaultTicket
     }
 
     delete(ticketId = 'new') {
-        const items = this._items().delete(String(ticketId))
+        const id = String(ticketId)
+        if (id === 'new') {
+            return
+        }
 
-        // save in storage
-        try {
-            storage.setItem(TICKET_REPLY_CACHE_KEY, JSON.stringify(items.toJS()))
-        } catch (err) {
-            console.error('Failed to delete from local storage', err)
+        for (const key of this._keys()) {
+            if (this._id(key) === id) {
+                this._deleteByKey(key)
+                break
+            }
         }
     }
 }
