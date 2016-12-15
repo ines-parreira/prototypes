@@ -4,7 +4,7 @@ import {Link, withRouter} from 'react-router'
 import classNames from 'classnames'
 import {isCurrentlyOnTicket} from '../../../utils'
 
-const ActivityWidgetItem = ({recentTicket, position}) => {
+const RecentChatsItem = ({recentTicket, position}) => {
     const channel = recentTicket.get('channel')
 
     const iconClasses = classNames('action icon', {
@@ -46,19 +46,19 @@ const ActivityWidgetItem = ({recentTicket, position}) => {
     )
 }
 
-ActivityWidgetItem.propTypes = {
+RecentChatsItem.propTypes = {
     recentTicket: PropTypes.object.isRequired,
     position: PropTypes.number.isRequired
 }
 
-class ActivityWidget extends React.Component {
+class RecentChats extends React.Component {
     static propTypes = {
         activity: PropTypes.object,
         router: PropTypes.object,
     }
 
     componentDidMount() {
-        // force redraw on page change, since we care about window.location in ActivityWidgetItem
+        // force redraw on page change, since we care about window.location in RecentChatsItem
         this.unlisten = this.props.router.listen(() => this.forceUpdate())
     }
 
@@ -77,13 +77,13 @@ class ActivityWidget extends React.Component {
         }
 
         return (
-            <div className="ActivityWidget">
+            <div className="RecentChats">
                 <div className="item">
-                    <h4>RECENT ACTIVITY</h4>
+                    <h4>RECENT CHATS</h4>
                     <div className="menu">
                         {
                             tickets.map((e, index) => (
-                                <ActivityWidgetItem
+                                <RecentChatsItem
                                     key={e.get('id')}
                                     recentTicket={e}
                                     position={index + 1}
@@ -101,4 +101,4 @@ const mapStateToProps = (state) => ({
     activity: state.activity,
 })
 
-export default withRouter(connect(mapStateToProps)(ActivityWidget))
+export default withRouter(connect(mapStateToProps)(RecentChats))

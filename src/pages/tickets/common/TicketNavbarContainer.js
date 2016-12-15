@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as ViewsActions from '../../../state/views/actions'
 import TicketsNavbarView from './components/TicketsNavbarView'
-import ActivityWidget from '../../common/components/ActivityWidget'
+import RecentChats from '../../common/components/RecentChats'
 import Navbar from '../../common/components/Navbar'
 
 class TicketNavbarContainer extends React.Component {
@@ -16,7 +16,7 @@ class TicketNavbarContainer extends React.Component {
     render() {
         return (
             <Navbar activeContent="tickets">
-                <ActivityWidget />
+                <RecentChats />
                 <TicketsNavbarView
                     views={this.props.views}
                     currentView={this.props.views.get('active')}
