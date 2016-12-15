@@ -553,13 +553,15 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
         }
 
         // Facebook does not accept comment with just an attachment.
-        if ((data.newMessage.body_text.length === 0) && (data.newMessage.attachments.length > 0)) {
-            dispatch(notify({
-                type: 'error',
-                title: 'Your message cannot be sent',
-                message: 'You cannot send an attachment without a message in a Facebook comment.'
-            }))
-            return null
+        if (data.newMessage.channel === 'facebook') {
+            if ((data.newMessage.body_text.length === 0) && (data.newMessage.attachments.length > 0)) {
+                dispatch(notify({
+                    type: 'error',
+                    title: 'Your message cannot be sent',
+                    message: 'You cannot send an attachment without a message in a Facebook comment.'
+                }))
+                return null
+            }
         }
 
         if ((data.newMessage.body_text.length > 0) || (data.newMessage.attachments.length > 0)) {
