@@ -14,6 +14,11 @@ import {TICKET_VIEWED} from '../activity/constants'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 import {lastMessage, isCurrentlyOnTicket} from '../../utils'
+import {
+    guessReceiversFromTicket,
+    receiversValueFromState,
+    receiversStateFromValue
+} from './utils'
 
 export const addAttachments = (ticket, atts) => (dispatch) => {
     dispatch({
@@ -180,24 +185,21 @@ export const setSourceType = (sourceType) => ({
  * Only getting potential requesters and calling a callback
  * No reducer action after that
  * @param query
- * @param callback
  * @returns {function(*)}
  */
-export const updatePotentialRequesters = (query, callback) => (dispatch) => (
+export const updatePotentialRequesters = query => (dispatch) => (
     axios.post('/api/search/', {
         doc_type: 'user_channel',
         query
     })
         .then((json = {}) => json.data)
         .then(resp => {
-            const response = resp.data.map((result) => {
+            return resp.data.map((result) => {
                 return {
                     ...result,
                     ...result.user
                 }
             })
-
-            callback(null, response)
         })
         .catch(error => {
             return dispatch({
@@ -670,6 +672,15 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
                     resetMessage,
                     resp
                 })
+
+                // TODO @jebarjonet improve the flow of receivers reselection
+                // here we are normalizing receivers data before we send it
+                const {ticket: _ticket} = getState()
+                const type = _ticket.getIn(['newMessage', 'source', 'type'])
+                // set receivers according to last sent message
+                const receivers = guessReceiversFromTicket(_ticket)
+                const receiversValues = receiversValueFromState(receivers.toJS(), type)
+                dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
 
                 // We're trying to add a signature if any
                 dispatch(setResponseText(ticket.get('id')))

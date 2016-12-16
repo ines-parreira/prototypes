@@ -3,10 +3,9 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import ReceiversDropdown from './ReceiversDropdown'
-import {SOURCE_VALUE_PROP} from '../../../../../config'
 import {firstMessage} from '../../../../../utils'
 import {isTicketDifferent} from './../../../common/utils'
-import {getLastSameSourceTypeMessage} from '../../../../../state/ticket/utils'
+import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import _set from 'lodash/set'
 
 class ReplyMessageChannel extends React.Component {
@@ -20,29 +19,6 @@ class ReplyMessageChannel extends React.Component {
 
     shouldComponentUpdate(nextProps) {
         return isTicketDifferent(this.props.ticket, nextProps.ticket) || !this.props.settings.equals(nextProps.settings)
-    }
-
-    _initialReceivers() {
-        const ticket = this.props.ticket
-        let receivers = fromJS([])
-        const messages = ticket.get('messages', fromJS([]))
-
-        if (!messages.size) {
-            return receivers
-        }
-
-        const sourceType = ticket.getIn(['newMessage', 'source', 'type'])
-        const lastMessage = getLastSameSourceTypeMessage(messages, sourceType)
-
-        if (lastMessage) {
-            if (lastMessage.get('from_agent')) {
-                receivers = lastMessage.getIn(['source', 'to'])
-            } else {
-                receivers = fromJS([lastMessage.getIn(['source', 'from'])])
-            }
-        }
-
-        return receivers.filter(receiver => !!receiver) // remove falsey values
     }
 
     /**
@@ -73,7 +49,7 @@ class ReplyMessageChannel extends React.Component {
         return popupChannelClassNames.default
     }
 
-    _searchQuery(searchValue) {
+    _searchQuery = (searchValue) => {
         const query = {
             _source: ['id', 'address', 'type', 'user'],
             size: 5,
@@ -127,12 +103,11 @@ class ReplyMessageChannel extends React.Component {
         return (
             <ReceiversDropdown
                 actions={actions}
-                initialValues={this._initialReceivers()}
+                initialValues={guessReceiversFromTicket(ticket)}
                 generateQuery={v => this._searchQuery(v)}
                 enabled={isInputEnabled}
                 value={this.props.ticket.getIn(['newMessage', 'source', 'to']).toJS()}
                 parentId={parentId.toString()}
-                valueProp={SOURCE_VALUE_PROP[this.props.ticket.getIn(['newMessage', 'source', 'type'])]}
                 sourceType={this.props.ticket.getIn(['newMessage', 'source', 'type'])}
             />
         )
@@ -227,10 +202,8 @@ ReplyMessageChannel.propTypes = {
     isUpdate: PropTypes.bool.isRequired,
 }
 
-function mapStateToProps(state, ownProps) {
-    return {
-        isUpdate: !!ownProps.ticket.get('id'),
-    }
-}
+const mapStateToProps = (state, ownProps) => ({
+    isUpdate: !!ownProps.ticket.get('id'),
+})
 
 export default connect(mapStateToProps)(ReplyMessageChannel)

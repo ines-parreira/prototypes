@@ -1,7 +1,7 @@
-import {SOURCE_VALUE_PROP} from '../../../config'
+import {getValuePropFromSourceType} from '../../../state/ticket/utils'
 
 export function displayUserNameFromSource(user, sourceType) {
-    const valueProp = SOURCE_VALUE_PROP[sourceType]
+    const valueProp = getValuePropFromSourceType(sourceType)
     const value = user[valueProp]
 
     let label = user.name || value

@@ -1,19 +1,16 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 import _ from 'lodash'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import {isEmail} from '../../../../../utils'
-import {displayUserNameFromSource} from '../../../common/utils'
+import {
+    getValuePropFromSourceType,
+    receiversValueFromState,
+    receiversStateFromValue
+} from '../../../../../state/ticket/utils'
 
 class ReceiversDropdown extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this._valueFromState = this._valueFromState.bind(this)
-        this._search = this._search.bind(this)
-        this._search = _.debounce(this._search, 200)
-    }
-
     componentDidMount() {
         this._setInitialValues()
     }
@@ -27,40 +24,14 @@ class ReceiversDropdown extends React.Component {
         }
     }
 
-    _valueFromState(options) {
-        return options.map((user) => {
-            const value = user[this.props.valueProp]
-
-            return {
-                id: user.id,
-                name: user.name,
-                label: displayUserNameFromSource(user, this.props.sourceType),
-                value
-            }
-        })
-    }
+    _valueFromState = (options) => receiversValueFromState(options, this.props.sourceType)
 
     _setInitialValues() {
-        const users = this._valueFromState(this.props.initialValues.toJS())
-
-        this._onChange(users)
+        this._onChange(this._valueFromState(this.props.initialValues.toJS()))
     }
 
     _onChange = (value) => {
-        if (!this.props.valueProp) {
-            return
-        }
-
-        const newValue = value || []
-        const fieldName = this.props.valueProp
-
-        this.props.actions.ticket.setReceivers(newValue.map((user) => {
-            return {
-                id: user.id,
-                name: user.name,
-                [fieldName]: user.value
-            }
-        }))
+        this.props.actions.ticket.setReceivers(receiversStateFromValue(value, this.props.sourceType))
     }
 
     // add email when typing a separator
@@ -98,15 +69,16 @@ class ReceiversDropdown extends React.Component {
         }
     }
 
-    _search(input, callback) {
+    _search = _.debounce((input, callback) => {
         const queryText = input.toLowerCase()
 
-        this.props.actions.ticket.updatePotentialRequesters(this.props.generateQuery(queryText), (error, data) => {
-            callback(null, {
-                options: this._valueFromState(data)
+        this.props.actions.ticket.updatePotentialRequesters(this.props.generateQuery(queryText))
+            .then((data) => {
+                callback(null, {
+                    options: this._valueFromState(data)
+                })
             })
-        })
-    }
+    }, 200)
 
     render() {
         const {sourceType, enabled, valueProp} = this.props
@@ -154,4 +126,9 @@ ReceiversDropdown.propTypes = {
     sourceType: PropTypes.string.isRequired
 }
 
-export default ReceiversDropdown
+const mapStateToProps = (state, ownProps) => ({
+    valueProp: getValuePropFromSourceType(ownProps.sourceType),
+})
+
+export default connect(mapStateToProps)(ReceiversDropdown)
+

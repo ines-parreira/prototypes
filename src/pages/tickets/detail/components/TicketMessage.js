@@ -2,12 +2,12 @@ import React, {PropTypes} from 'react'
 import {List} from 'immutable'
 import classNames from 'classnames'
 import {isArray as _isArray} from 'lodash'
-import {SOURCE_VALUE_PROP} from '../../../../config'
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
 import {displayUserNameFromSource} from '../../common/utils'
 import {DatetimeLabel, AgentLabel} from '../../../common/utils/labels'
+import {getValuePropFromSourceType} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
 
 export default class TicketMessage extends React.Component {
@@ -84,7 +84,7 @@ export default class TicketMessage extends React.Component {
             && source.type !== 'api'
 
         if (hasLegend) {
-            legend = `${source.from[SOURCE_VALUE_PROP[source.type]]}`
+            legend = `${source.from[getValuePropFromSourceType(source.type)]}`
         }
 
         return (
