@@ -10,7 +10,7 @@ const RecentChatsItem = ({recentTicket, position}) => {
     const iconClasses = classNames('action icon', {
         mail: channel === 'email',
         comments: channel === 'chat',
-        facebook: channel === 'facebook' || channel === 'facebook-post',
+        facebook: ['facebook', 'facebook-post', 'facebook-comment'].includes(channel),
         comment: channel === 'internal-note',
         'facebook-messenger': channel === 'facebook-message',
         help: channel === 'unknown',
