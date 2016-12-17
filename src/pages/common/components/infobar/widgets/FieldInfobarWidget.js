@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react'
-import _ from 'lodash'
 import classnames from 'classnames'
 import TooltipWidgetEditField from '../forms/TooltipWidgetEditField'
+
+import {displayLabel} from '../utils'
 
 class FieldInfobarWidget extends React.Component {
     constructor(props) {
@@ -18,30 +19,6 @@ class FieldInfobarWidget extends React.Component {
             const currentlyEditedWidgetPath = editing.state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
             this.isEdited = isEditing && tp === currentlyEditedWidgetPath
         }
-    }
-
-    /**
-     * Display label (before the value)
-     * @param label
-     * @returns {*}
-     * @private
-     */
-    _displayLabel = (label) => {
-        const defaultLabel = '-'
-
-        if (_.isUndefined(label)) {
-            return defaultLabel
-        }
-
-        if (_.isNull(label)) {
-            return defaultLabel
-        }
-
-        if (_.isString(label) && !label) {
-            return defaultLabel
-        }
-
-        return label
     }
 
     _startWidgetEdition = (e) => {
@@ -122,7 +99,7 @@ class FieldInfobarWidget extends React.Component {
                     {widget.get('title')}:
                 </span>
                 <span className="field-value">
-                    {this._displayLabel(value)}
+                    {displayLabel(value)}
                 </span>
                 {this._renderTools()}
                 {this._renderTooltip()}

@@ -19,11 +19,13 @@ describe('reducers', () => {
 
         it('fetch list OK', () => {
             const items = [{
+                order: 0,
                 type: 'card',
                 title: 'Customer',
                 path: '',
                 widgets: []
             }, {
+                order: 1,
                 type: 'card',
                 title: 'Orders',
                 path: 'orders',

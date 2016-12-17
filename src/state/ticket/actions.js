@@ -143,11 +143,10 @@ export const togglePriority = (priority) => ({ // here, the priority argument is
     })
 })
 
-/* eslint "camelcase": "off" */
-export const setAgent = (assignee_user) => ({
+export const setAgent = (assigneeUser) => ({
     type: types.SET_AGENT,
     args: fromJS({
-        assignee_user
+        assignee_user: assigneeUser
     })
 })
 
@@ -596,7 +595,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
 /**
  * Perform actions when we successfully create a new message.
  */
-function onMessageSent(dispatch, ticket_id, messageSent) {
+function onMessageSent(dispatch, ticketId, messageSent) {
     const hasPending = messageSent.actions ?
         !!messageSent.actions.find(action => action.status === 'pending')
         : false
@@ -608,7 +607,7 @@ function onMessageSent(dispatch, ticket_id, messageSent) {
         }))
     }
 
-    setTimeout(() => dispatch(fetchTicketMessage(ticket_id, messageSent.id, hasPending)), 1000)
+    setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageSent.id, hasPending)), 1000)
 
     // reinitialize the current macro
     dispatch({

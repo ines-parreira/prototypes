@@ -42,7 +42,7 @@ export default class AddAttachmentsAction extends Component {
                     <i className="plus icon"/>
                     ADD FILES
                 </div>
-                <input className="hidden" ref="FileInput" type="hidden" type="file" multiple
+                <input className="hidden" ref="FileInput"type="file" multiple
                     onChange={this._addAttachments}
                 />
                 <div className="ui divider"></div>

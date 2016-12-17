@@ -29,9 +29,5 @@ export function itemsWithUpdatedWidgets(items = fromJS([]), context, newWidgets)
 }
 
 export function reorderWidgets(items = fromJS([])) {
-    return items.map((item, i) => {
-        const updatedItem = item
-        updatedItem.set('order', i)
-        return updatedItem
-    })
+    return items.map((item, i) => item.set('order', i))
 }

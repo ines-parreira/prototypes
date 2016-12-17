@@ -1,13 +1,13 @@
 import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
 import * as WidgetsActions from '../../../state/widgets/actions'
 import * as UsersActions from '../../../state/users/actions'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 
-import {getActiveUser, getActiveUserId} from '../../../state/users/selectors'
+import {getActiveUserId} from '../../../state/users/selectors'
+import {getSources} from '../../../state/widgets/selectors'
 
 class UserSourceContainer extends React.Component {
     componentWillMount() {
@@ -19,8 +19,8 @@ class UserSourceContainer extends React.Component {
         const {
             widgets,
             actions,
-            activeUser,
             activeUserId,
+            sources,
         } = this.props
 
         if (!activeUserId) {
@@ -28,10 +28,6 @@ class UserSourceContainer extends React.Component {
         }
 
         const identifier = activeUserId.toString()
-
-        const sources = fromJS({
-            user: activeUser,
-        })
 
         return (
             <SourceWrapper
@@ -49,15 +45,15 @@ UserSourceContainer.propTypes = {
     params: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    activeUser: PropTypes.object.isRequired,
+    sources: PropTypes.object.isRequired,
     activeUserId: PropTypes.number,
 }
 
 function mapStateToProps(state) {
     return {
         widgets: state.widgets,
-        activeUser: getActiveUser(state),
         activeUserId: getActiveUserId(state),
+        sources: getSources(state),
     }
 }
 

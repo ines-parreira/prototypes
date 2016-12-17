@@ -6,6 +6,7 @@ import {fromJS} from 'immutable'
 
 import * as WidgetActions from '../../../state/widgets/actions'
 import * as InfobarActions from '../../../state/infobar/actions'
+import {getSources} from '../../../state/widgets/selectors'
 
 class TicketInfobarContainer extends React.Component {
     componentWillMount() {
@@ -21,15 +22,12 @@ class TicketInfobarContainer extends React.Component {
             ticket,
             widgets,
             route,
-            infobar
+            infobar,
+            sources,
         } = this.props
 
         // the || is used to replace null
         const user = ticket.get('requester', fromJS({})) || fromJS({})
-
-        const sources = fromJS({
-            ticket
-        })
 
         return (
             <Infobar
@@ -51,14 +49,16 @@ TicketInfobarContainer.propTypes = {
     infobar: PropTypes.object.isRequired,
     route: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
-    widgets: PropTypes.object.isRequired
+    widgets: PropTypes.object.isRequired,
+    sources: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
         infobar: state.infobar,
         ticket: state.ticket,
-        widgets: state.widgets
+        widgets: state.widgets,
+        sources: getSources(state),
     }
 }
 

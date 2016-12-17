@@ -120,8 +120,7 @@ describe('widgets infobar utils', () => {
                         }
                     }
                 }
-            }),
-            fromJS({})
+            })
         ]
 
         const incorrect = [
@@ -144,7 +143,8 @@ describe('widgets infobar utils', () => {
                         really: 'yes'
                     }
                 }
-            })
+            }),
+            fromJS({})
         ]
 
         it('detection OK', () => {

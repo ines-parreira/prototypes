@@ -2,12 +2,12 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Infobar from '../../common/components/infobar/Infobar'
-import {fromJS} from 'immutable'
 
 import * as WidgetActions from '../../../state/widgets/actions'
 import * as InfobarActions from '../../../state/infobar/actions'
 
 import {getActiveUser, getActiveUserId} from '../../../state/users/selectors'
+import {getSources} from '../../../state/widgets/selectors'
 
 class UserInfobarContainer extends React.Component {
     componentWillMount() {
@@ -24,6 +24,7 @@ class UserInfobarContainer extends React.Component {
             route,
             infobar,
             activeUser,
+            sources,
             activeUserId,
         } = this.props
 
@@ -32,10 +33,6 @@ class UserInfobarContainer extends React.Component {
         }
 
         const identifier = activeUserId.toString()
-
-        const sources = fromJS({
-            user: activeUser,
-        })
 
         return (
             <Infobar
@@ -58,6 +55,7 @@ UserInfobarContainer.propTypes = {
     route: PropTypes.object.isRequired,
     activeUser: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
+    sources: PropTypes.object.isRequired,
     activeUserId: PropTypes.number,
 }
 
@@ -67,6 +65,7 @@ function mapStateToProps(state) {
         widgets: state.widgets,
         activeUser: getActiveUser(state),
         activeUserId: getActiveUserId(state),
+        sources: getSources(state),
     }
 }
 

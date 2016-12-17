@@ -125,10 +125,6 @@ class TicketDetailContainer extends React.Component {
         shortcutManager.unbind('TicketDetailContainer')
     }
 
-    _forcePush(url) {
-        browserHistory.push(url)
-    }
-
     _bindKeys() {
         // Have to bind these here so they capture at the correct level
         const macrosVisible = () => this.props.macros.get('visible')
@@ -304,7 +300,7 @@ class TicketDetailContainer extends React.Component {
              * the new state to the application.
              */
             const nextTicketUrl = this._computeNextUrl(true)
-            this._forcePush(nextTicketUrl)
+            browserHistory.push(nextTicketUrl)
         }
     }
 
@@ -376,7 +372,6 @@ TicketDetailContainer.propTypes = {
     router: PropTypes.object.isRequired,
     route: PropTypes.object.isRequired
 }
-
 
 function mapStateToProps(state) {
     return {

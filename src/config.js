@@ -103,10 +103,12 @@ export const VIA = CHANNELS.concat(['form', 'helpdesk', 'app', 'rule'])
  */
 export const DEFAULT_SOURCE_PATHS = {
     ticket: [
-        'ticket.requester.customer'
+        'ticket.requester.customer',
+        // 'ticket.requester.customer._shopify',
     ],
     user: [
-        'user.customer'
+        'user.customer',
+        // 'user.customer._shopify',
     ]
 }
 

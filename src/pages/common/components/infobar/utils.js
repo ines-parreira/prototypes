@@ -1,7 +1,9 @@
+import React from 'react'
 import {fromJS} from 'immutable'
 import _ from 'lodash'
-import moment from 'moment-timezone'
-import {isUrl, isEmail} from '../../../../utils'
+import moment from 'moment'
+import {DatetimeLabel} from '../../utils/labels'
+import * as utils from '../../../../utils'
 import {DEFAULT_SOURCE_PATHS} from '../../../../config'
 
 const Raven = window.Raven
@@ -142,7 +144,7 @@ export function renderTemplate(text, context = {}) {
  */
 export function areSourcesReady(sources, everySources = true) {
     // for every source
-    return sources.every((source, key) => {
+    return sources.some((source, key) => {
         // get the path we have to search in
         // ex : ticket.requester.customer -> requester.customer (because ticket is already in source)
         const sourcePaths = _.get(DEFAULT_SOURCE_PATHS, key)
@@ -265,9 +267,9 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
             type = 'age'
         } else if (isBoolean(value)) {
             type = 'boolean'
-        } else if (isEmail(value)) {
+        } else if (utils.isEmail(value)) {
             type = 'email'
-        } else if (isUrl(value)) {
+        } else if (utils.isUrl(value)) {
             type = 'url'
         } else if (isDate(value)) {
             type = 'date'
@@ -405,4 +407,109 @@ export function prepareWidgetToDisplay(widget = fromJS({}), source = fromJS({}),
         type,
         path
     }
+}
+
+/**
+ * Return a field value based on raw incoming data and a field type
+ * @param data
+ * @param type
+ * @returns {string}
+ */
+export function guessFieldValueFromRawData(data, type) {
+    let fieldValue = ''
+
+    if (!_.isUndefined(data) && !_.isNull(data)) {
+        if (_.isString(data)) {
+            fieldValue = data
+        }
+
+        switch (type) {
+            case 'text': {
+                fieldValue = data
+                break
+            }
+            case 'date': {
+                fieldValue = <DatetimeLabel dateTime={data} />
+                break
+            }
+            case 'age': {
+                try {
+                    fieldValue = moment().diff(data, 'years')
+                    fieldValue += ` (${moment(data).format('YYYY-MM-DD')})`
+                } catch (e) {
+                    fieldValue = data
+                }
+                break
+            }
+            case 'url': {
+                if (utils.isUrl(data)) {
+                    fieldValue = (
+                        <a
+                            href={data}
+                            target="_blank"
+                        >
+                            {data.length > 60 ? `${data.slice(0, 57)}...` : data}
+                        </a>
+                    )
+                }
+                break
+            }
+            case 'email': {
+                if (utils.isEmail(data)) {
+                    fieldValue = (
+                        <a href={`mailto:${data}`} target="_blank">{data}</a>
+                    )
+                }
+                break
+            }
+            case 'boolean': {
+                let isTrue = true
+
+                if (_.isBoolean(data)) {
+                    isTrue = data
+                }
+
+                if (_.isString(data)) {
+                    isTrue = data === 'true' || data.toString() === '1'
+                }
+
+                fieldValue = isTrue
+                    ? <a className="ui mini green label">True</a>
+                    : <a className="ui mini red label">False</a>
+                break
+            }
+            case 'array': {
+                if (_.isArray(data)) {
+                    fieldValue = data.join(', ')
+                }
+                break
+            }
+            default:
+        }
+    }
+
+    return fieldValue
+}
+
+/**
+ * Display a widget field label (before the value)
+ * @param label
+ * @returns {*}
+ */
+export function displayLabel(label) {
+    const defaultLabel = '-'
+
+    if (_.isUndefined(label)) {
+        return defaultLabel
+    }
+
+    if (_.isNull(label)) {
+        return defaultLabel
+    }
+
+    if (_.isString(label) && !label) {
+        return defaultLabel
+    }
+
+    return label
 }

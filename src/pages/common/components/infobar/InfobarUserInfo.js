@@ -105,6 +105,10 @@ class InfobarUserInfo extends React.Component {
             && contextWidgets.size <= 1
             && contextWidgets.getIn([0, 'template'], fromJS({})) === fromJS({})
 
+        if (!isEditing && !shouldSuggestTemplateGeneration && contextWidgets.every(w => w.get('template', fromJS({})).isEmpty())) {
+            return null
+        }
+
         return (
             <div className="flex-vertical">
                 <div className="infobar-section-separator"></div>
@@ -292,7 +296,7 @@ InfobarUserInfo.propTypes = {
     sources: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     widgets: PropTypes.object,
-    isDefaultUser: PropTypes.bool
+    isDefaultUser: PropTypes.bool,
 }
 
 InfobarUserInfo.defaultProps = {

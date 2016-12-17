@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
 import * as WidgetsActions from '../../../state/widgets/actions'
 import * as TicketActions from '../../../state/ticket/actions'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
+import {getSources} from '../../../state/widgets/selectors'
 
 class TicketSourceContainer extends React.Component {
     componentWillMount() {
@@ -17,12 +17,9 @@ class TicketSourceContainer extends React.Component {
         const {
             ticket,
             widgets,
-            actions
+            actions,
+            sources,
         } = this.props
-
-        const sources = fromJS({
-            ticket
-        })
 
         return (
             <SourceWrapper
@@ -40,13 +37,15 @@ TicketSourceContainer.propTypes = {
     params: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    sources: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
         ticket: state.ticket,
-        widgets: state.widgets
+        widgets: state.widgets,
+        sources: getSources(state),
     }
 }
 

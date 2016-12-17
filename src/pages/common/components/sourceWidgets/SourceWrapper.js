@@ -6,10 +6,8 @@ import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
 import SourceWidgets from './SourceWidgets'
 
 export default class SourceWrapper extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.widgetsTemplate = fromJS([])
+    state = {
+        widgetsTemplate: fromJS([]),
     }
 
     componentWillReceiveProps(nextProps) {
@@ -17,7 +15,7 @@ export default class SourceWrapper extends React.Component {
 
         const context = widgets.get('currentContext', '')
 
-        const hasWidgetsTemplates = !this.widgetsTemplate.isEmpty()
+        const hasWidgetsTemplates = !this.state.widgetsTemplate.isEmpty()
 
         const shouldGenerateWidgets = areSourcesReady(sources)
             && !hasWidgetsTemplates
@@ -25,7 +23,7 @@ export default class SourceWrapper extends React.Component {
         // generate widgets template from incoming json and use it to display source widgets
         // i.e. the things you can drag into the infobar
         if (shouldGenerateWidgets) {
-            this.widgetsTemplate = fromJS(jsonToWidgets(sources.toJS(), context))
+            this.setState({widgetsTemplate: fromJS(jsonToWidgets(sources.toJS(), context))})
         }
     }
 
@@ -40,8 +38,6 @@ export default class SourceWrapper extends React.Component {
             sources,
             widgets
         } = this.props
-
-        const template = this.widgetsTemplate
 
         const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
 
@@ -72,7 +68,7 @@ export default class SourceWrapper extends React.Component {
                         <div className="content">
                             <SourceWidgets
                                 source={sources}
-                                widgets={template}
+                                widgets={this.state.widgetsTemplate}
                                 editing={{
                                     isDragging,
                                     actions: this.props.actions.widgets

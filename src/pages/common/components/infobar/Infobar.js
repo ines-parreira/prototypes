@@ -12,7 +12,7 @@ import {areSourcesReady} from './utils'
 import InfobarSearchResultsList from './InfobarSearchResultsList'
 import Search from '../Search'
 
-export default class Infobar extends React.Component {
+class Infobar extends React.Component {
     constructor(props) {
         super(props)
 
@@ -36,8 +36,10 @@ export default class Infobar extends React.Component {
         const isEditingParam = !!nextProps.isRouteEditingWidgets
         const isEditing = nextProps.widgets.getIn(['_internal', 'isEditing'])
 
-        if (isEditingParam !== isEditing) {
-            this._toggleEditionMode(isEditingParam)
+        if (isEditingParam && !isEditing) {
+            nextProps.actions.widgets.startEditionMode(nextProps.context)
+        } else if (!isEditingParam && isEditing) {
+            nextProps.actions.widgets.stopEditionMode()
         }
 
         const wasMerging = this.props.infobar.getIn(['_internal', 'mergeUsersModal', 'display'])
@@ -65,10 +67,12 @@ export default class Infobar extends React.Component {
             if (results.size >= 1) {
                 if (results.size === 1) {
                     nextProps.actions.infobar.setInfobarMode('default')
-                    newState = {data: newState.data.merge({
-                        shouldForceSearch: false,
-                        shouldResetSearch: true
-                    })}
+                    newState = {
+                        data: newState.data.merge({
+                            shouldForceSearch: false,
+                            shouldResetSearch: true
+                        })
+                    }
                 }
 
                 newState = {data: newState.data.set('isInitialized', true)}
@@ -116,13 +120,15 @@ export default class Infobar extends React.Component {
      * Set the edition mode to passed one
      */
     _toggleEditionMode = (isEditing) => {
-        const {actions, identifier, context} = this.props
+        const {identifier, context} = this.props
+
+        if (!identifier) {
+            return
+        }
 
         if (isEditing) {
-            actions.widgets.startEditionMode(context)
             browserHistory.push(`/app/${context}/${identifier}/edit-widgets`)
         } else {
-            actions.widgets.stopEditionMode()
             browserHistory.push(`/app/${context}/${identifier}`)
         }
     }
@@ -357,3 +363,5 @@ Infobar.propTypes = {
 Infobar.defaultProps = {
     user: fromJS({})
 }
+
+export default Infobar

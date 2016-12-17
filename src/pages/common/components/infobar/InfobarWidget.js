@@ -1,10 +1,7 @@
 import React, {PropTypes} from 'react'
-import moment from 'moment-timezone'
 import _ from 'lodash'
 import {fromJS} from 'immutable'
-import {DatetimeLabel} from '../../utils/labels'
-import * as utils from '../../../../utils'
-import {prepareWidgetToDisplay} from './utils'
+import {prepareWidgetToDisplay, guessFieldValueFromRawData} from './utils'
 
 import ListInfobarWidget from './widgets/ListInfobarWidget'
 import WrapperInfobarWidget from './widgets/WrapperInfobarWidget'
@@ -89,83 +86,11 @@ class InfobarWidget extends React.Component {
             default:
         }
 
-        let fieldValue = ''
-
-        if (!_.isUndefined(data) && !_.isNull(data)) {
-            if (_.isString(data)) {
-                fieldValue = data
-            }
-
-            switch (type) {
-                case 'text': {
-                    fieldValue = data
-                    break
-                }
-                case 'date': {
-                    fieldValue = <DatetimeLabel dateTime={data} />
-                    break
-                }
-                case 'age': {
-                    try {
-                        fieldValue = moment().diff(data, 'years')
-                        fieldValue += ` (${moment(data).format('YYYY-MM-DD')})`
-                    } catch (e) {
-                        fieldValue = data
-                    }
-                    break
-                }
-                case 'url': {
-                    if (utils.isUrl(data)) {
-                        fieldValue = (
-                            <a
-                                href={data}
-                                target="_blank"
-                            >
-                                {data.length > 60 ? `${data.slice(0, 57)}...` : data}
-                            </a>
-                        )
-                    }
-                    break
-                }
-                case 'email': {
-                    if (utils.isEmail(data)) {
-                        fieldValue = (
-                            <a href={`mailto:${data}`} target="_blank">{data}</a>
-                        )
-                    }
-                    break
-                }
-                case 'boolean': {
-                    let isTrue = true
-
-                    if (_.isBoolean(data)) {
-                        isTrue = data
-                    }
-
-                    if (_.isString(data)) {
-                        isTrue = data === 'true' || data.toString() === '1'
-                    }
-
-                    fieldValue = isTrue
-                        ? <a className="ui mini green label">True</a>
-                        : <a className="ui mini red label">False</a>
-                    break
-                }
-                case 'array': {
-                    if (_.isArray(data)) {
-                        fieldValue = data.join(', ')
-                    }
-                    break
-                }
-                default:
-            }
-        }
-
         return (
             <FieldInfobarWidget
                 isEditing={isEditing}
                 isParentList={isParentList}
-                value={fieldValue}
+                value={guessFieldValueFromRawData(data, type)}
                 widget={updatedWidget}
                 editing={editing}
             />

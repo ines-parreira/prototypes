@@ -396,10 +396,16 @@ export const isCurrentlyOnTicket = (ticketId = '') => {
         return false
     }
 
+    const suffix = [
+        '',
+        '/',
+        '/edit-widgets',
+    ]
+
     const objectURL = `/app/ticket/${ticketId}`
     const currentUrl = window.location.pathname.split('?')[0]
 
-    return currentUrl.endsWith(objectURL)
+    return suffix.some(s => currentUrl.endsWith(`${objectURL}${s}`))
 }
 
 /**

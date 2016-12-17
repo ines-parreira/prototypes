@@ -1,10 +1,11 @@
 import axios from 'axios'
 import * as types from './constants'
-import {Map} from 'immutable'
 import {notify} from '../notifications/actions'
 import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
+
+import {getSources} from '../widgets/selectors'
 
 export function fetchWidgets() {
     return (dispatch) => {
@@ -108,6 +109,8 @@ export function cancelDrag() {
 
 export function drop(eventType, targetParentTemplatePath = '', key = '', toIndex = 0, fromIndex = 0) {
     return (dispatch, getState) => {
+        const state = getState()
+
         dispatch({
             type: types.DROP,
             eventType,
@@ -115,9 +118,7 @@ export function drop(eventType, targetParentTemplatePath = '', key = '', toIndex
             toIndex,
             fromIndex,
             targetParentTemplatePath,
-            source: Map({
-                ticket: getState().ticket
-            })
+            source: getSources(state),
         })
     }
 }
