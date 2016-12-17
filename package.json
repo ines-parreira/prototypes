@@ -10,7 +10,7 @@
     "pretest": "npm run lint",
     "test": "mocha --compilers js:babel-register,css:g/static/private/js/test/exclude-css.js -r jsdom-global/register --recursive g/static/**/*.spec.js",
     "test:debug": "mocha --compilers js:babel-register,css:g/static/private/js/test/exclude-css.js -r jsdom-global/register --debug --recursive g/static/**/*.spec.js",
-    "test:cover": "npm run lint && babel-node ./node_modules/.bin/isparta cover ./node_modules/.bin/_mocha -- --compilers js:babel-register,css:g/static/private/js/test/exclude-css.js -r jsdom-global/register --recursive g/static/**/*.spec.js",
+    "test:cover": "npm run lint && babel-node --max_old_space_size=2048 ./node_modules/.bin/isparta cover ./node_modules/.bin/_mocha -- --compilers js:babel-register,css:g/static/private/js/test/exclude-css.js -r jsdom-global/register --recursive g/static/**/*.spec.js",
     "test:watch": "npm test -- --watch",
     "build": "NODE_ENV=production webpack -p",
     "serve": "webpack-dev-server --progress --colors --inline --host 0.0.0.0",
