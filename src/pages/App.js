@@ -9,10 +9,9 @@ import Navbar from './common/components/Navbar'
 import KeyboardHelp from './common/components/KeyboardHelp'
 import Notifications from 'react-notification-system-redux'
 import {NOTIFICATIONS_STYLE_CONFIG} from '../config'
-import NewVersionNotification from './common/components/NewVersionNotification'
-import classNames from 'classnames'
 import shortcutManager from './common/utils/shortcutManager'
-
+import BannerNotifications from './common/components/BannerNotifications/'
+import ModalNotifications from './common/components/ModalNotifications/'
 import '../../css/main.less'
 
 let pollInterval = null
@@ -51,32 +50,38 @@ class App extends React.Component {
     }
 
     render() {
+        const {notifications} = this.props
+        const bannerNotifications = notifications.filter((notif) => notif.style === 'banner')
+        const modalNotifications = notifications.filter((notif) => notif.style === 'modal')
+        const alertNotifications = notifications.filter((notif) => notif.style === 'alert')
+
         return (
             <DocumentTitle title="Gorgias">
-                <div className={classNames('App', {
-                    'show-new-version-notification': this.props.activity.get('newVersion')
-                })}>
-                    <NewVersionNotification />
+                <div className="App">
+                    <BannerNotifications notifications={bannerNotifications}/>
+                    <ModalNotifications notifications={modalNotifications}/>
 
-                    {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}
-                    {this.props.navbar || (
-                        <Navbar activeContent="settings">
-                            <div></div>
-                        </Navbar>
-                    )}
+                    <div className="App-main">
+                        {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}
+                        {this.props.navbar || (
+                            <Navbar activeContent="settings" currentUser={this.props.currentUser}>
+                                <div></div>
+                            </Navbar>
+                        )}
 
-                    <div className="App-content">
-                        <div className="main-content pusher">
-                            {this.props.content || this.props.children}
+                        <div className="App-content">
+                            <div className="main-content pusher">
+                                {this.props.content || this.props.children}
+                            </div>
                         </div>
-                    </div>
 
-                    {this.props.infobar}
+                        {this.props.infobar}
+                    </div>
 
                     <KeyboardHelp />
 
                     <Notifications
-                        notifications={this.props.notifications}
+                        notifications={alertNotifications}
                         style={NOTIFICATIONS_STYLE_CONFIG}
                     />
                 </div>
@@ -88,7 +93,6 @@ class App extends React.Component {
 App.propTypes = {
     // current logged in user
     currentUser: PropTypes.object,
-    activity: PropTypes.object,
 
     fetchUser: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired,
@@ -107,13 +111,12 @@ App.propTypes = {
     activeContent: PropTypes.object,
 
     content: PropTypes.node,
-    notifications: PropTypes.array
+    notifications: PropTypes.array,
 }
 
 function mapStateToProps(state) {
     return {
         currentUser: state.currentUser,
-        activity: state.activity,
         notifications: state.notifications
     }
 }

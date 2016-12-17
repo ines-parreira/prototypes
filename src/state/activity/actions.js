@@ -1,11 +1,14 @@
 import axios from 'axios'
 import {fromJS} from 'immutable'
 import {fetchPage} from '../views/actions'
+import {notify} from '../../state/notifications/actions'
+import * as currentAccountTypes from '../currentAccount/constants'
+import * as billingTypes from '../billing/constants'
 import * as viewsTypes from '../views/constants'
 import * as types from './constants'
 import * as ticketActions from '../ticket/actions'
 import {shouldUpdateTicket, shouldUpdateView} from './utils'
-import {isCurrentlyOnTicket} from '../../utils'
+import {isCurrentlyOnTicket, toQueryParams} from '../../utils'
 
 const notificationSoundData = require('../../../audio/notification.mp3')
 const notificationSound = new Audio(notificationSoundData)
@@ -43,11 +46,26 @@ export const pollActivity = () => (dispatch, getState) => {
 
     const previousTickets = activity.get('tickets', fromJS([]))
 
-    return axios.get(`/api/activity/?${$.param(params)}`, {timeout: 10000})
+    return axios.get(`/api/activity/?${toQueryParams(params)}`, {timeout: 10000})
         .then((json = {}) => json.data)
         .then((resp = {}) => {
             // renaming variables since they are already used in upper scope
             const {views: _views, ticket: _ticket} = getState()
+            const prevGitCommit = activity.get('git_commit')
+
+            if (resp.git_commit && resp.git_commit !== prevGitCommit) {
+                dispatch(notify({
+                    style: 'banner',
+                    type: 'info',
+                    dismissible: false,
+                    onClick: () => {
+                        window.location.reload()
+                    },
+                    allowHtml: true,
+                    message: `An update is available for Gorgias. Click <a>here</a> to reload the page and get the 
+                    latest improvements.`
+                }))
+            }
 
             dispatch({
                 type: types.SUBMIT_ACTIVITY_SUCCESS,
@@ -117,6 +135,20 @@ export const pollActivity = () => (dispatch, getState) => {
                 if (!isFetchingView) {
                     dispatch(ticketActions.fetchTicket(_ticket.get('id'), false))
                 }
+            }
+
+            if (resp.current_account) {
+                dispatch({
+                    type: currentAccountTypes.UPDATE_ACCOUNT_SUCCESS,
+                    resp: resp.current_account
+                })
+            }
+
+            if (resp.current_usage) {
+                dispatch({
+                    type: billingTypes.FETCH_CURRENT_USAGE_SUCCESS,
+                    resp: resp.current_usage
+                })
             }
         })
         .catch(error => {

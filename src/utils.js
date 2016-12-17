@@ -364,8 +364,8 @@ export const isAgent = (user) => {
 
     return roles.includes('agent')
         || roles.includes('admin')
+        || roles.includes('staff')
 }
-
 
 /**
  * Test if user is admin
@@ -384,6 +384,19 @@ export const isAdmin = (user) => {
     }
 
     return roles.includes('admin')
+        || roles.includes('staff')
+}
+
+// Check if a user has a role
+export function hasRole(user, requiredRole) {
+    switch (requiredRole) {
+        case 'agent':
+            return isAgent(user, requiredRole)
+        case 'admin':
+            return isAdmin(user, requiredRole)
+        default:
+            return false
+    }
 }
 
 /**
@@ -442,4 +455,38 @@ export const isCurrentlyOnView = (viewId = '', viewsState = {}) => {
  */
 export function getPluralObjectName(viewType) {
     return viewType.replace('-list', 's')
+}
+
+/**
+ * Check if user has reach maximum limit of a plan
+ * @param limit name fo the limit, E.g: min, default, max
+ * @param tickets number of tickets used for a period
+ * @param plan A plan in `config.py` - billing section
+ * @param signupDate signup date of an account (`created_datetime`)
+ * @returns {boolean}
+ */
+// TODO: remove all code related to effective date of plan
+// when all accounts before `effective_date` have a credit card
+export function hasReachedLimit(limit, tickets, plan, signupDate = moment()) {
+    const effectiveDate = moment(plan.get('effective_date', moment()))
+    let date = signupDate
+
+    if ((date instanceof Date || date instanceof String) && moment(date).isValid) {
+        date = moment(date)
+    } else if (!date.isValid || !date.isValid()) {
+        date = moment()
+    }
+
+    if (date.isBefore(effectiveDate)) {
+        return false
+    }
+
+    const freeTickets = plan.get('free_tickets', 0)
+    return tickets >= plan.getIn(['limits', limit], freeTickets)
+}
+
+export function toQueryParams(obj) {
+    return Object.keys(obj).map((key) => (
+        `${key}=${encodeURIComponent(obj[key])}`
+    )).join('&')
 }

@@ -6,8 +6,13 @@ import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
 
 export default class TicketSubmitButtons extends React.Component {
+    static defaultProps = {
+        canSendMessage: true
+    }
+
     shouldComponentUpdate(nextProps) {
-        return isTicketDifferent(this.props.ticket, nextProps.ticket)
+        const {canSendMessage, ticket} = this.props
+        return isTicketDifferent(ticket, nextProps.ticket) || canSendMessage !== nextProps.canSendMessage
     }
 
     componentDidMount() {
@@ -30,10 +35,11 @@ export default class TicketSubmitButtons extends React.Component {
     }
 
     render() {
+        const {canSendMessage} = this.props
         const ticketState = this.props.ticket.get('state')
         const commonClasses = ['ui', 'green', 'button', {
             loading: this.props.ticket.getIn(['_internal', 'loading', 'submitMessage']),
-            disabled: !ticketState.get('dirty')
+            disabled: !canSendMessage || !ticketState.get('dirty')
         }]
 
         return (
@@ -63,5 +69,6 @@ export default class TicketSubmitButtons extends React.Component {
 
 TicketSubmitButtons.propTypes = {
     ticket: PropTypes.object.isRequired,
-    submit: PropTypes.func.isRequired
+    submit: PropTypes.func.isRequired,
+    canSendMessage: PropTypes.bool.isRequired
 }

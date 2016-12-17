@@ -1,14 +1,13 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
-import {fromJS} from 'immutable'
 import NotAllowed from './NotAllowed'
-
+import {hasRole} from '../../../utils'
 // check user role before render the desired component
 const userRoleRequired = (Component, requiredRole, redirectTo) => {
     const UserRoleRequired = (props) => {
         // user has required role
-        if (props.roles.includes(requiredRole)) {
+        if (requiredRole && hasRole(props.currentUser, requiredRole)) {
             return <Component {...props}/>
         }
 
@@ -21,12 +20,12 @@ const userRoleRequired = (Component, requiredRole, redirectTo) => {
     }
 
     UserRoleRequired.propTypes = {
-        roles: PropTypes.object.isRequired
+        currentUser: PropTypes.object.isRequired
     }
 
     function mapStateToProps(state) {
         return {
-            roles: state.currentUser.get('roles', fromJS([])).map(role => role.get('name'))
+            currentUser: state.currentUser
         }
     }
 

@@ -44,7 +44,7 @@ const InputField = ({type, input, meta, className, label, placeholder, required,
                     )
                 }
             </div>
-            {meta.invalid && <ErrorMessage errors={meta.error} />}
+            {meta.invalid && meta.touched && <ErrorMessage errors={meta.error} />}
             {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
         </div>
     )

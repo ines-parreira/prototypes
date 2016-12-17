@@ -8,7 +8,7 @@ import {
     updateFilterValue
 } from './utils'
 
-const initialState = fromJS({
+export const initialState = fromJS({
     items: [],
     active: {},
     loading: false,

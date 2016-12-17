@@ -1,7 +1,7 @@
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
-import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
+import reducer, {initialState} from '../reducers'
 
 expect.extend(expectImmutable)
 

@@ -610,3 +610,12 @@ export const VIEW_FIELDS = {
         },
     ]
 }
+/**
+ * Notification uids for known notifications
+ */
+export const NOTIFICATION_UIDS = {
+    freeMinLimitReached: 2,
+    freeDefaultLimitReached: 3,
+    accountDeactivated: 4,
+    accountDeactivatedCardUpdated: 5,
+}

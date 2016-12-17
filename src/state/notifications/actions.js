@@ -12,7 +12,9 @@ const AUTHORIZED_NOTIFICATION_TYPES = [
 const INITIAL_MESSAGE = {
     position: 'tc',
     autoDismiss: 0,
-    dismissible: true
+    dismissible: true,
+    // styles available: alert, banner, modal
+    style: 'alert'
 }
 
 /**

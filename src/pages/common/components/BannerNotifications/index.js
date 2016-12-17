@@ -1,0 +1,2 @@
+import BannerNotificationsContainer from './BannerNotificationsContainer'
+export default BannerNotificationsContainer

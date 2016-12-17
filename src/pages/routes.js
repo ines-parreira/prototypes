@@ -26,6 +26,8 @@ import RulesNavbarContainer from './rules/common/RulesNavbarContainer'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
 import AccountContainer from './settings/account/AccountContainer'
 import UserRoleRequired from './common/components/UserRoleRequired'
+import BillingContainer from './settings/billing/BillingContainer'
+import CreditCardContainer from './settings/billing/credit-cards/CreditCardContainer'
 
 export default (
     <Route path="/app" component={App}>
@@ -184,6 +186,28 @@ export default (
                     navbar: SettingsNavbarContainer
                 }}
             />
+            <Route path="billing">
+                <IndexRoute
+                    components={{
+                        content: UserRoleRequired(BillingContainer, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path="add-credit-card"
+                    components={{
+                        content: UserRoleRequired(CreditCardContainer, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path="update-credit-card"
+                    components={{
+                        content: UserRoleRequired(CreditCardContainer, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+            </Route>
         </Route>
         <Route path="*" component={NoMatch}/>
     </Route>

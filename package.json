@@ -41,6 +41,8 @@
     "promise-polyfill": "^6.0.2",
     "react": "^15.3.2",
     "react-addons-css-transition-group": "^15.3.2",
+    "react-addons-transition-group": "^15.4.1",
+    "react-credit-card": "^0.20.0",
     "react-datepicker": "^0.29.0",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.3.2",

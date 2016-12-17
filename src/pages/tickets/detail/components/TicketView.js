@@ -9,7 +9,7 @@ import TicketMessages from './TicketMessages'
 
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
-import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
+import TicketSubmitButtonsContainer from './replyarea/TicketSubmitButtonsContainer'
 
 export default class TicketView extends React.Component {
     // USED ONLY BY THE COMMENTED DROPDOWN BELOW
@@ -272,7 +272,7 @@ export default class TicketView extends React.Component {
                                 ticket={this.props.ticket}
                             />
 
-                            <TicketSubmitButtons
+                            <TicketSubmitButtonsContainer
                                 ticket={ticket}
                                 submit={this._handlePreSubmit}
                             />

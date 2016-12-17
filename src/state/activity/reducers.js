@@ -1,7 +1,7 @@
 import * as types from './constants'
 import {fromJS} from 'immutable'
 
-const initialState = fromJS({
+export const initialState = fromJS({
     _internal: {
         loading: false,
     },
@@ -21,13 +21,9 @@ export default (state = initialState, action) => {
         case types.SUBMIT_ACTIVITY_SUCCESS: {
             const tickets = action.resp.tickets
 
-            // see if the latest git_commit is different
-            const newVersion = action.resp.git_commit !== ''
-                && action.resp.git_commit !== state.get('git_commit')
-
             return state.merge({
                 tickets,
-                newVersion,
+                git_commit: action.resp.git_commit
             }).setIn(['_internal', 'loading'], false)
         }
 

@@ -1,8 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {fromJS} from 'immutable'
 import Navbar from '../../../common/components/Navbar'
-import {hasRole} from '../../../common/utils/user'
+import {hasRole} from '../../../../utils'
 
 export default class SettingsNavbar extends React.Component {
     static propTypes = {
@@ -15,12 +14,15 @@ export default class SettingsNavbar extends React.Component {
             currentUser,
             location: {pathname}
         } = this.props
-        const roles = currentUser.get('roles', fromJS([]))
         // links in the sidebar
         const links = [{
             requiredRole: 'admin',
             to: 'account',
             text: 'Account'
+        }, {
+            requiredRole: 'admin',
+            to: 'billing',
+            text: 'Billing'
         }, {
             to: 'your-profile',
             text: 'Your profile'
@@ -31,7 +33,7 @@ export default class SettingsNavbar extends React.Component {
                 <div className="menu">
                     {links.map(({to, text, requiredRole}) => {
                         // hide link if user hasn't the required role
-                        if (requiredRole && !hasRole(roles, requiredRole)) {
+                        if (requiredRole && !hasRole(currentUser, requiredRole)) {
                             return
                         }
 

@@ -1,5 +1,7 @@
 import expect from 'expect'
 import moment from 'moment'
+import {fromJS} from 'immutable'
+import plan from '../fixtures/plan'
 import * as utils from '../utils'
 
 describe('global utils', () => {
@@ -140,6 +142,68 @@ describe('global utils', () => {
 
         it('not editable', () => {
             expect(utils.isEditable(notEditable)).toBe(false)
+        })
+    })
+
+    describe('usage', () => {
+        const _plan = fromJS(plan)
+
+        it('should determine if user has reached min limit', () => {
+            expect(utils.hasReachedLimit('min', plan.limits.min - 1, _plan)).toEqual(false)
+            expect(utils.hasReachedLimit('min', plan.limits.min, _plan)).toEqual(true)
+        })
+
+        it('should determine if user has reached default limit', () => {
+            expect(utils.hasReachedLimit('default', plan.free_tickets - 1, _plan)).toEqual(false)
+            expect(utils.hasReachedLimit('default', plan.free_tickets, _plan)).toEqual(true)
+        })
+
+        it('should determine if user has reached max limit', () => {
+            expect(utils.hasReachedLimit('max', plan.limits.max - 1, _plan)).toEqual(false)
+            expect(utils.hasReachedLimit('max', plan.limits.max, _plan)).toEqual(true)
+        })
+    })
+
+    describe('toQueryParams', () => {
+        it('should convert object to query params', () => {
+            const obj = {
+                a: 12,
+                c: 14
+            }
+            expect(utils.toQueryParams(obj)).toEqual('a=12&c=14')
+        })
+    })
+
+    describe('hasRole', () => {
+        it('should determine if user has required role (agent)', () => {
+            const user = fromJS({
+                roles: [{
+                    name: 'agent'
+                }]
+            })
+            expect(utils.hasRole(user, 'agent')).toEqual(true)
+            expect(utils.hasRole(user, 'admin')).toEqual(false)
+            expect(utils.hasRole(user, 'staff')).toEqual(false)
+        })
+
+        it('should determine if user has required role (admin)', () => {
+            // as admin
+            let user = fromJS({
+                roles: [{
+                    name: 'admin'
+                }]
+            })
+            expect(utils.hasRole(user, 'agent')).toEqual(true)
+            expect(utils.hasRole(user, 'admin')).toEqual(true)
+
+            // as staff
+            user = fromJS({
+                roles: [{
+                    name: 'staff'
+                }]
+            })
+            expect(utils.hasRole(user, 'agent')).toEqual(true)
+            expect(utils.hasRole(user, 'admin')).toEqual(true)
         })
     })
 })

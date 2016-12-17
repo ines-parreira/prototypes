@@ -19,6 +19,7 @@ import viewsReducer from './views/reducers'
 import activityReducer from './activity/reducers'
 import statsReducer from './stats/reducers'
 import infobarReducer from './infobar/reducers'
+import billingReducer from './billing/reducers'
 
 const rootReducer = combineReducers({
     currentAccount: currentAccountReducer,
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
     infobar: infobarReducer,
     routing: routerReducer,
     form: formReducer,
+    billing: billingReducer,
     notifications: notificationsReducer
 })
 
