@@ -3,7 +3,11 @@ import {fromJS} from 'immutable'
 import {TICKET_STATUSES} from '../../../../../config'
 import RightSelect from './RightSelect'
 
-const Right = ({node, objectPath, agents, tags, currentUser, onChange, index}) => {
+const Right = ({node, objectPath, agents, tags, currentUser, onChange, index, empty}) => {
+    if (empty) {
+        return <span></span>
+    }
+
     let options = fromJS([])
 
     if (objectPath === 'ticket.assignee_user.id') {
@@ -61,6 +65,11 @@ const Right = ({node, objectPath, agents, tags, currentUser, onChange, index}) =
 
     return <span className="ui basic light blue button">{node.value}</span>
 }
+
+Right.defaultProps = {
+    empty: false
+}
+
 Right.propTypes = {
     node: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
@@ -68,7 +77,8 @@ Right.propTypes = {
     tags: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
-    objectPath: PropTypes.string.isRequired
+    objectPath: PropTypes.string.isRequired,
+    empty: PropTypes.bool.isRequired
 }
 
 export default Right

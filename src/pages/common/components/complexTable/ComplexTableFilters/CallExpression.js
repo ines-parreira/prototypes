@@ -1,11 +1,12 @@
 import React, {PropTypes} from 'react'
-import {BASIC_OPERATORS} from '../../../../../config'
+import {BASIC_OPERATORS, EMPTY_OPERATORS} from '../../../../../config'
 import Left from './Left'
 import Right from './Right'
 import Operator from './Operator'
 import OperatorLabel from './OperatorLabel'
 import RemoveCallExpression from './RemoveCallExpression'
 import {findProperty} from '../../../../../utils'
+import _includes from 'lodash/includes'
 
 const resolveObjectPath = (node) => {
     switch (node.type) {
@@ -47,6 +48,7 @@ const CallExpression = ({view, schemas, node, updateOperator, removeCondition, i
                 currentUser={currentUser}
                 onChange={updateFieldFilter}
                 index={index}
+                empty={_includes(Object.keys(EMPTY_OPERATORS), operator.name)}
             />
             <RemoveCallExpression
                 onClick={removeCondition}

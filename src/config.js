@@ -33,6 +33,15 @@ export const BASIC_OPERATORS = {
     }
 }
 
+export const EMPTY_OPERATORS = {
+    isEmpty: {
+        label: 'is empty'
+    },
+    isNotEmpty: {
+        label: 'is not empty'
+    }
+}
+
 export const VIEW_TYPE_CONFIGURATION = {
     'ticket-list': {
         type: 'ticket-list',
