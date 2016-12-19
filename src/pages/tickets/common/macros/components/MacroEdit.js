@@ -143,7 +143,6 @@ export default class MacroEdit extends React.Component {
                                             key={key}
                                             index={key}
                                             args={action.get('arguments')}
-                                            tags={this.props.tags}
                                             updateActionArgs={actions.updateActionArgs}
                                             deleteAction={actions.deleteAction}
                                         />
@@ -235,7 +234,6 @@ export default class MacroEdit extends React.Component {
 MacroEdit.propTypes = {
     loading: PropTypes.object.isRequired,
     currentMacro: PropTypes.object,
-    tags: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     cancel: PropTypes.func.isRequired

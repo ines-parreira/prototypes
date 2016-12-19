@@ -1,8 +1,11 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
+import {connect} from 'react-redux'
 import TicketTags from '../../../../detail/components/ticketdetails/TicketTags'
 
-export default class AddTagsAction extends React.Component {
+import {getTags} from '../../../../../../state/tags/selectors'
+
+class AddTagsAction extends React.Component {
     splitIncomingTags = () => this.props.args.get('tags').split(',').filter(t => !!t)
 
     addTags = (tags) => {
@@ -49,3 +52,11 @@ AddTagsAction.propTypes = {
     updateActionArgs: PropTypes.func.isRequired,
     deleteAction: PropTypes.func.isRequired
 }
+
+function mapStateToProps(state) {
+    return {
+        tags: getTags(state),
+    }
+}
+
+export default connect(mapStateToProps)(AddTagsAction)

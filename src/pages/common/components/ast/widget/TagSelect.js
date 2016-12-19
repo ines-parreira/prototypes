@@ -1,25 +1,22 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
-import { Map } from 'immutable'
-
+import {getTags} from '../../../../../state/tags/selectors'
 import * as tagsActions from '../../../../../state/tags/actions'
 import Select from './Select'
 
-
 class TagSelect extends React.Component {
     componentDidMount() {
-        const { actions, tags } = this.props
+        const {actions, tags} = this.props
         if (!tags.length) {
             actions.tags.fetchTags()
         }
     }
 
     render() {
-        const { onChange, tags, value } = this.props
-        const options = tags.get('items').map(tag => tag.get('name'))
+        const {onChange, tags, value} = this.props
+        const options = tags.map(tag => tag.get('name'))
 
         return <Select value={value} onChange={onChange} options={options} />
     }
@@ -32,12 +29,8 @@ TagSelect.propTypes = {
     value: PropTypes.string,
 }
 
-TagSelect.defaultProps = {
-    tags: Map()
-}
-
 const mapStateToProps = (state) => ({
-    tags: state.tags,
+    tags: getTags(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

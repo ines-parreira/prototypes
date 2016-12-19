@@ -113,11 +113,6 @@ class TicketListContainer extends React.Component {
 TicketListContainer.propTypes = {
     tickets: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
-    tags: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired,
-    currentUser: PropTypes.object,
-    settings: PropTypes.object.isRequired,
     fetchTags: PropTypes.func.isRequired,
 
     // React Router
@@ -129,11 +124,6 @@ function mapStateToProps(state) {
     return {
         tickets: state.tickets,
         views: state.views,
-        tags: state.tags,
-        schemas: state.schemas,
-        users: state.users,
-        currentUser: state.currentUser,
-        settings: state.settings
     }
 }
 

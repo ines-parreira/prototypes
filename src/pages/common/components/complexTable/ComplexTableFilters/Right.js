@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
+import {connect} from 'react-redux'
 import {TICKET_STATUSES} from '../../../../../config'
 import RightSelect from './RightSelect'
+import {getTags} from '../../../../../state/tags/selectors'
 
 const Right = ({node, objectPath, agents, tags, currentUser, onChange, index, empty}) => {
     if (empty) {
@@ -66,10 +68,6 @@ const Right = ({node, objectPath, agents, tags, currentUser, onChange, index, em
     return <span className="ui basic light blue button">{node.value}</span>
 }
 
-Right.defaultProps = {
-    empty: false
-}
-
 Right.propTypes = {
     node: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
@@ -81,4 +79,15 @@ Right.propTypes = {
     empty: PropTypes.bool.isRequired
 }
 
-export default Right
+Right.defaultProps = {
+    empty: false
+}
+
+function mapStateToProps(state) {
+    return {
+        tags: getTags(state),
+    }
+}
+
+export default connect(mapStateToProps)(Right)
+

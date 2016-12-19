@@ -8,9 +8,10 @@ import OverviewStatsView from './components/OverviewStatsView'
 import {setFilter, fetchStats} from '../../../state/stats/actions'
 import {getDisplayName} from '../../../state/users/helpers'
 import {getAgents} from '../../../state/users/selectors'
+import {getTags} from '../../../state/tags/selectors'
 
 const mapStateToProps = (state) => ({
-    tags: state.tags.get('items', fromJS([])).map(tag => ({label: tag.get('name'), value: tag.get('id')})).toJS(),
+    tags: getTags(state).map(tag => ({label: tag.get('name'), value: tag.get('id')})).toJS(),
     channels: Object.keys(USER_CHANNEL_CLASS).map(channel => ({
         label: _upperFirst(channel.replace('-', ' ')),
         value: channel,

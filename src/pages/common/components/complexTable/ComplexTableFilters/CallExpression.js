@@ -19,7 +19,7 @@ const resolveObjectPath = (node) => {
     }
 }
 
-const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index, agents, tags, currentUser, updateFieldFilter, parentNode}) => {
+const CallExpression = ({view, schemas, node, updateOperator, removeCondition, index, agents, currentUser, updateFieldFilter, parentNode}) => {
     const left = node.arguments[0]
     const right = node.arguments[1]
     const operator = node.callee
@@ -44,7 +44,6 @@ const CallExpression = ({view, schemas, node, updateOperator, removeCondition, i
                 node={right}
                 objectPath={objectPath}
                 agents={agents}
-                tags={tags}
                 currentUser={currentUser}
                 onChange={updateFieldFilter}
                 index={index}
@@ -69,7 +68,6 @@ CallExpression.propTypes = {
     updateOperator: PropTypes.func.isRequired,
 
     agents: PropTypes.object.isRequired,
-    tags: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
 
     updateFieldFilter: PropTypes.func.isRequired,

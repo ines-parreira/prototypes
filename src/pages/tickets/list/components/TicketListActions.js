@@ -1,12 +1,13 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {fromJS} from 'immutable'
 import {browserHistory} from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import * as ViewsActions from '../../../../state/views/actions'
 import * as MacroActions from '../../../../state/macro/actions'
+
 import {getAgents} from '../../../../state/users/selectors'
+import {getTags} from '../../../../state/tags/selectors'
 
 class TicketListActions extends React.Component {
     componentDidUpdate(prevProps) {
@@ -50,7 +51,7 @@ class TicketListActions extends React.Component {
                 on: 'click',
                 allowAdditions: true,
                 action: (text, value) => {
-                    const tag = this.props.tags.find(curTag => curTag.get('name') === value)
+                    const tag = this.props.tags.find(t => t.get('name') === value)
 
                     if (tag) {
                         this._bulkUpdate('tag', tag.toJS())
@@ -284,7 +285,7 @@ TicketListActions.propTypes = {
 function mapStateToProps(state) {
     return {
         currentUser: state.currentUser,
-        tags: state.tags.get('items', fromJS([])),
+        tags: getTags(state),
         agents: getAgents(state),
     }
 }

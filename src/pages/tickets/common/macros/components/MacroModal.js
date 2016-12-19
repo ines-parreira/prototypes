@@ -69,7 +69,6 @@ export default class MacroModal extends React.Component {
             <MacroEdit
                 loading={loading}
                 currentMacro={currentMacro}
-                tags={this.props.tags}
                 agents={this.props.agents}
                 actions={actions.macro}
                 cancel={this.cancel}
@@ -109,7 +108,6 @@ MacroModal.propTypes = {
     activeView: PropTypes.object,
     macros: PropTypes.object.isRequired,
     currentMacro: PropTypes.object,
-    tags: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
 
     actions: PropTypes.object.isRequired,

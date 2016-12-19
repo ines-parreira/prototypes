@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 
 import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
@@ -6,8 +7,10 @@ import TicketPriority from './ticketdetails/TicketPriority'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 
+import {getTags} from '../../../../state/tags/selectors'
+import {getAgents} from '../../../../state/users/selectors'
 
-export default class TicketHeader extends React.Component {
+class TicketHeader extends React.Component {
     shouldComponentUpdate(nextProps) {
         const currentTicket = this.props.ticket.delete('newMessage').delete('messages').delete('state')
         const nextTicket = nextProps.ticket.delete('newMessage').delete('messages').delete('state')
@@ -96,7 +99,7 @@ export default class TicketHeader extends React.Component {
                             />
 
                             <TicketTags
-                                tags={tags.get('items').toJS()}
+                                tags={tags.toJS()}
                                 ticketTags={ticket.get('tags')}
                                 addTags={actions.ticket.addTags}
                                 removeTag={actions.ticket.removeTag}
@@ -136,3 +139,13 @@ TicketHeader.propTypes = {
     computeNextUrl: PropTypes.func.isRequired,
     hideTicket: PropTypes.func.isRequired
 }
+
+
+function mapStateToProps(state) {
+    return {
+        agents: getAgents(state),
+        tags: getTags(state),
+    }
+}
+
+export default connect(mapStateToProps)(TicketHeader)

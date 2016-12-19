@@ -86,7 +86,6 @@ export default class TicketTags extends React.Component {
     }
 }
 
-
 TicketTags.propTypes = {
     tags: PropTypes.array.isRequired,
     ticketTags: PropTypes.object.isRequired,

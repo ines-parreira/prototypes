@@ -7,6 +7,8 @@ import {compactInteger} from '../../../utils'
 import {isCreationUrl} from '../../common/utils/url'
 import UserListActions from './components/UserListActions'
 
+import {getUsers} from '../../../state/users/selectors'
+
 class UserListContainer extends React.Component {
     render() {
         const activeView = this.props.views.get('active', fromJS({}))
@@ -32,7 +34,7 @@ class UserListContainer extends React.Component {
                         isUpdate={isUpdate}
                         askedViewId={this.props.params.viewId}
                         viewsType="user-list"
-                        items={this.props.users.get('items', fromJS([]))}
+                        items={this.props.users}
                         hasBulkActions={!activeView.get('editMode', false)}
                         ActionsComponent={UserListActions}
                         queryPath="bool.should.0.multi_match.query"
@@ -62,11 +64,7 @@ class UserListContainer extends React.Component {
 
 UserListContainer.propTypes = {
     views: PropTypes.object.isRequired,
-    tags: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired,
-    currentUser: PropTypes.object,
-    settings: PropTypes.object.isRequired,
 
     // React Router
     params: PropTypes.object,
@@ -76,11 +74,7 @@ UserListContainer.propTypes = {
 function mapStateToProps(state) {
     return {
         views: state.views,
-        tags: state.tags,
-        schemas: state.schemas,
-        users: state.users,
-        currentUser: state.currentUser,
-        settings: state.settings
+        users: getUsers(state),
     }
 }
 export default connect(mapStateToProps)(UserListContainer)

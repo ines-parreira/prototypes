@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {StickyContainer, Sticky} from 'react-sticky'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
+import {connect} from 'react-redux'
 
 import TicketHeader from './TicketHeader'
 
@@ -11,14 +12,10 @@ import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtonsContainer from './replyarea/TicketSubmitButtonsContainer'
 
-export default class TicketView extends React.Component {
-    // USED ONLY BY THE COMMENTED DROPDOWN BELOW
-    // componentDidMount() {
-    //     $('#top-option-dropdown').dropdown({
-    //         on: 'hover',
-    //         action: 'nothing'
-    //     })
-    // }
+import {getTags} from '../../../../state/tags/selectors'
+import {getAgents, makeIsLoading as makeUsersIsLoading} from '../../../../state/users/selectors'
+
+class TicketView extends React.Component {
     constructor() {
         super()
         this.state = {
@@ -49,13 +46,15 @@ export default class TicketView extends React.Component {
          *
          * For that, we need to make sure :
          */
-        const shouldInitializeForm = this.props.view && !this.props.view.isEmpty() &&
+        const shouldInitializeForm = this.props.view
+            && !this.props.view.isEmpty()
             // that we're on a Ticket being created
-            !this.props.ticket.get('id') &&
+            && !this.props.ticket.get('id')
             // that this code hasn't been executed yet
-            !this.props.ticket.getIn(['state', 'dirty']) &&
+            && !this.props.ticket.getIn(['state', 'dirty'])
             // that we've got all the data needed
-            this.props.tags.get('items').size && this.props.users.get('agents').size
+            && !this.props.tags.isEmpty()
+            && !this.props.agents.isEmpty()
 
         if (shouldInitializeForm) {
             const filtersAst = this.props.view.get('filters_ast', fromJS({})) || fromJS({})
@@ -113,7 +112,7 @@ export default class TicketView extends React.Component {
 
                 switch (field) {
                     case 'ticket.tags.name': {
-                        const newTags = this.props.tags.get('items').filter(t => ~values.indexOf(t.get('name')))
+                        const newTags = this.props.tags.filter(t => values.includes(t.get('name')))
                         this.props.actions.ticket.addTags(newTags)
                         break
                     }
@@ -122,8 +121,8 @@ export default class TicketView extends React.Component {
                         break
                     case 'ticket.assignee_user.id':
                         if (firstValue !== '{current_user.id}') {
-                            this.props.actions.ticket.setAgent(this.props.users.get('agents').find(
-                                curAgent => curAgent.get('id').toString() === firstValue
+                            this.props.actions.ticket.setAgent(this.props.agents.find(
+                                a => a.get('id').toString() === firstValue
                             ))
                         }
                         break
@@ -180,7 +179,7 @@ export default class TicketView extends React.Component {
     }
 
     render = () => {
-        const {ticket, tags, users, actions, computeNextUrl, hidden} = this.props
+        const {ticket, users, usersIsLoading, actions, computeNextUrl, hidden} = this.props
 
         const isCreating = !ticket.get('id')
 
@@ -212,7 +211,7 @@ export default class TicketView extends React.Component {
                                         transparent: !ticket.get('id')
                                         || !users.getIn(['userHistory', 'hasHistory'])
                                         || ticket.getIn(['_internal', 'displayHistory'])
-                                        || users.getIn(['_internal', 'loading', 'history'])
+                                        || usersIsLoading('history')
                                     }
                                 )}
                                 onClick={() => {
@@ -238,8 +237,6 @@ export default class TicketView extends React.Component {
                         </div>
                         <TicketHeader
                             ticket={ticket}
-                            tags={tags}
-                            agents={users.get('agents')}
                             actions={actions}
                             computeNextUrl={computeNextUrl}
                             hideTicket={this.hideTicket}
@@ -286,15 +283,36 @@ export default class TicketView extends React.Component {
 
 TicketView.propTypes = {
     actions: PropTypes.object.isRequired,
-    ticket: PropTypes.object.isRequired,
-    macros: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    tags: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired,
-    settings: PropTypes.object.isRequired,
-    view: PropTypes.object,
-    submit: PropTypes.func.isRequired,
+    agents: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     computeNextUrl: PropTypes.func.isRequired,
-    hidden: PropTypes.bool
+    currentUser: PropTypes.object.isRequired,
+    hidden: PropTypes.bool,
+    macros: PropTypes.object.isRequired,
+    settings: PropTypes.object.isRequired,
+    submit: PropTypes.func.isRequired,
+    tags: PropTypes.object.isRequired,
+    ticket: PropTypes.object.isRequired,
+    users: PropTypes.object.isRequired,
+    usersIsLoading: PropTypes.func.isRequired,
+    view: PropTypes.object
 }
+
+function mapStateToProps(state) {
+    return {
+        activeView: state.views.get('active', fromJS({})),
+        agents: getAgents(state),
+        currentUser: state.currentUser,
+        macros: state.macros,
+        users: state.users,
+        usersIsLoading: makeUsersIsLoading(state),
+        routing: state.routing,
+        settings: state.settings,
+        tags: getTags(state),
+        ticket: state.ticket,
+        tickets: state.tickets,
+        views: state.views
+    }
+}
+
+export default connect(mapStateToProps)(TicketView)

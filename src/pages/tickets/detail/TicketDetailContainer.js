@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {browserHistory, withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import {fromJS} from 'immutable'
 import shortcutManager from '../../common/utils/shortcutManager'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
@@ -233,7 +234,7 @@ class TicketDetailContainer extends React.Component {
 
         const nextIndex = currentTicketIndex + translation
         const nextTicket = this.props.tickets.get('items').toJS()[nextIndex]
-        const activeView = this.props.views.get('active')
+        const activeView = this.props.activeView
 
         if (nextTicket && nextTicket.id) {
             nextTicketUrl = `/app/ticket/${nextTicket.id}`
@@ -305,8 +306,6 @@ class TicketDetailContainer extends React.Component {
     }
 
     render() {
-        const view = this.props.views.get('active')
-
         if (
             (this.props.params.ticketId !== 'new' && !this.props.ticket.get('id'))
             || (this.props.params.ticketId === 'new' && this.props.ticket.get('id'))
@@ -324,23 +323,17 @@ class TicketDetailContainer extends React.Component {
                     }}
                 >
                     <Timeline
-                        userHistory={this.props.users.get('userHistory')}
-                        isDisplayed={this.props.ticket.getIn(['_internal', 'displayHistory'])}
                         actions={this.props.actions.ticket}
                         currentTicketId={this.props.ticket.get('id')}
+                        isDisplayed={this.props.ticket.getIn(['_internal', 'displayHistory'])}
+                        userHistory={this.props.users.get('userHistory')}
                     />
                     <TicketView
                         actions={this.props.actions}
-                        ticket={this.props.ticket}
-                        macros={this.props.macros}
-                        currentUser={this.props.currentUser}
-                        tags={this.props.tags}
-                        users={this.props.users}
-                        settings={this.props.settings}
-                        submit={this._submit}
                         applyMacro={this._applyMacro}
                         computeNextUrl={this._computeNextUrl}
-                        view={view}
+                        submit={this._submit}
+                        view={this.props.activeView}
                     />
                     <MacroContainer />
                 </div>
@@ -356,17 +349,16 @@ TicketDetailContainer.propTypes = {
         ticketId: PropTypes.string
     }).isRequired,
 
+    actions: PropTypes.object.isRequired,
+    activeView: PropTypes.object.isRequired,
+    currentUser: PropTypes.object,
+    macros: PropTypes.object,
     ticket: PropTypes.object,
     tickets: PropTypes.object,
-    macros: PropTypes.object,
-    tags: PropTypes.object,
     users: PropTypes.object,
-    currentUser: PropTypes.object,
-    settings: PropTypes.object,
     views: PropTypes.object,
-    routing: PropTypes.object,
 
-    actions: PropTypes.object.isRequired,
+    routing: PropTypes.object,
 
     // React Router
     router: PropTypes.object.isRequired,
@@ -375,27 +367,26 @@ TicketDetailContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        activeView: state.views.get('active', fromJS({})),
+        currentUser: state.currentUser,
+        macros: state.macros,
+        users: state.users,
+        routing: state.routing,
         ticket: state.ticket,
         tickets: state.tickets,
-        macros: state.macros,
-        tags: state.tags,
-        users: state.users,
-        currentUser: state.currentUser,
-        settings: state.settings,
-        views: state.views,
-        routing: state.routing
+        views: state.views
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
-            views: bindActionCreators(ViewsActions, dispatch),
-            ticket: bindActionCreators(TicketActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),
+            settings: bindActionCreators(SettingsActions, dispatch),
             tag: bindActionCreators(TagActions, dispatch),
+            ticket: bindActionCreators(TicketActions, dispatch),
             user: bindActionCreators(UserActions, dispatch),
-            settings: bindActionCreators(SettingsActions, dispatch)
+            views: bindActionCreators(ViewsActions, dispatch)
         }
     }
 }

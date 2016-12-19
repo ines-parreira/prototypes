@@ -36,7 +36,6 @@ class MacroContainer extends React.Component {
         const {
             activeView,
             macros,
-            tags,
             agents,
             actions,
             disableExternalActions,
@@ -55,7 +54,6 @@ class MacroContainer extends React.Component {
                 macros={macros.get('items')}
                 newMacro={macros.get('newMacro')}
                 currentMacro={macros.get('modalSelected')}
-                tags={tags.get('items')}
                 agents={agents}
                 actions={actions}
                 disableExternalActions={disableExternalActions || false}
@@ -70,7 +68,6 @@ class MacroContainer extends React.Component {
 MacroContainer.propTypes = {
     activeView: PropTypes.object,
     macros: PropTypes.object.isRequired,
-    tags: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
 
@@ -86,7 +83,6 @@ MacroContainer.defaultProps = {
 function mapStateToProps(state) {
     return {
         macros: state.macros,
-        tags: state.tags,
         agents: getAgents(state),
     }
 }

@@ -85,7 +85,7 @@ export default class FilterTopbar extends React.Component {
     }
 
     render() {
-        const {isUpdate, views, agents, tags, currentUser, updateFieldFilter} = this.props
+        const {isUpdate, views, agents, currentUser, updateFieldFilter} = this.props
         const {isSubmitting} = this.state
         const activeView = views.get('active')
         const buttonClass = classNames('ui', 'button', {loading: this.state.isSubmitting})
@@ -102,7 +102,6 @@ export default class FilterTopbar extends React.Component {
                         updateFieldFilterOperator={this.props.updateFieldFilterOperator}
                         schemas={this.props.schemas}
                         agents={agents}
-                        tags={tags}
                         currentUser={currentUser}
                         updateFieldFilter={updateFieldFilter}
                     />
@@ -170,7 +169,6 @@ FilterTopbar.propTypes = {
     updateFieldFilterOperator: PropTypes.func.isRequired,
 
     agents: PropTypes.object.isRequired,
-    tags: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired
 }

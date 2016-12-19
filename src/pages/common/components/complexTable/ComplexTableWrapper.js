@@ -393,7 +393,6 @@ class ComplexTableWrapper extends React.Component {
                             submitView={actions.views.submitView}
                             currentUser={currentUser}
                             agents={agents}
-                            tags={this.props.tags}
                             updateFieldFilter={actions.views.updateFieldFilter}
                         />
                     </div>
@@ -430,7 +429,6 @@ ComplexTableWrapper.propTypes = {
     items: PropTypes.object.isRequired,
     fields: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
-    tags: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
@@ -469,7 +467,6 @@ function mapStateToProps(state, ownProps) {
         schemas: state.schemas,
         users: state.users,
         currentUser: state.currentUser,
-        tags: state.tags.get('items', fromJS([])),
         agents: getAgents(state),
         activeView,
         hasActiveView: !activeView.isEmpty(),
