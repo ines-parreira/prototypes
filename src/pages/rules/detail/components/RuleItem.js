@@ -104,7 +104,7 @@ class RuleItem extends React.Component {
         let rmBtn = (
             <button
                 type="button"
-                className="ui left floated icon basic red button"
+                className="ui right floated icon basic red button"
                 onClick={this._handleDeactivate}
             >
                 Deactivate Rule
@@ -152,10 +152,10 @@ class RuleItem extends React.Component {
             resetBtn = null
         }
         return (
-            <div className="ui right aligned segment">
-                {rmBtn}
-                {resetBtn}
+            <div className="ui aligned segment">
                 {primaryBtn}
+                {resetBtn}
+                {rmBtn}
             </div>
         )
     }

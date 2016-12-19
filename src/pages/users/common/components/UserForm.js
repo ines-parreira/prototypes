@@ -243,27 +243,25 @@ class UserForm extends React.Component {
                     </div>
 
                     <div className="actions">
-                        <div className="field">
-                            <button
-                                type="submit"
-                                className={classNames('ui', 'green', 'button', {
-                                    loading: submitting
-                                })}
-                                disabled={submitting}
-                            >
-                                {isUpdate ? 'Update user' : 'Add user'}
-                            </button>
-                            <button
-                                type="button"
-                                className={classNames('ui', 'button', {
-                                    loading: submitting
-                                })}
-                                disabled={submitting}
-                                onClick={this.props.closeModal}
-                            >
-                                Cancel
-                            </button>
-                        </div>
+                        <button
+                            type="button"
+                            className={classNames('ui button', {
+                                loading: submitting
+                            })}
+                            disabled={submitting}
+                            onClick={this.props.closeModal}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className={classNames('ui green button', {
+                                loading: submitting
+                            })}
+                            disabled={submitting}
+                        >
+                            {isUpdate ? 'Update user' : 'Add user'}
+                        </button>
                     </div>
                 </form>
             </div>

@@ -115,44 +115,43 @@ export default class FilterTopbar extends React.Component {
                     </button>
                 </div>
                 <div className="filter-topbar-actions">
-                    <button
-                        className="ui button"
-                        onClick={this._cancel}
-                    >
-                        CANCEL
-                    </button>
+                    {isUpdate ?
+                        <span>
+                            <button
+                                className={`${buttonClass} green`}
+                                disabled={isSubmitting}
+                                onClick={this._onClickUpdate}
+                            >
+                                UPDATE VIEW
+                            </button>
+                            <button
+                                className={buttonClass}
+                                disabled={isSubmitting}
+                                onClick={this._onClickNew}
+                            >
+                                SAVE AS NEW VIEW
+                            </button>
+                        </span>
+                        :
+                        <button
+                            className={`${buttonClass} green`}
+                            disabled={isSubmitting}
+                            onClick={this._createView}
+                        >
+                            CREATE VIEW
+                        </button>
+                    }
                     <span className="ml15 text-light-black">
                         <i className="info circle icon"/>
                         Click on a column's name to add a filter.
                     </span>
-                    <div className="ui right floated">
-                        {isUpdate ?
-                            <span>
-                                <button
-                                    className={buttonClass}
-                                    disabled={isSubmitting}
-                                    onClick={this._onClickNew}
-                                >
-                                    SAVE AS NEW VIEW
-                                </button>
-                                <button
-                                    className={`${buttonClass} green`}
-                                    disabled={isSubmitting}
-                                    onClick={this._onClickUpdate}
-                                >
-                                    UPDATE VIEW
-                                </button>
-                            </span>
-                            :
-                            <button
-                                className={`${buttonClass} green`}
-                                disabled={isSubmitting}
-                                onClick={this._createView}
-                            >
-                                CREATE VIEW
-                            </button>
-                        }
-                    </div>
+
+                    <button
+                        className="ui button floated right"
+                        onClick={this._cancel}
+                    >
+                        CANCEL
+                    </button>
                 </div>
             </div>
         )

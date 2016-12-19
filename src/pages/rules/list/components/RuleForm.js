@@ -50,11 +50,13 @@ class RuleForm extends React.Component {
                             placeholder="Description"
                             component={TextAreaField}
                         />
-                        <button type="submit" className={submitButtonClassName}>
-                            Create new rule
-                        </button>
+                    </div>
+                    <div className="actions">
                         <button type="button" className="ui button" onClick={this._handleCancel}>
                             Cancel
+                        </button>
+                        <button type="submit" className={submitButtonClassName}>
+                            Create new rule
                         </button>
                     </div>
                 </form>
