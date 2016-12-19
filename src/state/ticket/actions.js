@@ -170,7 +170,7 @@ export const setSubject = (subject) => ({
     })
 })
 
-export const setReceivers = (receivers) => ({
+export const setReceivers = (receivers = []) => ({
     type: types.SET_RECEIVERS,
     receivers
 })

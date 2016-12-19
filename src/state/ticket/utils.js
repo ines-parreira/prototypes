@@ -121,7 +121,7 @@ export function receiversStateFromValue(value, sourceType) {
     const valueProp = getValuePropFromSourceType(sourceType)
 
     if (!valueProp) {
-        return
+        return []
     }
 
     const newValue = value || []
