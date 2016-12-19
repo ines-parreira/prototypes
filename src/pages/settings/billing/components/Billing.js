@@ -65,7 +65,7 @@ export default class Billing extends Component {
                         Then we charge ${plan.get('cost_per_ticket') * numbTicketExample}/{numbTicketExample} tickets,
                         and the cost per ticket goes down as the number of ticket increases.<br/>
 
-                        Learn more on our <Link to="https://gorgias.io/pricing">pricing page</Link>.
+                        Learn more on our <Link to="https://gorgias.io/pricing" target="_blank">pricing page</Link>.
                     </p>
                     <div className="row">
                         <p>
