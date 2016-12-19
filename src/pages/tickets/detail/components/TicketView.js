@@ -15,7 +15,7 @@ import TicketSubmitButtonsContainer from './replyarea/TicketSubmitButtonsContain
 import {getTags} from '../../../../state/tags/selectors'
 import {getAgents, makeIsLoading as makeUsersIsLoading} from '../../../../state/users/selectors'
 
-class TicketView extends React.Component {
+export class TicketView extends React.Component {
     constructor() {
         super()
         this.state = {

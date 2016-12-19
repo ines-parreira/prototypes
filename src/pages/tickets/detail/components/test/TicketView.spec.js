@@ -4,7 +4,7 @@ import expect from 'expect'
 import expectImmutable from 'expect-immutable'
 import {fromJS} from 'immutable'
 
-import TicketView from '../TicketView'
+import {TicketView} from '../TicketView'
 
 expect.extend(expectImmutable)
 
