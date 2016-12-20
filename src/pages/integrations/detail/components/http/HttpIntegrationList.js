@@ -6,8 +6,17 @@ import IntegrationList from '../IntegrationList'
 export default class HttpIntegrationList extends React.Component {
     render() {
         const {integrations, actions, loading} = this.props
-        const longTypeDescription = `HTTP integrations allow you to connect Gorgias to about anything with 
-HTTP bindings.`
+        const longTypeDescription = (
+            <span>
+                HTTP integrations allow you to connect any application to Gorgias.{' '}
+                <a
+                    href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html"
+                    target="_blank"
+                >
+                    Learn more
+                </a> about how to connect apps in our docs.
+            </span>
+        )
 
         const isSubmitting = loading.get('updateIntegration')
 

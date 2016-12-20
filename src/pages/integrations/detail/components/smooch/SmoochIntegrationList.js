@@ -7,9 +7,15 @@ export default class SmoochIntegrationList extends React.Component {
     render() {
         const {integrations, actions, loading} = this.props
 
-        const longTypeDescription = `Smooch is a chat widget that you can add to your website.
-            Every time a user starts a conversation with you, it opens a ticket in Gorgias where you can
-            respond to them.`
+        const longTypeDescription = (
+            <span>
+                You can add a chat integration here to add a chat widget on your website.
+                Every time a user starts a conversation, it opens a ticket in Gorgias.
+                You can then respond to the ticket to chat with the user.
+                <br />
+                You can add multiple chat integrations.
+            </span>
+        )
 
         const integrationToItemDisplay = (int) => {
             const editLink = `/app/integrations/smooch/${int.get('id')}`

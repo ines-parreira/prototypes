@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import IntegrationListRow from './IntegrationListRow'
-import {getIntegrationsList} from '../../../../state/integrations/utils'
+import {getIntegrationsList} from '../../../../state/integrations/helpers'
 import WrapInFacebookLogin from '../../detail/components/facebook/WrapInFacebookLogin'
 
 class IntegrationList extends React.Component {
@@ -36,20 +36,18 @@ class IntegrationList extends React.Component {
                             and perform actions in outside tools directly from Gorgias.
                         </div>
 
-                        <table className="ui very basic padded table">
-                            <tbody>
+                        <div className="div-table">
                             {
-                                list.map((c) => (
+                                list.map((c, i) => (
                                     <IntegrationListRow
-                                        key={c.get('type')}
-                                        integrationType={c}
+                                        key={i}
+                                        integrationConfig={c}
                                         onClickAdd={typeToOnClickAdd[c.get('type')]}
                                         isLoading={this._isLoading(c.get('type'))}
                                     />
                                 ))
                             }
-                            </tbody>
-                        </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -63,5 +61,4 @@ IntegrationList.propTypes = {
     actions: PropTypes.object.isRequired,
 }
 
-// eslint-disable-next-line no-class-assign
-export default IntegrationList = WrapInFacebookLogin(IntegrationList)
+export default WrapInFacebookLogin(IntegrationList)

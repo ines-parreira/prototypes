@@ -60,14 +60,18 @@ class SmoochIntegrationDetail extends React.Component {
         return (
             <div>
                 <p>
-                    To add a chat with Smooch to your website, add the following code before the {'</body>'} on your page:
+                    To add a chat to your website, add the following code before the <kbd>{'</body>'}</kbd> on your
+                    page:
                 </p>
                 <pre className="ui info message">
                     {'<script src="https://cdn.smooch.io/smooch.min.js"></script>\n'}
                     {`<script>Smooch.init({appToken: '${integration.getIn(['smooch', 'app_token'])}'});</script>`}
                 </pre>
                 <p>
-                    You can send user data to better identify who you are talking to. Check out <a href="http://docs.smooch.io/javascript/" target="_blank">Smooch's documentation</a> to learn how to do it.
+                    Chat is provided through Smooch, at no additional cost for you. You can send user data to better
+                    identify who you are talking to. Check out {' '}
+                    <a href="http://docs.smooch.io/javascript/" target="_blank">Smooch's documentation</a> to learn
+                    how to do it.
                 </p>
             </div>
         )
@@ -89,7 +93,7 @@ class SmoochIntegrationDetail extends React.Component {
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
                         <i className="right angle icon divider" />
-                        <Link to="/app/integrations/smooch" className="section">Smooch</Link>
+                        <Link to="/app/integrations/smooch" className="section">Chat</Link>
                         <i className="right angle icon divider" />
                         <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
                     </div>
@@ -106,7 +110,7 @@ class SmoochIntegrationDetail extends React.Component {
                     >
                         <Field
                             name="name"
-                            label="Integration Name"
+                            label="Integration name"
                             placeholder="Name"
                             required
                             component={InputField}

@@ -115,45 +115,62 @@ export const DEFAULT_SOURCE_PATHS = {
 /**
  * Integration-related
  */
-// Semantic icons for integration types.
-export const INTEGRATION_TYPE_TO_ICON = {
-    email: 'mail icon',
-    facebook: 'facebook square icon',
-    http: 'feed icon',
-    twitter: 'twitter icon',
-    segment: 'square icon',
-    smooch: 'comments icon'
-}
-
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
-    // {
-    //     type: 'email',
-    //     description: 'Connect your support inboxes'
-    // },
     {
         type: 'facebook',
         title: 'Facebook',
-        description: 'Connect your Facebook pages'
+        description: 'Create tickets when your customers post on your page or contact you on Messenger',
+        image: 'integrations/facebook.png',
     },
     {
         type: 'smooch',
-        title: 'Smooch',
-        description: 'Chat with your users'
+        title: 'Chat',
+        description: 'Add a chat on your website',
+        image: 'integrations/chat.png',
     },
     {
         type: 'http',
         title: 'HTTP',
-        description: 'Connect to anything over HTTP'
+        description: 'Connect any application to Gorgias',
+        image: 'integrations/http.png',
     },
-    // {
-    //     type: 'twitter',
-    //     description: 'Connect your twitter account'
-    // },
-    // {
-    //     type: 'segment',
-    //     description: 'Sync data with all your apps'
-    // }
+    {
+        title: 'Shopify',
+        description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#shopify',
+        image: 'integrations/shopify.png',
+    },
+    {
+        title: 'WooCommerce',
+        description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#woocommerce',
+        image: 'integrations/woocommerce.png',
+    },
+    {
+        title: 'Salesforce',
+        description: 'Display customer information next to tickets',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#salesforce',
+        image: 'integrations/salesforce.png',
+    },
+    {
+        title: 'Shipstation',
+        description: 'Display shipping info next to tickets',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#shipstation',
+        image: 'integrations/shipstation.png',
+    },
+    {
+        title: 'Slack',
+        description: 'Post notifications on Slack when tickets are created or updated',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#slack',
+        image: 'integrations/slack.png',
+    },
+    {
+        title: 'Zapier',
+        description: 'Trigger zaps with macros',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#zapier',
+        image: 'integrations/zapier.png',
+    },
 ]
 
 /**

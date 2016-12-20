@@ -1,55 +1,80 @@
 import React, {PropTypes} from 'react'
-import {Link, browserHistory} from 'react-router'
+import {connect} from 'react-redux'
+import {Link} from 'react-router'
 import classNames from 'classnames'
-import {INTEGRATION_TYPE_TO_ICON} from '../../../../config'
+import {getIconFromUrl} from '../../../../state/integrations/helpers'
 
-export default class IntegrationListRow extends React.Component {
+class IntegrationListRow extends React.Component {
     render() {
-        const {integrationType, onClickAdd, onClickEdit, isLoading} = this.props
+        const {integrationConfig, onClickAdd, onClickUpdate, isLoading, hasAnIntegration} = this.props
 
-        const editLink = `/app/integrations/${integrationType.get('type')}`
-        const triggerEdit = onClickEdit ||
-            (() => browserHistory.push(editLink))
+        let nextUrl = `/app/integrations/${integrationConfig.get('type')}`
 
-        const triggerAdd = onClickAdd ||
-            (() => browserHistory.push(`/app/integrations/${integrationType.get('type')}/new`))
+        if (!hasAnIntegration) {
+            nextUrl += '/new'
+        }
 
-        const buttonClasses = ['ui', 'basic', 'light', 'blue', 'button', 'right', {loading: isLoading}]
-        const button = integrationType.get('count') <= 0 ? (
-            <button className={classNames(buttonClasses)} onClick={triggerAdd}>
-                Add
-            </button>
-        ) : (
-            <button className={classNames(buttonClasses)} onClick={triggerEdit}>
-                Edit
-            </button>
-        )
+        const onClick = hasAnIntegration ? onClickUpdate : onClickAdd
+
+        const isExternalLink = !!integrationConfig.get('url')
+
+        const buttonClasses = ['icon', {
+            'notched circle loading': isLoading,
+            'angle right': !isLoading && !isExternalLink,
+            external: !isLoading && isExternalLink,
+        }]
+
+        const linkConfig = {
+            to: isExternalLink ? integrationConfig.get('url') : nextUrl,
+        }
+
+        if (onClick) {
+            linkConfig.onClick = onClick
+        }
+
+        if (isExternalLink) {
+            linkConfig.target = '_blank'
+        }
 
         return (
-            <tr className="IntegrationListRow">
-                <td className="center aligned">
-                    <i className={`${INTEGRATION_TYPE_TO_ICON[integrationType.get('type')]} huge`}/>
-                </td>
-                <td>
+            <Link
+                className="IntegrationListRow"
+                {...linkConfig}
+            >
+                <div>
+                    <img
+                        role="presentation"
+                        className="logo"
+                        src={getIconFromUrl(integrationConfig.get('image'))}
+                    />
+                </div>
+                <div>
                     <div className="ui header">
                         <span className="subject">
-                            <Link to={editLink}>{integrationType.get('title')}</Link>
-                            {integrationType.get('count') > 0 ? <span> ({integrationType.get('count')})</span> : ''}
+                            {integrationConfig.get('title')}
+                            {hasAnIntegration && <span> ({integrationConfig.get('count')})</span>}
                         </span>
                     </div>
-                    {integrationType.get('description')}
-                </td>
-                <td>
-                    {button}
-                </td>
-            </tr>
+                    {integrationConfig.get('description')}
+                </div>
+                <div>
+                    <i className={classNames(buttonClasses)} />
+                </div>
+            </Link>
         )
     }
 }
 
 IntegrationListRow.propTypes = {
-    integrationType: PropTypes.object.isRequired,
+    integrationConfig: PropTypes.object.isRequired,
     onClickAdd: PropTypes.func,
-    onClickEdit: PropTypes.func,
-    isLoading: PropTypes.bool
+    onClickUpdate: PropTypes.func,
+    isLoading: PropTypes.bool,
+    hasAnIntegration: PropTypes.bool.isRequired,
 }
+
+const mapStateToProps = (state, ownProps) => ({
+    hasAnIntegration: ownProps.integrationConfig.get('count', 0) > 0,
+})
+
+export default connect(mapStateToProps)(IntegrationListRow)

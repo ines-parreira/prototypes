@@ -2,9 +2,8 @@ import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import {fromJS} from 'immutable'
 import classNames from 'classnames'
-import {INTEGRATION_TYPE_TO_ICON} from '../../../../config'
 import NoIntegration from './NoIntegration'
-import {getIntegrationsList} from '../../../../state/integrations/utils'
+import {getIntegrationsList, getIconFromType} from '../../../../state/integrations/helpers'
 
 /**
  * A generic component to edit integrations of a given type.
@@ -20,13 +19,14 @@ export default class IntegrationList extends React.Component {
         let createIntegrationButtonClassNames = ['ui', 'right', 'floated', 'green', 'button']
 
         if (integrationType === 'facebook') {
-            createIntegrationButtonClassNames = createIntegrationButtonClassNames.concat([{loading: loading.get('facebookLogin')}])
+            createIntegrationButtonClassNames = createIntegrationButtonClassNames.concat([{
+                loading: loading.get('facebookLogin')
+            }])
         }
 
         const integrationTypes = fromJS(getIntegrationsList(integrations))
-        const integrationTitle = integrationTypes
-            .find(i => i.get('type', '') === integrationType, null, fromJS({}))
-            .get('title')
+        const integrationConfig = integrationTypes.find(i => i.get('type', '') === integrationType, null, fromJS({}))
+        const integrationTitle = integrationConfig.get('title')
 
         return (
             <div className="ui grid IntegrationEditView">
@@ -40,7 +40,11 @@ export default class IntegrationList extends React.Component {
 
                 <div className="ui sixteen wide column flex-spaced-row">
                     <h1 className="ui header">
-                        <i className={`${INTEGRATION_TYPE_TO_ICON[integrationType]} huge`} />
+                        <img
+                            role="presentation"
+                            className="logo"
+                            src={getIconFromType(integrationType)}
+                        />
 
                         <div className="content">
                             {integrationTitle}
@@ -74,7 +78,7 @@ export default class IntegrationList extends React.Component {
                             loading={loading.get('integrations', false)}
                         />
                     ) : (
-                        <table className="ui very basic padded table">
+                        <table className="ui selectable very basic padded table">
                             <tbody>
                                 {integrations.valueSeq().map(integrationToItemDisplay)}
                             </tbody>
@@ -91,7 +95,7 @@ IntegrationList.propTypes = {
     integrations: PropTypes.object.isRequired, // The integrations for the relevant type only
     createIntegration: PropTypes.func.isRequired, // The callback to create a new integration for this type.
     createIntegrationButtonText: PropTypes.string.isRequired, // The text for the button to create a new integration
-    longTypeDescription: PropTypes.string,
+    longTypeDescription: PropTypes.node,
     loading: PropTypes.object.isRequired,  // A map for different loading status(es)
     // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.
     integrationToItemDisplay: PropTypes.func.isRequired

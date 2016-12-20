@@ -169,7 +169,7 @@ class HttpIntegrationDetail extends React.Component {
                     >
                         <Field
                             name="name"
-                            label="Integration Name"
+                            label="Integration name"
                             placeholder="Name"
                             required
                             component={InputField}

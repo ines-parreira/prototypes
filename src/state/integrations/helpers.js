@@ -1,10 +1,11 @@
 import {fromJS} from 'immutable'
 import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
+import _find from 'lodash/find'
 
 /**
  * Compute the number of active integrations for each type
  */
-function getIntegrationsCountPerType(integrations = []) {
+const getIntegrationsCountPerType = (integrations = []) => {
     return integrations
         .reduce((accumulator, item) => {
             const newAccumulator = accumulator
@@ -23,7 +24,7 @@ function getIntegrationsCountPerType(integrations = []) {
  * @param integrations
  * @returns {*}
  */
-export function getIntegrationsList(integrations = []) {
+export const getIntegrationsList = (integrations = []) => {
     const counts = getIntegrationsCountPerType(integrations)
     return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription) => (
         {
@@ -32,3 +33,17 @@ export function getIntegrationsList(integrations = []) {
         })
     ))
 }
+
+export const getIconUrl = (type) => {
+    const config = _find(INTEGRATION_TYPE_DESCRIPTIONS, {type})
+    return config && config.image ? config.image : ''
+}
+
+export const getIconFromUrl = (url) => {
+    return url ? require(`../../../img/${url}`) : ''
+}
+
+export const getIconFromType = (type) => {
+    return getIconFromUrl(getIconUrl(type))
+}
+
