@@ -98,7 +98,7 @@ class SmoochIntegrationDetail extends React.Component {
                         <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
                     </div>
 
-                    <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
+                    <h1>{isUpdate ? integration.get('name') : 'Add new chat'}</h1>
                     <br />
                     {this._renderInstructions(isUpdate)}
                 </div>

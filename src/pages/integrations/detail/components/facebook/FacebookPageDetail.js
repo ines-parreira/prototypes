@@ -67,7 +67,7 @@ export default class FacebookPageDetail extends React.Component {
                         <i className="right angle icon divider"/>
                         <Link to="/app/integrations/facebook" className="section">Facebook</Link>
                         <i className="right angle icon divider"/>
-                        <a className="active section">{isUpdate ? page.get('name') : 'Add page'}</a>
+                        <a className="active section">{isUpdate ? page.get('name') : 'Add new Facebook page'}</a>
                     </div>
 
                     <h1>{integration.getIn(['facebook', 'name'])}</h1>
