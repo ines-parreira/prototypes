@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import {convertFromHTML} from 'draft-convert'
 import {convertToRaw, convertFromRaw, createFromText, ContentState, SelectionState} from 'draft-js'
 
-import ticketReplyCache from '../ticketReplyCache'
+import ticketReplyCache from './ticketReplyCache'
 import {renderTemplate} from '../../pages/common/utils/template'
 
 const signatureHTMLPrefix = '<div></div><div></div>'

@@ -136,7 +136,8 @@ export class TicketReplyCache {
 
         // save in storage
         try {
-            this.storage.setItem(`${CACHE_KEY_PREFIX}${id}${CACHE_KEY_SEPARATOR}${timestamp}`, JSON.stringify(ticket.toJS()))
+            this.storage.setItem(`${CACHE_KEY_PREFIX}${id}${CACHE_KEY_SEPARATOR}${timestamp}`,
+                JSON.stringify(ticket.toJS()))
         } catch (err) {
             console.error('Failed to save new state in local storage', err)
         }
@@ -177,7 +178,6 @@ export class TicketReplyCache {
         for (const key of this._keys()) {
             if (this._id(key) === id) {
                 this._deleteByKey(key)
-                break
             }
         }
     }

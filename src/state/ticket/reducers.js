@@ -3,7 +3,7 @@ import * as userTypes from './../users/constants'
 import {Map, List, fromJS} from 'immutable'
 import {convertToHTML} from '../../utils'
 import * as responseUtils from './responseUtils'
-import ticketReplyCache from '../ticketReplyCache'
+import ticketReplyCache from './ticketReplyCache'
 import {ANSWERABLE_SOURCE_TYPES} from '../../config'
 
 import _isUndefined from 'lodash/isUndefined'
