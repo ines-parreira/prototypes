@@ -4,6 +4,7 @@ import {Map, List, fromJS} from 'immutable'
 import {convertToHTML} from '../../utils'
 import * as responseUtils from './responseUtils'
 import ticketReplyCache from '../ticketReplyCache'
+import {ANSWERABLE_SOURCE_TYPES} from '../../config'
 
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
@@ -191,7 +192,7 @@ export default (state = initialState, action) => {
                 newState = newState.set('messages', newState.get('messages').push(respMessage))
             }
 
-             // Make sure we reset the cache before we send the message
+            // Make sure we reset the cache before we send the message
             ticketReplyCache.delete(state.get('id'))
 
             newState = newState.mergeDeep({
@@ -226,7 +227,12 @@ export default (state = initialState, action) => {
             }
 
             const newState = state.merge(fromJS(action.resp))
-            const sourceType = getSourceTypeOfResponse(newState.get('messages'))
+            let sourceType = getSourceTypeOfResponse(newState.get('messages'))
+
+            // if channel is not supported, suggest email answer
+            if (!ANSWERABLE_SOURCE_TYPES.includes(sourceType)) {
+                sourceType = 'email'
+            }
 
             return newState.set('newMessage', newMessage(
                 getChannelFromSourceType(sourceType),

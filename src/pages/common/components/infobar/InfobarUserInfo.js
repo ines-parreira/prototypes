@@ -193,6 +193,11 @@ class InfobarUserInfo extends React.Component {
                             target: '_blank'
                         }
                         break
+                    case 'phone':
+                        props = {
+                            href: `tel:${address}`
+                        }
+                        break
                     default:
                         props = null
                 }

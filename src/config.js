@@ -7,7 +7,6 @@ export const AVAILABLE_HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
 /**
  * Timeformat related
  */
-
 export const AVAILABLE_LANGUAGES = [
     {
         localeName: 'en',
@@ -22,8 +21,6 @@ export const AVAILABLE_LANGUAGES = [
 /**
  * View related
  */
-export const ACTIVITY_DISPLAY_COUNT = 6
-
 export const BASIC_OPERATORS = {
     eq: {
         label: 'is'
@@ -68,16 +65,9 @@ export const VIEW_TYPE_CONFIGURATION = {
 // Basically will be used in: source.setIn(['source', 'to', {PROPERTY_NAME}], identifier/address)
 export const SOURCE_VALUE_PROP = {
     email: 'address',
+    phone: 'address',
+    'ottspot-call': 'address',
     chat: 'smooch_id',
-    api: null,
-    'facebook-message': 'name',
-    'facebook-comment': 'name',
-    'facebook-post': 'name'
-}
-
-export const USER_VALUE_PROP = {
-    email: 'email',
-    chat: null,
     api: null,
     'facebook-message': 'name',
     'facebook-comment': 'name',
@@ -92,11 +82,13 @@ export const USER_CHANNEL_CLASS = {
     'facebook-message': 'icon facebook-messenger',
     chat: 'icon comments',
     phone: 'icon phone',
+    'ottspot-call': 'icon phone',
 }
 
 export const TICKET_STATUSES = ['open', 'new', 'closed']
 export const CHANNELS = ['email', 'phone', 'sms', 'chat', 'twitter', 'facebook', 'api']
 export const VIA = CHANNELS.concat(['form', 'helpdesk', 'app', 'rule'])
+export const ANSWERABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-post', 'facebook-comment', 'facebook-message']
 
 /**
  * Widget related
@@ -188,21 +180,8 @@ export const DEFAULT_ACTIONS = [
     'setPriority',
     'addAttachments',
     'http',
-    // 'http_integration',
     'notify'
 ]
-
-export const ARGUMENT_TYPES = [
-    'email',        // an email input
-    'password',     // a password input
-    'string',       // a standard text input
-    'object',       // a dictionary ( input: textarea )
-    'bool',         // a checkbox
-    'array'
-]
-
-export const ACTION_STATUS = ['pending', 'running', 'success', 'error', 'canceled']
-
 
 export const ACTION_TEMPLATES = {
     addAttachments: {

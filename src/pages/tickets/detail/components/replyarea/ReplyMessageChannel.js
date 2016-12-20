@@ -7,6 +7,7 @@ import {firstMessage} from '../../../../../utils'
 import {isTicketDifferent} from './../../../common/utils'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import _set from 'lodash/set'
+import _reduce from 'lodash/reduce'
 
 class ReplyMessageChannel extends React.Component {
     componentDidMount() {
@@ -30,19 +31,21 @@ class ReplyMessageChannel extends React.Component {
     getClassNames() {
         const message = this.props.ticket.get('newMessage')
         const channel = message.getIn(['source', 'type'])
-        const popupChannelClassNames = {
-            default: 'action icon',
-            private: 'action icon comment yellow',
-            email: 'action icon mail blue',
-            chat: 'action icon purple comments',
-            api: 'action icon code',
-            'facebook-comment': 'action icon facebook square blue',
-            'facebook-message': 'action icon facebook-messenger blue'
-        }
+        const popupChannelClassNames = _reduce({
+            default: '',
+            private: 'comment yellow',
+            email: 'mail blue',
+            chat: 'purple comments',
+            'facebook-comment': 'facebook square blue',
+            'facebook-message': 'facebook-messenger blue'
+        }, (result, value, key) => {
+            result[key] = `action icon ${value}`
+            return result
+        }, {})
 
         if (!message.get('public')) {
             return popupChannelClassNames.private
-        } else if (~Object.keys(popupChannelClassNames).indexOf(channel)) {
+        } else if (Object.keys(popupChannelClassNames).includes(channel)) {
             return popupChannelClassNames[channel]
         }
 
@@ -129,7 +132,9 @@ class ReplyMessageChannel extends React.Component {
                 hidden: !isUpdate ? true : ticketFirstMessage.source.type !== 'chat',
             }),
             facebookComment: classnames('item', {
-                hidden: !isUpdate || ticketFirstMessage.source.type !== 'facebook-post',
+                hidden: !isUpdate
+                || ticketFirstMessage.source.type !== 'facebook-post'
+                || ticketFirstMessage.source.type !== 'facebook-comment',
             }),
             facebookMessage: classnames('item', {
                 hidden: !isUpdate || ticketFirstMessage.source.type !== 'facebook-message',

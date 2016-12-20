@@ -67,9 +67,11 @@ export default class TicketMessage extends React.Component {
             email: 'mail',
             chat: 'comments',
             api: 'code',
+            phone: 'phone',
+            'ottspot-call': 'phone',
             'facebook-message': 'facebook-messenger',
             'facebook-comment': 'facebook square',
-            'facebook-post': 'facebook square'
+            'facebook-post': 'facebook square',
         }
 
         const source = Object.assign({}, {
