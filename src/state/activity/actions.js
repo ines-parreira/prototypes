@@ -88,13 +88,11 @@ export const pollActivity = () => (dispatch, getState) => {
                     const previousTicket = previousTickets.find(t => t.get('id') === currentTicket.get('id'))
                     let isNew = false
 
-                    // the ticket was not there the previous time, it is a new one
                     if (!previousTicket) {
+                        // the ticket was not there the previous time, it is a new one
                         isNew = true
-                    }
-
-                    // the ticket had not got something new, but now it has
-                    if (!previousTicket.get('has_something_new')) {
+                    } else if (!previousTicket.get('has_something_new')) {
+                        // the ticket had not got something new, but now it has
                         isNew = true
                     }
 
