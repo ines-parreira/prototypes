@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
-import {Link} from 'react-router'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _ from 'lodash'
@@ -10,7 +9,6 @@ import {AVAILABLE_LANGUAGES} from './../../../../config'
 import formSender from '../../../common/utils/formSender'
 
 import {InputField, RichTextAreaField, SelectField} from '../../../common/components/formFields'
-
 
 class YourProfileView extends React.Component {
     constructor(props) {
@@ -60,8 +58,11 @@ class YourProfileView extends React.Component {
 
         return (
             <div className="ui grid">
-                <div className="twelve wide column">
-                    <h1>Your profile</h1>
+                <div className="six wide column">
+                    <h1>
+                        <i className="user alternative blue icon ml5ni mr10i" />
+                        Your profile
+                    </h1>
                     <p>
                         Update your profile information.
                     </p>
@@ -129,19 +130,6 @@ class YourProfileView extends React.Component {
                             label="Signature"
                             component={RichTextAreaField}
                         />
-
-                        <div className="field">
-                            <label>Password</label>
-                            <Link
-                                type="button"
-                                className="ui basic grey button"
-                                to="/app/settings/your-profile/change-password"
-                            >
-                                Change password
-                            </Link>
-                        </div>
-
-                        <br /><br />
 
                         <div className="field">
 

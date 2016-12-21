@@ -106,6 +106,13 @@ class Navbar extends React.Component {
                     </div>
 
                     <div className="menu">
+                        <Link
+                            className="item"
+                            to="/app/settings/profile"
+                        >
+                            <i className="user icon" />
+                            Your profile
+                        </Link>
                         <a
                             className="item"
                             href="/logout"

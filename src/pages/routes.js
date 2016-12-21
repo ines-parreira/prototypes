@@ -131,7 +131,7 @@ export default (
                 navbar: IntegrationNavbarContainer
             }}
         >
-            <Route path=":integrationId"/>
+            <Route path=":integrationId" />
         </Route>
         <Route
             path="rules"
@@ -160,7 +160,7 @@ export default (
                     content: UserRoleRequired(
                         AccountContainer,
                         'admin',
-                        '/app/settings/your-profile'
+                        '/app/settings/profile'
                     ),
                     navbar: SettingsNavbarContainer
                 }}
@@ -173,14 +173,14 @@ export default (
                 }}
             />
             <Route
-                path="your-profile"
+                path="profile"
                 components={{
                     content: YourProfileContainer,
                     navbar: SettingsNavbarContainer
                 }}
             />
             <Route
-                path="your-profile/change-password"
+                path="change-password"
                 components={{
                     content: ChangePasswordContainer,
                     navbar: SettingsNavbarContainer
@@ -209,6 +209,6 @@ export default (
                 />
             </Route>
         </Route>
-        <Route path="*" component={NoMatch}/>
+        <Route path="*" component={NoMatch} />
     </Route>
 )

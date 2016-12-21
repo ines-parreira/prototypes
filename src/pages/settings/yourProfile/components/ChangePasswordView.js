@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
-import {Link} from 'react-router'
 import classNames from 'classnames'
 
 import {InputField} from '../../../common/components/formFields'
@@ -31,14 +30,11 @@ class ChangePasswordView extends React.Component {
 
         return (
             <div className="ui grid">
-                <div className="twelve wide column">
-                    <div className="ui large breadcrumb">
-                        <Link to="/app/settings/your-profile">Your profile</Link>
-                        <i className="right angle icon divider"/>
-                        <a className="active section">Change password</a>
-                    </div>
-
-                    <h1>Change password</h1>
+                <div className="six wide column">
+                    <h1>
+                        <i className="lock alternative blue icon ml5ni mr10i"/>
+                        Change password
+                    </h1>
                     <p>
                         Enter your current password to confirm your identity, then the new password you would like to
                         set instead.

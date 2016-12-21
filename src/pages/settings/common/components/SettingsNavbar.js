@@ -14,43 +14,61 @@ export default class SettingsNavbar extends React.Component {
             currentUser,
             location: {pathname}
         } = this.props
-        // links in the sidebar
-        const links = [{
-            requiredRole: 'admin',
-            to: 'account',
-            text: 'Account'
+
+        const categories = [{
+            name: 'You',
+            links: [{
+                to: 'profile',
+                text: 'Your profile'
+            }, {
+                to: 'change-password',
+                text: 'Change password'
+            }]
         }, {
-            requiredRole: 'admin',
-            to: 'billing',
-            text: 'Billing'
-        }, {
-            to: 'your-profile',
-            text: 'Your profile'
+            name: 'General',
+            links: [{
+                requiredRole: 'admin',
+                to: 'account',
+                text: 'Account'
+            }, {
+                requiredRole: 'admin',
+                to: 'billing',
+                text: 'Billing'
+            }]
         }]
 
         return (
-            <Navbar currentUser={currentUser} activeContent="settings">
-                <div className="menu">
-                    {links.map(({to, text, requiredRole}) => {
-                        // hide link if user hasn't the required role
-                        if (requiredRole && !hasRole(currentUser, requiredRole)) {
-                            return
-                        }
+            <Navbar activeContent="settings">
+                {categories.map(({name, links}, index) => (
+                    <div
+                        className="item"
+                        key={index}
+                    >
+                        <h4>{name}</h4>
 
-                        const isActive = pathname.split('/').includes(to)
-                            || (/settings\/?$/.test(pathname) && to === 'account')
+                        <div className="menu">
+                            {links.map(({to, text, requiredRole}) => {
+                                // hide link if user hasn't the required role
+                                if (requiredRole && !hasRole(currentUser, requiredRole)) {
+                                    return
+                                }
 
-                        return (
-                            <Link
-                                key={to}
-                                to={`/app/settings/${to}`}
-                                className={`item ${isActive ? 'active' : ''}`}
-                            >
-                                {text}
-                            </Link>
-                        )
-                    })}
-                </div>
+                                const isActive = pathname.split('/').includes(to)
+                                    || (/settings\/?$/.test(pathname) && to === 'account')
+
+                                return (
+                                    <Link
+                                        key={to}
+                                        to={`/app/settings/${to}`}
+                                        className={`item ${isActive ? 'active' : ''}`}
+                                    >
+                                        {text}
+                                    </Link>
+                                )
+                            })}
+                        </div>
+                    </div>
+                ))}
             </Navbar>
         )
     }
