@@ -1,9 +1,8 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {displayUserNameFromSource} from '../../../tickets/common/utils'
-import {stripHTML, lastMessage as getLastMessage, firstMessage as getFirstMessage} from '../../../../utils'
+import {stripHTML} from '../../../../utils'
 import {RenderLabel, TagLabel} from '../../../common/utils/labels'
-import _get from 'lodash/get'
 
 export default class ComplexTableCell extends React.Component {
     _valueFieldContent = () => {
@@ -32,11 +31,17 @@ export default class ComplexTableCell extends React.Component {
                     case 'assignee':
                         return item.get('assignee_user') || fromJS({})
                     case 'details': {
-                        const previewedMessage = getLastMessage(item.get('messages', fromJS([])).toJS())
-
                         let subject = stripHTML(item.get('subject'))
 
-                        if (!previewedMessage) {
+                        // Optionally show how many messages a ticket has in the subject
+                        const messageCount = item.get('messages_count')
+                        if (messageCount > 1) {
+                            subject = `(${messageCount}) ${subject}`
+                        }
+
+                        const body = item.get('excerpt')
+
+                        if (!body) {
                             return (
                                 <div className="ui header">
                                     <span className="subject">
@@ -45,17 +50,6 @@ export default class ComplexTableCell extends React.Component {
                                 </div>
                             )
                         }
-
-                        // Optionally show how many messages a ticket has in the subject
-                        const messageCount = this.props.item.get('messages').size
-                        if (messageCount > 1) {
-                            subject = `(${messageCount}) ${subject}`
-                        }
-
-                        const body = previewedMessage.body_html
-                            ? stripHTML(previewedMessage.body_html)
-                            : previewedMessage.body_text
-
                         return (
                             <div className="ui header">
                                 <span className="subject">
@@ -68,32 +62,24 @@ export default class ComplexTableCell extends React.Component {
                         )
                     }
                     case 'from': {
-                        const firstMessage = getFirstMessage(item.get('messages', fromJS([])).toJS())
-
-                        if (!firstMessage) {
+                        if (!item.get('first_source')) {
                             break
                         }
 
-                        const path = 'source.from'
-
                         // get the part of "source" that we want
-                        const source = _get(firstMessage, path, '')
+                        const source = item.getIn(['first_source', 'from'], fromJS({})).toJS()
                         // display the user based on the message type
-                        return displayUserNameFromSource(source, firstMessage.source.type)
+                        return displayUserNameFromSource(source, item.getIn(['first_source', 'type']))
                     }
                     case 'to': {
-                        const firstMessage = getFirstMessage(item.get('messages', fromJS([])).toJS())
-
-                        if (!firstMessage) {
+                        if (!item.get('first_source')) {
                             break
                         }
 
-                        const path = 'source.to.0'
-
                         // get the part of "source" that we want
-                        const source = _get(firstMessage, path, '')
+                        const source = item.getIn(['first_source', 'to', 0], fromJS({})).toJS()
                         // display the user based on the message type
-                        return displayUserNameFromSource(source, firstMessage.source.type)
+                        return displayUserNameFromSource(source, item.getIn(['first_source', 'type']))
                     }
                     case 'tags': {
                         return (
