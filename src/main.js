@@ -1,9 +1,8 @@
 import React from 'react'
 import {render} from 'react-dom'
+import {browserHistory} from 'react-router'
 import Root from './pages/Root'
 import {fromJS} from 'immutable'
-import {browserHistory} from 'react-router'
-import {syncHistoryWithStore} from 'react-router-redux'
 import configureStore from './store/configureStore'
 import moment from 'moment-timezone'
 import Promise from 'promise-polyfill'
@@ -36,13 +35,12 @@ const toImmutableProps = (plainObject) => {
 // Supply an initial state to redux for faster page loads. See #752
 const initialState = window.GORGIAS_STATE || {}
 const store = configureStore(toImmutableProps(initialState))
-const history = syncHistoryWithStore(browserHistory, store)
 
 if (initialState.currentUser) {
     initMoment(initialState.currentUser)
 }
 
 render(
-    <Root history={history} store={store} />,
+    <Root history={browserHistory} store={store} />,
     document.getElementById('App')
 )
