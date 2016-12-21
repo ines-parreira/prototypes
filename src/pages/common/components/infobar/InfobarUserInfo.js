@@ -60,7 +60,7 @@ class InfobarUserInfo extends React.Component {
         this.contextWidgets = hasWidgets ? currentItems : fromJS([])
 
         if (widgets.getIn(['_internal', 'hasFetchedWidgets'])) {
-            const shouldGenerateWidgets = areSourcesReady(sources)
+            const shouldGenerateWidgets = areSourcesReady(sources, context)
                 && !hasWidgets
                 && !widgets.getIn(['_internal', 'hasGeneratedWidgets'])
 
@@ -252,11 +252,14 @@ class InfobarUserInfo extends React.Component {
             user,
             sources,
             isDefaultUser,
+            widgets
         } = this.props
 
         if (!user || user.isEmpty()) {
             return null
         }
+
+        const context = widgets.get('currentContext', '')
 
         return (
             <div className="flex-vertical">
@@ -285,7 +288,7 @@ class InfobarUserInfo extends React.Component {
                     {this._renderUserChannels(user.get('channels', fromJS([])))}
                 </div>
                 {
-                    areSourcesReady(sources) ? this._renderWidgets() : this._renderSuggestion()
+                    areSourcesReady(sources, context) ? this._renderWidgets() : this._renderSuggestion()
                 }
             </div>
         )

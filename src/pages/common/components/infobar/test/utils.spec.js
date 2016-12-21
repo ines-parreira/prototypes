@@ -147,15 +147,17 @@ describe('widgets infobar utils', () => {
             fromJS({})
         ]
 
+        const context = 'ticket'
+
         it('detection OK', () => {
             correct.forEach((input) => {
-                expect(utils.areSourcesReady(input)).toBe(true)
+                expect(utils.areSourcesReady(input, context)).toBe(true)
             })
         })
 
         it('detection KO', () => {
             incorrect.forEach((input) => {
-                expect(utils.areSourcesReady(input)).toBe(false)
+                expect(utils.areSourcesReady(input, context)).toBe(false)
             })
         })
     })

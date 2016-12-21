@@ -142,32 +142,32 @@ export function renderTemplate(text, context = {}) {
  * @param everySources
  * @returns {*|boolean}
  */
-export function areSourcesReady(sources, everySources = true) {
+export function areSourcesReady(sources, context, everySources = true) {
     // for every source
-    return sources.some((source, key) => {
-        // get the path we have to search in
-        // ex : ticket.requester.customer -> requester.customer (because ticket is already in source)
-        const sourcePaths = _.get(DEFAULT_SOURCE_PATHS, key)
+    const currentSource = sources.get(context)
 
-        if (!sourcePaths) {
+    // get the path we have to search in
+    // ex : ticket.requester.customer -> requester.customer (because ticket is already in source)
+    const sourcePaths = _.get(DEFAULT_SOURCE_PATHS, context)
+
+    if (!sourcePaths || !currentSource) {
+        return false
+    }
+
+    const condition = everySources ? 'every' : 'some'
+
+    return sourcePaths[condition]((sourcePath) => {
+        // we remove the first property of the source origin path since we are searching directly in the source
+        // ex : we transform ticket.requester.customer into ['requester', 'customer']
+        const immutableSourcePath = sourcePath.split('.').slice(1)
+
+        const sourceData = currentSource.getIn(immutableSourcePath, fromJS({}))
+
+        if (!sourceData) {
             return false
         }
 
-        const condition = everySources ? 'every' : 'some'
-
-        return sourcePaths[condition]((sourcePath) => {
-            // we remove the first property of the source origin path since we are searching directly in the source
-            // ex : we transform ticket.requester.customer into ['requester', 'customer']
-            const immutableSourcePath = sourcePath.split('.').slice(1)
-
-            const sourceData = source.getIn(immutableSourcePath, fromJS({}))
-
-            if (!sourceData) {
-                return false
-            }
-
-            return !sourceData.isEmpty()
-        })
+        return !sourceData.isEmpty()
     })
 }
 
@@ -194,7 +194,7 @@ export function canDisplayWidget(widget, source) {
 
     return areSourcesReady(fromJS({
         [initialSourceName]: source.get(initialSourceName, fromJS({}))
-    }))
+    }), initialSourceName)
 }
 
 /**

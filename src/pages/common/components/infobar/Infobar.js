@@ -194,9 +194,11 @@ class Infobar extends React.Component {
         const shouldForceSearch = this.state.data.get('shouldForceSearch') && !this.state.data.get('isInitialized')
         const forcedQuery = shouldForceSearch ? user.get('name', '') : null
 
+        const context = widgets.get('currentContext', '')
+
         const canEditWidgets = !isLoading
             && hasFetchedWidgets
-            && areSourcesReady(sources)
+            && areSourcesReady(sources, context)
             && mode === 'default'
             && !forcedQuery
 

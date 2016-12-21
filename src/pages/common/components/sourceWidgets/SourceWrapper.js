@@ -17,7 +17,7 @@ export default class SourceWrapper extends React.Component {
 
         const hasWidgetsTemplates = !this.state.widgetsTemplate.isEmpty()
 
-        const shouldGenerateWidgets = areSourcesReady(sources)
+        const shouldGenerateWidgets = areSourcesReady(sources, context)
             && !hasWidgetsTemplates
 
         // generate widgets template from incoming json and use it to display source widgets
