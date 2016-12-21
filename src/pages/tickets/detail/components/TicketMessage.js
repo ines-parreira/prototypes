@@ -20,7 +20,6 @@ export default class TicketMessage extends React.Component {
         //     on: 'hover',
         //     action: 'nothing'
         // })
-        $('.actions .label').popup({inline: true, hoverable: true, position: 'top left'})
     }
 
     renderAttachment(message) {
