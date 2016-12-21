@@ -78,15 +78,22 @@ export default (state = initialState, action) => {
         case types.ADD_ATTACHMENT_START:
             return state.setIn(['_internal', 'loading', 'addAttachment'], true)
 
-        case types.ADD_ATTACHMENT_SUCCESS:
-            return state.mergeDeep({
-                newMessage: {
-                    attachments: state.getIn(['newMessage', 'attachments']).concat(action.resp)
-                },
-                state: {
-                    dirty: true
-                }
-            }).setIn(['_internal', 'loading', 'addAttachment'], false)
+        case types.ADD_ATTACHMENT_SUCCESS: {
+            let newState = state
+
+            if (action.ticketId === state.get('id')) {
+                newState = newState.mergeDeep({
+                    newMessage: {
+                        attachments: state.getIn(['newMessage', 'attachments']).concat(action.resp)
+                    },
+                    state: {
+                        dirty: true
+                    }
+                })
+            }
+
+            return newState.setIn(['_internal', 'loading', 'addAttachment'], false)
+        }
 
         case types.ADD_ATTACHMENTS:
             return state.updateIn(

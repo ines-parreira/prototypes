@@ -34,6 +34,7 @@ export const addAttachments = (ticket, atts) => (dispatch) => {
             (att) => (att.content_type.startsWith('image')) || (att.content_type.startsWith('video')))
 
         const previousAtts = ticket.getIn(['newMessage', 'attachments'])
+
         if ((previousAtts.size > 0) || (atts.length > 1) || atts.length !== attsFiltered.length) {
             dispatch(notify({
                 autoDismiss: false,
@@ -59,11 +60,13 @@ export const addAttachments = (ticket, atts) => (dispatch) => {
     for (const attachment of attachments) {
         formData.append(attachment.name, attachment.file)
     }
+
     return axios.post('/api/upload/', formData)
         .then((json = {}) => json.data)
         .then(resp => {
             dispatch({
                 type: types.ADD_ATTACHMENT_SUCCESS,
+                ticketId: ticket.get('id'),
                 resp
             })
         })
