@@ -176,6 +176,9 @@ export default (state = initialState, action) => {
         }
 
         case types.SUBMIT_TICKET_MESSAGE_SUCCESS: {
+            // Make sure we reset the cache before we send the message
+            ticketReplyCache.delete(action.resp.ticket_id)
+
             // If we changed the displayed ticket (e.g. submit and close), we dont want to change the state.
             if (action.resp.ticket_id !== state.get('id') && state.get('id')) {
                 return state
@@ -191,9 +194,6 @@ export default (state = initialState, action) => {
             } else {
                 newState = newState.set('messages', newState.get('messages').push(respMessage))
             }
-
-            // Make sure we reset the cache before we send the message
-            ticketReplyCache.delete(state.get('id'))
 
             newState = newState.mergeDeep({
                 state: {
