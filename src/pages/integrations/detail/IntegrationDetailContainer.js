@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
 import * as IntegrationsActions from '../../../state/integrations/actions'
+import * as IntegrationsSelectors from '../../../state/integrations/selectors'
 
 import FacebookAvailablePages from './components/facebook/FacebookAvailablePages'
 import FacebookPageDetail from './components/facebook/FacebookPageDetail'
@@ -13,6 +14,9 @@ import HttpIntegrationDetail from './components/http/HttpIntegrationDetail'
 
 import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
 import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
+
+import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList'
+import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
 
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
@@ -52,6 +56,8 @@ class IntegrationDetailContainer extends React.Component {
             integrations: integrations.get('integrations', fromJS([])),
             loading: integrations.getIn(['state', 'loading'], fromJS({})),
         }
+
+        const redirectUri = this.props.getRedirectUri(params.integrationType)
 
         switch (params.integrationType) {
             case 'facebook':
@@ -125,6 +131,27 @@ class IntegrationDetailContainer extends React.Component {
                     )
                 }
 
+            case 'shopify':
+                if (isDetail) {
+                    return (
+                        <ShopifyIntegrationDetail
+                            actions={actions}
+                            integration={commonProps.integration}
+                            isUpdate={isUpdate}
+                            loading={commonProps.loading}
+                            redirectUri={redirectUri}
+                        />
+                    )
+                } else {
+                    return (
+                        <ShopifyIntegrationList
+                            actions={actions}
+                            integrations={commonProps.integrations}
+                            loading={commonProps.loading}
+                        />
+                    )
+                }
+
             default:
                 return null
         }
@@ -139,11 +166,13 @@ IntegrationDetailContainer.propTypes = {
         integrationId: PropTypes.string
     }).isRequired,
     settings: PropTypes.object.isRequired,
+    getRedirectUri: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
     integrations: state.integrations,
     settings: state.settings,
+    getRedirectUri: IntegrationsSelectors.makeGetRedirectUri(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -107,6 +107,7 @@ export const DEFAULT_SOURCE_PATHS = {
 /**
  * Integration-related
  */
+
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
@@ -128,9 +129,9 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/http.png',
     },
     {
+        type: 'shopify',
         title: 'Shopify',
         description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#shopify',
         image: 'integrations/shopify.png',
     },
     {
@@ -162,7 +163,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Trigger zaps with macros',
         url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#zapier',
         image: 'integrations/zapier.png',
-    },
+    }
 ]
 
 /**

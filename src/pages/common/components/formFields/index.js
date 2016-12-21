@@ -1,4 +1,5 @@
 export {default as InputField} from './InputField'
+export {default as LabeledInputField} from './LabeledInputField'
 export {default as URLInputField} from './URLInputField'
 export {default as TextAreaField} from './TextAreaField'
 export {default as JsonField} from './JsonField'

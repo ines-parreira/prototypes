@@ -3,34 +3,9 @@ import {sortBy as _sortBy} from 'lodash'
 import {browserHistory} from 'react-router'
 import {notify} from '../notifications/actions'
 import moment from 'moment'
+import {fromJS} from 'immutable'
 import * as types from './constants'
 
-export function fetchIntegration(integrationId, integrationType) {
-    return (dispatch) => {
-        dispatch({
-            type: types.FETCH_INTEGRATION_START,
-            id: integrationId
-        })
-
-        return axios.get(`/api/integrations/${integrationId}`)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                dispatch({
-                    type: types.FETCH_INTEGRATION_SUCCESS,
-                    integration: resp
-                })
-            })
-            .catch(error => {
-                // We redirect to the integrations home page if we can't find the wanted integration on the server
-                browserHistory.replace(`/app/integrations/${integrationType}`)
-                return dispatch({
-                    type: types.FETCH_INTEGRATION_ERROR,
-                    error,
-                    reason: 'Failed to fetch integration'
-                })
-            })
-    }
-}
 
 export function fetchIntegrations() {
     return (dispatch) => {
@@ -57,6 +32,91 @@ export function fetchIntegrations() {
                     type: types.FETCH_INTEGRATIONS_ERROR,
                     error,
                     reason: 'Failed to fetch integrations'
+                })
+            })
+    }
+}
+
+/**
+ * Helper to execute all actions that should be executed when an Integration is successfully created.
+ *
+ * @param dispatch: the dispatch method
+ * @param resp: the raw Integration data coming back from the server
+ */
+function onCreateSuccess(dispatch, resp) {
+    dispatch({
+        type: types.CREATE_INTEGRATION_SUCCESS,
+        resp
+    })
+
+    fetchIntegrations()(dispatch)
+
+    browserHistory.push(`/app/integrations/${resp.type}/${resp.id}`)
+
+    dispatch(notify({
+        type: 'success',
+        message: 'Integration successfully added'
+    }))
+}
+
+export function triggerCreateSuccess(integration) {
+    return (dispatch) => onCreateSuccess(dispatch, integration)
+}
+
+/**
+ * Helper to execute all actions that should be executed when an Integration is successfully updated.
+ *
+ * @param dispatch: the dispatch method
+ * @param resp: the raw Integration data coming back from the server
+ */
+function onUpdateSuccess(dispatch, resp) {
+    dispatch({
+        type: types.UPDATE_INTEGRATION_SUCCESS,
+        resp
+    })
+
+    fetchIntegrations()(dispatch)
+
+    dispatch(notify({
+        type: 'success',
+        message: 'Integration successfully updated'
+    }))
+}
+
+export function fetchIntegration(integrationId, integrationType, waitingForAuthentication = false) {
+    return (dispatch) => {
+        if (!waitingForAuthentication) {
+            dispatch({
+                type: types.FETCH_INTEGRATION_START,
+                id: integrationId
+            })
+        }
+
+        return axios.get(`/api/integrations/${integrationId}`)
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.FETCH_INTEGRATION_SUCCESS,
+                    integration: resp
+                })
+
+                if (waitingForAuthentication) {
+                    const isPending = fromJS(resp).getIn(['meta', 'oauth', 'status'], null) === 'pending'
+
+                    if (isPending) {
+                        setTimeout(() => dispatch(fetchIntegration(integrationId, integrationType, true)), 3000)
+                    } else {
+                        onCreateSuccess(dispatch, resp)
+                    }
+                }
+            })
+            .catch(error => {
+                // We redirect to the integrations home page if we can't find the wanted integration on the server
+                browserHistory.replace(`/app/integrations/${integrationType}`)
+                return dispatch({
+                    type: types.FETCH_INTEGRATION_ERROR,
+                    error,
+                    reason: 'Failed to fetch integration'
                 })
             })
     }
@@ -186,13 +246,14 @@ export const facebookLogin = () => ((dispatch, getState) => {
 
 function updateOrCreateIntegrationRequest(integration, action) {
     return (dispatch) => {
+        const isUpdate = integration.get('id')
+
         dispatch({
-            type: types.UPDATE_INTEGRATION_START,
+            type: isUpdate ? types.UPDATE_INTEGRATION_START : types.CREATE_INTEGRATION_START,
             integration
         })
 
         let promise
-        const isUpdate = integration.get('id')
 
         if (isUpdate) {
             promise = axios.put(
@@ -206,25 +267,15 @@ function updateOrCreateIntegrationRequest(integration, action) {
         return promise
             .then((json = {}) => json.data)
             .then(resp => {
-                dispatch({
-                    type: types.UPDATE_INTEGRATION_SUCCESS,
-                    resp
-                })
-
-                fetchIntegrations()(dispatch)
-
-                if (!isUpdate) {
-                    browserHistory.push(`/app/integrations/${integration.get('type')}`)
+                if (isUpdate) {
+                    onUpdateSuccess(dispatch, resp)
+                } else {
+                    onCreateSuccess(dispatch, resp)
                 }
-
-                dispatch(notify({
-                    type: 'success',
-                    message: `Integration successfully ${isUpdate ? 'updated' : 'added'}`
-                }))
             })
             .catch(error => {
                 return dispatch({
-                    type: types.UPDATE_INTEGRATION_ERROR,
+                    type: isUpdate ? types.UPDATE_INTEGRATION_ERROR : types.CREATE_INTEGRATION_ERROR,
                     error,
                     reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration'
                 })
@@ -243,6 +294,15 @@ export function deactivateIntegration(integration) {
 export function activateIntegration(integration) {
     return (dispatch) => {
         const newIntegration = integration.set('deactivated_datetime', null)
+
+        if (newIntegration.getIn(['meta', 'oauth', 'status'], null) !== 'success') {
+            return dispatch({
+                type: types.UPDATE_INTEGRATION_ERROR,
+                error: true,
+                reason: 'You can\'t activate this integration: the authentication process is in progress.'
+            })
+        }
+
         return updateOrCreateIntegrationRequest(newIntegration)(dispatch)
     }
 }

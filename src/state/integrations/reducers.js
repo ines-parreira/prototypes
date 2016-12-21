@@ -5,6 +5,7 @@ import * as types from './constants.js'
 const initialState = fromJS({
     integrations: [],
     integration: {},
+    authentication: {},  // store data necessary for authenticating from the front-end, for each integration type
     state: {
         loading: {
             facebookLogin: false,
@@ -73,6 +74,7 @@ export default (state = initialState, action) => {
 
         case types.FACEBOOK_LOGIN:
             return state.setIn(['state', 'loading', 'facebookLogin'], true)
+
         case types.FACEBOOK_LOGIN_ERROR:
             return state.setIn(['state', 'loading', 'facebookLogin'], false)
 
@@ -84,6 +86,7 @@ export default (state = initialState, action) => {
                 for (const pageIntegration of action.resp.data) {
                     const existingIndex = newState.get('integrations')
                         .findIndex((int) => int.getIn(['facebook', 'page_id']) === pageIntegration.facebook.page_id)
+
                     if (~existingIndex) {
                         newState = newState.setIn(['integrations', existingIndex], fromJS(pageIntegration))
                     } else {
@@ -100,12 +103,15 @@ export default (state = initialState, action) => {
         case types.FACEBOOK_LOGIN_STATUS:
             return state.setIn(['_internal', 'facebookLoginStatus'], action.status)
 
+        case types.CREATE_INTEGRATION_START:
         case types.UPDATE_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'updateIntegration'], action.integration.get('id', true))
 
+        case types.CREATE_INTEGRATION_ERROR:
         case types.UPDATE_INTEGRATION_ERROR:
             return state.setIn(['state', 'loading', 'updateIntegration'], false)
 
+        case types.CREATE_INTEGRATION_SUCCESS:
         case types.UPDATE_INTEGRATION_SUCCESS:
             return state.setIn(['state', 'loading', 'updateIntegration'], false)
                 .set('integration', fromJS(action.resp))
