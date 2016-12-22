@@ -50,6 +50,11 @@ class YourProfileView extends React.Component {
         normalizedValues.signature_html = values.signature.html
         delete normalizedValues.signature
 
+        // if no text, set no html
+        if (!normalizedValues.signature_text) {
+            normalizedValues.signature_html = ''
+        }
+
         return formSender(this.props.actions.submitUser(normalizedValues, 0))
     }
 
