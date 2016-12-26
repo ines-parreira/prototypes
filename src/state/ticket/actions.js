@@ -283,7 +283,7 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
         ticketId
     })
     const currentUser = getState().currentUser
-    macro.get('actions').forEach(action => dispatch(applyMacroAction(action, currentUser)))
+    macro.get('actions', fromJS([])).forEach(action => dispatch(applyMacroAction(action, currentUser)))
 
     dispatch({
         type: types.RECORD_MACRO,
