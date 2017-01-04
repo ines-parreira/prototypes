@@ -3,6 +3,7 @@ import ViewFilters from './ComplexTableFilters'
 import {browserHistory} from 'react-router'
 import {slugify, getPluralObjectName} from '../../../../utils'
 import classNames from 'classnames'
+import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 export default class FilterTopbar extends React.Component {
     state = {
@@ -10,7 +11,7 @@ export default class FilterTopbar extends React.Component {
     }
 
     _onClickUpdate = () => {
-        amplitude.getInstance().logEvent('Updated view')
+        logEvent('Updated view')
         const activeView = this.props.views.get('active')
 
         if (window.confirm('You\'re about to edit this view for all users. Are you sure?')) {
@@ -25,7 +26,7 @@ export default class FilterTopbar extends React.Component {
         this.setState({
             isSubmitting: true
         })
-        amplitude.getInstance().logEvent('Saved as new view')
+        logEvent('Saved as new view')
 
         let activeView = this.props.views.get('active')
         const original = this.props.views
@@ -71,7 +72,7 @@ export default class FilterTopbar extends React.Component {
             .set('name', activeView.get('name') || 'New view')
         activeView = activeView.set('slug', slugify(activeView.get('name')))
 
-        amplitude.getInstance().logEvent('Created a new view')
+        logEvent('Created a new view')
 
         this._submitView(activeView)
     }

@@ -1,6 +1,7 @@
 import * as types from './constants'
 import {fromJS} from 'immutable'
-import _ from 'lodash'
+import _isObject from 'lodash/isObject'
+import _endsWith from 'lodash/endsWith'
 import {
     isRootSource,
     stripLastListsFromPath,
@@ -139,7 +140,7 @@ export default (state = initialState, action) => {
 
 
             // prepare data to be transformed into widget
-            const isSimpleField = !_.isObject(sourceData)
+            const isSimpleField = !_isObject(sourceData)
             const preparedData = {
                 [strippedKey]: isSimpleField ? sourceData : sourceData.toJS()
             }
@@ -153,8 +154,8 @@ export default (state = initialState, action) => {
             const widgetsItems = isDraggingARootSource
                 ? ['_internal', 'editedItems']
                 : ['_internal', 'editedItems']
-                .concat(targetParentTemplatePath.split('.'))
-                .concat(['widgets'])
+                    .concat(targetParentTemplatePath.split('.'))
+                    .concat(['widgets'])
 
             // if is a dragging source, wrap it in a wrapper
             if (isDraggingARootSource) {
@@ -214,7 +215,7 @@ export default (state = initialState, action) => {
 
             // remove last lists in source absolute path, since objects and arrays are here considered the same
             let listCounter = 0
-            while (_.endsWith(newAbsolutePath, '[]')) {
+            while (_endsWith(newAbsolutePath, '[]')) {
                 listCounter++
                 newAbsolutePath = newAbsolutePath.slice(0, -2)
             }

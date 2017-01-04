@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
-import _ from 'lodash'
+import _cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment-timezone'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
@@ -44,7 +44,7 @@ class YourProfileView extends React.Component {
     }
 
     _handleSubmit = (values) => {
-        const normalizedValues = _.cloneDeep(values)
+        const normalizedValues = _cloneDeep(values)
 
         normalizedValues.signature_text = values.signature.text
         normalizedValues.signature_html = values.signature.html

@@ -9,6 +9,7 @@ import moment from 'moment'
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
 
 import {getAgents} from '../../../state/users/selectors'
+import {logEvent} from '../../../store/middlewares/amplitudeTracker'
 
 class TicketListInfobarContainer extends React.Component {
     _hideBoarding = () => {
@@ -113,19 +114,19 @@ const mapStateToProps = (state) => {
             isDone: true,
             href: 'http://help.gorgias.io/en/latest/src/helpdesk/00-getting-started.html#how-to-set-up-email-forwarding',
             target: '_blank',
-            onClick: () => amplitude.getInstance().logEvent('Clicked add support inbox on Onboarding widget'),
+            onClick: () => logEvent('Clicked add support inbox on Onboarding widget'),
         },
         {
             title: 'Invite team members',
             isDone: hasOtherAgents,
             href: '/app/users',
-            onClick: () => amplitude.getInstance().logEvent('Clicked invite team members on Onboarding widget'),
+            onClick: () => logEvent('Clicked invite team members on Onboarding widget'),
         },
         {
             title: 'Add an integration',
             isDone: hasIntegrations,
             href: '/app/integrations',
-            onClick: () => amplitude.getInstance().logEvent('Clicked add an integration on Onboarding widget'),
+            onClick: () => logEvent('Clicked add an integration on Onboarding widget'),
         },
     ]
 

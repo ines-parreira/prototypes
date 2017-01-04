@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _isUndefined from 'lodash/isUndefined'
 
 const Raven = window.Raven
 
@@ -6,7 +6,7 @@ const Raven = window.Raven
  * Middleware sending redux errors to Sentry
  */
 const crashReporter = () => next => action => {
-    if (_.isUndefined(Raven)) {
+    if (_isUndefined(Raven)) {
         return next(action)
     }
 

@@ -1,23 +1,24 @@
-import _ from 'lodash'
+import _pick from 'lodash/pick'
+import _isUndefined from 'lodash/isUndefined'
 import {Map} from 'immutable'
 import {
-  CREATE_NEW_USER_SUCCESS,
-  FETCH_CURRENT_USER_SUCCESS,
-  UPDATE_USER_SUCCESS
+    CREATE_NEW_USER_SUCCESS,
+    FETCH_CURRENT_USER_SUCCESS,
+    UPDATE_USER_SUCCESS
 } from '../../state/users/constants'
 import {FETCH_SETTINGS_SUCCESS} from '../../state/settings/constants'
 import {
-  SUBMIT_TICKET_SUCCESS,
-  FETCH_TICKET_SUCCESS,
-  RECORD_MACRO,
-  ADD_ATTACHMENT_SUCCESS,
-  ADD_TICKET_TAGS,
-  SET_STATUS
+    SUBMIT_TICKET_SUCCESS,
+    FETCH_TICKET_SUCCESS,
+    RECORD_MACRO,
+    ADD_ATTACHMENT_SUCCESS,
+    ADD_TICKET_TAGS,
+    SET_STATUS
 } from '../../state/ticket/constants'
 import {
-  CREATE_MACRO_SUCCESS,
-  UPDATE_MACRO_SUCCESS,
-  DELETE_MACRO_SUCCESS
+    CREATE_MACRO_SUCCESS,
+    UPDATE_MACRO_SUCCESS,
+    DELETE_MACRO_SUCCESS
 } from '../../state/macro/constants'
 import {humanizeActionType} from './utils'
 
@@ -45,8 +46,12 @@ const CONFIG_ACTIONS = [
  * @param store
  */
 const amplitudeTracker = store => next => action => {
+    if (_isUndefined(window.amplitude)) {
+        return next(action)
+    }
+
     const ALL_ACTIONS = TRACKED_ACTIONS.concat(CONFIG_ACTIONS)
-    if (_.includes(ALL_ACTIONS, action.type)) {
+    if (ALL_ACTIONS.includes(action.type)) {
         let actionName = humanizeActionType(action.type)
         let actionProps = Map({action: action.type})
 
@@ -84,13 +89,13 @@ const amplitudeTracker = store => next => action => {
                 })
                 break
             case FETCH_TICKET_SUCCESS:
-                actionProps = actionProps.merge(_.pick(action.resp, ['id']))
+                actionProps = actionProps.merge(_pick(action.resp, ['id']))
                 break
             case ADD_TICKET_TAGS:
                 // temporarily defined its name since action type is not well formatted
                 actionName = 'Added tag'
                 actionProps = actionProps.merge({
-                    ticket: _.pick(store.getState().ticket.toJS(), ['id'])
+                    ticket: _pick(store.getState().ticket.toJS(), ['id'])
                 })
                 break
             case RECORD_MACRO:
@@ -98,23 +103,29 @@ const amplitudeTracker = store => next => action => {
                 actionProps = actionProps.merge({
                     id: action.macro.get('id'),
                     name: action.macro.get('name'),
-                    ticket: _.pick(store.getState().ticket.toJS(), ['id'])
+                    ticket: _pick(store.getState().ticket.toJS(), ['id'])
                 })
                 break
             case ADD_ATTACHMENT_SUCCESS:
                 actionProps = actionProps.merge({
-                    ticket: _.pick(store.getState().ticket.toJS(), ['id'])
+                    ticket: _pick(store.getState().ticket.toJS(), ['id'])
                 })
                 break
             default:
                 break
         }
-        if (_.includes(TRACKED_ACTIONS, action.type)) {
+        if (TRACKED_ACTIONS.includes(action.type)) {
             amplitude.getInstance().logEvent(actionName, actionProps.toJS())
         }
     }
 
     return next(action)
+}
+
+export const logEvent = (event, props) => {
+    if (!_isUndefined(window.amplitude)) {
+        amplitude.getInstance().logEvent(event, props)
+    }
 }
 
 export default amplitudeTracker

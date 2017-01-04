@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react'
-import _ from 'lodash'
+import _pick from 'lodash/pick'
 import classNames from 'classnames'
 import {isTicketDifferent} from './../../../common/utils'
 import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
+import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 
 export default class TicketSubmitButtons extends React.Component {
     static defaultProps = {
@@ -28,8 +29,8 @@ export default class TicketSubmitButtons extends React.Component {
         $('.TicketSubmitButtons button').popup('hide')
         this.props.submit(status, next)
         // we use `next` var to determine if the ticket is closed after send action
-        amplitude.getInstance().logEvent('Sent message', {
-            ticket: _.pick(this.props.ticket.toJS(), ['id']),
+        logEvent('Sent message', {
+            ticket: _pick(this.props.ticket.toJS(), ['id']),
             andClose: next
         })
     }

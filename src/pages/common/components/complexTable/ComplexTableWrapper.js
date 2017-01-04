@@ -13,6 +13,7 @@ import {VIEW_TYPE_CONFIGURATION} from '../../../../config'
 import {slugify, viewFields} from '../../../../utils'
 import {getAgents} from '../../../../state/users/selectors'
 import _pick from 'lodash/pick'
+import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 // Each of the following properties are required
 // to use `ComplexTableWrapper` to create a view
@@ -186,7 +187,7 @@ class ComplexTableWrapper extends React.Component {
 
         if (shouldFetchTickets) {
             nextProps.actions.views.fetchPage(nextPage)
-            amplitude.getInstance().logEvent('Opened view', _pick(nextActive.toJS(), ['id', 'slug']))
+            logEvent('Opened view', _pick(nextActive.toJS(), ['id', 'slug']))
         }
     }
 

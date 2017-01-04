@@ -1,5 +1,6 @@
 import {List} from 'immutable'
-import _ from 'lodash'
+import _pullAll from 'lodash/pullAll'
+import _find from 'lodash/find'
 
 /**
  * Conjugate a verb (base form) to past simple
@@ -13,7 +14,7 @@ function conjugateToPastSimple(verb) {
         {base: 'set', pastSimple: 'set'},
     ]
     // check if verb is an irregular verb
-    const conjVerb = _.find(IRREGULAR_VERBS, (v) => v.base === verb)
+    const conjVerb = _find(IRREGULAR_VERBS, (v) => v.base === verb)
 
     // otherwise we apply some english rules to determine its conjugation
     if (conjVerb) {
@@ -41,7 +42,7 @@ export function humanizeActionType(actionType) {
     }
     let words = actionType.toLowerCase().trim().split('_')
     // remove noise
-    words = List(_.pullAll(words, EXCLUDED_WORDS))
+    words = List(_pullAll(words, EXCLUDED_WORDS))
 
     const verb = conjugateToPastSimple(words.get(0))
     words = words.shift()

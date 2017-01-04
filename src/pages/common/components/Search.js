@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
-import _ from 'lodash'
+import _debounce from 'lodash/debounce'
+import _set from 'lodash/set'
+import _get from 'lodash/get'
 import classNames from 'classnames'
 import shortcutManager from '../utils/shortcutManager'
 
@@ -36,7 +38,7 @@ export default class Search extends React.Component {
 
             if (nextProps.forcedQuery) {
                 if (typeof nextProps.forcedQuery === 'object') {
-                    this.refs.searchInput.value = _.get(nextProps.forcedQuery.toJS(), nextProps.queryPath.split(',')[0])
+                    this.refs.searchInput.value = _get(nextProps.forcedQuery.toJS(), nextProps.queryPath.split(',')[0])
                 } else if (typeof nextProps.forcedQuery === 'string') {
                     this.refs.searchInput.value = nextProps.forcedQuery
                 }
@@ -61,7 +63,7 @@ export default class Search extends React.Component {
     }
 
     // search every XXXms
-    _debouncedSearch = _.debounce(() => {
+    _debouncedSearch = _debounce(() => {
         if (!this.refs.searchInput) {
             return false
         }
@@ -71,7 +73,7 @@ export default class Search extends React.Component {
         const value = this.refs.searchInput.value
 
         paths.forEach((path) => {
-            _.set(query, path, value)
+            _set(query, path, value)
         })
 
         this.props.onChange(query, value, this.props.params)

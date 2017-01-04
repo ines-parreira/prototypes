@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
+import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 const InfobarAddIntegrationSuggestion = () => (
     <div className="widgets-list">
@@ -53,7 +54,7 @@ const InfobarAddIntegrationSuggestion = () => (
                             <Link
                                 to="/app/integrations/http"
                                 className="ui small light blue button"
-                                onClick={() => amplitude.getInstance().logEvent('Clicked add integration on add integration widget')}
+                                onClick={() => logEvent('Clicked add integration on add integration widget')}
                             >
                                 Add integration
                             </Link>

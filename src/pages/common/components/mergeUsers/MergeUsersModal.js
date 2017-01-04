@@ -8,11 +8,12 @@ import {JSONTree} from './../JSONTree'
 import {USER_CHANNEL_CLASS} from './../../../../config'
 import BinaryChoiceField from './../formFields/BinaryChoiceField'
 import MultiSelectBinaryChoiceField from './../formFields/MultiSelectBinaryChoiceField'
+import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 
 class MergeUsersModal extends React.Component {
     componentDidMount = () => {
-        amplitude.getInstance().logEvent('Opened MergeUsers Modal', {
+        logEvent('Opened MergeUsers Modal', {
             destinationUserChannelType: this.props.destinationUser.get('channels').map(channel => channel.get('type'))
                 .toList()
                 .toJS(),
@@ -59,7 +60,7 @@ class MergeUsersModal extends React.Component {
     _handleSubmit = (data) => {
         // submit user to merge
         if (confirm('This action is irreversible. Are you sure you want to merge those users?')) {
-            amplitude.getInstance().logEvent('Confirmed MergeUser', {
+            logEvent('Confirmed MergeUser', {
                 finalUser: data.user.channels.map(channel => channel.type)
             })
 

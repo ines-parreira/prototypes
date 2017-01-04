@@ -1,4 +1,6 @@
-import _ from 'lodash'
+import _some from 'lodash/some'
+import _get from 'lodash/get'
+import _endsWith from 'lodash/endsWith'
 import {notify} from '../../state/notifications/actions'
 
 /**
@@ -14,10 +16,10 @@ const IGNORED_PREFIXS = [
 const serverErrorHandler = store => next => action => {
     const shouldDisplayError = action
         && action.error
-        && !_.some(IGNORED_PREFIXS, (prefix) => action.type.startsWith(prefix))
+        && !_some(IGNORED_PREFIXS, (prefix) => action.type.startsWith(prefix))
 
     if (shouldDisplayError) {
-        const error = _.get(action, 'error.response.data.error', '')
+        const error = _get(action, 'error.response.data.error', '')
 
         const message =
             error.msg
@@ -28,7 +30,7 @@ const serverErrorHandler = store => next => action => {
 
         store.dispatch(notify({
             type: 'error',
-            message: `${message}${_.endsWith(message, '.') ? '' : '.'}`
+            message: `${message}${_endsWith(message, '.') ? '' : '.'}`
         }))
     }
 

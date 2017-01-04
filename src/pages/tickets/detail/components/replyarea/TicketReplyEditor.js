@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Map} from 'immutable'
-import _ from 'lodash'
+import _throttle from 'lodash/throttle'
 
 import {EditorState, ContentState, RichUtils} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
@@ -59,7 +59,7 @@ export default class TicketReplyEditor extends React.Component {
     }
 
     // throttle the updating of the redux because it's slow otherwise when we type
-    _updateMessageText = _.throttle((editorState) => {
+    _updateMessageText = _throttle((editorState) => {
         this.props.actions.ticket.setResponseText(this.props.ticket.get('id'), Map({
             contentState: editorState.getCurrentContent(),
             selectionState: editorState.getSelection()

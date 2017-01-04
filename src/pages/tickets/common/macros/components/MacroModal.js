@@ -5,10 +5,11 @@ import MacroList from './MacroList'
 import MacroEdit from './MacroEdit'
 import MacroPreview from './MacroPreview'
 import shortcutManager from '../../../../common/utils/shortcutManager'
+import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 
 export default class MacroModal extends React.Component {
     componentDidMount() {
-        amplitude.getInstance().logEvent('Opened macro modal')
+        logEvent('Opened macro modal')
 
         $(this.refs.macroModal).modal({
             onHidden: this.props.actions.macro.closeModal

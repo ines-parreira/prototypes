@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {setFieldVisibility} from '../../../../state/views/actions'
+import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 class ShowMoreFieldsDropdown extends React.Component {
     componentDidMount = () => {
@@ -12,7 +13,7 @@ class ShowMoreFieldsDropdown extends React.Component {
                 popup: $(this.refs.showmorePopup),
                 on: 'click',
                 position: 'bottom right',
-                onVisible: () => amplitude.getInstance().logEvent('Opened more fields (column options)')
+                onVisible: () => logEvent('Opened more fields (column options)')
             })
     }
 

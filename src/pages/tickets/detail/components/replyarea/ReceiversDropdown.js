@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import _ from 'lodash'
+import _debounce from 'lodash/debounce'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import {isEmail} from '../../../../../utils'
@@ -69,7 +69,7 @@ class ReceiversDropdown extends React.Component {
         }
     }
 
-    _search = _.debounce((input, callback) => {
+    _search = _debounce((input, callback) => {
         const queryText = input.toLowerCase()
 
         this.props.actions.ticket.updatePotentialRequesters(this.props.generateQuery(queryText))

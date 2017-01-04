@@ -1,7 +1,8 @@
 import React from 'react'
 import ErrorMessage from '../../../common/components/ErrorMessage'
 import classNames from 'classnames'
-import _ from 'lodash'
+import _split from 'lodash/split'
+import _replace from 'lodash/replace'
 
 class URLInputField extends React.Component {
     constructor(props) {
@@ -33,13 +34,13 @@ class URLInputField extends React.Component {
     }
 
     _getProtocol = (value) => {
-        const urlArray = _.split(value, ':')
+        const urlArray = _split(value, ':')
 
         // If there's no protocol specified in the URL, set `http://` as default
         return urlArray.length > 1 ? `${urlArray[0]}://` : 'http://'
     }
 
-    _trimProtocol = (value) => _.replace(value, /^http[s]?:\/\//, '')
+    _trimProtocol = (value) => _replace(value, /^http[s]?:\/\//, '')
 
     _onChange = (e) => {
         const trimmedUrl = this._trimProtocol(e.target.value)

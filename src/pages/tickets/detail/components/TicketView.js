@@ -14,6 +14,7 @@ import TicketSubmitButtonsContainer from './replyarea/TicketSubmitButtonsContain
 
 import {getTags} from '../../../../state/tags/selectors'
 import {getAgents, makeIsLoading as makeUsersIsLoading} from '../../../../state/users/selectors'
+import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 export class TicketView extends React.Component {
     constructor() {
@@ -224,7 +225,7 @@ export class TicketView extends React.Component {
                                         actions.ticket.toggleHistory(true)
                                         document.getElementsByClassName('TicketDetailContainer')[0].scrollTop = 0
 
-                                        amplitude.getInstance().logEvent('Opened Timeline', {
+                                        logEvent('Opened Timeline', {
                                             nbOfTicketsInTimeline: users.getIn(['userHistory', 'tickets']).size,
                                             channel: ticket.get('channel'),
                                             nbOfMessagesInTicket: ticket.get('messages').size

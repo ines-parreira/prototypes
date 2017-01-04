@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router'
 import classNames from 'classnames'
 import {isCurrentlyOnTicket} from '../../../utils'
+import {logEvent} from '../../../store/middlewares/amplitudeTracker'
 
 const RecentChatsItem = ({recentTicket, position}) => {
     const channel = recentTicket.get('channel')
@@ -20,7 +21,7 @@ const RecentChatsItem = ({recentTicket, position}) => {
 
     // track on click
     const _onClick = () => {
-        amplitude.getInstance().logEvent('Clicked on recent activity item', {
+        logEvent('Clicked on recent activity item', {
             position,
             ticket: recentTicket.toJS(),
         })

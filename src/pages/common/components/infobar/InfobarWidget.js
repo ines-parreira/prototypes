@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
-import _ from 'lodash'
+import _isObject from 'lodash/isObject'
+import _isFunction from 'lodash/isFunction'
 import {fromJS} from 'immutable'
 import {prepareWidgetToDisplay, guessFieldValueFromRawData} from './utils'
 
@@ -25,12 +26,12 @@ class InfobarWidget extends React.Component {
         }
 
         // ... is not an object
-        if (!_.isObject(source)) {
+        if (!_isObject(source)) {
             return null
         }
 
         // ... is not immutable
-        if (!source.isEmpty || (source.isEmpty && !_.isFunction(source.isEmpty))) {
+        if (!source.isEmpty || (source.isEmpty && !_isFunction(source.isEmpty))) {
             return null
         }
 
