@@ -11,7 +11,14 @@ import moment from 'moment-timezone'
 import sanitizeHtml from 'sanitize-html'
 import {convertToHTML as _convertToHTML} from 'draft-convert'
 import Immutable, {fromJS} from 'immutable'
+import md5 from 'md5'
 import {VIEW_FIELDS} from './config'
+
+/**
+ * Serialize an object and return it's md5 hash.
+ * @param obj the object of which we want the hash
+ */
+export const getHashOfObj = obj => md5(JSON.stringify(obj))
 
 /**
  * Guess if a passed string is a url

@@ -5,7 +5,7 @@ import * as types from './constants'
 import {notify} from '../notifications/actions'
 import {VIEW_TYPE_CONFIGURATION} from '../../config'
 import {fetchUsers} from '../users/actions'
-import {getPluralObjectName} from '../../utils'
+import {getPluralObjectName, getHashOfObj} from '../../utils'
 import _max from 'lodash/max'
 
 export const setViewActive = (view) => ({
@@ -224,6 +224,8 @@ export function fetchPage(page, discreet = false) {
             return Promise.resolve()
         }
 
+        const viewHash = getHashOfObj(activeView)
+
         dispatch({
             type: types.FETCH_LIST_VIEW_START,
             viewId,
@@ -254,12 +256,14 @@ export function fetchPage(page, discreet = false) {
                 views = getState().views
                 const isCurrent = views.getIn(['_internal', 'currentViewId']) === viewId
                     && views.getIn(['_internal', 'pagination', 'page']) === data.meta.page
+                    && viewHash === getHashOfObj(views.get('active'))
 
                 // make sure the incoming ticket list is the one the current user is looking at
                 if (isCurrent) {
                     dispatch({
                         type: types.FETCH_LIST_VIEW_SUCCESS,
                         viewType: activeViewType,
+                        activeView,
                         data,
                     })
                 }
