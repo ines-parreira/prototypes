@@ -1,6 +1,7 @@
 import axios from 'axios'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
+import {fromJS} from 'immutable'
 
 export const updateActionArgs = (actionIndex, value) => ({
     type: types.UPDATE_ACTION_ARGS,
@@ -106,6 +107,8 @@ export const createMacro = (macro) => (dispatch) => {
                 type: types.CREATE_MACRO_SUCCESS,
                 resp
             })
+
+            dispatch(previewMacroInModal(resp.id))
 
             dispatch(notify({
                 type: 'success',
