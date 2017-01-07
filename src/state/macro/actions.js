@@ -1,7 +1,6 @@
 import axios from 'axios'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
-import {fromJS} from 'immutable'
 
 export const updateActionArgs = (actionIndex, value) => ({
     type: types.UPDATE_ACTION_ARGS,
