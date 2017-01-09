@@ -52,7 +52,7 @@ const InfobarAddIntegrationSuggestion = () => (
                         <div className="no-result-container suggestion">
                             <h3>Display customer data here<br />by adding an integration</h3>
                             <Link
-                                to="/app/integrations/http"
+                                to="/app/integrations"
                                 className="ui small light blue button"
                                 onClick={() => logEvent('Clicked add integration on add integration widget')}
                             >
