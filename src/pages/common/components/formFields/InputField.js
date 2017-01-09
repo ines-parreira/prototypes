@@ -23,6 +23,10 @@ const InputField = ({type, input, meta, className, label, placeholder, required,
         props.required = true
     }
 
+    if (type === 'hidden') {
+        return <input {...props}/>
+    }
+
     return (
         <div className={fieldClassName}>
             {label && <label htmlFor={input.name}>{label}</label>}

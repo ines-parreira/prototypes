@@ -5,6 +5,7 @@ import * as ViewsActions from '../../../state/views/actions'
 import TicketsNavbarView from './components/TicketsNavbarView'
 import RecentChats from '../../common/components/RecentChats'
 import Navbar from '../../common/components/Navbar'
+import {fromJS} from 'immutable'
 
 class TicketNavbarContainer extends React.Component {
     componentWillMount() {
@@ -18,6 +19,9 @@ class TicketNavbarContainer extends React.Component {
             <Navbar activeContent="tickets">
                 <RecentChats />
                 <TicketsNavbarView
+                    settingType="ticket-views"
+                    setting={this.props.setting}
+                    isLoading={this.props.isLoading}
                     views={this.props.views}
                     currentView={this.props.views.get('active')}
                 />
@@ -32,12 +36,23 @@ TicketNavbarContainer.propTypes = {
     params: PropTypes.object.isRequired,
     location: PropTypes.shape({
         query: PropTypes.object
-    })
+    }),
+    setting: PropTypes.object,
+    isLoading: PropTypes.bool.isRequired
 }
 
-const mapStateToProps = (state) => ({
-    views: state.views
-})
+const mapStateToProps = (state) => {
+    const setting = state.currentUser
+        .get('settings', fromJS([]))
+        .find((_setting) => _setting.get('type') === 'ticket-views')
+
+    return {
+        views: state.views,
+        setting,
+        isLoading: state.currentUser.getIn(['_internal', 'loading'], false)
+
+    }
+}
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(ViewsActions, dispatch)

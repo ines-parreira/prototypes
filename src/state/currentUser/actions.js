@@ -28,3 +28,39 @@ export const changePassword = (oldPassword, newPassword) => (dispatch => {
             })
         })
 })
+
+export function submitSetting(data) {
+    return (dispatch) => {
+        const isUpdate = !!data.id
+        let promise
+
+        dispatch({
+            type: types.SUBMIT_SETTING_START
+        })
+
+        if (isUpdate) {
+            promise = axios.put(`/api/users/0/settings/${data.id}/`, data)
+        } else {
+            promise = axios.post('/api/users/0/settings/', data)
+        }
+
+        return promise
+            .then((json = {}) => json.data)
+            .then(resp => {
+                dispatch({
+                    type: types.SUBMIT_SETTING_SUCCESS,
+                    isUpdate,
+                    resp
+                })
+
+                return resp
+            })
+            .catch(error => {
+                return dispatch({
+                    type: types.SUBMIT_SETTING_ERROR,
+                    error,
+                    reason: 'Failed to update settings'
+                })
+            })
+    }
+}

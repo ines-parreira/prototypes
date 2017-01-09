@@ -20,6 +20,7 @@ export default (state = initialState, action) => {
         case userTypes.FETCH_CURRENT_USER_START:
         case userTypes.SUBMIT_CURRENT_USER_START:
         case types.CHANGE_PASSWORD_START:
+        case types.SUBMIT_SETTING_START:
             return state.setIn(['_internal', 'loading'], true)
 
         case userTypes.FETCH_CURRENT_USER_SUCCESS:
@@ -41,8 +42,22 @@ export default (state = initialState, action) => {
         case types.CHANGE_PASSWORD_ERROR:
         case types.CHANGE_PASSWORD_SUCCESS:
         case userTypes.SUBMIT_CURRENT_USER_ERROR:
+        case types.SUBMIT_SETTING_ERROR:
             return state.setIn(['_internal', 'loading'], false)
-
+        case types.SUBMIT_SETTING_SUCCESS: {
+            const newState = state.setIn(['_internal', 'loading'], false)
+            if (action.isUpdate) {
+                return newState.updateIn(['settings'], settings => {
+                    return settings.map(setting => {
+                        if (setting.get('id') === action.resp.id) {
+                            return setting.set('data', fromJS(action.resp.data))
+                        }
+                        return setting
+                    })
+                })
+            }
+            return newState.updateIn(['settings'], settings => settings.push(fromJS(action.resp)))
+        }
         default:
             return state
     }

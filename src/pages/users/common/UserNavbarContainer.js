@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux'
 import * as ViewsActions from '../../../state/views/actions'
 import UsersNavbarView from './components/UsersNavbarView'
 import Navbar from '../../common/components/Navbar'
+import {fromJS} from 'immutable'
 
 class UserNavbarContainer extends React.Component {
     componentWillMount() {
@@ -16,6 +17,9 @@ class UserNavbarContainer extends React.Component {
         return (
             <Navbar activeContent="users">
                 <UsersNavbarView
+                    settingType="user-views"
+                    setting={this.props.setting}
+                    isLoading={this.props.isLoading}
                     views={this.props.views}
                     currentView={this.props.views.get('active')}
                 />
@@ -30,12 +34,22 @@ UserNavbarContainer.propTypes = {
     params: PropTypes.object.isRequired,
     location: PropTypes.shape({
         query: PropTypes.object
-    })
+    }),
+    setting: PropTypes.object,
+    isLoading: PropTypes.bool.isRequired
 }
 
-const mapStateToProps = (state) => ({
-    views: state.views
-})
+const mapStateToProps = (state) => {
+    const setting = state.currentUser
+        .get('settings', fromJS([]))
+        .find((_setting) => _setting.get('type') === 'user-views')
+
+    return {
+        views: state.views,
+        setting,
+        isLoading: state.currentUser.getIn(['_internal', 'loading'], false)
+    }
+}
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(ViewsActions, dispatch)

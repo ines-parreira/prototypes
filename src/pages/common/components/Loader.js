@@ -1,9 +1,19 @@
 import React, {PropTypes} from 'react'
+import classnames from 'classnames'
 
 export const DEFAULT_MESSAGE = 'Loading...'
 
-export const Loader = ({message, loading = true}) => {
-    let content = <div className="ui active text loader">{message || DEFAULT_MESSAGE}</div>
+export const Loader = ({message = DEFAULT_MESSAGE, loading = true, inline = false, inverted = false, size}) => {
+    const className = classnames('ui', 'active', size, {
+        inline,
+        inverted,
+        text: message && !inline
+    }, 'loader')
+
+    if (inline) {
+        return <div className={className}></div>
+    }
+    let content = <div className={className}>{message}</div>
 
     if (!loading) {
         content = message || DEFAULT_MESSAGE
@@ -18,11 +28,16 @@ export const Loader = ({message, loading = true}) => {
     )
 }
 
-Loader.propTypes = {
-    loading: PropTypes.bool.isRequired,
-    message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
+Loader.defaultProps = {
+    loading: true,
+    inverted: false,
+    inline: false,
 }
 
-Loader.defaultProps = {
-    loading: false,
+Loader.propTypes = {
+    loading: PropTypes.bool.isRequired,
+    inverted: PropTypes.bool.isRequired,
+    inline: PropTypes.bool.isRequired,
+    size: PropTypes.oneOf(['mini', 'tiny', 'small', 'medium', 'large']),
+    message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 }
