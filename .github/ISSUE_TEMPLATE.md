@@ -10,7 +10,6 @@ if feature request:
 
 
 if bug:
-#### Location: staging / production
 #### Description:
 - 
 
