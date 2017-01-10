@@ -4,7 +4,6 @@ import ComplexTableCell from './ComplexTableCell'
 
 export default class ComplexTableRow extends React.Component {
     _toggleSelection = (e, id) => {
-        e.preventDefault()
         e.stopPropagation()
         this.props.toggleSelection(id)
     }
