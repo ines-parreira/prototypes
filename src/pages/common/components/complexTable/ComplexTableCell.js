@@ -69,9 +69,7 @@ export default class ComplexTableCell extends React.Component {
                         // get the part of "source" that we want
                         const source = item.getIn(['first_source', 'from'], fromJS({})).toJS()
                         // display the user based on the message type
-                        return fromJS({
-                            name: displayUserNameFromSource(source, firstMessage.source.type)
-                        })
+                        return displayUserNameFromSource(source, item.getIn(['first_source', 'type']))
                     }
                     case 'to': {
                         // TODO get the matched channel,
