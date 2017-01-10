@@ -15,6 +15,7 @@ export default class ComplexTableRow extends React.Component {
         return (
             <Link
                 to={`/app/${this.props.viewConfig.routeItem}/${this.props.item.get('id')}`}
+                onClick={this.props.saveIndex}
                 className="complex-list-table-row"
             >
                 {
