@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router'
 import _isEmpty from 'lodash/isEmpty'
 import _isNull from 'lodash/isNull'
 import _pick from 'lodash/pick'
+import _find from 'lodash/find'
 import axios from 'axios'
 
 import * as types from './constants'
@@ -533,9 +534,23 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
         } else if (msg.from_agent) {
             data.newMessage.source.from = msg.source.from
         } else {
-            data.newMessage.source.from = {
-                name: msg.source.to[0].name || supportChannel.name,
-                address: msg.source.to[0].address
+            const splitSupportAddress = supportChannel.address.split('@')
+
+            // trying to guess if there is an address in `to` corresponding to current account support address
+            // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
+            const companyAnsweredInfo = _find(msg.source.to, (to = {}) => {
+                const address = to.address || ''
+                return address.startsWith(splitSupportAddress[0]) && address.endsWith(`@${splitSupportAddress[1]}`)
+            })
+
+            // if we found an `to` address corresponding to current support account, we use it
+            if (companyAnsweredInfo) {
+                data.newMessage.source.from = {
+                    name: companyAnsweredInfo.name || supportChannel.name,
+                    address: companyAnsweredInfo.address
+                }
+            } else {
+                data.newMessage.source.from = supportChannel
             }
         }
 
