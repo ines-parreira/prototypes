@@ -224,7 +224,7 @@ export function fetchPage(page, discreet = false) {
             return Promise.resolve()
         }
 
-        const viewHash = getHashOfObj(activeView)
+        const viewHash = getHashOfObj(activeView.toJS())
 
         dispatch({
             type: types.FETCH_LIST_VIEW_START,
@@ -256,7 +256,7 @@ export function fetchPage(page, discreet = false) {
                 views = getState().views
                 const isCurrent = views.getIn(['_internal', 'currentViewId']) === viewId
                     && views.getIn(['_internal', 'pagination', 'page']) === data.meta.page
-                    && viewHash === getHashOfObj(views.get('active'))
+                    && viewHash === getHashOfObj(views.get('active').toJS())
 
                 // make sure the incoming ticket list is the one the current user is looking at
                 if (isCurrent) {
