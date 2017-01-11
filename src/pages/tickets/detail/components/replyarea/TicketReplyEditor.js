@@ -96,6 +96,12 @@ export default class TicketReplyEditor extends React.Component {
         return false
     }
 
+    _focusEditor = () => {
+        if (this.refs.editor && this.refs.editor.focus) {
+            this.refs.editor.focus()
+        }
+    }
+
     render() {
         const {ticket} = this.props
 
@@ -106,6 +112,7 @@ export default class TicketReplyEditor extends React.Component {
                 onDragEnter={() => this.refs.overlay.classList.add('active')}
                 onDragLeave={() => this.refs.overlay.classList.remove('active')}
                 onDrop={() => this.refs.overlay.classList.remove('active')}
+                onClick={this._focusEditor}
             >
                 <div className="field">
                     <Editor
