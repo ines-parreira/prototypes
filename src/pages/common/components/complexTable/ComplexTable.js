@@ -97,21 +97,23 @@ export default class ComplexTable extends React.Component {
                             visibleFields={view.get('fields', fromJS([]))}
                         />
                     </div>
-                    {
-                        items
-                            .map((item, index) => (
-                                <ComplexTableRow
-                                    hasBulkActions={hasBulkActions}
-                                    viewConfig={viewConfig}
-                                    key={item.get('id')}
-                                    fields={displayedFields}
-                                    item={item}
-                                    toggleSelection={this.props.toggleSelection}
-                                    selected={selectedItemsIds.includes(item.get('id'))}
-                                    saveIndex={() => this.props.saveIndex(index)}
-                                />
-                            ))
-                    }
+                    <div className="complex-list-table-body">
+                        {
+                            items
+                                .map((item, index) => (
+                                    <ComplexTableRow
+                                        hasBulkActions={hasBulkActions}
+                                        viewConfig={viewConfig}
+                                        key={item.get('id')}
+                                        fields={displayedFields}
+                                        item={item}
+                                        toggleSelection={this.props.toggleSelection}
+                                        selected={selectedItemsIds.includes(item.get('id'))}
+                                        saveIndex={() => this.props.saveIndex(index)}
+                                    />
+                                ))
+                        }
+                    </div>
                 </div>
 
                 <SemanticPaginator

@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {Link} from 'react-router'
 import {fromJS} from 'immutable'
 import {displayUserNameFromSource} from '../../../tickets/common/utils'
 import {stripHTML} from '../../../../utils'
@@ -131,21 +132,27 @@ export default class ComplexTableCell extends React.Component {
     }
 
     render() {
-        const {field} = this.props
+        const {field, link, saveIndex} = this.props
 
         return (
-            <div className={`complex-list-table-col table-cell ${field.get('name')}`}>
+            <Link
+                to={link}
+                className={`complex-list-table-col table-cell ${field.get('name')}`}
+                onClick={saveIndex}
+            >
                 <RenderLabel
                     field={field}
                     value={this._valueFieldContent()}
                 />
-            </div>
+            </Link>
         )
     }
 }
 
 ComplexTableCell.propTypes = {
+    link: PropTypes.string.isRequired,
     item: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
     viewType: PropTypes.string.isRequired,
+    saveIndex: PropTypes.func.isRequired,
 }

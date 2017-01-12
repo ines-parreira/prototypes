@@ -1,27 +1,25 @@
 import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
 import ComplexTableCell from './ComplexTableCell'
-
+import {Link} from 'react-router'
 export default class ComplexTableRow extends React.Component {
-    _toggleSelection = (e, id) => {
-        e.stopPropagation()
-        this.props.toggleSelection(id)
+    _toggleSelection = () => {
+        this.props.toggleSelection(this.props.item.get('id'))
     }
 
     render() {
         // const style = {maxWidth: this.props.width}
-        const {fields, item, selected, viewConfig, hasBulkActions} = this.props
+        const {fields, item, selected, viewConfig, saveIndex, hasBulkActions} = this.props
+        const link = `/app/${viewConfig.routeItem}/${item.get('id')}`
 
         return (
-            <Link
-                to={`/app/${this.props.viewConfig.routeItem}/${this.props.item.get('id')}`}
-                onClick={this.props.saveIndex}
-                className="complex-list-table-row"
-            >
+            <div className="complex-list-table-row">
                 {
                     hasBulkActions
                     && (
-                        <div className="complex-list-table-col" onClick={e => this._toggleSelection(e, item.get('id'))}>
+                        <div
+                            className="complex-list-table-col"
+                            onClick={this._toggleSelection}
+                        >
                             <span className="ui checkbox">
                                 <input
                                     type="checkbox"
@@ -37,14 +35,21 @@ export default class ComplexTableRow extends React.Component {
                         .map((field) => (
                             <ComplexTableCell
                                 key={`${item.id}-${field.get('name')}`}
+                                link={link}
+                                saveIndex={saveIndex}
                                 item={item}
                                 field={field}
                                 viewType={viewConfig.type}
                             />
                         ))
                 }
-                <div className="complex-list-table-col"></div>
-            </Link>
+                {/* empty link to make the "show more field" column clickable */}
+                <Link
+                    to={link}
+                    onClick={saveIndex}
+                    className="complex-list-table-col"
+                />
+            </div>
         )
     }
 }
