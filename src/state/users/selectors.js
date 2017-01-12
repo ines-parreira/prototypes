@@ -26,7 +26,7 @@ export const getUsers = createSelector(
 
 export const getActiveUser = createSelector(
     [getUsersState],
-    state => state.get('active', fromJS({})) || fromJS({}) // the || is used to replace null
+    state => state.get('active') || fromJS({})
 )
 
 export const getActiveUserId = createSelector(

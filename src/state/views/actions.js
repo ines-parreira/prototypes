@@ -5,6 +5,7 @@ import * as types from './constants'
 import {notify} from '../notifications/actions'
 import {VIEW_TYPE_CONFIGURATION} from '../../config'
 import {fetchUsers} from '../users/actions'
+import {getActiveViewSearch, getActiveViewFilters} from './selectors'
 import {getPluralObjectName, getHashOfObj} from '../../utils'
 import _max from 'lodash/max'
 
@@ -224,7 +225,8 @@ export function fetchPage(page, discreet = false) {
             return Promise.resolve()
         }
 
-        const viewHash = getHashOfObj(activeView.toJS())
+        const searchHash = getHashOfObj(getActiveViewSearch(getState()).toJS())
+        const filtersHash = getHashOfObj(getActiveViewFilters(getState()))
 
         dispatch({
             type: types.FETCH_LIST_VIEW_START,
@@ -254,9 +256,15 @@ export function fetchPage(page, discreet = false) {
             .then((json = {}) => json.data)
             .then(data => {
                 views = getState().views
+                // if the current view id the same as the received one
                 const isCurrent = views.getIn(['_internal', 'currentViewId']) === viewId
+                    // is the current page the same as the received one
                     && views.getIn(['_internal', 'pagination', 'page']) === data.meta.page
-                    && viewHash === getHashOfObj(views.get('active').toJS())
+                    // if the search the same as the current active one
+                    // (if somebody has modified the search while the request was done)
+                    && searchHash === getHashOfObj(getActiveViewSearch(getState()).toJS())
+                    // (if somebody has modified the filters while the request was done)
+                    && filtersHash === getHashOfObj(getActiveViewFilters(getState()))
 
                 // make sure the incoming ticket list is the one the current user is looking at
                 if (isCurrent) {
