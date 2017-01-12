@@ -52,7 +52,7 @@ class ShowMoreFieldsDropdown extends React.Component {
                                             >
                                                 <div className="ui checkbox">
                                                     <input
-                                                        id="field-visibility-{field.get('name')}"
+                                                        id={`field-visibility-${field.get('name')}`}
                                                         type="checkbox"
                                                         name={field.get('name')}
                                                         checked={isChecked}
@@ -60,7 +60,10 @@ class ShowMoreFieldsDropdown extends React.Component {
                                                             this._setFieldVisibility(field.get('name'), !isChecked)
                                                         }}
                                                     />
-                                                    <label htmlFor="field-visibility-{field.get('name')}">
+                                                    <label
+                                                        htmlFor={`field-visibility-${field.get('name')}`}
+                                                        style={{cursor: 'pointer'}}
+                                                    >
                                                         {field.get('title')}
                                                     </label>
                                                 </div>
