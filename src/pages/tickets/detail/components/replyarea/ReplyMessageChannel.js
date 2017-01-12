@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import ReceiversDropdown from './ReceiversDropdown'
-import {firstMessage} from '../../../../../utils'
+import {getFirstMessage} from '../../../../../utils'
 import {isTicketDifferent} from './../../../common/utils'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import _set from 'lodash/set'
@@ -120,7 +120,7 @@ class ReplyMessageChannel extends React.Component {
         const {ticket, actions, isUpdate} = this.props
         const popupClassNames = this.getClassNames()
 
-        const ticketFirstMessage = firstMessage(ticket.get('messages').toJS())
+        const ticketFirstMessage = getFirstMessage(ticket.get('messages').toJS())
 
         if (isUpdate && !ticketFirstMessage) {
             return null

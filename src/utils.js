@@ -86,7 +86,7 @@ export function getCode(ast) {
  * @param {Object} options filters to apply on messages
  * @returns {Object|Array}
  */
-export function lastMessage(messages, options) {
+export function getLastMessage(messages, options) {
     if (!messages || !messages.length) {
         return
     }
@@ -97,7 +97,7 @@ export function lastMessage(messages, options) {
     return messages.sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]
 }
 
-export function firstMessage(messages) {
+export function getFirstMessage(messages) {
     if (!messages) {
         return
     }

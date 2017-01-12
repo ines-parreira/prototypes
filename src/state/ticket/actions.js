@@ -13,11 +13,12 @@ import {setMacrosVisible} from '../macro/actions'
 import {TICKET_VIEWED} from '../activity/constants'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
-import {lastMessage, isCurrentlyOnTicket} from '../../utils'
+import {getLastMessage, isCurrentlyOnTicket} from '../../utils'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
-    receiversStateFromValue
+    receiversStateFromValue,
+    getSenderContactInfo,
 } from './utils'
 
 export const addAttachments = (ticket, atts) => (dispatch) => {
@@ -475,34 +476,6 @@ export const formatAction = (action, template, context) => {
 }
 
 /**
- * Return the account's most appropriate channel to send a message.
- *
- * @param channelType: type of channel to use: email, facebook, etc
- * @param channels: channels available
- * @returns {string} the channel to use
- */
-function getChannel(channelType, channels = []) {
-    let chan = {}
-
-    for (const channel of channels) {
-        if (channel.type === channelType) {
-            if (channel.preferred) {
-                return {
-                    name: channel.name,
-                    address: channel.address
-                }
-            }
-            chan = {
-                name: channel.name,
-                address: channel.address
-            }
-        }
-    }
-
-    return chan
-}
-
-/**
  * Perform various actions on the ticket data and return a POST-able ticket data structure.
  * Adds the newMessage to the ticket's messages, attaches actions and sets some source elements on the message.
  * Also sets some properties on the ticket.
@@ -517,33 +490,24 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
 
     // Prepare newMessage to send it.
     if (data.newMessage) {
-        const newMsgChannel = data.newMessage.source.type
-        const supportChannel = getChannel(newMsgChannel, currentAccount.get('channels', fromJS({})).toJS())
-        const msg = lastMessage(data.messages, {
-            channel: newMsgChannel,
+        const channelType = data.newMessage.source.type
+
+        const lastChannelMessage = getLastMessage(data.messages, {
+            channel: channelType,
             public: true
         })
 
-        // if there is no message, we use default support channel information
-        // if there is a message:
-        //  - if message is from an agent, previous `from` field is used
-        //  - if message is not from an agent, previous `to` field is used
-        if (!msg || !msg.source) {
-            data.newMessage.source.from = supportChannel
-        } else if (msg.from_agent) {
-            data.newMessage.source.from = msg.source.from
-        } else {
-            data.newMessage.source.from = {
-                name: msg.source.to[0].name || supportChannel.name,
-                address: msg.source.to[0].address
-            }
-        }
+        data.newMessage.source.from = getSenderContactInfo(
+            channelType,
+            currentAccount.get('channels', fromJS({})).toJS(),
+            lastChannelMessage,
+        )
 
-        if (data.messages.length && msg) {
-            const lastMsg = lastMessage(data.messages)
+        if (data.messages.length && lastChannelMessage) {
+            const lastMessage = getLastMessage(data.messages)
 
-            if (lastMsg.source.extra) {
-                data.newMessage.source.extra = msg.source.extra
+            if (lastMessage.source.extra) {
+                data.newMessage.source.extra = lastChannelMessage.source.extra
             }
         }
 
@@ -641,7 +605,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
             })
         }
 
-        const messageToSend = lastMessage(data.messages)
+        const messageToSend = getLastMessage(data.messages)
 
         let promise
 
@@ -745,7 +709,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
         return axios.post('/api/tickets/', data)
             .then((json = {}) => json.data)
             .then(resp => {
-                const messageSent = lastMessage(resp.messages)
+                const messageSent = getLastMessage(resp.messages)
 
                 onMessageSent(dispatch, resp.id, messageSent)
 

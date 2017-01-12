@@ -37,7 +37,7 @@ describe('global utils', () => {
         })
     })
 
-    describe('lastMessage', () => {
+    describe('getLastMessage', () => {
         it('effective sort', () => {
             const messages = [
                 {
@@ -54,13 +54,13 @@ describe('global utils', () => {
                 }
             ]
 
-            const message = utils.lastMessage(messages) || {}
+            const message = utils.getLastMessage(messages) || {}
 
             expect(message.id).toBe(3)
         })
     })
 
-    describe('firstMessage', () => {
+    describe('getFirstMessage', () => {
         it('effective sort', () => {
             const messages = [
                 {
@@ -77,7 +77,7 @@ describe('global utils', () => {
                 }
             ]
 
-            const message = utils.firstMessage(messages) || {}
+            const message = utils.getFirstMessage(messages) || {}
 
             expect(message.id).toBe(1)
         })
