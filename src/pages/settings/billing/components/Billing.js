@@ -47,6 +47,7 @@ export default class Billing extends Component {
         }
 
         const {plan} = this.props
+        const costExample = plan.get('cost_per_ticket') * numbTicketExample
 
         return (
             <div className="ui grid">
@@ -61,9 +62,13 @@ export default class Billing extends Component {
                         We only count tickets that contain <strong>at least one message from an agent</strong> in
                         your
                         team.<br/>
-                        The first {plan.get('free_tickets')} tickets per month are on us.
-                        Then we charge ${plan.get('cost_per_ticket') * numbTicketExample}/{numbTicketExample} tickets,
-                        and the cost per ticket goes down as the number of ticket increases.<br/>
+                        {costExample
+                            ? `The first ${plan.get('free_tickets')} tickets per month are on us.
+                             Then we charge ${costExample}/${numbTicketExample} tickets,
+                             and the cost per ticket goes down as the number of ticket increases.`
+                            : 'Your plan include an unlimited number of tickets per month.'
+                        }
+                        <br/>
 
                         Learn more on our <Link to="https://gorgias.io/pricing" target="_blank">pricing page</Link>.
                     </p>
@@ -135,19 +140,19 @@ export default class Billing extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {invoices.map((invoice) => (
-                                    <tr key={invoice.get('id')}>
-                                        <td>{moment.unix(invoice.get('date')).format('LL')}</td>
-                                        <td>
-                                            {invoice.get('paid')
-                                                ? <span className="ui green basic mini label">PAID</span>
-                                                : <span className="ui red basic mini label">UNPAID</span>
-                                            }
-                                        </td>
-                                        <td>{`${invoice.getIn(['metadata', 'tickets'], '-')}`} </td>
-                                        <td>{`$${invoice.get('amount_due') / 100}`} </td>
-                                    </tr>
-                                ))}
+                                    {invoices.map((invoice) => (
+                                        <tr key={invoice.get('id')}>
+                                            <td>{moment.unix(invoice.get('date')).format('LL')}</td>
+                                            <td>
+                                                {invoice.get('paid')
+                                                    ? <span className="ui green basic mini label">PAID</span>
+                                                    : <span className="ui red basic mini label">UNPAID</span>
+                                                }
+                                            </td>
+                                            <td>{`${invoice.getIn(['metadata', 'tickets'], '-')}`} </td>
+                                            <td>{`$${invoice.get('amount_due') / 100}`} </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         }
