@@ -74,6 +74,11 @@ class ShopifyIntegrationDetail extends React.Component {
         window.location.href = this.props.redirectUri.replace('{shop_name}', name)
     }
 
+    _updateAppPermissions = () => {
+        const name = this.props.integration.getIn(['meta', 'shop_name'])
+        window.location.href = this.props.redirectUri.replace('{shop_name}', name)
+    }
+
     render() {
         const {actions, handleSubmit, integration, isUpdate, loading} = this.props
 
@@ -83,6 +88,8 @@ class ShopifyIntegrationDetail extends React.Component {
         const authenticationRequired = this.props.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
 
         const ctaIsLoading = isSubmitting || authenticationRequired
+
+        const needScopeUpdate = integration.getIn(['meta', 'need_scope_update'])
 
         if (loading.get('integration')) {
             return <Loader />
@@ -120,6 +127,19 @@ class ShopifyIntegrationDetail extends React.Component {
                         />
                         <div className="field">
 
+                            {
+                                needScopeUpdate && (
+                                    <button
+                                        type="button"
+                                        className="ui light blue button"
+                                        disabled={isSubmitting}
+                                        onClick={() => this._updateAppPermissions()}
+                                    >
+                                        Update app permissions
+                                    </button>
+                                )
+                            }
+
                             <button
                                 className={classNames('ui', 'green', 'button', {'loading disabled': ctaIsLoading})}
                                 disabled={isSubmitting}
@@ -140,6 +160,7 @@ class ShopifyIntegrationDetail extends React.Component {
                                     </button>
                                 )
                             }
+
                             {
                                 !authenticationRequired && isUpdate && !isActive && (
                                     <button
