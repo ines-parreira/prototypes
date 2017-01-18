@@ -4,6 +4,7 @@ import ComplexTableRow from './ComplexTableRow'
 import ColumnHeaderWrapper from './ColumnHeaderWrapper'
 import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
 import SemanticPaginator from '../SemanticPaginator'
+import BlankState from '../BlankState'
 import {Loader} from '../Loader'
 import {viewFields} from '../../../../utils'
 
@@ -32,7 +33,7 @@ export default class ComplexTable extends React.Component {
 
         // if empty view or view fields => show message
         if (items.isEmpty()) {
-            let message = <p>This view is empty. Enjoy your day!</p>
+            let message
 
             if (view.get('dirty')) {
                 message = <p>No {viewConfig.singular} found.<br /><a onClick={this.props.resetView}>Reset view</a></p>
@@ -40,12 +41,9 @@ export default class ComplexTable extends React.Component {
 
             return (
                 <div className="complex-list complex-list-limited" style={style}>
-                    <div>
-                        <Loader
-                            message={message}
-                            loading={false}
-                        />
-                    </div>
+                    <BlankState
+                        message={message}
+                    />
                 </div>
             )
         }

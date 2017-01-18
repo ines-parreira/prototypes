@@ -206,4 +206,10 @@ describe('global utils', () => {
             expect(utils.hasRole(user, 'admin')).toEqual(true)
         })
     })
+
+    describe('emoji', () => {
+        it('should return same string if twemoji is not loaded', () => {
+            expect(utils.emoji('🚀')).toEqual('🚀')
+        })
+    })
 })
