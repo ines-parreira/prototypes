@@ -40,7 +40,7 @@ class ShopifyIntegrationDetail extends React.Component {
                             nextProps.integration.get('id'),
                             nextProps.integration.get('type'),
                             true)
-                    , 3000)
+                        , 3000)
                 } else {
                     nextProps.actions.triggerCreateSuccess(nextProps.integration.toJS())
                 }
@@ -126,9 +126,10 @@ class ShopifyIntegrationDetail extends React.Component {
                             component={LabeledInputField}
                         />
                         <div className="field">
-
                             {
-                                needScopeUpdate && (
+                                isUpdate
+                                && needScopeUpdate
+                                && (
                                     <button
                                         type="button"
                                         className="ui light blue button"
