@@ -47,12 +47,6 @@ class TicketHeader extends React.Component {
     render() {
         const {ticket, tags, agents, actions} = this.props
 
-        let ticketId = ''
-
-        if (ticket.get('id')) {
-            ticketId = `#${ticket.get('id')}`
-        }
-
         return (
             <div className="ticket-header">
 
@@ -118,10 +112,6 @@ class TicketHeader extends React.Component {
                                 agents={agents}
                                 setAgent={actions.ticket.setAgent}
                             />
-
-                            <span className="ticket-id ticket-details-item">
-                                {ticketId}
-                            </span>
                         </div>
                     </div>
                 </div>
