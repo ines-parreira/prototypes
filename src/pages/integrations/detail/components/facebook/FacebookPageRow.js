@@ -12,6 +12,10 @@ export default class FacebookPageRow extends React.Component {
         const isDisabled = integration.get('deactivated_datetime')
         const page = integration.get('facebook')
 
+        if (!page || page.isEmpty()) {
+            return null
+        }
+
         return (
             <tr className="FacebookPageRow">
                 <td>
