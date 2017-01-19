@@ -153,7 +153,7 @@ export function renderTemplate(text, context = {}) {
  * @param everySources
  * @returns {*|boolean}
  */
-export function areSourcesReady(sources, context, everySources = true) {
+export function areSourcesReady(sources, context, everySources = false) {
     // for every source
     const currentSource = sources.get(context)
 
