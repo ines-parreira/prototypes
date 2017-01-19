@@ -8,6 +8,7 @@ import _filter from 'lodash/filter'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
+import linkifyhtml from 'linkifyjs/html'
 import sanitizeHtml from 'sanitize-html'
 import {convertToHTML as _convertToHTML} from 'draft-convert'
 import Immutable, {fromJS} from 'immutable'
@@ -311,7 +312,7 @@ export function closest(element, selector) {
  * @param contentState
  */
 export function convertToHTML(contentState) {
-    return _convertToHTML({
+    return linkifyhtml(_convertToHTML({
         blockToHTML: {
             unstyled: {
                 start: '<div>',
@@ -319,7 +320,7 @@ export function convertToHTML(contentState) {
                 empty: '<br>' // when we have an empty block (correspons with a new line, add a line break)
             }
         }
-    })(contentState)
+    })(contentState), {target: null})
 }
 
 /**

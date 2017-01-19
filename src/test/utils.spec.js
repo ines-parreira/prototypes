@@ -3,6 +3,7 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
+import { ContentState } from 'draft-js'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -207,9 +208,38 @@ describe('global utils', () => {
         })
     })
 
+
+    describe('toHTML', () => {
+        it('should convert links (www.xxx.com) to html', () => {
+            const text = 'Hello there\n\nwww.google.com'
+            const contentState = ContentState.createFromText(text)
+            expect(utils.convertToHTML(contentState)).toEqual('<div>Hello there</div><br><div><a href="http://www.google.com" class="linkified" target="_blank">www.google.com</a></div>')
+        })
+
+        it('should convert links (xxx.com) to html', () => {
+            const text = 'Hello there\n\ngoogle.com'
+            const contentState = ContentState.createFromText(text)
+            expect(utils.convertToHTML(contentState)).toEqual('<div>Hello there</div><br><div><a href="http://google.com" class="linkified" target="_blank">google.com</a></div>')
+        })
+
+        it('should convert multiple links to html', () => {
+            const text = 'Hey There!\n\nwww.google.com\n\nAnother link: www.gorgias.io'
+            const contentState = ContentState.createFromText(text)
+            expect(utils.convertToHTML(contentState)).toEqual('<div>Hey There!</div><br><div><a href="http://www.google.com" class="linkified" target="_blank">www.google.com</a></div><br><div>Another link: <a href="http://www.gorgias.io" class="linkified" target="_blank">www.gorgias.io</a></div>')
+        })
+
+        it('should NOT convert adjacent links to html correctly (www.xxx.comwww.yyy.com)', () => {
+            const text = 'Hey Marie Curie,\nmultiple links: www.facebook.comwww.github.com\n\nThanks for contacting us.'
+            const contentState = ContentState.createFromText(text)
+            expect(utils.convertToHTML(contentState)).toEqual('<div>Hey Marie Curie,</div><div>multiple links: <a href="http://www.facebook.comwww.github.com" class="linkified" target="_blank">www.facebook.comwww.github.com</a></div><br><div>Thanks for contacting us.</div>')
+
+        })
+    })
+  
     describe('emoji', () => {
         it('should return same string if twemoji is not loaded', () => {
             expect(utils.emoji('🚀')).toEqual('🚀')
+
         })
     })
 })
