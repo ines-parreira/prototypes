@@ -3,7 +3,7 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
-import { ContentState } from 'draft-js'
+import {ContentState} from 'draft-js'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -232,14 +232,12 @@ describe('global utils', () => {
             const text = 'Hey Marie Curie,\nmultiple links: www.facebook.comwww.github.com\n\nThanks for contacting us.'
             const contentState = ContentState.createFromText(text)
             expect(utils.convertToHTML(contentState)).toEqual('<div>Hey Marie Curie,</div><div>multiple links: <a href="http://www.facebook.comwww.github.com" class="linkified" target="_blank">www.facebook.comwww.github.com</a></div><br><div>Thanks for contacting us.</div>')
-
         })
     })
-  
+
     describe('emoji', () => {
         it('should return same string if twemoji is not loaded', () => {
             expect(utils.emoji('🚀')).toEqual('🚀')
-
         })
     })
 })
