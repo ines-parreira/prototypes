@@ -1,27 +1,10 @@
 import React, {PropTypes} from 'react'
 import IntegrationListRow from './IntegrationListRow'
 import {getIntegrationsList} from '../../../../state/integrations/helpers'
-import WrapInFacebookLogin from '../../detail/components/facebook/WrapInFacebookLogin'
 
-class IntegrationList extends React.Component {
-    _isLoading(type) {
-        const integrations = this.props.integrations
-        const loaders = {
-            facebook: integrations.getIn(['state', 'loading', 'facebookLogin'])
-        }
-        return loaders[type]
-    }
-
+export default class IntegrationList extends React.Component {
     render() {
-        const {
-            integrations,
-            actions
-        } = this.props
-
-        // A map from type to the action that will be on the connect button
-        const typeToOnClickAdd = {
-            facebook: () => actions.facebookLogin()
-        }
+        const {integrations} = this.props
 
         const list = getIntegrationsList(integrations.get('integrations'))
 
@@ -39,12 +22,7 @@ class IntegrationList extends React.Component {
                         <div className="div-table">
                             {
                                 list.map((c, i) => (
-                                    <IntegrationListRow
-                                        key={i}
-                                        integrationConfig={c}
-                                        onClickAdd={typeToOnClickAdd[c.get('type')]}
-                                        isLoading={this._isLoading(c.get('type'))}
-                                    />
+                                    <IntegrationListRow key={i} integrationConfig={c}/>
                                 ))
                             }
                         </div>
@@ -56,9 +34,5 @@ class IntegrationList extends React.Component {
 }
 
 IntegrationList.propTypes = {
-    facebookAppId: PropTypes.string,
-    integrations: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
+    integrations: PropTypes.object.isRequired
 }
-
-export default WrapInFacebookLogin(IntegrationList)

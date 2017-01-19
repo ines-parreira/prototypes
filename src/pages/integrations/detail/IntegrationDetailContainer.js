@@ -5,9 +5,10 @@ import {fromJS} from 'immutable'
 import * as IntegrationsActions from '../../../state/integrations/actions'
 import * as IntegrationsSelectors from '../../../state/integrations/selectors'
 
-import FacebookAvailablePages from './components/facebook/FacebookAvailablePages'
-import FacebookPageDetail from './components/facebook/FacebookPageDetail'
+import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList'
+import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup'
+import FacebookIntegrationLogin from './components/facebook/FacebookIntegrationLogin'
 
 import HttpIntegrationList from './components/http/HttpIntegrationList'
 import HttpIntegrationDetail from './components/http/HttpIntegrationDetail'
@@ -25,7 +26,7 @@ class IntegrationDetailContainer extends React.Component {
 
         // We need this to allow the user to refresh the settings page.
         // If we don't fetch it, the state is empty on refresh.
-        if (params.integrationId && params.integrationId !== 'new') {
+        if (params.integrationId && !['new', 'setup'].includes(params.integrationId)) {
             actions.fetchIntegration(params.integrationId, params.integrationType)
         }
     }
@@ -34,8 +35,7 @@ class IntegrationDetailContainer extends React.Component {
         const {actions, params} = this.props
         const {params: nextParams} = nextProps
         if (
-            nextParams.integrationId &&
-            nextParams.integrationId !== 'new' &&
+            nextParams.integrationId && !['new', 'setup'].includes(nextParams.integrationId) &&
             params.integrationId !== nextParams.integrationId
         ) {
             actions.fetchIntegration(nextParams.integrationId)
@@ -51,6 +51,8 @@ class IntegrationDetailContainer extends React.Component {
 
         const isDetail = !!params.integrationId
         const isUpdate = isDetail && params.integrationId !== 'new'
+        const isSetup = params.integrationId === 'setup'
+
         const commonProps = {
             integration: integrations.get('integration', fromJS({})),
             integrations: integrations.get('integrations', fromJS([])),
@@ -62,35 +64,40 @@ class IntegrationDetailContainer extends React.Component {
         switch (params.integrationType) {
             case 'facebook':
                 if (isDetail) {
-                    if (isUpdate) {
+                    if (isSetup) {
                         return (
-                            <FacebookPageDetail
+                            <FacebookIntegrationSetup
+                                actions={actions}
+                                integrations={commonProps.integrations}
+                                loading={commonProps.loading}
+                            />
+                        )
+                    } else if (isUpdate) {
+                        return (
+                            <FacebookIntegrationDetail
                                 actions={actions}
                                 integration={commonProps.integration}
                                 loading={commonProps.loading}
                             />
                         )
+                    } else {
+                        return (
+                            <FacebookIntegrationLogin
+                                loading={commonProps.loading}
+                                redirectUri={redirectUri}
+                            />
+                        )
                     }
-
-                    const facebookIntegrations = commonProps.integrations.filter(i => i.get('type') === 'facebook')
+                } else {
                     return (
-                        <FacebookAvailablePages
+                        <FacebookIntegrationList
                             actions={actions}
-                            facebookIntegrations={facebookIntegrations}
+                            integrations={commonProps.integrations}
+                            redirectUri={redirectUri}
+                            loading={commonProps.loading}
                         />
                     )
                 }
-
-                return (
-                    <FacebookIntegrationList
-                        actions={actions}
-                        integrations={commonProps.integrations}
-                        facebookAppId={settings.getIn(['data', 'facebook_app_id'])}
-                        loading={commonProps.loading}
-                        facebookLoginStatus={integrations.getIn(['_internal', 'facebookLoginStatus'])}
-                    />
-                )
-
             case 'http':
                 if (isDetail) {
                     return (

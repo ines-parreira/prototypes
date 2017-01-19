@@ -7,6 +7,7 @@ const CheckboxField = ({type, input, name, className, label, labelClassName}) =>
         <input
             name={name}
             type={type}
+            disabled={input.disabled}
             checked={input.value}
             onChange={input.onChange}
         />

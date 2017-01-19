@@ -16,14 +16,7 @@ export default class IntegrationList extends React.Component {
             longTypeDescription, integrationToItemDisplay, loading
         } = this.props
 
-        let createIntegrationButtonClassNames = ['ui', 'right', 'floated', 'green', 'button']
-
-        if (integrationType === 'facebook') {
-            createIntegrationButtonClassNames = createIntegrationButtonClassNames.concat([{
-                loading: loading.get('facebookLogin')
-            }])
-        }
-
+        const createIntegrationButtonClassNames = ['ui', 'right', 'floated', 'green', 'button']
         const integrationTypes = fromJS(getIntegrationsList(integrations))
         const integrationConfig = integrationTypes.find(i => i.get('type', '') === integrationType, null, fromJS({}))
         const integrationTitle = integrationConfig.get('title')

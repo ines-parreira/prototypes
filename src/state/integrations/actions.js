@@ -161,89 +161,6 @@ export function deleteIntegration(integration) {
     }
 }
 
-function onFacebookLoginSuccess(dispatch) {
-    return (response) => {
-        if (!response) {
-            // no response means that we're already authenticated so just redirect to the pages
-            dispatch({
-                type: types.FACEBOOK_LOGIN_SUCCESS
-            })
-            browserHistory.push('/app/integrations/facebook/new')
-        } else {
-            if (response.authResponse) {
-                const params = encodeURI(`user_id=${response.authResponse.userID}&` +
-                    `access_token=${response.authResponse.accessToken}`)
-                axios.post(`/callbacks/facebook/receive-access-token?${params}`)
-                    .then((json = {}) => json.data)
-                    .then(resp => {
-                        browserHistory.push('/app/integrations/facebook/new')
-                        return dispatch({
-                            type: types.FACEBOOK_LOGIN_SUCCESS,
-                            resp
-                        })
-                    })
-                    .catch(error => {
-                        return dispatch({
-                            type: types.FACEBOOK_LOGIN_ERROR,
-                            error,
-                            reason: 'Failed to add Facebook pages, please try again.'
-                        })
-                    })
-            } else {
-                return dispatch({
-                    type: types.FACEBOOK_LOGIN_ERROR,
-                    error: true,
-                    reason: 'Failed to add Facebook pages: Login was canceled or authorization was refused.'
-                })
-            }
-        }
-
-        return Promise.resolve()
-    }
-}
-
-export const facebookLoginStatus = () => ((dispatch) => {
-    FB.getLoginStatus((res) => {
-        dispatch({
-            type: types.FACEBOOK_LOGIN_STATUS,
-            status: res.status
-        })
-    })
-})
-
-/**
- * We want to login the user, ask for relevant permissions and then display the list of pages so s/he can choose the
- * ones to import.
- * @returns {function()}
- *
- * See https://developers.facebook.com/docs/facebook-login/web
- */
-export const facebookLogin = () => ((dispatch, getState) => {
-    const integrations = getState().integrations
-    const status = integrations.getIn(['_internal', 'facebookLoginStatus'])
-    const facebookPages = integrations.get('integrations').filter(i => i.get('facebook'))
-    const connections = facebookPages.map(i => i.get('connections')).flatten(true)
-
-    dispatch({
-        type: types.FACEBOOK_LOGIN
-    })
-
-    const shouldLogin = !(
-        status === 'connected' &&
-        facebookPages && facebookPages.size &&
-        connections && connections.size === facebookPages.size
-    )
-
-    if (shouldLogin) {
-        // login popup
-        FB.login(onFacebookLoginSuccess(dispatch), {
-            scope: 'manage_pages,publish_pages,read_page_mailboxes'
-        })
-    } else {
-        onFacebookLoginSuccess(dispatch)()
-    }
-})
-
 function updateOrCreateIntegrationRequest(integration, action) {
     return (dispatch) => {
         const isUpdate = integration.get('id')
@@ -294,7 +211,6 @@ export function deactivateIntegration(integration) {
 export function activateIntegration(integration) {
     return (dispatch) => {
         const newIntegration = integration.set('deactivated_datetime', null)
-
         return updateOrCreateIntegrationRequest(newIntegration)(dispatch)
     }
 }
@@ -310,32 +226,6 @@ export function updateOrCreateIntegration(integration, action) {
         // We make sure that the integration is active
         const newIntegration = integration.set('deactivated_datetime', null)
         return updateOrCreateIntegrationRequest(newIntegration, action)(dispatch)
-    }
-}
-
-export function selectFacebookPage(pageId) {
-    browserHistory.push('/app/integrations/facebook/new/addpage')
-    return {
-        type: types.SELECT_FACEBOOK_PAGE,
-        pageId
-    }
-}
-
-export function togglePrivateMessagesEnabled() {
-    return {
-        type: types.TOGGLE_PRIVATE_MESSAGES_ENABLED
-    }
-}
-
-export function togglePostsEnabled() {
-    return {
-        type: types.TOGGLE_POSTS_ENABLED
-    }
-}
-
-export function toggleImportHistoryEnabled() {
-    return {
-        type: types.TOGGLE_IMPORT_HISTORY_ENABLED
     }
 }
 
