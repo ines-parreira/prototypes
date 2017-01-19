@@ -4,7 +4,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import {DatetimeLabel} from '../../utils/labels'
 import * as utils from '../../../../utils'
-import {DEFAULT_SOURCE_PATHS} from '../../../../config'
+import {getSourcePathFromContext, getContextFromSourcePath} from '../../../../state/widgets/utils'
 
 const Raven = window.Raven
 
@@ -33,6 +33,16 @@ export function isObject(value) {
  */
 export function isSimpleTemplateWidget(widget) {
     return !['card', 'list'].includes(widget.get('type'))
+}
+
+/**
+ * Check if a widget does not contain any simple widget (ie. only complex widgets such as cards or lists)
+ * If it contains at least a card, or a list, etc. it returns false
+ * @param widget
+ * @returns {boolean}
+ */
+export function hasNoSimpleWidget(widget) {
+    return !widget.get('widgets', fromJS([])).some(isSimpleTemplateWidget)
 }
 
 export function isUppercase(string) {
@@ -139,6 +149,7 @@ export function renderTemplate(text, context = {}) {
 /**
  * Return true if sources exist and are not empty
  * @param sources
+ * @param context
  * @param everySources
  * @returns {*|boolean}
  */
@@ -146,9 +157,8 @@ export function areSourcesReady(sources, context, everySources = true) {
     // for every source
     const currentSource = sources.get(context)
 
-    // get the path we have to search in
-    // ex : ticket.requester.customer -> requester.customer (because ticket is already in source)
-    const sourcePaths = _.get(DEFAULT_SOURCE_PATHS, context)
+    // get the paths we have to search in
+    const sourcePaths = getSourcePathFromContext(context)
 
     if (!sourcePaths || !currentSource) {
         return false
@@ -197,6 +207,30 @@ export function canDisplayWidget(widget, source) {
     }), initialSourceName)
 }
 
+export function makeWrapper({order, context, child, sourcePath}) {
+    const type = getContextFromSourcePath(sourcePath).type
+
+    let wrapperWidget = fromJS({
+        type: 'wrapper',
+        widgets: [child],
+    })
+
+    // we don't want to display a card around data in wrapper (unnecessary nesting)
+    // if there is only a card in the wrapper and no simple widget in this card (ie. only cards or lists) we move those
+    // children into the wrapper directly instead of letting them in the card
+    const firstWidget = wrapperWidget.get('widgets', fromJS([])).first()
+    if (hasNoSimpleWidget(firstWidget)) {
+        wrapperWidget = wrapperWidget.set('widgets', firstWidget.get('widgets', fromJS([])))
+    }
+
+    return fromJS({
+        type,
+        order,
+        context,
+        template: wrapperWidget,
+    })
+}
+
 /**
  * Translate json to template configuration for widgets
  * @param value
@@ -222,6 +256,9 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
 
         // if object (and not an array, since Array is an Object in JS)
         if (isObject(value)) {
+            // remove private keys from source
+            value = _.omitBy(value, (v, k) => k.startsWith('_'))
+
             let enhancedValues = {}
 
             // order keys in alphabetical order
@@ -317,31 +354,31 @@ export function jsonToWidgets(json, context = 'ticket') {
     const defaultResponse = []
 
     try {
-        const sourcePaths = _.get(DEFAULT_SOURCE_PATHS, context, '')
+        const sourcePaths = getSourcePathFromContext(context)
 
         const response = sourcePaths
             .map((sourcePath, i) => {
-                const source = _.get(json, sourcePath.split('.'), {})
+                let source = _.get(json, sourcePath.split('.'), {})
 
-                let template = jsonToWidget(source)
+                // remove private keys from source before we transform it into a template
+                source = _.omitBy(source, (v, k) => k.startsWith('_'))
+
+                if (!source || !_.size(source)) {
+                    return null
+                }
+
+                const template = jsonToWidget(source)
 
                 if (!template || !_.size(template)) {
                     return null
                 }
 
-                // set each widget in a wrapper
-                template = {
-                    type: 'wrapper',
-                    path: sourcePath,
-                    widgets: [template]
-                }
-
-                return {
-                    type: 'custom',
+                return makeWrapper({
                     order: i,
                     context,
-                    template
-                }
+                    child: template,
+                    sourcePath,
+                })
             })
 
         // remove null widgets

@@ -27,6 +27,7 @@ class SourceWidget extends React.Component {
                         source={data || fromJS({})}
                         widget={updatedWidget}
                         editing={editing}
+                        parent={parent}
                     />
                 )
             }

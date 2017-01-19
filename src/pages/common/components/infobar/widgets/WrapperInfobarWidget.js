@@ -19,9 +19,9 @@ class WrapperInfobarWidget extends React.Component {
 
     render() {
         const {
+            widget,
             isEditing,
             source,
-            widget,
             editing
         } = this.props
 
@@ -35,17 +35,12 @@ class WrapperInfobarWidget extends React.Component {
                         isEditing
                         && (
                             <div className="header clearfix">
-                                {
-                                    isEditing
-                                    && (
-                                        <span className="tools">
-                                            <i
-                                                className="red link remove icon"
-                                                onClick={this._deleteWrapper}
-                                            />
-                                        </span>
-                                    )
-                                }
+                                <span className="tools">
+                                    <i
+                                        className="red link remove icon"
+                                        onClick={this._deleteWrapper}
+                                    />
+                                </span>
                             </div>
                         )
                     }
@@ -96,3 +91,4 @@ WrapperInfobarWidget.propTypes = {
 }
 
 export default WrapperInfobarWidget
+

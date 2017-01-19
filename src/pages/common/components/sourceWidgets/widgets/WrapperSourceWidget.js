@@ -1,28 +1,35 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
+import {humanizeString} from '../../infobar/utils'
+import _last from 'lodash/last'
 
 import SourceWidget from '../SourceWidget'
 
 class WrapperSourceWidget extends React.Component {
     render() {
         const {
-            source,
             widget,
-            editing
+            source,
+            editing,
+            parent,
         } = this.props
 
         const ap = widget.get('absolutePath')
         const tp = widget.get('templatePath')
+        const children = widget.get('widgets', fromJS([]))
+
+        if (children.isEmpty()) {
+            return null
+        }
 
         return (
-            <div
-                className="ui card wrapper draggable"
-                data-key={widget.get('path')}
+            <div className={`ui card wrapper draggable ${parent.get('type')}`}
+                 data-key={widget.get('path')}
             >
                 <div className="content">
                     <div className="header clearfix">
-                        {ap}
+                        {humanizeString(_last(ap.split('.')))}
                     </div>
                     <DragWrapper
                         actions={editing && editing.actions}
@@ -34,8 +41,7 @@ class WrapperSourceWidget extends React.Component {
                         isEditing
                     >
                         {
-                            widget
-                                .get('widgets', fromJS([]))
+                            children
                                 .map((w, i) => {
                                     const passedWidget = w
                                         .set('templatePath', `${tp}.widgets.${i}`)
@@ -61,7 +67,8 @@ class WrapperSourceWidget extends React.Component {
 WrapperSourceWidget.propTypes = {
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
-    widget: PropTypes.object.isRequired
+    parent: PropTypes.object.isRequired,
+    widget: PropTypes.object.isRequired,
 }
 
 export default WrapperSourceWidget

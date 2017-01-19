@@ -5,9 +5,14 @@ import _endsWith from 'lodash/endsWith'
 import {
     isRootSource,
     stripLastListsFromPath,
-    jsonToWidget
+    jsonToWidget,
+    makeWrapper,
 } from '../../pages/common/components/infobar/utils'
-import {itemsWithContext, itemsWithUpdatedWidgets, reorderWidgets} from './utils'
+import {
+    itemsWithContext,
+    itemsWithUpdatedWidgets,
+    reorderWidgets,
+} from './utils'
 
 export const initialState = fromJS({
     items: [],
@@ -154,28 +159,24 @@ export default (state = initialState, action) => {
             const widgetsItems = isDraggingARootSource
                 ? ['_internal', 'editedItems']
                 : ['_internal', 'editedItems']
-                    .concat(targetParentTemplatePath.split('.'))
-                    .concat(['widgets'])
+                .concat(targetParentTemplatePath.split('.'))
+                .concat(['widgets'])
 
             // if is a dragging source, wrap it in a wrapper
             if (isDraggingARootSource) {
                 const context = state.get('currentContext', '')
                 const strippedSourceAbsolutePath = stripLastListsFromPath(sourceAbsolutePath)
 
-                widget = fromJS({
-                    type: 'custom',
+                widget = makeWrapper({
                     order: widgetsItems.size,
                     context,
-                    template: {
-                        type: 'wrapper',
-                        path: strippedSourceAbsolutePath,
-                        widgets: [widget]
-                    }
+                    child: widget,
+                    sourcePath: strippedSourceAbsolutePath,
                 })
             }
 
             // get first child widget, may be useful later
-            const childWidget = widget.getIn(['widgets', '0'], fromJS({}))
+            const childWidget = widget.get('widgets', fromJS([])).first()
 
             // current list at the path to put generated widgets
             const currentList = newState

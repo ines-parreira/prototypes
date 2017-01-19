@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import DragWrapper from '../dragging/WidgetsDragWrapper'
 import {canDisplayWidget} from './utils'
+import {getSourcePathFromContext} from '../../../../state/widgets/utils'
 
 class InfobarWidgets extends React.Component {
     render() {
@@ -40,9 +41,15 @@ class InfobarWidgets extends React.Component {
                     {
                         widgets
                             .map((widget, i) => {
-                                const passedWidget = widget
+                                let passedWidget = widget
                                     .get('template', fromJS({}))
                                     .set('templatePath', `${i}.template`)
+
+                                // if no path is set, use the configuration one
+                                if (!passedWidget.get('path')) {
+                                    const sourcePath = getSourcePathFromContext(widget.get('context'), widget.get('type'))
+                                    passedWidget = passedWidget.set('path', sourcePath)
+                                }
 
                                 if (!canDisplayWidget(passedWidget, source)) {
                                     return null

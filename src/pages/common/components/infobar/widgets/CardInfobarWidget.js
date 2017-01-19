@@ -114,6 +114,9 @@ class CardInfobarWidget extends React.Component {
 
         const childWidgets = widget.get('widgets', fromJS([]))
 
+        // display content (or at least space under card title) if we are in edition mode or if there is data to display
+        const shouldDisplayCardContent = editing || !childWidgets.isEmpty()
+
         return (
             <div
                 className={className}
@@ -123,7 +126,11 @@ class CardInfobarWidget extends React.Component {
                     {
                         (widget.get('title') || isEditing)
                         && (
-                            <div className="header clearfix">
+                            <div
+                                className={classnames('header clearfix', {
+                                    'no-content': !editing && !source.isEmpty() && childWidgets.isEmpty(),
+                                })}
+                            >
                                 {
                                     widget.get('title')
                                         ? this._renderTitle(widget, source.toJS())
@@ -157,44 +164,46 @@ class CardInfobarWidget extends React.Component {
                     }
 
                     {
-                        !source.isEmpty() ? (
-                            <DragWrapper
-                                actions={editing && editing.actions}
-                                sort
-                                group={{
-                                    name: ap,
-                                    pull: false,
-                                    put: true
-                                }}
-                                templatePath={tp}
-                                isEditing={isEditing}
-                                watchDrop
-                            >
-                                {
-                                    childWidgets
-                                        .map((w, i) => {
-                                            const passedWidget = w
-                                                .set('templatePath', `${tp}.widgets.${i}`)
-
-                                            return (
-                                                <InfobarWidget
-                                                    key={`${passedWidget.get('path')}-${i}`}
-                                                    source={source}
-                                                    parent={widget}
-                                                    widget={passedWidget}
-                                                    editing={editing}
-                                                    isEditing={isEditing}
-                                                />
-                                            )
-                                        })
-                                }
-                            </DragWrapper>
-                        ) : (
+                        source.isEmpty() ? (
                             <div className="simple-field">
                                 <span className="field-label">
                                     <i>No data</i>
                                 </span>
                             </div>
+                        ) : (
+                            shouldDisplayCardContent && (
+                                <DragWrapper
+                                    actions={editing && editing.actions}
+                                    sort
+                                    group={{
+                                        name: ap,
+                                        pull: false,
+                                        put: true
+                                    }}
+                                    templatePath={tp}
+                                    isEditing={isEditing}
+                                    watchDrop
+                                >
+                                    {
+                                        childWidgets
+                                            .map((w, i) => {
+                                                const passedWidget = w
+                                                    .set('templatePath', `${tp}.widgets.${i}`)
+
+                                                return (
+                                                    <InfobarWidget
+                                                        key={`${passedWidget.get('path')}-${i}`}
+                                                        source={source}
+                                                        parent={widget}
+                                                        widget={passedWidget}
+                                                        editing={editing}
+                                                        isEditing={isEditing}
+                                                    />
+                                                )
+                                            })
+                                    }
+                                </DragWrapper>
+                            )
                         )
                     }
                 </div>

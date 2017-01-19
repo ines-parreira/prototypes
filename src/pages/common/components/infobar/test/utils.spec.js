@@ -151,13 +151,13 @@ describe('widgets infobar utils', () => {
 
         it('detection OK', () => {
             correct.forEach((input) => {
-                expect(utils.areSourcesReady(input, context)).toBe(true)
+                expect(utils.areSourcesReady(input, context, false)).toBe(true)
             })
         })
 
         it('detection KO', () => {
             incorrect.forEach((input) => {
-                expect(utils.areSourcesReady(input, context)).toBe(false)
+                expect(utils.areSourcesReady(input, context, false)).toBe(false)
             })
         })
     })
