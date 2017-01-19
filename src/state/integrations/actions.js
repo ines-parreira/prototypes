@@ -295,14 +295,6 @@ export function activateIntegration(integration) {
     return (dispatch) => {
         const newIntegration = integration.set('deactivated_datetime', null)
 
-        if (newIntegration.getIn(['meta', 'oauth', 'status'], null) !== 'success') {
-            return dispatch({
-                type: types.UPDATE_INTEGRATION_ERROR,
-                error: true,
-                reason: 'You can\'t activate this integration: the authentication process is in progress.'
-            })
-        }
-
         return updateOrCreateIntegrationRequest(newIntegration)(dispatch)
     }
 }
