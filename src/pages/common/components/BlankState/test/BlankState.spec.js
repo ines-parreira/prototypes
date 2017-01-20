@@ -45,11 +45,7 @@ describe('BlankState component', () => {
     it('more than 10 tickets closed', () => {
         const {output} = setup({
             stats: fromJS({
-                overview: {
-                    current_period: {
-                        total_closed_tickets: 11
-                    }
-                }
+                agents: [['Alex', 11]]
             })
         })
         expect(output.props.children.props.children[1].props.children).toEqual('No more tickets here!')
@@ -58,11 +54,7 @@ describe('BlankState component', () => {
     it('more than 100 tickets closed', () => {
         const {output} = setup({
             stats: fromJS({
-                overview: {
-                    current_period: {
-                        total_closed_tickets: 101
-                    }
-                }
+                agents: [['Alex', 101]]
             })
         })
         expect(output.props.children.props.children[1].props.children).toEqual('Done!')
@@ -71,11 +63,7 @@ describe('BlankState component', () => {
     it('more than 500 tickets closed', () => {
         const {output} = setup({
             stats: fromJS({
-                overview: {
-                    current_period: {
-                        total_closed_tickets: 501
-                    }
-                }
+                agents: [['Alex', 501]]
             })
         })
         expect(output.props.children.props.children[1].props.children).toEqual('All good!')

@@ -22,6 +22,7 @@ export default class SimpleStatsView extends React.Component {
     }
 
     _handleDateChange = (meta) => {
+        meta.type = this.props.type
         this.props.fetchStats(meta)
     }
 

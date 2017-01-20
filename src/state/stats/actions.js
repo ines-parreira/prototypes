@@ -19,7 +19,7 @@ export function setFilter(filterName, values) {
     }
 }
 
-export function fetchStats(newMeta = {}) {
+export function fetchStats(newMeta = {}, newFilters = {}) {
     return (dispatch, getState) => {
         const statsState = getState().stats
 
@@ -27,7 +27,7 @@ export function fetchStats(newMeta = {}) {
         const meta = statsState.getIn(['_internal', 'meta'], fromJS({}))
 
         // get current filters
-        const filters = statsState.getIn(['_internal', 'filters'], fromJS({}))
+        const filters = statsState.getIn(['_internal', 'filters'], fromJS({})).merge(newFilters)
 
         // merge with passed meta
         const params = meta.merge(newMeta).toJS()

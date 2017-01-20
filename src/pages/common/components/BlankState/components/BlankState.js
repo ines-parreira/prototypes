@@ -11,7 +11,7 @@ export const BlankState = ({message, stats}) => {
     }
 
     // total closed tickets in the last 7 days
-    const closedTickets = stats.getIn(['overview', 'current_period', 'total_closed_tickets'])
+    const closedTickets = stats.getIn(['agents', 0, 1])
 
     const messages = [
         {
@@ -37,13 +37,13 @@ export const BlankState = ({message, stats}) => {
     // default content
     let content = <p>This view is empty. Enjoy your day!</p>
 
-     // if custom message, show that.
+    // if custom message, show that.
     if (message) {
         content = message
     } else {
         // match message based on number of closed tickets
         let messageMatch
-        messages.reverse().some((msg) => {
+        messages.reverse().some(msg => {
             if (closedTickets > msg.count) {
                 messageMatch = msg
                 return true
@@ -59,11 +59,13 @@ export const BlankState = ({message, stats}) => {
 
             content = (
                 <div className="blank-state-message">
-                    <i className={iconClassName}></i>
+                    <i className={iconClassName}/>
                     <h2 className="blank-state-message-title">
                         {messageMatch.title}
                     </h2>
-                    <p className="blank-state-message-text" dangerouslySetInnerHTML={{__html: emoji(messageMatch.text)}}></p>
+                    <p className="blank-state-message-text"
+                       dangerouslySetInnerHTML={{__html: emoji(messageMatch.text)}}
+                    />
                 </div>
             )
         }

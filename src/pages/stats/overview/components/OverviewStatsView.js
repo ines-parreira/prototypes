@@ -15,13 +15,14 @@ export default class OverviewStatsView extends React.Component {
     }
 
     _handleDateChange = (meta) => {
+        meta.type = 'overview'
         this.props.fetchStats(meta)
     }
 
     _handleFilterChange = (filterName) => {
         return (values) => {
             this.props.setFilter(filterName, fromJS(values))
-            this.props.fetchStats()
+            this.props.fetchStats({type: 'overview'})
         }
     }
 
