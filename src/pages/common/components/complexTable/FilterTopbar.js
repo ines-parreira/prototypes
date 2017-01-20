@@ -11,7 +11,6 @@ export default class FilterTopbar extends React.Component {
     }
 
     _onClickUpdate = () => {
-        logEvent('Updated view')
         const activeView = this.props.views.get('active')
 
         if (window.confirm('You\'re about to edit this view for all users. Are you sure?')) {
@@ -19,6 +18,7 @@ export default class FilterTopbar extends React.Component {
                 isSubmitting: true
             })
             this._submitView(activeView)
+            logEvent('Updated view')
         }
     }
 
@@ -26,7 +26,6 @@ export default class FilterTopbar extends React.Component {
         this.setState({
             isSubmitting: true
         })
-        logEvent('Saved as new view')
 
         let activeView = this.props.views.get('active')
         const original = this.props.views
@@ -47,6 +46,7 @@ export default class FilterTopbar extends React.Component {
         }
 
         this._submitView(activeView)
+        logEvent('Saved as new view')
     }
 
     _cancel = () => {
@@ -72,9 +72,8 @@ export default class FilterTopbar extends React.Component {
             .set('name', activeView.get('name') || 'New view')
         activeView = activeView.set('slug', slugify(activeView.get('name')))
 
-        logEvent('Created a new view')
-
         this._submitView(activeView)
+        logEvent('Created a new view')
     }
 
     _submitView = (view) => {

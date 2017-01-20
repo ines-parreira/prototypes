@@ -13,26 +13,18 @@ import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 class MergeUsersModal extends React.Component {
     componentDidMount = () => {
-        logEvent('Opened MergeUsers Modal', {
-            destinationUserChannelType: this.props.destinationUser.get('channels').map(channel => channel.get('type'))
-                .toList()
-                .toJS(),
-            sourceUser: this.props.sourceUser.get('channels').map(channel => channel.get('type'))
-                .toList()
-                .toJS()
-        })
-
+        const {destinationUser, sourceUser} = this.props
         const initData = {
             user: this.props.destinationUser.map((v, k) => {
                 if (!v) {
-                    return this.props.sourceUser.get(k)
+                    return sourceUser.get(k)
                 }
 
                 return v
             }).toJS()
         }
 
-        initData.user.channels = initData.user.channels.concat(this.props.sourceUser.get('channels').toJS())
+        initData.user.channels = initData.user.channels.concat(sourceUser.get('channels').toJS())
 
         this.props.initialize(initData)
 
@@ -51,6 +43,17 @@ class MergeUsersModal extends React.Component {
             position: 'top left',
             offset: -10
         })
+
+        logEvent('Opened MergeUsers Modal', {
+            destinationUserChannelType: destinationUser.get('channels')
+                .map(channel => channel.get('type'))
+                .toList()
+                .toJS(),
+            sourceUser: sourceUser.get('channels')
+                .map(channel => channel.get('type'))
+                .toList()
+                .toJS()
+        })
     }
 
     componentWillUnmount = () => {
@@ -60,15 +63,14 @@ class MergeUsersModal extends React.Component {
     _handleSubmit = (data) => {
         // submit user to merge
         if (confirm('This action is irreversible. Are you sure you want to merge those users?')) {
-            logEvent('Confirmed MergeUser', {
-                finalUser: data.user.channels.map(channel => channel.type)
-            })
-
             this.props.mergeUsers(
                 this.props.destinationUser.get('id'),
                 this.props.sourceUser.get('id'),
                 data.user
             )
+            logEvent('Confirmed MergeUser', {
+                finalUser: data.user.channels.map(channel => channel.type)
+            })
         }
         return false
     }

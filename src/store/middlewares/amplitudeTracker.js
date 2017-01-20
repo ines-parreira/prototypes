@@ -3,13 +3,11 @@ import _isUndefined from 'lodash/isUndefined'
 import {Map} from 'immutable'
 import {
     CREATE_NEW_USER_SUCCESS,
-    FETCH_CURRENT_USER_SUCCESS,
-    UPDATE_USER_SUCCESS
+    UPDATE_USER_SUCCESS,
+    SUBMIT_CURRENT_USER_SUCCESS
 } from '../../state/users/constants'
-import {FETCH_SETTINGS_SUCCESS} from '../../state/settings/constants'
 import {
     SUBMIT_TICKET_SUCCESS,
-    FETCH_TICKET_SUCCESS,
     RECORD_MACRO,
     ADD_ATTACHMENT_SUCCESS,
     ADD_TICKET_TAGS,
@@ -29,18 +27,39 @@ const TRACKED_ACTIONS = [
     UPDATE_MACRO_SUCCESS,
     DELETE_MACRO_SUCCESS,
     SUBMIT_TICKET_SUCCESS,
-    FETCH_TICKET_SUCCESS,
     RECORD_MACRO,
     ADD_ATTACHMENT_SUCCESS,
     ADD_TICKET_TAGS,
     SET_STATUS
 ]
 
+// List of actions that require an update of user properties on Amplitude
 const CONFIG_ACTIONS = [
-    FETCH_CURRENT_USER_SUCCESS,
     UPDATE_USER_SUCCESS,
-    FETCH_SETTINGS_SUCCESS
+    SUBMIT_CURRENT_USER_SUCCESS,
 ]
+
+export const logEvent = (event, props) => {
+    if (!_isUndefined(window.amplitude)) {
+        amplitude.getInstance().logEvent(event, props)
+    }
+}
+
+export const setUserProperties = (user) => {
+    if (!_isUndefined(window.amplitude)) {
+        const domain = window.location.hostname.split('.')[0]
+        amplitude.getInstance().setUserId(user.id)
+        amplitude.getInstance().setUserProperties({
+            account: domain,
+            name: user.name,
+            email: user.email,
+            country: user.country,
+            role: user.roles[0].name,
+            created_at: user.created_datetime
+        })
+    }
+}
+
 /**
  * Middleware tracking actions with Amplitude API
  * @param store
@@ -56,29 +75,12 @@ const amplitudeTracker = store => next => action => {
         let actionProps = Map({action: action.type})
 
         switch (action.type) {
-            case FETCH_CURRENT_USER_SUCCESS:
-                amplitude.getInstance().setUserId(action.resp.id)
-                amplitude.getInstance().setUserProperties({
-                    name: action.resp.name,
-                    email: action.resp.email,
-                    country: action.resp.country,
-                    role: action.resp.roles[0].name
-                })
-                break
             case UPDATE_USER_SUCCESS:
-                // update information is current user update his information
+            case SUBMIT_CURRENT_USER_SUCCESS:
+                // update information if current user information changes
                 if (store.getState().currentUser.get('id') === action.resp.id) {
-                    amplitude.getInstance().setUserProperties({
-                        name: action.resp.name,
-                        email: action.resp.email,
-                        role: action.resp.roles[0].name
-                    })
+                    setUserProperties(action.resp)
                 }
-                break
-            case FETCH_SETTINGS_SUCCESS:
-                amplitude.getInstance().setUserProperties({
-                    account: action.resp.account_domain
-                })
                 break
             case SET_STATUS:
                 // temporarily defined its name since action type is not well formatted
@@ -87,9 +89,6 @@ const amplitudeTracker = store => next => action => {
                     id: store.getState().ticket.get('id'),
                     status: action.args.get('status')
                 })
-                break
-            case FETCH_TICKET_SUCCESS:
-                actionProps = actionProps.merge(_pick(action.resp, ['id']))
                 break
             case ADD_TICKET_TAGS:
                 // temporarily defined its name since action type is not well formatted
@@ -115,17 +114,12 @@ const amplitudeTracker = store => next => action => {
                 break
         }
         if (TRACKED_ACTIONS.includes(action.type)) {
-            amplitude.getInstance().logEvent(actionName, actionProps.toJS())
+            logEvent(actionName, actionProps.toJS())
         }
     }
 
     return next(action)
 }
 
-export const logEvent = (event, props) => {
-    if (!_isUndefined(window.amplitude)) {
-        amplitude.getInstance().logEvent(event, props)
-    }
-}
 
 export default amplitudeTracker

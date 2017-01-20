@@ -26,13 +26,16 @@ export default class TicketSubmitButtons extends React.Component {
     }
 
     submit = (status, next) => {
+        const isSending = this.props.ticket.getIn(['_internal', 'loading', 'submitMessage'])
         $('.TicketSubmitButtons button').popup('hide')
         this.props.submit(status, next)
         // we use `next` var to determine if the ticket is closed after send action
-        logEvent('Sent message', {
-            ticket: _pick(this.props.ticket.toJS(), ['id']),
-            andClose: next
-        })
+        if (!isSending) {
+            logEvent('Sent message', {
+                ticket: _pick(this.props.ticket.toJS(), ['id']),
+                andClose: next
+            })
+        }
     }
 
     render() {

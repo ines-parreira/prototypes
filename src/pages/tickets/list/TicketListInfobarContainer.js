@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {Link} from 'react-router'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
@@ -64,13 +65,13 @@ class TicketListInfobarContainer extends React.Component {
                                     {
                                         steps.map((step, index) => {
                                             const linkProperties = _pick(step, [
-                                                'href',
+                                                'to',
                                                 'target',
                                                 'onClick',
                                             ])
 
                                             return (
-                                                <a
+                                                <Link
                                                     className={classnames('step', {
                                                         done: step.isDone
                                                     })}
@@ -79,7 +80,7 @@ class TicketListInfobarContainer extends React.Component {
                                                 >
                                                     <i className="check circle icon" />
                                                     {step.title}
-                                                </a>
+                                                </Link>
                                             )
                                         })
                                     }
@@ -112,20 +113,20 @@ const mapStateToProps = (state) => {
         {
             title: 'Add your support inbox',
             isDone: true,
-            href: 'http://help.gorgias.io/en/latest/src/helpdesk/00-getting-started.html#how-to-set-up-email-forwarding',
+            to: 'http://help.gorgias.io/en/latest/src/helpdesk/00-getting-started.html#how-to-set-up-email-forwarding',
             target: '_blank',
             onClick: () => logEvent('Clicked add support inbox on Onboarding widget'),
         },
         {
             title: 'Invite team members',
             isDone: hasOtherAgents,
-            href: '/app/users',
+            to: '/app/users',
             onClick: () => logEvent('Clicked invite team members on Onboarding widget'),
         },
         {
             title: 'Add an integration',
             isDone: hasIntegrations,
-            href: '/app/integrations',
+            to: '/app/integrations',
             onClick: () => logEvent('Clicked add an integration on Onboarding widget'),
         },
     ]

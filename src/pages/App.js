@@ -6,6 +6,7 @@ import {fetchSettings} from '../state/settings/actions'
 import {fetchTags} from '../state/tags/actions'
 import {pollActivity} from '../state/activity/actions'
 import Navbar from './common/components/Navbar'
+import {setUserProperties} from '../store/middlewares/amplitudeTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
 import Notifications from 'react-notification-system-redux'
 import {NOTIFICATIONS_STYLE_CONFIG} from '../config'
@@ -43,6 +44,8 @@ class App extends React.Component {
 
     componentDidMount() {
         shortcutManager.bind('App')
+        // define Amplitude user properties
+        setUserProperties(this.props.currentUser.toJS())
     }
 
     componentWillUnmount() {

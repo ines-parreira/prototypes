@@ -7,6 +7,7 @@ import classnames from 'classnames'
 import ReactSortable from './../../../common/components/dragging/ReactSortable'
 import CheckboxField from './../../../common/components/formFields/CheckboxField'
 import {compactInteger} from '../../../../utils'
+import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 import {submitSetting} from '../../../../state/currentUser/actions'
 import {sortViews} from './utils'
 import css from './ViewNavbarViewEditor.less'
@@ -66,7 +67,7 @@ class ViewNavbarViewEditor extends Component {
             newSetting = newSetting.setIn([id, 'display_order'], index)
         })
         change('data', newSetting.toJS())
-        amplitude.getInstance().logEvent('Moved a view')
+        logEvent('Moved a view')
     }
 
     _renderViews = (views) => {
@@ -107,8 +108,8 @@ class ViewNavbarViewEditor extends Component {
                         input={{
                             value: !formData.getIn([viewId.toString(), 'hide'], false),
                             onChange: ({target}) => {
-                                amplitude.getInstance().logEvent(`${target.checked ? 'Showed' : 'Hided'} a view`)
                                 change(`data.${viewId}.hide`, !target.checked)
+                                logEvent(`${target.checked ? 'Showed' : 'Hided'} a view`)
                             }
                         }}
                         component={CheckboxField}
