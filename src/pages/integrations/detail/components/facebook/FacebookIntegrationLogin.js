@@ -30,17 +30,14 @@ export default class FacebookIntegrationLogin extends React.Component {
 
                     <h1>Login to Facebook</h1>
                 </div>
-                <div>
-                    Please login to Facebook and give Gorgias the permissions to access and manage your pages.
-                </div>
-
                 <div className="ten wide column">
-                    <span
+                    <p>Please login to Facebook and give Gorgias the permissions to access and manage your pages.</p>
+                    <button
                         className={classNames(submitButtonClassNames)}
                         onClick={this._onLogin}
                     >
                         Login to Facebook
-                    </span>
+                    </button>
                 </div>
             </div>
         )
