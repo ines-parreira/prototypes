@@ -31,8 +31,14 @@ class ReceiversDropdown extends React.Component {
         this._setInitialValues()
     }
 
-    componentWillReceiveProps() {
-        this._openUsedOptionalRows()
+    componentWillReceiveProps(nextProps) {
+        const {isOpen: wasOpen} = this.props
+        const {isOpen} = nextProps
+
+        // if closing or opening, recalculating optional rows that we want to keep open
+        if (wasOpen !== isOpen) {
+            this._openUsedOptionalRows()
+        }
     }
 
     componentDidUpdate(prevProps) {
