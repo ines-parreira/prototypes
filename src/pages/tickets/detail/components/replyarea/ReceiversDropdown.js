@@ -1,18 +1,38 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import _debounce from 'lodash/debounce'
-import Select from 'react-select'
-import 'react-select/dist/react-select.css'
-import {isEmail} from '../../../../../utils'
+import {bindActionCreators} from 'redux'
+import classnames from 'classnames'
+import {ReceiversSelectField} from '../../../../common/components/formFields'
+import * as ticketActions from '../../../../../state/ticket/actions'
 import {
-    getValuePropFromSourceType,
+    getNewMessageType,
+    getNewMessageChannel,
+    makeGetNewMessageSourceProperty,
+    getNewMessageRecipients,
+} from '../../../../../state/ticket/selectors'
+import {
     receiversValueFromState,
-    receiversStateFromValue
+    receiversStateFromValue,
 } from '../../../../../state/ticket/utils'
+import {displayUserNameFromSource} from '../../../common/utils'
+import _upperFirst from 'lodash/upperFirst'
+import _uniq from 'lodash/uniq'
+import _difference from 'lodash/difference'
+import _xor from 'lodash/xor'
+
+const optionalRows = ['cc', 'bcc']
 
 class ReceiversDropdown extends React.Component {
+    state = {
+        displayedRows: [], // optional rows that are displayed
+    }
+
     componentDidMount() {
         this._setInitialValues()
+    }
+
+    componentWillReceiveProps() {
+        this._openUsedOptionalRows()
     }
 
     componentDidUpdate(prevProps) {
@@ -24,112 +44,202 @@ class ReceiversDropdown extends React.Component {
         }
     }
 
-    _valueFromState = (options) => receiversValueFromState(options, this.props.sourceType)
+    /**
+     * Remember currently used rows as open
+     * @private
+     */
+    _openUsedOptionalRows = () => {
+        const {
+            getNewMessageSourceProperty,
+        } = this.props
 
-    _setInitialValues() {
-        this._onChange(this._valueFromState(this.props.initialValues.toJS()))
+        const rows = this._getAvailableRows()
+
+        // remove unusued rows from optional ones
+        const displayedOptionalRows = rows.filter((r) => !getNewMessageSourceProperty(r).isEmpty())
+
+        this.setState({
+            displayedRows: displayedOptionalRows,
+        })
     }
 
-    _onChange = (value) => {
-        this.props.actions.ticket.setReceivers(receiversStateFromValue(value, this.props.sourceType))
-    }
+    /**
+     * Return available rows (depends on the source type)
+     * @returns {string[]}
+     * @private
+     */
+    _getAvailableRows = () => {
+        const {
+            sourceType,
+        } = this.props
 
-    // add email when typing a separator
-    _onInputChange = (value) => {
-        if (!value) {
-            return value
+        let rows = ['to']
+
+        if (sourceType === 'email') {
+            rows = ['to', 'cc', 'bcc']
         }
 
-        const separators = [',', ' ']
-
-        // if last character of input is a separator
-        if (separators.includes(value.slice(-1))) {
-            const stripValue = value.slice(0, -1)
-
-            if (!isEmail(stripValue)) {
-                return value
-            }
-
-            this.refs.receiverDropdown.refs.select.selectValue({
-                label: stripValue,
-                value: stripValue,
-            })
-
-            return ''
-        }
-
-        return value
+        return rows
     }
 
-    // add email when blurring field
-    _onBlur = (event) => {
-        const value = event.target.value
-        if (isEmail(value)) {
-            this.refs.receiverDropdown.refs.select.selectFocusedOption()
-        }
+    _setInitialValues = () => {
+        const {sourceType, setReceivers} = this.props
+        const value = receiversValueFromState(this.props.initialValues, sourceType)
+        setReceivers(receiversStateFromValue(value, sourceType))
     }
 
-    _search = _debounce((input, callback) => {
-        const queryText = input.toLowerCase()
+    _toggleOptionalRow = (row) => {
+        this.setState({
+            displayedRows: _xor(this.state.displayedRows, [row]),
+        })
+    }
 
-        this.props.actions.ticket.updatePotentialRequesters(this.props.generateQuery(queryText))
-            .then((data) => {
-                callback(null, {
-                    options: this._valueFromState(data)
-                })
-            })
-    }, 200)
+    _renderOpened = () => {
+        const {
+            sourceType,
+            enabled,
+            channel,
+            parentId,
+            getNewMessageSourceProperty,
+            setReceivers
+        } = this.props
 
-    render() {
-        const {sourceType, enabled, valueProp} = this.props
+        const rows = this._getAvailableRows()
 
-        const addLabelText = 'Add the email address "{label}" ?'
+        // rows that are displayed by default
+        const mandatoryRows = rows.filter(r => !optionalRows.includes(r))
 
-        const placeholder = valueProp ? 'Search a user...' : 'Sorry, no recipient for this type of message...'
+        // available optional rows, depends on the rows configuration above (depends on source type or channel)
+        const availableOptionalRows = rows.filter(r => optionalRows.includes(r))
+
+        // selected optional rows or rows already containing data
+        const displayedOptionalRows = availableOptionalRows.filter((r) => {
+            return this.state.displayedRows.includes(r) || !getNewMessageSourceProperty(r).isEmpty()
+        })
+
+        // remaining optional rows not already displayed
+        const remainingOptionalRows = _difference(availableOptionalRows, displayedOptionalRows)
+
+        // final displayed rows
+        const displayedRows = _uniq(mandatoryRows.concat(displayedOptionalRows))
 
         return (
-            <div className="receiver-dropdown">
-                <Select.Async
-                    ref="receiverDropdown"
-                    multi
-                    cache={false}
-                    name="receiver-dropdown"
-                    value={this._valueFromState(this.props.value)}
-                    onChange={this._onChange}
-                    onInputChange={this._onInputChange}
-                    loadOptions={this._search}
-                    disabled={!enabled}
-                    allowCreate={sourceType === 'email'}
-                    allowCreateConstraint={isEmail}
-                    addLabelText={addLabelText}
-                    placeholder={placeholder}
-                    onBlur={this._onBlur}
-                    onBlurResetsInput={false}
-                    tabIndex="2"
-                    required
-                />
+            <div>
+                {
+                    // display fields
+                    displayedRows.map((prop) => {
+                        let value = getNewMessageSourceProperty(prop)
+
+                        value = value.isEmpty() ? [] : value.toJS()
+
+                        return (
+                            <div
+                                key={prop}
+                                className="receivers-row"
+                            >
+                                <span className="label">{_upperFirst(prop)}: </span>
+                                <ReceiversSelectField
+                                    isDisabled={!enabled}
+                                    parentId={parentId}
+                                    sourceType={sourceType}
+                                    channel={channel}
+                                    input={{
+                                        value,
+                                        onChange(recipients) {
+                                            setReceivers({
+                                                [prop]: recipients,
+                                            }, false)
+                                        },
+                                    }}
+                                />
+                            </div>
+                        )
+                    })
+                }
+
+                {
+                    // display buttons for optional fields
+                    !!remainingOptionalRows.length && (
+                        <div className="optional-rows">
+                            {
+                                remainingOptionalRows.map((prop, index) => (
+                                    <span key={prop}>
+                                        <span
+                                            className="optional-row"
+                                            onClick={(e) => {
+                                                e.stopPropagation() // prevent the edit window from closing
+                                                this._toggleOptionalRow(prop)
+                                            }}
+                                        >
+                                            {_upperFirst(prop)}
+                                        </span>
+                                        {(index < remainingOptionalRows.length - 1) && ' / '}
+                                    </span>
+                                ))
+                            }
+                        </div>
+                    )
+                }
+            </div>
+        )
+    }
+
+    _renderClosed = () => {
+        const {sourceType, allRecipients, canOpen} = this.props
+
+        const allDisplayedNames = allRecipients.toJS().map(v => displayUserNameFromSource(v, sourceType))
+
+        return (
+            <div className="receivers-row">
+                <span className="label">To: </span>
+                <span
+                    className={classnames('receivers-list', {
+                        editable: canOpen,
+                    })}
+                >
+                    {allDisplayedNames.join(', ')}
+                </span>
+            </div>
+        )
+    }
+
+    render() {
+        return (
+            <div className="receivers-dropdown">
+                {this.props.isOpen ? this._renderOpened() : this._renderClosed()}
             </div>
         )
     }
 }
 
 ReceiversDropdown.propTypes = {
-    actions: PropTypes.object.isRequired,
+    setReceivers: PropTypes.func.isRequired,
     initialValues: PropTypes.object.isRequired, // the values which should populate the field when it mounts
 
-    generateQuery: PropTypes.func.isRequired,
-
-    value: PropTypes.array.isRequired,
+    getNewMessageSourceProperty: PropTypes.func.isRequired,
     enabled: PropTypes.bool.isRequired, // whether the dropdown should allow user interactions or not
     parentId: PropTypes.string.isRequired, // the id of the parent object, to check if the field needs to be repopulated
 
-    valueProp: PropTypes.string, // the property to display from the object
-    sourceType: PropTypes.string.isRequired
+    sourceType: PropTypes.string.isRequired,
+    channel: PropTypes.string.isRequired,
+    allRecipients: PropTypes.object.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    canOpen: PropTypes.bool.isRequired,
 }
 
-const mapStateToProps = (state, ownProps) => ({
-    valueProp: getValuePropFromSourceType(ownProps.sourceType),
-})
+const mapStateToProps = (state) => {
+    return {
+        sourceType: getNewMessageType(state),
+        channel: getNewMessageChannel(state),
+        getNewMessageSourceProperty: makeGetNewMessageSourceProperty(state),
+        allRecipients: getNewMessageRecipients(state),
+    }
+}
 
-export default connect(mapStateToProps)(ReceiversDropdown)
+function mapDispatchToProps(dispatch) {
+    return {
+        setReceivers: bindActionCreators(ticketActions.setReceivers, dispatch)
+    }
+}
 
+export default connect(mapStateToProps, mapDispatchToProps)(ReceiversDropdown)

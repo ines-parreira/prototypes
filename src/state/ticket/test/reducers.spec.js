@@ -372,7 +372,9 @@ describe('Ticket reducer', () => {
             expect(
                 reducer(initialState, {
                     type: types.SET_RECEIVERS,
-                    receivers: [receiver]
+                    receivers: {
+                        to: [receiver],
+                    }
                 })
             ).toEqualImmutable(
                 expected

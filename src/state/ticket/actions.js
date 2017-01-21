@@ -174,9 +174,16 @@ export const setSubject = (subject) => ({
     })
 })
 
-export const setReceivers = (receivers = []) => ({
+/**
+ * Set new message receivers
+ * @param receivers - object such as {to: [], cc: []}
+ * @param replaceAll - boolean true if should replace all recipients properties with the incoming object (to, cc, bcc)
+ * or if it only replaces passed properties
+ */
+export const setReceivers = (receivers = {}, replaceAll = true) => ({
     type: types.SET_RECEIVERS,
-    receivers
+    receivers,
+    replaceAll,
 })
 
 export const setSourceType = (sourceType) => ({
@@ -645,7 +652,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
                 const type = _ticket.getIn(['newMessage', 'source', 'type'])
                 // set receivers according to last sent message
                 const receivers = guessReceiversFromTicket(_ticket)
-                const receiversValues = receiversValueFromState(receivers.toJS(), type)
+                const receiversValues = receiversValueFromState(receivers, type)
                 dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
 
                 // We're trying to add a signature if any

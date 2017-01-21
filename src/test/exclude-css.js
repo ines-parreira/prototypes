@@ -6,3 +6,4 @@ function noop() {
 }
 
 require.extensions['.css'] = noop
+require.extensions['.less'] = noop

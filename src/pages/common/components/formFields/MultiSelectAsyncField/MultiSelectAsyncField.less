@@ -1,0 +1,80 @@
+:local .field {
+  @font-size: 14px;
+
+  position: relative;
+  width: 100%;
+  min-height: 27px;
+
+  .values {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .input {
+    min-width: 30px;
+    flex-grow: 2;
+    height: 23px;
+    border: none;
+    outline: none;
+  }
+
+  .item {
+    position: relative;
+    font-size: 14px;
+    white-space: nowrap;
+    border: 1px solid #cfe0ee;
+    padding: 2px 24px 2px 6px;
+    border-radius: 3px;
+    margin: 0 4px 2px 0;
+    cursor: pointer;
+    outline: none !important; // prevent outline from focus
+
+    &:hover {
+      border-color: #c2c2c2;
+    }
+
+    &.item--focused {
+      border-color: #7BB3EE;
+    }
+
+    .item-remove-button {
+      margin-left: 6px;
+      font-size: 10px;
+      position: absolute;
+      cursor: pointer;
+
+      &:hover {
+        color: #7BB3EE;
+      }
+    }
+  }
+
+  .suggestions {
+    position: absolute;
+    z-index: 10;
+    background: white;
+    width: 100%;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid #cfe0ee;
+    border-top: none;
+
+    &.suggestions--hidden {
+      display: none;
+    }
+
+    & > .suggestion {
+      font-size: @font-size;
+      padding: 6px 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      color: #707070;
+
+      &.suggestion--focused {
+        background: #f2f9fe;
+      }
+    }
+  }
+}

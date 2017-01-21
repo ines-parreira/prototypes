@@ -16,7 +16,7 @@ export const isLoading = name => createSelector(
 )
 
 // in component usage
-// ex: usersIsLoading: makeIsLoading(state)   then : const isMerging = usersIsLoading('merge')
+// ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
 export const makeIsLoading = state => name => isLoading(name)(state)
 
 export const getUsers = createSelector(

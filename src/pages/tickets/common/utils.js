@@ -9,7 +9,7 @@ export function displayUserNameFromSource(user, sourceType) {
     // if is email channel and has a name, show the address next to the name
     if (sourceType === 'email') {
         if (user.name) {
-            label = `${user.name} <${value}>`
+            label = `${user.name} (${value})`
         } else {
             label = value
         }

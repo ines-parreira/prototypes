@@ -4,10 +4,16 @@ import {Map, List, fromJS} from 'immutable'
 import {convertToHTML} from '../../utils'
 import * as responseUtils from './responseUtils'
 import ticketReplyCache from './ticketReplyCache'
+import {
+    getReceiversProperties,
+} from './selectors'
 import {ANSWERABLE_SOURCE_TYPES} from '../../config'
 
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
+import _pick from 'lodash/pick'
+import _assign from 'lodash/assign'
+import _omit from 'lodash/omit'
 
 import {
     getLastNonInternalNoteMessage,
@@ -24,7 +30,9 @@ export const newMessage = (channel, sourceType) => fromJS({
     source: {
         type: sourceType,
         from: {}, // = ticket.messages[first].from_agent ? ticket.messages[first].source.from : ... .to
-        to: []
+        to: [],
+        cc: [],
+        bcc: [],
     },
     subject: '',
     body_text: '',
@@ -431,12 +439,30 @@ export default (state = initialState, action) => {
 
         case types.SET_RECEIVERS: {
             let newState = state
-            const receivers = action.receivers
+            const receivers = _pick(action.receivers, getReceiversProperties())
+            const replaceAll = action.replaceAll
 
-            newState = newState.setIn(['newMessage', 'source', 'to'], fromJS(receivers))
+            const currentSource = newState.getIn(['newMessage', 'source'], fromJS({})).toJS()
 
-            if (receivers.length) {
-                const firstReceiver = receivers[0]
+            let newReceivers = {}
+            if (replaceAll) { // we replace all receivers in source by passed ones
+                newReceivers = receivers
+            } else { // we merge existing receivers with passed ones
+                const currentReceivers = _pick(currentSource, getReceiversProperties())
+                newReceivers = _assign(currentReceivers, receivers)
+            }
+
+            // removing current receivers from source
+            const sourceWithoutReceivers = _omit(currentSource, getReceiversProperties())
+
+            // setting new receivers in source
+            newState = newState.setIn(['newMessage', 'source'], fromJS(_assign(sourceWithoutReceivers, newReceivers)))
+
+            // completing receiver property based on receivers source data
+            const toReceivers = newState.getIn(['newMessage', 'source', 'to'], fromJS([])).toJS()
+
+            if (toReceivers.length) {
+                const firstReceiver = toReceivers[0]
                 let storedData = firstReceiver.id
                     ? {id: firstReceiver.id}
                     : {email: firstReceiver.address}

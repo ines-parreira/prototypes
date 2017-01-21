@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 import _pick from 'lodash/pick'
 import _find from 'lodash/find'
+import _forEach from 'lodash/forEach'
 import {SOURCE_VALUE_PROP} from '../../config'
 import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
 
@@ -160,11 +161,14 @@ export function getValuePropFromSourceType(sourceType) {
  * @returns {*}
  */
 export function guessReceiversFromTicket(ticket) {
-    let receivers = fromJS([])
+    let toReceivers = fromJS([])
+    let ccReceivers = fromJS([])
     const messages = ticket.get('messages', fromJS([]))
 
     if (!messages.size) {
-        return receivers
+        return {
+            to: []
+        }
     }
 
     const sourceType = ticket.getIn(['newMessage', 'source', 'type'])
@@ -172,42 +176,51 @@ export function guessReceiversFromTicket(ticket) {
 
     if (lastMessage) {
         if (lastMessage.get('from_agent')) {
-            receivers = lastMessage.getIn(['source', 'to'])
+            toReceivers = lastMessage.getIn(['source', 'to'])
         } else {
-            receivers = fromJS([lastMessage.getIn(['source', 'from'])])
+            toReceivers = fromJS([lastMessage.getIn(['source', 'from'])])
         }
+
+        ccReceivers = lastMessage.getIn(['source', 'cc'], fromJS([]))
     }
 
-    return receivers.filter(receiver => !!receiver) // remove falsey values
+    return {
+        to: toReceivers.filter(receiver => !!receiver).toJS(), // remove falsey values
+        cc: ccReceivers.filter(receiver => !!receiver).toJS(),
+    }
 }
 
 export function receiversValueFromState(options, sourceType) {
     const valueProp = getValuePropFromSourceType(sourceType)
 
-    return options.map((user) => {
-        return {
+    _forEach(options, (users, index) => {
+        options[index] = users.map((user) => ({
             id: user.id,
             name: user.name,
             label: displayUserNameFromSource(user, sourceType),
             value: user[valueProp],
-        }
+        }))
     })
+
+    return options
 }
 
 export function receiversStateFromValue(value, sourceType) {
     const valueProp = getValuePropFromSourceType(sourceType)
 
     if (!valueProp) {
-        return []
+        return {}
     }
 
-    const newValue = value || []
+    const newValue = value || {}
 
-    return newValue.map((user) => {
-        return {
+    _forEach(newValue, (users, index) => {
+        newValue[index] = users.map((user) => ({
             id: user.id,
             name: user.name,
             [valueProp]: user.value
-        }
+        }))
     })
+
+    return newValue
 }
