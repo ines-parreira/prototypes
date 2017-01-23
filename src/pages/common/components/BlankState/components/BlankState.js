@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import {emoji} from '../../../../../utils'
+import {Emoji} from '../../Emoji'
 
 export const BlankState = ({message, stats}) => {
     // return empty if still loading stats,
@@ -18,19 +18,28 @@ export const BlankState = ({message, stats}) => {
             count: 10,
             icon: 'sun',
             title: 'No more tickets here!',
-            text: `You closed ${closedTickets} tickets this week, that's a good start 👌`
+            text: <span>
+                You closed ${closedTickets} tickets this week, that's a good start
+                <Emoji name="ok_hand" />
+            </span>
         },
         {
             count: 100,
             icon: 'check circle',
             title: 'Done!',
-            text: `You've helped ${closedTickets} people this week, you deserve some 🍪`
+            text: <span>
+                You've helped ${closedTickets} people this week, you deserve some
+                <Emoji name="cookie" />
+            </span>
         },
         {
             count: 500,
             icon: 'asterisk',
             title: 'All good!',
-            text: `You closed ${closedTickets} tickets this week, you're awesome 🚀`
+            text: <span>
+                You closed ${closedTickets} tickets this week, you're awesome
+                <Emoji name="rocket" />
+            </span>
         }
     ]
 
@@ -63,9 +72,9 @@ export const BlankState = ({message, stats}) => {
                     <h2 className="blank-state-message-title">
                         {messageMatch.title}
                     </h2>
-                    <p className="blank-state-message-text"
-                       dangerouslySetInnerHTML={{__html: emoji(messageMatch.text)}}
-                    />
+                    <p className="blank-state-message-text">
+                        {messageMatch.text}
+                    </p>
                 </div>
             )
         }

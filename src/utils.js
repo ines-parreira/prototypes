@@ -498,18 +498,3 @@ export function toQueryParams(obj) {
         `${key}=${encodeURIComponent(obj[key])}`
     )).join('&')
 }
-
-/**
- * Convert emoji chars to <img/> tags using Twitter Emoji (twemoji).
- * @param {String|Object} emojiContainer string or dom node with emojis
- * @returns {String|Object}
- */
-export function emoji(emojiContainer) {
-    if (typeof window.twemoji === 'undefined') {
-        return emojiContainer
-    }
-
-    return window.twemoji.parse(emojiContainer, {
-        base: `${window.GORGIAS_ASSETS_URL}/static/emoji/`
-    })
-}

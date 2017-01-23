@@ -234,10 +234,4 @@ describe('global utils', () => {
             expect(utils.convertToHTML(contentState)).toEqual('<div>Hey Marie Curie,</div><div>multiple links: <a href="http://www.facebook.comwww.github.com" class="linkified" target="_blank">www.facebook.comwww.github.com</a></div><br><div>Thanks for contacting us.</div>')
         })
     })
-
-    describe('emoji', () => {
-        it('should return same string if twemoji is not loaded', () => {
-            expect(utils.emoji('🚀')).toEqual('🚀')
-        })
-    })
 })
