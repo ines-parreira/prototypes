@@ -6,8 +6,10 @@ import {fromJS} from 'immutable'
 import configureStore from './store/configureStore'
 import moment from 'moment-timezone'
 import Promise from 'promise-polyfill'
+import includes from 'array-includes'
 
-// polyfill for Promise
+// Polyfills
+Array.prototype.includes = Array.prototype.includes || includes // eslint-disable-line no-extend-native
 window.Promise = window.Promise || Promise
 
 const initMoment = (currentUser) => {
@@ -41,6 +43,6 @@ if (initialState.currentUser) {
 }
 
 render(
-    <Root history={browserHistory} store={store} />,
+    <Root history={browserHistory} store={store}/>,
     document.getElementById('App')
 )
