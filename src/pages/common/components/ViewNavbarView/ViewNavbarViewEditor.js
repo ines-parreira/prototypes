@@ -126,7 +126,7 @@ class ViewNavbarViewEditor extends Component {
             location: {pathname}
         } = this.props
         const {isLoading} = this.state
-        const createButtonClass = classnames('mt10', 'item', {
+        const createButtonClass = classnames('mt10 item', {
             active: pathname.includes(`${objectName}/new`)
         })
 

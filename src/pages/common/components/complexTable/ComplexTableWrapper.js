@@ -12,6 +12,7 @@ import Search from '../Search'
 import {VIEW_TYPE_CONFIGURATION} from '../../../../config'
 import {slugify, viewFields} from '../../../../utils'
 import {getAgents} from '../../../../state/users/selectors'
+import {getActiveView, getViewsByType, getSelectedItemsIds, makeGetView} from '../../../../state/views/selectors'
 import _pick from 'lodash/pick'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
@@ -89,12 +90,12 @@ class ComplexTableWrapper extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        const {activeView, selectedItemsIds} = this.props
+
         // view was edited,
         // update the header dimensions.
-        const shouldCalculateHeaderHeight = !this.props.views.get('active', fromJS({})).equals(prevProps.views.get('active', fromJS({})))
-            || !this.props.views.getIn(['_internal',
-                'selectedItemsIds'], fromJS([])).equals(prevProps.views.getIn(['_internal',
-                'selectedItemsIds'], fromJS([])))
+        const shouldCalculateHeaderHeight = !activeView.equals(prevProps.activeView)
+            || !selectedItemsIds.equals(prevProps.selectedItemsIds)
 
         if (shouldCalculateHeaderHeight) {
             this.setFixedHeader(this.refs.header)
@@ -102,7 +103,6 @@ class ComplexTableWrapper extends React.Component {
     }
 
     _updateList = (nextProps = this.props) => {
-        const nextViews = nextProps.views
         const currentActive = this.props.activeView
         const nextActive = nextProps.activeView
 
@@ -116,11 +116,8 @@ class ComplexTableWrapper extends React.Component {
         }
 
         // get available views filtered by the accepted views type
-        const availableViews = nextViews
-            .get('items', fromJS([]))
-            .filter((view) => {
-                return view.get('type') === nextProps.viewsType
-            })
+        const availableViews = this.props.viewsByType
+
         const firstAvailableView = availableViews.first() || fromJS({})
 
         // set the first available view as active if...
@@ -133,7 +130,7 @@ class ComplexTableWrapper extends React.Component {
             // ...and the current view is not available
             && !availableViews.find((view) => view.get('id') === currentActive.get('id'))
         if (shouldSetFirstAvailableViewAsActive) {
-            this.props.actions.views.setViewActive(firstAvailableView)
+            this.props.actions.views.setViewActive(this.props.getView(firstAvailableView.get('id')))
         }
 
         // add mode so set a base view as active view
@@ -146,16 +143,13 @@ class ComplexTableWrapper extends React.Component {
         } else if (!this.props.isUpdate && nextProps.isUpdate) {
             // close edit view filters mode when we leave add mode
             setTimeout(() => {
-                this.props.actions.views.updateView(this.props.views.get('active'), false)
+                this.props.actions.views.updateView(this.props.activeView, false)
             }, 1)
         }
         // if an id is asked and that the incoming active view is not the asked one
         if (hasAskedViewId && askedViewId !== nextActive.get('id')) {
             // get the available view that is asked
-            const nextParamView = availableViews
-                .find((view) => {
-                    return view.get('id') === askedViewId
-                }, null, fromJS({}))
+            const nextParamView = this.props.getView(askedViewId)
 
             // is there is one, set it
             if (!nextParamView.isEmpty()) {
@@ -212,7 +206,7 @@ class ComplexTableWrapper extends React.Component {
     deleteView = (view) => this.props.actions.views.deleteView(view)
 
     updateViewName = (name) => {
-        this.updateView(this.props.views.get('active').merge({
+        this.updateView(this.props.activeView.merge({
             name,
             slug: slugify(name)
         }))
@@ -222,11 +216,11 @@ class ComplexTableWrapper extends React.Component {
 
     viewActionEdit = () => {
         // updateView enters editMode by default
-        this.props.actions.views.updateView(this.props.views.get('active'))
+        this.props.actions.views.updateView(this.props.activeView)
     }
 
     viewActionDelete = () => {
-        this.deleteView(this.props.views.get('active'))
+        this.deleteView(this.props.activeView)
     }
 
     getScrollbarWidth() {
@@ -322,7 +316,7 @@ class ComplexTableWrapper extends React.Component {
                                                 })
                                             }}
                                         >
-                                            <i className="setting icon"/>
+                                            <i className="setting icon" />
                                             <div className="text">VIEW SETTINGS</div>
                                             <div className="menu">
                                                 <div
@@ -430,12 +424,15 @@ ComplexTableWrapper.propTypes = {
     items: PropTypes.object.isRequired,
     fields: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
+    selectedItemsIds: PropTypes.object.isRequired,
+    viewsByType: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     activeView: PropTypes.object.isRequired,
     hasActiveView: PropTypes.bool.isRequired,
+    getView: PropTypes.func.isRequired,
 
     actions: PropTypes.shape({
         views: PropTypes.object.isRequired,
@@ -461,17 +458,20 @@ ComplexTableWrapper.defaultProps = {
 }
 
 function mapStateToProps(state, ownProps) {
-    const activeView = state.views.get('active', fromJS({}))
+    const activeView = getActiveView(state)
 
     return {
         views: state.views,
+        viewsByType: getViewsByType(ownProps.viewsType)(state),
+        selectedItemsIds: getSelectedItemsIds(state),
         schemas: state.schemas,
         users: state.users,
         currentUser: state.currentUser,
         agents: getAgents(state),
         activeView,
         hasActiveView: !activeView.isEmpty(),
-        fields: viewFields(ownProps.viewsType)
+        fields: viewFields(ownProps.viewsType),
+        getView: makeGetView(state),
     }
 }
 

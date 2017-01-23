@@ -5,7 +5,7 @@ import * as ViewsActions from '../../../state/views/actions'
 import TicketsNavbarView from './components/TicketsNavbarView'
 import RecentChats from '../../common/components/RecentChats'
 import Navbar from '../../common/components/Navbar'
-import {fromJS} from 'immutable'
+import {getSettingsByType} from '../../../state/currentUser/selectors'
 
 class TicketNavbarContainer extends React.Component {
     componentWillMount() {
@@ -22,8 +22,6 @@ class TicketNavbarContainer extends React.Component {
                     settingType="ticket-views"
                     setting={this.props.setting}
                     isLoading={this.props.isLoading}
-                    views={this.props.views}
-                    currentView={this.props.views.get('active')}
                 />
             </Navbar>
         )
@@ -31,7 +29,6 @@ class TicketNavbarContainer extends React.Component {
 }
 
 TicketNavbarContainer.propTypes = {
-    views: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     location: PropTypes.shape({
@@ -42,15 +39,9 @@ TicketNavbarContainer.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-    const setting = state.currentUser
-        .get('settings', fromJS([]))
-        .find((_setting) => _setting.get('type') === 'ticket-views')
-
     return {
-        views: state.views,
-        setting,
+        setting: getSettingsByType('ticket-views')(state),
         isLoading: state.currentUser.getIn(['_internal', 'loading'], false)
-
     }
 }
 
