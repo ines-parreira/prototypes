@@ -109,33 +109,27 @@ class InfobarUserInfo extends React.Component {
             return null
         }
 
-        return (
-            <div className="flex-vertical">
-                <div className="infobar-section-separator"></div>
-                {
-                    shouldSuggestTemplateGeneration
-                        ? this._renderGenerateButton()
-                        : (
-                        <div>
-                            <InfobarWidgets
-                                source={sources}
-                                widgets={contextWidgets}
-                                editing={isEditing ? {
-                                    isEditing,
-                                    isDragging,
-                                    actions,
-                                    state: widgets,
-                                    canDrop: (targetAbsolutePath) => {
-                                        const group = widgets.getIn(['_internal', 'drag', 'group'])
-                                        return canDrop(group, targetAbsolutePath)
-                                    }
-                                } : undefined}
-                            />
-                        </div>
-                    )
-                }
-            </div>
-        )
+        return [
+            <div key="separator" className="infobar-section-separator"></div>,
+            shouldSuggestTemplateGeneration
+                ? this._renderGenerateButton()
+                : (<InfobarWidgets
+                    key="widgets"
+                    source={sources}
+                    widgets={contextWidgets}
+                    editing={isEditing ? {
+                        isEditing,
+                        isDragging,
+                        actions,
+                        state: widgets,
+                        canDrop: (targetAbsolutePath) => {
+                            const group = widgets.getIn(['_internal', 'drag', 'group'])
+                            return canDrop(group, targetAbsolutePath)
+                        }
+                    } : undefined}
+                />
+            )
+        ]
     }
 
     /**
@@ -149,12 +143,10 @@ class InfobarUserInfo extends React.Component {
         } = this.props
 
         return (
-            !hasIntegrations && (
-                <div className="flex-vertical">
-                    <div className="infobar-section-separator"></div>
-                    <InfobarAddIntegrationSuggestion />
-                </div>
-            )
+            !hasIntegrations && [
+                <div key="separator" className="infobar-section-separator"></div>,
+                <InfobarAddIntegrationSuggestion key="integration-suggestion" />
+            ]
         )
     }
 
@@ -219,7 +211,7 @@ class InfobarUserInfo extends React.Component {
                         key={idx}
                         className="user-channel"
                     >
-                        <i className={iconClass} />
+                        <i className={iconClass}/>
                         {addressComponent}
                     </p>
                 )
