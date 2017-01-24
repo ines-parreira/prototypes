@@ -92,7 +92,7 @@ export default (state = initialState, action) => {
             if (action.ticketId === state.get('id')) {
                 newState = newState.mergeDeep({
                     newMessage: {
-                        attachments: state.getIn(['newMessage', 'attachments']).concat(action.resp)
+                        attachments: state.getIn(['newMessage', 'attachments'], fromJS([])).concat(action.resp)
                     },
                     state: {
                         dirty: true
@@ -115,13 +115,13 @@ export default (state = initialState, action) => {
 
         case types.DELETE_ATTACHMENT:
             return state
-                .setIn(['newMessage', 'attachments'], state.getIn(['newMessage', 'attachments']).delete(action.index))
+                .setIn(['newMessage', 'attachments'], state.getIn(['newMessage', 'attachments'], fromJS([])).delete(action.index))
                 .setIn(['state', 'dirty'], true)
 
         case types.RECORD_MACRO:
             return state.setIn(
                 ['newMessage', 'macros'],
-                state.getIn(['newMessage', 'macros']).push({id: action.macro.get('id')})
+                state.getIn(['newMessage', 'macros'], fromJS([])).push({id: action.macro.get('id')})
             )
 
         case types.SUBMIT_TICKET_MESSAGE_START: {
@@ -203,7 +203,7 @@ export default (state = initialState, action) => {
             const respMessage = fromJS(action.resp)
 
             // We can't just concatenate since we might get duplicates. So we merge on message id.
-            const existingIndex = newState.get('messages').findIndex((m) => m.get('id') === respMessage.get('id'))
+            const existingIndex = newState.get('messages', fromJS([])).findIndex((m) => m.get('id') === respMessage.get('id'))
             if (~existingIndex) {
                 newState = newState.setIn(['messages', existingIndex], respMessage)
             } else {
@@ -223,7 +223,7 @@ export default (state = initialState, action) => {
 
             return action.resetMessage ? newState.set('newMessage', newMessage(
                 action.resp.channel,
-                getSourceTypeOfResponse(newState.get('messages'))
+                getSourceTypeOfResponse(newState.get('messages', fromJS([])))
             )) : newState
         }
 
@@ -472,11 +472,11 @@ export default (state = initialState, action) => {
                     : {email: firstReceiver.address}
                 storedData = fromJS(storedData)
 
-                if (!newState.getIn(['newMessage', 'receiver'])) {
+                if (!newState.getIn(['newMessage', 'receiver'], null)) {
                     newState = newState.setIn(['newMessage', 'receiver'], storedData)
                 }
             } else {
-                if (!newState.getIn(['newMessage', 'source', 'to']).size) {
+                if (!newState.getIn(['newMessage', 'source', 'to'], fromJS([])).size) {
                     newState = newState.setIn(['newMessage', 'receiver'], null)
                 }
             }
@@ -491,8 +491,8 @@ export default (state = initialState, action) => {
             return state
                 .set(
                     'messages',
-                    state.get('messages').delete(
-                        state.get('messages').findIndex(message => message.get('id') === action.messageId)
+                    state.get('messages', fromJS([])).delete(
+                        state.get('messages', fromJS([])).findIndex(message => message.get('id') === action.messageId)
                     )
                 )
                 .setIn(['_internal', 'loading', 'deleteMessage'], false)
