@@ -8,6 +8,7 @@ import {pollActivity} from '../state/activity/actions'
 import Navbar from './common/components/Navbar'
 import {setUserProperties} from '../store/middlewares/amplitudeTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
+import SocketIO from './common/utils/socketio'
 import Notifications from 'react-notification-system-redux'
 import {NOTIFICATIONS_STYLE_CONFIG} from '../config'
 import shortcutManager from './common/utils/shortcutManager'
@@ -19,7 +20,6 @@ let pollInterval = null
 class App extends React.Component {
     componentWillMount() {
         this.props.fetchUsers(['agent', 'admin'])
-
         // activity polling
         let shouldPoll = true
         const pollingParameter = this.props.location.query._activity_polling || ''
@@ -46,10 +46,12 @@ class App extends React.Component {
         shortcutManager.bind('App')
         // define Amplitude user properties
         setUserProperties(this.props.currentUser.toJS())
+        this._socket = new SocketIO()
     }
 
     componentWillUnmount() {
         shortcutManager.unbind('App')
+        this._socket.disconnect()
     }
 
     render() {
@@ -87,6 +89,7 @@ class App extends React.Component {
                         notifications={alertNotifications}
                         style={NOTIFICATIONS_STYLE_CONFIG}
                     />
+
                 </div>
             </DocumentTitle>
         )
