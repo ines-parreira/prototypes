@@ -93,7 +93,11 @@ class URLInputField extends React.Component {
 
 URLInputField.defaultProps = {
     required: false,
-    placeholder: 'gorgias.io'
+    placeholder: 'gorgias.io',
+    meta: {
+        invalid: false,
+        touched: false
+    }
 }
 
 URLInputField.propTypes = {

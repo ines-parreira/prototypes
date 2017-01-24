@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {AVAILABLE_HTTP_METHODS, JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../../../../../../config'
 import ParametersEditor from '../../../../../common/components/ParametersEditor'
 import JsonField from './../../../../../common/components/formFields/JsonField'
+import URLInputField from './../../../../../common/components/formFields/URLInputField'
 
 export default class HttpAction extends React.Component {
     componentDidMount() {
@@ -122,11 +123,12 @@ export default class HttpAction extends React.Component {
                         </div>
                         <div className="thirteen wide field required">
                             <label>URL</label>
-                            <input
-                                type="text"
-                                value={action.getIn(['arguments', 'url'])}
-                                onChange={e => this._setArgument('url', e.target.value)}
-                                required="required"
+                            <URLInputField
+                                input={{
+                                    value: action.getIn(['arguments', 'url']),
+                                    onChange: v => this._setArgument('url', v)
+                                }}
+                                required
                             />
                         </div>
                     </div>
