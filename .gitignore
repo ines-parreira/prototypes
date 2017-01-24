@@ -1,5 +1,6 @@
 # Celery Beat
 celerybeat-schedule.db
+celerybeat-schedule
 
 .DS_Store
 # Byte-compiled / optimized / DLL files
