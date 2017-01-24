@@ -4,6 +4,7 @@ import {Link, withRouter} from 'react-router'
 import {Field, reduxForm, getFormValues} from 'redux-form'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
+import _pick from 'lodash/pick'
 import ReactSortable from './../../../common/components/dragging/ReactSortable'
 import CheckboxField from './../../../common/components/formFields/CheckboxField'
 import {compactInteger} from '../../../../utils'
@@ -36,6 +37,17 @@ class ViewNavbarViewEditor extends Component {
         const nextFormValues = fromJS(nextProps.formValues || {})
         const formHasChanged = this.props.formValues && nextProps.formValues &&
             !nextFormValues.get('data').equals(formValues.get('data'))
+
+        // one or more views has been added while edit mode is enabled,
+        // so we add view settings to the form data if it does not exist
+        if (nextProps.formValues) {
+            nextProps.views.forEach(view => {
+                const viewId = view.get('id')
+                if (!nextProps.formValues.data[viewId]) {
+                    change(`data.${viewId}`, _pick(view.toJS(), ['hide, display_order']))
+                }
+            })
+        }
 
         // update setting
         if (formHasChanged) {
