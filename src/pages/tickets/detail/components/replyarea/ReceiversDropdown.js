@@ -9,6 +9,9 @@ import {
     getNewMessageChannel,
     makeGetNewMessageSourceProperty,
     getNewMessageRecipients,
+    getContactProperties,
+    getOptionalContactProperties,
+    areNewMessageContactPropertiesFulfilled,
 } from '../../../../../state/ticket/selectors'
 import {
     receiversValueFromState,
@@ -19,8 +22,6 @@ import _upperFirst from 'lodash/upperFirst'
 import _uniq from 'lodash/uniq'
 import _difference from 'lodash/difference'
 import _xor from 'lodash/xor'
-
-const optionalRows = ['cc', 'bcc']
 
 class ReceiversDropdown extends React.Component {
     state = {
@@ -57,35 +58,15 @@ class ReceiversDropdown extends React.Component {
     _openUsedOptionalRows = () => {
         const {
             getNewMessageSourceProperty,
+            availableContactProperties,
         } = this.props
 
-        const rows = this._getAvailableRows()
-
         // remove unusued rows from optional ones
-        const displayedOptionalRows = rows.filter((r) => !getNewMessageSourceProperty(r).isEmpty())
+        const displayedOptionalRows = availableContactProperties.filter((r) => !getNewMessageSourceProperty(r).isEmpty())
 
         this.setState({
             displayedRows: displayedOptionalRows,
         })
-    }
-
-    /**
-     * Return available rows (depends on the source type)
-     * @returns {string[]}
-     * @private
-     */
-    _getAvailableRows = () => {
-        const {
-            sourceType,
-        } = this.props
-
-        let rows = ['to']
-
-        if (sourceType === 'email') {
-            rows = ['to', 'cc', 'bcc']
-        }
-
-        return rows
     }
 
     _setInitialValues = () => {
@@ -107,16 +88,16 @@ class ReceiversDropdown extends React.Component {
             channel,
             parentId,
             getNewMessageSourceProperty,
-            setReceivers
+            setReceivers,
+            availableContactProperties,
+            optionalContactProperties,
         } = this.props
 
-        const rows = this._getAvailableRows()
-
         // rows that are displayed by default
-        const mandatoryRows = rows.filter(r => !optionalRows.includes(r))
+        const mandatoryRows = availableContactProperties.filter(r => !optionalContactProperties.includes(r))
 
         // available optional rows, depends on the rows configuration above (depends on source type or channel)
-        const availableOptionalRows = rows.filter(r => optionalRows.includes(r))
+        const availableOptionalRows = availableContactProperties.filter(r => optionalContactProperties.includes(r))
 
         // selected optional rows or rows already containing data
         const displayedOptionalRows = availableOptionalRows.filter((r) => {
@@ -145,10 +126,11 @@ class ReceiversDropdown extends React.Component {
                             >
                                 <span className="label">{_upperFirst(prop)}: </span>
                                 <ReceiversSelectField
-                                    isDisabled={!enabled}
                                     parentId={parentId}
                                     sourceType={sourceType}
                                     channel={channel}
+                                    disabled={!enabled}
+                                    required={mandatoryRows.includes(prop)}
                                     input={{
                                         value,
                                         onChange(recipients) {
@@ -231,14 +213,21 @@ ReceiversDropdown.propTypes = {
     allRecipients: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     canOpen: PropTypes.bool.isRequired,
+    availableContactProperties: PropTypes.array.isRequired,
+    optionalContactProperties: PropTypes.array.isRequired,
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+    const type = getNewMessageType(state)
+
     return {
-        sourceType: getNewMessageType(state),
+        sourceType: type,
         channel: getNewMessageChannel(state),
         getNewMessageSourceProperty: makeGetNewMessageSourceProperty(state),
         allRecipients: getNewMessageRecipients(state),
+        availableContactProperties: getContactProperties(type)(state),
+        optionalContactProperties: getOptionalContactProperties(type)(state),
+        isOpen: ownProps.isOpen || !areNewMessageContactPropertiesFulfilled(state)
     }
 }
 

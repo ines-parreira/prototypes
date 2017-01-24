@@ -2,8 +2,6 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import MultiSelectAsyncField from './MultiSelectAsyncField'
-// import Select from 'react-select'
-// import 'react-select/dist/react-select.css'
 import {isEmail} from '../../../../utils'
 import {
     getValuePropFromSourceType,
@@ -15,6 +13,24 @@ import _debounce from 'lodash/debounce'
 import {updatePotentialRequesters} from '../../../../state/ticket/actions'
 
 class ReceiversSelectField extends React.Component {
+    static propTypes = {
+        input: PropTypes.object.isRequired,
+        updatePotentialRequesters: PropTypes.func.isRequired,
+
+        disabled: PropTypes.bool.isRequired, // whether the dropdown should allow user interactions or not
+        parentId: PropTypes.string.isRequired, // the id of the parent object, to check if the field needs to be repopulated
+
+        valueProp: PropTypes.string, // the property to display from the object
+        sourceType: PropTypes.string.isRequired,
+        channel: PropTypes.string.isRequired,
+        required: PropTypes.bool.isRequired,
+    }
+
+    static defaultProps = {
+        disabled: false,
+        required: false,
+    }
+
     /**
      * Search query for async search on input typing
      * @param searchValue
@@ -74,7 +90,7 @@ class ReceiversSelectField extends React.Component {
     }, 200)
 
     render() {
-        const {sourceType, isDisabled, valueProp, input: {value}} = this.props
+        const {sourceType, disabled, required, valueProp, input: {value}} = this.props
 
         const placeholder = valueProp ? 'Search a user...' : 'Sorry, no recipient for this type of message...'
 
@@ -87,7 +103,8 @@ class ReceiversSelectField extends React.Component {
                     onChange: this._onChange,
                 }}
                 loadOptions={this._search}
-                disabled={isDisabled}
+                disabled={disabled}
+                required={required}
                 allowCreate={sourceType === 'email'}
                 allowCreateConstraint={isEmail}
                 placeholder={placeholder}
@@ -97,26 +114,12 @@ class ReceiversSelectField extends React.Component {
     }
 }
 
-ReceiversSelectField.propTypes = {
-    input: PropTypes.object.isRequired,
-    updatePotentialRequesters: PropTypes.func.isRequired,
-
-    isDisabled: PropTypes.bool.isRequired, // whether the dropdown should allow user interactions or not
-    parentId: PropTypes.string.isRequired, // the id of the parent object, to check if the field needs to be repopulated
-
-    valueProp: PropTypes.string, // the property to display from the object
-    sourceType: PropTypes.string.isRequired,
-    channel: PropTypes.string.isRequired,
-}
-
 const mapStateToProps = (state, ownProps) => ({
     valueProp: getValuePropFromSourceType(ownProps.sourceType),
 })
 
-function mapDispatchToProps(dispatch) {
-    return {
-        updatePotentialRequesters: bindActionCreators(updatePotentialRequesters, dispatch)
-    }
-}
+const mapDispatchToProps = (dispatch) => ({
+    updatePotentialRequesters: bindActionCreators(updatePotentialRequesters, dispatch),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReceiversSelectField)

@@ -14,6 +14,7 @@ class MultiSelectAsyncField extends React.Component {
         input: PropTypes.object.isRequired,
         placeholder: PropTypes.string,
         disabled: PropTypes.bool.isRequired,
+        required: PropTypes.bool.isRequired, // true if a value is required
         allowCreate: PropTypes.bool.isRequired, // true item creation is allowed
         allowCreateConstraint: PropTypes.func, // constraint function called if item creation is allowed
         loadOptions: PropTypes.func.isRequired, // async function returning search results when typing
@@ -22,13 +23,14 @@ class MultiSelectAsyncField extends React.Component {
     static defaultProps = {
         allowCreate: false,
         disabled: false,
+        required: false,
     }
 
     state = {
         inputValue: '',
         options: [], // displayed options when typing by async loading
         focusedOptionIndex: 0, // index of focused option (hovered by mouse or keyboard controlled)
-        focusedItemIndex: null, // index of focused item (clicked by mouse or keyboard controlled)
+        focusedItemIndex: null, // index of focused item (clicked by mouse)
     }
 
     componentDidMount() {
@@ -353,11 +355,15 @@ class MultiSelectAsyncField extends React.Component {
             input: {value},
             disabled,
             placeholder,
+            required,
         } = this.props
 
         const hasOptions = !!this.state.options.length
 
         const placeholderOnEmpty = value.length ? '' : placeholder
+
+        // we set the input as required only if this field is required and there is no tag (no value) to this field
+        const isInputRequired = required && !value.length
 
         return (
             <div className={css.field}>
@@ -398,6 +404,7 @@ class MultiSelectAsyncField extends React.Component {
                         onKeyDown={this._onInputKeyDown}
                         onBlur={this._onInputBlur}
                         disabled={disabled}
+                        required={isInputRequired}
                         placeholder={placeholderOnEmpty}
                         tabIndex="2"
                     />

@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+import {isImmutable} from '../../utils'
 import {createSelector} from 'reselect'
 
 export const getReceiversProperties = () => ['to', 'cc', 'bcc']
@@ -67,19 +68,57 @@ export const getNewMessageSourceProperty = property => createSelector(
 // then : const newMessageTo = newMessageSourceProperty('to')
 export const makeGetNewMessageSourceProperty = state => property => getNewMessageSourceProperty(property)(state)
 
-export const getNewMessageRecipients = (state) => {
-    const recipientProperties = ['to', 'cc', 'bcc']
-
-    return recipientProperties.reduce((result, prop) => {
-        const recipients = getNewMessageSourceProperty(prop)(state)
-        recipients.forEach(recipient => {
-            result = result.push(fromJS(recipient))
-        })
-        return result
-    }, fromJS([]))
+export const getMandatoryContactProperties = (sourceType) => () => {
+    return sourceType === 'email' ? ['to'] : []
 }
+
+export const getOptionalContactProperties = (sourceType) => () => {
+    return sourceType === 'email' ? ['cc', 'bcc'] : []
+}
+
+// return all contact properties (mandatory + optional) for a source type
+export const getContactProperties = sourceType => createSelector(
+    [getMandatoryContactProperties(sourceType), getOptionalContactProperties(sourceType)],
+    (mandatory, optional) => mandatory.concat(optional)
+)
+
+export const getNewMessageMandatoryContactProperties = createSelector(
+    [getNewMessageType],
+    sourceType => getMandatoryContactProperties(sourceType)()
+)
+
+export const getNewMessageContactProperties = createSelector(
+    [getNewMessageType],
+    sourceType => getContactProperties(sourceType)()
+)
+
+// true if mandatory contact properties (such as 'to') are not empty for current new message
+export const areNewMessageContactPropertiesFulfilled = createSelector(
+    [getNewMessageMandatoryContactProperties, makeGetNewMessageSourceProperty],
+    (mandatoryProperties, getFromSource) => {
+        return mandatoryProperties.every((property => {
+            const value = getFromSource(property)
+            return isImmutable(value) ? !value.isEmpty() : !!value
+        }))
+    }
+)
+
+// return all recipients values merged in an immutable array
+export const getNewMessageRecipients = createSelector(
+    [getNewMessageContactProperties, makeGetNewMessageSourceProperty],
+    (recipientProperties, getFromSource) => {
+        return recipientProperties.reduce((result, prop) => {
+            const recipients = getFromSource(prop)
+            recipients.forEach(recipient => {
+                result = result.push(fromJS(recipient))
+            })
+            return result
+        }, fromJS([]))
+    }
+)
 
 export const hasNewMessageRecipients = createSelector(
     [getNewMessageRecipients],
     recipients => !recipients.isEmpty()
 )
+
