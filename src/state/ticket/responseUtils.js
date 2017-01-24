@@ -4,7 +4,7 @@ import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
 import {convertFromHTML} from 'draft-convert'
-import {convertToRaw, convertFromRaw, createFromText, ContentState, SelectionState} from 'draft-js'
+import {convertToRaw, convertFromRaw, ContentState, SelectionState} from 'draft-js'
 
 import ticketReplyCache from './ticketReplyCache'
 import {renderTemplate} from '../../pages/common/utils/template'
@@ -169,7 +169,7 @@ export const addSignature = (context) => {
     if (signatureHTML) {
         signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${signatureHTML}`).getBlocksAsArray()
     } else if (signatureText) {
-        signatureBlocks = createFromText(`${signatureTextPrefix}${signatureText}`).getBlocksAsArray()
+        signatureBlocks = ContentState.createFromText(`${signatureTextPrefix}${signatureText}`).getBlocksAsArray()
     }
 
     if (!signatureBlocks) {
