@@ -12,6 +12,7 @@ export function renderTemplate(body, context = {}) {
             interpolate: /{([\s\S]+?)}/g
         })(newContext)
     } catch (e) {
-        return body
+        const re = /{([A-Za-z0-9._[\]]+)}/g
+        return body.replace(re, '')
     }
 }

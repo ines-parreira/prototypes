@@ -13,7 +13,7 @@ import sanitizeHtml from 'sanitize-html'
 import {convertToHTML as _convertToHTML} from 'draft-convert'
 import Immutable, {fromJS} from 'immutable'
 import md5 from 'md5'
-import {VIEW_FIELDS} from './config'
+import {VIEW_FIELDS, ACTION_TEMPLATES} from './config'
 
 /**
  * Serialize an object and return it's md5 hash.
@@ -497,4 +497,23 @@ export function toQueryParams(obj) {
     return Object.keys(obj).map((key) => (
         `${key}=${encodeURIComponent(obj[key])}`
     )).join('&')
+}
+
+/**
+ * Convert emoji chars to <img/> tags using Twitter Emoji (twemoji).
+ * @param {String|Object} emojiContainer string or dom node with emojis
+ * @returns {String|Object}
+ */
+export function emoji(emojiContainer) {
+    if (typeof window.twemoji === 'undefined') {
+        return emojiContainer
+    }
+
+    return window.twemoji.parse(emojiContainer, {
+        base: `${window.GORGIAS_ASSETS_URL}/static/emoji/`
+    })
+}
+
+export function getActionTemplate(actionName) {
+    return ACTION_TEMPLATES.find(template => template.name === actionName) || {}
 }

@@ -60,8 +60,9 @@ describe('components utils : template', () => {
             })).toBe(`We are the ${formatDatetime(date)}`)
         })
 
-        it('return passed text if interpolation fails', () => {
+        it('return passed text without templates if interpolation fails', () => {
             const text = 'Hello {somebody.bestFriend.name}'
+            const result = 'Hello '
 
             expect(renderTemplate(text, {
                 somebody: {
@@ -69,7 +70,7 @@ describe('components utils : template', () => {
                         name: 'Michael'
                     }
                 }
-            })).toBe(text)
+            })).toBe(result)
         })
     })
 })

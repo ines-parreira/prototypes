@@ -238,7 +238,11 @@ export default (state = initialState, action) => {
             // if discreet, only update messages
             if (!action.displayLoading) {
                 const messages = _get(action, ['resp', 'messages'], [])
-                return state.set('messages', state.get('messages', fromJS([])).mergeDeep(messages))
+                const requesterCustomer = fromJS(_get(action, ['resp', 'requester', 'customer'], {}))
+
+                return state
+                    .set('messages', state.get('messages', fromJS([])).mergeDeep(messages))
+                    .setIn(['requester', 'customer'], requesterCustomer)
             }
 
             const newState = state.merge(fromJS(action.resp))

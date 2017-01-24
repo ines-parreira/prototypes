@@ -8,12 +8,12 @@ import axios from 'axios'
 
 import * as types from './constants'
 import {fromJS} from 'immutable'
-import {ACTION_TEMPLATES, DEFAULT_ACTIONS} from '../../config'
+import {DEFAULT_ACTIONS} from '../../config'
 import {setMacrosVisible} from '../macro/actions'
 import {TICKET_VIEWED} from '../activity/constants'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
-import {getLastMessage, isCurrentlyOnTicket} from '../../utils'
+import {getLastMessage, isCurrentlyOnTicket, getActionTemplate} from '../../utils'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -284,10 +284,31 @@ export const applyMacroAction = (action, currentUser) => {
     }
 }
 
+const renderObject = (argument, context) => {
+    let ret = argument
+
+    if (typeof argument === 'string') {
+        ret = renderTemplate(argument, context)
+    } else if (typeof argument === 'object') {
+        ret = argument.map(v => renderObject(v, context))
+    }
+
+    return ret
+}
+
 export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
+    // render macro action arguments
+    const ticketState = getState().ticket.toJS()
+
+    const renderedMacro = macro.set('actions', macro.get('actions').map(
+        action => action.set('arguments', action.get('arguments').map(
+            argument => renderObject(argument, {ticket: ticketState})
+        ))
+    ))
+
     dispatch({
         type: types.APPLY_MACRO,
-        macro,
+        macro: renderedMacro,
         ticketId
     })
     const currentUser = getState().currentUser
@@ -386,7 +407,7 @@ export const fetchTicketMessage = (ticketId, messageId, sendNotification = true)
                             <ul>
                                 {
                                     hasActions && resp.actions.map((action, idx) => {
-                                        if (ACTION_TEMPLATES[action.name].execution === 'back') {
+                                        if (getActionTemplate(action.name).execution === 'back') {
                                             return (
                                                 <li key={idx}>
                                                     <b>{action.title}</b>: {action.status}
@@ -543,7 +564,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
             if (macroActions) {
                 data.newMessage.actions = macroActions.map(curAction => formatAction(
                     curAction,
-                    fromJS(ACTION_TEMPLATES).get(curAction.get('name')),
+                    fromJS(getActionTemplate(curAction.get('name'))),
                     {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
                 ))
             }

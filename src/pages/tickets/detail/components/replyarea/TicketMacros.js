@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {ACTION_TEMPLATES} from '../../../../../config'
-import {mapFileFormatToSemanticIcon} from '../../../common/utils'
+import {mapFileFormatToSemanticIcon, getSortedIntegrationActions} from '../../../common/utils'
 import {AgentLabel} from '../../../../common/utils/labels'
+import {getIconFromType} from './../../../../../state/integrations/helpers'
+import {getActionTemplate} from './../../../../../utils'
 
 export default class TicketMacros extends React.Component {
     openModalOnSelectedMacro(selectedMacroId) {
@@ -75,7 +76,7 @@ export default class TicketMacros extends React.Component {
                                 {tag}
                             </div>
                         ))
-                    ))
+                    )).toJS()
                 }
             </div>
         )
@@ -121,18 +122,33 @@ export default class TicketMacros extends React.Component {
         )
     }
 
-    renderExternalActions(externalActions) {
-        if (!externalActions || !externalActions.size) {
+    renderBackActions(integrationType, integrationActions) {
+        if (!integrationActions || !integrationActions.size) {
             return null
         }
 
         return (
-            <div className="macro-data">
-                <div className="ui label macro-legend">ACTIONS:</div>
+            <div
+                key={integrationType}
+                className="macro-data integration-actions"
+            >
+                <div className="ui label macro-legend">
+                    {integrationType.toUpperCase()} ACTIONS:
+                </div>
                 {
-                    externalActions.map((action, idx) =>
-                        <div key={`external-action-${idx}`} className="ui yellow label">{action.get('title')}</div>
-                    )
+                    integrationActions.map((action, idx) =>
+                        <div
+                            className="integration-action"
+                            key={`integration-action-${idx}`}
+                        >
+                            <img
+                                src={getIconFromType(integrationType)}
+                                role="presentation"
+                                className="logo"
+                            />
+                            {action.get('title')}
+                        </div>
+                    ).toJS()
                 }
             </div>
         )
@@ -152,9 +168,12 @@ export default class TicketMacros extends React.Component {
         const setPriorityAction = macro.get('actions').find(action => action.get('name') === 'setPriority')
         const assignUserAction = macro.get('actions').find(action => action.get('name') === 'assignUser')
         const addAttachmentsActions = macro.get('actions').find(action => action.get('name') === 'addAttachments')
-        const externalActions = macro.get('actions').filter(
-            action => fromJS(ACTION_TEMPLATES).getIn([action.get('name'), 'execution']) === 'back'
+
+        const backActions = macro.get('actions').filter(
+            action => getActionTemplate(action.get('name')).execution === 'back'
         )
+
+        const sortedBackActions = getSortedIntegrationActions(backActions)
 
         let textPreview = null
         if (responseTextAction) {
@@ -170,8 +189,9 @@ export default class TicketMacros extends React.Component {
         return (
             <div className="macro-preview">
                 <div>
-                    <a className="ui right floated basic label"
-                       onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}
+                    <a
+                        className="ui right floated basic label"
+                        onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}
                     >
                         MANAGE MACROS
                     </a>
@@ -179,7 +199,9 @@ export default class TicketMacros extends React.Component {
                     {this.renderAddTags(addTagsActions)}
                     {this.renderAssignUser(assignUserAction)}
                     {this.renderSetPriority(setPriorityAction)}
-                    {this.renderExternalActions(externalActions)}
+                    {
+                        sortedBackActions.map((v, k) => this.renderBackActions(k, v)).toList().toJS()
+                    }
                     {this._renderAddAttachments(addAttachmentsActions)}
                     {textPreview}
                 </div>

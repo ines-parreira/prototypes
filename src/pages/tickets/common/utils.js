@@ -1,4 +1,6 @@
+import {fromJS} from 'immutable'
 import {getValuePropFromSourceType} from '../../../state/ticket/utils'
+import {getActionTemplate} from './../../../utils'
 
 export function displayUserNameFromSource(user, sourceType) {
     const valueProp = getValuePropFromSourceType(sourceType)
@@ -50,4 +52,50 @@ export function mapFileFormatToSemanticIcon(format) {
         default:
             return `${icon} text outline`
     }
+}
+
+/**
+ *  Take a list of integration actions' names, and return them sorted by type.
+ *  i.e. [shopify_action1, shopify_action2, stripe_action1] => {shopify: [action1, action1], stripe: [action1]}
+ *
+ * @param actionsList: the list of actions' names
+ * @returns {any} the dictionary of sorted actions' names
+ */
+export function getSortedIntegrationActionsNames(actionsList) {
+    let sortedActions = fromJS({})
+
+    actionsList.map(action => {
+        const type = action.integrationType
+
+        if (!sortedActions.get(type)) {
+            sortedActions = sortedActions.set(type, fromJS([]))
+        }
+
+        sortedActions = sortedActions.set(type, sortedActions.get(type).push(action.name))
+    })
+
+    return sortedActions
+}
+
+/**
+ * Take a list of integration actions (action object, not names), and return them sorted by type.
+ * i.e. [shopify_action1, shopify_action2, stripe_action1] => {shopify: [action1, action1], stripe: [action1]}
+ *
+ * @param actionsList: the list of actions
+ * @returns {any} the dictionary of sorted actions
+ */
+export function getSortedIntegrationActions(actionsList) {
+    let sortedActions = fromJS({})
+
+    actionsList.map(action => {
+        const type = getActionTemplate(action.get('name')).integrationType || action.get('name')
+
+        if (!sortedActions.get(type)) {
+            sortedActions = sortedActions.set(type, fromJS([]))
+        }
+
+        sortedActions = sortedActions.set(type, sortedActions.get(type).push(action))
+    })
+
+    return sortedActions
 }

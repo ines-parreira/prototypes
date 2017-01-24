@@ -1,9 +1,12 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
+import {fromJS} from 'immutable'
 
 import TicketAttachments from './TicketAttachments'
 import TicketReplyAction from './TicketReplyAction'
 import TicketReplyEditor from './TicketReplyEditor'
+
+import {getActionTemplate} from '../../../../../utils'
 
 export default class TicketReply extends React.Component {
     _handleFiles = (files) => {
@@ -23,14 +26,21 @@ export default class TicketReply extends React.Component {
 
         if (this.props.ticket.getIn(['_internal', 'loading', 'addAttachment'])) {
             return (
-                <div className="attachments-pseudobar">
-                    <div className="ui small active loader"></div>
+                <div className="attachments-wrapper">
+                    <div className="attachments-pseudobar">
+                        <div className="ui small active loader"></div>
+                    </div>
+                    <TicketAttachments
+                        removable
+                        attachments={ticket.getIn(['newMessage', 'attachments'], fromJS([]))}
+                        deleteAttachment={actions.ticket.deleteAttachment}
+                    />
                 </div>
             )
         }
 
         return (
-            <div>
+            <div className="attachments-wrapper">
                 <div className="attachments-pseudobar">
                     <div className="fake-fileinput">
                         <label htmlFor="attachments-input">
@@ -55,24 +65,32 @@ export default class TicketReply extends React.Component {
 
     _renderActions = () => {
         const {ticket, appliedMacro, actions} = this.props
-        const httpActions = appliedMacro ?
-            appliedMacro.get('actions').filter(action => action.get('name') === 'http') : []
-        if (!httpActions) {
+
+        const backendActions = appliedMacro ?
+            appliedMacro.get('actions').filter(
+                action => getActionTemplate(action.get('name')).execution === 'back'
+            ) : []
+
+        if (!backendActions) {
             return null
         }
 
-        return (<div>
-            {httpActions.map((action, key) => (
-                <TicketReplyAction
-                    key={key}
-                    index={appliedMacro.get('actions').indexOf(action)}
-                    action={action}
-                    update={actions.ticket.updateActionArgsOnApplied}
-                    remove={actions.ticket.deleteActionOnApplied}
-                    ticketId={ticket.get('id')}
-                />
-            ))}
-        </div>)
+        return (
+            <div>
+                {
+                    backendActions.map((action, key) => (
+                        <TicketReplyAction
+                            key={key}
+                            index={appliedMacro.get('actions').indexOf(action)}
+                            action={action}
+                            update={actions.ticket.updateActionArgsOnApplied}
+                            remove={actions.ticket.deleteActionOnApplied}
+                            ticketId={ticket.get('id')}
+                        />
+                    ))
+                }
+            </div>
+        )
     }
 
     render() {
@@ -89,8 +107,8 @@ export default class TicketReply extends React.Component {
                     handleFiles={this._handleFiles}
                     ref="editor"
                 />
-                {this._renderActions()}
                 {this._renderAttachments()}
+                {this._renderActions()}
             </div>
         )
     }

@@ -36,7 +36,11 @@ export default class MacroModal extends React.Component {
 
                     e.preventDefault()
                     this.cancel()
-                    this.props.actions.tickets.bulkUpdate(this.props.selectedItemsIds, 'macro', this.props.currentMacro.toJS())
+                    this.props.actions.tickets.bulkUpdate(
+                        this.props.selectedItemsIds,
+                        'macro',
+                        this.props.currentMacro.toJS()
+                    )
                 }
             }
         })

@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
-import {fromJS} from 'immutable'
-import {ACTION_TEMPLATES} from '../../../../../config'
+import {getActionTemplate} from '../../../../../utils'
 import classnames from 'classnames'
 import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
@@ -135,7 +134,7 @@ export default class MacroPreview extends React.Component {
         const setPriorityAction = currentMacro.get('actions').find(action => action.get('name') === 'setPriority')
         const assignUserAction = currentMacro.get('actions').find(action => action.get('name') === 'assignUser')
         const externalActions = currentMacro.get('actions').filter(
-            action => fromJS(ACTION_TEMPLATES).getIn([action.get('name'), 'execution']) === 'back'
+            action => getActionTemplate(action.get('name')).execution === 'back'
         )
 
         return (

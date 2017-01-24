@@ -1,38 +1,54 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import classname from 'classnames'
-import {FORM_CONTENT_TYPE} from './../../../../../state/macro/utils'
+import {getActionTemplate} from './../../../../../utils'
+
+import {FORM_CONTENT_TYPE} from './../../../../../config'
+import {getIconUrl, getIconFromUrl} from './../../../../../state/integrations/helpers'
 
 export default class TicketReplyAction extends React.Component {
-    setValue(arg, value, category) {
+    setListDictValue(arg, value, category) {
         const index = this.props.action.getIn(['arguments', category]).indexOf(arg)
+
+        const newValue = this.props.action.get('arguments', fromJS({})).setIn([category, index, 'value'], value)
 
         if (~index) {
             this.props.update(
                 this.props.index,
-                this.props.action.get('arguments').setIn([category, index, 'value'], value),
+                newValue,
                 this.props.ticketId
             )
         }
     }
 
-    renderArgs(title, args, category) {
+    setValue(key, value) {
+        const newValue = this.props.action.get('arguments', fromJS({})).set(key, value)
+
+        this.props.update(
+            this.props.index,
+            newValue,
+            this.props.ticketId
+        )
+    }
+
+    renderListDictArgs(title, args, category) {
         if (args.size) {
             return (
                 <div className="eight wide column">
-                    <h5>{title}</h5>
+                    {
+                        !!title && <h5>{title}</h5>
+                    }
                     {
                         args.map((arg, key) => (
-                            <div key={key} className="ui labeled input">
-                                <div className="ui label">{arg.get('key')}</div>
+                            <div key={key} className="ui input arg-input">
+                                <div style={{marginRight: '10px'}}>{arg.get('key')}</div>
                                 <input
                                     type="text"
                                     value={arg.get('value')}
-                                    onChange={(e) => this.setValue(arg, e.target.value, category)}
+                                    onChange={(e) => this.setListDictValue(arg, e.target.value, category)}
                                     required
                                 />
                             </div>
-                        ))
+                        )).toList().toJS()
                     }
                 </div>
             )
@@ -40,35 +56,108 @@ export default class TicketReplyAction extends React.Component {
         return null
     }
 
+    renderArgs = (args) => {
+        const template = getActionTemplate(this.props.action.get('name'))
+        const sortedArgs = args.sortBy((v, k) => template.arguments[k].display_order)
+
+        return (
+            <div className="eight wide column">
+                {
+                    sortedArgs.map((value, key) => (
+                        <div key={key} className="ui input arg-input">
+                            <div style={{marginRight: '10px'}}>{key}</div>
+                            <input
+                                type="text"
+                                value={value}
+                                onChange={(e) => this.setValue(key, e.target.value, null)}
+                                required={template.arguments[key].required || false}
+                            />
+                        </div>
+                    )).toList().toJS()
+                }
+            </div>
+        )
+    }
+
     render() {
         const {action, remove, ticketId} = this.props
 
-        const headersArgs = action.getIn(['arguments', 'headers'], fromJS([]))
-            .filter(curAction => curAction.get('editable'))
+        let type = action.get('name')
+        const template = getActionTemplate(type)
 
-        const paramsArgs = action.getIn(['arguments', 'params'], fromJS([]))
-            .filter(curAction => curAction.get('editable'))
+        if (template.integrationType) {
+            type = template.integrationType
+        }
 
-        const formData = action.getIn(['arguments', 'content_type']) === FORM_CONTENT_TYPE
-            ? action.getIn(['arguments', 'form'], fromJS([])).filter(curAction => curAction.get('editable'))
-            : fromJS([])
+        const icon = getIconFromUrl(getIconUrl(type))
 
-        const shouldDisplayArgs = headersArgs.size + paramsArgs.size + formData.size
-        const className = classname('ui active content grid', {hidden: !shouldDisplayArgs})
+        let argsComponent = null
+
+        if (type === 'http') {
+            const headersArgs = action.getIn(['arguments', 'headers'], fromJS([]))
+                .filter(curAction => curAction.get('editable'))
+
+            const paramsArgs = action.getIn(['arguments', 'params'], fromJS([]))
+                .filter(curAction => curAction.get('editable'))
+
+            const formData = action.getIn(['arguments', 'content_type']) === FORM_CONTENT_TYPE
+                ? action.getIn(['arguments', 'form'], fromJS([])).filter(curAction => curAction.get('editable'))
+                : fromJS([])
+
+            const shouldDisplayArgs = headersArgs.size + paramsArgs.size + formData.size
+
+            if (shouldDisplayArgs) {
+                argsComponent = (
+                    <div className="ui grid args-wrapper">
+                        {this.renderListDictArgs('Headers', headersArgs, 'headers')}
+                        {this.renderListDictArgs('URL Parameters', paramsArgs, 'params')}
+                        {this.renderListDictArgs('Form Data', formData, 'form')}
+                    </div>
+                )
+            }
+        } else {
+            const args = action.get('arguments')
+
+            if (args && !args.isEmpty()) {
+                argsComponent = (
+                    <div className="ui grid args-wrapper">
+                        {this.renderArgs(args)}
+                    </div>
+                )
+            }
+        }
+
+        const notes = getActionTemplate(action.get('name')).notes
 
         return (
             <div className="TicketReplyAction">
-                <div className="ui accordion">
-                    <div className="title ui yellow label">
-                        {action.get('title')}
-                        <i className="icon close" onClick={() => remove(this.props.index, ticketId)}/>
-                    </div>
-                    <div className={className}>
-                        {this.renderArgs('Headers', headersArgs, 'headers')}
-                        {this.renderArgs('URL Parameters', paramsArgs, 'params')}
-                        {this.renderArgs('Form Data', formData, 'form')}
-                    </div>
+                <div className="title">
+                    {
+                        !!type && (
+                            <img className="action-logo" role="presentation" src={icon}/>
+                        )
+                    }
+                    <span>{action.get('title')}</span>
                 </div>
+                <i
+                    className="large icon remove red circle right floated"
+                    onClick={() => remove(this.props.index, ticketId)}
+                />
+                {argsComponent}
+                {
+                    !!notes && (
+                        <div className="notes">
+                        {
+                            notes.map((note, idx) => (
+                                <div key={idx} className="text-light-black">
+                                    <i className="info circle icon"/>
+                                    {note}
+                                </div>
+                            ))
+                        }
+                        </div>
+                    )
+                }
             </div>
         )
     }

@@ -3,7 +3,7 @@ import Immutable from 'immutable'
 import SearchInput from 'react-search-input'
 import classnames from 'classnames'
 
-import {ACTION_TEMPLATES} from '../../../../../config'
+import {getActionTemplate} from '../../../../../utils'
 
 export default class MacroList extends React.Component {
     constructor() {
@@ -57,7 +57,7 @@ export default class MacroList extends React.Component {
 
                             if (disableExternalActions) {
                                 macro.get('actions').forEach(action => {
-                                    if (ACTION_TEMPLATES[action.get('name')].execution === 'back') {
+                                    if (getActionTemplate(action.get('name')).execution === 'back') {
                                         isDisabled = true
                                     }
                                 })

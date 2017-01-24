@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react'
 import {fromJS} from 'immutable'
 import _lowerCase from 'lodash/lowerCase'
-import { ACTION_TEMPLATES } from '../../../../config'
+import {getActionTemplate} from '../../../../utils'
 import Modal from '../../../common/components/Modal'
 import {JSONTree} from './../../../common/components/JSONTree'
-import {JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from './../../../../state/macro/utils'
+import {JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from './../../../../config'
 
 export default class TicketMessageActions extends React.Component {
     constructor(props) {
@@ -102,7 +102,7 @@ export default class TicketMessageActions extends React.Component {
             return null
         }
 
-        const backActions = message.actions.filter(action => ACTION_TEMPLATES[action.name].execution === 'back')
+        const backActions = message.actions.filter(action => getActionTemplate(action.name).execution === 'back')
 
         return (
             <div className="ticket-message-actions">
@@ -122,10 +122,14 @@ export default class TicketMessageActions extends React.Component {
                             icon = 'ban'
                         }
 
-                        const contentTypeKey = fromJS(action.arguments.headers).keySeq().toList()
-                            .find((k) => _lowerCase(k) === 'content type')
+                        let contentType = null
 
-                        const contentType = action.arguments.headers[contentTypeKey]
+                        if (action.arguments.headers) {
+                            const contentTypeKey = fromJS(action.arguments.headers).keySeq().toList()
+                                .find((k) => _lowerCase(k) === 'content type')
+
+                            contentType = action.arguments.headers[contentTypeKey]
+                        }
 
                         return (
                             <div
@@ -137,12 +141,16 @@ export default class TicketMessageActions extends React.Component {
                                     {action.title}
                                 </button>
 
-                                <Modal
-                                    isOpen={this.state.isModalOpen[index]}
-                                    onRequestClose={this._closeModal(index)}
-                                >
-                                    {this._renderModalContent(index, action, contentType)}
-                                </Modal>
+                                {
+                                    contentType && (
+                                        <Modal
+                                            isOpen={this.state.isModalOpen[index]}
+                                            onRequestClose={this._closeModal(index)}
+                                        >
+                                            {this._renderModalContent(index, action, contentType)}
+                                        </Modal>
+                                    )
+                                }
                             </div>
                         )
                     })

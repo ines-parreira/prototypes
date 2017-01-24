@@ -173,52 +173,11 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
  * Then, when the macro will be used, the fields with no value will show up to be filled by the agent using the macro.
  */
 
-export const DEFAULT_ACTIONS = [
-    'addTags',
-    'setStatus',
-    'assignUser',
-    'setResponseText',
-    'setPriority',
-    'addAttachments',
-    'http',
-    'notify'
-]
+export const JSON_CONTENT_TYPE = 'application/json'
+export const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded'
 
-export const ACTION_TEMPLATES = {
-    addAttachments: {
-        execution: 'front',
-        name: 'addAttachments',
-        title: '',
-        arguments: {
-            attachments: {
-                type: 'listDict',
-                default: []
-            }
-        }
-    },
-    setStatus: {
-        execution: 'front',
-        name: 'setStatus',
-        title: '',
-        arguments: {
-            status: {
-                type: 'string',
-                enum: ['new', 'open', 'closed'],
-                default: 'new'
-            }
-        }
-    },
-    addTags: {
-        execution: 'front',
-        name: 'addTags',
-        title: '',
-        arguments: {
-            tags: {
-                type: 'string'
-            }
-        }
-    },
-    setResponseText: {
+export const ACTION_TEMPLATES = [
+    {
         execution: 'front',
         name: 'setResponseText',
         title: '',
@@ -234,7 +193,40 @@ export const ACTION_TEMPLATES = {
             }
         }
     },
-    assignUser: {
+    {
+        execution: 'front',
+        name: 'addAttachments',
+        title: '',
+        arguments: {
+            attachments: {
+                type: 'listDict',
+                default: []
+            }
+        }
+    },
+    {
+        execution: 'front',
+        name: 'addTags',
+        title: '',
+        arguments: {
+            tags: {
+                type: 'string'
+            }
+        }
+    },
+    {
+        execution: 'front',
+        name: 'setStatus',
+        title: '',
+        arguments: {
+            status: {
+                type: 'string',
+                enum: ['new', 'open', 'closed'],
+                default: 'new'
+            }
+        }
+    },
+    {
         execution: 'front',
         name: 'assignUser',
         title: '',
@@ -244,7 +236,7 @@ export const ACTION_TEMPLATES = {
             }
         }
     },
-    setPriority: {
+    {
         execution: 'front',
         name: 'setPriority',
         title: '',
@@ -256,7 +248,7 @@ export const ACTION_TEMPLATES = {
             }
         }
     },
-    http: {
+    {
         execution: 'back',
         name: 'http',
         title: '',
@@ -326,48 +318,147 @@ export const ACTION_TEMPLATES = {
             },
             json: {
                 type: 'dict',
-                format: 'json'
+                format: 'json',
+                default: {}
             },
             content_type: {
                 type: 'string',
-                default: 'application/json'
+                default: JSON_CONTENT_TYPE,
+                enum: [JSON_CONTENT_TYPE, FORM_CONTENT_TYPE]
             }
         }
     },
-    httpIntegration: {
+    // {
+    //     execution: 'back',
+    //     name: 'httpIntegration',
+    //     title: '',
+    //     arguments: {
+    //         integration_id: {
+    //             type: 'integer',
+    //             choice: '{state.integrations.http}',
+    //             required: true
+    //         }
+    //     }
+    // },
+    // {
+    //     execution: 'back',
+    //     name: 'notify',
+    //     title: '',
+    //     arguments: {
+    //         email: {
+    //             type: 'string',
+    //             format: 'email',
+    //             default: '{ticket.assignee_user.email}'
+    //         },
+    //         subject: {
+    //             type: 'string',
+    //             default: '{ticket.subject}',
+    //             editable: true
+    //         },
+    //         content: {
+    //             type: 'string',
+    //             default: '{ticket.body_html}',
+    //             editable: true
+    //         }
+    //     }
+    // },
+    {
         execution: 'back',
-        name: 'httpIntegration',
-        title: '',
+        integrationType: 'shopify',
+        name: 'shopifyCancelLastOrder',
+        title: 'Cancel last order',
+        arguments: {}
+    },
+    {
+        execution: 'back',
+        integrationType: 'shopify',
+        name: 'shopifyCancelOrder',
+        title: 'Cancel order',
         arguments: {
-            integration_id: {
-                type: 'integer',
-                choice: '{state.integrations.http}'
+            order_id: {
+                type: 'string',
+                default: '',
+                editable: true,
+                required: true
             }
         }
     },
-    notify: {
+    {
         execution: 'back',
-        name: 'notify',
-        title: '',
+        integrationType: 'shopify',
+        name: 'shopifyDuplicateLastOrder',
+        title: 'Duplicate last order',
+        arguments: {}
+    },
+    {
+        execution: 'back',
+        integrationType: 'shopify',
+        name: 'shopifyEditShippingAddressOfLastOrder',
+        title: 'Edit last order\'s shipping address',
+        notes: [
+            'This action won\'t work if the order has already been shipped.'
+        ],
         arguments: {
-            email: {
+            address1: {
                 type: 'string',
-                format: 'email',
-                default: '{ticket.assignee_user.email}'
+                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.address1}',
+                editable: true,
+                required: false,
+                display_order: 1
             },
-            subject: {
+            address2: {
                 type: 'string',
-                default: '{ticket.subject}',
-                editable: true
+                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.address2}',
+                editable: true,
+                required: false,
+                display_order: 2
             },
-            content: {
+            city: {
                 type: 'string',
-                default: '{ticket.body_html}',
-                editable: true
-            }
+                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.city}',
+                editable: true,
+                required: false,
+                display_order: 3
+            },
+            country: {
+                type: 'string',
+                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.country}',
+                editable: true,
+                required: false,
+                display_order: 4
+            },
+            zip: {
+                type: 'string',
+                default: '{ticket.requester.customer._shopify.orders[0].shipping_address.zip}',
+                editable: true,
+                required: false,
+                display_order: 5
+            },
         }
+    },
+    {
+        execution: 'back',
+        integrationType: 'shopify',
+        name: 'shopifyRefundShippingCostOfLastOrder',
+        title: 'Refund last order\'s shipping cost',
+        arguments: {},
+        notes: [
+            'This action will fail if the payment hasn\'t been captured yet.'
+        ]
+    },
+    {
+        execution: 'back',
+        integrationType: 'shopify',
+        name: 'shopifyFullRefundLastOrder',
+        title: 'Refund last order',
+        arguments: {},
+        notes: [
+            'This action will fail if the payment hasn\'t been captured yet.'
+        ]
     }
-}
+]
+
+export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map(template => template.name)
 
 /**
  * Notifications related

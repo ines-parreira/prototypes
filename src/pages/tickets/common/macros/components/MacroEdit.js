@@ -1,4 +1,6 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {fromJS} from 'immutable'
 
 import SetPriorityAction from './actions/SetPriorityAction'
 import SetStatusAction from './actions/SetStatusAction'
@@ -7,13 +9,20 @@ import AssignUserAction from './actions/AssignUserAction'
 import AddTagsAction from './actions/AddTagsAction'
 import HttpAction from './actions/HttpAction'
 import AddAttachmentsAction from './actions/AddAttachmentsAction'
+import IntegrationAction from './actions/IntegrationAction'
+import DefaultAction from './actions/DefaultAction'
+
+import {getSortedIntegrationActionsNames} from './../../utils'
 
 import * as ticketTypes from '../../../../../state/ticket/constants'
-import {DEFAULT_ACTIONS} from '../../../../../config'
+import {DEFAULT_ACTIONS, ACTION_TEMPLATES} from '../../../../../config'
+import {getActionTemplate} from './../../../../../utils'
+
+import {getMacroSelectedInModal} from './../../../../../state/macro/selectors'
 
 import {humanizeString} from '../../../../common/components/infobar/utils'
 
-export default class MacroEdit extends React.Component {
+class MacroEdit extends React.Component {
     componentDidMount() {
         const insertNewMacro = this.refs.insertNewMacro
 
@@ -43,15 +52,7 @@ export default class MacroEdit extends React.Component {
                         insertNewMacro.classList.add('upward')
                     }
                 },
-                onChange: (value, text, $choice) => {
-                    // extract value of item select because default value `text` is humanized
-                    // and will not match with one of `DEFAULT_ACTIONS`
-                    const action = $choice[0].attributes['data-value'].value
-                    if (DEFAULT_ACTIONS.includes(action)) {
-                        this.props.actions.addAction(action)
-                        $('#new-action-popup').dropdown('set text', 'Insert a new action')
-                    }
-                }
+                onHide: () => { $(insertNewMacro).dropdown('clear') }
             })
         }
     }
@@ -72,16 +73,83 @@ export default class MacroEdit extends React.Component {
         }
     }
 
-    render() {
-        const {loading, currentMacro, actions, cancel} = this.props
+    renderNewActionMenu() {
+        const externalActions = ACTION_TEMPLATES.filter(template => template.execution === 'back')
+        const ticketActions = ACTION_TEMPLATES.filter(template => template.execution === 'front').map(t => t.name)
 
-        if (!currentMacro) {
+        const integrationMenus = getSortedIntegrationActionsNames(
+            externalActions.filter(v => !!v.integrationType)
+        )
+        const nonIntegrationActions = externalActions.filter(v => !v.integrationType).map(t => t.name)
+
+        return (
+            <div className="menu">
+                <div className="header">Ticket Actions</div>
+                {
+                    ticketActions.map(action => (
+                        <a
+                            key={action}
+                            onClick={() => this.props.actions.addAction(action)}
+                            className="item"
+                        >
+                            {humanizeString(action)}
+                        </a>
+                    ))
+                }
+                <div className="divider"></div>
+                <div className="header">External Actions</div>
+                {
+                    nonIntegrationActions.map(action => (
+                        <a
+                            key={action}
+                            onClick={() => this.props.actions.addAction(action)}
+                            className="item"
+                        >
+                            {humanizeString(action)}
+                        </a>
+                    ))
+                }
+                {
+                    integrationMenus.map((actions, key) => {
+                        const hasCurrentTypeIntegrations = this.props.integrations.some(
+                            integration => integration.get('type') === key
+                        )
+
+                        if (!hasCurrentTypeIntegrations) {
+                            return null
+                        }
+
+                        return (
+                            <div className="item">
+                                <i className="dropdown icon"/>
+                                <span className="text">{humanizeString(key)}</span>
+                                <div className="upward menu">
+                                    {
+                                        actions.map(actionName => (
+                                            <a
+                                                key={actionName}
+                                                onClick={() => this.props.actions.addAction(actionName)}
+                                                className="item"
+                                            >
+                                                {getActionTemplate(actionName).title}
+                                            </a>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
+
+    render() {
+        const {loading, currentMacro, actions, cancel, presetActions} = this.props
+
+        if (currentMacro.isEmpty()) {
             return null
         }
-
-        const presetActions = currentMacro.get('actions').filter(
-            action => ~DEFAULT_ACTIONS.indexOf(action.get('name'))
-        )
 
         const saveButton = currentMacro.get('id') !== 'new' ? (
             <button type="submit" className="ui green right floated button">Update macro</button>
@@ -191,7 +259,8 @@ export default class MacroEdit extends React.Component {
                                     )
                                 case ticketTypes.ADD_ATTACHMENTS:
                                     return (
-                                        <AddAttachmentsAction key={key}
+                                        <AddAttachmentsAction
+                                            key={key}
                                             index={key}
                                             action={action}
                                             isLoading={isLoading}
@@ -201,23 +270,36 @@ export default class MacroEdit extends React.Component {
                                         />
                                     )
                                 default:
-                                    return null
+                                    if (getActionTemplate(action.get('name')).integrationType) {
+                                        return (
+                                            <IntegrationAction
+                                                key={key}
+                                                index={key}
+                                                action={action}
+                                                deleteAction={actions.deleteAction}
+                                            />
+                                        )
+                                    }
+
+                                    return (
+                                        <DefaultAction
+                                            key={key}
+                                            index={key}
+                                            name={action.get('name')}
+                                            deleteAction={actions.deleteAction}
+                                        />
+                                    )
                             }
                         })
                     }
 
-                    <div className="ui floating dropdown labeled search icon light blue button"
+                    <div
+                        className="ui pointing dropdown labeled icon light blue button"
                         ref="insertNewMacro"
                     >
                         <i className="plus icon"/>
                         Insert a new action
-                        <div className="menu">
-                            {
-                                DEFAULT_ACTIONS.map(action => (
-                                    <a key={action} data-value={action} className="item">{humanizeString(action)}</a>
-                                ))
-                            }
-                        </div>
+                        {this.renderNewActionMenu()}
                     </div>
                 </div>
 
@@ -233,8 +315,25 @@ export default class MacroEdit extends React.Component {
 
 MacroEdit.propTypes = {
     loading: PropTypes.object.isRequired,
-    currentMacro: PropTypes.object,
+    currentMacro: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    cancel: PropTypes.func.isRequired
+    cancel: PropTypes.func.isRequired,
+    presetActions: PropTypes.object.isRequired,
+
+    integrations: PropTypes.object.isRequired
 }
+
+function mapStateToProps(state) {
+    const currentMacro = getMacroSelectedInModal(state)
+
+    return {
+        integrations: state.integrations.get('integrations', fromJS([])),
+        currentMacro,
+        presetActions: currentMacro.get('actions', fromJS([])).filter(
+            action => DEFAULT_ACTIONS.includes(action.get('name'))
+        )
+    }
+}
+
+export default connect(mapStateToProps)(MacroEdit)

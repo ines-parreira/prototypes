@@ -1,13 +1,54 @@
 import {fromJS} from 'immutable'
-import {ACTION_TEMPLATES} from '../../config'
-
-export const JSON_CONTENT_TYPE = 'application/json'
-export const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded'
+import {getActionTemplate} from '../../utils'
+import _forEach from 'lodash/forEach'
 
 export function getMacrosWithoutExternalActions(currentMacros) {
     return currentMacros.filter(
         macro => macro.get('actions').filter(
-            action => fromJS(ACTION_TEMPLATES).getIn([action.get('name'), 'execution']) === 'back'
+            action => getActionTemplate(action.get('name')).execution === 'back'
         ).isEmpty()
     )
+}
+
+export function generateDefaultAction(actionType) {
+    const actionTemplate = getActionTemplate(actionType)
+
+    if (!actionTemplate) {
+        return null
+    }
+
+    let ret = fromJS({
+        type: 'user',
+        execution: actionTemplate.execution,
+        name: actionTemplate.name,
+        title: actionTemplate.title,
+        arguments: {}
+    })
+
+    _forEach(actionTemplate.arguments, (arg, key) => {
+        let defaultValue = arg.default
+
+        if (typeof arg.default === 'undefined') {
+            switch (arg.type) {
+                case 'string':
+                    defaultValue = ''
+                    break
+                case 'integer':
+                    defaultValue = null
+                    break
+                case 'listDict':
+                    defaultValue = []
+                    break
+                case 'dict':
+                    defaultValue = {}
+                    break
+                default:
+                    break
+            }
+        }
+
+        ret = ret.setIn(['arguments', key], fromJS(defaultValue))
+    })
+
+    return ret
 }

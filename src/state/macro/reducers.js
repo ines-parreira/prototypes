@@ -2,83 +2,14 @@ import {createFilter} from 'react-search-input'
 import * as types from './constants'
 import {fromJS, Map} from 'immutable'
 import {DEFAULT_ACTIONS} from '../../config'
-import {getMacrosWithoutExternalActions, JSON_CONTENT_TYPE} from './utils'
+import {getMacrosWithoutExternalActions, generateDefaultAction} from './utils'
 
-const actionInitial = fromJS({
-    type: 'user',
-    name: '',
-    title: '',
-    arguments: {}
-})
-
-const initialDefaultActions = Map({
-    addAttachments: actionInitial.merge({
-        name: 'addAttachments',
-        arguments: {
-            attachments: []
-        }
-    }),
-    setStatus: actionInitial.merge({
-        name: 'setStatus',
-        arguments: {status: 'new'}
-    }),
-    addTags: actionInitial.merge({
-        name: 'addTags',
-        arguments: {tags: ''}
-    }),
-    setResponseText: actionInitial.merge({
-        name: 'setResponseText',
-        arguments: {
-            body_text: '',
-            body_html: ''
-        }
-    }),
-    assignUser: actionInitial.merge({
-        name: 'assignUser',
-        arguments: {
-            assignee_user: null
-        }
-    }),
-    setPriority: actionInitial.merge({
-        name: 'setPriority',
-        arguments: {
-            priority: 'normal'
-        }
-    }),
-    http: actionInitial.merge({
-        execution: 'back',
-        name: 'http',
-        arguments: {
-            method: 'GET',
-            url: '',
-            headers: [],
-            params: [],
-            content_type: JSON_CONTENT_TYPE
-        }
-    }),
-    httpIntegration: actionInitial.merge({
-        execution: 'back',
-        name: 'http_integration',
-        arguments: {
-            integrationId: null
-        }
-    }),
-    notify: actionInitial.merge({
-        execution: 'back',
-        name: 'notify',
-        arguments: {
-            email: '',
-            subject: '{ticket.subject}',
-            content: '{ticket.last_message.body_text}'
-        }
-    })
-})
 
 const macroInitial = fromJS({
     id: 'new',
     name: 'New macro',
     actions: [
-        initialDefaultActions.get('setResponseText')
+        generateDefaultAction('setResponseText')
     ]
 })
 
@@ -94,8 +25,7 @@ const macrosInitial = fromJS({
     selected: {},
     isModalOpen: false,
     modalSelected: null,
-    items: {},
-    actions: initialDefaultActions
+    items: {}
 })
 
 export default (state = macrosInitial, action) => {
@@ -202,7 +132,7 @@ export default (state = macrosInitial, action) => {
 
             return state.setIn(
                 ['modalSelected', 'actions'],
-                state.getIn(['modalSelected', 'actions']).push(state.getIn(['actions', action.actionType]))
+                state.getIn(['modalSelected', 'actions']).push(generateDefaultAction(action.actionType))
             )
 
         case types.SAVE_SEARCH: {

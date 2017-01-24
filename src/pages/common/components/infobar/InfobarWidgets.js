@@ -5,8 +5,15 @@ import {fromJS} from 'immutable'
 import DragWrapper from '../dragging/WidgetsDragWrapper'
 import {canDisplayWidget} from './utils'
 import {getSourcePathFromContext} from '../../../../state/widgets/utils'
+import _isEqual from 'lodash/isEqual'
 
 class InfobarWidgets extends React.Component {
+    shouldComponentUpdate(nextProps) {
+        return !this.props.source.equals(nextProps.source) ||
+                !this.props.widgets.equals(nextProps.widgets) ||
+                !_isEqual(this.props.editing, nextProps.editing)
+    }
+
     render() {
         const {
             source,
