@@ -68,8 +68,8 @@ export const getNewMessageSourceProperty = property => createSelector(
 // then : const newMessageTo = newMessageSourceProperty('to')
 export const makeGetNewMessageSourceProperty = state => property => getNewMessageSourceProperty(property)(state)
 
-export const getMandatoryContactProperties = (sourceType) => () => {
-    return sourceType === 'email' ? ['to'] : []
+export const getMandatoryContactProperties = (sourceType) => () => { // eslint-disable-line no-unused-vars
+    return ['to']
 }
 
 export const getOptionalContactProperties = (sourceType) => () => {
