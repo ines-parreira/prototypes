@@ -16,7 +16,7 @@ import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
 
 import {
-    getLastNonInternalNoteMessage,
+    getLastNonSystemTypeMessage,
     getSourceTypeOfResponse,
     getChannelFromSourceType,
 } from './utils'
@@ -353,7 +353,7 @@ export default (state = initialState, action) => {
                 newState = newState.setIn(['newMessage', 'channel'], getChannelFromSourceType(action.sourceType))
             } else {
                 // For an internal note, we infer the channel from the last non-internal note message.
-                const lastSourceType = getLastNonInternalNoteMessage(state.get('messages')).getIn(['source', 'type'])
+                const lastSourceType = getLastNonSystemTypeMessage(state.get('messages')).getIn(['source', 'type'])
                 newState = newState.setIn(['newMessage', 'channel'], getChannelFromSourceType(lastSourceType))
             }
 

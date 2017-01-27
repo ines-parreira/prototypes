@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import _pick from 'lodash/pick'
 import _find from 'lodash/find'
 import _forEach from 'lodash/forEach'
-import {SOURCE_VALUE_PROP} from '../../config'
+import {SOURCE_VALUE_PROP, SYSTEM_TYPES} from '../../config'
 import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
 
 /**
@@ -10,8 +10,8 @@ import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
  * @param messages
  * @returns {*}
  */
-export function getLastNonInternalNoteMessage(messages) {
-    const filteredMessages = messages.filter((m) => m.getIn(['source', 'type']) !== 'internal-note')
+export function getLastNonSystemTypeMessage(messages) {
+    const filteredMessages = messages.filter((m) => !SYSTEM_TYPES.includes(m.getIn(['source', 'type'])))
 
     return !!filteredMessages.size && filteredMessages.last()
 }
@@ -37,7 +37,7 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
  * source type of the message we're responding to.
  */
 export function getSourceTypeOfResponse(messages) {
-    const lastMsg = getLastNonInternalNoteMessage(messages)
+    const lastMsg = getLastNonSystemTypeMessage(messages)
 
     if (!lastMsg) {
         return 'api'

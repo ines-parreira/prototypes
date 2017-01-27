@@ -71,6 +71,7 @@ export default class TicketMessage extends React.Component {
             'facebook-message': 'facebook-messenger',
             'facebook-comment': 'facebook square',
             'facebook-post': 'facebook square',
+            'system-message': 'setting'
         }
 
         const source = Object.assign({}, {
@@ -83,6 +84,7 @@ export default class TicketMessage extends React.Component {
         const hasLegend = !source.type.startsWith('facebook')
             && source.type !== 'chat'
             && source.type !== 'api'
+            && source.type !== 'system-message'
 
         if (hasLegend) {
             legend = `${source.from[getValuePropFromSourceType(source.type)]}`
