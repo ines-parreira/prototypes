@@ -54,8 +54,11 @@ export const fail = (error, reason) => ({
  */
 export const create = (data) => (dispatch) => (
     axios.post('/api/rules/', data)
-        .then(response => dispatch(addRuleEnd(response.data)))
-        .catch(error => dispatch(fail(error, 'Unable to create the rule')))
+        .then((response) => {
+            dispatch(addRuleEnd(response.data))
+        }, (error) => {
+            dispatch(fail(error, 'Unable to create the rule'))
+        })
 )
 
 /**
@@ -68,8 +71,7 @@ export const save = (data) => {
             .then(() => dispatch(notify({
                 type: 'success',
                 message: 'Rule saved successfully',
-            })))
-            .catch(error => {
+            })), error => {
                 return dispatch(fail(error, 'Unable to save the rule'))
             })
     }
@@ -90,8 +92,7 @@ export const activate = (id) => (dispatch) => (
                 type: 'success',
                 message: 'Rule activated successfully',
             }))
-        })
-        .catch(error => {
+        }, error => {
             return dispatch(fail(error, 'Unable to activate the rule'))
         })
 )
@@ -112,8 +113,7 @@ export const deactivate = (id) => (dispatch) => (
                 type: 'success',
                 message: 'Rule deactivated successfully',
             }))
-        })
-        .catch(error => {
+        }, error => {
             return dispatch(fail(error, 'Unable to deactivate the rule'))
         })
 )
@@ -133,8 +133,7 @@ export const remove = (id) => (dispatch) => (
                 type: 'success',
                 message: 'Rule deleted successfully',
             }))
-        })
-        .catch(error => {
+        }, error => {
             return dispatch(fail(error, 'Unable to delete the rule'))
         })
 )
@@ -163,8 +162,7 @@ export function submitRule(url, comment) {
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch(addRuleEnd(resp))
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch(fail(error, 'Unable to submit the rule'))
             })
     }
@@ -179,8 +177,7 @@ export function fetchRules() {
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch(receiveRules(resp.data))
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch(fail(error, 'Unable to receive rules'))
             })
     }

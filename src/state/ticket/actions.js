@@ -70,8 +70,7 @@ export const addAttachments = (ticket, atts) => (dispatch) => {
                 ticketId: ticket.get('id'),
                 resp
             })
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.ADD_ATTACHMENT_ERROR,
                 error,
@@ -120,8 +119,7 @@ export const ticketPartialUpdate = (ticketId, args, nextUrl = null) => (dispatch
                     setTimeout(() => browserHistory.push(nextUrl), nextUrl.includes('tickets') ? 800 : 300)
                 }
             }
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.TICKET_PARTIAL_UPDATE_ERROR,
                 error,
@@ -210,8 +208,7 @@ export const updatePotentialRequesters = query => (dispatch) => (
                     ...result.user
                 }
             })
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: 'ERROR',
                 error,
@@ -247,8 +244,7 @@ export const deleteMessage = (ticketId, messageId) => (dispatch) => {
                 type: types.DELETE_TICKET_MESSAGE_SUCCESS,
                 messageId
             })
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.DELETE_TICKET_MESSAGE_ERROR,
                 error,
@@ -371,13 +367,14 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
                 })
                 dispatch(initializeMessageDraft(ticketId))
             }
-        })
-        .catch(error => {
-            return displayLoading ? dispatch({
-                type: types.FETCH_TICKET_ERROR,
-                error,
-                reason: `Failed to fetch ticket ${ticketId}`
-            }) : null
+        }, error => {
+            return displayLoading
+                ? dispatch({
+                    type: types.FETCH_TICKET_ERROR,
+                    error,
+                    reason: `Failed to fetch ticket ${ticketId}`
+                })
+                : null
         })
 }
 
@@ -394,7 +391,7 @@ export const fetchTicketMessage = (ticketId, messageId, sendNotification = true)
                 !!resp.actions.find(action => action.status === 'pending')
                 : false
             const hasFailure = hasActions ?
-            !!resp.actions.find(action => action.status === 'error') || resp.failed_datetime
+                !!resp.actions.find(action => action.status === 'error') || resp.failed_datetime
                 : !!resp.failed_datetime
 
             if (hasFailure) {
@@ -445,8 +442,7 @@ export const fetchTicketMessage = (ticketId, messageId, sendNotification = true)
                 type: types.FETCH_MESSAGE_SUCCESS,
                 resp
             })
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.FETCH_MESSAGE_ERROR,
                 error,
@@ -678,8 +674,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
 
                 // We're trying to add a signature if any
                 dispatch(setResponseText(ticket.get('id')))
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.SUBMIT_TICKET_MESSAGE_ERROR,
                     error,
@@ -712,8 +707,7 @@ export function updateTicketMessage(ticketId, messageId, data, action = null) {
                 })
 
                 dispatch(fetchTicketMessage(ticketId, messageId))
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.UPDATE_TICKET_MESSAGE_ERROR,
                     messageId,
@@ -748,8 +742,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
                 })
 
                 browserHistory.push(`/app/ticket/${resp.id}`)
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.SUBMIT_TICKET_ERROR,
                     error,

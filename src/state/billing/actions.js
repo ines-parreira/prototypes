@@ -15,8 +15,7 @@ export function fetchCurrentUsage() {
                 type: types.FETCH_CURRENT_USAGE_SUCCESS,
                 resp
             })
-        })
-        .catch(error => {
+        }, error => {
             dispatch({
                 type: types.FETCH_CURRENT_USAGE_ERROR,
                 error,
@@ -39,8 +38,7 @@ export function fetchInvoices() {
                     type: types.FETCH_INVOICES_SUCCESS,
                     resp
                 })
-            })
-            .catch(error => {
+            }, error => {
                 dispatch({
                     type: types.FETCH_INVOICES_ERROR,
                     error,
@@ -63,8 +61,7 @@ export function fetchCreditCard() {
                     type: types.FETCH_CREDIT_CARD_SUCCESS,
                     resp
                 })
-            })
-            .catch(error => {
+            }, error => {
                 dispatch({
                     type: types.FETCH_CREDIT_CARD_ERROR,
                     error,
@@ -108,8 +105,7 @@ export function updateCreditCard(creditCard) {
                                 resp
                             })
                             browserHistory.push('/app/settings/billing/')
-                        })
-                        .catch(error => {
+                        }, error => {
                             dispatch({
                                 type: types.UPDATE_CREDIT_CARD_ERROR,
                                 error,

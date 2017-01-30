@@ -25,8 +25,7 @@ export function fetchUsers(roles) {
                     resp,
                     roles
                 })
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.FETCH_USER_LIST_ERROR,
                     error,
@@ -51,8 +50,7 @@ export function fetchUser(userId) {
                     type: isCurrentUser ? types.FETCH_CURRENT_USER_SUCCESS : types.FETCH_USER_SUCCESS,
                     resp
                 })
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: isCurrentUser ? types.FETCH_CURRENT_USER_ERROR : types.FETCH_USER_ERROR,
                     error,
@@ -94,8 +92,7 @@ export function submitUser(data, userId) {
                 }))
 
                 return resp
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: isCurrentUser ? types.SUBMIT_CURRENT_USER_ERROR : types.SUBMIT_USER_ERROR,
                     error,
@@ -124,8 +121,7 @@ export function deleteUser(userId) {
                     type: 'success',
                     message: 'User successfully deleted'
                 }))
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.DELETE_USER_ERROR,
                     error,
@@ -159,8 +155,7 @@ export function fetchUserHistory(userId, options) {
                         resp
                     })
                 }
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.FETCH_USER_HISTORY_ERROR,
                     error,
@@ -188,8 +183,7 @@ export function mergeUsers(baseUserId, mergeUserId, data) {
                     type: 'success',
                     message: 'Users successfully merged. Search data is being updated, it might take a few minutes.'
                 }))
-            })
-            .catch(error => {
+            }, error => {
                 dispatch({
                     type: types.MERGE_USERS_ERROR,
                     error,

@@ -16,8 +16,7 @@ export const updateAccount = (values) => (dispatch => {
                 type: 'success',
                 message: 'Account settings successfully updated!'
             }))
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.UPDATE_ACCOUNT_ERROR,
                 error,

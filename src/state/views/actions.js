@@ -72,8 +72,7 @@ export function fieldEnumSearch(field, query) {
                     resp
                 })
                 return fromJS(resp.data)
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.UPDATE_VIEW_FIELD_ENUM_ERROR,
                     error,
@@ -99,8 +98,7 @@ export function fetchViews(currentViewId) {
                     resp,
                     currentViewId
                 })
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.FETCH_VIEW_LIST_ERROR,
                     error,
@@ -150,8 +148,7 @@ export function submitView(view) {
                 if (!isUpdate) {
                     browserHistory.push(`/app/${objectName}/${resp.id}/${resp.slug}`)
                 }
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: isUpdate ? types.SUBMIT_UPDATE_VIEW_ERROR : types.SUBMIT_NEW_VIEW_ERROR,
                     error,
@@ -190,8 +187,7 @@ export function deleteView(view) {
                         type: types.DELETE_VIEW_SUCCESS,
                         viewId: view.get('id')
                     })
-                })
-                .catch(error => {
+                }, error => {
                     return dispatch({
                         type: 'ERROR',
                         error,
@@ -275,8 +271,7 @@ export function fetchPage(page, discreet = false) {
                         data,
                     })
                 }
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.FETCH_LIST_VIEW_ERROR,
                     error,
@@ -387,8 +382,7 @@ export function bulkUpdate(activeView, ids, key, value) {
                     type: 'success',
                     message: successMessage
                 }))
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.BULK_UPDATE_ERROR,
                     error,
@@ -434,8 +428,7 @@ export function bulkDelete(activeView, ids) {
                     type: 'success',
                     message: `${ids.size} ${viewConfig.plural} successfully deleted!`
                 }))
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.BULK_DELETE_ERROR,
                     error,

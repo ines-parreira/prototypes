@@ -14,8 +14,7 @@ export function fetchSettings() {
                     type: types.FETCH_SETTINGS_SUCCESS,
                     resp
                 })
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.FETCH_SETTINGS_ERROR,
                     error,

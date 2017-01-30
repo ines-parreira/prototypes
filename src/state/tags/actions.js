@@ -21,8 +21,7 @@ export function fetchTags() {
                     type: types.FETCH_TAG_LIST_SUCCESS,
                     resp
                 })
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.FETCH_TAG_LIST_ERROR,
                     error,

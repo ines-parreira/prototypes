@@ -24,8 +24,7 @@ export function fetchWidgets() {
                     type: types.FETCH_WIDGETS_SUCCESS,
                     items: resp.data
                 })
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.FETCH_WIDGETS_ERROR,
                     error,
@@ -184,8 +183,7 @@ export function submitWidgets(data) {
                     type: 'success',
                     message: 'Widgets successfully updated'
                 }))
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.SUBMIT_WIDGET_ERROR,
                     error,

@@ -26,8 +26,7 @@ export function fetchIntegrations() {
                     type: types.FETCH_INTEGRATIONS_SUCCESS,
                     resp: newResp
                 })
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.FETCH_INTEGRATIONS_ERROR,
                     error,
@@ -109,8 +108,7 @@ export function fetchIntegration(integrationId, integrationType, waitingForAuthe
                         onCreateSuccess(dispatch, resp)
                     }
                 }
-            })
-            .catch(error => {
+            }, error => {
                 // We redirect to the integrations home page if we can't find the wanted integration on the server
                 browserHistory.replace(`/app/integrations/${integrationType}`)
                 return dispatch({
@@ -145,8 +143,7 @@ export function deleteIntegration(integration) {
                         type: 'success',
                         message: 'Integration successfully deleted'
                     }))
-                })
-                .catch(error => {
+                }, error => {
                     return dispatch({
                         type: types.DELETE_INTEGRATION_ERROR,
                         error,
@@ -189,8 +186,7 @@ function updateOrCreateIntegrationRequest(integration, action) {
                 } else {
                     onCreateSuccess(dispatch, resp)
                 }
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: isUpdate ? types.UPDATE_INTEGRATION_ERROR : types.CREATE_INTEGRATION_ERROR,
                     error,

@@ -19,8 +19,7 @@ export const changePassword = (oldPassword, newPassword) => (dispatch => {
                 type: 'success',
                 message: 'Password successfully changed!'
             }))
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.CHANGE_PASSWORD_ERROR,
                 error,
@@ -54,8 +53,7 @@ export function submitSetting(data) {
                 })
 
                 return resp
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.SUBMIT_SETTING_ERROR,
                     error,

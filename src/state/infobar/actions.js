@@ -21,8 +21,7 @@ export const search = (query, docType = 'user', source = []) => ((dispatch) => {
                 type: docType === 'user' ? types.SEARCH_USERS_SUCCESS : types.SEARCH_TICKETS_SUCCESS,
                 resp
             })
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: docType === 'user' ? types.SEARCH_USERS_ERROR : types.SEARCH_TICKETS_ERROR,
                 error,
@@ -51,8 +50,7 @@ export const fetchUserPicture = (email = '') => ((dispatch) => {
                 url: GRAVATAR_URL,
                 email
             })
-        })
-        .catch(() => {
+        }, () => {
             return axios.get(GOOGLE_URL)
                 .then((json = {}) => json.data)
                 .then((data = {}) => {
@@ -69,8 +67,7 @@ export const fetchUserPicture = (email = '') => ((dispatch) => {
                             type: types.FETCH_USER_PICTURE_ERROR
                         })
                     }
-                })
-                .catch(() => {
+                }, () => {
                     // DO NOT ADD AN ERROR FIELD HERE: it's on purpose, we don't want an error message to be
                     // displayed if there's no picture for a user
                     return dispatch({
@@ -92,8 +89,7 @@ export const fetchPreviewUser = (userId) => ((dispatch) => {
                 type: types.FETCH_PREVIEW_USER_SUCCESS,
                 resp
             })
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.FETCH_PREVIEW_USER_ERROR,
                 error,

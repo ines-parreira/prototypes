@@ -148,8 +148,7 @@ export const pollActivity = () => (dispatch, getState) => {
                     resp: resp.current_usage
                 })
             }
-        })
-        .catch(error => {
+        }, error => {
             console.error('Failed polling activity', error)
             return dispatch({
                 type: types.SUBMIT_ACTIVITY_ERROR,

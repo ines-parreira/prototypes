@@ -84,8 +84,7 @@ export const fetchMacros = () => (dispatch) => {
                 type: types.FETCH_MACRO_LIST_SUCCESS,
                 resp
             })
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.FETCH_MACRO_LIST_ERROR,
                 error,
@@ -113,8 +112,7 @@ export const createMacro = (macro) => (dispatch) => {
                 type: 'success',
                 message: 'Macro created'
             }))
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.CREATE_MACRO_ERROR,
                 error,
@@ -139,8 +137,7 @@ export const updateMacro = (macro) => (dispatch) => {
                 type: 'success',
                 message: 'Macro updated'
             }))
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.UPDATE_MACRO_ERROR,
                 error,
@@ -167,8 +164,7 @@ export const deleteMacro = (macroId) => (dispatch) => {
                 type: 'success',
                 message: 'Macro deleted'
             }))
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.DELETE_MACRO_ERROR,
                 error,
@@ -196,8 +192,7 @@ export const addAttachments = (actionIndex, files) => (dispatch) => {
                 actionIndex,
                 files: resp
             })
-        })
-        .catch(error => {
+        }, error => {
             return dispatch({
                 type: types.ADD_ATTACHMENTS_MACRO_ERROR,
                 error,

@@ -57,8 +57,7 @@ export function fetchStats(newMeta = {}, newFilters = {}) {
                     type: types.FETCH_STATS_SUCCESS,
                     resp
                 })
-            })
-            .catch(error => {
+            }, error => {
                 return dispatch({
                     type: types.FETCH_STATS_ERROR,
                     error,
