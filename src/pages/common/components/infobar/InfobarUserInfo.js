@@ -7,6 +7,7 @@ import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
 import ProfileImage from './../ProfileImage'
 import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
 import {itemsWithContext} from '../../../../state/widgets/utils'
+import {getDisplayName} from '../../../../state/users/helpers'
 import {USER_CHANNEL_CLASS} from '../../../../config'
 
 class InfobarUserInfo extends React.Component {
@@ -113,22 +114,25 @@ class InfobarUserInfo extends React.Component {
             <div key="separator" className="infobar-section-separator"></div>,
             shouldSuggestTemplateGeneration
                 ? this._renderGenerateButton()
-                : (<InfobarWidgets
+                : <InfobarWidgets
                     key="widgets"
                     source={sources}
                     widgets={contextWidgets}
-                    editing={isEditing ? {
-                        isEditing,
-                        isDragging,
-                        actions,
-                        state: widgets,
-                        canDrop: (targetAbsolutePath) => {
-                            const group = widgets.getIn(['_internal', 'drag', 'group'])
-                            return canDrop(group, targetAbsolutePath)
-                        }
-                    } : undefined}
+                    editing={
+                        isEditing
+                            ? {
+                                isEditing,
+                                isDragging,
+                                actions,
+                                state: widgets,
+                                canDrop: (targetAbsolutePath) => {
+                                    const group = widgets.getIn(['_internal', 'drag', 'group'])
+                                    return canDrop(group, targetAbsolutePath)
+                                }
+                            }
+                            : undefined
+                    }
                 />
-            )
         ]
     }
 
@@ -211,7 +215,7 @@ class InfobarUserInfo extends React.Component {
                         key={idx}
                         className="user-channel"
                     >
-                        <i className={iconClass}/>
+                        <i className={iconClass} />
                         {addressComponent}
                     </p>
                 )
@@ -266,7 +270,7 @@ class InfobarUserInfo extends React.Component {
                         />
                         <h2>
                             <Link to={`/app/user/${user.get('id')}`}>
-                                {user.get('name', '')}
+                                {getDisplayName(user)}
                                 {
                                     isDefaultUser && (
                                         <span className="ui light blue horizontal label right middle">
