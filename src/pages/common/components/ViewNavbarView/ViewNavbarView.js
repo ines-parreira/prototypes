@@ -15,7 +15,7 @@ const popupConf = {
     variation: 'inverted',
     position: 'top center'
 }
-const popupEnterMessage = 'Edit views list'
+const popupEnterMessage = 'Create, re-order & hide views'
 const popupLeaveMessage = 'Leave edit mode'
 
 // Component used to display a list of views in the navbar

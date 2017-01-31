@@ -20,6 +20,10 @@ function unicodeToHex(char) {
     return char.codePointAt(0).toString(16)
 }
 
+function emojiImgUrl(emojiChar) {
+    return `${window.GORGIAS_ASSETS_URL || ''}/static/public/img/emoji/72x72/${unicodeToHex(emojiChar)}.png`
+}
+
 export const Emoji = ({name}) => {
     let emojiChar = name
 
@@ -33,7 +37,7 @@ export const Emoji = ({name}) => {
         })
     }
 
-    return <img src={`/static/public/img/emoji/72x72/${unicodeToHex(emojiChar)}.png`} alt={emojiChar} className="emoji" />
+    return <img src={emojiImgUrl(emojiChar)} alt={emojiChar} className="emoji" />
 }
 
 Emoji.propTypes = {

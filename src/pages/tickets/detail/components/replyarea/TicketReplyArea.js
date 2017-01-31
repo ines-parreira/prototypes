@@ -62,6 +62,8 @@ export default class TicketReplyArea extends React.Component {
 
     render = () => {
         let {macros} = this.props
+        // don't steal focus in New Ticket
+        const isNewTicket = !this.props.ticket.get('id')
         const macrosVisible = macros.get('visible')
 
         if (this.refs.search && this.refs.search.state.searchTerm && macros.get('items').size) {
@@ -82,7 +84,7 @@ export default class TicketReplyArea extends React.Component {
                         onChange={this._searchUpdated}
                         className="ui transparent input full-width shortcuts-enable"
                         placeholder="Search for a macro"
-                        autoFocus={macrosVisible}
+                        autoFocus={macrosVisible && !isNewTicket}
                     />
 
                     <a className={classNames({hidden: !macrosVisible, 'clear-macros': true})} ref="popupClearMacros">
@@ -111,6 +113,7 @@ export default class TicketReplyArea extends React.Component {
                             ticket={this.props.ticket}
                             appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
                             users={this.props.users}
+                            autoFocus={!(macrosVisible && isNewTicket)}
                         />
                     )}
                 </div>

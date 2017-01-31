@@ -19,7 +19,7 @@ export const BlankState = ({message, stats}) => {
             icon: 'sun',
             title: 'No more tickets here!',
             text: <span>
-                You closed ${closedTickets} tickets this week, that's a good start
+                You closed {closedTickets} tickets this week, that's a good start
                 <Emoji name="ok_hand" />
             </span>
         },
@@ -28,7 +28,7 @@ export const BlankState = ({message, stats}) => {
             icon: 'check circle',
             title: 'Done!',
             text: <span>
-                You've helped ${closedTickets} people this week, you deserve some
+                You've helped {closedTickets} people this week, you deserve some
                 <Emoji name="cookie" />
             </span>
         },
@@ -37,7 +37,7 @@ export const BlankState = ({message, stats}) => {
             icon: 'asterisk',
             title: 'All good!',
             text: <span>
-                You closed ${closedTickets} tickets this week, you're awesome
+                You closed {closedTickets} tickets this week, you're awesome
                 <Emoji name="rocket" />
             </span>
         }

@@ -18,6 +18,7 @@ class MultiSelectAsyncField extends React.Component {
         allowCreate: PropTypes.bool.isRequired, // true item creation is allowed
         allowCreateConstraint: PropTypes.func, // constraint function called if item creation is allowed
         loadOptions: PropTypes.func.isRequired, // async function returning search results when typing
+        autoFocus: PropTypes.bool,
     }
 
     static defaultProps = {
@@ -34,7 +35,9 @@ class MultiSelectAsyncField extends React.Component {
     }
 
     componentDidMount() {
-        this._focusInput()
+        if (this.props.autoFocus) {
+            this._focusInput()
+        }
     }
 
     // unmounting or closed by user (blur somewhere in the page)

@@ -70,7 +70,7 @@ export default class Billing extends Component {
                         }
                         <br/>
 
-                        Learn more on our <Link to="https://gorgias.io/pricing" target="_blank">pricing page</Link>.
+                        Learn more on our <Link to="https://gorgias.io/pricing" target="_blank"><strong>pricing page</strong></Link>.
                     </p>
                     <div className="row">
                         <p>
@@ -99,7 +99,7 @@ export default class Billing extends Component {
                         </div>
                         <p className="mt10">
                             If you have any questions or if you want to unsubscribe, please
-                            contact us <a href="mailto:support@gorgias.io">support@gorgias.io</a>.
+                            contact us at <a href="mailto:support@gorgias.io">support@gorgias.io</a>.
                         </p>
                     </div>
                     <div className="row mt20">

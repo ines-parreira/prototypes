@@ -24,7 +24,9 @@ export default class TicketReplyEditor extends React.Component {
     componentDidMount() {
         // We'd like to autofocus the editor, but in componentDidMount the editor element might not be ready
         // so we're using the setTimeout hack to focus the editor here
-        setTimeout(() => this.focus(), 1)
+        if (this.props.autoFocus) {
+            setTimeout(() => this.focus(), 1)
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -52,7 +54,9 @@ export default class TicketReplyEditor extends React.Component {
         } else {
             // This is required because otherwise the cursor has an undefined state for an empty content
             // See: https://github.com/facebook/draft-js/issues/410
-            editorState = EditorState.moveFocusToEnd(editorState)
+            if (this.props.autoFocus) {
+                editorState = EditorState.moveFocusToEnd(editorState)
+            }
         }
 
         if (selectionState) {
@@ -137,4 +141,5 @@ TicketReplyEditor.propTypes = {
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     handleFiles: PropTypes.func.isRequired,
+    autoFocus: PropTypes.bool
 }

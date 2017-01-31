@@ -94,7 +94,7 @@ export default class TicketReply extends React.Component {
     }
 
     render() {
-        const {ticket, actions} = this.props
+        const {ticket, actions, autoFocus} = this.props
         const className = classNames('TicketReply', {
             internal: ticket.get('newMessage') && !ticket.getIn(['newMessage', 'public']),
         })
@@ -106,6 +106,7 @@ export default class TicketReply extends React.Component {
                     ticket={ticket}
                     handleFiles={this._handleFiles}
                     ref="editor"
+                    autoFocus={autoFocus}
                 />
                 {this._renderAttachments()}
                 {this._renderActions()}
@@ -118,4 +119,5 @@ TicketReply.propTypes = {
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     appliedMacro: PropTypes.object,
+    autoFocus: PropTypes.bool,
 }
