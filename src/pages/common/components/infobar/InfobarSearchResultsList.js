@@ -65,6 +65,6 @@ export default class InfobarSearchResultsList extends React.Component {
 
 InfobarSearchResultsList.propTypes = {
     searchResults: PropTypes.object.isRequired,
-    defaultUserId: PropTypes.number.isRequired,
+    defaultUserId: PropTypes.number,
     fetchPreviewUser: PropTypes.func.isRequired
 }

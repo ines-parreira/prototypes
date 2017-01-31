@@ -210,10 +210,9 @@ class Infobar extends React.Component {
         } else if (mode === 'default') {
             // current user info
             content = (
-                !hasFetchedWidgets ? (
-                    <Loader />
-                ) : (
-                    <InfobarUserInfo
+                !hasFetchedWidgets
+                    ? <Loader />
+                    : <InfobarUserInfo
                         actions={actions.widgets}
                         fetchUserPicture={actions.infobar.fetchUserPicture}
                         infobar={infobar}
@@ -222,7 +221,6 @@ class Infobar extends React.Component {
                         user={user}
                         widgets={widgets}
                     />
-                )
             )
         } else if (mode === 'search') {
             // list of found users
@@ -257,6 +255,8 @@ class Infobar extends React.Component {
                 .setIn(['ticket', 'requester'], tweakedUser)
                 .set('user', tweakedUser)
 
+            const hasDestinationUser = !user.isEmpty()
+
             content = (
                 <div>
                     <div className="preview-buttons-wrapper">
@@ -267,12 +267,17 @@ class Infobar extends React.Component {
                             <i className="ui arrow left icon" />
                             BACK
                         </div>
-                        <div
-                            className={mergeClassName}
-                            onClick={() => actions.infobar.toggleMergeUsersModal()}
-                        >
-                            MERGE
-                        </div>
+                        {
+                            hasDestinationUser
+                            && (
+                                <div
+                                    className={mergeClassName}
+                                    onClick={() => actions.infobar.toggleMergeUsersModal()}
+                                >
+                                    MERGE
+                                </div>
+                            )
+                        }
                     </div>
                     <InfobarUserInfo
                         actions={actions.widgets}
