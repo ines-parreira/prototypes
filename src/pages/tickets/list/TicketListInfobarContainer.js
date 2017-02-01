@@ -102,7 +102,12 @@ TicketListInfobarContainer.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-    const hasIntegrations = !state.integrations.get('integrations', fromJS([])).isEmpty()
+    // exclude email/gmail integrations cause after onboarding,
+    // account have a least one integration
+    const hasIntegrations = !state.integrations
+        .get('integrations', fromJS([]))
+        .filter(inte => !['email', 'gmail'].includes(inte.get('type', '')))
+        .isEmpty()
     const hasOtherAgents = getAgents(state).size > 1
     const currentUser = state.currentUser
 
