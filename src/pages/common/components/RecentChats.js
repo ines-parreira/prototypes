@@ -80,7 +80,7 @@ class RecentChats extends React.Component {
         return (
             <div className="RecentChats">
                 <div className="item">
-                    <h4>RECENT CHATS</h4>
+                    <h4>ACTIVE CHATS</h4>
                     <div className="menu">
                         {
                             tickets.map((e, index) => (
