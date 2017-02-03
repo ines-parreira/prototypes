@@ -35,7 +35,7 @@ export default (state = initialState, action) => {
             let newState = state
 
             if (~ticketIndex) {
-                newState = state.setIn(['tickets', ticketIndex, 'has_something_new'], false)
+                newState = state.setIn(['tickets', ticketIndex, 'is_unread'], false)
             }
 
             return newState

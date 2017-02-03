@@ -31,7 +31,7 @@ const RecentChatsItem = ({recentTicket, position}) => {
     const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
     const linkClasses = classNames('item', {
         active: isActive,
-        'has-something-new': recentTicket.get('has_something_new') && !isActive,
+        'has-something-new': recentTicket.get('is_unread') && !isActive,
     })
 
     return (

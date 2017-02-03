@@ -393,6 +393,7 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
                 dispatch({
                     type: types.FETCH_TICKET_SUCCESS,
                     resp,
+                    ticketId: parseInt(ticketId),
                     displayLoading,
                 })
                 dispatch(initializeMessageDraft())

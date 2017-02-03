@@ -77,7 +77,7 @@ export const pollActivity = () => (dispatch, getState) => {
 
             // comparing previous and current tickets from activity to trigger a sound notification if necessary
             const shouldSoundNotify = currentTickets
-                .filter(t => t.get('has_something_new'))
+                .filter(t => t.get('is_unread'))
                 .some((currentTicket) => {
                     const previousTicket = previousTickets.find(t => t.get('id') === currentTicket.get('id'))
                     let isNew = false
@@ -85,7 +85,7 @@ export const pollActivity = () => (dispatch, getState) => {
                     if (!previousTicket) {
                         // the ticket was not there the previous time, it is a new one
                         isNew = true
-                    } else if (!previousTicket.get('has_something_new')) {
+                    } else if (!previousTicket.get('is_unread')) {
                         // the ticket had not got something new, but now it has
                         isNew = true
                     }

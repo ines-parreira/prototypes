@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
+import classnames from 'classnames'
 import ComplexTableCell from './ComplexTableCell'
 import {Link} from 'react-router'
+
 export default class ComplexTableRow extends React.Component {
     _toggleSelection = () => {
         this.props.toggleSelection(this.props.item.get('id'))
@@ -12,7 +14,11 @@ export default class ComplexTableRow extends React.Component {
         const link = `/app/${viewConfig.routeItem}/${item.get('id')}`
 
         return (
-            <div className="complex-list-table-row">
+            <div
+                className={classnames('complex-list-table-row', {
+                    highlighted: item.get('is_unread'),
+                })}
+            >
                 {
                     hasBulkActions
                     && (
