@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {browserHistory} from 'react-router'
 
 import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
@@ -9,6 +11,8 @@ import TicketAssignee from './ticketdetails/TicketAssignee'
 
 import {getTags} from '../../../../state/tags/selectors'
 import {getAgents} from '../../../../state/users/selectors'
+
+import {notify as sendNotification} from '../../../../state/notifications/actions'
 
 class TicketHeader extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -24,28 +28,38 @@ class TicketHeader extends React.Component {
         return !currentTicket.equals(nextTicket) || !currentTags.equals(nextTags) || !currentAgents.equals(nextAgents)
     }
 
-    _setQuickStatus = (status) => {
-        const {actions, computeNextUrl, hideTicket} = this.props
+    _toggleStatus = (status) => {
+        const newStatus = status === 'closed' ? 'open' : 'closed'
+        return this._setStatus(newStatus)
+    }
 
-        let newStatus = 'closed'
-        if (status === 'closed') {
-            newStatus = 'open'
-        }
+    _setStatus = (status) => {
+        const {actions, computeNextUrl, hideTicket, notify} = this.props
 
-        actions.ticket.setStatus(newStatus)
+        const nextUrl = computeNextUrl(true)
 
         // when closing the ticket, jump to the next one
-        if (newStatus === 'closed') {
-            const nextUrl = computeNextUrl(true)
+        if (status === 'closed') {
+            notify({
+                type: 'success',
+                message: 'The ticket has been closed.'
+            })
 
+            // redirect to the next ticket after the transition is done.
             if (nextUrl) {
                 hideTicket()
+                // delay redirect to let the hiding animation appear
+                setTimeout(() => browserHistory.push(nextUrl), 300)
             }
         }
+
+        actions.ticket.setStatus(status)
     }
 
     render() {
         const {ticket, tags, agents, actions} = this.props
+
+        const isUpdate = !!ticket.get('id')
 
         return (
             <div className="ticket-header">
@@ -86,11 +100,15 @@ class TicketHeader extends React.Component {
                     <div className="row">
 
                         <div className="eleven wide column">
-                            <TicketStatus
-                                currentStatus={ticket.get('status')}
-                                setStatus={actions.ticket.setStatus}
-                                setQuickStatus={this._setQuickStatus}
-                            />
+                            {
+                                isUpdate && (
+                                    <TicketStatus
+                                        currentStatus={ticket.get('status')}
+                                        setStatus={this._setStatus}
+                                        setQuickStatus={this._toggleStatus}
+                                    />
+                                )
+                            }
 
                             <TicketTags
                                 tags={tags.toJS()}
@@ -127,7 +145,8 @@ TicketHeader.propTypes = {
     actions: PropTypes.object.isRequired,
 
     computeNextUrl: PropTypes.func.isRequired,
-    hideTicket: PropTypes.func.isRequired
+    hideTicket: PropTypes.func.isRequired,
+    notify: PropTypes.func.isRequired,
 }
 
 
@@ -138,4 +157,10 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(TicketHeader)
+function mapDispatchToProps(dispatch) {
+    return {
+        notify: bindActionCreators(sendNotification, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TicketHeader)

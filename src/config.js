@@ -1,3 +1,5 @@
+import {makeGetProperty} from './state/ticket/selectors'
+
 /**
  * Action related
  */
@@ -179,11 +181,19 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
 export const JSON_CONTENT_TYPE = 'application/json'
 export const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded'
 
+/**
+ * execution - 'front' or 'back', either the action is executed client side or on server
+ * name - name of the action (must correspond to action name to be triggered on client side)
+ * title - label shown in actions list in macro editor
+ * arguments - description of macro action form (and structure of data returned by the form)
+ * integrationType - action bound to a type of integration (should nt be available if no integration of this type)
+ * getStateData - selector used to retrieve data from reducer corresponding to data updated by the action
+ */
 export const ACTION_TEMPLATES = [
     {
         execution: 'front',
         name: 'setResponseText',
-        title: '',
+        title: 'Set response text',
         arguments: {
             body_text: {
                 type: 'string',
@@ -199,7 +209,7 @@ export const ACTION_TEMPLATES = [
     {
         execution: 'front',
         name: 'addAttachments',
-        title: '',
+        title: 'Add attachments',
         arguments: {
             attachments: {
                 type: 'listDict',
@@ -210,51 +220,41 @@ export const ACTION_TEMPLATES = [
     {
         execution: 'front',
         name: 'addTags',
-        title: '',
-        arguments: {
-            tags: {
-                type: 'string'
-            }
-        }
+        title: 'Add tags',
+        partialUpdateKey: 'tags',
+        partialUpdateValue: makeGetProperty('tags'),
     },
     {
         execution: 'front',
         name: 'setStatus',
-        title: '',
-        arguments: {
-            status: {
-                type: 'string',
-                enum: ['new', 'open', 'closed'],
-                default: 'new'
-            }
-        }
+        title: 'Set status',
+        partialUpdateKey: 'status',
+        partialUpdateValue: makeGetProperty('status'),
     },
     {
         execution: 'front',
         name: 'assignUser',
-        title: '',
-        arguments: {
-            assignee_user_id: {
-                type: 'integer'
-            }
-        }
+        title: 'Assign an agent',
+        partialUpdateKey: 'assignee_user',
+        partialUpdateValue: makeGetProperty('assignee_user'),
     },
     {
         execution: 'front',
         name: 'setPriority',
-        title: '',
-        arguments: {
-            priority: {
-                type: 'string',
-                enum: ['normal', 'high'],
-                default: 'high'
-            }
-        }
+        title: 'Set priority',
+        partialUpdateKey: 'priority',
+        partialUpdateValue: makeGetProperty('priority'),
+    },
+    {
+        name: 'setSubject',
+        title: 'Set subject',
+        partialUpdateKey: 'subject',
+        partialUpdateValue: makeGetProperty('subject'),
     },
     {
         execution: 'back',
         name: 'http',
-        title: '',
+        title: 'HTTP hook',
         arguments: {
             method: {
                 type: 'string',

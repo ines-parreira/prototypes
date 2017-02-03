@@ -1,6 +1,5 @@
-import _pick from 'lodash/pick'
 import _isUndefined from 'lodash/isUndefined'
-import {Map} from 'immutable'
+import {fromJS} from 'immutable'
 import {
     CREATE_NEW_USER_SUCCESS,
     UPDATE_USER_SUCCESS,
@@ -72,13 +71,14 @@ const amplitudeTracker = store => next => action => {
     const ALL_ACTIONS = TRACKED_ACTIONS.concat(CONFIG_ACTIONS)
     if (ALL_ACTIONS.includes(action.type)) {
         let actionName = humanizeActionType(action.type)
-        let actionProps = Map({action: action.type})
+        let actionProps = fromJS({action: action.type})
+        const state = store.getState()
 
         switch (action.type) {
             case UPDATE_USER_SUCCESS:
             case SUBMIT_CURRENT_USER_SUCCESS:
                 // update information if current user information changes
-                if (store.getState().currentUser.get('id') === action.resp.id) {
+                if (state.currentUser.get('id') === action.resp.id) {
                     setUserProperties(action.resp)
                 }
                 break
@@ -86,15 +86,15 @@ const amplitudeTracker = store => next => action => {
                 // temporarily defined its name since action type is not well formatted
                 actionName = 'Updated ticket status'
                 actionProps = actionProps.merge({
-                    id: store.getState().ticket.get('id'),
-                    status: action.args.get('status')
+                    ticket: state.ticket.get('id'),
+                    status: action.status,
                 })
                 break
             case ADD_TICKET_TAGS:
                 // temporarily defined its name since action type is not well formatted
                 actionName = 'Added tag'
                 actionProps = actionProps.merge({
-                    ticket: _pick(store.getState().ticket.toJS(), ['id'])
+                    ticket: state.ticket.get('id'),
                 })
                 break
             case RECORD_MACRO:
@@ -102,12 +102,12 @@ const amplitudeTracker = store => next => action => {
                 actionProps = actionProps.merge({
                     id: action.macro.get('id'),
                     name: action.macro.get('name'),
-                    ticket: _pick(store.getState().ticket.toJS(), ['id'])
+                    ticket: state.ticket.get('id'),
                 })
                 break
             case ADD_ATTACHMENT_SUCCESS:
                 actionProps = actionProps.merge({
-                    ticket: _pick(store.getState().ticket.toJS(), ['id'])
+                    ticket: state.ticket.get('id'),
                 })
                 break
             default:

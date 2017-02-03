@@ -86,26 +86,26 @@ class MacroEdit extends React.Component {
             <div className="menu">
                 <div className="header">Ticket Actions</div>
                 {
-                    ticketActions.map(action => (
+                    ticketActions.map(actionName => (
                         <a
-                            key={action}
-                            onClick={() => this.props.actions.addAction(action)}
+                            key={actionName}
+                            onClick={() => this.props.actions.addAction(actionName)}
                             className="item"
                         >
-                            {humanizeString(action)}
+                            {getActionTemplate(actionName).title || humanizeString(actionName)}
                         </a>
                     ))
                 }
                 <div className="divider"></div>
                 <div className="header">External Actions</div>
                 {
-                    nonIntegrationActions.map(action => (
+                    nonIntegrationActions.map(actionName => (
                         <a
-                            key={action}
-                            onClick={() => this.props.actions.addAction(action)}
+                            key={actionName}
+                            onClick={() => this.props.actions.addAction(actionName)}
                             className="item"
                         >
-                            {humanizeString(action)}
+                            {getActionTemplate(actionName).title || humanizeString(actionName)}
                         </a>
                     ))
                 }
@@ -131,7 +131,7 @@ class MacroEdit extends React.Component {
                                                 onClick={() => this.props.actions.addAction(actionName)}
                                                 className="item"
                                             >
-                                                {getActionTemplate(actionName).title}
+                                                {getActionTemplate(actionName).title || humanizeString(actionName)}
                                             </a>
                                         ))
                                     }

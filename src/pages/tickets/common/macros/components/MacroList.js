@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import Immutable from 'immutable'
+import {fromJS} from 'immutable'
 import SearchInput from 'react-search-input'
 import classnames from 'classnames'
 
@@ -35,7 +35,7 @@ export default class MacroList extends React.Component {
          * Used to replace the list of all macros with the list of macros corresponding to the current search term,
          * if there is a current search term.
          */
-        const curMacros = this.refs.search ? Immutable.fromJS(macros.valueSeq().toJS().filter(this.refs.search.filter(['name']))) : macros
+        const curMacros = this.refs.search ? fromJS(macros.valueSeq().toJS().filter(this.refs.search.filter(['name']))) : macros
 
         return (
             <div style={{ height: '100%' }}>
@@ -56,11 +56,9 @@ export default class MacroList extends React.Component {
                             let isDisabled = false
 
                             if (disableExternalActions) {
-                                macro.get('actions').forEach(action => {
-                                    if (getActionTemplate(action.get('name')).execution === 'back') {
-                                        isDisabled = true
-                                    }
-                                })
+                                isDisabled = macro
+                                    .get('actions', fromJS([]))
+                                    .some(action => getActionTemplate(action.get('name')).execution === 'back')
                             }
 
                             const props = {

@@ -2,6 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 import {browserHistory} from 'react-router'
 import Root from './pages/Root'
+import SocketIO from './pages/common/utils/socketio'
 import {fromJS} from 'immutable'
 import configureStore from './store/configureStore'
 import moment from 'moment-timezone'
@@ -37,12 +38,13 @@ const toImmutableProps = (plainObject) => {
 // Supply an initial state to redux for faster page loads. See #752
 const initialState = window.GORGIAS_STATE || {}
 const store = configureStore(toImmutableProps(initialState))
+const socket = new SocketIO(store) // eslint-disable-line no-unused-vars
 
 if (initialState.currentUser) {
     initMoment(initialState.currentUser)
 }
 
 render(
-    <Root history={browserHistory} store={store}/>,
+    <Root history={browserHistory} store={store} />,
     document.getElementById('App')
 )

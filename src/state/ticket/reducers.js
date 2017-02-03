@@ -1,15 +1,17 @@
 import * as types from './constants'
 import * as userTypes from './../users/constants'
-import {Map, List, fromJS} from 'immutable'
+import {fromJS} from 'immutable'
 import {convertToHTML} from '../../utils'
 import * as responseUtils from './responseUtils'
 import ticketReplyCache from './ticketReplyCache'
+import SocketIO from '../../pages/common/utils/socketio'
 import {
     getReceiversProperties,
 } from './selectors'
 import {ANSWERABLE_SOURCE_TYPES} from '../../config'
 
 import _isUndefined from 'lodash/isUndefined'
+import _isString from 'lodash/isString'
 import _get from 'lodash/get'
 import _pick from 'lodash/pick'
 import _assign from 'lodash/assign'
@@ -79,9 +81,9 @@ export const initialState = fromJS({
     newMessage: newMessage('email', 'email')
 })
 
-export default (state = initialState, action) => {
-    let tags
+const updatableFields = initialState.keySeq().filter(key => !['state', '_internal', 'newMessage'].includes(key))
 
+export default (state = initialState, action) => {
     switch (action.type) {
         case types.ADD_ATTACHMENT_START:
             return state.setIn(['_internal', 'loading', 'addAttachment'], true)
@@ -185,9 +187,9 @@ export default (state = initialState, action) => {
                 .setIn(['_internal', 'loading', 'submitMessage'], false)
 
             return action.resetMessage ? newState.set('newMessage', newMessage(
-                action.resp.channel,
-                getSourceTypeOfResponse(newState.get('messages'))
-            )) : newState
+                    action.resp.channel,
+                    getSourceTypeOfResponse(newState.get('messages'))
+                )) : newState
         }
 
         case types.SUBMIT_TICKET_MESSAGE_SUCCESS: {
@@ -200,15 +202,6 @@ export default (state = initialState, action) => {
             }
 
             let newState = state
-            const respMessage = fromJS(action.resp)
-
-            // We can't just concatenate since we might get duplicates. So we merge on message id.
-            const existingIndex = newState.get('messages', fromJS([])).findIndex((m) => m.get('id') === respMessage.get('id'))
-            if (~existingIndex) {
-                newState = newState.setIn(['messages', existingIndex], respMessage)
-            } else {
-                newState = newState.set('messages', newState.get('messages').push(respMessage))
-            }
 
             newState = newState.mergeDeep({
                 state: {
@@ -222,9 +215,9 @@ export default (state = initialState, action) => {
 
 
             return action.resetMessage ? newState.set('newMessage', newMessage(
-                action.resp.channel,
-                getSourceTypeOfResponse(newState.get('messages', fromJS([])))
-            )) : newState
+                    action.resp.channel,
+                    getSourceTypeOfResponse(newState.get('messages', fromJS([])))
+                )) : newState
         }
 
         case types.FETCH_TICKET_START: {
@@ -247,6 +240,17 @@ export default (state = initialState, action) => {
 
             const newState = state.merge(fromJS(action.resp))
             let sourceType = getSourceTypeOfResponse(newState.get('messages'))
+
+            const ticketId = newState.get('id')
+            const requesterId = newState.getIn(['requester', 'id'])
+
+            const io = new SocketIO()
+            if (ticketId) {
+                io.joinTicket(ticketId)
+            }
+            if (requesterId) {
+                io.joinUser(requesterId)
+            }
 
             // if channel is not supported, suggest email answer
             if (!ANSWERABLE_SOURCE_TYPES.includes(sourceType)) {
@@ -295,56 +299,53 @@ export default (state = initialState, action) => {
             )
         }
 
-        /* Macro actions */
         case types.ADD_TICKET_TAGS: {
-            tags = state.get('tags', List())
-            const existingTagNames = tags.map((x) => x.get('name'))
+            let tags = action.args.get('tags')
+            let ticketTags = state.get('tags', fromJS([]))
+            const existingTagNames = ticketTags.map(x => x.get('name'))
 
-            let newTags = action.args.get('tags')
-            if (newTags) {
-                newTags = newTags.split(',').map(t => t.trim())
-            } else {
-                newTags = []
-            }
+            tags = tags ? tags.split(',').map(t => t.trim()) : []
 
-            for (const tag of newTags) {
-                if (!existingTagNames.includes(tag)) {
-                    tags = tags.push(Map({name: tag}))
+            tags.forEach((newTag) => {
+                if (!existingTagNames.includes(newTag)) {
+                    ticketTags = ticketTags.push(fromJS({name: newTag}))
                 }
-            }
-            return state.set('tags', tags)
+            })
+
+            return state.set('tags', ticketTags)
         }
 
-        case types.REMOVE_TICKET_TAG:
-            return state.set('tags', state.get('tags').delete(action.index))
+        case types.REMOVE_TICKET_TAG: {
+            const tag = action.args.get('tag')
+            const ticketTags = state.get('tags', fromJS([]))
+            return state.set('tags', ticketTags.delete(ticketTags.findIndex(t => t.get('name') === tag)))
+        }
 
-        case types.SET_TAGS:
-            return state.set('tags', fromJS(action.args.get('tags')))
+        case types.TOGGLE_PRIORITY: {
+            const priority = action.args.get('priority')
+            let newPriority = state.get('priority') === 'normal' ? 'high' : 'normal'
 
-        case types.TOGGLE_PRIORITY:
-            if (action.args.get('priority')) {
-                return state.set('priority', action.args.get('priority'))
+            if (_isString(priority)) {
+                newPriority = priority
             }
 
-            return state.get('priority') === 'normal' ? state.set('priority', 'high') : state.set('priority', 'normal')
+            return state.set('priority', newPriority)
+        }
 
-        case types.SET_AGENT:
-            return state.set(
-                'assignee_user',
-                action.args.get('assignee_user') ? fromJS(action.args.get('assignee_user')) : null
-            )
+        case types.SET_AGENT: {
+            const assigneeUser = action.args.get('assignee_user') || null // we want null if undefined
+            return state.set('assignee_user', fromJS(assigneeUser))
+        }
 
-        case types.SET_STATUS:
-            if (action.args.get('id') && action.args.get('id') !== state.get('id')) {
-                return state
-            }
-            return state.set('status', action.args.get('status'))
+        case types.SET_STATUS: {
+            const status = action.args.get('status')
+            return state.set('status', status)
+        }
 
-        case types.SET_PUBLIC:
-            return state.setIn(['newMessage', 'public'], action.isPublic)
-
-        case types.SET_SUBJECT:
-            return state.set('subject', action.args.get('subject'))
+        case types.SET_SUBJECT: {
+            const subject = action.args.get('subject')
+            return state.set('subject', subject)
+        }
 
         case types.SET_SOURCE_TYPE: {
             let newState = state
@@ -395,7 +396,7 @@ export default (state = initialState, action) => {
         }
 
         case types.FETCH_TICKET_REPLY_MACRO: {
-            const cache = ticketReplyCache.get(action.ticketId).get('macro')
+            const cache = ticketReplyCache.get(state.get('id')).get('macro')
             return state.setIn(['state', 'appliedMacro'], cache)
         }
 
@@ -513,6 +514,37 @@ export default (state = initialState, action) => {
                 return state.set('requester', fromJS(action.resp))
             }
             return state
+        }
+
+        case types.MERGE_TICKET: {
+            const {ticket} = action
+            const ticketData = fromJS(ticket)
+
+            // if received ticket data does not concern current ticket, do nothing
+            if (ticketData.get('id') !== state.get('id')) {
+                return state
+            }
+
+            let newState = state
+
+            // merge received ticket with current ticket
+            updatableFields.forEach((key) => {
+                newState = newState.set(key, ticketData.get(key))
+            })
+
+            return newState
+        }
+
+        case types.MERGE_REQUESTER: {
+            const {user} = action
+            const userData = fromJS(user)
+
+            // if received user data does not concern current requester of ticket, do nothing
+            if (userData.get('id') !== state.getIn(['requester', 'id'])) {
+                return state
+            }
+
+            return state.set('requester', userData)
         }
 
         default:

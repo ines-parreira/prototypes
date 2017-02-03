@@ -6,6 +6,11 @@ export const getReceiversProperties = () => ['to', 'cc', 'bcc']
 
 export const getTicketState = state => state.ticket || fromJS({})
 
+export const makeGetProperty = property => createSelector(
+    [getTicketState],
+    state => state.get(property)
+)
+
 export const getTicket = createSelector(
     [getTicketState],
     state => state

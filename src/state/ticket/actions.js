@@ -19,6 +19,7 @@ import {
     receiversValueFromState,
     receiversStateFromValue,
     getSenderContactInfo,
+    buildPartialUpdateFromAction,
 } from './utils'
 
 export const addAttachments = (ticket, atts) => (dispatch) => {
@@ -93,9 +94,32 @@ export const receivedMacro = () => ({
     type: types.RECEIVED_MACRO
 })
 
-export const ticketPartialUpdate = (ticketId, args, nextUrl = null) => (dispatch) => {
+export const mergeTicket = (ticket) => {
+    return {
+        type: types.MERGE_TICKET,
+        ticket,
+    }
+}
+
+export const mergeRequester = (user) => {
+    return {
+        type: types.MERGE_REQUESTER,
+        user,
+    }
+}
+
+export const ticketPartialUpdate = (args) => (dispatch, getState) => {
+    const {ticket} = getState()
+    const ticketId = ticket.get('id')
+
+    // do not send to server if it's a partial update on a new ticket
+    if (!ticketId) {
+        return Promise.resolve()
+    }
+
     dispatch({
-        type: types.TICKET_PARTIAL_UPDATE_START
+        type: types.TICKET_PARTIAL_UPDATE_START,
+        args,
     })
 
     return axios.put(`/api/tickets/${ticketId}/`, args)
@@ -105,20 +129,6 @@ export const ticketPartialUpdate = (ticketId, args, nextUrl = null) => (dispatch
                 type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
                 resp
             })
-
-            // show a success message if we closed the ticket
-            if (args.status === 'closed') {
-                dispatch(notify({
-                    type: 'success',
-                    message: 'The ticket has been closed.'
-                }))
-
-                // Redirect to the next ticket after the transition is done.
-                // Timeout also needed for the notification to stay up, otherwise the redirect will hide it.
-                if (nextUrl) {
-                    setTimeout(() => browserHistory.push(nextUrl), nextUrl.includes('tickets') ? 800 : 300)
-                }
-            }
         }, error => {
             return dispatch({
                 type: types.TICKET_PARTIAL_UPDATE_ERROR,
@@ -128,49 +138,68 @@ export const ticketPartialUpdate = (ticketId, args, nextUrl = null) => (dispatch
         })
 }
 
-export const addTags = (tags) => ({
-    type: types.ADD_TICKET_TAGS,
-    args: tags
-})
-
-export const removeTag = (index) => ({
-    type: types.REMOVE_TICKET_TAG,
-    index
-})
-
-export const togglePriority = (priority) => ({ // here, the priority argument is optional
-    type: types.TOGGLE_PRIORITY,
-    args: fromJS({
-        priority: priority.isString ? priority : null
+export const addTags = (tags) => (dispatch, getState) => {
+    dispatch({
+        type: types.ADD_TICKET_TAGS,
+        args: fromJS({tags}),
     })
-})
 
-export const setAgent = (assigneeUser) => ({
-    type: types.SET_AGENT,
-    args: fromJS({
-        assignee_user: assigneeUser
+    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
+}
+
+export const removeTag = (tag) => (dispatch, getState) => {
+    dispatch({
+        type: types.REMOVE_TICKET_TAG,
+        args: fromJS({tag}),
     })
-})
 
-export const setStatus = (status, id = null) => ({
-    type: types.SET_STATUS,
-    args: fromJS({
-        status,
-        id
+    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
+}
+
+export const togglePriority = (priority = null) => (dispatch, getState) => { // priority argument is optional
+    dispatch({
+        type: types.TOGGLE_PRIORITY,
+        args: fromJS({priority}),
     })
-})
 
-export const setPublic = (isPublic) => ({
-    type: types.SET_PUBLIC,
-    isPublic
-})
+    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setPriority', getState())))
+}
 
-export const setSubject = (subject) => ({
-    type: types.SET_SUBJECT,
-    args: fromJS({
-        subject
+export const setAgent = (assigneeUser) => (dispatch, getState) => {
+    dispatch({
+        type: types.SET_AGENT,
+        args: fromJS({assignee_user: assigneeUser}),
     })
-})
+
+    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('assignUser', getState())))
+}
+
+export const setStatus = (status) => (dispatch, getState) => {
+    dispatch({
+        type: types.SET_STATUS,
+        args: fromJS({status}),
+    })
+
+    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setStatus', getState())))
+}
+
+export const setSubject = (subject) => (dispatch, getState) => {
+    dispatch({
+        type: types.SET_SUBJECT,
+        args: fromJS({subject}),
+    })
+
+    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setSubject', getState())))
+}
+
+export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
+    return dispatch({
+        type: types.SET_RESPONSE_TEXT,
+        args,
+        currentUser: getState().currentUser, // used in middleware, not in reducer
+        fromMacro: false, // used in middleware, not in reducer
+    })
+}
 
 /**
  * Set new message receivers
@@ -217,16 +246,6 @@ export const updatePotentialRequesters = query => (dispatch) => (
         })
 )
 
-export const setResponseText = (ticketId, args = fromJS({})) => (dispatch, getState) => (
-    dispatch({
-        type: types.SET_RESPONSE_TEXT,
-        args,
-        currentUser: getState().currentUser,
-        ticketId,
-        fromMacro: false
-    })
-)
-
 export const markTicketDirty = (dirty = true) => ({
     type: types.MARK_TICKET_DIRTY,
     dirty
@@ -266,18 +285,20 @@ export const updateActionArgsOnApplied = (actionIndex, value, ticketId) => ({
     ticketId
 })
 
-export const applyMacroAction = (action, currentUser) => {
+export const applyMacroAction = (action) => (dispatch, getState) => {
     const {type, name} = action.toJS()
     if (type === 'user' && !DEFAULT_ACTIONS.includes(name)) {
         console.error('Applying unknown macro action', name)
     }
 
-    return {
+    const args = action.get('arguments')
+
+    dispatch({
         type: name,
-        args: action.get('arguments'),
-        currentUser,
-        fromMacro: true
-    }
+        args,
+        currentUser: getState().currentUser, // used in middleware, not in reducer
+        fromMacro: true, // used in middleware, not in reducer
+    })
 }
 
 const renderObject = (argument, context) => {
@@ -294,7 +315,8 @@ const renderObject = (argument, context) => {
 
 export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
     // render macro action arguments
-    const ticketState = getState().ticket.toJS()
+    let state = getState()
+    const ticketState = state.ticket.toJS()
 
     const renderedMacro = macro.set('actions', macro.get('actions').map(
         action => action.set('arguments', action.get('arguments').map(
@@ -307,8 +329,17 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
         macro: renderedMacro,
         ticketId
     })
-    const currentUser = getState().currentUser
-    macro.get('actions', fromJS([])).forEach(action => dispatch(applyMacroAction(action, currentUser)))
+
+    const actions = macro.get('actions', fromJS([]))
+
+    actions.forEach(action => dispatch(applyMacroAction(action)))
+
+    state = getState() // refetch state after macro actions has been applied
+
+    const actionNames = actions.map(a => a.get('name')).toJS()
+    const partialUpdate = buildPartialUpdateFromAction(actionNames, state)
+
+    dispatch(ticketPartialUpdate(partialUpdate))
 
     dispatch({
         type: types.RECORD_MACRO,
@@ -323,21 +354,20 @@ export const clearAppliedMacro = (ticketId) => ({
     ticketId
 })
 
-export const fetchTicketReplyMacro = (ticketId) => ({
-    type: types.FETCH_TICKET_REPLY_MACRO,
-    ticketId
+export const fetchTicketReplyMacro = () => ({
+    type: types.FETCH_TICKET_REPLY_MACRO
 })
 
-export const initializeMessageDraft = (ticketId) => (dispatch) => {
+export const initializeMessageDraft = () => (dispatch) => {
     // get cached ticket reply message
-    dispatch(setResponseText(ticketId))
+    dispatch(setResponseText())
     // get cached macro
-    dispatch(fetchTicketReplyMacro(ticketId))
+    dispatch(fetchTicketReplyMacro())
 }
 
 export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
     if (ticketId === 'new') {
-        return dispatch(initializeMessageDraft(ticketId))
+        return dispatch(initializeMessageDraft())
     }
 
     dispatch({
@@ -365,7 +395,7 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
                     resp,
                     displayLoading,
                 })
-                dispatch(initializeMessageDraft(ticketId))
+                dispatch(initializeMessageDraft())
             }
         }, error => {
             return displayLoading
@@ -586,7 +616,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
 /**
  * Perform actions when we successfully create a new message.
  */
-function onMessageSent(dispatch, ticketId, messageSent) {
+function onMessageSent(dispatch, messageSent) {
     const hasPending = messageSent.actions ?
         !!messageSent.actions.find(action => action.status === 'pending')
         : false
@@ -598,8 +628,6 @@ function onMessageSent(dispatch, ticketId, messageSent) {
         }))
     }
 
-    setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageSent.id, hasPending)), 1000)
-
     // reinitialize the current macro
     dispatch({
         type: types.APPLY_MACRO,
@@ -608,16 +636,14 @@ function onMessageSent(dispatch, ticketId, messageSent) {
 }
 
 /**
- * @param ticket: A ticket with an existing id is expected.
  * @param action: A parameter to decide on what to do when an action failed. (Retry/ignore/cancel, etc.)
  */
-export function submitTicketMessage(ticket, status, macroActions, currentUser, action, resetMessage = true) {
+export function submitTicketMessage(status, macroActions, action, resetMessage = true) {
     return (dispatch, getState) => {
-        const {currentAccount} = getState()
+        const {currentAccount, ticket, currentUser} = getState()
 
         dispatch({
             type: types.SUBMIT_TICKET_MESSAGE_START,
-            currentUser
         })
 
         const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser, currentAccount)
@@ -645,17 +671,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
         return promise
             .then((json = {}) => json.data)
             .then(resp => {
-                // Update on the ticket.
-                if (status) {
-                    // We don't want to update the wrong state if we are redirecting so we specify the id in setStatus.
-                    dispatch(setStatus(status, ticket.get('id')))
-                    // We need to explicitly do the partial update because we cannot count on the component
-                    // re-rendering (if we redirect). The re-rendering is when the autosave is usually performed and
-                    // the status updated in db.
-                    ticketPartialUpdate(ticket.get('id'), {status})(dispatch)
-                }
-
-                onMessageSent(dispatch, ticket.get('id'), resp)
+                onMessageSent(dispatch, resp)
 
                 dispatch({
                     type: types.SUBMIT_TICKET_MESSAGE_SUCCESS,
@@ -673,7 +689,7 @@ export function submitTicketMessage(ticket, status, macroActions, currentUser, a
                 dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
 
                 // We're trying to add a signature if any
-                dispatch(setResponseText(ticket.get('id')))
+                dispatch(setResponseText())
             }, error => {
                 return dispatch({
                     type: types.SUBMIT_TICKET_MESSAGE_ERROR,
@@ -733,7 +749,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
             .then(resp => {
                 const messageSent = getLastMessage(resp.messages)
 
-                onMessageSent(dispatch, resp.id, messageSent)
+                onMessageSent(dispatch, messageSent)
 
                 dispatch({
                     type: types.SUBMIT_TICKET_SUCCESS,

@@ -38,7 +38,6 @@ export default class TicketMessages extends React.Component {
                         <TicketMessage
                             key={message.get('id')}
                             message={message.toJS()}
-                            submit={this.props.submit}
                             deleteMessage={this.props.deleteMessage}
                             loading={
                                 !!this.props.loadingState.get('updateMessage', fromJS([]))
@@ -56,7 +55,6 @@ export default class TicketMessages extends React.Component {
 }
 
 TicketMessages.propTypes = {
-    submit: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
     currentUser: PropTypes.object,

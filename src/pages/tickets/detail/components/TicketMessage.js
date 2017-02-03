@@ -253,7 +253,6 @@ export default class TicketMessage extends React.Component {
 TicketMessage.propTypes = {
     message: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
-    submit: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
     ticket: PropTypes.object,
     currentUser: PropTypes.object.isRequired

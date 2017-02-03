@@ -6,8 +6,7 @@ import * as currentAccountTypes from '../currentAccount/constants'
 import * as billingTypes from '../billing/constants'
 import * as viewsTypes from '../views/constants'
 import * as types from './constants'
-import * as ticketActions from '../ticket/actions'
-import {shouldUpdateTicket, shouldUpdateView} from './utils'
+import {shouldUpdateView} from './utils'
 import {isCurrentlyOnTicket, toQueryParams} from '../../utils'
 
 const notificationSoundData = require('../../../audio/notification.mp3')
@@ -15,7 +14,7 @@ const notificationSound = new Audio(notificationSoundData)
 notificationSound.load()
 
 export const pollActivity = () => (dispatch, getState) => {
-    const {activity, views, ticket} = getState()
+    const {activity, views} = getState()
 
     const loading = activity.getIn(['_internal', 'loading'], false)
 
@@ -39,18 +38,13 @@ export const pollActivity = () => (dispatch, getState) => {
         params.queryView = activeViewId
     }
 
-    // if currently on a ticket, check if has unseen updates on this ticket
-    if (shouldUpdateTicket(ticket.get('id'))) {
-        params.queryTicket = ticket.get('id')
-    }
-
     const previousTickets = activity.get('tickets', fromJS([]))
 
     return axios.get(`/api/activity/?${toQueryParams(params)}`, {timeout: 10000})
         .then((json = {}) => json.data)
         .then((resp = {}) => {
             // renaming variables since they are already used in upper scope
-            const {views: _views, ticket: _ticket} = getState()
+            const {views: _views} = getState()
             const prevGitCommit = activity.get('git_commit')
 
             if (resp.git_commit && resp.git_commit !== prevGitCommit) {
@@ -122,16 +116,6 @@ export const pollActivity = () => (dispatch, getState) => {
                     if (!isEditing) {
                         dispatch(fetchPage(null, true))
                     }
-                }
-            }
-
-            // if currently on a ticket, ask for its auto refresh
-            if (shouldUpdateTicket(_ticket.get('id'))) {
-                const isFetchingView = _ticket.getIn(['_internal', 'loading', 'fetchTicket'], false)
-
-                // don't fetch ticket if it is currently fetching
-                if (!isFetchingView) {
-                    dispatch(ticketActions.fetchTicket(_ticket.get('id'), false))
                 }
             }
 

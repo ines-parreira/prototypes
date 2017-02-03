@@ -37,108 +37,6 @@ export class TicketView extends React.Component {
         }
     }
 
-    componentDidMount() {
-        /**
-         * The code below is used to initialize a new Ticket being created with the constraints of the view
-         * on which the Agent want to create a new Ticket.
-         *
-         * For example, if we create a new Ticket on the "My Tickets" view, we want the new ticket to automatically be
-         * assigned to the current user.
-         *
-         * For that, we need to make sure :
-         */
-        const shouldInitializeForm = this.props.view
-            && !this.props.view.isEmpty()
-            // that we're on a Ticket being created
-            && !this.props.ticket.get('id')
-            // that this code hasn't been executed yet
-            && !this.props.ticket.getIn(['state', 'dirty'])
-            // that we've got all the data needed
-            && !this.props.tags.isEmpty()
-            && !this.props.agents.isEmpty()
-
-        if (shouldInitializeForm) {
-            const filtersAst = this.props.view.get('filters_ast', fromJS({})) || fromJS({})
-
-            const exp = filtersAst.getIn(['body', 0, 'expression'])
-
-            const fields = {}
-            const walk = (node) => {
-                switch (node.type) {
-                    case 'LogicalExpression':
-                        if (node.operator !== '&&') {
-                            throw Error('Unknown operator', node)
-                        }
-                        walk(node.left)
-                        walk(node.right)
-
-                        break
-                    case 'CallExpression': {
-                        if (!~['eq', 'contains'].indexOf(node.callee.name)) {
-                            break
-                        }
-
-                        const left = walk(node.arguments[0])
-                        const right = walk(node.arguments[1])
-                        if (!Array.isArray(fields[left])) {
-                            fields[left] = []
-                        }
-                        fields[left].push(right)
-                        break
-                    }
-                    case 'MemberExpression':
-                        return `${walk(node.object)}.${node.property.name}`
-                    case 'Literal':
-                        // raw comes with extra quotes - we should remove them
-                        return node.raw.replace(/^"/, '').replace(/"$/, '')
-                    case 'Identifier':
-                        return node.name
-                    default:
-                        throw Error('Unknown node type', node)
-
-                }
-                return null
-            }
-
-            // exp can be undefined if our AST is empty.
-            if (exp) {
-                walk(exp.toJS())
-            }
-
-            // Since it's the agent clicking on the 'New Ticket' it's automatically assigned to them
-            this.props.actions.ticket.setAgent(this.props.currentUser)
-            for (const field of Object.keys(fields)) {
-                const values = fields[field]
-                const firstValue = values[0]
-
-                switch (field) {
-                    case 'ticket.tags.name': {
-                        const newTags = this.props.tags.filter(t => values.includes(t.get('name')))
-                        this.props.actions.ticket.addTags(newTags)
-                        break
-                    }
-                    case 'ticket.status':
-                        this.props.actions.ticket.setStatus(firstValue)
-                        break
-                    case 'ticket.assignee_user.id':
-                        if (firstValue !== '{current_user.id}') {
-                            this.props.actions.ticket.setAgent(this.props.agents.find(
-                                a => a.get('id').toString() === firstValue
-                            ))
-                        }
-                        break
-                    case 'ticket.priority':
-                        this.props.actions.ticket.setPriority(firstValue)
-                        break
-                    default:
-                        break
-                }
-            }
-
-            this.props.actions.ticket.markTicketDirty()
-        }
-    }
-
     deleteMessage = (messageId) => {
         this.props.actions.ticket.deleteMessage(this.props.ticket.get('id'), messageId)
     }
@@ -170,7 +68,6 @@ export class TicketView extends React.Component {
                 <TicketMessages
                     currentUser={this.props.currentUser}
                     messages={ticket.get('messages')}
-                    submit={this.props.submit}
                     deleteMessage={this.deleteMessage}
                     loadingState={ticket.getIn(['_internal', 'loading'])}
                     ticket={ticket}

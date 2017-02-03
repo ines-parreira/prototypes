@@ -1,13 +1,11 @@
 import React, {PropTypes} from 'react'
-import {Map} from 'immutable'
+import {fromJS} from 'immutable'
 import TicketPriority from '../../../../detail/components/ticketdetails/TicketPriority'
 
 export default class SetPriorityAction extends React.Component {
     _togglePriority = () => {
-        this.props.updateActionArgs(
-            this.props.index,
-            Map({priority: this.props.action.getIn(['arguments', 'priority']) === 'normal' ? 'high' : 'normal'})
-        )
+        const priority = this.props.action.getIn(['arguments', 'priority']) === 'normal' ? 'high' : 'normal'
+        this.props.updateActionArgs(this.props.index, fromJS({priority}))
     }
 
     render() {

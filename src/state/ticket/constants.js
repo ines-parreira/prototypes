@@ -35,7 +35,6 @@ export const SET_RESPONSE_TEXT = 'setResponseText'
 export const SET_STATUS = 'setStatus'
 export const SET_AGENT = 'assignUser'
 export const ADD_ATTACHMENTS = 'addAttachments'
-export const SET_TAGS = 'SET_TAGS'
 
 export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
 
@@ -48,7 +47,6 @@ export const APPLY_MACRO = 'APPLY_MACRO'
 export const FETCH_TICKET_REPLY_MACRO = 'FETCH_TICKET_REPLY_MACRO'
 export const CLEAR_APPLIED_MACRO = 'CLEAR_APPLIED_MACRO'
 
-export const SET_PUBLIC = 'SET_PUBLIC'
 export const SET_SUBJECT = 'SET_SUBJECT'
 export const SET_SOURCE_TYPE = 'SET_SOURCE_TYPE'
 export const SET_RECEIVERS = 'SET_RECEIVERS'
@@ -70,3 +68,7 @@ export const TOGGLE_HISTORY = 'TOGGLE_HISTORY'
 
 // State-related
 export const DISPLAY_HISTORY_ON_NEXT_PAGE = 'DISPLAY_HISTORY_ON_NEXT_PAGE'
+
+// Merge events from sockets updates coming from server
+export const MERGE_TICKET = 'MERGE_TICKET'
+export const MERGE_REQUESTER = 'MERGE_REQUESTER'

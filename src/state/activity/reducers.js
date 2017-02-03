@@ -1,6 +1,5 @@
 import * as types from './constants'
 import {fromJS} from 'immutable'
-import SocketIO from '../../pages/common/utils/socketio'
 
 export const initialState = fromJS({
     _internal: {
@@ -30,14 +29,6 @@ export default (state = initialState, action) => {
 
         case types.TICKET_VIEWED: {
             const ticketId = parseInt(action.ticketId, 10)
-
-            // Notify the server that we've entered this ticket
-            const s = new SocketIO()
-            s.send({
-                event: 'join-room',
-                objectType: 'Ticket',
-                objectId: ticketId,
-            })
 
             // Don't display the red dot if the current ticket has something new
             const ticketIndex = state.get('tickets', fromJS([])).findIndex((ticket) => ticket.get('id') === ticketId)

@@ -46,12 +46,12 @@ class App extends React.Component {
         shortcutManager.bind('App')
         // define Amplitude user properties
         setUserProperties(this.props.currentUser.toJS())
-        this._socket = new SocketIO()
     }
 
     componentWillUnmount() {
+        const io = new SocketIO()
         shortcutManager.unbind('App')
-        this._socket.disconnect()
+        io.disconnect()
     }
 
     render() {
@@ -63,8 +63,8 @@ class App extends React.Component {
         return (
             <DocumentTitle title="Gorgias">
                 <div className="App">
-                    <BannerNotifications notifications={bannerNotifications}/>
-                    <ModalNotifications notifications={modalNotifications}/>
+                    <BannerNotifications notifications={bannerNotifications} />
+                    <ModalNotifications notifications={modalNotifications} />
 
                     <div className="App-main">
                         {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}

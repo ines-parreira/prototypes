@@ -61,50 +61,6 @@ class TicketDetailContainer extends React.Component {
             }
 
             this._fetchTicketData(nextProps.params.ticketId)
-        } else if (
-            this.props.ticket.get('id')
-            && this.props.ticket.get('id') !== 'new'
-            && this.props.ticket.get('id') === nextProps.ticket.get('id')
-            && this.props.ticket.get('id').toString() === this.props.params.ticketId
-        ) {
-            /**
-             * This is the autosave. Here, we check changes to the ticket state, and if there's any we make a
-             * partial update to save only what has changed.
-             */
-
-            const data = {}
-
-            if (this.props.ticket.get('status') !== nextProps.ticket.get('status')) {
-                data.status = nextProps.ticket.get('status')
-            }
-
-            if (this.props.ticket.get('tags').size !== nextProps.ticket.get('tags').size) {
-                data.tags = nextProps.ticket.get('tags')
-            }
-
-            if (this.props.ticket.get('priority') !== nextProps.ticket.get('priority')) {
-                data.priority = nextProps.ticket.get('priority')
-            }
-
-            if (this.props.ticket.getIn(['assignee_user', 'id']) !== nextProps.ticket.getIn(['assignee_user', 'id'])) {
-                if (!nextProps.ticket.get('assignee_user')) {
-                    data.assignee_user = null
-                } else {
-                    data.assignee_user = {id: nextProps.ticket.getIn(['assignee_user', 'id'])}
-                }
-            }
-
-            if (this.props.ticket.get('subject') !== nextProps.ticket.get('subject')) {
-                data.subject = nextProps.ticket.get('subject')
-            }
-
-            if (Object.keys(data).length) {
-                this.props.actions.ticket.ticketPartialUpdate(
-                    nextProps.ticket.get('id'),
-                    data,
-                    this._computeNextUrl(true)
-                )
-            }
         }
     }
 
@@ -279,10 +235,8 @@ class TicketDetailContainer extends React.Component {
             }
         } else {
             this.props.actions.ticket.submitTicketMessage(
-                ticket,
                 status,
                 this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
-                this.props.currentUser,
                 action,
                 resetMessage
             )

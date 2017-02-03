@@ -2,8 +2,10 @@ import {fromJS} from 'immutable'
 import _pick from 'lodash/pick'
 import _find from 'lodash/find'
 import _forEach from 'lodash/forEach'
+import _isArray from 'lodash/isArray'
 import {SOURCE_VALUE_PROP, SYSTEM_TYPES} from '../../config'
 import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
+import {getActionTemplate} from '../../utils'
 
 /**
  * Get the most recent message that was not an internal note.
@@ -190,6 +192,12 @@ export function guessReceiversFromTicket(ticket) {
     }
 }
 
+/**
+ * Return receivers value (to send to server and use on UI) from state (reducers)
+ * @param options
+ * @param sourceType
+ * @returns {*}
+ */
 export function receiversValueFromState(options, sourceType) {
     const valueProp = getValuePropFromSourceType(sourceType)
 
@@ -205,6 +213,12 @@ export function receiversValueFromState(options, sourceType) {
     return options
 }
 
+/**
+ * Return receivers state (reducers) from value (to send to server and use on UI)
+ * @param value
+ * @param sourceType
+ * @returns {*}
+ */
 export function receiversStateFromValue(value, sourceType) {
     const valueProp = getValuePropFromSourceType(sourceType)
 
@@ -223,4 +237,28 @@ export function receiversStateFromValue(value, sourceType) {
     })
 
     return newValue
+}
+
+/**
+ * Build a partial update object from macro actions (or any crafted action with the same form)
+ * @param actionNames - 'addTags', 'setPriority', ['addTags', 'setStatus'], etc.
+ * @param state - reducer state
+ * @returns {*} - ex: {tags: [{name: 'refund'}], status: 'open'}
+ */
+export function buildPartialUpdateFromAction(actionNames, state) {
+    if (!state) {
+        return {}
+    }
+
+    if (!_isArray(actionNames)) {
+        actionNames = [actionNames]
+    }
+
+    return actionNames
+        .map(actionName => getActionTemplate(actionName))
+        .filter(config => !!config.partialUpdateKey)
+        .reduce((result, config) => {
+            result[config.partialUpdateKey] = config.partialUpdateValue(state)
+            return result
+        }, {})
 }

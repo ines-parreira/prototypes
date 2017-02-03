@@ -32,14 +32,8 @@ export default (state = initialState, action) => {
     switch (action.type) {
         case types.SET_VIEW_ACTIVE: {
             if (action.view) {
-                const s = new SocketIO()
-
-                // enter the new view
-                s.send({
-                    event: 'join-room',
-                    objectType: 'View',
-                    objectId: action.view.get('id'),
-                })
+                const io = new SocketIO()
+                io.joinView(action.view.get('id'))
 
                 return state.set('active', action.view)
             }

@@ -1,6 +1,4 @@
 import React, {PropTypes} from 'react'
-import {fromJS} from 'immutable'
-
 
 export default class TicketTags extends React.Component {
     componentDidMount() {
@@ -20,7 +18,7 @@ export default class TicketTags extends React.Component {
             return
         }
 
-        this.props.addTags(fromJS({tags: name}))
+        this.props.addTags(name)
         tagDropdown.dropdown('clear')
     }
 
@@ -37,9 +35,15 @@ export default class TicketTags extends React.Component {
             <div className="ui labels ticket-tags-wrapper">
                 {
                     ticketTags.map((tag, i) => (
-                        <div key={i} className="ticket-tag ui label">
+                        <div
+                            key={i}
+                            className="ticket-tag ui label"
+                        >
                             {tag.get('name')}
-                            <i className="icon close" onClick={() => removeTag(i)}/>
+                            <i
+                                className="icon close"
+                                onClick={() => removeTag(tag.get('name'))}
+                            />
                         </div>
                     ))
                 }
@@ -50,12 +54,12 @@ export default class TicketTags extends React.Component {
                     onClick={() => this.refs.tagSearch.focus()}
                 >
                     <span>
-                        <i className="icon plus"/> ADD TAG
+                        <i className="icon plus" /> ADD TAG
                     </span>
 
                     <div className="menu">
                         <div className="ui search input">
-                            <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..."/>
+                            <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..." />
                         </div>
                         <div className="hidden item" key="placeholder"></div>
                         {

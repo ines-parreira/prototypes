@@ -202,32 +202,19 @@ describe('Ticket reducer', () => {
         )
     })
 
-    it('should remove one tags', () => {
+    it('should remove one tag', () => {
         const tags = fromJS([{name: 'npm'}, {name: 'drama'}])
         const currentTicket = initialState.set('tags', tags)
-        let expected = initialState.set('tags', tags)
-        expected = expected.set('tags', expected.get('tags').delete(1))
+        const expected = initialState.set('tags', tags.delete(1))
 
         expect(
-            reducer(currentTicket, {type: types.REMOVE_TICKET_TAG, index: 1})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should set tags', () => {
-        const tags = [{name: 'luke'}, {name: 'leia'}]
-        const expected = initialState.set('tags', fromJS(tags))
-
-        expect(
-            reducer(initialState, {type: types.SET_TAGS, args: fromJS({tags})})
+            reducer(currentTicket, {type: types.REMOVE_TICKET_TAG, args: fromJS({tag: 'drama'})})
         ).toEqualImmutable(
             expected
         )
     })
 
     it('should toggle priority', () => {
-        // const args = Map({ priority: })
         const expected = initialState.set('priority', 'high')
 
         expect(
@@ -273,16 +260,6 @@ describe('Ticket reducer', () => {
 
         expect(
             reducer(initialState, {type: types.SET_STATUS, args})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should set newMessage.public', () => {
-        const expected = initialState.setIn(['newMessage', 'public'], false)
-
-        expect(
-            reducer(initialState, {type: types.SET_PUBLIC, isPublic: false})
         ).toEqualImmutable(
             expected
         )

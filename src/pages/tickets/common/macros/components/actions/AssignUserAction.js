@@ -1,13 +1,10 @@
 import React, {PropTypes} from 'react'
-import {Map} from 'immutable'
+import {fromJS} from 'immutable'
 import TicketAssignee from '../../../../detail/components/ticketdetails/TicketAssignee'
 
 export default class AssignUserAction extends React.Component {
     setAssignee(assignee) {
-        this.props.updateActionArgs(
-            this.props.index,
-            Map({assignee_user: Map(assignee)})
-        )
+        this.props.updateActionArgs(this.props.index, fromJS({assignee_user: assignee}))
     }
 
     render() {

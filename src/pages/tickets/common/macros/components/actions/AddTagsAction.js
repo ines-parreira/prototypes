@@ -6,17 +6,17 @@ import TicketTags from '../../../../detail/components/ticketdetails/TicketTags'
 import {getTags} from '../../../../../../state/tags/selectors'
 
 class AddTagsAction extends React.Component {
-    splitIncomingTags = () => this.props.args.get('tags').split(',').filter(t => !!t)
+    splitIncomingTags = () => this.props.args.get('tags', fromJS([])).split(',').filter(t => !!t)
 
     addTags = (tags) => {
         let newTags = this.splitIncomingTags()
-        newTags = newTags.concat(tags.get('tags')).join(',')
+        newTags = newTags.concat(tags).join(',')
         this.props.updateActionArgs(this.props.index, fromJS({tags: newTags}))
     }
 
-    removeTag = (tagIndex) => {
+    removeTag = (tag) => {
         let newTags = this.splitIncomingTags()
-        newTags.splice(tagIndex, 1)
+        newTags.splice(newTags.indexOf(tag), 1)
         newTags = newTags.join(',')
         this.props.updateActionArgs(this.props.index, fromJS({tags: newTags}))
     }
