@@ -71,7 +71,7 @@ export const SYSTEM_TYPES = ['internal-note', 'system-message']
 export const SOURCE_VALUE_PROP = {
     email: 'address',
     phone: 'address',
-    'ottspot-call': 'address',
+    'ottspott-call': 'address',
     chat: 'smooch_id',
     api: null,
     'facebook-message': 'name',
@@ -87,7 +87,7 @@ export const USER_CHANNEL_CLASS = {
     'facebook-message': 'icon facebook-messenger',
     chat: 'icon comments',
     phone: 'icon phone',
-    'ottspot-call': 'icon phone',
+    'ottspott-call': 'icon phone',
 }
 
 export const TICKET_STATUSES = ['open', 'new', 'closed']

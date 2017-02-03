@@ -67,7 +67,7 @@ export default class TicketMessage extends React.Component {
             chat: 'comments',
             api: 'code',
             phone: 'phone',
-            'ottspot-call': 'phone',
+            'ottspott-call': 'phone',
             'facebook-message': 'facebook-messenger',
             'facebook-comment': 'facebook square',
             'facebook-post': 'facebook square',
