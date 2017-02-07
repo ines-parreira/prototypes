@@ -31,7 +31,7 @@ export function isUrl(string) {
         return false
     }
 
-    return !!string.match(new RegExp(/^https?:\/\/.+/i))
+    return /^https?:\/\/.+/i.test(string)
 }
 
 /**
@@ -44,19 +44,28 @@ export function isEmail(string) {
         return false
     }
 
-    return !!string.match(new RegExp(/[^@]+@[^@]+/i))
+    return /[^@]+@[^@]+/i.test(string)
 }
 
 export function formatDatetime(datetime, timezone, format = 'calendar') {
     try {
-        // Note the timezone should be set when the user first logs in.
-        const raw = timezone ? moment(datetime).tz(timezone) : moment(datetime)
+        let momentDate = moment(datetime)
 
-        if (format === 'calendar') {
-            return raw.calendar()
+        // if the input is a UNIX timestamp, force moment to interpret it as a timestamp (not automatic)
+        const unix = moment.unix(datetime)
+        if (unix.isValid()) {
+            momentDate = unix
         }
 
-        return raw.format(format)
+        if (timezone) {
+            momentDate = momentDate.tz(timezone)
+        }
+
+        if (format === 'calendar') {
+            return momentDate.calendar()
+        }
+
+        return momentDate.format(format)
     } catch (e) {
         console.error('Failed to format datetime', e, datetime, timezone)
         return datetime

@@ -36,6 +36,22 @@ describe('global utils', () => {
             const time = utils.formatDatetime('2016-06-09T07:30:07+00:00', 'Europe/Paris', 'YYYY-DD-MM HH:mm')
             expect(time).toBe('2016-09-06 09:30')
         })
+
+        it('timestamp input as string', () => {
+            expect(utils.formatDatetime('1480695366')).toBe('12/02/2016')
+        })
+
+        it('timestamp input as number', () => {
+            expect(utils.formatDatetime(1480695366)).toBe('12/02/2016')
+        })
+
+        it('timestamp input as string decimal', () => {
+            expect(utils.formatDatetime('1318781876.721')).toBe('10/16/2011')
+        })
+
+        it('timestamp input as number decimal', () => {
+            expect(utils.formatDatetime(1318781876.721)).toBe('10/16/2011')
+        })
     })
 
     describe('getLastMessage', () => {
