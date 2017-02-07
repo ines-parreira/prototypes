@@ -17,7 +17,23 @@ import * as SettingsActions from '../../../state/settings/actions'
 import MacroContainer from '../common/macros/MacroContainer' // import that to fetch tags list
 
 class TicketDetailContainer extends React.Component {
+    state = {
+        isTicketHidden: false,
+    }
+
     _fetchTicketData = (ticketId) => this.props.actions.ticket.fetchTicket(ticketId)
+
+    _showTicket = () => {
+        this.setState({
+            isTicketHidden: false,
+        })
+    }
+
+    _hideTicket = () => {
+        this.setState({
+            isTicketHidden: true,
+        })
+    }
 
     componentWillMount() {
         this.props.actions.macro.fetchMacros()
@@ -61,6 +77,10 @@ class TicketDetailContainer extends React.Component {
             }
 
             this._fetchTicketData(nextProps.params.ticketId)
+        }
+
+        if (nextProps.params.ticketId !== this.props.params.ticketId) {
+            this._showTicket()
         }
     }
 
@@ -211,6 +231,8 @@ class TicketDetailContainer extends React.Component {
             return
         }
 
+        let promise
+
         // The ticket does not exist yet.
         if (!ticket.get('id')) {
             const receiver = ticket.getIn(['newMessage', 'receiver'])
@@ -225,7 +247,7 @@ class TicketDetailContainer extends React.Component {
             })
 
             if (ticket.get('subject') || window.confirm('Are you sure you want to create a ticket with no subject?')) {
-                this.props.actions.ticket.submitTicket(
+                promise = this.props.actions.ticket.submitTicket(
                     ticket,
                     status,
                     this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
@@ -234,7 +256,7 @@ class TicketDetailContainer extends React.Component {
                 )
             }
         } else {
-            this.props.actions.ticket.submitTicketMessage(
+            promise = this.props.actions.ticket.submitTicketMessage(
                 status,
                 this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
                 action,
@@ -245,17 +267,22 @@ class TicketDetailContainer extends React.Component {
             this.props.actions.ticket.clearAppliedMacro(ticket.get('id'))
         }
 
-        if (next) {
-            /**
-             * `next` is a boolean indicating whether the agent wants to be redirected to the next ticket.
-             *
-             * If he does, we first try to get the naive next ticket (the ticket at the current index + 1).
-             * If the ticket doesnt exist, then we can't redirect the agent.
-             * If it does, we save the new index (the old index + 1) as the new current index, then we push
-             * the new state to the application.
-             */
-            const nextTicketUrl = this._computeNextUrl(true)
-            browserHistory.push(nextTicketUrl)
+        if (status) {
+            // set status
+            promise.then(() => {
+                this.props.actions.ticket.setStatus(status, () => {
+                    if (status === 'closed') {
+                        const nextUrl = this._computeNextUrl(true)
+
+                        // redirect to the next ticket after the transition is done.
+                        if (nextUrl) {
+                            this._hideTicket()
+                            // delay redirect to let the hiding animation appear
+                            setTimeout(() => browserHistory.push(nextUrl), 300)
+                        }
+                    }
+                })
+            })
         }
     }
 
@@ -286,6 +313,8 @@ class TicketDetailContainer extends React.Component {
                         actions={this.props.actions}
                         applyMacro={this._applyMacro}
                         computeNextUrl={this._computeNextUrl}
+                        hideTicket={this._hideTicket}
+                        isTicketHidden={this.state.isTicketHidden}
                         submit={this._submit}
                         view={this.props.activeView}
                     />

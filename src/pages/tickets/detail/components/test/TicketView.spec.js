@@ -97,7 +97,7 @@ describe('TicketView component', () => {
                     applyMacro={() => {}}
                     computeNextUrl={() => {}}
                     view={{}}
-                    hidden
+                    isTicketHidden
                 />
             )
 

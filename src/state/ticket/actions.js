@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router'
 import _isEmpty from 'lodash/isEmpty'
 import _isNull from 'lodash/isNull'
 import _pick from 'lodash/pick'
+import _noop from 'lodash/noop'
 import axios from 'axios'
 
 import * as types from './constants'
@@ -174,11 +175,20 @@ export const setAgent = (assigneeUser) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('assignUser', getState())))
 }
 
-export const setStatus = (status) => (dispatch, getState) => {
+export const setStatus = (status, onClose = _noop) => (dispatch, getState) => {
     dispatch({
         type: types.SET_STATUS,
         args: fromJS({status}),
     })
+
+    if (status === 'closed') {
+        dispatch(notify({
+            type: 'success',
+            message: 'The ticket has been closed.'
+        }))
+
+        onClose()
+    }
 
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setStatus', getState())))
 }

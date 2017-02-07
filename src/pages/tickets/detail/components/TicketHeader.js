@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
 
 import EditableTitle from '../../../common/components/EditableTitle'
@@ -11,8 +10,6 @@ import TicketAssignee from './ticketdetails/TicketAssignee'
 
 import {getTags} from '../../../../state/tags/selectors'
 import {getAgents} from '../../../../state/users/selectors'
-
-import {notify as sendNotification} from '../../../../state/notifications/actions'
 
 class TicketHeader extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -34,26 +31,18 @@ class TicketHeader extends React.Component {
     }
 
     _setStatus = (status) => {
-        const {actions, computeNextUrl, hideTicket, notify} = this.props
+        const {actions, computeNextUrl, hideTicket} = this.props
 
         const nextUrl = computeNextUrl(true)
 
-        // when closing the ticket, jump to the next one
-        if (status === 'closed') {
-            notify({
-                type: 'success',
-                message: 'The ticket has been closed.'
-            })
-
+        actions.ticket.setStatus(status, () => {
             // redirect to the next ticket after the transition is done.
             if (nextUrl) {
                 hideTicket()
                 // delay redirect to let the hiding animation appear
                 setTimeout(() => browserHistory.push(nextUrl), 300)
             }
-        }
-
-        actions.ticket.setStatus(status)
+        })
     }
 
     render() {
@@ -146,7 +135,6 @@ TicketHeader.propTypes = {
 
     computeNextUrl: PropTypes.func.isRequired,
     hideTicket: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
 }
 
 
@@ -157,10 +145,8 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        notify: bindActionCreators(sendNotification, dispatch),
-    }
+function mapDispatchToProps() {
+    return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketHeader)

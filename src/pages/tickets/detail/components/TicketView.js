@@ -17,13 +17,6 @@ import {getAgents, makeIsLoading as makeUsersIsLoading} from '../../../../state/
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 export class TicketView extends React.Component {
-    constructor() {
-        super()
-        this.state = {
-            isTicketHidden: false
-        }
-    }
-
     componentWillMount() {
         const shouldDisplayHistoryOnNextPage = this.props.ticket.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
         const displayHistory = this.props.ticket.getIn(['_internal', 'displayHistory'])
@@ -41,12 +34,6 @@ export class TicketView extends React.Component {
         this.props.actions.ticket.deleteMessage(this.props.ticket.get('id'), messageId)
     }
 
-    hideTicket = () => {
-        this.setState({
-            isTicketHidden: true
-        })
-    }
-
     _handlePreSubmit = (...args) => {
         if (this.refs.newMessageForm.checkValidity()) {
             this.statusParams = args
@@ -57,7 +44,7 @@ export class TicketView extends React.Component {
 
     _handleSubmit = (e) => {
         e.preventDefault()
-        this.props.submit.apply(this, this.statusParams)
+        this.props.submit(...this.statusParams)
     }
 
     _renderMessages = (isCreating = false) => {
@@ -77,13 +64,9 @@ export class TicketView extends React.Component {
     }
 
     render = () => {
-        const {ticket, users, usersIsLoading, actions, computeNextUrl, hidden} = this.props
+        const {ticket, users, usersIsLoading, actions, computeNextUrl, isTicketHidden} = this.props
 
         const isCreating = !ticket.get('id')
-
-        // for testing,
-        // get hidden from props.
-        const isTicketHidden = hidden || this.state.isTicketHidden
 
         const itemsCountInHistory = users.getIn(['userHistory', 'tickets'], fromJS([])).size
             + users.getIn(['userHistory', 'events'], fromJS([])).size
@@ -137,7 +120,7 @@ export class TicketView extends React.Component {
                             ticket={ticket}
                             actions={actions}
                             computeNextUrl={computeNextUrl}
-                            hideTicket={this.hideTicket}
+                            hideTicket={this.props.hideTicket}
                         />
                     </Sticky>
 
@@ -185,7 +168,8 @@ TicketView.propTypes = {
     applyMacro: PropTypes.func.isRequired,
     computeNextUrl: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired,
-    hidden: PropTypes.bool,
+    hideTicket: PropTypes.func.isRequired,
+    isTicketHidden: PropTypes.bool.isRequired,
     macros: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired,
     submit: PropTypes.func.isRequired,
