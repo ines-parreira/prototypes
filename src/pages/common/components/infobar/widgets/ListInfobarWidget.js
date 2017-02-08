@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
+import {List} from 'immutable'
 
 import InfobarWidget from '../InfobarWidget'
 
@@ -22,8 +23,14 @@ class ListInfobarWidget extends React.Component {
 
         const isParentOfCard = updatedWidget.getIn(['widgets', 0, 'type'], '') === 'card'
 
+        // if source data is not a list, don't try to display it as a list
+        // it means incoming data does not have the expected shape
+        if (!List.isList(source)) {
+            return null
+        }
+
+        let orderedSource = source
         // order source
-        let orderedSource = source.toList()
         const orderByConfig = widget.getIn(['meta', 'orderBy'])
 
         if (!isEditing && orderByConfig) {
