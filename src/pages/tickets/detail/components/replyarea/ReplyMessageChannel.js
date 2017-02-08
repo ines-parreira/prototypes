@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import MessageSourceFields from './MessageSourceFields/'
+import ReceiversDropdown from './ReceiversDropdown'
 import {getFirstMessage} from '../../../../../utils'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import {
@@ -12,7 +12,6 @@ import {
     hasNewMessageRecipients,
 } from '../../../../../state/ticket/selectors'
 import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors'
-import * as integrationSelectors from '../../../../../state/integrations/selectors'
 import _reduce from 'lodash/reduce'
 
 class ReplyMessageChannel extends React.Component {
@@ -27,7 +26,7 @@ class ReplyMessageChannel extends React.Component {
             on: 'click'
         })
 
-        window.addEventListener('click', this._updateMessageSourceFieldsOpening)
+        window.addEventListener('click', this._updateReceiversDropdownOpening)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,7 +40,7 @@ class ReplyMessageChannel extends React.Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('click', this._updateMessageSourceFieldsOpening)
+        window.removeEventListener('click', this._updateReceiversDropdownOpening)
     }
 
     _canChangeReceivers = () => {
@@ -53,7 +52,7 @@ class ReplyMessageChannel extends React.Component {
      * @param e
      * @private
      */
-    _updateMessageSourceFieldsOpening = (e) => {
+    _updateReceiversDropdownOpening = (e) => {
         const {hasRecipients} = this.props
 
         // list of components on which the click does not change opening
@@ -118,7 +117,7 @@ class ReplyMessageChannel extends React.Component {
     }
 
     _renderTo = () => {
-        const {ticket, messages, accountChannels} = this.props
+        const {ticket, messages} = this.props
 
         if (!ticket.getIn(['newMessage', 'public'])) {
             return (
@@ -143,8 +142,8 @@ class ReplyMessageChannel extends React.Component {
             || !this.props.isUpdate
 
         return (
-            <MessageSourceFields
-                initialValues={guessReceiversFromTicket(ticket, accountChannels)}
+            <ReceiversDropdown
+                initialValues={guessReceiversFromTicket(ticket, this.props.currentAccountChannels.toJS())}
                 enabled={isInputEnabled}
                 parentId={parentId.toString()}
                 canOpen={this._canChangeReceivers()}
@@ -257,7 +256,6 @@ ReplyMessageChannel.propTypes = {
     isUpdate: PropTypes.bool.isRequired,
     sourceType: PropTypes.string.isRequired,
     channel: PropTypes.string.isRequired,
-    accountChannels: PropTypes.object.isRequired,
     message: PropTypes.object.isRequired,
     messages: PropTypes.object.isRequired,
     hasRecipients: PropTypes.bool.isRequired,
@@ -267,7 +265,6 @@ const mapStateToProps = (state, ownProps) => ({
     currentAccountChannels: currentAccountSelectors.getChannels(state),
     sourceType: getNewMessageType(state),
     channel: getNewMessageChannel(state),
-    accountChannels: integrationSelectors.getChannels(state),
     isUpdate: !!ownProps.ticket.get('id'),
     message: getNewMessage(state),
     messages: getMessages(state),

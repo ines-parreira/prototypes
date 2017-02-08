@@ -10,16 +10,9 @@ import {getIntegrationsList, getIconFromType} from '../../../../state/integratio
  * We can then have specific components for each integration type using this one.
  */
 export default class IntegrationList extends React.Component {
-    onButtonClick = () => {
-        if (this.props.createIntegrationButtonOnClick) {
-            this.props.createIntegrationButtonOnClick()
-        }
-        this.props.createIntegration()
-    }
-
     render() {
         const {
-            integrations, integrationType, createIntegrationButtonText,
+            integrations, integrationType, createIntegration, createIntegrationButtonText,
             longTypeDescription, integrationToItemDisplay, loading
         } = this.props
 
@@ -33,31 +26,27 @@ export default class IntegrationList extends React.Component {
                 <div className="ui sixteen wide column">
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider"/>
+                        <i className="right angle icon divider" />
                         <a className="active section">{integrationTitle}</a>
                     </div>
                 </div>
 
                 <div className="ui sixteen wide column flex-spaced-row">
                     <h1 className="ui header">
-                        {integrationConfig.get('image') ?
-                            <img
-                                role="presentation"
-                                className="logo"
-                                src={getIconFromType(integrationType)}
-                            />
-                            :
-                            <i className={`icon ${integrationConfig.get('icon')} pt0i`}/>
-                        }
+                        <img
+                            role="presentation"
+                            className="logo"
+                            src={getIconFromType(integrationType)}
+                        />
+
                         <div className="content">
                             {integrationTitle}
                         </div>
                     </h1>
 
                     <div>
-                        <button
-                            className={classNames(createIntegrationButtonClassNames)}
-                            onClick={this.onButtonClick}
+                        <button className={classNames(createIntegrationButtonClassNames)}
+                                onClick={createIntegration}
                         >
                             {createIntegrationButtonText}
                         </button>
@@ -99,7 +88,6 @@ IntegrationList.propTypes = {
     integrations: PropTypes.object.isRequired, // The integrations for the relevant type only
     createIntegration: PropTypes.func.isRequired, // The callback to create a new integration for this type.
     createIntegrationButtonText: PropTypes.string.isRequired, // The text for the button to create a new integration
-    createIntegrationButtonOnClick: PropTypes.func, // function executed when user click on button to create a new integration
     longTypeDescription: PropTypes.node,
     loading: PropTypes.object.isRequired,  // A map for different loading status(es)
     // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.

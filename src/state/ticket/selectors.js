@@ -112,14 +112,13 @@ export const areNewMessageContactPropertiesFulfilled = createSelector(
 export const getNewMessageRecipients = createSelector(
     [getNewMessageContactProperties, makeGetNewMessageSourceProperty],
     (recipientProperties, getFromSource) => {
-        return recipientProperties.filter(prop => prop !== 'from')
-            .reduce((result, prop) => {
-                const recipients = getFromSource(prop)
-                recipients.forEach(recipient => {
-                    result = result.push(fromJS(recipient))
-                })
-                return result
-            }, fromJS([]))
+        return recipientProperties.reduce((result, prop) => {
+            const recipients = getFromSource(prop)
+            recipients.forEach(recipient => {
+                result = result.push(fromJS(recipient))
+            })
+            return result
+        }, fromJS([]))
     }
 )
 

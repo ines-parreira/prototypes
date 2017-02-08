@@ -24,6 +24,7 @@ import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
 import RulesNavbarContainer from './rules/common/RulesNavbarContainer'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
+import AccountContainer from './settings/account/AccountContainer'
 import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCardContainer'
@@ -156,7 +157,18 @@ export default (
         <Route path="settings">
             <IndexRoute
                 components={{
-                    content: YourProfileContainer,
+                    content: UserRoleRequired(
+                        AccountContainer,
+                        'admin',
+                        '/app/settings/profile'
+                    ),
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="account"
+                components={{
+                    content: UserRoleRequired(AccountContainer, 'admin'),
                     navbar: SettingsNavbarContainer
                 }}
             />

@@ -1,21 +1,13 @@
 import expect from 'expect'
-import expectImmutable from 'expect-immutable'
-import {getChannels} from '../../integrations/selectors'
-import integrationState from '../../integrations/tests/fixtures'
-import {smoochTicket, emailTicket} from './fixtures'
 import {fromJS} from 'immutable'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
     receiversStateFromValue,
-    getPreferredChannel,
-    getNewMessageSender
 } from '../utils'
 import {
     displayUserNameFromSource,
 } from '../../../pages/tickets/common/utils'
-
-expect.extend(expectImmutable)
 
 const users = {
     email: [{
@@ -134,7 +126,6 @@ const receiversStateExample = {
         address: receiversValueExample.cc[0].value,
     }],
 }
-const channels = getChannels(integrationState)
 
 describe('Ticket utils', () => {
     describe('guessReceiversFromTicket', () => {
@@ -193,93 +184,5 @@ describe('Ticket utils', () => {
 
     describe('receiversStateFromValue', () => {
         expect(receiversStateFromValue(receiversValueExample, 'email')).toEqual(receiversStateExample)
-    })
-
-    describe('getPreferredChannel', () => {
-        it('should return preferred', () => {
-            const expected = channels.find(channel => {
-                return channel.get('type') === 'email' && channel.get('preferred', false)
-            })
-            expect(getPreferredChannel('email', channels))
-                .toEqualImmutable(expected)
-        })
-
-        it('should return first', () => {
-            // remove preferred channels of the list
-            const _chans = channels.filter(channel => channel.get('preferred', false) === false)
-            const expected = _chans.find(channel => channel.get('type') === 'email')
-            expect(getPreferredChannel('email', _chans))
-                .toEqualImmutable(expected)
-        })
-
-        it('should return empty Map', () => {
-            expect(getPreferredChannel('skype', channels))
-                .toEqualImmutable(fromJS({}))
-        })
-    })
-
-    describe('getNewMessageSender', () => {
-        it('should return `from` field from last message from agent (chat, messenger)', () => {
-            const expected = smoochTicket.getIn(['messages', 1, 'source', 'from'])
-            expect(getNewMessageSender(smoochTicket, channels))
-                .toEqualImmutable(expected)
-        })
-
-        it('should return `to` field from last message from customer (chat, messenger)', () => {
-            // delete last message from agent
-            const _smoochTicket = smoochTicket.deleteIn(['messages', 1])
-            const expected = _smoochTicket.getIn(['messages', 0, 'source', 'to', 0])
-            expect(getNewMessageSender(_smoochTicket, channels))
-                .toEqualImmutable(expected)
-        })
-
-        it('should return preferred channel', () => {
-            // remove messages, to simulate a new ticket
-            const _emailTicket = emailTicket.set('messages', fromJS([]))
-            const expected = getPreferredChannel('email', channels)
-            expect(getNewMessageSender(_emailTicket, channels))
-                .toEqualImmutable(expected)
-        })
-
-        it('should return `from` field from last message from agent', () => {
-            const expected = emailTicket.getIn(['messages', 1, 'source', 'from'])
-            expect(getNewMessageSender(emailTicket, channels))
-                .toEqualImmutable(expected)
-        })
-
-        it('should return channel in `to` field from last message from customer (email found in `to`)', () => {
-            // delete last message from agent
-            const _emailTicket = emailTicket.deleteIn(['messages', 1])
-            const expected = _emailTicket.getIn(['messages', 0, 'source', 'to', 1])
-            expect(getNewMessageSender(emailTicket, channels))
-                .toEqualImmutable(expected)
-        })
-
-        it('should return channel in `cc` field from last message from customer (email found in `cc`)', () => {
-            // delete last message from agent
-            // and move `To` addresses in `Cc` and remove `To` addresses
-            const _emailTicket = emailTicket.deleteIn(['messages', 1])
-                .updateIn(['messages', 0, 'source'], source => {
-                    return source.set('cc', source.get('to'))
-                        .set('to', fromJS([]))
-                })
-            const expected = _emailTicket.getIn(['messages', 0, 'source', 'cc', 1])
-            expect(getNewMessageSender(emailTicket, channels))
-                .toEqualImmutable(expected)
-        })
-
-        it('should return preferred email (email not found in `to`)', () => {
-            // remove address that can match
-            const _emailTicket = emailTicket.deleteIn(['messages', 1])
-            const expected = getPreferredChannel('email', channels)
-            expect(getNewMessageSender(_emailTicket, channels))
-                .toEqualImmutable(expected)
-        })
-
-        it('should return empty Map (internal-note)', () => {
-            const _emailTicket = emailTicket.setIn(['newMessage', 'source', 'type'], 'internal-note')
-            expect(getNewMessageSender(_emailTicket, channels))
-                .toEqualImmutable(fromJS({}))
-        })
     })
 })

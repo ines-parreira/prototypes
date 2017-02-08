@@ -442,10 +442,6 @@ export default (state = initialState, action) => {
                 .setIn(['state', 'selectionState'], selectionState)
         }
 
-        case types.SET_SENDER: {
-            return state.setIn(['newMessage', 'source', 'from'], action.sender)
-        }
-
         case types.SET_RECEIVERS: {
             let newState = state
             const receivers = _pick(action.receivers, getReceiversProperties())

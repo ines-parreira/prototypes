@@ -116,13 +116,6 @@ export const DEFAULT_SOURCE_PATHS = {
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
-        type: 'email',
-        subTypes: ['email', 'gmail'],
-        title: 'Email',
-        description: 'Connect your support email addresses and respond to your customers from Gorgias',
-        icon: 'mail blue'
-    },
-    {
         type: 'facebook',
         title: 'Facebook',
         description: 'Create tickets when your customers post on your page or contact you on Messenger',

@@ -75,6 +75,7 @@ describe('Ticket reducer', () => {
         )
     })
 
+
     it('should return correct loading state equal true', () => {
         let expected = initialState.setIn(['_internal', 'loading', 'deleteMessage'], true)
 
@@ -155,7 +156,9 @@ describe('Ticket reducer', () => {
         )
     })
 
+
     // TODO ✅ : fetch_ticket_success
+
 
     it('should return same state if ticket_id is different', () => {
         expect(
@@ -373,21 +376,6 @@ describe('Ticket reducer', () => {
             reducer(currentTicket, {type: types.DELETE_TICKET_MESSAGE_SUCCESS, messageId: 'foo'})
         ).toEqualImmutable(
             initialState
-        )
-    })
-
-    it('should handle SET_SENDER', () => {
-        const action = {
-            type: types.SET_SENDER,
-            sender: fromJS({
-                name: 'Acme Support',
-                address: 'support@acme.com'
-            })
-        }
-        expect(
-            reducer(initialState, action)
-        ).toEqualImmutable(
-            initialState.setIn(['newMessage', 'source', 'from'], action.sender)
         )
     })
 

@@ -1,4 +1,6 @@
 import {fromJS} from 'immutable'
+import _pick from 'lodash/pick'
+import _find from 'lodash/find'
 import _forEach from 'lodash/forEach'
 import _isArray from 'lodash/isArray'
 import {SOURCE_VALUE_PROP, SYSTEM_TYPES} from '../../config'
@@ -72,19 +74,87 @@ export function getChannelFromSourceType(sourceType) {
     }
 }
 
-export function isSupportAddress(addressToTest = '', supportAddresses = fromJS([])) {
-    if (!addressToTest || !supportAddresses.size) {
+/**
+ * Return the most appropriate account's info of asked channel to send a message to
+ * @param channelType: type of channel to use: email, facebook, etc
+ * @param channels: channels available
+ * @returns {Object} the channel to use
+ */
+export function getChannelContactInfo(channelType, channels = []) {
+    let chan = null // return null if no channel match, it's important
+
+    if (channelType === 'internal-note') {
+        return {}
+    }
+
+    for (const channel of channels) {
+        if (channel.type === channelType) {
+            if (channel.preferred) {
+                return {
+                    name: channel.name,
+                    address: channel.address
+                }
+            }
+            chan = {
+                name: channel.name,
+                address: channel.address
+            }
+        }
+    }
+
+    return chan
+}
+
+export function isAccountAddress(addressToTest = '', supportAddress = '') {
+    if (!addressToTest || !supportAddress) {
         return false
     }
-    for (const supportAddress of supportAddresses) {
-        const splitSupportAddress = supportAddress.split('@')
 
+    const splitSupportAddress = supportAddress.split('@')
+
+    // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
+    return addressToTest === supportAddress
+        || addressToTest.startsWith(`${splitSupportAddress[0]}+`) && addressToTest.endsWith(`@${splitSupportAddress[1]}`)
+}
+
+/**
+ * Return `from` contact info when creating a new message based on ticket last eligible message
+ * @param channelType
+ * @param currentAccountContactInfo
+ * @param lastMessage
+ * @returns {*}
+ */
+export function getSenderContactInfo(channelType, currentAccountContactInfo, lastMessage) {
+    const supportChannel = getChannelContactInfo(channelType, currentAccountContactInfo)
+
+    // if there is no message, default support channel is used
+    // if there is a message:
+    //  - if message is from an agent, previous `from` field is used
+    //  - else if there is support channel, search in `to` field addresses to find support channel information
+    //  otherwise default support channel is used
+    //  - else, previous `to` field is used
+    if (!lastMessage || !lastMessage.source) {
+        return supportChannel
+    } else if (lastMessage.from_agent) {
+        return lastMessage.source.from
+    } else if (supportChannel) {
+        // trying to guess if there is an address in `to` corresponding to current account support address
         // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
-        if (addressToTest === supportAddress ||
-            addressToTest.startsWith(`${splitSupportAddress[0]}+`) &&
-            addressToTest.endsWith(`@${splitSupportAddress[1]}`)) {
-            return true
+        const companyAnsweredInfo = _find(lastMessage.source.to, (to = {}) => {
+            return isAccountAddress(to.address, supportChannel.address)
+        })
+
+        // if we found a `to` address corresponding to current support account, we use it
+        if (companyAnsweredInfo) {
+            return {
+                name: companyAnsweredInfo.name || supportChannel.name,
+                address: companyAnsweredInfo.address
+            }
+        } else {
+            return supportChannel
         }
+    } else {
+        return _pick(lastMessage.source.to[0], ['name', 'address'])
     }
 }
 
@@ -99,10 +169,10 @@ export function getValuePropFromSourceType(sourceType) {
 /**
  * Guess receivers from a ticket based on its messages
  * @param ticket
- * @param channels
+ * @param currentAccountContactInfo
  * @returns {*}
  */
-export function guessReceiversFromTicket(ticket, channels = fromJS([])) {
+export function guessReceiversFromTicket(ticket, currentAccountContactInfo) {
     let toReceivers = fromJS([])
     let ccReceivers = fromJS([])
     const messages = ticket.get('messages', fromJS([]))
@@ -113,30 +183,46 @@ export function guessReceiversFromTicket(ticket, channels = fromJS([])) {
         }
     }
 
-    const supportAddresses = channels.map(channel => channel.get('address'))
     const sourceType = ticket.getIn(['newMessage', 'source', 'type'])
     const lastMessage = getLastSameSourceTypeMessage(messages, sourceType)
+    const supportChannel = getChannelContactInfo(sourceType, currentAccountContactInfo)
 
     if (lastMessage) {
         if (lastMessage.get('from_agent')) {
             toReceivers = lastMessage.getIn(['source', 'to'])
         } else {
-            toReceivers = toReceivers.push(lastMessage.getIn(['source', 'from']))
+            toReceivers = fromJS([lastMessage.getIn(['source', 'from'])])
 
-            if (supportAddresses.size) {
-                toReceivers = toReceivers.concat(lastMessage.getIn(['source', 'to']))
+            if (supportChannel) {
+                const isSupportAddressInCc = lastMessage.getIn(['source', 'cc'], fromJS([]))
+                    .some(receiver => isAccountAddress(receiver.get('address'), supportChannel.address))
+
+                // if support address is in cc, we want `to` last message receivers to be in new message `to`
+                if (isSupportAddressInCc) {
+                    toReceivers = toReceivers.concat(lastMessage.getIn(['source', 'to']))
+                }
             }
         }
+
         ccReceivers = lastMessage.getIn(['source', 'cc'], fromJS([]))
     }
 
-    // remove our support addresses of the receivers
-    const cleanReceivers = receivers => receivers.filter(receiver => {
-        return !isSupportAddress(receiver.get('address'), supportAddresses)
-    })
+    const cleanReceivers = (receivers) => {
+        let newReceivers = receivers
+            .filter(receiver => !!receiver) // remove falsey values
+
+        if (supportChannel) {
+            // remove current support address
+            newReceivers = newReceivers.filter((receiver) => {
+                return !isAccountAddress(receiver.get('address'), supportChannel.address)
+            })
+        }
+
+        return newReceivers
+    }
 
     return {
-        to: cleanReceivers(toReceivers).toJS(),
+        to: cleanReceivers(toReceivers).toJS(), // remove falsey values
         cc: cleanReceivers(ccReceivers).toJS(),
     }
 }
@@ -210,78 +296,4 @@ export function buildPartialUpdateFromAction(actionNames, state) {
             result[config.partialUpdateKey] = config.partialUpdateValue(state)
             return result
         }, {})
-}
-
-/**
- * Return preferred channel of account
- * return first available channels as a fallback
- * @param channelType E.g: email, messenger
- * @param channels Available account channels (from email and gmail integrations)
- * @returns {*}
- */
-export function getPreferredChannel(channelType, channels) {
-    // get the preferred channel
-    let chan = channels.find(channel => {
-        return channel.get('type') === channelType && channel.get('preferred', false)
-    })
-
-    // get the first channel available
-    if (!chan) {
-        chan = channels.find(channel => channel.get('type') === channelType)
-    }
-
-    return chan || fromJS({})
-}
-
-/**
- * Return sender based on ticket messages and available channels
- * @param ticket
- * @param channels Available account channels (from email and gmail integrations)
- * @returns {*}
- */
-export function getNewMessageSender(ticket, channels) {
-    const channelType = ticket.getIn(['newMessage', 'source', 'type'], '')
-
-    if (channelType === 'internal-note') {
-        return fromJS({})
-    }
-
-    const preferredChannel = getPreferredChannel(channelType, channels) || fromJS({})
-    const lastMessage = ticket.get('messages')
-        .findLast(message => message.getIn(['source', 'type'], '') === channelType)
-
-    // smooch, messenger
-    // because channels only list email addresses
-    if (preferredChannel.isEmpty()) {
-        if (lastMessage.get('from_agent')) {
-            return lastMessage.getIn(['source', 'from'])
-        }
-        return lastMessage.getIn(['source', 'to', 0])
-    }
-
-    // new ticket
-    if (!lastMessage) {
-        return preferredChannel
-    }
-
-    // last message sent by the customer
-    // from address of last message or preferred channel of the same type
-    if (lastMessage.get('from_agent', false)) {
-        return lastMessage.getIn(['source', 'from'], preferredChannel)
-    }
-
-    // last message sent by an agent
-    // search in recipients of `to` and `cc` fields to match with an email of account channels
-    const receivers = lastMessage.getIn(['source', 'to'], fromJS([]))
-        .concat(lastMessage.getIn(['source', 'cc'], fromJS([])))
-    for (const receiver of receivers) {
-        for (const channel of channels) {
-            if (receiver.get('address') === channel.get('address')) {
-                return channel
-            }
-        }
-    }
-
-    // no channels found so, we use the preferred channel
-    return preferredChannel
 }
