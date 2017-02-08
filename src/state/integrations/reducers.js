@@ -43,8 +43,10 @@ export default (state = initialState, action) => {
             return state.setIn(['state', 'loading', 'integrations'], false)
 
         case types.FETCH_INTEGRATIONS_SUCCESS: {
-            const data = fromJS(action.resp.data).sortBy(i => moment(i.get('deactivated_datetime'))).reverse()
-            return state.set('integrations', data)
+            const integrations = fromJS(action.resp.data)
+                .sortBy(inte => inte.get('name'))
+                .sortBy(inte => moment(inte.get('deactivated_datetime')))
+            return state.set('integrations', integrations)
                 .setIn(['state', 'loading', 'integrations'], false)
         }
 
@@ -65,11 +67,12 @@ export default (state = initialState, action) => {
             return state.setIn(['state', 'loading', 'delete'], action.id)
 
         case types.DELETE_INTEGRATION_SUCCESS:
-            return state.set('integrations',
-                state.get('integrations')
-                    .valueSeq()
-                    .filter(int => int.get('id') !== action.id)
-            )
+            return state.update('integrations', integrations => (
+                integrations.valueSeq().filter(int => int.get('id') !== action.id)
+            )).setIn(['state', 'loading', 'delete'], false)
+
+        case types.DELETE_INTEGRATION_ERROR:
+            return state.setIn(['state', 'loading', 'delete'], false)
 
         case types.TEST_HTTP_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'testing'], true)

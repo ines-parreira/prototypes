@@ -19,6 +19,10 @@ import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail
 import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList'
 import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
 
+import EmailIntegrationList from './components/email/EmailIntegrationList'
+import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/index'
+import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/index'
+
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
         const {actions, params} = this.props
@@ -62,6 +66,32 @@ class IntegrationDetailContainer extends React.Component {
         const redirectUri = this.props.getRedirectUri(params.integrationType)
 
         switch (params.integrationType) {
+            case 'email':
+                if (isDetail) {
+                    if (isUpdate) {
+                        return (
+                            <EmailIntegrationUpdate
+                                actions={actions}
+                                integration={commonProps.integration}
+                                loading={commonProps.loading}
+                            />
+                        )
+                    } else {
+                        return (
+                            <EmailIntegrationCreate
+                                actions={actions}
+                                loading={commonProps.loading}
+                            />)
+                    }
+                } else {
+                    return (
+                        <EmailIntegrationList
+                            actions={actions}
+                            integrations={commonProps.integrations}
+                            loading={commonProps.loading}
+                        />
+                    )
+                }
             case 'facebook':
                 if (isDetail) {
                     if (isSetup) {

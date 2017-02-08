@@ -2,8 +2,9 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import classnames from 'classnames'
-import {ReceiversSelectField} from '../../../../common/components/formFields'
-import * as ticketActions from '../../../../../state/ticket/actions'
+import ReceiversSelectField from './components/ReceiversSelectField'
+import SenderSelectField from './components/SenderSelectField/index'
+import * as ticketActions from '../../../../../../state/ticket/actions'
 import {
     getNewMessageType,
     getNewMessageChannel,
@@ -12,20 +13,21 @@ import {
     getContactProperties,
     getOptionalContactProperties,
     areNewMessageContactPropertiesFulfilled,
-} from '../../../../../state/ticket/selectors'
+} from '../../../../../../state/ticket/selectors'
+import * as integrationSelectors from '../../../../../../state/integrations/selectors'
 import {
     receiversValueFromState,
     receiversStateFromValue,
-} from '../../../../../state/ticket/utils'
-import {displayUserNameFromSource} from '../../../common/utils'
+} from '../../../../../../state/ticket/utils'
+import {displayUserNameFromSource} from '../../../../common/utils'
 import _upperFirst from 'lodash/upperFirst'
 import _uniq from 'lodash/uniq'
 import _difference from 'lodash/difference'
 import _xor from 'lodash/xor'
 
-class ReceiversDropdown extends React.Component {
+class MessageSourceFields extends React.Component {
     state = {
-        displayedRows: [], // optional rows that are displayed
+        displayedFields: [], // optional fields that are displayed
     }
 
     componentDidMount() {
@@ -33,12 +35,18 @@ class ReceiversDropdown extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {isOpen: wasOpen} = this.props
+        const {isOpen: wasOpen, isNewTicket} = this.props
         const {isOpen} = nextProps
+        const {displayedFields} = this.state
+        const hasFromField = displayedFields.includes('from')
 
-        // if closing or opening, recalculating optional rows that we want to keep open
+        // display `from` field on new ticket creation
+        if (isNewTicket && !hasFromField) {
+            this.setState({displayedFields: displayedFields.concat(['from'])})
+        }
+        // if closing or opening, recalculating optional fields that we want to keep open
         if (wasOpen !== isOpen) {
-            this._openUsedOptionalRows()
+            this._openUsedOptionalFields()
         }
     }
 
@@ -52,69 +60,74 @@ class ReceiversDropdown extends React.Component {
     }
 
     /**
-     * Remember currently used rows as open
+     * Remember currently used fields as open
      * @private
      */
-    _openUsedOptionalRows = () => {
+    _openUsedOptionalFields = () => {
         const {
             getNewMessageSourceProperty,
             availableContactProperties,
         } = this.props
 
-        // remove unusued rows from optional ones
-        const displayedOptionalRows = availableContactProperties.filter((r) => !getNewMessageSourceProperty(r).isEmpty())
+        // remove unused fields from optional ones
+        const displayedOptionalFields = availableContactProperties.filter((r) => !getNewMessageSourceProperty(r).isEmpty())
 
         this.setState({
-            displayedRows: displayedOptionalRows,
+            displayedFields: displayedOptionalFields,
         })
     }
 
     _setInitialValues = () => {
-        const {sourceType, setReceivers} = this.props
+        const {sourceType, setReceivers, setSender} = this.props
         const value = receiversValueFromState(this.props.initialValues, sourceType)
         setReceivers(receiversStateFromValue(value, sourceType))
+        setSender()
     }
 
-    _toggleOptionalRow = (row) => {
+    _toggleOptionalField = (field) => {
         this.setState({
-            displayedRows: _xor(this.state.displayedRows, [row]),
+            displayedFields: _xor(this.state.displayedFields, [field]),
         })
     }
 
     _renderOpened = () => {
         const {
+            accountChannels,
             sourceType,
             enabled,
             channel,
             parentId,
             getNewMessageSourceProperty,
             setReceivers,
+            setSender,
             availableContactProperties,
             optionalContactProperties,
         } = this.props
 
-        // rows that are displayed by default
-        const mandatoryRows = availableContactProperties.filter(r => !optionalContactProperties.includes(r))
+        // fields that are displayed by default
+        const mandatoryFields = availableContactProperties.filter(r => !optionalContactProperties.includes(r))
 
-        // available optional rows, depends on the rows configuration above (depends on source type or channel)
-        const availableOptionalRows = availableContactProperties.filter(r => optionalContactProperties.includes(r))
+        // available optional fields, depends on the fields configuration above (depends on source type or channel)
+        const availableOptionalFields = availableContactProperties.filter(r => optionalContactProperties.includes(r))
 
-        // selected optional rows or rows already containing data
-        const displayedOptionalRows = availableOptionalRows.filter((r) => {
-            return this.state.displayedRows.includes(r) || !getNewMessageSourceProperty(r).isEmpty()
+        // selected optional fields or fields already containing data
+        const displayedOptionalFields = availableOptionalFields.filter((r) => {
+            return this.state.displayedFields.includes(r) || !getNewMessageSourceProperty(r).isEmpty()
         })
 
-        // remaining optional rows not already displayed
-        const remainingOptionalRows = _difference(availableOptionalRows, displayedOptionalRows)
+        // remaining optional fields not already displayed
+        const remainingOptionalFields = _difference(availableOptionalFields, displayedOptionalFields)
 
-        // final displayed rows
-        const displayedRows = _uniq(mandatoryRows.concat(displayedOptionalRows))
+        // final displayed fields
+        const displayedFields = _uniq(mandatoryFields.concat(displayedOptionalFields))
+
+        const from = getNewMessageSourceProperty('from').toJS()
 
         return (
             <div>
                 {
                     // display fields
-                    displayedRows.map((prop) => {
+                    displayedFields.map((prop) => {
                         let value = getNewMessageSourceProperty(prop)
 
                         value = value.isEmpty() ? [] : value.toJS()
@@ -122,7 +135,7 @@ class ReceiversDropdown extends React.Component {
                         return (
                             <div
                                 key={prop}
-                                className="receivers-row"
+                                className="message-source-field"
                             >
                                 <span className="label">{_upperFirst(prop)}: </span>
                                 <ReceiversSelectField
@@ -130,7 +143,7 @@ class ReceiversDropdown extends React.Component {
                                     sourceType={sourceType}
                                     channel={channel}
                                     disabled={!enabled}
-                                    required={mandatoryRows.includes(prop)}
+                                    required={mandatoryFields.includes(prop)}
                                     input={{
                                         value,
                                         onChange(recipients) {
@@ -144,24 +157,42 @@ class ReceiversDropdown extends React.Component {
                         )
                     })
                 }
-
+                {
+                    from && (
+                        <div
+                            key="from"
+                            className="message-source-field"
+                        >
+                            <span className="label">From: </span>
+                            <SenderSelectField
+                                channels={accountChannels}
+                                input={{
+                                    value: from.address,
+                                    onChange({target}) {
+                                        setSender(target.value)
+                                    },
+                                }}
+                            />
+                        </div>
+                    )
+                }
                 {
                     // display buttons for optional fields
-                    !!remainingOptionalRows.length && (
-                        <div className="optional-rows">
+                    !!remainingOptionalFields.length && (
+                        <div className="optional-fields">
                             {
-                                remainingOptionalRows.map((prop, index) => (
+                                remainingOptionalFields.map((prop, index) => (
                                     <span key={prop}>
                                         <span
-                                            className="optional-row"
+                                            className="optional-field"
                                             onClick={(e) => {
                                                 e.stopPropagation() // prevent the edit window from closing
-                                                this._toggleOptionalRow(prop)
+                                                this._toggleOptionalField(prop)
                                             }}
                                         >
                                             {_upperFirst(prop)}
                                         </span>
-                                        {(index < remainingOptionalRows.length - 1) && ' / '}
+                                        {(index < remainingOptionalFields.length - 1) && ' / '}
                                     </span>
                                 ))
                             }
@@ -178,7 +209,7 @@ class ReceiversDropdown extends React.Component {
         const allDisplayedNames = allRecipients.toJS().map(v => displayUserNameFromSource(v, sourceType))
 
         return (
-            <div className="receivers-row">
+            <div className="message-source-field">
                 <span className="label">To: </span>
                 <span
                     className={classnames('receivers-list', {
@@ -193,14 +224,16 @@ class ReceiversDropdown extends React.Component {
 
     render() {
         return (
-            <div className="receivers-dropdown">
+            <div className="message-source-fields">
                 {this.props.isOpen ? this._renderOpened() : this._renderClosed()}
             </div>
         )
     }
 }
 
-ReceiversDropdown.propTypes = {
+MessageSourceFields.propTypes = {
+    accountChannels: PropTypes.object.isRequired,
+    setSender: PropTypes.func.isRequired,
     setReceivers: PropTypes.func.isRequired,
     initialValues: PropTypes.object.isRequired, // the values which should populate the field when it mounts
 
@@ -212,6 +245,7 @@ ReceiversDropdown.propTypes = {
     channel: PropTypes.string.isRequired,
     allRecipients: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
+    isNewTicket: PropTypes.bool.isRequired,
     canOpen: PropTypes.bool.isRequired,
     availableContactProperties: PropTypes.array.isRequired,
     optionalContactProperties: PropTypes.array.isRequired,
@@ -221,7 +255,9 @@ const mapStateToProps = (state, ownProps) => {
     const type = getNewMessageType(state)
 
     return {
+        isNewTicket: !state.ticket.get('id'),
         sourceType: type,
+        accountChannels: integrationSelectors.getChannels(state),
         channel: getNewMessageChannel(state),
         getNewMessageSourceProperty: makeGetNewMessageSourceProperty(state),
         allRecipients: getNewMessageRecipients(state),
@@ -233,8 +269,9 @@ const mapStateToProps = (state, ownProps) => {
 
 function mapDispatchToProps(dispatch) {
     return {
+        setSender: bindActionCreators(ticketActions.setSender, dispatch),
         setReceivers: bindActionCreators(ticketActions.setReceivers, dispatch)
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReceiversDropdown)
+export default connect(mapStateToProps, mapDispatchToProps)(MessageSourceFields)

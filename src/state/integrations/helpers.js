@@ -26,13 +26,30 @@ const getIntegrationsCountPerType = (integrations = []) => {
  */
 export const getIntegrationsList = (integrations = []) => {
     const counts = getIntegrationsCountPerType(integrations)
-    return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription) => (
-        {
+    return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription) => {
+        let count = 0
+
+        if (typeDescription.subTypes) {
+            // make sum of all count of sub types
+            typeDescription.subTypes.forEach(type => {
+                if (counts[type]) {
+                    count += counts[type]
+                }
+            })
+        } else {
+            count += counts[typeDescription.type]
+        }
+
+        return {
             ...typeDescription,
-            count: counts[typeDescription.type] || 0
-        })
-    ))
+            count
+        }
+    }))
 }
+
+export const getIntegrationsByTypes = (integrations = [], types = []) => (
+    integrations.filter(inte => types.includes(inte.get('type', '')))
+)
 
 export const getIconUrl = (type) => {
     const config = _find(INTEGRATION_TYPE_DESCRIPTIONS, {type})
