@@ -3,8 +3,10 @@ import {
     mergeTicket,
     mergeRequester,
 } from '../../../state/ticket/actions'
+import {isCurrentlyOnTicket} from '../../../utils'
 import _throttle from 'lodash/throttle'
 import _reject from 'lodash/reject'
+import _get from 'lodash/get'
 
 const socket = socketio.connect(window.WS_URL)
 
@@ -99,6 +101,7 @@ export default class SocketIO {
             case 'ticket-updated': {
                 log('Ticket updated', json)
                 this._mergeTicket(json.ticket)
+                this._sendTicketViewed(_get(json, 'ticket.id'))
                 break
             }
             case 'ticket-deleted': {
@@ -108,6 +111,7 @@ export default class SocketIO {
             case 'ticket-message-created': {
                 log('Message created', json)
                 this._mergeTicket(json.ticket)
+                this._sendTicketViewed(_get(json, 'ticket.id'))
                 break
             }
             default:
@@ -131,6 +135,17 @@ export default class SocketIO {
         // merge updated user with requester of ticket
         this._dispatch(mergeRequester(json))
     }, 100)
+
+    _sendTicketViewed = (ticketId) => {
+        // if ticket is updated and user is currently on it, send a 'ticket viewed' event
+        if (isCurrentlyOnTicket(ticketId)) {
+            log('Ticket viewed sent for ticket', ticketId)
+            this.send({
+                event: 'ticket-viewed',
+                ticketId,
+            })
+        }
+    }
 
     disconnect = () => {
         socket.disconnect()

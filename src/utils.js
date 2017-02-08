@@ -408,9 +408,9 @@ export const isAdmin = (user) => {
 export function hasRole(user, requiredRole) {
     switch (requiredRole) {
         case 'agent':
-            return isAgent(user, requiredRole)
+            return isAgent(user)
         case 'admin':
-            return isAdmin(user, requiredRole)
+            return isAdmin(user)
         default:
             return false
     }
