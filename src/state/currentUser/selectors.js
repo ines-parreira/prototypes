@@ -4,6 +4,11 @@ import {getViews} from '../views/selectors'
 
 export const getCurrentUserState = state => state.currentUser || fromJS({})
 
+export const getCurrentUser = createSelector(
+    [getCurrentUserState],
+    state => state
+)
+
 export const getSettings = createSelector(
     [getCurrentUserState],
     state => state.get('settings', fromJS([]))

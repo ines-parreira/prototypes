@@ -3,6 +3,11 @@ import {createSelector} from 'reselect'
 
 export const getIntegrationsState = state => state.integrations || fromJS({})
 
+export const getIntegrations = createSelector(
+    [getIntegrationsState],
+    state => state.get('integrations', fromJS([]))
+)
+
 export const getAuthData = type => createSelector(
     [getIntegrationsState],
     state => state.getIn(['authentication', type], fromJS({}))

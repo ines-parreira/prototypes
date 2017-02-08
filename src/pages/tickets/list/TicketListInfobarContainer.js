@@ -1,149 +1,112 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import _pick from 'lodash/pick'
 import {isAdmin} from '../../../utils'
 import moment from 'moment'
 
+import {ONBOARDING_INTEGRATION_SUGGESTIONS} from '../../../config'
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
 
-import {getAgents} from '../../../state/users/selectors'
+import * as integrationsSelectors from '../../../state/integrations/selectors'
+import * as currentUserSelectors from '../../../state/currentUser/selectors'
+
 import {logEvent} from '../../../store/middlewares/amplitudeTracker'
+import {getIconFromType} from '../../../state/integrations/helpers'
+
+import css from './TicketListInfobarContainer.less'
+
+const suggestions = ONBOARDING_INTEGRATION_SUGGESTIONS
 
 class TicketListInfobarContainer extends React.Component {
-    _hideBoarding = () => {
-        window.localStorage.setItem('hideBoarding', true)
-        this.forceUpdate()
+    static propTypes = {
+        currentUser: PropTypes.object.isRequired,
+        integrations: PropTypes.object.isRequired,
     }
 
     render() {
         const {
             currentUser,
-            steps,
-            isBoardingDone,
+            integrations,
         } = this.props
-        let {shouldDisplay} = this.props
 
-        // local storage condition is in render so that it updates on forceUpdate
-        shouldDisplay = shouldDisplay
-            && !window.localStorage.getItem('hideBoarding')
+        const displayedSuggestions = suggestions.filter((suggestion) => {
+            // remove suggestions that have already at least an integration
+            return !integrations.find(integration => integration.get('type') === suggestion.type)
+        })
 
-        if (!shouldDisplay) {
+        const hidingDate = moment(currentUser.get('created_datetime')).add(14, 'days')
+
+        // hide bar if current user is not an admin
+        const shouldHide = !isAdmin(currentUser)
+            // or if there is no suggestions (already added every suggested integrations)
+            || !displayedSuggestions.length
+            // or if a certain time has passed since user creation AND at least an integration has been made
+            || (
+                moment().isAfter(hidingDate)
+                && displayedSuggestions.length < suggestions.length
+            )
+
+        if (shouldHide) {
             return null
         }
 
         return (
             <InfobarLayout>
                 <div
-                    className="infobar-content flex flex-center flex-column"
-                    style={{textAlign: 'center'}}
+                    className={classnames(css.page, 'infobar-content')}
                 >
-                    <div style={{fontSize: 100, marginBottom: 60}}>✌️</div>
+                    <div className={css.icon}>✌️</div>
                     <h1>
                         Welcome to Gorgias <br />
                         {currentUser.get('firstname')}!
                     </h1>
                     {
-                        isBoardingDone ? (
-                            <div>
-                                <h3>You're all set, enjoy ;)</h3>
-                                <div>
-                                    <button
-                                        className="mini ui green button"
-                                        onClick={this._hideBoarding}
-                                    >
-                                        Got it
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            <div>
-                                <h3>Let's complete your setup:</h3>
-                                <div className="boarding">
-                                    {
-                                        steps.map((step, index) => {
-                                            const linkProperties = _pick(step, [
-                                                'to',
-                                                'target',
-                                                'onClick',
-                                            ])
+                        <div className={css.buttons}>
+                            {
+                                displayedSuggestions.map((suggestion) => {
+                                    const type = suggestion.type
 
-                                            return (
-                                                <Link
-                                                    className={classnames('step', {
-                                                        done: step.isDone
-                                                    })}
-                                                    key={index}
-                                                    {...linkProperties}
-                                                >
-                                                    <i className="check circle icon" />
-                                                    {step.title}
-                                                </Link>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </div>
-                        )
+                                    return (
+                                        <Link
+                                            key={type}
+                                            className={css.button}
+                                            to={suggestion.url}
+                                            onClick={() => {
+                                                logEvent(`Clicked add a "${type}" integration on Onboarding widget`)
+                                            }}
+                                        >
+                                            <img
+                                                role="presentation"
+                                                className="logo"
+                                                src={getIconFromType(type)}
+                                            />
+                                            <span>{suggestion.title}</span>
+                                        </Link>
+                                    )
+                                })
+                            }
+                        </div>
                     }
+                    <Link
+                        className={css.sub}
+                        to="/app/integrations"
+                        onClick={() => {
+                            logEvent('Clicked add "other apps" on Onboarding widget')
+                        }}
+                    >
+                        Connect other apps
+                    </Link>
                 </div>
             </InfobarLayout>
         )
     }
 }
 
-TicketListInfobarContainer.propTypes = {
-    currentUser: PropTypes.object.isRequired,
-    shouldDisplay: PropTypes.bool.isRequired,
-    isBoardingDone: PropTypes.bool.isRequired,
-    steps: PropTypes.array.isRequired,
-}
-
 const mapStateToProps = (state) => {
-    // exclude email/gmail integrations cause after onboarding,
-    // account have a least one integration
-    const hasIntegrations = !state.integrations
-        .get('integrations', fromJS([]))
-        .filter(inte => !['email', 'gmail'].includes(inte.get('type', '')))
-        .isEmpty()
-    const hasOtherAgents = getAgents(state).size > 1
-    const currentUser = state.currentUser
-
-    // display the bar only for 3 days after user creation (if it is an admin)
-    const durationBeforeHide = moment(currentUser.get('created_datetime')).add(3, 'days')
-
-    const steps = [
-        {
-            title: 'Add your support inbox',
-            isDone: true,
-            to: 'http://help.gorgias.io/en/latest/src/helpdesk/00-getting-started.html#how-to-set-up-email-forwarding',
-            target: '_blank',
-            onClick: () => logEvent('Clicked add support inbox on Onboarding widget'),
-        },
-        {
-            title: 'Invite team members',
-            isDone: hasOtherAgents,
-            to: '/app/users',
-            onClick: () => logEvent('Clicked invite team members on Onboarding widget'),
-        },
-        {
-            title: 'Add an integration',
-            isDone: hasIntegrations,
-            to: '/app/integrations',
-            onClick: () => logEvent('Clicked add an integration on Onboarding widget'),
-        },
-    ]
-
-    const shouldDisplay = isAdmin(currentUser)
-        && durationBeforeHide.isAfter(moment())
-
     return {
-        currentUser,
-        shouldDisplay,
-        isBoardingDone: steps.every(step => step.isDone),
-        steps,
+        integrations: integrationsSelectors.getIntegrations(state),
+        currentUser: currentUserSelectors.getCurrentUser(state),
     }
 }
 

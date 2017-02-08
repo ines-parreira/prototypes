@@ -1,0 +1,57 @@
+:local .page {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    margin-bottom: 26px;
+  }
+
+  .icon {
+    font-size: 100px;
+    margin-bottom: 30px;
+  }
+
+  .buttons {
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+
+    .button {
+      display: inline-flex;
+      justify-content: flex-start;
+      align-items: center;
+      border-radius: 3px;
+      background-color: #FFF;
+      border: 1px solid #F0F0F0;
+      height: 60px;
+      padding: 0 16px;
+      font-size: 20px;
+      color: inherit;
+      font-weight: bold;
+      margin-bottom: 12px;
+
+      &:hover {
+        background-color: #F3F3F3;
+        border-color: #e9eaea;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      img {
+        width: 30px;
+        margin-right: 14px;
+      }
+    }
+  }
+
+  .sub {
+    color: #b1b1b1;
+    text-decoration: underline;
+    margin-top: 24px;
+  }
+}

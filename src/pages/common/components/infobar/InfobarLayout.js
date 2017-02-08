@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import _max from 'lodash/max'
 
 class InfobarLayout extends React.Component {
     constructor(props) {
@@ -7,7 +8,7 @@ class InfobarLayout extends React.Component {
         this.cursorX = null
         this.originalWidth = 0
         // a special method of minesweeping by @xarg
-        this.minWidth = window.innerWidth / 5.1
+        this.minWidth = _max([window.innerWidth / 5.1, 280])
         this.maxWidth = window.innerWidth / 2.3
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'

@@ -171,6 +171,21 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     }
 ]
 
+// used on infobar after new account creation to suggest integrations to add
+export const ONBOARDING_INTEGRATION_SUGGESTIONS = [{
+    title: 'Connect Shopify',
+    type: 'shopify',
+    url: 'app/integrations/shopify/new',
+}, {
+    title: 'Connect Facebook',
+    type: 'facebook',
+    url: 'app/integrations/facebook',
+}, {
+    title: 'Connect Chat',
+    type: 'smooch',
+    url: 'app/integrations/smooch/new',
+}]
+
 /**
  * Templates for custom actions.
  * Those templates are used by the front-end to generate the UI to create a new action (in the Macros Management).
