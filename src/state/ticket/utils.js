@@ -78,10 +78,10 @@ export function getChannelFromSourceType(sourceType) {
  * Return the most appropriate account's info of asked channel to send a message to
  * @param channelType: type of channel to use: email, facebook, etc
  * @param channels: channels available
- * @returns {string} the channel to use
+ * @returns {Object} the channel to use
  */
 export function getChannelContactInfo(channelType, channels = []) {
-    let chan = null
+    let chan = null // return null if no channel match, it's important
 
     if (channelType === 'internal-note') {
         return {}
@@ -105,6 +105,18 @@ export function getChannelContactInfo(channelType, channels = []) {
     return chan
 }
 
+export function isAccountAddress(addressToTest = '', supportAddress = '') {
+    if (!addressToTest || !supportAddress) {
+        return false
+    }
+
+    const splitSupportAddress = supportAddress.split('@')
+
+    // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
+    return addressToTest === supportAddress
+        || addressToTest.startsWith(`${splitSupportAddress[0]}+`) && addressToTest.endsWith(`@${splitSupportAddress[1]}`)
+}
+
 /**
  * Return `from` contact info when creating a new message based on ticket last eligible message
  * @param channelType
@@ -126,16 +138,13 @@ export function getSenderContactInfo(channelType, currentAccountContactInfo, las
     } else if (lastMessage.from_agent) {
         return lastMessage.source.from
     } else if (supportChannel) {
-        const splitSupportAddress = supportChannel.address.split('@')
-
         // trying to guess if there is an address in `to` corresponding to current account support address
         // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
         const companyAnsweredInfo = _find(lastMessage.source.to, (to = {}) => {
-            const address = to.address || ''
-            return address.startsWith(splitSupportAddress[0]) && address.endsWith(`@${splitSupportAddress[1]}`)
+            return isAccountAddress(to.address, supportChannel.address)
         })
 
-        // if we found an `to` address corresponding to current support account, we use it
+        // if we found a `to` address corresponding to current support account, we use it
         if (companyAnsweredInfo) {
             return {
                 name: companyAnsweredInfo.name || supportChannel.name,
@@ -160,9 +169,10 @@ export function getValuePropFromSourceType(sourceType) {
 /**
  * Guess receivers from a ticket based on its messages
  * @param ticket
+ * @param currentAccountContactInfo
  * @returns {*}
  */
-export function guessReceiversFromTicket(ticket) {
+export function guessReceiversFromTicket(ticket, currentAccountContactInfo) {
     let toReceivers = fromJS([])
     let ccReceivers = fromJS([])
     const messages = ticket.get('messages', fromJS([]))
@@ -175,20 +185,45 @@ export function guessReceiversFromTicket(ticket) {
 
     const sourceType = ticket.getIn(['newMessage', 'source', 'type'])
     const lastMessage = getLastSameSourceTypeMessage(messages, sourceType)
+    const supportChannel = getChannelContactInfo(sourceType, currentAccountContactInfo)
 
     if (lastMessage) {
         if (lastMessage.get('from_agent')) {
             toReceivers = lastMessage.getIn(['source', 'to'])
         } else {
             toReceivers = fromJS([lastMessage.getIn(['source', 'from'])])
+
+            if (supportChannel) {
+                const isSupportAddressInCc = lastMessage.getIn(['source', 'cc'], fromJS([]))
+                    .some(receiver => isAccountAddress(receiver.get('address'), supportChannel.address))
+
+                // if support address is in cc, we want `to` last message receivers to be in new message `to`
+                if (isSupportAddressInCc) {
+                    toReceivers = toReceivers.concat(lastMessage.getIn(['source', 'to']))
+                }
+            }
         }
 
         ccReceivers = lastMessage.getIn(['source', 'cc'], fromJS([]))
     }
 
+    const cleanReceivers = (receivers) => {
+        let newReceivers = receivers
+            .filter(receiver => !!receiver) // remove falsey values
+
+        if (supportChannel) {
+            // remove current support address
+            newReceivers = newReceivers.filter((receiver) => {
+                return !isAccountAddress(receiver.get('address'), supportChannel.address)
+            })
+        }
+
+        return newReceivers
+    }
+
     return {
-        to: toReceivers.filter(receiver => !!receiver).toJS(), // remove falsey values
-        cc: ccReceivers.filter(receiver => !!receiver).toJS(),
+        to: cleanReceivers(toReceivers).toJS(), // remove falsey values
+        cc: cleanReceivers(ccReceivers).toJS(),
     }
 }
 

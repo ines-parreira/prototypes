@@ -11,6 +11,7 @@ import {
     getMessages,
     hasNewMessageRecipients,
 } from '../../../../../state/ticket/selectors'
+import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors'
 import _reduce from 'lodash/reduce'
 
 class ReplyMessageChannel extends React.Component {
@@ -142,7 +143,7 @@ class ReplyMessageChannel extends React.Component {
 
         return (
             <ReceiversDropdown
-                initialValues={guessReceiversFromTicket(ticket)}
+                initialValues={guessReceiversFromTicket(ticket, this.props.currentAccountChannels.toJS())}
                 enabled={isInputEnabled}
                 parentId={parentId.toString()}
                 canOpen={this._canChangeReceivers()}
@@ -248,6 +249,7 @@ class ReplyMessageChannel extends React.Component {
 }
 
 ReplyMessageChannel.propTypes = {
+    currentAccountChannels: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired,
@@ -260,6 +262,7 @@ ReplyMessageChannel.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+    currentAccountChannels: currentAccountSelectors.getChannels(state),
     sourceType: getNewMessageType(state),
     channel: getNewMessageChannel(state),
     isUpdate: !!ownProps.ticket.get('id'),

@@ -22,6 +22,7 @@ import {
     getSenderContactInfo,
     buildPartialUpdateFromAction,
 } from './utils'
+import * as currentAccountSelectors from '../../state/currentAccount/selectors'
 
 export const addAttachments = (ticket, atts) => (dispatch) => {
     dispatch({
@@ -692,10 +693,11 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
 
                 // TODO @jebarjonet improve the flow of receivers reselection
                 // here we are normalizing receivers data before we send it
-                const {ticket: _ticket} = getState()
+                const state = getState()
+                const {ticket: _ticket} = state
                 const type = _ticket.getIn(['newMessage', 'source', 'type'])
                 // set receivers according to last sent message
-                const receivers = guessReceiversFromTicket(_ticket)
+                const receivers = guessReceiversFromTicket(_ticket, currentAccountSelectors.getChannels(state).toJS())
                 const receiversValues = receiversValueFromState(receivers, type)
                 dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
 
