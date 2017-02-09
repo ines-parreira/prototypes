@@ -37,6 +37,11 @@ export default (state = initialState, action) => {
                 .get('items', fromJS([]))
                 .findIndex(item => item.get('id') === action.ticketId)
 
+            // if ticket is not found in view, don't do anything
+            if (!~ticketIndex) {
+                return state
+            }
+
             return state.setIn(['items', ticketIndex, 'is_unread'], false)
         }
 
