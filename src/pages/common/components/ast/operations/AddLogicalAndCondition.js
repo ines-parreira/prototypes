@@ -10,7 +10,8 @@ class AddLogicalAndCondition extends React.Component {
         const actionNode = {
             type: 'LogicalExpression',
             operator: '&&',
-            left: {
+            left: null,
+            right: {
                 type: 'CallExpression',
                 callee: {
                     type: 'Identifier',
@@ -36,7 +37,6 @@ class AddLogicalAndCondition extends React.Component {
                     }
                 ],
             },
-            right: null,
         }
 
         const { actions, rule, parent } = this.props

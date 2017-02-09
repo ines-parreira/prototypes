@@ -7,6 +7,7 @@ import Select from './widget/ReactSelect'
 import StatusSelect from './widget/StatusSelect'
 import PrioritySelect from './widget/PrioritySelect'
 import TagSelect from './widget/TagSelect'
+import MacroSelect from './widget/MacroSelect'
 
 class Widget extends React.Component {
 
@@ -130,6 +131,8 @@ class Widget extends React.Component {
                 return <StatusSelect {...widget} onChange={this._handleChange}/>
             case 'priority-select':
                 return <PrioritySelect {...widget} onChange={this._handleChange}/>
+            case 'macro-select':
+                return <MacroSelect {...widget} onChange={this._handleChange} />
             case 'input':
                 return this._input(value)
             case 'textarea':

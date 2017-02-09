@@ -5,7 +5,7 @@ import ActionSelect from './ActionSelect'
 export const actionsConfig = {
     notify: {
         compact: false,
-        name: 'Send Notification',
+        name: 'Send Message',
         args: {
             subject: {
                 name: 'Subject',
@@ -19,6 +19,36 @@ export const actionsConfig = {
                 widget: 'textarea'
             }
         }
+    },
+    sendEmail: {
+        compact: false,
+        name: 'Send Email',
+        args: {
+            to: {
+                name: 'To'
+            },
+            cc: {
+                name: 'Cc'
+            },
+            bcc: {
+                name: 'Bcc'
+            },
+            subject: {
+                name: 'Subject',
+            },
+            body_text: {
+                name: 'Text',
+                widget: 'textarea'
+            },
+            body_html: {
+                name: 'HTML',
+                widget: 'textarea'
+            }
+        }
+    },
+    applyMacro: {
+        compact: true,
+        name: 'Apply Macro'
     },
     addTags: {
         compact: true,

@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 
 import {DatetimeLabel} from '../../../common/utils/labels'
 import RuleItem from '../../detail/components/RuleItem'
+import {createIsDirtySelector} from '../../../../state/rules/selectors'
 
 class RuleTableRow extends React.Component {
     constructor(props) {
@@ -15,16 +16,19 @@ class RuleTableRow extends React.Component {
     }
 
     _renderDetail = () => {
-        const {rule, actions} = this.props
+        const {rule, actions, selectors} = this.props
+
         if (!this.state.showDetail) {
             return null
         }
+
         return (
             <tr className="no-hover">
                 <td colSpan="100%">
                     <RuleItem
                         rule={rule}
                         actions={actions}
+                        isDirty={selectors.isDirty(rule.get('id'))}
                     />
                 </td>
             </tr>
@@ -61,10 +65,14 @@ RuleTableRow.propTypes = {
     actions: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
     rule: PropTypes.object.isRequired,
+    selectors: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
     currentUser: state.currentUser,
+    selectors: {
+        isDirty: createIsDirtySelector(state)
+    }
 })
 
 export default connect(mapStateToProps)(RuleTableRow)

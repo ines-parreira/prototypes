@@ -99,7 +99,7 @@ class RuleItem extends React.Component {
     }
 
     _renderButtons() {
-        const {rule} = this.props
+        const {rule, isDirty} = this.props
 
         let rmBtn = (
             <button
@@ -114,7 +114,7 @@ class RuleItem extends React.Component {
         let resetBtn = (
             <button
                 type="button"
-                className="ui button"
+                className={classNames('ui button', {disabled: !isDirty})}
                 onClick={this._handleReset}
             >
                 Cancel Changes
@@ -123,7 +123,7 @@ class RuleItem extends React.Component {
         let primaryBtn = (
             <button
                 type="button"
-                className="ui positive button"
+                className={classNames('ui positive button', {disabled: !isDirty})}
                 onClick={this._handleSubmit}
             >
                 Save Changes
@@ -191,6 +191,7 @@ class RuleItem extends React.Component {
 RuleItem.propTypes = {
     rule: React.PropTypes.object,
     actions: React.PropTypes.object,
+    isDirty: React.PropTypes.bool
 }
 
 export default RuleItem

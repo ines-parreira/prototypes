@@ -61,7 +61,7 @@ export default class RulesView extends React.Component {
                     </p>
                 </div>
                 {activeRules && !activeRules.isEmpty() && (
-                    <div>
+                    <div className="rule-category">
                         <h4>Active Rules</h4>
                         <RuleTable
                             actions={actions}
@@ -71,7 +71,7 @@ export default class RulesView extends React.Component {
                     </div>
                 )}
                 {inactiveRules && !inactiveRules.isEmpty() && (
-                    <div>
+                    <div className="rule-category">
                         <h4>Inactive Rules</h4>
                         <RuleTable
                             actions={actions}

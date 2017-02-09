@@ -5,9 +5,10 @@ import {bindActionCreators} from 'redux'
 import RulesView from './components/RulesView'
 
 import * as RuleActions from '../../../state/rules/actions'
+import {getRules} from '../../../state/rules/selectors'
 
 const mapStateToProps = (state) => ({
-    rules: state.rules,
+    rules: getRules(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

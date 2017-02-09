@@ -7,3 +7,8 @@ export const getMacroSelectedInModal = createSelector(
     [getMacrosState],
     state => state.get('modalSelected') || fromJS({})
 )
+
+export const getMacros = createSelector(
+    [getMacrosState],
+    state => state.get('items') || fromJS({})
+)

@@ -5,7 +5,34 @@ import {updateCallExpression, getObjectExpression} from './utils'
 
 import * as types from './constants'
 
-export const initialState = fromJS({})
+export const initialState = fromJS({
+    _internal: {
+        dirtyList: []
+    },
+    rules: {}
+})
+
+function markAsDirty(ruleId, state) {
+    if (!state.getIn(['_internal', 'dirtyList']).contains(ruleId)) {
+        return state.setIn(
+            ['_internal', 'dirtyList'],
+            state.getIn(['_internal', 'dirtyList']).push(ruleId)
+        )
+    }
+
+    return state
+}
+
+function markAsClean(ruleId, state) {
+    if (!state.getIn(['_internal', 'dirtyList']).contains(ruleId)) {
+        return state.setIn(
+            ['_internal', 'dirtyList'],
+            state.getIn(['_internal', 'dirtyList']).filter(id => id !== ruleId.toString())
+        )
+    }
+
+    return state
+}
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -15,25 +42,28 @@ export default (state = initialState, action) => {
                 rule.code_ast = getAST(rule.code)
             }
 
-            return state.set(rule.id.toString(), fromJS(rule))
+            return state.setIn(['rules', rule.id.toString()], fromJS(rule))
         }
 
         case types.ACTIVATE_RULE: {
-            return state.update(
-                action.id.toString(),
+            return state.updateIn(
+                ['rules', action.id.toString()],
                 r => r.set('deactivated_datetime', null)
             )
         }
 
         case types.DEACTIVATE_RULE: {
-            return state.update(
-                action.id.toString(),
+            return state.updateIn(
+                ['rules', action.id.toString()],
                 r => r.set('deactivated_datetime', (new Date()).toISOString())
             )
         }
 
         case types.REMOVE_RULE: {
-            return state.remove(action.id.toString())
+            return state.set(
+                'rules',
+                state.get('rules').remove(action.id.toString())
+            )
         }
 
         case types.RULES_REQUESTS_POSTS:
@@ -48,12 +78,12 @@ export default (state = initialState, action) => {
 
                 return [ruleItem.id, ruleItem]
             })
-            return fromJS(fromPairs(rules))
+            return state.set('rules', fromJS(fromPairs(rules)))
         }
 
         case types.RULES_INITIALISE_CODE_AST: {
             const {id} = action
-            let stateItem = state.get(id.toString())
+            let stateItem = state.getIn(['rules', id.toString()])
 
             let ast = types.DEFAULT_IF_STATEMENT
             const code = getCode(ast)
@@ -61,12 +91,18 @@ export default (state = initialState, action) => {
 
             stateItem = stateItem.set('code_ast', fromJS(ast))
             stateItem = stateItem.set('code', code)
-            return state.set(id.toString(), stateItem)
+
+            markAsDirty(id.toString(), state)
+
+            return markAsDirty(
+                id.toString(),
+                state.setIn(['rules', id.toString()], stateItem)
+            )
         }
 
         case types.RULES_UPDATE_CODE_AST: {
             const {id, path, value, operation, schemas} = action
-            const stateItem = state.get(id.toString())
+            const stateItem = state.getIn(['rules', id.toString()])
             const pathFull = path.unshift('code_ast')
 
             let stateItemNew
@@ -156,7 +192,7 @@ export default (state = initialState, action) => {
             // Add logical AND operation in TEST block of IFSTATEMENT.
             if (operation === 'UPDATE_LOGICAL_AND') {
                 const test = stateItem.getIn(pathFull.toJS())
-                value.right = test.toJS()
+                value.left = test.toJS()
                 stateItemNew = stateItem.updateIn(pathFull.toJS(), () => value)
             }
 
@@ -188,8 +224,17 @@ export default (state = initialState, action) => {
             const stateItemObj = stateItemNew.toJS()
             stateItemObj.code = getCode(stateItemObj.code_ast)
             stateItemObj.code_ast = getAST(stateItemObj.code)  // To apply, ast syntax options (loc, ...)
-            return state.set(id.toString(), fromJS(stateItemObj))
+
+            return markAsDirty(
+                id.toString(),
+                state.setIn(['rules', id.toString()], fromJS(stateItemObj))
+            )
         }
+
+        case types.RESET_RULE_SUCCESS:
+        case types.UPDATE_RULE_SUCCESS:
+        case types.UPDATE_RULE_ERROR:
+            return markAsClean(action.ruleId, state)
 
         default:
             return state

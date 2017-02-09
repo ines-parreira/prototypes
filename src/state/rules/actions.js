@@ -68,11 +68,21 @@ export const create = (data) => (dispatch) => (
 export const save = (data) => {
     return dispatch => {
         return axios.put(`/api/rules/${data.id}/`, data)
-            .then(() => dispatch(notify({
-                type: 'success',
-                message: 'Rule saved successfully',
-            })), error => {
-                return dispatch(fail(error, 'Unable to save the rule'))
+            .then(() => {
+                dispatch({
+                    type: types.UPDATE_RULE_SUCCESS,
+                    ruleId: data.id
+                })
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Rule saved successfully',
+                }))
+            }, (error) => {
+                dispatch({
+                    type: types.UPDATE_RULE_ERROR,
+                    ruleId: data.id
+                })
+                dispatch(fail(error, 'Unable to save the rule'))
             })
     }
 }
@@ -145,12 +155,18 @@ export const remove = (id) => (dispatch) => (
 export const reset = (id) => (dispatch) => (
     axios.get(`/api/rules/${id}`)
         .then((json = {}) => json.data)
-        .then(response => dispatch(modifyCodeast(
-            id,
-            List([]),
-            response.code_ast || types.DEFAULT_IF_STATEMENT,
-            'UPDATE'
-        )))
+        .then(response => {
+            dispatch({
+                type: types.RESET_RULE_SUCCESS,
+                ruleId: id
+            })
+            return dispatch(modifyCodeast(
+                id,
+                List([]),
+                response.code_ast || types.DEFAULT_IF_STATEMENT,
+                'UPDATE'
+            ))
+        })
 )
 
 // Submit rule
