@@ -3,12 +3,14 @@ import {Link} from 'react-router'
 import {Field, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 import {InputField} from '../../../../common/components/formFields'
+import {Loader} from '../../../../common/components/Loader'
 import {UPDATE_CREDIT_CARD_FORM} from '../../../../../state/billing/constants'
 import {creditCardNormalizer, creditCardCVCNormalizer, creditCardExpDateNormalizer} from '../utils'
 import css from './CreditCard.less'
 import Card from 'react-credit-card'
 import 'react-credit-card/source/card.css'
 import 'react-credit-card/source/card-types.css'
+import {loadScript} from '../../../../../utils'
 
 // This component is used as "update" and "add" credit card
 // but the logic behind is the same, we just display `add` or `update` on UI
@@ -33,6 +35,20 @@ class CreditCard extends Component {
         cvc: ''
     }
 
+    state = {
+        isStripeLoaded: !!window.Stripe
+    }
+
+    componentWillMount() {
+        // load Stripe.js cause we need it to create token for credit card
+        loadScript('https://js.stripe.com/v2/', () => {
+            if (window.STRIPE_PUBLIC_KEY) {
+                Stripe.setPublishableKey(window.STRIPE_PUBLIC_KEY)
+                this.setState({isStripeLoaded: true})
+            }
+        })
+    }
+
     render() {
         // get url to determine if it is an creation or an update
         // logic behind is the same, we just display `add` or `update` on UI
@@ -52,6 +68,11 @@ class CreditCard extends Component {
             expDate,
             cvc
         } = this.props
+        const {isStripeLoaded} = this.state
+
+        if (!isStripeLoaded) {
+            return <Loader/>
+        }
 
         return (
             <div className="ui grid">

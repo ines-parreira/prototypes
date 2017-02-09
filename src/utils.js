@@ -538,3 +538,14 @@ export function emoji(emojiContainer) {
 export function getActionTemplate(actionName) {
     return ACTION_TEMPLATES.find(template => template.name === actionName) || {}
 }
+
+export function loadScript(url, callback) {
+    const elem = document.createElement('script')
+    const script = document.getElementsByTagName('script')[0]
+    elem.src = url
+
+    if (callback) {
+        elem.addEventListener('load', callback)
+    }
+    script.parentNode.insertBefore(elem, script)
+}
