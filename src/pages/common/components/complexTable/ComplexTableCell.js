@@ -40,7 +40,7 @@ export default class ComplexTableCell extends React.Component {
                             subject = `(${messageCount}) ${subject}`
                         }
 
-                        const body = item.get('excerpt')
+                        const body = stripHTML(item.get('excerpt'))
 
                         if (!body) {
                             return (
