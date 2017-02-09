@@ -5,7 +5,7 @@ import ActionSelect from './ActionSelect'
 export const actionsConfig = {
     notify: {
         compact: false,
-        name: 'Send Message',
+        name: 'Deliver Message',
         args: {
             subject: {
                 name: 'Subject',
