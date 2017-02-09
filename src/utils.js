@@ -4,6 +4,9 @@ import _isString from 'lodash/isString'
 import _isNumber from 'lodash/isNumber'
 import _isObject from 'lodash/isObject'
 import _filter from 'lodash/filter'
+import _get from 'lodash/get'
+import _uniq from 'lodash/uniq'
+import _compact from 'lodash/compact'
 
 import esprima from 'esprima'
 import escodegen from 'escodegen'
@@ -107,16 +110,25 @@ export function getLastMessage(messages, options) {
     return messages.sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]
 }
 
-export function getFirstMessage(messages) {
+/**
+ * Return list of types of messages present in a list of messages
+ * @param messages
+ * @returns {Array}
+ */
+export function ticketSourceTypes(messages) {
+    let sources = []
+
     if (!messages) {
-        return
+        return sources
     }
 
     if (!messages.length) {
-        return
+        return sources
     }
 
-    return messages.sort((m1, m2) => moment(m1.created_datetime).diff(moment(m2.created_datetime)))[0]
+    sources = messages.map(message => _get(message, 'source.type'))
+
+    return _uniq(_compact(sources))
 }
 
 // given a field path. Ex: ticket.requester.id and OpenID schemas => resolve the last property

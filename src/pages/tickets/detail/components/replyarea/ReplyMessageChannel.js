@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import ReceiversDropdown from './ReceiversDropdown'
-import {getFirstMessage} from '../../../../../utils'
+import {ticketSourceTypes} from '../../../../../utils'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import {
     getNewMessageType,
@@ -156,30 +156,24 @@ class ReplyMessageChannel extends React.Component {
         const {isUpdate, messages} = this.props
         const popupClassNames = this._getClassNames()
 
-        const ticketFirstMessage = getFirstMessage(messages.toJS())
+        const sources = ticketSourceTypes(messages.toJS())
 
-        let sourceType = ''
-
-        if (isUpdate && !ticketFirstMessage) {
+        if (isUpdate && messages.isEmpty()) {
             return null
-        }
-
-        if (ticketFirstMessage) {
-            sourceType = ticketFirstMessage.source.type
         }
 
         const channelClassNames = {
             email: 'item',
             chat: classnames('item', {
-                hidden: isUpdate ? sourceType !== 'chat' : true,
+                hidden: isUpdate ? !sources.includes('chat') : true,
             }),
             facebookComment: classnames('item', {
                 hidden: !isUpdate
-                || sourceType !== 'facebook-post'
-                || sourceType !== 'facebook-comment',
+                || !sources.includes('facebook-post')
+                || !sources.includes('facebook-comment')
             }),
             facebookMessage: classnames('item', {
-                hidden: !isUpdate || sourceType !== 'facebook-message',
+                hidden: !isUpdate || !sources.includes('facebook-message'),
             }),
             internal: classnames('item', {
                 hidden: !isUpdate,

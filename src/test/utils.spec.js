@@ -77,27 +77,18 @@ describe('global utils', () => {
         })
     })
 
-    describe('getFirstMessage', () => {
-        it('effective sort', () => {
-            const messages = [
-                {
-                    id: 2,
-                    created_datetime: new Date('2016-01-13')
-                },
-                {
-                    id: 3,
-                    created_datetime: new Date('2016-01-14')
-                },
-                {
-                    id: 1,
-                    created_datetime: new Date('2016-01-12')
-                }
-            ]
+    describe('ticketSourceTypes', () => {
+        const messages = [
+            {source: {type: 'system-message'}},
+            {source: {type: 'system-message'}},
+            {},
+            {source: {type: 'chat'}},
+            {source: {type: 'email'}},
+        ]
 
-            const message = utils.getFirstMessage(messages) || {}
+        const answer = ['system-message', 'chat', 'email']
 
-            expect(message.id).toBe(1)
-        })
+        expect(utils.ticketSourceTypes(messages)).toEqual(answer)
     })
 
     describe('is email', () => {
