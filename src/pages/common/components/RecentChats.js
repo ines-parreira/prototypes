@@ -13,6 +13,7 @@ const RecentChatsItem = ({recentTicket, position}) => {
         comments: channel === 'chat',
         facebook: ['facebook', 'facebook-post', 'facebook-comment'].includes(channel),
         comment: channel === 'internal-note',
+        setting: channel === 'system-message',
         'facebook-messenger': channel === 'facebook-message',
         help: channel === 'unknown',
     })
