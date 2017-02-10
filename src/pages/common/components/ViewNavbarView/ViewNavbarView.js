@@ -123,6 +123,7 @@ class ViewNavbarView extends Component {
                                         <Link
                                             key={key}
                                             to={`/app/${objectName}/${view.id}/${view.slug}`}
+                                            title={`${view.name} (${count})`}
                                             className={classes}
                                         >
                                             {`${view.name} (${compactInteger(count)})`}
