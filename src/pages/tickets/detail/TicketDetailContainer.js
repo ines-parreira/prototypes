@@ -267,7 +267,7 @@ class TicketDetailContainer extends React.Component {
             this.props.actions.ticket.clearAppliedMacro(ticket.get('id'))
         }
 
-        if (status) {
+        if (status && promise) {
             // set status
             promise.then(() => {
                 this.props.actions.ticket.setStatus(status, () => {
