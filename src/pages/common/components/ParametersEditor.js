@@ -7,7 +7,8 @@ export default class ParametersEditor extends React.Component {
         this.props.updateDict(this.props.list.push(Map({
             key: '',
             value: '',
-            editable: false
+            editable: false,
+            required: true
         })))
     }
 
@@ -26,18 +27,27 @@ export default class ParametersEditor extends React.Component {
             <div className="dict-editor">
                 {
                     list.map((dict, index) => {
-                        const className = classnames('ui circular action write icon', {
+                        const editableClassName = classnames('ui circular action write icon', {
                             grey: !dict.get('editable'),
                             'blue inverted': dict.get('editable'),
                         })
 
-                        const title = dict.get('editable')
+                        const editableTitle = dict.get('editable')
                             ? 'Click to make this field not editable'
                             : 'Click to make this field editable'
 
+                        const requiredClassName = classnames('ui circular action asterisk icon', {
+                            grey: !dict.get('required'),
+                            'blue inverted': dict.get('required'),
+                        })
+
+                        const requiredTitle = dict.get('required')
+                            ? 'Click to make this field not required'
+                            : 'Click to make this field required'
+
                         return (
                             <div key={index} className="fields">
-                                <div className="six wide field">
+                                <div className="five wide field">
                                     <input
                                         type="text"
                                         placeholder="Key"
@@ -53,11 +63,18 @@ export default class ParametersEditor extends React.Component {
                                         onChange={(e) => this.changeValue('value', index, e.target.value)}
                                     />
                                 </div>
-                                <div className="two wide field right-icons">
+                                <div className="three wide field right-icons">
                                     <i
-                                        className={className}
+                                        className={requiredClassName}
+                                        onClick={() => this.changeValue('required', index, !dict.get('required'))}
+                                        data-content={requiredTitle}
+                                        data-variation="inverted"
+                                        ref={e => $(e).popup()}
+                                    />
+                                    <i
+                                        className={editableClassName}
                                         onClick={() => this.changeValue('editable', index, !dict.get('editable'))}
-                                        data-content={title}
+                                        data-content={editableTitle}
                                         data-variation="inverted"
                                         ref={e => $(e).popup()}
                                     />

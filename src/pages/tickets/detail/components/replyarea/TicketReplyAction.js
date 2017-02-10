@@ -45,7 +45,7 @@ export default class TicketReplyAction extends React.Component {
                                     type="text"
                                     value={arg.get('value')}
                                     onChange={(e) => this.setListDictValue(arg, e.target.value, category)}
-                                    required
+                                    required={arg.get('required')}
                                 />
                             </div>
                         )).toList().toJS()

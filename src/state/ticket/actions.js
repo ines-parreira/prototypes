@@ -528,10 +528,12 @@ export const formatAction = (action, template, context) => {
         if (template.getIn(['arguments', key, 'type']) === 'listDict') {
             newArgs = newArgs.set(key, fromJS({}))
             value.forEach(element => {
-                newArgs = newArgs.setIn(
-                    [key, renderTemplate(element.get('key'), context)],
-                    renderTemplate(element.get('value'), context)
-                )
+                if (element.get('value') !== '') {
+                    newArgs = newArgs.setIn(
+                        [key, renderTemplate(element.get('key'), context)],
+                        renderTemplate(element.get('value'), context)
+                    )
+                }
             })
         } else {
             newArgs = newArgs.set(key, value)
