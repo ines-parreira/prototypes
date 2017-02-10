@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import ReceiversDropdown from './ReceiversDropdown'
 import {ticketSourceTypes} from '../../../../../utils'
+import MessageSourceFields from './MessageSourceFields/'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import {
     getNewMessageType,
@@ -11,7 +11,7 @@ import {
     getMessages,
     hasNewMessageRecipients,
 } from '../../../../../state/ticket/selectors'
-import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors'
+import * as integrationSelectors from '../../../../../state/integrations/selectors'
 import _reduce from 'lodash/reduce'
 
 class ReplyMessageChannel extends React.Component {
@@ -26,7 +26,7 @@ class ReplyMessageChannel extends React.Component {
             on: 'click'
         })
 
-        window.addEventListener('click', this._updateReceiversDropdownOpening)
+        window.addEventListener('click', this._updateMessageSourceFieldsOpening)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -40,7 +40,7 @@ class ReplyMessageChannel extends React.Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('click', this._updateReceiversDropdownOpening)
+        window.removeEventListener('click', this._updateMessageSourceFieldsOpening)
     }
 
     _canChangeReceivers = () => {
@@ -52,7 +52,7 @@ class ReplyMessageChannel extends React.Component {
      * @param e
      * @private
      */
-    _updateReceiversDropdownOpening = (e) => {
+    _updateMessageSourceFieldsOpening = (e) => {
         const {hasRecipients} = this.props
 
         // list of components on which the click does not change opening
@@ -117,7 +117,7 @@ class ReplyMessageChannel extends React.Component {
     }
 
     _renderTo = () => {
-        const {ticket, messages} = this.props
+        const {ticket, messages, accountChannels} = this.props
 
         if (!ticket.getIn(['newMessage', 'public'])) {
             return (
@@ -142,8 +142,8 @@ class ReplyMessageChannel extends React.Component {
             || !this.props.isUpdate
 
         return (
-            <ReceiversDropdown
-                initialValues={guessReceiversFromTicket(ticket, this.props.currentAccountChannels.toJS())}
+            <MessageSourceFields
+                initialValues={guessReceiversFromTicket(ticket, accountChannels)}
                 enabled={isInputEnabled}
                 parentId={parentId.toString()}
                 canOpen={this._canChangeReceivers()}
@@ -243,26 +243,29 @@ class ReplyMessageChannel extends React.Component {
 }
 
 ReplyMessageChannel.propTypes = {
-    currentAccountChannels: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired,
     sourceType: PropTypes.string.isRequired,
     channel: PropTypes.string.isRequired,
+    accountChannels: PropTypes.object.isRequired,
     message: PropTypes.object.isRequired,
     messages: PropTypes.object.isRequired,
     hasRecipients: PropTypes.bool.isRequired,
 }
 
-const mapStateToProps = (state, ownProps) => ({
-    currentAccountChannels: currentAccountSelectors.getChannels(state),
-    sourceType: getNewMessageType(state),
-    channel: getNewMessageChannel(state),
-    isUpdate: !!ownProps.ticket.get('id'),
-    message: getNewMessage(state),
-    messages: getMessages(state),
-    hasRecipients: hasNewMessageRecipients(state),
-})
+const mapStateToProps = (state, ownProps) => {
+    const sourceType = getNewMessageType(state)
+    return {
+        sourceType,
+        channel: getNewMessageChannel(state),
+        accountChannels: integrationSelectors.getChannelsByType(sourceType)(state),
+        isUpdate: !!ownProps.ticket.get('id'),
+        message: getNewMessage(state),
+        messages: getMessages(state),
+        hasRecipients: hasNewMessageRecipients(state),
+    }
+}
 
 export default connect(mapStateToProps)(ReplyMessageChannel)

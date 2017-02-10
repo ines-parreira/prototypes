@@ -42,11 +42,15 @@ class IntegrationListRow extends React.Component {
                 {...linkConfig}
             >
                 <div>
-                    <img
-                        role="presentation"
-                        className="logo"
-                        src={getIconFromUrl(integrationConfig.get('image'))}
-                    />
+                    {integrationConfig.get('image') ?
+                        <img
+                            role="presentation"
+                            className="logo"
+                            src={getIconFromUrl(integrationConfig.get('image'))}
+                        />
+                        :
+                        <i className={`icon ${integrationConfig.get('icon')}`}/>
+                    }
                 </div>
                 <div>
                     <div className="ui header">
@@ -58,7 +62,7 @@ class IntegrationListRow extends React.Component {
                     {integrationConfig.get('description')}
                 </div>
                 <div>
-                    <i className={classNames(buttonClasses)} />
+                    <i className={classNames(buttonClasses)}/>
                 </div>
             </Link>
         )

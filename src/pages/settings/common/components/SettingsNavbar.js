@@ -28,10 +28,6 @@ export default class SettingsNavbar extends React.Component {
             name: 'General',
             links: [{
                 requiredRole: 'admin',
-                to: 'account',
-                text: 'Account'
-            }, {
-                requiredRole: 'admin',
                 to: 'billing',
                 text: 'Billing'
             }]
@@ -54,7 +50,7 @@ export default class SettingsNavbar extends React.Component {
                                 }
 
                                 const isActive = pathname.split('/').includes(to)
-                                    || (/settings\/?$/.test(pathname) && to === 'account')
+                                    || (/settings\/?$/.test(pathname) && to === 'profile')
 
                                 return (
                                     <Link

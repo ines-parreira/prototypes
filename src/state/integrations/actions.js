@@ -136,8 +136,9 @@ export function deleteIntegration(integration) {
                         type: types.DELETE_INTEGRATION_SUCCESS,
                         id: integration.get('id')
                     })
-
-                    browserHistory.push(`/app/integrations/${integration.get('type')}`)
+                    const currentUrl = window.location.pathname
+                    const nextUrl = currentUrl.substr(0, currentUrl.lastIndexOf(integration.get('id')))
+                    browserHistory.push(nextUrl)
 
                     dispatch(notify({
                         type: 'success',

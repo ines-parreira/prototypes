@@ -19,10 +19,11 @@ import {
     guessReceiversFromTicket,
     receiversValueFromState,
     receiversStateFromValue,
-    getSenderContactInfo,
     buildPartialUpdateFromAction,
+    getNewMessageSender
 } from './utils'
-import * as currentAccountSelectors from '../../state/currentAccount/selectors'
+import * as integrationSelectors from '../../state/integrations/selectors'
+import {getChannels} from '../integrations/selectors'
 
 export const addAttachments = (ticket, atts) => (dispatch) => {
     dispatch({
@@ -223,6 +224,36 @@ export const setReceivers = (receivers = {}, replaceAll = true) => ({
     receivers,
     replaceAll,
 })
+
+/**
+ * Set new message sender. A sender is represented by an integration (email or gmail)
+ * @param sender - address of an integration used to communicate. E.g: email, gmail
+ */
+export const setSender = (sender) => (dispatch, getState) => {
+    const ticket = getState().ticket
+    const channels = getChannels(getState())
+    let _sender = null
+
+    if (sender) {
+        _sender = channels.find(channel => channel.get('address') === sender)
+    }
+
+    if (!_sender) {
+        _sender = getNewMessageSender(ticket, channels)
+    }
+
+    if (!_sender.isEmpty()) {
+        _sender = fromJS({
+            name: _sender.get('name', ''),
+            address: _sender.get('address', '')
+        })
+    }
+
+    dispatch({
+        type: types.SET_SENDER,
+        sender: _sender
+    })
+}
 
 export const setSourceType = (sourceType) => ({
     type: types.SET_SOURCE_TYPE,
@@ -548,7 +579,7 @@ export const formatAction = (action, template, context) => {
  * Adds the newMessage to the ticket's messages, attaches actions and sets some source elements on the message.
  * Also sets some properties on the ticket.
  */
-function prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser, currentAccount) {
+function prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser) {
     const data = ticket.toJS()
 
     data.status = status || data.status
@@ -564,12 +595,6 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
             channel: channelType,
             public: true
         })
-
-        data.newMessage.source.from = getSenderContactInfo(
-            channelType,
-            currentAccount.get('channels', fromJS({})).toJS(),
-            lastChannelMessage,
-        )
 
         if (data.messages.length && lastChannelMessage) {
             const lastMessage = getLastMessage(data.messages)
@@ -654,13 +679,13 @@ function onMessageSent(dispatch, messageSent) {
  */
 export function submitTicketMessage(status, macroActions, action, resetMessage = true) {
     return (dispatch, getState) => {
-        const {currentAccount, ticket, currentUser} = getState()
+        const {ticket, currentUser} = getState()
 
         dispatch({
             type: types.SUBMIT_TICKET_MESSAGE_START,
         })
 
-        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser, currentAccount)
+        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
 
         if (!data || _isNull(data)) {
             return dispatch({
@@ -699,9 +724,11 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
                 const {ticket: _ticket} = state
                 const type = _ticket.getIn(['newMessage', 'source', 'type'])
                 // set receivers according to last sent message
-                const receivers = guessReceiversFromTicket(_ticket, currentAccountSelectors.getChannels(state).toJS())
+                const receivers = guessReceiversFromTicket(_ticket, integrationSelectors.getChannelsByType(type)(state))
                 const receiversValues = receiversValueFromState(receivers, type)
                 dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
+                // set sender according to last sent message
+                dispatch(setSender())
 
                 // We're trying to add a signature if any
                 dispatch(setResponseText())
@@ -750,14 +777,12 @@ export function updateTicketMessage(ticketId, messageId, data, action = null) {
 }
 
 export function submitTicket(ticket, status, macroActions, currentUser, resetMessage = true) {
-    return (dispatch, getState) => {
-        const {currentAccount} = getState()
-
+    return (dispatch) => {
         dispatch({
             type: types.SUBMIT_TICKET_START
         })
 
-        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser, currentAccount)
+        const data = prepareTicketDataToSend(dispatch, ticket, status, macroActions, currentUser)
 
         return axios.post('/api/tickets/', data)
             .then((json = {}) => json.data)
