@@ -248,7 +248,17 @@ export function getNewMessageSender(ticket, channels) {
 
     const preferredChannel = getPreferredChannel(channelType, channels) || fromJS({})
     const lastMessage = ticket.get('messages')
-        .findLast(message => message.getIn(['source', 'type'], '') === channelType)
+        .findLast(message => {
+            const type = message.getIn(['source', 'type'], '')
+
+            // a message can be a facebook post
+            // or a comment but agent can only respond with a comment
+            if (channelType === 'facebook-comment') {
+                return [channelType, 'facebook-post'].includes(type)
+            }
+
+            return type === channelType
+        })
 
     // smooch, messenger
     // because channels only list email addresses

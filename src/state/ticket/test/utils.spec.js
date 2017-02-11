@@ -2,7 +2,7 @@ import expect from 'expect'
 import expectImmutable from 'expect-immutable'
 import {getChannels} from '../../integrations/selectors'
 import integrationState from '../../integrations/tests/fixtures'
-import {smoochTicket, emailTicket} from './fixtures'
+import {smoochTicket, emailTicket, facebookPost} from './fixtures'
 import {fromJS} from 'immutable'
 import {
     guessReceiversFromTicket,
@@ -225,11 +225,25 @@ describe('Ticket utils', () => {
                 .toEqualImmutable(expected)
         })
 
+        it('should return `from` field from last message from agent (facebook post)', () => {
+            const expected = facebookPost.getIn(['messages', 1, 'source', 'from'])
+            expect(getNewMessageSender(facebookPost, channels))
+                .toEqualImmutable(expected)
+        })
+
         it('should return `to` field from last message from customer (chat, messenger)', () => {
             // delete last message from agent
             const _smoochTicket = smoochTicket.deleteIn(['messages', 1])
             const expected = _smoochTicket.getIn(['messages', 0, 'source', 'to', 0])
             expect(getNewMessageSender(_smoochTicket, channels))
+                .toEqualImmutable(expected)
+        })
+
+        it('should return `to` field from last message from customer (facebook post)', () => {
+            // delete last message from agent
+            const _facebookPost = facebookPost.deleteIn(['messages', 1])
+            const expected = _facebookPost.getIn(['messages', 0, 'source', 'to', 0])
+            expect(getNewMessageSender(_facebookPost, channels))
                 .toEqualImmutable(expected)
         })
 

@@ -91,3 +91,56 @@ export const emailTicket = fromJS({
     }]
 })
 
+export const facebookPost = fromJS({
+    newMessage: {
+        source: {
+            type: 'facebook-comment'
+        }
+    },
+    messages: [
+        {
+            source: {
+                from: {
+                    address: '1232353100194770',
+                    id: 5,
+                    facebook_id: '1232353100194770',
+                    name: 'Check-my Motherfockin Resume'
+                },
+                post_id: '519388858269125_626477354226941',
+                type: 'facebook-post',
+                page_id: '519388858269125',
+                to: [
+                    {
+                        address: '',
+                        id: 1,
+                        name: 'Acme Support'
+                    }
+                ]
+            },
+            id: 153,
+            from_agent: false
+        },
+        {
+            source: {
+                from: {
+                    address: '',
+                    name: 'Acme Support'
+                },
+                comment_id: '626477354226941_626479084226768',
+                post_id: '519388858269125_626477354226941',
+                type: 'facebook-comment',
+                page_id: '519388858269125',
+                to: [
+                    {
+                        address: '',
+                        id: 5,
+                        name: 'Check-my Motherfockin Resume'
+                    }
+                ],
+                cc: []
+            },
+            id: 189,
+            from_agent: true
+        },
+    ]
+})

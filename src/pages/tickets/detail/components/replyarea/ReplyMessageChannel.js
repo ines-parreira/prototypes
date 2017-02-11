@@ -169,8 +169,8 @@ class ReplyMessageChannel extends React.Component {
             }),
             facebookComment: classnames('item', {
                 hidden: !isUpdate
-                || !sources.includes('facebook-post')
-                || !sources.includes('facebook-comment')
+                || (!sources.includes('facebook-post')
+                && !sources.includes('facebook-comment'))
             }),
             facebookMessage: classnames('item', {
                 hidden: !isUpdate || !sources.includes('facebook-message'),
