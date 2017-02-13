@@ -62,10 +62,13 @@ class ReplyMessageChannel extends React.Component {
         if (this._canChangeReceivers()) {
             if (hasRecipients) {
                 // ignore click if clicked on ignored components (such as the channel picker dropdown)
-                const shouldBeIgnored = ignoredComponentsRefs.some(id => $(this.refs[id])[0].contains(e.target))
+                const shouldBeIgnored = ignoredComponentsRefs.some((id) => {
+                    return !this.refs[id] || (this.refs[id] && $(this.refs[id])[0].contains(e.target))
+                })
 
                 if (!shouldBeIgnored) {
-                    const hasClickedInComponent = $(this.refs.messageChannel)[0].contains(e.target)
+                    const hasClickedInComponent = this.refs.messageChannel
+                        && $(this.refs.messageChannel)[0].contains(e.target)
                     this._toggleOpening(hasClickedInComponent)
                 }
             } else {
