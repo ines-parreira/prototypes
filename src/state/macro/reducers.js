@@ -101,9 +101,10 @@ export default (state = macrosInitial, action) => {
         case types.FETCH_MACRO_LIST_SUCCESS: {
             items = Map()
 
-            for (const macro of action.resp.data) {
+            const macros = action.resp.data || []
+            macros.forEach((macro) => {
                 items = items.set(macro.id, fromJS(macro))
-            }
+            })
 
             return state.merge({
                 items: items.sortBy(i => i.get('usage', 0)).reverse()
