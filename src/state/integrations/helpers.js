@@ -9,11 +9,15 @@ const getIntegrationsCountPerType = (integrations = []) => {
     return integrations
         .reduce((accumulator, item) => {
             const newAccumulator = accumulator
-            if (item.get('type') in accumulator && !item.get('deactivated_datetime')) {
-                newAccumulator[item.get('type')] += 1
-            } else {
-                newAccumulator[item.get('type')] = 1
+
+            if (!item.get('deactivated_datetime')) {
+                if (item.get('type') in accumulator) {
+                    newAccumulator[item.get('type')] += 1
+                } else {
+                    newAccumulator[item.get('type')] = 1
+                }
             }
+
             return newAccumulator
         }, {})
 }
