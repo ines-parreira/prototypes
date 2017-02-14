@@ -22,8 +22,7 @@ import {
     buildPartialUpdateFromAction,
     getNewMessageSender
 } from './utils'
-import * as integrationSelectors from '../../state/integrations/selectors'
-import {getChannels} from '../integrations/selectors'
+import * as integrationSelectors from '../integrations/selectors'
 
 export const addAttachments = (ticket, atts) => (dispatch) => {
     dispatch({
@@ -231,7 +230,7 @@ export const setReceivers = (receivers = {}, replaceAll = true) => ({
  */
 export const setSender = (sender) => (dispatch, getState) => {
     const ticket = getState().ticket
-    const channels = getChannels(getState())
+    const channels = integrationSelectors.getChannels(getState())
     let _sender = null
 
     if (sender) {
