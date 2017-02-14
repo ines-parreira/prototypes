@@ -7,7 +7,6 @@ import _isObject from 'lodash/isObject'
 import _compact from 'lodash/compact'
 import _map from 'lodash/map'
 import _forEach from 'lodash/forEach'
-import _size from 'lodash/size'
 import _flattenDeep from 'lodash/flattenDeep'
 
 /**
@@ -76,7 +75,7 @@ const formSender = (incomingPromise, options = {}) => {
                     const message = _get(errors, 'msg', '')
 
                     // if there is no global form error, let's put the error message in there
-                    if (!_size(fieldsErrors) && message) {
+                    if (!fieldsErrors._error && message) {
                         fieldsErrors._error = [message]
                     }
 
