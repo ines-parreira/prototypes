@@ -36,11 +36,6 @@ export default class SocketIO {
             this.store = store
         }
 
-        const pollingConfiguration = window.DISABLE_ACTIVITY_POLLING || 'False'
-        if (pollingConfiguration !== 'False') {
-            return
-        }
-
         socket.on('connect', this._onConnect)
         socket.on('message', this._onMessage)
         socket.on('json', this._onJSON)
