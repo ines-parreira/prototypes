@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Map} from 'immutable'
+import {connect} from 'react-redux'
 import _throttle from 'lodash/throttle'
 
 import {EditorState, ContentState, SelectionState, Modifier, RichUtils} from 'draft-js'
@@ -9,6 +10,8 @@ import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import createToolbarPlugin from './plugins/toolbar'
+
+import * as ticketSelectors from '../../../../../state/ticket/selectors'
 
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
@@ -31,7 +34,10 @@ const _updateMessageText = _throttle((props, editorState) => {
     }))
 }, 300)
 
-export default class TicketReplyEditor extends React.Component {
+// ticket types that can have toolbar actions such as bold, italic, link, etc.
+const richTicketTypes = ['email', 'internal-note']
+
+class TicketReplyEditor extends React.Component {
     componentWillMount() {
         this.state = this._getEditorState(this.props)
     }
@@ -113,6 +119,18 @@ export default class TicketReplyEditor extends React.Component {
         _updateMessageText(this.props, editorState)
     }
 
+    _handleFiles = (files) => {
+        const newFiles = []
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i]
+            const {name, size, type} = file
+            newFiles.push({url: null, name, size, content_type: type, file})
+        }
+
+        this.props.actions.ticket.addAttachments(this.props.ticket, newFiles)
+    }
+
     // This is for handling things like Bold, Italic, etc..
     _handleKeyCommand = (command) => {
         const newState = RichUtils.handleKeyCommand(this.state.editorState, command)
@@ -128,7 +146,7 @@ export default class TicketReplyEditor extends React.Component {
             getEditorState: () => this.state.editorState,
             setEditorState: this._onChange
         })
-        this.props.handleFiles(files)
+        this._handleFiles(files)
         return false
     }
 
@@ -139,7 +157,9 @@ export default class TicketReplyEditor extends React.Component {
     }
 
     render() {
-        const {ticket} = this.props
+        const {ticket, ticketType} = this.props
+
+        const hideActions = !richTicketTypes.includes(ticketType)
 
         return (
             <div
@@ -167,6 +187,7 @@ export default class TicketReplyEditor extends React.Component {
                     <EmojiSuggestions />
                 </div>
                 <Toolbar
+                    hideActions={hideActions}
                     buttons={[
                         <div className="attachment">
                             <label htmlFor="attachments-input">
@@ -180,7 +201,7 @@ export default class TicketReplyEditor extends React.Component {
                                 id="attachments-input"
                                 type="file"
                                 multiple
-                                onChange={(e) => this.props.handleFiles(e.target.files)}
+                                onChange={(e) => this._handleFiles(e.target.files)}
                             />
                         </div>
                     ]}
@@ -193,6 +214,14 @@ export default class TicketReplyEditor extends React.Component {
 TicketReplyEditor.propTypes = {
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
-    handleFiles: PropTypes.func.isRequired,
+    ticketType: PropTypes.string.isRequired,
     autoFocus: PropTypes.bool
 }
+
+function mapStateToProps(state) {
+    return {
+        ticketType: ticketSelectors.getNewMessageType(state),
+    }
+}
+
+export default connect(mapStateToProps)(TicketReplyEditor)

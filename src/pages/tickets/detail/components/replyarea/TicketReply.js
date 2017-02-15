@@ -9,18 +9,6 @@ import TicketReplyEditor from './TicketReplyEditor'
 import {getActionTemplate} from '../../../../../utils'
 
 export default class TicketReply extends React.Component {
-    _handleFiles = (files) => {
-        const newFiles = []
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i]
-            const {name, size, type} = file
-            newFiles.push({url: null, name, size, content_type: type, file})
-        }
-
-        this.props.actions.ticket.addAttachments(this.props.ticket, newFiles)
-    }
-
     _renderAttachments = () => {
         const {ticket, actions} = this.props
 
@@ -76,7 +64,6 @@ export default class TicketReply extends React.Component {
                 <TicketReplyEditor
                     actions={actions}
                     ticket={ticket}
-                    handleFiles={this._handleFiles}
                     ref="editor"
                     autoFocus={autoFocus}
                 />

@@ -6,13 +6,15 @@ import css from './Toolbar.less'
 class Toolbar extends React.Component {
     static propTypes = {
         actions: PropTypes.array.isRequired,
-        buttons: PropTypes.array,
+        buttons: PropTypes.array.isRequired,
+        hideActions: PropTypes.bool.isRequired,
         store: PropTypes.object.isRequired,
     }
 
     static defaultProps = {
         actions: [],
         buttons: [],
+        hideActions: false,
     }
 
     _preventDefault = (event) => {
@@ -62,15 +64,17 @@ class Toolbar extends React.Component {
     }
 
     render() {
-        const {actions, buttons} = this.props
+        const {actions, buttons, hideActions} = this.props
+
+        const displaySeparator = !hideActions && buttons.length > 0
 
         return (
             <div
                 className={classnames('editor-toolbar', css.page)}
                 onMouseDown={this._preventDefault}
             >
-                {actions.map(this._renderAction)}
-                {buttons.length && <span className={css.separator} />}
+                {!hideActions && actions.map(this._renderAction)}
+                {displaySeparator && <span className={css.separator} />}
                 {buttons.map(this._renderButton)}
             </div>
         )
