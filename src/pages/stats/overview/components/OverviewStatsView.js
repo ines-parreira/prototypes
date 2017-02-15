@@ -31,20 +31,32 @@ export default class OverviewStatsView extends React.Component {
         return d ? `${d}%` : ''
     }
 
-    // format a value and display it as a duration (days, hours, minutes)
-    _formatDuration(d) {
-        let ret = ''
+    // format a value and display it as a duration (days, hours, minutes or seconds)
+    _formatDuration(value) {
+        const duration = moment.duration(value, 'seconds')
+        let response = ''
 
-        if (d.days()) {
-            ret += `${d.days()}d `
+        const days = duration.days()
+        if (days) {
+            response += `${days}d `
         }
-        if (d.hours()) {
-            ret += `${d.hours()}h `
+
+        const hours = duration.hours()
+        if (hours) {
+            response += `${hours}h `
         }
-        if (d.minutes()) {
-            ret += `${d.minutes()}m `
+
+        const minutes = duration.minutes()
+        if (minutes) {
+            response += `${minutes}m `
         }
-        return ret
+
+        const seconds = duration.seconds()
+        if (!response && seconds) {
+            response = `${seconds}s`
+        }
+
+        return response
     }
 
     // add meta info on how to display each statistic
@@ -53,14 +65,14 @@ export default class OverviewStatsView extends React.Component {
             switch (key) {
                 case 'median_resolution_time':
                     return {
-                        value: this._formatDuration(moment.duration(v, 'seconds')),
+                        value: this._formatDuration(v),
                         tooltip: 'Difference between the date the ticket was created and when it was closed.',
                         label: 'Resolution time',
                         moreIsBetter: false,
                     }
                 case 'median_first_response_time':
                     return {
-                        value: this._formatDuration(moment.duration(v, 'seconds')),
+                        value: this._formatDuration(v),
                         tooltip: `Difference between the date when the first message was received from 
 the user and the first response of the agent. Only tickets with at least 1 response are taken into account.`,
                         label: 'First response time',
@@ -155,22 +167,22 @@ the user and the first response of the agent. Only tickets with at least 1 respo
                                         </div>
                                         {
                                             value.value || value.value === 0 ? (
-                                                <span className="value">
+                                                    <span className="value">
                                                     {value.value}
-                                                    {
-                                                        this._renderTooltip(
-                                                            tooltipDelta,
-                                                            renderDifference(
-                                                                stats.getIn(['difference_period', key]),
-                                                                value.moreIsBetter
-                                                            ),
-                                                            {distanceAway: -10}
-                                                        )
-                                                    }
+                                                        {
+                                                            this._renderTooltip(
+                                                                tooltipDelta,
+                                                                renderDifference(
+                                                                    stats.getIn(['difference_period', key]),
+                                                                    value.moreIsBetter
+                                                                ),
+                                                                {distanceAway: -10}
+                                                            )
+                                                        }
                                                 </span>
-                                            ) : (
-                                                <span className="value">n/a</span>
-                                            )
+                                                ) : (
+                                                    <span className="value">n/a</span>
+                                                )
                                         }
                                     </div>
                                 ))
