@@ -137,6 +137,30 @@ the user and the first response of the agent. Only tickets with at least 1 respo
         }
     }
 
+    _renderValue(value, key, tooltipDelta) {
+        const {stats} = this.props
+
+        if (value.value || value.value === 0) {
+            return (
+                <span className="value">
+                    {value.value}
+                    {
+                        this._renderTooltip(
+                            tooltipDelta,
+                            renderDifference(
+                                stats.getIn(['difference_period', key]),
+                                value.moreIsBetter
+                            ),
+                            {distanceAway: -10}
+                        )
+                    }
+                </span>
+            )
+        }
+
+        return <span className="value">n/a</span>
+    }
+
     // render the grid of statistics
     _renderStatistics = () => {
         const {stats, meta} = this.props
@@ -165,25 +189,7 @@ the user and the first response of the agent. Only tickets with at least 1 respo
                                                 )
                                             }
                                         </div>
-                                        {
-                                            value.value || value.value === 0 ? (
-                                                    <span className="value">
-                                                    {value.value}
-                                                        {
-                                                            this._renderTooltip(
-                                                                tooltipDelta,
-                                                                renderDifference(
-                                                                    stats.getIn(['difference_period', key]),
-                                                                    value.moreIsBetter
-                                                                ),
-                                                                {distanceAway: -10}
-                                                            )
-                                                        }
-                                                </span>
-                                                ) : (
-                                                    <span className="value">n/a</span>
-                                                )
-                                        }
+                                        {this._renderValue(value, key, tooltipDelta)}
                                     </div>
                                 ))
                                 .toList()
