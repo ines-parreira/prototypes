@@ -405,12 +405,14 @@ export default (state = initialState, action) => {
             let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
             const appliedMacro = state.getIn(['state', 'appliedMacro'])
 
+            action.ticketId = state.get('id')
+
             let context = {
                 action,
                 state,
                 contentState,
                 selectionState,
-                appliedMacro
+                appliedMacro,
             }
 
             context = responseUtils.getCache(context)

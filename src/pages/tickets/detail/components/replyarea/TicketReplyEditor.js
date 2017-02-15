@@ -2,19 +2,34 @@ import React, {PropTypes} from 'react'
 import {Map} from 'immutable'
 import _throttle from 'lodash/throttle'
 
-import {EditorState, ContentState, RichUtils} from 'draft-js'
+import {EditorState, ContentState, SelectionState, Modifier, RichUtils} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
-import 'draft-js-linkify-plugin/lib/plugin.css'
+import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
+import createToolbarPlugin from './plugins/toolbar'
+
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
 const dndPlugin = createDndPlugin()
 const linkifyPlugin = createLinkifyPlugin()
 const emojiPlugin = createEmojiPlugin()
+const blockBreakoutPlugin = createBlockBreakoutPlugin()
+const toolbarPlugin = createToolbarPlugin()
+
 const {EmojiSuggestions} = emojiPlugin
-const plugins = [emojiPlugin, dndPlugin, linkifyPlugin]
+const {Toolbar} = toolbarPlugin
+
+const plugins = [emojiPlugin, dndPlugin, linkifyPlugin, blockBreakoutPlugin, toolbarPlugin]
+
+// throttle the updating of the redux because it's slow otherwise when we type
+const _updateMessageText = _throttle((props, editorState) => {
+    props.actions.ticket.setResponseText(Map({
+        contentState: editorState.getCurrentContent(),
+        selectionState: editorState.getSelection()
+    }))
+}, 300)
 
 export default class TicketReplyEditor extends React.Component {
     componentWillMount() {
@@ -25,7 +40,7 @@ export default class TicketReplyEditor extends React.Component {
         // We'd like to autofocus the editor, but in componentDidMount the editor element might not be ready
         // so we're using the setTimeout hack to focus the editor here
         if (this.props.autoFocus) {
-            setTimeout(() => this.focus(), 1)
+            setTimeout(this._focusEditor, 0)
         }
     }
 
@@ -37,18 +52,42 @@ export default class TicketReplyEditor extends React.Component {
         }
     }
 
-    focus() {
-        if (this.refs.editor) {
-            this.refs.editor.focus()
-        }
+    /**
+     * Empty content
+     * @param editorState
+     * @returns {EditorState}
+     * @private
+     */
+    _emptyContentState = (editorState) => {
+        let contentState = editorState.getCurrentContent()
+        const firstBlock = contentState.getFirstBlock()
+        const lastBlock = contentState.getLastBlock()
+        const allSelected = new SelectionState({
+            anchorKey: firstBlock.getKey(),
+            anchorOffset: 0,
+            focusKey: lastBlock.getKey(),
+            focusOffset: lastBlock.getLength(),
+            hasFocus: true
+        })
+        contentState = Modifier.removeRange(contentState, allSelected, 'backward')
+        return EditorState.push(editorState, contentState, 'remove-range')
     }
 
-    _getEditorState(props) {
+    _getEditorState = (props) => {
         const state = props.ticket.get('state')
         const contentState = state.get('contentState')
         const selectionState = state.get('selectionState')
 
-        let editorState = EditorState.createWithContent(ContentState.createFromText(''))
+        let editorState
+
+        if (this.state && this.state.editorState) {
+            // if content state already exists, just clear the content
+            editorState = this._emptyContentState(this.state.editorState)
+        } else {
+            // if there is no content, create a new editor state
+            editorState = EditorState.createWithContent(ContentState.createFromText(''))
+        }
+
         if (contentState && contentState.hasText()) {
             editorState = EditorState.push(editorState, contentState, 'insert-characters')
         } else {
@@ -65,20 +104,13 @@ export default class TicketReplyEditor extends React.Component {
                 hasFocus: false
             }))
         }
+
         return {editorState}
     }
 
-    // throttle the updating of the redux because it's slow otherwise when we type
-    _updateMessageText = _throttle((editorState) => {
-        this.props.actions.ticket.setResponseText(Map({
-            contentState: editorState.getCurrentContent(),
-            selectionState: editorState.getSelection()
-        }))
-    }, 300)
-
     _onChange = (editorState) => {
         this.setState({editorState})
-        this._updateMessageText(editorState)
+        _updateMessageText(this.props, editorState)
     }
 
     // This is for handling things like Bold, Italic, etc..
@@ -111,14 +143,16 @@ export default class TicketReplyEditor extends React.Component {
 
         return (
             <div
-                ref="overlay"
                 className="ui reply form"
-                onDragEnter={() => this.refs.overlay.classList.add('active')}
-                onDragLeave={() => this.refs.overlay.classList.remove('active')}
-                onDrop={() => this.refs.overlay.classList.remove('active')}
                 onClick={this._focusEditor}
             >
-                <div className="field">
+                <div
+                    ref="overlay"
+                    className="field"
+                    onDragOver={() => this.refs.overlay.classList.add('active')}
+                    onDragLeave={() => this.refs.overlay.classList.remove('active')}
+                    onDrop={() => this.refs.overlay.classList.remove('active')}
+                >
                     <Editor
                         ref="editor"
                         tabIndex="4"
@@ -132,6 +166,25 @@ export default class TicketReplyEditor extends React.Component {
                     />
                     <EmojiSuggestions />
                 </div>
+                <Toolbar
+                    buttons={[
+                        <div className="attachment">
+                            <label htmlFor="attachments-input">
+                                {
+                                    ticket.getIn(['_internal', 'loading', 'addAttachment'])
+                                        ? <i className="notched circle loading icon" />
+                                        : <i className="attach icon" />
+                                }
+                            </label>
+                            <input
+                                id="attachments-input"
+                                type="file"
+                                multiple
+                                onChange={(e) => this.props.handleFiles(e.target.files)}
+                            />
+                        </div>
+                    ]}
+                />
             </div>
         )
     }

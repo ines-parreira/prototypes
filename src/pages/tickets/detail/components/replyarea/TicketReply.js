@@ -24,39 +24,11 @@ export default class TicketReply extends React.Component {
     _renderAttachments = () => {
         const {ticket, actions} = this.props
 
-        if (this.props.ticket.getIn(['_internal', 'loading', 'addAttachment'])) {
-            return (
-                <div className="attachments-wrapper">
-                    <div className="attachments-pseudobar">
-                        <div className="ui small active loader"></div>
-                    </div>
-                    <TicketAttachments
-                        removable
-                        attachments={ticket.getIn(['newMessage', 'attachments'], fromJS([]))}
-                        deleteAttachment={actions.ticket.deleteAttachment}
-                    />
-                </div>
-            )
-        }
-
         return (
             <div className="attachments-wrapper">
-                <div className="attachments-pseudobar">
-                    <div className="fake-fileinput">
-                        <label htmlFor="attachments-input">
-                            <i className="large attach icon"/>
-                        </label>
-                        <input
-                            id="attachments-input"
-                            type="file"
-                            multiple
-                            onChange={(e) => this._handleFiles(e.target.files)}
-                        />
-                    </div>
-                </div>
                 <TicketAttachments
                     removable
-                    attachments={ticket.getIn(['newMessage', 'attachments'])}
+                    attachments={ticket.getIn(['newMessage', 'attachments'], fromJS([]))}
                     deleteAttachment={actions.ticket.deleteAttachment}
                 />
             </div>

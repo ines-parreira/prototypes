@@ -156,12 +156,10 @@ export const addSignature = (context) => {
         return _markSignatureAdded(context)
     }
 
-
     // Only add if the we don't have the signature already
     if (contentState && isSignatureAdded(contentState, action.currentUser)) {
         return _markSignatureAdded(context)
     }
-
 
     let signatureBlocks = null
     const signatureHTML = action.currentUser.get('signature_html')

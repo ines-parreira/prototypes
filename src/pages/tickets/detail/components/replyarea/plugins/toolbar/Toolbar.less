@@ -1,0 +1,46 @@
+.editor-toolbar {
+  display: flex;
+  position: absolute;
+  flex-direction: row;
+  bottom: 7px;
+  left: 9px;
+
+  .icon {
+    font-size: 14px;
+  }
+
+  .attachment {
+    &,
+    & * {
+      cursor: pointer;
+    }
+
+    input {
+      display: none;
+    }
+  }
+}
+
+:local .page {
+  .button {
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.15s;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.9;
+    }
+
+    &.active {
+      opacity: 1;
+    }
+  }
+
+  .separator {
+    height: 15px;
+    width: 1px;
+    background-color: #E3E4E5;
+    margin: 2px 7px 0 5px;
+  }
+}

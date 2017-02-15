@@ -215,7 +215,6 @@ describe('global utils', () => {
         })
     })
 
-
     describe('toHTML', () => {
         it('should convert links (www.xxx.com) to html', () => {
             const text = 'Hello there\n\nwww.google.com'

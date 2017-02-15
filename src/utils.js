@@ -8,6 +8,7 @@ import _get from 'lodash/get'
 import _uniq from 'lodash/uniq'
 import _compact from 'lodash/compact'
 
+import React from 'react'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
@@ -333,15 +334,22 @@ export function closest(element, selector) {
  * @param contentState
  */
 export function convertToHTML(contentState) {
+    // linkify transforms linkified urls into actual HTML links
     return linkifyhtml(_convertToHTML({
         blockToHTML: {
             unstyled: {
                 start: '<div>',
                 end: '</div>',
-                empty: '<br>' // when we have an empty block (correspons with a new line, add a line break)
+                empty: '<br>' // when we have an empty block (corresponds with a new line, add a line break)
             }
+        },
+        entityToHTML: (entity, originalText) => {
+            if (entity.type === 'link') {
+                return (<a href={entity.data.url} target="_blank">{originalText}</a>)
+            }
+            return originalText
         }
-    })(contentState), {target: null})
+    })(contentState))
 }
 
 /**

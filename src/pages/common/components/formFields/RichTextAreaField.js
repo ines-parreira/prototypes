@@ -8,7 +8,7 @@ import {convertToHTML} from '../../../../utils'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
-import 'draft-js-linkify-plugin/lib/plugin.css'
+
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
 const dndPlugin = createDndPlugin()
