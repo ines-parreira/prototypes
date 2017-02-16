@@ -14,6 +14,7 @@ export const initialState = fromJS({
         tickets: [],
         events: []
     },
+    agentsLocation: [],
     _internal: {
         loading: {
             history: false,
@@ -182,6 +183,10 @@ export default (state = initialState, action) => {
             }
 
             return newState
+        }
+
+        case types.SET_AGENTS_LOCATION: {
+            return state.set('agentsLocation', fromJS(action.data))
         }
 
         default:

@@ -194,3 +194,8 @@ export function mergeUsers(baseUserId, mergeUserId, data) {
 }
 
 export const clearUser = () => ({type: types.CLEAR_USER})
+
+export const setAgentsLocation = (locations) => ({
+    type: types.SET_AGENTS_LOCATION,
+    data: locations,
+})

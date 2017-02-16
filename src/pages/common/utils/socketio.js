@@ -1,12 +1,11 @@
 import socketio from 'socket.io-client'
-import {
-    mergeTicket,
-    mergeRequester,
-} from '../../../state/ticket/actions'
 import {isCurrentlyOnTicket} from '../../../utils'
 import _throttle from 'lodash/throttle'
 import _reject from 'lodash/reject'
 import _get from 'lodash/get'
+
+import * as ticketActions from '../../../state/ticket/actions'
+import * as usersActions from '../../../state/users/actions'
 
 const socket = socketio.connect(window.WS_URL)
 
@@ -77,20 +76,27 @@ export default class SocketIO {
     }
 
     _onJSON = (json) => {
-        log('received json', json)
         const {event} = json
 
-        if (!(event && event.type)) {
+        if (!event) {
             return
         }
 
-        switch (event.type) {
-            case 'ticket-viewed': {
-                break
-            }
+        const {type} = event
+
+        if (!type) {
+            return
+        }
+
+        switch (type) {
             case 'user-updated': {
                 log('User updated', json)
                 this._mergeUser(json.user)
+                break
+            }
+            case 'user-location-updated': {
+                log('User location updated', json)
+                this._setAgentsLocation(json.locations)
                 break
             }
             case 'ticket-updated': {
@@ -119,7 +125,7 @@ export default class SocketIO {
      * @type {Function}
      * @private
      */
-    _mergeTicket = _throttle(json => this._dispatch(mergeTicket(json)), 100)
+    _mergeTicket = _throttle(json => this._dispatch(ticketActions.mergeTicket(json)), 100)
 
     /**
      * We throttle incoming events to prevent too frequent app update on client
@@ -128,8 +134,10 @@ export default class SocketIO {
      */
     _mergeUser = _throttle((json) => {
         // merge updated user with requester of ticket
-        this._dispatch(mergeRequester(json))
+        this._dispatch(ticketActions.mergeRequester(json))
     }, 100)
+
+    _setAgentsLocation = _throttle(json => this._dispatch(usersActions.setAgentsLocation(json)), 100)
 
     _sendTicketViewed = (ticketId) => {
         // if ticket is updated and user is currently on it, send a 'ticket viewed' event
@@ -151,14 +159,8 @@ export default class SocketIO {
     }
 
     saveJoin = (object) => {
-        const type = object.objectType
-
-        if (!type) {
-            return
-        }
-
-        // remove all other joins of the same type
-        rooms = _reject(rooms, {event: 'join-room', objectType: type})
+        // leave all rooms of that object type
+        this.saveLeave(object)
 
         // add the passed event
         rooms.push(object)
@@ -171,6 +173,26 @@ export default class SocketIO {
         }
         this.send(object)
         this.saveJoin(object)
+    }
+
+    saveLeave = (object) => {
+        const type = object.objectType
+
+        if (!type) {
+            return
+        }
+
+        // remove all other joins of the same type
+        rooms = _reject(rooms, {event: 'join-room', objectType: type})
+    }
+
+    leave = (args) => {
+        const object = {
+            ...args,
+            event: 'leave-room',
+        }
+        this.send(object)
+        this.saveLeave(object)
     }
 
     joinView = (id) => {
@@ -192,6 +214,22 @@ export default class SocketIO {
     joinTicket = (id) => {
         log('Join ticket', id)
         this.join({
+            objectType: 'Ticket',
+            objectId: id,
+        })
+    }
+
+    leaveUser = (id) => {
+        log('Leave user', id)
+        this.leave({
+            objectType: 'User',
+            objectId: id,
+        })
+    }
+
+    leaveTicket = (id) => {
+        log('Leave ticket', id)
+        this.leave({
             objectType: 'Ticket',
             objectId: id,
         })

@@ -15,6 +15,7 @@ import * as UserActions from '../../../state/users/actions'
 import * as TagActions from '../../../state/tags/actions'
 import * as SettingsActions from '../../../state/settings/actions'
 import MacroContainer from '../common/macros/MacroContainer' // import that to fetch tags list
+import SocketIO from '../../common/utils/socketio'
 
 class TicketDetailContainer extends React.Component {
     state = {
@@ -100,6 +101,17 @@ class TicketDetailContainer extends React.Component {
         window.onbeforeunload = null
 
         shortcutManager.unbind('TicketDetailContainer')
+
+        // leaving ticket and request user from socket io
+        const io = new SocketIO()
+        const ticketId = this.props.params.ticketId
+        const requesterId = this.props.ticket.getIn(['requester', 'id'])
+        if (ticketId) {
+            io.leaveTicket(ticketId)
+        }
+        if (requesterId) {
+            io.leaveUser(requesterId)
+        }
     }
 
     _bindKeys() {

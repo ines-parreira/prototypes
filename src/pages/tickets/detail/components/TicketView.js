@@ -3,6 +3,7 @@ import {StickyContainer, Sticky} from 'react-sticky'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
+import classnames from 'classnames'
 
 import TicketHeader from './TicketHeader'
 
@@ -11,10 +12,12 @@ import TicketMessages from './TicketMessages'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtonsContainer from './replyarea/TicketSubmitButtonsContainer'
-
-import {getTags} from '../../../../state/tags/selectors'
-import {getAgents, makeIsLoading as makeUsersIsLoading} from '../../../../state/users/selectors'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
+
+import * as tagsSelectors from '../../../../state/tags/selectors'
+import * as usersSelectors from '../../../../state/users/selectors'
+
+import css from './TicketView.less'
 
 export class TicketView extends React.Component {
     componentWillMount() {
@@ -64,7 +67,15 @@ export class TicketView extends React.Component {
     }
 
     render = () => {
-        const {ticket, users, usersIsLoading, actions, computeNextUrl, isTicketHidden} = this.props
+        const {
+            agentsViewing,
+            ticket,
+            users,
+            usersIsLoading,
+            actions,
+            computeNextUrl,
+            isTicketHidden
+        } = this.props
 
         const isCreating = !ticket.get('id')
 
@@ -76,9 +87,11 @@ export class TicketView extends React.Component {
             : 'Hide user history'
 
         return (
-            <div className={classNames('ticket-view', {
-                'transition out fade right': isTicketHidden
-            })}>
+            <div
+                className={classNames(css.page, 'ticket-view', {
+                    'transition out fade right': isTicketHidden
+                })}
+            >
                 <StickyContainer>
                     <Sticky
                         topOffset={1}
@@ -122,10 +135,25 @@ export class TicketView extends React.Component {
                             computeNextUrl={computeNextUrl}
                             hideTicket={this.props.hideTicket}
                         />
+
+                        <div
+                            className={classnames(css['viewers-banner'], {
+                                [css.hidden]: agentsViewing.size <= 0,
+                            })}
+                        >
+                            {
+                                // we want to hide text during animation if there is no agents viewing
+                                agentsViewing.size > 0 && (
+                                    <span>
+                                        {agentsViewing.map(agent => agent.get('name')).join(', ')}
+                                        {' '}{agentsViewing.size > 1 ? 'are' : 'is'} viewing
+                                    </span>
+                                )
+                            }
+                        </div>
                     </Sticky>
 
                     <div className="ticket-content">
-
                         {this._renderMessages(isCreating)}
 
                         <form
@@ -165,6 +193,7 @@ export class TicketView extends React.Component {
 TicketView.propTypes = {
     actions: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
+    agentsViewing: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     computeNextUrl: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired,
@@ -180,17 +209,22 @@ TicketView.propTypes = {
     view: PropTypes.object
 }
 
+TicketView.defaultProps = {
+    agentsViewing: fromJS([]),
+}
+
 function mapStateToProps(state) {
     return {
         activeView: state.views.get('active', fromJS({})),
-        agents: getAgents(state),
+        agents: usersSelectors.getAgents(state),
+        agentsViewing: usersSelectors.getOtherAgentsOnTicket(state.ticket.get('id'))(state),
         currentUser: state.currentUser,
         macros: state.macros,
         users: state.users,
-        usersIsLoading: makeUsersIsLoading(state),
+        usersIsLoading: usersSelectors.makeIsLoading(state),
         routing: state.routing,
         settings: state.settings,
-        tags: getTags(state),
+        tags: tagsSelectors.getTags(state),
         ticket: state.ticket,
         tickets: state.tickets,
         views: state.views
