@@ -2,8 +2,10 @@ import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import IntegrationList from '../IntegrationList'
 import classNames from 'classnames'
+import {connect} from 'react-redux'
+import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
-export default class ShopifyIntegrationList extends React.Component {
+class ShopifyIntegrationList extends React.Component {
     render() {
         const {integrations, actions, loading} = this.props
 
@@ -92,6 +94,7 @@ export default class ShopifyIntegrationList extends React.Component {
                 integrations={integrations.filter((v) => v.get('type') === 'shopify')}
                 createIntegration={() => browserHistory.push('/app/integrations/shopify/new')}
                 createIntegrationButtonText="Add Shopify"
+                createIntegrationButtonHidden={this.props.hasIntegration}
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />
@@ -102,5 +105,12 @@ export default class ShopifyIntegrationList extends React.Component {
 ShopifyIntegrationList.propTypes = {
     integrations: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    hasIntegration: PropTypes.bool.isRequired,
 }
+
+const mapStateToProps = (state) => ({
+    hasIntegration: !integrationsSelectors.getIntegrationsByTypes('shopify')(state).isEmpty(),
+})
+
+export default connect(mapStateToProps)(ShopifyIntegrationList)

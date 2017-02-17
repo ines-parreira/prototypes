@@ -33,7 +33,7 @@ export default class IntegrationList extends React.Component {
                 <div className="ui sixteen wide column">
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider"/>
+                        <i className="right angle icon divider" />
                         <a className="active section">{integrationTitle}</a>
                     </div>
                 </div>
@@ -47,21 +47,25 @@ export default class IntegrationList extends React.Component {
                                 src={getIconFromType(integrationType)}
                             />
                             :
-                            <i className={`icon ${integrationConfig.get('icon')} pt0i`}/>
+                            <i className={`icon ${integrationConfig.get('icon')} pt0i`} />
                         }
                         <div className="content">
                             {integrationTitle}
                         </div>
                     </h1>
 
-                    <div>
-                        <button
-                            className={classNames(createIntegrationButtonClassNames)}
-                            onClick={this.onButtonClick}
-                        >
-                            {createIntegrationButtonText}
-                        </button>
-                    </div>
+                    {
+                        !this.props.createIntegrationButtonHidden && (
+                            <div>
+                                <button
+                                    className={classNames(createIntegrationButtonClassNames)}
+                                    onClick={this.onButtonClick}
+                                >
+                                    {createIntegrationButtonText}
+                                </button>
+                            </div>
+                        )
+                    }
                 </div>
 
                 {
@@ -103,5 +107,10 @@ IntegrationList.propTypes = {
     longTypeDescription: PropTypes.node,
     loading: PropTypes.object.isRequired,  // A map for different loading status(es)
     // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.
-    integrationToItemDisplay: PropTypes.func.isRequired
+    integrationToItemDisplay: PropTypes.func.isRequired,
+    createIntegrationButtonHidden: PropTypes.bool.isRequired,
+}
+
+IntegrationList.defaultProps = {
+    createIntegrationButtonHidden: false,
 }

@@ -1,11 +1,23 @@
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
+import _isArray from 'lodash/isArray'
 
 export const getIntegrationsState = state => state.integrations || fromJS({})
 
 export const getIntegrations = createSelector(
     [getIntegrationsState],
     state => state.get('integrations', fromJS([]))
+)
+
+export const getIntegrationsByTypes = types => createSelector(
+    [getIntegrations],
+    (integrations) => {
+        if (!_isArray(types)) {
+            types = [types]
+        }
+
+        return integrations.filter(integration => types.includes(integration.get('type')))
+    }
 )
 
 export const getEmailIntegrations = createSelector(

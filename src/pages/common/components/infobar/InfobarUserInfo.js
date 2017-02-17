@@ -9,6 +9,7 @@ import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
 import {itemsWithContext} from '../../../../state/widgets/utils'
 import {getDisplayName} from '../../../../state/users/helpers'
 import {USER_CHANNEL_CLASS} from '../../../../config'
+import * as integrationsSelectors from '../../../../state/integrations/selectors'
 
 class InfobarUserInfo extends React.Component {
     constructor(props) {
@@ -142,16 +143,14 @@ class InfobarUserInfo extends React.Component {
      * @private
      */
     _renderSuggestion = () => {
-        const {
-            hasIntegrations,
-        } = this.props
+        if (this.props.hasIntegrations) {
+            return null
+        }
 
-        return (
-            !hasIntegrations && [
-                <div key="separator" className="infobar-section-separator"></div>,
-                <InfobarAddIntegrationSuggestion key="integration-suggestion" />
-            ]
-        )
+        return [
+            <div key="separator" className="infobar-section-separator"></div>,
+            <InfobarAddIntegrationSuggestion key="integration-suggestion" />
+        ]
     }
 
     /**
@@ -309,10 +308,7 @@ InfobarUserInfo.defaultProps = {
 }
 
 const mapStateToProps = (state) => ({
-    hasIntegrations: !state.integrations
-        .get('integrations', fromJS([]))
-        .filter(i => i.get('type') === 'http')
-        .isEmpty(),
+    hasIntegrations: !integrationsSelectors.getIntegrationsByTypes(['http', 'shopify'])(state).isEmpty(),
 })
 
 export default connect(mapStateToProps)(InfobarUserInfo)
