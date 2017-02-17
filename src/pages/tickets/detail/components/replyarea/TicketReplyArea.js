@@ -1,14 +1,16 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classNames from 'classnames'
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
 import SearchInput from 'react-search-input'
 import {onlySignature} from '../../../../../state/ticket/responseUtils'
+import * as ticketSelectors from './../../../../../state/ticket/selectors'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
 
-export default class TicketReplyArea extends React.Component {
+export class TicketReplyArea extends React.Component {
     constructor() {
         super()
         this.state = {searchTerm: ''}
@@ -25,7 +27,7 @@ export default class TicketReplyArea extends React.Component {
         window.addEventListener('keydown', this._hideMacros)
 
         if (this.props.ticket.getIn(CONTENT_STATE_PATH) === null) {
-            this._setMacrosVisible(true)
+            this._setMacrosVisible(this.props.newMessageType === 'email')
         }
     }
 
@@ -132,5 +134,15 @@ TicketReplyArea.propTypes = {
     previewMacro: PropTypes.func.isRequired,
     updateMacro: PropTypes.func,
     previewMacroInModal: PropTypes.func.isRequired,
-    openModal: PropTypes.func.isRequired
+    openModal: PropTypes.func.isRequired,
+
+    newMessageType: PropTypes.string.isRequired,
 }
+
+function mapStateToProps(state) {
+    return {
+        newMessageType: ticketSelectors.getNewMessageType(state)
+    }
+}
+
+export default connect(mapStateToProps)(TicketReplyArea)
