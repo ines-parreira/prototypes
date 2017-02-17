@@ -51,6 +51,7 @@ coverage.xml
 *,cover
 npm-debug.log
 .babel.json
+node_modules
 
 # Translations
 *.mo
@@ -61,7 +62,6 @@ docs/_build/
 
 # PyBuilder
 target/
-
 .idea
 
 # Kate editor

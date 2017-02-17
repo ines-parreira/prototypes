@@ -19,6 +19,7 @@
   "author": "Alex Plugaru <alex@gorgias.io>",
   "license": "UNLICENSED",
   "dependencies": {
+    "array-includes": "^3.0.2",
     "axios": "^0.13.1",
     "classnames": "^2.2.5",
     "clipboard": "^1.5.16",
