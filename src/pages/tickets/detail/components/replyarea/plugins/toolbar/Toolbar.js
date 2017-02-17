@@ -32,15 +32,23 @@ class Toolbar extends React.Component {
     _renderAction = (action) => {
         const {store} = this.props
 
+        const getEditorState = store.getItem('getEditorState')
+
+        const isDisabled = action.isDisabled(getEditorState)
+
         return (
             <div
                 key={action.label}
                 className={classnames(css.button, {
-                    [css.active]: action.isActive(store.getItem('getEditorState'))
+                    [css.active]: action.isActive(getEditorState),
+                    [css.disabled]: isDisabled,
                 })}
                 onClick={(e) => {
                     this._preventDefault(e)
-                    this._toggleAction(action)
+
+                    if (!isDisabled) {
+                        this._toggleAction(action)
+                    }
                 }}
             >
                 {

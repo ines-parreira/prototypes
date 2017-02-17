@@ -19,7 +19,6 @@ export default [
     {
         label: 'Link',
         icon: 'linkify',
-        style: 'link',
         active: (block, editorState) => {
             const contentState = editorState.getCurrentContent()
 

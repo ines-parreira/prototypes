@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _throttle from 'lodash/throttle'
 
-import {EditorState, ContentState, SelectionState, Modifier, RichUtils} from 'draft-js'
+import {EditorState, ContentState, SelectionState, Modifier} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
@@ -132,13 +132,19 @@ class TicketReplyEditor extends React.Component {
     }
 
     // This is for handling things like Bold, Italic, etc..
-    _handleKeyCommand = (command) => {
-        const newState = RichUtils.handleKeyCommand(this.state.editorState, command)
-        if (newState) {
+    _handleKeyCommand = (command) => { // eslint-disable-line
+        // disabling keyboard shortcuts
+        // TODO @jebarjonet remove this after https://github.com/HubSpot/draft-convert/pull/17 is resolved
+        return false
+
+        /**
+         const newState = RichUtils.handleKeyCommand(this.state.editorState, command)
+         if (newState) {
             this._onChange(newState)
             return true
         }
-        return false
+         return false
+         **/
     }
 
     _handleDroppedFiles = (selection, files) => {

@@ -24,16 +24,21 @@
 :local .page {
   .button {
     cursor: pointer;
-    opacity: 0.5;
-    transition: opacity 0.15s;
+    opacity: .6;
+    transition: all .1s linear;
 
     &:hover {
       cursor: pointer;
-      opacity: 0.9;
+      opacity: .9;
     }
 
     &.active {
       opacity: 1;
+    }
+
+    &.disabled {
+      opacity: .2;
+      cursor: not-allowed;
     }
   }
 
