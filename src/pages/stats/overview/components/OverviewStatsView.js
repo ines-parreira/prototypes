@@ -6,6 +6,7 @@ import PageHeader from '../../../common/components/PageHeader'
 import {Loader} from '../../../common/components/Loader'
 import {renderDifference, comparedPeriodString} from '../../common/utils'
 import SearchableSelectField from '../../../common/components/formFields/SearchableSelectField'
+import _isNumber from 'lodash/isNumber'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -28,7 +29,7 @@ export default class OverviewStatsView extends React.Component {
 
     // format a value and display it as a percentage
     _formatPercent(d) {
-        return d ? `${d}%` : ''
+        return _isNumber(d) ? `${d}%` : ''
     }
 
     // format a value and display it as a duration (days, hours, minutes or seconds)
