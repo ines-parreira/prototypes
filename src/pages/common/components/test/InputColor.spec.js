@@ -1,6 +1,7 @@
 import expect from 'expect'
 import React from 'react'
 import TestUtils from 'react-addons-test-utils'
+import {colors} from '../InputColor'
 import InputColor from '../InputColor'
 
 function setup(props) {
@@ -21,7 +22,7 @@ describe('InputColor component', () => {
         expect(output.props.children.some((child) => {
             return (child.type === 'input' &&
                 child.props.type === 'text' &&
-                child.props.value === '')
+                child.props.value === colors[0])
         })).toBe(true)
     })
 

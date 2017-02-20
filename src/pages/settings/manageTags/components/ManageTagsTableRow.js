@@ -104,7 +104,8 @@ class ManageTagsTableRow extends Component {
                 <div className="complex-list-table-col manage-tags-table-col-actions">
                     <div className="manage-tags-table-row-actions">
                         <button type="button" onClick={this._onEdit}
-                                className="ui light blue basic label manage-tags-action">
+                                className="ui light blue basic label manage-tags-action"
+                        >
                             Edit
                         </button>
 
@@ -117,7 +118,8 @@ class ManageTagsTableRow extends Component {
 
                     <div className="manage-tags-table-row-edit-item">
                         <button type="button" onClick={this._onCancel}
-                                className="ui light blue basic label manage-tags-action">
+                                className="ui light blue basic label manage-tags-action"
+                        >
                             Cancel
                         </button>
 

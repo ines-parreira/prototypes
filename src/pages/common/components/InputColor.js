@@ -3,7 +3,7 @@
 
 import React, {Component, PropTypes} from 'react'
 
-const colors = [
+export const colors = [
     '#0993f4', // blue
     '#f2484a', // red
     '#F2711C', // orange
