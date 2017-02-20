@@ -34,8 +34,8 @@ class ManageTagsTableRow extends Component {
         e.preventDefault()
 
         const row = this.props.row
-        .set('name', this.state.name)
-        .set('decoration', this.state.decoration)
+            .set('name', this.state.name)
+            .set('decoration', this.state.decoration)
 
         this.props.onSave(row.toJS())
     }
@@ -88,7 +88,7 @@ class ManageTagsTableRow extends Component {
 
                     <div className="manage-tags-table-row-edit-item">
                         <div className="ui input manage-tags-input-name">
-                            <input value={this.state.name} onChange={this._changeName} required />
+                            <input value={this.state.name} onChange={this._changeName} required/>
                         </div>
 
                         <div className="manage-tags-input-color">
@@ -103,17 +103,21 @@ class ManageTagsTableRow extends Component {
                 </div>
                 <div className="complex-list-table-col manage-tags-table-col-actions">
                     <div className="manage-tags-table-row-actions">
-                        <button type="button" onClick={this._onEdit} className="ui light blue basic label manage-tags-action">
+                        <button type="button" onClick={this._onEdit}
+                                className="ui light blue basic label manage-tags-action">
                             Edit
                         </button>
 
-                        <button type="button" className="ui light red basic label manage-tags-action" onClick={this._onRemove}>
+                        <button type="button" className="ui light red basic label manage-tags-action"
+                                onClick={this._onRemove}
+                        >
                             Delete
                         </button>
                     </div>
 
                     <div className="manage-tags-table-row-edit-item">
-                        <button type="button" onClick={this._onCancel} className="ui light blue basic label manage-tags-action">
+                        <button type="button" onClick={this._onCancel}
+                                className="ui light blue basic label manage-tags-action">
                             Cancel
                         </button>
 

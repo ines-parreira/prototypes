@@ -114,7 +114,7 @@ class ManageTags extends Component {
                             <div className="ui popup manage-tags-create-popup" ref="createTagPopup">
                                 <form className={createTagFormClassName} onSubmit={this._onCreate}>
                                     <div className="ui right labeled input">
-                                        <input type="text" placeholder="New tag name" required ref={this._tagNameRef} />
+                                        <input type="text" placeholder="New tag name" required ref={this._tagNameRef}/>
                                         <button className="ui green label" type="submit">
                                             <i className="icon checkmark"></i>
                                         </button>

@@ -4,19 +4,18 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 
 class ManageTagsTable extends Component {
-    sortRows(rows, key, reverse) {
-        return rows.sort((a, b) => {
-            if (a.get(key) < b.get(key)) {
-                return reverse ? 1 : -1
-            }
+    _sortRows = (rows, key, reverse) => rows.sort((a, b) => {
+        if (a.get(key) < b.get(key)) {
+            return reverse ? 1 : -1
+        }
 
-            if (a.get(key) > b.get(key)) {
-                return reverse ? -1 : 1
-            }
+        if (a.get(key) > b.get(key)) {
+            return reverse ? -1 : 1
+        }
 
-            return 0
-        })
-    }
+        return 0
+    })
+
 
     _getSort() {
         if (!this.props.sort) {
@@ -26,12 +25,13 @@ class ManageTagsTable extends Component {
         return this.props.sort
     }
 
-    _sortIconClassName(sort, reverse, field) {
-        return classnames('action sort icon caret', {
+    _sortIconClassName = (sort, reverse, field) => classnames(
+        'action sort icon caret',
+        {
             down: (sort === field && !reverse),
             up: (sort === field && reverse)
-        })
-    }
+        }
+    )
 
     _onSort = (sort) => {
         return () => {
@@ -48,14 +48,17 @@ class ManageTagsTable extends Component {
     render() {
         const {rows, columns, reverse, onEdit, onCancel, onSave, onRemove, onSelect, onSelectAll} = this.props
         const sort = this._getSort()
-        const sortedRows = this.sortRows(rows.get('items'), sort, reverse)
+        const sortedRows = this._sortRows(rows.get('items'), sort, reverse)
 
         return (
             <div className="manage-tags-table complex-list-table ui selectable very basic table">
                 <div className="complex-list-table-row complex-list-table-header">
                     <label className="complex-list-table-col manage-tags-table-col-checkbox">
                         <span className="ui checkbox">
-                            <input type="checkbox" checked={rows.getIn(['_internal', 'selectAll'], false)} onChange={onSelectAll} value/>
+                            <input type="checkbox"
+                                   checked={rows.getIn(['_internal', 'selectAll'], false)}
+                                   onChange={onSelectAll}
+                            />
                             <label />
                         </span>
                     </label>
@@ -65,7 +68,9 @@ class ManageTagsTable extends Component {
                             <span className="plain-column-header-label">
                                 {column.title}
 
-                                <i className={this._sortIconClassName(sort, reverse, column.field)} onClick={this._onSort(column.field)}></i>
+                                <i className={this._sortIconClassName(sort, reverse, column.field)}
+                                   onClick={this._onSort(column.field)}
+                                />
                             </span>
                         </div>
                     ))}
@@ -108,10 +113,10 @@ ManageTagsTable.propTypes = {
 ManageTagsTable.defaultProps = {
     columns: [{
         title: 'Tag',
-        field: 'name'
+        field: 'name',
     }, {
         title: 'Tickets',
-        field: 'count'
+        field: 'count_tickets',
     }]
 }
 
