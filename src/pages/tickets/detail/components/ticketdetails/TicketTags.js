@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {TagLabel} from '../../../../common/utils/labels'
 
 export default class TicketTags extends React.Component {
     componentDidMount() {
@@ -35,16 +36,17 @@ export default class TicketTags extends React.Component {
             <div className="ui labels ticket-tags-wrapper">
                 {
                     ticketTags.map((tag, i) => (
-                        <div
+                        <TagLabel
                             key={i}
-                            className="ticket-tag ui label"
+                            name={tag.get('name')}
+                            decoration={tag.get('decoration')}
+                            className="ticket-tag"
                         >
-                            {tag.get('name')}
                             <i
                                 className="icon close"
                                 onClick={() => removeTag(tag.get('name'))}
                             />
-                        </div>
+                        </TagLabel>
                     ))
                 }
                 <div

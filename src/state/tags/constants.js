@@ -3,3 +3,17 @@ export const FETCH_TAG_LIST_SUCCESS = 'FETCH_TAG_LIST_SUCCESS'
 export const FETCH_TAG_LIST_ERROR = 'FETCH_TAG_LIST_ERROR'
 
 export const ADD_TAGS = 'ADD_TAGS'
+
+export const SELECT_TAG = 'SELECT_TAG'
+export const SELECT_TAG_ALL = 'SELECT_TAG_ALL'
+
+export const EDIT_TAG = 'EDIT_TAG'
+export const EDIT_TAG_CANCEL = 'EDIT_TAG_CANCEL'
+
+export const SAVE_TAG = 'SAVE_TAG'
+
+export const CREATE_TAG_START = 'CREATE_TAG_START'
+export const CREATE_TAG_SUCCESS = 'CREATE_TAG_SUCCESS'
+export const CREATE_TAG_ERROR = 'CREATE_TAG_ERROR'
+
+export const REMOVE_TAG = 'REMOVE_TAG'

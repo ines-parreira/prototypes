@@ -36,7 +36,7 @@ export const SET_STATUS = 'setStatus'
 export const SET_AGENT = 'assignUser'
 export const ADD_ATTACHMENTS = 'addAttachments'
 
-export const REMOVE_TICKET_TAG = 'REMOVE_TAG'
+export const REMOVE_TICKET_TAG = 'REMOVE_TICKET_TAG'
 
 export const RECORD_MACRO = 'RECORD_MACRO'
 export const RECEIVED_MACRO = 'RECEIVED_MACRO'

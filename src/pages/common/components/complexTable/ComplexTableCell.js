@@ -93,6 +93,7 @@ export default class ComplexTableCell extends React.Component {
                                             <TagLabel
                                                 key={`${item.get('id')}-${tag.get('id')}`}
                                                 name={tag.get('name')}
+                                                decoration={tag.get('decoration')}
                                             />
                                         ))
                                 }

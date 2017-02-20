@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import {merge} from 'lodash'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
+import {fromJS} from 'immutable'
 import {formatDatetime, isImmutable} from '../../../utils'
 
 /**
@@ -28,8 +29,30 @@ UserLabel.propTypes = {name: PropTypes.string}
 /**
  * TAG
  */
-export const TagLabel = ({name = ''}) => <button className="ui light blue mini basic label">{name}</button>
-TagLabel.propTypes = {name: PropTypes.string}
+export const TagLabel = ({name = '', decoration, className, children}) => {
+    const color = (decoration || fromJS({})).get('color')
+    const labelClassName = classNames('ui light basic label', className, {
+        blue: !color
+    })
+
+    const labelStyle = {
+        color,
+        borderColor: color
+    }
+
+    return (
+        <div className={labelClassName} style={labelStyle}>
+            {name}
+            {children}
+        </div>
+    )
+}
+TagLabel.propTypes = {
+    name: PropTypes.string,
+    decoration: PropTypes.object,
+    className: PropTypes.string,
+    children: PropTypes.object
+}
 
 /**
  * PRIORITY

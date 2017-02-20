@@ -41,7 +41,7 @@ describe('reducers', () => {
             expect(
                 fetchTagsFromServer(initialState)
             ).toEqualImmutable(
-                Map({items: List(newFakeTags)})
+                initialState.merge(Map({items: List(newFakeTags)}))
             )
 
             expect(
@@ -62,7 +62,7 @@ describe('reducers', () => {
             expect(
                 addTags(initialState)
             ).toEqualImmutable(
-                Map({items: List(newFakeTags)})
+                initialState.merge(Map({items: List(newFakeTags)}))
             )
 
             expect(

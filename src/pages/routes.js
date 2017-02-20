@@ -27,6 +27,7 @@ import TicketListInfobarContainer from './tickets/list/TicketListInfobarContaine
 import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCardContainer'
+import ManageTagsContainer from './settings/manageTags/ManageTagsContainer'
 
 export default (
     <Route path="/app" component={App}>
@@ -196,6 +197,13 @@ export default (
                     }}
                 />
             </Route>
+            <Route
+                path="manage-tags"
+                components={{
+                    content: ManageTagsContainer,
+                    navbar: SettingsNavbarContainer
+                }}
+            />
         </Route>
         <Route path="*" component={NoMatch} />
     </Route>

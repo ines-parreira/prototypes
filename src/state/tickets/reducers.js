@@ -1,5 +1,6 @@
 import * as ticketTypes from '../ticket/constants'
 import * as viewsTypes from '../views/constants'
+import * as tagsTypes from '../tags/constants'
 import {fromJS} from 'immutable'
 
 export const initialState = fromJS({
@@ -43,6 +44,52 @@ export default (state = initialState, action) => {
             }
 
             return state.setIn(['items', ticketIndex, 'is_unread'], false)
+        }
+
+        case tagsTypes.SAVE_TAG: {
+            // update tags in cached tickets
+            let tagIndex = -1
+            const ticketIndex = state
+                .get('items', fromJS([]))
+                .findIndex(item => {
+                    tagIndex = item
+                    .get('tags', fromJS([]))
+                    .findIndex(tag => tag.get('id') === action.tag.id)
+
+                    return ~tagIndex
+                })
+
+            // if ticket or tag not found
+            if (!~ticketIndex || !~tagIndex) {
+                return state
+            }
+
+            return state.setIn(['items', ticketIndex, 'tags', tagIndex], fromJS(action.tag))
+        }
+
+        case tagsTypes.REMOVE_TAG: {
+            // remove deleted tag from cached tickets
+            let tagIndex = -1
+            const ticketIndex = state
+                .get('items', fromJS([]))
+                .findIndex(item => {
+                    tagIndex = item
+                    .get('tags', fromJS([]))
+                    .findIndex(tag => tag.get('id') === action.id)
+
+                    return ~tagIndex
+                })
+
+            // if ticket or tag not found
+            if (!~ticketIndex || !~tagIndex) {
+                return state
+            }
+
+            return state.setIn(['items', ticketIndex, 'tags'],
+                state
+                .getIn(['items', ticketIndex, 'tags'])
+                .splice(tagIndex, 1)
+            )
         }
 
         default:

@@ -30,6 +30,10 @@ export default class SettingsNavbar extends React.Component {
                 requiredRole: 'admin',
                 to: 'billing',
                 text: 'Billing'
+            }, {
+                requiredRole: 'admin',
+                to: 'manage-tags',
+                text: 'Manage tags'
             }]
         }]
 
