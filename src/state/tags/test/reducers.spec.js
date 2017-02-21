@@ -1,7 +1,7 @@
 import expect from 'expect'
 import expectImmutable from 'expect-immutable'
 
-import {List, Map} from 'immutable'
+import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
@@ -34,20 +34,20 @@ describe('reducers', () => {
             const fetchTagsFromServer = (state) => (
                 reducer(state, {
                     type: types.FETCH_TAG_LIST_SUCCESS,
-                    resp: {data: newFakeTags}
+                    resp: {data: newFakeTags, meta: {page: 1}}
                 })
             )
 
             expect(
                 fetchTagsFromServer(initialState)
             ).toEqualImmutable(
-                initialState.merge(Map({items: List(newFakeTags)}))
+                initialState.merge(fromJS({items: newFakeTags, _internal: {pagination: {page: 1}}}))
             )
 
             expect(
-                fetchTagsFromServer(Map({items: List(currentFakeTags)}))
+                fetchTagsFromServer(fromJS({items: currentFakeTags}))
             ).toEqualImmutable(
-                Map({items: List(newFakeTags)})
+                fromJS({items: newFakeTags, _internal: {pagination: {page: 1}}})
             )
         })
 
@@ -62,13 +62,13 @@ describe('reducers', () => {
             expect(
                 addTags(initialState)
             ).toEqualImmutable(
-                initialState.merge(Map({items: List(newFakeTags)}))
+                initialState.merge(fromJS({items: newFakeTags}))
             )
 
             expect(
-                addTags(Map({items: List(currentFakeTags)}))
+                addTags(fromJS({items: currentFakeTags}))
             ).toEqualImmutable(
-                Map({items: List(currentFakeTags.concat(newFakeTags))})
+                fromJS({items: currentFakeTags.concat(newFakeTags)})
             )
         })
     })

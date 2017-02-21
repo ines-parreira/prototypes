@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import ManageTags from './components/ManageTags'
-import {fetchTags, edit, cancel, save, create, remove, select, selectAll} from '../../../state/tags/actions'
+import {fetchTags, edit, cancel, save, create, remove, select, selectAll, setPage} from '../../../state/tags/actions'
 
 function mapPropsToState(state) {
     return {
@@ -16,5 +16,6 @@ export default connect(mapPropsToState, {
     create,
     remove,
     select,
-    selectAll
+    selectAll,
+    setPage
 })(ManageTags)

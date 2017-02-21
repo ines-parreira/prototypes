@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import ManageTagsTable from './ManageTagsTable'
 import classnames from 'classnames'
+import SemanticPaginator from '../../../common/components/SemanticPaginator'
 import {fromJS} from 'immutable'
 
 class ManageTags extends Component {
@@ -24,6 +25,14 @@ class ManageTags extends Component {
             position: 'bottom right'
         })
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.tags.getIn(['_internal', 'pagination', 'page']) !==
+            nextProps.tags.getIn(['_internal', 'pagination', 'page'])) {
+            this.props.fetch()
+        }
+    }
+
 
     componentDidUpdate(prevProps) {
         const oldCreating = prevProps.tags.getIn(['_internal', 'creating'])
@@ -142,6 +151,14 @@ class ManageTags extends Component {
                         onSelect={select}
                         onSelectAll={selectAll}
                     />
+
+                    <SemanticPaginator
+                        page={tags.getIn(['_internal', 'pagination', 'page'], 1)}
+                        totalPages={tags.getIn(['_internal', 'pagination', 'nb_pages'])}
+                        onChange={(page) => this.props.setPage(page)}
+                        radius={1}
+                        anchor={2}
+                    />
                 </div>
             </div>
         )
@@ -158,6 +175,7 @@ ManageTags.propTypes = {
     remove: PropTypes.func.isRequired,
     select: PropTypes.func.isRequired,
     selectAll: PropTypes.func.isRequired,
+    setPage: PropTypes.func.isRequired,
 }
 
 export default ManageTags

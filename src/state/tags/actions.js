@@ -19,13 +19,18 @@ export function addTags(tags) {
     }
 }
 
-export function fetchTags() {
-    return (dispatch) => {
+export function fetchTags(page) {
+    return (dispatch, getState) => {
         dispatch({
             type: types.FETCH_TAG_LIST_START
         })
 
-        return axios.get('/api/tags/')
+        const {tags} = getState()
+        if (tags) {
+            page = tags.getIn(['_internal', 'pagination', 'page'], 1)
+        }
+
+        return axios.get('/api/tags/', {params: {page}})
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -152,3 +157,17 @@ export const remove = (id) => {
             })
     }
 }
+
+/**
+ * Set a page in pagination
+ *
+ * @param page
+ * @returns {{type: *, page: *}}
+ */
+export function setPage(page) {
+    return {
+        type: types.SET_TAG_LIST_PAGE,
+        page
+    }
+}
+

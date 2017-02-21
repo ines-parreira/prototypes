@@ -1,5 +1,5 @@
 import * as types from './constants'
-import {List, fromJS} from 'immutable'
+import {fromJS} from 'immutable'
 
 export const initialState = fromJS({
     _internal: {},
@@ -10,7 +10,9 @@ export const initialState = fromJS({
 export default (state = initialState, action) => {
     switch (action.type) {
         case types.FETCH_TAG_LIST_SUCCESS:
-            return state.set('items', List().merge(action.resp.data))
+            return state
+                .set('items', fromJS(action.resp.data))
+                .setIn(['_internal', 'pagination'], fromJS(action.resp.meta))
 
         case types.ADD_TAGS:
             return state.set('items', state.get('items').concat(action.tags))
@@ -55,24 +57,27 @@ export default (state = initialState, action) => {
 
         case types.SAVE_TAG:
             return state
-            .setIn(['items', state.get('items').findIndex(item => {
-                return item.get('id') === action.tag.id
-            })], fromJS(action.tag))
-            .setIn(['meta', action.tag.id, 'edit'], false)
+                .setIn(['items', state.get('items').findIndex(item => {
+                    return item.get('id') === action.tag.id
+                })], fromJS(action.tag))
+                .setIn(['meta', action.tag.id, 'edit'], false)
 
         case types.CREATE_TAG_START:
             return state.setIn(['_internal', 'creating'], true)
 
         case types.CREATE_TAG_SUCCESS:
             return state
-            .set('items', state.get('items').push(fromJS(action.tag)))
-            .setIn(['_internal', 'creating'], false)
+                .set('items', state.get('items').push(fromJS(action.tag)))
+                .setIn(['_internal', 'creating'], false)
 
         case types.REMOVE_TAG:
             return state
-            .set('items', state.get('items').splice(state.get('items').findIndex(item => {
-                return item.get('id') === action.id
-            }), 1))
+                .set('items', state.get('items').splice(state.get('items').findIndex(item => {
+                    return item.get('id') === action.id
+                }), 1))
+        case types.SET_TAG_LIST_PAGE: {
+            return state.setIn(['_internal', 'pagination', 'page'], action.page)
+        }
 
         default:
             return state
