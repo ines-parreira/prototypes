@@ -31,7 +31,7 @@ UserLabel.propTypes = {name: PropTypes.string}
  */
 export const TagLabel = ({name = '', decoration, className, children}) => {
     const color = (decoration || fromJS({})).get('color')
-    const labelClassName = classNames('ui light basic label', className, {
+    const labelClassName = classNames('ui light basic label tags', className, {
         blue: !color
     })
 

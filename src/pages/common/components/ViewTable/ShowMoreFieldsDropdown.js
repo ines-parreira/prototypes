@@ -18,22 +18,25 @@ class ShowMoreFieldsDropdown extends React.Component {
     }
 
     _setFieldVisibility = (name, state) => {
+        if (!state && this.props.visibleFields.size <= 1) {
+            return window.alert('You can not remove all columns of a view')
+        }
+
         $(this.refs.showmoreButton).popup('hide')
         return this.props.setFieldVisibility(name, state)
     }
 
     render() {
-        const {visibleFields} = this.props
+        const visibleFieldsNames = this.props.visibleFields.map(field => field.get('name'))
 
         return (
-            <div className="show-more-fields-dropdown complex-list-table-col">
-                <div className="show-more-fields-dropdown-icon">
-                    <i
-                        ref="showmoreButton"
-                        className="block layout icon"
-                        title="Show more fields"
-                    />
-                </div>
+            <div>
+                <i
+                    ref="showmoreButton"
+                    className="block layout icon"
+                    title="Show more fields"
+                    style={{cursor: 'pointer'}}
+                />
                 <div
                     ref="showmorePopup"
                     className="ui popup"
@@ -43,7 +46,7 @@ class ShowMoreFieldsDropdown extends React.Component {
                             {
                                 this.props.fields
                                     .map((field) => {
-                                        const isChecked = visibleFields.includes(field.get('name'))
+                                        const isChecked = visibleFieldsNames.includes(field.get('name'))
 
                                         return (
                                             <div

@@ -2,12 +2,15 @@ import React, {PropTypes, Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classnames from 'classnames'
-import _assign from 'lodash/assign'
 import {compactInteger, getPluralObjectName} from '../../../../utils'
 import {Loader} from './../../../common/components/Loader'
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
-import {getActiveView, getViewsByType} from '../../../../state/views/selectors'
+import _assign from 'lodash/assign'
+
+import * as viewsActions from '../../../../state/views/actions'
+import {getActiveView, getViewsByType, makeGetView} from '../../../../state/views/selectors'
 import {getSettingsByType as getCurrentUserSettingsByType} from '../../../../state/currentUser/selectors'
+
 import css from './ViewNavbarView.less'
 
 // popup configuration
@@ -22,12 +25,13 @@ const popupLeaveMessage = 'Leave edit mode'
 class ViewNavbarView extends Component {
     static propTypes = {
         views: PropTypes.object.isRequired,
-        currentView: PropTypes.object.isRequired,
+        activeView: PropTypes.object.isRequired,
         viewType: PropTypes.oneOf(['ticket-list', 'user-list']).isRequired,
         settings: PropTypes.object,
         settingType: PropTypes.oneOf(['ticket-views', 'user-views']).isRequired,
         isLoading: PropTypes.bool.isRequired,
         isUpdate: PropTypes.bool.isRequired,
+        fetchPage: PropTypes.func.isRequired,
     }
 
     state = {
@@ -58,7 +62,7 @@ class ViewNavbarView extends Component {
     }
 
     render() {
-        const {views, currentView, viewType, settings, isLoading, isUpdate} = this.props
+        const {views, activeView, viewType, settings, isLoading, isUpdate} = this.props
         const {hasEditMode} = this.state
         // we use this to build urls
         const objectName = getPluralObjectName(viewType)
@@ -97,7 +101,7 @@ class ViewNavbarView extends Component {
                     </h4>
                     <div className="menu">
                         {
-                            hasEditMode ? (
+                            hasEditMode ?
                                 <ViewNavbarViewEditor
                                     initialValues={settings.toJS()}
                                     setting={settings}
@@ -106,31 +110,32 @@ class ViewNavbarView extends Component {
                                     views={displayedViews}
                                     objectName={objectName}
                                 />
-                            ) : (
-                                displayedViews.map((_view) => {
-                                    const view = _view.toJS()
-                                    const key = `${view.slug}-${view.id}`
-                                    let classes = classnames('item', {
-                                        active: currentView && currentView.get('id') === view.id
+                                : (
+                                    displayedViews.map((view) => {
+                                        const isCurrentView = activeView.get('id') === view.get('id')
+
+                                        const key = `${view.get('slug')}-${view.get('id')}`
+                                        let classes = classnames('item', {
+                                            active: isCurrentView,
+                                        })
+                                        let count = 0
+
+                                        if (view.get('count') !== undefined && view.get('count') !== null) {
+                                            count = view.get('count')
+                                        }
+
+                                        return (
+                                            <Link
+                                                key={key}
+                                                to={`/app/${objectName}/${view.get('id')}/${view.get('slug')}`}
+                                                className={classes}
+                                                title={`${view.get('name')} (${count})`}
+                                            >
+                                                {`${view.get('name')} (${compactInteger(count)})`}
+                                            </Link>
+                                        )
                                     })
-                                    let count = 0
-
-                                    if (view.count !== undefined && view.count !== null) {
-                                        count = view.count
-                                    }
-
-                                    return (
-                                        <Link
-                                            key={key}
-                                            to={`/app/${objectName}/${view.id}/${view.slug}`}
-                                            title={`${view.name} (${count})`}
-                                            className={classes}
-                                        >
-                                            {`${view.name} (${compactInteger(count)})`}
-                                        </Link>
-                                    )
-                                })
-                            )
+                                )
                         }
                     </div>
                 </div>
@@ -143,11 +148,16 @@ const mapStateToProps = (state, ownProps) => {
     const settings = getCurrentUserSettingsByType(ownProps.settingType)(state)
 
     return {
-        currentView: getActiveView(state),
+        getView: makeGetView(state),
+        activeView: getActiveView(state),
         views: getViewsByType(ownProps.viewType)(state),
         settings,
         isUpdate: !!settings.get('id'),
     }
 }
 
-export default connect(mapStateToProps)(ViewNavbarView)
+const mapDispatchToProps = {
+    fetchPage: viewsActions.fetchPage,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewNavbarView)

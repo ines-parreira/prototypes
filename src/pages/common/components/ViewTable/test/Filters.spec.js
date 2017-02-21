@@ -2,7 +2,7 @@ import expect from 'expect'
 import React from 'react'
 import {fromJS} from 'immutable'
 import TestUtils from 'react-addons-test-utils'
-import ViewFilters from '../ComplexTableFilters'
+import {ViewFilters} from '../Filters/ViewFilters'
 
 function setup(props) {
     const renderer = TestUtils.createRenderer()

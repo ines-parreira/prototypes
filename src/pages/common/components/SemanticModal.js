@@ -10,7 +10,7 @@ export default class SemanticModal extends Component {
         inverted: PropTypes.bool,
         basic: PropTypes.bool,
         dismissible: PropTypes.bool
-    };
+    }
 
     static defaultProps = {
         transition: 'scale',
@@ -18,9 +18,7 @@ export default class SemanticModal extends Component {
         inverted: false,
         basic: false,
         dismissible: true
-    };
-
-    state = {}
+    }
 
     componentDidMount() {
         if (this.props.isOpen) {

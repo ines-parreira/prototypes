@@ -3,11 +3,11 @@ import {fromJS} from 'immutable'
 import {browserHistory} from 'react-router'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
-import {VIEW_TYPE_CONFIGURATION} from '../../config'
 import {fetchUsers} from '../users/actions'
-import {getActiveViewSearch, getActiveViewFilters} from './selectors'
 import {getPluralObjectName, getHashOfObj} from '../../utils'
 import _max from 'lodash/max'
+
+import * as viewsSelectors from './selectors'
 
 export const setViewActive = (view) => ({
     type: types.SET_VIEW_ACTIVE,
@@ -20,11 +20,25 @@ export const updateView = (view, edit = true) => ({
     edit
 })
 
-export const setFieldVisibility = (name, state) => ({
-    type: types.SET_FIELD_VISIBILITY,
-    name,
-    state
-})
+export const setOrderDirection = (fieldPath, direction = 'asc') => (dispatch) => {
+    dispatch({
+        type: types.SET_ORDER_DIRECTION,
+        fieldPath,
+        direction,
+    })
+
+    dispatch(updateView())
+}
+
+export const setFieldVisibility = (name, state) => (dispatch) => {
+    dispatch({
+        type: types.SET_FIELD_VISIBILITY,
+        name,
+        state,
+    })
+
+    dispatch(updateView())
+}
 
 // add filter for 1 field
 export const addFieldFilter = (field, filter) => ({
@@ -81,7 +95,12 @@ export function fieldEnumSearch(field, query) {
     }
 }
 
-export const resetView = () => ({type: types.RESET_VIEW})
+export const resetView = (configName) => {
+    return {
+        type: types.RESET_VIEW,
+        configName,
+    }
+}
 
 export function fetchViews(currentViewId) {
     return (dispatch) => {
@@ -107,6 +126,13 @@ export function fetchViews(currentViewId) {
     }
 }
 
+export function setPage(page) {
+    return {
+        type: types.SET_PAGE,
+        page
+    }
+}
+
 export function submitView(view) {
     return (dispatch, getState) => {
         const {views} = getState()
@@ -114,7 +140,7 @@ export function submitView(view) {
         const objectName = getPluralObjectName(view.get('type', ''))
 
         dispatch({
-            type: types.SUBMIT_VIEW_START
+            type: types.SUBMIT_VIEW_START,
         })
 
         let promise
@@ -177,9 +203,9 @@ export function deleteView(view) {
             axios.delete(`/api/views/${view.get('id')}/`)
                 .then((json = {}) => json.data)
                 .then(() => {
-                    const viewConfig = VIEW_TYPE_CONFIGURATION[viewType]
+                    const viewConfig = viewsSelectors.getViewConfigByType(viewType)
                     const destinationView = otherViewsOfType.first()
-                    const destinationRoute = `/app/${viewConfig.routeList}/${destinationView.get('id')}/${destinationView.get('slug')}`
+                    const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
                     browserHistory.push(destinationRoute)
 
                     dispatch({
@@ -199,13 +225,14 @@ export function deleteView(view) {
 
 export function fetchPage(page, discreet = false) {
     return (dispatch, getState) => {
-        let views = getState().views
+        const state = getState()
+        let views = state.views
 
-        const activeView = views.get('active', fromJS({}))
+        const activeView = viewsSelectors.getActiveView(state)
         const viewId = activeView.get('id')
-        const isDirty = views.getIn(['active', 'dirty'], false)
+        const isDirty = viewsSelectors.isDirty(state)
 
-        if (!activeView || activeView.isEmpty()) {
+        if (!viewsSelectors.hasActiveView(state)) {
             return Promise.resolve()
         }
 
@@ -213,15 +240,17 @@ export function fetchPage(page, discreet = false) {
             page = views.getIn(['_internal', 'pagination', 'page'], 1)
         }
 
+        dispatch(setPage(page))
+
         const activeViewType = activeView.get('type', 'ticket-list')
-        const viewConfig = VIEW_TYPE_CONFIGURATION[activeViewType]
+        const viewConfig = viewsSelectors.getViewConfigByType(activeViewType)
 
         if (!isDirty && !viewId) {
             return Promise.resolve()
         }
 
-        const searchHash = getHashOfObj(getActiveViewSearch(getState()))
-        const filtersHash = getHashOfObj(getActiveViewFilters(getState()))
+        const searchHash = getHashOfObj(viewsSelectors.getActiveViewSearch(getState()))
+        const filtersHash = getHashOfObj(viewsSelectors.getActiveViewFilters(getState()))
 
         dispatch({
             type: types.FETCH_LIST_VIEW_START,
@@ -234,12 +263,12 @@ export function fetchPage(page, discreet = false) {
         // when a view is dirty, just send the whole view data rather than just the id
         // this will allow us to test a view before submitting it to the DB
         if (isDirty) {
-            promise = axios.put(`/api/${viewConfig.api}/view/`, {
+            promise = axios.put(`/api/${viewConfig.get('api')}/view/`, {
                 view: activeView.delete('dirty').delete('editMode').toJS(),
                 page
             })
         } else {
-            promise = axios.get(`/api/${viewConfig.api}/`, {
+            promise = axios.get(`/api/${viewConfig.get('api')}/`, {
                 params: {
                     view_id: viewId,
                     page
@@ -254,12 +283,12 @@ export function fetchPage(page, discreet = false) {
                 // if the current view id the same as the received one
                 const isCurrent = views.getIn(['_internal', 'currentViewId']) === viewId
                     // is the current page the same as the received one
-                    && views.getIn(['_internal', 'pagination', 'page']) === data.meta.page
+                    && views.getIn(['_internal', 'pagination', 'page'], 1) === data.meta.page
                     // if the search the same as the current active one
                     // (if somebody has modified the search while the request was done)
-                    && searchHash === getHashOfObj(getActiveViewSearch(getState()))
+                    && searchHash === getHashOfObj(viewsSelectors.getActiveViewSearch(getState()))
                     // (if somebody has modified the filters while the request was done)
-                    && filtersHash === getHashOfObj(getActiveViewFilters(getState()))
+                    && filtersHash === getHashOfObj(viewsSelectors.getActiveViewFilters(getState()))
 
                 // make sure the incoming ticket list is the one the current user is looking at
                 if (isCurrent) {
@@ -274,31 +303,17 @@ export function fetchPage(page, discreet = false) {
                 return dispatch({
                     type: types.FETCH_LIST_VIEW_ERROR,
                     error,
-                    reason: `Failed to fetch list of ${viewConfig.plural}`
+                    reason: `Failed to fetch list of ${viewConfig.get('plural')}`
                 })
             })
     }
 }
 
-export function setPage(page) {
-    return {
-        type: types.SET_PAGE,
-        page
-    }
-}
-
-export function saveIndex(currentItemIndex) {
-    return {
-        type: types.SAVE_INDEX,
-        currentItemIndex
-    }
-}
-
-export function toggleSelection(idOrIds, selectedAll = false) {
+export function toggleSelection(idOrIds, selectAll = false) {
     return {
         type: types.TOGGLE_SELECTION,
         idOrIds,
-        selectedAll
+        selectAll,
     }
 }
 
@@ -312,9 +327,9 @@ export function bulkUpdate(activeView, ids, key, value) {
         }
 
         const activeViewType = activeView.get('type', 'ticket-list')
-        const viewConfig = VIEW_TYPE_CONFIGURATION[activeViewType]
+        const viewConfig = viewsSelectors.getViewConfigByType(activeViewType)
 
-        let successMessage = `${ids.size} ${viewConfig.plural}: ${key} successfully set to ${value}!`
+        let successMessage = `${ids.size} ${viewConfig.get('plural')}: ${key} successfully set to ${value}!`
 
         if (activeViewType === 'ticket-list') {
             switch (key) {
@@ -365,10 +380,10 @@ export function bulkUpdate(activeView, ids, key, value) {
             type: 'info',
             autoDismiss: false,
             closeOnNext: true,
-            message: `Updating ${viewConfig.api}...`
+            message: `Updating ${viewConfig.get('api')}...`
         }))
 
-        return axios.put(`/api/${viewConfig.api}/`, data)
+        return axios.put(`/api/${viewConfig.get('api')}/`, data)
             .then((json = {}) => json.data)
             .then(() => {
                 dispatch({
@@ -385,7 +400,7 @@ export function bulkUpdate(activeView, ids, key, value) {
                 return dispatch({
                     type: types.BULK_UPDATE_ERROR,
                     error,
-                    reason: `Failed to update list of ${viewConfig.plural}`
+                    reason: `Failed to update list of ${viewConfig.get('plural')}`
                 })
             })
     }
@@ -398,16 +413,16 @@ export function bulkDelete(activeView, ids) {
         })
 
         const activeViewType = activeView.get('type', 'ticket-list')
-        const viewConfig = VIEW_TYPE_CONFIGURATION[activeViewType]
+        const viewConfig = viewsSelectors.getViewConfigByType(activeViewType)
 
         dispatch(notify({
             type: 'info',
             autoDismiss: false,
             closeOnNext: true,
-            message: `Deleting ${viewConfig.plural}...`
+            message: `Deleting ${viewConfig.get('plural')}...`
         }))
 
-        return axios.delete(`/api/${viewConfig.api}/`, {
+        return axios.delete(`/api/${viewConfig.get('api')}/`, {
             data: {ids}
         })
             .then((json = {}) => json.data)
@@ -425,13 +440,13 @@ export function bulkDelete(activeView, ids) {
 
                 dispatch(notify({
                     type: 'success',
-                    message: `${ids.size} ${viewConfig.plural} successfully deleted!`
+                    message: `${ids.size} ${viewConfig.get('plural')} successfully deleted!`
                 }))
             }, error => {
                 return dispatch({
                     type: types.BULK_DELETE_ERROR,
                     error,
-                    reason: `Couldn\'t delete selected ${viewConfig.plural}`
+                    reason: `Couldn\'t delete selected ${viewConfig.get('plural')}`
                 })
             })
     }

@@ -50,6 +50,7 @@
     "react-datepicker": "^0.29.0",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.3.2",
+    "react-immutable-proptypes": "^2.1.0",
     "react-modal": "^1.5.2",
     "react-notification-system": "^0.2.10",
     "react-notification-system-redux": "^1.0.8",
