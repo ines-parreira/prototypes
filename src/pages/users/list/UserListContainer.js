@@ -37,24 +37,6 @@ class UserListContainer extends React.Component {
                         items={this.props.users}
                         hasBulkActions={!activeView.get('editMode', false)}
                         ActionsComponent={UserListActions}
-                        queryPath="bool.should.0.multi_match.query"
-                        searchQuery={{
-                            bool: {
-                                should: [
-                                    {
-                                        multi_match: {
-                                            query: '',
-                                            operator: 'and',
-                                            type: 'phrase_prefix',
-                                            fields: [
-                                                'name',
-                                                'email'
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-                        }}
                     />
                 </div>
             </DocumentTitle>

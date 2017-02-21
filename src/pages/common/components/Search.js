@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import _debounce from 'lodash/debounce'
-import _set from 'lodash/set'
 import _get from 'lodash/get'
 import classNames from 'classnames'
 import shortcutManager from '../utils/shortcutManager'
@@ -67,16 +66,7 @@ export default class Search extends React.Component {
         if (!this.refs.searchInput) {
             return false
         }
-
-        const paths = this.props.queryPath.split(',')
-        const query = this.props.query
-        const value = this.refs.searchInput.value
-
-        paths.forEach((path) => {
-            _set(query, path, value)
-        })
-
-        this.props.onChange(query, value, this.props.params)
+        this.props.onChange(this.refs.searchInput.value)
     }, this.props.searchDebounceTime || 200)
 
     render() {
@@ -97,7 +87,7 @@ export default class Search extends React.Component {
                         autoFocus={this.props.autofocus}
                         disabled={this.props.disabled}
                     />
-                    <i className="search icon" />
+                    <i className="search icon"/>
                 </div>
             </div>
         )
@@ -106,8 +96,6 @@ export default class Search extends React.Component {
 
 Search.propTypes = {
     onChange: PropTypes.func.isRequired,
-    query: PropTypes.object.isRequired,
-    queryPath: PropTypes.string.isRequired,
     params: PropTypes.object,
     forcedQuery: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     shouldResetInput: PropTypes.bool,

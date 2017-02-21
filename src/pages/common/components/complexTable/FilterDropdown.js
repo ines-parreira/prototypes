@@ -6,7 +6,6 @@ import Search from '../Search'
 import {RenderLabel} from '../../utils/labels'
 import {equalityOperator, resolveLiteral, isImmutable, fieldPath} from '../../../../utils'
 import {fieldEnumSearch} from '../../../../state/views/actions'
-import _isUndefined from 'lodash/isUndefined'
 
 class FilterDropdown extends React.Component {
     constructor(props) {
@@ -33,15 +32,10 @@ class FilterDropdown extends React.Component {
     }
 
     // query search from server and save it in state
-    onSearch = (query = this.props.field.getIn(['filter', 'query']), value) => {
-        // no query object = no search (enum is hardcoded)
-        if (_isUndefined(query)) {
+    onSearch = (query) => {
+        // Fields that already have an enum don't need to have a search
+        if (this.props.field.getIn(['filter', 'enum'])) {
             return
-        }
-
-        // if there is no value and that the query is an object, we don't send query so we retrieve every results
-        if (!value && query.delete) {
-            query = query.delete('query')
         }
 
         this.props.fieldEnumSearch(this.props.field, query)
@@ -56,7 +50,7 @@ class FilterDropdown extends React.Component {
     renderSearch = () => {
         const field = this.props.field
 
-        if (!field.getIn(['filter', 'query'])) {
+        if (!field.getIn(['filter', 'type'])) {
             return
         }
 
@@ -66,8 +60,6 @@ class FilterDropdown extends React.Component {
                     autofocus
                     className="medium"
                     onChange={this.onSearch}
-                    queryPath={field.getIn(['filter', 'queryPath'])}
-                    query={field.getIn(['filter', 'query']).toJS()}
                     searchDebounceTime={300}
                 />
             </div>
@@ -118,7 +110,7 @@ class FilterDropdown extends React.Component {
     render() {
         const field = this.props.field
 
-        if (!(field.getIn(['filter', 'query']) || this.state.enum)) {
+        if (!(field.get('filter') || this.state.enum)) {
             return
         }
 

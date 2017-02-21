@@ -3,27 +3,24 @@ import {fromJS} from 'immutable'
 import md5 from 'md5'
 import * as types from './constants'
 
-export const search = (query, docType = 'user', source = []) => ((dispatch) => {
+export const search = (query, searchType = 'infobar-user') => ((dispatch) => {
     dispatch({
-        type: docType === 'user' ? types.SEARCH_USERS_START : types.SEARCH_TICKETS_START
+        type: searchType === 'infobar-user' ? types.SEARCH_USERS_START : types.SEARCH_TICKETS_START
     })
 
     return axios.post('/api/search/', {
-        doc_type: docType,
-        query: {
-            _source: source, // ['id', 'name', 'email']
-            query
-        }
+        type: searchType,
+        query
     })
         .then((json = {}) => json.data)
         .then(resp => {
             dispatch({
-                type: docType === 'user' ? types.SEARCH_USERS_SUCCESS : types.SEARCH_TICKETS_SUCCESS,
+                type: searchType === 'infobar-user' ? types.SEARCH_USERS_SUCCESS : types.SEARCH_TICKETS_SUCCESS,
                 resp
             })
         }, error => {
             return dispatch({
-                type: docType === 'user' ? types.SEARCH_USERS_ERROR : types.SEARCH_TICKETS_ERROR,
+                type: searchType === 'infobar-user' ? types.SEARCH_USERS_ERROR : types.SEARCH_TICKETS_ERROR,
                 error,
                 reason: 'Failed to do the search. Please try again...'
             })

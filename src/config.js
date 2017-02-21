@@ -578,12 +578,7 @@ export const VIEW_FIELDS = {
             title: 'Tags',
             path: 'tags.name', // specify if different from name and if used in filters
             filter: {
-                doc_type: 'tag',
-                queryPath: 'stringQuery',
-                query: {
-                    field: 'name',
-                    stringQuery: ''
-                }
+                type: 'tag',
             }
         },
         {
@@ -591,19 +586,7 @@ export const VIEW_FIELDS = {
             title: 'Requester',
             path: 'requester.id',
             filter: {
-                doc_type: 'user',
-                queryPath: 'query.multi_match.query',  // lodash set syntax: https://lodash.com/docs#set
-                query: {
-                    _source: ['id', 'name', 'email'],
-                    size: 10,
-                    query: {
-                        multi_match: {
-                            query: '',
-                            fuzziness: 3,
-                            fields: ['name', 'email']
-                        }
-                    }
-                }
+                type: 'user',
             }
         },
         {
@@ -611,35 +594,7 @@ export const VIEW_FIELDS = {
             title: 'Assignee',
             path: 'assignee_user.id',
             filter: {
-                doc_type: 'user',
-                queryPath: 'query.multi_match.query',  // lodash set syntax: https://lodash.com/docs#set
-                query: {
-                    _source: ['id', 'name', 'email'],
-                    size: 10,
-                    query: {
-                        multi_match: {
-                            query: '',
-                            fuzziness: 3,
-                            fields: ['name', 'email']
-                        }
-                    },
-                    filter: {
-                        bool: {
-                            should: [
-                                {
-                                    match: {
-                                        'roles.name': 'agent'
-                                    }
-                                },
-                                {
-                                    match: {
-                                        'roles.name': 'admin'
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
+                type: 'agent',
             }
         },
         {

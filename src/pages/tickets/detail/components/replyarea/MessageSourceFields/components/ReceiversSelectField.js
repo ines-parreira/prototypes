@@ -8,7 +8,6 @@ import {
     receiversValueFromState,
     receiversStateFromValue
 } from '../../../../../../../state/ticket/utils'
-import _set from 'lodash/set'
 import _debounce from 'lodash/debounce'
 import {updatePotentialRequesters} from '../../../../../../../state/ticket/actions'
 
@@ -31,44 +30,6 @@ class ReceiversSelectField extends React.Component {
         required: false,
     }
 
-    /**
-     * Search query for async search on input typing
-     * @param searchValue
-     * @returns Object
-     * @private
-     */
-    _searchQuery = (searchValue) => {
-        const query = {
-            _source: ['id', 'address', 'type', 'user'],
-            size: 5,
-            query: {
-                filtered: {
-                    filter: {
-                        bool: {
-                            must: [{
-                                match: {
-                                    type: this.props.channel
-                                }
-                            }]
-                        }
-                    },
-                    query: {
-                        multi_match: {
-                            query: '',
-                            fuzziness: 3,
-                            fields: ['address', 'user.name'],
-                            type: 'phrase_prefix'
-                        }
-                    }
-                }
-            }
-        }
-
-        _set(query, 'query.filtered.query.multi_match.query', searchValue)
-
-        return query
-    }
-
     _valueFromState = (options) => receiversValueFromState({to: options}, this.props.sourceType).to
 
     _onChange = (value) => {
@@ -83,7 +44,7 @@ class ReceiversSelectField extends React.Component {
             callback([])
         }
 
-        this.props.updatePotentialRequesters(this._searchQuery(queryText))
+        this.props.updatePotentialRequesters(queryText)
             .then((data) => {
                 callback(this._valueFromState(data))
             })

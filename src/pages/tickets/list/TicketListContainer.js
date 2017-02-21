@@ -52,52 +52,6 @@ class TicketListContainer extends React.Component {
                         items={this.props.tickets.get('items', fromJS([]))}
                         hasBulkActions={!activeView.get('editMode', false)}
                         ActionsComponent={TicketListActions}
-                        queryPath="bool.should.0.multi_match.query,bool.should.1.multi_match.query,bool.should.2.nested.query.multi_match.query"
-                        searchQuery={{
-                            bool: {
-                                should: [
-                                    {
-                                        multi_match: {
-                                            query: '',
-                                            operator: 'and',
-                                            fields: [
-                                                'subject^3',
-                                                'requester.name',
-                                                'sender.name',
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        multi_match: {
-                                            query: '',
-                                            type: 'phrase_prefix',
-                                            fields: [
-                                                'requester.email',
-                                                'sender.email'
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        nested: {
-                                            path: 'messages',
-                                            query: {
-                                                multi_match: {
-                                                    query: '',
-                                                    type: 'phrase_prefix',
-                                                    fields: [
-                                                        'messages.source.from.name',
-                                                        'messages.source.from.email',
-                                                        'messages.source.to.name',
-                                                        'messages.source.to.email',
-                                                        'messages.body_*'
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }}
                     />
                     <MacroContainer
                         activeView={activeView}

@@ -189,11 +189,11 @@ class ComplexTableWrapper extends React.Component {
         this.props.actions.views.setPage(page)
     }
 
-    _search = (query, stringQuery, params) => {
+    _search = (searchQuery) => {
         const activeView = this.props.activeView
 
-        if (stringQuery) {
-            this.props.actions.views.updateView(activeView.merge({search: {query, params}}))
+        if (searchQuery) {
+            this.props.actions.views.updateView(activeView.merge({search: searchQuery}))
         } else if (activeView.get('search')) {
             this.props.actions.views.updateView(activeView.set('search', null))
         }
@@ -260,8 +260,6 @@ class ComplexTableWrapper extends React.Component {
         const {
             views,
             items,
-            searchQuery,
-            queryPath,
             viewsType,
             fields,
             schemas,
@@ -344,8 +342,6 @@ class ComplexTableWrapper extends React.Component {
                                         onChange={this._search}
                                         className="long"
                                         forcedQuery={activeView.getIn(['search', 'query'])}
-                                        queryPath={queryPath}
-                                        query={searchQuery}
                                         placeholder={`Search ${viewConfig.plural}`}
                                         searchDebounceTime={400}
                                         location={activeView.get('id')}
@@ -438,8 +434,6 @@ ComplexTableWrapper.propTypes = {
         views: PropTypes.object.isRequired,
     }).isRequired,
 
-    searchQuery: PropTypes.object.isRequired,
-    queryPath: PropTypes.string.isRequired,
     viewsType: PropTypes.string.isRequired,
     askedViewId: PropTypes.string,
     isUpdate: PropTypes.bool.isRequired,
@@ -451,8 +445,6 @@ ComplexTableWrapper.propTypes = {
 
 ComplexTableWrapper.defaultProps = {
     users: fromJS({}),
-    searchQuery: {},
-    queryPath: '',
     viewsType: 'ticket-list',
     hasBulkActions: false
 }

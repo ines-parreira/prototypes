@@ -60,10 +60,9 @@ export function fieldEnumSearch(field, query) {
             type: types.UPDATE_VIEW_FIELD_ENUM_START
         })
 
-        return axios.post('/api/search/', {
-            doc_type: field.getIn(['filter', 'doc_type']),
-            query
-        })
+        const data = field.get('filter').toJS()
+        data.query = query
+        return axios.post('/api/search/', data)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -221,7 +220,7 @@ export function fetchPage(page, discreet = false) {
             return Promise.resolve()
         }
 
-        const searchHash = getHashOfObj(getActiveViewSearch(getState()).toJS())
+        const searchHash = getHashOfObj(getActiveViewSearch(getState()))
         const filtersHash = getHashOfObj(getActiveViewFilters(getState()))
 
         dispatch({
@@ -258,7 +257,7 @@ export function fetchPage(page, discreet = false) {
                     && views.getIn(['_internal', 'pagination', 'page']) === data.meta.page
                     // if the search the same as the current active one
                     // (if somebody has modified the search while the request was done)
-                    && searchHash === getHashOfObj(getActiveViewSearch(getState()).toJS())
+                    && searchHash === getHashOfObj(getActiveViewSearch(getState()))
                     // (if somebody has modified the filters while the request was done)
                     && filtersHash === getHashOfObj(getActiveViewFilters(getState()))
 

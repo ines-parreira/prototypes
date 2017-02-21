@@ -17,7 +17,7 @@ export const getActiveView = createSelector(
 
 export const getActiveViewSearch = createSelector(
     [getActiveView],
-    state => state.get('search') || fromJS({})
+    state => state.get('search') || ''
 )
 
 export const getActiveViewFilters = createSelector(

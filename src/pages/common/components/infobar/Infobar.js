@@ -89,9 +89,9 @@ class Infobar extends React.Component {
     /**
      * Populate infobar state from search results
      */
-    _search = (query, stringQuery) => {
-        if (stringQuery) {
-            this.props.actions.infobar.search(query, 'user', ['id', 'name', 'email', 'channels'])
+    _search = (query) => {
+        if (query) {
+            this.props.actions.infobar.search(query, 'infobar-user')
         } else {
             this.props.actions.infobar.resetSearch()
         }
@@ -312,21 +312,7 @@ class Infobar extends React.Component {
                             onChange={this._search}
                             forcedQuery={forcedQuery}
                             location={identifier}
-                            queryPath="bool.should.0.multi_match.query"
                             disabled={isEditing}
-                            query={{
-                                bool: {
-                                    should: [
-                                        {
-                                            multi_match: {
-                                                query: '',
-                                                type: 'phrase_prefix',
-                                                fields: ['name', 'email']
-                                            }
-                                        }
-                                    ]
-                                }
-                            }}
                         />
 
                         <button

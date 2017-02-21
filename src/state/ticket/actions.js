@@ -267,7 +267,7 @@ export const setSourceType = (sourceType) => ({
  */
 export const updatePotentialRequesters = query => (dispatch) => (
     axios.post('/api/search/', {
-        doc_type: 'user_channel',
+        type: 'user_channel',
         query
     })
         .then((json = {}) => json.data)
