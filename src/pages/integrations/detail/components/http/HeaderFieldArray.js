@@ -1,6 +1,6 @@
 import React from 'react'
-
 import {Field} from 'redux-form'
+import _trim from 'lodash/trim'
 import {InputField} from '../../../../common/components/formFields'
 
 const HeaderFieldArray = ({fields}) => (
@@ -18,7 +18,7 @@ const HeaderFieldArray = ({fields}) => (
                         name={`${header}.key`}
                         placeholder="Key"
                         component={InputField}
-                        format={(value) => value.trim()}
+                        format={value => _trim(value)}
                     />
                     <Field
                         className="seven wide"
