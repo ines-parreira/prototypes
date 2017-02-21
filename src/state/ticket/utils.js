@@ -263,6 +263,10 @@ export function getNewMessageSender(ticket, channels) {
     // smooch, messenger
     // because channels only list email addresses
     if (preferredChannel.isEmpty()) {
+        if (!lastMessage) {
+            return fromJS({})
+        }
+
         if (lastMessage.get('from_agent')) {
             return lastMessage.getIn(['source', 'from'])
         }
