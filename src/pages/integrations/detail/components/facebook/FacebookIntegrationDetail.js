@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import classNames from 'classnames'
+import {fromJS} from 'immutable'
 import {Loader} from '../../../../common/components/Loader'
 import {CheckboxField} from '../../../../common/components/formFields'
 
@@ -56,7 +57,7 @@ export default class FacebookIntegrationDetail extends React.Component {
             return <Loader />
         }
 
-        const page = integration.get('facebook')
+        const page = integration.get('facebook', fromJS({}))
         const submitButtonClassNames = ['ui', 'green', 'button', {loading: loading.get('updateIntegration')}]
 
         return (
