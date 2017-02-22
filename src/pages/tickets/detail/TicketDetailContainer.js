@@ -17,6 +17,8 @@ import * as SettingsActions from '../../../state/settings/actions'
 import MacroContainer from '../common/macros/MacroContainer' // import that to fetch tags list
 import SocketIO from '../../common/utils/socketio'
 
+import * as viewsSelectors from '../../../state/views/selectors'
+
 class TicketDetailContainer extends React.Component {
     state = {
         isTicketHidden: false,
@@ -214,7 +216,14 @@ class TicketDetailContainer extends React.Component {
     _computeNextUrl = (ascending) => {
         let nextTicketUrl = '/app'
         const translation = ascending ? 1 : -1
-        const currentTicketIndex = this.props.views.getIn(['_internal', 'currentItemIndex'])
+        const ticketId = this.props.ticket.get('id')
+
+        if (!ticketId) {
+            return false
+        }
+
+        const currentTicketIndex = this.props.tickets.get('items', fromJS([]))
+            .findIndex(ticket => ticket.get('id') === ticketId)
 
         if (!currentTicketIndex && currentTicketIndex !== 0) {
             return false
@@ -226,7 +235,6 @@ class TicketDetailContainer extends React.Component {
 
         if (nextTicket && nextTicket.id) {
             nextTicketUrl = `/app/ticket/${nextTicket.id}`
-            this.props.actions.views.saveIndex(nextIndex)
         } else if (!activeView.isEmpty()) {
             nextTicketUrl = `/app/tickets/${activeView.get('id')}/${activeView.get('slug')}`
         }
@@ -351,7 +359,6 @@ TicketDetailContainer.propTypes = {
     ticket: PropTypes.object,
     tickets: PropTypes.object,
     users: PropTypes.object,
-    views: PropTypes.object,
 
     routing: PropTypes.object,
 
@@ -362,14 +369,13 @@ TicketDetailContainer.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        activeView: state.views.get('active', fromJS({})),
+        activeView: viewsSelectors.getActiveView(state),
         currentUser: state.currentUser,
         macros: state.macros,
         users: state.users,
         routing: state.routing,
         ticket: state.ticket,
         tickets: state.tickets,
-        views: state.views
     }
 }
 
