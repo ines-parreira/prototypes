@@ -8,7 +8,6 @@ import TicketPriority from './ticketdetails/TicketPriority'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 
-import {getTags} from '../../../../state/tags/selectors'
 import {getAgents} from '../../../../state/users/selectors'
 
 class TicketHeader extends React.Component {
@@ -16,13 +15,10 @@ class TicketHeader extends React.Component {
         const currentTicket = this.props.ticket.delete('newMessage').delete('messages').delete('state')
         const nextTicket = nextProps.ticket.delete('newMessage').delete('messages').delete('state')
 
-        const currentTags = this.props.tags
-        const nextTags = nextProps.tags
-
         const currentAgents = this.props.agents
         const nextAgents = nextProps.agents
 
-        return !currentTicket.equals(nextTicket) || !currentTags.equals(nextTags) || !currentAgents.equals(nextAgents)
+        return !currentTicket.equals(nextTicket) || !currentAgents.equals(nextAgents)
     }
 
     _toggleStatus = (status) => {
@@ -46,7 +42,7 @@ class TicketHeader extends React.Component {
     }
 
     render() {
-        const {ticket, tags, agents, actions} = this.props
+        const {ticket, agents, actions} = this.props
 
         const isUpdate = !!ticket.get('id')
 
@@ -100,7 +96,6 @@ class TicketHeader extends React.Component {
                             }
 
                             <TicketTags
-                                tags={tags.toJS()}
                                 ticketTags={ticket.get('tags')}
                                 addTags={actions.ticket.addTags}
                                 removeTag={actions.ticket.removeTag}
@@ -129,7 +124,6 @@ class TicketHeader extends React.Component {
 
 TicketHeader.propTypes = {
     ticket: PropTypes.object.isRequired,
-    tags: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
 
@@ -141,7 +135,6 @@ TicketHeader.propTypes = {
 function mapStateToProps(state) {
     return {
         agents: getAgents(state),
-        tags: getTags(state),
     }
 }
 

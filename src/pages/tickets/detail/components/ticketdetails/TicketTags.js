@@ -1,7 +1,16 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {fromJS} from 'immutable'
 import {TagLabel} from '../../../../common/utils/labels'
+import {fieldEnumSearch} from '../../../../../state/views/actions'
 
-export default class TicketTags extends React.Component {
+import _debounce from 'lodash/debounce'
+
+export class TicketTags extends React.Component {
+    state = {
+        enum: [],
+    }
+
     componentDidMount() {
         $(this.refs.tagDropdown).dropdown({
             allowAdditions: true,
@@ -9,6 +18,8 @@ export default class TicketTags extends React.Component {
                 this.update()
             }
         })
+
+        this._search()
     }
 
     update = () => {
@@ -23,8 +34,21 @@ export default class TicketTags extends React.Component {
         tagDropdown.dropdown('clear')
     }
 
+    _search = _debounce((search) => {
+        const field = fromJS({
+            filter: {type: 'tag'}
+        })
+
+        this.props.fieldEnumSearch(field, search)
+            .then((data) => {
+                this.setState({
+                    enum: data,
+                })
+            })
+    }, 300)
+
     render = () => {
-        const {tags, ticketTags, removeTag} = this.props
+        const {ticketTags, removeTag} = this.props
         const existingTagNames = this.props.ticketTags.map(x => x.get('name'))
 
         let style = {}
@@ -61,21 +85,26 @@ export default class TicketTags extends React.Component {
 
                     <div className="menu">
                         <div className="ui search input">
-                            <input id="tag-search" ref="tagSearch" type="text" placeholder="Search tags..." />
+                            <input
+                                ref="tagSearch"
+                                type="text"
+                                placeholder="Search tags..."
+                                onChange={(e) => this._search(e.target.value)}
+                            />
                         </div>
                         <div className="hidden item" key="placeholder"></div>
                         {
 
-                            tags.map((tag, i) => {
-                                if (!existingTagNames.contains(tag.name)) {
+                            this.state.enum.map((tag, i) => {
+                                if (!existingTagNames.contains(tag.get('name'))) {
                                     return (
                                         <div
                                             className="item"
                                             key={i}
-                                            data-value={tag.name}
+                                            data-value={tag.get('name')}
                                             onClick={this.update}
                                         >
-                                            {tag.name}
+                                            {tag.get('name')}
                                         </div>
                                     )
                                 }
@@ -93,8 +122,14 @@ export default class TicketTags extends React.Component {
 }
 
 TicketTags.propTypes = {
-    tags: PropTypes.array.isRequired,
     ticketTags: PropTypes.object.isRequired,
     addTags: PropTypes.func.isRequired,
-    removeTag: PropTypes.func.isRequired
+    removeTag: PropTypes.func.isRequired,
+    fieldEnumSearch: PropTypes.func.isRequired,
 }
+
+const mapDispatchToProps = {
+    fieldEnumSearch,
+}
+
+export default connect(null, mapDispatchToProps)(TicketTags)

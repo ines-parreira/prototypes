@@ -4,7 +4,7 @@ import expect from 'expect'
 import expectImmutable from 'expect-immutable'
 import { fromJS } from 'immutable'
 
-import TicketTags from '../TicketTags'
+import {TicketTags} from '../TicketTags'
 
 expect.extend(expectImmutable)
 
@@ -42,18 +42,5 @@ describe('TicketTags component', () => {
     it('should display current tags', () => {
         const ticketTagsList = component.props.children[0]
         expect(ticketTagsList.size).toBe(ticketTags.size)
-    })
-
-    it('should have all tags as options, except those in ticketTags', () => {
-        const tagsList = component.props.children[1].props.children[1].props.children[2]
-        let actualTagsListLength = 0
-
-        for (const tag of tagsList) {
-            if (tag) { // remove 'null' values from the count
-                actualTagsListLength += 1
-            }
-        }
-
-        expect(actualTagsListLength).toBe(tags.length - ticketTags.size)
     })
 })

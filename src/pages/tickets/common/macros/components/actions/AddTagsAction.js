@@ -1,11 +1,8 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import {connect} from 'react-redux'
 import TicketTags from '../../../../detail/components/ticketdetails/TicketTags'
 
-import {getTags} from '../../../../../../state/tags/selectors'
-
-class AddTagsAction extends React.Component {
+export default class AddTagsAction extends React.Component {
     splitIncomingTags = () => this.props.args.get('tags', '').split(',').filter(t => !!t)
 
     addTags = (tags) => {
@@ -22,7 +19,7 @@ class AddTagsAction extends React.Component {
     }
 
     render() {
-        const {tags, deleteAction, index} = this.props
+        const {deleteAction, index} = this.props
         const ticketTags = fromJS(this.splitIncomingTags().map(t => ({name: t})))
 
         return (
@@ -33,7 +30,6 @@ class AddTagsAction extends React.Component {
                 />
                 <h4 className="inline">ADD TAGS</h4>
                 <TicketTags
-                    tags={tags.toJS()}
                     ticketTags={ticketTags}
                     addTags={this.addTags}
                     removeTag={this.removeTag}
@@ -47,16 +43,7 @@ class AddTagsAction extends React.Component {
 
 AddTagsAction.propTypes = {
     args: PropTypes.object,
-    tags: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     updateActionArgs: PropTypes.func.isRequired,
     deleteAction: PropTypes.func.isRequired
 }
-
-function mapStateToProps(state) {
-    return {
-        tags: getTags(state),
-    }
-}
-
-export default connect(mapStateToProps)(AddTagsAction)
