@@ -1,13 +1,11 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
 import Search from '../Search'
 import {RenderLabel} from '../../utils/labels'
 import {equalityOperator, resolveLiteral, isImmutable, fieldPath} from '../../../../utils'
 import {fieldEnumSearch} from '../../../../state/views/actions'
-import _noop from 'lodash/noop'
-
-import * as schemasSelectors from '../../../../state/schemas/selectors'
 
 class FilterDropdown extends React.Component {
     constructor(props) {
@@ -20,30 +18,17 @@ class FilterDropdown extends React.Component {
     componentDidMount() {
         // trigger search on component load
         this.onSearch()
-        // wait for React to be ready before we bind anything (hence the setTimeout)
-        setTimeout(() => window.addEventListener('click', this._closeOnClickOutside), 1)
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('click', this._closeOnClickOutside)
     }
 
     onClick = (newValue) => {
         const viewConfig = this.props.viewConfig
 
-        const left = `${viewConfig.get('singular')}.${fieldPath(this.props.field)}`
-
+        const left = `${viewConfig.singular}.${fieldPath(this.props.field)}`
         this.props.addFieldFilter(this.props.field.toJS(), {
             left,
             operator: equalityOperator(left, this.props.schemas),
             right: resolveLiteral(newValue, left)
         })
-
-        // trigger add callback
-        this.props.onAdd()
-
-        // trigger close callback
-        this.props.onClose()
     }
 
     // query search from server and save it in state
@@ -59,14 +44,6 @@ class FilterDropdown extends React.Component {
                     enum: data
                 })
             })
-    }
-
-    _closeOnClickOutside = (e) => {
-        const hasClickedInComponent = this.refs.filterDropdown && $(this.refs.filterDropdown)[0].contains(e.target)
-
-        if (!hasClickedInComponent) {
-            this.props.onClose()
-        }
     }
 
     // render a search input if the field is searchable
@@ -138,11 +115,8 @@ class FilterDropdown extends React.Component {
         }
 
         return (
-            <div
-                ref="filterDropdown"
-                className="filter-dropdown"
-            >
-                <div className="ui simple dropdown active visible">
+            <div className="filter-dropdown">
+                <div ref="uicomponent" className="ui simple dropdown active visible">
                     <div className="ui vertical menu visible">
                         {this.renderSearch()}
                         {this.renderEnum()}
@@ -159,23 +133,10 @@ FilterDropdown.propTypes = {
     schemas: PropTypes.object.isRequired,
     addFieldFilter: PropTypes.func.isRequired,
     fieldEnumSearch: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
-    onAdd: PropTypes.func.isRequired,
 }
 
-FilterDropdown.defaultProps = {
-    onClose: _noop,
-    onAdd: _noop,
-}
+const mapDispatchToProps = (dispatch) => ({
+    fieldEnumSearch: bindActionCreators(fieldEnumSearch, dispatch)
+})
 
-const mapStateToProps = (state) => {
-    return {
-        schemas: schemasSelectors.getSchemas(state),
-    }
-}
-
-const mapDispatchToProps = {
-    fieldEnumSearch,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(FilterDropdown)
+export default connect(null, mapDispatchToProps)(FilterDropdown)

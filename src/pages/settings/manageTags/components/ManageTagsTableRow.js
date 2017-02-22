@@ -33,10 +33,6 @@ class ManageTagsTableRow extends Component {
     _onSave = (e) => {
         e.preventDefault()
 
-        if (!this.state.name) {
-            return window.alert('You need to give a name to that tag')
-        }
-
         const row = this.props.row
             .set('name', this.state.name)
             .set('decoration', this.state.decoration)
@@ -70,52 +66,43 @@ class ManageTagsTableRow extends Component {
 
     render() {
         const {row, meta} = this.props
-        const rowClassName = classnames('manage-tags-table-row', {
+        const rowClassName = classnames('complex-list-table-row manage-tags-table-row', {
             'manage-tags-table-row-edit': (meta.get('edit') === true)
         })
 
         return (
-            <tr className={rowClassName}>
-                <td
-                    className="cell-wrapper cell-short clickable"
-                    onClick={this._onSelect}
-                >
+            <form className={rowClassName} onSubmit={this._onSave}>
+                <label className="complex-list-table-col">
                     <span className="ui checkbox">
-                        <input
-                            type="checkbox"
-                            checked={meta.get('selected', false)}
-                        />
+                        <input type="checkbox" checked={meta.get('selected', false)} onChange={this._onSelect} value/>
                         <label />
                     </span>
-                </td>
-
-                <td className="manage-tags-table-col-name">
-                    <div className="cell-wrapper manage-tags-table-row-item">
+                </label>
+                <div className="complex-list-table-col">
+                    <div className="manage-tags-table-row-item">
                         <TagLabel
                             name={row.get('name')}
                             decoration={row.get('decoration')}
                         />
                     </div>
 
-                    <div className="cell-wrapper manage-tags-table-row-edit-item">
+                    <div className="manage-tags-table-row-edit-item">
                         <div className="ui input manage-tags-input-name">
-                            <input value={this.state.name} onChange={this._changeName} required />
+                            <input value={this.state.name} onChange={this._changeName} required/>
                         </div>
 
                         <div className="manage-tags-input-color">
-                            <InputColor value={this.state.decoration.get('color')} onChange={this._changeColor} />
+                            <InputColor value={this.state.decoration.get('color')} onChange={this._changeColor}/>
                         </div>
                     </div>
-                </td>
-
-                <td className="manage-tags-table-col-count">
-                    <div className="cell-wrapper manage-tags-table-row-item">
+                </div>
+                <div className="complex-list-table-col">
+                    <div className="manage-tags-table-row-item">
                         {row.get('count_tickets')}
                     </div>
-                </td>
-
-                <td className="manage-tags-table-col-actions">
-                    <div className="cell-wrapper manage-tags-table-row-actions">
+                </div>
+                <div className="complex-list-table-col manage-tags-table-col-actions">
+                    <div className="manage-tags-table-row-actions">
                         <button type="button" onClick={this._onEdit}
                                 className="ui light blue basic label manage-tags-action"
                         >
@@ -129,22 +116,19 @@ class ManageTagsTableRow extends Component {
                         </button>
                     </div>
 
-                    <div className="cell-wrapper manage-tags-table-row-edit-item">
+                    <div className="manage-tags-table-row-edit-item">
                         <button type="button" onClick={this._onCancel}
                                 className="ui light blue basic label manage-tags-action"
                         >
                             Cancel
                         </button>
 
-                        <button
-                            className="ui light green basic label manage-tags-action"
-                            onClick={this._onSave}
-                        >
+                        <button type="submit" className="ui light green basic label manage-tags-action">
                             Save changes
                         </button>
                     </div>
-                </td>
-            </tr>
+                </div>
+            </form>
         )
     }
 }

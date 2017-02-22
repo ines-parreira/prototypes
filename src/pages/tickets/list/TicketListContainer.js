@@ -1,19 +1,14 @@
 import React, {PropTypes} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
+import {fromJS} from 'immutable'
+import {bindActionCreators} from 'redux'
+import {fetchTags} from '../../../state/tags/actions'
 import MacroContainer from '../common/macros/MacroContainer'
+import ComplexTableWrapper from '../../common/components/complexTable/ComplexTableWrapper'
 import {compactInteger} from '../../../utils'
 import {isCreationUrl} from '../../common/utils/url'
-
-import * as tagsActions from '../../../state/tags/actions'
-import * as viewsActions from '../../../state/views/actions'
-
-import * as ticketsSelectors from '../../../state/tickets/selectors'
-import * as viewsSelectors from '../../../state/views/selectors'
-
 import TicketListActions from './components/TicketListActions'
-import ViewTable from '../../common/components/ViewTable/Page'
 
 class TicketListContainer extends React.Component {
     state = {
@@ -32,7 +27,8 @@ class TicketListContainer extends React.Component {
 
     render() {
         const {isUpdate} = this.state
-        const {tickets, urlViewId, activeView, hasActiveView} = this.props
+        const activeView = this.props.views.get('active', fromJS({}))
+        const hasActiveView = !activeView.isEmpty()
         let title = 'Loading...'
 
         if (!isUpdate) {
@@ -48,22 +44,19 @@ class TicketListContainer extends React.Component {
 
         return (
             <DocumentTitle title={title}>
-                <div style={{height: '100%'}}>
-                    <ViewTable
-                        key="table"
-                        type="ticket"
-                        items={tickets}
-                        view={activeView}
+                <div className="TicketListContainer">
+                    <ComplexTableWrapper
                         isUpdate={isUpdate}
-                        urlViewId={urlViewId}
+                        askedViewId={this.props.params.viewId}
+                        viewsType="ticket-list"
+                        items={this.props.tickets.get('items', fromJS([]))}
+                        hasBulkActions={!activeView.get('editMode', false)}
                         ActionsComponent={TicketListActions}
                     />
                     <MacroContainer
-                        key="macros"
                         activeView={activeView}
-                        disableExternalActions
-                        selectionMode
-                        selectedItemsIds={this.props.selectedItemsIds}
+                        disableExternalActions selectionMode
+                        selectedItemsIds={this.props.views.getIn(['_internal', 'selectedItemsIds'])}
                     />
                 </div>
             </DocumentTitle>
@@ -72,34 +65,26 @@ class TicketListContainer extends React.Component {
 }
 
 TicketListContainer.propTypes = {
-    activeView: ImmutablePropTypes.map.isRequired,
-    hasActiveView: PropTypes.bool.isRequired,
-    fetchTags: PropTypes.func.isRequired,
-    location: PropTypes.object,
-    params: PropTypes.object,
-    selectedItemsIds: ImmutablePropTypes.list.isRequired,
     tickets: PropTypes.object.isRequired,
-    urlViewId: PropTypes.string,
     views: PropTypes.object.isRequired,
+    fetchTags: PropTypes.func.isRequired,
+
+    // React Router
+    params: PropTypes.object,
+    location: PropTypes.object
 }
 
-function mapStateToProps(state, ownProps) {
-    const urlViewId = ownProps.params.viewId
-
+function mapStateToProps(state) {
     return {
-        activeView: viewsSelectors.getActiveView(state),
-        getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
-        hasActiveView: viewsSelectors.hasActiveView(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-        tickets: ticketsSelectors.getTickets(state),
-        urlViewId,
+        tickets: state.tickets,
         views: state.views,
     }
 }
 
-const mapDispatchToProps = {
-    fetchTags: tagsActions.fetchTags,
-    fetchPage: viewsActions.fetchPage,
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchTags: bindActionCreators(fetchTags, dispatch),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketListContainer)

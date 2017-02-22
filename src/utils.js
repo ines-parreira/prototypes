@@ -9,7 +9,6 @@ import _uniq from 'lodash/uniq'
 import _compact from 'lodash/compact'
 
 import React from 'react'
-import {createSelectorCreator, defaultMemoize} from 'reselect'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
@@ -18,7 +17,7 @@ import sanitizeHtml from 'sanitize-html'
 import {convertToHTML as _convertToHTML} from 'draft-convert'
 import Immutable, {fromJS} from 'immutable'
 import md5 from 'md5'
-import {ACTION_TEMPLATES} from './config'
+import {VIEW_FIELDS, ACTION_TEMPLATES} from './config'
 
 /**
  * Serialize an object and return it's md5 hash.
@@ -354,6 +353,12 @@ export function convertToHTML(contentState) {
 }
 
 /**
+ * Return view fields for a specific view type
+ * @param viewType
+ */
+export const viewFields = (viewType) => fromJS(VIEW_FIELDS).get(viewType, fromJS([]))
+
+/**
  * Return true if passed object is immutable (from Immutable JS)
  * @param object
  */
@@ -541,11 +546,6 @@ export function emoji(emojiContainer) {
 export function getActionTemplate(actionName) {
     return ACTION_TEMPLATES.find(template => template.name === actionName) || {}
 }
-
-export const createImmutableSelector = createSelectorCreator(
-    defaultMemoize,
-    Immutable.is,
-)
 
 export function loadScript(url, callback) {
     const elem = document.createElement('script')

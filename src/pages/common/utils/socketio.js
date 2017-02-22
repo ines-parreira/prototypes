@@ -167,11 +167,6 @@ export default class SocketIO {
     }
 
     join = (args) => {
-        // if no object id, we don't join anything
-        if (!args.objectId) {
-            return
-        }
-
         const object = {
             ...args,
             event: 'join-room',
@@ -192,11 +187,6 @@ export default class SocketIO {
     }
 
     leave = (args) => {
-        // if no object id, we don't join anything
-        if (!args.objectId) {
-            return
-        }
-
         const object = {
             ...args,
             event: 'leave-room',

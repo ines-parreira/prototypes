@@ -1,10 +1,7 @@
 import React, {PropTypes} from 'react'
-import {connect} from 'react-redux'
 import CallExpression from './CallExpression'
 
-import * as schemasSelectors from '../../../../../state/schemas/selectors'
-
-export class ViewFilters extends React.Component {
+export default class ViewFilters extends React.Component {
     removeCondition = (index) => {
         this.props.removeFieldFilter(index)
     }
@@ -69,11 +66,3 @@ ViewFilters.propTypes = {
     currentUser: PropTypes.object.isRequired,
     updateFieldFilter: PropTypes.func.isRequired
 }
-
-const mapStateToProps = (state) => {
-    return {
-        schemas: schemasSelectors.getSchemas(state),
-    }
-}
-
-export default connect(mapStateToProps)(ViewFilters)

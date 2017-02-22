@@ -1,32 +1,20 @@
 import React, {PropTypes} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
+import {fromJS} from 'immutable'
+import ComplexTableWrapper from '../../common/components/complexTable/ComplexTableWrapper'
 import {compactInteger} from '../../../utils'
 import {isCreationUrl} from '../../common/utils/url'
+import UserListActions from './components/UserListActions'
+
 import {getUsers} from '../../../state/users/selectors'
 
-import * as viewsActions from '../../../state/views/actions'
-import * as viewsSelectors from '../../../state/views/selectors'
-
-import UserListActions from './components/UserListActions'
-import ViewTable from '../../common/components/ViewTable/Page'
-
 class UserListContainer extends React.Component {
-    state = {
-        isUpdate: true
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            isUpdate: !isCreationUrl(nextProps.location.pathname, 'users')
-        })
-    }
-
     render() {
-        const {isUpdate} = this.state
-        const {users, urlViewId, activeView, hasActiveView} = this.props
+        const activeView = this.props.views.get('active', fromJS({}))
         let title = 'Loading...'
+        const hasActiveView = !activeView.isEmpty()
+        const isUpdate = !isCreationUrl(this.props.location.pathname, 'users')
 
         if (!isUpdate) {
             title = 'New view'
@@ -41,47 +29,34 @@ class UserListContainer extends React.Component {
 
         return (
             <DocumentTitle title={title}>
-                <ViewTable
-                    type="user"
-                    items={users}
-                    view={activeView}
-                    isUpdate={isUpdate}
-                    urlViewId={urlViewId}
-                    ActionsComponent={UserListActions}
-                />
+                <div className="UserListContainer">
+                    <ComplexTableWrapper
+                        isUpdate={isUpdate}
+                        askedViewId={this.props.params.viewId}
+                        viewsType="user-list"
+                        items={this.props.users}
+                        hasBulkActions={!activeView.get('editMode', false)}
+                        ActionsComponent={UserListActions}
+                    />
+                </div>
             </DocumentTitle>
         )
     }
 }
 
 UserListContainer.propTypes = {
-    activeView: ImmutablePropTypes.map.isRequired,
-    hasActiveView: PropTypes.bool.isRequired,
-    location: PropTypes.object,
-    params: PropTypes.object,
-    urlViewId: PropTypes.string,
-    users: PropTypes.object.isRequired,
     views: PropTypes.object.isRequired,
+    users: PropTypes.object.isRequired,
+
+    // React Router
+    params: PropTypes.object,
+    location: PropTypes.object
 }
 
-const mapStateToProps = (state, ownProps) => {
-    const urlViewId = ownProps.params.viewId
-
+function mapStateToProps(state) {
     return {
-        getView: viewsSelectors.makeGetView(state),
-        getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
-        activeView: viewsSelectors.getActiveView(state),
-        hasActiveView: viewsSelectors.hasActiveView(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-        users: getUsers(state),
-        urlViewId,
         views: state.views,
+        users: getUsers(state),
     }
 }
-
-const mapDispatchToProps = {
-    setViewActive: viewsActions.setViewActive,
-    fetchPage: viewsActions.fetchPage,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserListContainer)
+export default connect(mapStateToProps)(UserListContainer)

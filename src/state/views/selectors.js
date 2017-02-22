@@ -1,58 +1,21 @@
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
-import {createImmutableSelector} from '../../utils'
 import {sortViews} from './utils'
-import {views as viewsConfig} from '../../config'
 import {getSettingsByType as getCurrentUserSettingsByType} from '../currentUser/selectors'
 
 export const getViewsState = state => state.views || fromJS({})
 
-export const getViews = createImmutableSelector(
+export const getViews = createSelector(
     [getViewsState],
     state => state.get('items', fromJS([]))
 )
 
-export const getActiveView = createImmutableSelector(
+export const getActiveView = createSelector(
     [getViewsState],
     state => state.get('active') || fromJS({})
 )
 
-export const hasActiveView = createSelector(
-    [getActiveView],
-    state => !state.isEmpty()
-)
-
-export const hasActiveViewOfType = type => createSelector(
-    [hasActiveView, getActiveView],
-    (isActive, activeView) => isActive && activeView.get('type') === type
-)
-
-export const isDirty = createSelector(
-    [getActiveView],
-    state => state.get('dirty') || false
-)
-
-export const isEditMode = createSelector(
-    [getActiveView],
-    state => state.get('editMode') || false
-)
-
-export const getActiveViewType = createSelector(
-    [getActiveView],
-    state => state.get('type') || ''
-)
-
-export const getActiveViewOrderDirection = createSelector(
-    [getActiveView],
-    state => state.get('order_dir') || ''
-)
-
-export const getActiveViewOrderBy = createSelector(
-    [getActiveView],
-    state => state.get('order_by') || ''
-)
-
-export const getActiveViewSearch = createImmutableSelector(
+export const getActiveViewSearch = createSelector(
     [getActiveView],
     state => state.get('search') || ''
 )
@@ -62,123 +25,35 @@ export const getActiveViewFilters = createSelector(
     state => state.get('filters') || ''
 )
 
-/**
- * Retrieve the "active" view from views list instead of the one register in "active" property of the state
- * This way we have the pristine view which is currently active, before it has been copied in the "active" property and
- * probably modified
- */
-export const getPristineActiveView = createImmutableSelector(
-    [getViews, getActiveView],
-    (views, activeView) => views.find(v => v.get('id') === activeView.get('id')) || fromJS({})
+export const getView = id => createSelector(
+    [getViews],
+    views => views.find((view) => view.get('id') === id, null, fromJS({}))
 )
 
-export const getSelectedItemsIds = createImmutableSelector(
+export const makeGetView = state => id => getView(id)(state)
+
+export const getSelectedItemsIds = createSelector(
     [getViewsState],
     state => state.getIn(['_internal', 'selectedItemsIds'], fromJS([]))
 )
 
-export const getPagination = createImmutableSelector(
-    [getViewsState],
-    state => state.getIn(['_internal', 'pagination'], fromJS({}))
-)
-
-export const getLoading = createSelector(
-    [getViewsState],
-    state => state.getIn(['_internal', 'loading'], fromJS({}))
-)
-
-// in props usage
-// ex: isMerging: isLoading('merge')(state)
-export const isLoading = name => createSelector(
-    [getLoading],
-    loading => loading.get(name, false)
-)
-
-// in component usage
-// ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
-export const makeIsLoading = state => name => isLoading(name)(state)
-
-export const getViewConfig = name => {
-    const config = viewsConfig.find(item => item.get('name') === name)
-
-    if (!config) {
-        console.error(`There is no view configuration for name "${name}"`)
-        return fromJS({})
-    }
-
-    return config
-}
-
-export const getViewConfigByType = type => {
-    const config = viewsConfig.find(item => item.get('type') === type)
-
-    if (!config) {
-        console.error(`There is no view configuration for type "${type}"`)
-        return fromJS({})
-    }
-
-    return config
-}
-
-export const getViewsByType = type => createImmutableSelector(
+export const getViewsByType = type => createSelector(
     [getViews, getCurrentUserSettingsByType(type.replace('list', 'views'))],
-    (views, currentUserSettings) => {
-        return views
-        // keep only views of asked type
-            .filter(view => view.get('type') === type)
-            // update views according to current user settings
-            .map((view) => {
-                const viewId = view.get('id')
-                const viewSetting = currentUserSettings.getIn(['data', viewId.toString()], fromJS({}))
+    (views, currentUserSettings) => views
+    // keep only views of asked type
+        .filter(view => view.get('type') === type)
+        // update views according to current user settings
+        .map((view) => {
+            const viewId = view.get('id')
+            const viewSetting = currentUserSettings.getIn(['data', viewId.toString()], fromJS({}))
 
-                const hide = viewSetting.get('hide', false)
-                const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
+            const hide = viewSetting.get('hide', false)
+            const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
 
-                return view
-                    .set('hide', hide)
-                    .set('display_order', displayOrder)
-            })
-            // sort views by display order
-            .sort(sortViews)
-    }
+            return view
+                .set('hide', hide)
+                .set('display_order', displayOrder)
+        })
+        // sort views by display order
+        .sort(sortViews)
 )
-
-export const getViewIdToDisplay = (type, urlViewId) => createSelector(
-    [getViewsByType(type)],
-    (views) => {
-        if (urlViewId) {
-            return parseInt(urlViewId)
-        }
-
-        if (views.isEmpty()) {
-            return null
-        }
-
-        return parseInt(views.first().get('id'))
-    }
-)
-
-export const makeGetViewIdToDisplay = state => (type, urlViewId) => getViewIdToDisplay(type, urlViewId)(state)
-
-/**
- * Return view of asked id, if id is 'new' it generates a new view according to config
- * @param id {String}
- * @param configName {String} - optional
- */
-export const getView = (id, configName = '') => createImmutableSelector(
-    [getViews],
-    views => {
-        if (id === 'new' || !id) {
-            if (!configName) {
-                console.error(`Can't get new view with config name "${configName}"`)
-                return fromJS({})
-            }
-
-            return getViewConfig(configName).get('newView')()
-        }
-
-        return views.find(view => view.get('id') === parseInt(id), null, fromJS({}))
-    }
-)
-
-export const makeGetView = state => (id, configName) => getView(id, configName)(state)

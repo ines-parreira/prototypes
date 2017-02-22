@@ -1,7 +1,6 @@
 import {fromJS} from 'immutable'
 import * as types from './constants'
 import {getCode} from '../../utils'
-import {shouldUpdateView} from '../activity/utils'
 import SocketIO from '../../pages/common/utils/socketio'
 import {
     addFilterAST,
@@ -9,7 +8,6 @@ import {
     updateFilterOperator,
     updateFilterValue
 } from './utils'
-import * as selectors from './selectors'
 
 export const initialState = fromJS({
     items: [],
@@ -29,7 +27,7 @@ export default (state = initialState, action) => {
     let items
     let ast = ''
     let code = ''
-    let activeView = state.get('active', fromJS({}))
+    let active = state.get('active', fromJS({}))
 
     switch (action.type) {
         case types.SET_VIEW_ACTIVE: {
@@ -43,94 +41,75 @@ export default (state = initialState, action) => {
         }
 
         case types.UPDATE_VIEW: {
-            const view = action.view || activeView
-            return state.set('active', view.set('dirty', true).set('editMode', action.edit))
+            // edit is true by default,
+            // for backwards compatibility.
+            return state.set('active', action.view.set('dirty', true).set('editMode', action.edit))
         }
 
         case types.SET_FIELD_VISIBILITY: {
-            const visibleFields = activeView.get('fields', fromJS([]))
+            const visibleFields = active.get('fields', fromJS([]))
 
             const fields = action.state
                 ? visibleFields.push(action.name)
                 : visibleFields.delete(visibleFields.indexOf(action.name))
 
-            activeView = activeView.set('fields', fields)
+            active = active
+                .set('fields', fields)
+                .set('editMode', true)
 
-            return state.set('active', activeView)
-        }
-
-        case types.SET_ORDER_DIRECTION: {
-            return state.set('active', activeView.merge({
-                order_by: action.fieldPath,
-                order_dir: action.direction,
-            }))
+            return state.set('active', active)
         }
 
         case types.ADD_VIEW_FIELD_FILTER: {
             // given a filter and our code+ast => generate new code/ast and save it to the state
-            ast = addFilterAST(activeView, action.filter)
+            ast = addFilterAST(active, action.filter)
             code = getCode(ast.toJS())
-            activeView = activeView.set('filters_ast', ast).set('filters', code)
+            active = active.set('filters_ast', ast).set('filters', code)
 
             // enter edit mode
-            activeView = activeView.set('editMode', true)
+            active = active.set('editMode', true)
 
-            return state.set('active', activeView.set('dirty', true))
+            return state.set('active', active.set('dirty', true))
         }
 
         case types.REMOVE_VIEW_FIELD_FILTER: {
-            ast = removeFilterAST(activeView, action.index)
+            ast = removeFilterAST(active, action.index)
             if (ast) {
                 code = getCode(ast.toJS())
             }
-            activeView = activeView.set('filters_ast', ast).set('filters', code)
-            return state.set('active', activeView.set('dirty', true))
+            active = active.set('filters_ast', ast).set('filters', code)
+            return state.set('active', active.set('dirty', true))
         }
 
         case types.UPDATE_VIEW_FIELD_FILTER: {
-            ast = updateFilterValue(activeView, action.index, action.value)
+            ast = updateFilterValue(active, action.index, action.value)
             code = getCode(ast.toJS())
-            activeView = activeView.set('filters_ast', ast).set('filters', code)
-            return state.set('active', activeView.set('dirty', true))
+            active = active.set('filters_ast', ast).set('filters', code)
+            return state.set('active', active.set('dirty', true))
         }
 
         case types.UPDATE_VIEW_FIELD_FILTER_OPERATOR: {
-            ast = updateFilterOperator(activeView, action.index, action.operator)
+            ast = updateFilterOperator(active, action.index, action.operator)
             code = getCode(ast.toJS())
-            activeView = activeView.set('filters_ast', ast).set('filters', code)
-            return state.set('active', activeView.set('dirty', true))
+            active = active.set('filters_ast', ast).set('filters', code)
+            return state.set('active', active.set('dirty', true))
         }
 
         case types.RESET_VIEW: {
             // find the original view from the state and replace the active view
-            let original = selectors.getView(activeView.get('id'), action.configName)({views: state})
-
-            // if it's a new view, it's ID should be 0
-            const isUpdate = original.get('id') !== 0
-
-            if (isUpdate) {
-                // if is updating an existing view, on reset we close edition panel
-                original = original.set('dirty', false).set('editMode', false)
-            } else {
-                // if creating a new viw, on reset we keep the edition panel open
-                original = original.set('dirty', true).set('editMode', true)
-            }
-
-            return state.set('active', original)
+            const original = state.get('items').find(v => v.get('id') === active.get('id'), null, fromJS({}))
+            return state.set('active', original.set('dirty', false))
         }
 
         case types.SUBMIT_UPDATE_VIEW_SUCCESS: {
             const updatedView = fromJS(action.resp)
             // we need to replace the old view with the new one
             items = state.get('items')
-            const replaceIndex = items.findIndex(v => v.get('id') === updatedView.get('id'))
-            let newState = state.setIn(['items', replaceIndex], updatedView)
-
-            if (shouldUpdateView(updatedView.get('id'), state)) {
-                newState = newState.set('active', updatedView.set('dirty', false))
-            }
-
-            return newState
+            const replaceIndex = items.findIndex(v => (v.get('id') === updatedView.get('id')))
+            return state.merge({
+                items: items.delete(replaceIndex).push(updatedView),
+                active: updatedView.set('dirty', false)
+            })
         }
 
         case types.SUBMIT_NEW_VIEW_SUCCESS: {
@@ -154,12 +133,12 @@ export default (state = initialState, action) => {
 
             // also populate the active view state
             if (action.currentViewId) {
-                activeView = items.find(item => item.get('id') === parseInt(action.currentViewId), null, fromJS({}))
+                active = items.find(item => item.get('id') === parseInt(action.currentViewId), null, fromJS({}))
             }
 
             return state.merge({
                 items,
-                active: activeView,
+                active,
                 loading: false
             })
         }
@@ -203,7 +182,7 @@ export default (state = initialState, action) => {
             const currentlySelected = state.getIn(['_internal', 'selectedItemsIds'], fromJS([]))
 
             // if it is a "select all" action where we select every items
-            if (action.selectAll) {
+            if (action.selectedAll) {
                 if (currentlySelected.size < action.idOrIds.size) {
                     return state.setIn(['_internal', 'selectedItemsIds'], action.idOrIds)
                 }
@@ -225,6 +204,10 @@ export default (state = initialState, action) => {
         case types.BULK_DELETE_SUCCESS: {
             return state
                 .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
+        }
+
+        case types.SAVE_INDEX: {
+            return state.setIn(['_internal', 'currentItemIndex'], action.currentItemIndex)
         }
 
         case types.SET_PAGE: {

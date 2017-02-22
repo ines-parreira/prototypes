@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {fromJS} from 'immutable'
-import {fetchPage} from '../../state/views/actions'
+import {fetchPage} from '../views/actions'
 import {notify} from '../../state/notifications/actions'
 import * as currentAccountTypes from '../currentAccount/constants'
 import * as billingTypes from '../billing/constants'
@@ -8,8 +8,6 @@ import * as viewsTypes from '../views/constants'
 import * as types from './constants'
 import {shouldUpdateView} from './utils'
 import {isCurrentlyOnTicket, toQueryParams} from '../../utils'
-
-import * as viewsSelectors from '../views/selectors'
 
 const notificationSoundData = require('../../../audio/notification.mp3')
 const notificationSound = new Audio(notificationSoundData)
@@ -45,9 +43,8 @@ export const pollActivity = () => (dispatch, getState) => {
     return axios.get(`/api/activity/?${toQueryParams(params)}`, {timeout: 10000})
         .then((json = {}) => json.data)
         .then((resp = {}) => {
-            const _state = getState()
             // renaming variables since they are already used in upper scope
-            const {views: _views} = _state
+            const {views: _views} = getState()
             const prevGitCommit = activity.get('git_commit')
 
             if (resp.git_commit && resp.git_commit !== prevGitCommit) {
@@ -109,8 +106,8 @@ export const pollActivity = () => (dispatch, getState) => {
             // if currently on a view, ask for its auto refresh
             const _activeViewId = _views.getIn(['active', 'id'])
             if (shouldUpdateView(_activeViewId, _views)) {
-                const isFetchingView = viewsSelectors.isLoading('fetchList')(_state)
-                    || viewsSelectors.isLoading('fetchListDiscreet')(_state)
+                const isFetchingView = _views.getIn(['_internal', 'loading', 'fetchList'], false)
+                    || _views.getIn(['_internal', 'loading', 'fetchListDiscreet'], false)
 
                 // don't fetch view if it is currently fetching
                 if (!isFetchingView) {

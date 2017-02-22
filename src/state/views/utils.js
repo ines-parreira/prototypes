@@ -80,3 +80,4 @@ export function sortViews(view1, view2) {
 
     return view1.get('display_order', 0) - view2.get('display_order', 0)
 }
+

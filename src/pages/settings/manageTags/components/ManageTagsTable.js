@@ -51,56 +51,46 @@ class ManageTagsTable extends Component {
         const sortedRows = this._sortRows(rows.get('items'), sort, reverse)
 
         return (
-            <table className="main-table view-table">
-                <thead>
-                    <tr>
-                        <td
-                            className="cell-wrapper cell-short clickable"
-                            onClick={onSelectAll}
-                        >
-                            <span className="ui checkbox">
-                                <input
-                                    type="checkbox"
-                                    checked={rows.getIn(['_internal', 'selectAll'], false)}
-                                />
-                                <label />
-                            </span>
-                        </td>
-                        {columns.map((column, i) => (
-                            <td key={i}>
-                                <div>
-                                    <div className={`cell-wrapper manage-tags-table-col-${column.field}`}>
-                                        <div onClick={this._onSort(column.field)}>
-                                            <span className="clickable filterable">
-                                                {column.title}
-                                            </span>
-                                            <i className={this._sortIconClassName(sort, reverse, column.field)} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        ))}
-                        <td></td>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {
-                        sortedRows.map((tag, i) => (
-                            <ManageTagsTableRow
-                                key={i}
-                                row={tag}
-                                meta={rows.getIn(['meta', tag.get('id')]) || fromJS({})}
-                                onEdit={onEdit}
-                                onSave={onSave}
-                                onCancel={onCancel}
-                                onRemove={onRemove}
-                                onSelect={onSelect}
+            <div className="manage-tags-table complex-list-table ui selectable very basic table">
+                <div className="complex-list-table-row complex-list-table-header">
+                    <label className="complex-list-table-col manage-tags-table-col-checkbox">
+                        <span className="ui checkbox">
+                            <input type="checkbox"
+                                   checked={rows.getIn(['_internal', 'selectAll'], false)}
+                                   onChange={onSelectAll}
                             />
-                        ))
-                    }
-                </tbody>
-            </table>
+                            <label />
+                        </span>
+                    </label>
+
+                    {columns.map((column, i) => (
+                        <div className={`complex-list-table-col manage-tags-table-col-${column.field}`} key={i}>
+                            <span className="plain-column-header-label">
+                                {column.title}
+
+                                <i className={this._sortIconClassName(sort, reverse, column.field)}
+                                   onClick={this._onSort(column.field)}
+                                />
+                            </span>
+                        </div>
+                    ))}
+                    <div className="complex-list-table-col"></div>
+                </div>
+                {
+                    sortedRows.map((tag, i) => (
+                        <ManageTagsTableRow
+                            key={i}
+                            row={tag}
+                            meta={rows.getIn(['meta', tag.get('id')]) || fromJS({})}
+                            onEdit={onEdit}
+                            onSave={onSave}
+                            onCancel={onCancel}
+                            onRemove={onRemove}
+                            onSelect={onSelect}
+                        />
+                    ))
+                }
+            </div>
         )
     }
 }

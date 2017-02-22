@@ -1,39 +1,17 @@
 import React, {PropTypes} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
-import {connect} from 'react-redux'
+import ViewFilters from './ComplexTableFilters'
 import {browserHistory} from 'react-router'
+import {slugify, getPluralObjectName} from '../../../../utils'
 import classNames from 'classnames'
-
-import Filters from './Filters'
-import {slugify} from '../../../../utils'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
-import * as viewsActions from '../../../../state/views/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
-import * as usersSelectors from '../../../../state/users/selectors'
-
-class FilterTopbar extends React.Component {
-    static propTypes = {
-        activeView: ImmutablePropTypes.map.isRequired,
-        agents: PropTypes.object.isRequired,
-        config: ImmutablePropTypes.map.isRequired,
-        currentUser: PropTypes.object.isRequired,
-        fetchPage: PropTypes.func.isRequired,
-        isUpdate: PropTypes.bool.isRequired,
-        pristineActiveView: ImmutablePropTypes.map.isRequired,
-        removeFieldFilter: PropTypes.func.isRequired,
-        updateFieldFilter: PropTypes.func.isRequired,
-        updateFieldFilterOperator: PropTypes.func.isRequired,
-        resetView: PropTypes.func.isRequired,
-        submitView: PropTypes.func.isRequired,
-    }
-
+export default class FilterTopbar extends React.Component {
     state = {
         isSubmitting: false
     }
 
     _onClickUpdate = () => {
-        const activeView = this.props.activeView
+        const activeView = this.props.views.get('active')
 
         if (window.confirm('You\'re about to edit this view for all users. Are you sure?')) {
             this.setState({
@@ -49,8 +27,10 @@ class FilterTopbar extends React.Component {
             isSubmitting: true
         })
 
-        let activeView = this.props.activeView
-        const original = this.props.pristineActiveView
+        let activeView = this.props.views.get('active')
+        const original = this.props.views
+            .get('items')
+            .find(v => v.get('id') === activeView.get('id'))
 
         // new means it has no id set
         activeView = activeView.delete('id')
@@ -70,14 +50,13 @@ class FilterTopbar extends React.Component {
     }
 
     _cancel = () => {
-        const {config, isUpdate, fetchPage, resetView} = this.props
+        const {isUpdate, views, resetView} = this.props
+        const objectName = getPluralObjectName(views.getIn(['active', 'type'], 'ticket-list'))
+
         if (isUpdate) {
-            // if is updating an existing view, on cancel we reset current view
             resetView()
-            fetchPage(1)
         } else {
-            // if is updating an existing view, on cancel we leave edition
-            browserHistory.push(`/app/${config.get('routeList')}/`)
+            browserHistory.push(`/app/${objectName}/`)
         }
     }
 
@@ -86,7 +65,7 @@ class FilterTopbar extends React.Component {
             isSubmitting: true
         })
 
-        let activeView = this.props.activeView
+        let activeView = this.props.views.get('active')
         // new means it has no id set
         activeView = activeView
             .delete('id')
@@ -106,8 +85,9 @@ class FilterTopbar extends React.Component {
     }
 
     render() {
-        const {activeView, isUpdate, agents, currentUser} = this.props
+        const {isUpdate, views, agents, currentUser, updateFieldFilter} = this.props
         const {isSubmitting} = this.state
+        const activeView = views.get('active')
         const buttonClass = classNames('ui', 'button', {loading: this.state.isSubmitting})
         if (!activeView.get('editMode')) {
             return null
@@ -116,22 +96,14 @@ class FilterTopbar extends React.Component {
         return (
             <div className="filter-topbar">
                 <div className="filter-topbar-content">
-                    <Filters
+                    <ViewFilters
                         view={activeView}
-                        removeFieldFilter={(...args) => {
-                            this.props.removeFieldFilter(...args)
-                            this.props.fetchPage(1)
-                        }}
-                        updateFieldFilterOperator={(...args) => {
-                            this.props.updateFieldFilterOperator(...args)
-                            this.props.fetchPage(1)
-                        }}
+                        removeFieldFilter={this.props.removeFieldFilter}
+                        updateFieldFilterOperator={this.props.updateFieldFilterOperator}
+                        schemas={this.props.schemas}
                         agents={agents}
                         currentUser={currentUser}
-                        updateFieldFilter={(...args) => {
-                            this.props.updateFieldFilter(...args)
-                            this.props.fetchPage(1)
-                        }}
+                        updateFieldFilter={updateFieldFilter}
                     />
 
                     <button
@@ -139,7 +111,7 @@ class FilterTopbar extends React.Component {
                         className="filter-topbar-close"
                         onClick={this._cancel}
                     >
-                        <i className="icon remove large" />
+                        <i className="icon remove large"/>
                     </button>
                 </div>
                 <div className="filter-topbar-actions">
@@ -170,7 +142,7 @@ class FilterTopbar extends React.Component {
                         </button>
                     }
                     <span className="ml15 text-light-black">
-                        <i className="info circle icon" />
+                        <i className="info circle icon"/>
                         Click on a column's name to add a filter.
                     </span>
 
@@ -186,28 +158,16 @@ class FilterTopbar extends React.Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        agents: usersSelectors.getAgents(state),
-        activeView: viewsSelectors.getActiveView(state),
-        config: viewsSelectors.getViewConfig(ownProps.type),
-        currentUser: state.currentUser,
-        isEditMode: viewsSelectors.isEditMode(state),
-        pristineActiveView: viewsSelectors.getPristineActiveView(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-    }
-}
+FilterTopbar.propTypes = {
+    views: PropTypes.object.isRequired,
+    schemas: PropTypes.object.isRequired,
+    submitView: PropTypes.func.isRequired,
+    resetView: PropTypes.func.isRequired,
+    removeFieldFilter: PropTypes.func.isRequired,
+    updateFieldFilter: PropTypes.func.isRequired,
+    updateFieldFilterOperator: PropTypes.func.isRequired,
 
-const mapDispatchToProps = {
-    deleteView: viewsActions.deleteView,
-    fetchPage: viewsActions.fetchPage,
-    toggleSelection: viewsActions.toggleSelection,
-    updateView: viewsActions.updateView,
-    removeFieldFilter: viewsActions.removeFieldFilter,
-    resetView: viewsActions.resetView,
-    submitView: viewsActions.submitView,
-    updateFieldFilter: viewsActions.updateFieldFilter,
-    updateFieldFilterOperator: viewsActions.updateFieldFilterOperator,
+    agents: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    isUpdate: PropTypes.bool.isRequired
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(FilterTopbar)

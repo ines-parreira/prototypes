@@ -1,10 +1,5 @@
 import {makeGetProperty} from './state/ticket/selectors'
 
-
-// TODO @jebarjonet switch all configuration to modular version
-export * as constants from './config/constants'
-export views from './config/views'
-
 /**
  * Action related
  */
@@ -43,6 +38,25 @@ export const EMPTY_OPERATORS = {
     },
     isNotEmpty: {
         label: 'is not empty'
+    }
+}
+
+export const VIEW_TYPE_CONFIGURATION = {
+    'ticket-list': {
+        type: 'ticket-list',
+        routeItem: 'ticket', // UI route for this object
+        routeList: 'tickets', // UI route for the list of those objects
+        api: 'tickets', // api endpoint for this object
+        singular: 'ticket', // singular version for sentences
+        plural: 'tickets' // plural version for sentences
+    },
+    'user-list': {
+        type: 'user-list',
+        routeItem: 'user',
+        routeList: 'users',
+        api: 'users',
+        singular: 'user',
+        plural: 'users'
     }
 }
 
@@ -536,6 +550,134 @@ export const NOTIFICATIONS_STYLE_CONFIG = {
     }
 }
 
+export const VIEW_FIELDS = {
+    'ticket-list': [
+        // temporary disable priority in views
+        // {
+        //     name: 'priority',
+        //     title: 'Priority',
+        // },
+        {
+            name: 'details',
+            title: 'Details',
+        },
+        {
+            name: 'subject',
+            title: 'Subject',
+        },
+        {
+            name: 'from',
+            title: 'From',
+        },
+        {
+            name: 'to',
+            title: 'To',
+        },
+        {
+            name: 'tags',
+            title: 'Tags',
+            path: 'tags.name', // specify if different from name and if used in filters
+            filter: {
+                type: 'tag',
+            }
+        },
+        {
+            name: 'requester',
+            title: 'Requester',
+            path: 'requester.id',
+            filter: {
+                type: 'user',
+            }
+        },
+        {
+            name: 'assignee',
+            title: 'Assignee',
+            path: 'assignee_user.id',
+            filter: {
+                type: 'agent',
+            }
+        },
+        {
+            name: 'status',
+            title: 'Status',
+            filter: {
+                enum: TICKET_STATUSES
+            }
+        },
+        {
+            name: 'via',
+            title: 'Via',
+            filter: {
+                enum: VIA
+            }
+        },
+        {
+            name: 'channel',
+            title: 'Channel',
+            filter: {
+                enum: CHANNELS
+            }
+        },
+        {
+            name: 'created',
+            title: 'Created',
+            path: 'created_datetime',
+            filter: {
+                sort: {
+                    created_datetime: 'desc'
+                }
+            }
+        },
+        {
+            name: 'updated',
+            title: 'Updated',
+            path: 'updated_datetime',
+            filter: {
+                sort: {
+                    updated_datetime: 'desc'
+                }
+            }
+        },
+    ],
+    'user-list': [
+        {
+            name: 'name',
+            title: 'Name',
+        },
+        {
+            name: 'email',
+            title: 'Email',
+        },
+        {
+            name: 'roles',
+            title: 'Role',
+            path: 'roles.name',
+            filter: {
+                enum: ['user', 'agent', 'admin']
+            }
+        },
+        {
+            name: 'created',
+            title: 'Created',
+            path: 'created_datetime',
+            filter: {
+                sort: {
+                    created_datetime: 'desc'
+                }
+            }
+        },
+        {
+            name: 'updated',
+            title: 'Updated',
+            path: 'updated_datetime',
+            filter: {
+                sort: {
+                    updated_datetime: 'desc'
+                }
+            }
+        },
+    ]
+}
 /**
  * Notification uids for known notifications
  */
