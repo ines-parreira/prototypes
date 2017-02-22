@@ -93,8 +93,8 @@ class ViewNavbarView extends Component {
                         >
                             <span ref="settingButton">
                                 {isLoading
-                                    ? <Loader size="mini" inline inverted />
-                                    : <i className={settingIconClass} />
+                                    ? <Loader size="mini" inline inverted/>
+                                    : <i className={settingIconClass}/>
                                 }
                             </span>
                         </span>
@@ -118,10 +118,10 @@ class ViewNavbarView extends Component {
                                         let classes = classnames('item', {
                                             active: isCurrentView,
                                         })
-                                        let count = 0
+                                        let count = ''
 
                                         if (view.get('count') !== undefined && view.get('count') !== null) {
-                                            count = view.get('count')
+                                            count = `(${compactInteger(view.get('count'))})`
                                         }
 
                                         return (
@@ -129,9 +129,9 @@ class ViewNavbarView extends Component {
                                                 key={key}
                                                 to={`/app/${objectName}/${view.get('id')}/${view.get('slug')}`}
                                                 className={classes}
-                                                title={`${view.get('name')} (${count})`}
+                                                title={`${view.get('name')} ${count}`}
                                             >
-                                                {`${view.get('name')} (${compactInteger(count)})`}
+                                                {`${view.get('name')} ${count}`}
                                             </Link>
                                         )
                                     })
