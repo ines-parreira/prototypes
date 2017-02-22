@@ -66,9 +66,30 @@ export class TicketView extends React.Component {
         }
     }
 
+    _renderCollisionDetection = () => {
+        const {agentsViewing} = this.props
+
+        return (
+            <div
+                className={classnames(css['viewers-banner'], {
+                    [css.hidden]: agentsViewing.size <= 0,
+                })}
+            >
+                {
+                    // we want to hide text during animation if there is no agents viewing
+                    agentsViewing.size > 0 && (
+                        <span>
+                            {agentsViewing.map(agent => agent.get('name')).join(', ')}
+                            {' '}{agentsViewing.size > 1 ? 'are' : 'is'} viewing
+                        </span>
+                    )
+                }
+            </div>
+        )
+    }
+
     render = () => {
         const {
-            agentsViewing,
             ticket,
             users,
             usersIsLoading,
@@ -136,21 +157,7 @@ export class TicketView extends React.Component {
                             hideTicket={this.props.hideTicket}
                         />
 
-                        <div
-                            className={classnames(css['viewers-banner'], {
-                                [css.hidden]: agentsViewing.size <= 0,
-                            })}
-                        >
-                            {
-                                // we want to hide text during animation if there is no agents viewing
-                                agentsViewing.size > 0 && (
-                                    <span>
-                                        {agentsViewing.map(agent => agent.get('name')).join(', ')}
-                                        {' '}{agentsViewing.size > 1 ? 'are' : 'is'} viewing
-                                    </span>
-                                )
-                            }
-                        </div>
+                        {this._renderCollisionDetection()}
                     </Sticky>
 
                     <div className="ticket-content">

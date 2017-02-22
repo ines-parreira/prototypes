@@ -6,6 +6,9 @@ import {fromJS} from 'immutable'
 
 import Cell from './Cell'
 
+import css from '../Table.less'
+
+import * as usersSelectors from '../../../../../state/users/selectors'
 import * as viewsActions from '../../../../../state/views/actions'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
@@ -14,6 +17,7 @@ class Row extends React.Component {
         canSelectItem: PropTypes.bool.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         fields: ImmutablePropTypes.list.isRequired,
+        getAgentsViewing: PropTypes.func.isRequired,
         item: ImmutablePropTypes.map.isRequired,
         isSelected: PropTypes.bool.isRequired,
         toggleSelection: PropTypes.func.isRequired,
@@ -29,9 +33,11 @@ class Row extends React.Component {
     }
 
     render() {
-        const {canSelectItem, config, fields, item, isSelected, type} = this.props
+        const {canSelectItem, config, fields, getAgentsViewing, item, isSelected, type} = this.props
 
         const link = `/app/${config.get('routeItem')}/${item.get('id')}`
+
+        const agentsViewing = getAgentsViewing(item.get('id'))
 
         return (
             <tr
@@ -45,6 +51,14 @@ class Row extends React.Component {
                             className="cell-wrapper cell-short clickable"
                             onClick={this._toggleSelection}
                         >
+                            {
+                                // display an eye on row if an agent is currently viewing this item
+                                agentsViewing.size > 0 && (
+                                    <div className={css.viewers}>
+                                        <i className="unhide icon" />
+                                    </div>
+                                )
+                            }
                             <span className="ui checkbox">
                                 <input
                                     type="checkbox"
@@ -74,6 +88,7 @@ class Row extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         config: viewsSelectors.getViewConfig(ownProps.type),
+        getAgentsViewing: usersSelectors.makeGetOtherAgentsOnTicket(state),
     }
 }
 

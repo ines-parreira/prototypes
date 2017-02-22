@@ -125,3 +125,5 @@ export const getOtherAgentsOnTicket = ticketId => createSelector(
         return agents.filter(agent => agent.get('id').toString() !== currentUser.get('id').toString())
     }
 )
+
+export const makeGetOtherAgentsOnTicket = state => ticketId => getOtherAgentsOnTicket(ticketId)(state)

@@ -1,21 +1,38 @@
-:local {
-  .table {
-    tr {
-      td {
-        &.limit-overflow {
-          &,
-          & * {
-            max-width: 360px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
+:local .table {
+  tr {
+    td {
+      &.limit-overflow {
+        &,
+        & * {
+          max-width: 360px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
 
-            @media (min-width: 2000px) {
-              max-width: 600px;
-            }
+          @media (min-width: 2000px) {
+            max-width: 600px;
           }
         }
       }
+    }
+  }
+
+  .viewers {
+    @size: 26px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: white;
+    width: 0;
+    height: 0;
+    border-top: @size solid #f3a60b;
+    border-right: @size solid transparent;
+
+    i {
+      position: absolute;
+      top: -28px;
+      left: 2px;
+      font-size: 12px;
     }
   }
 }
