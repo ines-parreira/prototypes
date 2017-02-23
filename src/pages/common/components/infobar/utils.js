@@ -177,6 +177,10 @@ export function areSourcesReady(sources, context, everySources = false) {
             return false
         }
 
+        if (!utils.isImmutable(sourceData)) {
+            return false
+        }
+
         return !sourceData.isEmpty()
     })
 }
