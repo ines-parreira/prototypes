@@ -118,10 +118,13 @@ class ViewNavbarView extends Component {
                                         let classes = classnames('item', {
                                             active: isCurrentView,
                                         })
+
                                         let count = ''
+                                        let compactCount = ''
 
                                         if (view.get('count') !== undefined && view.get('count') !== null) {
-                                            count = `(${compactInteger(view.get('count'))})`
+                                            count = `(${view.get('count')})`
+                                            compactCount = `(${compactInteger(view.get('count'))})`
                                         }
 
                                         return (
@@ -131,7 +134,7 @@ class ViewNavbarView extends Component {
                                                 className={classes}
                                                 title={`${view.get('name')} ${count}`}
                                             >
-                                                {`${view.get('name')} ${count}`}
+                                                {`${view.get('name')} ${compactCount}`}
                                             </Link>
                                         )
                                     })
