@@ -3,7 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import {compactInteger} from '../../../utils'
-import {isCreationUrl} from '../../common/utils/url'
+import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
 import {getUsers} from '../../../state/users/selectors'
 
 import * as viewsActions from '../../../state/views/actions'
@@ -14,17 +14,19 @@ import ViewTable from '../../common/components/ViewTable/Page'
 
 class UserListContainer extends React.Component {
     state = {
+        isSearch: false,
         isUpdate: true
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
+            isSearch: isSearchUrl(nextProps.location.pathname, 'users'),
             isUpdate: !isCreationUrl(nextProps.location.pathname, 'users')
         })
     }
 
     render() {
-        const {isUpdate} = this.state
+        const {isSearch, isUpdate} = this.state
         const {users, urlViewId, activeView, hasActiveView} = this.props
         let title = 'Loading...'
 
@@ -39,6 +41,10 @@ class UserListContainer extends React.Component {
             title = 'Wrong view'
         }
 
+        if (isSearch) {
+            title = 'Search'
+        }
+
         return (
             <DocumentTitle title={title}>
                 <ViewTable
@@ -46,6 +52,7 @@ class UserListContainer extends React.Component {
                     items={users}
                     view={activeView}
                     isUpdate={isUpdate}
+                    isSearch={isSearch}
                     urlViewId={urlViewId}
                     ActionsComponent={UserListActions}
                 />

@@ -52,11 +52,6 @@ export const getActiveViewOrderBy = createSelector(
     state => state.get('order_by') || ''
 )
 
-export const getActiveViewSearch = createImmutableSelector(
-    [getActiveView],
-    state => state.get('search') || ''
-)
-
 export const getActiveViewFilters = createSelector(
     [getActiveView],
     state => state.get('filters') || ''
@@ -80,6 +75,11 @@ export const getSelectedItemsIds = createImmutableSelector(
 export const getPagination = createImmutableSelector(
     [getViewsState],
     state => state.getIn(['_internal', 'pagination'], fromJS({}))
+)
+
+export const getLastViewId = createSelector(
+    [getViewsState],
+    state => state.getIn(['_internal', 'lastViewId'])
 )
 
 export const getLoading = createSelector(

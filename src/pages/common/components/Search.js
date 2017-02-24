@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import _debounce from 'lodash/debounce'
-import _get from 'lodash/get'
+import _isUndefined from 'lodash/isUndefined'
 import classNames from 'classnames'
 import shortcutManager from '../utils/shortcutManager'
 
@@ -24,6 +24,10 @@ export default class Search extends React.Component {
                 }
             })
         }
+
+        if (this.props.forcedQuery) {
+            this.refs.searchInput.value = this.props.forcedQuery || ''
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -35,13 +39,11 @@ export default class Search extends React.Component {
         if (shouldSetValue) {
             this.refs.searchInput.value = ''
 
-            if (nextProps.forcedQuery) {
-                if (typeof nextProps.forcedQuery === 'object') {
-                    this.refs.searchInput.value = _get(nextProps.forcedQuery.toJS(), nextProps.queryPath.split(',')[0])
-                } else if (typeof nextProps.forcedQuery === 'string') {
-                    this.refs.searchInput.value = nextProps.forcedQuery
-                }
+            if (!_isUndefined(nextProps.forcedQuery)) {
+                this.refs.searchInput.value = nextProps.forcedQuery || ''
+            }
 
+            if (nextProps.forcedQuery) {
                 // `this._debouncedSearch()` is not necessary in the ticket-list context, but I think it's better for
                 // consistency that it gets executed anytime we force a query.
                 this._debouncedSearch()
@@ -66,13 +68,16 @@ export default class Search extends React.Component {
         if (!this.refs.searchInput) {
             return false
         }
-        this.props.onChange(this.refs.searchInput.value)
+
+        return this.props.onChange(this.refs.searchInput.value)
     }, this.props.searchDebounceTime || 200)
 
     render() {
+        const {disabled} = this.props
+
         const containerClasses = classNames('ui search', this.props.className)
         const inputClasses = classNames('ui small icon fluid input', {
-            disabled: this.props.disabled
+            disabled,
         })
 
         return (
@@ -82,12 +87,12 @@ export default class Search extends React.Component {
                         className="prompt"
                         type="text"
                         ref="searchInput"
-                        placeholder={this.props.placeholder || 'Search'}
+                        placeholder={this.props.placeholder}
                         onChange={this._debouncedSearch}
                         autoFocus={this.props.autofocus}
-                        disabled={this.props.disabled}
+                        disabled={disabled}
                     />
-                    <i className="search icon"/>
+                    <i className="search icon" />
                 </div>
             </div>
         )
@@ -107,9 +112,11 @@ Search.propTypes = {
     bindKey: PropTypes.bool,
     searchDebounceTime: PropTypes.number,
 
+    // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
     location: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
 
 Search.defaultProps = {
-    disabled: false
+    disabled: false,
+    placeholder: 'Search',
 }

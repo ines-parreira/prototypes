@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import * as types from './constants'
+import _isNumber from 'lodash/isNumber'
 import {getCode} from '../../utils'
 import {shouldUpdateView} from '../activity/utils'
 import SocketIO from '../../pages/common/utils/socketio'
@@ -17,6 +18,7 @@ export const initialState = fromJS({
     loading: false,
     _internal: {
         currentViewId: null,
+        lastViewId: null,
         selectedItemsIds: [],
         loading: {
             fetchList: false,
@@ -172,7 +174,13 @@ export default (state = initialState, action) => {
         }
 
         case types.FETCH_LIST_VIEW_START: {
-            let newState = state.setIn(['_internal', 'currentViewId'], action.viewId)
+            let newState = state
+                .setIn(['_internal', 'currentViewId'], action.viewId)
+
+            // if fetched view is a real view (not new view created, not search, etc.) we save it's id
+            if (_isNumber(action.viewId) && action.viewId > 0) {
+                newState = newState.setIn(['_internal', 'lastViewId'], action.viewId)
+            }
 
             if (action.discreet) {
                 newState = newState

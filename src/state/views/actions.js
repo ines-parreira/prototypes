@@ -249,7 +249,6 @@ export function fetchPage(page, discreet = false) {
             return Promise.resolve()
         }
 
-        const searchHash = getHashOfObj(viewsSelectors.getActiveViewSearch(getState()))
         const filtersHash = getHashOfObj(viewsSelectors.getActiveViewFilters(getState()))
 
         dispatch({
@@ -264,7 +263,10 @@ export function fetchPage(page, discreet = false) {
         // this will allow us to test a view before submitting it to the DB
         if (isDirty) {
             promise = axios.put(`/api/${viewConfig.get('api')}/view/`, {
-                view: activeView.delete('dirty').delete('editMode').toJS(),
+                view: activeView
+                    .delete('dirty')
+                    .delete('editMode')
+                    .toJS(),
                 page
             })
         } else {
@@ -284,9 +286,6 @@ export function fetchPage(page, discreet = false) {
                 const isCurrent = views.getIn(['_internal', 'currentViewId']) === viewId
                     // is the current page the same as the received one
                     && views.getIn(['_internal', 'pagination', 'page'], 1) === data.meta.page
-                    // if the search the same as the current active one
-                    // (if somebody has modified the search while the request was done)
-                    && searchHash === getHashOfObj(viewsSelectors.getActiveViewSearch(getState()))
                     // (if somebody has modified the filters while the request was done)
                     && filtersHash === getHashOfObj(viewsSelectors.getActiveViewFilters(getState()))
 
@@ -295,7 +294,6 @@ export function fetchPage(page, discreet = false) {
                     dispatch({
                         type: types.FETCH_LIST_VIEW_SUCCESS,
                         viewType: activeViewType,
-                        activeView,
                         data,
                     })
                 }

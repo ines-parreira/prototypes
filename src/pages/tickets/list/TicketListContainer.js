@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import MacroContainer from '../common/macros/MacroContainer'
 import {compactInteger} from '../../../utils'
-import {isCreationUrl} from '../../common/utils/url'
+import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
 
 import * as tagsActions from '../../../state/tags/actions'
 import * as viewsActions from '../../../state/views/actions'
@@ -17,7 +17,8 @@ import ViewTable from '../../common/components/ViewTable/Page'
 
 class TicketListContainer extends React.Component {
     state = {
-        isUpdate: true
+        isSearch: false,
+        isUpdate: true,
     }
 
     componentWillMount() {
@@ -26,12 +27,13 @@ class TicketListContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            isUpdate: !isCreationUrl(nextProps.location.pathname, 'tickets')
+            isSearch: isSearchUrl(nextProps.location.pathname, 'tickets'),
+            isUpdate: !isCreationUrl(nextProps.location.pathname, 'tickets'),
         })
     }
 
     render() {
-        const {isUpdate} = this.state
+        const {isSearch, isUpdate} = this.state
         const {tickets, urlViewId, activeView, hasActiveView} = this.props
         let title = 'Loading...'
 
@@ -46,20 +48,23 @@ class TicketListContainer extends React.Component {
             title = 'Wrong view'
         }
 
+        if (isSearch) {
+            title = 'Search'
+        }
+
         return (
             <DocumentTitle title={title}>
                 <div style={{height: '100%'}}>
                     <ViewTable
-                        key="table"
                         type="ticket"
                         items={tickets}
                         view={activeView}
                         isUpdate={isUpdate}
+                        isSearch={isSearch}
                         urlViewId={urlViewId}
                         ActionsComponent={TicketListActions}
                     />
                     <MacroContainer
-                        key="macros"
                         activeView={activeView}
                         disableExternalActions
                         selectionMode
@@ -77,6 +82,7 @@ TicketListContainer.propTypes = {
     fetchTags: PropTypes.func.isRequired,
     location: PropTypes.object,
     params: PropTypes.object,
+    route: PropTypes.object.isRequired,
     selectedItemsIds: ImmutablePropTypes.list.isRequired,
     tickets: PropTypes.object.isRequired,
     urlViewId: PropTypes.string,

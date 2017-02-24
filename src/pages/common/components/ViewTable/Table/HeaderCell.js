@@ -21,6 +21,7 @@ class HeaderCell extends React.Component {
         field: ImmutablePropTypes.map.isRequired,
         fields: ImmutablePropTypes.list.isRequired,
         isLast: PropTypes.bool.isRequired,
+        isSearch: PropTypes.bool.isRequired,
         orderBy: PropTypes.string.isRequired,
         orderDirection: PropTypes.string.isRequired,
         setOrderDirection: PropTypes.func.isRequired,
@@ -50,14 +51,25 @@ class HeaderCell extends React.Component {
     }
 
     render() {
-        const {config, fetchPage, field, fields, isLast, orderBy, orderDirection, setOrderDirection} = this.props
+        const {
+            config,
+            fetchPage,
+            field,
+            fields,
+            isLast,
+            isSearch,
+            orderBy,
+            orderDirection,
+            setOrderDirection
+        } = this.props
 
         const fieldPath = getFieldPath(field)
 
         let action = ''
         let onClick = _noop
 
-        if (field.get('filter')) {
+        // if currently searching, can't do anything (no edition)
+        if (field.get('filter') && !isSearch) {
             action = field.getIn(['filter', 'sort']) ? 'sort' : 'filter'
 
             if (action === 'filter') {
@@ -107,7 +119,7 @@ class HeaderCell extends React.Component {
                         }
                     </div>
                     {
-                        isLast && (
+                        isLast && !isSearch && (
                             <ShowMoreFieldsDropdown
                                 fields={config.get('fields', fromJS([]))}
                                 visibleFields={fields}

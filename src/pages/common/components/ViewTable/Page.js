@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router'
+import _get from 'lodash/get'
 
 import {Loader} from '../Loader'
 import Header from './Header'
@@ -22,8 +24,10 @@ class Page extends React.Component {
         getViewIdToDisplay: PropTypes.func.isRequired,
         getView: PropTypes.func.isRequired,
         hasActiveView: PropTypes.bool.isRequired,
+        isSearch: PropTypes.bool.isRequired,
         isUpdate: PropTypes.bool.isRequired,
         items: ImmutablePropTypes.list.isRequired,
+        router: PropTypes.object.isRequired,
         setViewActive: PropTypes.func.isRequired,
         type: PropTypes.string.isRequired,
         urlViewId: PropTypes.string,
@@ -55,24 +59,49 @@ class Page extends React.Component {
         const currentSuggestedViewId = getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
         const nextSuggestedViewId = getViewIdToDisplay(nextProps.config.get('type'), nextProps.urlViewId)
 
-        // add mode so set a base view as active view
+        // entering search mode
+        if (!this.props.isSearch && nextProps.isSearch) {
+            this.props.updateView(config.get('searchView')(this._searchQuery(nextProps)), false)
+            return this.props.fetchPage(1)
+        }
+
+        // entering "add new" mode
         if (this.props.isUpdate && !nextProps.isUpdate) {
             this.props.updateView(config.get('newView')())
             return this.props.fetchPage(1)
-        } else if (!this.props.isUpdate && nextProps.isUpdate) {
-            this.props.setViewActive(this.props.getView(nextSuggestedViewId), false)
+        }
+
+        // in search mode, if search has changed, research again
+        if (nextProps.isSearch && this._searchQuery(this.props) !== this._searchQuery(nextProps)) {
+            this.props.updateView(config.get('searchView')(this._searchQuery(nextProps)), false)
+            return this.props.fetchPage(1)
+        }
+
+        // leaving search mode
+        if (this.props.isSearch && !nextProps.isSearch) {
+            this.props.setViewActive(this.props.getView(nextSuggestedViewId))
+            return this.props.fetchPage(1)
+        }
+
+        // leaving "add new" mode
+        if (!this.props.isUpdate && nextProps.isUpdate) {
+            this.props.setViewActive(this.props.getView(nextSuggestedViewId))
             return this.props.fetchPage(1)
         }
 
         // suggested view to display (mostly because url changed) has changed OR there is no active view
         if (currentSuggestedViewId !== nextSuggestedViewId || !nextProps.hasActiveView) {
             this.props.setViewActive(this.props.getView(nextSuggestedViewId))
-            this.props.fetchPage(1)
+            return this.props.fetchPage(1)
         }
     }
 
+    _searchQuery = (props = this.props) => {
+        return _get(props, 'location.query.q', '')
+    }
+
     _renderTable = () => {
-        const {type, items, config, activeView} = this.props
+        const {type, items, config, isSearch, activeView} = this.props
 
         const displayedFields = config.get('fields', fromJS([]))
             .filter(field => activeView.get('fields', fromJS([])).contains(field.get('name')))
@@ -82,12 +111,13 @@ class Page extends React.Component {
                 type={type}
                 items={items}
                 fields={displayedFields}
+                isSearch={isSearch}
             />
         )
     }
 
     render() {
-        const {ActionsComponent, activeView, isUpdate, type} = this.props
+        const {ActionsComponent, activeView, isSearch, isUpdate, type} = this.props
 
         if (activeView.isEmpty()) {
             return <Loader loading />
@@ -97,6 +127,7 @@ class Page extends React.Component {
             <div className={css.page}>
                 <div className={css.header}>
                     <Header
+                        isSearch={isSearch}
                         isUpdate={isUpdate}
                         ActionsComponent={ActionsComponent}
                         type={type}
@@ -128,5 +159,5 @@ const mapDispatchToProps = {
     updateView: viewsActions.updateView,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Page)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Page))
 

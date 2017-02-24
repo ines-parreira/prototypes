@@ -2,11 +2,13 @@ import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
+import {Link, browserHistory, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
 import EditableTitle from '../EditableTitle'
 import FilterTopbar from './FilterTopbar'
 import Search from '../Search'
 import {slugify} from '../../../../utils'
+import _get from 'lodash/get'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
@@ -22,8 +24,11 @@ class Header extends React.Component {
         deleteView: PropTypes.func.isRequired,
         fetchPage: PropTypes.func.isRequired,
         isEditMode: PropTypes.bool.isRequired,
+        isSearch: PropTypes.bool.isRequired,
         isUpdate: PropTypes.bool.isRequired,
         item: ImmutablePropTypes.map.isRequired,
+        lastViewId: PropTypes.number,
+        router: PropTypes.object.isRequired,
         selectedItemsIds: ImmutablePropTypes.list.isRequired,
         type: PropTypes.string.isRequired,
         updateView: PropTypes.func.isRequired,
@@ -33,15 +38,31 @@ class Header extends React.Component {
         item: fromJS({}),
     }
 
+    _goBackUrl = () => {
+        const {config, lastViewId} = this.props
+
+        let url = `/app/${config.get('routeList')}`
+
+        if (lastViewId) {
+            url += `/${lastViewId}`
+        }
+
+        return url
+    }
+
+    _searchQuery = () => {
+        return _get(this.props, 'location.query.q', '')
+    }
+
     _search = (searchQuery) => {
-        const activeView = this.props.activeView
+        const {config} = this.props
 
         if (searchQuery) {
-            this.props.updateView(activeView.merge({search: searchQuery}))
-            this.props.fetchPage(1)
-        } else if (activeView.get('search')) {
-            this.props.updateView(activeView.set('search', null))
-            this.props.fetchPage(1)
+            // add search to view and ask page of view (will return search result)
+            browserHistory.push(`/app/${config.get('routeList')}/search?q=${searchQuery}`)
+        } else {
+            // set the previous view back
+            browserHistory.push(this._goBackUrl())
         }
     }
 
@@ -58,6 +79,7 @@ class Header extends React.Component {
             activeView,
             config,
             isEditMode,
+            isSearch,
             isUpdate,
             selectedItemsIds,
             type,
@@ -69,9 +91,9 @@ class Header extends React.Component {
             <div>
                 <div>
                     <div className="ui text menu sticky-header-search">
-                        <div className="left menu item">
-                            {
-                                isUpdate && (
+                        {
+                            isUpdate && !isSearch && (
+                                <div className="left menu item">
                                     <div
                                         className={classnames('ui dropdown', css.settings)}
                                         ref={(dropdown) => {
@@ -102,35 +124,56 @@ class Header extends React.Component {
                                             </div>
                                         </div>
                                     </div>
-                                )
-                            }
-                        </div>
+                                </div>
+                            )
+                        }
+                        {
+                            isSearch && (
+                                <Link
+                                    className=" ui tiny basic grey button"
+                                    to={this._goBackUrl()}
+                                >
+                                    <i className="arrow left icon" />
+                                    Back
+                                </Link>
+                            )
+                        }
                         <div className="right menu item">
                             <Search
                                 autofocus
                                 bindKey
                                 onChange={this._search}
                                 className="long"
-                                forcedQuery={activeView.getIn(['search', 'query'])}
                                 placeholder={`Search ${config.get('plural')}`}
                                 searchDebounceTime={400}
-                                location={activeView.get('id')}
+                                location={`${activeView.get('id')}${!!isSearch && '(s)'}`}
+                                forcedQuery={this._searchQuery()}
                             />
                         </div>
                     </div>
 
                     <div className="ui sixteen wide column flex-spaced-row no-wrap view-header">
-                        <EditableTitle
-                            select={!isUpdate}
-                            style={{margin: '0 8px 0 0'}}
-                            title={activeView.get('name', '')}
-                            placeholder="View name"
-                            update={(name) => {
-                                if (name !== activeView.get('name')) {
-                                    this._updateViewName(name)
-                                }
-                            }}
-                        />
+                        {
+                            isSearch ? (
+                                    <EditableTitle
+                                        style={{margin: '0 8px 0 0'}}
+                                        title={activeView.get('name', '')}
+                                        disabled
+                                    />
+                                ) : (
+                                    <EditableTitle
+                                        select={!isUpdate}
+                                        style={{margin: '0 8px 0 0'}}
+                                        title={activeView.get('name', '')}
+                                        placeholder="View name"
+                                        update={(name) => {
+                                            if (name !== activeView.get('name')) {
+                                                this._updateViewName(name)
+                                            }
+                                        }}
+                                    />
+                                )
+                        }
                         {
                             ActionsComponent
                             && (
@@ -157,6 +200,7 @@ const mapStateToProps = (state, ownProps) => {
         activeView: viewsSelectors.getActiveView(state),
         config: viewsSelectors.getViewConfig(ownProps.type),
         isEditMode: viewsSelectors.isEditMode(state),
+        lastViewId: viewsSelectors.getLastViewId(state),
         selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
     }
 }
@@ -169,4 +213,4 @@ const mapDispatchToProps = {
     updateView: viewsActions.updateView,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))

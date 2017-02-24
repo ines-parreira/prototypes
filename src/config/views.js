@@ -228,8 +228,16 @@ const config = [{
     },
     newView: () => {
         return baseView().merge({
-            fields: ['priority', 'details', 'tags', 'requester', 'created'],
-            type: 'ticket-list'
+            fields: ['details', 'channel', 'requester', 'created'],
+            type: 'ticket-list',
+        })
+    },
+    searchView: (query) => {
+        return baseView().merge({
+            name: `Search "${query}"`,
+            search: query,
+            fields: ['details', 'channel', 'requester', 'created'],
+            type: 'ticket-list',
         })
     },
 }, {
@@ -294,7 +302,15 @@ const config = [{
     newView: () => {
         return baseView().merge({
             fields: ['name', 'email', 'roles', 'created'],
-            type: 'user-list'
+            type: 'user-list',
+        })
+    },
+    searchView: (query) => {
+        return baseView().merge({
+            name: `Search "${query}"`,
+            search: query,
+            fields: ['name', 'email', 'roles', 'created'],
+            type: 'user-list',
         })
     },
 }]

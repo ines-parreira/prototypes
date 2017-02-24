@@ -53,6 +53,13 @@ export default (
             }}
         />
         <Route
+            path="users/search"
+            components={{
+                content: UserListContainer,
+                navbar: UserNavbarContainer
+            }}
+        />
+        <Route
             path="users/:viewId(/:viewSlug)"
             components={{
                 content: UserListContainer,
@@ -103,6 +110,14 @@ export default (
         />
         <Route
             path="tickets/new"
+            components={{
+                content: TicketListContainer,
+                navbar: TicketNavbarContainer,
+                infobar: TicketListInfobarContainer,
+            }}
+        />
+        <Route
+            path="tickets/search"
             components={{
                 content: TicketListContainer,
                 navbar: TicketNavbarContainer,

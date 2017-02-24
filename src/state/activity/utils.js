@@ -1,6 +1,6 @@
 import {isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
 
-const ignoredIds = ['new', '0', 0]
+const ignoredIds = ['search', 'new', '0', 0]
 
 /**
  * Return true if ticket should be updated (refeteched)

@@ -7,3 +7,7 @@
 export function isCreationUrl(url, objectName) {
     return url.includes(`app/${objectName}/new`)
 }
+
+export function isSearchUrl(url, objectName) {
+    return url.includes(`app/${objectName}/search`)
+}

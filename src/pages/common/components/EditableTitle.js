@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
+import _noop from 'lodash/noop'
 
 export default class EditableTitle extends React.Component {
     constructor(props) {
@@ -86,6 +87,7 @@ export default class EditableTitle extends React.Component {
                 type="text"
                 tabIndex="1"
                 style={this.props.style}
+                disabled={this.props.disabled}
                 className={className}
 
                 placeholder={placeholder}
@@ -105,9 +107,15 @@ export default class EditableTitle extends React.Component {
 
 EditableTitle.propTypes = {
     title: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
     update: PropTypes.func.isRequired,
     focus: PropTypes.bool,
     select: PropTypes.bool,
+    disabled: PropTypes.bool,
     style: PropTypes.object
+}
+
+
+EditableTitle.defaultProps = {
+    update: _noop,
 }

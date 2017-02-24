@@ -23,6 +23,7 @@ class Table extends React.Component {
         fields: ImmutablePropTypes.list.isRequired,
         isEditMode: PropTypes.bool.isRequired,
         isLoading: PropTypes.func.isRequired,
+        isSearch: PropTypes.bool.isRequired,
         items: ImmutablePropTypes.list.isRequired,
         pagination: ImmutablePropTypes.map.isRequired,
         resetView: PropTypes.func.isRequired,
@@ -47,6 +48,7 @@ class Table extends React.Component {
             config,
             isEditMode,
             isLoading,
+            isSearch,
             items,
             fields,
             pagination,
@@ -68,14 +70,18 @@ class Table extends React.Component {
                     <p>
                         No {config.get('singular')} found.
                         <br />
-                        <a
-                            onClick={() => {
-                                this.props.resetView(config.get('name'))
-                                this.props.fetchPage(1)
-                            }}
-                        >
-                            Reset view
-                        </a>
+                        {
+                            !isSearch && (
+                                <a
+                                    onClick={() => {
+                                        this.props.resetView(config.get('name'))
+                                        this.props.fetchPage(1)
+                                    }}
+                                >
+                                    Reset view
+                                </a>
+                            )
+                        }
                     </p>
                 )
             }
@@ -115,6 +121,7 @@ class Table extends React.Component {
                                             fields={fields}
                                             type={type}
                                             isLast={fields.size === index + 1}
+                                            isSearch={isSearch}
                                         />
                                     )
                                 })
