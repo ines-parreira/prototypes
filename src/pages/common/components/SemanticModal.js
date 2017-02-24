@@ -20,7 +20,9 @@ export default class SemanticModal extends Component {
         dismissible: true
     }
 
-    state = {}
+    state = {
+        show: false
+    }
 
     componentDidMount() {
         if (this.props.isOpen) {
