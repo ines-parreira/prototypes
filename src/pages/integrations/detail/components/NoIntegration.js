@@ -6,7 +6,7 @@ export default class NoIntegration extends React.Component {
 
         const message = loading ?
             'Loading...' :
-            `You have no active ${type} integration at the moment.`
+            `You have no ${type} integration at the moment.`
 
         return loading ?
             <div className="ui active text loader">{message}</div> :
