@@ -12,6 +12,8 @@ import * as usersSelectors from '../../../../../state/users/selectors'
 import * as viewsActions from '../../../../../state/views/actions'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
+import * as viewsUtils from '../../../../../state/views/utils'
+
 class Row extends React.Component {
     static propTypes = {
         canSelectItem: PropTypes.bool.isRequired,
@@ -54,7 +56,10 @@ class Row extends React.Component {
                             {
                                 // display an eye on row if an agent is currently viewing this item
                                 agentsViewing.size > 0 && (
-                                    <div className={css.viewers}>
+                                    <div
+                                        className={css.viewers}
+                                        title={viewsUtils.agentsViewingMessage(agentsViewing)}
+                                    >
                                         <i className="unhide icon" />
                                     </div>
                                 )

@@ -80,3 +80,8 @@ export function sortViews(view1, view2) {
 
     return view1.get('display_order', 0) - view2.get('display_order', 0)
 }
+
+export function agentsViewingMessage(agents) {
+    const agentsNames = agents.map(agent => agent.get('name')).join(', ')
+    return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} viewing`
+}

@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {StickyContainer, Sticky} from 'react-sticky'
-import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
@@ -16,6 +15,8 @@ import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 import * as tagsSelectors from '../../../../state/tags/selectors'
 import * as usersSelectors from '../../../../state/users/selectors'
+
+import * as viewsUtils from '../../../../state/views/utils'
 
 import css from './TicketView.less'
 
@@ -79,8 +80,8 @@ export class TicketView extends React.Component {
                     // we want to hide text during animation if there is no agents viewing
                     agentsViewing.size > 0 && (
                         <span>
-                            {agentsViewing.map(agent => agent.get('name')).join(', ')}
-                            {' '}{agentsViewing.size > 1 ? 'are' : 'is'} viewing
+                            <i className="unhide icon" />
+                            {' '}{viewsUtils.agentsViewingMessage(agentsViewing)}
                         </span>
                     )
                 }
@@ -109,7 +110,7 @@ export class TicketView extends React.Component {
 
         return (
             <div
-                className={classNames(css.page, 'ticket-view', {
+                className={classnames(css.page, 'ticket-view', {
                     'transition out fade right': isTicketHidden
                 })}
             >
@@ -120,7 +121,7 @@ export class TicketView extends React.Component {
                     >
                         <div className="previous-btn-container">
                             <button
-                                className={classNames(
+                                className={classnames(
                                     'ticket-previous-btn ui small button',
                                     {
                                         transparent: !ticket.get('id')
