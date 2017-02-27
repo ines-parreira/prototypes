@@ -17,8 +17,12 @@ import UserSourceContainer from './users/detail/UserSourceContainer'
 import UserInfobarContainer from './users/detail/UserInfobarContainer'
 import OverviewStatsContainer from './stats/overview/OverviewStatsContainer'
 import SimpleStatsContainer from './stats/simple/SimpleStatsContainer'
+
+
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
 import ChangePasswordContainer from './settings/yourProfile/ChangePasswordContainer'
+import ApiKeyView from './settings/apiKey/ApiKeyView'
+
 import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
@@ -187,6 +191,13 @@ export default (
                 path="change-password"
                 components={{
                     content: ChangePasswordContainer,
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="api"
+                components={{
+                    content: ApiKeyView,
                     navbar: SettingsNavbarContainer
                 }}
             />

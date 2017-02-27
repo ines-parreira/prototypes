@@ -23,6 +23,9 @@ export default class SettingsNavbar extends React.Component {
             }, {
                 to: 'change-password',
                 text: 'Change password'
+            }, {
+                to: 'api',
+                text: 'API key'
             }]
         }, {
             name: 'General',

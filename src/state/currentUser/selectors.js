@@ -35,3 +35,8 @@ export const getSettingsByType = type => createSelector(
         return settings
     }
 )
+
+export const getApiKey = createSelector(
+    [getCurrentUserState],
+    state => state.getIn(['auths', 0, 'data', 'token']) || ''
+)
