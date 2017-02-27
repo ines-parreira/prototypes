@@ -34,7 +34,7 @@ class ApiKeyView extends React.Component {
                     </h1>
                     <p>
                         Here’s your API key. You can use it to authenticate requests
-                        on <a href="https://docs.gorgias.io/" target="_blank">our API</a>, and make changes
+                        on <a href="http://docs.gorgias.io/" target="_blank">our API</a>, and make changes
                         to your tickets & users. Make sure you keep it safe.
                     </p>
 
