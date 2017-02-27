@@ -354,7 +354,8 @@ export default (state = initialState, action) => {
                 newState = newState.setIn(['newMessage', 'channel'], getChannelFromSourceType(action.sourceType))
             } else {
                 // For an internal note, we infer the channel from the last non-internal note message.
-                const lastSourceType = getLastNonSystemTypeMessage(state.get('messages')).getIn(['source', 'type'])
+                const lastMessage = getLastNonSystemTypeMessage(state.get('messages'))
+                const lastSourceType = lastMessage ? lastMessage.getIn(['source', 'type']) : 'email'
                 newState = newState.setIn(['newMessage', 'channel'], getChannelFromSourceType(lastSourceType))
             }
 
