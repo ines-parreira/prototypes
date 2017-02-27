@@ -5,10 +5,8 @@ import Clipboard from 'clipboard'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 
 class ApiKeyView extends React.Component {
-    componentWillMount() {
-        this.state = {
-            isCopied: false
-        }
+    state = {
+        isCopied: false,
     }
 
     componentDidMount() {
@@ -40,22 +38,22 @@ class ApiKeyView extends React.Component {
 
                     <h4>Your personal API key</h4>
                     <div className="ui action input fluid">
-                      <input
-                          id="apiKey"
-                          type="text"
-                          value={apiKey}
-                          readOnly
-                      />
-                      <button
-                          id="copyApiKey"
-                          className="ui light blue right labeled icon button"
-                          data-clipboard-target="#apiKey"
-                      >
-                        <i className="copy icon"/>
-                          {
-                              this.state.isCopied ? 'COPIED' : 'COPY'
-                          }
-                      </button>
+                        <input
+                            id="apiKey"
+                            type="text"
+                            value={apiKey}
+                            readOnly
+                        />
+                        <button
+                            id="copyApiKey"
+                            className="ui light blue right labeled icon button"
+                            data-clipboard-target="#apiKey"
+                        >
+                            <i className="copy icon" />
+                            {
+                                this.state.isCopied ? 'COPIED!' : 'COPY'
+                            }
+                        </button>
                     </div>
                 </div>
             </div>

@@ -13,14 +13,18 @@ import {getQueryParam} from '../../../../../../utils'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 
 class EmailIntegrationUpdate extends React.Component {
+    state = {
+        isCopied: false,
+    }
+
     componentDidMount() {
         // activate copy to clipboard button
         const clipboard = new Clipboard('#copy-forwarding-email')
+
         clipboard.on('success', () => {
-            const textNode = document.querySelector('#copy-forwarding-email').childNodes[2]
-            textNode.textContent = 'COPIED!'
+            this.setState({isCopied: true})
             setTimeout(() => {
-                textNode.textContent = 'COPY'
+                this.setState({isCopied: false})
             }, 1500)
         })
 
@@ -91,12 +95,15 @@ class EmailIntegrationUpdate extends React.Component {
                             readOnly
                         />
                         <button
-                            id="copy-forwarding-email" type="button"
+                            id="copy-forwarding-email"
+                            type="button"
                             className="ui light blue right labeled icon button"
                             data-clipboard-target="#forwarding-email"
                         >
-                            <i className="copy icon"/>
-                            Copy
+                            <i className="copy icon" />
+                            {
+                                this.state.isCopied ? 'COPIED!' : 'COPY'
+                            }
                         </button>
                     </div>
                 </div>
@@ -127,9 +134,9 @@ class EmailIntegrationUpdate extends React.Component {
                 <div className="sixteen wide tablet ten wide computer column">
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider"/>
+                        <i className="right angle icon divider" />
                         <Link to="/app/integrations/email" className="section">Email</Link>
-                        <i className="right angle icon divider"/>
+                        <i className="right angle icon divider" />
                         <a className="active section">
                             {integration.get('name')}
                         </a>
@@ -167,7 +174,7 @@ class EmailIntegrationUpdate extends React.Component {
                                             data-content="The name that customers will see when they receive emails from you."
                                             data-variation="inverted"
                                         >
-                                            <i className="help circle link icon"/>
+                                            <i className="help circle link icon" />
                                         </span>
                                     </span>
                                 }
