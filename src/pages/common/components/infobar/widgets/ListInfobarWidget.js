@@ -12,7 +12,6 @@ class ListInfobarWidget extends React.Component {
             source,
             widget,
             editing,
-            open
         } = this.props
 
         const updatedWidget = widget
@@ -80,7 +79,7 @@ class ListInfobarWidget extends React.Component {
                                     widget={passedWidget}
                                     editing={editing}
                                     isEditing={isEditing}
-                                    open={open && i === 0}
+                                    open={i === 0}
                                 />
                             )
                         })

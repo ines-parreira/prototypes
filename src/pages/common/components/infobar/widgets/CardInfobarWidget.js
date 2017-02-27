@@ -102,7 +102,9 @@ class CardInfobarWidget extends React.Component {
             )
         }
 
-        return renderTemplate(title, source)
+        return (
+            <span>{renderTemplate(title, source)}</span>
+        )
     }
 
     render() {
@@ -112,7 +114,7 @@ class CardInfobarWidget extends React.Component {
             source,
             widget,
             editing,
-            open
+            open,
         } = this.props
 
         const ap = widget.get('absolutePath')
@@ -147,7 +149,7 @@ class CardInfobarWidget extends React.Component {
                             onClick={this._toggleCardExpand}
                         >
                             {
-                                !isEditing && <i className="dropdown icon" />
+                                !isEditing && <span className="dropdown-icon"><i className="dropdown icon" /></span>
                             }
                             {
                                 widget.get('title')

@@ -9,7 +9,20 @@ import WrapperInfobarWidget from './widgets/WrapperInfobarWidget'
 import CardInfobarWidget from './widgets/CardInfobarWidget'
 import FieldInfobarWidget from './widgets/FieldInfobarWidget'
 
-class InfobarWidget extends React.Component {
+export default class InfobarWidget extends React.Component {
+    static propTypes = {
+        editing: PropTypes.object,
+        parent: PropTypes.object,
+        source: PropTypes.object.isRequired,
+        widget: PropTypes.object.isRequired,
+        isEditing: PropTypes.bool.isRequired,
+        open: PropTypes.bool.isRequired,
+    }
+
+    static defaultProps = {
+        open: false,
+    }
+
     render() {
         const {
             parent,
@@ -54,7 +67,6 @@ class InfobarWidget extends React.Component {
                         source={data || fromJS({})}
                         widget={updatedWidget}
                         editing={editing}
-                        open={open}
                     />
                 )
             }
@@ -79,7 +91,7 @@ class InfobarWidget extends React.Component {
                         widget={updatedWidget}
                         editing={editing}
                         parent={parent}
-                        open={open}
+                        open={open || !isParentList}
                     />
                 )
             }
@@ -102,14 +114,3 @@ class InfobarWidget extends React.Component {
         )
     }
 }
-
-InfobarWidget.propTypes = {
-    editing: PropTypes.object,
-    parent: PropTypes.object,
-    source: PropTypes.object.isRequired,
-    widget: PropTypes.object.isRequired,
-    isEditing: PropTypes.bool.isRequired,
-    open: PropTypes.bool
-}
-
-export default InfobarWidget
