@@ -69,6 +69,7 @@ class InfobarWidgets extends React.Component {
                                         widget={passedWidget}
                                         editing={editing}
                                         isEditing={isEditing}
+                                        open={i === 0}
                                     />
                                 )
                             })

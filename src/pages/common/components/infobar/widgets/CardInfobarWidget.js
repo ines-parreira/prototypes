@@ -12,6 +12,10 @@ class CardInfobarWidget extends React.Component {
         super(props)
 
         this.isEdited = false
+
+        this.state = {
+            open: props.open,
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -22,6 +26,12 @@ class CardInfobarWidget extends React.Component {
             const currentlyEditedWidgetPath = editing.state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
             this.isEdited = isEditing && tp === currentlyEditedWidgetPath
         }
+    }
+
+    _toggleCardExpand = () => {
+        this.setState({
+            open: !this.state.open
+        })
     }
 
     _deleteCard = (e) => {
@@ -101,7 +111,8 @@ class CardInfobarWidget extends React.Component {
             isParentList,
             source,
             widget,
-            editing
+            editing,
+            open
         } = this.props
 
         const ap = widget.get('absolutePath')
@@ -109,7 +120,8 @@ class CardInfobarWidget extends React.Component {
 
         const className = classnames('ui card', {
             'can-drop': editing && editing.canDrop(ap),
-            draggable: !isParentList
+            draggable: !isParentList,
+            closed: !this.state.open && !isEditing
         })
 
         const childWidgets = widget.get('widgets', fromJS([]))
@@ -117,94 +129,107 @@ class CardInfobarWidget extends React.Component {
         // display content (or at least space under card title) if we are in edition mode or if there is data to display
         const shouldDisplayCardContent = editing || !childWidgets.isEmpty()
 
+        // detect first non-text nested widget, to auto-expand
+        let firstNonTextWidget = false
+
         return (
             <div
                 className={className}
                 data-key={widget.get('path')}
             >
-                <div className="content">
-                    {
-                        (widget.get('title') || isEditing)
-                        && (
-                            <div
-                                className={classnames('header clearfix', {
-                                    'no-content': !editing && !source.isEmpty() && childWidgets.isEmpty(),
-                                })}
-                            >
-                                {
-                                    widget.get('title')
-                                        ? this._renderTitle(widget, source.toJS())
-                                        : <span className="placeholder">Title</span>
-                                }
+                {
+                    (widget.get('title') || isEditing)
+                    && (
+                        <div
+                            className={classnames('title header clearfix', {
+                                'no-content': !editing && !source.isEmpty() && childWidgets.isEmpty(),
+                            })}
+                            onClick={this._toggleCardExpand}
+                        >
+                            {
+                                !isEditing && <i className="dropdown icon" />
+                            }
+                            {
+                                widget.get('title')
+                                    ? this._renderTitle(widget, source.toJS())
+                                    : <span className="placeholder">Title</span>
+                            }
+                            {
+                                isEditing
+                                && isParentList
+                                && <span className="meta"> (list)</span>
+                            }
+                            <span className="tools">
                                 {
                                     isEditing
-                                    && isParentList
-                                    && <span className="meta"> (list)</span>
+                                    && (
+                                        <span>
+                                            <i
+                                                className="grey link setting icon"
+                                                onClick={this._startWidgetEdition}
+                                            />
+                                            <i
+                                                className="red link remove icon"
+                                                onClick={isParentList ? this._deleteList : this._deleteCard}
+                                            />
+                                        </span>
+                                    )
                                 }
-                                <span className="tools">
-                                    {
-                                        isEditing
-                                        && (
-                                            <span>
-                                                <i
-                                                    className="grey link setting icon"
-                                                    onClick={this._startWidgetEdition}
-                                                />
-                                                <i
-                                                    className="red link remove icon"
-                                                    onClick={isParentList ? this._deleteList : this._deleteCard}
-                                                />
-                                            </span>
-                                        )
-                                    }
-                                </span>
-                                {this._renderTooltip()}
-                            </div>
-                        )
-                    }
-
+                            </span>
+                            {this._renderTooltip()}
+                        </div>
+                    )
+                }
+                <div className="content">
                     {
                         source.isEmpty() ? (
-                            <div className="simple-field">
-                                <span className="field-label">
-                                    <i>No data</i>
-                                </span>
-                            </div>
-                        ) : (
-                            shouldDisplayCardContent && (
-                                <DragWrapper
-                                    actions={editing && editing.actions}
-                                    sort
-                                    group={{
-                                        name: ap,
-                                        pull: false,
-                                        put: true
-                                    }}
-                                    templatePath={tp}
-                                    isEditing={isEditing}
-                                    watchDrop
-                                >
-                                    {
-                                        childWidgets
-                                            .map((w, i) => {
-                                                const passedWidget = w
-                                                    .set('templatePath', `${tp}.widgets.${i}`)
+                                <div className="simple-field">
+                                    <span className="field-label">
+                                        <i>No data</i>
+                                    </span>
+                                </div>
+                            ) : (
+                                shouldDisplayCardContent && (
+                                    <DragWrapper
+                                        actions={editing && editing.actions}
+                                        sort
+                                        group={{
+                                            name: ap,
+                                            pull: false,
+                                            put: true
+                                        }}
+                                        templatePath={tp}
+                                        isEditing={isEditing}
+                                        watchDrop
+                                    >
+                                        {
+                                            childWidgets
+                                                .map((w, i) => {
+                                                    const passedWidget = w
+                                                        .set('templatePath', `${tp}.widgets.${i}`)
 
-                                                return (
-                                                    <InfobarWidget
-                                                        key={`${passedWidget.get('path')}-${i}`}
-                                                        source={source}
-                                                        parent={widget}
-                                                        widget={passedWidget}
-                                                        editing={editing}
-                                                        isEditing={isEditing}
-                                                    />
-                                                )
-                                            })
-                                    }
-                                </DragWrapper>
+                                                    // find first non-text widget,
+                                                    // to auto-expand.
+                                                    if (w.get('type') !== 'text' && !firstNonTextWidget) {
+                                                        firstNonTextWidget = true
+                                                    }
+
+                                                    return (
+                                                        <InfobarWidget
+                                                            key={`${passedWidget.get('path')}-${i}`}
+                                                            source={source}
+                                                            parent={widget}
+                                                            widget={passedWidget}
+                                                            editing={editing}
+                                                            isEditing={isEditing}
+                                                            open={open && firstNonTextWidget}
+                                                        />
+                                                    )
+                                                })
+                                        }
+                                    </DragWrapper>
+                                )
                             )
-                        )
                     }
                 </div>
             </div>
@@ -218,12 +243,14 @@ CardInfobarWidget.propTypes = {
     widget: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     isParentList: PropTypes.bool.isRequired,
-    parent: PropTypes.object
+    parent: PropTypes.object,
+    open: PropTypes.bool
 }
 
 CardInfobarWidget.defaultProps = {
     isEditing: false,
-    isParentList: false
+    isParentList: false,
+    open: false
 }
 
 export default CardInfobarWidget

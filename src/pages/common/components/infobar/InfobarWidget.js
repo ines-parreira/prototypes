@@ -16,7 +16,8 @@ class InfobarWidget extends React.Component {
             source,
             widget,
             editing,
-            isEditing
+            isEditing,
+            open
         } = this.props
 
         // prevent buggy display if source...
@@ -53,6 +54,7 @@ class InfobarWidget extends React.Component {
                         source={data || fromJS({})}
                         widget={updatedWidget}
                         editing={editing}
+                        open={open}
                     />
                 )
             }
@@ -64,6 +66,7 @@ class InfobarWidget extends React.Component {
                         source={data || fromJS({})}
                         widget={updatedWidget}
                         editing={editing}
+                        open={open}
                     />
                 )
             }
@@ -76,6 +79,7 @@ class InfobarWidget extends React.Component {
                         widget={updatedWidget}
                         editing={editing}
                         parent={parent}
+                        open={open}
                     />
                 )
             }
@@ -104,7 +108,8 @@ InfobarWidget.propTypes = {
     parent: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
-    isEditing: PropTypes.bool.isRequired
+    isEditing: PropTypes.bool.isRequired,
+    open: PropTypes.bool
 }
 
 export default InfobarWidget

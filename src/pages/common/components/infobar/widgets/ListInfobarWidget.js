@@ -11,7 +11,8 @@ class ListInfobarWidget extends React.Component {
             isParentList,
             source,
             widget,
-            editing
+            editing,
+            open
         } = this.props
 
         const updatedWidget = widget
@@ -79,6 +80,7 @@ class ListInfobarWidget extends React.Component {
                                     widget={passedWidget}
                                     editing={editing}
                                     isEditing={isEditing}
+                                    open={open && i === 0}
                                 />
                             )
                         })
@@ -107,7 +109,8 @@ ListInfobarWidget.propTypes = {
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
-    isParentList: PropTypes.bool.isRequired
+    isParentList: PropTypes.bool.isRequired,
+    open: PropTypes.bool
 }
 
 ListInfobarWidget.defaultProps = {

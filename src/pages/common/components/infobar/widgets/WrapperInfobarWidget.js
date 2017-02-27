@@ -22,7 +22,8 @@ class WrapperInfobarWidget extends React.Component {
             widget,
             isEditing,
             source,
-            editing
+            editing,
+            open
         } = this.props
 
         const ap = widget.get('absolutePath')
@@ -72,6 +73,7 @@ class WrapperInfobarWidget extends React.Component {
                                             widget={passedWidget}
                                             editing={editing}
                                             isEditing={isEditing}
+                                            open={open && i === 0}
                                         />
                                     )
                                 })
@@ -87,7 +89,8 @@ WrapperInfobarWidget.propTypes = {
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
-    isEditing: PropTypes.bool.isRequired
+    isEditing: PropTypes.bool.isRequired,
+    open: PropTypes.bool
 }
 
 export default WrapperInfobarWidget
