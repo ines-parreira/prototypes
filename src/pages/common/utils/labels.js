@@ -6,16 +6,17 @@ import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
 import {fromJS} from 'immutable'
 import {formatDatetime, isImmutable} from '../../../utils'
+import {USER_CHANNEL_CLASS} from '../../../config'
 
 /**
  * AGENT
  */
 export const AgentLabel = ({name = ''}) => {
     return (
-        <span className="agent-label">
+        <div className="agent-label">
             <span className="agent-id-label ui medium yellow label">A</span>
             {name && <span className="secondary-action">{name.toUpperCase()}</span>}
-        </span>
+        </div>
     )
 }
 AgentLabel.propTypes = {name: PropTypes.string}
@@ -23,7 +24,7 @@ AgentLabel.propTypes = {name: PropTypes.string}
 /**
  * USER
  */
-export const UserLabel = ({name = ''}) => <span>{name}</span>
+export const UserLabel = ({name = ''}) => <div>{name}</div>
 UserLabel.propTypes = {name: PropTypes.string}
 
 /**
@@ -61,7 +62,7 @@ export const PriorityLabel = ({priority}) => {
     const className = classNames('ticket-priority flag icon', priority, {
         outline: priority !== 'high'
     })
-    return <i className={className} />
+    return <i className={className}/>
 }
 PriorityLabel.propTypes = {priority: PropTypes.string.isRequired}
 
@@ -86,18 +87,16 @@ export const ChannelLabel = ({channel}) => (
 ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 
 /**
- * CHANNEL DETAIL
+ *  Source DETAIL
  */
-export const ChannelDetailLabel = ({channel}) => (
-    <span>
-        {channel.get('user') ? `
-            ${channel.getIn(['user', 'name'])}
-            <${channel.get('address')}>
-        ` : channel.get('address')}
-    </span>
+export const SourceDetailLabel = ({value}) => (
+    <div>
+        <i className={USER_CHANNEL_CLASS[value.get('type')]}/>
+        {value.get('name') ? `${value.get('name')} <${value.get('address')}>` : value.get('address')}
+    </div>
 )
-ChannelDetailLabel.propTypes = {
-    channel: PropTypes.object.isRequired
+SourceDetailLabel.propTypes = {
+    value: PropTypes.object.isRequired
 }
 
 /**
@@ -198,7 +197,7 @@ export const RenderLabel = ({field, value}) => {
 
     switch (field.get('name')) {
         case 'tags':
-            return <TagLabel name={value} />
+            return <TagLabel name={value}/>
         case 'created':
         case 'updated':
             return (
@@ -207,20 +206,20 @@ export const RenderLabel = ({field, value}) => {
                 />
             )
         case 'status':
-            return <StatusLabel status={value} />
+            return <StatusLabel status={value}/>
         case 'priority':
-            return <PriorityLabel priority={value} />
+            return <PriorityLabel priority={value}/>
         case 'assignee':
-            return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
-        case 'to':
-            return <ChannelDetailLabel channel={value} />
+            return value.get('name') ? <AgentLabel name={value.get('name')}/> : null
+        case 'source':
+            return typeof value === 'string' ? <div>{value}</div> : <SourceDetailLabel value={value}/>
         case 'requester':
-            return <UserLabel name={value.get('name')} />
+            return <UserLabel name={value.get('name')}/>
         case 'roles':
-            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value} />
+            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value}/>
         case 'via':
         case 'channel':
-            return <ChannelLabel channel={value} />
+            return <ChannelLabel channel={value}/>
         default:
             return <span>{value}</span>
     }

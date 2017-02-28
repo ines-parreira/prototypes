@@ -68,12 +68,12 @@ const config = [{
             title: 'Subject',
         },
         {
-            name: 'from',
-            title: 'From',
-        },
-        {
-            name: 'to',
-            title: 'To',
+            name: 'source',
+            title: 'Source',
+            path: 'messages.source.to.address',
+            filter: {
+                type: 'source',
+            }
         },
         {
             name: 'tags',
@@ -194,16 +194,16 @@ const config = [{
                 // display the user based on the message type
                 return displayUserNameFromSource(source, item.getIn(['first_source', 'type']))
             }
-            case 'to': {
-                // TODO get the matched channel,
-                // instead of the first one.
-                const firstChannel = item.getIn(['receiver', 'channels', 0])
-
-                if (!firstChannel) {
+            case 'source': {
+                if (!item.get('first_source')) {
                     break
                 }
 
-                return firstChannel
+                // get the part of "source" that we want
+                const source = item.getIn(['first_source', 'to'], fromJS([])).toJS()[0]
+
+                // display the user based on the message type
+                return displayUserNameFromSource(source, item.getIn(['first_source', 'type']))
             }
             case 'tags': {
                 return (
