@@ -24,7 +24,7 @@ class CardSourceWidget extends React.Component {
         })
 
         let displayedTitle = stripLastListsFromPath(ap)
-        displayedTitle = _last(displayedTitle.split('.'))
+        displayedTitle = _last(displayedTitle)
 
         return (
             <div
@@ -40,7 +40,7 @@ class CardSourceWidget extends React.Component {
                         <DragWrapper
                             actions={editing && editing.actions}
                             group={{
-                                name: ap,
+                                name: ap.join('.'),
                                 pull: true,
                                 put: false
                             }}

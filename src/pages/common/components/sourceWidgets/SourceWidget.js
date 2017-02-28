@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import {prepareWidgetToDisplay, displayLabel, guessFieldValueFromRawData} from '../infobar/utils'
+import {prepareWidgetToDisplay, displayLabel} from '../infobar/utils'
 
 import ListSourceWidget from './widgets/ListSourceWidget'
 import CardSourceWidget from './widgets/CardSourceWidget'
@@ -63,7 +63,7 @@ class SourceWidget extends React.Component {
                     {path}:
                 </span>
                 <span className="field-value">
-                    {displayLabel(guessFieldValueFromRawData(data, type))}
+                    {displayLabel(data)}
                 </span>
             </div>
         )

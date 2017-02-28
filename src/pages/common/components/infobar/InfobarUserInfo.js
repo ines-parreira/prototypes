@@ -167,7 +167,7 @@ class InfobarUserInfo extends React.Component {
                 const address = channel.get('address', '')
 
                 if (!address) {
-                    return
+                    return null
                 }
 
                 switch (channel.get('type')) {
@@ -206,7 +206,7 @@ class InfobarUserInfo extends React.Component {
                 const iconClass = USER_CHANNEL_CLASS[channel.get('type')]
 
                 if (!iconClass) {
-                    return
+                    return null
                 }
 
                 return (

@@ -49,7 +49,7 @@ class WrapperInfobarWidget extends React.Component {
                         actions={editing && editing.actions}
                         sort
                         group={{
-                            name: ap,
+                            name: ap.join('.'),
                             pull: false,
                             put: true
                         }}

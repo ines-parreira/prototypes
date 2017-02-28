@@ -55,11 +55,11 @@ export function isUppercase(string) {
  * @param path
  * @returns {*}
  */
-export function stripLastListsFromPath(path = '') {
+export function stripLastListsFromPath(path = []) {
     let newPath = path
 
-    while (_.endsWith(newPath, '[]')) {
-        newPath = newPath.slice(0, -2)
+    while (_.last(newPath) === '[]') {
+        newPath = _.initial(newPath)
     }
 
     return newPath
@@ -169,7 +169,7 @@ export function areSourcesReady(sources, context, everySources = false) {
     return sourcePaths[condition]((sourcePath) => {
         // we remove the first property of the source origin path since we are searching directly in the source
         // ex : we transform ticket.requester.customer into ['requester', 'customer']
-        const immutableSourcePath = sourcePath.split('.').slice(1)
+        const immutableSourcePath = sourcePath.slice(1)
 
         const sourceData = currentSource.getIn(immutableSourcePath, fromJS({}))
 
@@ -197,7 +197,7 @@ export function canDisplayWidget(widget, source) {
         return false
     }
 
-    const splitPath = widget.get('path', '').split('.')
+    const splitPath = widget.get('path', '')
 
     if (!splitPath.length) {
         return false
@@ -362,7 +362,7 @@ export function jsonToWidgets(json, context = 'ticket') {
 
         const response = sourcePaths
             .map((sourcePath, i) => {
-                let source = _.get(json, sourcePath.split('.'), {})
+                let source = _.get(json, sourcePath, {})
 
                 // remove private keys from source before we transform it into a template
                 source = _.omitBy(source, (v, k) => k.startsWith('_'))
@@ -420,7 +420,7 @@ export function canDrop(group = '', targetAbsolutePath = '') {
         return !targetAbsolutePath
     }
 
-    return group === targetAbsolutePath
+    return group === targetAbsolutePath.join('.')
 }
 
 /**
@@ -434,12 +434,27 @@ export function prepareWidgetToDisplay(widget = fromJS({}), source = fromJS({}),
     // build absolute path of widget
     const parentPath = !!parent && parent.get('absolutePath', parent.get('path', ''))
     const ownPath = widget.get('path', '')
-    const absolutePath = parentPath ? `${parentPath}${ownPath ? `.${ownPath}` : ''}` : widget.get('path')
-    const updatedWidget = widget.set('absolutePath', absolutePath)
+
+    let absolutePath = widget.get('path')
+
+    if (parentPath) {
+        absolutePath = parentPath
+
+        if (ownPath) {
+            absolutePath = _.concat(absolutePath, ownPath)
+        }
+    }
+
+    let updatedWidget = widget.set('absolutePath', absolutePath)
+
+    let path = updatedWidget.get('path', '')
+    if (path && !_.isArray(path)) {
+        updatedWidget = updatedWidget.set('path', [path])
+    }
 
     // get data of widget in shortcuts
-    const path = updatedWidget.get('path', '')
-    const data = path ? source.getIn(path.split('.')) : source
+    path = updatedWidget.get('path', '')
+    const data = path ? source.getIn(path) : source
     const type = updatedWidget.get('type', '')
 
     return {

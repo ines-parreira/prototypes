@@ -24,17 +24,18 @@ class WrapperSourceWidget extends React.Component {
         }
 
         return (
-            <div className={`ui card wrapper draggable ${parent.get('type')}`}
-                 data-key={widget.get('path')}
+            <div
+                className={`ui card wrapper draggable ${parent.get('type')}`}
+                data-key={widget.get('path').join('.')}
             >
                 <div className="content">
                     <div className="header clearfix">
-                        {humanizeString(_last(ap.split('.')))}
+                        {humanizeString(_last(ap))}
                     </div>
                     <DragWrapper
                         actions={editing && editing.actions}
                         group={{
-                            name: ap,
+                            name: ap.join('.'),
                             pull: true,
                             put: false
                         }}

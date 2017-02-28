@@ -1,7 +1,8 @@
 import * as types from './constants'
 import {fromJS} from 'immutable'
 import _isObject from 'lodash/isObject'
-import _endsWith from 'lodash/endsWith'
+import _last from 'lodash/last'
+import _initial from 'lodash/initial'
 import {
     isRootSource,
     stripLastListsFromPath,
@@ -124,15 +125,15 @@ export default (state = initialState, action) => {
             const isDraggingARootSource = isRootSource(currentGroup)
 
             // build absolute path of dragged property
-            let sourceAbsolutePath = currentGroup
+            let sourceFlattenAbsolutePath = currentGroup
             if (isDraggingARootSource) {
-                sourceAbsolutePath = key
+                sourceFlattenAbsolutePath = key
             } else if (key) {
-                sourceAbsolutePath += `.${key}`
+                sourceFlattenAbsolutePath += `.${key}`
             }
 
             // get data from source path to generate a widget for it
-            const relativeSourcePath = sourceAbsolutePath.replace(/\[]/g, '.0')
+            const relativeSourcePath = sourceFlattenAbsolutePath.replace(/\[]/g, '.0')
             const sourceData = source.getIn(relativeSourcePath.split('.'))
 
             // drag is off
@@ -159,19 +160,19 @@ export default (state = initialState, action) => {
             const widgetsItems = isDraggingARootSource
                 ? ['_internal', 'editedItems']
                 : ['_internal', 'editedItems']
-                .concat(targetParentTemplatePath.split('.'))
-                .concat(['widgets'])
+                    .concat(targetParentTemplatePath.split('.'))
+                    .concat(['widgets'])
 
             // if is a dragging source, wrap it in a wrapper
             if (isDraggingARootSource) {
                 const context = state.get('currentContext', '')
-                const strippedSourceAbsolutePath = stripLastListsFromPath(sourceAbsolutePath)
+                const strippedSourceFlattenAbsolutePath = stripLastListsFromPath(sourceFlattenAbsolutePath)
 
                 widget = makeWrapper({
                     order: widgetsItems.size,
                     context,
                     child: widget,
-                    sourcePath: strippedSourceAbsolutePath,
+                    sourcePath: strippedSourceFlattenAbsolutePath,
                 })
             }
 
@@ -216,9 +217,10 @@ export default (state = initialState, action) => {
 
             // remove last lists in source absolute path, since objects and arrays are here considered the same
             let listCounter = 0
-            while (_endsWith(newAbsolutePath, '[]')) {
+
+            while (_last(newAbsolutePath) === '[]') {
                 listCounter++
-                newAbsolutePath = newAbsolutePath.slice(0, -2)
+                newAbsolutePath = _initial(newAbsolutePath)
             }
 
             // remove last lists from template path

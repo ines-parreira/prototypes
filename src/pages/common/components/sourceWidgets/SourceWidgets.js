@@ -35,11 +35,8 @@ class SourceWidgets extends React.Component {
                                     .get('template', fromJS({}))
                                     .set('templatePath', `${i.toString()}.template`)
 
-                                // if no path is set, use the configuration one
-                                if (!passedWidget.get('path')) {
-                                    const sourcePath = getSourcePathFromContext(widget.get('context'), widget.get('type'))
-                                    passedWidget = passedWidget.set('path', sourcePath)
-                                }
+                                const sourcePath = getSourcePathFromContext(widget.get('context'), widget.get('type'))
+                                passedWidget = passedWidget.set('path', sourcePath)
 
                                 return (
                                     <SourceWidget

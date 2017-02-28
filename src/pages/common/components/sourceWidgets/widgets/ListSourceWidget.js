@@ -13,7 +13,7 @@ class ListSourceWidget extends React.Component {
         } = this.props
 
         const updatedWidget = widget
-            .set('absolutePath', `${widget.get('absolutePath')}[]`)
+            .set('absolutePath', widget.get('absolutePath').concat(['[]']))
 
         const passedWidget = updatedWidget
             .getIn(['widgets', '0'])

@@ -86,12 +86,12 @@ export const ANSWERABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-post', 'faceb
  */
 export const DEFAULT_SOURCE_PATHS = {
     ticket: {
-        custom: 'ticket.requester.customer',
-        shopify: 'ticket.requester.customer._shopify',
+        custom: ['ticket', 'requester', 'customer'],
+        shopify: ['ticket', 'requester', 'customer', '_shopify'],
     },
     user: {
-        custom: 'user.customer',
-        shopify: 'user.customer._shopify',
+        custom: ['user', 'customer'],
+        shopify: ['user', 'customer', '_shopify'],
     }
 }
 
