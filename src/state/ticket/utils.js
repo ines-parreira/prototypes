@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 import _forEach from 'lodash/forEach'
 import _isArray from 'lodash/isArray'
+import _toLower from 'lodash/toLower'
 import {SOURCE_VALUE_PROP, SYSTEM_TYPES} from '../../config'
 import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
 import {getActionTemplate} from '../../utils'
@@ -77,7 +78,7 @@ export function isSupportAddress(addressToTest = '', supportAddresses = fromJS([
         return false
     }
 
-    addressToTest = addressToTest.toLowerCase()
+    addressToTest = _toLower(addressToTest)
 
     for (const supportAddress of supportAddresses) {
         const splitSupportAddress = supportAddress.split('@')
@@ -135,7 +136,7 @@ export function guessReceiversFromTicket(ticket, channels = fromJS([])) {
 
     // remove our support addresses of the receivers
     const cleanReceivers = receivers => receivers
-        .map(receiver => receiver.update('address', address => address.toLowerCase()))
+        .map(receiver => receiver.get('address') ? receiver.update('address', _toLower) : receiver)
         .filter(receiver => {
             return !isSupportAddress(receiver.get('address'), supportAddresses)
         })
