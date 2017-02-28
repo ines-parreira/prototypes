@@ -76,6 +76,9 @@ export function isSupportAddress(addressToTest = '', supportAddresses = fromJS([
     if (!addressToTest || !supportAddresses.size) {
         return false
     }
+
+    addressToTest = addressToTest.toLowerCase()
+
     for (const supportAddress of supportAddresses) {
         const splitSupportAddress = supportAddress.split('@')
 
@@ -131,9 +134,11 @@ export function guessReceiversFromTicket(ticket, channels = fromJS([])) {
     }
 
     // remove our support addresses of the receivers
-    const cleanReceivers = receivers => receivers.filter(receiver => {
-        return !isSupportAddress(receiver.get('address'), supportAddresses)
-    })
+    const cleanReceivers = receivers => receivers
+        .map(receiver => receiver.update('address', address => address.toLowerCase()))
+        .filter(receiver => {
+            return !isSupportAddress(receiver.get('address'), supportAddresses)
+        })
 
     return {
         to: cleanReceivers(toReceivers).toJS(),
