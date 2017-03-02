@@ -8,7 +8,7 @@ import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 
 export default class EmailIntegrationList extends React.Component {
     render() {
-        const {integrations, loading} = this.props
+        const {integrations, actions, loading} = this.props
         const longTypeDescription = (
             <span>
                 Connect your support email addresses and respond to your customers from Gorgias.
@@ -38,14 +38,14 @@ export default class EmailIntegrationList extends React.Component {
 
             if (!active) {
                 primaryBtn = (
-                    <a
+                    <button
                         className={classNames('ui basic light blue button', {
                             'loading disabled': isRowSubmitting
                         })}
-                        href={`/integrations/gmail/auth?integration_id=${int.get('id')}`}
+                        onClick={() => !isRowSubmitting && actions.activateIntegration(int)}
                     >
                         Re-Activate
-                    </a>
+                    </button>
                 )
             }
 
