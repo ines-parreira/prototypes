@@ -3,11 +3,13 @@ import React, {PropTypes} from 'react'
 import RuleTableRow from './RuleTableRow'
 
 const RuleTable = ({actions, rules}) => (
-    <table className="ui selectable basic padded table">
+    <table className="main-table view-table">
         <thead>
             <tr>
-                <th>Details</th>
-                <th className="right aligned">Updated</th>
+                <td className="cell-wrapper cell-short"><div><span>Details</span></div></td>
+                <td className="cell-wrapper cell-short"><div><span>Status</span></div></td>
+                <td className="cell-wrapper cell-short"><div><span>Usage</span></div></td>
+                <td className="cell-wrapper cell-short"><div><span>Updated</span></div></td>
             </tr>
         </thead>
         {

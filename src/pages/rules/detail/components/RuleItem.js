@@ -21,12 +21,18 @@ class RuleItem extends React.Component {
         const {actions, rule} = this.props
 
         event.preventDefault()
-        actions.rules.save({
-            id: rule.get('id'),
-            title: rule.get('title'),
-            code: rule.get('code'),
-            code_ast: rule.get('code_ast'),
-        })
+
+        const confirmMsg = 'You\'re about to modify a system rule, this may prevent you from sending ' +
+            'messages to your customers. Are you sure?'
+
+        if (rule.get('type') === 'user' || confirm(confirmMsg)) {
+            actions.rules.save({
+                id: rule.get('id'),
+                title: rule.get('title'),
+                code: rule.get('code'),
+                code_ast: rule.get('code_ast'),
+            })
+        }
     }
 
     _handleReset = (event) => {
@@ -76,10 +82,10 @@ class RuleItem extends React.Component {
         return (
             <div>
                 <a className="ui red ribbon label" title="The code behind the scenes" onClick={this._handleToggleCode}>
-                    <i className="code icon" /> Code
+                    <i className="code icon"/> Code
                 </a>
                 <a className="ui floated right" title="Toggle code" onClick={this._handleToggleCode}>
-                    <i className={toggleClasses} />
+                    <i className={toggleClasses}/>
                 </a>
             </div>
         )
@@ -91,8 +97,8 @@ class RuleItem extends React.Component {
         if (this.state.showCode) {
             return (
                 <pre>
-                    <code>{code && code.trim()}</code>
-                </pre>
+                     <code>{code && code.trim()}</code>
+                 </pre>
             )
         }
         return null
@@ -134,7 +140,10 @@ class RuleItem extends React.Component {
             rmBtn = (
                 <button
                     type="button"
-                    className="ui left floated icon basic red button"
+                    className={classNames(
+                        'ui right floated icon basic red button',
+                        {disabled: rule.get('type') === 'system'})
+                    }
                     onClick={this._handleRemove}
                 >
                     Delete Rule
@@ -171,11 +180,6 @@ class RuleItem extends React.Component {
         return (
             <div className="item">
                 <div className="ui segments">
-                    <div className="ui segment">
-                        {this._renderToggleCode()}
-                        <p />
-                        {this._renderCode()}
-                    </div>
                     <Program
                         {...codeAST}
                         rule={rule}

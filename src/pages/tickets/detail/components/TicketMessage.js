@@ -121,23 +121,37 @@ export default class TicketMessage extends React.Component {
     }
 
     renderMeta(message) {
-        if (!message.meta || !message.meta.current_page) {
-            return null
+        let fromWidget = null
+        let viaWidget = null
+
+        if (message.meta && message.meta.current_page) {
+            let displayString = message.meta.current_page
+
+            if (displayString.length > 28) {
+                displayString = `...${displayString.substr(displayString.length - 25)}`
+            }
+
+            fromWidget = (
+                <span key="from-widget" className="ticket-message-from">
+                    from <a target="_blank" href={message.meta.current_page}>
+                        {displayString}
+                    </a>
+                </span>
+            )
         }
 
-        let displayString = message.meta.current_page
-
-        if (displayString.length > 28) {
-            displayString = `...${displayString.substr(displayString.length - 25)}`
+        if (message.via === 'rule') {
+            viaWidget = (
+                <span key="via-widget" className="ticket-message-from">
+                    sent via a <b><i className="icon setting"/>Rule</b>
+                </span>
+            )
         }
 
-        return (
-            <span className="ticket-message-from">
-                from <a target="_blank" href={message.meta.current_page}>
-                    {displayString}
-                </a>
-            </span>
-        )
+        return [
+            fromWidget,
+            viaWidget
+        ]
     }
 
     _renderMessageNotSent(messageId, ticketId) {

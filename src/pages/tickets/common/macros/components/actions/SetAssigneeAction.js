@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import TicketAssignee from '../../../../detail/components/ticketdetails/TicketAssignee'
 
-export default class AssignUserAction extends React.Component {
+export default class SetAssigneeAction extends React.Component {
     setAssignee(assignee) {
         this.props.updateActionArgs(this.props.index, fromJS({assignee_user: assignee}))
     }
@@ -28,7 +28,7 @@ export default class AssignUserAction extends React.Component {
     }
 }
 
-AssignUserAction.propTypes = {
+SetAssigneeAction.propTypes = {
     action: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,

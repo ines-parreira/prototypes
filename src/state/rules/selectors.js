@@ -18,7 +18,7 @@ export const getInternal = createSelector(
     state => state.get('_internal') || fromJS({})
 )
 
-export const createIsDirtySelector = globalState => id => createSelector(
+export const makeIsDirty = globalState => id => createSelector(
     [getInternal],
     state => state.get('dirtyList', fromJS([])).contains(id.toString())
 )(globalState)

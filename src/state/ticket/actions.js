@@ -173,7 +173,7 @@ export const setAgent = (assigneeUser) => (dispatch, getState) => {
         args: fromJS({assignee_user: assigneeUser}),
     })
 
-    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('assignUser', getState())))
+    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setAssignee', getState())))
 }
 
 export const setStatus = (status, onClose = _noop) => (dispatch, getState) => {

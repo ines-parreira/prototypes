@@ -6,7 +6,7 @@ import {generateDefaultAction} from '../../../../../state/macro/utils'
 import SetPriorityAction from './actions/SetPriorityAction'
 import SetStatusAction from './actions/SetStatusAction'
 import SetResponseTextAction from './actions/SetResponseTextAction'
-import AssignUserAction from './actions/AssignUserAction'
+import SetAssigneeAction from './actions/SetAssigneeAction'
 import AddTagsAction from './actions/AddTagsAction'
 import HttpAction from './actions/HttpAction'
 import AddAttachmentsAction from './actions/AddAttachmentsAction'
@@ -263,7 +263,7 @@ class MacroEdit extends React.Component {
                                     )
                                 case ticketTypes.SET_AGENT:
                                     return (
-                                        <AssignUserAction
+                                        <SetAssigneeAction
                                             key={key}
                                             index={key}
                                             action={action}

@@ -6,8 +6,8 @@ import drop from 'lodash/drop'
 import Select from './widget/ReactSelect'
 import StatusSelect from './widget/StatusSelect'
 import PrioritySelect from './widget/PrioritySelect'
-import TagSelect from './widget/TagSelect'
 import MacroSelect from './widget/MacroSelect'
+import AssigneeSelect from './widget/AssigneeSelect'
 
 class Widget extends React.Component {
 
@@ -125,18 +125,17 @@ class Widget extends React.Component {
         switch (widgetType) {
             case 'select':
                 return <Select {...widget} onChange={this._handleChange}/>
-            case 'tag-select':
-                return <TagSelect {...widget} onChange={this._handleChange}/>
             case 'status-select':
                 return <StatusSelect {...widget} onChange={this._handleChange}/>
             case 'priority-select':
                 return <PrioritySelect {...widget} onChange={this._handleChange}/>
             case 'macro-select':
                 return <MacroSelect {...widget} onChange={this._handleChange} />
-            case 'input':
-                return this._input(value)
+            case 'assignee_user-select':
+                return <AssigneeSelect {...widget} onChange={this._handleChange} />
             case 'textarea':
                 return this._textarea(value)
+            case 'input':
             default:
                 return this._input(value)
         }

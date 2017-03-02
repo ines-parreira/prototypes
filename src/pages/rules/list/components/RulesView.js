@@ -37,9 +37,6 @@ export default class RulesView extends React.Component {
     render() {
         const {actions, rules} = this.props
 
-        const activeRules = rules.filter(r => !r.get('deactivated_datetime'))
-        const inactiveRules = rules.filter(r => r.get('deactivated_datetime'))
-
         return (
             <div className="view">
                 <PageHeader title="Rules">
@@ -60,25 +57,17 @@ export default class RulesView extends React.Component {
                         the text 'refund' or send a satisfaction survey after the ticket was closed for more than 48h.
                     </p>
                 </div>
-                {activeRules && !activeRules.isEmpty() && (
-                    <div className="rule-category">
-                        <h4>Active Rules</h4>
-                        <RuleTable
-                            actions={actions}
-                            rules={activeRules}
-                        />
+                {
+                    rules && !rules.isEmpty() && (
+                        <div className="rule-category">
+                            <RuleTable
+                                actions={actions}
+                                rules={rules}
+                            />
 
-                    </div>
-                )}
-                {inactiveRules && !inactiveRules.isEmpty() && (
-                    <div className="rule-category">
-                        <h4>Inactive Rules</h4>
-                        <RuleTable
-                            actions={actions}
-                            rules={inactiveRules}
-                        />
-                    </div>
-                )}
+                        </div>
+                    )
+                }
 
                 <Modal
                     header="Create New Rule"

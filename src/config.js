@@ -243,7 +243,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: 'front',
-        name: 'assignUser',
+        name: 'setAssignee',
         title: 'Assign an agent',
         partialUpdateKey: 'assignee_user',
         partialUpdateValue: makeGetProperty('assignee_user'),

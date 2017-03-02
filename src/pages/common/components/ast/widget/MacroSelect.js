@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import {fromJS} from 'immutable'
 import {getActionTemplate} from './../../../../../utils'
 
 import Select from './Select'
@@ -20,13 +21,14 @@ class MacroSelect extends React.Component {
 
     render() {
         const {value, onChange, macros} = this.props
-        const options = macros
-            .filter(macro => macro.get('actions')
+        let options = fromJS([])
+
+        macros.filter(macro => macro.get('actions')
                 // Filter out macros with external actions
                 .filter(action => getActionTemplate(action.get('name')).execution === 'back')
                 .isEmpty()
-            ).map(macro => {
-                return {label: macro.get('name')}
+            ).forEach(macro => {
+                options = options.push(fromJS({value: macro.get('id'), label: macro.get('name')}))
             })
 
         if (options.isEmpty()) {

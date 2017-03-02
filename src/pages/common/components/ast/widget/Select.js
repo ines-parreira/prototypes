@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react'
 
 import classNames from 'classnames'
-import { List } from 'immutable'
+import {List, Map, fromJS} from 'immutable'
+
 
 class Select extends React.Component {
-
     componentDidMount() {
         const { onChange, value } = this.props
         $(this.refs.select).dropdown({ onChange })
@@ -31,9 +31,15 @@ class Select extends React.Component {
 
         if (options) {
             if (Array.isArray(options) || List.isList(options)) {
-                options.map((option) => _options.push([option, option]))
-            } else {
-                Object.keys(options).map((key) => _options.push([key, options[key].label]))
+                const immutableOptions = fromJS(options)
+
+                if (!immutableOptions.isEmpty() && Map.isMap(immutableOptions.get(0))) {
+                    // if options is of format: [{value: v, label: l}, {value: v, label: l}]
+                    immutableOptions.map(option => _options.push(option.toJS()))
+                } else {
+                    // if options is of format: [value, value, value]
+                    immutableOptions.map((option) => _options.push({value: option, label: option}))
+                }
             }
         }
 
@@ -48,7 +54,11 @@ class Select extends React.Component {
         return (
             <span>
                 <select className={selectClassName} ref="select">
-                    {_options && _options.map((opt) => <option value={opt[0]} key={opt[0]}>{opt[1]}</option>)}
+                    {
+                        _options && _options.map((opt, idx) => (
+                            <option value={opt.value} key={idx}>{opt.label}</option>
+                        ))
+                    }
                 </select>
             </span>
         )

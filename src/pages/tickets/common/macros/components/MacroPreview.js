@@ -41,8 +41,8 @@ export default class MacroPreview extends React.Component {
         )
     }
 
-    _renderAssignUser(assignUserAction) {
-        if (!assignUserAction) {
+    _renderSetAssignee(setAssigneeAction) {
+        if (!setAssigneeAction) {
             return null
         }
 
@@ -50,10 +50,10 @@ export default class MacroPreview extends React.Component {
             <div className="macro-data">
                 <div className="ui label macro-legend">ASSIGN TO:</div>
                 <span
-                    key={`action-assign-${assignUserAction.id}`}
+                    key={`action-assign-${setAssigneeAction.id}`}
                     className="ticket-owner-btn ticket-details-item"
                 >
-                    <AgentLabel name={assignUserAction.getIn(['arguments', 'assignee_user', 'name'])} />
+                    <AgentLabel name={setAssigneeAction.getIn(['arguments', 'assignee_user', 'name'])} />
                 </span>
             </div>
         )
@@ -132,7 +132,7 @@ export default class MacroPreview extends React.Component {
         const responseTextAction = currentMacro.get('actions').find(action => action.get('name') === 'setResponseText')
         const setStatusAction = currentMacro.get('actions').find(action => action.get('name') === 'setStatus')
         const setPriorityAction = currentMacro.get('actions').find(action => action.get('name') === 'setPriority')
-        const assignUserAction = currentMacro.get('actions').find(action => action.get('name') === 'assignUser')
+        const setAssigneeAction = currentMacro.get('actions').find(action => action.get('name') === 'setAssignee')
         const externalActions = currentMacro.get('actions').filter(
             action => getActionTemplate(action.get('name')).execution === 'back'
         )
@@ -144,7 +144,7 @@ export default class MacroPreview extends React.Component {
 
                     {this._renderSetStatus(setStatusAction)}
                     {this._renderAddTags(addTagsActions)}
-                    {this._renderAssignUser(assignUserAction)}
+                    {this._renderSetAssignee(setAssigneeAction)}
                     {this._renderSetPriority(setPriorityAction)}
                     {this._renderExternalActions(externalActions)}
                     <div className="macro-data pre">{responseTextAction.getIn(['arguments', 'body_text'])}</div>

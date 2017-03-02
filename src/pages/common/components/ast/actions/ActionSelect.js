@@ -16,7 +16,7 @@ class ActionSelect extends React.Component {
     }
 
     render() {
-        const { value } = this.props
+        const { value, rule } = this.props
         const selectedActionName = actionsConfig[value] && actionsConfig[value].name
         return (
             <div
@@ -28,6 +28,11 @@ class ActionSelect extends React.Component {
                 <div className="menu">
                     {Object.keys(actionsConfig).map((action, i) => {
                         const actionName = actionsConfig[action] && actionsConfig[action].name
+
+                        if (actionsConfig[action].type === 'system' && !(rule.get('type') === 'system')) {
+                            return null
+                        }
+
                         return (
                             <div key={i} className="item" data-value={action}>
                                 {actionName || action}

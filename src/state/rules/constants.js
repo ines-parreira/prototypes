@@ -40,6 +40,15 @@ const SEND_EMAIL_ACTION_DEFAULT = {
     body_html: ''
 }
 
+const SEND_MESSAGE_ACTION_DEFAULT = {
+    to: '',
+    cc: '',
+    bcc: '',
+    subject: '',
+    body_text: '',
+    body_html: ''
+}
+
 const ADD_TAGS_ACTION_DEFAULT = {
     tags: '',
 }
@@ -60,6 +69,10 @@ const APPLY_MACRO_ACTION_DEFAULT = {
     macro: ''
 }
 
+const ASSIGN_USER_ACTION_DEFAULT = {
+    assignee_user: ''
+}
+
 export const ACTION_DEFAULT_STATE = {
     applyMacro: APPLY_MACRO_ACTION_DEFAULT,
     sendEmail: SEND_EMAIL_ACTION_DEFAULT,
@@ -68,6 +81,8 @@ export const ACTION_DEFAULT_STATE = {
     setTags: SET_TAGS_ACTION_DEFAULT,
     setStatus: SET_STATUS_ACTION_DEFAULT,
     setPriority: SET_PRIORITY_ACTION_DEFAULT,
+    setAssignee: ASSIGN_USER_ACTION_DEFAULT,
+    replyToTicket: SEND_MESSAGE_ACTION_DEFAULT,
 }
 
 export const DEFAULT_IF_STATEMENT = {

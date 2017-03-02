@@ -82,8 +82,8 @@ export default class TicketMacros extends React.Component {
         )
     }
 
-    renderAssignUser(assignUserAction) {
-        if (!assignUserAction) {
+    renderSetAssignee(setAssigneeAction) {
+        if (!setAssigneeAction) {
             return null
         }
 
@@ -91,10 +91,10 @@ export default class TicketMacros extends React.Component {
             <div className="macro-data">
                 <div className="ui label macro-legend">ASSIGN TO:</div>
                 <span
-                    key={`action-assign-${assignUserAction.id}`}
+                    key={`action-assign-${setAssigneeAction.id}`}
                     className="ticket-owner-btn ticket-details-item"
                 >
-                    <AgentLabel name={assignUserAction.getIn(['arguments', 'assignee_user', 'name'])} />
+                    <AgentLabel name={setAssigneeAction.getIn(['arguments', 'assignee_user', 'name'])} />
                 </span>
             </div>
         )
@@ -166,7 +166,7 @@ export default class TicketMacros extends React.Component {
         const responseTextAction = macro.get('actions').find(action => action.get('name') === 'setResponseText')
         const setStatusAction = macro.get('actions').find(action => action.get('name') === 'setStatus')
         const setPriorityAction = macro.get('actions').find(action => action.get('name') === 'setPriority')
-        const assignUserAction = macro.get('actions').find(action => action.get('name') === 'assignUser')
+        const setAssigneeAction = macro.get('actions').find(action => action.get('name') === 'setAssignee')
         const addAttachmentsActions = macro.get('actions').find(action => action.get('name') === 'addAttachments')
 
         const backActions = macro.get('actions').filter(
@@ -197,7 +197,7 @@ export default class TicketMacros extends React.Component {
                     </a>
                     {this.renderSetStatus(setStatusAction)}
                     {this.renderAddTags(addTagsActions)}
-                    {this.renderAssignUser(assignUserAction)}
+                    {this.renderSetAssignee(setAssigneeAction)}
                     {this.renderSetPriority(setPriorityAction)}
                     {
                         sortedBackActions.map((v, k) => this.renderBackActions(k, v)).toList().toJS()

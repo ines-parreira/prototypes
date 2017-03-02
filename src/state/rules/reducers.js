@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {fromJS, OrderedMap} from 'immutable'
 import fromPairs from 'lodash/fromPairs'
 import {getCode, getAST} from '../../utils'
 import {updateCallExpression, getObjectExpression} from './utils'
@@ -42,7 +42,9 @@ export default (state = initialState, action) => {
                 rule.code_ast = getAST(rule.code)
             }
 
-            return state.setIn(['rules', rule.id.toString()], fromJS(rule))
+            // Make sure when we add a new rule it's at the top
+            const newRule = OrderedMap().set(rule.id, fromJS(rule))
+            return state.set('rules', newRule.merge(state.get('rules')))
         }
 
         case types.ACTIVATE_RULE: {
@@ -78,7 +80,12 @@ export default (state = initialState, action) => {
 
                 return [ruleItem.id, ruleItem]
             })
-            return state.set('rules', fromJS(fromPairs(rules)))
+            return state.set(
+                'rules',
+                fromJS(fromPairs(rules))
+                    .sort((a, b) => a.get('created_datetime') < b.get('created_datetime'))
+                    .sort((a, b) => a.get('type') < b.get('type')) // system rules at the end
+            )
         }
 
         case types.RULES_INITIALISE_CODE_AST: {

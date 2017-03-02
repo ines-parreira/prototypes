@@ -33,7 +33,7 @@ export const ADD_TICKET_TAGS = 'addTags'
 export const TOGGLE_PRIORITY = 'setPriority'
 export const SET_RESPONSE_TEXT = 'setResponseText'
 export const SET_STATUS = 'setStatus'
-export const SET_AGENT = 'assignUser'
+export const SET_AGENT = 'setAssignee'
 export const ADD_ATTACHMENTS = 'addAttachments'
 
 export const REMOVE_TICKET_TAG = 'REMOVE_TICKET_TAG'

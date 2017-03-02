@@ -4,6 +4,7 @@ import ActionSelect from './ActionSelect'
 
 export const actionsConfig = {
     notify: {
+        type: 'system',
         compact: false,
         name: 'Deliver Message',
         args: {
@@ -46,9 +47,24 @@ export const actionsConfig = {
             }
         }
     },
+    replyToTicket: {
+        compact: false,
+        name: 'Reply to ticket',
+        note: '* only taken into account if the last message is an email.',
+        args: {
+            body_text: {
+                name: 'Text',
+                widget: 'textarea'
+            },
+            body_html: {
+                name: 'HTML*',
+                widget: 'textarea'
+            }
+        }
+    },
     applyMacro: {
         compact: true,
-        name: 'Apply Macro'
+        name: 'Apply Macro',
     },
     addTags: {
         compact: true,
@@ -66,10 +82,14 @@ export const actionsConfig = {
         compact: true,
         name: 'Set Status',
     },
-    sendSurvey: {
+    setAssignee: {
         compact: true,
-        name: 'Send Satisfaction Survey'
+        name: 'Assign Agent'
     },
+    // sendSurvey: {
+    //     compact: true,
+    //     name: 'Send Satisfaction Survey'
+    // },
 }
 
 class Action extends React.Component {
@@ -88,7 +108,10 @@ class Action extends React.Component {
         }
 
         if (config.compact) {
-            return <span>{children}</span>
+            return [
+                <span key="children">{children}</span>,
+                config.note ? <div className="rule-note" key="note">{config.note}</div> : null
+            ]
         }
 
         // pass the args to children so that they know how to render themselves
@@ -96,9 +119,20 @@ class Action extends React.Component {
             const childrenWithProps = React.Children.map(children,
                 (child) => React.cloneElement(child, {config: config.args})
             )
-            return <div className="ui segment">{childrenWithProps}</div>
+
+            return (
+                <div className="ui segment">
+                    {childrenWithProps}
+                    {config.note ? <div className="rule-note">{config.note}</div> : null}
+                </div>
+            )
         }
-        return <div className="ui segment">{children}</div>
+        return (
+            <div className="ui segment">
+                {children}
+                {config.note ? <div className="rule-note">{config.note}</div> : null}
+            </div>
+        )
     }
 
     render() {
