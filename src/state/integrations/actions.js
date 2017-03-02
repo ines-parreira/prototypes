@@ -246,34 +246,3 @@ export function testHttpIntegration(integration) {
         }, 2000)
     }
 }
-
-export function importEmails(integration) {
-    return (dispatch) => {
-        dispatch({
-            type: types.GMAIL_INTEGRATION_IMPORT_START,
-            id: integration.get('id')
-        })
-
-        return axios.put(
-            `/api/integrations/${integration.get('id')}/`,
-            integration.toJS()
-        )
-            .then((json = {}) => json.data)
-            .then(resp => {
-                dispatch(notify({
-                    type: 'success',
-                    message: 'Importation successfully started'
-                }))
-                return dispatch({
-                    type: types.GMAIL_INTEGRATION_IMPORT_SUCCESS,
-                    resp
-                })
-            }, error => {
-                return dispatch({
-                    type: types.GMAIL_INTEGRATION_IMPORT_ERROR,
-                    error,
-                    reason: 'Failed to start importation'
-                })
-            })
-    }
-}
