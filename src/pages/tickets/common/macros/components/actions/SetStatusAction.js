@@ -6,7 +6,8 @@ import {TICKET_STATUSES} from '../../../../../../config'
 export default class SetStatusAction extends React.Component {
     componentDidMount() {
         const {index, action, updateActionArgs} = this.props
-        const status = action.getIn(['arguments', 'status'])
+        const status = action.getIn(['arguments', 'status']) || TICKET_STATUSES[0]
+        updateActionArgs(index, fromJS({status}))
 
         $(this.refs.select)
             .dropdown({

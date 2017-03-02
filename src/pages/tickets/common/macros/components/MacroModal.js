@@ -57,28 +57,27 @@ export default class MacroModal extends React.Component {
     }
 
     render() {
-        const {loading, activeView, macros, currentMacro, actions, selectionMode, selectedItemsIds } = this.props
+        const {activeView, macros, currentMacro, actions, selectionMode, selectedItemsIds} = this.props
 
         const rightPart = selectionMode ? (
-            <MacroPreview
-                currentMacro={currentMacro}
-                apply={() => {
-                    this.cancel()
-                    const value = currentMacro ? currentMacro.toJS() : null
-                    actions.views.bulkUpdate(activeView, selectedItemsIds, 'macro', value)
-                }}
-                cancel={this.cancel}
-                selectedItemsIds={selectedItemsIds}
-            />
-        ) : (
-            <MacroEdit
-                loading={loading}
-                currentMacro={currentMacro}
-                agents={this.props.agents}
-                actions={actions.macro}
-                cancel={this.cancel}
-            />
-        )
+                <MacroPreview
+                    currentMacro={currentMacro}
+                    apply={() => {
+                        this.cancel()
+                        const value = currentMacro ? currentMacro.toJS() : null
+                        actions.views.bulkUpdate(activeView, selectedItemsIds, 'macro', value)
+                    }}
+                    cancel={this.cancel}
+                    selectedItemsIds={selectedItemsIds}
+                />
+            ) : (
+                <MacroEdit
+                    currentMacro={currentMacro}
+                    agents={this.props.agents}
+                    actions={actions.macro}
+                    cancel={this.cancel}
+                />
+            )
 
         return (
             <div
@@ -109,7 +108,6 @@ export default class MacroModal extends React.Component {
 }
 
 MacroModal.propTypes = {
-    loading: PropTypes.object.isRequired,
     activeView: PropTypes.object,
     macros: PropTypes.object.isRequired,
     currentMacro: PropTypes.object,

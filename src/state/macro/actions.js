@@ -2,18 +2,6 @@ import axios from 'axios'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
 
-export const updateActionArgs = (actionIndex, value) => ({
-    type: types.UPDATE_ACTION_ARGS,
-    actionIndex,
-    value
-})
-
-export const updateActionTitle = (actionIndex, title) => ({
-    type: types.UPDATE_ACTION_TITLE,
-    actionIndex,
-    title
-})
-
 export const openModal = () => ({
     type: types.OPEN_MODAL
 })
@@ -29,16 +17,6 @@ export const addNewMacro = () => ({
 export const setName = (name) => ({
     type: types.SET_NAME,
     name
-})
-
-export const addAction = (actionType) => ({
-    type: types.ADD_ACTION,
-    actionType
-})
-
-export const deleteAction = (actionIndex) => ({
-    type: types.DELETE_ACTION,
-    actionIndex
 })
 
 export const previewMacroInModal = (macroId) => ({
@@ -187,11 +165,10 @@ export const addAttachments = (actionIndex, files) => (dispatch) => {
     return axios.post('/api/upload/', formData)
         .then((json = {}) => json.data)
         .then(resp => {
-            dispatch({
-                type: types.ADD_ATTACHMENTS_MACRO_SUCCESS,
-                actionIndex,
-                files: resp
-            })
+            return {
+                index: actionIndex,
+                files: resp,
+            }
         }, error => {
             return dispatch({
                 type: types.ADD_ATTACHMENTS_MACRO_ERROR,
@@ -200,9 +177,3 @@ export const addAttachments = (actionIndex, files) => (dispatch) => {
             })
         })
 }
-
-export const removeAttachment = (actionIndex, fileIndex) => ({
-    type: types.DELETE_ATTACHMENT_MACRO,
-    actionIndex,
-    fileIndex
-})

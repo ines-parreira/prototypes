@@ -1,9 +1,7 @@
 import {createFilter} from 'react-search-input'
 import * as types from './constants'
 import {fromJS, Map} from 'immutable'
-import {DEFAULT_ACTIONS} from '../../config'
 import {getMacrosWithoutExternalActions, generateDefaultAction} from './utils'
-
 
 const macroInitial = fromJS({
     id: 'new',
@@ -111,30 +109,8 @@ export default (state = macrosInitial, action) => {
             })
         }
 
-        case types.UPDATE_ACTION_ARGS:
-            return state.setIn(['modalSelected', 'actions', action.actionIndex, 'arguments'], action.value)
-
-        case types.UPDATE_ACTION_TITLE:
-            return state.setIn(['modalSelected', 'actions', action.actionIndex, 'title'], action.title)
-
         case types.SET_NAME:
             return state.setIn(['modalSelected', 'name'], action.name)
-
-        case types.DELETE_ACTION:
-            return state.setIn(
-                ['modalSelected', 'actions'],
-                state.getIn(['modalSelected', 'actions']).delete(action.actionIndex)
-            )
-
-        case types.ADD_ACTION:
-            if (!~DEFAULT_ACTIONS.indexOf(action.actionType)) {
-                return state
-            }
-
-            return state.setIn(
-                ['modalSelected', 'actions'],
-                state.getIn(['modalSelected', 'actions']).push(generateDefaultAction(action.actionType))
-            )
 
         case types.SAVE_SEARCH: {
             const queryField = state.get('isModalOpen') ? 'modalQuery' : 'query'
@@ -154,51 +130,6 @@ export default (state = macrosInitial, action) => {
 
             return newState
         }
-
-        case types.ADD_ATTACHMENTS_MACRO_START: {
-            const currentMacroId = state.getIn(['modalSelected', 'id'])
-            // add a loading status
-            return newState.updateIn(
-                ['_internal', 'loading', currentMacroId, 'addAttachments'],
-                fromJS([]),
-                addAttachments => addAttachments.push(true)
-            )
-        }
-        case types.ADD_ATTACHMENTS_MACRO_ERROR: {
-            const currentMacroId = state.getIn(['modalSelected', 'id'])
-            // remove a loading status
-            return state.updateIn(
-                ['_internal', 'loading', currentMacroId, 'addAttachments'],
-                fromJS([]),
-                addAttachments => addAttachments.pop()
-            )
-        }
-        case types.ADD_ATTACHMENTS_MACRO_SUCCESS: {
-            const currentMacroId = state.getIn(['modalSelected', 'id'])
-            let filesUploaded = state.getIn(
-                ['modalSelected', 'actions', action.actionIndex, 'arguments', 'attachments']
-            )
-            filesUploaded = filesUploaded.concat(fromJS(action.files))
-            // update attachments
-            newState = newState.setIn(
-                ['modalSelected', 'actions', action.actionIndex, 'arguments', 'attachments'], filesUploaded
-            )
-            // remove a loading status
-            return newState.updateIn(
-                ['_internal', 'loading', currentMacroId, 'addAttachments'],
-                fromJS([]),
-                addAttachments => addAttachments.pop()
-            )
-        }
-
-        case types.DELETE_ATTACHMENT_MACRO:
-            return newState.deleteIn([
-                'modalSelected',
-                'actions',
-                action.actionIndex,
-                'arguments',
-                'attachments',
-                action.fileIndex])
 
         default:
             return state

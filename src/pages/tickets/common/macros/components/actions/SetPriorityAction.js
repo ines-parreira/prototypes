@@ -3,6 +3,10 @@ import {fromJS} from 'immutable'
 import TicketPriority from '../../../../detail/components/ticketdetails/TicketPriority'
 
 export default class SetPriorityAction extends React.Component {
+    componentDidMount() {
+        this.props.updateActionArgs(this.props.index, fromJS({priority: 'normal'}))
+    }
+
     _togglePriority = () => {
         const priority = this.props.action.getIn(['arguments', 'priority']) === 'normal' ? 'high' : 'normal'
         this.props.updateActionArgs(this.props.index, fromJS({priority}))
@@ -10,6 +14,13 @@ export default class SetPriorityAction extends React.Component {
 
     render() {
         const {index, action, deleteAction} = this.props
+
+        const value = action.getIn(['arguments', 'priority'])
+
+        if (!value) {
+            return null
+        }
+
         return (
             <div className="priority">
                 <i
@@ -18,7 +29,7 @@ export default class SetPriorityAction extends React.Component {
                 />
                 <h4 className="inline">SET PRIORITY</h4>
                 <TicketPriority
-                    priority={action.getIn(['arguments', 'priority'])}
+                    priority={value}
                     togglePriority={this._togglePriority}
                 />
                 <div className="ui divider"></div>

@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import {generateDefaultAction} from '../../../../../state/macro/utils'
 
 import SetPriorityAction from './actions/SetPriorityAction'
 import SetStatusAction from './actions/SetStatusAction'
@@ -23,6 +24,16 @@ import {getMacroSelectedInModal} from './../../../../../state/macro/selectors'
 import {humanizeString} from '../../../../common/components/infobar/utils'
 
 class MacroEdit extends React.Component {
+    state = {
+        actions: fromJS([]),
+    }
+
+    componentWillMount() {
+        if (this.props.currentMacro) {
+            this._setActions(this.props.currentMacro.get('actions'))
+        }
+    }
+
     componentDidMount() {
         const insertNewMacro = this.refs.insertNewMacro
 
@@ -52,34 +63,82 @@ class MacroEdit extends React.Component {
                         insertNewMacro.classList.add('upward')
                     }
                 },
-                onHide: () => { $(insertNewMacro).dropdown('clear') }
+                onHide: () => {
+                    $(insertNewMacro).dropdown('clear')
+                }
             })
         }
     }
 
-    create() {
-        this.props.actions.createMacro(this.props.currentMacro)
+    componentWillReceiveProps(nextProps) {
+        // if selected macro changes, initialize actions again
+        if (nextProps.currentMacro.get('id') !== this.props.currentMacro.get('id')) {
+            this._setActions(nextProps.currentMacro.get('actions'))
+        }
+    }
+
+    _setActions = (actions = fromJS([])) => {
+        this.setState({actions: actions.filter(action => DEFAULT_ACTIONS.includes(action.get('name')))})
+    }
+
+    _updateActionArguments = (index, args = fromJS({})) => {
+        const actions = this.state.actions.setIn([index, 'arguments'], args)
+        this.setState({actions})
+    }
+
+    _updateActionTitle = (index, title) => {
+        const actions = this.state.actions.setIn([index, 'title'], title)
+        this.setState({actions})
+    }
+
+    _addAction = (actionName) => {
+        if (!~DEFAULT_ACTIONS.indexOf(actionName)) {
+            return
+        }
+
+        const actions = this.state.actions.push(generateDefaultAction(actionName))
+        this.setState({actions})
+    }
+
+    _deleteAction = (index) => {
+        const actions = this.state.actions.delete(index)
+        this.setState({actions})
+    }
+
+    _addAttachment = (...args) => {
+        return this.props.actions.addAttachments(...args)
+            .then(({index, files}) => {
+                const actions = this.state.actions.updateIn([index, 'arguments', 'attachments'], attachments => attachments.concat(fromJS(files)))
+                this.setState({actions})
+            })
+    }
+
+    _deleteAttachment = (actionIndex, fileIndex) => {
+        const actions = this.state.actions.updateIn([actionIndex, 'arguments', 'attachments'], attachments => attachments.delete(fileIndex))
+        this.setState({actions})
+    }
+
+    create = () => {
+        this.props.actions.createMacro(this.props.currentMacro.set('actions', this.state.actions))
         $('#macro-modal').modal('hide')
     }
 
-    update() {
-        this.props.actions.updateMacro(this.props.currentMacro)
+    update = () => {
+        this.props.actions.updateMacro(this.props.currentMacro.set('actions', this.state.actions))
         $('#macro-modal').modal('hide')
     }
 
-    deleteMacro() {
+    deleteMacro = () => {
         if (confirm(`Do you really want to delete the macro ${this.props.currentMacro.get('name', '')} ?`)) {
             this.props.actions.deleteMacro(this.props.currentMacro.get('id', ''))
         }
     }
 
-    renderNewActionMenu() {
+    renderNewActionMenu = () => {
         const externalActions = ACTION_TEMPLATES.filter(template => template.execution === 'back')
         const ticketActions = ACTION_TEMPLATES.filter(template => template.execution === 'front').map(t => t.name)
 
-        const integrationMenus = getSortedIntegrationActionsNames(
-            externalActions.filter(v => !!v.integrationType)
-        )
+        const integrationMenus = getSortedIntegrationActionsNames(externalActions.filter(v => !!v.integrationType))
         const nonIntegrationActions = externalActions.filter(v => !v.integrationType).map(t => t.name)
 
         return (
@@ -89,7 +148,7 @@ class MacroEdit extends React.Component {
                     ticketActions.map(actionName => (
                         <a
                             key={actionName}
-                            onClick={() => this.props.actions.addAction(actionName)}
+                            onClick={() => this._addAction(actionName)}
                             className="item"
                         >
                             {getActionTemplate(actionName).title || humanizeString(actionName)}
@@ -102,7 +161,7 @@ class MacroEdit extends React.Component {
                     nonIntegrationActions.map(actionName => (
                         <a
                             key={actionName}
-                            onClick={() => this.props.actions.addAction(actionName)}
+                            onClick={() => this._addAction(actionName)}
                             className="item"
                         >
                             {getActionTemplate(actionName).title || humanizeString(actionName)}
@@ -121,14 +180,14 @@ class MacroEdit extends React.Component {
 
                         return (
                             <div className="item">
-                                <i className="dropdown icon"/>
+                                <i className="dropdown icon" />
                                 <span className="text">{humanizeString(key)}</span>
                                 <div className="upward menu">
                                     {
                                         actions.map(actionName => (
                                             <a
                                                 key={actionName}
-                                                onClick={() => this.props.actions.addAction(actionName)}
+                                                onClick={() => this._addAction(actionName)}
                                                 className="item"
                                             >
                                                 {getActionTemplate(actionName).title || humanizeString(actionName)}
@@ -145,34 +204,16 @@ class MacroEdit extends React.Component {
     }
 
     render() {
-        const {loading, currentMacro, actions, cancel, presetActions} = this.props
+        const {currentMacro, actions, cancel} = this.props
 
         if (currentMacro.isEmpty()) {
             return null
         }
 
-        const saveButton = currentMacro.get('id') !== 'new' ? (
-            <button type="submit" className="ui green right floated button">Update macro</button>
-        ) : (
-            <button type="submit" className="ui green right floated button">Create macro</button>
-        )
-
-        const submitAction = (e) => {
-            e.preventDefault()
-
-            if (currentMacro.get('id') !== 'new') {
-                this.update()
-            } else {
-                this.create()
-            }
-        }
-
-        const deleteButton = currentMacro.get('id') !== 'new' ? (
-            <div className="ui basic red left floated button" onClick={() => this.deleteMacro()}>Delete macro</div>
-        ) : null
+        const isUpdate = currentMacro.get('id') !== 'new'
 
         return (
-            <form className="MacroEdit" onSubmit={submitAction}>
+            <form className="MacroEdit">
                 <div className="ui vertical segment">
                     <div>
                         <h4>MACRO NAME</h4>
@@ -188,12 +229,7 @@ class MacroEdit extends React.Component {
                     </div>
 
                     {
-                        presetActions.map((action, key) => {
-                            // get loading status for the each action of the current macro
-                            // `loadingStatus` can be an boolean in most of case but
-                            // for files upload, we use a list of boolean
-                            const loadingStatus = loading.getIn([currentMacro.get('id'), action.get('name')], false)
-                            const isLoading = (loadingStatus && !loadingStatus.isEmpty())
+                        this.state.actions.map((action, key) => {
                             switch (action.get('name')) {
                                 case ticketTypes.SET_STATUS:
                                     return (
@@ -201,8 +237,8 @@ class MacroEdit extends React.Component {
                                             key={key}
                                             index={key}
                                             action={action}
-                                            updateActionArgs={actions.updateActionArgs}
-                                            deleteAction={actions.deleteAction}
+                                            updateActionArgs={this._updateActionArguments}
+                                            deleteAction={this._deleteAction}
                                         />
                                     )
                                 case ticketTypes.ADD_TICKET_TAGS:
@@ -211,8 +247,8 @@ class MacroEdit extends React.Component {
                                             key={key}
                                             index={key}
                                             args={action.get('arguments')}
-                                            updateActionArgs={actions.updateActionArgs}
-                                            deleteAction={actions.deleteAction}
+                                            updateActionArgs={this._updateActionArguments}
+                                            deleteAction={this._deleteAction}
                                         />
                                     )
                                 case ticketTypes.SET_RESPONSE_TEXT:
@@ -221,8 +257,8 @@ class MacroEdit extends React.Component {
                                             key={key}
                                             index={key}
                                             action={action}
-                                            updateActionArgs={actions.updateActionArgs}
-                                            deleteAction={actions.deleteAction}
+                                            updateActionArgs={this._updateActionArguments}
+                                            deleteAction={this._deleteAction}
                                         />
                                     )
                                 case ticketTypes.SET_AGENT:
@@ -232,8 +268,8 @@ class MacroEdit extends React.Component {
                                             index={key}
                                             action={action}
                                             agents={this.props.agents}
-                                            updateActionArgs={actions.updateActionArgs}
-                                            deleteAction={actions.deleteAction}
+                                            updateActionArgs={this._updateActionArguments}
+                                            deleteAction={this._deleteAction}
                                         />
                                     )
                                 case ticketTypes.TOGGLE_PRIORITY:
@@ -242,8 +278,8 @@ class MacroEdit extends React.Component {
                                             key={key}
                                             index={key}
                                             action={action}
-                                            updateActionArgs={actions.updateActionArgs}
-                                            deleteAction={actions.deleteAction}
+                                            updateActionArgs={this._updateActionArguments}
+                                            deleteAction={this._deleteAction}
                                         />
                                     )
                                 case 'http':
@@ -252,9 +288,9 @@ class MacroEdit extends React.Component {
                                             key={key}
                                             index={key}
                                             action={action}
-                                            updateActionArgs={actions.updateActionArgs}
-                                            updateActionTitle={actions.updateActionTitle}
-                                            deleteAction={actions.deleteAction}
+                                            updateActionArgs={this._updateActionArguments}
+                                            updateActionTitle={this._updateActionTitle}
+                                            deleteAction={this._deleteAction}
                                         />
                                     )
                                 case ticketTypes.ADD_ATTACHMENTS:
@@ -263,10 +299,9 @@ class MacroEdit extends React.Component {
                                             key={key}
                                             index={key}
                                             action={action}
-                                            isLoading={isLoading}
-                                            addAttachments={actions.addAttachments}
-                                            removeAttachment={actions.removeAttachment}
-                                            deleteAction={actions.deleteAction}
+                                            addAttachments={this._addAttachment}
+                                            removeAttachment={this._deleteAttachment}
+                                            deleteAction={this._deleteAction}
                                         />
                                     )
                                 default:
@@ -276,7 +311,7 @@ class MacroEdit extends React.Component {
                                                 key={key}
                                                 index={key}
                                                 action={action}
-                                                deleteAction={actions.deleteAction}
+                                                deleteAction={this._deleteAction}
                                             />
                                         )
                                     }
@@ -286,7 +321,7 @@ class MacroEdit extends React.Component {
                                             key={key}
                                             index={key}
                                             name={action.get('name')}
-                                            deleteAction={actions.deleteAction}
+                                            deleteAction={this._deleteAction}
                                         />
                                     )
                             }
@@ -297,16 +332,48 @@ class MacroEdit extends React.Component {
                         className="ui pointing dropdown labeled icon light blue button"
                         ref="insertNewMacro"
                     >
-                        <i className="plus icon"/>
+                        <i className="plus icon" />
                         Insert a new action
                         {this.renderNewActionMenu()}
                     </div>
                 </div>
 
                 <div className="buttons-bar">
-                    {deleteButton}
-                    {saveButton}
-                    <div className="ui basic grey right floated button" onClick={cancel}>cancel</div>
+                    {
+                        isUpdate && (
+                            <div
+                                className="ui basic red left floated button"
+                                onClick={this.deleteMacro}
+                            >
+                                Delete macro
+                            </div>
+                        )
+                    }
+                    {
+                        isUpdate ? (
+                                <button
+                                    type="button"
+                                    className="ui green right floated button"
+                                    onClick={this.update}
+                                >
+                                    Update macro
+                                </button>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="ui green right floated button"
+                                    onClick={this.create}
+                                >
+                                    Create macro
+                                </button>
+                            )
+                    }
+                    <div
+                        className="ui basic grey right floated button"
+                        onClick={cancel}
+                    >
+                        cancel
+                    </div>
                 </div>
             </form>
         )
@@ -314,13 +381,10 @@ class MacroEdit extends React.Component {
 }
 
 MacroEdit.propTypes = {
-    loading: PropTypes.object.isRequired,
     currentMacro: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     cancel: PropTypes.func.isRequired,
-    presetActions: PropTypes.object.isRequired,
-
     integrations: PropTypes.object.isRequired
 }
 
@@ -330,9 +394,6 @@ function mapStateToProps(state) {
     return {
         integrations: state.integrations.get('integrations', fromJS([])),
         currentMacro,
-        presetActions: currentMacro.get('actions', fromJS([])).filter(
-            action => DEFAULT_ACTIONS.includes(action.get('name'))
-        )
     }
 }
 

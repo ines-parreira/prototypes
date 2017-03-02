@@ -49,7 +49,6 @@ class MacroContainer extends React.Component {
 
         return (
             <MacroModal
-                loading={macros.getIn(['_internal', 'loading'])}
                 activeView={activeView}
                 macros={macros.get('items')}
                 newMacro={macros.get('newMacro')}
