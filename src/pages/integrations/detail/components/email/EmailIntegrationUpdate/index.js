@@ -1,1 +1,1 @@
-export default from './EmailIntegrationUpdateContainer'
+export default from './EmailIntegrationUpdate'

@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
+import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {InputField} from '../../../../../common/components/formFields'
 import css from './EmailIntegrationCreate.less'
@@ -10,10 +11,11 @@ import classNames from 'classnames'
 import {browserHistory} from 'react-router'
 import {getQueryParam} from '../../../../../../utils'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
+import {notify} from '../../../../../../state/notifications/actions'
 import googleIcon from './google-icon.png'
 
 
-class EmailIntegrationDetail extends React.Component {
+class EmailIntegrationCreate extends React.Component {
     componentDidMount() {
         $(this.refs.AddressNameTooltip).popup({
             inline: true,
@@ -115,6 +117,7 @@ class EmailIntegrationDetail extends React.Component {
                                         </span>
                                     </span>
                                 }
+                                required
                             />
                             <Field
                                 type="email"
@@ -122,6 +125,7 @@ class EmailIntegrationDetail extends React.Component {
                                 label="Email address"
                                 placeholder={`support@${domain}.com`}
                                 component={InputField}
+                                required
                             />
                             <button
                                 disabled={isSubmitting}
@@ -131,7 +135,6 @@ class EmailIntegrationDetail extends React.Component {
                             >
                                 Connect this email account
                             </button>
-
                         </form>
                     </div>
                 </div>
@@ -140,7 +143,8 @@ class EmailIntegrationDetail extends React.Component {
     }
 }
 
-EmailIntegrationDetail.propTypes = {
+
+EmailIntegrationCreate.propTypes = {
     domain: PropTypes.string.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
@@ -149,6 +153,12 @@ EmailIntegrationDetail.propTypes = {
     notify: PropTypes.func.isRequired,
 }
 
-export default reduxForm({
+const emailIntegrationCreateComponent = reduxForm({
     form: 'ADD_EMAIL_INTEGRATION',
-})(EmailIntegrationDetail)
+})(EmailIntegrationCreate)
+
+const mapStateToProps = state => ({
+    domain: state.currentAccount.get('domain'),
+})
+
+export default connect(mapStateToProps, {notify})(emailIntegrationCreateComponent)
