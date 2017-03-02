@@ -3,17 +3,17 @@ import classnames from 'classnames'
 
 export const DEFAULT_MESSAGE = 'Loading...'
 
-export const Loader = ({message = DEFAULT_MESSAGE, loading = true, inline = false, inverted = false, size}) => {
-    const className = classnames('ui', 'active', size, {
+export const Loader = ({message = DEFAULT_MESSAGE, loading = true, inline = false, inverted = false, size, className}) => {
+    const classNames = classnames('ui', 'active', className, size, {
         inline,
         inverted,
         text: message && !inline
     }, 'loader')
 
     if (inline) {
-        return <div className={className}></div>
+        return <div className={classNames}></div>
     }
-    let content = <div className={className}>{message}</div>
+    let content = <div className={classNames}>{message}</div>
 
     if (!loading) {
         content = message || DEFAULT_MESSAGE
@@ -37,6 +37,7 @@ Loader.defaultProps = {
 Loader.propTypes = {
     loading: PropTypes.bool.isRequired,
     inverted: PropTypes.bool.isRequired,
+    className: PropTypes.string,
     inline: PropTypes.bool.isRequired,
     size: PropTypes.oneOf(['mini', 'tiny', 'small', 'medium', 'large']),
     message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])

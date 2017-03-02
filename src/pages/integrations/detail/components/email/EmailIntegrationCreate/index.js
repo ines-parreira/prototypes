@@ -1,1 +1,1 @@
-export default from './EmailIntegrationCreateContainer'
+export default from './EmailIntegrationCreate'

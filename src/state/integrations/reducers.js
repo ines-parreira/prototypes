@@ -77,6 +77,14 @@ export default (state = initialState, action) => {
         case types.TEST_HTTP_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'testing'], true)
 
+        case types.GMAIL_INTEGRATION_IMPORT_START:
+            return state.setIn(['state', 'loading', 'import'], action.id)
+
+        case types.GMAIL_INTEGRATION_IMPORT_ERROR:
+        case types.GMAIL_INTEGRATION_IMPORT_SUCCESS:
+            return state.setIn(['state', 'loading', 'import'], false)
+                .set('integration', fromJS(action.resp))
+
         case types.TEST_HTTP_INTEGRATION_SUCCESS:
             return state.setIn(['integration', 'testing'], fromJS(action.response))
                 .setIn(['state', 'loading', 'testing'], false)

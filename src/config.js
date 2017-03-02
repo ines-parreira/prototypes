@@ -179,6 +179,8 @@ export const ONBOARDING_INTEGRATION_SUGGESTIONS = [{
     url: 'app/integrations/smooch/new',
 }]
 
+// Number of threads imported from Gmail
+export const GMAIL_IMPORTED_THREADS = 100
 /**
  * Templates for custom actions.
  * Those templates are used by the front-end to generate the UI to create a new action (in the Macros Management).
