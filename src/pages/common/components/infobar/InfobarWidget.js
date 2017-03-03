@@ -54,7 +54,7 @@ export default class InfobarWidget extends React.Component {
             return null
         }
 
-        const {updatedWidget, data, type} = prepareWidgetToDisplay(widget, source, parent)
+        let {updatedWidget, data, type} = prepareWidgetToDisplay(widget, source, parent)
 
         const isParentList = parent && parent.get('type') === 'list'
 
@@ -83,11 +83,18 @@ export default class InfobarWidget extends React.Component {
                 )
             }
             case 'card': {
+                data = data || fromJS({})
+
+                // do not display card if there is no data to display in it
+                if (!isEditing && data.isEmpty()) {
+                    return null
+                }
+
                 return (
                     <CardInfobarWidget
                         isEditing={isEditing}
                         isParentList={isParentList}
-                        source={data || fromJS({})}
+                        source={data}
                         widget={updatedWidget}
                         editing={editing}
                         parent={parent}

@@ -143,13 +143,14 @@ class CardInfobarWidget extends React.Component {
                     (widget.get('title') || isEditing)
                     && (
                         <div
-                            className={classnames('title header clearfix', {
-                                'no-content': !editing && !source.isEmpty() && childWidgets.isEmpty(),
-                            })}
+                            className="title header clearfix"
                             onClick={this._toggleCardExpand}
                         >
                             {
-                                !isEditing && <span className="dropdown-icon"><i className="dropdown icon" /></span>
+                                !isEditing && shouldDisplayCardContent &&
+                                (
+                                    <span className="dropdown-icon"><i className="dropdown icon" /></span>
+                                )
                             }
                             {
                                 widget.get('title')
@@ -182,7 +183,11 @@ class CardInfobarWidget extends React.Component {
                         </div>
                     )
                 }
-                <div className="content">
+                <div
+                    className={classnames('content', {
+                        hidden: !shouldDisplayCardContent,
+                    })}
+                >
                     {
                         source.isEmpty() ? (
                                 <div className="simple-field">
