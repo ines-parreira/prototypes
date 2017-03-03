@@ -7,8 +7,7 @@ import InfobarLayout from './InfobarLayout'
 import InfobarUserInfo from './InfobarUserInfo'
 import MergeUsersContainer from './../mergeUsers/MergeUsersContainer'
 import {Loader} from '../Loader'
-import {areSourcesReady} from './utils'
-import {isImmutable} from '../../../../utils'
+import {areSourcesReady, isCustomerDataValid} from './utils'
 
 import InfobarSearchResultsList from './InfobarSearchResultsList'
 import Search from '../Search'
@@ -53,7 +52,7 @@ class Infobar extends React.Component {
         // Initialization (force search if there's no customer data, auto-open result if there's just one)
         if (!this.state.data.get('isInitialized') && !nextProps.user.isEmpty()) {
             const customer = nextProps.user.get('customer', fromJS({}))
-            const hasCustomer = customer && isImmutable(customer) && !customer.isEmpty()
+            const hasCustomer = isCustomerDataValid(customer)
 
             const shouldForceSearch = !hasCustomer && nextProps.user.get('name', '')
 

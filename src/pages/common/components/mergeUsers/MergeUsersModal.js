@@ -3,13 +3,12 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Field, reduxForm, formValueSelector} from 'redux-form'
 import classNames from 'classnames'
-import _isEmpty from 'lodash/isEmpty'
 import {JSONTree} from './../JSONTree'
 import {USER_CHANNEL_CLASS} from './../../../../config'
 import BinaryChoiceField from './../formFields/BinaryChoiceField'
 import MultiSelectBinaryChoiceField from './../formFields/MultiSelectBinaryChoiceField'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
-
+import {isCustomerDataValid} from '../infobar/utils'
 
 class MergeUsersModal extends React.Component {
     componentDidMount = () => {
@@ -100,8 +99,10 @@ class MergeUsersModal extends React.Component {
 
         const buttonClassName = classNames('ui orange button', {loading: isLoading, disabled: isLoading})
 
-        const baseCustomer = (destinationUser.get('customer') || fromJS({})).toJS()
-        const mergeCustomer = (sourceUser.get('customer') || fromJS({})).toJS()
+        let baseCustomer = destinationUser.get('customer')
+        baseCustomer = isCustomerDataValid(baseCustomer) ? baseCustomer.toJS() : {}
+        let mergeCustomer = sourceUser.get('customer')
+        mergeCustomer = isCustomerDataValid(mergeCustomer) ? mergeCustomer.toJS() : {}
 
         const emailTooltipText = 'This is the email address which will be used to fetch data for the user.'
         const contactTooltipText = 'You can\'t unselect the contact info associated with the primary email.'
@@ -195,12 +196,12 @@ class MergeUsersModal extends React.Component {
                             component={BinaryChoiceField}
                             options={[
                                 {
-                                    label: <JSONTree data={destinationUser.get('customer')} />,
-                                    value: _isEmpty(baseCustomer) ? null : baseCustomer
+                                    label: <JSONTree data={fromJS(baseCustomer)} />,
+                                    value: baseCustomer
                                 },
                                 {
-                                    label: <JSONTree data={sourceUser.get('customer')} />,
-                                    value: _isEmpty(mergeCustomer) ? null : mergeCustomer
+                                    label: <JSONTree data={fromJS(mergeCustomer)} />,
+                                    value: mergeCustomer
                                 }
                             ]}
                         />

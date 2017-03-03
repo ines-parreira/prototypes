@@ -50,6 +50,15 @@ export function isUppercase(string) {
 }
 
 /**
+ * Return true if passed customer data is valid (not empty, Immutable Map, etc.)
+ * @param customer
+ * @returns {boolean}
+ */
+export const isCustomerDataValid = (customer) => {
+    return !!customer && utils.isImmutable(customer) && !customer.isEmpty()
+}
+
+/**
  * Remove last "[]" from the passed path
  * Ex: ticket.orders[] to ticket.orders
  * @param path
@@ -173,15 +182,7 @@ export function areSourcesReady(sources, context, everySources = false) {
 
         const sourceData = currentSource.getIn(immutableSourcePath, fromJS({}))
 
-        if (!sourceData) {
-            return false
-        }
-
-        if (!utils.isImmutable(sourceData)) {
-            return false
-        }
-
-        return !sourceData.isEmpty()
+        return isCustomerDataValid(sourceData)
     })
 }
 
@@ -552,7 +553,7 @@ export function guessFieldValueFromRawData(data, type) {
  * @param label
  * @returns {*}
  */
-export function displayLabel(label) {
+export const displayLabel = (label) => {
     const defaultLabel = '-'
 
     if (_.isUndefined(label)) {
