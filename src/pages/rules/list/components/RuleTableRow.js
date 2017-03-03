@@ -97,11 +97,13 @@ class RuleTableRow extends React.Component {
                             </div>
                         </div>
                     </td>
-                    {/*<td>*/}
-                        {/*<div className="cell-wrapper">*/}
-                            {/*{rule.get('usage')}*/}
-                        {/*</div>*/}
-                    {/*</td>*/}
+                    {/*
+                    <td>
+                        <div className="cell-wrapper">
+                            {rule.get('usage')}
+                        </div>
+                    </td>
+                    */}
                     <td className="right aligned">
                         <div className="cell-wrapper">
                             <DatetimeLabel

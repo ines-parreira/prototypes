@@ -8,7 +8,7 @@ const RuleTable = ({actions, rules}) => (
             <tr>
                 <td className="cell-wrapper cell-short"><div><span>Details</span></div></td>
                 <td className="cell-wrapper cell-short"><div><span>Status</span></div></td>
-                {/*<td className="cell-wrapper cell-short"><div><span>Usage</span></div></td>*/}
+                {/*  <td className="cell-wrapper cell-short"><div><span>Usage</span></div></td> */}
                 <td className="cell-wrapper cell-short"><div><span>Updated</span></div></td>
             </tr>
         </thead>
