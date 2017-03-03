@@ -54,7 +54,9 @@ export default class InfobarWidget extends React.Component {
             return null
         }
 
-        let {updatedWidget, data, type} = prepareWidgetToDisplay(widget, source, parent)
+        const preparedData = prepareWidgetToDisplay(widget, source, parent)
+        const {updatedWidget, type} = preparedData
+        let {data} = preparedData
 
         const isParentList = parent && parent.get('type') === 'list'
 

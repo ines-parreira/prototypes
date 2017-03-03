@@ -8,7 +8,6 @@ import _get from 'lodash/get'
 import _uniq from 'lodash/uniq'
 import _compact from 'lodash/compact'
 
-import React from 'react'
 import {createSelectorCreator, defaultMemoize} from 'reselect'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
