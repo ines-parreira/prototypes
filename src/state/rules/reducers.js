@@ -43,7 +43,7 @@ export default (state = initialState, action) => {
             }
 
             // Make sure when we add a new rule it's at the top
-            const newRule = OrderedMap().set(rule.id, fromJS(rule))
+            const newRule = OrderedMap().set(rule.id.toString(), fromJS(rule))
             return state.set('rules', newRule.merge(state.get('rules')))
         }
 
