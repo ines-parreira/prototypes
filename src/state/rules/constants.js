@@ -40,11 +40,7 @@ const SEND_EMAIL_ACTION_DEFAULT = {
     body_html: ''
 }
 
-const SEND_MESSAGE_ACTION_DEFAULT = {
-    to: '',
-    cc: '',
-    bcc: '',
-    subject: '',
+const REPLY_TO_TICKET_ACTION_DEFAULT = {
     body_text: '',
     body_html: ''
 }
@@ -82,7 +78,7 @@ export const ACTION_DEFAULT_STATE = {
     setStatus: SET_STATUS_ACTION_DEFAULT,
     setPriority: SET_PRIORITY_ACTION_DEFAULT,
     setAssignee: ASSIGN_USER_ACTION_DEFAULT,
-    replyToTicket: SEND_MESSAGE_ACTION_DEFAULT,
+    replyToTicket: REPLY_TO_TICKET_ACTION_DEFAULT,
 }
 
 export const DEFAULT_IF_STATEMENT = {
