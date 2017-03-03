@@ -346,7 +346,11 @@ export function convertToHTML(contentState) {
         },
         entityToHTML: (entity, originalText) => {
             if (entity.type === 'link') {
-                return (<a href={entity.data.url} target="_blank">{originalText}</a>)
+                // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
+                return {
+                    start: `<a href="${entity.data.url}" target="_blank">`,
+                    end: '</a>',
+                }
             }
             return originalText
         }
