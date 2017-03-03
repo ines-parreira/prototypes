@@ -133,7 +133,7 @@ export default (state = initialState, action) => {
             }
 
             // get data from source path to generate a widget for it
-            const relativeSourcePath = sourceFlattenAbsolutePath.replace(/\[]/g, '.0')
+            const relativeSourcePath = sourceFlattenAbsolutePath.replace(/\[]/g, '0')
             const sourceData = source.getIn(relativeSourcePath.split('.'))
 
             // drag is off
@@ -143,7 +143,6 @@ export default (state = initialState, action) => {
 
             // key (so the path) is calculated from the difference between the source and the target paths
             const strippedKey = stripLastListsFromPath(key)
-
 
             // prepare data to be transformed into widget
             const isSimpleField = !_isObject(sourceData)
