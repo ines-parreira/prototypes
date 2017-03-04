@@ -65,7 +65,6 @@ export default class AddAttachmentsAction extends Component {
                     multiple
                     onChange={this._addAttachments}
                 />
-                <div className="ui divider" />
             </div>
         )
     }

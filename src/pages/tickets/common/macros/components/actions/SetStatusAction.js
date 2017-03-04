@@ -46,7 +46,6 @@ export default class SetStatusAction extends React.Component {
                         </select>
                     </div>
                 </div>
-                <div className="ui divider"></div>
             </div>
         )
     }

@@ -23,22 +23,29 @@ export default class MacroList extends React.Component {
 
         return (
             <div className="button-wrapper">
-                <div className="ui basic light blue fluid button" onClick={this.props.actions.addNewMacro}>Create macro</div>
+                <div
+                    className="ui basic light blue fluid button"
+                    onClick={this.props.actions.addNewMacro}
+                >
+                    Create macro
+                </div>
             </div>
         )
     }
 
     render() {
-        const { macros, currentMacro, actions, disableExternalActions } = this.props
+        const {macros, currentMacro, actions, disableExternalActions} = this.props
 
         /**
          * Used to replace the list of all macros with the list of macros corresponding to the current search term,
          * if there is a current search term.
          */
-        const curMacros = this.refs.search ? fromJS(macros.valueSeq().toJS().filter(this.refs.search.filter(['name']))) : macros
+        const curMacros = this.refs.search
+            ? fromJS(macros.valueSeq().toJS().filter(this.refs.search.filter(['name'])))
+            : macros
 
         return (
-            <div style={{ height: '100%' }}>
+            <div style={{height: '100%'}}>
                 <div className="ui secondary vertical fluid menu">
                     <div className="ui category search item">
                         <div className="ui icon input">
@@ -48,7 +55,7 @@ export default class MacroList extends React.Component {
                                 className="ui icon input full-width prompt shortcuts-enable"
                                 placeholder="Search for a macro"
                             />
-                            <i className="search icon"/>
+                            <i className="search icon" />
                         </div>
                     </div>
                     {
@@ -67,7 +74,8 @@ export default class MacroList extends React.Component {
                                     active: currentMacro && macro.get('id') === currentMacro.get('id'),
                                     disabled: isDisabled
                                 }),
-                                onClick: isDisabled ? null : () => actions.previewMacroInModal(macro.get('id'))
+                                onClick: isDisabled ? null : () => actions.previewMacroInModal(macro.get('id')),
+                                style: {margin: '0'},
                             }
 
                             return (

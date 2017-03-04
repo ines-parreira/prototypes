@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import {Field, reduxForm} from 'redux-form'
 import {fromJS} from 'immutable'
-import {InputField, SelectField} from '../../formFields'
+import {InputField, SelectField} from '../../../forms'
 import {isSimpleTemplateWidget} from '../utils'
 
 class TooltipWidgetEditCard extends React.Component {

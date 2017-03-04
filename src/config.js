@@ -203,7 +203,7 @@ export const ACTION_TEMPLATES = [
     {
         execution: 'front',
         name: 'setResponseText',
-        title: 'Set response text',
+        title: 'Add response text',
         arguments: {
             body_text: {
                 type: 'string',
@@ -255,12 +255,13 @@ export const ACTION_TEMPLATES = [
         partialUpdateKey: 'priority',
         partialUpdateValue: makeGetProperty('priority'),
     },
-    {
-        name: 'setSubject',
-        title: 'Set subject',
-        partialUpdateKey: 'subject',
-        partialUpdateValue: makeGetProperty('subject'),
-    },
+    // {
+    //     execution: 'front',
+    //     name: 'setSubject',
+    //     title: 'Set subject',
+    //     partialUpdateKey: 'subject',
+    //     partialUpdateValue: makeGetProperty('subject'),
+    // },
     {
         execution: 'back',
         name: 'http',

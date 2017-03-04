@@ -26,7 +26,6 @@ class IntegrationAction extends React.Component {
 
                     {action.get('title')}
                 </h4>
-                <div className="ui divider"></div>
             </div>
         )
     }

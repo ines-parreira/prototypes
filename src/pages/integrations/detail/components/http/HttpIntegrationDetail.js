@@ -14,7 +14,7 @@ import {
     MultiSelectField,
     JsonField,
     URLInputField
-} from '../../../../common/components/formFields'
+} from '../../../../common/forms'
 import HeaderFieldArray from './HeaderFieldArray'
 import formSender from '../../../../common/utils/formSender'
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group'

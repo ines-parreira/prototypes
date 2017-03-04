@@ -1,6 +1,6 @@
 import React from 'react'
 import {Field} from 'redux-form'
-import {InputField} from '../../../common/components/formFields'
+import {InputField} from '../../../common/forms'
 import ErrorMessage from '../../../common/components/ErrorMessage'
 
 const UserContactField = ({

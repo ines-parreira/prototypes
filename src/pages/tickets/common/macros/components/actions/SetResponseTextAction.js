@@ -1,27 +1,38 @@
 import React, {PropTypes} from 'react'
+import {Modifier, EditorState} from 'draft-js'
+import {RichTextAreaField} from '../../../../../common/forms'
 
 export default class SetResponseTextAction extends React.Component {
     componentDidMount() {
         $(this.refs.insertVariableDropdown).dropdown({
             onChange: (variable) => {
-                // insert variable in text area
-                const cursorPosition = $(this.refs.textarea).prop('selectionStart')
-                const initialText = this.props.action.getIn(['arguments', 'body_text'], '')
-                const text = `${initialText.slice(0, cursorPosition)}{${variable}}${initialText.slice(cursorPosition)}`
-                this._setResponseText(text)
-                $(this.refs.textarea).focus()
+                this._insertText(`{${variable}}`)
             }
         })
     }
 
-    _setResponseText(value) {
-        const args = this.props.action.get('arguments')
+    shouldComponentUpdate(nextProps) {
+        return nextProps.index !== nextProps.index
+            || !nextProps.action.equals(nextProps.action)
+    }
 
-        this.props.updateActionArgs(
-            this.props.index,
-            args.set('body_text', value).set('body_html', args.get('body_html') ? value : '')
-            // todo(@martin): fix that when we use body_html and body_text correctly
-        )
+    _insertText = (text) => {
+        if (!this.richArea) {
+            return
+        }
+
+        // insert text at selection
+        let editorState = this.richArea.state.editorState
+        const selection = editorState.getSelection()
+        const contentState = editorState.getCurrentContent()
+        const modifier = Modifier.replaceText(contentState, selection, text)
+        editorState = EditorState.push(editorState, modifier, 'insert-fragment')
+        this.richArea._setEditorState(editorState)
+    }
+
+    _setResponseText = ({text, html}) => {
+        const args = this.props.action.get('arguments')
+        this.props.updateActionArgs(this.props.index, args.set('body_text', text).set('body_html', html))
     }
 
     _renderInsertVariable = () => {
@@ -31,10 +42,10 @@ export default class SetResponseTextAction extends React.Component {
                 className="ui dropdown"
             >
                 Insert variable
-                <i className="dropdown icon"/>
+                <i className="dropdown icon" />
                 <div className="menu">
                     <div className="item">
-                        <i className="dropdown icon"/>
+                        <i className="dropdown icon" />
                         <span className="text">Ticket requester</span>
                         <div className="menu">
                             <div
@@ -64,7 +75,7 @@ export default class SetResponseTextAction extends React.Component {
                         </div>
                     </div>
                     <div className="item">
-                        <i className="dropdown icon"/>
+                        <i className="dropdown icon" />
                         <span className="text">Current user</span>
                         <div className="menu">
                             <div
@@ -112,14 +123,20 @@ export default class SetResponseTextAction extends React.Component {
                         <div className="textarea-toolbar">
                             {this._renderInsertVariable()}
                         </div>
-                        <textarea
-                            onChange={e => this._setResponseText(e.target.value)}
-                            value={action.getIn(['arguments', 'body_text'], '')}
-                            ref="textarea"
+                        <RichTextAreaField
+                            ref={(richArea) => {
+                                this.richArea = richArea
+                            }}
+                            input={{
+                                value: {
+                                    text: action.getIn(['arguments', 'body_text'], ''),
+                                    html: action.getIn(['arguments', 'body_html'], ''),
+                                },
+                                onChange: this._setResponseText,
+                            }}
                         />
                     </div>
                 </div>
-                <div className="ui divider"></div>
             </div>
         )
     }

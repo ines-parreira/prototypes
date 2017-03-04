@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import _clone from 'lodash/clone'
 
 import {Loader} from '../../../../common/components/Loader'
-import {InputField} from '../../../../common/components/formFields'
+import {InputField} from '../../../../common/forms'
 import formSender from '../../../../common/utils/formSender'
 
 export const defaultContent = {

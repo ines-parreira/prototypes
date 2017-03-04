@@ -5,7 +5,7 @@ import PeriodPicker from '../../common/PeriodPicker'
 import PageHeader from '../../../common/components/PageHeader'
 import {Loader} from '../../../common/components/Loader'
 import {renderDifference, comparedPeriodString} from '../../common/utils'
-import SearchableSelectField from '../../../common/components/formFields/SearchableSelectField'
+import SearchableSelectField from '../../../common/forms/SearchableSelectField'
 import _isNumber from 'lodash/isNumber'
 
 import 'react-datepicker/dist/react-datepicker.css'

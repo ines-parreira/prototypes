@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import ErrorMessage from '../../../common/components/ErrorMessage'
+import ErrorMessage from '../components/ErrorMessage'
 
 export default class JsonField extends React.Component {
     constructor(props) {

@@ -3,7 +3,7 @@ import {Link, browserHistory} from 'react-router'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import {Loader} from '../../../../common/components/Loader'
-import {CheckboxField} from '../../../../common/components/formFields'
+import {CheckboxField} from '../../../../common/forms'
 
 export default class FacebookIntegrationDetail extends React.Component {
     constructor() {

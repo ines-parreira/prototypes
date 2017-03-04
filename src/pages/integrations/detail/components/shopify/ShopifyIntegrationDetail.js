@@ -7,7 +7,7 @@ import _clone from 'lodash/clone'
 import _isEmpty from 'lodash/isEmpty'
 
 import {Loader} from '../../../../common/components/Loader'
-import {LabeledInputField} from '../../../../common/components/formFields'
+import {LabeledInputField} from '../../../../common/forms'
 import formSender from '../../../../common/utils/formSender'
 
 export const defaultContent = {

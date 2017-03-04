@@ -8,7 +8,7 @@ import moment from 'moment-timezone'
 import {AVAILABLE_LANGUAGES} from './../../../../config'
 import formSender from '../../../common/utils/formSender'
 
-import {InputField, RichTextAreaField, SelectField} from '../../../common/components/formFields'
+import {InputField, RichTextAreaField, SelectField} from '../../../common/forms'
 
 class YourProfileView extends React.Component {
     constructor(props) {

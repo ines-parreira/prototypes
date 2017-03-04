@@ -3,7 +3,7 @@ import {Field, FieldArray, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 
 import {Loader} from '../../../../common/components/Loader'
-import {InputField} from '../../../../common/components/formFields'
+import {InputField} from '../../../../common/forms'
 
 const variableRegexp = /{(.*?)}/g
 

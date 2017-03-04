@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import classNames from 'classnames'
 import truncate from 'lodash/truncate'
-import {CheckboxField} from '../../../../common/components/formFields'
+import {CheckboxField} from '../../../../common/forms'
 import {Loader} from '../../../../common/components/Loader'
 
 

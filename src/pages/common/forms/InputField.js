@@ -1,11 +1,9 @@
 import React, {PropTypes} from 'react'
 import _noop from 'lodash/noop'
 import classNames from 'classnames'
-import ErrorMessage from '../../../common/components/ErrorMessage'
+import ErrorMessage from '../components/ErrorMessage'
 
-const LabeledInputField = ({
-        type, input, meta, className, label, leftLabel, rightLabel, placeholder, required, readOnly, buttons, maxWidth
-    }) => {
+const InputField = ({type, input, meta, className, label, placeholder, required, readOnly, buttons}) => {
     const hasButtons = !!buttons.length
 
     const fieldClassName = classNames({
@@ -15,7 +13,7 @@ const LabeledInputField = ({
     const inputClassName = classNames({
         action: hasButtons,
         disabled: readOnly,
-    }, 'ui', 'right', 'labeled', 'input')
+    }, 'ui', 'input')
 
     const props = input
 
@@ -25,25 +23,15 @@ const LabeledInputField = ({
         props.required = true
     }
 
+    if (type === 'hidden') {
+        return <input {...props}/>
+    }
+
     return (
         <div className={fieldClassName}>
             {label && <label htmlFor={input.name}>{label}</label>}
-            <div className={inputClassName} style={{maxWidth}}>
-                {
-                    !!leftLabel && (
-                        <div className="ui label">
-                            {leftLabel}
-                        </div>
-                    )
-                }
+            <div className={inputClassName}>
                 <input {...props} placeholder={placeholder} />
-                {
-                    !!rightLabel && (
-                        <div className="ui label">
-                            {rightLabel}
-                        </div>
-                    )
-                }
                 {
                     hasButtons && (
                         buttons.map((button, i) => {
@@ -61,34 +49,30 @@ const LabeledInputField = ({
                     )
                 }
             </div>
-            {meta.invalid && <ErrorMessage errors={meta.error} />}
+            {meta.invalid && meta.touched && <ErrorMessage errors={meta.error} />}
             {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
         </div>
     )
 }
 
-LabeledInputField.defaultProps = {
+InputField.defaultProps = {
     className: '',
     required: false,
     readOnly: false,
     type: 'text',
     buttons: [],
-    maxWidth: null
 }
 
-LabeledInputField.propTypes = {
+InputField.propTypes = {
     type: PropTypes.string.isRequired,
     input: PropTypes.object.isRequired,
     meta: PropTypes.object.isRequired,
     className: PropTypes.string,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    leftLabel: PropTypes.string,
-    rightLabel: PropTypes.string,
     placeholder: PropTypes.string,
     required: PropTypes.bool,
     buttons: PropTypes.array,
-    readOnly: PropTypes.bool,
-    maxWidth: PropTypes.string
+    readOnly: PropTypes.bool
 }
 
-export default LabeledInputField
+export default InputField

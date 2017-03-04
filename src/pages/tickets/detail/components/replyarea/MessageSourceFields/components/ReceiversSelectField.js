@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import MultiSelectAsyncField from '../../../../../../common/components/formFields/MultiSelectAsyncField/index'
+import MultiSelectAsyncField from '../../../../../../common/forms/MultiSelectAsyncField/index'
 import {isEmail} from '../../../../../../../utils'
 import {
     getValuePropFromSourceType,

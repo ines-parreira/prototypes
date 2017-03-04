@@ -4,7 +4,9 @@ import TicketPriority from '../../../../detail/components/ticketdetails/TicketPr
 
 export default class SetPriorityAction extends React.Component {
     componentDidMount() {
-        this.props.updateActionArgs(this.props.index, fromJS({priority: 'normal'}))
+        if (!this.props.action.getIn(['arguments', 'priority'])) {
+            this.props.updateActionArgs(this.props.index, fromJS({priority: 'normal'}))
+        }
     }
 
     _togglePriority = () => {
@@ -32,7 +34,6 @@ export default class SetPriorityAction extends React.Component {
                     priority={value}
                     togglePriority={this._togglePriority}
                 />
-                <div className="ui divider"></div>
             </div>
         )
     }

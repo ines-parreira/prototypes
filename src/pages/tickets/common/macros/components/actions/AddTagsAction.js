@@ -35,7 +35,6 @@ export default class AddTagsAction extends React.Component {
                     removeTag={this.removeTag}
                     suffix={`macro-modal-${index}`}
                 />
-                <div className="ui divider"></div>
             </div>
         )
     }

@@ -3,7 +3,7 @@ import _takeRight from 'lodash/takeRight'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
-import {convertFromHTML} from 'draft-convert'
+import {convertFromHTML} from '../../utils'
 import {convertToRaw, convertFromRaw, ContentState, SelectionState} from 'draft-js'
 
 import ticketReplyCache from './ticketReplyCache'
@@ -208,21 +208,20 @@ export const applyMacro = (context) => {
     const ticketState = state.toJS()
     const currentUser = _pick(action.currentUser.toJS(), ['name', 'firstname', 'lastname', 'email'])
 
-    const text = renderTemplate(action.args.get('body_text', ''), {
+    const variables = {
         ticket: ticketState,
         current_user: currentUser
-    })
+    }
 
-    const html = renderTemplate(action.args.get('body_html', ''), {
-        ticket: ticketState,
-        current_user: currentUser
-    })
+    const text = renderTemplate(action.args.get('body_text', ''), variables)
+
+    const html = renderTemplate(action.args.get('body_html', ''), variables)
 
     let blocks = []
-    if (text) {
-        blocks = ContentState.createFromText(text).getBlocksAsArray()
-    } else {
+    if (html) {
         blocks = convertFromHTML(html).getBlocksAsArray()
+    } else {
+        blocks = ContentState.createFromText(text).getBlocksAsArray()
     }
 
     if (contentState && contentState.hasText()) {

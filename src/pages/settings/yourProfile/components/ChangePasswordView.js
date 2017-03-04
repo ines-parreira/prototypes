@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 
-import {InputField} from '../../../common/components/formFields'
+import {InputField} from '../../../common/forms'
 import formSender from '../../../common/utils/formSender'
 
 const validate = (values) => {

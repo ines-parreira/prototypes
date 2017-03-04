@@ -4,8 +4,8 @@ import {Field, reduxForm, reset} from 'redux-form'
 
 import classNames from 'classnames'
 
-import InputField from '../../../common/components/formFields/InputField'
-import TextAreaField from '../../../common/components/formFields/TextAreaField'
+import InputField from '../../../common/forms/InputField'
+import TextAreaField from '../../../common/forms/TextAreaField'
 import formSender from '../../../common/utils/formSender'
 
 class RuleForm extends React.Component {

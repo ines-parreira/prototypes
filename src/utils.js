@@ -14,10 +14,16 @@ import escodegen from 'escodegen'
 import moment from 'moment-timezone'
 import linkifyhtml from 'linkifyjs/html'
 import sanitizeHtml from 'sanitize-html'
-import {convertToHTML as _convertToHTML} from 'draft-convert'
+import {Entity} from 'draft-js'
+import {convertToHTML as _convertToHTML, convertFromHTML as _convertFromHTML} from 'draft-convert'
 import Immutable, {fromJS} from 'immutable'
 import md5 from 'md5'
+import linkifyIt from 'linkify-it'
 import {ACTION_TEMPLATES} from './config'
+
+// note that 2 letters tlds are automatically interpreted
+const tlds = 'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(' ')
+export const linkify = linkifyIt().tlds(tlds)
 
 /**
  * Serialize an object and return it's md5 hash.
@@ -353,7 +359,31 @@ export function convertToHTML(contentState) {
             }
             return originalText
         }
-    })(contentState))
+    })(contentState), {
+        validate: {
+            url(value) {
+                return linkify.test(value)
+            }
+        }
+    })
+}
+
+/**
+ * Single convertFromHTML config for the entire app (same options everywhere if needed)
+ * @param html
+ */
+export function convertFromHTML(html) {
+    return _convertFromHTML({
+        htmlToEntity: (nodeName, node) => {
+            if (nodeName === 'a') {
+                return Entity.create(
+                    'link',
+                    'MUTABLE',
+                    {url: node.href}
+                )
+            }
+        },
+    })(html)
 }
 
 /**

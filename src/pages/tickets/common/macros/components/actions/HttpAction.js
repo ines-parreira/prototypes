@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {AVAILABLE_HTTP_METHODS, JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../../../../../../config'
 import ParametersEditor from '../../../../../common/components/ParametersEditor'
-import JsonField from './../../../../../common/components/formFields/JsonField'
-import URLInputField from './../../../../../common/components/formFields/URLInputField'
+import JsonField from '../../../../../common/forms/JsonField'
+import URLInputField from '../../../../../common/forms/URLInputField'
 
 export default class HttpAction extends React.Component {
     componentDidMount() {
@@ -148,7 +148,6 @@ export default class HttpAction extends React.Component {
                     </div>
                     {this._renderBody(action)}
                 </div>
-                <div className="ui divider"></div>
             </div>
         )
     }

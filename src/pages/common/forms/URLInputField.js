@@ -1,5 +1,5 @@
 import React from 'react'
-import ErrorMessage from '../../../common/components/ErrorMessage'
+import ErrorMessage from '../components/ErrorMessage'
 import classNames from 'classnames'
 import _split from 'lodash/split'
 import _replace from 'lodash/replace'

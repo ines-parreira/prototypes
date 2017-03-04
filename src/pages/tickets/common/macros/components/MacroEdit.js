@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import _uniqWith from 'lodash/uniqWith'
 import {generateDefaultAction} from '../../../../../state/macro/utils'
 
 import SetPriorityAction from './actions/SetPriorityAction'
@@ -78,7 +79,13 @@ class MacroEdit extends React.Component {
     }
 
     _setActions = (actions = fromJS([])) => {
-        this.setState({actions: actions.filter(action => DEFAULT_ACTIONS.includes(action.get('name')))})
+        // filter actions that exist in configuration
+        actions = actions.filter(action => DEFAULT_ACTIONS.includes(action.get('name')))
+
+        // keep only one action by type
+        actions = fromJS(_uniqWith(actions.toJS(), (first, second) => first.name === second.name))
+
+        this.setState({actions})
     }
 
     _updateActionArguments = (index, args = fromJS({})) => {
@@ -135,38 +142,51 @@ class MacroEdit extends React.Component {
     }
 
     renderNewActionMenu = () => {
-        const externalActions = ACTION_TEMPLATES.filter(template => template.execution === 'back')
-        const ticketActions = ACTION_TEMPLATES.filter(template => template.execution === 'front').map(t => t.name)
+        // front actions executed on client
+        const ticketActions = ACTION_TEMPLATES
+            .filter(template => template.execution === 'front')
+            // remove actions that have already been used
+            .filter(action => !this.state.actions.find(usedActions => usedActions.get('name') === action.name))
 
+        // external actions executed on server
+        const externalActions = ACTION_TEMPLATES.filter(template => template.execution === 'back')
+        // external actions with externalType grouped by externalType
         const integrationMenus = getSortedIntegrationActionsNames(externalActions.filter(v => !!v.integrationType))
-        const nonIntegrationActions = externalActions.filter(v => !v.integrationType).map(t => t.name)
+        // external actions without externalType, list of names
+        const nonIntegrationActions = externalActions.filter(v => !v.integrationType)
 
         return (
             <div className="menu">
-                <div className="header">Ticket Actions</div>
+                {ticketActions.length > 0 && <div className="header">Ticket Actions</div>}
                 {
-                    ticketActions.map(actionName => (
-                        <a
-                            key={actionName}
-                            onClick={() => this._addAction(actionName)}
-                            className="item"
-                        >
-                            {getActionTemplate(actionName).title || humanizeString(actionName)}
-                        </a>
-                    ))
+                    ticketActions.map((action) => {
+                        const actionName = action.name
+                        return (
+                            <a
+                                key={actionName}
+                                onClick={() => this._addAction(actionName)}
+                                className="item"
+                            >
+                                {action.title || humanizeString(actionName)}
+                            </a>
+                        )
+                    })
                 }
-                <div className="divider"></div>
+                {ticketActions.length > 0 && <div className="divider"></div>}
                 <div className="header">External Actions</div>
                 {
-                    nonIntegrationActions.map(actionName => (
-                        <a
-                            key={actionName}
-                            onClick={() => this._addAction(actionName)}
-                            className="item"
-                        >
-                            {getActionTemplate(actionName).title || humanizeString(actionName)}
-                        </a>
-                    ))
+                    nonIntegrationActions.map((action) => {
+                        const actionName = action.name
+                        return (
+                            <a
+                                key={actionName}
+                                onClick={() => this._addAction(actionName)}
+                                className="item"
+                            >
+                                {action.title || humanizeString(actionName)}
+                            </a>
+                        )
+                    })
                 }
                 {
                     integrationMenus.map((actions, key) => {
@@ -179,7 +199,10 @@ class MacroEdit extends React.Component {
                         }
 
                         return (
-                            <div className="item">
+                            <div
+                                className="item"
+                                key={key}
+                            >
                                 <i className="dropdown icon" />
                                 <span className="text">{humanizeString(key)}</span>
                                 <div className="upward menu">
@@ -197,7 +220,7 @@ class MacroEdit extends React.Component {
                                 </div>
                             </div>
                         )
-                    })
+                    }).toList()
                 }
             </div>
         )
@@ -217,7 +240,7 @@ class MacroEdit extends React.Component {
                 <div className="ui vertical segment">
                     <div>
                         <h4>MACRO NAME</h4>
-                        <div id="macro-name" className="ui content input">
+                        <div className="ui content input">
                             <input
                                 type="text"
                                 onChange={e => actions.setName(e.target.value)}
@@ -225,111 +248,122 @@ class MacroEdit extends React.Component {
                                 required
                             />
                         </div>
-                        <div className="ui divider"></div>
                     </div>
 
                     {
-                        this.state.actions.map((action, key) => {
+                        this.state.actions.map((action, index) => {
+                            let child = null
+
                             switch (action.get('name')) {
                                 case ticketTypes.SET_STATUS:
-                                    return (
+                                    child = (
                                         <SetStatusAction
-                                            key={key}
-                                            index={key}
+                                            index={index}
                                             action={action}
                                             updateActionArgs={this._updateActionArguments}
                                             deleteAction={this._deleteAction}
                                         />
                                     )
+                                    break
                                 case ticketTypes.ADD_TICKET_TAGS:
-                                    return (
+                                    child = (
                                         <AddTagsAction
-                                            key={key}
-                                            index={key}
+                                            index={index}
                                             args={action.get('arguments')}
                                             updateActionArgs={this._updateActionArguments}
                                             deleteAction={this._deleteAction}
                                         />
                                     )
+                                    break
                                 case ticketTypes.SET_RESPONSE_TEXT:
-                                    return (
+                                    child = (
                                         <SetResponseTextAction
-                                            key={key}
-                                            index={key}
+                                            index={index}
                                             action={action}
                                             updateActionArgs={this._updateActionArguments}
                                             deleteAction={this._deleteAction}
                                         />
                                     )
+                                    break
                                 case ticketTypes.SET_AGENT:
-                                    return (
+                                    child = (
                                         <SetAssigneeAction
-                                            key={key}
-                                            index={key}
+                                            index={index}
                                             action={action}
                                             agents={this.props.agents}
                                             updateActionArgs={this._updateActionArguments}
                                             deleteAction={this._deleteAction}
                                         />
                                     )
+                                    break
                                 case ticketTypes.TOGGLE_PRIORITY:
-                                    return (
+                                    child = (
                                         <SetPriorityAction
-                                            key={key}
-                                            index={key}
+                                            index={index}
                                             action={action}
                                             updateActionArgs={this._updateActionArguments}
                                             deleteAction={this._deleteAction}
                                         />
                                     )
+                                    break
                                 case 'http':
-                                    return (
+                                    child = (
                                         <HttpAction
-                                            key={key}
-                                            index={key}
+                                            index={index}
                                             action={action}
                                             updateActionArgs={this._updateActionArguments}
                                             updateActionTitle={this._updateActionTitle}
                                             deleteAction={this._deleteAction}
                                         />
                                     )
+                                    break
                                 case ticketTypes.ADD_ATTACHMENTS:
-                                    return (
+                                    child = (
                                         <AddAttachmentsAction
-                                            key={key}
-                                            index={key}
+                                            index={index}
                                             action={action}
                                             addAttachments={this._addAttachment}
                                             removeAttachment={this._deleteAttachment}
                                             deleteAction={this._deleteAction}
                                         />
                                     )
+                                    break
                                 default:
                                     if (getActionTemplate(action.get('name')).integrationType) {
-                                        return (
+                                        child = (
                                             <IntegrationAction
-                                                key={key}
-                                                index={key}
+                                                index={index}
                                                 action={action}
                                                 deleteAction={this._deleteAction}
                                             />
                                         )
+                                    } else {
+                                        child = (
+                                            <DefaultAction
+                                                index={index}
+                                                name={action.get('name')}
+                                                deleteAction={this._deleteAction}
+                                            />
+                                        )
                                     }
-
-                                    return (
-                                        <DefaultAction
-                                            key={key}
-                                            index={key}
-                                            name={action.get('name')}
-                                            deleteAction={this._deleteAction}
-                                        />
-                                    )
                             }
+
+                            // the unique key is based on index of action + ID of macro
+                            // so when we switch from a macro to the other, all previous macro fields are unmounted
+                            // it's simpler to manage lifecycle of actions components then
+                            const key = `${index}${currentMacro.get('id')}`
+
+                            return (
+                                <div key={key}>
+                                    <div className="ui divider" />
+                                    {child}
+                                </div>
+                            )
                         })
                     }
 
                     <div
-                        className="ui pointing dropdown labeled icon light blue button"
+                        className="ui pointing dropdown labeled icon light blue button mt20i"
                         ref="insertNewMacro"
                     >
                         <i className="plus icon" />
@@ -372,7 +406,7 @@ class MacroEdit extends React.Component {
                         className="ui basic grey right floated button"
                         onClick={cancel}
                     >
-                        cancel
+                        Cancel
                     </div>
                 </div>
             </form>

@@ -229,9 +229,9 @@ describe('global utils', () => {
         })
 
         it('should convert multiple links to html', () => {
-            const text = 'Hey There!\n\nwww.google.com\n\nAnother link: www.gorgias.io'
+            const text = 'Hey There!\n\nwww.google.com\n\nAnother link: http://www.gorgias.io'
             const contentState = ContentState.createFromText(text)
-            expect(utils.convertToHTML(contentState)).toEqual('<div>Hey There!</div><br><div><a href="http://www.google.com" class="linkified" target="_blank">www.google.com</a></div><br><div>Another link: <a href="http://www.gorgias.io" class="linkified" target="_blank">www.gorgias.io</a></div>')
+            expect(utils.convertToHTML(contentState)).toEqual('<div>Hey There!</div><br><div><a href="http://www.google.com" class="linkified" target="_blank">www.google.com</a></div><br><div>Another link: <a href="http://www.gorgias.io" class="linkified" target="_blank">http://www.gorgias.io</a></div>')
         })
 
         it('should NOT convert adjacent links to html correctly (www.xxx.comwww.yyy.com)', () => {

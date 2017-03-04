@@ -3,20 +3,18 @@ import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _throttle from 'lodash/throttle'
 
-import {EditorState, ContentState, SelectionState, Modifier} from 'draft-js'
+import {EditorState, ContentState} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
-import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
-import createToolbarPlugin from './plugins/toolbar'
+import createToolbarPlugin from '../../../../common/draftjs/plugins/toolbar'
 
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
 
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
 const dndPlugin = createDndPlugin()
-const linkifyPlugin = createLinkifyPlugin()
 const emojiPlugin = createEmojiPlugin()
 const blockBreakoutPlugin = createBlockBreakoutPlugin()
 const toolbarPlugin = createToolbarPlugin()
@@ -24,7 +22,7 @@ const toolbarPlugin = createToolbarPlugin()
 const {EmojiSuggestions} = emojiPlugin
 const {Toolbar} = toolbarPlugin
 
-const plugins = [emojiPlugin, dndPlugin, linkifyPlugin, blockBreakoutPlugin, toolbarPlugin]
+const plugins = [emojiPlugin, dndPlugin, blockBreakoutPlugin, toolbarPlugin]
 
 // throttle the updating of the redux because it's slow otherwise when we type
 const _updateMessageText = _throttle((props, editorState) => {
@@ -58,27 +56,6 @@ class TicketReplyEditor extends React.Component {
         }
     }
 
-    /**
-     * Empty content
-     * @param editorState
-     * @returns {EditorState}
-     * @private
-     */
-    _emptyContentState = (editorState) => {
-        let contentState = editorState.getCurrentContent()
-        const firstBlock = contentState.getFirstBlock()
-        const lastBlock = contentState.getLastBlock()
-        const allSelected = new SelectionState({
-            anchorKey: firstBlock.getKey(),
-            anchorOffset: 0,
-            focusKey: lastBlock.getKey(),
-            focusOffset: lastBlock.getLength(),
-            hasFocus: true
-        })
-        contentState = Modifier.removeRange(contentState, allSelected, 'backward')
-        return EditorState.push(editorState, contentState, 'remove-range')
-    }
-
     _getEditorState = (props) => {
         const state = props.ticket.get('state')
         const contentState = state.get('contentState')
@@ -88,7 +65,7 @@ class TicketReplyEditor extends React.Component {
 
         if (this.state && this.state.editorState) {
             // if content state already exists, just clear the content
-            editorState = this._emptyContentState(this.state.editorState)
+            editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''))
         } else {
             // if there is no content, create a new editor state
             editorState = EditorState.createWithContent(ContentState.createFromText(''))

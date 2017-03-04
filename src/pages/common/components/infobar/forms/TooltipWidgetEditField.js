@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import {Field, reduxForm} from 'redux-form'
-import {InputField, SelectField} from '../../formFields'
+import {InputField, SelectField} from '../../../forms'
 
 class TooltipWidgetEditField extends React.Component {
     componentDidMount() {

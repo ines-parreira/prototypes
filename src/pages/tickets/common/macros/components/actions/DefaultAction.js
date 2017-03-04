@@ -11,7 +11,6 @@ class DefaultAction extends React.Component {
                     onClick={() => deleteAction(index)}
                 />
                 <h4 className="inline">{name}</h4>
-                <div className="ui divider"></div>
             </div>
         )
     }

@@ -22,7 +22,6 @@ export default class SetAssigneeAction extends React.Component {
                     setAgent={assignee => this.setAssignee(assignee)}
                     suffix="macro-modal"
                 />
-                <div className="ui divider"></div>
             </div>
         )
     }
