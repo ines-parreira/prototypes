@@ -124,10 +124,10 @@ class ReplyMessageChannel extends React.Component {
 
         if (!ticket.getIn(['newMessage', 'public'])) {
             return (
-                <div className="receivers-dropdown">
-                    <div className="receivers-row">
+                <div className="message-source-fields">
+                    <div className="message-source-field">
                         <span className="receivers-list">
-                            <span className="receiver-placeholder">Internal note</span>
+                            Internal note
                         </span>
                     </div>
                 </div>
