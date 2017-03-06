@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import {createImmutableSelector} from '../../utils'
 import {sortViews} from './utils'
-import {views as viewsConfig} from '../../config'
+import viewsConfig from '../../config/views'
 import {getSettingsByType as getCurrentUserSettingsByType} from '../currentUser/selectors'
 
 export const getViewsState = state => state.views || fromJS({})

@@ -8,7 +8,7 @@ import SocketIO from '../../pages/common/utils/socketio'
 import {
     getReceiversProperties,
 } from './selectors'
-import {ANSWERABLE_SOURCE_TYPES} from '../../config'
+import * as ticketConfig from '../../config/ticket'
 
 import _isUndefined from 'lodash/isUndefined'
 import _isString from 'lodash/isString'
@@ -18,7 +18,6 @@ import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
 
 import {
-    getLastNonSystemTypeMessage,
     getSourceTypeOfResponse,
     getChannelFromSourceType,
 } from './utils'
@@ -239,7 +238,7 @@ export default (state = initialState, action) => {
             }
 
             const newState = state.merge(fromJS(action.resp))
-            let sourceType = getSourceTypeOfResponse(newState.get('messages'))
+            const sourceType = getSourceTypeOfResponse(newState.get('messages'))
 
             const ticketId = newState.get('id')
             const requesterId = newState.getIn(['requester', 'id'])
@@ -252,13 +251,8 @@ export default (state = initialState, action) => {
                 io.joinUser(requesterId)
             }
 
-            // if channel is not supported, suggest email answer
-            if (!ANSWERABLE_SOURCE_TYPES.includes(sourceType)) {
-                sourceType = 'email'
-            }
-
             return newState.set('newMessage', newMessage(
-                getChannelFromSourceType(sourceType),
+                getChannelFromSourceType(sourceType, newState.get('messages')),
                 sourceType
             ))
                 .mergeDeep({
@@ -348,20 +342,12 @@ export default (state = initialState, action) => {
         }
 
         case types.SET_SOURCE_TYPE: {
-            let newState = state
+            const channel = getChannelFromSourceType(action.sourceType, state.get('messages'))
 
-            if (action.sourceType !== 'internal-note') {
-                newState = newState.setIn(['newMessage', 'channel'], getChannelFromSourceType(action.sourceType))
-            } else {
-                // For an internal note, we infer the channel from the last non-internal note message.
-                const lastMessage = getLastNonSystemTypeMessage(state.get('messages'))
-                const lastSourceType = lastMessage ? lastMessage.getIn(['source', 'type']) : 'email'
-                newState = newState.setIn(['newMessage', 'channel'], getChannelFromSourceType(lastSourceType))
-            }
-
-            return newState
+            return state
+                .setIn(['newMessage', 'channel'], channel)
                 .setIn(['newMessage', 'source', 'type'], action.sourceType)
-                .setIn(['newMessage', 'public'], action.sourceType !== 'internal-note')
+                .setIn(['newMessage', 'public'], ticketConfig.isPublic(action.sourceType))
         }
 
         case types.APPLY_MACRO: {

@@ -2,20 +2,10 @@ import {fromJS} from 'immutable'
 import _forEach from 'lodash/forEach'
 import _isArray from 'lodash/isArray'
 import _toLower from 'lodash/toLower'
-import {SOURCE_VALUE_PROP, SYSTEM_TYPES} from '../../config'
+import {SOURCE_VALUE_PROP} from '../../config'
+import * as ticketConfig from '../../config/ticket'
 import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
 import {getActionTemplate} from '../../utils'
-
-/**
- * Get the most recent message that was not an internal note.
- * @param messages
- * @returns {*}
- */
-export function getLastNonSystemTypeMessage(messages) {
-    const filteredMessages = messages.filter((m) => !SYSTEM_TYPES.includes(m.getIn(['source', 'type'])))
-
-    return !!filteredMessages.size && filteredMessages.last()
-}
 
 /**
  * Get the most recent messages which have the matching sourceType
@@ -38,39 +28,15 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
  * source type of the message we're responding to.
  */
 export function getSourceTypeOfResponse(messages) {
-    const lastMsg = getLastNonSystemTypeMessage(messages)
-
-    if (!lastMsg) {
-        return 'api'
-    }
-
-    // some messages don't have sources - failed imports, api, etc..
-    if (!lastMsg.get('source')) {
-        return 'api'
-    }
-
-    switch (lastMsg.getIn(['source', 'type'])) {
-        case 'facebook-post':
-            return 'facebook-comment'
-        default:
-            return lastMsg.getIn(['source', 'type'])
-    }
+    return ticketConfig.responseSourceType(messages)
 }
 
 /**
  * Map a source type to a channel.
  * Returns undefined for internal note as we dont have enough information to guess the channel.
  */
-export function getChannelFromSourceType(sourceType) {
-    if (!sourceType) {
-        return
-    }
-
-    if (sourceType.startsWith('facebook')) {
-        return 'facebook'
-    } else if (sourceType !== 'internal-note') {
-        return sourceType
-    }
+export function getChannelFromSourceType(sourceType, messages) {
+    return ticketConfig.sourceTypeToChannel(sourceType, messages)
 }
 
 export function isSupportAddress(addressToTest = '', supportAddresses = fromJS([])) {

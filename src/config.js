@@ -2,8 +2,6 @@ import {makeGetProperty} from './state/ticket/selectors'
 
 
 // TODO @jebarjonet switch all configuration to modular version
-export * as constants from './config/constants'
-export views from './config/views'
 
 /**
  * Action related
@@ -49,11 +47,6 @@ export const EMPTY_OPERATORS = {
 /**
  * Ticket-related
  */
-// This is a utility map to get the right property name when setting the source on a message
-// Basically will be used in: source.setIn(['source', 'to', {PROPERTY_NAME}], identifier/address)
-
-export const SYSTEM_TYPES = ['internal-note', 'system-message']
-
 export const SOURCE_VALUE_PROP = {
     email: 'address',
     phone: 'address',
