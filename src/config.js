@@ -249,6 +249,7 @@ export const ACTION_TEMPLATES = [
         partialUpdateValue: makeGetProperty('priority'),
     },
     {
+        execution: 'front',
         name: 'setSubject',
         title: 'Set subject',
         partialUpdateKey: 'subject',

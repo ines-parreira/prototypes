@@ -6,6 +6,7 @@ import {generateDefaultAction} from '../../../../../state/macro/utils'
 
 import SetPriorityAction from './actions/SetPriorityAction'
 import SetStatusAction from './actions/SetStatusAction'
+import SetSubjectAction from './actions/SetSubjectAction'
 import SetResponseTextAction from './actions/SetResponseTextAction'
 import SetAssigneeAction from './actions/SetAssigneeAction'
 import AddTagsAction from './actions/AddTagsAction'
@@ -240,7 +241,10 @@ class MacroEdit extends React.Component {
                 <div className="ui vertical segment">
                     <div>
                         <h4>MACRO NAME</h4>
-                        <div className="ui content input">
+                        <div
+                            className="ui content input"
+                            style={{width: '100%'}}
+                        >
                             <input
                                 type="text"
                                 onChange={e => actions.setName(e.target.value)}
@@ -291,6 +295,16 @@ class MacroEdit extends React.Component {
                                             index={index}
                                             action={action}
                                             agents={this.props.agents}
+                                            updateActionArgs={this._updateActionArguments}
+                                            deleteAction={this._deleteAction}
+                                        />
+                                    )
+                                    break
+                                case ticketTypes.SET_SUBJECT:
+                                    child = (
+                                        <SetSubjectAction
+                                            index={index}
+                                            action={action}
                                             updateActionArgs={this._updateActionArguments}
                                             deleteAction={this._deleteAction}
                                         />

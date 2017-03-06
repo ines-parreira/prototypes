@@ -122,6 +122,21 @@ export default class TicketMacros extends React.Component {
         )
     }
 
+    renderSetSubject(setSubjectAction) {
+        if (!setSubjectAction) {
+            return null
+        }
+
+        return (
+            <div className="macro-data">
+                <div className="ui label macro-legend">SET SUBJECT:</div>
+                <b className="integration-action">
+                    {setSubjectAction.getIn(['arguments', 'subject'])}
+                </b>
+            </div>
+        )
+    }
+
     renderBackActions(integrationType, integrationActions) {
         if (!integrationActions || !integrationActions.size) {
             return null
@@ -167,6 +182,7 @@ export default class TicketMacros extends React.Component {
         const setStatusAction = macro.get('actions').find(action => action.get('name') === 'setStatus')
         const setPriorityAction = macro.get('actions').find(action => action.get('name') === 'setPriority')
         const setAssigneeAction = macro.get('actions').find(action => action.get('name') === 'setAssignee')
+        const setSubjectAction = macro.get('actions').find(action => action.get('name') === 'setSubject')
         const addAttachmentsActions = macro.get('actions').find(action => action.get('name') === 'addAttachments')
 
         const backActions = macro.get('actions').filter(
@@ -199,6 +215,7 @@ export default class TicketMacros extends React.Component {
                     {this.renderAddTags(addTagsActions)}
                     {this.renderSetAssignee(setAssigneeAction)}
                     {this.renderSetPriority(setPriorityAction)}
+                    {this.renderSetSubject(setSubjectAction)}
                     {
                         sortedBackActions.map((v, k) => this.renderBackActions(k, v)).toList().toJS()
                     }

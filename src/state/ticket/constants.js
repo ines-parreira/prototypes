@@ -35,6 +35,7 @@ export const SET_RESPONSE_TEXT = 'setResponseText'
 export const SET_STATUS = 'setStatus'
 export const SET_AGENT = 'setAssignee'
 export const ADD_ATTACHMENTS = 'addAttachments'
+export const SET_SUBJECT = 'setSubject'
 
 export const REMOVE_TICKET_TAG = 'REMOVE_TICKET_TAG'
 
@@ -47,7 +48,6 @@ export const APPLY_MACRO = 'APPLY_MACRO'
 export const FETCH_TICKET_REPLY_MACRO = 'FETCH_TICKET_REPLY_MACRO'
 export const CLEAR_APPLIED_MACRO = 'CLEAR_APPLIED_MACRO'
 
-export const SET_SUBJECT = 'SET_SUBJECT'
 export const SET_SOURCE_TYPE = 'SET_SOURCE_TYPE'
 export const SET_RECEIVERS = 'SET_RECEIVERS'
 export const SET_SENDER = 'SET_SENDER'
