@@ -255,13 +255,13 @@ export const ACTION_TEMPLATES = [
         partialUpdateKey: 'priority',
         partialUpdateValue: makeGetProperty('priority'),
     },
-    // {
-    //     execution: 'front',
-    //     name: 'setSubject',
-    //     title: 'Set subject',
-    //     partialUpdateKey: 'subject',
-    //     partialUpdateValue: makeGetProperty('subject'),
-    // },
+    {
+        execution: 'front',
+        name: 'setSubject',
+        title: 'Set subject',
+        partialUpdateKey: 'subject',
+        partialUpdateValue: makeGetProperty('subject'),
+    },
     {
         execution: 'back',
         name: 'http',
