@@ -117,6 +117,7 @@ class EmailIntegrationCreate extends React.Component {
                                         </span>
                                     </span>
                                 }
+                                required
                             />
                             <Field
                                 type="email"
@@ -124,6 +125,7 @@ class EmailIntegrationCreate extends React.Component {
                                 label="Email address"
                                 placeholder={`support@${domain}.com`}
                                 component={InputField}
+                                required
                             />
                             <button
                                 disabled={isSubmitting}
@@ -133,7 +135,6 @@ class EmailIntegrationCreate extends React.Component {
                             >
                                 Connect this email account
                             </button>
-
                         </form>
                     </div>
                 </div>
@@ -141,6 +142,7 @@ class EmailIntegrationCreate extends React.Component {
         )
     }
 }
+
 
 EmailIntegrationCreate.propTypes = {
     domain: PropTypes.string.isRequired,

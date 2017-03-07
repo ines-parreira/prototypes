@@ -22,16 +22,6 @@ class EmailIntegrationUpdate extends React.Component {
     }
 
     componentDidMount() {
-        // activate copy to clipboard button
-        const clipboard = new Clipboard('#copy-forwarding-email')
-
-        clipboard.on('success', () => {
-            this.setState({isCopied: true})
-            setTimeout(() => {
-                this.setState({isCopied: false})
-            }, 1500)
-        })
-
         // display message from url
         const message = getQueryParam('message')
         if (message) {
@@ -50,21 +40,29 @@ class EmailIntegrationUpdate extends React.Component {
         // populating the form when updating an integration
         if (!this.isInitialized && !loading.get('integration')) {
             this.props.initialize({
-                name: integration.get('name', ''),
-                meta: {
-                    import_activated: integration.getIn(['meta', 'import_activated'], false)
-                }
+                name: integration.get('name', '')
             })
             this.isInitialized = true
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         $(this.refs.AddressNameTooltip).popup({
             inline: true,
             position: 'top left',
             offset: -11
         })
+        // activate copy to clipboard button only for email integration
+        if (this.props.integration.get('type') === 'email' &&
+            prevProps.integration.get('id') !== this.props.integration.get('id')) {
+            const clipboard = new Clipboard('#copy-forwarding-email')
+            clipboard.on('success', () => {
+                this.setState({isCopied: true})
+                setTimeout(() => {
+                    this.setState({isCopied: false})
+                }, 1500)
+            })
+        }
     }
 
     _handleSubmit = (type, values) => {
@@ -124,7 +122,7 @@ class EmailIntegrationUpdate extends React.Component {
                             className="ui light blue right labeled icon button"
                             data-clipboard-target="#forwarding-email"
                         >
-                            <i className="copy icon" />
+                            <i className="copy icon"/>
                             {
                                 this.state.isCopied ? 'COPIED!' : 'COPY'
                             }
@@ -147,6 +145,7 @@ class EmailIntegrationUpdate extends React.Component {
             }
         } = this.props
         const isSubmitting = loading.get('updateIntegration') === integration.get('id')
+        const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
 
         return [
@@ -185,6 +184,14 @@ class EmailIntegrationUpdate extends React.Component {
                 >
                     Save changes
                 </button>
+                {isDeactivated && (
+                    <a
+                        className={classNames('ui basic light blue button')}
+                        href={`/integrations/gmail/auth?integration_id=${integration.get('id')}`}
+                    >
+                        Re-Activate
+                    </a>
+                )}
                 <button
                     disabled={isSubmitting || isDeleting}
                     onClick={() => deleteIntegration(integration, 'email')}
@@ -256,12 +263,12 @@ class EmailIntegrationUpdate extends React.Component {
 
         return (
             <div className="ui grid">
-                <div className="sixteen wide tablet ten wide computer column">
+                <div className="sixteen wide tablet twelve wide computer column">
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider" />
+                        <i className="right angle icon divider"/>
                         <Link to="/app/integrations/email" className="section">Email</Link>
-                        <i className="right angle icon divider" />
+                        <i className="right angle icon divider"/>
                         <a className="active section">
                             {integration.get('name')}
                         </a>
@@ -277,7 +284,7 @@ class EmailIntegrationUpdate extends React.Component {
                 </div>
                 <div className="ui row pt0i">
                     <div className="sixteen wide tablet seven wide computer column">
-                        {this._renderInstructions()}
+                        {integration.get('type') === 'email' && this._renderInstructions()}
                         {integration.get('type') === 'gmail' && this._renderImportation()}
                         {this._renderSettings()}
                     </div>
