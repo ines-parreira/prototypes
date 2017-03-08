@@ -13,8 +13,11 @@ import FacebookIntegrationLogin from './components/facebook/FacebookIntegrationL
 import HttpIntegrationList from './components/http/HttpIntegrationList'
 import HttpIntegrationDetail from './components/http/HttpIntegrationDetail'
 
-import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
+import ChatIntegrationList from './components/chat/ChatIntegrationList'
+import ChatIntegrationDetail from './components/chat/ChatIntegrationDetail'
+
 import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
+import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
 
 import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList'
 import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
@@ -76,22 +79,24 @@ class IntegrationDetailContainer extends React.Component {
                                 loading={commonProps.loading}
                             />
                         )
-                    } else {
-                        return (
-                            <EmailIntegrationCreate
-                                actions={actions}
-                                loading={commonProps.loading}
-                            />)
                     }
-                } else {
+
                     return (
-                        <EmailIntegrationList
+                        <EmailIntegrationCreate
                             actions={actions}
-                            integrations={commonProps.integrations}
                             loading={commonProps.loading}
                         />
                     )
                 }
+
+                return (
+                    <EmailIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
+
             case 'facebook':
                 if (isDetail) {
                     if (isSetup) {
@@ -110,24 +115,25 @@ class IntegrationDetailContainer extends React.Component {
                                 loading={commonProps.loading}
                             />
                         )
-                    } else {
-                        return (
-                            <FacebookIntegrationLogin
-                                loading={commonProps.loading}
-                                redirectUri={redirectUri}
-                            />
-                        )
                     }
-                } else {
+
                     return (
-                        <FacebookIntegrationList
-                            actions={actions}
-                            integrations={commonProps.integrations}
-                            redirectUri={redirectUri}
+                        <FacebookIntegrationLogin
                             loading={commonProps.loading}
+                            redirectUri={redirectUri}
                         />
                     )
                 }
+
+                return (
+                    <FacebookIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        redirectUri={redirectUri}
+                        loading={commonProps.loading}
+                    />
+                )
+
             case 'http':
                 if (isDetail) {
                     return (
@@ -138,35 +144,57 @@ class IntegrationDetailContainer extends React.Component {
                             loading={commonProps.loading}
                         />
                     )
-                } else {
-                    return (
-                        <HttpIntegrationList
-                            actions={actions}
-                            integrations={commonProps.integrations}
-                            loading={commonProps.loading}
-                        />
-                    )
                 }
 
-            case 'smooch':
+                return (
+                    <HttpIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
+
+            case 'smooch_inside':
                 if (isDetail) {
                     return (
-                        <SmoochIntegrationDetail
+                        <ChatIntegrationDetail
                             actions={actions}
                             integration={commonProps.integration}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
                         />
                     )
-                } else {
+                }
+
+                return (
+                    <ChatIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
+
+            case 'smooch':
+                if (isDetail) {
                     return (
-                        <SmoochIntegrationList
+                        <SmoochIntegrationDetail
+                            integration={commonProps.integration}
+                            isUpdate={isUpdate}
                             actions={actions}
-                            integrations={commonProps.integrations}
                             loading={commonProps.loading}
+                            redirectUri={redirectUri}
                         />
                     )
                 }
+
+                return (
+                    <SmoochIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                        redirectUri={redirectUri}
+                    />
+                )
 
             case 'shopify':
                 if (isDetail) {
@@ -179,15 +207,15 @@ class IntegrationDetailContainer extends React.Component {
                             redirectUri={redirectUri}
                         />
                     )
-                } else {
-                    return (
-                        <ShopifyIntegrationList
-                            actions={actions}
-                            integrations={commonProps.integrations}
-                            loading={commonProps.loading}
-                        />
-                    )
                 }
+
+                return (
+                    <ShopifyIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
 
             default:
                 return null

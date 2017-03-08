@@ -108,10 +108,16 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/facebook.png',
     },
     {
-        type: 'smooch',
+        type: 'smooch_inside',
         title: 'Chat',
         description: 'Add a chat on your website',
         image: 'integrations/chat.png',
+    },
+    {
+        type: 'smooch',
+        title: 'Smooch',
+        description: 'Connect your own Smooch to Gorgias',
+        image: 'integrations/smooch.png',
     },
     {
         type: 'http',
@@ -168,8 +174,8 @@ export const ONBOARDING_INTEGRATION_SUGGESTIONS = [{
     url: 'app/integrations/facebook',
 }, {
     title: 'Connect Chat',
-    type: 'smooch',
-    url: 'app/integrations/smooch/new',
+    type: 'smooch_inside',
+    url: 'app/integrations/smooch_inside/new',
 }]
 
 // Number of threads imported from Gmail

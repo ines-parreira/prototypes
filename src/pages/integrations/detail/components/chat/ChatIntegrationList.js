@@ -3,27 +3,22 @@ import {Link, browserHistory} from 'react-router'
 import classnames from 'classnames'
 import IntegrationList from '../IntegrationList'
 
-export default class SmoochIntegrationList extends React.Component {
-    _onLogin = () => {
-        window.location.href = this.props.redirectUri
-    }
-
+export default class ChatIntegrationList extends React.Component {
     render() {
         const {integrations, actions, loading} = this.props
 
         const longTypeDescription = (
-            <div>
-                <b><a href="https://smooch.io/" target="_blank">Smooch</a></b> is a messaging platform which enables
-                you to interact with your customers across multiple channels, and to build your own bot. You can use
-                Gorgias as an interface for your team to respond to Smooch conversations.
-                <br/><br/>
-                You can connect your own Smooch account to Gorgias. When a customer initiates a conversation through
-                Smooch, it will create a chat in Gorgias and send a notification.
-            </div>
+            <span>
+                You can add a chat integration here to add a chat widget on your website.
+                Every time a user starts a conversation, it opens a ticket in Gorgias.
+                You can then respond to the ticket to chat with the user.
+                <br />
+                You can add multiple chat integrations.
+            </span>
         )
 
         const integrationToItemDisplay = (int) => {
-            const editLink = `/app/integrations/smooch/${int.get('id')}`
+            const editLink = `/app/integrations/smooch_inside/${int.get('id')}`
             const isLoading = int.get('id') === loading.get('delete')
 
             const editClassName = classnames('ui basic light blue button', {
@@ -64,11 +59,11 @@ export default class SmoochIntegrationList extends React.Component {
 
         return (
             <IntegrationList
-                integrationType="smooch"
+                integrationType="smooch_inside"
                 longTypeDescription={longTypeDescription}
-                integrations={integrations.filter((v) => v.get('type') === 'smooch')}
-                createIntegration={this._onLogin}
-                createIntegrationButtonText="Add my Smooch"
+                integrations={integrations.filter((v) => v.get('type') === 'smooch_inside')}
+                createIntegration={() => browserHistory.push('/app/integrations/smooch_inside/new')}
+                createIntegrationButtonText="Add chat"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />
@@ -76,9 +71,8 @@ export default class SmoochIntegrationList extends React.Component {
     }
 }
 
-SmoochIntegrationList.propTypes = {
+ChatIntegrationList.propTypes = {
     integrations: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    redirectUri: PropTypes.string.isRequired
+    actions: PropTypes.object.isRequired
 }

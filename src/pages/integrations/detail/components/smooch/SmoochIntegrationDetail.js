@@ -1,29 +1,22 @@
 import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
+import {Link, withRouter} from 'react-router'
 import {Field, reduxForm} from 'redux-form'
-import classNames from 'classnames'
 import {fromJS} from 'immutable'
-import _clone from 'lodash/clone'
+import classNames from 'classnames'
+import _isEmpty from 'lodash/isEmpty'
+import _pick from 'lodash/pick'
+
+import formSender from '../../../../common/utils/formSender'
+import InputField from './../../../../common/forms/InputField'
 
 import {Loader} from '../../../../common/components/Loader'
-import {InputField} from '../../../../common/forms'
-import formSender from '../../../../common/utils/formSender'
-
-export const defaultContent = {
-    type: 'smooch'
-}
 
 class SmoochIntegrationDetail extends React.Component {
     constructor(props) {
         super(props)
 
         // used to know if form has been asynchronously initialized when updating
-        this.isInitialized = !props.isUpdate
-
-        // populating new integration form
-        if (!props.isUpdate) {
-            props.initialize(_clone(defaultContent))
-        }
+        this.isInitialized = false
     }
 
     componentWillUpdate(nextProps) {
@@ -36,51 +29,50 @@ class SmoochIntegrationDetail extends React.Component {
         }
     }
 
-    _handleSubmit = (values) => {
-        let doc = fromJS(defaultContent).mergeDeep(values)
+    componentWillReceiveProps(nextProps) {
+        if (_isEmpty(this.props.integration.toJS()) && !_isEmpty(nextProps.integration.toJS())) {
+            const authenticationRequired = nextProps.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
+            const isAuthenticating = nextProps.location.query.action === 'authentication'
 
-        // if update, set ids for server
-        if (this.props.isUpdate) {
-            const integration = this.props.integration
-            doc = doc
-                .set('id', integration.get('id'))
-                .setIn(['smooch', 'id'], integration.getIn(['smooch', 'id']))
+            if (isAuthenticating) {
+                if (authenticationRequired) {
+                    setTimeout(
+                        nextProps.actions.fetchIntegration(
+                            nextProps.integration.get('id'),
+                            nextProps.integration.get('type'),
+                            true)
+                        , 3000)
+                } else {
+                    nextProps.actions.triggerCreateSuccess(nextProps.integration.toJS())
+                }
+            }
+        }
+    }
+
+    _addNewSmooch = () => { window.location.href = this.props.redirectUri }
+
+    _handleSubmit = (values) => {
+        if (!this.props.isUpdate) {
+            return this._addNewSmooch()
         }
 
+        let doc = fromJS(values)
+
+        // only update
+        const integration = this.props.integration
+        doc = fromJS(_pick(doc.set('id', integration.get('id')).toJS(), ['id', 'name']))
         return formSender(this.props.actions.updateOrCreateIntegration(doc))
     }
 
-    _renderInstructions = (isUpdate) => {
-        const {integration} = this.props
-
-        if (!isUpdate || !integration.get('id')) {
-            return null
-        }
-
-        return (
-            <div>
-                <p>
-                    To add a chat to your website, add the following code before the <kbd>{'</body>'}</kbd> on your
-                    page:
-                </p>
-                <pre className="ui info message">
-                    {'<script src="https://cdn.smooch.io/smooch.min.js"></script>\n'}
-                    {`<script>Smooch.init({appToken: '${integration.getIn(['smooch', 'app_token'])}'});</script>`}
-                </pre>
-                <p>
-                    Chat is provided through Smooch, at no additional cost for you. You can send user data to better
-                    identify who you are talking to. Check out {' '}
-                    <a href="http://docs.smooch.io/javascript/" target="_blank">Smooch's documentation</a> to learn
-                    how to do it.
-                </p>
-            </div>
-        )
-    }
-
     render() {
-        const {actions, handleSubmit, integration, isUpdate, loading} = this.props
+        const {actions, integration, isUpdate, loading, handleSubmit} = this.props
 
         const isSubmitting = loading.get('updateIntegration')
+        const isActive = !integration.get('deactivated_datetime')
+
+        const authenticationRequired = this.props.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
+
+        const ctaIsLoading = isSubmitting || authenticationRequired
 
         if (loading.get('integration')) {
             return <Loader />
@@ -93,15 +85,12 @@ class SmoochIntegrationDetail extends React.Component {
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
                         <i className="right angle icon divider" />
-                        <Link to="/app/integrations/smooch" className="section">Chat</Link>
+                        <Link to="/app/integrations/smooch" className="section">Smooch</Link>
                         <i className="right angle icon divider" />
                         <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
                     </div>
 
-                    <h1>{isUpdate ? integration.get('name') : 'Add new chat'}</h1>
-                    <p>Let's add a Smooch integration, so you can chat with customers on your website.</p>
-
-                    {this._renderInstructions(isUpdate)}
+                    <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
                 </div>
 
                 <div className="ten wide column">
@@ -109,21 +98,52 @@ class SmoochIntegrationDetail extends React.Component {
                         className="ui form"
                         onSubmit={handleSubmit(this._handleSubmit)}
                     >
-                        <Field
-                            name="name"
-                            label="Integration name"
-                            placeholder="Website chat app"
-                            required
-                            component={InputField}
-                        />
-                        <div className="field">
+                        {isUpdate && (
+                            <Field
+                                name="name"
+                                label="Smooch App Name"
+                                placeholder="The name of your Smooch app"
+                                defaultValue={integration.get('name')}
+                                required
+                                component={InputField}
+                            />
 
+                        )}
+                        <div className="field">
                             <button
-                                className={classNames('ui', 'green', 'button', {loading: isSubmitting})}
+                                className={classNames('ui', 'green', 'button', {'loading disabled': ctaIsLoading})}
                                 disabled={isSubmitting}
                             >
-                                {isUpdate ? 'Save changes' : 'Add integration'}
+                                {isUpdate ? 'Save changes' : 'Connect my Smooch'}
                             </button>
+
+                            {
+                                !authenticationRequired && isUpdate && isActive && (
+                                    <button
+                                        type="button"
+                                        className={classNames('ui basic light floated orange button', {
+                                            'loading disabled': isSubmitting
+                                        })}
+                                        onClick={() => !isSubmitting && actions.deactivateIntegration(integration)}
+                                    >
+                                        Deactivate integration
+                                    </button>
+                                )
+                            }
+
+                            {
+                                !authenticationRequired && isUpdate && !isActive && (
+                                    <button
+                                        type="button"
+                                        className={classNames('ui basic light blue floated button', {
+                                            'loading disabled': isSubmitting
+                                        })}
+                                        onClick={() => !isSubmitting && actions.activateIntegration(integration)}
+                                    >
+                                        Re-Activate integration
+                                    </button>
+                                )
+                            }
 
                             {
                                 isUpdate && (
@@ -132,7 +152,7 @@ class SmoochIntegrationDetail extends React.Component {
                                         onClick={() => actions.deleteIntegration(integration)}
                                         type="button"
                                     >
-                                        Delete integration
+                                        Delete
                                     </button>
                                 )
                             }
@@ -147,12 +167,17 @@ class SmoochIntegrationDetail extends React.Component {
 SmoochIntegrationDetail.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     initialize: PropTypes.func.isRequired,
+
     integration: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired,
+
+    redirectUri: PropTypes.string.isRequired,
+
+    // Router
+    location: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired
 }
 
-export default reduxForm({
-    form: 'smoochIntegration',
-})(SmoochIntegrationDetail)
+export default withRouter(reduxForm({form: 'smoochIntegration'})(SmoochIntegrationDetail))

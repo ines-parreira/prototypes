@@ -137,8 +137,13 @@ export function deleteIntegration(integration) {
                         id: integration.get('id')
                     })
                     const currentUrl = window.location.pathname
-                    const nextUrl = currentUrl.substr(0, currentUrl.lastIndexOf(integration.get('id')))
-                    browserHistory.push(nextUrl)
+                    const indexOfId = currentUrl.lastIndexOf(integration.get('id'))
+
+                    if (~indexOfId) {
+                        const nextUrl = currentUrl.substr(0, indexOfId)
+                        console.log(currentUrl, nextUrl, currentUrl.lastIndexOf(integration.get('id')))
+                        browserHistory.push(nextUrl)
+                    }
 
                     dispatch(notify({
                         type: 'success',

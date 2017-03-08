@@ -198,6 +198,7 @@ class ShopifyIntegrationDetail extends React.Component {
 ShopifyIntegrationDetail.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     initialize: PropTypes.func.isRequired,
+
     integration: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
