@@ -8,7 +8,7 @@ class IntegrationListRow extends React.Component {
     render() {
         const {integrationConfig, onClickAdd, onClickUpdate, isLoading, hasAnIntegration} = this.props
 
-        let nextUrl = `/app/integrations/${integrationConfig.get('type')}`
+        const nextUrl = `/app/integrations/${integrationConfig.get('type')}`
 
         const onClick = hasAnIntegration ? onClickUpdate : onClickAdd
 
