@@ -10,10 +10,6 @@ class IntegrationListRow extends React.Component {
 
         let nextUrl = `/app/integrations/${integrationConfig.get('type')}`
 
-        if (!hasAnIntegration) {
-            nextUrl += '/new'
-        }
-
         const onClick = hasAnIntegration ? onClickUpdate : onClickAdd
 
         const isExternalLink = !!integrationConfig.get('url')
