@@ -165,7 +165,7 @@ export default class TicketMessage extends React.Component {
         )
     }
 
-    _renderActionFailed(messageId, ticketId, messageActions) {
+    _renderActionFailed(messageId, ticketId) {
         const rMsg = 'Retry to execute the failed action(s) automatically, and send the message if it succeeds.'
         return (
             <HardWarning
@@ -173,7 +173,6 @@ export default class TicketMessage extends React.Component {
                 retryTooltipMessage={rMsg}
                 messageId={messageId}
                 ticketId={ticketId}
-                messageActions={messageActions}
                 retry force cancel
             />
         )
@@ -209,7 +208,7 @@ export default class TicketMessage extends React.Component {
         return (
             <div className={className} ref="ticketMessage">
                 {
-                    !loading && error && this._renderActionFailed(message.id, ticket.get('id'), message.actions)
+                    !loading && error && this._renderActionFailed(message.id, ticket.get('id'))
                 }
                 {
                     !loading && message.failed_datetime && this._renderMessageNotSent(message.id, ticket.get('id'))
