@@ -3,6 +3,8 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as TicketActions from '../../../../state/ticket/actions'
 import classnames from 'classnames'
+import {getActionTemplate} from './../../../../utils'
+import _trim from 'lodash/trim'
 
 class HardWarning extends React.Component {
     componentDidMount() {
@@ -14,7 +16,11 @@ class HardWarning extends React.Component {
     }
 
     render() {
-        const {message, retryTooltipMessage, actions, ticketId, messageId, retry, force, cancel} = this.props
+        const {
+            message, retryTooltipMessage, actions,
+            ticketId, messageId, messageActions,
+            retry, force, cancel
+        } = this.props
 
         let retryButton = null
         let forceButton = null
@@ -75,6 +81,35 @@ class HardWarning extends React.Component {
                             </div>
 
                             <div>
+                                {
+                                    messageActions.map((action, idx) => {
+                                        if (action.status === 'error' && action.response.msg) {
+                                            const template = getActionTemplate(action.name)
+
+                                            // Match all tags like [SHOPIFY] [full-refund] [STUFF-FOO-bar]
+                                            const regex = /\[[\w-]+\]/g
+                                            const transformedMsg = _trim(
+                                                action.response.msg.replace(regex, '').toLowerCase(),
+                                                '.'
+                                            )
+
+                                            return (
+                                                <div
+                                                    key={idx}
+                                                    style={{color: '#000', margin: '10px 0'}}
+                                                >
+                                                    The action <b>{template.title}</b> failed
+                                                    because <b>{transformedMsg}</b>.
+                                                </div>
+                                            )
+                                        }
+
+                                        return null
+                                    })
+                                }
+                            </div>
+
+                            <div>
                                 {retryButton}
                                 {forceButton}
                                 {cancelButton}
@@ -89,6 +124,7 @@ class HardWarning extends React.Component {
 
 HardWarning.defaultProps = {
     message: '',
+    messageActions: [],
     retryTooltipMessage: 'Retry to send the message.'
 }
 
@@ -99,6 +135,8 @@ HardWarning.propTypes = {
 
     ticketId: PropTypes.number.isRequired,
     messageId: PropTypes.number.isRequired,
+
+    messageActions: PropTypes.array,
 
     retry: PropTypes.bool,
     force: PropTypes.bool,
