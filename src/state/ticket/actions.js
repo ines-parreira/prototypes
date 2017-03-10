@@ -14,6 +14,7 @@ import {setMacrosVisible} from '../macro/actions'
 import {TICKET_VIEWED} from '../activity/constants'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
+import {getLastSameSourceTypeMessage} from './utils'
 import {getLastMessage, isCurrentlyOnTicket, getActionTemplate} from '../../utils'
 import {
     guessReceiversFromTicket,
@@ -588,18 +589,15 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
 
     // Prepare newMessage to send it.
     if (data.newMessage) {
-        const channelType = data.newMessage.source.type
+        const sourceType = data.newMessage.source.type
 
-        const lastChannelMessage = getLastMessage(data.messages, {
-            channel: channelType,
-            public: true
-        })
+        let lastSameTypeMessage = getLastSameSourceTypeMessage(ticket.get('messages'), sourceType)
 
-        if (data.messages.length && lastChannelMessage) {
-            const lastMessage = getLastMessage(data.messages)
+        if (data.messages.length && lastSameTypeMessage) {
+            lastSameTypeMessage = lastSameTypeMessage.toJS()
 
-            if (lastMessage.source.extra) {
-                data.newMessage.source.extra = lastChannelMessage.source.extra
+            if (lastSameTypeMessage.source.extra) {
+                data.newMessage.source.extra = lastSameTypeMessage.source.extra
             }
         }
 
