@@ -127,7 +127,7 @@ export function receiversValueFromState(options, sourceType) {
             id: user.id,
             name: user.name,
             label: displayUserNameFromSource(user, sourceType),
-            value: user[valueProp],
+            value: user[valueProp] || user.address,
         }))
     })
 
@@ -153,7 +153,8 @@ export function receiversStateFromValue(value, sourceType) {
         newValue[index] = users.map((user) => ({
             id: user.id,
             name: user.name,
-            [valueProp]: user.value
+            [valueProp]: user.value,
+            address: user.value,
         }))
     })
 
