@@ -115,7 +115,13 @@ export default class SocketIO {
                 this._sendTicketViewed(_get(json, 'ticket.id'))
                 break
             }
+            case 'ticket-message-action-failed': {
+                log('Action failed', json)
+                this._notifyMessageActionFailed(json.ticket_id)
+                break
+            }
             default:
+                log('Received json', json)
                 return
         }
     }
@@ -137,7 +143,15 @@ export default class SocketIO {
         this._dispatch(ticketActions.mergeRequester(json))
     }, 100)
 
+    /**
+     * Update current location of agents in reducer
+     */
     _setAgentsLocation = _throttle(json => this._dispatch(usersActions.setAgentsLocation(json)), 100)
+
+    /**
+     * Inform the user that an action failed on one of its messages
+     */
+    _notifyMessageActionFailed = _throttle(json => this._dispatch(ticketActions.notifyMessageActionError(json)), 100)
 
     _sendTicketViewed = (ticketId) => {
         // if ticket is updated and user is currently on it, send a 'ticket viewed' event

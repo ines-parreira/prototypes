@@ -451,77 +451,27 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
         })
 }
 
-export const fetchTicketMessage = (ticketId, messageId, sendNotification = true) => (dispatch) => {
-    dispatch({
-        type: types.FETCH_MESSAGE_START
-    })
-
-    return axios.get(`/api/tickets/${ticketId}/messages/${messageId}/`)
-        .then((json = {}) => json.data)
-        .then(resp => {
-            const hasActions = !!resp.actions
-            const hasPending = hasActions ?
-                !!resp.actions.find(action => action.status === 'pending')
-                : false
-            const hasFailure = hasActions ?
-                !!resp.actions.find(action => action.status === 'error') || resp.failed_datetime
-                : !!resp.failed_datetime
-
-            if (hasFailure) {
-                dispatch(notify({
-                    type: 'error',
-                    title: 'Something went wrong on your last message :/',
-                    autoDismiss: false,
-                    children: (
-                        <div>
-                            <ul>
-                                {
-                                    hasActions && resp.actions.map((action, idx) => {
-                                        if (getActionTemplate(action.name).execution === 'back') {
-                                            return (
-                                                <li key={idx}>
-                                                    <b>{action.title}</b>: {action.status}
-                                                </li>
-                                            )
-                                        }
-                                        return null
-                                    })
-                                }
-                            </ul>
-                            <p>
-                                The message hasn't been sent, you should review it right now.
-                            </p>
-                            <div className="buttons">
-                                <button
-                                    className="ui tiny button green"
-                                    onClick={() => browserHistory.push(`/app/ticket/${resp.ticket_id}`)}
-                                >
-                                    Review message
-                                </button>
-                            </div>
-                        </div>
-                    )
-                }))
-            } else if (hasPending || (!resp.sent_datetime && !resp.failed_datetime)) {
-                setTimeout(() => dispatch(fetchTicketMessage(ticketId, messageId, sendNotification)), 2000)
-            } else if (sendNotification) {
-                dispatch(notify({
-                    type: 'success',
-                    message: 'Message successfully sent!'
-                }))
-            }
-
-            dispatch({
-                type: types.FETCH_MESSAGE_SUCCESS,
-                resp
-            })
-        }, error => {
-            return dispatch({
-                type: types.FETCH_MESSAGE_ERROR,
-                error,
-                reason: 'Failed to fetch message. Please try again...'
-            })
-        })
+export const notifyMessageActionError = (ticketId) => (dispatch) => {
+    return dispatch(notify({
+        type: 'error',
+        title: 'Something went wrong on your last message :/',
+        autoDismiss: false,
+        children: (
+            <div>
+                <p>
+                    The message was not sent because an action broke on it, you should review it right now.
+                </p>
+                <div className="buttons">
+                    <button
+                        className="ui tiny button green"
+                        onClick={() => browserHistory.push(`/app/ticket/${ticketId}`)}
+                    >
+                        Review message
+                    </button>
+                </div>
+            </div>
+        )
+    }))
 }
 
 export const formatAction = (action, template, context) => {
@@ -652,18 +602,7 @@ function prepareTicketDataToSend(dispatch, ticket, status, macroActions, current
 /**
  * Perform actions when we successfully create a new message.
  */
-function onMessageSent(dispatch, messageSent) {
-    const hasPending = messageSent.actions ?
-        !!messageSent.actions.find(action => action.status === 'pending')
-        : false
-
-    if (!hasPending) {
-        dispatch(notify({
-            type: 'success',
-            message: 'Message successfully sent!'
-        }))
-    }
-
+function onMessageSent(dispatch) {
     // reinitialize the current macro
     dispatch({
         type: types.APPLY_MACRO,
@@ -707,7 +646,7 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
         return promise
             .then((json = {}) => json.data)
             .then(resp => {
-                onMessageSent(dispatch, resp)
+                onMessageSent(dispatch)
 
                 dispatch({
                     type: types.SUBMIT_TICKET_MESSAGE_SUCCESS,
@@ -755,13 +694,11 @@ export function updateTicketMessage(ticketId, messageId, data, action = null) {
         return axios.put(url, data)
             .then((json = {}) => json.data)
             .then(resp => {
-                dispatch({
+                return dispatch({
                     type: types.UPDATE_TICKET_MESSAGE_SUCCESS,
                     messageId,
                     resp
                 })
-
-                dispatch(fetchTicketMessage(ticketId, messageId))
             }, error => {
                 return dispatch({
                     type: types.UPDATE_TICKET_MESSAGE_ERROR,
@@ -784,17 +721,15 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
         return axios.post('/api/tickets/', data)
             .then((json = {}) => json.data)
             .then(resp => {
-                const messageSent = getLastMessage(resp.messages)
+                onMessageSent(dispatch)
 
-                onMessageSent(dispatch, messageSent)
+                browserHistory.push(`/app/ticket/${resp.id}`)
 
-                dispatch({
+                return dispatch({
                     type: types.SUBMIT_TICKET_SUCCESS,
                     resetMessage,
                     resp
                 })
-
-                browserHistory.push(`/app/ticket/${resp.id}`)
             }, error => {
                 return dispatch({
                     type: types.SUBMIT_TICKET_ERROR,
