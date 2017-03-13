@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react'
-import _split from 'lodash/split'
 
 
 export default class ProfileImage extends React.Component {
@@ -25,13 +24,15 @@ export default class ProfileImage extends React.Component {
             return ''
         }
 
-        const splitName = _split(name, ' ').filter(elt => elt.length > 0)
+        const splitName = name.split(' ').filter(text => text.length > 0)
 
         if (splitName.length > 1) {
             return `${splitName[0][0]}${splitName[1][0]}`
+        } else if (splitName.length) {
+            return splitName[0][0]
         }
 
-        return splitName[0][0]
+        return ''
     }
 
     render() {
