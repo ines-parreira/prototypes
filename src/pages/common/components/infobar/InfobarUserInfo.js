@@ -189,8 +189,9 @@ class InfobarUserInfo extends React.Component {
                         }
                         break
                     case 'phone':
+                        // remove dots and spaces so that some extensions recognize the address as a tel number
                         props = {
-                            href: `tel:${address}`
+                            href: `tel:${address.replace(/\./g, '').replace(/ /g, '')}`
                         }
                         break
                     default:
