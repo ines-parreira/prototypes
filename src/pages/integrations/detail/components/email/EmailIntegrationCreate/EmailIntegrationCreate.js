@@ -1,15 +1,13 @@
 import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
+import {Link, browserHistory, withRouter} from 'react-router'
 import {InputField} from '../../../../../common/forms'
 import css from './EmailIntegrationCreate.less'
 import {fromJS} from 'immutable'
 import formSender from '../../../../../common/utils/formSender'
 import _capitalize from 'lodash/capitalize'
 import classNames from 'classnames'
-import {browserHistory} from 'react-router'
-import {getQueryParam} from '../../../../../../utils'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import {notify} from '../../../../../../state/notifications/actions'
 import googleIcon from './google-icon.png'
@@ -24,10 +22,14 @@ class EmailIntegrationCreate extends React.Component {
         })
 
         // display message from url
-        const message = getQueryParam('message')
+        const {
+            message,
+            message_type: type = 'info'
+        } = this.props.location.query
+
         if (message) {
             this.props.notify({
-                type: getQueryParam('message_type') || 'info',
+                type,
                 title: message.replace(/\+/g, ' ')
             })
             // remove error from url
@@ -150,6 +152,7 @@ EmailIntegrationCreate.propTypes = {
     actions: PropTypes.object.isRequired,
     pristine: PropTypes.bool.isRequired,
     loading: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
     notify: PropTypes.func.isRequired,
 }
 
@@ -161,4 +164,4 @@ const mapStateToProps = state => ({
     domain: state.currentAccount.get('domain'),
 })
 
-export default connect(mapStateToProps, {notify})(emailIntegrationCreateComponent)
+export default withRouter(connect(mapStateToProps, {notify})(emailIntegrationCreateComponent))

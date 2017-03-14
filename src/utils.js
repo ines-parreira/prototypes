@@ -663,19 +663,3 @@ export const uploadFiles = (files) => {
     return axios.post('/api/upload/', formData)
         .then((json = {}) => json.data)
 }
-
-/**
- * Return a query param
- * @param name name of the query param
- * @returns {string}
- */
-export function getQueryParam(name) {
-    const string = window.location.search.substring(1)
-    const params = string.split('&')
-    for (let i = 0; i < params.length; i++) {
-        const param = params[i].split('=')
-        if (param[0] === name) {
-            return decodeURIComponent(param[1])
-        }
-    }
-}

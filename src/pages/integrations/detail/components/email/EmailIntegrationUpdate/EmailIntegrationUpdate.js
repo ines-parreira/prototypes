@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
-import {Link, browserHistory} from 'react-router'
+import {Link, browserHistory, withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {Loader} from '../../../../../common/components/Loader'
 import {InputField} from '../../../../../common/forms'
@@ -10,7 +10,6 @@ import formSender from '../../../../../common/utils/formSender'
 import _capitalize from 'lodash/capitalize'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
-import {getQueryParam} from '../../../../../../utils'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
@@ -23,10 +22,14 @@ class EmailIntegrationUpdate extends React.Component {
 
     componentDidMount() {
         // display message from url
-        const message = getQueryParam('message')
+        const {
+            message,
+            message_type: type = 'info'
+        } = this.props.location.query
+
         if (message) {
             this.props.notify({
-                type: getQueryParam('message_type') || 'info',
+                type,
                 title: message.replace(/\+/g, ' ')
             })
             // remove error from url
@@ -304,6 +307,7 @@ EmailIntegrationUpdate.propTypes = {
     actions: PropTypes.object.isRequired,
     pristine: PropTypes.bool.isRequired,
     loading: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
 }
 
 const emailIntegrationUpdateComponent = reduxForm({
@@ -319,4 +323,4 @@ const mapDispatchToProps = {
     notify: notificationActions.notify,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(emailIntegrationUpdateComponent)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(emailIntegrationUpdateComponent))
