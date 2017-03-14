@@ -47,7 +47,7 @@ export default class TicketMessageBody extends React.Component {
 
         return (
             <div className={classNames}>
-                <div dangerouslySetInnerHTML={{__html: body}}></div>
+                <div dangerouslySetInnerHTML={{__html: body}} />
                 {quoteButton}
             </div>
         )

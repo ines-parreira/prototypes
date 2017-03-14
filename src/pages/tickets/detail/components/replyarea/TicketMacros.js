@@ -1,12 +1,15 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
+import {connect} from 'react-redux'
 import {mapFileFormatToSemanticIcon, getSortedIntegrationActions} from '../../../common/utils'
 import {AgentLabel} from '../../../../common/utils/labels'
 import {getIconFromType} from './../../../../../state/integrations/helpers'
-import {getActionTemplate} from './../../../../../utils'
+import {getActionTemplate, sanitizeHtmlDefault} from './../../../../../utils'
+import {isRichType} from '../../../../../config/ticket'
+import * as ticketSelectors from '../../../../../state/ticket/selectors'
 
-export default class TicketMacros extends React.Component {
+class TicketMacros extends React.Component {
     openModalOnSelectedMacro(selectedMacroId) {
         this.props.previewMacroInModal(selectedMacroId)
         this.props.openModal()
@@ -195,10 +198,16 @@ export default class TicketMacros extends React.Component {
         if (responseTextAction) {
             const html = responseTextAction.getIn(['arguments', 'body_html'])
             const text = responseTextAction.getIn(['arguments', 'body_text'])
-            if (text) {
-                textPreview = <pre className="text-preview">{text}</pre>
+            if (html && isRichType(this.props.newMessageType)) {
+                const body = sanitizeHtmlDefault(html)
+                textPreview = (
+                    <div
+                        className="text-preview rich-content-wrapper"
+                        dangerouslySetInnerHTML={{__html: body}}
+                    />
+                )
             } else {
-                textPreview = <div className="text-preview" dangerouslySetInnerHTML={{__html: html}}></div>
+                textPreview = <pre className="text-preview">{text}</pre>
             }
         }
 
@@ -271,9 +280,18 @@ TicketMacros.propTypes = {
     applyMacro: PropTypes.func.isRequired,
     previewMacro: PropTypes.func.isRequired,
     previewMacroInModal: PropTypes.func.isRequired,
-    openModal: PropTypes.func.isRequired
+    openModal: PropTypes.func.isRequired,
+    newMessageType: PropTypes.string.isRequired,
 }
 
 TicketMacros.defaultProps = {
     macros: fromJS({})
 }
+
+function mapStateToProps(state) {
+    return {
+        newMessageType: ticketSelectors.getNewMessageType(state),
+    }
+}
+
+export default connect(mapStateToProps)(TicketMacros)

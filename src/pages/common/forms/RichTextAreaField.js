@@ -2,10 +2,12 @@ import React from 'react'
 import classNames from 'classnames'
 
 import {EditorState, RichUtils, ContentState} from 'draft-js'
-import Editor from 'draft-js-plugins-editor'
+import Editor, {composeDecorators} from 'draft-js-plugins-editor'
 import {convertToHTML, convertFromHTML} from '../../../utils'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
+import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
+import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import createToolbarPlugin from '../draftjs/plugins/toolbar'
 
 import 'draft-js-emoji-plugin/lib/plugin.css'
@@ -16,9 +18,24 @@ export default class RichTextAreaField extends React.Component {
 
         this.dndPlugin = createDndPlugin()
         this.emojiPlugin = createEmojiPlugin()
-        this.toolbarPlugin = createToolbarPlugin()
+        this.blockBreakoutPlugin = createBlockBreakoutPlugin()
+        this.resizeablePlugin = createResizeablePlugin({
+            horizontal: 'absolute',
+        })
 
-        this.plugins = [this.emojiPlugin, this.dndPlugin, this.toolbarPlugin]
+        const imageDecorator = composeDecorators(
+            this.resizeablePlugin.decorator,
+        )
+
+        this.toolbarPlugin = createToolbarPlugin({imageDecorator})
+
+        this.plugins = [
+            this.emojiPlugin,
+            this.dndPlugin,
+            this.blockBreakoutPlugin,
+            this.resizeablePlugin,
+            this.toolbarPlugin
+        ]
 
         let editorState = EditorState.createEmpty()
         editorState = EditorState.moveFocusToEnd(editorState)
@@ -39,10 +56,16 @@ export default class RichTextAreaField extends React.Component {
     // used by parents that want to set a new editor state
     _setEditorState = (editorState, focus = true) => {
         this._onChange(editorState, () => {
-            if (focus && this.editor) {
-                this.editor.focus()
+            if (focus) {
+                this._focusEditor()
             }
         })
+    }
+
+    _focusEditor = () => {
+        if (this.editor) {
+            this.editor.focus()
+        }
     }
 
     _didHTMLChanged = (html) => {
@@ -73,33 +96,27 @@ export default class RichTextAreaField extends React.Component {
 
     // This is for handling things like Bold, Italic, etc..
     _handleKeyCommand = (command) => {
-        const newState = RichUtils.handleKeyCommand(this.state.editorState, command)
+        const {editorState} = this.state
+        const newState = RichUtils.handleKeyCommand(editorState, command)
         if (newState) {
             this._onChange(newState)
-            return true
+            return 'handled'
         }
-        return false
+
+        return 'not-handled'
     }
 
     _onChange = (editorState, callback) => {
-        const html = convertToHTML(editorState.getCurrentContent())
-        // compare new html to current one in state of component
-        const didHTMLChanged = this._didHTMLChanged(html)
+        const contentState = editorState.getCurrentContent()
 
         this.setState({editorState}, () => {
             if (callback) {
                 callback()
             }
 
-            // if content did not change, don't trigger a onChange event
-            // we don't care about changes in selection state
-            if (!didHTMLChanged) {
-                return
-            }
-
             this.props.input.onChange({
-                text: editorState.getCurrentContent().getPlainText(),
-                html,
+                text: contentState.getPlainText(),
+                html: convertToHTML(contentState),
             })
         })
     }
@@ -115,7 +132,10 @@ export default class RichTextAreaField extends React.Component {
             <div className={fieldClassName}>
                 {label && <label htmlFor={input.name}>{label}</label>}
                 <div className="rich-textarea-wrapper">
-                    <div style={{paddingBottom: '26px'}}>
+                    <div
+                        style={{paddingBottom: '26px'}}
+                        onClick={this._focusEditor}
+                    >
                         <Editor
                             editorState={this.state.editorState}
                             onChange={editorState => this._onChange(editorState)}
@@ -127,8 +147,8 @@ export default class RichTextAreaField extends React.Component {
                             }}
                         />
                         <EmojiSuggestions />
-                        <Toolbar />
                     </div>
+                    <Toolbar />
                 </div>
             </div>
         )

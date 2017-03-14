@@ -31,6 +31,7 @@
     "draft-js-emoji-plugin": "2.0.0-beta6",
     "draft-js-inline-toolbar-plugin": "^2.0.0-beta6",
     "draft-js-plugins-editor": "2.0.0-beta9",
+    "draft-js-resizeable-plugin": "2.0.0-beta9",
     "escodegen": "^1.8.1",
     "esprima": "^2.7.3",
     "history": "^4.5.0",

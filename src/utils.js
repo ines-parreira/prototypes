@@ -9,12 +9,13 @@ import _uniq from 'lodash/uniq'
 import _compact from 'lodash/compact'
 
 import {createSelectorCreator, defaultMemoize} from 'reselect'
+import axios from 'axios'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
 import moment from 'moment-timezone'
 import linkifyhtml from 'linkifyjs/html'
 import sanitizeHtml from 'sanitize-html'
-import {Entity} from 'draft-js'
+import {Entity, Modifier, EditorState, ContentState} from 'draft-js'
 import {convertToHTML as _convertToHTML, convertFromHTML as _convertFromHTML} from 'draft-convert'
 import Immutable, {fromJS} from 'immutable'
 import md5 from 'md5'
@@ -347,6 +348,10 @@ export function convertToHTML(contentState) {
                 start: '<div>',
                 end: '</div>',
                 empty: '<br>' // when we have an empty block (corresponds with a new line, add a line break)
+            },
+            atomic: {
+                start: '<figure>',
+                end: '</figure>'
             }
         },
         entityToHTML: (entity, originalText) => {
@@ -357,6 +362,14 @@ export function convertToHTML(contentState) {
                     end: '</a>',
                 }
             }
+
+            if (entity.type === 'img') {
+                const width = entity.data.width || 400
+
+                // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
+                return `<img src="${entity.data.src}" width="${width}px" />`
+            }
+
             return originalText
         }
     })(contentState), {
@@ -373,7 +386,12 @@ export function convertToHTML(contentState) {
  * @param html
  */
 export function convertFromHTML(html) {
-    return _convertFromHTML({
+    let converted = _convertFromHTML({
+        htmlToBlock: (nodeName) => {
+            if (nodeName === 'figure') {
+                return 'atomic'
+            }
+        },
         htmlToEntity: (nodeName, node) => {
             if (nodeName === 'a') {
                 return Entity.create(
@@ -382,8 +400,47 @@ export function convertFromHTML(html) {
                     {url: node.href}
                 )
             }
+
+            if (nodeName === 'img') {
+                return Entity.create(
+                    'img',
+                    'IMMUTABLE',
+                    {
+                        src: node.src,
+                        width: node.width,
+                    }
+                )
+            }
         },
     })(html)
+
+    // remove the default 'a' character in atomic blocks so that text from getPlainText() of this contentState that not
+    // carry a 'a' where images are supposed to be displayed
+    // see https://github.com/HubSpot/draft-convert/issues/30
+    const blocks = converted.getBlocksAsArray().map((block) => {
+        if (block.getType() === 'atomic') {
+            return block.set('text', '')
+        }
+
+        return block
+    })
+
+    converted = ContentState.createFromBlockArray(blocks)
+
+    return converted
+}
+
+/**
+ * Insert text in editorState
+ * @param editorState
+ * @param text
+ * @returns {EditorState}
+ */
+export function insertText(editorState, text) {
+    const selection = editorState.getSelection()
+    const contentState = editorState.getCurrentContent()
+    const modifier = Modifier.replaceText(contentState, selection, text)
+    return EditorState.push(editorState, modifier, 'insert-fragment')
 }
 
 /**
@@ -589,6 +646,22 @@ export function loadScript(url, callback) {
         elem.addEventListener('load', callback)
     }
     script.parentNode.insertBefore(elem, script)
+}
+
+/**
+ * Upload file action meant to be used by another action
+ * @param files
+ * @return {Array} - [{content_type, name, size, url}]
+ */
+export const uploadFiles = (files) => {
+    const formData = new window.FormData()
+
+    for (const file of files) {
+        formData.append(file.name, file)
+    }
+
+    return axios.post('/api/upload/', formData)
+        .then((json = {}) => json.data)
 }
 
 /**

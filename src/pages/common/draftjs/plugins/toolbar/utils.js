@@ -1,21 +1,26 @@
 import {RichUtils, Entity} from 'draft-js'
+import _forEach from 'lodash/forEach'
 import actions from './actions'
 
 export const getToolbarActions = () => {
     return actions.map((nativeAction) => {
+        const updatedAction = {...nativeAction} // clone native action
+
         // complete toggle function configuration if not specified
-        if (!nativeAction.toggle) {
-            nativeAction.toggle = (block, action, editorState, setEditorState) => {
-                setEditorState(RichUtils.toggleInlineStyle(
-                    editorState,
-                    action.style
-                ))
+        if (!updatedAction.functions) {
+            updatedAction.functions = {
+                toggle: (block, action, editorState, setEditorState) => {
+                    return setEditorState(RichUtils.toggleInlineStyle(
+                        editorState,
+                        action.style
+                    ))
+                }
             }
         }
 
         // complete active function configuration if not specified
-        if (!nativeAction.active) {
-            nativeAction.active = (block, editorState) => {
+        if (!updatedAction.active) {
+            updatedAction.active = (block, editorState) => {
                 const contentState = editorState.getCurrentContent()
 
                 if (!contentState.hasText()) {
@@ -23,35 +28,39 @@ export const getToolbarActions = () => {
                 }
 
                 const currentStyle = editorState.getCurrentInlineStyle()
-                return currentStyle.has(nativeAction.style)
+                return currentStyle.has(updatedAction.style)
             }
         }
 
-        // add a trigger function that will run `toggle`, but accepts simpler parameters
-        nativeAction.trigger = (getEditorState, setEditorState) => {
-            const editorState = getEditorState()
-            const block = editorState
-                .getCurrentContent()
-                .getBlockForKey(editorState.getSelection().getStartKey())
-            return nativeAction.toggle(block, nativeAction, editorState, setEditorState)
-        }
+        // for each functions of the action, bind the same function but accepting simpler parameters
+        const functions = {}
+        _forEach(updatedAction.functions, (func, name) => {
+            functions[name] = (getEditorState, setEditorState, ...other) => {
+                const editorState = getEditorState()
+                const block = editorState
+                    .getCurrentContent()
+                    .getBlockForKey(editorState.getSelection().getStartKey())
+                return func(block, updatedAction, editorState, setEditorState, ...other)
+            }
+        })
+        updatedAction.functions = functions
 
         // add a isActive function that will run `active`, but accepts simpler parameters
-        nativeAction.isActive = (getEditorState) => {
+        updatedAction.isActive = (getEditorState) => {
             const editorState = getEditorState()
             const block = editorState
                 .getCurrentContent()
                 .getBlockForKey(editorState.getSelection().getStartKey())
-            return nativeAction.active(block, editorState)
+            return updatedAction.active(block, editorState)
         }
 
         // disable style on links and links on style
         // TODO @jebarjonet remove this after https://github.com/HubSpot/draft-convert/pull/17 is resolved
-        if (!nativeAction.isDisabled) {
-            nativeAction.isDisabled = (getEditorState) => {
+        if (!updatedAction.isDisabled) {
+            updatedAction.isDisabled = (getEditorState) => {
                 const editorState = getEditorState()
 
-                const isLink = nativeAction.label === 'Link'
+                const isLink = updatedAction.label === 'Link'
 
                 let preventAction = false
                 const selection = editorState.getSelection()
@@ -136,6 +145,6 @@ export const getToolbarActions = () => {
             }
         }
 
-        return nativeAction
+        return updatedAction
     })
 }

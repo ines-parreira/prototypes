@@ -1,24 +1,31 @@
-import {RichUtils, Entity} from 'draft-js'
+import {RichUtils, EditorState, Entity, AtomicBlockUtils} from 'draft-js'
+import {insertText} from '../../../../../utils'
+import AddLink from './components/AddLink'
+import AddImage from './components/AddImage'
 
 export default [
     {
         label: 'Bold',
+        name: 'Bold',
         icon: 'bold',
         style: 'BOLD'
     },
     {
         label: 'Italic',
+        name: 'Italic',
         icon: 'italic',
         style: 'ITALIC'
     },
     {
         label: 'Underline',
+        name: 'Underline',
         icon: 'underline',
         style: 'UNDERLINE'
     },
     {
         label: 'Link',
-        icon: 'linkify',
+        name: 'Insert link',
+        component: AddLink,
         active: (block, editorState) => {
             const contentState = editorState.getCurrentContent()
 
@@ -43,33 +50,54 @@ export default [
             )
             return active
         },
-        toggle: (block, action, editorState, setEditorState) => {
-            const selection = editorState.getSelection()
-            // nothing selected, do nothing
-            if (selection.isCollapsed()) {
-                window.alert('You need to select some text before adding or removing a link')
-                return
-            }
+        functions: {
+            onClick: (block, action, editorState, setEditorState) => {
+                const selection = editorState.getSelection()
 
-            if (action.active(block, editorState)) {
-                // if already a link, remove it
-                setEditorState(RichUtils.toggleLink(editorState, selection, null))
-            } else {
-                // add new link
-                let url = window.prompt('Enter a URL')
-
-                // if no url written, do nothing
-                if (!url) {
-                    return
+                if (action.active(block, editorState)) {
+                    // if already a link, remove it
+                    setEditorState(RichUtils.toggleLink(editorState, selection, null))
+                    return false
                 }
+
+                return true
+            },
+            addLink: (block, action, editorState, setEditorState, url) => {
+                const selection = editorState.getSelection()
 
                 // if no 'http' at the beginning of the url, add it
                 if (!/^https?:\/\//i.test(url)) {
                     url = `http://${url}`
                 }
+
+                // nothing selected, insert link as text
+                if (selection.isCollapsed()) {
+                    return setEditorState(insertText(editorState, url))
+                }
+
                 const entityKey = Entity.create('link', 'MUTABLE', {url})
                 setEditorState(RichUtils.toggleLink(editorState, selection, entityKey))
+            },
+        }
+    },
+    {
+        label: 'Image',
+        name: 'Insert image',
+        component: AddImage,
+        functions: {
+            addImage: (block, action, editorState, setEditorState, url) => {
+                const entityKey = Entity.create('img', 'IMMUTABLE', {src: url, width: '400'})
+                let newEditorState = AtomicBlockUtils.insertAtomicBlock(
+                    editorState,
+                    entityKey,
+                    ' ',
+                )
+                newEditorState = EditorState.forceSelection(
+                    newEditorState,
+                    editorState.getCurrentContent().getSelectionAfter()
+                )
+                setEditorState(newEditorState)
             }
         },
-    },
+    }
 ]

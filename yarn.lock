@@ -1969,6 +1969,18 @@ draft-js-plugins-editor@2.0.0-beta9:
     react-dom ">=15.3.1"
     union-class-names "^1.0.0"
 
+draft-js-resizeable-plugin@2.0.0-beta9:
+  version "2.0.0-beta9"
+  resolved "https://registry.yarnpkg.com/draft-js-resizeable-plugin/-/draft-js-resizeable-plugin-2.0.0-beta9.tgz#498af4d0a4151ac37f68fe0cd227fbc00f7ed0fd"
+  dependencies:
+    decorate-component-with-props "^1.0.2"
+    draft-js ">=0.9.1"
+    find-with-regex "^1.0.2"
+    immutable ">=3.8.1"
+    react ">=15.3.1"
+    react-dom ">=15.3.1"
+    union-class-names "^1.0.0"
+
 draft-js@>=0.9.1, draft-js@^0.9.1:
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.9.1.tgz#940a51a0ad1fede0411676b6404f4050495f54f9"

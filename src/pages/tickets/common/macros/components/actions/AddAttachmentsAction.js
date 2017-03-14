@@ -8,7 +8,7 @@ export default class AddAttachmentsAction extends Component {
     }
 
     _openFileBrowser = () => {
-        this.refs.FileInput.click()
+        this.refs.fileInput.click()
     }
 
     _addAttachments = (event) => {
@@ -60,7 +60,7 @@ export default class AddAttachmentsAction extends Component {
                 </div>
                 <input
                     className="hidden"
-                    ref="FileInput"
+                    ref="fileInput"
                     type="file"
                     multiple
                     onChange={this._addAttachments}

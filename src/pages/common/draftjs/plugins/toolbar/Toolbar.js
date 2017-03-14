@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
+import _forEach from 'lodash/forEach'
 
 import css from './Toolbar.less'
 
@@ -21,20 +22,33 @@ class Toolbar extends React.Component {
         event.preventDefault()
     }
 
-    _toggleAction = (action) => {
-        const {store} = this.props
-
-        if (action.trigger) {
-            action.trigger(store.getItem('getEditorState'), store.getItem('setEditorState'))
-        }
-    }
-
     _renderAction = (action) => {
         const {store} = this.props
 
         const getEditorState = store.getItem('getEditorState')
 
+        const isActive = action.isActive(getEditorState)
         const isDisabled = action.isDisabled(getEditorState)
+
+        // pass getter and setter of editorState to functions
+        const functions = {}
+        _forEach(action.functions, (func, name) => {
+            functions[name] = (...other) => {
+                return func(store.getItem('getEditorState'), store.getItem('setEditorState'), ...other)
+            }
+        })
+
+        if (action.component) {
+            return (
+                <action.component
+                    key={action.label}
+                    action={action}
+                    functions={functions}
+                    isActive={isActive}
+                    isDisabled={isDisabled}
+                />
+            )
+        }
 
         return (
             <div
@@ -47,15 +61,15 @@ class Toolbar extends React.Component {
                     this._preventDefault(e)
 
                     if (!isDisabled) {
-                        this._toggleAction(action)
+                        functions.toggle()
                     }
                 }}
+                onMouseDown={this._preventDefault}
             >
-                {
-                    action.icon ?
-                        <i className={`${action.icon} icon`} />
-                        : action.button
-                }
+                <i
+                    className={`${action.icon} icon`}
+                    title={action.name}
+                />
             </div>
         )
     }
@@ -77,10 +91,7 @@ class Toolbar extends React.Component {
         const displaySeparator = !hideActions && buttons.length > 0
 
         return (
-            <div
-                className={classnames('editor-toolbar', css.page)}
-                onMouseDown={this._preventDefault}
-            >
+            <div className={classnames('editor-toolbar', css.page)}>
                 {!hideActions && actions.map(this._renderAction)}
                 {displaySeparator && <span className={css.separator} />}
                 {buttons.map(this._renderButton)}

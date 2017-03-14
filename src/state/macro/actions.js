@@ -1,6 +1,7 @@
 import axios from 'axios'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
+import {uploadFiles} from '../../utils'
 
 export const openModal = () => ({
     type: types.OPEN_MODAL
@@ -157,13 +158,7 @@ export const addAttachments = (actionIndex, files) => (dispatch) => {
         type: types.ADD_ATTACHMENTS_MACRO_START
     })
 
-    const formData = new window.FormData()
-    for (const file of files) {
-        formData.append(file.name, file)
-    }
-
-    return axios.post('/api/upload/', formData)
-        .then((json = {}) => json.data)
+    return uploadFiles(files)
         .then(resp => {
             return {
                 index: actionIndex,

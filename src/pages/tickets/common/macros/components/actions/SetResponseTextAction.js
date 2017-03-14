@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
-import {Modifier, EditorState} from 'draft-js'
 import {RichTextAreaField} from '../../../../../common/forms'
+import {insertText} from '../../../../../../utils'
 
 export default class SetResponseTextAction extends React.Component {
     componentDidMount() {
@@ -23,10 +23,7 @@ export default class SetResponseTextAction extends React.Component {
 
         // insert text at selection
         let editorState = this.richArea.state.editorState
-        const selection = editorState.getSelection()
-        const contentState = editorState.getCurrentContent()
-        const modifier = Modifier.replaceText(contentState, selection, text)
-        editorState = EditorState.push(editorState, modifier, 'insert-fragment')
+        editorState = insertText(editorState, text)
         this.richArea._setEditorState(editorState)
     }
 

@@ -15,7 +15,7 @@ import {TICKET_VIEWED} from '../activity/constants'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 import {getLastSameSourceTypeMessage} from './utils'
-import {getLastMessage, isCurrentlyOnTicket, getActionTemplate} from '../../utils'
+import {getLastMessage, isCurrentlyOnTicket, getActionTemplate, uploadFiles} from '../../utils'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -55,21 +55,17 @@ export const addAttachments = (ticket, atts) => (dispatch) => {
                     </div>
                 )
             }))
+            return dispatch({
+                type: types.ADD_ATTACHMENT_ERROR,
+            })
         }
 
         attachments = previousAtts.size > 0 ? [] : attsFiltered.slice(0, 1)
     }
 
-    const formData = new window.FormData()
-
-    for (const attachment of attachments) {
-        formData.append(attachment.name, attachment.file)
-    }
-
-    return axios.post('/api/upload/', formData)
-        .then((json = {}) => json.data)
+    return uploadFiles(attachments)
         .then(resp => {
-            dispatch({
+            return dispatch({
                 type: types.ADD_ATTACHMENT_SUCCESS,
                 ticketId: ticket.get('id'),
                 resp

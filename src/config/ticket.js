@@ -73,6 +73,20 @@ export const responseSourceType = (messages) => {
     return lastSourceType
 }
 
+/**
+ * Return true if source type is public type
+ * @param sourceType
+ * @returns {boolean}
+ */
 export const isPublic = (sourceType) => {
     return sourceType !== 'internal-note'
+}
+
+/**
+ * Return true if type supports HTML content
+ * @param sourceType
+ * @returns {boolean}
+ */
+export const isRichType = (sourceType) => {
+    return ['email', 'internal-note'].includes(sourceType)
 }

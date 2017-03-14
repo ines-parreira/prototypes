@@ -4,10 +4,12 @@ import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
 import {convertFromHTML} from '../../utils'
+import {isRichType} from '../../config/ticket'
 import {convertToRaw, convertFromRaw, ContentState, SelectionState} from 'draft-js'
 
 import ticketReplyCache from './ticketReplyCache'
 import {renderTemplate} from '../../pages/common/utils/template'
+import * as selectors from './selectors'
 
 const signatureHTMLPrefix = '<div></div><div></div>'
 const signatureTextPrefix = '\n\n'
@@ -164,7 +166,7 @@ export const addSignature = (context) => {
     let signatureBlocks = null
     const signatureHTML = action.currentUser.get('signature_html')
     const signatureText = action.currentUser.get('signature_text')
-    if (signatureHTML) {
+    if (signatureHTML && isRichType(selectors.getNewMessageType({ticket: state}))) {
         signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${signatureHTML}`).getBlocksAsArray()
     } else if (signatureText) {
         signatureBlocks = ContentState.createFromText(`${signatureTextPrefix}${signatureText}`).getBlocksAsArray()
@@ -218,7 +220,7 @@ export const applyMacro = (context) => {
     const html = renderTemplate(action.args.get('body_html', ''), variables)
 
     let blocks = []
-    if (html) {
+    if (html && isRichType(selectors.getNewMessageType({ticket: state}))) {
         blocks = convertFromHTML(html).getBlocksAsArray()
     } else {
         blocks = ContentState.createFromText(text).getBlocksAsArray()

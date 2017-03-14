@@ -3,12 +3,14 @@ import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _throttle from 'lodash/throttle'
 
-import {EditorState, ContentState} from 'draft-js'
-import Editor from 'draft-js-plugins-editor'
+import {EditorState, ContentState, RichUtils} from 'draft-js'
+import Editor, {composeDecorators} from 'draft-js-plugins-editor'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
+import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import createToolbarPlugin from '../../../../common/draftjs/plugins/toolbar'
+import {isRichType} from '../../../../../config/ticket'
 
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
 
@@ -17,12 +19,21 @@ import 'draft-js-emoji-plugin/lib/plugin.css'
 const dndPlugin = createDndPlugin()
 const emojiPlugin = createEmojiPlugin()
 const blockBreakoutPlugin = createBlockBreakoutPlugin()
-const toolbarPlugin = createToolbarPlugin()
+const resizeablePlugin = createResizeablePlugin({
+    horizontal: 'absolute',
+})
+
+const imageDecorator = composeDecorators(
+    resizeablePlugin.decorator,
+)
+
+const toolbarPlugin = createToolbarPlugin({imageDecorator})
 
 const {EmojiSuggestions} = emojiPlugin
 const {Toolbar} = toolbarPlugin
 
-const plugins = [emojiPlugin, dndPlugin, blockBreakoutPlugin, toolbarPlugin]
+const plugins = [emojiPlugin, dndPlugin, blockBreakoutPlugin, resizeablePlugin, toolbarPlugin]
+
 
 // throttle the updating of the redux because it's slow otherwise when we type
 const _updateMessageText = _throttle((props, editorState) => {
@@ -31,9 +42,6 @@ const _updateMessageText = _throttle((props, editorState) => {
         selectionState: editorState.getSelection()
     }))
 }, 300)
-
-// ticket types that can have toolbar actions such as bold, italic, link, etc.
-const richTicketTypes = ['email', 'internal-note']
 
 class TicketReplyEditor extends React.Component {
     componentWillMount() {
@@ -97,31 +105,19 @@ class TicketReplyEditor extends React.Component {
     }
 
     _handleFiles = (files) => {
-        const newFiles = []
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i]
-            const {name, size, type} = file
-            newFiles.push({url: null, name, size, content_type: type, file})
-        }
-
-        this.props.actions.ticket.addAttachments(this.props.ticket, newFiles)
+        this.props.actions.ticket.addAttachments(this.props.ticket, files)
     }
 
     // This is for handling things like Bold, Italic, etc..
     _handleKeyCommand = (command) => { // eslint-disable-line
-        // disabling keyboard shortcuts
-        // TODO @jebarjonet remove this after https://github.com/HubSpot/draft-convert/pull/17 is resolved
-        return false
-
-        /**
-         const newState = RichUtils.handleKeyCommand(this.state.editorState, command)
-         if (newState) {
+        const {editorState} = this.state
+        const newState = RichUtils.handleKeyCommand(editorState, command)
+        if (newState) {
             this._onChange(newState)
-            return true
+            return 'handled'
         }
-         return false
-         **/
+
+        return 'not-handled'
     }
 
     _handleDroppedFiles = (selection, files) => {
@@ -134,30 +130,30 @@ class TicketReplyEditor extends React.Component {
     }
 
     _focusEditor = () => {
-        if (this.refs.editor && this.refs.editor.focus) {
-            this.refs.editor.focus()
+        if (this.editor) {
+            this.editor.focus()
         }
     }
 
     render() {
-        const {ticket, ticketType} = this.props
+        const {ticket, newMessageType} = this.props
 
-        const hideActions = !richTicketTypes.includes(ticketType)
+        const hideActions = !isRichType(newMessageType)
 
         return (
-            <div
-                className="ui reply form"
-                onClick={this._focusEditor}
-            >
+            <div className="ui reply form">
                 <div
                     ref="overlay"
-                    className="field"
+                    className="field rich-textarea-wrapper"
+                    onClick={this._focusEditor}
                     onDragOver={() => this.refs.overlay.classList.add('active')}
                     onDragLeave={() => this.refs.overlay.classList.remove('active')}
                     onDrop={() => this.refs.overlay.classList.remove('active')}
                 >
                     <Editor
-                        ref="editor"
+                        ref={(editor) => {
+                            this.editor = editor
+                        }}
                         tabIndex="4"
                         spellCheck
                         readOnly={ticket.getIn(['_internal', 'loading', 'submitMessage'])}
@@ -176,15 +172,21 @@ class TicketReplyEditor extends React.Component {
                             <label htmlFor="attachments-input">
                                 {
                                     ticket.getIn(['_internal', 'loading', 'addAttachment'])
-                                        ? <i className="notched circle loading icon" />
-                                        : <i className="attach icon" />
+                                        ? (
+                                            <i className="notched circle loading icon" />
+                                        ) : (
+                                            <i
+                                                className="attach icon"
+                                                title="Add attachment"
+                                            />
+                                        )
                                 }
                             </label>
                             <input
                                 id="attachments-input"
                                 type="file"
                                 multiple
-                                onChange={(e) => this._handleFiles(e.target.files)}
+                                onChange={e => this._handleFiles(e.target.files)}
                             />
                         </div>
                     ]}
@@ -197,13 +199,13 @@ class TicketReplyEditor extends React.Component {
 TicketReplyEditor.propTypes = {
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
-    ticketType: PropTypes.string.isRequired,
+    newMessageType: PropTypes.string.isRequired,
     autoFocus: PropTypes.bool
 }
 
 function mapStateToProps(state) {
     return {
-        ticketType: ticketSelectors.getNewMessageType(state),
+        newMessageType: ticketSelectors.getNewMessageType(state),
     }
 }
 
