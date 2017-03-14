@@ -1,5 +1,6 @@
-import React from 'react'
-import classNames from 'classnames'
+import React, {PropTypes} from 'react'
+import classnames from 'classnames'
+import _isEqual from 'lodash/isEqual'
 
 import {EditorState, RichUtils, ContentState} from 'draft-js'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
@@ -42,6 +43,7 @@ export default class RichTextAreaField extends React.Component {
 
         this.state = {
             editorState,
+            isDragging: false,
         }
     }
 
@@ -50,7 +52,9 @@ export default class RichTextAreaField extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this._updateEditorState(nextProps.input.value)
+        if (!_isEqual(nextProps.input.value, this.props.input.value)) {
+            this._updateEditorState(nextProps.input.value)
+        }
     }
 
     // used by parents that want to set a new editor state
@@ -106,6 +110,13 @@ export default class RichTextAreaField extends React.Component {
         return 'not-handled'
     }
 
+    _handleDroppedFiles = (...args) => {
+        const {handleDroppedFiles} = this.props
+        if (handleDroppedFiles) {
+            return handleDroppedFiles(...args)
+        }
+    }
+
     _onChange = (editorState, callback) => {
         const contentState = editorState.getCurrentContent()
 
@@ -122,33 +133,49 @@ export default class RichTextAreaField extends React.Component {
     }
 
     render() {
-        const {input, label, placeholder, required} = this.props
-        const fieldClassName = classNames({required}, 'field')
-
+        const {
+            canDropFiles,
+            input,
+            label,
+            required,
+            toolbarProps,
+            ...rest
+        } = this.props
         const {EmojiSuggestions} = this.emojiPlugin
         const {Toolbar} = this.toolbarPlugin
 
         return (
-            <div className={fieldClassName}>
+            <div
+                className={classnames('field', {
+                    required,
+                })}
+            >
                 {label && <label htmlFor={input.name}>{label}</label>}
                 <div className="rich-textarea-wrapper">
                     <div
+                        className={classnames('editor-wrapper', {
+                            drop: this.state.isDragging && canDropFiles,
+                        })}
                         style={{paddingBottom: '26px'}}
                         onClick={this._focusEditor}
+                        onDragOver={() => this.setState({isDragging: true})}
+                        onDragLeave={() => this.setState({isDragging: false})}
+                        onDrop={() => this.setState({isDragging: false})}
                     >
                         <Editor
                             editorState={this.state.editorState}
                             onChange={editorState => this._onChange(editorState)}
                             plugins={this.plugins}
-                            placeholder={placeholder}
                             handleKeyCommand={this._handleKeyCommand}
+                            handleDroppedFiles={this._handleDroppedFiles}
                             ref={(editor) => {
                                 this.editor = editor
                             }}
+                            {...rest}
                         />
                         <EmojiSuggestions />
                     </div>
-                    <Toolbar />
+                    <Toolbar {...toolbarProps} />
                 </div>
             </div>
         )
@@ -156,12 +183,17 @@ export default class RichTextAreaField extends React.Component {
 }
 
 RichTextAreaField.defaultProps = {
-    required: false
+    canDropFiles: false,
+    required: false,
+    toolbarProps: {},
 }
 
 RichTextAreaField.propTypes = {
-    input: React.PropTypes.object.isRequired,
-    label: React.PropTypes.string,
-    placeholder: React.PropTypes.string,
-    required: React.PropTypes.bool
+    canDropFiles: PropTypes.bool.isRequired,
+    handleDroppedFiles: PropTypes.func,
+    input: PropTypes.object.isRequired,
+    label: PropTypes.string,
+    placeholder: PropTypes.string,
+    required: PropTypes.bool.isRequired,
+    toolbarProps: PropTypes.object.isRequired,
 }

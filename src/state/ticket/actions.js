@@ -108,6 +108,10 @@ export const mergeRequester = (user) => {
 }
 
 export const ticketPartialUpdate = (args) => (dispatch, getState) => {
+    if (_isEmpty(args)) {
+        return Promise.resolve()
+    }
+
     const {ticket} = getState()
     const ticketId = ticket.get('id')
 

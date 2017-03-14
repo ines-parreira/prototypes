@@ -2,14 +2,10 @@ import React, {PropTypes} from 'react'
 import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _throttle from 'lodash/throttle'
+import {RichTextAreaField} from '../../../../common/forms'
 
-import {EditorState, ContentState, RichUtils} from 'draft-js'
-import Editor, {composeDecorators} from 'draft-js-plugins-editor'
+import {EditorState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
-import createEmojiPlugin from 'draft-js-emoji-plugin'
-import createResizeablePlugin from 'draft-js-resizeable-plugin'
-import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
-import createToolbarPlugin from '../../../../common/draftjs/plugins/toolbar'
 import {isRichType} from '../../../../../config/ticket'
 
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
@@ -17,23 +13,6 @@ import * as ticketSelectors from '../../../../../state/ticket/selectors'
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
 const dndPlugin = createDndPlugin()
-const emojiPlugin = createEmojiPlugin()
-const blockBreakoutPlugin = createBlockBreakoutPlugin()
-const resizeablePlugin = createResizeablePlugin({
-    horizontal: 'absolute',
-})
-
-const imageDecorator = composeDecorators(
-    resizeablePlugin.decorator,
-)
-
-const toolbarPlugin = createToolbarPlugin({imageDecorator})
-
-const {EmojiSuggestions} = emojiPlugin
-const {Toolbar} = toolbarPlugin
-
-const plugins = [emojiPlugin, dndPlugin, blockBreakoutPlugin, resizeablePlugin, toolbarPlugin]
-
 
 // throttle the updating of the redux because it's slow otherwise when we type
 const _updateMessageText = _throttle((props, editorState) => {
@@ -41,42 +20,36 @@ const _updateMessageText = _throttle((props, editorState) => {
         contentState: editorState.getCurrentContent(),
         selectionState: editorState.getSelection()
     }))
-}, 300)
+}, 100)
 
 class TicketReplyEditor extends React.Component {
     componentWillMount() {
-        this.state = this._getEditorState(this.props)
-    }
-
-    componentDidMount() {
-        // We'd like to autofocus the editor, but in componentDidMount the editor element might not be ready
-        // so we're using the setTimeout hack to focus the editor here
-        if (this.props.autoFocus) {
-            setTimeout(this._focusEditor, 0)
-        }
+        this._updateEditorState(this._getEditorStateFromReducer(this.props))
     }
 
     componentWillReceiveProps(nextProps) {
-        const contentState = nextProps.ticket.getIn(['state', 'contentState'])
         const forceUpdate = nextProps.ticket.getIn(['state', 'forceUpdate'])
-        if (contentState === null || forceUpdate) {
-            this.setState(this._getEditorState(nextProps))
+
+        if (forceUpdate) {
+            this._updateEditorState(this._getEditorStateFromReducer(nextProps))
+        }
+
+        if (!this.props.autoFocus && nextProps.autoFocus && this.richArea) {
+            setTimeout(() => {
+                this.richArea._focusEditor()
+            }, 1)
         }
     }
 
-    _getEditorState = (props) => {
+    _getEditorStateFromReducer = (props) => {
         const state = props.ticket.get('state')
         const contentState = state.get('contentState')
         const selectionState = state.get('selectionState')
 
-        let editorState
+        let editorState = this._getEditorState()
 
-        if (this.state && this.state.editorState) {
-            // if content state already exists, just clear the content
-            editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''))
-        } else {
-            // if there is no content, create a new editor state
-            editorState = EditorState.createWithContent(ContentState.createFromText(''))
+        if (!editorState) {
+            return
         }
 
         if (contentState && contentState.hasText()) {
@@ -96,7 +69,7 @@ class TicketReplyEditor extends React.Component {
             }))
         }
 
-        return {editorState}
+        return editorState
     }
 
     _onChange = (editorState) => {
@@ -108,18 +81,6 @@ class TicketReplyEditor extends React.Component {
         this.props.actions.ticket.addAttachments(this.props.ticket, files)
     }
 
-    // This is for handling things like Bold, Italic, etc..
-    _handleKeyCommand = (command) => { // eslint-disable-line
-        const {editorState} = this.state
-        const newState = RichUtils.handleKeyCommand(editorState, command)
-        if (newState) {
-            this._onChange(newState)
-            return 'handled'
-        }
-
-        return 'not-handled'
-    }
-
     _handleDroppedFiles = (selection, files) => {
         dndPlugin.handleDroppedFiles(selection, files, {
             getEditorState: () => this.state.editorState,
@@ -129,10 +90,29 @@ class TicketReplyEditor extends React.Component {
         return false
     }
 
-    _focusEditor = () => {
-        if (this.editor) {
-            this.editor.focus()
+    _getEditorState = () => {
+        if (!this.richArea) {
+            return
         }
+
+        return this.richArea.state.editorState
+    }
+
+    _updateEditorState = (editorState) => {
+        if (!this.richArea) {
+            return
+        }
+
+        this.richArea._setEditorState(editorState)
+    }
+
+    _updateReducer = () => {
+        if (!this.richArea) {
+            return
+        }
+
+        const {editorState} = this.richArea.state
+        _updateMessageText(this.props, editorState)
     }
 
     render() {
@@ -142,65 +122,60 @@ class TicketReplyEditor extends React.Component {
 
         return (
             <div className="ui reply form">
-                <div
-                    ref="overlay"
-                    className="field rich-textarea-wrapper"
-                    onClick={this._focusEditor}
-                    onDragOver={() => this.refs.overlay.classList.add('active')}
-                    onDragLeave={() => this.refs.overlay.classList.remove('active')}
-                    onDrop={() => this.refs.overlay.classList.remove('active')}
-                >
-                    <Editor
-                        ref={(editor) => {
-                            this.editor = editor
-                        }}
-                        tabIndex="4"
-                        spellCheck
-                        readOnly={ticket.getIn(['_internal', 'loading', 'submitMessage'])}
-                        editorState={this.state.editorState}
-                        plugins={plugins}
-                        onChange={this._onChange}
-                        handleKeyCommand={this._handleKeyCommand}
-                        handleDroppedFiles={this._handleDroppedFiles}
-                    />
-                    <EmojiSuggestions />
-                </div>
-                <Toolbar
-                    hideActions={hideActions}
-                    buttons={[
-                        <div className="attachment">
-                            <label htmlFor="attachments-input">
-                                {
-                                    ticket.getIn(['_internal', 'loading', 'addAttachment'])
-                                        ? (
-                                            <i className="notched circle loading icon" />
-                                        ) : (
-                                            <i
-                                                className="attach icon"
-                                                title="Add attachment"
-                                            />
-                                        )
-                                }
-                            </label>
-                            <input
-                                id="attachments-input"
-                                type="file"
-                                multiple
-                                onChange={e => this._handleFiles(e.target.files)}
-                            />
-                        </div>
-                    ]}
+                <RichTextAreaField
+                    ref={(richArea) => {
+                        this.richArea = richArea
+                    }}
+                    input={{
+                        value: {
+                            text: '',
+                            html: '',
+                        },
+                        onChange: this._updateReducer,
+                    }}
+                    handleDroppedFiles={this._handleDroppedFiles}
+                    tabIndex="4"
+                    spellCheck
+                    canDropFiles
+                    readOnly={ticket.getIn(['_internal', 'loading', 'submitMessage'])}
+                    toolbarProps={{
+                        hideActions,
+                        buttons: [
+                            <div className="attachment">
+                                <label htmlFor="attachments-input">
+                                    {
+                                        ticket.getIn(['_internal', 'loading', 'addAttachment'])
+                                            ? (
+                                                <i className="notched circle loading icon" />
+                                            ) : (
+                                                <i
+                                                    className="attach icon"
+                                                    title="Add attachment"
+                                                />
+                                            )
+                                    }
+                                </label>
+                                <input
+                                    id="attachments-input"
+                                    type="file"
+                                    multiple
+                                    onChange={e => this._handleFiles(e.target.files)}
+                                />
+                            </div>
+                        ],
+                    }}
                 />
             </div>
         )
     }
 }
 
+
 TicketReplyEditor.propTypes = {
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     newMessageType: PropTypes.string.isRequired,
-    autoFocus: PropTypes.bool
+    autoFocus: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state) {

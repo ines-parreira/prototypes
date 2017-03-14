@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
 import SearchInput from 'react-search-input'
@@ -47,14 +47,12 @@ export class TicketReplyArea extends React.Component {
         window.removeEventListener('keydown', this._hideMacros)
     }
 
-    // Just a handy shortcut
-    _setMacrosVisible = (v) => this.props.actions.macro.setMacrosVisible(v)
+    _setMacrosVisible = v => this.props.actions.macro.setMacrosVisible(v)
 
     _hideMacros = (e) => {
-        if (e.keyCode === 27 && !this.props.macros.get('isModalOpen')) {
+        if (e.key === 'Escape' && !this.props.macros.get('isModalOpen')) {
             this._setMacrosVisible(false)
         }
-        return null
     }
 
     _searchUpdated = (term) => {
@@ -75,7 +73,7 @@ export class TicketReplyArea extends React.Component {
         }
 
         return (
-            <div className={classNames('TicketReplyArea', {
+            <div className={classnames('TicketReplyArea', {
                 'TicketReplyArea-macros-visible': macrosVisible
             })}>
                 <div className="TicketReplyArea-search">
@@ -89,7 +87,7 @@ export class TicketReplyArea extends React.Component {
                         autoFocus={macrosVisible && !isNewTicket}
                     />
 
-                    <a className={classNames({hidden: !macrosVisible, 'clear-macros': true})} ref="popupClearMacros">
+                    <a className={classnames({hidden: !macrosVisible, 'clear-macros': true})} ref="popupClearMacros">
                         <i
                             className="right close icon"
                             onClick={() => this._setMacrosVisible(false)}
@@ -109,15 +107,16 @@ export class TicketReplyArea extends React.Component {
                         openModal={this.props.openModal}
                     />
 
-                    {!macrosVisible && (
-                        <TicketReply
-                            actions={this.props.actions}
-                            ticket={this.props.ticket}
-                            appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
-                            users={this.props.users}
-                            autoFocus={!(macrosVisible && isNewTicket)}
-                        />
-                    )}
+                    <TicketReply
+                        className={classnames({
+                            hidden: macrosVisible,
+                        })}
+                        actions={this.props.actions}
+                        ticket={this.props.ticket}
+                        appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
+                        users={this.props.users}
+                        autoFocus={!macrosVisible}
+                    />
                 </div>
             </div>
         )

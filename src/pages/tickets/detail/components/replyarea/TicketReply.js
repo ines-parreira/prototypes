@@ -55,7 +55,7 @@ export default class TicketReply extends React.Component {
 
     render() {
         const {ticket, actions, autoFocus} = this.props
-        const className = classNames('TicketReply', {
+        const className = classNames('TicketReply', this.props.className, {
             internal: ticket.get('newMessage') && !ticket.getIn(['newMessage', 'public']),
         })
 
@@ -75,8 +75,9 @@ export default class TicketReply extends React.Component {
 }
 
 TicketReply.propTypes = {
+    autoFocus: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
+    className: PropTypes.string,
     ticket: PropTypes.object.isRequired,
     appliedMacro: PropTypes.object,
-    autoFocus: PropTypes.bool,
 }

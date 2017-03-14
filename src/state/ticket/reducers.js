@@ -404,7 +404,7 @@ export default (state = initialState, action) => {
 
             context = responseUtils.getCache(context)
             // only deal with signature when email
-            if (state.getIn(['newMessage', 'channel']) === 'email') {
+            if (state.getIn(['newMessage', 'source', 'type']) === 'email') {
                 context = responseUtils.addSignature(context)
             }
             context = responseUtils.applyMacro(context)

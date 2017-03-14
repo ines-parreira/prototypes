@@ -145,7 +145,7 @@ const _markSignatureAdded = (context) => {
  * @returns {*}
  */
 export const addSignature = (context) => {
-    const {action, state, contentState, selectionState} = context
+    const {action, state, contentState} = context
 
     context.signatureAdded = state.getIn(['state', 'signatureAdded'], false)
 
@@ -176,18 +176,11 @@ export const addSignature = (context) => {
         return context
     }
 
-    let existingBlocks = []
-    if (contentState) {
-        existingBlocks = contentState.getBlocksAsArray()
-    }
-
     // Concat the signature blocks at the end of the content
-    context.contentState = ContentState.createFromBlockArray(existingBlocks.concat(signatureBlocks))
+    context.contentState = ContentState.createFromBlockArray(signatureBlocks)
 
     // Set the position of the cursor just before the signature. Only if we don't already have a selection state!
-    if (!selectionState) {
-        context.selectionState = _selectionBefore(context.contentState.getBlocksAsArray())
-    }
+    context.selectionState = _selectionBefore(context.contentState.getBlocksAsArray())
     context.forceUpdate = true
 
     return _markSignatureAdded(context)
@@ -266,6 +259,7 @@ export const applyMacro = (context) => {
     }
 
     context.contentState = ContentState.createFromBlockArray(blocks)
+    context.forceUpdate = true
 
     return context
 }
