@@ -21,7 +21,6 @@ class Table extends React.Component {
         config: ImmutablePropTypes.map.isRequired,
         fetchPage: PropTypes.func.isRequired,
         fields: ImmutablePropTypes.list.isRequired,
-        isEditMode: PropTypes.bool.isRequired,
         isLoading: PropTypes.func.isRequired,
         isSearch: PropTypes.bool.isRequired,
         items: ImmutablePropTypes.list.isRequired,
@@ -46,7 +45,6 @@ class Table extends React.Component {
         const {
             activeView,
             config,
-            isEditMode,
             isLoading,
             isSearch,
             items,
@@ -96,22 +94,18 @@ class Table extends React.Component {
                 <table className={classnames(css.table, 'main-table view-table')}>
                     <thead>
                         <tr>
-                            {
-                                !isEditMode && (
-                                    <td
-                                        className="cell-wrapper cell-short clickable"
-                                        onClick={this._toggleSelectAll}
-                                    >
-                                        <span className="ui checkbox">
-                                            <input
-                                                type="checkbox"
-                                                checked={areAllSelected}
-                                            />
-                                            <label />
-                                        </span>
-                                    </td>
-                                )
-                            }
+                            <td
+                                className="cell-wrapper cell-short clickable"
+                                onClick={this._toggleSelectAll}
+                            >
+                                <span className="ui checkbox">
+                                    <input
+                                        type="checkbox"
+                                        checked={areAllSelected}
+                                    />
+                                    <label />
+                                </span>
+                            </td>
                             {
                                 fields.map((field, index) => {
                                     return (
@@ -136,7 +130,6 @@ class Table extends React.Component {
                                 return (
                                     <Row
                                         key={id}
-                                        canSelectItem={!isEditMode}
                                         fields={fields}
                                         item={item}
                                         isSelected={selectedItemsIds.includes(id)}
@@ -164,7 +157,6 @@ const mapStateToProps = (state, ownProps) => {
     return {
         activeView: viewsSelectors.getActiveView(state),
         config: viewsSelectors.getViewConfig(ownProps.type),
-        isEditMode: viewsSelectors.isEditMode(state),
         isLoading: viewsSelectors.makeIsLoading(state),
         pagination: viewsSelectors.getPagination(state),
         selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),

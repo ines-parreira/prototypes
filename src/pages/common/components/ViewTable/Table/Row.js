@@ -16,7 +16,6 @@ import * as viewsUtils from '../../../../../state/views/utils'
 
 class Row extends React.Component {
     static propTypes = {
-        canSelectItem: PropTypes.bool.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         fields: ImmutablePropTypes.list.isRequired,
         getAgentsViewing: PropTypes.func.isRequired,
@@ -35,7 +34,7 @@ class Row extends React.Component {
     }
 
     render() {
-        const {canSelectItem, config, fields, getAgentsViewing, item, isSelected, type} = this.props
+        const {config, fields, getAgentsViewing, item, isSelected, type} = this.props
 
         const link = `/app/${config.get('routeItem')}/${item.get('id')}`
 
@@ -47,33 +46,29 @@ class Row extends React.Component {
                     highlighted: item.get('is_unread'),
                 })}
             >
-                {
-                    canSelectItem && (
-                        <td
-                            className="cell-wrapper cell-short clickable"
-                            onClick={this._toggleSelection}
-                        >
-                            {
-                                // display an eye on row if an agent is currently viewing this item
-                                agentsViewing.size > 0 && (
-                                    <div
-                                        className={css.viewers}
-                                        title={viewsUtils.agentsViewingMessage(agentsViewing)}
-                                    >
-                                        <i className="unhide icon" />
-                                    </div>
-                                )
-                            }
-                            <span className="ui checkbox">
-                                <input
-                                    type="checkbox"
-                                    checked={isSelected}
-                                />
-                                <label />
-                            </span>
-                        </td>
-                    )
-                }
+                <td
+                    className="cell-wrapper cell-short clickable"
+                    onClick={this._toggleSelection}
+                >
+                    {
+                        // display an eye on row if an agent is currently viewing this item
+                        agentsViewing.size > 0 && (
+                            <div
+                                className={css.viewers}
+                                title={viewsUtils.agentsViewingMessage(agentsViewing)}
+                            >
+                                <i className="unhide icon" />
+                            </div>
+                        )
+                    }
+                    <span className="ui checkbox">
+                        <input
+                            type="checkbox"
+                            checked={isSelected}
+                        />
+                        <label />
+                    </span>
+                </td>
                 {
                     fields.map((field) => (
                         <Cell

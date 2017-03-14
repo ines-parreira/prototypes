@@ -23,7 +23,6 @@ class Header extends React.Component {
         config: ImmutablePropTypes.map.isRequired,
         deleteView: PropTypes.func.isRequired,
         fetchPage: PropTypes.func.isRequired,
-        isEditMode: PropTypes.bool.isRequired,
         isSearch: PropTypes.bool.isRequired,
         isUpdate: PropTypes.bool.isRequired,
         item: ImmutablePropTypes.map.isRequired,
@@ -78,14 +77,11 @@ class Header extends React.Component {
             ActionsComponent,
             activeView,
             config,
-            isEditMode,
             isSearch,
             isUpdate,
             selectedItemsIds,
             type,
         } = this.props
-
-        const canSelectItem = !isEditMode
 
         return (
             <div>
@@ -178,7 +174,6 @@ class Header extends React.Component {
                             ActionsComponent
                             && (
                                 <ActionsComponent
-                                    hasBulkActions={canSelectItem}
                                     view={activeView}
                                     selectedItemsIds={selectedItemsIds}
                                 />
@@ -199,7 +194,6 @@ const mapStateToProps = (state, ownProps) => {
     return {
         activeView: viewsSelectors.getActiveView(state),
         config: viewsSelectors.getViewConfig(ownProps.type),
-        isEditMode: viewsSelectors.isEditMode(state),
         lastViewId: viewsSelectors.getLastViewId(state),
         selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
     }

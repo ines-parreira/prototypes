@@ -228,7 +228,7 @@ const config = [{
     },
     newView: () => {
         return baseView().merge({
-            fields: ['details', 'channel', 'requester', 'created'],
+            fields: ['details', 'channel', 'assignee', 'requester', 'created'],
             type: 'ticket-list',
         })
     },
@@ -236,7 +236,7 @@ const config = [{
         return baseView().merge({
             name: `Search "${query}"`,
             search: query,
-            fields: ['details', 'channel', 'requester', 'created'],
+            fields: ['details', 'channel', 'assignee', 'requester', 'created'],
             type: 'ticket-list',
         })
     },

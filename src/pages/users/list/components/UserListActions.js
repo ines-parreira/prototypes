@@ -83,12 +83,7 @@ class UserListActions extends React.Component {
     }
 
     render() {
-        const {hasBulkActions} = this.props
         const areBulkActionsDisplayed = this.props.selectedItemsIds.size > 0
-
-        if (!hasBulkActions) {
-            return null
-        }
 
         return (
             <div className="flex-spaced-row bulk-actions">
@@ -127,7 +122,6 @@ UserListActions.propTypes = {
     view: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired, // tickets actions
     selectedItemsIds: PropTypes.object.isRequired, // list of ids of selected tickets
-    hasBulkActions: PropTypes.bool.isRequired
 }
 
 function mapDispatchToProps(dispatch) {
