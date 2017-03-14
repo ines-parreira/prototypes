@@ -10,7 +10,8 @@ import {notify} from '../../state/notifications/actions'
 
 const IGNORED_PREFIXS = [
     'SUBMIT_ACTIVITY_ERROR',
-    'redux-form'
+    'redux-form',
+    '@@redux-form',
 ]
 
 const serverErrorHandler = store => next => action => {
