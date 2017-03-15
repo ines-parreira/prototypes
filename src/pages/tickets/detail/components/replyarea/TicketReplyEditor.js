@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import _throttle from 'lodash/throttle'
 import {RichTextAreaField} from '../../../../common/forms'
 
-import {EditorState} from 'draft-js'
+import {EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import {isRichType} from '../../../../../config/ticket'
 
@@ -55,6 +55,8 @@ class TicketReplyEditor extends React.Component {
         if (contentState && contentState.hasText()) {
             editorState = EditorState.push(editorState, contentState, 'insert-characters')
         } else {
+            editorState = EditorState.createEmpty()
+
             // This is required because otherwise the cursor has an undefined state for an empty content
             // See: https://github.com/facebook/draft-js/issues/410
             if (this.props.autoFocus) {

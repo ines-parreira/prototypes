@@ -180,7 +180,8 @@ export default (state = initialState, action) => {
                         selectionState: null,
                         signatureAdded: false,
                         appliedMacro: null,
-                        query: ''
+                        query: '',
+                        forceUpdate: true,
                     }
                 })
                 .setIn(['_internal', 'loading', 'submitMessage'], false)
@@ -208,7 +209,8 @@ export default (state = initialState, action) => {
                     contentState: null,
                     selectionState: null,
                     signatureAdded: false,
-                    query: ''
+                    query: '',
+                    forceUpdate: true,
                 }
             }).setIn(['_internal', 'loading', 'submitMessage'], false)
 
