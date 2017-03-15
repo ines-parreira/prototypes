@@ -119,22 +119,6 @@ describe('middlewares', () => {
             })).toEqual(false)
         })
 
-        it('should not notify when user try to send a message (account signup before effective date of plan)', () => {
-            // set usage to default limit and set signup date before effective date
-            store = mockStore(_assign({}, baseState, {
-                currentAccount: baseState.currentAccount.set('created_datetime', new Date('1991-09-03')),
-                billing: baseState.billing.setIn(['currentUsage', 'data', 'tickets'], plan.free_tickets)
-            }))
-
-            store.dispatch({
-                type: ticketTypes.SUBMIT_TICKET_SUCCESS
-            })
-
-            expect(_some(store.getActions(), {
-                type: 'RNS_SHOW_NOTIFICATION'
-            })).toEqual(false)
-        })
-
         it('should notify when user try to open a ticket (account deactivated)', () => {
             const expectedAction = _assign({}, notifs.accountDeactivatedModal, {
                 type: 'RNS_SHOW_NOTIFICATION'
@@ -185,23 +169,6 @@ describe('middlewares', () => {
             // set usage just below the max limit
             store = mockStore(_assign({}, baseState, {
                 billing: baseState.billing.setIn(['currentUsage', 'data', 'tickets'], ticketsMaxLimit - 1)
-            }))
-
-            store.dispatch({
-                type: ticketTypes.FETCH_TICKET_START,
-                displayLoading: true
-            })
-
-            expect(_some(store.getActions(), {
-                type: 'RNS_SHOW_NOTIFICATION'
-            })).toEqual(false)
-        })
-
-        it('should not notify when user open a ticket (account signup before effective date of plan)', () => {
-            // set usage to max limit and set signup date before effective date
-            store = mockStore(_assign({}, baseState, {
-                currentAccount: baseState.currentAccount.set('created_datetime', new Date('1991-09-03')),
-                billing: baseState.billing.setIn(['currentUsage', 'data', 'tickets'], ticketsMaxLimit)
             }))
 
             store.dispatch({
@@ -405,52 +372,6 @@ describe('middlewares', () => {
             }
             store = mockStore(_assign({}, baseState, {
                 currentAccount: baseState.currentAccount.merge({meta: {hasCreditCard: true}})
-            }))
-
-            // account has reached min limit
-            store.dispatch({
-                type: billingTypes.FETCH_CURRENT_USAGE_SUCCESS,
-                resp: {
-                    data: {
-                        tickets: ticketsMinLimit
-                    }
-                }
-            })
-
-            expect(_some(store.getActions(), expectedAction)).toEqual(false)
-
-            // account has reached default limit
-            store.dispatch({
-                type: billingTypes.FETCH_CURRENT_USAGE_SUCCESS,
-                resp: {
-                    data: {
-                        tickets: plan.free_tickets
-                    }
-                }
-            })
-
-            expect(_some(store.getActions(), expectedAction)).toEqual(false)
-
-            // account has reached max limit
-            store.dispatch({
-                type: billingTypes.FETCH_CURRENT_USAGE_SUCCESS,
-                resp: {
-                    data: {
-                        tickets: ticketsMaxLimit + 99999
-                    }
-                }
-            })
-
-            expect(_some(store.getActions(), expectedAction)).toEqual(false)
-        })
-
-        it('should not notify if account reach any limit of free tickets (account signed up before effective date of plan)', () => {
-            const expectedAction = {
-                type: 'RNS_SHOW_NOTIFICATION'
-            }
-            store = mockStore(_assign({}, baseState, {
-                currentAccount: baseState.currentAccount
-                    .set('created_datetime', new Date('1991-09-03'))
             }))
 
             // account has reached min limit
