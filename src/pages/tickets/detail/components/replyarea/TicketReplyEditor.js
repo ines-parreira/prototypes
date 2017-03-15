@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import _throttle from 'lodash/throttle'
 import {RichTextAreaField} from '../../../../common/forms'
 
-import {EditorState} from 'draft-js'
+import {EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import {isRichType} from '../../../../../config/ticket'
 
@@ -31,7 +31,9 @@ class TicketReplyEditor extends React.Component {
         const forceUpdate = nextProps.ticket.getIn(['state', 'forceUpdate'])
 
         if (forceUpdate) {
-            this._updateEditorState(this._getEditorStateFromReducer(nextProps))
+            setTimeout(() => {
+                this._updateEditorState(this._getEditorStateFromReducer(nextProps))
+            }, 1)
         }
 
         if (!this.props.autoFocus && nextProps.autoFocus) {
@@ -51,13 +53,14 @@ class TicketReplyEditor extends React.Component {
         let editorState = this._getEditorState()
 
         if (!editorState) {
-            return
+            return editorState
         }
 
         if (contentState && contentState.hasText()) {
             editorState = EditorState.push(editorState, contentState, 'insert-characters')
         } else {
-            editorState = EditorState.createEmpty()
+            // empty editor state (triggered after message is sent, textarea needs to be emptied)
+            editorState = EditorState.push(editorState, ContentState.createFromText(''))
 
             // This is required because otherwise the cursor has an undefined state for an empty content
             // See: https://github.com/facebook/draft-js/issues/410
