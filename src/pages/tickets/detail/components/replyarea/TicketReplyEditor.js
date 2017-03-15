@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import _throttle from 'lodash/throttle'
 import {RichTextAreaField} from '../../../../common/forms'
 
-import {EditorState, ContentState} from 'draft-js'
+import {EditorState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import {isRichType} from '../../../../../config/ticket'
 

@@ -48,7 +48,7 @@ export const initialState = fromJS({
         dirty: false,
         query: '',
         signatureAdded: false,
-        forceUpdate: false,
+        forceUpdate: true,
         contentState: null,
         selectionState: null,
         appliedMacro: null,
