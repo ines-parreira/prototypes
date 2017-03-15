@@ -7,7 +7,6 @@ import {notify} from '../../state/notifications/actions'
 import * as currentAccountTypes from '../../state/currentAccount/constants'
 import * as billingTypes from '../../state/billing/constants'
 import * as ticketTypes from '../../state/ticket/constants'
-import moment from 'moment'
 import _some from 'lodash/some'
 
 const TRACKED_ACTIONS = [
