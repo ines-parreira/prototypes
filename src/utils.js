@@ -640,7 +640,8 @@ export function loadScript(url, callback) {
 export const uploadFiles = (files) => {
     const formData = new window.FormData()
 
-    for (const file of files) {
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i]
         formData.append(file.name, file)
     }
 
