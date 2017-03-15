@@ -48,6 +48,7 @@ export const initialState = fromJS({
         dirty: false,
         query: '',
         signatureAdded: false,
+        cacheAdded: false,
         forceUpdate: true,
         contentState: null,
         selectionState: null,
@@ -149,8 +150,6 @@ export default (state = initialState, action) => {
         }
 
         case types.SUBMIT_TICKET_START:
-            // Make sure we reset the cache before we send the message
-            ticketReplyCache.delete(state.get('id'))
             return state.setIn(['_internal', 'loading', 'submitMessage'], true)
 
         case types.SUBMIT_TICKET_ERROR:
@@ -179,6 +178,7 @@ export default (state = initialState, action) => {
                         contentState: null,
                         selectionState: null,
                         signatureAdded: false,
+                        cacheAdded: false,
                         appliedMacro: null,
                         query: '',
                         forceUpdate: true,
@@ -209,6 +209,7 @@ export default (state = initialState, action) => {
                     contentState: null,
                     selectionState: null,
                     signatureAdded: false,
+                    cacheAdded: false,
                     query: '',
                     forceUpdate: true,
                 }
@@ -404,7 +405,7 @@ export default (state = initialState, action) => {
                 appliedMacro,
             }
 
-            context = responseUtils.getCache(context)
+            context = responseUtils.addCache(context)
             // only deal with signature when email
             if (state.getIn(['newMessage', 'source', 'type']) === 'email') {
                 context = responseUtils.addSignature(context)
@@ -425,7 +426,8 @@ export default (state = initialState, action) => {
                 state: {
                     dirty,
                     forceUpdate: !!context.forceUpdate,
-                    signatureAdded: !!context.signatureAdded
+                    signatureAdded: !!context.signatureAdded,
+                    cacheAdded: !!context.cacheAdded,
                 }
             })
             // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it

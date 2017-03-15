@@ -45,7 +45,7 @@ export const onlySignature = (contentState, currentUser = fromJS({})) => {
  * @returns {*}
  */
 export const getCache = (context) => {
-    const {contentState, action} = context
+    const {action} = context
 
     // Proceed only if the change didn't come from a macro
     if (action.fromMacro) {
@@ -53,17 +53,15 @@ export const getCache = (context) => {
     }
 
     // We're fetching the cached state from the localStorage here
-    if (!contentState) {
-        const cachedContent = ticketReplyCache.get(action.ticketId)
-        if (cachedContent && !cachedContent.isEmpty()) {
-            const cachedContentState = cachedContent.get('contentState')
-            if (cachedContentState) {
-                context.contentState = convertFromRaw(cachedContentState.toJS())
-                const cachedSelectionState = cachedContent.get('selectionState')
-                if (cachedSelectionState) {
-                    // create a new selection and just copy the props from the cached state
-                    context.selectionState = SelectionState.createEmpty().merge(cachedSelectionState)
-                }
+    const cachedContent = ticketReplyCache.get(action.ticketId)
+    if (cachedContent && !cachedContent.isEmpty()) {
+        const cachedContentState = cachedContent.get('contentState')
+        if (cachedContentState) {
+            context.contentState = convertFromRaw(cachedContentState.toJS())
+            const cachedSelectionState = cachedContent.get('selectionState')
+            if (cachedSelectionState) {
+                // create a new selection and just copy the props from the cached state
+                context.selectionState = SelectionState.createEmpty().merge(cachedSelectionState)
             }
         }
     }
@@ -92,6 +90,40 @@ export const updateCache = (context) => {
         // we're deleting the data from cache so we don't explode the storage
         ticketReplyCache.delete(action.ticketId)
     }
+}
+
+/**
+ * Mark the context with cache added fields so we don't add the cache twice
+ *
+ * @param context
+ * @returns {*}
+ * @private
+ */
+const _markCacheAdded = (context) => {
+    context.cacheAdded = true
+    context.state = context.state.setIn(['state', 'cacheAdded'], true)
+    return context
+}
+
+/**
+ * Add a cache (if any) as the content state
+ *
+ * @param context
+ * @returns {*}
+ */
+export const addCache = (context) => {
+    const {state} = context
+
+    context.cacheAdded = state.getIn(['state', 'cacheAdded'], false)
+
+    if (context.cacheAdded) {
+        return _markCacheAdded(context)
+    }
+
+    context = getCache(context)
+    context.forceUpdate = true
+
+    return _markCacheAdded(context)
 }
 
 /**
