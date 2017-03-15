@@ -34,9 +34,11 @@ class TicketReplyEditor extends React.Component {
             this._updateEditorState(this._getEditorStateFromReducer(nextProps))
         }
 
-        if (!this.props.autoFocus && nextProps.autoFocus && this.richArea) {
+        if (!this.props.autoFocus && nextProps.autoFocus) {
             setTimeout(() => {
-                this.richArea._focusEditor()
+                if (this.richArea) {
+                    this.richArea._focusEditor()
+                }
             }, 1)
         }
     }
