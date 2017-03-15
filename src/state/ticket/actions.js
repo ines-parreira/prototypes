@@ -632,6 +632,27 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
 
         const messageToSend = getLastMessage(data.messages)
 
+        // Execute front-end validations for each action of the message
+        if (messageToSend.actions) {
+            for (const messageAction of messageToSend.actions) {
+                const template = getActionTemplate(messageAction.get('name'))
+
+                if (template.validators) {
+                    for (const validator of template.validators) {
+                        const res = validator.validate(ticket.getIn(['requester', 'customer'], fromJS({})).toJS())
+
+                        if (!res) {
+                            return dispatch({
+                                type: types.SUBMIT_TICKET_MESSAGE_ERROR,
+                                error: 'Action validation error.',
+                                reason: validator.error
+                            })
+                        }
+                    }
+                }
+            }
+        }
+
         let promise
 
         if (action) {

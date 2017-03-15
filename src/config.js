@@ -1,5 +1,5 @@
 import {makeGetProperty} from './state/ticket/selectors'
-
+import _get from 'lodash/get'
 
 // TODO @jebarjonet switch all configuration to modular version
 
@@ -380,7 +380,21 @@ export const ACTION_TEMPLATES = [
         integrationType: 'shopify',
         name: 'shopifyCancelLastOrder',
         title: 'Cancel last order',
-        arguments: {}
+        arguments: {},
+        validators: [
+            {
+                validate: (customer) => customer._shopify,
+                error: 'This user has no Shopify data.'
+            },
+            {
+                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                error: 'This user has no order to cancel.'
+            },
+            {
+                validate: (customer) => _get(customer, ['_shopify', 'orders', 0, 'financial_status']) !== 'fulfilled',
+                error: 'The last order has already been fulfilled, it\'s not cancellable.'
+            }
+        ]
     },
     {
         execution: 'back',
@@ -401,7 +415,17 @@ export const ACTION_TEMPLATES = [
         integrationType: 'shopify',
         name: 'shopifyDuplicateLastOrder',
         title: 'Duplicate last order',
-        arguments: {}
+        arguments: {},
+        validators: [
+            {
+                validate: (customer) => customer._shopify,
+                error: 'This user has no Shopify data.'
+            },
+            {
+                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                error: 'This user has no order to duplicate.'
+            }
+        ]
     },
     {
         execution: 'back',
@@ -447,7 +471,21 @@ export const ACTION_TEMPLATES = [
                 required: false,
                 display_order: 5
             },
-        }
+        },
+        validators: [
+            {
+                validate: (customer) => customer._shopify,
+                error: 'This user has no Shopify data.'
+            },
+            {
+                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                error: 'This user has no order to edit.'
+            },
+            {
+                validate: (customer) => _get(customer, ['_shopify', 'orders', 0, 'financial_status']) !== 'fulfilled',
+                error: 'The last order has already been fulfilled, you can\'t edit it\'s shipping address.'
+            }
+        ]
     },
     {
         execution: 'back',
@@ -457,6 +495,22 @@ export const ACTION_TEMPLATES = [
         arguments: {},
         notes: [
             'This action will fail if the payment hasn\'t been captured yet.'
+        ],
+        validators: [
+            {
+                validate: (customer) => customer._shopify,
+                error: 'This user has no Shopify data.'
+            },
+            {
+                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                error: 'This user has no order to refund.'
+            },
+            {
+                validate: (customer) => !['refunded', 'accepted'].includes(
+                    _get(customer, ['_shopify', 'orders', 0, 'financial_status'])
+                ),
+                error: 'The last order has already been refunder or hasn\'t been paid for yet.'
+            }
         ]
     },
     {
@@ -467,6 +521,22 @@ export const ACTION_TEMPLATES = [
         arguments: {},
         notes: [
             'This action will fail if the payment hasn\'t been captured yet.'
+        ],
+        validators: [
+            {
+                validate: (customer) => customer._shopify,
+                error: 'This user has no Shopify data.'
+            },
+            {
+                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                error: 'This user has no order to refund.'
+            },
+            {
+                validate: (customer) => !['refunded', 'accepted'].includes(
+                    _get(customer, ['_shopify', 'orders', 0, 'financial_status'])
+                ),
+                error: 'The last order has already been refunded or hasn\'t been paid for yet.'
+            }
         ]
     }
 ]
