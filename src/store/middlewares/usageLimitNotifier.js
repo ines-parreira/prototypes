@@ -60,12 +60,10 @@ const usageLimitNotifier = store => next => action => {
     const plan = billing.get('plan')
     const freeTickets = plan.get('free_tickets')
     const tickets = billing.getIn(['currentUsage', 'data', 'tickets'])
-    // TODO: remove all code related to effective date of plan
-    // when all accounts before `effective_date` have a credit card
-    const signupDate = moment(currentAccount.get('created_datetime', moment()))
-    const isAboveMinLimit = hasReachedLimit('min', tickets, plan, signupDate)
-    const isAboveDefaultLimit = hasReachedLimit('default', tickets, plan, signupDate)
-    const isAboveMaxLimit = hasReachedLimit('max', tickets, plan, signupDate)
+
+    const isAboveMinLimit = hasReachedLimit('min', tickets, plan)
+    const isAboveDefaultLimit = hasReachedLimit('default', tickets, plan)
+    const isAboveMaxLimit = hasReachedLimit('max', tickets, plan)
     const isAccountActive = currentAccount.get('deactivated_datetime', null) === null
     const hasCreditCard = currentAccount.getIn(['meta', 'hasCreditCard'], false)
     const hasShopifyBillingActive = currentAccount.getIn(['meta', 'shopify_billing', 'active'], false)
@@ -146,8 +144,8 @@ const usageLimitNotifier = store => next => action => {
             }
 
             const nextTickets = _action.getIn(['resp', 'data', 'tickets'])
-            const nextIsAboveMinLimit = hasReachedLimit('min', nextTickets, plan, signupDate)
-            const nextIsAboveDefaultLimit = hasReachedLimit('default', nextTickets, plan, signupDate)
+            const nextIsAboveMinLimit = hasReachedLimit('min', nextTickets, plan)
+            const nextIsAboveDefaultLimit = hasReachedLimit('default', nextTickets, plan)
 
             if ((!isAboveMinLimit && nextIsAboveMinLimit) ||
                 (!isAboveDefaultLimit && nextIsAboveDefaultLimit)) {
