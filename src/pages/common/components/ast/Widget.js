@@ -23,12 +23,24 @@ class Widget extends React.Component {
 
     _input = (value) => (
         <span className="ui input" style={{verticalAlign: 'middle'}}>
-            <input type="text" value={value} onChange={this._handleChangeByEvent}/>
+            <input
+                type="text"
+                value={value}
+                onChange={this._handleChangeByEvent}
+                placeholder={this.props.config.placeholder || ''}
+                required={this.props.config.required || false}
+            />
         </span>
     )
 
     _textarea = (value) => (
-        <textarea type="text" value={value} onChange={this._handleChangeByEvent}/>
+        <textarea
+            type="text"
+            value={value}
+            onChange={this._handleChangeByEvent}
+            placeholder={this.props.config.placeholder || ''}
+            required={this.props.config.required || false}
+        />
     )
 
     _resolveLeft(left, schemas) {
@@ -142,6 +154,10 @@ class Widget extends React.Component {
     }
 }
 
+Widget.defaultProps = {
+    config: {}
+}
+
 Widget.propTypes = {
     rule: React.PropTypes.object,
     value: React.PropTypes.any,
@@ -150,6 +166,8 @@ Widget.propTypes = {
     actions: React.PropTypes.object,
     type: React.PropTypes.string,
     leftsiblings: React.PropTypes.object,
+
+    config: React.PropTypes.object,
 }
 
 export default Widget

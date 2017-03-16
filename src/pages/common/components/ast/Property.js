@@ -22,6 +22,7 @@ const Property = ({theKey, value, actions, leftsiblings, parent, rule, schemas, 
                 actions={actions}
                 rule={rule}
                 schemas={schemas}
+                config={config}
             />
         </div>
     </div>

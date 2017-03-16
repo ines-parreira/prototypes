@@ -19,7 +19,7 @@ const ObjectExpression = ({properties, leftsiblings, parent, actions, rule, sche
         }
 
         const parentProperty = parent.push('properties', idx)
-        const argConfig = config ? config[property.key.name] : null
+        const argConfig = config ? config[property.key.name] : undefined
         return (
             <Property
                 {...property}
@@ -36,7 +36,7 @@ const ObjectExpression = ({properties, leftsiblings, parent, actions, rule, sche
     })
 
     return (
-        <form className="ui form">{propertiesComp}</form>
+        <div className="ui form">{propertiesComp}</div>
     )
 }
 

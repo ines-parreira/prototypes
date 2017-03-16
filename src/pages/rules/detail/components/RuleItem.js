@@ -127,11 +127,7 @@ class RuleItem extends React.Component {
             </button>
         )
         let primaryBtn = (
-            <button
-                type="button"
-                className={classNames('ui positive button', {disabled: !isDirty})}
-                onClick={this._handleSubmit}
-            >
+            <button className={classNames('ui positive button', {disabled: !isDirty})}>
                 Save Changes
             </button>
         )
@@ -178,16 +174,18 @@ class RuleItem extends React.Component {
         }
 
         return (
-            <div className="item">
-                <div className="ui segments">
-                    <Program
-                        {...codeAST}
-                        rule={rule}
-                        actions={actions}
-                    />
-                    {this._renderButtons()}
+            <form onSubmit={this._handleSubmit}>
+                <div className="item">
+                    <div className="ui segments">
+                        <Program
+                            {...codeAST}
+                            rule={rule}
+                            actions={actions}
+                        />
+                        {this._renderButtons()}
+                    </div>
                 </div>
-            </div>
+            </form>
         )
     }
 }

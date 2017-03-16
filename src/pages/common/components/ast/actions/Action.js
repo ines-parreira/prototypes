@@ -26,7 +26,9 @@ export const actionsConfig = {
         name: 'Send Email',
         args: {
             to: {
-                name: 'To'
+                name: 'To',
+                placeholder: 'Don\'t forget to add a recipient!',
+                required: true,
             },
             cc: {
                 name: 'Cc'
@@ -43,7 +45,9 @@ export const actionsConfig = {
             },
             body_html: {
                 name: 'HTML',
-                widget: 'textarea'
+                widget: 'textarea',
+                placeholder: 'If you don\'t want anything specific here, leave this field blank; ' +
+                'we will automatically generate HTML from the Text.'
             }
         }
     },
