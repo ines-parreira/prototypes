@@ -68,7 +68,7 @@ class ChatIntegrationDetail extends React.Component {
                 <p>
                     Chat is provided through Smooch, at no additional cost for you. You can send user data to better
                     identify who you are talking to. Check out {' '}
-                    <a href="http://docs.smooch.io/javascript/" target="_blank">Smooch's documentation</a> to learn
+                    <a href="https://github.com/smooch/smooch-js/#individual-functions" target="_blank">Smooch's documentation</a> to learn
                     how to do it.
                 </p>
             </div>
