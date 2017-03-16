@@ -355,7 +355,7 @@ export function bulkUpdate(activeView, ids, key, value) {
                                 data.updates.priority = action.arguments.priority
                                 break
                             case 'addTags':
-                                data.updates.tags = action.arguments
+                                data.updates.tags = action.arguments.tags
                                 break
                             case 'setAssignee':
                                 data.updates.assignee_user = action.arguments.assignee_user
