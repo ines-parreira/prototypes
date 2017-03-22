@@ -36,7 +36,7 @@ class App extends React.Component {
                 clearInterval(pollInterval)
             }
 
-            pollInterval = setInterval(this.props.pollActivity, 5000)
+            pollInterval = setInterval(this.props.pollActivity, 15000)
         }
 
         this.props.pollActivity()
