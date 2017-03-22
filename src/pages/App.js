@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+import _forEach from 'lodash/forEach'
 import DocumentTitle from 'react-document-title'
 import {fetchUser, fetchUsers} from '../state/users/actions'
 import {fetchSettings} from '../state/settings/actions'
 import {fetchTags} from '../state/tags/actions'
-import {pollActivity} from '../state/activity/actions'
 import Navbar from './common/components/Navbar'
 import {setUserProperties} from '../store/middlewares/amplitudeTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
@@ -16,7 +16,9 @@ import BannerNotifications from './common/components/BannerNotifications/'
 import ModalNotifications from './common/components/ModalNotifications/'
 import '../../css/main.less'
 
-let pollInterval = null
+import * as activityActions from '../state/activity/actions'
+
+const intervals = {}
 class App extends React.Component {
     componentWillMount() {
         this.props.fetchUsers(['agent', 'admin'])
@@ -32,14 +34,14 @@ class App extends React.Component {
         }
 
         if (shouldPoll) {
-            if (pollInterval) {
-                clearInterval(pollInterval)
-            }
+            _forEach(intervals, interval => clearInterval(interval))
 
-            pollInterval = setInterval(this.props.pollActivity, 15000)
+            intervals.activity = setInterval(this.props.pollActivity, 15000)
+            intervals.chats = setInterval(this.props.pollChats, 5000)
         }
 
         this.props.pollActivity()
+        this.props.pollChats()
     }
 
     componentDidMount() {
@@ -105,6 +107,7 @@ App.propTypes = {
     fetchSettings: PropTypes.func.isRequired,
     fetchTags: PropTypes.func.isRequired,
     pollActivity: PropTypes.func.isRequired,
+    pollChats: PropTypes.func.isRequired,
 
     // Injected by React Router
     children: PropTypes.node,
@@ -132,5 +135,6 @@ export default connect(mapStateToProps, {
     fetchUsers,
     fetchSettings,
     fetchTags,
-    pollActivity
+    pollActivity: activityActions.pollActivity,
+    pollChats: activityActions.pollChats,
 })(App)

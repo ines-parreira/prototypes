@@ -40,8 +40,6 @@ export const pollActivity = () => (dispatch, getState) => {
         params.queryView = activeViewId
     }
 
-    const previousTickets = activity.get('tickets', fromJS([]))
-
     return axios.get(`/api/activity/?${toQueryParams(params)}`, {timeout: 10000})
         .then((json = {}) => json.data)
         .then((resp = {}) => {
@@ -76,35 +74,6 @@ export const pollActivity = () => (dispatch, getState) => {
                 })
             }
 
-            const currentTickets = fromJS(resp.tickets || [])
-
-            // comparing previous and current tickets from activity to trigger a sound notification if necessary
-            const shouldSoundNotify = currentTickets
-                .filter(t => t.get('is_unread'))
-                .some((currentTicket) => {
-                    const previousTicket = previousTickets.find(t => t.get('id') === currentTicket.get('id'))
-                    let isNew = false
-
-                    if (!previousTicket) {
-                        // the ticket was not there the previous time, it is a new one
-                        isNew = true
-                    } else if (!previousTicket.get('is_unread')) {
-                        // the ticket had not got something new, but now it has
-                        isNew = true
-                    }
-
-                    // if currently on the ticket, no sound
-                    if (isCurrentlyOnTicket(currentTicket.get('id'))) {
-                        isNew = false
-                    }
-
-                    return isNew
-                })
-
-            if (shouldSoundNotify) {
-                notificationSound.play()
-            }
-
             // TODO @jebarjonet CHECK if something new before fetching
             // if currently on a view, ask for its auto refresh
             const _activeViewId = _views.getIn(['active', 'id'])
@@ -137,6 +106,57 @@ export const pollActivity = () => (dispatch, getState) => {
             }
         }, error => {
             console.error('Failed polling activity', error)
+            return dispatch({
+                type: types.SUBMIT_ACTIVITY_ERROR,
+                error,
+            })
+        })
+}
+
+
+export const pollChats = () => (dispatch, getState) => {
+    const {activity} = getState()
+
+    const previousTickets = activity.get('tickets', fromJS([]))
+
+    return axios.get('/api/activity/chats/', {timeout: 10000})
+        .then((json = {}) => json.data)
+        .then((resp = {}) => {
+            dispatch({
+                type: types.SUBMIT_CHATS_SUCCESS,
+                resp
+            })
+
+            const currentTickets = fromJS(resp.tickets || [])
+
+            // comparing previous and current tickets from activity to trigger a sound notification if necessary
+            const shouldSoundNotify = currentTickets
+                .filter(t => t.get('is_unread'))
+                .some((currentTicket) => {
+                    const previousTicket = previousTickets.find(t => t.get('id') === currentTicket.get('id'))
+                    let isNew = false
+
+                    if (!previousTicket) {
+                        // the ticket was not there the previous time, it is a new one
+                        isNew = true
+                    } else if (!previousTicket.get('is_unread')) {
+                        // the ticket had not got something new, but now it has
+                        isNew = true
+                    }
+
+                    // if currently on the ticket, no sound
+                    if (isCurrentlyOnTicket(currentTicket.get('id'))) {
+                        isNew = false
+                    }
+
+                    return isNew
+                })
+
+            if (shouldSoundNotify) {
+                notificationSound.play()
+            }
+        }, error => {
+            console.error('Failed polling chats', error)
             return dispatch({
                 type: types.SUBMIT_ACTIVITY_ERROR,
                 error,

@@ -19,12 +19,14 @@ export default (state = initialState, action) => {
             return state.setIn(['_internal', 'loading'], false)
 
         case types.SUBMIT_ACTIVITY_SUCCESS: {
-            const tickets = action.resp.tickets
-
             return state.merge({
-                tickets,
                 git_commit: action.resp.git_commit
             }).setIn(['_internal', 'loading'], false)
+        }
+
+        case types.SUBMIT_CHATS_SUCCESS: {
+            const tickets = action.resp.tickets
+            return state.merge({tickets})
         }
 
         case types.TICKET_VIEWED: {
