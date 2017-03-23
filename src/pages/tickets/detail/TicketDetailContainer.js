@@ -111,9 +111,6 @@ class TicketDetailContainer extends React.Component {
         if (ticketId) {
             io.leaveTicket(ticketId)
         }
-        if (requesterId) {
-            io.leaveUser(requesterId)
-        }
     }
 
     _bindKeys() {

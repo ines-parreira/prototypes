@@ -250,9 +250,6 @@ export default (state = initialState, action) => {
             if (ticketId) {
                 io.joinTicket(ticketId)
             }
-            if (requesterId) {
-                io.joinUser(requesterId)
-            }
 
             return newState.set('newMessage', newMessage(
                 getChannelFromSourceType(sourceType, newState.get('messages')),
