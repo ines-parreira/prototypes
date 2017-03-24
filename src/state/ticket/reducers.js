@@ -244,7 +244,6 @@ export default (state = initialState, action) => {
             const sourceType = getSourceTypeOfResponse(newState.get('messages'))
 
             const ticketId = newState.get('id')
-            const requesterId = newState.getIn(['requester', 'id'])
 
             const io = new SocketIO()
             if (ticketId) {
