@@ -110,7 +110,7 @@ class ManageTagsTableRow extends Component {
 
                 <td className="manage-tags-table-col-count">
                     <div className="cell-wrapper manage-tags-table-row-item">
-                        {row.get('count_tickets')}
+                        {row.get('usage_count')}
                     </div>
                 </td>
 

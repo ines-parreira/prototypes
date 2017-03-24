@@ -126,7 +126,7 @@ ManageTagsTable.defaultProps = {
         field: 'name',
     }, {
         title: 'Tickets',
-        field: 'count_tickets',
+        field: 'usage_count',
     }]
 }
 
