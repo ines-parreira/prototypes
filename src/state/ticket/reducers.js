@@ -67,6 +67,7 @@ export const initialState = fromJS({
         },
     },
     messages: [],
+    customer_ratings: [],
     subject: '',
     via: 'helpdesk',
     channel: 'email',

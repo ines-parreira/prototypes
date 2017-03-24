@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import TicketMessage from './TicketMessage'
+import CustomerRating from './CustomerRating'
 
 
 export default class TicketMessages extends React.Component {
@@ -11,21 +12,19 @@ export default class TicketMessages extends React.Component {
     }
 
     render() {
-        const {messages} = this.props
-
+        const {messages, ticket} = this.props
         if (messages.size === 0) {
             return null
         }
         // We concatenate messages and customer ratings.
         // Ratings have a 'rating_datetime' which is equivalent to created_datetime.
-        // const allMessages = messages.concat(ticket.get('customer_ratings')
-        //     .map((cr) => cr.set('isCustomerRating', true).set('created_datetime', cr.get('rating_datetime'))))
-        //     .sortBy((m) => m.get('created_datetime'))
-
+        const allMessages = messages.concat(ticket.get('customer_ratings')
+            .map((cr) => cr.set('isCustomerRating', true).set('created_datetime', cr.get('rating_datetime'))))
+            .sortBy((m) => m.get('created_datetime'))
         return (
             <div className="TicketMessages">
-                {messages.map((message) => {
-                    /* if (message.get('isCustomerRating')) {
+                {allMessages.map((message, index) => {
+                    if (message.get('isCustomerRating')) {
                         return (
                             <CustomerRating
                                 key={`${index.toString()}_rating`}
@@ -33,7 +32,7 @@ export default class TicketMessages extends React.Component {
                                 currentUser={this.props.currentUser}
                             />
                         )
-                    } */
+                    }
 
                     return (
                         <TicketMessage
