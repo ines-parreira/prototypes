@@ -27,7 +27,6 @@ const baseView = () => fromJS({
     display_order: 1,
     created_datetime: new Date(),
     order_dir: 'desc',
-    user: {},
     filters: '',
     filters_ast: {
         sourceType: 'script',
