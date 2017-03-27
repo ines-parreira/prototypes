@@ -125,7 +125,14 @@ class TicketReplyEditor extends React.Component {
     render() {
         const {ticket, newMessageType} = this.props
 
-        const hideActions = !isRichType(newMessageType)
+        const isNewMessageRichType = isRichType(newMessageType)
+
+        const attachmentInputProps = {}
+
+        // if not rich type (like chat or Facebook message), only accept images
+        if (!isNewMessageRichType) {
+            attachmentInputProps.accept = 'image/*'
+        }
 
         return (
             <div className="ui reply form">
@@ -146,7 +153,7 @@ class TicketReplyEditor extends React.Component {
                     canDropFiles
                     readOnly={ticket.getIn(['_internal', 'loading', 'submitMessage'])}
                     toolbarProps={{
-                        hideActions,
+                        hideActions: !isNewMessageRichType,
                         buttons: [
                             <div className="attachment">
                                 <label htmlFor="attachments-input">
@@ -167,6 +174,7 @@ class TicketReplyEditor extends React.Component {
                                     type="file"
                                     multiple
                                     onChange={e => this._handleFiles(e.target.files)}
+                                    {...attachmentInputProps}
                                 />
                             </div>
                         ],
