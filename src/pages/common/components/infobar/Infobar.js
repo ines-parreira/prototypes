@@ -49,35 +49,36 @@ class Infobar extends React.Component {
         // e.g. if we just succeeded a merging
         newState = {data: newState.data.set('shouldResetSearch', wasMerging && !isMerging && modeIsDefault)}
 
+        // todo(@jebarjonet): redo this component
         // Initialization (force search if there's no customer data, auto-open result if there's just one)
-        if (!this.state.data.get('isInitialized') && !nextProps.user.isEmpty()) {
-            const customer = nextProps.user.get('customer', fromJS({}))
-            const hasCustomer = isCustomerDataValid(customer)
-
-            const shouldForceSearch = !hasCustomer && nextProps.user.get('name', '')
-
-            const results = nextProps.infobar.get('searchResults')
-
-            if (shouldForceSearch) {
-                newState = {data: newState.data.set('shouldForceSearch', true)}
-            } else {
-                newState = {data: newState.data.set('isInitialized', true)}
-            }
-
-            if (results.size >= 1) {
-                if (results.size === 1) {
-                    nextProps.actions.infobar.setInfobarMode('default')
-                    newState = {
-                        data: newState.data.merge({
-                            shouldForceSearch: false,
-                            shouldResetSearch: true
-                        })
-                    }
-                }
-
-                newState = {data: newState.data.set('isInitialized', true)}
-            }
-        }
+        // if (!this.state.data.get('isInitialized') && !nextProps.user.isEmpty()) {
+        //     const customer = nextProps.user.get('customer', fromJS({}))
+        //     const hasCustomer = isCustomerDataValid(customer)
+        //
+        //     const shouldForceSearch = !hasCustomer && nextProps.user.get('name', '')
+        //
+        //     const results = nextProps.infobar.get('searchResults')
+        //
+        //     if (shouldForceSearch) {
+        //         newState = {data: newState.data.set('shouldForceSearch', true)}
+        //     } else {
+        //         newState = {data: newState.data.set('isInitialized', true)}
+        //     }
+        //
+        //     if (results.size >= 1) {
+        //         if (results.size === 1) {
+        //             nextProps.actions.infobar.setInfobarMode('default')
+        //             newState = {
+        //                 data: newState.data.merge({
+        //                     shouldForceSearch: false,
+        //                     shouldResetSearch: true
+        //                 })
+        //             }
+        //         }
+        //
+        //         newState = {data: newState.data.set('isInitialized', true)}
+        //     }
+        // }
 
         this.setState(newState)
     }
