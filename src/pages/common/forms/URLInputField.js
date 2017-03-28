@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import ErrorMessage from '../components/ErrorMessage'
 import classNames from 'classnames'
 import _split from 'lodash/split'
@@ -63,7 +63,7 @@ class URLInputField extends React.Component {
     }
 
     render() {
-        const {input, label, meta, placeholder, required} = this.props
+        const {description, input, label, meta, placeholder, required} = this.props
         const fieldClassName = classNames({required}, 'field')
 
         return (
@@ -84,6 +84,11 @@ class URLInputField extends React.Component {
                         placeholder={placeholder}
                     />
                 </div>
+                {
+                    description && (
+                        <div className="text-muted mt5i">{description}</div>
+                    )
+                }
                 {meta.invalid && <ErrorMessage errors={meta.error} />}
                 {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
             </div>
@@ -101,11 +106,12 @@ URLInputField.defaultProps = {
 }
 
 URLInputField.propTypes = {
-    input: React.PropTypes.object.isRequired,
-    meta: React.PropTypes.object.isRequired,
-    label: React.PropTypes.string,
-    placeholder: React.PropTypes.string,
-    required: React.PropTypes.bool,
+    description: PropTypes.node,
+    input: PropTypes.object.isRequired,
+    meta: PropTypes.object.isRequired,
+    label: PropTypes.string,
+    placeholder: PropTypes.string.isRequired,
+    required: PropTypes.bool.isRequired,
 }
 
 export default URLInputField

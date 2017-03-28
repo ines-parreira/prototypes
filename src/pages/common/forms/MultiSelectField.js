@@ -20,7 +20,6 @@ export default class MultiSelectField extends React.Component {
         return (
             <div className={fieldClassName} ref="parent">
                 {label && <label htmlFor={input.name}>{label}</label>}
-                {description ? <p>{description}</p> : null}
                 <div className="fields">
                     {
                         options.map((option, idx) => (
@@ -37,6 +36,11 @@ export default class MultiSelectField extends React.Component {
                         ))
                     }
                 </div>
+                {
+                    description && (
+                        <div className="text-muted">{description}</div>
+                    )
+                }
             </div>
         )
     }
@@ -50,6 +54,6 @@ MultiSelectField.propTypes = {
     input: PropTypes.object.isRequired,
     options: PropTypes.array.isRequired,
     label: PropTypes.string,
-    description: PropTypes.string,
+    description: PropTypes.node,
     required: PropTypes.bool
 }

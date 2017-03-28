@@ -111,13 +111,17 @@ class ShopifyIntegrationDetail extends React.Component {
                 </div>
 
                 <div className="ten wide column">
+                    <p>Let's connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along with
+                        their order information. This way, when they contact you, you'll be able to see their Shopify
+                        information next to tickets. </p>
+
                     <form
                         className="ui form"
                         onSubmit={handleSubmit(this._handleSubmit)}
                     >
                         <Field
                             name="name"
-                            label="Shop Name"
+                            label="Store name"
                             rightLabel=".myshopify.com"
                             maxWidth="50%"
                             placeholder="The name of your Shopify shop"

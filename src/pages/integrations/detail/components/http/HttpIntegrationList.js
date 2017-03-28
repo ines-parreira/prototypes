@@ -7,15 +7,21 @@ export default class HttpIntegrationList extends React.Component {
     render() {
         const {integrations, actions, loading} = this.props
         const longTypeDescription = (
-            <span>
-                HTTP integrations allow you to connect any application to Gorgias.{' '}
-                <a
-                    href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html"
-                    target="_blank"
-                >
-                    Learn more
-                </a> about how to connect apps in our docs.
-            </span>
+            <div>
+                <p>
+                    HTTP integrations allow you to connect any application to Gorgias. For example, when a customer
+                    creates a ticket, you can fetch their last orders on your back-office app, and display them next to
+                    the ticket.
+                </p>
+                <p>
+                    <a
+                        href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html"
+                        target="_blank"
+                    >
+                        Learn more
+                    </a> about how to connect apps in our docs, or contact our support through the chat.
+                </p>
+            </div>
         )
 
         const isSubmitting = loading.get('updateIntegration')

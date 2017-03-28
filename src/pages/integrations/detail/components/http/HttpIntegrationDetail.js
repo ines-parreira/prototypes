@@ -159,7 +159,16 @@ class HttpIntegrationDetail extends React.Component {
                     </div>
 
                     <h1>{isUpdate ? integration.get('name') : 'Add new HTTP integration'}</h1>
-                    <div>Let's configure this HTTP integration.</div>
+                    <div>
+                        Add the details about the HTTP integration you want to add below. If you need help, you can
+                        check our {' '}
+                        <a
+                            href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#your-custom-back-office-app"
+                            target="_blank"
+                        >
+                            docs
+                        </a> or contact us.
+                    </div>
                 </div>
 
                 <div className="ten wide column">
@@ -181,12 +190,36 @@ class HttpIntegrationDetail extends React.Component {
                             component={InputField}
                         />
                         <Field
+                            name="http.triggers"
+                            label="Triggers"
+                            placeholder="Triggers"
+                            description="This HTTP integration will be executed when any of the events below happens."
+                            ref="httpTriggers"
+                            required
+                            component={MultiSelectField}
+                            options={[
+                                {
+                                    label: 'Ticket Created',
+                                    slug: 'ticket-created'
+                                },
+                                {
+                                    label: 'Ticket Updated',
+                                    slug: 'ticket-updated'
+                                }
+                            ]}
+                        />
+                        <Field
                             name="http.url"
                             label="URL"
-                            placeholder="URL"
+                            placeholder="https://company.com/api/users?email={ticket.requester.email}"
                             ref="httpUrl"
                             required
                             component={URLInputField}
+                            description={(
+                                <span>
+                                    You can use <code>{'{ticket.requester.email}'}</code> to pass the email of the requester of the ticket.
+                                </span>
+                            )}
                         />
                         <Field
                             name="http.method"
@@ -233,26 +266,6 @@ class HttpIntegrationDetail extends React.Component {
                             name="http.form"
                             label="Request Body (JSON)"
                             component={JsonField}
-                        />
-
-                        <Field
-                            name="http.triggers"
-                            label="Triggers"
-                            placeholder="Triggers"
-                            description="This HTTP integration will be executed when any of the events below happened"
-                            ref="httpTriggers"
-                            required
-                            component={MultiSelectField}
-                            options={[
-                                {
-                                    label: 'Ticket Created',
-                                    slug: 'ticket-created'
-                                },
-                                {
-                                    label: 'Ticket Updated',
-                                    slug: 'ticket-updated'
-                                }
-                            ]}
                         />
 
                         <div className="field">

@@ -9,7 +9,19 @@ class ShopifyIntegrationList extends React.Component {
     render() {
         const {integrations, actions, loading} = this.props
 
-        const longTypeDescription = 'Shopify is an e-commerce system.'
+        const longTypeDescription = (
+            <div>
+                <p>Shopify is an e-commerce platform. By connecting your Shopify store to Gorgias, you can:</p>
+
+                <ul>
+                    <li>See Shopify profile and orders & shipping status next to support tickets</li>
+                    <li>Edit orders, issue refunds, etc. directly from support conversations</li>
+                    <li>Search users by order number, shipping address and match anonymous chat tickets with existing
+                        Shopify customers
+                    </li>
+                </ul>
+            </div>
+        )
         const isSubmitting = loading.get('updateIntegration')
 
         const integrationToItemDisplay = (int) => {
