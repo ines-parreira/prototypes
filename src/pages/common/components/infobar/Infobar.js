@@ -7,7 +7,7 @@ import InfobarLayout from './InfobarLayout'
 import InfobarUserInfo from './InfobarUserInfo'
 import MergeUsersContainer from './../mergeUsers/MergeUsersContainer'
 import {Loader} from '../Loader'
-import {areSourcesReady, isCustomerDataValid} from './utils'
+import {areSourcesReady} from './utils'
 
 import InfobarSearchResultsList from './InfobarSearchResultsList'
 import Search from '../Search'
