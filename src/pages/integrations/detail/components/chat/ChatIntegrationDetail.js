@@ -201,7 +201,7 @@ class ChatIntegrationDetail extends React.Component {
                         className={classnames(css.copy, 'ui light blue icon button right labeled')}
                         data-clipboard-target="#chat-snippet"
                     >
-                        <i className="copy icon"/>
+                        <i className="copy icon" />
                         {
                             this.state.isCopied ? 'COPIED!' : 'COPY'
                         }
@@ -210,8 +210,8 @@ class ChatIntegrationDetail extends React.Component {
                 <p>
                     This chat is provided through a 3rd party called Smooch, at no additional cost. You can send user
                     data to better
-                    identify who you are talking to. Check out
-                    <a href="http://docs.smooch.io/javascript/" target="_blank">their documentation</a> to learn how
+                    identify who you are talking to. Check out <a href="http://docs.smooch.io/javascript/"
+                                                                  target="_blank">their documentation</a> to learn how
                     to do it.
                 </p>
             </div>
@@ -233,15 +233,17 @@ class ChatIntegrationDetail extends React.Component {
 
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider"/>
+                        <i className="right angle icon divider" />
                         <Link to="/app/integrations/smooch_inside" className="section">Chat</Link>
-                        <i className="right angle icon divider"/>
+                        <i className="right angle icon divider" />
                         <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
                     </div>
 
                     <h1>{isUpdate ? integration.get('name') : 'Add new chat'}</h1>
 
                     {this._renderInstructions(isUpdate, isSubmitting)}
+
+                    <br />
 
                     <div className="ui grid">
                         <div className="eight wide column">
@@ -262,7 +264,7 @@ class ChatIntegrationDetail extends React.Component {
                                                 <span>
                                                     Chat title
                                                     <span ref="chatTitleTooltip">
-                                                        <i className="help circle link icon"/>
+                                                        <i className="help circle link icon" />
                                                     </span>
                                                     <div className="ui inverted popup">
                                                         Can be set only once! If you want to change the title create
@@ -285,7 +287,7 @@ class ChatIntegrationDetail extends React.Component {
                                                 <span>
                                                     Company icon
                                                     <span ref="companyIconTooltip">
-                                                        <i className="help circle link icon"/>
+                                                        <i className="help circle link icon" />
                                                     </span>
                                                     <div className="ui inverted popup">
                                                         The image must have a square format. Example: 200x200 pixels.
