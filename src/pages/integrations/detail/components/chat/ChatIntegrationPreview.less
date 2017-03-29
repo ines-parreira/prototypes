@@ -1,218 +1,215 @@
-/* ChatIntegrationPreview
- */
-
 :local {
-    @primary: #0097ff;
-    @gray: #c8cbd0;
+  @primary: #0097ff;
+  @gray: #c8cbd0;
 
-    .preview {
-        overflow: hidden;
-        padding: 2.4em;
-        background: #f8f9fa;
-        border-radius: 5px;
+  .preview {
+    overflow: hidden;
+    padding: 2.4em;
+    background: #f8f9fa;
+    border-radius: 5px;
+    width: 30em;
 
-        pointer-events: none;
+    pointer-events: none;
 
-        > .titlebar {
-            display: block;
-            height: 2em;
-            padding-left: .4em;
-            margin: -2.4em -2.4em 2em;
-            background-color: #edeeef;
+    > .titlebar {
+      display: block;
+      height: 2em;
+      padding-left: .4em;
+      margin: -2.4em -2.4em 2em;
+      background-color: #edeeef;
 
-        }
-
-        > .titlebar:before {
-            display: block;
-            width: 4.2em;
-            height: 100%;
-            content: '';
-            background-image: radial-gradient(ellipse at center,
-                #f8f9fa 0%,
-                #f8f9fa 45%,
-                transparent 45%);
-            background-repeat: repeat-x;
-            background-size: 1.4em 1.4em;
-            background-position: 0 center;
-        }
     }
 
-    .dialog {
-        overflow: hidden;
-        width: 100%;
-        background: #fff;
-        border: 0;
-        margin-bottom: 1em;
-        background: #fff;
-        border-radius: 5px;
-        box-shadow: 0 4px 1em rgba(0,0,0,.12);
+    > .titlebar:before {
+      display: block;
+      width: 4.2em;
+      height: 100%;
+      content: '';
+      background-image: radial-gradient(ellipse at center,
+      #f8f9fa 0%,
+      #f8f9fa 45%,
+      transparent 45%);
+      background-repeat: repeat-x;
+      background-size: 1.4em 1.4em;
+      background-position: 0 center;
+    }
+  }
 
-        .titlebar {
-            position: relative;
-            padding: .4em 1.6em;
-            background: @primary;
+  .dialog {
+    overflow: hidden;
+    width: 100%;
+    background: #fff;
+    border: 0;
+    margin-bottom: 1em;
+    border-radius: 5px;
+    box-shadow: 0 4px 1em rgba(0, 0, 0, .12);
 
-            color: #fff;
-            text-align: center;
+    .titlebar {
+      position: relative;
+      padding: .4em 1.6em;
+      background: @primary;
 
-            .icon.times {
-                position: absolute;
-                top: 50%;
-                right: .8em;
-                transform: translateY(-50%);
-            }
-        }
+      color: #fff;
+      text-align: center;
 
-        .header {
-            display: flex;
-            flex-direction: row;
-            padding: 1.2em .8em;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e9e9e9;
-        }
-
-        .details {
-            overflow: hidden;
-            flex: 1;
-            padding-left: .8em;
-
-            h2 {
-                margin-bottom: 0;
-
-                font-size: 1.2em;
-            }
-        }
-
-        .content {
-            overflow: hidden;
-            padding: 12em .8em .4em;
-        }
+      .icon.times {
+        position: absolute;
+        top: 50%;
+        right: .8em;
+        transform: translateY(-50%);
+      }
     }
 
-    .brand {
-        float: left;
-        width: 2.8em;
-        height: 2.8em;
+    .header {
+      display: flex;
+      flex-direction: row;
+      padding: 1.2em .8em;
+      background: #f8f9fa;
+      border-bottom: 1px solid #e9e9e9;
     }
 
-    .brand .image {
-        display: block;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        border-radius: 50%;
-        background-size: cover;
+    .details {
+      overflow: hidden;
+      flex: 1;
+      padding-left: .8em;
+
+      h2 {
+        margin-bottom: 0;
+
+        font-size: 1.2em;
+      }
     }
 
-    .brand .icon {
-        width: inherit;
-        height: inherit;
+    .content {
+      overflow: hidden;
+      padding: 12em .8em .4em;
+    }
+  }
+
+  .brand {
+    float: left;
+    width: 2.8em;
+    height: 2.8em;
+  }
+
+  .brand .image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 50%;
+    background-size: cover;
+  }
+
+  .brand .icon {
+    width: inherit;
+    height: inherit;
+  }
+
+  .icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-size: cover;
+
+    &.camera {
+      background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M896 672q119 0 203.5 84.5t84.5 203.5-84.5 203.5-203.5 84.5-203.5-84.5-84.5-203.5 84.5-203.5 203.5-84.5zm704-416q106 0 181 75t75 181v896q0 106-75 181t-181 75h-1408q-106 0-181-75t-75-181v-896q0-106 75-181t181-75h224l51-136q19-49 69.5-84.5t103.5-35.5h512q53 0 103.5 35.5t69.5 84.5l51 136h224zm-704 1152q185 0 316.5-131.5t131.5-316.5-131.5-316.5-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5z" fill="@{gray}"/></svg>');
+    }
+
+    &.comments {
+      background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1408 768q0 139-94 257t-256.5 186.5-353.5 68.5q-86 0-176-16-124 88-278 128-36 9-86 16h-3q-11 0-20.5-8t-11.5-21q-1-3-1-6.5t.5-6.5 2-6l2.5-5 3.5-5.5 4-5 4.5-5 4-4.5q5-6 23-25t26-29.5 22.5-29 25-38.5 20.5-44q-124-72-195-177t-71-224q0-139 94-257t256.5-186.5 353.5-68.5 353.5 68.5 256.5 186.5 94 257zm384 256q0 120-71 224.5t-195 176.5q10 24 20.5 44t25 38.5 22.5 29 26 29.5 23 25q1 1 4 4.5t4.5 5 4 5 3.5 5.5l2.5 5 2 6 .5 6.5-1 6.5q-3 14-13 22t-22 7q-50-7-86-16-154-40-278-128-90 16-176 16-271 0-472-132 58 4 88 4 161 0 309-45t264-129q125-92 192-212t67-254q0-77-23-152 129 71 204 178t75 230z" fill="@{primary}"/></svg>');
+    }
+
+    &.times {
+      background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z" fill="#fff"/></svg>')
+    }
+  }
+
+  .bubble {
+    float: left;
+    clear: both;
+    width: 60%;
+    padding: .4em;
+    margin-bottom: .8em;
+    background: #f4f4f4;
+    border-radius: 5px;
+
+    line-height: 1.2em;
+
+    &.primary {
+      float: right;
+      background: @primary;
+
+      color: #fff;
+    }
+  }
+
+  .user {
+    float: left;
+    clear: both;
+    padding: 0 .4em;
+
+    color: @gray;
+  }
+
+  .poweredby {
+    clear: both;
+
+    color: @gray;
+    font-size: .84em;
+    text-align: center;
+  }
+
+  .footer {
+    overflow: hidden;
+    padding: .4em;
+    border-top: 1px solid #efefef;
+
+    color: @gray;
+
+    .icon,
+    .placeholder {
+      display: inline-block;
+
+      vertical-align: middle;
     }
 
     .icon {
-        display: inline-block;
-        width: 1em;
-        height: 1em;
-        background-size: cover;
-
-        &.camera {
-            background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M896 672q119 0 203.5 84.5t84.5 203.5-84.5 203.5-203.5 84.5-203.5-84.5-84.5-203.5 84.5-203.5 203.5-84.5zm704-416q106 0 181 75t75 181v896q0 106-75 181t-181 75h-1408q-106 0-181-75t-75-181v-896q0-106 75-181t181-75h224l51-136q19-49 69.5-84.5t103.5-35.5h512q53 0 103.5 35.5t69.5 84.5l51 136h224zm-704 1152q185 0 316.5-131.5t131.5-316.5-131.5-316.5-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5z" fill="@{gray}"/></svg>');
-        }
-
-        &.comments {
-            background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1408 768q0 139-94 257t-256.5 186.5-353.5 68.5q-86 0-176-16-124 88-278 128-36 9-86 16h-3q-11 0-20.5-8t-11.5-21q-1-3-1-6.5t.5-6.5 2-6l2.5-5 3.5-5.5 4-5 4.5-5 4-4.5q5-6 23-25t26-29.5 22.5-29 25-38.5 20.5-44q-124-72-195-177t-71-224q0-139 94-257t256.5-186.5 353.5-68.5 353.5 68.5 256.5 186.5 94 257zm384 256q0 120-71 224.5t-195 176.5q10 24 20.5 44t25 38.5 22.5 29 26 29.5 23 25q1 1 4 4.5t4.5 5 4 5 3.5 5.5l2.5 5 2 6 .5 6.5-1 6.5q-3 14-13 22t-22 7q-50-7-86-16-154-40-278-128-90 16-176 16-271 0-472-132 58 4 88 4 161 0 309-45t264-129q125-92 192-212t67-254q0-77-23-152 129 71 204 178t75 230z" fill="@{primary}"/></svg>');
-        }
-
-        &.times {
-            background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z" fill="#fff"/></svg>')
-        }
+      margin-right: .8em;
     }
 
-    .bubble {
-        float: left;
-        clear: both;
-        width: 60%;
-        padding: .4em;
-        margin-bottom: .8em;
-        background: #f4f4f4;
-        border-radius: 5px;
+    button {
+      float: right;
+      border: 0;
+      background: transparent;
 
-        line-height: 1.2em;
-
-        &.primary {
-            float: right;
-            background: @primary;
-
-            color: #fff;
-        }
+      font-weight: bold;
     }
+  }
 
-    .user {
-        float: left;
-        clear: both;
-        padding: 0 .4em;
+  .button {
+    float: right;
+    width: 3.625em;
+    height: 3.625em;
+    background: @primary;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
 
-        color: @gray;
+    .icon {
+      display: inline-block;
+      width: 55%;
+      height: 55%;
+      margin-left: 50%;
+      margin-top: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible; shape-rendering: geometricPrecision;"><filter id="dots"><feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur><feOffset dx="0" dy="4" result="offsetblur"></feOffset><feComponentTransfer><feFuncA type="linear" slope="0.4"></feFuncA></feComponentTransfer><feComposite operator="in" in2="offsetblur"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><path fill="#fff" filter="url(#dots)" d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"></path></svg>');
+      background-size: cover;
     }
+  }
 
-    .poweredby {
-        clear: both;
-
-        color: @gray;
-        font-size: .84em;
-        text-align: center;
-    }
-
-    .footer {
-        overflow: hidden;
-        padding: .4em;
-        border-top: 1px solid #efefef;
-
-        color: @gray;
-
-        .icon,
-        .placeholder {
-            display: inline-block;
-
-            vertical-align: middle;
-        }
-
-        .icon {
-            margin-right: .8em;
-        }
-
-        button {
-            float: right;
-            border: 0;
-            background: transparent;
-
-            font-weight: bold;
-        }
-    }
-
-    .button {
-        float: right;
-        width: 3.625em;
-        height: 3.625em;
-        background: @primary;
-        border-radius: 50%;
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
-
-        .icon {
-            display: inline-block;
-            width: 55%;
-            height: 55%;
-            margin-left: 50%;
-            margin-top: 50%;
-            transform: translate(-50%,-50%);
-            background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible; shape-rendering: geometricPrecision;"><filter id="dots"><feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur><feOffset dx="0" dy="4" result="offsetblur"></feOffset><feComponentTransfer><feFuncA type="linear" slope="0.4"></feFuncA></feComponentTransfer><feComposite operator="in" in2="offsetblur"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><path fill="#fff" filter="url(#dots)" d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"></path></svg>');
-            background-size: cover;
-        }
-    }
-
-    // shrink dialog and chat button
-    .dialog,
-    .button {
-        font-size: .72em;
-    }
+  // shrink dialog and chat button
+  .dialog,
+  .button {
+    font-size: 1em;
+  }
 }
