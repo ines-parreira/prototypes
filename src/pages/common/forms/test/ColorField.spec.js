@@ -1,12 +1,11 @@
 import expect from 'expect'
 import React from 'react'
 import TestUtils from 'react-addons-test-utils'
-import {colors} from '../InputColor'
-import InputColor from '../InputColor'
+import ColorField from '../ColorField'
 
 function setup(props) {
     const renderer = TestUtils.createRenderer()
-    renderer.render(<InputColor {...props} />)
+    renderer.render(<ColorField {...props} />)
     const output = renderer.getRenderOutput()
 
     return {
@@ -16,22 +15,26 @@ function setup(props) {
     }
 }
 
-describe('InputColor component', () => {
+describe('ColorField component', () => {
     it('without value', () => {
-        const {output} = setup()
-        expect(output.props.children.some((child) => {
+        const {output} = setup({
+            input: {}
+        })
+        expect(output.props.children[1].props.children.some((child) => {
             return (child.type === 'input' &&
                 child.props.type === 'text' &&
-                child.props.value === colors[0])
+                !child.props.value)
         })).toBe(true)
     })
 
     it('with value', () => {
         const value = 'mock value'
         const {output} = setup({
-            value
+            input: {
+                value
+            }
         })
-        expect(output.props.children.some((child) => {
+        expect(output.props.children[1].props.children.some((child) => {
             return (child.type === 'input' &&
                 child.props.type === 'text' &&
                 child.props.value === value)

@@ -1,0 +1,36 @@
+/* FileField
+ */
+
+ :local {
+    .button {
+        display: inline-block !important;
+
+        vertical-align: top;
+        cursor: pointer;
+
+        input {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+    }
+
+    .preview {
+        height: 2.8em;
+        margin-left: 1em;
+    }
+
+    .preview,
+    .preview img {
+        display: inline-block !important;
+
+        vertical-align: top !important;
+    }
+
+    .preview img {
+        max-height: 100%;
+    }
+}

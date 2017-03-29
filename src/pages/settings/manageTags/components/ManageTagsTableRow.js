@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react'
-import InputColor from '../../../common/components/InputColor'
+import {ColorField} from '../../../common/forms'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {TagLabel} from '../../../common/utils/labels'
@@ -62,9 +62,9 @@ class ManageTagsTableRow extends Component {
         })
     }
 
-    _changeColor = (e) => {
+    _changeColor = (color) => {
         this.setState({
-            decoration: this.state.decoration.set('color', e.target.value)
+            decoration: this.state.decoration.set('color', color)
         })
     }
 
@@ -103,7 +103,10 @@ class ManageTagsTableRow extends Component {
                         </div>
 
                         <div className="manage-tags-input-color">
-                            <InputColor value={this.state.decoration.get('color')} onChange={this._changeColor} />
+                            <ColorField input={{
+                                value: this.state.decoration.get('color'),
+                                onChange: this._changeColor
+                            }}/>
                         </div>
                     </div>
                 </td>

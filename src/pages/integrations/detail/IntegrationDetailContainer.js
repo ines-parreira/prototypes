@@ -50,7 +50,7 @@ class IntegrationDetailContainer extends React.Component {
     }
 
     render() {
-        const {actions, integrations, params, settings} = this.props
+        const {actions, integrations, params, settings, getFormValues, currentUser} = this.props
 
         if (!settings.get('loaded')) {
             return null
@@ -162,6 +162,8 @@ class IntegrationDetailContainer extends React.Component {
                             integration={commonProps.integration}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
+                            getFormValues={getFormValues}
+                            currentUser={currentUser}
                         />
                     )
                 }
@@ -231,13 +233,17 @@ IntegrationDetailContainer.propTypes = {
         integrationId: PropTypes.string
     }).isRequired,
     settings: PropTypes.object.isRequired,
-    getRedirectUri: PropTypes.func.isRequired
+    getRedirectUri: PropTypes.func.isRequired,
+    getFormValues: PropTypes.func.isRequired,
+    currentUser: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
     integrations: state.integrations,
     settings: state.settings,
-    getRedirectUri: IntegrationsSelectors.makeGetRedirectUri(state)
+    getRedirectUri: IntegrationsSelectors.makeGetRedirectUri(state),
+    currentUser: state.currentUser,
+    getFormValues: IntegrationsSelectors.makeGetFormValues(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

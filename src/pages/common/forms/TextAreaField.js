@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 export default class TextAreaField extends React.Component {
     render() {
-        const {input, label, placeholder, required} = this.props
+        const {input, label, placeholder, required, rows} = this.props
         const props = input
 
         if (required) {
@@ -18,6 +18,7 @@ export default class TextAreaField extends React.Component {
                 {label && <label htmlFor={input.name}>{label}</label>}
                 <textarea
                     {...props}
+                    rows={rows}
                     placeholder={placeholder}
                 />
             </div>
@@ -26,7 +27,7 @@ export default class TextAreaField extends React.Component {
 }
 
 TextAreaField.defaultProps = {
-    required: false,
+    required: false
 }
 
 TextAreaField.propTypes = {
@@ -34,4 +35,5 @@ TextAreaField.propTypes = {
     label: React.PropTypes.string,
     placeholder: React.PropTypes.string,
     required: React.PropTypes.bool,
+    rows: React.PropTypes.string
 }

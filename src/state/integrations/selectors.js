@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
+import {getFormValues} from 'redux-form'
 
 export const getIntegrationsState = state => state.integrations || fromJS({})
 
@@ -61,3 +62,5 @@ export const getRedirectUri = type => createSelector(
 )
 
 export const makeGetRedirectUri = state => type => getRedirectUri(type)(state)
+
+export const makeGetFormValues = state => form => getFormValues(form)(state)

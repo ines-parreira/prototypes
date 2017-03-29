@@ -1,0 +1,62 @@
+/* ChatIntegrationDetail
+ */
+
+:local {
+    .form {
+        display: flex;
+        margin-bottom: 2em;
+    }
+
+    .fieldset {
+        flex: 1;
+        padding-right: 2em;
+    }
+
+    .preview {
+        width: 20em;
+    }
+
+    .snippet {
+        position: relative;
+        margin-bottom: 1em;
+
+        textarea {
+            padding: .8em !important;
+            width: 100%;
+            margin: 0 !important;
+
+            font-family: monospace;
+        }
+
+        .copy {
+            position: absolute !important;
+            right: 1em;
+            bottom: 1.2em;
+            z-index: 1;
+        }
+
+        .update {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            background-color: rgba(255,248,219,.94) !important;
+            height: 100%;
+            width: 100%;
+
+            p {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                overflow: hidden;
+                padding: 1.5em;
+                transform: translateY(-50%);
+            }
+
+            button {
+                margin-top: -.6em;
+            }
+        }
+    }
+}
