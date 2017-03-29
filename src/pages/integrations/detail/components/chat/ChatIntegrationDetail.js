@@ -187,8 +187,13 @@ class ChatIntegrationDetail extends React.Component {
                             </div>
                         ) : ''}
 
-                    <textarea className="ui info message" id="chat-snippet" value={this._renderSnippet(integration)}
-                              rows="12" readOnly></textarea>
+                    <textarea
+                        className="ui info message"
+                        id="chat-snippet"
+                        value={this._renderSnippet(integration)}
+                        rows="12"
+                        readOnly
+                    />
 
                     <button
                         id="copy-chat-snippet"
@@ -205,8 +210,8 @@ class ChatIntegrationDetail extends React.Component {
                 <p>
                     This chat is provided through a 3rd party called Smooch, at no additional cost. You can send user
                     data to better
-                    identify who you are talking to. Check out <a href="http://docs.smooch.io/javascript/"
-                                                                  target="_blank">their documentation</a> to learn how
+                    identify who you are talking to. Check out
+                    <a href="http://docs.smooch.io/javascript/" target="_blank">their documentation</a> to learn how
                     to do it.
                 </p>
             </div>
