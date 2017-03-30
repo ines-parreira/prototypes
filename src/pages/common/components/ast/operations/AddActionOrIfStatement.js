@@ -50,7 +50,7 @@ class AddActionOrIfStatement extends React.Component {
                 type: 'CallExpression',
                 callee: {
                     type: 'Identifier',
-                    name: 'equal'
+                    name: 'eq'
                 },
                 arguments: [
                     {
