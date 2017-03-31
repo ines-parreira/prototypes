@@ -80,7 +80,10 @@ class ActionButton extends React.Component {
         const actionConfig = getActionByName(this.props.actionName)
 
         if (actionConfig) {
-            logEvent(`Execute action infobar: ${actionConfig.label}`)
+            logEvent('Execute action infobar', {
+                type: this.context.integration.get('type'),
+                name: actionConfig.label,
+            })
         }
 
         this.props.executeAction(
