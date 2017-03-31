@@ -14,12 +14,30 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 
 import css from './Page.less'
 
-class Page extends React.Component {
+@withRouter
+@connect((state, ownProps) => {
+    const config = viewsSelectors.getViewConfig(ownProps.type)
+
+    return {
+        activeView: viewsSelectors.getActiveView(state),
+        config,
+        currentPage: ownProps.location.query.page || 1,
+        getView: viewsSelectors.makeGetView(state),
+        getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
+        hasActiveView: viewsSelectors.hasActiveViewOfType(config.get('type'))(state),
+    }
+}, {
+    fetchPage: viewsActions.fetchPage,
+    setViewActive: viewsActions.setViewActive,
+    updateView: viewsActions.updateView,
+})
+export default class Page extends React.Component {
     static propTypes = {
         // a React element not instantiated is a function
         ActionsComponent: PropTypes.func,
         activeView: ImmutablePropTypes.map.isRequired,
         config: ImmutablePropTypes.map.isRequired,
+        currentPage: PropTypes.string.isRequired,
         fetchPage: PropTypes.func.isRequired,
         getViewIdToDisplay: PropTypes.func.isRequired,
         getView: PropTypes.func.isRequired,
@@ -49,7 +67,7 @@ class Page extends React.Component {
         }
 
         this.props.setViewActive(this.props.getView(suggestedViewId))
-        this.props.fetchPage(1, shouldFetchDiscreetly)
+        this.props.fetchPage(this.props.currentPage, shouldFetchDiscreetly)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -59,10 +77,15 @@ class Page extends React.Component {
         const currentSuggestedViewId = getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
         const nextSuggestedViewId = getViewIdToDisplay(nextProps.config.get('type'), nextProps.urlViewId)
 
+        // if on the same view but page changed, fetch the new page
+        if (currentSuggestedViewId === nextSuggestedViewId && this.props.currentPage !== nextProps.currentPage) {
+            return this.props.fetchPage(nextProps.currentPage)
+        }
+
         // entering search mode
         if (!this.props.isSearch && nextProps.isSearch) {
             this.props.updateView(config.get('searchView')(this._searchQuery(nextProps)), false)
-            return this.props.fetchPage(1)
+            return this.props.fetchPage(nextProps.currentPage)
         }
 
         // entering "add new" mode
@@ -140,24 +163,4 @@ class Page extends React.Component {
         )
     }
 }
-
-const mapStateToProps = (state, ownProps) => {
-    const config = viewsSelectors.getViewConfig(ownProps.type)
-
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        config,
-        getView: viewsSelectors.makeGetView(state),
-        getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
-        hasActiveView: viewsSelectors.hasActiveViewOfType(config.get('type'))(state),
-    }
-}
-
-const mapDispatchToProps = {
-    fetchPage: viewsActions.fetchPage,
-    setViewActive: viewsActions.setViewActive,
-    updateView: viewsActions.updateView,
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Page))
 

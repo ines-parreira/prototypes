@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
+import {browserHistory} from 'react-router'
 import {Loader} from '../Loader'
 import BlankState from '../BlankState'
 import SemanticPaginator from '../SemanticPaginator'
@@ -15,7 +16,20 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 
 import css from './Table.less'
 
-class Table extends React.Component {
+@connect((state, ownProps) => {
+    return {
+        activeView: viewsSelectors.getActiveView(state),
+        config: viewsSelectors.getViewConfig(ownProps.type),
+        isLoading: viewsSelectors.makeIsLoading(state),
+        pagination: viewsSelectors.getPagination(state),
+        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+    }
+}, {
+    fetchPage: viewsActions.fetchPage,
+    toggleSelection: viewsActions.toggleSelection,
+    resetView: viewsActions.resetView,
+})
+export default class Table extends React.Component {
     static propTypes = {
         activeView: ImmutablePropTypes.map.isRequired,
         config: ImmutablePropTypes.map.isRequired,
@@ -144,7 +158,12 @@ class Table extends React.Component {
                 <SemanticPaginator
                     page={pagination.get('page')}
                     totalPages={pagination.get('nb_pages')}
-                    onChange={(page) => this.props.fetchPage(page)}
+                    onChange={(page) => {
+                        // update page query param of current location (add/update "page" param)
+                        const location = Object.assign({}, browserHistory.getCurrentLocation())
+                        Object.assign(location.query, {page})
+                        browserHistory.push(location)
+                    }}
                     radius={1}
                     anchor={2}
                 />
@@ -152,22 +171,4 @@ class Table extends React.Component {
         )
     }
 }
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        config: viewsSelectors.getViewConfig(ownProps.type),
-        isLoading: viewsSelectors.makeIsLoading(state),
-        pagination: viewsSelectors.getPagination(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-    }
-}
-
-const mapDispatchToProps = {
-    fetchPage: viewsActions.fetchPage,
-    toggleSelection: viewsActions.toggleSelection,
-    resetView: viewsActions.resetView,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Table)
 

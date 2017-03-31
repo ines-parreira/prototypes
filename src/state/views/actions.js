@@ -285,7 +285,7 @@ export function fetchPage(page, discreet = false) {
                 // if the current view id the same as the received one
                 const isCurrent = views.getIn(['_internal', 'currentViewId']) === viewId
                     // is the current page the same as the received one
-                    && views.getIn(['_internal', 'pagination', 'page'], 1) === data.meta.page
+                    && views.getIn(['_internal', 'pagination', 'page'], 1).toString() === data.meta.page.toString()
                     // (if somebody has modified the filters while the request was done)
                     && filtersHash === getHashOfObj(viewsSelectors.getActiveViewFilters(getState()))
 
