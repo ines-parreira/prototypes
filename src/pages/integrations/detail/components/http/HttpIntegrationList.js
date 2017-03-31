@@ -10,12 +10,12 @@ export default class HttpIntegrationList extends React.Component {
             <div>
                 <p>
                     HTTP integrations allow you to connect any application to Gorgias. For example, when a customer
-                    creates a ticket, you can fetch their last orders on your back-office app, and display them next to
-                    the ticket.
+                    creates a ticket, you can fetch their last orders from your back-office app, and display them
+                    next to the ticket.
                 </p>
                 <p>
                     <a
-                        href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html"
+                        href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#your-custom-back-office-app"
                         target="_blank"
                     >
                         Learn more

@@ -36,8 +36,8 @@ class URLInputField extends React.Component {
     _getProtocol = (value) => {
         const urlArray = _split(value, ':')
 
-        // If there's no protocol specified in the URL, set `http://` as default
-        return urlArray.length > 1 ? `${urlArray[0]}://` : 'http://'
+        // If there's no protocol specified in the URL, set `https://` as default
+        return urlArray.length > 1 ? `${urlArray[0]}://` : 'https://'
     }
 
     _trimProtocol = (value) => _replace(value, /^http[s]?:\/\//, '')
@@ -71,11 +71,11 @@ class URLInputField extends React.Component {
                 {label && <label htmlFor={input.name}>{label}</label>}
                 <div className="ui labeled input">
                     <div ref="urlDropdown" className="ui dropdown label">
-                        <div className="text">http://</div>
+                        <div className="text">https://</div>
                         <i className="dropdown icon" />
                         <div className="menu">
-                            <div className="item">http://</div>
                             <div className="item">https://</div>
+                            <div className="item">http://</div>
                         </div>
                     </div>
                     <input

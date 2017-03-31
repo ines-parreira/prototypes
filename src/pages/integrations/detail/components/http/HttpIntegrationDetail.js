@@ -152,9 +152,9 @@ class HttpIntegrationDetail extends React.Component {
 
                     <div className="ui large breadcrumb">
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider" />
+                        <i className="right angle icon divider"/>
                         <Link to="/app/integrations/http" className="section">HTTP</Link>
-                        <i className="right angle icon divider" />
+                        <i className="right angle icon divider"/>
                         <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
                     </div>
 
@@ -193,7 +193,7 @@ class HttpIntegrationDetail extends React.Component {
                             name="http.triggers"
                             label="Triggers"
                             placeholder="Triggers"
-                            description="This HTTP integration will be executed when any of the events below happens."
+                            description="This HTTP integration will be executed when any of the events above happens."
                             ref="httpTriggers"
                             required
                             component={MultiSelectField}
@@ -211,19 +211,21 @@ class HttpIntegrationDetail extends React.Component {
                         <Field
                             name="http.url"
                             label="URL"
-                            placeholder="https://company.com/api/users?email={ticket.requester.email}"
+                            placeholder="company.com/api/users?email={ticket.requester.email}"
                             ref="httpUrl"
                             required
                             component={URLInputField}
                             description={(
                                 <span>
-                                    You can use <code>{'{ticket.requester.email}'}</code> to pass the email of the requester of the ticket.
+                                    You can use <code>{'{ticket.requester.email}'}</code> to pass the email of the
+                                    ticket requester. See other <a href="http://docs.gorgias.io/#/definitions/User"
+                                                                   target="_blank">vars</a>.
                                 </span>
                             )}
                         />
                         <Field
                             name="http.method"
-                            label="Method"
+                            label="HTTP Method"
                             placeholder="Method"
                             required
                             component={SelectField}
