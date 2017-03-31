@@ -17,11 +17,12 @@ import css from './Page.less'
 @withRouter
 @connect((state, ownProps) => {
     const config = viewsSelectors.getViewConfig(ownProps.type)
+    const currentPage = ownProps.location.query.page || 1
 
     return {
         activeView: viewsSelectors.getActiveView(state),
         config,
-        currentPage: ownProps.location.query.page || 1,
+        currentPage: currentPage.toString(),
         getView: viewsSelectors.makeGetView(state),
         getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
         hasActiveView: viewsSelectors.hasActiveViewOfType(config.get('type'))(state),
