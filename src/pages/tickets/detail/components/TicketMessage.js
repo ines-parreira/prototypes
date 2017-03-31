@@ -10,16 +10,14 @@ import {DatetimeLabel, AgentLabel} from '../../../common/utils/labels'
 import {getValuePropFromSourceType} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
 
+import css from './TicketMessage.less'
+
 export default class TicketMessage extends React.Component {
     componentDidMount() {
-        $('#email-dropdown', this.refs.ticketMessage).dropdown({
+        $(this.refs.sourceDropdown).dropdown({
             on: 'hover',
             action: 'nothing'
         })
-        // $('#option-dropdown', this.refs.ticketMessage).dropdown({
-        //     on: 'hover',
-        //     action: 'nothing'
-        // })
     }
 
     renderAttachment(message) {
@@ -92,7 +90,7 @@ export default class TicketMessage extends React.Component {
 
         return (
             <span className="ticket-message-source">
-                <div className="ui dropdown" id="email-dropdown">
+                <div className="ui dropdown" ref="sourceDropdown">
                     <span className="text">
                         <i className={`icon ${icons[source.type]}`} />
                         {legend}
@@ -198,7 +196,7 @@ export default class TicketMessage extends React.Component {
 
         const loading = (pending && !error) || this.props.loading
 
-        const className = classNames('ui raw segment ticket-message',
+        const className = classNames('ui raw segment ticket-message', css.component,
             {
                 'ticket-message-agent': message.from_agent,
                 internal: !message.public,
@@ -207,14 +205,14 @@ export default class TicketMessage extends React.Component {
         )
 
         return (
-            <div className={className} ref="ticketMessage">
+            <div className={className}>
                 {
                     !loading && error && this._renderActionFailed(message.id, ticket.get('id'), message.actions)
                 }
                 {
                     !loading && message.failed_datetime && this._renderMessageNotSent(message.id, ticket.get('id'))
                 }
-                <div className="ticket-message-header">
+                <div className={classNames('ticket-message-header', css.header)}>
                     <div className="ticket-message-header-details">
                         {message.from_agent && <AgentLabel />}
 
@@ -268,7 +266,6 @@ export default class TicketMessage extends React.Component {
 TicketMessage.propTypes = {
     message: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
-    deleteMessage: PropTypes.func.isRequired,
     ticket: PropTypes.object,
     currentUser: PropTypes.object.isRequired
 }

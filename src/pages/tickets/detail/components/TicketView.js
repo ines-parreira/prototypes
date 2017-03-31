@@ -6,7 +6,7 @@ import classnames from 'classnames'
 
 import TicketHeader from './TicketHeader'
 
-import TicketMessages from './TicketMessages'
+import TicketBody from './TicketBody'
 
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
@@ -34,10 +34,6 @@ export class TicketView extends React.Component {
         }
     }
 
-    deleteMessage = (messageId) => {
-        this.props.actions.ticket.deleteMessage(this.props.ticket.get('id'), messageId)
-    }
-
     _handlePreSubmit = (...args) => {
         if (this.refs.newMessageForm.checkValidity()) {
             this.statusParams = args
@@ -52,17 +48,9 @@ export class TicketView extends React.Component {
     }
 
     _renderMessages = (isCreating = false) => {
-        const {ticket} = this.props
-
         if (!isCreating) {
             return (
-                <TicketMessages
-                    currentUser={this.props.currentUser}
-                    messages={ticket.get('messages')}
-                    deleteMessage={this.deleteMessage}
-                    loadingState={ticket.getIn(['_internal', 'loading'])}
-                    ticket={ticket}
-                />
+                <TicketBody />
             )
         }
     }

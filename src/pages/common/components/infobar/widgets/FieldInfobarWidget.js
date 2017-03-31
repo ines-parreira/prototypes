@@ -12,34 +12,31 @@ class FieldInfobarWidget extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {isEditing, editing, widget} = nextProps
+        const {isEditing, editing, template} = nextProps
 
         if (editing) {
-            const tp = widget.get('templatePath')
+            const tp = template.get('templatePath')
             const currentlyEditedWidgetPath = editing.state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
             this.isEdited = isEditing && tp === currentlyEditedWidgetPath
         }
     }
 
     _startWidgetEdition = (e) => {
-        const {
-            editing,
-            widget
-        } = this.props
+        const {editing, template} = this.props
 
         e.stopPropagation()
         if (editing) {
-            editing.actions.startWidgetEdition(widget.get('templatePath', ''))
+            editing.actions.startWidgetEdition(template.get('templatePath', ''))
         }
     }
 
     _deleteField = (e) => {
-        const {editing} = this.props
+        const {editing, template} = this.props
 
         e.stopPropagation()
         if (editing) {
-            const ap = this.props.widget.get('absolutePath')
-            const tp = this.props.widget.get('templatePath')
+            const ap = template.get('absolutePath')
+            const tp = template.get('templatePath')
             editing.actions.removeEditedWidget(tp, ap)
         }
     }
@@ -72,11 +69,11 @@ class FieldInfobarWidget extends React.Component {
      * @private
      */
     _renderTooltip = () => {
-        const {editing, widget} = this.props
+        const {editing, template} = this.props
         if (this.isEdited) {
             return (
                 <TooltipWidgetEditField
-                    widget={widget}
+                    template={template}
                     actions={editing.actions}
                 />
             )
@@ -84,7 +81,7 @@ class FieldInfobarWidget extends React.Component {
     }
 
     render() {
-        const {widget, value} = this.props
+        const {template, value} = this.props
 
         const className = classnames('simple-field draggable', {
             edited: this.isEdited
@@ -96,7 +93,7 @@ class FieldInfobarWidget extends React.Component {
                 onClick={this._startWidgetEdition}
             >
                 <span className="field-label">
-                    {widget.get('title')}:
+                    {template.get('title')}:
                 </span>
                 <span className="field-value">
                     {displayLabel(value)}
@@ -117,6 +114,7 @@ FieldInfobarWidget.propTypes = {
         PropTypes.object,
     ]).isRequired,
     widget: PropTypes.object.isRequired,
+    template: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     isParentList: PropTypes.bool.isRequired
 }

@@ -1,6 +1,11 @@
+import React from 'react'
 import axios from 'axios'
+import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import md5 from 'md5'
+import {notify} from '../notifications/actions'
+import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
+
 import * as types from './constants'
 
 export const search = (query, searchType = 'infobar-user') => ((dispatch) => {
@@ -103,4 +108,102 @@ export const setInfobarMode = (mode) => ({
 export const toggleMergeUsersModal = (value) => ({
     type: types.TOGGLE_MERGE_USERS_MODAL,
     value
+})
+
+/**
+ * Send action from infobar button to server
+ * @param actionName
+ * @param integrationId
+ * @param userId
+ * @param payload
+ * @param callback
+ */
+export const executeAction = (actionName, integrationId, userId, payload = {}, callback) => ((dispatch, getState) => {
+    const state = getState()
+    const {ticket} = state
+
+    const ticketId = ticket.get('id')
+
+    const data = {
+        action_name: actionName,
+        user_id: userId,
+        ticket_id: ticketId,
+        integration_id: integrationId,
+        payload,
+    }
+
+    dispatch({
+        type: types.EXECUTE_ACTION_START,
+        data,
+        callback,
+    })
+
+    return axios.post('/api/actions/execute/', data)
+        .then((json = {}) => json.data)
+        .then(() => {
+            return Promise.resolve()
+        }, error => {
+            return dispatch({
+                type: types.EXECUTE_ACTION_ERROR,
+                data,
+                error,
+                reason: `Failed to execute action ${actionName} on user ${userId} for integration ${integrationId}`
+            })
+        })
+})
+
+/**
+ * Handle asynchronous result from an executed action from server (returned by socket)
+ * @param response
+ */
+export const handleExecutedAction = (response) => ((dispatch) => {
+    if (response.status === 'error') {
+        dispatch(notify({
+            type: 'error',
+            title: 'Something went wrong on your last action :/',
+            autoDismiss: false,
+            children: (
+                <div>
+                    <p>
+                        {stripErrorMessage(response.msg)}
+                    </p>
+                    <div className="buttons">
+                        {
+                            response.ticket_id ? (
+                                    <div>
+                                        {
+                                            !isCurrentlyOnTicket(response.ticket_id) && (
+                                                <button
+                                                    className="ui tiny button green"
+                                                    onClick={() => browserHistory.push(`/app/ticket/${response.ticket_id}`)}
+                                                >
+                                                    Review ticket
+                                                </button>
+                                            )
+                                        }
+                                    </div>
+                                ) : (
+                                    <button
+                                        className="ui tiny button green"
+                                        onClick={() => browserHistory.push(`/app/user/${response.user_id}`)}
+                                    >
+                                        Review user
+                                    </button>
+                                )
+                        }
+                    </div>
+                </div>
+            )
+        }))
+
+        return dispatch({
+            type: types.EXECUTE_ACTION_ERROR,
+            data: response,
+        })
+    }
+
+    return dispatch({
+        type: types.EXECUTE_ACTION_SUCCESS,
+        data: response,
+    })
 })

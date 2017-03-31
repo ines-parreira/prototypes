@@ -3,6 +3,7 @@ import {browserHistory, withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+
 import shortcutManager from '../../common/utils/shortcutManager'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
@@ -110,6 +111,8 @@ class TicketDetailContainer extends React.Component {
         if (ticketId) {
             io.leaveTicket(ticketId)
         }
+
+        this.props.actions.ticket.clearTicket()
     }
 
     _bindKeys() {

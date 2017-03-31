@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
-import {humanizeString} from '../../infobar/utils'
+import {humanizeString} from '../../../../../utils'
 import _last from 'lodash/last'
 
 import SourceWidget from '../SourceWidget'
@@ -10,14 +10,15 @@ class WrapperSourceWidget extends React.Component {
     render() {
         const {
             widget,
+            template,
             source,
             editing,
             parent,
         } = this.props
 
-        const ap = widget.get('absolutePath')
-        const tp = widget.get('templatePath')
-        const children = widget.get('widgets', fromJS([]))
+        const ap = template.get('absolutePath')
+        const tp = template.get('templatePath')
+        const children = template.get('widgets', fromJS([]))
 
         if (children.isEmpty()) {
             return null
@@ -26,7 +27,7 @@ class WrapperSourceWidget extends React.Component {
         return (
             <div
                 className={`ui card wrapper draggable ${parent.get('type')}`}
-                data-key={widget.get('path').join('.')}
+                data-key={template.get('path').join('.')}
             >
                 <div className="content">
                     <div className="header clearfix">
@@ -44,15 +45,16 @@ class WrapperSourceWidget extends React.Component {
                         {
                             children
                                 .map((w, i) => {
-                                    const passedWidget = w
+                                    const passedTemplate = w
                                         .set('templatePath', `${tp}.widgets.${i}`)
 
                                     return (
                                         <SourceWidget
-                                            key={`${passedWidget.get('path')}-${i}`}
+                                            key={`${passedTemplate.get('path')}-${i}`}
                                             source={source}
-                                            parent={widget}
-                                            widget={passedWidget}
+                                            parent={template}
+                                            template={passedTemplate}
+                                            widget={widget}
                                             editing={editing}
                                         />
                                     )
@@ -70,6 +72,7 @@ WrapperSourceWidget.propTypes = {
     source: PropTypes.object.isRequired,
     parent: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
+    template: PropTypes.object.isRequired,
 }
 
 export default WrapperSourceWidget

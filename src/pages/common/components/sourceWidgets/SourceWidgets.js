@@ -10,7 +10,7 @@ class SourceWidgets extends React.Component {
         const {
             source,
             widgets,
-            editing
+            editing,
         } = this.props
 
         const className = classnames('widgets-list editing', {
@@ -31,18 +31,19 @@ class SourceWidgets extends React.Component {
                     {
                         widgets
                             .map((widget, i) => {
-                                let passedWidget = widget
+                                let passedTemplate = widget
                                     .get('template', fromJS({}))
                                     .set('templatePath', `${i.toString()}.template`)
 
                                 const sourcePath = getSourcePathFromContext(widget.get('context'), widget.get('type'))
-                                passedWidget = passedWidget.set('path', sourcePath)
+                                passedTemplate = passedTemplate.set('path', sourcePath)
 
                                 return (
                                     <SourceWidget
-                                        key={`${passedWidget.get('path')}-${i}`}
+                                        key={`${passedTemplate.get('path')}-${i}`}
                                         source={source}
-                                        widget={passedWidget}
+                                        widget={widget}
+                                        template={passedTemplate}
                                         editing={editing}
                                         parent={widget}
                                     />

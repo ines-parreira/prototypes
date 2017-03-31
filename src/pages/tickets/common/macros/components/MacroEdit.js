@@ -19,11 +19,9 @@ import {getSortedIntegrationActionsNames} from './../../utils'
 
 import * as ticketTypes from '../../../../../state/ticket/constants'
 import {DEFAULT_ACTIONS, ACTION_TEMPLATES} from '../../../../../config'
-import {getActionTemplate} from './../../../../../utils'
+import {getActionTemplate, humanizeString} from './../../../../../utils'
 
 import {getMacroSelectedInModal} from './../../../../../state/macro/selectors'
-
-import {humanizeString} from '../../../../common/components/infobar/utils'
 
 class MacroEdit extends React.Component {
     state = {

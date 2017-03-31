@@ -5,6 +5,7 @@ import _reject from 'lodash/reject'
 import _get from 'lodash/get'
 
 import * as ticketActions from '../../../state/ticket/actions'
+import * as infobarActions from '../../../state/infobar/actions'
 import * as usersActions from '../../../state/users/actions'
 
 const socket = socketio.connect(window.WS_URL)
@@ -116,8 +117,13 @@ export default class SocketIO {
                 break
             }
             case 'ticket-message-action-failed': {
-                log('Action failed', json)
-                this._notifyMessageActionFailed(json.ticket_id)
+                log('Action failed on message', json)
+                this._handleMessageActionFailed(json.ticket_id)
+                break
+            }
+            case 'action-executed': {
+                log('Action executed', json)
+                this._handleExecutedAction(json)
                 break
             }
             default:
@@ -151,7 +157,12 @@ export default class SocketIO {
     /**
      * Inform the user that an action failed on one of its messages
      */
-    _notifyMessageActionFailed = _throttle(json => this._dispatch(ticketActions.notifyMessageActionError(json)), 100)
+    _handleMessageActionFailed = _throttle(json => this._dispatch(ticketActions.handleMessageActionError(json)), 100)
+
+    /**
+     * Inform the user that an action failed on one of its messages
+     */
+    _handleExecutedAction = _throttle(json => this._dispatch(infobarActions.handleExecutedAction(json)), 100)
 
     _sendTicketViewed = (ticketId) => {
         // if ticket is updated and user is currently on it, send a 'ticket viewed' event

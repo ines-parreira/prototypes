@@ -10,6 +10,13 @@ export const getIntegrations = createSelector(
     state => state.get('integrations', fromJS([]))
 )
 
+export const getIntegrationById = id => createSelector(
+    [getIntegrations],
+    (integrations) => {
+        return integrations.find(integration => integration.get('id') === id) || fromJS({})
+    }
+)
+
 export const getIntegrationsByTypes = types => createSelector(
     [getIntegrations],
     (integrations) => {
@@ -23,32 +30,32 @@ export const getIntegrationsByTypes = types => createSelector(
 
 export const getEmailIntegrations = createSelector(
     [getIntegrations],
-    state => state.filter(inte => ['email', 'gmail'].includes(inte.get('type', '')))
+    state => state.filter(integration => ['email', 'gmail'].includes(integration.get('type')))
 )
 
 // return email and gmail integrations formatted as channel
 export const getChannels = createSelector(
     [getEmailIntegrations],
-    state => state.map(inte => {
-        let type = inte.get('type')
+    state => state.map(integration => {
+        let type = integration.get('type')
 
-        if (inte.get('type') === 'gmail') {
+        if (integration.get('type') === 'gmail') {
             type = 'email'
         }
 
         return fromJS({
-            id: inte.get('id'),
+            id: integration.get('id'),
             type,
-            name: inte.get('name'),
-            address: inte.getIn(['meta', 'address']),
-            preferred: inte.getIn(['meta', 'preferred']),
+            name: integration.get('name'),
+            address: integration.getIn(['meta', 'address']),
+            preferred: integration.getIn(['meta', 'preferred']),
         })
     })
 )
 
 export const getChannelsByType = type => createSelector(
     [getChannels],
-    state => state.filter(inte => inte.get('type') === type)
+    state => state.filter(integration => integration.get('type') === type)
 )
 
 export const getAuthData = type => createSelector(

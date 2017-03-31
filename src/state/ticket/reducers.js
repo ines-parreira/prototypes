@@ -66,6 +66,7 @@ export const initialState = fromJS({
             updateMessageIds: [] // store the ids of all the messages being updated
         },
     },
+    events: [],
     messages: [],
     subject: '',
     via: 'helpdesk',
@@ -521,7 +522,9 @@ export default (state = initialState, action) => {
 
             // merge received ticket with current ticket
             updatableFields.forEach((key) => {
-                newState = newState.set(key, ticketData.get(key))
+                if (ticketData.has(key)) {
+                    newState = newState.set(key, ticketData.get(key))
+                }
             })
 
             return newState

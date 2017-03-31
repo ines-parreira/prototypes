@@ -85,21 +85,6 @@ export function isRootSource(group) {
 }
 
 /**
- * Transform object key to better like 'mainSteps' and 'order_id' to 'Main steps' and 'Order id'
- * @param text
- * @returns {*}
- */
-export function humanizeString(text) {
-    return _.chain(text)
-        .trim('.-_')
-        .replace(/([A-Z])/g, ' $1')
-        .replace(/[_.\s]+/g, ' ')
-        .toLower()
-        .upperFirst()
-        .value()
-}
-
-/**
  * Guess if a passed string is a date
  * @param string
  * @returns {boolean|*}
@@ -289,7 +274,7 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
 
             const response = {
                 type: 'card',
-                title: humanizeString(key),
+                title: utils.humanizeString(key),
                 widgets
             }
 
@@ -319,7 +304,7 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
 
         const response = {
             type,
-            title: isUppercase(key) ? key : humanizeString(key),
+            title: isUppercase(key) ? key : utils.humanizeString(key),
         }
 
         // if is child of list, we do not set its path since the list already has it
@@ -426,17 +411,17 @@ export function canDrop(group = '', targetAbsolutePath = '') {
 
 /**
  * Format some data from widget before it is display
- * @param widget
+ * @param template
  * @param source
  * @param parent
  * @returns {{updatedWidget: *, data: *, type: *, path: *}}
  */
-export function prepareWidgetToDisplay(widget = fromJS({}), source = fromJS({}), parent) {
+export function prepareWidgetToDisplay(template = fromJS({}), source = fromJS({}), parent) {
     // build absolute path of widget
     const parentPath = !!parent && parent.get('absolutePath', parent.get('path', ''))
-    const ownPath = widget.get('path', '')
+    const ownPath = template.get('path', '')
 
-    let absolutePath = widget.get('path')
+    let absolutePath = template.get('path')
 
     if (parentPath) {
         absolutePath = parentPath
@@ -446,20 +431,20 @@ export function prepareWidgetToDisplay(widget = fromJS({}), source = fromJS({}),
         }
     }
 
-    let updatedWidget = widget.set('absolutePath', absolutePath)
+    let updatedTemplate = template.set('absolutePath', absolutePath)
 
-    let path = updatedWidget.get('path', '')
+    let path = updatedTemplate.get('path', '')
     if (path && !_.isArray(path)) {
-        updatedWidget = updatedWidget.set('path', [path])
+        updatedTemplate = updatedTemplate.set('path', [path])
     }
 
     // get data of widget in shortcuts
-    path = updatedWidget.get('path', '')
+    path = updatedTemplate.get('path', '')
     const data = path ? source.getIn(path) : source
-    const type = updatedWidget.get('type', '')
+    const type = updatedTemplate.get('type', '')
 
     return {
-        updatedWidget,
+        updatedTemplate,
         data,
         type,
         path

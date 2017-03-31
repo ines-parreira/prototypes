@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
@@ -12,6 +13,20 @@ import {USER_CHANNEL_CLASS} from '../../../../config'
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
 
 class InfobarUserInfo extends React.Component {
+    static childContextTypes = {
+        user: ImmutablePropTypes.map.isRequired,
+        userId: PropTypes.number,
+    }
+
+    getChildContext() {
+        const user = this.props.user || fromJS({})
+
+        return {
+            user,
+            userId: user.get('id'),
+        }
+    }
+
     constructor(props) {
         super(props)
 

@@ -509,7 +509,7 @@ export const ACTION_TEMPLATES = [
                 validate: (customer) => !['refunded', 'accepted'].includes(
                     _get(customer, ['_shopify', 'orders', 0, 'financial_status'])
                 ),
-                error: 'The last order has already been refunder or hasn\'t been paid for yet.'
+                error: 'The last order has already been refunded or hasn\'t been paid for yet.'
             }
         ]
     },

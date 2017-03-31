@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import * as types from './constants'
+import * as utils from './utils'
 import * as userTypes from './../users/constants'
 
 export const initialState = fromJS({
@@ -19,7 +20,8 @@ export const initialState = fromJS({
         email: null
     },
     searchResults: [],
-    displayedUser: {}
+    pendingActionsCallbacks: [],
+    displayedUser: {},
 })
 
 export default (state = initialState, action) => {
@@ -108,6 +110,44 @@ export default (state = initialState, action) => {
                     },
                     mode: 'default'
                 }
+            })
+        }
+
+        case types.EXECUTE_ACTION_START: {
+            if (!action.callback) {
+                return state
+            }
+
+            const actionId = utils.actionButtonHashForData(action.data)
+
+            return state.updateIn(['pendingActionsCallbacks'], (list) => {
+                return list.push(fromJS({
+                    id: actionId,
+                    callback: action.callback,
+                }))
+            })
+        }
+
+        case types.EXECUTE_ACTION_ERROR:
+        case types.EXECUTE_ACTION_SUCCESS: {
+            const actionId = utils.actionButtonHashForData(action.data)
+
+            const actionIndex = state
+                .get('pendingActionsCallbacks')
+                .findIndex(pendingAction => pendingAction.get('id') === actionId)
+
+            if (!~actionIndex) {
+                return state
+            }
+
+            return state.updateIn(['pendingActionsCallbacks'], (list) => {
+                const callback = list.getIn([actionIndex, 'callback'])
+
+                if (callback) {
+                    callback(action.data) // execute callback
+                }
+
+                return list.remove(actionIndex)
             })
         }
 

@@ -71,7 +71,7 @@ class EmailIntegrationUpdate extends React.Component {
     _handleSubmit = (type, values) => {
         const {updateOrCreateIntegration} = this.props.actions
 
-        logEvent('email_integration_save_changes_click')
+        logEvent('Save email integration')
         return formSender(updateOrCreateIntegration(fromJS({
             id: this.props.integration.get('id'),
             name: values.name
@@ -85,7 +85,7 @@ class EmailIntegrationUpdate extends React.Component {
             return
         }
 
-        logEvent('gmail_integration_import_emails_click')
+        logEvent('Import Gmail emails')
 
         return formSender(importEmails(fromJS({
             id: integration.get('id'),

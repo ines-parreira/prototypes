@@ -5,14 +5,14 @@ import {InputField, SelectField} from '../../../forms'
 
 class TooltipWidgetEditField extends React.Component {
     componentDidMount() {
-        const {widget} = this.props
+        const {template} = this.props
 
         document.addEventListener('click', this._onClickOutside, false)
 
         // populating the form
         this.props.initialize({
-            title: widget.get('title', ''),
-            type: widget.get('type', '')
+            title: template.get('title', ''),
+            type: template.get('type', '')
         })
     }
 
@@ -104,7 +104,7 @@ class TooltipWidgetEditField extends React.Component {
 TooltipWidgetEditField.propTypes = {
     initialize: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    widget: PropTypes.object.isRequired,
+    template: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 }
 

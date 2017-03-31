@@ -48,14 +48,14 @@ class InfobarWidgets extends React.Component {
                     {
                         widgets
                             .map((widget, i) => {
-                                let passedWidget = widget
+                                let template = widget
                                     .get('template', fromJS({}))
                                     .set('templatePath', `${i}.template`)
 
                                 const sourcePath = getSourcePathFromContext(widget.get('context'), widget.get('type'))
-                                passedWidget = passedWidget.set('path', sourcePath)
+                                template = template.set('path', sourcePath)
 
-                                if (!canDisplayWidget(passedWidget, source)) {
+                                if (!canDisplayWidget(template, source)) {
                                     return null
                                 }
 
@@ -63,7 +63,8 @@ class InfobarWidgets extends React.Component {
                                     <InfobarWidget
                                         key={`${widget.get('order')}-${i}`}
                                         source={source}
-                                        widget={passedWidget}
+                                        widget={widget}
+                                        template={template}
                                         editing={editing}
                                         isEditing={isEditing}
                                         open={i === 0}

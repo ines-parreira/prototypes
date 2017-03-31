@@ -3,8 +3,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as TicketActions from '../../../../state/ticket/actions'
 import classnames from 'classnames'
-import {getActionTemplate} from './../../../../utils'
-import _trim from 'lodash/trim'
+import {getActionTemplate, stripErrorMessage} from './../../../../utils'
 
 class HardWarning extends React.Component {
     componentDidMount() {
@@ -86,12 +85,7 @@ class HardWarning extends React.Component {
                                         if (action.status === 'error' && action.response.msg) {
                                             const template = getActionTemplate(action.name)
 
-                                            // Match all tags like [SHOPIFY] [full-refund] [STUFF-FOO-bar]
-                                            const regex = /\[[\w-]+\]/g
-                                            const transformedMsg = _trim(
-                                                action.response.msg.replace(regex, '').toLowerCase(),
-                                                '.'
-                                            )
+                                            const transformedMsg = stripErrorMessage(action.response.msg)
 
                                             return (
                                                 <div

@@ -19,6 +19,11 @@ export const getTicket = createSelector(
         .delete('newMessage') || fromJS({})
 )
 
+export const getCustomer = createSelector(
+    [getTicketState],
+    state => state.getIn(['requester', 'customer']) || fromJS({})
+)
+
 export const getLoading = createSelector(
     [getTicketState],
     state => state.getIn(['_internal', 'loading'], fromJS({}))
@@ -37,7 +42,42 @@ export const makeIsLoading = state => name => isLoading(name)(state)
 
 export const getMessages = createSelector(
     [getTicketState],
-    state => state.get('messages', fromJS([]))
+    state => state.get('messages') || fromJS([])
+)
+
+export const getCustomerRatings = createSelector(
+    [getTicketState],
+    state => state.get('customer_ratings') || fromJS([])
+)
+
+export const getEvents = createSelector(
+    [getTicketState],
+    state => state.get('events') || fromJS([])
+)
+
+// return elements we display in the body of a ticket (messages, ratings, events, etc.)
+export const getBody = createSelector(
+    [getMessages, getCustomerRatings, getEvents],
+    (messages, ratings, events) => {
+        messages = messages.map((message) => {
+            return message.set('isMessage', true)
+        })
+
+        ratings = ratings.map((rating) => {
+            return rating
+                .set('isRating', true)
+                .set('created_datetime', rating.get('rating_datetime'))
+        })
+
+        events = events.map((event) => {
+            return event.set('isEvent', true)
+        })
+
+        return messages
+            .concat(ratings)
+            .concat(events)
+            .sortBy(element => element.get('created_datetime'))
+    }
 )
 
 export const getNewMessage = createSelector(

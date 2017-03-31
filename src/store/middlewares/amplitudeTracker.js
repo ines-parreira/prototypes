@@ -39,24 +39,28 @@ const CONFIG_ACTIONS = [
 ]
 
 export const logEvent = (event, props) => {
-    if (!_isUndefined(window.amplitude)) {
-        amplitude.getInstance().logEvent(event, props)
+    if (_isUndefined(window.amplitude)) {
+        return
     }
+
+    amplitude.getInstance().logEvent(event, props)
 }
 
 export const setUserProperties = (user) => {
-    if (!_isUndefined(window.amplitude)) {
-        const domain = window.location.hostname.split('.')[0]
-        amplitude.getInstance().setUserId(user.id)
-        amplitude.getInstance().setUserProperties({
-            account: domain,
-            name: user.name,
-            email: user.email,
-            country: user.country,
-            role: user.roles[0].name,
-            created_at: user.created_datetime
-        })
+    if (_isUndefined(window.amplitude)) {
+        return
     }
+
+    const domain = window.location.hostname.split('.')[0]
+    amplitude.getInstance().setUserId(user.id)
+    amplitude.getInstance().setUserProperties({
+        account: domain,
+        name: user.name,
+        email: user.email,
+        country: user.country,
+        role: user.roles[0].name,
+        created_at: user.created_datetime
+    })
 }
 
 /**

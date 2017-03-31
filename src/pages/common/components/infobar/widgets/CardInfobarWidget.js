@@ -11,20 +11,19 @@ class CardInfobarWidget extends React.Component {
     constructor(props) {
         super(props)
 
-        this.isEdited = false
-
         this.state = {
+            isEdited: false,
             open: props.open,
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        const {parent, isParentList, isEditing, widget, editing} = nextProps
+        const {parent, isParentList, isEditing, template, editing} = nextProps
 
-        if (editing) {
-            const tp = isParentList ? parent.get('templatePath', '') : widget.get('templatePath', '')
+        if (isEditing) {
+            const tp = isParentList ? parent.get('templatePath', '') : template.get('templatePath', '')
             const currentlyEditedWidgetPath = editing.state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
-            this.isEdited = isEditing && tp === currentlyEditedWidgetPath
+            this.setState({isEdited: tp === currentlyEditedWidgetPath})
         }
     }
 
@@ -35,10 +34,10 @@ class CardInfobarWidget extends React.Component {
     }
 
     _deleteCard = (e) => {
-        const {widget, editing} = this.props
+        const {template, editing} = this.props
 
-        const ap = widget.get('absolutePath')
-        const tp = widget.get('templatePath')
+        const ap = template.get('absolutePath')
+        const tp = template.get('templatePath')
 
         e.stopPropagation()
         if (editing) {
@@ -47,20 +46,20 @@ class CardInfobarWidget extends React.Component {
     }
 
     _deleteList = (e) => {
-        const {parent, widget, editing} = this.props
+        const {parent, template, editing} = this.props
 
         e.stopPropagation()
         if (editing) {
             const ap = parent.get('absolutePath')
-            const tp = widget.get('templatePath')
+            const tp = template.get('templatePath')
             editing.actions.removeEditedWidget(tp, ap)
         }
     }
 
     _startWidgetEdition = (e) => {
-        const {parent, isParentList, widget, editing} = this.props
+        const {parent, isParentList, template, editing} = this.props
 
-        const tp = isParentList ? parent.get('templatePath', '') : widget.get('templatePath', '')
+        const tp = isParentList ? parent.get('templatePath', '') : template.get('templatePath', '')
 
         e.stopPropagation()
         if (editing) {
@@ -74,37 +73,54 @@ class CardInfobarWidget extends React.Component {
      * @private
      */
     _renderTooltip = () => {
-        const {editing, parent, isParentList, widget} = this.props
-        if (this.isEdited) {
+        const {editing} = this.props
+        if (this.state.isEdited) {
             return (
                 <TooltipWidgetEditCard
-                    parent={parent}
-                    isParentList={isParentList}
-                    widget={widget}
+                    {...this.props}
                     actions={editing.actions}
                 />
             )
         }
     }
 
-    _renderTitle = (widget, source) => {
-        const title = widget.get('title', '')
-        const link = widget.getIn(['meta', 'link'])
+    _renderTitle = (template, source) => {
+        const title = template.get('title', '')
+        const link = template.getIn(['meta', 'link'])
+        const {TitleWrapper} = this.props
 
-        if (link) {
-            return (
-                <a
-                    href={renderTemplate(link, source)}
-                    target="_blank"
-                >
-                    {renderTemplate(title, source)}
-                </a>
+        let content = null
+
+        if (template.get('title')) {
+            if (link && !TitleWrapper) {
+                content = (
+                    <a
+                        href={renderTemplate(link, source)}
+                        target="_blank"
+                    >
+                        {renderTemplate(title, source)}
+                    </a>
+                )
+            } else {
+                content = (
+                    <span>{renderTemplate(title, source)}</span>
+                )
+            }
+        } else {
+            content = (
+                <span className="placeholder">Title</span>
             )
         }
 
-        return (
-            <span>{renderTemplate(title, source)}</span>
-        )
+        if (TitleWrapper) {
+            content = (
+                <TitleWrapper {...this.props}>
+                    {content}
+                </TitleWrapper>
+            )
+        }
+
+        return content
     }
 
     render() {
@@ -113,12 +129,16 @@ class CardInfobarWidget extends React.Component {
             isParentList,
             source,
             widget,
+            template,
             editing,
             open,
+            AfterTitle,
+            BeforeContent,
+            Wrapper,
         } = this.props
 
-        const ap = widget.get('absolutePath')
-        const tp = widget.get('templatePath')
+        const ap = template.get('absolutePath')
+        const tp = template.get('templatePath')
 
         const className = classnames('ui card', {
             'can-drop': editing && editing.canDrop(ap),
@@ -126,7 +146,7 @@ class CardInfobarWidget extends React.Component {
             closed: !this.state.open && !isEditing
         })
 
-        const childWidgets = widget.get('widgets', fromJS([]))
+        const childWidgets = template.get('widgets', fromJS([]))
 
         // display content (or at least space under card title) if we are in edition mode or if there is data to display
         const shouldDisplayCardContent = editing || !childWidgets.isEmpty()
@@ -134,29 +154,28 @@ class CardInfobarWidget extends React.Component {
         // detect first non-text nested widget, to auto-expand
         let firstNonTextWidget = false
 
-        return (
+        let content = (
             <div
                 className={className}
-                data-key={widget.get('path')}
+                data-key={template.get('path')}
             >
                 {
-                    (widget.get('title') || isEditing)
+                    (template.get('title') || isEditing)
                     && (
-                        <div
-                            className="title header clearfix"
-                            onClick={this._toggleCardExpand}
-                        >
+                        <div className="title header clearfix">
                             {
-                                !isEditing && shouldDisplayCardContent &&
-                                (
-                                    <span className="dropdown-icon"><i className="dropdown icon" /></span>
+                                !isEditing
+                                && shouldDisplayCardContent
+                                && (
+                                    <span
+                                        className="dropdown-icon clickable"
+                                        onClick={this._toggleCardExpand}
+                                    >
+                                        <i className="dropdown icon" />
+                                    </span>
                                 )
                             }
-                            {
-                                widget.get('title')
-                                    ? this._renderTitle(widget, source.toJS())
-                                    : <span className="placeholder">Title</span>
-                            }
+                            {this._renderTitle(template, source.toJS())}
                             {
                                 isEditing
                                 && isParentList
@@ -180,6 +199,7 @@ class CardInfobarWidget extends React.Component {
                                 }
                             </span>
                             {this._renderTooltip()}
+                            {!!AfterTitle && <AfterTitle {...this.props} />}
                         </div>
                     )
                 }
@@ -188,6 +208,7 @@ class CardInfobarWidget extends React.Component {
                         hidden: !shouldDisplayCardContent,
                     })}
                 >
+                    {!!BeforeContent && <BeforeContent {...this.props} />}
                     {
                         source.isEmpty() ? (
                                 <div className="simple-field">
@@ -212,7 +233,7 @@ class CardInfobarWidget extends React.Component {
                                         {
                                             childWidgets
                                                 .map((w, i) => {
-                                                    const passedWidget = w
+                                                    const passedTemplate = w
                                                         .set('templatePath', `${tp}.widgets.${i}`)
 
                                                     // find first non-text widget,
@@ -223,10 +244,11 @@ class CardInfobarWidget extends React.Component {
 
                                                     return (
                                                         <InfobarWidget
-                                                            key={`${passedWidget.get('path')}-${i}`}
+                                                            key={`${passedTemplate.get('path')}-${i}`}
                                                             source={source}
-                                                            parent={widget}
-                                                            widget={passedWidget}
+                                                            parent={template}
+                                                            widget={widget}
+                                                            template={passedTemplate}
                                                             editing={editing}
                                                             isEditing={isEditing}
                                                             open={open && firstNonTextWidget}
@@ -241,13 +263,29 @@ class CardInfobarWidget extends React.Component {
                 </div>
             </div>
         )
+
+        if (Wrapper) {
+            content = (
+                <Wrapper {...this.props}>
+                    {content}
+                </Wrapper>
+            )
+        }
+
+        return content
     }
 }
 
 CardInfobarWidget.propTypes = {
+    AfterTitle: PropTypes.func,
+    BeforeContent: PropTypes.func,
+    TitleWrapper: PropTypes.func,
+    Wrapper: PropTypes.func,
+
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
+    template: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     isParentList: PropTypes.bool.isRequired,
     parent: PropTypes.object,
@@ -255,6 +293,11 @@ CardInfobarWidget.propTypes = {
 }
 
 CardInfobarWidget.defaultProps = {
+    AfterTitle: null,
+    BeforeContent: null,
+    TitleWrapper: null,
+    Wrapper: null,
+
     isEditing: false,
     isParentList: false,
     open: false

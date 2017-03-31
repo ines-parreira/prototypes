@@ -9,12 +9,15 @@ import WrapperInfobarWidget from './widgets/WrapperInfobarWidget'
 import CardInfobarWidget from './widgets/CardInfobarWidget'
 import FieldInfobarWidget from './widgets/FieldInfobarWidget'
 
+import shopify from './widgets/shopify'
+
 export default class InfobarWidget extends React.Component {
     static propTypes = {
         editing: PropTypes.object,
         parent: PropTypes.object,
         source: PropTypes.object.isRequired,
         widget: PropTypes.object.isRequired,
+        template: PropTypes.object.isRequired,
         isEditing: PropTypes.bool.isRequired,
         open: PropTypes.bool.isRequired,
     }
@@ -28,6 +31,7 @@ export default class InfobarWidget extends React.Component {
             parent,
             source,
             widget,
+            template,
             editing,
             isEditing,
             open
@@ -54,11 +58,24 @@ export default class InfobarWidget extends React.Component {
             return null
         }
 
-        const preparedData = prepareWidgetToDisplay(widget, source, parent)
-        const {updatedWidget, type} = preparedData
+        const preparedData = prepareWidgetToDisplay(template, source, parent)
+        const {updatedTemplate, type} = preparedData
         let {data} = preparedData
 
         const isParentList = parent && parent.get('type') === 'list'
+
+        let extension = {}
+        const passedData = {
+            template: updatedTemplate,
+            isEditing,
+            source: data || fromJS({}),
+        }
+        if (updatedTemplate.get('absolutePath', []).includes('_shopify')) {
+            extension = {
+                ...extension,
+                ...shopify(passedData),
+            }
+        }
 
         // DISPLAY
         switch (type) {
@@ -67,7 +84,8 @@ export default class InfobarWidget extends React.Component {
                     <WrapperInfobarWidget
                         isEditing={isEditing}
                         source={data || fromJS({})}
-                        widget={updatedWidget}
+                        widget={widget}
+                        template={updatedTemplate}
                         editing={editing}
                     />
                 )
@@ -78,7 +96,8 @@ export default class InfobarWidget extends React.Component {
                         isEditing={isEditing}
                         isParentList={isParentList}
                         source={data || fromJS({})}
-                        widget={updatedWidget}
+                        widget={widget}
+                        template={updatedTemplate}
                         editing={editing}
                         open={open}
                     />
@@ -97,10 +116,12 @@ export default class InfobarWidget extends React.Component {
                         isEditing={isEditing}
                         isParentList={isParentList}
                         source={data}
-                        widget={updatedWidget}
+                        widget={widget}
+                        template={updatedTemplate}
                         editing={editing}
                         parent={parent}
                         open={open || !isParentList}
+                        {...extension}
                     />
                 )
             }
@@ -117,7 +138,8 @@ export default class InfobarWidget extends React.Component {
                 isEditing={isEditing}
                 isParentList={isParentList}
                 value={guessFieldValueFromRawData(data, type)}
-                widget={updatedWidget}
+                widget={widget}
+                template={updatedTemplate}
                 editing={editing}
             />
         )

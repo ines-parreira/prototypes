@@ -7,17 +7,17 @@ import {isSimpleTemplateWidget} from '../utils'
 
 class TooltipWidgetEditCard extends React.Component {
     componentDidMount() {
-        const {widget, parent, isParentList} = this.props
+        const {template, parent, isParentList} = this.props
 
         document.addEventListener('click', this._onClickOutside, false)
 
         const cardModel = {
-            title: widget.get('title', ''),
+            title: template.get('title', ''),
             // we need to specify the initial values for each field
             // otherwise they will not be sent if they are empty
             meta: fromJS({
                 link: ''
-            }).merge(widget.get('meta', fromJS({}))).toJS()
+            }).merge(template.get('meta', fromJS({}))).toJS()
         }
 
         const listModel = {
@@ -83,11 +83,11 @@ class TooltipWidgetEditCard extends React.Component {
     }
 
     render() {
-        const {handleSubmit, isParentList, widget} = this.props
+        const {handleSubmit, isParentList, template, editionHiddenFields} = this.props
 
         let orderByOptions = fromJS([])
         if (isParentList) {
-            orderByOptions = widget
+            orderByOptions = template
                 .get('widgets', fromJS([]))
                 .filter(isSimpleTemplateWidget)
                 .map((w) => ({
@@ -112,50 +112,54 @@ class TooltipWidgetEditCard extends React.Component {
                             placeholder="Order {id}"
                             component={InputField}
                         />
-                        <Field
-                            label="Link"
-                            name="card.meta.link"
-                            placeholder="http://myapi.com/{id}"
-                            component={InputField}
-                        />
                         {
-                            isParentList && (
-                                <div className="field">
-                                    <Field
-                                        label="Limit"
-                                        type="number"
-                                        name="list.meta.limit"
-                                        placeholder="Limit"
-                                        component={InputField}
-                                    />
-                                    <Field
-                                        label="Order by"
-                                        name="list.meta.orderBy"
-                                        direction="upward"
-                                        component={SelectField}
-                                    >
-                                        {
-                                            orderByOptions
-                                                .map((option) => {
-                                                    return ['-', '+']
-                                                        .map((order) => {
-                                                            const value = `${order}${option.value}`
-                                                            const label = `${option.label} (${order === '-' ? 'DESC' : 'ASC'})`
-
-                                                            return (
-                                                                <option
-                                                                    value={value}
-                                                                    key={value}
-                                                                >
-                                                                    {label}
-                                                                </option>
-                                                            )
-                                                        })
-                                                })
-                                        }
-                                    </Field>
-                                </div>
+                            !editionHiddenFields.includes('link') && (
+                                <Field
+                                    label="Link"
+                                    name="card.meta.link"
+                                    placeholder="http://myapi.com/{id}"
+                                    component={InputField}
+                                />
                             )
+                        }
+                        {
+                            isParentList && [
+                                <Field
+                                    key="limit"
+                                    label="Limit"
+                                    type="number"
+                                    name="list.meta.limit"
+                                    placeholder="Limit"
+                                    component={InputField}
+                                />,
+                                <Field
+                                    key="order"
+                                    label="Order by"
+                                    name="list.meta.orderBy"
+                                    direction="upward"
+                                    component={SelectField}
+                                >
+                                    {
+                                        orderByOptions
+                                            .map((option) => {
+                                                return ['-', '+']
+                                                    .map((order) => {
+                                                        const value = `${order}${option.value}`
+                                                        const label = `${option.label} (${order === '-' ? 'DESC' : 'ASC'})`
+
+                                                        return (
+                                                            <option
+                                                                value={value}
+                                                                key={value}
+                                                            >
+                                                                {label}
+                                                            </option>
+                                                        )
+                                                    })
+                                            })
+                                    }
+                                </Field>
+                            ]
                         }
                         <div className="two fields">
                             <div className="field">
@@ -184,16 +188,19 @@ class TooltipWidgetEditCard extends React.Component {
 }
 
 TooltipWidgetEditCard.propTypes = {
+    editionHiddenFields: PropTypes.array.isRequired,
+
     initialize: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    widget: PropTypes.object.isRequired,
+    template: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     isParentList: PropTypes.bool.isRequired,
     parent: PropTypes.object
 }
 
 TooltipWidgetEditCard.defaultProps = {
-    isParentList: false
+    editionHiddenFields: [],
+    isParentList: false,
 }
 
 export default reduxForm({

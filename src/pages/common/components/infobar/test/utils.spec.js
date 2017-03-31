@@ -67,37 +67,6 @@ describe('widgets infobar utils', () => {
         })
     })
 
-    describe('humanize string', () => {
-        const inputs = [
-            {
-                value: '',
-                expect: ''
-            },
-            {
-                value: 'ticket',
-                expect: 'Ticket'
-            },
-            {
-                value: 'customerOrders',
-                expect: 'Customer orders'
-            },
-            {
-                value: 'order_id',
-                expect: 'Order id'
-            },
-            {
-                value: 'helper hello',
-                expect: 'Helper hello'
-            }
-        ]
-
-        it('transform OK', () => {
-            inputs.forEach((input) => {
-                expect(utils.humanizeString(input.value)).toBe(input.expect)
-            })
-        })
-    })
-
     describe('are sources ready', () => {
         const correct = [
             fromJS({

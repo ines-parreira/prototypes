@@ -1,15 +1,54 @@
 import React, {PropTypes} from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
+import {connect} from 'react-redux'
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 
 import InfobarWidget from '../InfobarWidget'
 
-class WrapperInfobarWidget extends React.Component {
-    _deleteWrapper = (e) => {
-        const {widget, editing} = this.props
+import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
-        const ap = widget.get('absolutePath')
-        const tp = widget.get('templatePath')
+@connect((state, ownProps) => {
+    const {widget} = ownProps
+
+    // todo(jebarjonet) use integrationId instead of integration type
+    // see https://github.com/gorgias/gorgias/issues/1334#issuecomment-290482595
+    const integrations = integrationsSelectors.getIntegrationsByTypes(widget.get('type'))(state)
+
+    return {
+        integration: integrations.isEmpty() ? fromJS({}) : integrations.first(),
+    }
+})
+class WrapperInfobarWidget extends React.Component {
+    static propTypes = {
+        integration: ImmutablePropTypes.map.isRequired,
+        editing: PropTypes.object,
+        source: PropTypes.object.isRequired,
+        widget: PropTypes.object.isRequired,
+        template: PropTypes.object.isRequired,
+        isEditing: PropTypes.bool.isRequired,
+        open: PropTypes.bool
+    }
+
+    static childContextTypes = {
+        integration: ImmutablePropTypes.map.isRequired,
+        integrationId: PropTypes.number,
+    }
+
+    getChildContext() {
+        const integration = this.props.integration || fromJS({})
+
+        return {
+            integration,
+            integrationId: integration.get('id'),
+        }
+    }
+
+    _deleteWrapper = (e) => {
+        const {template, editing} = this.props
+
+        const ap = template.get('absolutePath')
+        const tp = template.get('templatePath')
 
         e.stopPropagation()
         if (editing) {
@@ -20,13 +59,14 @@ class WrapperInfobarWidget extends React.Component {
     render() {
         const {
             widget,
+            template,
             isEditing,
             source,
             editing,
         } = this.props
 
-        const ap = widget.get('absolutePath')
-        const tp = widget.get('templatePath')
+        const ap = template.get('absolutePath')
+        const tp = template.get('templatePath')
 
         return (
             <div className="ui card wrapper draggable">
@@ -58,18 +98,19 @@ class WrapperInfobarWidget extends React.Component {
                         watchDrop
                     >
                         {
-                            widget
+                            template
                                 .get('widgets', fromJS([]))
                                 .map((w, i) => {
-                                    const passedWidget = w
+                                    const passedTemplate = w
                                         .set('templatePath', `${tp}.widgets.${i}`)
 
                                     return (
                                         <InfobarWidget
-                                            key={`${passedWidget.get('path')}-${i}`}
+                                            key={`${passedTemplate.get('path')}-${i}`}
                                             source={source}
-                                            parent={widget}
-                                            widget={passedWidget}
+                                            parent={template}
+                                            widget={widget}
+                                            template={passedTemplate}
                                             editing={editing}
                                             isEditing={isEditing}
                                         />
@@ -81,14 +122,6 @@ class WrapperInfobarWidget extends React.Component {
             </div>
         )
     }
-}
-
-WrapperInfobarWidget.propTypes = {
-    editing: PropTypes.object,
-    source: PropTypes.object.isRequired,
-    widget: PropTypes.object.isRequired,
-    isEditing: PropTypes.bool.isRequired,
-    open: PropTypes.bool
 }
 
 export default WrapperInfobarWidget

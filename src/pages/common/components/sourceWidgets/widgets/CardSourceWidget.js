@@ -12,12 +12,13 @@ class CardSourceWidget extends React.Component {
         const {
             source,
             widget,
+            template,
             isParentList,
             editing
         } = this.props
 
-        const ap = widget.get('absolutePath')
-        const tp = widget.get('templatePath')
+        const ap = template.get('absolutePath')
+        const tp = template.get('templatePath')
 
         const className = classnames('ui card', {
             draggable: !isParentList,
@@ -29,7 +30,7 @@ class CardSourceWidget extends React.Component {
         return (
             <div
                 className={className}
-                data-key={widget.get('path')}
+                data-key={template.get('path')}
             >
                 <div className="content">
                     <div className="header clearfix">
@@ -47,18 +48,19 @@ class CardSourceWidget extends React.Component {
                             isEditing
                         >
                             {
-                                widget
+                                template
                                     .get('widgets', fromJS([]))
                                     .map((w, i) => {
-                                        const passedWidget = w
+                                        const passedTemplate = w
                                             .set('templatePath', `${tp}.widgets.${i}`)
 
                                         return (
                                             <SourceWidget
-                                                key={`${passedWidget.get('path')}-${i}`}
+                                                key={`${passedTemplate.get('path')}-${i}`}
                                                 source={source}
-                                                parent={widget}
-                                                widget={passedWidget}
+                                                parent={template}
+                                                template={passedTemplate}
+                                                widget={widget}
                                                 editing={editing}
                                             />
                                         )
@@ -76,6 +78,7 @@ CardSourceWidget.propTypes = {
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
+    template: PropTypes.object.isRequired,
     isParentList: PropTypes.bool.isRequired
 }
 

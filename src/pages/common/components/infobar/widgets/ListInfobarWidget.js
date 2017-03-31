@@ -11,17 +11,18 @@ class ListInfobarWidget extends React.Component {
             isParentList,
             source,
             widget,
+            template,
             editing,
         } = this.props
 
-        const updatedWidget = widget
-            .set('absolutePath', widget.get('absolutePath').concat(['[]']))
+        const updatedTemplate = template
+            .set('absolutePath', template.get('absolutePath').concat(['[]']))
 
-        const passedWidget = updatedWidget
+        const passedTemplate = updatedTemplate
             .getIn(['widgets', '0'])
-            .set('templatePath', `${updatedWidget.get('templatePath', '')}.widgets.0`)
+            .set('templatePath', `${updatedTemplate.get('templatePath', '')}.widgets.0`)
 
-        const isParentOfCard = updatedWidget.getIn(['widgets', 0, 'type'], '') === 'card'
+        const isParentOfCard = updatedTemplate.getIn(['widgets', 0, 'type'], '') === 'card'
 
         // if source data is not a list, don't try to display it as a list
         // it means incoming data does not have the expected shape
@@ -31,7 +32,7 @@ class ListInfobarWidget extends React.Component {
 
         let orderedSource = source
         // order source
-        const orderByConfig = widget.getIn(['meta', 'orderBy'])
+        const orderByConfig = template.getIn(['meta', 'orderBy'])
 
         if (!isEditing && orderByConfig) {
             // format of config : "-name" would tell order by 'name' DESC
@@ -45,7 +46,7 @@ class ListInfobarWidget extends React.Component {
         }
 
         // calculate limit of cards displayed in this array
-        let limit = isEditing ? 1 : widget.getIn(['meta', 'limit'])
+        let limit = isEditing ? 1 : template.getIn(['meta', 'limit'])
         limit = isParentOfCard ? limit : 1
         const sourceList = limit ? orderedSource.take(limit) : orderedSource
 
@@ -66,7 +67,7 @@ class ListInfobarWidget extends React.Component {
         return (
             <div
                 className={className}
-                data-key={`${widget.get('path')}[]`}
+                data-key={`${template.get('path')}[]`}
             >
                 {
                     sourceList
@@ -75,8 +76,9 @@ class ListInfobarWidget extends React.Component {
                                 <InfobarWidget
                                     key={i}
                                     source={d}
-                                    parent={updatedWidget}
-                                    widget={passedWidget}
+                                    parent={updatedTemplate}
+                                    widget={widget}
+                                    template={passedTemplate}
                                     editing={editing}
                                     isEditing={isEditing}
                                     open={i === 0}
@@ -107,6 +109,7 @@ ListInfobarWidget.propTypes = {
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
+    template: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     isParentList: PropTypes.bool.isRequired,
     open: PropTypes.bool

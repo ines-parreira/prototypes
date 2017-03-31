@@ -7,6 +7,8 @@ import _filter from 'lodash/filter'
 import _get from 'lodash/get'
 import _uniq from 'lodash/uniq'
 import _compact from 'lodash/compact'
+import _trim from 'lodash/trim'
+import _ from 'lodash'
 
 import {createSelectorCreator, defaultMemoize} from 'reselect'
 import axios from 'axios'
@@ -647,4 +649,31 @@ export const uploadFiles = (files) => {
 
     return axios.post('/api/upload/', formData)
         .then((json = {}) => json.data)
+}
+
+/**
+ * Clean error message sent from server before we display it
+ * @param text
+ */
+export const stripErrorMessage = (text) => {
+    // Match all tags like [SHOPIFY] [full-refund] [STUFF-FOO-bar]
+    const regex = /\[[\w-]+]/g
+    text = text.replace(regex, '')
+    text = _trim(text, '. ')
+    return text
+}
+
+/**
+ * Transform object key to better like 'mainSteps' and 'order_id' to 'Main steps' and 'Order id'
+ * @param text
+ * @returns {*}
+ */
+export function humanizeString(text) {
+    return _.chain(text)
+        .trim('.-_')
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/[_.\s]+/g, ' ')
+        .toLower()
+        .upperFirst()
+        .value()
 }

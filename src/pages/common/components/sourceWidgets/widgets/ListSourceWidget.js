@@ -8,16 +8,17 @@ class ListSourceWidget extends React.Component {
         const {
             source,
             widget,
+            template,
             editing,
             isParentList
         } = this.props
 
-        const updatedWidget = widget
-            .set('absolutePath', widget.get('absolutePath').concat(['[]']))
+        const updatedTemplate = template
+            .set('absolutePath', template.get('absolutePath').concat(['[]']))
 
-        const passedWidget = updatedWidget
+        const passedTemplate = updatedTemplate
             .getIn(['widgets', '0'])
-            .set('templatePath', `${updatedWidget.get('templatePath', '')}.widgets.0`)
+            .set('templatePath', `${updatedTemplate.get('templatePath', '')}.widgets.0`)
 
         const className = classnames('list', {
             draggable: !isParentList
@@ -26,7 +27,7 @@ class ListSourceWidget extends React.Component {
         return (
             <div
                 className={className}
-                data-key={widget.get('path')}
+                data-key={template.get('path')}
             >
                 {
                     source
@@ -37,8 +38,9 @@ class ListSourceWidget extends React.Component {
                                 <SourceWidget
                                     key={i}
                                     source={d}
-                                    parent={updatedWidget}
-                                    widget={passedWidget}
+                                    parent={updatedTemplate}
+                                    template={passedTemplate}
+                                    widget={widget}
                                     editing={editing}
                                 />
                             )
@@ -53,6 +55,7 @@ ListSourceWidget.propTypes = {
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
+    template: PropTypes.object.isRequired,
     isParentList: PropTypes.bool.isRequired
 }
 

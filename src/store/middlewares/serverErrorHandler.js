@@ -1,6 +1,6 @@
 import _some from 'lodash/some'
 import _get from 'lodash/get'
-import _endsWith from 'lodash/endsWith'
+import {stripErrorMessage} from '../../utils'
 import {notify} from '../../state/notifications/actions'
 
 /**
@@ -22,16 +22,18 @@ const serverErrorHandler = store => next => action => {
     if (shouldDisplayError) {
         const error = _get(action, 'error.response.data.error', '')
 
-        const message =
+        let message =
             error.msg
             || action.reason
             || `Unknown error for action ${action.type}`
 
         console.error('ERROR', message, action.error)
 
+        message = stripErrorMessage(message)
+
         store.dispatch(notify({
             type: 'error',
-            message: `${message}${_endsWith(message, '.') ? '' : '.'}`
+            message,
         }))
     }
 

@@ -14,14 +14,14 @@ import {setMacrosVisible} from '../macro/actions'
 import {TICKET_VIEWED} from '../activity/constants'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
-import {getLastSameSourceTypeMessage} from './utils'
 import {getLastMessage, isCurrentlyOnTicket, getActionTemplate, uploadFiles} from '../../utils'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
     receiversStateFromValue,
     buildPartialUpdateFromAction,
-    getNewMessageSender
+    getNewMessageSender,
+    getLastSameSourceTypeMessage,
 } from './utils'
 import * as integrationSelectors from '../integrations/selectors'
 
@@ -451,7 +451,7 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
         })
 }
 
-export const notifyMessageActionError = (ticketId) => (dispatch) => {
+export const handleMessageActionError = (ticketId) => (dispatch) => {
     return dispatch(notify({
         type: 'error',
         title: 'Something went wrong on your last message :/',
@@ -462,12 +462,16 @@ export const notifyMessageActionError = (ticketId) => (dispatch) => {
                     The message was not sent because an action broke on it, you should review it right now.
                 </p>
                 <div className="buttons">
-                    <button
-                        className="ui tiny button green"
-                        onClick={() => browserHistory.push(`/app/ticket/${ticketId}`)}
-                    >
-                        Review message
-                    </button>
+                    {
+                        !isCurrentlyOnTicket(ticketId) && (
+                            <button
+                                className="ui tiny button green"
+                                onClick={() => browserHistory.push(`/app/ticket/${ticketId}`)}
+                            >
+                                Review message
+                            </button>
+                        )
+                    }
                 </div>
             </div>
         )

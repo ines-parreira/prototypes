@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import _lowerCase from 'lodash/lowerCase'
+import _get from 'lodash/get'
 import {getActionTemplate} from '../../../../utils'
 import Modal from '../../../common/components/Modal'
 import {JSONTree} from './../../../common/components/JSONTree'
@@ -70,7 +70,7 @@ export default class TicketMessageActions extends React.Component {
                         !!action.arguments.json && contentType === JSON_CONTENT_TYPE && (
                             <div className="ticket-message-actions-params-block">
                                 <h3>JSON Data</h3>
-                                <JSONTree data={fromJS(action.arguments.json)}/>
+                                <JSONTree data={fromJS(action.arguments.json)} />
                             </div>
                         )
                     }
@@ -80,7 +80,7 @@ export default class TicketMessageActions extends React.Component {
                                 <h2>Response</h2>
                                 <p>Status code: <b>{action.response.status_code}</b></p>
                                 <p className="ticket-message-actions-response-body">
-                                    Body: {action.response.response}
+                                    <b>Body</b>: {action.response.response}
                                 </p>
                             </div>
                         )
@@ -96,7 +96,7 @@ export default class TicketMessageActions extends React.Component {
     }
 
     render() {
-        const { message } = this.props
+        const {message} = this.props
 
         if (!message.actions) {
             return null
@@ -122,14 +122,7 @@ export default class TicketMessageActions extends React.Component {
                             icon = 'ban'
                         }
 
-                        let contentType = null
-
-                        if (action.arguments.headers) {
-                            const contentTypeKey = fromJS(action.arguments.headers).keySeq().toList()
-                                .find((k) => _lowerCase(k) === 'content type')
-
-                            contentType = action.arguments.headers[contentTypeKey]
-                        }
+                        const contentType = _get(action, 'arguments.content_type')
 
                         return (
                             <div
@@ -137,7 +130,7 @@ export default class TicketMessageActions extends React.Component {
                                 className="ticket-message-actions-item"
                             >
                                 <button className={`ui icon labeled ${color} label`} onClick={this._openModal(index)}>
-                                    <i className={`icon ${icon}`}/>
+                                    <i className={`icon ${icon}`} />
                                     {action.title}
                                 </button>
 

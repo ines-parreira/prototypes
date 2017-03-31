@@ -240,4 +240,35 @@ describe('global utils', () => {
             expect(utils.convertToHTML(contentState)).toEqual('<div>Hey Marie Curie,</div><div>multiple links: <a href="http://www.facebook.comwww.github.com" class="linkified" target="_blank">www.facebook.comwww.github.com</a></div><br><div>Thanks for contacting us.</div>')
         })
     })
+
+    describe('humanize string', () => {
+        const inputs = [
+            {
+                value: '',
+                expect: ''
+            },
+            {
+                value: 'ticket',
+                expect: 'Ticket'
+            },
+            {
+                value: 'customerOrders',
+                expect: 'Customer orders'
+            },
+            {
+                value: 'order_id',
+                expect: 'Order id'
+            },
+            {
+                value: 'helper hello',
+                expect: 'Helper hello'
+            }
+        ]
+
+        it('transform OK', () => {
+            inputs.forEach((input) => {
+                expect(utils.humanizeString(input.value)).toBe(input.expect)
+            })
+        })
+    })
 })

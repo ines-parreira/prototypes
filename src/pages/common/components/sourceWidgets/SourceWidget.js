@@ -12,10 +12,11 @@ class SourceWidget extends React.Component {
             parent,
             source,
             widget,
-            editing
+            template,
+            editing,
         } = this.props
 
-        const {updatedWidget, data, type, path} = prepareWidgetToDisplay(widget, source, parent)
+        const {updatedTemplate, data, type, path} = prepareWidgetToDisplay(template, source, parent)
 
         const isParentList = parent && parent.get('type') === 'list'
 
@@ -25,7 +26,8 @@ class SourceWidget extends React.Component {
                 return (
                     <WrapperSourceWidget
                         source={data || fromJS({})}
-                        widget={updatedWidget}
+                        widget={widget}
+                        template={updatedTemplate}
                         editing={editing}
                         parent={parent}
                     />
@@ -36,7 +38,8 @@ class SourceWidget extends React.Component {
                     <ListSourceWidget
                         isParentList={isParentList}
                         source={data || fromJS({})}
-                        widget={updatedWidget}
+                        widget={widget}
+                        template={updatedTemplate}
                         editing={editing}
                     />
                 )
@@ -46,7 +49,8 @@ class SourceWidget extends React.Component {
                     <CardSourceWidget
                         isParentList={isParentList}
                         source={data || fromJS({})}
-                        widget={updatedWidget}
+                        widget={widget}
+                        template={updatedTemplate}
                         editing={editing}
                     />
                 )
@@ -74,7 +78,8 @@ SourceWidget.propTypes = {
     editing: PropTypes.object,
     parent: PropTypes.object,
     source: PropTypes.object.isRequired,
-    widget: PropTypes.object.isRequired
+    widget: PropTypes.object.isRequired,
+    template: PropTypes.object.isRequired,
 }
 
 export default SourceWidget
