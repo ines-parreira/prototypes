@@ -198,11 +198,14 @@ const config = [{
                     break
                 }
 
-                // get the part of "source" that we want
-                const source = item.getIn(['first_source', 'to'], fromJS([])).toJS()[0]
+                let source = item.getIn(['first_source', 'from'], fromJS({}))
+
+                if (!item.get('from_agent')) {
+                    source = item.getIn(['first_source', 'to'], fromJS([])).first() || fromJS({})
+                }
 
                 // display the user based on the message type
-                return displayUserNameFromSource(source, item.getIn(['first_source', 'type']))
+                return displayUserNameFromSource(source.toJS(), item.getIn(['first_source', 'type']))
             }
             case 'tags': {
                 return (
