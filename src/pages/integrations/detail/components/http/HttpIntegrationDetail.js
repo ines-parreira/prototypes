@@ -218,8 +218,8 @@ class HttpIntegrationDetail extends React.Component {
                             description={(
                                 <span>
                                     You can use <code>{'{ticket.requester.email}'}</code> to pass the email of the
-                                    ticket requester. See other <a href="http://docs.gorgias.io/#/definitions/User"
-                                                                   target="_blank">vars</a>.
+                                    ticket requester. See
+                                    other <a href="http://docs.gorgias.io/#/definitions/User" target="_blank">vars</a>.
                                 </span>
                             )}
                         />
