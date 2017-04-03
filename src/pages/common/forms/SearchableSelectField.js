@@ -16,9 +16,15 @@ class SearchableSelectField extends React.Component {
     }
 
     _handleSearchChange = (e) => {
+        const text = e.target.value
+
         this.setState({
-            search: e.target.value
+            search: text,
         })
+
+        if (this.props.onSearch) {
+            this.props.onSearch(text)
+        }
     }
 
     _handleOptionClick = (value) => {
@@ -95,6 +101,7 @@ class SearchableSelectField extends React.Component {
                                             <input
                                                 type="checkbox"
                                                 checked={input.value.includes(item.value)}
+                                                autoFocus
                                                 onClick={() => {
                                                     // we need this function here to satisfy React telling us that we
                                                     // need an onClick hook on a controlled input,
@@ -132,6 +139,7 @@ SearchableSelectField.propTypes = {
     plural: PropTypes.string.isRequired,
     singular: PropTypes.string.isRequired,
     isDisabled: PropTypes.bool.isRequired,
+    onSearch: PropTypes.func,
 }
 
 SearchableSelectField.defaultProps = {

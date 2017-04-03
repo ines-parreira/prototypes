@@ -1,16 +1,110 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
+import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import _isNumber from 'lodash/isNumber'
+import _debounce from 'lodash/debounce'
+
 import PeriodPicker from '../../common/PeriodPicker'
 import PageHeader from '../../../common/components/PageHeader'
 import {Loader} from '../../../common/components/Loader'
 import {renderDifference, comparedPeriodString} from '../../common/utils'
+import {fieldEnumSearch} from '../../../../state/views/actions'
 import SearchableSelectField from '../../../common/forms/SearchableSelectField'
-import _isNumber from 'lodash/isNumber'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
-export default class OverviewStatsView extends React.Component {
+
+// format a value and display it as a percentage
+const formatPercent = (value) => {
+    return _isNumber(value) ? `${value}%` : ''
+}
+
+// format a value and display it as a duration (days, hours, minutes or seconds)
+const formatDuration = (value) => {
+    const duration = moment.duration(value, 'seconds')
+    let response = ''
+
+    const days = duration.days()
+    if (days) {
+        response += `${days}d `
+    }
+
+    const hours = duration.hours()
+    if (hours) {
+        response += `${hours}h `
+    }
+
+    const minutes = duration.minutes()
+    if (minutes) {
+        response += `${minutes}m `
+    }
+
+    const seconds = duration.seconds()
+    if (!response && seconds) {
+        response = `${seconds}s`
+    }
+
+    return response
+}
+
+const availableStats = fromJS([{
+    name: 'total_new_tickets',
+    value: v => v,
+    label: 'New tickets',
+    tooltip: 'Tickets created during this period',
+}, {
+    name: 'total_closed_tickets',
+    value: v => v,
+    label: 'Closed tickets',
+    tooltip: 'Tickets closed during this period. If a ticket was closed multiple times, we only take into account the last time it was closed',
+}, {
+    name: 'total_ticket_messages_sent',
+    value: v => v,
+    tooltip: 'Total number of messages on all channels sent by agents',
+    label: 'Messages sent',
+}, {
+    name: 'total_ticket_messages_received',
+    value: v => v,
+    tooltip: 'Total number of messages on all channels received from user',
+    label: 'Messages received',
+}, {
+    name: 'median_first_response_time',
+    value: v => formatDuration(v),
+    tooltip: `Difference between the date when the first message was received from 
+the user and the first response of the agent. Only tickets with at least 1 response are taken into account (median)`,
+    label: 'First response time',
+    moreIsBetter: false,
+}, {
+    name: 'median_resolution_time',
+    value: v => formatDuration(v),
+    tooltip: `Difference between the date the ticket was created and when it was closed (median). 
+                        Only tickets with at least 1 response are taken into account`,
+    label: 'Resolution time',
+    moreIsBetter: false,
+}, {
+    name: 'total_one_touch_tickets',
+    value: v => formatPercent(v),
+    tooltip: 'Percentage of tickets that were solved with only one response from your agents',
+    label: 'One-touch tickets',
+    moreIsBetter: true,
+}, {
+    name: 'satisfaction_score',
+    value: v => formatPercent(v),
+    tooltip: 'Positive satisfaction ratings minus negative satisfaction ratings',
+    label: 'Satisfaction score',
+    moreIsBetter: true,
+}])
+
+class OverviewStatsView extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            tags: props.tags,
+        }
+    }
+
     componentDidMount() {
         this.props.fetchStats({type: 'overview'})
     }
@@ -27,100 +121,18 @@ export default class OverviewStatsView extends React.Component {
         }
     }
 
-    // format a value and display it as a percentage
-    _formatPercent(d) {
-        return _isNumber(d) ? `${d}%` : ''
-    }
-
-    // format a value and display it as a duration (days, hours, minutes or seconds)
-    _formatDuration(value) {
-        const duration = moment.duration(value, 'seconds')
-        let response = ''
-
-        const days = duration.days()
-        if (days) {
-            response += `${days}d `
-        }
-
-        const hours = duration.hours()
-        if (hours) {
-            response += `${hours}h `
-        }
-
-        const minutes = duration.minutes()
-        if (minutes) {
-            response += `${minutes}m `
-        }
-
-        const seconds = duration.seconds()
-        if (!response && seconds) {
-            response = `${seconds}s`
-        }
-
-        return response
-    }
-
-    // add meta info on how to display each statistic
-    _transformValues = (stats = fromJS([])) => {
-        return stats.map((v, key) => {
-            switch (key) {
-                case 'median_resolution_time':
-                    return {
-                        value: this._formatDuration(v),
-                        tooltip: 'Difference between the date the ticket was created and when it was closed.',
-                        label: 'Resolution time',
-                        moreIsBetter: false,
-                    }
-                case 'median_first_response_time':
-                    return {
-                        value: this._formatDuration(v),
-                        tooltip: `Difference between the date when the first message was received from 
-the user and the first response of the agent. Only tickets with at least 1 response are taken into account.`,
-                        label: 'First response time',
-                        moreIsBetter: false,
-                    }
-                case 'total_new_tickets':
-                    return {
-                        value: v,
-                        label: 'New tickets',
-                    }
-                case 'total_closed_tickets':
-                    return {
-                        value: v,
-                        label: 'Closed tickets',
-                    }
-                case 'total_ticket_messages_sent':
-                    return {
-                        value: v,
-                        tooltip: 'Total number of messages on all channels sent by agents.',
-                        label: 'Messages sent',
-                    }
-                case 'total_ticket_messages_received':
-                    return {
-                        value: v,
-                        tooltip: 'Total number of messages on all channels received from user.',
-                        label: 'Messages received',
-                    }
-                case 'satisfaction_score':
-                    return {
-                        value: this._formatPercent(v),
-                        tooltip: 'Positive satisfaction ratings minus negative satisfaction ratings.',
-                        label: 'Satisfaction score',
-                        moreIsBetter: true,
-                    }
-                case 'total_one_touch_tickets':
-                    return {
-                        value: this._formatPercent(v),
-                        tooltip: 'Percentage of tickets that were solved with only one response from your agents.',
-                        label: 'One-touch tickets',
-                        moreIsBetter: true,
-                    }
-                default:
-                    console.error(`Unknown stat ${key}`)
-                    return {}
-            }
+    _onSearchTags = _debounce((search) => {
+        const field = fromJS({
+            filter: {type: 'tag'}
         })
-    }
+
+        this.props.fieldEnumSearch(field, search)
+            .then((data) => {
+                this.setState({
+                    tags: data.toJS(),
+                })
+            })
+    }, 300)
 
     // render helper tooltip displaying description of each statistic
     _renderTooltip(text, content, popupOptions = {}) {
@@ -138,19 +150,21 @@ the user and the first response of the agent. Only tickets with at least 1 respo
         }
     }
 
-    _renderValue(value, key, tooltipDelta) {
+    _renderValue(config, value, key, tooltipDelta) {
         const {stats} = this.props
 
-        if (value.value || value.value === 0) {
+        value = config.get('value')(value)
+
+        if (value || value === 0) {
             return (
                 <span className="value">
-                    {value.value}
+                    {value}
                     {
                         this._renderTooltip(
                             tooltipDelta,
                             renderDifference(
                                 stats.getIn(['difference_period', key]),
-                                value.moreIsBetter
+                                config.get('moreIsBetter')
                             ),
                             {distanceAway: -10}
                         )
@@ -171,29 +185,38 @@ the user and the first response of the agent. Only tickets with at least 1 respo
 
         const tooltipDelta = comparedPeriodString(previousStartDatetime, previousEndDatetime)
 
+        const currentPeriod = stats.get('current_period') || fromJS({})
+
         return (
             <div className="ui card stats-card">
                 <div className="content">
                     <div className="ui statistics">
                         {
-                            this._transformValues(stats.get('current_period'), fromJS([]))
-                                .map((value, key) => (
-                                    <div className="card statistic"
-                                         key={value.label}
+                            availableStats.map((config) => {
+                                const currentPeriodStat = currentPeriod.find((value, key) => key === config.get('name'))
+
+                                if (!currentPeriodStat) {
+                                    return null
+                                }
+
+                                return (
+                                    <div
+                                        className="card statistic"
+                                        key={config.get('name')}
                                     >
                                         <div className="label">
-                                            {value.label}
+                                            {config.get('label')}
                                             {
                                                 this._renderTooltip(
-                                                    value.tooltip,
+                                                    config.get('tooltip'),
                                                     <i className="help circle link icon" />
                                                 )
                                             }
                                         </div>
-                                        {this._renderValue(value, key, tooltipDelta)}
+                                        {this._renderValue(config, currentPeriodStat, config.get('name'), tooltipDelta)}
                                     </div>
-                                ))
-                                .toList()
+                                )
+                            })
                         }
                     </div>
                 </div>
@@ -231,9 +254,10 @@ the user and the first response of the agent. Only tickets with at least 1 respo
                         <SearchableSelectField
                             plural="tags"
                             singular="tag"
-                            items={this.props.tags}
+                            items={this.state.tags.map(tag => ({label: tag.name, value: tag.id}))}
                             input={this._makeInputControl('tags')}
                             isDisabled={isLoading}
+                            onSearch={this._onSearchTags}
                         />
                         <SearchableSelectField
                             plural="channels"
@@ -258,13 +282,20 @@ the user and the first response of the agent. Only tickets with at least 1 respo
 }
 
 OverviewStatsView.propTypes = {
-    tags: PropTypes.array,
     channels: PropTypes.array,
     agents: PropTypes.array,
+    tags: PropTypes.array,
     stats: PropTypes.object.isRequired,
     meta: PropTypes.object.isRequired,
     filters: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
     fetchStats: PropTypes.func.isRequired,
     setFilter: PropTypes.func.isRequired,
+    fieldEnumSearch: PropTypes.func.isRequired,
 }
+
+const mapDispatchToProps = {
+    fieldEnumSearch,
+}
+
+export default connect(null, mapDispatchToProps)(OverviewStatsView)

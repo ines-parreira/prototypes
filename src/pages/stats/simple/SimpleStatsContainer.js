@@ -14,26 +14,26 @@ const mapStateToProps = (state, ownProps) => {
     switch (type) {
         case 'channels':
             fields = [
-                {name: 'Channels'},
-                {name: 'New tickets #'},
-                {name: 'New tickets Δ', type: 'delta'},
-                {name: 'New tickets %', type: 'percent'},
+                {name: 'name', label: 'Channels'},
+                {name: 'count', label: 'New tickets #'},
+                {name: 'delta', label: 'New tickets Δ', type: 'delta'},
+                {name: 'percentage', label: 'New tickets %', type: 'percent'},
             ]
             break
         case 'agents':
             fields = [
-                {name: 'Agents'},
-                {name: 'Closed tickets #'},
-                {name: 'Closed tickets Δ', type: 'delta'},
-                {name: 'Closed tickets %', type: 'percent'},
+                {name: 'name', label: 'Agents'},
+                {name: 'count', label: 'Closed tickets #'},
+                {name: 'delta', label: 'Closed tickets Δ', type: 'delta'},
+                {name: 'percentage', label: 'Closed tickets %', type: 'percent'},
             ]
             break
         case 'tags':
             fields = [
-                {name: 'Tags'},
-                {name: 'New tickets #'},
-                {name: 'New tickets Δ', type: 'delta'},
-                {name: 'New tickets %', type: 'percent'},
+                {name: 'name', label: 'Tags'},
+                {name: 'count', label: 'New tickets #'},
+                {name: 'delta', label: 'New tickets Δ', type: 'delta'},
+                {name: 'percentage', label: 'New tickets %', type: 'percent'},
             ]
             break
         default:
@@ -46,8 +46,8 @@ const mapStateToProps = (state, ownProps) => {
         // order stats by first value (closed tickets, new tickets, etc.)
         stats: state.stats
             .get(type, fromJS({}))
-            .filter(stat => !!stat.get(0)) // remove non identified stats (null, undefined, etc.)
-            .sort((a, b) => a.get(1) < b.get(1) ? 1 : -1),
+            .filter(stat => !!stat.get('name')) // remove non identified stats (null, undefined, etc.)
+            .sort((a, b) => a.get('count') < b.get('count') ? 1 : -1),
         meta: state.stats.getIn(['_internal', 'meta'], fromJS({})),
         isLoading: state.stats.getIn(['_internal', 'loading', 'stats']),
     }

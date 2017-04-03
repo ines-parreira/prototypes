@@ -59,13 +59,15 @@ export default class SimpleStatsView extends React.Component {
     _renderStatistics = () => {
         const {stats, fields} = this.props
 
+        const columns = ['name', 'count', 'delta', 'percentage']
+
         return (
             <table className="ui  padded single line table">
                 <thead>
                     <tr>
                         {
                             fields
-                                .map(field => field.get('name'))
+                                .map(field => field.get('label'))
                                 .map((field, index) =>
                                     <th key={index}>
                                         {field.toUpperCase()}
@@ -77,20 +79,30 @@ export default class SimpleStatsView extends React.Component {
                 <tbody>
                     {
                         stats.isEmpty() ? (
-                            <tr>
-                                <td colSpan="100">There is no data for this period.</td>
-                            </tr>
-                        ) : stats.map((row, index) =>
-                            <tr key={index}>
-                                {
-                                    row.map((cell, _index) =>
-                                        <td key={_index}>
-                                            {this._renderCell(cell, fields.getIn([_index, 'type']))}
-                                        </td>
-                                    )
-                                }
-                            </tr>
-                        ).toList()
+                                <tr>
+                                    <td
+                                        colSpan="100"
+                                        className="text-muted"
+                                    >
+                                        There is no data for this period.
+                                    </td>
+                                </tr>
+                            ) : stats.map((row, index) =>
+                                <tr key={index}>
+                                    {
+                                        columns.map((type) => {
+                                            const cell = row.get(type)
+                                            const field = fields.find(f => f.get('name') === type)
+
+                                            return (
+                                                <td key={type}>
+                                                    {this._renderCell(cell, field.get('type'))}
+                                                </td>
+                                            )
+                                        })
+                                    }
+                                </tr>
+                            ).toList()
                     }
                 </tbody>
             </table>

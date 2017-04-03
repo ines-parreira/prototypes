@@ -50,12 +50,15 @@ export function fetchStats(newMeta = {}, newFilters = {}) {
             type: types.FETCH_STATS_START
         })
 
-        return axios.get(`/api/stats/?${$.param(params)}`)
+        return axios.post(`/api/stats/${params.type}/`, params)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
                     type: types.FETCH_STATS_SUCCESS,
-                    resp
+                    resp: {
+                        ...resp,
+                        type: params.type,
+                    }
                 })
             }, error => {
                 return dispatch({

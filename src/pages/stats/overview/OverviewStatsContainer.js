@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {bindActionCreators} from 'redux'
 import _upperFirst from 'lodash/upperFirst'
 
-import {USER_CHANNEL_CLASS} from '../../../config'
+import {CHANNELS} from '../../../config'
 import OverviewStatsView from './components/OverviewStatsView'
 import {setFilter, fetchStats} from '../../../state/stats/actions'
 import {getDisplayName} from '../../../state/users/helpers'
@@ -11,8 +11,8 @@ import {getAgents} from '../../../state/users/selectors'
 import {getTags} from '../../../state/tags/selectors'
 
 const mapStateToProps = (state) => ({
-    tags: getTags(state).map(tag => ({label: tag.get('name'), value: tag.get('id')})).toJS(),
-    channels: Object.keys(USER_CHANNEL_CLASS).map(channel => ({
+    tags: getTags(state).toJS(),
+    channels: CHANNELS.map(channel => ({
         label: _upperFirst(channel.replace('-', ' ')),
         value: channel,
     })),
