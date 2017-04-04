@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import {fromJS} from 'immutable'
 
 import ActionButton from '../ActionButton'
 
@@ -84,12 +85,28 @@ class BeforeContent extends React.Component { // eslint-disable-line
         source: ImmutablePropTypes.map.isRequired,
     }
 
+    static contextTypes = {
+        order: ImmutablePropTypes.map.isRequired,
+    }
+
     render() {
         const {source} = this.props
 
-        const fulfillableQuantity = source.get('fulfillable_quantity')
-        const quantity = source.get('quantity')
-        const refundedQuantity = quantity - fulfillableQuantity
+        const itemId = source.get('id')
+        const refunds = this.context.order.get('refunds', fromJS([]))
+
+        const refundedQuantity = refunds
+            .map((refund) => { // keep refund items information about current item
+                return refund
+                    .get('refund_line_items', fromJS([]))
+                    .filter(item => item.get('line_item_id').toString() === itemId.toString())
+            })
+            .filter(refundedItemInfo => !refundedItemInfo.isEmpty()) // remove falsey data
+            .flatten(true) // flatten all those refund info in one List
+            .reduce((total, refund) => { // sum all refunded quantities
+                return total + refund.get('quantity')
+            }, 0)
+
 
         if (!refundedQuantity) {
             return null
