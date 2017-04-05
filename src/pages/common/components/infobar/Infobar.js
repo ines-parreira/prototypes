@@ -307,7 +307,7 @@ class Infobar extends React.Component {
                 <div className="infobar-content">
                     <div className="infobar-search-wrapper">
                         <Search
-                            placeholder="Search users..."
+                            placeholder="Search users by email, name or phone number"
                             bindKey
                             shouldResetInput={this.state.data.get('shouldResetSearch')}
                             onChange={this._search}
