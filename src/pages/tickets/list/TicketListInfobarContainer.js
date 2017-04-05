@@ -24,6 +24,11 @@ class TicketListInfobarContainer extends React.Component {
         integrations: PropTypes.object.isRequired,
     }
 
+    _hideBoarding = () => {
+        window.localStorage.setItem('hideBoarding', true)
+        this.forceUpdate()
+    }
+
     render() {
         const {
             currentUser,
@@ -39,6 +44,8 @@ class TicketListInfobarContainer extends React.Component {
 
         // hide bar if current user is not an admin
         const shouldHide = !isAdmin(currentUser)
+            // or if boarding infobar has been hidden
+            || window.localStorage.getItem('hideBoarding')
             // or if there is no suggestions (already added every suggested integrations)
             || !displayedSuggestions.length
             // or if a certain time has passed since user creation AND at least an integration has been made
@@ -97,6 +104,12 @@ class TicketListInfobarContainer extends React.Component {
                     >
                         Connect other apps
                     </Link>
+                    <a
+                        className={css.bottom}
+                        onClick={this._hideBoarding}
+                    >
+                        Hide
+                    </a>
                 </div>
             </InfobarLayout>
         )
