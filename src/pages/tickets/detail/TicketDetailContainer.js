@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 import {browserHistory, withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -15,7 +16,7 @@ import * as MacroActions from '../../../state/macro/actions'
 import * as UserActions from '../../../state/users/actions'
 import * as TagActions from '../../../state/tags/actions'
 import * as SettingsActions from '../../../state/settings/actions'
-import MacroContainer from '../common/macros/MacroContainer' // import that to fetch tags list
+import MacroContainer from '../common/macros/MacroContainer'
 import SocketIO from '../../common/utils/socketio'
 
 import * as viewsSelectors from '../../../state/views/selectors'
@@ -236,6 +237,11 @@ class TicketDetailContainer extends React.Component {
             nextTicketUrl = `/app/ticket/${nextTicket.id}`
         } else if (!activeView.isEmpty()) {
             nextTicketUrl = `/app/tickets/${activeView.get('id')}/${activeView.get('slug')}`
+
+            const page = this.props.pagination.get('page')
+            if (page && page > 1) {
+                nextTicketUrl += `?page=${page}`
+            }
         }
 
         return nextTicketUrl
@@ -358,6 +364,7 @@ TicketDetailContainer.propTypes = {
     ticket: PropTypes.object,
     tickets: PropTypes.object,
     users: PropTypes.object,
+    pagination: ImmutablePropTypes.map.isRequired,
 
     routing: PropTypes.object,
 
@@ -371,6 +378,7 @@ function mapStateToProps(state) {
         activeView: viewsSelectors.getActiveView(state),
         currentUser: state.currentUser,
         macros: state.macros,
+        pagination: viewsSelectors.getPagination(state),
         users: state.users,
         routing: state.routing,
         ticket: state.ticket,

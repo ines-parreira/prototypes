@@ -35,7 +35,7 @@ export default class Paginator extends React.Component {
     render() {
         var totalPages = this.props.totalPages
         if (totalPages && totalPages > 1) {
-            var current = this.props.page,
+            var current = parseInt(this.props.page),
                 radius = this.props.radius || 1,
                 anchor = this.props.anchor || 1,
                 separator = this.props.separator || '...',
