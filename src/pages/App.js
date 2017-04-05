@@ -36,7 +36,7 @@ class App extends React.Component {
         if (shouldPoll) {
             _forEach(intervals, interval => clearInterval(interval))
 
-            intervals.activity = setInterval(this.props.pollActivity, 15000)
+            intervals.activity = setInterval(this.props.pollActivity, 30000)
             intervals.chats = setInterval(this.props.pollChats, 5000)
         }
 
