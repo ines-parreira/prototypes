@@ -8,6 +8,7 @@ export default () => { // eslint-disable-line
     return {
         AfterTitle, // eslint-disable-line
         BeforeContent, // eslint-disable-line
+        Wrapper, // eslint-disable-line
     }
 }
 
@@ -20,6 +21,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
     static contextTypes = {
         integrationId: PropTypes.number,
         orderId: PropTypes.number,
+        refundedQuantity: PropTypes.number.isRequired,
     }
 
     render() {
@@ -33,7 +35,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
             return null
         }
 
-        const quantity = source.get('fulfillable_quantity')
+        const quantity = source.get('quantity') - this.context.refundedQuantity
 
         const payload = {
             item_id: source.get('id'),
@@ -81,32 +83,12 @@ class AfterTitle extends React.Component { // eslint-disable-line
 }
 
 class BeforeContent extends React.Component { // eslint-disable-line
-    static propTypes = {
-        source: ImmutablePropTypes.map.isRequired,
-    }
-
     static contextTypes = {
-        order: ImmutablePropTypes.map.isRequired,
+        refundedQuantity: PropTypes.number.isRequired,
     }
 
     render() {
-        const {source} = this.props
-
-        const itemId = source.get('id')
-        const refunds = this.context.order.get('refunds', fromJS([]))
-
-        const refundedQuantity = refunds
-            .map((refund) => { // keep refund items information about current item
-                return refund
-                    .get('refund_line_items', fromJS([]))
-                    .filter(item => item.get('line_item_id').toString() === itemId.toString())
-            })
-            .filter(refundedItemInfo => !refundedItemInfo.isEmpty()) // remove falsey data
-            .flatten(true) // flatten all those refund info in one List
-            .reduce((total, refund) => { // sum all refunded quantities
-                return total + refund.get('quantity')
-            }, 0)
-
+        const {refundedQuantity} = this.context
 
         if (!refundedQuantity) {
             return null
@@ -126,3 +108,46 @@ class BeforeContent extends React.Component { // eslint-disable-line
         )
     }
 }
+
+class Wrapper extends React.Component { // eslint-disable-line
+    static propTypes = {
+        children: PropTypes.node,
+        source: ImmutablePropTypes.map.isRequired,
+    }
+
+    static contextTypes = {
+        order: ImmutablePropTypes.map.isRequired,
+    }
+
+    static childContextTypes = {
+        refundedQuantity: PropTypes.number.isRequired,
+    }
+
+    getChildContext() {
+        const item = this.props.source || fromJS({})
+
+        const itemId = item.get('id')
+        const refunds = this.context.order.get('refunds', fromJS([]))
+
+        const refundedQuantity = refunds
+            .map((refund) => { // keep refund items information about current item
+                return refund
+                    .get('refund_line_items', fromJS([]))
+                    .filter(lineItem => lineItem.get('line_item_id').toString() === itemId.toString())
+            })
+            .filter(refundedItemInfo => !refundedItemInfo.isEmpty()) // remove falsey data
+            .flatten(true) // flatten all those refund info in one List
+            .reduce((total, refund) => { // sum all refunded quantities
+                return total + refund.get('quantity')
+            }, 0)
+
+        return {
+            refundedQuantity,
+        }
+    }
+
+    render() {
+        return this.props.children
+    }
+}
+
