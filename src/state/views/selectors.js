@@ -182,3 +182,18 @@ export const getView = (id, configName = '') => createImmutableSelector(
 )
 
 export const makeGetView = state => (id, configName) => getView(id, configName)(state)
+
+/**
+ * Return the count for a given view. Default to 0
+ * @param viewId
+ */
+export const getViewCount = (viewId) => createSelector(
+    [getViewsState],
+    state => {
+        const counts = state.get('counts', fromJS([]))
+        const viewCount = counts.find(vc => vc.get('view_id') === viewId, null, fromJS({}))
+        return viewCount.get('item_count', 0)
+    }
+)
+
+export const makeGetViewCount = state => (viewId) => getViewCount(viewId)(state)

@@ -8,7 +8,7 @@ import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 import _assign from 'lodash/assign'
 
 import * as viewsActions from '../../../../state/views/actions'
-import {getActiveView, getViewsByType, makeGetView} from '../../../../state/views/selectors'
+import {getActiveView, getViewsByType, makeGetView, makeGetViewCount} from '../../../../state/views/selectors'
 import {getSettingsByType as getCurrentUserSettingsByType} from '../../../../state/currentUser/selectors'
 
 import css from './ViewNavbarView.less'
@@ -32,6 +32,7 @@ class ViewNavbarView extends Component {
         isLoading: PropTypes.bool.isRequired,
         isUpdate: PropTypes.bool.isRequired,
         fetchPage: PropTypes.func.isRequired,
+        getViewCount: PropTypes.func.isRequired,
     }
 
     state = {
@@ -119,13 +120,9 @@ class ViewNavbarView extends Component {
                                             active: isCurrentView,
                                         })
 
-                                        let count = ''
-                                        let compactCount = ''
-
-                                        if (view.get('count') !== undefined && view.get('count') !== null) {
-                                            count = `(${view.get('count')})`
-                                            compactCount = `(${compactInteger(view.get('count'))})`
-                                        }
+                                        const viewCount = this.props.getViewCount(view.get('id'))
+                                        const count = `(${viewCount})`
+                                        const compactCount = `(${compactInteger(viewCount)})`
 
                                         return (
                                             <Link
@@ -152,6 +149,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         getView: makeGetView(state),
+        getViewCount: makeGetViewCount(state),
         activeView: getActiveView(state),
         views: getViewsByType(ownProps.viewType)(state),
         settings,

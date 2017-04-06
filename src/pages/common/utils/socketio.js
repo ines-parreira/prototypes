@@ -7,6 +7,7 @@ import _get from 'lodash/get'
 import * as ticketActions from '../../../state/ticket/actions'
 import * as infobarActions from '../../../state/infobar/actions'
 import * as usersActions from '../../../state/users/actions'
+import * as viewsActions from '../../../state/views/actions'
 
 const socket = socketio.connect(window.WS_URL)
 
@@ -126,6 +127,10 @@ export default class SocketIO {
                 this._handleExecutedAction(json)
                 break
             }
+            case 'views-count-updated': {
+                this._handleViewsCount(json)
+                break
+            }
             default:
                 log('Received json', json)
                 return
@@ -163,6 +168,8 @@ export default class SocketIO {
      * Inform the user that an action failed on one of its messages
      */
     _handleExecutedAction = _throttle(json => this._dispatch(infobarActions.handleExecutedAction(json)), 100)
+
+    _handleViewsCount = _throttle(json => this._dispatch(viewsActions.handleViewsCount(json)), 100)
 
     _sendTicketViewed = (ticketId) => {
         // if ticket is updated and user is currently on it, send a 'ticket viewed' event

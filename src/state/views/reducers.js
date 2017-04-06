@@ -14,6 +14,7 @@ import * as selectors from './selectors'
 
 export const initialState = fromJS({
     items: [],
+    counts: [],
     active: {},
     loading: false,
     _internal: {
@@ -237,6 +238,10 @@ export default (state = initialState, action) => {
 
         case types.SET_PAGE: {
             return state.setIn(['_internal', 'pagination', 'page'], action.page)
+        }
+
+        case types.UPDATE_COUNTS: {
+            return state.set('counts', fromJS(action.counts))
         }
 
         default:

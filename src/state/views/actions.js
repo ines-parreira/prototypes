@@ -457,3 +457,12 @@ export function bulkApplyMacro(macroId) {
         macroId
     }
 }
+
+/**
+ * Handle views item count update
+ * @param response
+ */
+export const handleViewsCount = ({counts}) => ({
+    type: types.UPDATE_COUNTS,
+    counts,
+})
