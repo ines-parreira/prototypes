@@ -10,7 +10,7 @@ import {setUserProperties} from '../store/middlewares/amplitudeTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
 import SocketIO from './common/utils/socketio'
 import Notifications from 'react-notification-system-redux'
-import {NOTIFICATIONS_STYLE_CONFIG} from '../config'
+import {NOTIFICATIONS_STYLE_CONFIG, POLL_ACTIVITY_INTERVAL, CHAT_POLLING_INTERVAL} from '../config'
 import shortcutManager from './common/utils/shortcutManager'
 import BannerNotifications from './common/components/BannerNotifications/'
 import ModalNotifications from './common/components/ModalNotifications/'
@@ -36,8 +36,8 @@ class App extends React.Component {
         if (shouldPoll) {
             _forEach(intervals, interval => clearInterval(interval))
 
-            intervals.activity = setInterval(this.props.pollActivity, 30000)
-            intervals.chats = setInterval(this.props.pollChats, 5000)
+            intervals.activity = setInterval(this.props.pollActivity, POLL_ACTIVITY_INTERVAL)
+            intervals.chats = setInterval(this.props.pollChats, CHAT_POLLING_INTERVAL)
         }
 
         this.props.pollActivity()

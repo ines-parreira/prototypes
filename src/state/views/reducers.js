@@ -14,7 +14,7 @@ import * as selectors from './selectors'
 
 export const initialState = fromJS({
     items: [],
-    counts: [],
+    counts: {},
     active: {},
     loading: false,
     _internal: {
@@ -241,7 +241,9 @@ export default (state = initialState, action) => {
         }
 
         case types.UPDATE_COUNTS: {
-            return state.set('counts', fromJS(action.counts))
+            return state.mergeDeep({
+                counts: action.counts
+            })
         }
 
         default:

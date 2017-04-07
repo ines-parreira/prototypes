@@ -10,6 +10,7 @@ import {shouldUpdateView} from './utils'
 import {isCurrentlyOnTicket, toQueryParams} from '../../utils'
 
 import * as viewsSelectors from '../views/selectors'
+import {POLL_ACTIVITY_TIMEOUT} from '../../config'
 
 const notificationSoundData = require('../../../audio/notification.mp3')
 const notificationSound = new Audio(notificationSoundData)
@@ -40,7 +41,7 @@ export const pollActivity = () => (dispatch, getState) => {
         params.queryView = activeViewId
     }
 
-    return axios.get(`/api/activity/?${toQueryParams(params)}`, {timeout: 10000})
+    return axios.get(`/api/activity/?${toQueryParams(params)}`, {timeout: POLL_ACTIVITY_TIMEOUT})
         .then((json = {}) => json.data)
         .then((resp = {}) => {
             const _state = getState()
