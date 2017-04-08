@@ -48,53 +48,62 @@ const formatDuration = (value) => {
     return response
 }
 
-const availableStats = fromJS([{
-    name: 'total_new_tickets',
-    value: v => v,
-    label: 'New tickets',
-    tooltip: 'Tickets created during this period',
-}, {
-    name: 'total_closed_tickets',
-    value: v => v,
-    label: 'Closed tickets',
-    tooltip: 'Tickets closed during this period. If a ticket was closed multiple times, we only take into account the last time it was closed',
-}, {
-    name: 'total_ticket_messages_sent',
-    value: v => v,
-    tooltip: 'Total number of messages on all channels sent by agents',
-    label: 'Messages sent',
-}, {
-    name: 'total_ticket_messages_received',
-    value: v => v,
-    tooltip: 'Total number of messages on all channels received from user',
-    label: 'Messages received',
-}, {
-    name: 'median_first_response_time',
-    value: v => formatDuration(v),
-    tooltip: `Difference between the date when the first message was received from 
+const availableStats = fromJS([
+    {
+        name: 'total_new_tickets',
+        value: v => v,
+        label: 'New tickets',
+        tooltip: 'Tickets created during this period',
+    },
+    {
+        name: 'total_closed_tickets',
+        value: v => v,
+        label: 'Closed tickets',
+        tooltip: 'Tickets closed during this period. If a ticket was closed multiple times, we only take into account the last time it was closed',
+    },
+    {
+        name: 'total_ticket_messages_sent',
+        value: v => v,
+        tooltip: 'Total number of messages on all channels sent by agents',
+        label: 'Messages sent',
+    },
+    {
+        name: 'total_ticket_messages_received',
+        value: v => v,
+        tooltip: 'Total number of messages on all channels received from user',
+        label: 'Messages received',
+    },
+    {
+        name: 'median_first_response_time',
+        value: v => formatDuration(v),
+        tooltip: `Difference between the date when the first message was received from 
 the user and the first response of the agent. Only tickets with at least 1 response are taken into account (median)`,
-    label: 'First response time',
-    moreIsBetter: false,
-}, {
-    name: 'median_resolution_time',
-    value: v => formatDuration(v),
-    tooltip: `Difference between the date the ticket was created and when it was closed (median). 
+        label: 'First response time',
+        moreIsBetter: false,
+    },
+    {
+        name: 'median_resolution_time',
+        value: v => formatDuration(v),
+        tooltip: `Difference between the date the ticket was created and when it was closed (median). 
                         Only tickets with at least 1 response are taken into account`,
-    label: 'Resolution time',
-    moreIsBetter: false,
-}, {
-    name: 'total_one_touch_tickets',
-    value: v => formatPercent(v),
-    tooltip: 'Percentage of tickets that were solved with only one response from your agents',
-    label: 'One-touch tickets',
-    moreIsBetter: true,
-}, {
-    name: 'satisfaction_score',
-    value: v => formatPercent(v),
-    tooltip: 'Positive satisfaction ratings minus negative satisfaction ratings',
-    label: 'Satisfaction score',
-    moreIsBetter: true,
-}])
+        label: 'Resolution time',
+        moreIsBetter: false,
+    },
+    {
+        name: 'total_one_touch_tickets',
+        value: v => formatPercent(v),
+        tooltip: 'Percentage of tickets that were solved with only one response from your agents',
+        label: 'One-touch tickets',
+        moreIsBetter: true,
+    },
+    // {
+    //     name: 'satisfaction_score',
+    //     value: v => formatPercent(v),
+    //     tooltip: 'Positive satisfaction ratings minus negative satisfaction ratings',
+    //     label: 'Satisfaction score',
+    //     moreIsBetter: true,
+    // }
+])
 
 class OverviewStatsView extends React.Component {
     constructor(props) {
@@ -195,7 +204,7 @@ class OverviewStatsView extends React.Component {
                             availableStats.map((config) => {
                                 const currentPeriodStat = currentPeriod.find((value, key) => key === config.get('name'))
 
-                                if (!currentPeriodStat) {
+                                if (currentPeriodStat === null) {
                                     return null
                                 }
 
