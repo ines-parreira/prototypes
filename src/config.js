@@ -164,6 +164,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Trigger zaps with macros',
         url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#zapier',
         image: 'integrations/zapier.png',
+    },
+    {
+        title: 'Elev.io',
+        description: 'Let your customers contact you from your help center',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#elev-io',
+        image: 'integrations/elevio.png',
     }
 ]
 
