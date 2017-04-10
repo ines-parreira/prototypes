@@ -145,7 +145,11 @@ class ChatIntegrationDetail extends React.Component {
         const cleanOptions = JSON.stringify(this._cleanOptions(options), null, '  ')
 
         let snippet = `<script src="${window.GORGIAS_ASSETS_URL || window.location.origin}/static/public/js/gorgias-chat.js"></script>\n`
-        snippet += `<script>\nGorgiasChat.init(${cleanOptions})\n</script>`
+        snippet += '<script>\n'
+        snippet += `document.addEventListener('DOMContentLoaded', function() {\n`
+        snippet += `GorgiasChat.init(${cleanOptions})\n`
+        snippet += '})\n'
+        snippet += '</script>'
 
         return snippet
     }
