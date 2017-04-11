@@ -12,6 +12,16 @@ class TicketMacros extends React.Component {
         this.props.openModal()
     }
 
+    componentDidMount() {
+        $(this.refs.popupClearMacros).popup({
+            inline: true,
+            variation: 'inverted',
+            position: 'top right',
+            hoverable: true,
+            on: 'hover'
+        })
+    }
+
     renderMacroListItem = (macro) => {
         const containerOpts = {
             key: macro.get('id'),
@@ -32,8 +42,10 @@ class TicketMacros extends React.Component {
     }
 
     render() {
-        const items = this.props.macros.get('items')
-        const macro = this.props.macros.get('selected')
+        const {macros, newMessageType, openModal, setMacrosVisible} = this.props
+        const items = macros.get('items')
+        const macro = macros.get('selected')
+        const macrosVisible = macros.get('visible')
 
         let content = (
             <div className="ui grid">
@@ -43,18 +55,16 @@ class TicketMacros extends React.Component {
                     </div>
                 </div>
                 <div className="macro-preview-container twelve wide column">
-                    <div className="macro-detail">
-                        <a
-                            className="ui right floated basic label"
-                            onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}
-                        >
-                            MANAGE MACROS
-                        </a>
-                        <Preview
-                            displayHTML={isRichType(this.props.newMessageType)}
-                            macro={macro}
-                        />
-                    </div>
+                    <a
+                        className="ui basic label manage-macros"
+                        onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}
+                    >
+                        MANAGE MACROS
+                    </a>
+                    <Preview
+                        displayHTML={isRichType(newMessageType)}
+                        macro={macro}
+                    />
                 </div>
             </div>
         )
@@ -65,7 +75,7 @@ class TicketMacros extends React.Component {
                     <h4>You don't have any macros yet.</h4>
                     <div
                         className="ui small light labeled icon blue button"
-                        onClick={() => this.props.openModal()}
+                        onClick={() => openModal()}
                     >
                         <i className="plus icon" />
                         Create a new macro
@@ -75,6 +85,21 @@ class TicketMacros extends React.Component {
         }
         return (
             <div className="TicketMacros">
+                <a
+                    className={classnames('clear-macros', {
+                        hidden: !macrosVisible
+                    })}
+                    ref="popupClearMacros"
+                >
+                    <i
+                        className="right close icon"
+                        onClick={() => setMacrosVisible(false)}
+                    />
+                </a>
+                <div className="ui popup clear-macros-popup">
+                    <strong>Esc</strong> to close the macro list.
+                </div>
+
                 {content}
             </div>
         )
@@ -88,6 +113,7 @@ TicketMacros.propTypes = {
     previewMacroInModal: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     newMessageType: PropTypes.string.isRequired,
+    setMacrosVisible: PropTypes.func.isRequired
 }
 
 TicketMacros.defaultProps = {

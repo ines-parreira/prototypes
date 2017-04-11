@@ -28,7 +28,7 @@ export const changePassword = (oldPassword, newPassword) => (dispatch => {
         })
 })
 
-export function submitSetting(data) {
+export function submitSetting(data, notification) {
     return (dispatch) => {
         const isUpdate = !!data.id
         let promise
@@ -51,6 +51,13 @@ export function submitSetting(data) {
                     isUpdate,
                     resp
                 })
+
+                if (notification) {
+                    dispatch(notify({
+                        type: 'success',
+                        message: 'Settings successfully updated'
+                    }))
+                }
 
                 return resp
             }, error => {

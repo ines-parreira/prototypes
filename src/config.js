@@ -627,3 +627,10 @@ export const NOTIFICATION_UIDS = {
     accountDeactivated: 4,
     accountDeactivatedCardUpdated: 5,
 }
+
+/**
+ * Default currentUser preferences
+ */
+export const DEFAULT_PREFERENCES = {
+    show_macros: false
+}

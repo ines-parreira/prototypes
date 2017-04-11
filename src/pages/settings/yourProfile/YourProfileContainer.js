@@ -5,7 +5,10 @@ import {fromJS} from 'immutable'
 import {pick as _pick} from 'lodash'
 
 import * as UserActions from '../../../state/users/actions'
+import {submitSetting} from '../../../state/currentUser/actions'
 import YourProfileView from './components/YourProfileView'
+
+import {getPreferences} from '../../../state/currentUser/selectors'
 
 
 class YourProfileContainer extends React.Component {
@@ -22,7 +25,7 @@ class YourProfileContainer extends React.Component {
 
         if (!currentUser.delete('_internal').isEmpty()) {
             prunedCurrentUser = fromJS(_pick(
-                currentUser.toJS(), ['name', 'email', 'timezone', 'language', 'signature_text', 'signature_html']
+                currentUser.toJS(), ['name', 'email', 'timezone', 'language', 'signature_text', 'signature_html', 'settings']
             ))
         }
 
@@ -31,6 +34,8 @@ class YourProfileContainer extends React.Component {
                 currentUser={prunedCurrentUser}
                 isLoading={currentUser.getIn(['_internal', 'loading'])}
                 actions={this.props.actions}
+                submitSetting={this.props.submitSetting}
+                preferences={this.props.preferences}
             />
         )
     }
@@ -38,18 +43,22 @@ class YourProfileContainer extends React.Component {
 
 YourProfileContainer.propTypes = {
     currentUser: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    submitSetting: PropTypes.func.isRequired,
+    preferences: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
     return {
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        preferences: getPreferences(state)
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(UserActions, dispatch)
+        actions: bindActionCreators(UserActions, dispatch),
+        submitSetting: bindActionCreators(submitSetting, dispatch)
     }
 }
 

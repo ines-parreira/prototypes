@@ -7,6 +7,7 @@ import TicketMacros from './TicketMacros'
 import SearchInput from 'react-search-input'
 import {onlySignature} from '../../../../../state/ticket/responseUtils'
 import * as ticketSelectors from './../../../../../state/ticket/selectors'
+import {getPreferences} from './../../../../../state/currentUser/selectors'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
 
@@ -17,13 +18,6 @@ export class TicketReplyArea extends React.Component {
     }
 
     componentDidMount() {
-        $(this.refs.popupClearMacros).popup({
-            inline: true,
-            variation: 'inverted',
-            position: 'top right',
-            hoverable: true,
-            on: 'hover'
-        })
         window.addEventListener('keydown', this._hideMacros)
 
         if (this.props.ticket.getIn(CONTENT_STATE_PATH) === null) {
@@ -35,11 +29,33 @@ export class TicketReplyArea extends React.Component {
         const prevContentState = this.props.ticket.getIn(CONTENT_STATE_PATH)
         const nextContextState = nextProps.ticket.getIn(CONTENT_STATE_PATH)
 
-        // here we make sure that we only hide the macros if the current contentState is null
-        if (prevContentState === null && nextContextState && nextContextState.hasText()) {
-            // macros are visible if only the signature is present
-            const visible = onlySignature(nextContextState, nextProps.currentUser)
-            this._setMacrosVisible(visible)
+        // here we make sure that we only toggle the macros
+        // if the current contentState is null.
+        if (prevContentState === null) {
+            // default
+            let showMacros = nextProps.preferences.get('show_macros')
+
+            // show/hide macros depending on the profile setting
+            const preferences = nextProps.currentUser
+                .get('settings')
+                .find((s) => s.get('type') === 'preferences')
+
+            if (preferences) {
+                showMacros = preferences.getIn(['data', 'show_macros'])
+            }
+
+            // macros are hidden if there is more text than the signature
+            const shouldHideMacros = (
+                nextContextState &&
+                nextContextState.hasText() &&
+                !onlySignature(nextContextState, nextProps.currentUser)
+            )
+
+            if (shouldHideMacros) {
+                showMacros = false
+            }
+
+            this._setMacrosVisible(showMacros)
         }
     }
 
@@ -86,16 +102,6 @@ export class TicketReplyArea extends React.Component {
                         placeholder="Search for a macro"
                         autoFocus={macrosVisible && !isNewTicket}
                     />
-
-                    <a className={classnames({hidden: !macrosVisible, 'clear-macros': true})} ref="popupClearMacros">
-                        <i
-                            className="right close icon"
-                            onClick={() => this._setMacrosVisible(false)}
-                        />
-                    </a>
-                    <div className="ui popup clear-macros-popup">
-                        <strong>Esc</strong> to close the macro list.
-                    </div>
                 </div>
 
                 <div className="TicketReplyArea-content">
@@ -105,6 +111,7 @@ export class TicketReplyArea extends React.Component {
                         previewMacro={this.props.previewMacro}
                         previewMacroInModal={this.props.previewMacroInModal}
                         openModal={this.props.openModal}
+                        setMacrosVisible={this._setMacrosVisible}
                     />
 
                     <TicketReply
@@ -134,13 +141,15 @@ TicketReplyArea.propTypes = {
     updateMacro: PropTypes.func,
     previewMacroInModal: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
+    preferences: PropTypes.object.isRequired,
 
     newMessageType: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
-        newMessageType: ticketSelectors.getNewMessageType(state)
+        newMessageType: ticketSelectors.getNewMessageType(state),
+        preferences: getPreferences(state)
     }
 }
 

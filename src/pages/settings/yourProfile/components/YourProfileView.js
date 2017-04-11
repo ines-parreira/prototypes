@@ -15,6 +15,10 @@ class YourProfileView extends React.Component {
         super(props)
 
         this.isInitialized = false
+        this.state = {
+            loadingPreferences: false,
+            preferences: props.preferences.get('data')
+        }
 
         if (!props.currentUser.isEmpty()) {
             this._init(props)
@@ -36,10 +40,13 @@ class YourProfileView extends React.Component {
     }
 
     _init(props) {
-        props.initialize(props.currentUser.set('signature', fromJS({
-            text: props.currentUser.get('signature_text', ''),
-            html: props.currentUser.get('signature_html', '')
-        })).toJS())
+        const formData = props.currentUser
+            .set('signature', fromJS({
+                text: props.currentUser.get('signature_text', ''),
+                html: props.currentUser.get('signature_html', '')
+            }))
+
+        props.initialize(formData.toJS())
         this.isInitialized = true
     }
 
@@ -58,8 +65,33 @@ class YourProfileView extends React.Component {
         return formSender(this.props.actions.submitUser(normalizedValues, 0))
     }
 
+    _savePreferences = (e) => {
+        e.preventDefault()
+
+        this.setState({loadingPreferences: true})
+
+        const newSettings = this.props.preferences.update('data', data => data.mergeDeep(this.state.preferences)).toJS()
+
+        return this.props.submitSetting(newSettings, true)
+            .then(() => {
+                this.setState({loadingPreferences: false})
+            })
+    }
+
+    _changePreference = (e) => {
+        let value = e.target.value
+        if (typeof e.target.checked !== 'undefined') {
+            value = e.target.checked
+        }
+
+        this.setState({
+            preferences: this.state.preferences.set(e.target.name, value)
+        })
+    }
+
     render() {
         const {handleSubmit, isLoading} = this.props
+        const loadingUser = isLoading && !this.state.loadingPreferences
 
         return (
             <div className="ui grid">
@@ -139,12 +171,52 @@ class YourProfileView extends React.Component {
                         <div className="field">
 
                             <button
-                                className={classNames('ui', 'green', 'button', {loading: isLoading})}
-                                disabled={isLoading}
+                                className={classNames('ui', 'green', 'button', {
+                                    loading: loadingUser
+                                })}
+                                disabled={loadingUser}
                             >
                                 Save changes
                             </button>
 
+                        </div>
+                    </form>
+
+                    <form
+                        className="ui form mt30"
+                        onSubmit={this._savePreferences}
+                    >
+                        <h4 className="ui header">
+                            Preferences
+                        </h4>
+
+                        <div className="ui field">
+                            <div className="ui checkbox">
+                                <input
+                                    id="show_macros"
+                                    name="show_macros"
+                                    type="checkbox"
+                                    checked={this.state.preferences.get('show_macros')}
+                                    onChange={this._changePreference}
+                                />
+                                <label
+                                    className="clickable"
+                                    htmlFor="show_macros"
+                                >
+                                    Display macros by default on emails
+                                </label>
+                            </div>
+                        </div>
+
+                        <div className="field">
+                            <button
+                                className={classNames('ui', 'green', 'button', {
+                                    loading: this.state.loadingPreferences
+                                })}
+                                disabled={this.state.loadingPreferences}
+                            >
+                                Save preferences
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -158,6 +230,8 @@ YourProfileView.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
+    submitSetting: PropTypes.func.isRequired,
+    preferences: PropTypes.object.isRequired,
     isLoading: PropTypes.bool
 }
 

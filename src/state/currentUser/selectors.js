@@ -2,6 +2,8 @@ import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import {getViews} from '../views/selectors'
 
+import {DEFAULT_PREFERENCES} from './../../config'
+
 export const getCurrentUserState = state => state.currentUser || fromJS({})
 
 export const getCurrentUser = createSelector(
@@ -39,4 +41,15 @@ export const getSettingsByType = type => createSelector(
 export const getApiKey = createSelector(
     [getCurrentUserState],
     state => state.getIn(['auths', 0, 'data', 'token']) || ''
+)
+
+export const getPreferences = createSelector(
+    [getSettings],
+    state => {
+        return fromJS({
+            type: 'preferences',
+            data: DEFAULT_PREFERENCES
+        })
+        .mergeDeep(state.find((s) => s.get('type') === 'preferences'))
+    }
 )
