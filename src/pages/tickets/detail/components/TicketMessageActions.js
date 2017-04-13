@@ -104,6 +104,10 @@ export default class TicketMessageActions extends React.Component {
 
         const backActions = message.actions.filter(action => getActionTemplate(action.name).execution === 'back')
 
+        if (backActions.length === 0) {
+            return null
+        }
+
         return (
             <div className="ticket-message-actions">
                 {
