@@ -40,43 +40,48 @@ class AfterTitle extends React.Component { // eslint-disable-line
             return null
         }
 
-        let actions = [{
-            actionName: 'shopifyRefundShippingCostOfOrder',
-            reason: 'refund the shipping cost of this order',
-            child: (
-                <div>
-                    <i className="shipping icon" />
-                    Refund shipping
-                </div>
-            )
-        }, {
-            actionName: 'shopifyCancelOrder',
-            reason: 'cancel this order',
-            child: (
-                <div>
-                    <i className="ban icon" />
-                    Cancel
-                </div>
-            )
-        }, {
-            actionName: 'shopifyFullRefundOrder',
-            reason: 'refund this order',
-            child: (
-                <div>
-                    <i className="repeat icon" />
-                    Full refund
-                </div>
-            )
-        }, {
-            actionName: 'shopifyDuplicateOrder',
-            reason: 'duplicate this order',
-            child: (
-                <div>
-                    <i className="copy icon" />
-                    Duplicate order
-                </div>
-            )
-        }]
+        let actions = [
+            {
+                actionName: 'shopifyRefundShippingCostOfOrder',
+                reason: 'refund the shipping cost of this order',
+                child: (
+                    <div>
+                        <i className="shipping icon" />
+                        Refund shipping
+                    </div>
+                )
+            },
+            // {
+            //     actionName: 'shopifyCancelOrder',
+            //     reason: 'cancel this order',
+            //     child: (
+            //         <div>
+            //             <i className="ban icon" />
+            //             Cancel
+            //         </div>
+            //     )
+            // },
+            {
+                actionName: 'shopifyFullRefundOrder',
+                reason: 'refund this order',
+                child: (
+                    <div>
+                        <i className="repeat icon" />
+                        Full refund
+                    </div>
+                )
+            },
+            {
+                actionName: 'shopifyDuplicateOrder',
+                reason: 'duplicate this order',
+                child: (
+                    <div>
+                        <i className="copy icon" />
+                        Duplicate order
+                    </div>
+                )
+            }
+        ]
 
         let removed = []
 
