@@ -51,16 +51,16 @@ class AfterTitle extends React.Component { // eslint-disable-line
                     </div>
                 )
             },
-            // {
-            //     actionName: 'shopifyCancelOrder',
-            //     reason: 'cancel this order',
-            //     child: (
-            //         <div>
-            //             <i className="ban icon" />
-            //             Cancel
-            //         </div>
-            //     )
-            // },
+            {
+                actionName: 'shopifyCancelOrder',
+                reason: 'cancel this order',
+                child: (
+                    <div>
+                        <i className="ban icon" />
+                        Cancel
+                    </div>
+                )
+            },
             {
                 actionName: 'shopifyFullRefundOrder',
                 reason: 'refund this order',
