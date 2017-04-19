@@ -25,6 +25,8 @@ import {
 } from './utils'
 import * as integrationSelectors from '../integrations/selectors'
 
+const Raven = window.Raven
+
 export const addAttachments = (ticket, atts) => (dispatch) => {
     dispatch({
         type: types.ADD_ATTACHMENT_START
@@ -94,6 +96,12 @@ export const receivedMacro = () => ({
 })
 
 export const mergeTicket = (ticket) => {
+    if (!Array.isArray(ticket.messages)) {
+        Raven.captureException(new Error('Trying to merge a ticket where messages is not an array'), {
+            extra: ticket
+        })
+    }
+
     return {
         type: types.MERGE_TICKET,
         ticket,
