@@ -50,11 +50,7 @@ export default class JsonField extends React.Component {
             return
         }
 
-        const error = (
-            <span>
-                <i className="icon warning sign" /> Invalid JSON : changes will not be saved until the JSON is fixed
-            </span>
-        )
+        const error = 'Invalid JSON : changes will not be saved until the JSON is fixed'
 
         return <ErrorMessage errors={error} />
     }

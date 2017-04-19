@@ -76,14 +76,11 @@ class Navbar extends React.Component {
                                 return (
                                     <DropdownItem
                                         key={item.label}
-                                        type="button"
+                                        tag={NavLink}
+                                        to={item.url}
+                                        onClick={() => this.setState({title: item.label})}
                                     >
-                                        <NavLink
-                                            to={item.url}
-                                            onClick={() => this.setState({title: item.label})}
-                                        >
-                                            {item.label}
-                                        </NavLink>
+                                        {item.label}
                                     </DropdownItem>
                                 )
                             })
