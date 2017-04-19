@@ -127,20 +127,22 @@ export class TicketTags extends React.Component {
         return (
             <div className="d-inline-flex align-items-center flex-wrap">
                 {
-                    ticketTags.map((tag, i) => (
-                        <TagLabel
-                            key={i}
-                            decoration={tag.get('decoration')}
-                        >
-                            <span>
-                                {tag.get('name')}
-                                <i
-                                    className="fa fa-fw fa-close cursor-pointer ml-1"
-                                    onClick={() => removeTag(tag.get('name'))}
-                                />
-                            </span>
-                        </TagLabel>
-                    ))
+                    ticketTags
+                        .sort((a, b) => a.get('name').toLowerCase() > b.get('name').toLowerCase() ? 1 : -1)
+                        .map((tag, i) => (
+                            <TagLabel
+                                key={i}
+                                decoration={tag.get('decoration')}
+                            >
+                                <span>
+                                    {tag.get('name')}
+                                    <i
+                                        className="fa fa-fw fa-close cursor-pointer ml-1"
+                                        onClick={() => removeTag(tag.get('name'))}
+                                    />
+                                </span>
+                            </TagLabel>
+                        ))
                 }
 
                 <ButtonDropdown
