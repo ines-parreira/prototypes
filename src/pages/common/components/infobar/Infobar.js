@@ -305,7 +305,7 @@ class Infobar extends React.Component {
         return (
             <InfobarLayout>
                 <div className="infobar-content">
-                    <div className="infobar-search-wrapper">
+                    <div className="infobar-search-wrapper d-flex align-items-center justify-content-between">
                         <Search
                             placeholder="Search users by email, name or phone number..."
                             bindKey

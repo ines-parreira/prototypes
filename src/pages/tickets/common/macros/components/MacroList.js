@@ -32,16 +32,20 @@ export default class MacroList extends React.Component {
                     className="ui secondary vertical fluid menu"
                     style={{margin: 0}}
                 >
-                    <div className="ui category search item">
-                        <div className="ui icon input">
-                            <SearchInput
-                                value={this.state.searchTerm}
-                                onChange={this.searchUpdated}
-                                className="ui icon input full-width prompt shortcuts-enable"
-                                placeholder="Search for a macro"
-                            />
-                            <i className="search icon" />
-                        </div>
+                    <div
+                        className="ui icon input"
+                        style={{
+                            width: '100%',
+                            padding: '12px 0',
+                        }}
+                    >
+                        <SearchInput
+                            value={this.state.searchTerm}
+                            onChange={this.searchUpdated}
+                            className="ui icon input full-width prompt shortcuts-enable"
+                            placeholder="Search for a macro"
+                        />
+                        <i className="search icon" />
                     </div>
                     {
                         curMacros.map(macro => {
