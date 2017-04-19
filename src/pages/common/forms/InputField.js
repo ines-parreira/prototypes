@@ -1,56 +1,89 @@
 import React, {PropTypes} from 'react'
 import _noop from 'lodash/noop'
 import classNames from 'classnames'
+import {Label, Input, InputGroupButton, Button, FormText} from 'reactstrap'
+
 import ErrorMessage from '../components/ErrorMessage'
 
-const InputField = ({type, input, meta, className, label, placeholder, required, readOnly, buttons}) => {
+const InputField = ({type, input, meta, className, label, help, placeholder, required, readOnly, buttons}) => {
     const hasButtons = !!buttons.length
 
     const fieldClassName = classNames({
         required,
-    }, className, 'ui', 'field')
+    }, className, 'field')
 
     const inputClassName = classNames({
-        action: hasButtons,
+        'input-group': hasButtons,
         disabled: readOnly,
-    }, 'ui', 'input')
+    })
 
-    const props = input
+    const inputProps = input
 
-    props.type = type
+    inputProps.type = type
+    inputProps.readOnly = readOnly
 
     if (required) {
-        props.required = true
+        inputProps.required = true
     }
 
     if (type === 'hidden') {
-        return <input {...props}/>
+        return <input {...inputProps} />
     }
 
     return (
         <div className={fieldClassName}>
-            {label && <label htmlFor={input.name}>{label}</label>}
+            {
+                label && (
+                    <Label
+                        htmlFor={input.name}
+                        className="control-label"
+                    >
+                        {label}
+                    </Label>
+                )
+            }
             <div className={inputClassName}>
-                <input {...props} placeholder={placeholder} />
+                <Input
+                    placeholder={placeholder}
+                    {...inputProps}
+                />
                 {
                     hasButtons && (
                         buttons.map((button, i) => {
                             return (
-                                <button
+                                <InputGroupButton
                                     key={i}
-                                    className={classNames('ui', 'button', button.className || '')}
-                                    type="button"
-                                    onClick={button.onClick || _noop}
                                 >
-                                    {button.label}
-                                </button>
+                                    <Button
+                                        className={button.className}
+                                        type="button"
+                                        onClick={button.onClick || _noop}
+                                    >
+                                        {button.label}
+                                    </Button>
+                                </InputGroupButton>
                             )
                         })
                     )
                 }
             </div>
-            {meta.invalid && meta.touched && <ErrorMessage errors={meta.error} />}
-            {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
+            {
+                help && (
+                    <FormText color="muted">
+                        {help}
+                    </FormText>
+                )
+            }
+            {
+                meta.invalid && meta.touched && (
+                    <ErrorMessage errors={meta.error} />
+                )
+            }
+            {
+                meta.touched && (
+                    <ErrorMessage errors={meta.warning} isWarning />
+                )
+            }
         </div>
     )
 }
@@ -61,11 +94,13 @@ InputField.defaultProps = {
     readOnly: false,
     type: 'text',
     buttons: [],
+    meta: {},
 }
 
 InputField.propTypes = {
     type: PropTypes.string.isRequired,
     input: PropTypes.object.isRequired,
+    help: PropTypes.string,
     meta: PropTypes.object.isRequired,
     className: PropTypes.string,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

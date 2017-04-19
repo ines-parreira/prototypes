@@ -136,7 +136,6 @@ class TooltipWidgetEditCard extends React.Component {
                                     key="order"
                                     label="Order by"
                                     name="list.meta.orderBy"
-                                    direction="upward"
                                     component={SelectField}
                                 >
                                     {

@@ -1,82 +1,47 @@
 import React, {PropTypes} from 'react'
-import {TICKET_STATUSES} from '../../../../../config'
+import classnames from 'classnames'
+import {Button, UncontrolledTooltip} from 'reactstrap'
+
+import css from './TicketStatus.less'
 
 export default class TicketStatus extends React.Component {
-    componentDidMount() {
-        $(this.refs.popupStatus).popup({
-            inline: true,
-            position: this.props.position,
-            hoverable: true,
-            on: 'click',
-            popup: '.ticket-status-popup'
-        })
-    }
-
-    componentDidUpdate() {
-        // when the status changes, hide the popup
-        $(this.refs.popupStatus).popup('hide')
-    }
-
     render() {
-        const {setStatus, setQuickStatus, currentStatus} = this.props
+        const {setQuickStatus, currentStatus} = this.props
+
+        const toClose = currentStatus !== 'closed'
 
         return (
-            <div className="ticket-status-wrapper ui buttons">
-                <button
-                    type="button"
-                    className="ticket-status-action ui basic grey button"
-                    onClick={() => {
-                        if (setQuickStatus) {
-                            setQuickStatus(currentStatus)
-                        }
-                    }}
+            <div className="d-inline-block mr-2">
+                <Button
+                    id="change-status-button"
+                    className={classnames('d-inline-block', css.button)}
+                    color={toClose ? 'secondary' : 'success'}
+                    onClick={() => setQuickStatus(currentStatus)}
                 >
-                    {currentStatus === 'closed' ? 'OPEN' : 'CLOSE'}
-                </button>
-
-                <div className="ui popup ticket-status-popup">
-                    <div
-                        className="ui vertical menu"
-                        style={{textAlign: 'left', border: 'none', width: 'inherit'}}
-                    >
-
-                        {
-                            TICKET_STATUSES.map((status) =>
-                                <button
-                                    type="button"
-                                    className={`item ticket-status smaller ticket-details-item ui ${status} label`}
-                                    key={status}
-                                    onClick={() => {
-                                        setStatus(status)
-                                    }}
-                                >
-                                    {status}
-                                </button>
-                            )
-                        }
-
-                    </div>
-                </div>
-
-                <button
-                    className="ticket-status-dropdown ui basic grey floating dropdown icon button"
-                    ref="popupStatus"
-                    type="button"
-                >
-                    <i className="dropdown icon" />
-                </button>
+                    <i
+                        className={classnames('fa fa-fw fa-check mr-1', css.icon, {
+                            [css.alone]: !toClose,
+                        })}
+                    />
+                    {toClose && 'Close'}
+                </Button>
+                {
+                    !toClose && (
+                        <UncontrolledTooltip
+                            placement="bottom"
+                            target="change-status-button"
+                            delay={{show: 1000, hide: 0}}
+                        >
+                            Reopen
+                        </UncontrolledTooltip>
+                    )
+                }
             </div>
         )
     }
 }
 
 TicketStatus.propTypes = {
-    setStatus: PropTypes.func.isRequired,
-    setQuickStatus: PropTypes.func,
+    setQuickStatus: PropTypes.func.isRequired,
     currentStatus: PropTypes.string.isRequired,
-    position: PropTypes.string
-}
-
-TicketStatus.defaultProps = {
-    position: 'bottom right'
 }

@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
+import {UncontrolledTooltip} from 'reactstrap'
+
 import {renderDifference, comparedPeriodString} from '../../common/utils'
 import PeriodPicker from '../../common/PeriodPicker'
 import PageHeader from '../../../common/components/PageHeader'
@@ -17,17 +19,13 @@ export default class SimpleStatsView extends React.Component {
         }
     }
 
-    componentDidUpdate() {
-        $('.tooltip').popup()
-    }
-
     _handleDateChange = (meta) => {
         meta.type = this.props.type
         this.props.fetchStats(meta)
     }
 
     // render a value depending on its type (like a percent, a delta, etc.)
-    _renderCell = (value, type) => {
+    _renderCell = (value, type, index) => {
         const {meta} = this.props
 
         switch (type) {
@@ -37,13 +35,20 @@ export default class SimpleStatsView extends React.Component {
 
                 const tooltipDelta = comparedPeriodString(previousStartDatetime, previousEndDatetime)
 
+                const id = `difference-${index}`
+
                 return (
-                    <span
-                        className="tooltip"
-                        data-content={tooltipDelta}
-                        data-variation="wide inverted"
-                    >
-                        {renderDifference(value)}
+                    <span>
+                        <span id={id}>
+                            {renderDifference(value)}
+                        </span>
+                        <UncontrolledTooltip
+                            placement="top"
+                            target={id}
+                            delay={0}
+                        >
+                            {tooltipDelta}
+                        </UncontrolledTooltip>
                     </span>
                 )
             }
@@ -96,7 +101,7 @@ export default class SimpleStatsView extends React.Component {
 
                                             return (
                                                 <td key={type}>
-                                                    {this._renderCell(cell, field.get('type'))}
+                                                    {this._renderCell(cell, field.get('type'), index)}
                                                 </td>
                                             )
                                         })
@@ -122,7 +127,6 @@ export default class SimpleStatsView extends React.Component {
                         <PeriodPicker
                             startDatetime={startDatetime}
                             endDatetime={endDatetime}
-                            period={meta.get('period')}
                             onChange={this._handleDateChange}
                             isDisabled={isLoading}
                         />

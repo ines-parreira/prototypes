@@ -5,6 +5,11 @@ import {fromJS} from 'immutable'
 import classNames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
+import {
+    Button,
+    Breadcrumb,
+    BreadcrumbItem,
+} from 'reactstrap'
 
 import formSender from '../../../../common/utils/formSender'
 import InputField from './../../../../common/forms/InputField'
@@ -49,7 +54,9 @@ class SmoochIntegrationDetail extends React.Component {
         }
     }
 
-    _addNewSmooch = () => { window.location.href = this.props.redirectUri }
+    _addNewSmooch = () => {
+        window.location.href = this.props.redirectUri
+    }
 
     _handleSubmit = (values) => {
         if (!this.props.isUpdate) {
@@ -79,26 +86,27 @@ class SmoochIntegrationDetail extends React.Component {
         }
 
         return (
-            <div className="ui grid">
-                <div className="ten wide column">
-
-                    <div className="ui large breadcrumb">
+            <div>
+                <Breadcrumb>
+                    <BreadcrumbItem>
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider" />
-                        <Link to="/app/integrations/smooch" className="section">Smooch</Link>
-                        <i className="right angle icon divider" />
-                        <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
-                    </div>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to="/app/integrations/smooch">Smooch</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        {isUpdate ? integration.get('name') : 'Add'}
+                    </BreadcrumbItem>
+                </Breadcrumb>
 
-                    <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
-                </div>
+                <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
 
-                <div className="ten wide column">
-                    <form
-                        className="ui form"
-                        onSubmit={handleSubmit(this._handleSubmit)}
-                    >
-                        {isUpdate && (
+                <form
+                    className="ui form"
+                    onSubmit={handleSubmit(this._handleSubmit)}
+                >
+                    {
+                        isUpdate && (
                             <Field
                                 name="name"
                                 label="Smooch App Name"
@@ -107,58 +115,70 @@ class SmoochIntegrationDetail extends React.Component {
                                 required
                                 component={InputField}
                             />
+                        )
+                    }
+                    <div className="field">
+                        <Button
+                            color="primary"
+                            className={classNames({
+                                'btn-loading': ctaIsLoading,
+                            })}
+                            disabled={ctaIsLoading}
+                        >
+                            {isUpdate ? 'Save changes' : 'Connect my Smooch'}
+                        </Button>
 
-                        )}
-                        <div className="field">
-                            <button
-                                className={classNames('ui', 'green', 'button', {'loading disabled': ctaIsLoading})}
-                                disabled={isSubmitting}
-                            >
-                                {isUpdate ? 'Save changes' : 'Connect my Smooch'}
-                            </button>
+                        {
+                            !authenticationRequired && isUpdate && isActive && (
+                                <Button
+                                    type="button"
+                                    color="warning"
+                                    outline
+                                    className={classNames('ml-2', {
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    disabled={isSubmitting}
+                                    onClick={() => actions.deactivateIntegration(integration)}
+                                >
+                                    Deactivate
+                                </Button>
+                            )
+                        }
 
-                            {
-                                !authenticationRequired && isUpdate && isActive && (
-                                    <button
-                                        type="button"
-                                        className={classNames('ui basic light floated orange button', {
-                                            'loading disabled': isSubmitting
-                                        })}
-                                        onClick={() => !isSubmitting && actions.deactivateIntegration(integration)}
-                                    >
-                                        Deactivate integration
-                                    </button>
-                                )
-                            }
+                        {
+                            !authenticationRequired && isUpdate && !isActive && (
+                                <Button
+                                    type="button"
+                                    color="success"
+                                    className={classNames('ml-2', {
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    disabled={isSubmitting}
+                                    onClick={() => actions.activateIntegration(integration)}
+                                >
+                                    Re-activate
+                                </Button>
+                            )
+                        }
 
-                            {
-                                !authenticationRequired && isUpdate && !isActive && (
-                                    <button
-                                        type="button"
-                                        className={classNames('ui basic light blue floated button', {
-                                            'loading disabled': isSubmitting
-                                        })}
-                                        onClick={() => !isSubmitting && actions.activateIntegration(integration)}
-                                    >
-                                        Re-Activate integration
-                                    </button>
-                                )
-                            }
-
-                            {
-                                isUpdate && (
-                                    <button
-                                        className="ui basic light red floated right button"
-                                        onClick={() => actions.deleteIntegration(integration)}
-                                        type="button"
-                                    >
-                                        Delete
-                                    </button>
-                                )
-                            }
-                        </div>
-                    </form>
-                </div>
+                        {
+                            isUpdate && (
+                                <Button
+                                    type="button"
+                                    color="danger"
+                                    outline
+                                    className={classNames('pull-right', {
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    disabled={isSubmitting}
+                                    onClick={() => actions.deleteIntegration(integration)}
+                                >
+                                    Delete
+                                </Button>
+                            )
+                        }
+                    </div>
+                </form>
             </div>
         )
     }

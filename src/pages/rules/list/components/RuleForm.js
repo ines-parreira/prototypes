@@ -9,7 +9,6 @@ import TextAreaField from '../../../common/forms/TextAreaField'
 import formSender from '../../../common/utils/formSender'
 
 class RuleForm extends React.Component {
-
     _handleCancel = () => {
         this.props.onCancel()
         this.props.reset()
@@ -27,14 +26,7 @@ class RuleForm extends React.Component {
         })
 
         return (
-            <div ref="modal">
-                <div className="header">
-                    Create new Rule
-                    <i
-                        className="remove action icon modal-close"
-                        onClick={this.props.onCancel}
-                    />
-                </div>
+            <div>
                 <form className="ui form" onSubmit={handleSubmit(this._handleSubmit)}>
                     <div className="content">
                         <Field
@@ -49,9 +41,10 @@ class RuleForm extends React.Component {
                             name="description"
                             placeholder="Description"
                             component={TextAreaField}
+                            rows="3"
                         />
                     </div>
-                    <div className="actions">
+                    <div className="actions pull-right mt-3">
                         <button type="button" className="ui button" onClick={this._handleCancel}>
                             Cancel
                         </button>

@@ -1,11 +1,19 @@
 import React, {PropTypes} from 'react'
 
-const RemoveCallExpression = ({index, onClick}) => (
-    <i className="remove circle red large action icon" onClick={() => onClick(index)}/>
-)
-RemoveCallExpression.propTypes = {
-    index: PropTypes.number.isRequired,
-    onClick: PropTypes.func.isRequired
-}
+export default class RemoveCallExpression extends React.Component {
+    static propTypes = {
+        index: PropTypes.number.isRequired,
+        onClick: PropTypes.func.isRequired,
+    }
 
-export default RemoveCallExpression
+    render() {
+        const {index, onClick} = this.props
+
+        return (
+            <i
+                className="fa fa-fw fa-times text-danger remove clickable"
+                onClick={() => onClick(index)}
+            />
+        )
+    }
+}

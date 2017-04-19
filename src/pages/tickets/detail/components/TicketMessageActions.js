@@ -34,63 +34,54 @@ export default class TicketMessageActions extends React.Component {
     _renderModalContent = (id, action, contentType) => {
         return (
             <div>
-                <div className="header">
-                    Request
-                    <i
-                        className="remove action icon modal-close"
-                        onClick={this._closeModal(id)}
-                    />
-                </div>
-                <div className="content">
-                    <h3>Headers</h3>
-                    {
-                        Object.keys(action.arguments.headers).map((arg, idx) => (
-                            <p key={idx}><b>{arg}:</b> {action.arguments.headers[arg]}</p>
-                        ))
-                    }
-                    <h3>URL Parameters</h3>
-                    {
-                        Object.keys(action.arguments.params).map((arg, idx) => (
-                            <p key={idx}><b>{arg}:</b> {action.arguments.params[arg]}</p>
-                        ))
-                    }
-                    {
-                        !!action.arguments.form && contentType === FORM_CONTENT_TYPE && (
-                            <div className="ticket-message-actions-params-block">
-                                <h3>Form Data</h3>
-                                {
-                                    Object.keys(action.arguments.form).map((arg, idx) => (
-                                        <p key={idx}><b>{arg}:</b> {action.arguments.form[arg]}</p>
-                                    ))
-                                }
+                <h3>Headers</h3>
+                {
+                    Object.keys(action.arguments.headers).map((arg, idx) => (
+                        <p key={idx}><b>{arg}:</b> {action.arguments.headers[arg]}</p>
+                    ))
+                }
+                <h3>URL Parameters</h3>
+                {
+                    Object.keys(action.arguments.params).map((arg, idx) => (
+                        <p key={idx}><b>{arg}:</b> {action.arguments.params[arg]}</p>
+                    ))
+                }
+                {
+                    !!action.arguments.form && contentType === FORM_CONTENT_TYPE && (
+                        <div className="ticket-message-actions-params-block">
+                            <h3>Form Data</h3>
+                            {
+                                Object.keys(action.arguments.form).map((arg, idx) => (
+                                    <p key={idx}><b>{arg}:</b> {action.arguments.form[arg]}</p>
+                                ))
+                            }
+                        </div>
+                    )
+                }
+                {
+                    !!action.arguments.json && contentType === JSON_CONTENT_TYPE && (
+                        <div className="ticket-message-actions-params-block">
+                            <h3>JSON Data</h3>
+                            <JSONTree data={fromJS(action.arguments.json)} />
+                        </div>
+                    )
+                }
+                {
+                    !!action.response && (
+                        <div className="ticket-message-actions-params-block">
+                            <h2>Response</h2>
+                            <p>Status code: <b>{action.response.status_code}</b></p>
+                            <div className="ticket-message-actions-response-body">
+                                <b>Body</b>:
+                                <pre>
+                                    <code>
+                                        {action.response.response}
+                                    </code>
+                                </pre>
                             </div>
-                        )
-                    }
-                    {
-                        !!action.arguments.json && contentType === JSON_CONTENT_TYPE && (
-                            <div className="ticket-message-actions-params-block">
-                                <h3>JSON Data</h3>
-                                <JSONTree data={fromJS(action.arguments.json)} />
-                            </div>
-                        )
-                    }
-                    {
-                        !!action.response && (
-                            <div className="ticket-message-actions-params-block">
-                                <h2>Response</h2>
-                                <p>Status code: <b>{action.response.status_code}</b></p>
-                                <p className="ticket-message-actions-response-body">
-                                    <b>Body</b>: {action.response.response}
-                                </p>
-                            </div>
-                        )
-                    }
-                </div>
-                <div className="actions">
-                    <button type="button" className="ui button" onClick={this._closeModal(id)}>
-                        Close
-                    </button>
-                </div>
+                        </div>
+                    )
+                }
             </div>
         )
     }
@@ -142,7 +133,9 @@ export default class TicketMessageActions extends React.Component {
                                     contentType && (
                                         <Modal
                                             isOpen={this.state.isModalOpen[index]}
-                                            onRequestClose={this._closeModal(index)}
+                                            onClose={this._closeModal(index)}
+                                            header="Request"
+                                            size="lg"
                                         >
                                             {this._renderModalContent(index, action, contentType)}
                                         </Modal>

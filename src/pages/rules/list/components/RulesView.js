@@ -8,9 +8,8 @@ import RuleTable from './RuleTable'
 import {getAST, getCode} from '../../../../utils'
 
 export default class RulesView extends React.Component {
-    constructor() {
-        super()
-        this.state = {showForm: false}
+    state = {
+        showForm: false,
     }
 
     componentWillMount() {
@@ -26,12 +25,13 @@ export default class RulesView extends React.Component {
     }
 
     _handleSubmit = (values) => {
-        this._hideForm()
         // add some default values for the rule
         values.code = 'if (eq(event.type, \'ticket-message-created\')) {}'
         values.code_ast = getAST(values.code)
         values.code = getCode(values.code_ast)
-        return this.props.actions.rules.create(values)
+        return this.props.actions.rules.create(values).then(() => {
+            this._hideForm()
+        })
     }
 
     render() {
@@ -70,9 +70,9 @@ export default class RulesView extends React.Component {
                 }
 
                 <Modal
-                    header="Create New Rule"
+                    header="Create new rule"
                     isOpen={this.state.showForm}
-                    onRequestClose={this._hideForm}
+                    onClose={this._hideForm}
                 >
                     <RuleForm
                         onSubmit={this._handleSubmit}

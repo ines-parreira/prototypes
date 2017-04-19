@@ -103,7 +103,6 @@ class IntegrationDetailContainer extends React.Component {
                         return (
                             <FacebookIntegrationSetup
                                 actions={actions}
-                                integrations={commonProps.integrations}
                                 loading={commonProps.loading}
                             />
                         )
@@ -128,7 +127,6 @@ class IntegrationDetailContainer extends React.Component {
                 return (
                     <FacebookIntegrationList
                         actions={actions}
-                        integrations={commonProps.integrations}
                         redirectUri={redirectUri}
                         loading={commonProps.loading}
                     />

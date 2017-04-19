@@ -2,10 +2,11 @@ import React, {PropTypes, Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classnames from 'classnames'
+import {UncontrolledTooltip} from 'reactstrap'
+
 import {compactInteger, getPluralObjectName} from '../../../../utils'
 import {Loader} from './../../../common/components/Loader'
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
-import _assign from 'lodash/assign'
 
 import * as viewsActions from '../../../../state/views/actions'
 import {getActiveView, getViewsByType, makeGetView, makeGetViewCount} from '../../../../state/views/selectors'
@@ -13,11 +14,6 @@ import {getSettingsByType as getCurrentUserSettingsByType} from '../../../../sta
 
 import css from './ViewNavbarView.less'
 
-// popup configuration
-const popupConf = {
-    variation: 'inverted',
-    position: 'top center'
-}
 const popupEnterMessage = 'Create, re-order & hide views'
 const popupLeaveMessage = 'Leave edit mode'
 
@@ -39,27 +35,9 @@ class ViewNavbarView extends Component {
         hasEditMode: false
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            if (this.refs.settingButton) {
-                $(this.refs.settingButton).popup(_assign({}, popupConf, {
-                    content: popupEnterMessage
-                }))
-            }
-        }, 1)
-    }
-
     _toggleHasEditMode = () => {
         const {hasEditMode} = this.state
         this.setState({hasEditMode: !hasEditMode})
-
-        setTimeout(() => {
-            if (this.refs.settingButton) {
-                $(this.refs.settingButton).popup(_assign({}, popupConf, {
-                    content: hasEditMode ? popupEnterMessage : popupLeaveMessage
-                }))
-            }
-        }, 1)
     }
 
     render() {
@@ -71,9 +49,9 @@ class ViewNavbarView extends Component {
         const settingButtonClass = classnames(css['setting-button'], {
             [css.active]: hasEditMode
         })
-        const settingIconClass = classnames('icon m0i', {
-            setting: !hasEditMode,
-            remove: hasEditMode
+        const settingIconClass = classnames('fa fa-fw', {
+            'fa-cog': !hasEditMode,
+            'fa-close': hasEditMode
         })
 
         let displayedViews = views
@@ -92,12 +70,19 @@ class ViewNavbarView extends Component {
                             onClick={this._toggleHasEditMode}
                             className={settingButtonClass}
                         >
-                            <span ref="settingButton">
+                            <span id="navbar-views-settings">
                                 {isLoading
-                                    ? <Loader size="mini" inline inverted/>
-                                    : <i className={settingIconClass}/>
+                                    ? <Loader size="mini" inline inverted />
+                                    : <i className={settingIconClass} />
                                 }
                             </span>
+                            <UncontrolledTooltip
+                                delay={0}
+                                placement="top"
+                                target="navbar-views-settings"
+                            >
+                                {hasEditMode ? popupLeaveMessage : popupEnterMessage}
+                            </UncontrolledTooltip>
                         </span>
                     </h4>
                     <div className="menu">

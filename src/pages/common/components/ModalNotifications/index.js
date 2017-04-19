@@ -1,2 +1,0 @@
-import ModalNotificationsContainer from './ModalNotificationsContainer'
-export default ModalNotificationsContainer

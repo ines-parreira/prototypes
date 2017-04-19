@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
+import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu} from 'reactstrap'
+
 import {humanizeString} from '../../../../../../utils'
 
 import ActionButton from '../ActionButton'
@@ -111,7 +113,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                             <ActionButton
                                 key={action.actionName}
                                 tag="button"
-                                className="ui button basic action-button"
+                                className="btn btn-sm btn-secondary action-button"
                                 actionName={action.actionName}
                                 reason={action.reason}
                                 payload={payload}
@@ -123,28 +125,32 @@ class AfterTitle extends React.Component { // eslint-disable-line
                 }
                 {
                     dropdownOptions.length > 0 && (
-                        <div className="ui compact menu action-dropdown">
-                            <div className="ui simple dropdown item">
-                                <i className="ellipsis vertical icon" />
-                                <div className="menu">
-                                    {
-                                        dropdownOptions.map((action) => {
-                                            return (
-                                                <ActionButton
-                                                    key={action.actionName}
-                                                    className="item"
-                                                    actionName={action.actionName}
-                                                    reason={action.reason}
-                                                    payload={payload}
-                                                >
-                                                    {action.child}
-                                                </ActionButton>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </div>
-                        </div>
+                        <UncontrolledButtonDropdown>
+                            <DropdownToggle
+                                caret
+                                className="caret-only"
+                                type="button"
+                                color="secondary"
+                                size="sm"
+                            />
+                            <DropdownMenu right>
+                                {
+                                    dropdownOptions.map((action) => {
+                                        return (
+                                            <ActionButton
+                                                key={action.actionName}
+                                                className="dropdown-item"
+                                                actionName={action.actionName}
+                                                reason={action.reason}
+                                                payload={payload}
+                                            >
+                                                {action.child}
+                                            </ActionButton>
+                                        )
+                                    })
+                                }
+                            </DropdownMenu>
+                        </UncontrolledButtonDropdown>
                     )
                 }
             </div>

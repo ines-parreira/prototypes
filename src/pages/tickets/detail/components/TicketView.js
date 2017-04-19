@@ -1,13 +1,12 @@
 import React, {PropTypes} from 'react'
-import {StickyContainer, Sticky} from 'react-sticky'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 
 import TicketHeader from './TicketHeader'
-
 import TicketBody from './TicketBody'
 
+import Timeline from '../../../common/components/timeline/Timeline'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtonsContainer from './replyarea/TicketSubmitButtonsContainer'
@@ -92,95 +91,117 @@ export class TicketView extends React.Component {
         const itemsCountInHistory = users.getIn(['userHistory', 'tickets'], fromJS([])).size
             + users.getIn(['userHistory', 'events'], fromJS([])).size
 
-        const historyButtonLabel = !ticket.getIn(['_internal', 'displayHistory'])
-            ? <p><i className="icon arrow circle up" />Show user history ({itemsCountInHistory})</p>
-            : 'Hide user history'
+        const isHistoryDisplayed = ticket.getIn(['_internal', 'displayHistory'])
+
+        const historyButtonLabel = isHistoryDisplayed
+            ? 'Hide user history'
+            : <p><i className="icon arrow circle up" />Show user history ({itemsCountInHistory})</p>
+
+        const transparentHistoryButton = !ticket.get('id')
+            || !users.getIn(['userHistory', 'hasHistory'])
+            || usersIsLoading('history')
+
+        const hideHistoryButton = !ticket.get('id')
 
         return (
             <div
                 className={classnames(css.page, 'ticket-view', {
-                    'transition out fade right': isTicketHidden
+                    'transition out fade right': isTicketHidden,
+                    [css['history-displayed']]: isHistoryDisplayed,
                 })}
             >
-                <StickyContainer>
-                    <Sticky
-                        topOffset={1}
-                        style={{transform: 'none'}}
-                    >
-                        <div className="previous-btn-container">
-                            <button
-                                className={classnames(
-                                    'ticket-previous-btn ui small button',
-                                    {
-                                        transparent: !ticket.get('id')
-                                        || !users.getIn(['userHistory', 'hasHistory'])
-                                        || ticket.getIn(['_internal', 'displayHistory'])
-                                        || usersIsLoading('history')
-                                    }
-                                )}
-                                onClick={() => {
-                                    const shouldOpenHistory =
-                                        ticket.get('id')
-                                        && users.getIn(['userHistory', 'hasHistory'])
-                                        && !ticket.getIn(['_internal', 'displayHistory'])
+                <div
+                    className={classnames({
+                        'mt-3': isCreating,
+                    })}
+                >
+                    <Timeline
+                        actions={this.props.actions.ticket}
+                        currentTicketId={this.props.ticket.get('id')}
+                        isDisplayed={isHistoryDisplayed}
+                        userHistory={this.props.users.get('userHistory')}
+                    />
+                    {
+                        !hideHistoryButton && (
+                            <div className="previous-btn-container">
+                                <button
+                                    className={classnames('ticket-previous-btn ui small button', {
+                                        transparent: transparentHistoryButton,
+                                        rounded: isHistoryDisplayed,
+                                    })}
+                                    onClick={() => {
+                                        const shouldOpenHistory = ticket.get('id')
+                                            && users.getIn(['userHistory', 'hasHistory'])
+                                            && !isHistoryDisplayed
 
-                                    if (shouldOpenHistory) {
-                                        actions.ticket.toggleHistory(true)
+                                        const eventName = shouldOpenHistory ? 'Opened Timeline' : 'Closed Timeline'
+
+                                        if (shouldOpenHistory) {
+                                            actions.ticket.toggleHistory(true)
+                                        } else {
+                                            actions.ticket.toggleHistory(false)
+                                        }
+
                                         document.getElementsByClassName('TicketDetailContainer')[0].scrollTop = 0
 
-                                        logEvent('Opened Timeline', {
+                                        logEvent(eventName, {
                                             nbOfTicketsInTimeline: users.getIn(['userHistory', 'tickets']).size,
                                             channel: ticket.get('channel'),
                                             nbOfMessagesInTicket: ticket.get('messages').size
                                         })
-                                    }
-                                }}
-                            >
-                                {historyButtonLabel}
-                            </button>
-                        </div>
-                        <TicketHeader
-                            ticket={ticket}
-                            actions={actions}
-                            computeNextUrl={computeNextUrl}
-                            hideTicket={this.props.hideTicket}
+                                    }}
+                                >
+                                    {historyButtonLabel}
+                                </button>
+                            </div>
+                        )
+                    }
+                    {
+                        isHistoryDisplayed && (
+                            <hr />
+                        )
+                    }
+                    <TicketHeader
+                        ticket={ticket}
+                        actions={actions}
+                        computeNextUrl={computeNextUrl}
+                        hideTicket={this.props.hideTicket}
+                    />
+
+                    {this._renderCollisionDetection()}
+                </div>
+
+                <div className="ticket-content">
+                    {this._renderMessages(isCreating)}
+
+                    <form
+                        onSubmit={this._handleSubmit}
+                        ref="newMessageForm"
+                    >
+                        <ReplyMessageChannel
+                            ticket={this.props.ticket}
+                            actions={this.props.actions}
+                            settings={this.props.settings}
                         />
 
-                        {this._renderCollisionDetection()}
-                    </Sticky>
+                        <TicketReplyArea
+                            actions={this.props.actions}
+                            applyMacro={this.props.applyMacro}
+                            previewMacro={this.props.actions.macro.previewMacro}
+                            previewMacroInModal={this.props.actions.macro.previewMacroInModal}
+                            openModal={this.props.actions.macro.openModal}
+                            currentUser={this.props.currentUser}
+                            users={this.props.users}
+                            macros={this.props.macros}
+                            ticket={this.props.ticket}
+                        />
 
-                    <div className="ticket-content">
-                        {this._renderMessages(isCreating)}
-
-                        <form
-                            onSubmit={this._handleSubmit}
-                            ref="newMessageForm"
-                        >
-                            <ReplyMessageChannel
-                                ticket={this.props.ticket}
-                                actions={this.props.actions}
-                                settings={this.props.settings}
-                            />
-
-                            <TicketReplyArea
-                                actions={this.props.actions}
-                                applyMacro={this.props.applyMacro}
-                                previewMacro={this.props.actions.macro.previewMacro}
-                                previewMacroInModal={this.props.actions.macro.previewMacroInModal}
-                                openModal={this.props.actions.macro.openModal}
-                                currentUser={this.props.currentUser}
-                                users={this.props.users}
-                                macros={this.props.macros}
-                                ticket={this.props.ticket}
-                            />
-
-                            <TicketSubmitButtonsContainer
-                                ticket={ticket}
-                                submit={this._handlePreSubmit}
-                            />
-                        </form>
-                    </div>
-                </StickyContainer>
+                        <TicketSubmitButtonsContainer
+                            ticket={ticket}
+                            submit={this._handlePreSubmit}
+                        />
+                    </form>
+                </div>
             </div>
         )
     }

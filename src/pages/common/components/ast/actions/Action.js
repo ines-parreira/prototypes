@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 
 import ActionSelect from './ActionSelect'
 
@@ -6,7 +7,7 @@ export const actionsConfig = {
     notify: {
         type: 'system',
         compact: false,
-        name: 'Deliver Message',
+        name: 'Deliver message',
         args: {
             subject: {
                 name: 'Subject',
@@ -23,7 +24,7 @@ export const actionsConfig = {
     },
     sendEmail: {
         compact: false,
-        name: 'Send Email',
+        name: 'Send email',
         args: {
             to: {
                 name: 'To',
@@ -68,31 +69,31 @@ export const actionsConfig = {
     },
     applyMacro: {
         compact: true,
-        name: 'Apply Macro',
+        name: 'Apply macro',
     },
     addTags: {
         compact: true,
-        name: 'Add Tags',
+        name: 'Add tags',
     },
     setTags: {
         compact: true,
-        name: 'Set Tags',
+        name: 'Set tags',
     },
-    setPriority: {
-        compact: true,
-        name: 'Set Priority',
-    },
+    // setPriority: {
+    //     compact: true,
+    //     name: 'Set priority',
+    // },
     setStatus: {
         compact: true,
-        name: 'Set Status',
+        name: 'Set status',
     },
     setAssignee: {
         compact: true,
-        name: 'Assign Agent'
+        name: 'Assign agent'
     },
     // sendSurvey: {
     //     compact: true,
-    //     name: 'Send Satisfaction Survey'
+    //     name: 'Send satisfaction survey'
     // },
 }
 
@@ -141,8 +142,15 @@ class Action extends React.Component {
 
     render() {
         const {actions, rule, parent, value} = this.props
+
+        const config = actionsConfig[value] || {}
+
         return (
-            <div className="action">
+            <div
+                className={classnames('mb-2', {
+                    'd-flex align-items-center': config.compact,
+                })}
+            >
                 <ActionSelect
                     actions={actions}
                     rule={rule}

@@ -5,6 +5,14 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _clone from 'lodash/clone'
 import Clipboard from 'clipboard'
+import {
+    UncontrolledTooltip,
+    Breadcrumb,
+    BreadcrumbItem,
+    Container,
+    Row,
+    Col,
+} from 'reactstrap'
 
 import {Loader} from '../../../../common/components/Loader'
 import {InputField, TextAreaField, ColorField, FileField} from '../../../../common/forms'
@@ -62,16 +70,6 @@ class ChatIntegrationDetail extends React.Component {
                 this.setState({isCopied: false})
             }, 1500)
         })
-    }
-
-    componentDidUpdate() {
-        const popupSettings = {
-            inline: true,
-            position: 'top left',
-            offset: -11
-        }
-        $(this.refs.chatTitleTooltip).popup(popupSettings)
-        $(this.refs.companyIconTooltip).popup(popupSettings)
     }
 
     _getFormValues(props) {
@@ -169,10 +167,11 @@ class ChatIntegrationDetail extends React.Component {
 
                 <p>
                     To add or update the chat to your website, add the following code before the <kbd>{'</body>'}</kbd>
-                    on your page:
+                    {' '}on your page:
                 </p>
                 <div className={css.snippet}>
-                    {dirty ? (
+                    {
+                        dirty && (
                             <div className={classnames(css.update, 'ui yellow message')}>
                                 <p>
                                     Save the changes you made to this integration before getting the new code.
@@ -189,7 +188,8 @@ class ChatIntegrationDetail extends React.Component {
                                     </button>
                                 </p>
                             </div>
-                        ) : ''}
+                        )
+                    }
 
                     <textarea
                         className="ui info message"
@@ -237,26 +237,31 @@ class ChatIntegrationDetail extends React.Component {
         }
 
         return (
-            <div className="ui grid">
-                <div className="sixteen wide tablet eleven wide computer column">
-
-                    <div className="ui large breadcrumb">
+            <div>
+                <Breadcrumb>
+                    <BreadcrumbItem>
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider" />
-                        <Link to="/app/integrations/smooch_inside" className="section">Chat</Link>
-                        <i className="right angle icon divider" />
-                        <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
-                    </div>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to="/app/integrations/smooch_inside">Chat</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        {isUpdate ? integration.get('name') : 'Add'}
+                    </BreadcrumbItem>
+                </Breadcrumb>
 
-                    <h1>{isUpdate ? integration.get('name') : 'Add new chat'}</h1>
+                <h1>{isUpdate ? `Chat: ${integration.get('name')}` : 'Add new chat'}</h1>
 
-                    {this._renderInstructions(isUpdate, isSubmitting)}
+                {this._renderInstructions(isUpdate, isSubmitting)}
 
-                    <br />
+                <br />
 
-                    <div className="ui grid">
-                        <div className="eight wide column">
-                            <h3>
+                <Container fluid>
+                    <Row>
+                        <Col
+                            style={{paddingLeft: 0}}
+                        >
+                            <h3 className="mb-3">
                                 Widget settings
                             </h3>
 
@@ -264,22 +269,26 @@ class ChatIntegrationDetail extends React.Component {
                                 className="ui form"
                                 onSubmit={handleSubmit(this._handleSubmit)}
                             >
-
                                 <div className={css.form}>
                                     <div className={css.fieldset}>
                                         <Field
                                             name="name"
                                             label={(
                                                 <span>
-                                                    Chat title
-                                                    <span ref="chatTitleTooltip">
-                                                        <i className="help circle link icon" />
-                                                    </span>
-                                                    <div className="ui inverted popup">
-                                                        Can be set only once! If you want to change the title create
-                                                        another chat.
-                                                    </div>
-                                                </span>
+                                                Chat title
+                                                <i
+                                                    id="company-name"
+                                                    className="help circle link icon"
+                                                />
+                                                <UncontrolledTooltip
+                                                    placement="top"
+                                                    target="company-name"
+                                                    delay={0}
+                                                >
+                                                    Can be set only once! If you want to change the title you will
+                                                    have to create another chat
+                                                </UncontrolledTooltip>
+                                            </span>
                                             )}
                                             placeholder="Ex: Company Support"
                                             required
@@ -294,14 +303,19 @@ class ChatIntegrationDetail extends React.Component {
                                             ratio="square"
                                             label={(
                                                 <span>
-                                                    Company icon
-                                                    <span ref="companyIconTooltip">
-                                                        <i className="help circle link icon" />
-                                                    </span>
-                                                    <div className="ui inverted popup">
-                                                        The image must have a square format. Example: 200x200 pixels.
-                                                    </div>
-                                                </span>
+                                                Company icon
+                                                <i
+                                                    id="company-icon"
+                                                    className="help circle link icon"
+                                                />
+                                                <UncontrolledTooltip
+                                                    placement="top"
+                                                    target="company-icon"
+                                                    delay={0}
+                                                >
+                                                    The image must have a square format. Example: 200x200 pixels
+                                                </UncontrolledTooltip>
+                                            </span>
                                             )}
                                         />
 
@@ -352,17 +366,21 @@ class ChatIntegrationDetail extends React.Component {
                                     )
                                 }
                             </form>
-                        </div>
-                        <div className="eight wide column">
-                            <h3>Chat Widget Preview</h3>
+                        </Col>
+                        <Col
+                            style={{padding: 0}}
+                        >
+                            <h3 className="mb-3">
+                                Preview
+                            </h3>
                             <ChatIntegrationPreview
                                 currentUser={currentUser}
                                 name={this.formValues.get('name')}
                                 decoration={this.formValues.get('decoration')}
                             />
-                        </div>
-                    </div>
-                </div>
+                        </Col>
+                    </Row>
+                </Container>
             </div>
         )
     }

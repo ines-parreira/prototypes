@@ -1,4 +1,10 @@
 :local .page {
+  &:not(.history-displayed) {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
   .viewers-banner {
     @padding-sides: 28px;
 

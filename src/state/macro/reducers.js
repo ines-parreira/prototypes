@@ -122,10 +122,12 @@ export default (state = macrosInitial, action) => {
             items = newState.get('items').toIndexedSeq().toJS()
             items = fromJS(items.filter(createFilter(newState.getIn(['state', queryField]), ['name'])))
 
-            if (!selectedMacro) {
-                newState = newState.set(selectedField, items.first())
-            } else if (!~items.findIndex(item => item.get('id') === selectedMacro.get('id'))) {
-                newState = newState.set(selectedField, items.first())
+            if (!items.isEmpty()) {
+                if (!selectedMacro) {
+                    newState = newState.set(selectedField, items.first())
+                } else if (!items.includes(item => item.get('id') === selectedMacro.get('id'))) {
+                    newState = newState.set(selectedField, items.first())
+                }
             }
 
             return newState

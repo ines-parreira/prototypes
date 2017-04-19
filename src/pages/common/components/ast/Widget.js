@@ -9,39 +9,46 @@ import PrioritySelect from './widget/PrioritySelect'
 import MacroSelect from './widget/MacroSelect'
 import AssigneeSelect from './widget/AssigneeSelect'
 
-class Widget extends React.Component {
+import InputField from '../../forms/InputField'
+import TextAreaField from '../../forms/TextAreaField'
 
+class Widget extends React.Component {
     _handleChange = (value) => {
         const {actions, rule, parent} = this.props
-        actions.rules.modifyCodeast(rule.get('id'), parent, value, 'UPDATE')
+        return actions.rules.modifyCodeast(rule.get('id'), parent, value, 'UPDATE')
     }
 
-    _handleChangeByEvent = (event) => {
-        const {actions, rule, parent} = this.props
-        actions.rules.modifyCodeast(rule.get('id'), parent, event.target.value, 'UPDATE')
-    }
+    _input = (value) => {
+        const {config = {}} = this.props
 
-    _input = (value) => (
-        <span className="ui input" style={{verticalAlign: 'middle'}}>
-            <input
-                type="text"
-                value={value}
-                onChange={this._handleChangeByEvent}
-                placeholder={this.props.config.placeholder || ''}
-                required={this.props.config.required || false}
+        return (
+            <InputField
+                label={config.name}
+                input={{
+                    value,
+                    onChange: e => this._handleChange(e.target.value),
+                }}
+                placeholder={config.placeholder || ''}
+                required={config.required || false}
             />
-        </span>
-    )
+        )
+    }
 
-    _textarea = (value) => (
-        <textarea
-            type="text"
-            value={value}
-            onChange={this._handleChangeByEvent}
-            placeholder={this.props.config.placeholder || ''}
-            required={this.props.config.required || false}
-        />
-    )
+    _textarea = (value) => {
+        const {config = {}} = this.props
+
+        return (
+            <TextAreaField
+                label={config.name}
+                input={{
+                    value,
+                    onChange: e => this._handleChange(e.target.value),
+                }}
+                placeholder={config.placeholder || ''}
+                required={config.required || false}
+            />
+        )
+    }
 
     _resolveLeft(left, schemas) {
         // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
@@ -136,11 +143,11 @@ class Widget extends React.Component {
 
         switch (widgetType) {
             case 'select':
-                return <Select {...widget} onChange={this._handleChange}/>
+                return <Select {...widget} onChange={this._handleChange} />
             case 'status-select':
-                return <StatusSelect {...widget} onChange={this._handleChange}/>
+                return <StatusSelect {...widget} onChange={this._handleChange} />
             case 'priority-select':
-                return <PrioritySelect {...widget} onChange={this._handleChange}/>
+                return <PrioritySelect {...widget} onChange={this._handleChange} />
             case 'macro-select':
                 return <MacroSelect {...widget} onChange={this._handleChange} />
             case 'assignee_user-select':

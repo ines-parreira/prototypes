@@ -29,60 +29,58 @@ class ChangePasswordView extends React.Component {
         const {handleSubmit, isLoading, invalid, pristine} = this.props
 
         return (
-            <div className="ui grid">
-                <div className="six wide column">
-                    <h1>
-                        <i className="lock alternative blue icon ml5ni mr10i"/>
-                        Change password
-                    </h1>
-                    <p>
-                        Enter your current password to confirm your identity, then the new password you would like to
-                        set instead.
-                    </p>
+            <div>
+                <h1>
+                    <i className="lock alternative blue icon ml5ni mr10i" />
+                    Change password
+                </h1>
+                <p>
+                    Enter your current password to confirm your identity, then the new password you would like to
+                    set instead.
+                </p>
 
-                    <form
-                        className="ui form"
-                        onSubmit={handleSubmit(this._handleSubmit)}
-                    >
-                        <Field
-                            type="password"
-                            name="old_password"
-                            label="Current password"
-                            placeholder="Current password"
-                            required
-                            component={InputField}
-                        />
-                        <Field
-                            type="password"
-                            name="new_password"
-                            label="New password"
-                            placeholder="New password"
-                            min={6}
-                            required
-                            component={InputField}
-                        />
-                        <Field
-                            type="password"
-                            name="confirm_new_password"
-                            label="Confirm new password"
-                            placeholder="New password"
-                            min={6}
-                            required
-                            component={InputField}
-                        />
+                <form
+                    className="ui form"
+                    onSubmit={handleSubmit(this._handleSubmit)}
+                >
+                    <Field
+                        type="password"
+                        name="old_password"
+                        label="Current password"
+                        placeholder="Current password"
+                        required
+                        component={InputField}
+                    />
+                    <Field
+                        type="password"
+                        name="new_password"
+                        label="New password"
+                        placeholder="New password"
+                        min={6}
+                        required
+                        component={InputField}
+                    />
+                    <Field
+                        type="password"
+                        name="confirm_new_password"
+                        label="Confirm new password"
+                        placeholder="New password"
+                        min={6}
+                        required
+                        component={InputField}
+                    />
 
-                        <div className="field">
+                    <div className="field">
 
-                            <button
-                                className={classNames('ui', 'green', 'button', {loading: isLoading})}
-                                disabled={isLoading || invalid || pristine}
-                            >
-                                Save changes
-                            </button>
+                        <button
+                            className={classNames('ui', 'green', 'button', {loading: isLoading})}
+                            disabled={isLoading || invalid || pristine}
+                        >
+                            Save changes
+                        </button>
 
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         )
     }

@@ -71,74 +71,72 @@ class CreditCard extends Component {
         const {isStripeLoaded} = this.state
 
         if (!isStripeLoaded) {
-            return <Loader/>
+            return <Loader />
         }
 
         return (
-            <div className="ui grid">
-                <div className="sixteen wide column">
-                    <div className="ui large breadcrumb">
-                        <Link className="section" to="app/settings/billing/">Billing</Link>
-                        <i className="right angle icon divider"/>
-                        <a className="section">{action} credit card</a>
-                    </div>
-                    <h1>{action} Credit card</h1>
-                    <p>Enter the information of the card you'd like to use.</p>
-                    <div className="ui grid">
-                        <div className={`height wide column ${css.formWrapper}`}>
-                            <form className="ui form" onSubmit={handleSubmit(updateCreditCard)}>
+            <div>
+                <div className="ui large breadcrumb">
+                    <Link className="section" to="app/settings/billing/">Billing</Link>
+                    <i className="right angle icon divider" />
+                    <a className="section">{action} credit card</a>
+                </div>
+                <h1>{action} Credit card</h1>
+                <p>Enter the information of the card you'd like to use.</p>
+                <div className="ui grid">
+                    <div className={`height wide column ${css.formWrapper}`}>
+                        <form className="ui form" onSubmit={handleSubmit(updateCreditCard)}>
+                            <Field
+                                type="text"
+                                name="number"
+                                label="Card number"
+                                placeholder="4657 7894 1234 7895"
+                                component={InputField}
+                                normalize={creditCardNormalizer}
+                            />
+                            <Field
+                                type="text"
+                                name="name"
+                                label="Name on the card"
+                                placeholder="Marie Curie"
+                                component={InputField}
+                            />
+                            <div className="two fields">
                                 <Field
                                     type="text"
-                                    name="number"
-                                    label="Card number"
-                                    placeholder="4657 7894 1234 7895"
+                                    name="expDate"
+                                    label="Expiration date"
+                                    placeholder="05 / 21"
                                     component={InputField}
-                                    normalize={creditCardNormalizer}
+                                    normalize={creditCardExpDateNormalizer}
                                 />
                                 <Field
                                     type="text"
-                                    name="name"
-                                    label="Name on the card"
-                                    placeholder="Marie Curie"
+                                    name="cvc"
+                                    label="CVC"
+                                    placeholder="693"
                                     component={InputField}
-                                />
-                                <div className="two fields">
-                                    <Field
-                                        type="text"
-                                        name="expDate"
-                                        label="Expiration date"
-                                        placeholder="05 / 21"
-                                        component={InputField}
-                                        normalize={creditCardExpDateNormalizer}
-                                    />
-                                    <Field
-                                        type="text"
-                                        name="cvc"
-                                        label="CVC"
-                                        placeholder="693"
-                                        component={InputField}
-                                        normalize={creditCardCVCNormalizer}
-                                    />
-                                </div>
-                                <div className="field">
-                                    <button
-                                        className={classNames('ui', 'green', 'button', {loading: isSubmitting})}
-                                        disabled={isSubmitting || invalid || pristine}
-                                    >
-                                        {action} CARD
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="height wide column">
-                            <div className="mt15">
-                                <Card
-                                    number={number.replace(/ /g, '')}
-                                    cvc={cvc}
-                                    expiry={expDate.replace(' / ', '')}
-                                    name={name}
+                                    normalize={creditCardCVCNormalizer}
                                 />
                             </div>
+                            <div className="field">
+                                <button
+                                    className={classNames('ui', 'green', 'button', {loading: isSubmitting})}
+                                    disabled={isSubmitting || invalid || pristine}
+                                >
+                                    {action} CARD
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="height wide column">
+                        <div className="mt15">
+                            <Card
+                                number={number.replace(/ /g, '')}
+                                cvc={cvc}
+                                expiry={expDate.replace(' / ', '')}
+                                name={name}
+                            />
                         </div>
                     </div>
                 </div>

@@ -1,21 +1,9 @@
 import React from 'react'
+import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 import Hoverable from '../../Hoverable'
 
 class AddActionOrIfStatement extends React.Component {
-
-    componentDidMount() {
-        $(this.refs.dropdown).dropdown({
-            onChange: (value) => {
-                if (value === 'action') {
-                    this._addAction()
-                } else {
-                    this._addIfStatement()
-                }
-            }
-        })
-    }
-
     _addAction = () => {
         const actionNode = {
             type: 'ExpressionStatement',
@@ -39,7 +27,7 @@ class AddActionOrIfStatement extends React.Component {
             }
         }
 
-        const { actions, rule, parent } = this.props
+        const {actions, rule, parent} = this.props
         actions.rules.modifyCodeast(rule.get('id'), parent.push('body'), actionNode, 'INSERT')
     }
 
@@ -82,26 +70,38 @@ class AddActionOrIfStatement extends React.Component {
             }
         }
 
-        const { actions, rule, parent } = this.props
+        const {actions, rule, parent} = this.props
         actions.rules.modifyCodeast(rule.get('id'), parent.push('body'), actionNode, 'INSERT')
     }
 
     render() {
-        const { title } = this.props
-        const { hovered } = this.context
+        const {title} = this.props
 
         return (
-            <div className="ui keyword floating dropdown icon button" ref="dropdown">
-                {
-                    !hovered
-                        ? <span className="text">{title}</span>
-                        : <i className="fitted large plus icon" />
-                }
-                <div className="menu">
-                    <div className="item" data-value="action">Action</div>
-                    <div className="item" data-value="if-statement">If Statement</div>
-                </div>
-            </div>
+            <UncontrolledButtonDropdown>
+                <DropdownToggle
+                    caret
+                    type="button"
+                    className="mr-2"
+                    color="info"
+                >
+                    {title}
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem
+                        type="button"
+                        onClick={() => this._addAction()}
+                    >
+                        Action
+                    </DropdownItem>
+                    <DropdownItem
+                        type="button"
+                        onClick={() => this._addIfStatement()}
+                    >
+                        "IF" statement
+                    </DropdownItem>
+                </DropdownMenu>
+            </UncontrolledButtonDropdown>
         )
     }
 }

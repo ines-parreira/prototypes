@@ -1,45 +1,59 @@
 import React from 'react'
 import {Field} from 'redux-form'
+import {Button} from 'reactstrap'
+
 import {InputField} from '../../../common/forms'
 import ErrorMessage from '../../../common/components/ErrorMessage'
 
-const UserContactField = ({
-    fields,
-    meta,
-    placeholder,
-    type,
-    addLabel,
-    label,
-}) => {
-    return (
-        <div className="field fields-array">
-            {label && <label>{label}</label>}
-            {meta.invalid && <ErrorMessage errors={meta.error} />}
-            {
-                fields.map((contact, index) =>
-                    <Field
-                        key={index}
-                        name={`${contact}.address`}
-                        type={type}
-                        placeholder={placeholder}
-                        buttons={[{
-                            className: 'basic icon',
-                            label: <i className="trash outline large icon" />,
-                            onClick() {
-                                fields.remove(index)
-                            }
-                        }]}
-                        component={InputField}
-                    />
-                )
-            }
-            <p>
-                <a onClick={() => fields.push({})}>
+class UserContactField extends React.Component {
+    render() {
+        const {
+            fields,
+            meta,
+            placeholder,
+            type,
+            addLabel,
+            label,
+        } = this.props
+
+        return (
+            <div
+                className="field fields-array"
+                style={{marginBottom: '18px'}}
+            >
+                {label && <label>{label}</label>}
+                {meta.invalid && <ErrorMessage errors={meta.error} />}
+                {
+                    fields.map((contact, index) =>
+                        <Field
+                            key={index}
+                            name={`${contact}.address`}
+                            type={type}
+                            placeholder={placeholder}
+                            buttons={[{
+                                className: 'btn-danger',
+                                label: <i className="fa fa-fw fa-trash-o fa-lg" />,
+                                onClick() {
+                                    fields.remove(index)
+                                }
+                            }]}
+                            component={InputField}
+                        />
+                    )
+                }
+
+                <Button
+                    type="button"
+                    size="sm"
+                    onClick={() => fields.push({})}
+                    color="secondary"
+                >
+                    <i className="fa fa-fw fa-plus mr-2" />
                     {addLabel}
-                </a>
-            </p>
-        </div>
-    )
+                </Button>
+            </div>
+        )
+    }
 }
 
 UserContactField.defaultProps = {

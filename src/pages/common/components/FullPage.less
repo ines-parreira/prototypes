@@ -1,0 +1,19 @@
+@import '../../../../css/new/mixins';
+
+:local {
+  .container {
+    padding-top: 20px !important;
+    margin: inherit !important;
+  }
+
+  .row {
+    min-height: 100%;
+
+    &:not(.no-limit) {
+      @media @large-desktops {
+        padding-top: 10px;
+        max-width: 900px;
+      }
+    }
+  }
+}

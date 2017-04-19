@@ -3,6 +3,15 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import classNames from 'classnames'
+import {
+    Button,
+    Popover,
+    PopoverTitle,
+    PopoverContent,
+    Card,
+    CardFooter,
+    CardBlock,
+} from 'reactstrap'
 
 import Filters from './Filters'
 import {slugify} from '../../../../utils'
@@ -29,19 +38,17 @@ class FilterTopbar extends React.Component {
     }
 
     state = {
-        isSubmitting: false
+        isSubmitting: false,
+        askUpdateConfirmation: false,
     }
 
     _onClickUpdate = () => {
-        const activeView = this.props.activeView
-
-        if (window.confirm('You\'re about to edit this view for all users. Are you sure?')) {
-            this.setState({
-                isSubmitting: true
-            })
-            this._submitView(activeView)
-            logEvent('Updated view')
-        }
+        this.setState({
+            isSubmitting: true,
+            askUpdateConfirmation: false,
+        })
+        this._submitView(this.props.activeView)
+        logEvent('Updated view')
     }
 
     _onClickNew = () => {
@@ -105,17 +112,23 @@ class FilterTopbar extends React.Component {
         })
     }
 
+    _toggleUpdateConfirmation = () => {
+        this.setState({
+            askUpdateConfirmation: !this.state.askUpdateConfirmation,
+        })
+    }
+
     render() {
         const {activeView, isUpdate, agents, currentUser} = this.props
         const {isSubmitting} = this.state
-        const buttonClass = classNames('ui', 'button', {loading: this.state.isSubmitting})
+
         if (!activeView.get('editMode')) {
             return null
         }
 
         return (
-            <div className="filter-topbar">
-                <div className="filter-topbar-content">
+            <Card>
+                <CardBlock className="filter-topbar-content">
                     <Filters
                         view={activeView}
                         removeFieldFilter={(...args) => {
@@ -134,54 +147,80 @@ class FilterTopbar extends React.Component {
                         }}
                     />
 
-                    <button
-                        type="button"
-                        className="filter-topbar-close"
-                        onClick={this._cancel}
-                    >
-                        <i className="icon remove large" />
-                    </button>
-                </div>
-                <div className="filter-topbar-actions">
-                    {isUpdate ?
-                        <span>
-                            <button
-                                className={`${buttonClass} green`}
-                                disabled={isSubmitting}
-                                onClick={this._onClickUpdate}
-                            >
-                                UPDATE VIEW
-                            </button>
-                            <button
-                                className={buttonClass}
-                                disabled={isSubmitting}
-                                onClick={this._onClickNew}
-                            >
-                                SAVE AS NEW VIEW
-                            </button>
-                        </span>
-                        :
-                        <button
-                            className={`${buttonClass} green`}
-                            disabled={isSubmitting}
-                            onClick={this._createView}
-                        >
-                            CREATE VIEW
-                        </button>
-                    }
-                    <span className="ml15 text-light-black">
-                        <i className="info circle icon" />
+                    <span className="text-muted">
+                        <i className="fa fa-fw fa-info-circle mr-2" />
                         Click on a column's name to add a filter.
                     </span>
+                </CardBlock>
+                <CardFooter>
+                    {
+                        isUpdate ? (
+                                <span>
+                                    <Button
+                                        id="update-view-button"
+                                        color="primary"
+                                        className={classNames('mr-2', {
+                                            'btn-loading': this.state.isSubmitting,
+                                        })}
+                                        disabled={isSubmitting}
+                                        onClick={this._toggleUpdateConfirmation}
+                                    >
+                                        Update view
+                                    </Button>{' '}
+                                    <Popover
+                                        placement="bottom"
+                                        isOpen={this.state.askUpdateConfirmation}
+                                        target="update-view-button"
+                                        toggle={this._toggleUpdateConfirmation}
+                                    >
+                                        <PopoverTitle>Are you sure?</PopoverTitle>
+                                        <PopoverContent>
+                                            <p>
+                                                You are about to edit this view for <b>all users</b>.
+                                            </p>
+                                            <Button
+                                                color="success"
+                                                onClick={this._onClickUpdate}
+                                            >
+                                                Confirm
+                                            </Button>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <Button
+                                        color="secondary"
+                                        className={classNames({
+                                            'btn-loading': this.state.isSubmitting,
+                                        })}
+                                        disabled={isSubmitting}
+                                        onClick={this._onClickNew}
+                                    >
+                                        Save as new view
+                                    </Button>
+                                </span>
+                            ) : (
+                                <Button
+                                    color="primary"
+                                    className={classNames({
+                                        'btn-loading': this.state.isSubmitting,
+                                    })}
+                                    disabled={isSubmitting}
+                                    onClick={this._createView}
+                                >
+                                    Create view
+                                </Button>
+                            )
+                    }
 
-                    <button
-                        className="ui button floated right"
+                    <Button
+                        color="secondary"
+                        className="pull-right"
+                        disabled={isSubmitting}
                         onClick={this._cancel}
                     >
-                        CANCEL
-                    </button>
-                </div>
-            </div>
+                        Cancel
+                    </Button>
+                </CardFooter>
+            </Card>
         )
     }
 }
@@ -199,7 +238,6 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
-    deleteView: viewsActions.deleteView,
     fetchPage: viewsActions.fetchPage,
     toggleSelection: viewsActions.toggleSelection,
     updateView: viewsActions.updateView,

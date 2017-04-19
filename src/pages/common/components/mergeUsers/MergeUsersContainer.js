@@ -11,12 +11,17 @@ class MergeUsersContainer extends React.Component {
     render() {
         const {destinationUser, sourceUser, display, actions, usersIsLoading} = this.props
 
-        if (!display) {
+        if (!destinationUser || destinationUser.isEmpty()) {
+            return null
+        }
+
+        if (!sourceUser || sourceUser.isEmpty()) {
             return null
         }
 
         return (
             <MergeUsersModal
+                isOpen={display}
                 destinationUser={destinationUser}
                 sourceUser={sourceUser}
                 toggleModal={actions.infobar.toggleMergeUsersModal}

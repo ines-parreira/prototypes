@@ -141,7 +141,6 @@ export function deleteIntegration(integration) {
 
                     if (~indexOfId) {
                         const nextUrl = currentUrl.substr(0, indexOfId)
-                        console.log(currentUrl, nextUrl, currentUrl.lastIndexOf(integration.get('id')))
                         browserHistory.push(nextUrl)
                     }
 

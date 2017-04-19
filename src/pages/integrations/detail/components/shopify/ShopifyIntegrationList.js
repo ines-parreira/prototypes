@@ -1,8 +1,10 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
-import IntegrationList from '../IntegrationList'
-import classNames from 'classnames'
 import {connect} from 'react-redux'
+import {Badge, Button} from 'reactstrap'
+import classNames from 'classnames'
+
+import IntegrationList from '../IntegrationList'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
 class ShopifyIntegrationList extends React.Component {
@@ -27,70 +29,84 @@ class ShopifyIntegrationList extends React.Component {
         const integrationToItemDisplay = (int) => {
             const active = !int.get('deactivated_datetime')
             const isRowSubmitting = isSubmitting === int.get('id')
-
-            const rowClasses = classNames({
-                deactivated: !active
-            })
+            const isDisabled = int.get('deactivated_datetime')
 
             const editLink = `/app/integrations/shopify/${int.get('id')}`
 
             let primaryBtn = (
-                <button
-                    className="ui basic light blue button"
-                    onClick={() => browserHistory.push(editLink)}
+                <Button
+                    tag={Link}
+                    color="info"
+                    to={editLink}
                 >
                     Edit
-                </button>
-
+                </Button>
             )
 
             let rmBtn = (
-                <button
-                    className={classNames('ui basic light orange button', {
-                        'loading disabled': isRowSubmitting
+                <Button
+                    color="warning"
+                    outline
+                    className={classNames('ml-2', {
+                        'btn-loading': isRowSubmitting,
                     })}
-                    onClick={() => !isRowSubmitting && actions.deactivateIntegration(int)}
+                    disabled={isRowSubmitting}
+                    onClick={() => actions.deactivateIntegration(int)}
                 >
                     Deactivate
-                </button>
+                </Button>
             )
 
             if (!active) {
                 primaryBtn = (
-                    <button
-                        className={classNames('ui basic light blue button', {
-                            'loading disabled': isRowSubmitting
+                    <Button
+                        color="success"
+                        className={classNames('mr-2', {
+                            'btn-loading': isRowSubmitting,
                         })}
-                        onClick={() => !isRowSubmitting && actions.activateIntegration(int)}
+                        disabled={isRowSubmitting}
+                        onClick={() => actions.activateIntegration(int)}
                     >
-                        Re-Activate
-                    </button>
+                        Re-activate
+                    </Button>
                 )
 
                 rmBtn = (
-                    <button
-                        className="ui basic light red button"
+                    <Button
+                        color="danger"
+                        outline
                         onClick={() => actions.deleteIntegration(int)}
                     >
                         Delete
-                    </button>
+                    </Button>
                 )
             }
 
             return (
-                <tr key={int.get('id')} className={rowClasses}>
-                    <td>
-                        <div className="ui header">
-                            <Link className="subject" to={editLink}>
-                                {int.get('name')}
-                            </Link>
-                            <div className="body sub header">
-                                {int.get('description')}
-                            </div>
-                        </div>
+                <tr key={int.get('id')}>
+                    <td style={{verticalAlign: 'middle'}}>
+                        <Link to={editLink}>
+                            <b>{int.get('name')}</b>
+                        </Link>
                     </td>
-                    <td className="eight wide column">
-                        <div className="floated right">
+                    <td
+                        className="smallest"
+                        style={{verticalAlign: 'middle'}}
+                    >
+                        {
+                            isDisabled ? (
+                                    <Badge color="warning">
+                                        Disabled
+                                    </Badge>
+                                ) : (
+                                    <Badge color="success">
+                                        Enabled
+                                    </Badge>
+                                )
+                        }
+                    </td>
+                    <td className="smallest">
+                        <div className="pull-right">
                             {primaryBtn}
                             {rmBtn}
                         </div>

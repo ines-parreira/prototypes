@@ -1,82 +1,205 @@
 import React, {PropTypes} from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import {fromJS} from 'immutable'
+import {connect} from 'react-redux'
+import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
+
+import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
+import * as usersSelectors from '../../../../../state/users/selectors'
+
 import {AgentLabel} from '../../../../common/utils/labels'
 
+@connect((state) => {
+    return {
+        agents: usersSelectors.getAgents(state),
+        currentUser: currentUserSelectors.getCurrentUser(state),
+    }
+})
 export default class TicketAssignee extends React.Component {
-    componentDidMount() {
-        const ticketOwnerDropdown = $(this.refs.popupTicketOwner)
+    static propTypes = {
+        agents: PropTypes.object.isRequired,
+        currentAssignee: PropTypes.string,
+        currentUser: ImmutablePropTypes.map.isRequired,
+        direction: PropTypes.string.isRequired,
+        setAgent: PropTypes.func.isRequired,
+    }
 
-        ticketOwnerDropdown.dropdown({
-            inline: true,
-            hoverable: true,
-            onChange: (value) => {
-                if (value !== 'clear') {
-                    const agent = this.props.agents.find(curAgent => curAgent.get('id').toString() === value)
-                    this.props.setAgent({id: agent.get('id'), name: agent.get('name')})
-                } else {
-                    this.props.setAgent(null)
-                }
-            }
+    static defaultProps = {
+        direction: 'left',
+    }
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            dropdownOpen: false,
+            enum: props.agents,
+            search: '',
+        }
+    }
+
+    _clearAgent = () => {
+        this.props.setAgent(null)
+        this.setState({search: ''})
+    }
+
+    _selectAgent = (agent) => {
+        this.props.setAgent({id: agent.get('id'), name: agent.get('name')})
+        this.setState({search: ''})
+    }
+
+    _toggle = () => {
+        const opens = !this.state.dropdownOpen
+
+        this.setState({
+            dropdownOpen: opens,
+        })
+
+        if (opens) {
+            const search = ''
+            this.setState({search})
+            this._filterResults(search)
+        }
+    }
+
+    _search = (search) => {
+        this.setState({search})
+        this._filterResults(search)
+    }
+
+    _filterResults = (search) => {
+        this.setState({
+            enum: this.props.agents.filter((agent) => {
+                return agent.get('name').toLowerCase().includes(search.toLowerCase())
+            }),
         })
     }
 
-    renderTicketOwner(currentAssignee) {
+    _displayMenu = () => {
+        const {currentAssignee, currentUser} = this.props
+        let availableAgents = this.state.enum
+
         if (currentAssignee) {
-            return <AgentLabel name={currentAssignee} />
+            availableAgents = availableAgents.filter(agent => agent.get('name') !== currentAssignee)
         }
 
-        return <span className="secondary-action">UNASSIGNED</span>
+        let options = fromJS([])
+
+        const isCurrentUserAssigned = !!currentAssignee && currentUser.get('name') === currentAssignee
+
+        if (!isCurrentUserAssigned) {
+            options = options.push(
+                <DropdownItem
+                    key="yourself"
+                    type="button"
+                    onClick={() => this._selectAgent(currentUser)}
+                >
+                    Assign yourself
+                </DropdownItem>,
+                <DropdownItem
+                    key="dividerYourself"
+                    divider
+                />,
+            )
+        }
+
+        if (availableAgents.isEmpty()) {
+            options = options.push(
+                <DropdownItem
+                    key="noAgents"
+                    header
+                >
+                    Could not find any agent
+                </DropdownItem>
+            )
+        } else {
+            options = options.concat(
+                availableAgents.map((agent, i) => {
+                    return (
+                        <DropdownItem
+                            key={i}
+                            type="button"
+                            onClick={() => this._selectAgent(agent)}
+                        >
+                            {agent.get('name')}
+                        </DropdownItem>
+                    )
+                })
+            )
+        }
+
+
+        if (currentAssignee) {
+            options = options.push(
+                <DropdownItem
+                    key="dividerClear"
+                    divider
+                />
+            )
+
+            options = options.push(
+                <DropdownItem
+                    key="clear"
+                    type="button"
+                    onClick={this._clearAgent}
+                >
+                    <span className="text-warning">Clear assignee</span>
+                </DropdownItem>
+            )
+        }
+
+        return options
     }
 
     render() {
-        const {currentAssignee, agents} = this.props
-
-        let divider = null
-        let clearItem = null
-
-        if (currentAssignee) {
-            divider = <div className="divider"></div>
-            clearItem = <div className="item" data-value="clear">Clear assignee</div>
-        }
+        const {currentAssignee, direction} = this.props
 
         return (
-            <div
-                ref="popupTicketOwner"
-                className="TicketAssignee ticket-owner-btn ticket-details-item ui search button input pointing dropdown link item"
-                onClick={() => this.refs.assigneeSearch.focus()}
-            >
-                {this.renderTicketOwner(currentAssignee)}
-
-                <div className="ui vertical menu">
-                    <div className="ui search input">
-                        <input
-                            ref="assigneeSearch"
-                            type="text"
-                            placeholder="Search agents..."
-                        />
-                    </div>
-                    <div className="hidden item"></div>
-                    {
-                        agents.map((agent) =>
-                            <div
-                                className="item"
-                                key={agent.get('id')}
-                                data-value={agent.get('id')}
-                            >
-                                {agent.get('name')}
-                            </div>
-                        )
-                    }
-
-                    {divider}
-                    {clearItem}
-                </div>
+            <div className="d-inline-block">
+                <ButtonDropdown
+                    className="d-inline-block"
+                    isOpen={this.state.dropdownOpen}
+                    toggle={this._toggle}
+                >
+                    <DropdownToggle
+                        color="link"
+                        type="button"
+                        style={{padding: 0}}
+                    >
+                        {
+                            currentAssignee ? (
+                                    <AgentLabel name={currentAssignee} />
+                                ) : (
+                                    <span className="text-muted">
+                                        Unassigned
+                                    </span>
+                                )
+                        }
+                    </DropdownToggle>
+                    <DropdownMenu
+                        right={direction === 'right'}
+                        style={{width: '230px'}}
+                    >
+                        <DropdownItem
+                            header
+                            className="dropdown-item-input"
+                        >
+                            <div className="mb-2">Assign to:</div>
+                            {
+                                this.state.dropdownOpen && ( // rebuild input on each opening so "autoFocus" works
+                                    <Input
+                                        placeholder="Search agents..."
+                                        autoFocus
+                                        value={this.state.search}
+                                        onChange={e => this._search(e.target.value)}
+                                    />
+                                )
+                            }
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        {this._displayMenu()}
+                    </DropdownMenu>
+                </ButtonDropdown>
             </div>
         )
     }
-}
-
-TicketAssignee.propTypes = {
-    currentAssignee: PropTypes.string, // not required because it can be null
-    agents: PropTypes.object.isRequired,
-    setAgent: PropTypes.func.isRequired
 }

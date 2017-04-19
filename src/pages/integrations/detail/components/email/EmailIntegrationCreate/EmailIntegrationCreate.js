@@ -1,26 +1,25 @@
 import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
 import {connect} from 'react-redux'
+import {fromJS} from 'immutable'
+import classNames from 'classnames'
 import {Link, browserHistory, withRouter} from 'react-router'
+import _capitalize from 'lodash/capitalize'
+import {
+    Button,
+    UncontrolledTooltip,
+    Breadcrumb,
+    BreadcrumbItem,
+} from 'reactstrap'
+
 import {InputField} from '../../../../../common/forms'
 import css from './EmailIntegrationCreate.less'
-import {fromJS} from 'immutable'
 import formSender from '../../../../../common/utils/formSender'
-import _capitalize from 'lodash/capitalize'
-import classNames from 'classnames'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import {notify} from '../../../../../../state/notifications/actions'
-import googleIcon from './google-icon.png'
-
 
 class EmailIntegrationCreate extends React.Component {
     componentDidMount() {
-        $(this.refs.AddressNameTooltip).popup({
-            inline: true,
-            position: 'top left',
-            offset: -11
-        })
-
         // display message from url
         const {
             message,
@@ -61,85 +60,86 @@ class EmailIntegrationCreate extends React.Component {
         const isSubmitting = loading.get('updateIntegration')
 
         return (
-            <div className="ui grid">
-                <div className="sixteen wide tablet ten wide computer column">
-                    <div className="ui large breadcrumb">
+            <div>
+                <Breadcrumb>
+                    <BreadcrumbItem>
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider"/>
-                        <Link to="/app/integrations/email" className="section">Email</Link>
-                        <i className="right angle icon divider"/>
-                        <a className="active section">
-                            Add email address
-                        </a>
-                    </div>
-                    <h1 className="ui header">
-                        Add email address
-                    </h1>
-                </div>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to="/app/integrations/email">Email</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        Add
+                    </BreadcrumbItem>
+                </Breadcrumb>
 
-                <div className="ui row pt0i">
-                    <div className="sixteen wide tablet seven wide computer column">
-                        <form
-                            className={`ui form ${css.form}`}
-                            onSubmit={handleSubmit((values) => this._handleSubmit('email', values))}
-                        >
-                            <p>Choose the type of email account you want to add.</p>
-                            <br/>
-                            <a
-                                href="/integrations/gmail/auth"
-                                className="fluid ui google plus icon submit button"
-                                onClick={() => { logEvent('connect_gmail_account_click') }}
-                            >
-                                <img
-                                    className={css['gmail-icon']}
-                                    width="20" height="20"
-                                    src={googleIcon}
-                                    alt="gmail-icon"
-                                />
-                                Connect your google account
-                            </a>
-                            <div className="ui horizontal divider mt20i mb15i">
-                                OR
-                            </div>
-                            <Field
-                                type="text"
-                                name="name"
-                                placeholder={`${_capitalize(domain)} Support`}
-                                component={InputField}
-                                label={
-                                    <span>
-                                        Address name
-                                        <span
-                                            ref="AddressNameTooltip"
-                                            className="inverted tooltip"
-                                            data-content="The name that customers will see when they receive emails from you."
-                                            data-variation="inverted"
-                                        >
-                                            <i className="help circle link icon"/>
-                                        </span>
-                                    </span>
-                                }
-                                required
-                            />
-                            <Field
-                                type="email"
-                                name="meta.address"
-                                label="Email address"
-                                placeholder={`support@${domain}.com`}
-                                component={InputField}
-                                required
-                            />
-                            <button
-                                disabled={isSubmitting}
-                                className={classNames('fluid ui primary submit button', {
-                                    loading: isSubmitting
-                                })}
-                            >
-                                Connect this email account
-                            </button>
-                        </form>
+                <h1>
+                    Add email address
+                </h1>
+
+                <form
+                    className={`ui form ${css.form}`}
+                    onSubmit={handleSubmit((values) => this._handleSubmit('email', values))}
+                >
+                    <p>Choose the type of email account you want to add.</p>
+                    <br />
+                    <Button
+                        tag="a"
+                        href="/integrations/gmail/auth"
+                        color="danger"
+                        block
+                        onClick={() => {
+                            logEvent('connect_gmail_account_click')
+                        }}
+                    >
+                        <i className="fa fa-fw fa-google fa-lg mr-2" />
+                        Connect your google account
+                    </Button>
+                    <div className="ui horizontal divider mt20i mb15i">
+                        OR
                     </div>
-                </div>
+                    <Field
+                        type="text"
+                        name="name"
+                        placeholder={`${_capitalize(domain)} Support`}
+                        component={InputField}
+                        label={
+                            <span>
+                                Address name
+                                <i
+                                    id="address-name"
+                                    className="help circle link icon"
+                                />
+                                <UncontrolledTooltip
+                                    placement="top"
+                                    target="address-name"
+                                    delay={0}
+                                >
+                                    The name that customers will see when they receive emails from you
+                                </UncontrolledTooltip>
+                            </span>
+                        }
+                        required
+                    />
+                    <Field
+                        type="email"
+                        name="meta.address"
+                        label="Email address"
+                        placeholder={`support@${domain}.com`}
+                        component={InputField}
+                        required
+                    />
+                    <Button
+                        block
+                        color="primary"
+                        className={classNames({
+                            'btn-loading': isSubmitting,
+                        })}
+                        disabled={isSubmitting}
+                    >
+                        Connect this email account
+                    </Button>
+                </form>
             </div>
         )
     }

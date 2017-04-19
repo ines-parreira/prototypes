@@ -1,8 +1,6 @@
 import axios from 'axios'
 import {fromJS} from 'immutable'
 import * as types from './constants'
-import _merge from 'lodash/merge'
-import {timesFromPeriod} from '../../pages/stats/common/utils'
 
 export function setMeta(meta = {}) {
     return {
@@ -31,15 +29,6 @@ export function fetchStats(newMeta = {}, newFilters = {}) {
 
         // merge with passed meta
         const params = meta.merge(newMeta).toJS()
-
-        // if there is only a period set but no dates, let's add them
-        if (params.period && (!params.start_datetime || !params.end_datetime)) {
-            const {startDatetime, endDatetime} = timesFromPeriod(params.period)
-            _merge(params, {
-                start_datetime: startDatetime.format(),
-                end_datetime: endDatetime.format(),
-            })
-        }
 
         // update stats meta to match what is asked to server
         dispatch(setMeta(params))

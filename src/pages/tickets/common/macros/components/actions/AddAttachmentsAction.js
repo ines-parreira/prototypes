@@ -42,13 +42,8 @@ export default class AddAttachmentsAction extends Component {
     }
 
     render() {
-        const {deleteAction, index} = this.props
         return (
             <div>
-                <i className="right floated remove circle red large action icon"
-                   onClick={() => deleteAction(index)}
-                />
-                <h4 className="inline">ATTACH FILES</h4>
                 {this._renderAttachments()}
                 {this.state.isLoading && <div className="ui small inline active loader loader-no-dimmer" />}
                 <div
@@ -56,7 +51,7 @@ export default class AddAttachmentsAction extends Component {
                     onClick={this._openFileBrowser}
                 >
                     <i className="plus icon" />
-                    ADD FILES
+                    Add files
                 </div>
                 <input
                     className="hidden"
@@ -75,5 +70,4 @@ AddAttachmentsAction.propTypes = {
     action: PropTypes.object.isRequired,
     addAttachments: PropTypes.func.isRequired,
     removeAttachment: PropTypes.func.isRequired,
-    deleteAction: PropTypes.func.isRequired
 }

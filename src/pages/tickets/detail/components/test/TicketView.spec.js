@@ -69,10 +69,6 @@ describe('TicketView component', () => {
             component = renderer.getRenderOutput()
         })
 
-        it('should contain ticket-content', () => {
-            expect(component.props.children.props.children[1].props.className).toContain('ticket-content')
-        })
-
         it('should not have the hidden classes', () => {
             expect(component.props.className).toNotContain('transition')
         })

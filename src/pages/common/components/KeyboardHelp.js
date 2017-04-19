@@ -1,21 +1,22 @@
 import React from 'react'
+
+import Modal from '../components/Modal'
+
 import shortcutManager from '../utils/shortcutManager'
 import keymap from '../utils/keymap'
 
 export default class KeyboardHelp extends React.Component {
-    showHelp() {
-        $('#keyboard-shortcuts').modal({
-            blurring: true
-        })
-        .modal('show')
-        .modal('refresh')
+    state = {
+        isOpen: false,
     }
 
     componentDidMount() {
         // bind keyboard shortcuts
         shortcutManager.bind('KeyboardHelp', {
             SHOW_HELP: {
-                action: this.showHelp
+                action: () => {
+                    this.setState({isOpen: true})
+                }
             }
         })
     }
@@ -24,48 +25,58 @@ export default class KeyboardHelp extends React.Component {
         shortcutManager.unbind('KeyboardHelp')
     }
 
+    _toggle = () => {
+        this.setState({isOpen: false})
+    }
+
     render() {
         return (
-            <div id="keyboard-shortcuts" className="ui modal scrolling">
-                <i className="right close icon"/>
-                <div className="header">Keyboard shortcuts</div>
-
-                <div className="content">
-
-                    {Object.keys(keymap).map((componentName, i) => {
+            <Modal
+                isOpen={this.state.isOpen}
+                onClose={this._toggle}
+                header="Keyboard shortcuts"
+            >
+                {
+                    Object.keys(keymap).map((componentName, i) => {
                         const component = keymap[componentName]
                         const actions = component.actions
 
                         return (
-                            <div className="keyboard-shortcuts-group" key={i}>
+                            <div
+                                key={i}
+                                className="keyboard-shortcuts-group"
+                            >
                                 <h3>{component.description}</h3>
 
-                                {Object.keys(actions).map((actionName, j) => {
-                                    const action = actions[actionName]
+                                {
+                                    Object.keys(actions).map((actionName, j) => {
+                                        const action = actions[actionName]
 
-                                    if (!action.description) {
-                                        return null
-                                    }
+                                        if (!action.description) {
+                                            return null
+                                        }
 
-                                    return (
-                                        <div className="keyboard-shortcuts-group-item" key={j}>
-                                            <div className="ui label horizontal keyboard-shortcuts-group-item-key">
-                                                {shortcutManager.getActionKeys(action)}
+                                        return (
+                                            <div
+                                                key={j}
+                                                className="keyboard-shortcuts-group-item"
+                                            >
+                                                <div
+                                                    className="ui label horizontal keyboard-shortcuts-group-item-key"
+                                                >
+                                                    {shortcutManager.getActionKeys(action)}
+                                                </div>
+
+                                                {action.description}
                                             </div>
-
-                                            {action.description}
-                                        </div>
-                                    )
-                                })}
+                                        )
+                                    })
+                                }
                             </div>
                         )
-                    })}
-                </div>
-
-                <div className="actions">
-                    <div className="ui cancel button">Close</div>
-                </div>
-            </div>
+                    })
+                }
+            </Modal>
         )
     }
 }

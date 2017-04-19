@@ -1,31 +1,28 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
+import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+
 import {ticketSourceTypes} from '../../../../../utils'
 import MessageSourceFields from './MessageSourceFields/'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import {
     getNewMessageType,
     getNewMessageChannel,
-    getNewMessage,
     getMessages,
     hasNewMessageRecipients,
 } from '../../../../../state/ticket/selectors'
 import * as integrationSelectors from '../../../../../state/integrations/selectors'
 import _reduce from 'lodash/reduce'
 
+import css from './ReplyMessageChannel.less'
+
 class ReplyMessageChannel extends React.Component {
     state = {
-        isOpen: false,
+        isReceiversAreaOpen: false,
     }
 
     componentDidMount() {
-        $(this.refs.messageChannelDropdown).dropdown({
-            position: 'bottom left',
-            hoverable: true,
-            on: 'click'
-        })
-
         window.addEventListener('click', this._updateMessageSourceFieldsOpening)
     }
 
@@ -35,7 +32,7 @@ class ReplyMessageChannel extends React.Component {
 
         // at any props change, open the dropdown when no receivers
         if (this._canChangeReceivers() && (!hasRecipients && hadRecipients === hasRecipients)) {
-            this._toggleOpening(true)
+            this._toggleReceiversArea(true)
         }
     }
 
@@ -69,34 +66,24 @@ class ReplyMessageChannel extends React.Component {
                 if (!shouldBeIgnored) {
                     const hasClickedInComponent = this.refs.messageChannel
                         && $(this.refs.messageChannel)[0].contains(e.target)
-                    this._toggleOpening(hasClickedInComponent)
+                    this._toggleReceiversArea(hasClickedInComponent)
                 }
             } else {
-                this._toggleOpening(true)
+                this._toggleReceiversArea(true)
             }
         } else {
-            this._toggleOpening(false)
+            this._toggleReceiversArea(false)
         }
     }
 
-    _toggleOpening = (state = !this.state.isOpen) => {
-        this.setState({
-            isOpen: state,
-        })
+    _toggleReceiversArea = (state = !this.state.isReceiversAreaOpen) => {
+        this.setState({isReceiversAreaOpen: state})
     }
 
-    /**
-     * This function gather and builds the data needed to render the receiver
-     * (name, mail, className of the icon, and its channel).
-     *
-     * @returns {string}
-     */
-    _getClassNames = () => {
-        const message = this.props.message
-        const channel = this.props.sourceType
+    _getChannelIconClassName = (sourceType) => {
         const popupChannelClassNames = _reduce({
             default: '',
-            private: 'comment yellow',
+            'internal-note': 'comment yellow',
             email: 'mail blue',
             chat: 'purple comments',
             'facebook-comment': 'facebook square blue',
@@ -106,10 +93,8 @@ class ReplyMessageChannel extends React.Component {
             return result
         }, {})
 
-        if (!message.get('public')) {
-            return popupChannelClassNames.private
-        } else if (Object.keys(popupChannelClassNames).includes(channel)) {
-            return popupChannelClassNames[channel]
+        if (Object.keys(popupChannelClassNames).includes(sourceType)) {
+            return popupChannelClassNames[sourceType]
         }
 
         return popupChannelClassNames.default
@@ -119,7 +104,7 @@ class ReplyMessageChannel extends React.Component {
         this.props.actions.ticket.setSourceType(sourceType)
     }
 
-    _renderTo = () => {
+    _renderReceiversArea = () => {
         const {ticket, messages, accountChannels} = this.props
 
         if (!ticket.getIn(['newMessage', 'public'])) {
@@ -150,14 +135,13 @@ class ReplyMessageChannel extends React.Component {
                 enabled={isInputEnabled}
                 parentId={parentId.toString()}
                 canOpen={this._canChangeReceivers()}
-                isOpen={this.state.isOpen}
+                isOpen={this.state.isReceiversAreaOpen}
             />
         )
     }
 
     render() {
         const {isUpdate, messages} = this.props
-        const popupClassNames = this._getClassNames()
 
         const sources = ticketSourceTypes(messages.toJS())
 
@@ -165,81 +149,97 @@ class ReplyMessageChannel extends React.Component {
             return null
         }
 
-        const channelClassNames = {
-            email: 'item',
-            chat: classnames('item', {
-                hidden: isUpdate ? !sources.includes('chat') : true,
-            }),
-            facebookComment: classnames('item', {
-                hidden: !isUpdate
-                || (!sources.includes('facebook-post')
-                && !sources.includes('facebook-comment'))
-            }),
-            facebookMessage: classnames('item', {
-                hidden: !isUpdate || !sources.includes('facebook-message'),
-            }),
-            internal: classnames('item', {
-                hidden: !isUpdate,
-            })
-        }
+        const suggestChat = isUpdate && sources.includes('chat')
+        const suggestFacebookComment = isUpdate && (sources.includes('facebook-post') || sources.includes('facebook-comment'))
+        const suggestFacebookMessage = isUpdate && sources.includes('facebook-message')
+        const suggestInternalNote = isUpdate
 
         return (
             <div
                 ref="messageChannel"
                 className={classnames('ReplyMessageChannel', {
-                    open: this.state.isOpen,
+                    open: this.state.isReceiversAreaOpen,
                 })}
             >
                 <div
                     ref="channelPicker"
-                    className="channel-picker"
+                    className={classnames('channel-picker', css['channel-dropdown'])}
                 >
-                    <div
-                        ref="messageChannelDropdown"
-                        className="ui dropdown"
-                    >
-                        <i className={popupClassNames} />
-                        <i className="icon caret down" />
-                        <div
-                            className="ui vertical menu"
-                            style={{textAlign: 'left', border: 'none', width: 'inherit', marginTop: '8px'}}
+                    <UncontrolledDropdown>
+                        <DropdownToggle
+                            caret
+                            type="button"
+                            className={css['dropdown-toggle']}
                         >
-                            <div
-                                className={channelClassNames.email}
-                                onClick={() => this._setSourceType('email')}
+                            <i className={this._getChannelIconClassName(this.props.sourceType)} />
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem
+                                type="button"
+                                onClick={() => {
+                                    this._setSourceType('email')
+                                }}
                             >
-                                Send as email
-                            </div>
-                            <div
-                                className={channelClassNames.chat}
-                                onClick={() => this._setSourceType('chat')}
-                            >
-                                Send as chat message
-                            </div>
-                            <div
-                                className={channelClassNames.facebookComment}
-                                onClick={() => this._setSourceType('facebook-comment')}
-                            >
-                                Send as Facebook comment
-                            </div>
-                            <div
-                                className={channelClassNames.facebookMessage}
-                                onClick={() => this._setSourceType('facebook-message')}
-
-                            >
-                                Send as Facebook private message
-                            </div>
-                            <div
-                                className={channelClassNames.internal}
-                                onClick={() => this._setSourceType('internal-note')}
-                            >
-                                Send as internal note
-                            </div>
-                        </div>
-                    </div>
+                                <i className={classnames('mr-2', this._getChannelIconClassName('email'))} />
+                                Email
+                            </DropdownItem>
+                            {
+                                suggestChat && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            this._setSourceType('chat')
+                                        }}
+                                    >
+                                        <i className={classnames('mr-2', this._getChannelIconClassName('chat'))} />
+                                        Chat message
+                                    </DropdownItem>
+                                )
+                            }
+                            {
+                                suggestFacebookComment && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            this._setSourceType('facebook-comment')
+                                        }}
+                                    >
+                                        <i className={classnames('mr-2', this._getChannelIconClassName('facebook-comment'))} />
+                                        Facebook comment
+                                    </DropdownItem>
+                                )
+                            }
+                            {
+                                suggestFacebookMessage && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            this._setSourceType('facebook-message')
+                                        }}
+                                    >
+                                        <i className={classnames('mr-2', this._getChannelIconClassName('facebook-message'))} />
+                                        Facebook private message
+                                    </DropdownItem>
+                                )
+                            }
+                            {
+                                suggestInternalNote && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            this._setSourceType('internal-note')
+                                        }}
+                                    >
+                                        <i className={classnames('mr-2', this._getChannelIconClassName('internal-note'))} />
+                                        Internal note
+                                    </DropdownItem>
+                                )
+                            }
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                 </div>
 
-                {this._renderTo()}
+                {this._renderReceiversArea()}
             </div>
         )
     }
@@ -253,7 +253,6 @@ ReplyMessageChannel.propTypes = {
     sourceType: PropTypes.string.isRequired,
     channel: PropTypes.string.isRequired,
     accountChannels: PropTypes.object.isRequired,
-    message: PropTypes.object.isRequired,
     messages: PropTypes.object.isRequired,
     hasRecipients: PropTypes.bool.isRequired,
 }
@@ -265,7 +264,6 @@ const mapStateToProps = (state, ownProps) => {
         channel: getNewMessageChannel(state),
         accountChannels: integrationSelectors.getChannelsByType(sourceType)(state),
         isUpdate: !!ownProps.ticket.get('id'),
-        message: getNewMessage(state),
         messages: getMessages(state),
         hasRecipients: hasNewMessageRecipients(state),
     }

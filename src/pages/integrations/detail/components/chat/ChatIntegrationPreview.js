@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
-import css from './ChatIntegrationPreview.less'
 import classnames from 'classnames'
+
+import css from './ChatIntegrationPreview.less'
 
 const ChatIntegrationPreview = ({name, decoration, currentUser}) => {
     const titlebarStyle = {

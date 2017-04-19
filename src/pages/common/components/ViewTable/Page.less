@@ -1,31 +1,10 @@
-:local {
-  .page {
-    display: flex;
-    flex-direction: column;
-    margin: -1em -2em; // to revert "main-content" class that gives margin to content
-    height: ~"calc(100% + 2em)"; // string here so that LESS does not calculate this at compilation
+:local .page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 
-    .header {
-      margin: 1em 2em;
-    }
-
-    .table {
-      padding: 0 2em 1em;
-      overflow: auto;
-      height: 100%;
-    }
-
-    .settings {
-      color: #0993f4;
-      font-weight: bold;
-
-      .text {
-        padding: 1em 0;
-      }
-
-      .menu {
-        width: 9.2em;
-      }
-    }
+  .table {
+    overflow: auto;
+    height: 100%;
   }
 }

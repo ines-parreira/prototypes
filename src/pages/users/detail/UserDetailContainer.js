@@ -60,12 +60,14 @@ class UserDetailContainer extends React.Component {
         }
 
         return (
-            <Timeline
-                isDisplayed
-                userHistory={this.props.users.get('userHistory')}
-                revert
-                displayAll
-            />
+            <div className="mt-4 mb-4">
+                <Timeline
+                    isDisplayed
+                    userHistory={this.props.users.get('userHistory')}
+                    revert
+                    displayAll
+                />
+            </div>
         )
     }
 
@@ -91,13 +93,7 @@ class UserDetailContainer extends React.Component {
             <div className="UserDetailContainer">
                 <div className="flex-spaced-row">
                     <h1>{activeUser.get('name')}</h1>
-                    {/*
-                     <div className="ui buttons">
-                     <button className="ui button green">
-                     Create ticket
-                     </button>
-                     </div>
-                     */}
+
                     <button
                         className="ui tiny green button"
                         onClick={this._openModal}
@@ -110,7 +106,8 @@ class UserDetailContainer extends React.Component {
 
                 <Modal
                     isOpen={this.state.isUserFormOpen}
-                    onRequestClose={this._closeModal}
+                    onClose={this._closeModal}
+                    header={`Update user: ${activeUser.get('name')}`}
                 >
                     <UserForm
                         user={activeUser}

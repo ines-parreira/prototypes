@@ -1,46 +1,52 @@
 import React from 'react'
+import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
-import { actionsConfig } from './Action'
+import {actionsConfig} from './Action'
 
 class ActionSelect extends React.Component {
-
-    componentDidMount() {
-        $(this.refs.actionSelect).dropdown({
-            onChange: this._handleChange,
-        })
-    }
-
-    _handleChange = (value) => {
-        const { actions, rule, parent } = this.props
+    _handleClick = (value) => {
+        const {actions, rule, parent} = this.props
         actions.rules.modifyCodeast(rule.get('id'), parent, value, 'UPDATE')
     }
 
     render() {
-        const { value, rule } = this.props
+        const {value, rule} = this.props
         const selectedActionName = actionsConfig[value] && actionsConfig[value].name
+
+        const label = selectedActionName || value || 'Select action'
+
         return (
-            <div
-                className="ui floating dropdown right labeled search icon positive button"
-                ref="actionSelect"
-            >
-                <i className="caret down icon" />
-                <span className="text">{selectedActionName || value || 'Select Action'}</span>
-                <div className="menu">
-                    {Object.keys(actionsConfig).map((action, i) => {
-                        const actionName = actionsConfig[action] && actionsConfig[action].name
+            <UncontrolledButtonDropdown>
+                <DropdownToggle
+                    caret
+                    className="mr-2"
+                    color="success"
+                    type="button"
+                >
+                    {label}
+                </DropdownToggle>
+                <DropdownMenu>
+                    {
+                        Object.keys(actionsConfig).map((action, i) => {
+                            const config = actionsConfig[action] || {}
 
-                        if (actionsConfig[action].type === 'system' && !(rule.get('type') === 'system')) {
-                            return null
-                        }
+                            if (config.type === 'system' && !(rule.get('type') === 'system')) {
+                                return null
+                            }
 
-                        return (
-                            <div key={i} className="item" data-value={action}>
-                                {actionName || action}
-                            </div>
-                        )
-                    })}
-                </div>
-            </div>
+                            return (
+                                <DropdownItem
+                                    key={i}
+                                    type="button"
+                                    onClick={() => this._handleClick(action)}
+                                >
+                                    {config.name || action}
+                                </DropdownItem>
+                            )
+                        })
+                    }
+                </DropdownMenu>
+            </UncontrolledButtonDropdown>
         )
     }
 

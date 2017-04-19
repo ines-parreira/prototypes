@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
+import {UncontrolledTooltip} from 'reactstrap'
+
 import {isRichType} from '../../../../../config/ticket'
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
 import Preview from '../../../common/macros/Preview'
@@ -10,16 +12,6 @@ class TicketMacros extends React.Component {
     openModalOnSelectedMacro(selectedMacroId) {
         this.props.previewMacroInModal(selectedMacroId)
         this.props.openModal()
-    }
-
-    componentDidMount() {
-        $(this.refs.popupClearMacros).popup({
-            inline: true,
-            variation: 'inverted',
-            position: 'top right',
-            hoverable: true,
-            on: 'hover'
-        })
     }
 
     renderMacroListItem = (macro) => {
@@ -59,7 +51,7 @@ class TicketMacros extends React.Component {
                         className="ui basic label manage-macros"
                         onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}
                     >
-                        MANAGE MACROS
+                        Manage macros
                     </a>
                     <Preview
                         displayHTML={isRichType(newMessageType)}
@@ -86,19 +78,21 @@ class TicketMacros extends React.Component {
         return (
             <div className="TicketMacros">
                 <a
+                    id="clear-macro-button"
                     className={classnames('clear-macros', {
                         hidden: !macrosVisible
                     })}
-                    ref="popupClearMacros"
+                    onClick={() => setMacrosVisible(false)}
                 >
-                    <i
-                        className="right close icon"
-                        onClick={() => setMacrosVisible(false)}
-                    />
+                    <i className="fa fa-fw fa-close" />
                 </a>
-                <div className="ui popup clear-macros-popup">
+                <UncontrolledTooltip
+                    placement="top"
+                    target="clear-macro-button"
+                    delay={0}
+                >
                     <strong>Esc</strong> to close the macro list.
-                </div>
+                </UncontrolledTooltip>
 
                 {content}
             </div>

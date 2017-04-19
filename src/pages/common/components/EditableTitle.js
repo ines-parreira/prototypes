@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
+import {Input} from 'reactstrap'
 import _noop from 'lodash/noop'
+
+import css from './EditableTitle.less'
 
 export default class EditableTitle extends React.Component {
     constructor(props) {
@@ -76,19 +79,19 @@ export default class EditableTitle extends React.Component {
     }
 
     render() {
-        const {placeholder} = this.props
-        const className = classnames('ui header EditableTitle', {
-            'edit-mode': this.state.editMode
-        })
+        const {className, placeholder, style} = this.props
 
         return (
-            <input
-                ref="title"
+            <Input
+                getRef="title"
                 type="text"
                 tabIndex="1"
-                style={this.props.style}
+                size="lg"
+                style={style}
                 disabled={this.props.disabled}
-                className={className}
+                className={classnames(className, css.component, {
+                    [css['edit-mode']]: this.state.editMode || this.props.forceEditMode,
+                })}
 
                 placeholder={placeholder}
                 autoFocus={this.props.focus}
@@ -106,16 +109,20 @@ export default class EditableTitle extends React.Component {
 }
 
 EditableTitle.propTypes = {
+    className: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     update: PropTypes.func.isRequired,
     focus: PropTypes.bool,
     select: PropTypes.bool,
     disabled: PropTypes.bool,
-    style: PropTypes.object
+    style: PropTypes.object.isRequired,
+    forceEditMode: PropTypes.bool,
 }
 
 
 EditableTitle.defaultProps = {
+    className: '',
     update: _noop,
+    style: {},
 }

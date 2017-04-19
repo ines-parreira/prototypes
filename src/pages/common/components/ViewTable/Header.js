@@ -1,19 +1,27 @@
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
-import classnames from 'classnames'
+import {
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    Button,
+    Popover,
+    PopoverTitle,
+    PopoverContent,
+} from 'reactstrap'
 import {Link, browserHistory, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
+import _get from 'lodash/get'
+
 import EditableTitle from '../EditableTitle'
 import FilterTopbar from './FilterTopbar'
 import Search from '../Search'
 import {slugify} from '../../../../utils'
-import _get from 'lodash/get'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
-
-import css from './Page.less'
 
 class Header extends React.Component {
     static propTypes = {
@@ -35,6 +43,10 @@ class Header extends React.Component {
 
     static defaultProps = {
         item: fromJS({}),
+    }
+
+    state = {
+        askDeleteConfirmation: false,
     }
 
     _goBackUrl = () => {
@@ -72,6 +84,12 @@ class Header extends React.Component {
         }))
     }
 
+    _toggleDeleteConfirmation = () => {
+        this.setState({
+            askDeleteConfirmation: !this.state.askDeleteConfirmation,
+        })
+    }
+
     render() {
         const {
             ActionsComponent,
@@ -83,83 +101,100 @@ class Header extends React.Component {
             type,
         } = this.props
 
+        const isEditMode = activeView.get('editMode')
+
         return (
             <div>
                 <div>
-                    <div className="ui text menu sticky-header-search">
+                    <div className="clearfix mb-2">
                         {
                             isUpdate && !isSearch && (
-                                <div className="left menu item">
-                                    <div
-                                        className={classnames('ui dropdown', css.settings)}
-                                        ref={(dropdown) => {
-                                            $(dropdown).dropdown({
-                                                action: () => {
-                                                    // HACK action='hide' does not work
-                                                    // as described in the docs.
-                                                    $(dropdown).dropdown('hide')
-                                                }
-                                            })
-                                        }}
+                                <UncontrolledDropdown className="d-inline-block">
+                                    <DropdownToggle
+                                        caret
+                                        type="button"
+                                        id="settings-view-button"
                                     >
-                                        <i className="setting icon" />
-                                        <div className="text">VIEW SETTINGS</div>
-                                        <div className="menu">
-                                            <div
-                                                className="item"
-                                                onClick={() => this.props.updateView(activeView)}
+                                        <i className="fa fa-cog fa-fw mr-2" />
+                                        Settings
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <DropdownItem
+                                            type="button"
+                                            onClick={() => this.props.updateView(activeView)}
+                                        >
+                                            Edit view
+                                        </DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem
+                                            id="settings-view-button"
+                                            type="button"
+                                            onClick={this._toggleDeleteConfirmation}
+                                        >
+                                            <span className="text-danger">Delete view</span>
+                                            <Popover
+                                                placement="bottom"
+                                                isOpen={this.state.askDeleteConfirmation}
+                                                target="settings-view-button"
+                                                toggle={this._toggleDeleteConfirmation}
                                             >
-                                                Edit view
-                                            </div>
-                                            <div className="divider"></div>
-                                            <div
-                                                className="item red text"
-                                                onClick={() => this.props.deleteView(activeView)}
-                                            >
-                                                Delete view
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                                <PopoverTitle>Are you sure?</PopoverTitle>
+                                                <PopoverContent>
+                                                    <p>
+                                                        You are about to <b>delete</b> this view for <b>all users</b>.
+                                                    </p>
+                                                    <Button
+                                                        color="success"
+                                                        onClick={() => {
+                                                            this.props.deleteView(activeView)
+                                                            this._toggleDeleteConfirmation()
+                                                        }}
+                                                    >
+                                                        Confirm
+                                                    </Button>
+                                                </PopoverContent>
+                                            </Popover>
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
                             )
                         }
+
                         {
                             isSearch && (
                                 <Link
-                                    className=" ui tiny basic grey button"
+                                    className="btn btn-secondary"
                                     to={this._goBackUrl()}
                                 >
-                                    <i className="arrow left icon" />
+                                    <i className="fa fa-fw fa-arrow-left mr-2" />
                                     Back
                                 </Link>
                             )
                         }
-                        <div className="right menu item">
-                            <Search
-                                autofocus
-                                bindKey
-                                onChange={this._search}
-                                className="long"
-                                placeholder={`Search ${config.get('plural')}`}
-                                searchDebounceTime={400}
-                                location={`${activeView.get('id')}${!!isSearch && '(s)'}`}
-                                forcedQuery={this._searchQuery()}
-                            />
-                        </div>
+
+                        <Search
+                            bindKey
+                            onChange={this._search}
+                            className="pull-right"
+                            placeholder={`Search ${config.get('plural')}...`}
+                            searchDebounceTime={400}
+                            location={`${activeView.get('id')}${!!isSearch && '(s)'}`}
+                            forcedQuery={this._searchQuery()}
+                        />
                     </div>
 
-                    <div className="ui sixteen wide column flex-spaced-row no-wrap view-header">
+                    <div className="clearfix d-flex flex-row align-items-center mb-2">
                         {
                             isSearch ? (
                                     <EditableTitle
-                                        style={{margin: '0 8px 0 0'}}
+                                        className="mr-2"
                                         title={activeView.get('name', '')}
                                         disabled
                                     />
                                 ) : (
                                     <EditableTitle
+                                        className="mr-2"
                                         select={!isUpdate}
-                                        style={{margin: '0 8px 0 0'}}
                                         title={activeView.get('name', '')}
                                         placeholder="View name"
                                         update={(name) => {
@@ -167,12 +202,14 @@ class Header extends React.Component {
                                                 this._updateViewName(name)
                                             }
                                         }}
+                                        disabled={!isEditMode}
+                                        forceEditMode={isEditMode}
                                     />
                                 )
                         }
+
                         {
-                            ActionsComponent
-                            && (
+                            ActionsComponent && (
                                 <ActionsComponent
                                     view={activeView}
                                     selectedItemsIds={selectedItemsIds}

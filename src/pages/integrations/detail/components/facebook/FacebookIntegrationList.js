@@ -1,8 +1,25 @@
 import React, {PropTypes} from 'react'
+import ImmutablePropsTypes from 'react-immutable-proptypes'
+import {connect} from 'react-redux'
+
 import IntegrationList from '../../components/IntegrationList'
 import FacebookPageRow from './FacebookPageRow'
 
+import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+
+@connect((state) => {
+    return {
+        integrations: integrationsSelectors.getFacebookIntegrations(state),
+    }
+})
 export default class FacebookIntegrationList extends React.Component {
+    static propTypes = {
+        integrations: ImmutablePropsTypes.list.isRequired,
+        loading: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired,
+        redirectUri: PropTypes.string.isRequired,
+    }
+
     _onLogin = () => {
         window.location = this.props.redirectUri
     }
@@ -23,7 +40,7 @@ This integration creates tickets when customers post on your Facebook page or se
         return (
             <IntegrationList
                 integrationType="facebook"
-                integrations={integrations.filter((v) => v.get('type') === 'facebook')}
+                integrations={integrations}
                 longTypeDescription={longTypeDescription}
                 createIntegration={this._onLogin}
                 createIntegrationButtonText="Login to Facebook"
@@ -32,12 +49,4 @@ This integration creates tickets when customers post on your Facebook page or se
             />
         )
     }
-}
-
-
-FacebookIntegrationList.propTypes = {
-    integrations: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    redirectUri: PropTypes.string.isRequired,
 }

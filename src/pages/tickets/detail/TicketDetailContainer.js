@@ -9,7 +9,6 @@ import shortcutManager from '../../common/utils/shortcutManager'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
 import {Loader} from '../../common/components/Loader'
-import Timeline from '../../common/components/timeline/Timeline'
 import * as ViewsActions from '../../../state/views/actions'
 import * as TicketActions from '../../../state/ticket/actions'
 import * as MacroActions from '../../../state/macro/actions'
@@ -321,19 +320,13 @@ class TicketDetailContainer extends React.Component {
         }
 
         return (
-            <DocumentTitle title={`${this.props.ticket.get('id') ? this.props.ticket.get('subject') : 'New ticket'}`}>
+            <DocumentTitle title={this.props.ticket.get('id') ? this.props.ticket.get('subject') : 'New ticket'}>
                 <div
                     className="TicketDetailContainer"
                     onScroll={() => {
                         this.forceUpdate()
                     }}
                 >
-                    <Timeline
-                        actions={this.props.actions.ticket}
-                        currentTicketId={this.props.ticket.get('id')}
-                        isDisplayed={this.props.ticket.getIn(['_internal', 'displayHistory'])}
-                        userHistory={this.props.users.get('userHistory')}
-                    />
                     <TicketView
                         actions={this.props.actions}
                         applyMacro={this._applyMacro}

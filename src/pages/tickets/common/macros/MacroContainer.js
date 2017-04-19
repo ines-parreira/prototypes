@@ -43,12 +43,17 @@ class MacroContainer extends React.Component {
             selectedItemsIds
         } = this.props
 
-        if (!macros.get('isModalOpen')) {
+        const isOpen = macros.get('isModalOpen')
+
+        // important to keep, we want the MacroModal component to mount only if it is open
+        // check lifecycle of shortcutManager
+        if (!isOpen) {
             return null
         }
 
         return (
             <MacroModal
+                isOpen={isOpen}
                 activeView={activeView}
                 macros={macros.get('items')}
                 newMacro={macros.get('newMacro')}

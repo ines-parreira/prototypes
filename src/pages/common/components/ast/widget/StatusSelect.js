@@ -7,7 +7,14 @@ const StatusSelect = ({onChange, schemas, value}) => {
     const options = schemas.getIn([
         'definitions', 'Ticket', 'properties', 'status', 'meta', 'enum'
     ]).toList()
-    return <Select value={value} onChange={onChange} options={options}/>
+
+    return (
+        <Select
+            value={value}
+            onChange={onChange}
+            options={options}
+        />
+    )
 }
 
 StatusSelect.propTypes = {
@@ -21,6 +28,4 @@ const mapStateToProps = (state) => ({
     schemas: state.schemas,
 })
 
-export default connect(
-    mapStateToProps,
-)(StatusSelect)
+export default connect(mapStateToProps)(StatusSelect)

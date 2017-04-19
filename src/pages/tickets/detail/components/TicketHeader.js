@@ -1,24 +1,17 @@
 import React, {PropTypes} from 'react'
-import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 
 import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
-import TicketPriority from './ticketdetails/TicketPriority'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 
-import {getAgents} from '../../../../state/users/selectors'
-
-class TicketHeader extends React.Component {
+export default class TicketHeader extends React.Component {
     shouldComponentUpdate(nextProps) {
         const currentTicket = this.props.ticket.delete('newMessage').delete('messages').delete('state')
         const nextTicket = nextProps.ticket.delete('newMessage').delete('messages').delete('state')
 
-        const currentAgents = this.props.agents
-        const nextAgents = nextProps.agents
-
-        return !currentTicket.equals(nextTicket) || !currentAgents.equals(nextAgents)
+        return !currentTicket.equals(nextTicket)
     }
 
     _toggleStatus = (status) => {
@@ -42,80 +35,43 @@ class TicketHeader extends React.Component {
     }
 
     render() {
-        const {ticket, agents, actions} = this.props
+        const {ticket, actions} = this.props
 
         const isUpdate = !!ticket.get('id')
 
         return (
             <div className="ticket-header">
-
-                {/*
-                 <div className="ticket-actions-btn ui dropdown" id="top-option-dropdown">
-                 <i className="ui icon angle down"/>
-                 <div className="menu transition">
-                 <div className="item">
-                 <a href="#">
-                 Merge
-                 </a>
-                 </div>
-                 <div className="item">
-                 <a href="#">
-                 Mark as spam
-                 </a>
-                 </div>
-                 </div>
-                 </div>
-                 */}
-
-                {/*
-                 <button className="ticket-previous-btn ui mini button">
-                 NO PREVIOUS TICKETS
-                 </button>
-                 */}
-
                 <EditableTitle
+                    className="mb-2"
                     title={ticket.get('subject')}
                     placeholder="Subject"
                     update={actions.ticket.setSubject}
                     focus={!ticket.get('id')}
-                    style={{width: '100%'}}
                 />
 
-                <div className="ui grid ticket-header-details">
-                    <div className="row">
+                <div className="d-flex justify-content-between">
+                    <div className="d-inline-flex">
+                        {
+                            isUpdate && (
+                                <TicketStatus
+                                    currentStatus={ticket.get('status')}
+                                    setQuickStatus={this._toggleStatus}
+                                />
+                            )
+                        }
 
-                        <div className="eleven wide column">
-                            {
-                                isUpdate && (
-                                    <TicketStatus
-                                        currentStatus={ticket.get('status')}
-                                        setStatus={this._setStatus}
-                                        setQuickStatus={this._toggleStatus}
-                                    />
-                                )
-                            }
-
-                            <TicketTags
-                                ticketTags={ticket.get('tags')}
-                                addTags={actions.ticket.addTags}
-                                removeTag={actions.ticket.removeTag}
-                            />
-                        </div>
-
-                        <div className="five wide column ticket-details">
-
-                            <TicketPriority
-                                priority={ticket.get('priority')}
-                                togglePriority={actions.ticket.togglePriority}
-                            />
-
-                            <TicketAssignee
-                                currentAssignee={ticket.getIn(['assignee_user', 'name'])}
-                                agents={agents}
-                                setAgent={actions.ticket.setAgent}
-                            />
-                        </div>
+                        <TicketTags
+                            ticketTags={ticket.get('tags')}
+                            addTags={actions.ticket.addTags}
+                            removeTag={actions.ticket.removeTag}
+                        />
                     </div>
+
+                    <TicketAssignee
+                        direction="right"
+                        currentAssignee={ticket.getIn(['assignee_user', 'name'])}
+                        setAgent={actions.ticket.setAgent}
+                    />
                 </div>
             </div>
         )
@@ -124,22 +80,8 @@ class TicketHeader extends React.Component {
 
 TicketHeader.propTypes = {
     ticket: PropTypes.object.isRequired,
-    agents: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
 
     computeNextUrl: PropTypes.func.isRequired,
     hideTicket: PropTypes.func.isRequired,
 }
-
-
-function mapStateToProps(state) {
-    return {
-        agents: getAgents(state),
-    }
-}
-
-function mapDispatchToProps() {
-    return {}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(TicketHeader)

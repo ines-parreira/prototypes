@@ -17,10 +17,14 @@ class PageHeader extends React.Component {
     render() {
         const {title, children} = this.props
         return (
-            <div className="ui sixteen wide column flex-spaced-row no-wrap page-header">
-                <div>
-                    <h1 className="ui header">{title}</h1>
-                </div>
+            <div className="d-flex align-items-center justify-content-between mb-2">
+                <h1
+                    className="ui header"
+                    style={{marginBottom: 0}}
+                >
+                    {title}
+                </h1>
+
                 {children && this._renderChildren()}
             </div>
         )

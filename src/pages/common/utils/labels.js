@@ -1,10 +1,11 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import classNames from 'classnames'
-import {merge} from 'lodash'
+import classnames from 'classnames'
+import {Badge} from 'reactstrap'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
 import {fromJS} from 'immutable'
+import {UncontrolledTooltip} from 'reactstrap'
 import {formatDatetime, isImmutable} from '../../../utils'
 import {USER_CHANNEL_CLASS} from '../../../config'
 
@@ -13,9 +14,15 @@ import {USER_CHANNEL_CLASS} from '../../../config'
  */
 export const AgentLabel = ({name = ''}) => {
     return (
-        <div className="agent-label">
+        <div className="agent-label d-inline-flex align-items-center">
             <span className="agent-id-label ui medium yellow label">A</span>
-            {name && <span className="secondary-action">{name.toUpperCase()}</span>}
+            {
+                name && (
+                    <span className="secondary-action">
+                        {name}
+                    </span>
+                )
+            }
         </div>
     )
 }
@@ -30,51 +37,71 @@ UserLabel.propTypes = {name: PropTypes.string}
 /**
  * TAG
  */
-export const TagLabel = ({name = '', decoration, className, children}) => {
-    const color = (decoration || fromJS({})).get('color')
-    const labelClassName = classNames('ui light basic label tags', className, {
-        blue: !color
-    })
-
-    const labelStyle = {
-        color,
-        borderColor: color
-    }
+export const TagLabel = ({decoration, children, style}) => {
+    style.color = (decoration || fromJS({})).get('color') || '#0275d8'
 
     return (
-        <div className={labelClassName} style={labelStyle}>
-            {name}
+        <Badge
+            className="tag"
+            style={style}
+        >
             {children}
-        </div>
+        </Badge>
     )
 }
 TagLabel.propTypes = {
-    name: PropTypes.string,
+    children: PropTypes.node,
     decoration: PropTypes.object,
-    className: PropTypes.string,
-    children: PropTypes.object
+    style: PropTypes.object.isRequired,
+}
+TagLabel.defaultProps = {
+    style: {},
 }
 
 /**
  * PRIORITY
  */
 export const PriorityLabel = ({priority}) => {
-    const className = classNames('ticket-priority flag icon', priority, {
+    const className = classnames('ticket-priority flag icon', priority, {
         outline: priority !== 'high'
     })
-    return <i className={className}/>
+    return <i className={className} />
 }
 PriorityLabel.propTypes = {priority: PropTypes.string.isRequired}
 
 /**
  * STATUS
  */
-export const StatusLabel = ({status}) => (
-    <span className={`ticket-status smaller ticket-details-item ui label ${status}`}>
-        {status}
-    </span>
-)
-StatusLabel.propTypes = {status: PropTypes.string.isRequired}
+export const StatusLabel = ({status, ...rest}) => {
+    let color = 'primary'
+
+    switch (status) {
+        case 'open':
+            color = 'secondary'
+            break
+        case 'new':
+            color = 'info'
+            break
+        case 'closed':
+            color = 'success'
+            break
+        default:
+    }
+
+    return (
+        <Badge
+            className="text-center"
+            color={color}
+            style={{width: '56px'}}
+            {...rest}
+        >
+            {status}
+        </Badge>
+    )
+}
+StatusLabel.propTypes = {
+    status: PropTypes.string.isRequired,
+}
 
 /**
  * CHANNEL
@@ -91,7 +118,7 @@ ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
  */
 export const SourceDetailLabel = ({value}) => (
     <div>
-        <i className={USER_CHANNEL_CLASS[value.get('type')]}/>
+        <i className={USER_CHANNEL_CLASS[value.get('type')]} />
         {value.get('name') ? `${value.get('name')} <${value.get('address')}>` : value.get('address')}
     </div>
 )
@@ -135,47 +162,36 @@ RoleLabel.propTypes = {roles: PropTypes.oneOfType([PropTypes.array, PropTypes.ob
 export class DatetimeLabel extends React.Component {
     static propTypes = {
         dateTime: PropTypes.string,
-        settings: PropTypes.object,
         timezone: PropTypes.string
     }
 
-    componentDidMount() {
-        let settings = {
-            hoverable: true,
-            variation: 'tiny inverted',
-            delay: {
-                show: 200,
-                hide: 100
-            }
-        }
-
-        if (this.props.settings) {
-            settings = merge(settings, this.props.settings)
-        }
-
-        $(this.refs.tooltip).popup(settings)
-    }
-
-    componentWillUnmount() {
-        $(this.refs.tooltip).popup('destroy')
+    constructor(props) {
+        super(props)
+        this.id = `datetime-tooltip-${Math.random().toString(36).slice(2)}` // generates a random unique id
     }
 
     render() {
         const {dateTime, timezone} = this.props
 
         if (!dateTime) {
-            return
+            return null
         }
 
         const labelDatetime = formatDatetime(dateTime, timezone)
         const tooltipDatetime = formatDatetime(dateTime, timezone, 'L LT')
 
         return (
-            <span
-                ref="tooltip"
-                data-html={tooltipDatetime}
-            >
-                {labelDatetime}
+            <span>
+                <span id={this.id}>
+                    {labelDatetime}
+                </span>
+                <UncontrolledTooltip
+                    placement="top"
+                    target={this.id}
+                    delay={{show: 200, hide: 0}}
+                >
+                    {tooltipDatetime}
+                </UncontrolledTooltip>
             </span>
         )
     }
@@ -197,7 +213,7 @@ export const RenderLabel = ({field, value}) => {
 
     switch (field.get('name')) {
         case 'tags':
-            return <TagLabel name={value}/>
+            return <TagLabel>{value}</TagLabel>
         case 'created':
         case 'updated':
             return (
@@ -206,20 +222,20 @@ export const RenderLabel = ({field, value}) => {
                 />
             )
         case 'status':
-            return <StatusLabel status={value}/>
+            return <StatusLabel status={value} />
         case 'priority':
-            return <PriorityLabel priority={value}/>
+            return <PriorityLabel priority={value} />
         case 'assignee':
-            return value.get('name') ? <AgentLabel name={value.get('name')}/> : null
+            return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
         case 'source':
-            return typeof value === 'string' ? <div>{value}</div> : <SourceDetailLabel value={value}/>
+            return typeof value === 'string' ? <div>{value}</div> : <SourceDetailLabel value={value} />
         case 'requester':
-            return <UserLabel name={value.get('name')}/>
+            return <UserLabel name={value.get('name')} />
         case 'roles':
-            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value}/>
+            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value} />
         case 'via':
         case 'channel':
-            return <ChannelLabel channel={value}/>
+            return <ChannelLabel channel={value} />
         default:
             return <span>{value}</span>
     }

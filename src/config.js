@@ -257,13 +257,13 @@ export const ACTION_TEMPLATES = [
         partialUpdateKey: 'assignee_user',
         partialUpdateValue: makeGetProperty('assignee_user'),
     },
-    {
-        execution: 'front',
-        name: 'setPriority',
-        title: 'Set priority',
-        partialUpdateKey: 'priority',
-        partialUpdateValue: makeGetProperty('priority'),
-    },
+    // {
+    //     execution: 'front',
+    //     name: 'setPriority',
+    //     title: 'Set priority',
+    //     partialUpdateKey: 'priority',
+    //     partialUpdateValue: makeGetProperty('priority'),
+    // },
     {
         execution: 'front',
         name: 'setSubject',

@@ -1,6 +1,5 @@
 export InputField from './InputField'
 export LabeledInputField from './LabeledInputField'
-export URLInputField from './URLInputField'
 export TextAreaField from './TextAreaField'
 export JsonField from './JsonField'
 export SelectField from './SelectField'

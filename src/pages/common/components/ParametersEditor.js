@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
+import {UncontrolledTooltip} from 'reactstrap'
 
 export default class ParametersEditor extends React.Component {
     addRow() {
@@ -65,20 +66,33 @@ export default class ParametersEditor extends React.Component {
                                 </div>
                                 <div className="three wide field right-icons">
                                     <i
+                                        id={`parameter-required-${index}`}
                                         className={requiredClassName}
                                         onClick={() => this.changeValue('required', index, !dict.get('required'))}
-                                        data-content={requiredTitle}
-                                        data-variation="inverted"
-                                        ref={e => $(e).popup()}
                                     />
+                                    <UncontrolledTooltip
+                                        placement="top"
+                                        target={`parameter-required-${index}`}
+                                        delay={0}
+                                    >
+                                        {requiredTitle}
+                                    </UncontrolledTooltip>
                                     <i
+                                        id={`parameter-editable-${index}`}
                                         className={editableClassName}
                                         onClick={() => this.changeValue('editable', index, !dict.get('editable'))}
-                                        data-content={editableTitle}
-                                        data-variation="inverted"
-                                        ref={e => $(e).popup()}
                                     />
-                                    <i className="red close action icon" onClick={() => this.deleteRow(index)} />
+                                    <UncontrolledTooltip
+                                        placement="top"
+                                        target={`parameter-editable-${index}`}
+                                        delay={0}
+                                    >
+                                        {editableTitle}
+                                    </UncontrolledTooltip>
+                                    <i
+                                        className="red close action icon"
+                                        onClick={() => this.deleteRow(index)}
+                                    />
                                 </div>
                             </div>
                         )

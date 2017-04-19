@@ -24,37 +24,35 @@ class ApiKeyView extends React.Component {
         const {apiKey} = this.props
 
         return (
-            <div className="ui grid">
-                <div className="eight wide column">
-                    <h1>
-                        <i className="key alternative blue icon ml5ni mr10i" />
-                        API key
-                    </h1>
-                    <p>
-                        Here’s your API key. You can use it to authenticate requests
-                        on <a href="http://docs.gorgias.io/" target="_blank">our API</a>, and make changes
-                        to your tickets & users. Make sure you keep it safe.
-                    </p>
+            <div>
+                <h1>
+                    <i className="key alternative blue icon ml5ni mr10i" />
+                    API key
+                </h1>
+                <p>
+                    Here’s your API key. You can use it to authenticate requests
+                    on <a href="http://docs.gorgias.io/" target="_blank">our API</a>, and make changes
+                    to your tickets & users. Make sure you keep it safe.
+                </p>
 
-                    <h4>Your personal API key</h4>
-                    <div className="ui action input fluid">
-                        <input
-                            id="apiKey"
-                            type="text"
-                            value={apiKey}
-                            readOnly
-                        />
-                        <button
-                            id="copyApiKey"
-                            className="ui light blue right labeled icon button"
-                            data-clipboard-target="#apiKey"
-                        >
-                            <i className="copy icon" />
-                            {
-                                this.state.isCopied ? 'COPIED!' : 'COPY'
-                            }
-                        </button>
-                    </div>
+                <h4>Your personal API key</h4>
+                <div className="ui action input fluid">
+                    <input
+                        id="apiKey"
+                        type="text"
+                        value={apiKey}
+                        readOnly
+                    />
+                    <button
+                        id="copyApiKey"
+                        className="ui light blue right labeled icon button"
+                        data-clipboard-target="#apiKey"
+                    >
+                        <i className="copy icon" />
+                        {
+                            this.state.isCopied ? 'COPIED!' : 'COPY'
+                        }
+                    </button>
                 </div>
             </div>
         )

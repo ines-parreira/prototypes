@@ -1,93 +1,75 @@
-/* ColorField
- */
-
 import React, {Component, PropTypes} from 'react'
 import classnames from 'classnames'
+import {TwitterPicker} from 'react-color'
+import onClickOutside from 'react-onclickoutside'
 
 import css from './ColorField.less'
 
 const colors = [
-    '#0993f4', // blue
-    '#f2484a', // red
-    '#F2711C', // orange
-    '#FBBD08', // yellow
+    '#EB144C', // red
+    '#FF6900', // orange
+    '#FCB900', // yellow
     '#B5CC18', // olive
-    '#2DCF57', // green
-    '#00B5AD', // teal
-    '#6435C9', // violet
-    '#A333C8', // purple
+    '#00D084', // green
+    '#7BDCB5', // teal
+    '#8ED1FC', // light blue
+    '#0693E3', // blue
+    '#9900EF', // purple
     '#E03997', // pink
+    '#F78DA7', // light pink
     '#A5673F', // brown
-    '#767676' // grey
+    '#ABB8C3', // light grey
+    '#767676', // grey
 ]
 
+@onClickOutside
 class ColorField extends Component {
-    componentDidMount() {
-        $(this.refs.selectColor).popup({
-            offset: -8,
-            popup: $(this.refs.selectColorPopup),
-            on: 'click',
-            position: 'bottom left'
-        })
+    state = {
+        displayColorPicker: false,
     }
 
-    _renderColorBtn = (color, key) => {
-        const style = {
-            backgroundColor: color
-        }
+    // used by onClickOutside HOC
+    handleClickOutside = () => {
+        this.setState({displayColorPicker: false})
+    }
 
-        const _onClick = () => {
-            if (this.props.input && this.props.input.onChange) {
-                this.props.input.onChange(color)
-            }
+    _handleClick = () => {
+        this.setState({displayColorPicker: !this.state.displayColorPicker})
+    }
 
-            $(this.refs.selectColor).popup('hide')
-        }
-
-        return (
-            <button
-                type="button"
-                style={style}
-                onClick={_onClick}
-                key={key}
-            />
-        )
+    _handleChange = (color) => {
+        this.props.input.onChange(color.hex)
     }
 
     render() {
-        const {input, required, placeholder, className, label} = this.props
+        const {input, required, className, label} = this.props
 
-        const fieldClassName = classnames({
+        const fieldClassName = classnames('field', className, {
             required,
-        }, className, 'ui field')
-
-        const btnStyle = {
-            background: input.value
-        }
+        })
 
         return (
             <div className={fieldClassName}>
-                {label && <label htmlFor={input.name}>{label}</label>}
-                <div className={classnames(css.field, 'ui input')}>
-                    <button
-                        type="button"
-                        style={btnStyle}
-                        className={css.button}
-                        ref="selectColor"
-                    />
-                    <input
-                        type="text"
-                        {...input}
-                        placeholder={placeholder}
-                        required={required}
-                    />
-
+                {label && <label>{label}</label>}
+                <div className={css.wrapper}>
                     <div
-                        className={classnames(css.popup, 'ui popup')}
-                        ref="selectColorPopup"
+                        className={css.preview}
+                        onClick={this._handleClick}
                     >
-                        {colors.map(this._renderColorBtn)}
+                        <div
+                            style={{backgroundColor: input.value}}
+                        />
                     </div>
+                    {
+                        this.state.displayColorPicker && (
+                            <TwitterPicker
+                                className={css.popup}
+                                color={input.value}
+                                colors={colors}
+                                onChange={this._handleChange}
+                            />
+                        )
+                    }
                 </div>
             </div>
         )

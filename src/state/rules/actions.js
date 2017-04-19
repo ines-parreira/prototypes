@@ -52,14 +52,14 @@ export const fail = (error, reason) => ({
  * Create a rule
  * @param data
  */
-export const create = (data) => (dispatch) => (
-    axios.post('/api/rules/', data)
+export const create = (data) => (dispatch) => {
+    return axios.post('/api/rules/', data)
         .then((response) => {
             dispatch(addRuleEnd(response.data))
         }, (error) => {
             dispatch(fail(error, 'Unable to create the rule'))
         })
-)
+}
 
 /**
  * Save a rule

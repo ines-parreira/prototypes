@@ -3,6 +3,9 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
+import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+
+import './Navbar.less'
 
 // A <Link /> with some default styles
 const NavLink = (props) => {
@@ -30,6 +33,26 @@ NavLink.propTypes = {
     to: PropTypes.string.isRequired,
 }
 
+const mainMenu = [{
+    url: '/app/tickets',
+    label: 'Tickets',
+}, {
+    url: '/app/users',
+    label: 'Users',
+}, {
+    url: '/app/integrations',
+    label: 'Integrations',
+}, {
+    url: '/app/stats',
+    label: 'Statistics',
+}, {
+    url: '/app/rules',
+    label: 'Rules',
+}, {
+    url: '/app/settings',
+    label: 'Settings',
+}]
+
 class Navbar extends React.Component {
     componentWillMount() {
         this.state = {
@@ -37,91 +60,70 @@ class Navbar extends React.Component {
         }
     }
 
-    componentDidMount() {
-        $('#user-menu', this.refs.navbar).dropdown({
-            direction: 'upward'
-        })
-        $('#main-menu', this.refs.navbar).dropdown()
-    }
-
     render() {
         const {currentUser} = this.props
 
         return (
-            <div className="navbar" ref="navbar">
-                <div id="main-menu" className="navbar-btn navbar-btn-category ui dropdown">
-                    {this.state.title}
-                    <i className="icon angle down" />
-                    <div className="menu">
-                        <NavLink
-                            to="/app/tickets"
-                            onClick={() => this.setState({title: 'Tickets'})}
-                        >
-                            Tickets
-                        </NavLink>
-                        <NavLink
-                            to="/app/users"
-                            onClick={() => this.setState({title: 'Users'})}
-                        >
-                            Users
-                        </NavLink>
-                        <NavLink
-                            to="/app/integrations"
-                            onClick={() => this.setState({title: 'Integrations'})}
-                        >
-                            Integrations
-                        </NavLink>
-                        <NavLink
-                            to="/app/stats"
-                            onClick={() => this.setState({title: 'Statistics'})}
-                        >
-                            Statistics
-                        </NavLink>
-                        <NavLink
-                            to="/app/rules"
-                            onClick={() => this.setState({title: 'Rules'})}
-                        >
-                            Rules
-                        </NavLink>
-                        <NavLink
-                            to="/app/settings"
-                            onClick={() => this.setState({title: 'Settings'})}
-                        >
-                            Settings
-                        </NavLink>
-                    </div>
-                </div>
+            <div className="nav-primary">
+                <UncontrolledDropdown className="nav-dropdown">
+                    <DropdownToggle>
+                        <span style={{fontSize: '18px'}}>{this.state.title}</span>
+                        <i className="fa fa-caret-down" />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        {
+                            mainMenu.map((item) => {
+                                return (
+                                    <DropdownItem
+                                        key={item.label}
+                                        type="button"
+                                    >
+                                        <NavLink
+                                            to={item.url}
+                                            onClick={() => this.setState({title: item.label})}
+                                        >
+                                            {item.label}
+                                        </NavLink>
+                                    </DropdownItem>
+                                )
+                            })
+                        }
+                    </DropdownMenu>
+                </UncontrolledDropdown>
 
                 <div className="navbar-content ui fluid inverted blue large vertical menu">
                     {this.props.children}
                 </div>
 
-                <div id="user-menu" className="navbar-btn ui dropdown">
-                    <i className="ellipsis horizontal icon" />
-                    <div>
-                        <h4 className="current-user">
-                            <i className="status green circle icon" title="User online" />
-                            <span className="name" title={currentUser.get('name')}>{currentUser.get('name')}</span>
-                        </h4>
-                    </div>
-
-                    <div className="menu">
-                        <Link
-                            className="item"
-                            to="/app/settings/profile"
-                        >
-                            <i className="user icon" />
-                            Your profile
-                        </Link>
-                        <a
-                            className="item"
-                            href="/logout"
-                        >
-                            <i className="sign out icon" />
-                            Sign Out
-                        </a>
-                    </div>
-                </div>
+                <UncontrolledDropdown
+                    className="nav-dropdown"
+                    dropup
+                >
+                    <DropdownToggle>
+                        <span>
+                            <i
+                                className="fa fa-circle mr-2"
+                                style={{color: '#2DCF57'}}
+                            />
+                            {currentUser.get('name')}
+                        </span>
+                        <i className="fa fa-ellipsis-h" />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem>
+                            <Link to="/app/settings/profile">
+                                <i className="fa fa-fw fa-user mr-2" />
+                                Your profile
+                            </Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                            <a href="/logout">
+                                <i className="fa fa-fw fa-sign-out mr-2" />
+                                Log out
+                            </a>
+                        </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledDropdown>
             </div>
         )
     }

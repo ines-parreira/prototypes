@@ -1,0 +1,182 @@
+.nav-primary {
+  @padding: 16px;
+  @blue: #1c4969;
+
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+
+  background: @blue;
+
+  .nav-dropdown {
+    & > button {
+      color: #fff !important;
+      border: none;
+      border-radius: 0;
+      font-size: 15px;
+      padding: 18px @padding;
+      width: 100%;
+      display: flex;
+      font-weight: 700;
+      background: #19415d;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      transition: all .1s linear;
+      box-shadow: none !important;
+
+      &:hover,
+      &:active {
+        background-color: #133349;
+      }
+    }
+
+    &.show > button {
+      background-color: #133349;
+    }
+
+    &:not(.dropup) > button {
+      border-bottom: 1px solid #255f89;
+    }
+
+    &.dropup > button {
+      border-top: 1px solid #255f89;
+      padding-top: 14px;
+      padding-bottom: 14px;
+      font-size: 14px;
+    }
+
+    .dropdown-menu {
+      width: 100%;
+      margin: 0;
+      border-radius: 0;
+      border: solid 1px #cfe0ee;
+      border-top: none;
+      padding: 0;
+
+      .dropdown-item {
+        padding: 0;
+        color: #0C0C0C;
+
+        &:hover {
+          background-color: #F3F3F3;
+        }
+
+        a {
+          color: inherit;
+          padding: 8px 16px;
+          display: block;
+
+          &.active {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .navbar-content {
+    flex: 1;
+    overflow: auto;
+    background-color: transparent !important;
+
+    .item > h4 {
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 14px;
+    }
+
+    .item {
+      .menu {
+        .item > span {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .menu {
+      white-space: nowrap;
+
+      & > .item {
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        & > i.icon {
+          width: 1.2em;
+          float: none !important;
+          margin: inherit !important;
+          margin-right: 6px !important;
+          opacity: .6;
+
+          color: #fff;
+          transition: all .1s;
+        }
+
+        &:hover .icon {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  /* navbar buttons
+   */
+
+  .ui.navbar-btn {
+    display: block;
+  }
+
+  .navbar-btn {
+    padding: 1em 1.14em;
+    background: darken(@blue, 3%);
+
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .navbar-btn:hover,
+  .navbar-btn:active {
+    background: darken(@blue, 8%);
+  }
+
+  .navbar-btn > .icon {
+    float: right;
+    width: 1.18em;
+    margin: 0 0 0 .5em;
+  }
+
+  .navbar-btn > .menu {
+    width: 100%;
+    border-radius: 0 !important;
+  }
+
+  .navbar-btn-category {
+    border-bottom: 1px solid lighten(@blue, 8%);
+
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .navbar-btn-category .icon {
+    font-weight: normal;
+  }
+
+  .RecentChats {
+    .menu .item {
+      padding-right: 2.7em !important;
+
+      &.has-something-new {
+        &,
+        & > * {
+          color: white !important;
+          opacity: 1 !important;
+        }
+
+        span {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+}

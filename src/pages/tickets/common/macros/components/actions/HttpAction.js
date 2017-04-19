@@ -3,17 +3,10 @@ import {fromJS} from 'immutable'
 import {AVAILABLE_HTTP_METHODS, JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../../../../../../config'
 import ParametersEditor from '../../../../../common/components/ParametersEditor'
 import JsonField from '../../../../../common/forms/JsonField'
-import URLInputField from '../../../../../common/forms/URLInputField'
+import InputField from '../../../../../common/forms/InputField'
+import SelectField from '../../../../../common/forms/SelectField'
 
 export default class HttpAction extends React.Component {
-    componentDidMount() {
-        $(this.refs.method)
-            .dropdown({
-                onChange: value => this._setArgument('method', value)
-            })
-            .dropdown('set selected', this.props.action.getIn(['arguments', 'method']))
-    }
-
     _setTitle = (title) => {
         this.props.updateActionTitle(
             this.props.index,
@@ -56,8 +49,8 @@ export default class HttpAction extends React.Component {
         return (
             <div className="field">
                 <label>Body</label>
-                <div className="inline fields">
-                    <div className="action field">
+                <div className="d-inline fields">
+                    <div className="action field pl-0">
                         <div
                             className="ui radio checkbox"
                             onClick={() => this._setArgument('content_type', FORM_CONTENT_TYPE)}
@@ -66,7 +59,7 @@ export default class HttpAction extends React.Component {
                             <label>{FORM_CONTENT_TYPE}</label>
                         </div>
                     </div>
-                    <div className="action field">
+                    <div className="action field pl-0">
                         <div
                             className="ui radio checkbox"
                             onClick={() => this._setArgument('content_type', JSON_CONTENT_TYPE)}
@@ -83,15 +76,10 @@ export default class HttpAction extends React.Component {
     }
 
     render() {
-        const {index, action, deleteAction} = this.props
+        const {action} = this.props
 
         return (
             <div className="http">
-                <i
-                    className="right floated remove circle red large action icon"
-                    onClick={() => deleteAction(index)}
-                />
-                <h4>SEND HTTP REQUEST</h4>
                 <div className="ui form">
                     <div className="field required">
                         <label>Action Title</label>
@@ -105,9 +93,12 @@ export default class HttpAction extends React.Component {
                     <div className="fields">
                         <div className="three wide field">
                             <label>Method</label>
-                            <select
-                                ref="method"
-                                className="ui dropdown"
+                            <SelectField
+                                input={{
+                                    value: action.getIn(['arguments', 'method']),
+                                    onChange: v => this._setArgument('method', v)
+                                }}
+                                required
                             >
                                 {
                                     AVAILABLE_HTTP_METHODS.map((method) =>
@@ -119,11 +110,11 @@ export default class HttpAction extends React.Component {
                                         </option>
                                     )
                                 }
-                            </select>
+                            </SelectField>
                         </div>
                         <div className="thirteen wide field required">
                             <label>URL</label>
-                            <URLInputField
+                            <InputField
                                 input={{
                                     value: action.getIn(['arguments', 'url']),
                                     onChange: v => this._setArgument('url', v)
@@ -158,5 +149,4 @@ HttpAction.propTypes = {
     index: PropTypes.number.isRequired,
     updateActionArgs: PropTypes.func.isRequired,
     updateActionTitle: PropTypes.func.isRequired,
-    deleteAction: PropTypes.func.isRequired
 }

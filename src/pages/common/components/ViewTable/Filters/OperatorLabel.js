@@ -1,16 +1,27 @@
 import React, {PropTypes} from 'react'
+import {Button} from 'reactstrap'
 
-const OperatorLabel = ({operator}) => {
-    const operatorLabels = {
-        '&&': 'AND',
-        '||': 'OR'
+export default class OperatorLabel extends React.Component {
+    static propTypes = {
+        operator: PropTypes.string.isRequired,
     }
 
-    return <span className="ui light blue button OperatorLabel">{operatorLabels[operator]}</span>
-}
+    render() {
+        const {operator} = this.props
 
-OperatorLabel.propTypes = {
-    operator: PropTypes.string.isRequired
-}
+        const operatorLabels = {
+            '&&': 'and',
+            '||': 'or'
+        }
 
-export default OperatorLabel
+        return (
+            <Button
+                className="OperatorLabel btn-frozen"
+                tag="div"
+                color="warning"
+            >
+                {operatorLabels[operator]}
+            </Button>
+        )
+    }
+}

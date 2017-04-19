@@ -10,22 +10,17 @@ import Widget from './Widget'
  kind: "init" | "get" | "set";
  }
  */
-const Property = ({theKey, value, actions, leftsiblings, parent, rule, schemas, config}) => (
-    <div className="field">
-        <div className="ui labeled input">
-            <div className="ui label">{(config && config.name) || theKey.name}</div>
-            <Widget
-                value={value.value}
-                type={config ? config.widget : null}
-                parent={parent.push('value', 'value')}
-                leftsiblings={leftsiblings}
-                actions={actions}
-                rule={rule}
-                schemas={schemas}
-                config={config}
-            />
-        </div>
-    </div>
+const Property = ({value, actions, leftsiblings, parent, rule, schemas, config}) => (
+    <Widget
+        value={value.value}
+        type={config ? config.widget : null}
+        parent={parent.push('value', 'value')}
+        leftsiblings={leftsiblings}
+        actions={actions}
+        rule={rule}
+        schemas={schemas}
+        config={config}
+    />
 )
 
 Property.propTypes = {

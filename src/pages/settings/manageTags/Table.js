@@ -1,20 +1,23 @@
 import React, {Component, PropTypes} from 'react'
-import ManageTagsTableRow from './ManageTagsTableRow'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 
-class ManageTagsTable extends Component {
-    _sortRows = (rows, key, reverse) => rows.sort((a, b) => {
-        if (a.get(key) < b.get(key)) {
-            return reverse ? 1 : -1
-        }
+import Row from './Row'
 
-        if (a.get(key) > b.get(key)) {
-            return reverse ? -1 : 1
-        }
+class Table extends Component {
+    _sortRows = (rows, key, reverse) => {
+        return rows.sort((a, b) => {
+            if (a.get(key) < b.get(key)) {
+                return reverse ? 1 : -1
+            }
 
-        return 0
-    })
+            if (a.get(key) > b.get(key)) {
+                return reverse ? -1 : 1
+            }
+
+            return 0
+        })
+    }
 
 
     _getSort() {
@@ -46,7 +49,7 @@ class ManageTagsTable extends Component {
     }
 
     render() {
-        const {rows, columns, reverse, onEdit, onCancel, onSave, onRemove, onSelect, onSelectAll} = this.props
+        const {rows, columns, reverse, onSelectAll} = this.props
         const sort = this._getSort()
         const sortedRows = this._sortRows(rows.get('items'), sort, reverse)
 
@@ -66,36 +69,33 @@ class ManageTagsTable extends Component {
                                 <label />
                             </span>
                         </td>
-                        {columns.map((column, i) => (
-                            <td key={i}>
-                                <div>
-                                    <div className={`cell-wrapper manage-tags-table-col-${column.field}`}>
-                                        <div onClick={this._onSort(column.field)}>
+                        {
+                            columns.map((column, i) => (
+                                <td key={i}>
+                                    <div>
+                                        <div className={`cell-wrapper manage-tags-table-col-${column.field}`}>
+                                            <div onClick={this._onSort(column.field)}>
                                             <span className="clickable filterable">
                                                 {column.title}
                                             </span>
-                                            <i className={this._sortIconClassName(sort, reverse, column.field)} />
+                                                <i className={this._sortIconClassName(sort, reverse, column.field)} />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        ))}
-                        <td></td>
+                                </td>
+                            ))
+                        }
+                        <td />
                     </tr>
                 </thead>
 
                 <tbody>
                     {
                         sortedRows.map((tag, i) => (
-                            <ManageTagsTableRow
+                            <Row
                                 key={i}
                                 row={tag}
                                 meta={rows.getIn(['meta', tag.get('id')]) || fromJS({})}
-                                onEdit={onEdit}
-                                onSave={onSave}
-                                onCancel={onCancel}
-                                onRemove={onRemove}
-                                onSelect={onSelect}
                             />
                         ))
                     }
@@ -105,22 +105,17 @@ class ManageTagsTable extends Component {
     }
 }
 
-ManageTagsTable.propTypes = {
+Table.propTypes = {
     rows: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired,
     onSort: PropTypes.func.isRequired,
-    onEdit: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired,
     onSelectAll: PropTypes.func.isRequired,
 
     sort: PropTypes.string,
     reverse: PropTypes.bool
 }
 
-ManageTagsTable.defaultProps = {
+Table.defaultProps = {
     columns: [{
         title: 'Tag',
         field: 'name',
@@ -130,4 +125,4 @@ ManageTagsTable.defaultProps = {
     }]
 }
 
-export default ManageTagsTable
+export default Table

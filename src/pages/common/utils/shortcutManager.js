@@ -1,6 +1,3 @@
-/* shortcut manager
- */
-
 import Mousetrap from 'mousetrap'
 import * as mousetrap from 'mousetrap'
 import _merge from 'lodash/merge'

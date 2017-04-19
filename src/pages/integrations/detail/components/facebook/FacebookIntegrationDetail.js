@@ -2,20 +2,29 @@ import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
+import _truncate from 'lodash/truncate'
+import {
+    Button,
+    Popover,
+    PopoverTitle,
+    PopoverContent,
+    Breadcrumb,
+    BreadcrumbItem,
+} from 'reactstrap'
+
 import {Loader} from '../../../../common/components/Loader'
 import {CheckboxField} from '../../../../common/forms'
 
 export default class FacebookIntegrationDetail extends React.Component {
-    constructor() {
-        super()
-        this.state = {
-            settings: {
-                posts_enabled: true,
-                private_messages_enabled: true,
-                import_history_enabled: true
-            }
-        }
+    state = {
+        settings: {
+            posts_enabled: true,
+            private_messages_enabled: true,
+            import_history_enabled: true,
+        },
+        askDisableConfirmation: false,
     }
+
     componentWillReceiveProps(nextProps) {
         // set default state
         if (nextProps.integration && !nextProps.integration.isEmpty()
@@ -44,86 +53,124 @@ export default class FacebookIntegrationDetail extends React.Component {
     }
 
     _disable = () => {
-        if (window.confirm('Are you sure you want to disable this integration?')) {
-            this.props.actions.deactivateIntegration(this.props.integration)
-            browserHistory.push('/app/integrations/facebook')
-        }
+        this.setState({askDisableConfirmation: false})
+        this.props.actions.deactivateIntegration(this.props.integration)
+        browserHistory.push('/app/integrations/facebook')
+    }
+
+    _toggleDisableConfirmation = () => {
+        this.setState({askDisableConfirmation: !this.state.askDisableConfirmation})
     }
 
     render() {
         const {integration, loading} = this.props
 
-        if (loading.get('integration') || integration.isEmpty()) {
+        const page = integration.get('facebook') || fromJS({})
+
+        if (loading.get('integration') || page.isEmpty()) {
             return <Loader />
         }
 
-        const page = integration.get('facebook', fromJS({}))
-        const submitButtonClassNames = ['ui', 'green', 'button', {loading: loading.get('updateIntegration')}]
-
         return (
-            <div className="ui grid">
-                <div className="ten wide column">
-                    <div className="ui large breadcrumb">
+            <div>
+                <Breadcrumb>
+                    <BreadcrumbItem>
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider"/>
-                        <Link to="/app/integrations/facebook" className="section">Facebook</Link>
-                        <i className="right angle icon divider"/>
-                        <a className="active section">{page.get('name')}</a>
-                    </div>
-                </div>
-                <div className="ten wide column">
-                    <div className="ui header">
-                        <img
-                            className="ui image" alt={page.get('name')}
-                            src={page.getIn(['picture', 'data', 'url'])}
-                        />
-                        <div className="content">
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to="/app/integrations/facebook">Facebook</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        {page.get('name')}
+                    </BreadcrumbItem>
+                </Breadcrumb>
+
+                <div className="d-flex align-items-center mb-3">
+                    <img
+                        className="ui image rounded mr-3"
+                        alt={page.get('name')}
+                        src={page.getIn(['picture', 'data', 'url'])}
+                    />
+                    <div className="d-flex flex-column">
+                        <h2 className="header">
                             {page.get('name')}
-                            <p className="sub header">{page.get('about')}</p>
-                        </div>
-                    </div>
-                    <div className="ui form">
-                        <div className="field">
-                            <CheckboxField
-                                label="Enable Facebook Messenger"
-                                name="private_messages_enabled"
-                                input={{
-                                    value: this.state.settings.private_messages_enabled,
-                                    onChange: this._onChange,
-                                }}
-                            />
-                        </div>
-                        <div className="field">
-                            <CheckboxField
-                                label="Enable Facebook Posts & Comments"
-                                name="posts_enabled"
-                                input={{
-                                    value: this.state.settings.posts_enabled,
-                                    onChange: this._onChange,
-                                }}
-                            />
-                        </div>
-                        <div className="field">
-                            <CheckboxField
-                                label="Import 30 days of history (posts, comments and messages) as closed tickets"
-                                name="import_history_enabled"
-                                input={{
-                                    value: this.state.settings.import_history_enabled,
-                                    onChange: this._onChange,
-                                }}
-                            />
-                        </div>
-                        <a onClick={this._disable}>Disable this page</a>
+                        </h2>
+                        <p className="text-faded">
+                            {_truncate(page.get('about'), {length: 100})}
+                        </p>
                     </div>
                 </div>
 
-                <div className="ten wide column">
-                    <button
-                        className={classNames(submitButtonClassNames)}
+                <div className="ui form">
+                    <div className="field">
+                        <CheckboxField
+                            label="Enable Facebook Messenger"
+                            name="private_messages_enabled"
+                            input={{
+                                value: this.state.settings.private_messages_enabled,
+                                onChange: this._onChange,
+                            }}
+                        />
+                    </div>
+                    <div className="field">
+                        <CheckboxField
+                            label="Enable Facebook Posts & Comments"
+                            name="posts_enabled"
+                            input={{
+                                value: this.state.settings.posts_enabled,
+                                onChange: this._onChange,
+                            }}
+                        />
+                    </div>
+                    <div className="field">
+                        <CheckboxField
+                            label="Import 30 days of history (posts, comments and messages) as closed tickets"
+                            name="import_history_enabled"
+                            input={{
+                                value: this.state.settings.import_history_enabled,
+                                onChange: this._onChange,
+                            }}
+                        />
+                    </div>
+                </div>
+
+                <div className="mt-3">
+                    <Button
+                        color="primary"
+                        className={classNames('mr-2', {
+                            'btn-loading': loading.get('updateIntegration'),
+                        })}
                         onClick={this._handleSubmit}
                     >
-                        Save Changes
-                    </button>
+                        Save changes
+                    </Button>
+                    <Button
+                        color="warning"
+                        outline
+                        id="disable-integration-button"
+                        onClick={this._toggleDisableConfirmation}
+                    >
+                        Disable this page
+                    </Button>
+                    <Popover
+                        placement="bottom"
+                        isOpen={this.state.askDisableConfirmation}
+                        target="disable-integration-button"
+                        toggle={this._toggleDisableConfirmation}
+                    >
+                        <PopoverTitle>Are you sure?</PopoverTitle>
+                        <PopoverContent>
+                            <p>
+                                This page will not be synchronised with Gorgias anymore.
+                            </p>
+                            <Button
+                                color="success"
+                                onClick={this._disable}
+                            >
+                                Confirm
+                            </Button>
+                        </PopoverContent>
+                    </Popover>
                 </div>
             </div>
         )

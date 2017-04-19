@@ -5,6 +5,11 @@ import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _clone from 'lodash/clone'
 import _isEmpty from 'lodash/isEmpty'
+import {
+    Button,
+    Breadcrumb,
+    BreadcrumbItem,
+} from 'reactstrap'
 
 import {Loader} from '../../../../common/components/Loader'
 import {LabeledInputField} from '../../../../common/forms'
@@ -96,104 +101,116 @@ class ShopifyIntegrationDetail extends React.Component {
         }
 
         return (
-            <div className="ui grid">
-                <div className="ten wide column">
-
-                    <div className="ui large breadcrumb">
+            <div>
+                <Breadcrumb>
+                    <BreadcrumbItem>
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider" />
-                        <Link to="/app/integrations/shopify" className="section">Shopify</Link>
-                        <i className="right angle icon divider" />
-                        <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to="/app/integrations/shopify">Shopify</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        {isUpdate ? integration.get('name') : 'Add'}
+                    </BreadcrumbItem>
+                </Breadcrumb>
+
+                <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
+
+                <p>Let's connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along with
+                    their order information. This way, when they contact you, you'll be able to see their Shopify
+                    information next to tickets. </p>
+
+                <form
+                    className="ui form"
+                    onSubmit={handleSubmit(this._handleSubmit)}
+                >
+                    <Field
+                        name="name"
+                        label="Store name"
+                        rightLabel=".myshopify.com"
+                        maxWidth="50%"
+                        placeholder="The name of your Shopify shop"
+                        required
+                        readOnly={isUpdate}
+                        component={LabeledInputField}
+                    />
+                    <div className="field">
+                        {
+                            isUpdate
+                            && needScopeUpdate
+                            && (
+                                <button
+                                    type="button"
+                                    className="ui light blue button"
+                                    disabled={isSubmitting}
+                                    onClick={() => this._updateAppPermissions()}
+                                >
+                                    Update app permissions
+                                </button>
+                            )
+                        }
+
+                        {
+                            !isUpdate && (
+                                <Button
+                                    color="primary"
+                                    className={classNames('mr-2', {
+                                        'btn-loading': ctaIsLoading,
+                                    })}
+                                    disabled={isSubmitting}
+                                >
+                                    Add integration
+                                </Button>
+                            )
+                        }
+
+                        {
+                            !authenticationRequired && isUpdate && isActive && (
+                                <Button
+                                    type="button"
+                                    color="warning"
+                                    outline
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={() => actions.deactivateIntegration(integration)}
+                                >
+                                    Deactivate integration
+                                </Button>
+                            )
+                        }
+
+                        {
+                            !authenticationRequired && isUpdate && !isActive && (
+                                <Button
+                                    type="button"
+                                    color="success"
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={() => actions.activateIntegration(integration)}
+                                >
+                                    Re-activate integration
+                                </Button>
+                            )
+                        }
+
+                        {
+                            isUpdate && (
+                                <Button
+                                    type="button"
+                                    color="danger"
+                                    className={classNames('pull-right', {
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={() => actions.deleteIntegration(integration)}
+                                >
+                                    Delete
+                                </Button>
+                            )
+                        }
                     </div>
-
-                    <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
-                </div>
-
-                <div className="ten wide column">
-                    <p>Let's connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along with
-                        their order information. This way, when they contact you, you'll be able to see their Shopify
-                        information next to tickets. </p>
-
-                    <form
-                        className="ui form"
-                        onSubmit={handleSubmit(this._handleSubmit)}
-                    >
-                        <Field
-                            name="name"
-                            label="Store name"
-                            rightLabel=".myshopify.com"
-                            maxWidth="50%"
-                            placeholder="The name of your Shopify shop"
-                            required
-                            readOnly={isUpdate}
-                            component={LabeledInputField}
-                        />
-                        <div className="field">
-                            {
-                                isUpdate
-                                && needScopeUpdate
-                                && (
-                                    <button
-                                        type="button"
-                                        className="ui light blue button"
-                                        disabled={isSubmitting}
-                                        onClick={() => this._updateAppPermissions()}
-                                    >
-                                        Update app permissions
-                                    </button>
-                                )
-                            }
-
-                            <button
-                                className={classNames('ui', 'green', 'button', {'loading disabled': ctaIsLoading})}
-                                disabled={isSubmitting}
-                            >
-                                {isUpdate ? 'Save changes' : 'Add integration'}
-                            </button>
-
-                            {
-                                !authenticationRequired && isUpdate && isActive && (
-                                    <button
-                                        type="button"
-                                        className={classNames('ui basic light floated orange button', {
-                                            'loading disabled': isSubmitting
-                                        })}
-                                        onClick={() => !isSubmitting && actions.deactivateIntegration(integration)}
-                                    >
-                                        Deactivate integration
-                                    </button>
-                                )
-                            }
-
-                            {
-                                !authenticationRequired && isUpdate && !isActive && (
-                                    <button
-                                        type="button"
-                                        className={classNames('ui basic light blue floated button', {
-                                            'loading disabled': isSubmitting
-                                        })}
-                                        onClick={() => !isSubmitting && actions.activateIntegration(integration)}
-                                    >
-                                        Re-Activate integration
-                                    </button>
-                                )
-                            }
-
-                            {
-                                isUpdate && (
-                                    <button
-                                        className="ui basic light red floated right button"
-                                        onClick={() => actions.deleteIntegration(integration)}
-                                        type="button"
-                                    >
-                                        Delete
-                                    </button>
-                                )
-                            }
-                        </div>
-                    </form>
-                </div>
+                </form>
             </div>
         )
     }

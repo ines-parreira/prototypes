@@ -16,7 +16,7 @@ export default class InfobarSearchResultsList extends React.Component {
         return (
             <div className="InfobarSearchResultsList">
                 <h2>Users</h2>
-                <div className="ui container">
+                <div className="mt-3">
                     {
                         searchResults.map((user, idx) => {
                             const isDefaultUser = user.get('id') === defaultUserId
@@ -33,7 +33,7 @@ export default class InfobarSearchResultsList extends React.Component {
                                     <div>
                                         {
                                             user.get('name') && (
-                                                <h3>
+                                                <h4>
                                                     {user.get('name')}
                                                     {
                                                         isDefaultUser && (
@@ -44,7 +44,7 @@ export default class InfobarSearchResultsList extends React.Component {
                                                             </span>
                                                         )
                                                     }
-                                                </h3>
+                                                </h4>
                                             )
                                         }
                                         {

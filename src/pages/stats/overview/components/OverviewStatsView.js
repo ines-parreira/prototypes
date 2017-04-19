@@ -4,16 +4,14 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _isNumber from 'lodash/isNumber'
 import _debounce from 'lodash/debounce'
+import {UncontrolledTooltip} from 'reactstrap'
 
 import PeriodPicker from '../../common/PeriodPicker'
 import PageHeader from '../../../common/components/PageHeader'
 import {Loader} from '../../../common/components/Loader'
 import {renderDifference, comparedPeriodString} from '../../common/utils'
 import {fieldEnumSearch} from '../../../../state/views/actions'
-import SearchableSelectField from '../../../common/forms/SearchableSelectField'
-
-import 'react-datepicker/dist/react-datepicker.css'
-
+import SearchableSelectField from '../../common/SearchableSelectField'
 
 // format a value and display it as a percentage
 const formatPercent = (value) => {
@@ -144,22 +142,27 @@ class OverviewStatsView extends React.Component {
     }, 300)
 
     // render helper tooltip displaying description of each statistic
-    _renderTooltip(text, content, popupOptions = {}) {
-        if (text) {
-            return (
+    _renderTooltip = (id, text, content, options = {}) => {
+        return (
+            <span>
                 <span
-                    className="tooltip"
-                    data-content={text}
-                    data-variation="wide inverted"
-                    ref={(e) => $(e).popup(popupOptions)}
+                    id={id}
                 >
                     {content}
                 </span>
-            )
-        }
+                <UncontrolledTooltip
+                    placement="top"
+                    target={id}
+                    delay={0}
+                    {...options}
+                >
+                    {text}
+                </UncontrolledTooltip>
+            </span>
+        )
     }
 
-    _renderValue(config, value, key, tooltipDelta) {
+    _renderValue = (config, value, key, tooltipDelta) => {
         const {stats} = this.props
 
         value = config.get('value')(value)
@@ -170,12 +173,17 @@ class OverviewStatsView extends React.Component {
                     {value}
                     {
                         this._renderTooltip(
+                            `value-${config.get('name')}`,
                             tooltipDelta,
                             renderDifference(
                                 stats.getIn(['difference_period', key]),
                                 config.get('moreIsBetter')
                             ),
-                            {distanceAway: -10}
+                            {
+                                tether: {
+                                    offset: '-10px 0',
+                                },
+                            }
                         )
                     }
                 </span>
@@ -210,13 +218,14 @@ class OverviewStatsView extends React.Component {
 
                                 return (
                                     <div
-                                        className="card statistic"
+                                        className="statistic"
                                         key={config.get('name')}
                                     >
                                         <div className="label">
                                             {config.get('label')}
                                             {
                                                 this._renderTooltip(
+                                                    `title-${config.get('name')}`,
                                                     config.get('tooltip'),
                                                     <i className="help circle link icon" />
                                                 )
@@ -278,7 +287,6 @@ class OverviewStatsView extends React.Component {
                         <PeriodPicker
                             startDatetime={startDatetime}
                             endDatetime={endDatetime}
-                            period={meta.get('period')}
                             onChange={this._handleDateChange}
                             isDisabled={isLoading}
                         />

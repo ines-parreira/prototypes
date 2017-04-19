@@ -6,6 +6,12 @@ import {fromJS} from 'immutable'
 import _clone from 'lodash/clone'
 import _cloneDeep from 'lodash/cloneDeep'
 import _forIn from 'lodash/forIn'
+import {
+    Button,
+    Breadcrumb,
+    BreadcrumbItem,
+} from 'reactstrap'
+
 import {AVAILABLE_HTTP_METHODS} from '../../../../../config'
 import {Loader} from '../../../../common/components/Loader'
 import {
@@ -13,13 +19,9 @@ import {
     SelectField,
     MultiSelectField,
     JsonField,
-    URLInputField
 } from '../../../../common/forms'
 import HeaderFieldArray from './HeaderFieldArray'
 import formSender from '../../../../common/utils/formSender'
-// import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-
-// import HttpIntegrationTesting from './HttpIntegrationTesting'
 
 export const defaultContent = {
     type: 'http',
@@ -128,11 +130,6 @@ class HttpIntegrationDetail extends React.Component {
         return formSender(this.props.actions.updateOrCreateIntegration(doc))
     }
 
-    _handleTest = (data) => {
-        // sending test to server
-        this.props.actions.testHttpIntegration(data)
-    }
-
     render() {
         const {actions, handleSubmit, integration, isUpdate, loading} = this.props
 
@@ -147,213 +144,185 @@ class HttpIntegrationDetail extends React.Component {
         }
 
         return (
-            <div className="ui grid">
-                <div className="sixteen wide column">
-
-                    <div className="ui large breadcrumb">
+            <div>
+                <Breadcrumb>
+                    <BreadcrumbItem>
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider"/>
-                        <Link to="/app/integrations/http" className="section">HTTP</Link>
-                        <i className="right angle icon divider"/>
-                        <a className="active section">{isUpdate ? integration.get('name') : 'Add integration'}</a>
-                    </div>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to="/app/integrations/http">HTTP</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        {isUpdate ? integration.get('name') : 'Add'}
+                    </BreadcrumbItem>
+                </Breadcrumb>
 
-                    <h1>{isUpdate ? integration.get('name') : 'Add new HTTP integration'}</h1>
-                    <div>
-                        Add the details about the HTTP integration you want to add below. If you need help, you can
-                        check our {' '}
-                        <a
-                            href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#your-custom-back-office-app"
-                            target="_blank"
-                        >
-                            docs
-                        </a> or contact us.
-                    </div>
+                <h1>{isUpdate ? integration.get('name') : 'Add new HTTP integration'}</h1>
+                <div>
+                    Add the details about the HTTP integration you want to add below. If you need help, you can
+                    check our {' '}
+                    <a
+                        href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#your-custom-back-office-app"
+                        target="_blank"
+                    >
+                        docs
+                    </a> or contact us.
                 </div>
 
-                <div className="ten wide column">
-                    <form
-                        className="ui form"
-                        onSubmit={handleSubmit(this._handleSubmit)}
-                    >
-                        <Field
-                            name="name"
-                            label="Integration name"
-                            placeholder="Name"
-                            required
-                            component={InputField}
-                        />
-                        <Field
-                            name="description"
-                            label="Description"
-                            placeholder="Description"
-                            component={InputField}
-                        />
-                        <Field
-                            name="http.triggers"
-                            label="Triggers"
-                            placeholder="Triggers"
-                            description="This HTTP integration will be executed when any of the events above happens."
-                            ref="httpTriggers"
-                            required
-                            component={MultiSelectField}
-                            options={[
-                                {
-                                    label: 'Ticket Created',
-                                    slug: 'ticket-created'
-                                },
-                                {
-                                    label: 'Ticket Updated',
-                                    slug: 'ticket-updated'
-                                }
-                            ]}
-                        />
-                        <Field
-                            name="http.url"
-                            label="URL"
-                            placeholder="company.com/api/users?email={ticket.requester.email}"
-                            ref="httpUrl"
-                            required
-                            component={URLInputField}
-                            description={(
-                                <span>
+                <form
+                    className="ui form"
+                    onSubmit={handleSubmit(this._handleSubmit)}
+                >
+                    <Field
+                        name="name"
+                        label="Integration name"
+                        placeholder="Name"
+                        required
+                        component={InputField}
+                    />
+                    <Field
+                        name="description"
+                        label="Description"
+                        placeholder="Description"
+                        component={InputField}
+                    />
+                    <Field
+                        name="http.triggers"
+                        label="Triggers"
+                        placeholder="Triggers"
+                        description="This HTTP integration will be executed when any of the events above happens."
+                        ref="httpTriggers"
+                        required
+                        component={MultiSelectField}
+                        options={[
+                            {
+                                label: 'Ticket Created',
+                                slug: 'ticket-created'
+                            },
+                            {
+                                label: 'Ticket Updated',
+                                slug: 'ticket-updated'
+                            }
+                        ]}
+                    />
+                    <Field
+                        name="http.url"
+                        label="URL"
+                        placeholder="https://company.com/api/users?email={ticket.requester.email}"
+                        ref="httpUrl"
+                        required
+                        component={InputField}
+                        description={(
+                            <span>
                                     You can use <code>{'{ticket.requester.email}'}</code> to pass the email of the
                                     ticket requester. See
                                     other <a href="http://docs.gorgias.io/#/definitions/User" target="_blank">vars</a>.
                                 </span>
-                            )}
-                        />
-                        <Field
-                            name="http.method"
-                            label="HTTP Method"
-                            placeholder="Method"
-                            required
-                            component={SelectField}
+                        )}
+                    />
+                    <Field
+                        name="http.method"
+                        label="HTTP Method"
+                        required
+                        component={SelectField}
+                    >
+                        {
+                            AVAILABLE_HTTP_METHODS.map((method) =>
+                                <option
+                                    key={method}
+                                    value={method}
+                                >
+                                    {method}
+                                </option>
+                            )
+                        }
+                    </Field>
+                    <Field
+                        name="http.request_content_type"
+                        label="Request content type"
+                        required
+                        component={SelectField}
+                    >
+                        <option value="application/json">application/json</option>
+                    </Field>
+                    <Field
+                        name="http.response_content_type"
+                        label="Response content type"
+                        required
+                        component={SelectField}
+                    >
+                        <option value="application/json">application/json</option>
+                    </Field>
+
+                    <FieldArray
+                        name="http.headers"
+                        component={HeaderFieldArray}
+                    />
+
+                    <Field
+                        name="http.form"
+                        label="Request Body (JSON)"
+                        component={JsonField}
+                    />
+
+                    <div className="field">
+                        <Button
+                            color="primary"
+                            className={classNames('mr-2', {
+                                'btn-loading': isSubmitting,
+                            })}
+                            disabled={isSubmitting}
                         >
-                            {
-                                AVAILABLE_HTTP_METHODS.map((method) =>
-                                    <option
-                                        key={method}
-                                        value={method}
-                                    >
-                                        {method}
-                                    </option>
-                                )
-                            }
-                        </Field>
-                        <Field
-                            name="http.request_content_type"
-                            label="Request content type"
-                            required
-                            component={SelectField}
-                        >
-                            <option value="application/json">application/json</option>
-                        </Field>
-                        <Field
-                            type="text"
-                            name="http.response_content_type"
-                            label="Response content type"
-                            required
-                            component={SelectField}
-                        >
-                            <option value="application/json">application/json</option>
-                        </Field>
+                            {isUpdate ? 'Save changes' : 'Add integration'}
+                        </Button>
 
-                        <FieldArray
-                            name="http.headers"
-                            component={HeaderFieldArray}
-                        />
-
-                        <Field
-                            name="http.form"
-                            label="Request Body (JSON)"
-                            component={JsonField}
-                        />
-
-                        <div className="field">
-
-                            {/* isUpdate && (
-                             <button
-                             className={classNames('ui', 'teal', 'button', {
-                             loading: isSubmitting
-                             })}
-                             type="button"
-                             disabled={isSubmitting}
-                             onClick={() => {
-                             this.setState({isTestShown: !this.state.isTestShown})
-                             }}
-                             >
-                             Test
-                             </button>
-                             ) */}
-
-                            <button
-                                type="submit"
-                                className={classNames('ui green button', {
-                                    loading: isSubmitting
-                                })}
-                                disabled={isSubmitting}
-                            >
-                                {isUpdate ? 'Save changes' : 'Add integration'}
-                            </button>
-                            {isUpdate && isActive && (
-                                <button
+                        {
+                            isUpdate && isActive && (
+                                <Button
                                     type="button"
-                                    className={classNames('ui basic light floated orange button', {
-                                        loading: isSubmitting
+                                    color="warning"
+                                    outline
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
                                     })}
-                                    onClick={() => !isSubmitting && actions.deactivateIntegration(integration)}
+                                    onClick={() => actions.deactivateIntegration(integration)}
                                 >
                                     Deactivate integration
-                                </button>
-                            )}
-                            {isUpdate && !isActive && (
-                                <button
-                                    type="button"
-                                    className={classNames('ui basic light blue floated button', {
-                                        loading: isSubmitting
-                                    })}
-                                    onClick={() => !isSubmitting && actions.activateIntegration(integration)}
-                                >
-                                    Re-Activate integration
-                                </button>
-                            )}
+                                </Button>
+                            )
+                        }
 
-                            {isUpdate && (
-                                <button
+                        {
+                            isUpdate && !isActive && (
+                                <Button
                                     type="button"
-                                    className="ui basic light floated right red button"
+                                    color="success"
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={() => actions.activateIntegration(integration)}
+                                >
+                                    Re-activate integration
+                                </Button>
+                            )
+                        }
+
+                        {
+                            isUpdate && (
+                                <Button
+                                    type="button"
+                                    color="danger"
+                                    className={classNames('pull-right', {
+                                        'btn-loading': isSubmitting,
+                                    })}
                                     onClick={() => actions.deleteIntegration(integration)}
                                 >
-                                    Delete integration
-                                </button>
-                            )}
-                        </div>
-                    </form>
-
-                    {/*
-                     <div>
-                     <ReactCSSTransitionGroup
-                     transitionName="fade"
-                     transitionEnterTimeout={200}
-                     transitionLeaveTimeout={200}
-                     >
-                     {isTestShown && (
-                     <div>
-                     <br />
-                     <HttpIntegrationTesting
-                     url={this.refs.httpUrl.value || ''}
-                     integration={this.props.integration}
-                     loading={this.props.loading}
-                     test={this._handleTest}
-                     />
-                     </div>
-                     )}
-                     </ReactCSSTransitionGroup>
-                     </div>
-                     */}
-
-                </div>
+                                    Delete
+                                </Button>
+                            )
+                        }
+                    </div>
+                </form>
             </div>
         )
     }

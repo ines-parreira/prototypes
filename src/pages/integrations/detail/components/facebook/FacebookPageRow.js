@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
+import {Badge, Button} from 'reactstrap'
 
 export default class FacebookPageRow extends React.Component {
     _enable = () => {
@@ -18,38 +19,62 @@ export default class FacebookPageRow extends React.Component {
 
         return (
             <tr className="FacebookPageRow">
-                <td>
-                    <img alt={page.get('name')} src={page.getIn(['picture', 'data', 'url'])}/>
+                <td className="smallest">
+                    <img
+                        style={{
+                            height: '33px',
+                            maxWidth: '33px',
+                            overflow: 'hidden',
+                        }}
+                        className="rounded"
+                        alt={page.get('name')}
+                        src={page.getIn(['picture', 'data', 'url'])}
+                    />
                 </td>
-                <td>
-                    <div className="ui header">
-                        <span className="subject">{page.get('name')}</span>
-
-                        <div className="body sub header">
-                            {page.get('category')}
-                        </div>
-                    </div>
-                    <div>
-                        {page.get('about')}
-                    </div>
+                <td style={{verticalAlign: 'middle'}}>
+                    <b>{page.get('name')}</b>
+                    {' '}
+                    <span className="text-faded ml-3">
+                        {page.get('category')}
+                    </span>
                 </td>
-                <td className="three wide middle aligned column">
-                    {!isDisabled && (
-                        <Link
-                            className="ui basic light blue floated right button"
-                            to={`/app/integrations/facebook/${integration.get('id')}`}
-                        >
-                            Edit
-                        </Link>
-                    )}
-                    {isDisabled && (
-                        <button
-                            className="ui basic green floated right button"
-                            onClick={this._enable}
-                        >
-                            Enable
-                        </button>
-                    )}
+                <td
+                    className="smallest"
+                    style={{verticalAlign: 'middle'}}
+                >
+                    {
+                        isDisabled ? (
+                                <Badge color="warning">
+                                    Disabled
+                                </Badge>
+                            ) : (
+                                <Badge color="success">
+                                    Enabled
+                                </Badge>
+                            )
+                    }
+                </td>
+                <td className="smallest">
+                    <div className="pull-right">
+                        {
+                            isDisabled ? (
+                                    <Button
+                                        color="success"
+                                        onClick={this._enable}
+                                    >
+                                        Enable
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        tag={Link}
+                                        color="info"
+                                        to={`/app/integrations/facebook/${integration.get('id')}`}
+                                    >
+                                        Edit
+                                    </Button>
+                                )
+                        }
+                    </div>
                 </td>
             </tr>
         )

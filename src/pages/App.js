@@ -1,11 +1,14 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import _forEach from 'lodash/forEach'
 import DocumentTitle from 'react-document-title'
+import {Container} from 'reactstrap'
+import classnames from 'classnames'
+import _forEach from 'lodash/forEach'
+import _last from 'lodash/last'
+
 import {fetchUser, fetchUsers} from '../state/users/actions'
 import {fetchSettings} from '../state/settings/actions'
 import {fetchTags} from '../state/tags/actions'
-import Navbar from './common/components/Navbar'
 import {setUserProperties} from '../store/middlewares/amplitudeTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
 import SocketIO from './common/utils/socketio'
@@ -13,8 +16,16 @@ import Notifications from 'react-notification-system-redux'
 import {NOTIFICATIONS_STYLE_CONFIG, POLL_ACTIVITY_INTERVAL, CHAT_POLLING_INTERVAL} from '../config'
 import shortcutManager from './common/utils/shortcutManager'
 import BannerNotifications from './common/components/BannerNotifications/'
-import ModalNotifications from './common/components/ModalNotifications/'
+import ModalNotification from './common/components/ModalNotification'
+import FullPage from './common/components/FullPage'
+
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-bootstrap-daterangepicker/css/daterangepicker.css'
+import 'font-awesome/css/font-awesome.css'
+
 import '../../css/main.less'
+
+import css from './App.less'
 
 import * as activityActions from '../state/activity/actions'
 
@@ -57,30 +68,44 @@ class App extends React.Component {
     }
 
     render() {
-        const {notifications} = this.props
-        const bannerNotifications = notifications.filter((notif) => notif.style === 'banner')
-        const modalNotifications = notifications.filter((notif) => notif.style === 'modal')
-        const alertNotifications = notifications.filter((notif) => notif.style === 'alert')
+        const {notifications, routes} = this.props
+        const bannerNotifications = notifications.filter(notif => notif.style === 'banner')
+        const modalNotifications = notifications.filter(notif => notif.style === 'modal')
+        const alertNotifications = notifications.filter(notif => notif.style === 'alert')
+
+        const currentRoute = _last(routes)
 
         return (
             <DocumentTitle title="Gorgias">
-                <div className="App">
+                <div className={classnames(css.page)}>
                     <BannerNotifications notifications={bannerNotifications} />
-                    <ModalNotifications notifications={modalNotifications} />
 
-                    <div className="App-main">
-                        {/* default activeContent=users for now, shouldn't be any default in the end (specific navbar for each view) */}
-                        {this.props.navbar || (
-                            <Navbar activeContent="settings" currentUser={this.props.currentUser}>
-                                <div></div>
-                            </Navbar>
-                        )}
+                    {
+                        modalNotifications.map((notification) => (
+                            <ModalNotification
+                                key={notification.uid}
+                                {...notification}
+                            />
+                        ))
+                    }
 
-                        <div className="App-content">
-                            <div className="main-content pusher">
-                                {this.props.content || this.props.children}
-                            </div>
-                        </div>
+                    <div className={css.app}>
+                        {this.props.navbar}
+
+                        {
+                            currentRoute.noContainerPadding ? (
+                                    <Container
+                                        fluid
+                                        className={classnames(css['main-content'])}
+                                    >
+                                        {this.props.content || this.props.children}
+                                    </Container>
+                                ) : (
+                                    <FullPage>
+                                        {this.props.content || this.props.children}
+                                    </FullPage>
+                                )
+                        }
 
                         {this.props.infobar}
                     </div>
@@ -91,12 +116,12 @@ class App extends React.Component {
                         notifications={alertNotifications}
                         style={NOTIFICATIONS_STYLE_CONFIG}
                     />
-
                 </div>
             </DocumentTitle>
         )
     }
 }
+
 
 App.propTypes = {
     // current logged in user
@@ -113,6 +138,7 @@ App.propTypes = {
     children: PropTypes.node,
     params: PropTypes.object.isRequired,
     location: PropTypes.object,
+    routes: PropTypes.array.isRequired,
 
     // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
     navbar: PropTypes.node,

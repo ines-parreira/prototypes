@@ -19,23 +19,16 @@ export default class AddTagsAction extends React.Component {
     }
 
     render() {
-        const {deleteAction, index} = this.props
+        const {index} = this.props
         const ticketTags = fromJS(this.splitIncomingTags().map(t => ({name: t})))
 
         return (
-            <div>
-                <i
-                    className="right floated remove circle red large action icon"
-                    onClick={() => deleteAction(index)}
-                />
-                <h4 className="inline">ADD TAGS</h4>
-                <TicketTags
-                    ticketTags={ticketTags}
-                    addTags={this.addTags}
-                    removeTag={this.removeTag}
-                    suffix={`macro-modal-${index}`}
-                />
-            </div>
+            <TicketTags
+                ticketTags={ticketTags}
+                addTags={this.addTags}
+                removeTag={this.removeTag}
+                suffix={`macro-modal-${index}`}
+            />
         )
     }
 }
@@ -44,5 +37,4 @@ AddTagsAction.propTypes = {
     args: PropTypes.object,
     index: PropTypes.number.isRequired,
     updateActionArgs: PropTypes.func.isRequired,
-    deleteAction: PropTypes.func.isRequired
 }

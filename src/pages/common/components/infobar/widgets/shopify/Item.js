@@ -51,7 +51,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
             <div className="action-buttons">
                 <ActionButton
                     tag="button"
-                    className="ui button basic action-button"
+                    className="btn btn-sm btn-secondary action-button"
                     actionName="shopifyRefundOrderItem"
                     reason={`refund ${source.get('name')}`}
                     payload={{
@@ -67,7 +67,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                         <ActionButton
                             key="all"
                             tag="button"
-                            className="ui button basic action-button"
+                            className="btn btn-sm btn-secondary action-button"
                             actionName="shopifyRefundOrderItem"
                             reason={`refund ${quantity} ${source.get('name')}`}
                             payload={payload}

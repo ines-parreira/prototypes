@@ -1,6 +1,8 @@
 import React from 'react'
 import {Field} from 'redux-form'
 import _trim from 'lodash/trim'
+import {Button} from 'reactstrap'
+
 import {InputField} from '../../../../common/forms'
 
 const HeaderFieldArray = ({fields}) => (
@@ -26,25 +28,26 @@ const HeaderFieldArray = ({fields}) => (
                         placeholder="Value"
                         component={InputField}
                     />
-                    <div className="two wide field">
-                        <button
-                            className="ui tiny red button"
+                    <div className="two wide field pull-right">
+                        <Button
+                            color="danger"
                             type="button"
                             onClick={() => fields.remove(index)}
                         >
                             Remove
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )
         }
-        <button
+        <Button
+            size="sm"
+            color="secondary"
             type="button"
-            className="ui tiny blue button"
             onClick={() => fields.push({})}
         >
-            Add Header
-        </button>
+            Add header
+        </Button>
     </div>
 )
 

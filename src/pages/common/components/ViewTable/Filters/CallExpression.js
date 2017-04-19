@@ -54,11 +54,15 @@ const CallExpression = ({view, schemas, node, updateOperator, removeCondition, i
                 index={index}
                 empty={_includes(Object.keys(EMPTY_OPERATORS), operator.name)}
             />
+            {
+                parentNode && (
+                    <OperatorLabel operator={parentNode.operator} />
+                )
+            }
             <RemoveCallExpression
                 onClick={removeCondition}
                 index={index}
             />
-            {parentNode && <OperatorLabel operator={parentNode.operator}/>}
         </div>
     )
 }

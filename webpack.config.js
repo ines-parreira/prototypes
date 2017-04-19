@@ -21,7 +21,10 @@ let plugins = [
         filename: __PRODUCTION__ ? '[hash].[name].min.js' : '[name].js',
         minChunks: 2
     }),
-    new ManifestPlugin()
+    new ManifestPlugin(),
+    new webpack.ProvidePlugin({
+        Tether: 'tether',
+    })
 ]
 
 if (__PRODUCTION__) {
@@ -49,8 +52,8 @@ if (__PRODUCTION__) {
     ])
 }
 
-// compile a list of vendors from our package dependencies. Filter semantic because it's special..
-const vendors = Object.keys(pkg.dependencies).filter(m => m !== 'semantic-ui')
+const cssOnlyPackages = ['semantic-ui', 'bootstrap', 'font-awesome']
+const vendors = Object.keys(pkg.dependencies).filter(m => !cssOnlyPackages.includes(m))
 module.exports = {
     devtool: __PRODUCTION__ ? 'source-map' : 'eval',
     entry: {
@@ -82,19 +85,17 @@ module.exports = {
                 loader: 'url-loader'
             },
             {
-                test: /\.less$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
             },
             {
-                test: /\.css$/,
-                loaders: [
-                    'style', 'css'
-                ]
+                test: /\.less$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
             },
             // custom fonts
             {
                 test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-                loader: 'file-loader'
+                loader: 'url-loader'
             },
             // audio
             {

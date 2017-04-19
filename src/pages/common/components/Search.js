@@ -1,15 +1,27 @@
 import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
+import classnames from 'classnames'
+import {Input, InputGroup, InputGroupAddon} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
-import classNames from 'classnames'
+
 import shortcutManager from '../utils/shortcutManager'
 
+import css from './Search.less'
+
 export default class Search extends React.Component {
+    state = {
+        search: '',
+    }
+
     constructor(props) {
         super(props)
 
         this.isInitialized = false
+
+        this.state = {
+            search: props.forcedQuery || '',
+        }
     }
 
     componentDidMount() {
@@ -18,15 +30,10 @@ export default class Search extends React.Component {
                 FOCUS_SEARCH: {
                     action: (e) => {
                         e.preventDefault()
-                        const domNode = ReactDOM.findDOMNode(this.refs.searchInput)
-                        domNode.focus()
+                        ReactDOM.findDOMNode(this.refs.searchInput).focus()
                     }
                 }
             })
-        }
-
-        if (this.props.forcedQuery) {
-            this.refs.searchInput.value = this.props.forcedQuery || ''
         }
     }
 
@@ -37,10 +44,10 @@ export default class Search extends React.Component {
             )
 
         if (shouldSetValue) {
-            this.refs.searchInput.value = ''
+            this.setState({search: ''})
 
             if (!_isUndefined(nextProps.forcedQuery)) {
-                this.refs.searchInput.value = nextProps.forcedQuery || ''
+                this.setState({search: nextProps.forcedQuery || ''})
             }
 
             if (nextProps.forcedQuery) {
@@ -53,7 +60,7 @@ export default class Search extends React.Component {
         }
 
         if (!this.props.shouldResetInput && nextProps.shouldResetInput) {
-            this.refs.searchInput.value = ''
+            this.setState({search: ''})
         }
     }
 
@@ -65,35 +72,37 @@ export default class Search extends React.Component {
 
     // search every XXXms
     _debouncedSearch = _debounce(() => {
-        if (!this.refs.searchInput) {
-            return false
-        }
-
-        return this.props.onChange(this.refs.searchInput.value)
+        return this.props.onChange(this.state.search)
     }, this.props.searchDebounceTime || 200)
 
-    render() {
-        const {disabled} = this.props
+    _handleChange = (search) => {
+        this.setState({search})
+        return this._debouncedSearch()
+    }
 
-        const containerClasses = classNames('ui search', this.props.className)
-        const inputClasses = classNames('ui small icon fluid input', {
-            disabled,
-        })
+    render() {
+        const {disabled, style} = this.props
 
         return (
-            <div className={containerClasses}>
-                <div className={inputClasses}>
-                    <input
-                        className="prompt"
-                        type="text"
+            <div
+                className={classnames(css.component, this.props.className)}
+                style={style}
+            >
+                <InputGroup>
+                    <Input
                         ref="searchInput"
+                        type="text"
+                        className={css.input}
                         placeholder={this.props.placeholder}
-                        onChange={this._debouncedSearch}
+                        value={this.state.search}
+                        onChange={e => this._handleChange(e.target.value)}
                         autoFocus={this.props.autofocus}
                         disabled={disabled}
                     />
-                    <i className="search icon" />
-                </div>
+                    <InputGroupAddon>
+                        <i className="fa fa-fw fa-search" />
+                    </InputGroupAddon>
+                </InputGroup>
             </div>
         )
     }
@@ -113,10 +122,12 @@ Search.propTypes = {
     searchDebounceTime: PropTypes.number,
 
     // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
-    location: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    location: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    style: PropTypes.object.isRequired,
 }
 
 Search.defaultProps = {
     disabled: false,
-    placeholder: 'Search',
+    placeholder: 'Search...',
+    style: {},
 }

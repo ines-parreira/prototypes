@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import moment from 'moment'
+import classnames from 'classnames'
+
 import {Loader} from '../../../common/components/Loader'
 import css from './Billing.less'
 
@@ -13,7 +15,7 @@ export default class Billing extends Component {
         usage: PropTypes.object.isRequired,
         creditCard: PropTypes.object.isRequired,
         invoices: PropTypes.object.isRequired,
-        paymentMethod: PropTypes.bool.isRequired,
+        paymentMethod: PropTypes.string.isRequired,
         paymentIsActive: PropTypes.bool.isRequired,
         fetchCurrentUsage: PropTypes.func.isRequired,
         fetchCreditCard: PropTypes.func.isRequired,
@@ -63,78 +65,86 @@ export default class Billing extends Component {
         if ((isFetchingCurrentUsage && usage.isEmpty()) ||
             (isFetchingCreditCard && creditCard.isEmpty()) ||
             (isFetchingInvoices && invoices.isEmpty())) {
-            return (<Loader/>)
+            return (<Loader />)
         }
 
         const {plan, paymentMethod, paymentIsActive} = this.props
         const costExample = plan.get('cost_per_ticket') * numbTicketExample
 
         return (
-            <div className="ui grid">
-                <div className="sixteen wide column">
-                    <h1>
-                        <i className="credit card alternative blue icon ml5ni mr10i"/>
-                        Billing
-                    </h1>
-                    <p>
-                        Gorgias' pricing is based on the <strong>number of tickets you respond to every
-                        month</strong>.
-                        We only count tickets that contain <strong>at least one message from an agent</strong> in
-                        your
-                        team.<br/>
-                        {
-                            costExample
-                                ? `The first ${plan.get('free_tickets')} tickets per month are on us.
-                                 Then we charge $${costExample}/${numbTicketExample} tickets,
-                                 and the cost per ticket goes down as the number of ticket increases.`
-                                : 'Your plan include an unlimited number of tickets per month.'
-                        }
-                        <br/>
-
-                        Learn more on our <Link to="https://gorgias.io/pricing" target="_blank"><strong>pricing page</strong></Link>.
-                    </p>
-                    <div className="row">
-                        <p>
-                            <strong className="mr10">Current usage</strong>
-                            {
-                                `${moment(usage.getIn(['meta', 'start_datetime'])).format('MM/DD')}
-                                -
-                                ${moment(usage.getIn(['meta', 'end_datetime'])).format('MM/DD')}`
-                            }
-                        </p>
-                        <div className={css.statistics}>
-                            <div className="ui large statistic">
-                                <div className="value">
-                                    {usage.getIn(['data', 'tickets'])}
-                                </div>
-                                <div className="label">
-                                    tickets
-                                </div>
+            <div>
+                <h1>
+                    <i className="fa fa-fw fa-credit-card blue icon mr-2" />
+                    Billing
+                </h1>
+                <p>
+                    Gorgias' pricing is based on the <strong>number of tickets you respond to every
+                    month</strong>.
+                    We only count tickets that contain <strong>at least one message from an agent</strong> in
+                    your
+                    team.
+                </p>
+                {
+                    costExample ? (
+                            <p>
+                                The first {plan.get('free_tickets')} tickets per month are on us.
+                                Then we charge ${costExample}/{numbTicketExample} tickets,
+                                and the cost per ticket goes down as the number of ticket increases.
+                            </p>
+                        ) : (
+                            <p>
+                                Your plan include an unlimited number of tickets per month.
+                            </p>
+                        )
+                }
+                <p>
+                    Learn more on our <Link to="https://gorgias.io/pricing" target="_blank"><strong>pricing
+                    page</strong></Link>.
+                </p>
+                <div className="mb-4">
+                    <h6>
+                        <strong className="mr-2">Current usage</strong>
+                        <small className="text-faded">
+                            {moment(usage.getIn(['meta', 'start_datetime'])).format('MM/DD')}
+                            {' - '}
+                            {moment(usage.getIn(['meta', 'end_datetime'])).format('MM/DD')}
+                        </small>
+                    </h6>
+                    <div className={classnames('mb-2', css.statistics)}>
+                        <div className="ui large statistic">
+                            <div className="value">
+                                {usage.getIn(['data', 'tickets'])}
                             </div>
-                            <div className="ui large statistic">
-                                <div className="value">
-                                    ${usage.getIn(['data', 'cost'])}
-                                </div>
-                                <div className="label">
-                                    cost
-                                </div>
+                            <div className="label">
+                                tickets
                             </div>
                         </div>
-                        <p className="mt10">
-                            If you have any questions or if you want to unsubscribe, please
-                            contact us at <a href="mailto:support@gorgias.io">support@gorgias.io</a>.
-                        </p>
+                        <div className="ui large statistic">
+                            <div className="value">
+                                ${usage.getIn(['data', 'cost'])}
+                            </div>
+                            <div className="label">
+                                cost
+                            </div>
+                        </div>
                     </div>
-                    <div className="row mt20">
+                    <p>
+                        If you have any questions or if you want to unsubscribe, please
+                        contact us at <a href="mailto:support@gorgias.io">support@gorgias.io</a>.
+                    </p>
+                </div>
+                <div className="mb-4">
+                    <h6>
                         <strong>Payment method</strong>
-                        {
-                            paymentMethod === 'stripe' ? (
+                    </h6>
+                    {
+                        paymentMethod === 'stripe' ? (
                                 <div>
                                     <p className="mv5">
                                         {
                                             creditCard.isEmpty() ?
-                                            'No credit card registered' :
-                                            `${creditCard.get('brand')} ending in ${creditCard.get('last4')}
+                                                'No credit card registered' :
+                                                `${creditCard.get('brand')} ending in ${creditCard.get('last4')}
                                             •
                                             ${creditCard.get('exp_month')}/${creditCard.get('exp_year')}`
                                         }
@@ -175,12 +185,16 @@ export default class Billing extends Component {
                                     }
                                 </div>
                             )
-                        }
-                    </div>
-                    <div className={`row mt20 ${css.paymentsWrapper}`}>
+                    }
+                </div>
+                <div className={classnames(css.paymentsWrapper)}>
+                    <h6>
                         <strong>Payments history</strong>
-                        {
-                            invoices.isEmpty() ? <p>No payments</p> :
+                    </h6>
+                    {
+                        invoices.isEmpty() ? (
+                                <p>No payments</p>
+                            ) : (
                                 <table className="ui table">
                                     <thead>
                                         <tr>
@@ -197,8 +211,10 @@ export default class Billing extends Component {
                                                     <td>{moment.unix(invoice.get('date')).format('LL')}</td>
                                                     <td>
                                                         {invoice.get('paid')
-                                                            ? <span className="ui green basic mini label">PAID</span>
-                                                            : <span className="ui red basic mini label">UNPAID</span>
+                                                            ?
+                                                            <span className="ui green basic mini label">PAID</span>
+                                                            :
+                                                            <span className="ui red basic mini label">UNPAID</span>
                                                         }
                                                     </td>
                                                     <td>{`${invoice.getIn(['metadata', 'tickets'], '-')}`} </td>
@@ -208,8 +224,8 @@ export default class Billing extends Component {
                                         }
                                     </tbody>
                                 </table>
-                        }
-                    </div>
+                            )
+                    }
                 </div>
             </div>
         )

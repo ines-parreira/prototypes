@@ -8,6 +8,8 @@ import _isUndefined from 'lodash/isUndefined'
 import _find from 'lodash/find'
 import _clone from 'lodash/clone'
 import _isError from 'lodash/isError'
+import {Button} from 'reactstrap'
+
 import {submitUser} from '../../../../state/users/actions'
 import {InputField, SelectField} from '../../../common/forms'
 import UserChannelAddressField from './UserChannelAddressField'
@@ -21,16 +23,6 @@ export const defaultContent = {
 }
 
 const updatableChannels = ['email', 'twitter', 'phone']
-
-const warn = (values = {}) => {
-    const warnings = {}
-
-    if (!values.name) {
-        warnings.name = 'You should give a name to the user, to make it easier to identify'
-    }
-
-    return warnings
-}
 
 class UserForm extends React.Component {
     constructor(props) {
@@ -165,41 +157,30 @@ class UserForm extends React.Component {
     }
 
     render() {
-        const {handleSubmit, user, isUpdate, isUserStaff, submitting} = this.props
+        const {handleSubmit, isUpdate, isUserStaff, submitting} = this.props
         let {error} = this.props
 
-        const title = isUpdate ? `Update user : ${user.get('name')}` : 'Add user'
-
         return (
-            <div ref="modal">
-                <div className="header">
-                    {title}
-                    <i
-                        className="remove action icon modal-close"
-                        onClick={this.props.closeModal}
+            <form
+                className="ui form"
+                onSubmit={handleSubmit(this._handleSubmit)}
+            >
+                <div className="mb-2">
+                    <ErrorMessage errors={error} />
+
+                    <Field
+                        name="name"
+                        label="Name"
+                        placeholder="Name"
+                        component={InputField}
+                        help="Give a name to the user to make it easier to identify"
                     />
-                </div>
 
-                <form
-                    className="ui form"
-                    onSubmit={handleSubmit(this._handleSubmit)}
-                >
-                    <div className="content">
-                        <ErrorMessage errors={error} />
-
-                        <Field
-                            name="name"
-                            label="Name"
-                            placeholder="Name"
-                            component={InputField}
-                        />
-
-                        {
-                            isUserStaff ? (
+                    {
+                        isUserStaff ? (
                                 <p>This user is a <b>Gorgias Staff</b> member</p>
                             ) : (
                                 <Field
-                                    type="text"
                                     name="role"
                                     label="Role"
                                     required
@@ -210,61 +191,50 @@ class UserForm extends React.Component {
                                     <option value="admin">Admin</option>
                                 </Field>
                             )
-                        }
+                    }
 
-                        <p style={{marginTop: '30px'}}>
-                            <b>Please set below at least one contact information for this user :</b>
-                        </p>
+                    <p>
+                        <b>Please set below at least one contact information for this user :</b>
+                    </p>
 
-                        <FieldArray
-                            name="email"
-                            type="email"
-                            label="Emails"
-                            placeholder="john@snow.com"
-                            addLabel="Add an email address"
-                            component={UserChannelAddressField}
-                        />
+                    <FieldArray
+                        name="email"
+                        type="email"
+                        label="Emails"
+                        placeholder="john@snow.com"
+                        addLabel="Add an email address"
+                        component={UserChannelAddressField}
+                    />
 
-                        <FieldArray
-                            name="twitter"
-                            label="Twitter accounts"
-                            placeholder="johnSnow"
-                            addLabel="Add a Twitter account"
-                            component={UserChannelAddressField}
-                        />
+                    <FieldArray
+                        name="twitter"
+                        label="Twitter accounts"
+                        placeholder="johnSnow"
+                        addLabel="Add a Twitter account"
+                        component={UserChannelAddressField}
+                    />
 
-                        <FieldArray
-                            name="phone"
-                            label="Phone numbers"
-                            placeholder="754-3010"
-                            addLabel="Add an phone number"
-                            component={UserChannelAddressField}
-                        />
-                    </div>
+                    <FieldArray
+                        name="phone"
+                        label="Phone numbers"
+                        placeholder="754-3010"
+                        addLabel="Add an phone number"
+                        component={UserChannelAddressField}
+                    />
+                </div>
 
-                    <div className="actions">
-                        <button
-                            type="button"
-                            className={classNames('ui button', {
-                                loading: submitting
-                            })}
-                            disabled={submitting}
-                            onClick={this.props.closeModal}
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className={classNames('ui green button', {
-                                loading: submitting
-                            })}
-                            disabled={submitting}
-                        >
-                            {isUpdate ? 'Update user' : 'Add user'}
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div className="pull-right">
+                    <Button
+                        color="primary"
+                        className={classNames({
+                            'btn-loading': submitting
+                        })}
+                        disabled={submitting}
+                    >
+                        {isUpdate ? 'Update user' : 'Add user'}
+                    </Button>
+                </div>
+            </form>
         )
     }
 }
@@ -301,7 +271,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-    form: 'user',
-    warn,
-})(UserForm))
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'user'})(UserForm))

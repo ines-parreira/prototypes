@@ -1,11 +1,9 @@
 import React from 'react'
-
-import classNames from 'classnames'
+import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 import Hoverable from '../../Hoverable'
 
 class AddLogicalAndCondition extends React.Component {
-
     _handleClick = () => {
         const actionNode = {
             type: 'LogicalExpression',
@@ -39,22 +37,31 @@ class AddLogicalAndCondition extends React.Component {
             },
         }
 
-        const { actions, rule, parent } = this.props
+        const {actions, rule, parent} = this.props
         actions.rules.modifyCodeast(rule.get('id'), parent, actionNode, 'UPDATE_LOGICAL_AND')
     }
 
     render() {
-        const { title } = this.props
-        const { hovered } = this.context
-        const buttonClassName = classNames('ui inline keyword', { icon: hovered }, 'button')
+        const {title} = this.props
+
         return (
-            <button className={buttonClassName} onClick={this._handleClick}>
-                {
-                    !hovered
-                        ? title
-                        : <i className="fitted large plus icon" />
-                }
-            </button>
+            <UncontrolledButtonDropdown>
+                <DropdownToggle
+                    caret
+                    type="button"
+                    color="info"
+                >
+                    {title}
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem
+                        type="button"
+                        onClick={() => this._handleClick()}
+                    >
+                        Add condition
+                    </DropdownItem>
+                </DropdownMenu>
+            </UncontrolledButtonDropdown>
         )
     }
 }

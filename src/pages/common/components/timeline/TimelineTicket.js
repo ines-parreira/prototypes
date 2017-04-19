@@ -57,7 +57,7 @@ export default class TimelineTicket extends React.Component {
                 </div>
 
                 <div>
-                    <p className="created-datetime">{formatDatetime(ticket.get('created_datetime'))}</p>
+                    <p className="created-datetime text-center">{formatDatetime(ticket.get('created_datetime'))}</p>
                 </div>
             </div>
         )

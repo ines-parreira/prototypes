@@ -35,6 +35,7 @@ const usageMaxLimitReachedModalNotif = (freeTickets) => ({
 
 const accountDeactivatedModalNotif = {
     style: 'modal',
+    dismissible: false,
     title: 'Account deactivated',
     message: `Your account has been deactivated due to multiple payment failures. 
                     To re-activate your account, please update your payment method.`,
@@ -106,7 +107,7 @@ const usageLimitNotifier = store => next => action => {
             const nextIsPaying = nextHasCreditCard || nextHasShopifyBillingActive
 
             const isAlreadyNotified = _some(notifications, {uid: UIDS.accountDeactivated}) ||
-                    _some(notifications, {uid: UIDS.accountDeactivatedCardUpdated})
+                _some(notifications, {uid: UIDS.accountDeactivatedCardUpdated})
 
             // user has registered a credit card
             if (!isPaying && nextIsPaying) {

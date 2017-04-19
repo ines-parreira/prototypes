@@ -21,7 +21,11 @@ export class ViewFilters extends React.Component {
         }
 
         if (!view.get('filters_ast') || !view.getIn(['filters_ast', 'body']).size) {
-            return (<div className="no-filters">No filters selected</div>)
+            return (
+                <p>
+                    No filters selected
+                </p>
+            )
         }
 
         const exp = view.get('filters_ast').toJS().body[0].expression

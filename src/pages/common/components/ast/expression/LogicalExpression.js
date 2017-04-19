@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
+import {Button} from 'reactstrap'
 
 import Expression from '../expression/Expression'
 
@@ -10,9 +11,9 @@ import getSyntaxTreeLeaves from '../utils'
  operator: LogicalOperator;
  left: Expression;
  right: Expression;
-}
+ }
  */
-const LogicalExpression = ({ operator, left, right, rule, parent, actions, leftsiblings, schemas }) => {
+const LogicalExpression = ({operator, left, right, rule, parent, actions, leftsiblings, schemas}) => {
     let leftsiblings2
     let leftsiblings3
 
@@ -34,9 +35,13 @@ const LogicalExpression = ({ operator, left, right, rule, parent, actions, lefts
                 />
             </span>
             <div>
-                <span className="operator">
-                    <button className="ui button">{operator === '&&' ? 'AND' : 'OR'}</button>
-                </span>
+                    <Button
+                        className="btn-frozen"
+                        type="button"
+                        color="warning"
+                    >
+                        {operator === '&&' ? 'and' : 'or'}
+                    </Button>
                 <span className="right">
                     <Expression
                         {...right}

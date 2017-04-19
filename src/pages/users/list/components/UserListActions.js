@@ -1,50 +1,32 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import {
+    UncontrolledButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    Button,
+    Popover,
+    PopoverTitle,
+    PopoverContent,
+} from 'reactstrap'
+
 import * as ViewsActions from '../../../../state/views/actions'
 import * as UsersActions from '../../../../state/users/actions'
 import UserForm from '../../common/components/UserForm'
 import Modal from '../../../common/components/Modal'
 
 class UserListActions extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            isUserFormOpen: false
-        }
+    state = {
+        isUserFormOpen: false,
+        askDeleteConfirmation: false,
     }
 
-    componentDidUpdate(prevProps) {
-        const prevAreBulkActionsDisplayed = prevProps.selectedItemsIds.size > 0
-        const areBulkActionsDisplayed = this.props.selectedItemsIds.size > 0
-
-        if (!prevAreBulkActionsDisplayed && areBulkActionsDisplayed) {
-            $(this.refs.bulkMoreDropdown).dropdown({
-                hoverable: true,
-                on: 'click',
-                action: (text, value) => {
-                    switch (value) {
-                        case 'delete':
-                            this._bulkDelete()
-                            break
-                        default:
-                            break
-                    }
-
-                    $(this.refs.bulkMoreDropdown).dropdown('hide')
-                }
-            })
-        }
-    }
-
-    _bulkDelete() {
+    _bulkDelete = () => {
         const {actions, view, selectedItemsIds} = this.props
-        const message = `Are you sure you want to delete ${selectedItemsIds.size} users ?`
-        if (window.confirm(message)) {
-            actions.views.bulkDelete(view, selectedItemsIds)
-        }
+        this.setState({askDeleteConfirmation: false})
+        return actions.views.bulkDelete(view, selectedItemsIds)
     }
 
     _openModal = () => {
@@ -59,54 +41,76 @@ class UserListActions extends React.Component {
         this.props.actions.views.fetchPage(1)
     }
 
-    renderBulkActions() {
+    _toggleDeleteConfirmation = () => {
+        this.setState({askDeleteConfirmation: !this.state.askDeleteConfirmation})
+    }
+
+    _renderBulkActions = () => {
         return (
-            <div className="flex-spaced-row">
-                <div className="BulkAction ui tiny buttons">
-                    <div
-                        ref="bulkMoreDropdown"
-                        className="ui basic grey button floating dropdown"
+            <div className="d-inline-flex align-items-center">
+                <UncontrolledButtonDropdown
+                    className="mr-2"
+                >
+                    <DropdownToggle
+                        id="bulk-more-button"
+                        color="secondary"
+                        caret
+                        type="button"
                     >
-                        More <i className="dropdown icon" />
-                        <div className="menu">
-                            <div
-                                className="red text item"
-                                data-value="delete"
-                            >
-                                Delete users
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        More
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                        <DropdownItem
+                            type="button"
+                            className="text-danger"
+                            onClick={this._toggleDeleteConfirmation}
+                        >
+                            Delete users
+                        </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledButtonDropdown>
+                <Popover
+                    placement="bottom"
+                    isOpen={this.state.askDeleteConfirmation}
+                    target="bulk-more-button"
+                    toggle={this._toggleDeleteConfirmation}
+                >
+                    <PopoverTitle>Are you sure?</PopoverTitle>
+                    <PopoverContent>
+                        <p>
+                            Are you sure you want to delete {this.props.selectedItemsIds.size}{' '}
+                            user{this.props.selectedItemsIds.size > 1 && 's'}?
+                        </p>
+                        <Button
+                            color="success"
+                            onClick={this._bulkDelete}
+                        >
+                            Confirm
+                        </Button>
+                    </PopoverContent>
+                </Popover>
             </div>
         )
     }
 
     render() {
-        const areBulkActionsDisplayed = this.props.selectedItemsIds.size > 0
+        const areBulkActionsDisplayed = !this.props.selectedItemsIds.isEmpty()
 
         return (
-            <div className="flex-spaced-row bulk-actions">
-                <ReactCSSTransitionGroup
-                    transitionName="fade"
-                    transitionAppear
-                    transitionAppearTimeout={200}
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={200}
-                >
-                    {areBulkActionsDisplayed && this.renderBulkActions()}
-                </ReactCSSTransitionGroup>
+            <div className="d-inline-flex align-items-center pull-right">
+                {areBulkActionsDisplayed && this._renderBulkActions()}
 
-                <button
-                    className="ui tiny green button"
+                <Button
+                    color="primary"
                     onClick={this._openModal}
                 >
                     Add user
-                </button>
+                </Button>
 
                 <Modal
                     isOpen={this.state.isUserFormOpen}
-                    onRequestClose={this._closeModal}
+                    onClose={this._closeModal}
+                    header="Add user"
                 >
                     <UserForm
                         closeModal={this._closeModal}

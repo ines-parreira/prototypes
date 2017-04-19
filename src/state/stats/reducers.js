@@ -6,9 +6,7 @@ export const initialState = fromJS({
         loading: {
             stats: false
         },
-        meta: {
-            period: 'last-7-days'
-        },
+        meta: {},
         filters: {}
     }
 })

@@ -2,19 +2,25 @@ import React, {PropTypes} from 'react'
 
 export default class NoIntegration extends React.Component {
     render() {
-        const {type, loading} = this.props
+        const {loading} = this.props
 
-        const message = loading ?
-            'Loading...' :
-            `You have no ${type} integration at the moment.`
+        if (loading) {
+            return (
+                <div className="ui active text loader">
+                    Loading...
+                </div>
+            )
+        }
 
-        return loading ?
-            <div className="ui active text loader">{message}</div> :
-            <div>{message}</div>
+        return (
+            <div>
+                You have no integration of this type at the moment.
+            </div>
+        )
     }
 }
 
 NoIntegration.propTypes = {
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
     loading: PropTypes.bool.isRequired
 }

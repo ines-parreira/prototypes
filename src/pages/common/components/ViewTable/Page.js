@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
+import classnames from 'classnames'
 import _get from 'lodash/get'
 
 import {Loader} from '../Loader'
@@ -149,7 +150,7 @@ export default class Page extends React.Component {
 
         return (
             <div className={css.page}>
-                <div className={css.header}>
+                <div className="container-padding">
                     <Header
                         isSearch={isSearch}
                         isUpdate={isUpdate}
@@ -157,11 +158,10 @@ export default class Page extends React.Component {
                         type={type}
                     />
                 </div>
-                <div className={css.table}>
+                <div className={classnames(css.table, 'container-padding')}>
                     {this._renderTable()}
                 </div>
             </div>
         )
     }
 }
-

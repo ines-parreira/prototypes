@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment-timezone'
+import {UncontrolledTooltip} from 'reactstrap'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
 import formSender from '../../../common/utils/formSender'
@@ -23,14 +24,6 @@ class YourProfileView extends React.Component {
         if (!props.currentUser.isEmpty()) {
             this._init(props)
         }
-    }
-
-    componentDidMount() {
-        $(this.refs.languageTooltip).popup({
-            inline: true,
-            position: 'top left',
-            offset: -10
-        })
     }
 
     componentWillUpdate(nextProps) {
@@ -94,132 +87,133 @@ class YourProfileView extends React.Component {
         const loadingUser = isLoading && !this.state.loadingPreferences
 
         return (
-            <div className="ui grid">
-                <div className="six wide column">
-                    <h1>
-                        <i className="user alternative blue icon ml5ni mr10i" />
-                        Your profile
-                    </h1>
-                    <p>
-                        Update your profile information.
-                    </p>
+            <div>
+                <h1>
+                    <i className="user alternative blue icon ml5ni mr10i" />
+                    Your profile
+                </h1>
+                <p>
+                    Update your profile information.
+                </p>
 
-                    <form
-                        className="ui form"
-                        onSubmit={handleSubmit(this._handleSubmit)}
+                <form
+                    className="ui form"
+                    onSubmit={handleSubmit(this._handleSubmit)}
+                >
+                    <Field
+                        type="text"
+                        name="name"
+                        label="Name"
+                        placeholder="John Doe"
+                        required
+                        component={InputField}
+                    />
+                    <Field
+                        type="email"
+                        name="email"
+                        label="Email"
+                        placeholder="john.doe@gorgias.io"
+                        required
+                        component={InputField}
+                    />
+                    <Field
+                        name="timezone"
+                        label="Timezone"
+                        component={SelectField}
                     >
-                        <Field
-                            type="text"
-                            name="name"
-                            label="Name"
-                            placeholder="John Doe"
-                            required
-                            component={InputField}
-                        />
-                        <Field
-                            type="email"
-                            name="email"
-                            label="Email"
-                            placeholder="john.doe@gorgias.io"
-                            required
-                            component={InputField}
-                        />
-                        <Field
-                            type="datetime"
-                            name="timezone"
-                            label="Timezone"
-                            component={SelectField}
-                        >
-                            {
-                                moment.tz.names().map((name, idx) => <option key={idx} value={name}>{name}</option>)
-                            }
-                        </Field>
-                        <Field
-                            type="string"
-                            name="language"
-                            label="Language"
-                            component={SelectField}
-                            tooltip={(
-                                <span
-                                    ref="languageTooltip"
-                                    className="inverted tooltip"
-                                    data-content="Changing the language also changes the time format."
-                                    data-variation="inverted"
-                                >
-                                    <i className="help circle link icon" />
-                                </span>
-                            )}
-                        >
-                            {
-                                AVAILABLE_LANGUAGES.map((locale, idx) => (
-                                    <option
-                                        key={idx}
-                                        value={locale.localeName}
+                        {
+                            moment.tz.names().map((name, idx) => <option key={idx} value={name}>{name}</option>)
+                        }
+                    </Field>
+                    <Field
+                        name="language"
+                        label="Language"
+                        component={SelectField}
+                        tooltip={(
+                            <span>
+                                    <i
+                                        id="language"
+                                        className="help circle link icon"
+                                    />
+                                    <UncontrolledTooltip
+                                        placement="top"
+                                        target="language"
+                                        delay={0}
                                     >
-                                        {locale.displayName}
-                                    </option>
-                                ))
-                            }
-                        </Field>
-                        <Field
-                            type="text"
-                            name="signature"
-                            label="Signature"
-                            component={RichTextAreaField}
-                        />
-
-                        <div className="field">
-
-                            <button
-                                className={classNames('ui', 'green', 'button', {
-                                    loading: loadingUser
-                                })}
-                                disabled={loadingUser}
-                            >
-                                Save changes
-                            </button>
-
-                        </div>
-                    </form>
-
-                    <form
-                        className="ui form mt30"
-                        onSubmit={this._savePreferences}
+                                        Changing the language also changes the time format
+                                    </UncontrolledTooltip>
+                                </span>
+                        )}
                     >
-                        <h4 className="ui header">
-                            Preferences
-                        </h4>
-
-                        <div className="ui field">
-                            <div className="ui checkbox">
-                                <input
-                                    id="show_macros"
-                                    name="show_macros"
-                                    type="checkbox"
-                                    checked={this.state.preferences.get('show_macros')}
-                                    onChange={this._changePreference}
-                                />
-                                <label
-                                    className="clickable"
-                                    htmlFor="show_macros"
+                        {
+                            AVAILABLE_LANGUAGES.map((locale, idx) => (
+                                <option
+                                    key={idx}
+                                    value={locale.localeName}
                                 >
-                                    Display macros by default on emails
-                                </label>
-                            </div>
-                        </div>
+                                    {locale.displayName}
+                                </option>
+                            ))
+                        }
+                    </Field>
+                    <Field
+                        type="text"
+                        name="signature"
+                        label="Signature"
+                        component={RichTextAreaField}
+                    />
 
-                        <div className="field">
-                            <button
-                                className={classNames('ui', 'green', 'button', {
-                                    loading: this.state.loadingPreferences
-                                })}
-                                disabled={this.state.loadingPreferences}
+                    <div className="field">
+
+                        <button
+                            className={classNames('ui', 'green', 'button', {
+                                loading: loadingUser
+                            })}
+                            disabled={loadingUser}
+                        >
+                            Save changes
+                        </button>
+
+                    </div>
+                </form>
+
+                <form
+                    className="ui form mt30"
+                    onSubmit={this._savePreferences}
+                >
+                    <h4 className="ui header">
+                        Preferences
+                    </h4>
+
+                    <div className="ui field">
+                        <div className="ui checkbox">
+                            <input
+                                id="show_macros"
+                                name="show_macros"
+                                type="checkbox"
+                                checked={this.state.preferences.get('show_macros')}
+                                onChange={this._changePreference}
+                            />
+                            <label
+                                className="clickable"
+                                htmlFor="show_macros"
                             >
-                                Save preferences
-                            </button>
+                                Display macros by default on emails
+                            </label>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <div className="field">
+                        <button
+                            className={classNames('ui', 'green', 'button', {
+                                loading: this.state.loadingPreferences
+                            })}
+                            disabled={this.state.loadingPreferences}
+                        >
+                            Save preferences
+                        </button>
+                    </div>
+                </form>
             </div>
         )
     }

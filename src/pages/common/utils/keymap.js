@@ -1,6 +1,3 @@
-/* keyboard shortcuts
- */
-
 import {browserHistory} from 'react-router'
 
 export default {

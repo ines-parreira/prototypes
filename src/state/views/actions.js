@@ -199,27 +199,25 @@ export function deleteView(view) {
             }))
         }
 
-        if (window.confirm('You\'re about to delete this view for all users. Are you sure?')) {
-            axios.delete(`/api/views/${view.get('id')}/`)
-                .then((json = {}) => json.data)
-                .then(() => {
-                    const viewConfig = viewsSelectors.getViewConfigByType(viewType)
-                    const destinationView = otherViewsOfType.first()
-                    const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
-                    browserHistory.push(destinationRoute)
+        axios.delete(`/api/views/${view.get('id')}/`)
+            .then((json = {}) => json.data)
+            .then(() => {
+                const viewConfig = viewsSelectors.getViewConfigByType(viewType)
+                const destinationView = otherViewsOfType.first()
+                const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
+                browserHistory.push(destinationRoute)
 
-                    dispatch({
-                        type: types.DELETE_VIEW_SUCCESS,
-                        viewId: view.get('id')
-                    })
-                }, error => {
-                    return dispatch({
-                        type: 'ERROR',
-                        error,
-                        reason: `Failed to delete the view ${view.get('name')}`
-                    })
+                dispatch({
+                    type: types.DELETE_VIEW_SUCCESS,
+                    viewId: view.get('id')
                 })
-        }
+            }, error => {
+                return dispatch({
+                    type: 'ERROR',
+                    error,
+                    reason: `Failed to delete the view ${view.get('name')}`
+                })
+            })
     }
 }
 
@@ -332,7 +330,7 @@ export function bulkUpdate(activeView, ids, key, value) {
         if (activeViewType === 'ticket-list') {
             switch (key) {
                 case 'tag':
-                    successMessage = `${ids.size} tickets have been tagged "${value.name}'.`
+                    successMessage = `${ids.size} tickets have been tagged "${value.name}".`
                     break
                 case 'status':
                     successMessage = `${ids.size} tickets have been marked as ${value}.`

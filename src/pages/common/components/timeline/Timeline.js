@@ -38,14 +38,6 @@ export default class Timeline extends React.Component {
                             }
 
                             return null
-
-                            // otherwise it is an event
-                            // removed for now since we don't want to display only ids...
-                            // return (
-                            //     <div key={obj.get('id')}>
-                            //         {obj.get('id')}
-                            //     </div>
-                            // )
                         })
                     }
                 </div>

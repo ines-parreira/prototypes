@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react'
 import {List} from 'immutable'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import {isArray as _isArray} from 'lodash'
+import {Popover, PopoverContent} from 'reactstrap'
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
@@ -13,11 +14,12 @@ import HardWarning from './HardWarning'
 import css from './TicketMessage.less'
 
 export default class TicketMessage extends React.Component {
-    componentDidMount() {
-        $(this.refs.sourceDropdown).dropdown({
-            on: 'hover',
-            action: 'nothing'
-        })
+    state = {
+        infoDropdownOpen: false,
+    }
+
+    _toggleInfoDropdown = () => {
+        this.setState({infoDropdownOpen: !this.state.infoDropdownOpen})
     }
 
     renderAttachment(message) {
@@ -43,7 +45,8 @@ export default class TicketMessage extends React.Component {
         }
 
         return (
-            <li>{title}:
+            <li>
+                <span className="text-faded">{title}:</span>
                 <strong>
                     {
                         fieldSource.map((user) => {
@@ -88,33 +91,48 @@ export default class TicketMessage extends React.Component {
             legend = `${source.from[getValuePropFromSourceType(source.type)]}`
         }
 
+        const id = `info-${message.id}`
+
         return (
-            <span className="ticket-message-source">
-                <div className="ui dropdown" ref="sourceDropdown">
-                    <span className="text">
-                        <i className={`icon ${icons[source.type]}`} />
-                        {legend}
-                    </span>
-                    <div className="ticket-message-source-details menu transition">
-                        <ul className="item">
-                            {this.renderSourceList(source, 'From', 'from')}
-                            {this.renderSourceList(source, 'To', 'to')}
-                            {this.renderSourceList(source, 'Cc', 'cc')}
-                            {this.renderSourceList(source, 'Bcc', 'bcc')}
-                            <li>
-                                Send via:
-                                <strong>
-                                    {source.type}
-                                </strong>
-                            </li>
-                            <li>
-                                Date:
-                                <strong>{message.created_datetime}</strong>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </span>
+            <div>
+                <span
+                    className={classnames('text-faded', 'clickable', css.source)}
+                    onClick={this._toggleInfoDropdown}
+                >
+                    <i
+                        id={id}
+                        className={`icon ${icons[source.type]}`}
+                    />
+                    {legend}
+                </span>
+                <Popover
+                    placement="bottom"
+                    target={id}
+                    isOpen={this.state.infoDropdownOpen}
+                    toggle={this._toggleInfoDropdown}
+                >
+                    <PopoverContent>
+                        <div className="ticket-message-source-details">
+                            <ul className="item">
+                                {this.renderSourceList(source, 'From', 'from')}
+                                {this.renderSourceList(source, 'To', 'to')}
+                                {this.renderSourceList(source, 'Cc', 'cc')}
+                                {this.renderSourceList(source, 'Bcc', 'bcc')}
+                                <li>
+                                    <span className="text-faded">Send via:</span>
+                                    <strong>
+                                        {source.type}
+                                    </strong>
+                                </li>
+                                <li>
+                                    <span className="text-faded">Date:</span>
+                                    <strong>{message.created_datetime}</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+            </div>
         )
     }
 
@@ -141,7 +159,7 @@ export default class TicketMessage extends React.Component {
         if (message.via === 'rule') {
             viaWidget = (
                 <span key="via-widget" className="ticket-message-from">
-                    sent via a <b><i className="icon setting"/>Rule</b>
+                    sent via a <b><i className="icon setting" />Rule</b>
                 </span>
             )
         }
@@ -196,7 +214,7 @@ export default class TicketMessage extends React.Component {
 
         const loading = (pending && !error) || this.props.loading
 
-        const className = classNames('ui raw segment ticket-message', css.component,
+        const className = classnames('ui raw segment ticket-message', css.component,
             {
                 'ticket-message-agent': message.from_agent,
                 internal: !message.public,
@@ -212,7 +230,7 @@ export default class TicketMessage extends React.Component {
                 {
                     !loading && message.failed_datetime && this._renderMessageNotSent(message.id, ticket.get('id'))
                 }
-                <div className={classNames('ticket-message-header', css.header)}>
+                <div className={classnames('ticket-message-header', css.header)}>
                     <div className="ticket-message-header-details">
                         {message.from_agent && <AgentLabel />}
 
@@ -228,7 +246,13 @@ export default class TicketMessage extends React.Component {
                         {this.renderSource(message)}
                         {this.renderMeta(message)}
                     </div>
-                    <div className="ticket-message-time">
+                    <span
+                        className="text-faded pull-right"
+                        style={{
+                            fontWeight: '600',
+                            fontSize: '13px'
+                        }}
+                    >
                         <DatetimeLabel
                             dateTime={message.created_datetime}
                             settings={{
@@ -236,25 +260,8 @@ export default class TicketMessage extends React.Component {
                             }}
                             timezone={this.props.currentUser.get('timezone')}
                         />
-                    </div>
+                    </span>
                 </div>
-                {/*
-                 <div className="ticket-actions-btn ui dropdown" id="option-dropdown">
-                 <i className="ui icon angle down"/>
-                 <div className="menu transition">
-                 <div className="item">
-                 <a href="#">
-                 Most Recent Orders
-                 </a>
-                 </div>
-                 <div className="item">
-                 <a href="#">
-                 View Original
-                 </a>
-                 </div>
-                 </div>
-                 </div>
-                 */}
                 <TicketMessageBody message={message} />
                 {this.renderAttachment(message)}
                 <TicketMessageActions message={message} />

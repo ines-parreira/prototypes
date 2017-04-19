@@ -37,28 +37,42 @@ class IntegrationListRow extends React.Component {
                 className="IntegrationListRow"
                 {...linkConfig}
             >
-                <div>
-                    {integrationConfig.get('image') ?
-                        <img
-                            role="presentation"
-                            className="logo"
-                            src={getIconFromUrl(integrationConfig.get('image'))}
-                        />
-                        :
-                        <i className={`icon ${integrationConfig.get('icon')}`}/>
+                <div
+                    style={{width: '100px'}}
+                >
+                    {
+                        integrationConfig.get('image') ? (
+                                <img
+                                    role="presentation"
+                                    className="logo"
+                                    src={getIconFromUrl(integrationConfig.get('image'))}
+                                />
+                            ) : (
+                                <i
+                                    className={`icon ${integrationConfig.get('icon')}`}
+                                    style={{
+                                        fontSize: '54px',
+                                        marginTop: '-20px',
+                                    }}
+                                />
+                            )
                     }
                 </div>
                 <div>
                     <div className="ui header">
                         <span className="subject">
                             {integrationConfig.get('title')}
-                            {hasAnIntegration && <span> ({integrationConfig.get('count')})</span>}
+                            {
+                                hasAnIntegration && (
+                                    <span> ({integrationConfig.get('count')})</span>
+                                )
+                            }
                         </span>
                     </div>
                     {integrationConfig.get('description')}
                 </div>
                 <div>
-                    <i className={classNames(buttonClasses)}/>
+                    <i className={classNames(buttonClasses)} />
                 </div>
             </Link>
         )

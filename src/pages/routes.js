@@ -31,16 +31,20 @@ import TicketListInfobarContainer from './tickets/list/TicketListInfobarContaine
 import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCardContainer'
-import ManageTagsContainer from './settings/manageTags/ManageTagsContainer'
+import ManageTagsContainer from './settings/manageTags/ManageTags'
 
 export default (
-    <Route path="/app" component={App}>
+    <Route
+        path="/app"
+        component={App}
+    >
         <IndexRoute
             components={{
                 content: TicketListContainer,
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
+            noContainerPadding
         />
         <Route
             path="users"
@@ -48,6 +52,7 @@ export default (
                 content: UserListContainer,
                 navbar: UserNavbarContainer
             }}
+            noContainerPadding
         />
         <Route
             path="users/new"
@@ -55,6 +60,7 @@ export default (
                 content: UserListContainer,
                 navbar: UserNavbarContainer
             }}
+            noContainerPadding
         />
         <Route
             path="users/search"
@@ -62,6 +68,7 @@ export default (
                 content: UserListContainer,
                 navbar: UserNavbarContainer
             }}
+            noContainerPadding
         />
         <Route
             path="users/:viewId(/:viewSlug)"
@@ -69,6 +76,7 @@ export default (
                 content: UserListContainer,
                 navbar: UserNavbarContainer
             }}
+            noContainerPadding
         />
         <Route
             path="user/:userId"
@@ -77,6 +85,7 @@ export default (
                 navbar: UserNavbarContainer,
                 infobar: UserInfobarContainer
             }}
+            noContainerWidthLimit
         />
         <Route
             path="user/:userId/edit-widgets"
@@ -86,6 +95,7 @@ export default (
                 infobar: UserInfobarContainer
             }}
             isEditingWidgets
+            noContainerWidthLimit
         />
         <Route
             path="ticket/:ticketId"
@@ -94,6 +104,7 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketInfobarContainer
             }}
+            noContainerWidthLimit
         />
         <Route
             path="ticket/:ticketId/edit-widgets"
@@ -103,6 +114,7 @@ export default (
                 infobar: TicketInfobarContainer
             }}
             isEditingWidgets
+            noContainerWidthLimit
         />
         <Route
             path="tickets"
@@ -111,6 +123,7 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
+            noContainerPadding
         />
         <Route
             path="tickets/new"
@@ -119,6 +132,7 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
+            noContainerPadding
         />
         <Route
             path="tickets/search"
@@ -127,6 +141,7 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
+            noContainerPadding
         />
         <Route
             path="tickets/:viewId(/:viewSlug)"
@@ -135,6 +150,7 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketListInfobarContainer,
             }}
+            noContainerPadding
         />
         <Route
             path="integrations"

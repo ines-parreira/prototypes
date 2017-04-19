@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router'
 import classnames from 'classnames'
+import {Badge, Button} from 'reactstrap'
+
 import IntegrationList from '../IntegrationList'
 
 export default class SmoochIntegrationList extends React.Component {
@@ -16,7 +18,7 @@ export default class SmoochIntegrationList extends React.Component {
                 <b><a href="https://smooch.io/" target="_blank">Smooch</a></b> is a messaging platform which enables
                 you to interact with your customers across multiple channels, and to build your own bot. You can use
                 Gorgias as an interface for your team to respond to Smooch conversations.
-                <br/><br/>
+                <br /><br />
                 You can connect your own Smooch account to Gorgias. When a customer initiates a conversation through
                 Smooch, it will create a chat in Gorgias and send a notification.
             </div>
@@ -25,37 +27,53 @@ export default class SmoochIntegrationList extends React.Component {
         const integrationToItemDisplay = (int) => {
             const editLink = `/app/integrations/smooch/${int.get('id')}`
             const isLoading = int.get('id') === loading.get('delete')
-
-            const editClassName = classnames('ui basic light blue button', {
-                'loading disabled': isLoading
-            })
-
-            const deleteClassName = classnames('ui basic light red button', {
-                'loading disabled': isLoading
-            })
+            const isDisabled = int.get('deactivated_datetime')
 
             return (
                 <tr key={int.get('id')}>
-                    <td>
-                        <div className="ui header">
-                            <Link className="subject" to={editLink}>{int.get('name')}</Link>
-                            <div className="body sub header">
-                                {int.get('description')}
-                            </div>
-                        </div>
+                    <td style={{verticalAlign: 'middle'}}>
+                        <Link to={editLink}>
+                            <b>{int.get('name')}</b>
+                        </Link>
                     </td>
-                    <td className="eight wide column">
-                        <div className="floated right">
-                            <button className={editClassName}
-                                    onClick={() => !isLoading && browserHistory.push(editLink)}
+                    <td
+                        className="smallest"
+                        style={{verticalAlign: 'middle'}}
+                    >
+                        {
+                            isDisabled ? (
+                                    <Badge color="warning">
+                                        Disabled
+                                    </Badge>
+                                ) : (
+                                    <Badge color="success">
+                                        Enabled
+                                    </Badge>
+                                )
+                        }
+                    </td>
+                    <td className="smallest">
+                        <div className="pull-right">
+                            <Button
+                                tag={Link}
+                                color="info"
+                                className="mr-2"
+                                disabled={isLoading}
+                                to={editLink}
                             >
                                 Edit
-                            </button>
-                            <button className={deleteClassName}
-                                    onClick={() => !isLoading && actions.deleteIntegration(int)}
+                            </Button>
+                            <Button
+                                color="danger"
+                                outline
+                                className={classnames({
+                                    'btn-loading': isLoading,
+                                })}
+                                disabled={isLoading}
+                                onClick={() => !isLoading && actions.deleteIntegration(int)}
                             >
                                 Delete
-                            </button>
+                            </Button>
                         </div>
                     </td>
                 </tr>

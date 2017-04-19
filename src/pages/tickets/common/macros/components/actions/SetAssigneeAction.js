@@ -8,21 +8,14 @@ export default class SetAssigneeAction extends React.Component {
     }
 
     render() {
-        const {index, action, agents, deleteAction} = this.props
+        const {action, agents} = this.props
         return (
-            <div>
-                <i
-                    className="right floated remove circle red large action icon"
-                    onClick={() => deleteAction(index)}
-                />
-                <h4 className="inline">SET ASSIGNEE</h4>
-                <TicketAssignee
-                    currentAssignee={action.getIn(['arguments', 'assignee_user', 'name'])}
-                    agents={agents}
-                    setAgent={assignee => this.setAssignee(assignee)}
-                    suffix="macro-modal"
-                />
-            </div>
+            <TicketAssignee
+                currentAssignee={action.getIn(['arguments', 'assignee_user', 'name'])}
+                agents={agents}
+                setAgent={assignee => this.setAssignee(assignee)}
+                suffix="macro-modal"
+            />
         )
     }
 }
@@ -32,5 +25,4 @@ SetAssigneeAction.propTypes = {
     agents: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     updateActionArgs: PropTypes.func.isRequired,
-    deleteAction: PropTypes.func.isRequired
 }

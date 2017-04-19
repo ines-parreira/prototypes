@@ -1,6 +1,7 @@
-import React, {PropTypes, Component} from 'react'
+import React, {PropTypes} from 'react'
+import {Input} from 'reactstrap'
 
-export default class RightSelect extends Component {
+export default class RightSelect extends React.Component {
     static propTypes = {
         node: PropTypes.object.isRequired,
         options: PropTypes.object.isRequired,
@@ -8,43 +9,28 @@ export default class RightSelect extends Component {
         onChange: PropTypes.func.isRequired
     }
 
-    componentDidMount() {
-        const {index, onChange} = this.props
-        $(this.refs.select).dropdown({
-            onChange: (value) => onChange(index, value)
-        })
-    }
-
-    // Update semantic dropdown when it necessary
-    componentWillReceiveProps(nextProps) {
-        const {index, onChange, node} = this.props
-        // update index of field
-        if (index !== nextProps.index) {
-            $(this.refs.select).dropdown('refresh').dropdown({
-                onChange: (value) => onChange(nextProps.index, value)
-            })
-        }
-
-        // update selected value
-        if (node.value !== nextProps.node.value) {
-            setTimeout(() => {
-                $(this.refs.select).dropdown('set selected', nextProps.node.value)
-            }, 1)
-        }
-    }
-
     render() {
-        const {node, options} = this.props
+        const {node, options, onChange} = this.props
+
         return (
-            <div className="view-filters-expression-value">
-                <select ref="select" className="ui search dropdown" defaultValue={node.value}>
-                    {options.map((option, index) => (
-                        <option key={index} value={option.get('id')}>
+            <Input
+                className="d-inline"
+                style={{width: 'auto'}}
+                type="select"
+                value={node.value}
+                onChange={e => onChange(this.props.index, e.target.value)}
+            >
+                {
+                    options.map((option, index) => (
+                        <option
+                            key={index}
+                            value={option.get('id')}
+                        >
                             {option.get('name')}
                         </option>
-                    ))}
-                </select>
-            </div>
+                    ))
+                }
+            </Input>
         )
     }
 }

@@ -1,0 +1,22 @@
+:local .component {
+  width: 100% !important;
+  font-weight: bold !important;
+  padding: 8px 14px !important;
+  font-size: 26px !important;
+  transition: all .2s linear !important;
+
+  .not-editable {
+    border-color: transparent !important;
+    padding-left: 0 !important;
+  }
+
+  &:not(:hover):not(:focus):not(.edit-mode) {
+    .not-editable;
+  }
+
+  &:disabled {
+    .not-editable;
+    cursor: default !important;
+    background-color: initial !important;
+  }
+}

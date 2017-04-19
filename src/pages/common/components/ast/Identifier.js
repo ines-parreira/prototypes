@@ -6,14 +6,21 @@ import Widget from './Widget'
  interface Identifier <: Node, Expression, Pattern {
  type: "Identifier";
  name: string;
-}
+ }
  */
-const Identifier = ({ name, parent, rule, actions, schemas, leftsiblings }) => {
+const Identifier = ({name, parent, rule, actions, schemas, leftsiblings}) => {
     const parentNew = parent.push('name')
 
     switch (name) {
         case 'Action':
-            return <button className="ui orange button inline">TAKE ACTION</button>
+            return (
+                <button
+                    className="ui orange button d-inline"
+                    type="button"
+                >
+                    Take action
+                </button>
+            )
         case 'list_of_actions':
             return <span />
         default:

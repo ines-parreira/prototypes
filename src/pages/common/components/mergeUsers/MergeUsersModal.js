@@ -3,6 +3,9 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Field, reduxForm, formValueSelector} from 'redux-form'
 import classNames from 'classnames'
+import {UncontrolledTooltip} from 'reactstrap'
+import Modal from '../Modal'
+
 import {JSONTree} from './../JSONTree'
 import {USER_CHANNEL_CLASS} from './../../../../config'
 import BinaryChoiceField from '../../forms/BinaryChoiceField'
@@ -12,7 +15,7 @@ import {isCustomerDataValid} from '../infobar/utils'
 
 class MergeUsersModal extends React.Component {
     componentDidMount = () => {
-        const {destinationUser, sourceUser} = this.props
+        const {sourceUser} = this.props
         const initData = {
             user: this.props.destinationUser.map((v, k) => {
                 if (!v) {
@@ -26,71 +29,58 @@ class MergeUsersModal extends React.Component {
         initData.user.channels = initData.user.channels.concat(sourceUser.get('channels').toJS())
 
         this.props.initialize(initData)
-
-        $(this.refs.mergeUsersModal).modal({
-            onHidden: this._closeModal
-        }).modal('show')
-
-        $(this.refs.emailTooltip).popup({
-            inline: true,
-            position: 'top left',
-            offset: -10
-        })
-
-        $(this.refs.contactTooltip).popup({
-            inline: true,
-            position: 'top left',
-            offset: -10
-        })
-
-        logEvent('Opened MergeUsers Modal', {
-            destinationUserChannelType: destinationUser.get('channels')
-                .map(channel => channel.get('type'))
-                .toList()
-                .toJS(),
-            sourceUser: sourceUser.get('channels')
-                .map(channel => channel.get('type'))
-                .toList()
-                .toJS()
-        })
     }
 
-    componentWillUnmount = () => {
-        $(this.refs.mergeUsersModal).modal('hide')
+    componentWillReceiveProps(nextProps) {
+        const {destinationUser, sourceUser} = nextProps
+        if (!this.props.isOpen && nextProps.isOpen) {
+            logEvent('Opened MergeUsers Modal', {
+                destinationUserChannelType: destinationUser.get('channels')
+                    .map(channel => channel.get('type'))
+                    .toList()
+                    .toJS(),
+                sourceUser: sourceUser.get('channels')
+                    .map(channel => channel.get('type'))
+                    .toList()
+                    .toJS()
+            })
+        }
     }
 
     _handleSubmit = (data) => {
         // submit user to merge
         if (confirm('This action is irreversible. Are you sure you want to merge those users?')) {
-            this.props.mergeUsers(
-                this.props.destinationUser.get('id'),
-                this.props.sourceUser.get('id'),
-                data.user
-            )
             logEvent('Confirmed MergeUser', {
                 finalUser: data.user.channels.map(channel => channel.type)
             })
+            return this.props.mergeUsers(
+                this.props.destinationUser.get('id'),
+                this.props.sourceUser.get('id'),
+                data.user
+            ).then(() => {
+                this._toggle()
+            })
         }
-        return false
     }
 
-    _generateChannelOptions = (user) => (
-        user
-            .get('channels', fromJS([]))
-            .filter(channel => !!channel) // removing falsey values
-            .map((channel, idx) => ({
-                label: (
-                    <div key={idx}>
-                        <i className={USER_CHANNEL_CLASS[channel.get('type')]} /> {channel.get('address')}
-                    </div>
-                ),
-                value: channel.toJS()
-            }))
-            .toList()
-            .toJS()
-    )
+    _generateChannelOptions = (user) => {
+        return (
+            user.get('channels', fromJS([]))
+                .filter(channel => !!channel) // removing falsey values
+                .map((channel, idx) => ({
+                    label: (
+                        <div key={idx}>
+                            <i className={USER_CHANNEL_CLASS[channel.get('type')]} /> {channel.get('address')}
+                        </div>
+                    ),
+                    value: channel.toJS()
+                }))
+                .toList()
+                .toJS()
+        )
+    }
 
-    _closeModal = () => {
+    _toggle = () => {
         this.props.toggleModal(false)
     }
 
@@ -104,21 +94,17 @@ class MergeUsersModal extends React.Component {
         let mergeCustomer = sourceUser.get('customer')
         mergeCustomer = isCustomerDataValid(mergeCustomer) ? mergeCustomer.toJS() : {}
 
-        const emailTooltipText = 'This is the email address which will be used to fetch data for the user.'
-        const contactTooltipText = 'You can\'t unselect the contact info associated with the primary email.'
-
         const allChannels = destinationUser.get('channels').toJS().concat(sourceUser.get('channels').toJS())
         const requiredChannelValue = allChannels.find(channel => channel.address === primaryEmail)
 
         return (
-            <div
-                ref="mergeUsersModal"
-                className="MergeUsersModal ui large modal"
+            <Modal
+                isOpen={this.props.isOpen}
+                onClose={this._toggle}
+                className="MergeUsersModal"
+                size="lg"
+                header="Merge users"
             >
-                <i className="close icon" />
-                <div className="header">
-                    Merge users
-                </div>
                 <form
                     className="ui form"
                     onSubmit={handleSubmit(this._handleSubmit)}
@@ -134,11 +120,21 @@ class MergeUsersModal extends React.Component {
                             component={BinaryChoiceField}
                             options={[
                                 {
-                                    label: <span><i className="user icon" />{destinationUser.get('name') || ''}</span>,
+                                    label: (
+                                        <span>
+                                            <i className="user icon" />
+                                            {destinationUser.get('name') || ''}
+                                        </span>
+                                    ),
                                     value: destinationUser.get('name') || ''
                                 },
                                 {
-                                    label: <span><i className="user icon" />{sourceUser.get('name') || ''}</span>,
+                                    label: (
+                                        <span>
+                                            <i className="user icon" />
+                                            {sourceUser.get('name') || ''}
+                                        </span>
+                                    ),
                                     value: sourceUser.get('name') || ''
                                 }
                             ]}
@@ -148,22 +144,37 @@ class MergeUsersModal extends React.Component {
                             name="user.email"
                             component={BinaryChoiceField}
                             tooltip={(
-                                <span
-                                    ref="emailTooltip"
-                                    className="tooltip"
-                                    data-content={emailTooltipText}
-                                    data-variation="wide inverted"
-                                >
-                                    <i className="help circle link icon" />
-                                </span>
+                                <span>
+                                        <i
+                                            id="merge-primary-email"
+                                            className="help circle link icon"
+                                        />
+                                        <UncontrolledTooltip
+                                            placement="top"
+                                            target="merge-primary-email"
+                                            delay={0}
+                                        >
+                                            This is the email address which will be used to fetch data for the user
+                                        </UncontrolledTooltip>
+                                    </span>
                             )}
                             options={[
                                 {
-                                    label: <span><i className="mail icon" />{destinationUser.get('email') || ''}</span>,
+                                    label: (
+                                        <span>
+                                            <i className="mail icon" />
+                                            {destinationUser.get('email') || ''}
+                                        </span>
+                                    ),
                                     value: destinationUser.get('email') || ''
                                 },
                                 {
-                                    label: <span><i className="mail icon" />{sourceUser.get('email') || ''}</span>,
+                                    label: (
+                                        <span>
+                                            <i className="mail icon" />
+                                            {sourceUser.get('email') || ''}
+                                        </span>
+                                    ),
                                     value: sourceUser.get('email') || ''
                                 }
                             ]}
@@ -171,14 +182,19 @@ class MergeUsersModal extends React.Component {
                         <Field
                             label="Contact info"
                             tooltip={(
-                                <span
-                                    ref="contactTooltip"
-                                    className="tooltip"
-                                    data-content={contactTooltipText}
-                                    data-variation="wide inverted"
-                                >
-                                    <i className="help circle link icon" />
-                                </span>
+                                <span>
+                                        <i
+                                            id="merge-contact-info"
+                                            className="help circle link icon"
+                                        />
+                                        <UncontrolledTooltip
+                                            placement="top"
+                                            target="merge-contact-info"
+                                            delay={0}
+                                        >
+                                            You can not deselect the contact info associated with the primary email
+                                        </UncontrolledTooltip>
+                                    </span>
                             )}
                             name="user.channels"
                             component={MultiSelectBinaryChoiceField}
@@ -207,21 +223,19 @@ class MergeUsersModal extends React.Component {
                         />
                     </div>
 
-                    <div className="footer">
-                        <div className="ui right floated buttons-bar">
-                            <div
-                                className="ui basic grey button"
-                                onClick={this._closeModal}
-                            >
-                                Cancel
-                            </div>
-                            <button type="submit" className={buttonClassName}>
-                                Merge users
-                            </button>
+                    <div className="pull-right buttons-bar">
+                        <div
+                            className="ui basic grey button"
+                            onClick={this._toggle}
+                        >
+                            Cancel
                         </div>
+                        <button type="submit" className={buttonClassName}>
+                            Merge users
+                        </button>
                     </div>
                 </form>
-            </div>
+            </Modal>
         )
     }
 }
@@ -233,6 +247,7 @@ MergeUsersModal.propTypes = {
     sourceUser: PropTypes.object.isRequired,
     mergeUsers: PropTypes.func.isRequired,
     toggleModal: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     primaryEmail: PropTypes.string
 }

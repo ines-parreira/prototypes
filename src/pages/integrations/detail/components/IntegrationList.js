@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import {fromJS} from 'immutable'
-import classNames from 'classnames'
+import {Breadcrumb, BreadcrumbItem, Table, Button} from 'reactstrap'
+
 import NoIntegration from './NoIntegration'
 import {getIntegrationsList, getIconFromType} from '../../../../state/integrations/helpers'
 
@@ -19,27 +20,34 @@ export default class IntegrationList extends React.Component {
 
     render() {
         const {
-            integrations, integrationType, createIntegrationButtonText,
-            longTypeDescription, integrationToItemDisplay, loading
+            integrations,
+            integrationType,
+            createIntegrationButtonText,
+            longTypeDescription,
+            integrationToItemDisplay,
+            loading,
         } = this.props
 
-        const createIntegrationButtonClassNames = ['ui', 'right', 'floated', 'green', 'button']
         const integrationTypes = fromJS(getIntegrationsList(integrations))
         const integrationConfig = integrationTypes.find(i => i.get('type', '') === integrationType, null, fromJS({}))
         const integrationTitle = integrationConfig.get('title')
 
         return (
-            <div className="ui grid IntegrationEditView">
-                <div className="ui sixteen wide column">
-                    <div className="ui large breadcrumb">
+            <div>
+                <Breadcrumb>
+                    <BreadcrumbItem>
                         <Link to="/app/integrations">Integrations</Link>
-                        <i className="right angle icon divider" />
-                        <a className="active section">{integrationTitle}</a>
-                    </div>
-                </div>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        {integrationTitle}
+                    </BreadcrumbItem>
+                </Breadcrumb>
 
-                <div className="ui sixteen wide column flex-spaced-row">
-                    <h1 className="ui header">
+                <div className="d-flex justify-content-between align-item-center mb-3">
+                    <h1
+                        className="ui header"
+                        style={{marginBottom: 0}}
+                    >
                         {integrationConfig.get('image') ?
                             <img
                                 role="presentation"
@@ -56,47 +64,50 @@ export default class IntegrationList extends React.Component {
 
                     {
                         !this.props.createIntegrationButtonHidden && (
-                            <div>
-                                <button
-                                    className={classNames(createIntegrationButtonClassNames)}
-                                    onClick={this.onButtonClick}
-                                >
-                                    {createIntegrationButtonText}
-                                </button>
-                            </div>
+                            <Button
+                                color="primary"
+                                onClick={this.onButtonClick}
+                            >
+                                {createIntegrationButtonText}
+                            </Button>
                         )
                     }
                 </div>
 
-                {
-                    longTypeDescription
-                    && (
-                        <div className="row">
-                            <div className="sixteen wide column">
-                                {longTypeDescription}
-                            </div>
-                        </div>
-                    )
-                }
+                {longTypeDescription}
 
                 {
                     integrations.isEmpty() ? (
-                        <NoIntegration
-                            type={integrationType}
-                            loading={loading.get('integrations', false)}
-                        />
-                    ) : (
-                        <table className="ui selectable very basic padded table">
-                            <tbody>
-                                {integrations.valueSeq().map(integrationToItemDisplay)}
-                            </tbody>
-                        </table>
-                    )
+                            <div className="mt-3">
+                                <NoIntegration
+                                    type={integrationType}
+                                    loading={loading.get('integrations', false)}
+                                />
+                            </div>
+                        ) : (
+                            <Table
+                                className="mt-3"
+                                hover
+                            >
+                                <tbody>
+                                    {integrations.valueSeq().map(integrationToItemDisplay)}
+                                </tbody>
+                            </Table>
+                        )
                 }
             </div>
         )
     }
 }
+
+/*
+
+ <table className="ui selectable very basic padded table">
+ <tbody>
+ {integrations.valueSeq().map(integrationToItemDisplay)}
+ </tbody>
+ </table>
+ */
 
 IntegrationList.propTypes = {
     integrationType: PropTypes.string.isRequired, // The type of the integrations we're displaying

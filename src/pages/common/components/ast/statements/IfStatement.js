@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { AddActionOrIfStatement, AddLogicalAndCondition } from '../operations'
+import {AddActionOrIfStatement, AddLogicalAndCondition} from '../operations'
 import Expression from '../expression/Expression'
 import Statement from './Statement'
 
@@ -12,7 +12,6 @@ import Statement from './Statement'
  * @param parent
  * @param schemas
  * @param test
- * @param context
  * @constructor
  */
 let TestExpression = ({actions, rule, parent, schemas, test}) => (
@@ -125,8 +124,8 @@ AlternateStatement.propTypes = {
  * @param test {Expression}
  * @constructor
  */
-const IfStatement = ({ actions, alternate, consequent, rule, parent, schemas, test }) => {
-    const _alternate = alternate || { type: 'BlockStatement', body: [] }
+const IfStatement = ({actions, alternate, consequent, rule, parent, schemas, test}) => {
+    const _alternate = alternate || {type: 'BlockStatement', body: []}
 
     return (
         <div className="IfStatement">

@@ -1,10 +1,12 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import classNames from 'classnames'
+import {Badge, Button} from 'reactstrap'
+
 import IntegrationList from '../IntegrationList'
-import gmailImg from '../../../../../../img/integrations/gmail.png'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
+import gmailImg from '../../../../../../img/integrations/gmail.png'
 
 export default class EmailIntegrationList extends React.Component {
     render() {
@@ -20,56 +22,83 @@ export default class EmailIntegrationList extends React.Component {
         const integrationToItemDisplay = (int) => {
             const active = !int.get('deactivated_datetime')
             const isRowSubmitting = isSubmitting === int.get('id')
-
-            const rowClasses = classNames({
-                deactivated: !active
-            })
+            const isDisabled = int.get('deactivated_datetime')
 
             const editLink = `/app/integrations/email/${int.get('id')}`
+
             let primaryBtn = (
-                <button
-                    className="ui basic light blue button"
-                    onClick={() => browserHistory.push(editLink)}
+                <Button
+                    tag={Link}
+                    color="info"
+                    to={editLink}
                 >
                     Edit
-                </button>
-
+                </Button>
             )
 
             if (!active) {
                 primaryBtn = (
-                    <a
-                        className={classNames('ui basic light blue button', {
-                            'loading disabled': isRowSubmitting
+                    <Button
+                        tag={Link}
+                        color="success"
+                        to={`/integrations/gmail/auth?integration_id=${int.get('id')}`}
+                        className={classNames({
+                            'btn-loading': isRowSubmitting,
                         })}
-                        href={`/integrations/gmail/auth?integration_id=${int.get('id')}`}
                     >
-                        Re-Activate
-                    </a>
+                        Re-activate
+                    </Button>
                 )
             }
 
             return (
-                <tr key={int.get('id')} className={rowClasses}>
-                    <td>
+                <tr key={int.get('id')}>
+                    <td className="smallest">
                         {
-                            int.get('type') === 'email'
-                                ? <i className="icon mail big outline"/>
-                                : <img src={gmailImg} width="28" alt="email-icon" style={{marginLeft: '2px'}}/>
+                            int.get('type') === 'email' ? (
+                                    <i
+                                        className="fa fa-fw fa-envelope text-muted"
+                                        style={{
+                                            fontSize: '41px',
+                                            marginTop: '-8px',
+                                            marginLeft: '-3px',
+                                        }}
+                                    />
+                                ) : (
+                                    <img
+                                        src={gmailImg}
+                                        height="33"
+                                        alt="email-icon"
+                                    />
+                                )
                         }
                     </td>
-                    <td>
-                        <Link to={editLink}>
-                            <div className="ui header">
-                                {int.get('name')}
-                                <div className="body sub header">
-                                    {int.getIn(['meta', 'address'], '')}
-                                </div>
-                            </div>
-                        </Link>
+                    <td style={{verticalAlign: 'middle'}}>
+                        <b>{int.get('name')}</b>
+                        {' '}
+                        <span className="text-faded ml-3">
+                            {int.getIn(['meta', 'address'])}
+                        </span>
+
                     </td>
-                    <td className="pr15i">
-                        <div className="floated right">
+                    <td
+                        className="smallest"
+                        style={{verticalAlign: 'middle'}}
+                    >
+                        {
+                            isDisabled ? (
+                                    <Badge color="warning">
+                                        Disabled
+                                    </Badge>
+                                ) : (
+                                    <Badge color="success">
+                                        Enabled
+                                    </Badge>
+                                )
+                        }
+                    </td>
+                    <td className="smallest">
+                        <div className="pull-right">
                             {primaryBtn}
                         </div>
                     </td>
@@ -84,7 +113,9 @@ export default class EmailIntegrationList extends React.Component {
                 longTypeDescription={longTypeDescription}
                 createIntegration={() => browserHistory.push('/app/integrations/email/new')}
                 createIntegrationButtonText="Add email address"
-                createIntegrationButtonOnClick={() => { logEvent('add_email_address_click') }}
+                createIntegrationButtonOnClick={() => {
+                    logEvent('add_email_address_click')
+                }}
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

@@ -4,9 +4,10 @@ import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
+
 import {Loader} from '../Loader'
 import BlankState from '../BlankState'
-import SemanticPaginator from '../SemanticPaginator'
+import Pagination from '../Pagination'
 
 import Row from './Table/Row'
 import HeaderCell from './Table/HeaderCell'
@@ -155,17 +156,15 @@ export default class Table extends React.Component {
                     </tbody>
                 </table>
 
-                <SemanticPaginator
-                    page={pagination.get('page')}
-                    totalPages={pagination.get('nb_pages')}
+                <Pagination
+                    pageCount={pagination.get('nb_pages') || 1}
+                    currentPage={pagination.get('page') || 1}
                     onChange={(page) => {
                         // update page query param of current location (add/update "page" param)
                         const location = Object.assign({}, browserHistory.getCurrentLocation())
                         Object.assign(location.query, {page})
                         browserHistory.push(location)
                     }}
-                    radius={1}
-                    anchor={2}
                 />
             </div>
         )

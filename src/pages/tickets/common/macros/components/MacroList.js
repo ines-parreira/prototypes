@@ -6,31 +6,13 @@ import classnames from 'classnames'
 import {getActionTemplate} from '../../../../../utils'
 
 export default class MacroList extends React.Component {
-    constructor() {
-        super()
-        this.state = {searchTerm: ''}
+    state = {
+        searchTerm: '',
     }
 
     searchUpdated = (term) => {
         this.props.actions.saveSearch(term)
         this.setState({searchTerm: term}) // Necessary for re-render
-    }
-
-    renderCreateMacro() {
-        if (this.props.selectionMode) {
-            return null
-        }
-
-        return (
-            <div className="button-wrapper">
-                <div
-                    className="ui basic light blue fluid button"
-                    onClick={this.props.actions.addNewMacro}
-                >
-                    Create macro
-                </div>
-            </div>
-        )
     }
 
     render() {
@@ -40,17 +22,20 @@ export default class MacroList extends React.Component {
          * Used to replace the list of all macros with the list of macros corresponding to the current search term,
          * if there is a current search term.
          */
-        const curMacros = this.refs.search
-            ? fromJS(macros.valueSeq().toJS().filter(this.refs.search.filter(['name'])))
-            : macros
+        const curMacros = fromJS(macros.valueSeq().toJS().filter((macro) => {
+            return macro.name.toLowerCase().includes(this.state.searchTerm.toLowerCase())
+        }))
 
         return (
             <div style={{height: '100%'}}>
-                <div className="ui secondary vertical fluid menu">
+                <div
+                    className="ui secondary vertical fluid menu"
+                    style={{margin: 0}}
+                >
                     <div className="ui category search item">
                         <div className="ui icon input">
                             <SearchInput
-                                ref="search"
+                                value={this.state.searchTerm}
                                 onChange={this.searchUpdated}
                                 className="ui icon input full-width prompt shortcuts-enable"
                                 placeholder="Search for a macro"
@@ -86,7 +71,6 @@ export default class MacroList extends React.Component {
                         }).toList().toJS()
                     }
                 </div>
-                {this.renderCreateMacro()}
             </div>
         )
     }
@@ -97,5 +81,4 @@ MacroList.propTypes = {
     currentMacro: PropTypes.object,
     actions: PropTypes.object.isRequired,
     disableExternalActions: PropTypes.bool,
-    selectionMode: PropTypes.bool
 }

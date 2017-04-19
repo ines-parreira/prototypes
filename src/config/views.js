@@ -215,9 +215,10 @@ const config = [{
                                 .map((tag) => (
                                     <TagLabel
                                         key={tag.get('id')}
-                                        name={tag.get('name')}
                                         decoration={tag.get('decoration')}
-                                    />
+                                    >
+                                        {tag.get('name')}
+                                    </TagLabel>
                                 ))
                         }
                     </div>

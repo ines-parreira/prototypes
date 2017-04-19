@@ -156,7 +156,10 @@ class TicketReplyEditor extends React.Component {
                         hideActions: !isNewMessageRichType,
                         buttons: [
                             <div className="attachment">
-                                <label htmlFor="attachments-input">
+                                <label
+                                    htmlFor="attachments-input"
+                                    style={{margin: 0}}
+                                >
                                     {
                                         ticket.getIn(['_internal', 'loading', 'addAttachment'])
                                             ? (

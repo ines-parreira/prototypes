@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
+
 import {getActionByName} from '../../../../../config/actions'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 
@@ -119,9 +120,9 @@ class ActionButton extends React.Component {
         return (
             <Tag
                 className={classnames(css.button, className, {
-                    'disabled loading': this.state.isLoading,
-                    green: this.state.showSuccess,
-                    red: this.state.showError,
+                    'disabled loading btn-loading': this.state.isLoading,
+                    'btn-success': this.state.showSuccess,
+                    'btn-danger': this.state.showError,
                 })}
                 disabled={this.state.isLoading}
                 onClick={this._confirmAction}

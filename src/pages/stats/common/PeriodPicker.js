@@ -1,134 +1,89 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
-import DatePicker from 'react-datepicker'
-import {timesFromPeriod} from './utils'
+import DateRangePicker from 'react-bootstrap-daterangepicker'
+import {Button} from 'reactstrap'
 
 /**
  * The period picker allows to select a period which will set a start and an end datetime
  */
 export default class PeriodPicker extends React.Component {
-    componentWillMount() {
-        const {period, startDatetime, endDatetime} = this.props
+    constructor(props) {
+        super(props)
 
-        // on initialization
-        if (period && (!startDatetime || !endDatetime)) {
-            this._handlePeriodChange(period)
+        this.state = {
+            ranges: {
+                Today: [moment(), moment()],
+                'Last 7 days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 days': [moment().subtract(29, 'days'), moment()],
+                'Last 60 days': [moment().subtract(59, 'days'), moment()],
+                'Last 90 days': [moment().subtract(89, 'days'), moment()],
+            },
+            startDate: props.startDatetime || moment().subtract(29, 'days'),
+            endDate: props.endDatetime || moment(),
         }
     }
 
-    componentDidMount() {
-        $(this.refs.periodPicker).dropdown({
-            onChange: this._handlePeriodChange,
-        })
-    }
-
-    // period is changed via dropdown
-    _handlePeriodChange = (period) => {
-        const {startDatetime, endDatetime} = timesFromPeriod(period)
-
-        this.props.onChange({
-            period,
-            start_datetime: startDatetime.format(),
-            end_datetime: endDatetime.format(),
-        })
-    }
-
-    // date is changed via datepicker
-    _handleDateChange = (value, isStart = true) => {
-        let {startDatetime, endDatetime} = this.props
-
-        if (isStart) {
-            startDatetime = value
-        } else {
-            endDatetime = value
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.startDatetime && nextProps.endDatetime) {
+            this.setState({
+                startDate: nextProps.startDatetime,
+                endDate: nextProps.endDatetime,
+            })
         }
-
-        this.props.onChange({
-            start_datetime: startDatetime.format(),
-            end_datetime: endDatetime.format()
-        })
     }
 
-    _renderPeriodOption = (period, label) => {
-        const {startDatetime, endDatetime} = timesFromPeriod(period)
-
-        return (
-            <div
-                className="item"
-                key={period}
-                data-value={period}
-            >
-                <b>{label}</b>
-                <span>{startDatetime.format('MMM DD, YYYY')} - {endDatetime.format('MMM DD, YYYY')}</span>
-            </div>
-        )
+    _handleEvent = (event, picker) => {
+        this.props.onChange({
+            start_datetime: picker.startDate.format(),
+            end_datetime: picker.endDate.format(),
+        })
     }
 
     render() {
-        const {startDatetime, endDatetime, isDisabled} = this.props
+        const {isDisabled} = this.props
+        const start = this.state.startDate.format('MMM DD, YYYY')
+        const end = this.state.endDate.format('MMM DD, YYYY')
+        let label = `${start} - ${end}`
 
-        const periodPickerOptions = [
-            ['today', 'Today'],
-            ['last-7-days', 'Last 7 days'],
-            ['past-week', 'Past week'],
-            ['last-month', 'Last month'],
-            ['past-month', 'Past month'],
-            ['last-3-months', 'Last 3 months'],
-            ['last-6-months', 'Last 6 months'],
-            ['last-year', 'Last year'],
-        ]
+        if (start === end) {
+            label = start
+        }
 
         return (
-            <div className="period-picker">
-                <div className="ui input">
-                    <DatePicker
-                        dateFormat="MMM DD, YYYY"
-                        selected={startDatetime}
-                        startDate={startDatetime}
-                        endDate={endDatetime}
-                        onChange={this._handleDateChange}
-                        disabled={isDisabled}
-                        maxDate={endDatetime}
-                    />
-                </div>
-                <div className="ui input">
-                    <DatePicker
-                        dateFormat="MMM DD, YYYY"
-                        selected={endDatetime}
-                        startDate={startDatetime}
-                        endDate={endDatetime}
-                        onChange={(v) => this._handleDateChange(v, false)}
-                        disabled={isDisabled}
-                        minDate={startDatetime}
-                        maxDate={moment()}
-                    />
-                </div>
-                <div className="field inline">
-                    <div
-                        ref="periodPicker"
-                        className="ui icon dropdown button"
-                    >
-                        <i className="content icon" />
-                        <div className="menu">
-                            {periodPickerOptions.map((option) => this._renderPeriodOption(option[0], option[1]))}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <DateRangePicker
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                ranges={this.state.ranges}
+                onApply={this._handleEvent}
+                opens="left"
+                buttonClasses={['btn']}
+                applyClass="btn-success mr-2"
+                cancelClass="btn-secondary"
+                alwaysShowCalendars
+            >
+                <Button
+                    className="selected-date-range-btn"
+                    style={{width: '100%'}}
+                    disabled={isDisabled}
+                >
+                    <i className="fa fa-fw fa-calendar mr-2" />
+                    <span>
+                        {label}
+                    </span>
+                    <i className="fa fa-fw fa-caret-down" />
+                </Button>
+            </DateRangePicker>
         )
     }
 }
 
 PeriodPicker.propTypes = {
-    startDatetime: PropTypes.object.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
     endDatetime: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
-    isDisabled: PropTypes.bool.isRequired,
-    period: PropTypes.string,
+    startDatetime: PropTypes.object.isRequired,
 }
 
 PeriodPicker.defaultProps = {
     isDisabled: false,
-    startDatetime: moment().format(),
-    endDatetime: moment().format(),
 }

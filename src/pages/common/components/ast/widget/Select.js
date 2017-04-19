@@ -5,28 +5,9 @@ import {List, Map, fromJS} from 'immutable'
 
 
 class Select extends React.Component {
-    componentDidMount() {
-        const { onChange, value } = this.props
-        $(this.refs.select).dropdown({ onChange })
-        if (value) {
-            $(this.refs.select).dropdown('set selected', value)
-        }
-    }
+    _getOptions = () => {
+        const {options} = this.props
 
-    componentWillReceiveProps(nextProps) {
-        const { value } = nextProps
-        if (!value) {
-            const options = this._getOptions(nextProps.options)
-            const firstOptionValue = options.length && options[0][0]
-            if (firstOptionValue) {
-                this.props.onChange(firstOptionValue)
-            }
-        } else {
-            $(this.refs.select).dropdown('set selected', value)
-        }
-    }
-
-    _getOptions = (options) => {
         const _options = []
 
         if (options) {
@@ -47,20 +28,27 @@ class Select extends React.Component {
     }
 
     render() {
-        const { className, options } = this.props
+        const {className, onChange, value} = this.props
         const selectClassName = classNames('ui search dropdown', className)
-        const _options = this._getOptions(options)
+        const options = this._getOptions()
 
         return (
-            <span>
-                <select className={selectClassName} ref="select">
-                    {
-                        _options && _options.map((opt, idx) => (
-                            <option value={opt.value} key={idx}>{opt.label}</option>
-                        ))
-                    }
-                </select>
-            </span>
+            <select
+                className={selectClassName}
+                value={value}
+                onChange={e => onChange(e.target.value)}
+            >
+                {
+                    options.map((option, idx) => (
+                        <option
+                            key={idx}
+                            value={option.value}
+                        >
+                            {option.label}
+                        </option>
+                    ))
+                }
+            </select>
         )
     }
 

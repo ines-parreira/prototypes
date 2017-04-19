@@ -1,15 +1,27 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import _noop from 'lodash/noop'
+import onClickOutside from 'react-onclickoutside'
+import {
+    UncontrolledDropdown,
+    DropdownMenu,
+    DropdownItem,
+} from 'reactstrap'
+
 import Search from '../Search'
 import {RenderLabel} from '../../utils/labels'
 import {equalityOperator, resolveLiteral, isImmutable, fieldPath} from '../../../../utils'
 import {fieldEnumSearch} from '../../../../state/views/actions'
-import _noop from 'lodash/noop'
 
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 
+@onClickOutside
 class FilterDropdown extends React.Component {
+    state = {
+        isLoading: false,
+    }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -18,14 +30,12 @@ class FilterDropdown extends React.Component {
     }
 
     componentDidMount() {
-        // trigger search on component load
         this.onSearch()
-        // wait for React to be ready before we bind anything (hence the setTimeout)
-        setTimeout(() => window.addEventListener('click', this._closeOnClickOutside), 1)
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('click', this._closeOnClickOutside)
+    // used by onClickOutside HOC
+    handleClickOutside = () => {
+        this.props.onClose()
     }
 
     onClick = (newValue) => {
@@ -53,48 +63,67 @@ class FilterDropdown extends React.Component {
             return
         }
 
+        this.setState({
+            isLoading: true,
+        })
+
         this.props.fieldEnumSearch(this.props.field, query)
             .then((data) => {
                 this.setState({
-                    enum: data
+                    enum: data,
+                    isLoading: false,
                 })
             })
     }
 
-    _closeOnClickOutside = (e) => {
-        const hasClickedInComponent = this.refs.filterDropdown && $(this.refs.filterDropdown)[0].contains(e.target)
-
-        if (!hasClickedInComponent) {
-            this.props.onClose()
-        }
-    }
-
-    // render a search input if the field is searchable
     renderSearch = () => {
         const field = this.props.field
 
         if (!field.getIn(['filter', 'type'])) {
-            return
+            return null
         }
 
-        return (
-            <div className="ui icon search input">
+        return [
+            <DropdownItem
+                key="search"
+                header
+                className="dropdown-item-input"
+            >
                 <Search
                     autofocus
-                    className="medium"
                     onChange={this.onSearch}
                     searchDebounceTime={300}
                 />
-            </div>
-        )
+            </DropdownItem>,
+            <DropdownItem
+                key="divider"
+                divider
+            />
+        ]
     }
 
-    // if we have enum values render them
     renderEnum = () => {
         const field = this.props.field
 
         if (!this.state.enum) {
             return null
+        }
+
+        if (this.state.isLoading) {
+            return (
+                <DropdownItem disabled>
+                    <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2" />
+                    Loading...
+                </DropdownItem>
+            )
+        }
+
+        if (this.state.enum.isEmpty()) {
+            return (
+                <DropdownItem header>
+                    Could not find anything like this
+                </DropdownItem>
+            )
         }
 
         return this.state.enum.map((value, key) => {
@@ -103,12 +132,7 @@ class FilterDropdown extends React.Component {
             // special displays for some properties in the dropdown
             if (field.get('name') === 'tags') {
                 // display tags as tags
-                renderValue = (
-                    <RenderLabel
-                        field={field}
-                        value={value.get('name')}
-                    />
-                )
+                renderValue = value.get('name')
             } else if (typeof value === 'object' || field.get('name') === 'roles') {
                 renderValue = (
                     <RenderLabel
@@ -118,14 +142,16 @@ class FilterDropdown extends React.Component {
                 )
             }
 
+            const passedValue = isImmutable(value) ? value.toJS() : value
+
             return (
-                <div
+                <DropdownItem
                     key={key}
-                    className="item"
-                    onClick={() => this.onClick(isImmutable(value) ? value.toJS() : value)}
+                    type="button"
+                    onClick={() => this.onClick(passedValue)}
                 >
                     {renderValue}
-                </div>
+                </DropdownItem>
             )
         })
     }
@@ -134,21 +160,22 @@ class FilterDropdown extends React.Component {
         const field = this.props.field
 
         if (!(field.get('filter') || this.state.enum)) {
-            return
+            return null
         }
 
+        const canSearch = !!field.getIn(['filter', 'type'])
+
         return (
-            <div
-                ref="filterDropdown"
-                className="filter-dropdown"
-            >
-                <div className="ui simple dropdown active visible">
-                    <div className="ui vertical menu visible">
-                        {this.renderSearch()}
-                        {this.renderEnum()}
-                    </div>
-                </div>
-            </div>
+            <UncontrolledDropdown isOpen>
+                <DropdownMenu
+                    style={{
+                        width: canSearch && '230px',
+                    }}
+                >
+                    {this.renderSearch()}
+                    {this.renderEnum()}
+                </DropdownMenu>
+            </UncontrolledDropdown>
         )
     }
 }
