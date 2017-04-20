@@ -40,8 +40,9 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
                                     </div>
                                     <div className="simple-field">
                                         <span className="field-label">Address:</span>
-                                        <span
-                                            className="field-value">768 Harrison St, San Francisco, 94107, CA</span>
+                                        <span className="field-value">
+                                            768 Harrison St, San Francisco, 94107, CA
+                                        </span>
                                     </div>
                                     <div className="simple-field">
                                         <span className="field-label">Created at:</span>
