@@ -1,18 +1,22 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
+import {Button} from 'reactstrap'
+
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
-const InfobarAddIntegrationSuggestion = () => (
+const InfobarAddIntegrationSuggestion = ({user}) => (
     <div className="widgets-list">
         <div>
             <div className="ui card wrapper">
                 <div className="content">
                     <div>
                         <div className="ui card blurred">
+                            <div className="title header clearfix">
+                                <span>
+                                    👤 {user.get('name') || 'Nadia'} - 4 orders
+                                </span>
+                            </div>
                             <div className="content">
-                                <div className="header clearfix">
-                                    👤 Nadia - 4 orders
-                                </div>
                                 <div>
                                     <div className="simple-field">
                                         <span className="field-label">Spent:</span>
@@ -36,7 +40,8 @@ const InfobarAddIntegrationSuggestion = () => (
                                     </div>
                                     <div className="simple-field">
                                         <span className="field-label">Address:</span>
-                                        <span className="field-value">768 Harrison St, San Francisco, 94107, CA</span>
+                                        <span
+                                            className="field-value">768 Harrison St, San Francisco, 94107, CA</span>
                                     </div>
                                     <div className="simple-field">
                                         <span className="field-label">Created at:</span>
@@ -50,14 +55,24 @@ const InfobarAddIntegrationSuggestion = () => (
                             </div>
                         </div>
                         <div className="no-result-container suggestion">
-                            <h3>Display customer data here<br />by adding an integration</h3>
-                            <Link
+                            <div
+                                className="mb-3"
+                                style={{
+                                    margin: '0 18px',
+                                    fontSize: '20px',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                Display customer data here by adding an integration
+                            </div>
+                            <Button
+                                tag={Link}
+                                color="info"
                                 to="/app/integrations"
-                                className="ui small light blue button"
                                 onClick={() => logEvent('Clicked add integration on add integration widget')}
                             >
                                 Add integration
-                            </Link>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -65,5 +80,9 @@ const InfobarAddIntegrationSuggestion = () => (
         </div>
     </div>
 )
+
+InfobarAddIntegrationSuggestion.propTypes = {
+    user: PropTypes.object.isRequired,
+}
 
 export default InfobarAddIntegrationSuggestion

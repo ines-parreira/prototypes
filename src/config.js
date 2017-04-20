@@ -183,9 +183,9 @@ export const ONBOARDING_INTEGRATION_SUGGESTIONS = [{
     type: 'facebook',
     url: 'app/integrations/facebook',
 }, {
-    title: 'Connect Chat',
+    title: 'Connect chat',
     type: 'smooch_inside',
-    url: 'app/integrations/smooch_inside/new',
+    url: 'app/integrations/smooch_inside',
 }]
 
 // Number of threads imported from Gmail

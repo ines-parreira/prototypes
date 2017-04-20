@@ -176,7 +176,10 @@ class InfobarUserInfo extends React.Component {
 
         return [
             <div key="separator" className="infobar-section-separator"></div>,
-            <InfobarAddIntegrationSuggestion key="integration-suggestion" />
+            <InfobarAddIntegrationSuggestion
+                key="integration-suggestion"
+                user={this.props.user}
+            />
         ]
     }
 
