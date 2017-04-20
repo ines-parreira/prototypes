@@ -1,5 +1,8 @@
 import _words from 'lodash/words'
 import _max from 'lodash/max'
+import _isEqual from 'lodash/isEqual'
+import _omit from 'lodash/omit'
+import _functions from 'lodash/functions'
 import Notifications from 'react-notification-system-redux'
 
 const AUTHORIZED_NOTIFICATION_TYPES = [
@@ -15,6 +18,20 @@ const INITIAL_MESSAGE = {
     dismissible: true,
     // styles available: alert, banner, modal
     style: 'alert'
+}
+
+// clean-up notification for comparison
+const cleanNotification = (n) => _omit(n, _functions(n).concat([
+    'uid',
+    'level'
+]))
+
+// detect duplicate notifications
+const isDuplicate = (notification, oldNotification) => {
+    return _isEqual(
+        cleanNotification(notification),
+        cleanNotification(oldNotification)
+    )
 }
 
 /**
@@ -55,13 +72,24 @@ export const notify = (message) => (dispatch, getState) => {
     }
 
     const notificationsState = ((getState() || {}).notifications || [])
+    let duplicate = false
 
-    // close previous notifications that were closeOnNext = true
     notificationsState.forEach((notification) => {
+        // close previous notifications that were closeOnNext = true
         if (notification.closeOnNext) {
             dispatch(Notifications.hide(notification.uid))
         }
+
+        // detect duplicate notification
+        if (!duplicate) {
+            duplicate = isDuplicate(finalMessage, notification)
+        }
     })
+
+    // don't add duplicate notifications
+    if (duplicate) {
+        return Promise.resolve()
+    }
 
     return dispatch(Notifications[type](finalMessage))
 }
