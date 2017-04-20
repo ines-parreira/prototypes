@@ -117,7 +117,7 @@ export default class HttpAction extends React.Component {
                             <InputField
                                 input={{
                                     value: action.getIn(['arguments', 'url']),
-                                    onChange: v => this._setArgument('url', v)
+                                    onChange: e => this._setArgument('url', e.target.value)
                                 }}
                                 required
                             />
