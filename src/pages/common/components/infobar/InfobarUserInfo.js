@@ -3,6 +3,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
+import {Button} from 'reactstrap'
+
 import InfobarWidgets from './InfobarWidgets'
 import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
 import ProfileImage from './../ProfileImage'
@@ -17,6 +19,12 @@ class InfobarUserInfo extends React.Component {
         user: ImmutablePropTypes.map.isRequired,
         userId: PropTypes.number,
     }
+
+    state = {
+        showAllUserChannels: false,
+    }
+
+    shownUserChannels = 2
 
     getChildContext() {
         const user = this.props.user || fromJS({})
@@ -40,6 +48,10 @@ class InfobarUserInfo extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this._initWidgets(nextProps)
+
+        if (this.props.user.get('id') !== nextProps.user.get('id')) {
+            this.setState({showAllUserChannels: false})
+        }
     }
 
     componentWillUnmount() {
@@ -175,66 +187,88 @@ class InfobarUserInfo extends React.Component {
      * @private
      */
     _renderUserChannels = (channels = fromJS([])) => {
-        return channels
-            .map((channel, idx) => {
-                let props = null
-                let addressComponent = null
-                const address = channel.get('address', '')
+        channels = channels
+            .filter(channel => !['facebook', 'chat'].includes(channel.get('type'))) // hide chats and facebook
+            .sort((a, b) => a.get('address', '').toLowerCase() > b.get('address', '').toLowerCase() ? 1 : -1)
+            .sort((a, b) => a.get('type') > b.get('type') ? 1 : -1)
 
-                if (!address) {
-                    return null
+        const hasMoreChannels = !this.state.showAllUserChannels && channels.size > this.shownUserChannels
+
+        if (!this.state.showAllUserChannels) {
+            channels = channels.take(this.shownUserChannels)
+        }
+
+        const list = channels.map((channel, idx) => {
+            let props = null
+            let addressComponent = null
+            const address = channel.get('address') || ''
+
+            if (!address) {
+                return null
+            }
+
+            switch (channel.get('type')) {
+                case 'email':
+                    props = {
+                        href: `mailto:${address}`
+                    }
+                    break
+                case 'twitter':
+                    props = {
+                        href: `https://twitter.com/${address}`,
+                        target: '_blank'
+                    }
+                    break
+                case 'phone':
+                    // remove dots and spaces so that some extensions recognize the address as a tel number
+                    props = {
+                        href: `tel:${address.replace(/\./g, '').replace(/ /g, '')}`
+                    }
+                    break
+                default:
+                    props = null
+            }
+
+            if (props) {
+                addressComponent = <a {...props}>{address}</a>
+            } else {
+                addressComponent = <span>{address}</span>
+            }
+
+            const iconClass = USER_CHANNEL_CLASS[channel.get('type')]
+
+            if (!iconClass) {
+                return null
+            }
+
+            return (
+                <p
+                    key={idx}
+                    className="user-channel"
+                >
+                    <i className={iconClass} />
+                    {addressComponent}
+                </p>
+            )
+        })
+
+        return (
+            <div>
+                {list}
+                {
+                    hasMoreChannels && (
+                        <Button
+                            color="link"
+                            onClick={() => this.setState({showAllUserChannels: true})}
+                            style={{paddingLeft: 0}}
+                        >
+                            Show more
+                            <i className="fa fa-fw fa-caret-down ml-2" />
+                        </Button>
+                    )
                 }
-
-                switch (channel.get('type')) {
-                    case 'email':
-                        props = {
-                            href: `mailto:${address}`
-                        }
-                        break
-                    case 'twitter':
-                        props = {
-                            href: `https://twitter.com/${address}`,
-                            target: '_blank'
-                        }
-                        break
-                    case 'facebook':
-                        props = {
-                            href: `https://facebook.com/${address}`,
-                            target: '_blank'
-                        }
-                        break
-                    case 'phone':
-                        // remove dots and spaces so that some extensions recognize the address as a tel number
-                        props = {
-                            href: `tel:${address.replace(/\./g, '').replace(/ /g, '')}`
-                        }
-                        break
-                    default:
-                        props = null
-                }
-
-                if (props) {
-                    addressComponent = <a {...props}>{address}</a>
-                } else {
-                    addressComponent = <span>{address}</span>
-                }
-
-                const iconClass = USER_CHANNEL_CLASS[channel.get('type')]
-
-                if (!iconClass) {
-                    return null
-                }
-
-                return (
-                    <p
-                        key={idx}
-                        className="user-channel"
-                    >
-                        <i className={iconClass} />
-                        {addressComponent}
-                    </p>
-                )
-            })
+            </div>
+        )
     }
 
     /**
@@ -320,7 +354,7 @@ InfobarUserInfo.propTypes = {
 
 InfobarUserInfo.defaultProps = {
     isRequired: false,
-    user: fromJS({})
+    user: fromJS({}),
 }
 
 const mapStateToProps = (state) => ({
