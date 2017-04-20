@@ -66,7 +66,7 @@ const APPLY_MACRO_ACTION_DEFAULT = {
 }
 
 const ASSIGN_USER_ACTION_DEFAULT = {
-    assignee_user: '0' // means unassigned
+    assignee_user: '' // means unassigned
 }
 
 export const ACTION_DEFAULT_STATE = {
