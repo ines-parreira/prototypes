@@ -17,14 +17,14 @@ const NavLink = (props) => {
         url = url.slice(0, -1)
     }
 
-    const className = classnames('item', {
-        active: window.location.pathname.includes(url),
+    const className = classnames('dropdown-item', {
+        current: window.location.pathname.includes(url),
     })
 
     return (
         <Link
-            className={className}
             {...props}
+            className={className}
         />
     )
 }
@@ -107,11 +107,12 @@ class Navbar extends React.Component {
                         <i className="fa fa-ellipsis-h" />
                     </DropdownToggle>
                     <DropdownMenu>
-                        <DropdownItem>
-                            <Link to="/app/settings/profile">
-                                <i className="fa fa-fw fa-user mr-2" />
-                                Your profile
-                            </Link>
+                        <DropdownItem
+                            tag={NavLink}
+                            to="/app/settings/profile"
+                        >
+                            <i className="fa fa-fw fa-user mr-2" />
+                            Your profile
                         </DropdownItem>
                         <DropdownItem>
                             <a href="/logout">
