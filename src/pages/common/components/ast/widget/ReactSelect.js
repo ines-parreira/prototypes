@@ -39,11 +39,22 @@ export default class Select extends React.Component {
     render() {
         const {value} = this.props
         const options = this._getOptions()
+        // get the longest label option to determine the perfect width of the select
+        const longestOption = [...options]
+            .sort((option1, option2) => option1.label.length - option2.label.length)
+            .slice(-1)[0]
+        // 6: approximate width for a character
+        // 50: padding + width of the arrow of the select
+        let selectWidth = 120
+        if (longestOption && longestOption.label) {
+            selectWidth = longestOption.label.length * 6 + 50
+        }
+
         return (
             <div
                 style={{
                     display: 'inline-block',
-                    width: '120px',
+                    width: `${selectWidth}px`,
                     verticalAlign: 'middle',
                     paddingBottom: '3px',
                 }}

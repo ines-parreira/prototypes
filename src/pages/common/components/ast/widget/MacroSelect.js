@@ -19,17 +19,29 @@ class MacroSelect extends React.Component {
         }
     }
 
+    // Update the rule with the first macro when macros are fetched
+    componentWillReceiveProps(nextProps) {
+        const {value, onChange} = this.props
+
+        if (!value && !nextProps.macros.isEmpty()) {
+            const firstOption = this._getOptions(nextProps.macros).first()
+            onChange(firstOption.get('value').toString())
+        }
+    }
+
+    _getOptions = (macros = fromJS({})) => {
+        // Filter out macros with external actions
+        return macros
+            .filter(macro => macro.get('actions')
+                .filter(action => getActionTemplate(action.get('name')).execution === 'back')
+                .isEmpty())
+            .map(macro => fromJS({value: macro.get('id'), label: macro.get('name')}))
+            .toList()
+    }
+
     render() {
         const {value, onChange, macros} = this.props
-        let options = fromJS([])
-
-        macros.filter(macro => macro.get('actions')
-                // Filter out macros with external actions
-                .filter(action => getActionTemplate(action.get('name')).execution === 'back')
-                .isEmpty()
-            ).forEach(macro => {
-                options = options.push(fromJS({value: macro.get('id'), label: macro.get('name')}))
-            })
+        const options = this._getOptions(macros)
 
         if (options.isEmpty()) {
             return (
@@ -43,7 +55,7 @@ class MacroSelect extends React.Component {
             <Select
                 value={value}
                 onChange={onChange}
-                options={options.toJS() || []}
+                options={options.toJS()}
             />
         )
     }

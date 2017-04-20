@@ -38,7 +38,7 @@ export default class RulesView extends React.Component {
         const {actions, rules} = this.props
 
         return (
-            <div className="view">
+            <div>
                 <PageHeader title="Rules">
                     <button
                         className="ui right floated positive button"

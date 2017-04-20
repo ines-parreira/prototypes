@@ -1,7 +1,55 @@
 import React from 'react'
 import classnames from 'classnames'
 
+import {isFunction as _isFunction} from 'lodash'
+import ErrorMessage from '../../../../common/components/ErrorMessage'
 import ActionSelect from './ActionSelect'
+import {isEmailList, findProperty} from '../../../../../utils'
+
+export function validateEmailList(value, schemas) {
+    const reAstVar = /{([\w\.]+)}/g
+    let emailList = value
+
+    // verify that all template variables are email addresses
+    // if yes, we replace variables with valid email addresses to pass the validation
+    if (reAstVar.test(value)) {
+        emailList = emailList.replace(reAstVar, (match, path) => {
+            const prop = findProperty(path, schemas, true)
+            if (prop && prop.format === 'email') {
+                return 'placeholder@gorgias.io'
+            }
+        })
+    }
+
+    if (emailList && !isEmailList(emailList)) {
+        return 'One or multiple email addresses are invalid'
+    }
+}
+
+export function validateBody(values) {
+    if (!values.body_text && !values.body_html) {
+        return 'Body text or body HTML must be filled'
+    }
+}
+
+export function validateSendEmail(values) {
+    const errors = []
+
+    if (!values.body_text && !values.body_html) {
+        errors.push('Body text or body HTML must be filled')
+    }
+
+    if (!values.to && !values.cc && !values.bcc) {
+        errors.push('Email must have at least one recipient')
+    }
+    return errors
+}
+
+export function validateTags(values) {
+    if (!values.tags) {
+        return 'Tags cannot be empty'
+    }
+}
 
 export const actionsConfig = {
     notify: {
@@ -20,7 +68,8 @@ export const actionsConfig = {
                 name: 'HTML',
                 widget: 'textarea'
             }
-        }
+        },
+        validate: validateBody
     },
     sendEmail: {
         compact: false,
@@ -29,13 +78,15 @@ export const actionsConfig = {
             to: {
                 name: 'To',
                 placeholder: 'Don\'t forget to add a recipient!',
-                required: true,
+                validate: validateEmailList
             },
             cc: {
-                name: 'Cc'
+                name: 'Cc',
+                validate: validateEmailList
             },
             bcc: {
-                name: 'Bcc'
+                name: 'Bcc',
+                validate: validateEmailList
             },
             subject: {
                 name: 'Subject',
@@ -50,7 +101,8 @@ export const actionsConfig = {
                 placeholder: 'If you don\'t want anything specific here, leave this field blank; ' +
                 'we will automatically generate HTML from the Text.'
             }
-        }
+        },
+        validate: validateSendEmail
     },
     replyToTicket: {
         compact: false,
@@ -65,7 +117,8 @@ export const actionsConfig = {
                 name: 'HTML*',
                 widget: 'textarea'
             }
-        }
+        },
+        validate: validateBody
     },
     applyMacro: {
         compact: true,
@@ -74,10 +127,12 @@ export const actionsConfig = {
     addTags: {
         compact: true,
         name: 'Add tags',
+        validate: validateTags
     },
     setTags: {
         compact: true,
         name: 'Set tags',
+        validate: validateTags
     },
     // setPriority: {
     //     compact: true,
@@ -102,20 +157,44 @@ class Action extends React.Component {
         const {children, value} = this.props
 
         if (!value) {
-            return null
+            return (
+                <ErrorMessage
+                    key="errors"
+                    className="m0i ml10i pv10i"
+                    errors={'An action cannot be empty'}
+                    inline
+                />
+            )
         }
 
         // Determine the display mode
         const config = actionsConfig[value]
-
         if (!config) {
             return null
+        }
+
+        const values = {}
+        let errors = null
+
+        // build an object with the keys and values of the action
+        children.props.properties.forEach(property => {
+            values[property.key.name] = property.value.value
+        })
+
+        if (values && _isFunction(config.validate)) {
+            errors = config.validate(values)
         }
 
         if (config.compact) {
             return [
                 <span key="children">{children}</span>,
-                config.note ? <div className="rule-note" key="note">{config.note}</div> : null
+                config.note ? <div className="rule-note" key="note">{config.note}</div> : null,
+                <ErrorMessage
+                    key="errors"
+                    className="m0i ml15i p10i"
+                    errors={errors}
+                    inline
+                />
             ]
         }
 
@@ -129,6 +208,7 @@ class Action extends React.Component {
                 <div className="ui segment">
                     {childrenWithProps}
                     {config.note ? <div className="rule-note">{config.note}</div> : null}
+                    <ErrorMessage errors={errors}/>
                 </div>
             )
         }
@@ -136,6 +216,7 @@ class Action extends React.Component {
             <div className="ui segment">
                 {children}
                 {config.note ? <div className="rule-note">{config.note}</div> : null}
+                <ErrorMessage errors={errors}/>
             </div>
         )
     }

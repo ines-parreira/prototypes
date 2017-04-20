@@ -174,6 +174,7 @@ export default (
                 content: RuleContainer,
                 navbar: RulesNavbarContainer
             }}
+            noContainerWidthLimit
         />
         <Route
             path="stats"

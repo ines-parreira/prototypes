@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import Widget from './Widget'
+import ErrorMessage from '../../../common/components/ErrorMessage'
 
 /*
  interface Literal <: Node, Expression {
@@ -20,6 +21,14 @@ const Literal = ({ value, rule, actions, parent, leftsiblings, schemas }) => {
                 schemas={schemas}
                 leftsiblings={leftsiblings}
             />
+            {value === '' && (
+                <ErrorMessage
+                    key="errors"
+                    className="m0i ml15i p10i"
+                    errors={'This field cannot be empty'}
+                    inline
+                />
+            )}
         </span>
     )
 }

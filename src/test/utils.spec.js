@@ -4,6 +4,7 @@ import {fromJS} from 'immutable'
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
 import {ContentState} from 'draft-js'
+import schemasJSON from '../fixtures/openapi'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -101,16 +102,19 @@ describe('global utils', () => {
             '1234567890@example.com',
             'email@example-one.com',
             '_______@example.com',
+            '-------@example.com',
             'email@example.name',
             'email@example.museum',
             'email@example.co.jp',
             'firstname-lastname@example.com',
-            'test@localhost'
         ]
 
         const incorrect = [
             'plainaddress',
-            '@example.com'
+            'hello@example',
+            'hello@example.',
+            '@example.com',
+            'hello@exam ple.com',
         ]
 
         it('detection OK', () => {
@@ -122,6 +126,52 @@ describe('global utils', () => {
         it('detection KO', () => {
             incorrect.forEach((input) => {
                 expect(utils.isEmail(input)).toBe(false)
+            })
+        })
+    })
+
+    describe('is email list', () => {
+        const correct = [
+            'email@example.com',
+            'firstname.lastname@example.com',
+            'email@subdomain.example.com',
+            'firstname+lastname@example.com',
+            'email@123.123.123.123',
+            '1234567890@example.com',
+            'email@example-one.com',
+            '_______@example.com',
+            '-------@example.com',
+            'email@example.name',
+            'email@example.museum',
+            'email@example.co.jp',
+            'firstname-lastname@example.com',
+            'test@dev.exam-ple.com',
+            'test@dev.example.com, 1234567890@example.com',
+            'test@dev.example.com, 1234567890@example.com,'
+        ]
+
+        const incorrect = [
+            null,
+            undefined,
+            '',
+            'plainaddress',
+            '@example.com',
+            'hello@examp le.com',
+            ',email@example.com',
+            'email@example.com, @example.com,,',
+            'email@example.com, @example.com, email@example.com',
+            'email@example.com, , email@example.com,',
+        ]
+
+        it('detection OK', () => {
+            correct.forEach((input) => {
+                expect(utils.isEmailList(input)).toBe(true)
+            })
+        })
+
+        it('detection KO', () => {
+            incorrect.forEach((input) => {
+                expect(utils.isEmailList(input)).toBe(false)
             })
         })
     })
@@ -269,6 +319,56 @@ describe('global utils', () => {
             inputs.forEach((input) => {
                 expect(utils.humanizeString(input.value)).toBe(input.expect)
             })
+        })
+    })
+
+    describe('resolvePropertyName', () => {
+        it('should resolve property name', () => {
+            expect(utils.resolvePropertyName('Attachment')).toEqual('Attachment')
+            expect(utils.resolvePropertyName('Widget')).toEqual('Widget')
+            expect(utils.resolvePropertyName('View')).toEqual('View')
+            expect(utils.resolvePropertyName('UserSetting')).toEqual('UserSetting')
+            expect(utils.resolvePropertyName('UserConnection')).toEqual('UserConnection')
+            expect(utils.resolvePropertyName('ViewCount')).toEqual('ViewCount')
+            expect(utils.resolvePropertyName('User')).toEqual('User')
+            expect(utils.resolvePropertyName('Ticket')).toEqual('Ticket')
+            expect(utils.resolvePropertyName('Macro')).toEqual('Macro')
+            expect(utils.resolvePropertyName('Account')).toEqual('Account')
+            expect(utils.resolvePropertyName('UserAuth')).toEqual('UserAuth')
+            expect(utils.resolvePropertyName('IntegrationSmooch')).toEqual('IntegrationSmooch')
+            expect(utils.resolvePropertyName('Integration')).toEqual('Integration')
+            expect(utils.resolvePropertyName('Role')).toEqual('Role')
+            expect(utils.resolvePropertyName('Action')).toEqual('Action')
+            expect(utils.resolvePropertyName('UserChannel')).toEqual('UserChannel')
+            expect(utils.resolvePropertyName('SourceAddress')).toEqual('SourceAddress')
+            expect(utils.resolvePropertyName('IntegrationMapping')).toEqual('IntegrationMapping')
+            expect(utils.resolvePropertyName('IntegrationFacebook')).toEqual('IntegrationFacebook')
+            expect(utils.resolvePropertyName('Event')).toEqual('Event')
+            expect(utils.resolvePropertyName('Tag')).toEqual('Tag')
+            expect(utils.resolvePropertyName('Source')).toEqual('Source')
+            expect(utils.resolvePropertyName('CustomerRating')).toEqual('CustomerRating')
+            expect(utils.resolvePropertyName('IntegrationHTTP')).toEqual('IntegrationHTTP')
+            expect(utils.resolvePropertyName('Rule')).toEqual('Rule')
+
+            expect(utils.resolvePropertyName('Message')).toEqual('TicketMessage')
+        })
+    })
+
+    describe('findProperty', () => {
+        const schemas = fromJS(schemasJSON)
+
+        it('should find property (always use ref)', () => {
+            expect(utils.findProperty('ticket.tags.name', schemas, true))
+                .toEqual(schemas.getIn(['definitions', 'Tag', 'properties', 'name']).toJS())
+        })
+
+        it('should find property (not always use ref)', () => {
+            expect(utils.findProperty('ticket.requester.id', schemas))
+                .toEqual(schemas.getIn(['definitions', 'User', 'properties', 'id']).toJS())
+            expect(utils.findProperty('message.source.from.address', schemas))
+                .toEqual(schemas.getIn(['definitions', 'SourceAddress', 'properties', 'address']).toJS())
+            expect(utils.findProperty('ticket.tags.name', schemas))
+                .toEqual(schemas.getIn(['definitions', 'Ticket', 'properties', 'tags']).toJS())
         })
     })
 })

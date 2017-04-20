@@ -57,7 +57,29 @@ export function isEmail(string) {
         return false
     }
 
-    return /[^@]+@[^@]+/i.test(string)
+    return /^[\w\.\-\+]+@[\w\.\-]+\.\w+$/i.test(string)
+}
+
+/**
+ * Validate if string is a list of emails
+ * @param string
+ * @param delimiter
+ * @returns {boolean}
+ */
+export function isEmailList(string, delimiter = ',') {
+    if (!string) {
+        return false
+    }
+
+    const addresses = string.trim().split(delimiter)
+
+    // remove the last address if it's empty.
+    // it happens if the list of emails ends with a comma.
+    if (addresses.slice(-1)[0] === '') {
+        addresses.pop()
+    }
+
+    return addresses.every(address => isEmail(address.trim()))
 }
 
 export function formatDatetime(datetime, timezone, format = 'calendar') {
@@ -141,12 +163,36 @@ export function ticketSourceTypes(messages) {
     return _uniq(_compact(sources))
 }
 
-// given a field path. Ex: ticket.requester.id and OpenID schemas => resolve the last property
-export function findProperty(field, schemas) {
-    const parts = field.split('.')
+export function resolvePropertyName(name = '') {
+    switch (name) {
+        case 'Message':
+            return 'TicketMessage'
+        default:
+            return name
+    }
+}
 
-    let def = schemas.getIn(['definitions', _upperFirst(parts.shift())])
+/**
+ * Find API spec data of the last property of the given field
+ *
+ * @param {String} field the field path. E.g: ticket.requester.id
+ * @param {Object} schemas OpenID Schemas
+ * @param {Boolean} alwaysRef always use `$ref` of each property to resolve field
+ *     E.g:
+ *      true: return properties of `User.id` because `requester` is a `User`
+ *      false: return properties of `ticket.requester.id` field
+ * @returns {Object} API spec data of the last property
+ */
+export function findProperty(field, schemas, alwaysRef = false) {
+    const parts = field.split('.')
+    const firstPart = resolvePropertyName(_upperFirst(parts.shift()))
+    const definitions = schemas.get('definitions')
+    let def = definitions.get(firstPart)
     let prop
+
+    if (!def) {
+        return null
+    }
 
     while (parts.length !== 0) {
         prop = def.getIn(['properties', parts.shift()])
@@ -159,16 +205,14 @@ export function findProperty(field, schemas) {
 
         // if the current nested property has a `meta` field,
         // then we use it instead of the `meta` of it's definition
-        if (prop.meta) {
+        if (parts.length === 1 && !alwaysRef && prop.meta) {
             break
         }
+
+        const subDef = prop.$ref || (prop.items ? prop.items.$ref : null)
         // if we have a ref then we need to redo the whole definition thing
-        if (typeof prop.$ref !== 'undefined') {
-            def = schemas.getIn(['definitions', prop.$ref.replace('#/definitions/', '')])
-        } else if (prop.type === 'array') {
-            if (typeof prop.items.$ref !== 'undefined') {
-                def = schemas.getIn(['definitions', prop.items.$ref.replace('#/definitions/', '')])
-            }
+        if (subDef) {
+            def = definitions.get(subDef.replace('#/definitions/', ''))
         }
     }
 

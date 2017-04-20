@@ -10,7 +10,8 @@ import classnames from 'classnames'
  */
 export default class ErrorMessage extends React.Component {
     render() {
-        const {errors, isWarning} = this.props
+        const {errors, isWarning, inline, className} = this.props
+        const style = {}
         let hasError = false
         let formattedErrors = errors
 
@@ -31,11 +32,18 @@ export default class ErrorMessage extends React.Component {
             return null
         }
 
+        if (inline) {
+            style.display = 'inline-block'
+        }
+
         return (
-            <div className={classnames('ui message', {
-                error: !isWarning,
-                warning: isWarning,
-            })}>
+            <div
+                style={style}
+                className={classnames(className, 'ui message', {
+                    negative: !isWarning,
+                    warning: isWarning,
+                })}
+            >
                 {formattedErrors}
             </div>
         )
@@ -45,6 +53,8 @@ export default class ErrorMessage extends React.Component {
 ErrorMessage.propTypes = {
     errors: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     isWarning: PropTypes.bool.isRequired,
+    inline: PropTypes.bool,
+    className: PropTypes.string
 }
 
 ErrorMessage.defaultProps = {

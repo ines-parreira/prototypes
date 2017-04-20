@@ -1,7 +1,7 @@
 import React from 'react'
-
+import _isFunction from 'lodash/isFunction'
 import Widget from './Widget'
-
+import ErrorMessage from '../../../common/components/ErrorMessage'
 /*
  interface Property <: Node {
  type: "Property";
@@ -10,18 +10,28 @@ import Widget from './Widget'
  kind: "init" | "get" | "set";
  }
  */
-const Property = ({value, actions, leftsiblings, parent, rule, schemas, config}) => (
-    <Widget
-        value={value.value}
-        type={config ? config.widget : null}
-        parent={parent.push('value', 'value')}
-        leftsiblings={leftsiblings}
-        actions={actions}
-        rule={rule}
-        schemas={schemas}
-        config={config}
-    />
-)
+const Property = ({value, actions, leftsiblings, parent, rule, schemas, config = {}}) => {
+    let errors = null
+
+    if (value.value && _isFunction(config.validate)) {
+        errors = config.validate(value.value, schemas)
+    }
+    return (
+        <div className="field">
+            <Widget
+                value={value.value}
+                type={config.widget}
+                parent={parent.push('value', 'value')}
+                leftsiblings={leftsiblings}
+                actions={actions}
+                rule={rule}
+                schemas={schemas}
+                config={config}
+            />
+            <ErrorMessage errors={errors}/>
+        </div>
+    )
+}
 
 Property.propTypes = {
     rule: React.PropTypes.object.isRequired,
