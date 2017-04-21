@@ -150,7 +150,10 @@ export default class Page extends React.Component {
 
         return (
             <div className={css.page}>
-                <div className="container-padding">
+                <div
+                    className="container-padding"
+                    style={{borderBottom: '1px solid #D5D7D7'}}
+                >
                     <Header
                         isSearch={isSearch}
                         isUpdate={isUpdate}
@@ -158,7 +161,7 @@ export default class Page extends React.Component {
                         type={type}
                     />
                 </div>
-                <div className={classnames(css.table, 'container-padding')}>
+                <div className={classnames(css.table, 'container-padding', 'mt-2')}>
                     {this._renderTable()}
                 </div>
             </div>

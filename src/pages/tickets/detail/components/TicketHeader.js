@@ -40,7 +40,7 @@ export default class TicketHeader extends React.Component {
         const isUpdate = !!ticket.get('id')
 
         return (
-            <div className="ticket-header">
+            <div className="ticket-header mb-2">
                 <EditableTitle
                     className="mb-2"
                     title={ticket.get('subject')}

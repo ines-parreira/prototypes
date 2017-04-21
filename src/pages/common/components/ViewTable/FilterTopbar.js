@@ -127,7 +127,7 @@ class FilterTopbar extends React.Component {
         }
 
         return (
-            <Card>
+            <Card className="mt-2">
                 <CardBlock className="filter-topbar-content">
                     <Filters
                         view={activeView}

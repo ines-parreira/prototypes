@@ -183,7 +183,7 @@ class Header extends React.Component {
                         />
                     </div>
 
-                    <div className="clearfix d-flex flex-row align-items-center mb-2">
+                    <div className="clearfix d-flex flex-row align-items-center">
                         {
                             isSearch ? (
                                     <EditableTitle

@@ -114,6 +114,7 @@ export class TicketView extends React.Component {
                     className={classnames({
                         'mt-3': isCreating,
                     })}
+                    style={{borderBottom: '1px solid #D5D7D7'}}
                 >
                     <Timeline
                         actions={this.props.actions.ticket}
