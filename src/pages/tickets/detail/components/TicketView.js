@@ -46,14 +46,6 @@ export class TicketView extends React.Component {
         this.props.submit(...this.statusParams)
     }
 
-    _renderMessages = (isCreating = false) => {
-        if (!isCreating) {
-            return (
-                <TicketBody />
-            )
-        }
-    }
-
     _renderCollisionDetection = () => {
         const {agentsViewing} = this.props
 
@@ -172,8 +164,16 @@ export class TicketView extends React.Component {
                     {this._renderCollisionDetection()}
                 </div>
 
-                <div className="ticket-content">
-                    {this._renderMessages(isCreating)}
+                <div
+                    className={classnames('ticket-content', {
+                        'mt-3': isCreating,
+                    })}
+                >
+                    {
+                        !isCreating && (
+                            <TicketBody />
+                        )
+                    }
 
                     <form
                         onSubmit={this._handleSubmit}
