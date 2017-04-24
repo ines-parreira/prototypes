@@ -114,11 +114,12 @@ class Navbar extends React.Component {
                             <i className="fa fa-fw fa-user mr-2" />
                             Your profile
                         </DropdownItem>
-                        <DropdownItem>
-                            <a href="/logout">
-                                <i className="fa fa-fw fa-sign-out mr-2" />
-                                Log out
-                            </a>
+                        <DropdownItem
+                            tag="a"
+                            href="/logout"
+                        >
+                            <i className="fa fa-fw fa-sign-out mr-2" />
+                            Log out
                         </DropdownItem>
                     </DropdownMenu>
                 </UncontrolledDropdown>
