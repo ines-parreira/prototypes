@@ -260,12 +260,11 @@ export function fetchPage(page, discreet = false) {
         // when a view is dirty, just send the whole view data rather than just the id
         // this will allow us to test a view before submitting it to the DB
         if (isDirty) {
-            promise = axios.put(`/api/${viewConfig.get('api')}/view/`, {
+            promise = axios.put(`/api/${viewConfig.get('api')}/view/?page=${page}`, {
                 view: activeView
                     .delete('dirty')
                     .delete('editMode')
-                    .toJS(),
-                page
+                    .toJS()
             })
         } else {
             promise = axios.get(`/api/${viewConfig.get('api')}/`, {
