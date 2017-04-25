@@ -1,13 +1,32 @@
 import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
 import classnames from 'classnames'
 import {Badge, Button} from 'reactstrap'
+import {connect} from 'react-redux'
+import {Link, browserHistory, withRouter} from 'react-router'
+import {notify} from '../../../../../state/notifications/actions'
 
 import IntegrationList from '../IntegrationList'
 
-export default class SmoochIntegrationList extends React.Component {
+class SmoochIntegrationList extends React.Component {
     _onLogin = () => {
         window.location.href = this.props.redirectUri
+    }
+
+    componentDidMount() {
+        // display message from url
+        const {
+            message,
+            message_type: type = 'info'
+        } = this.props.location.query
+
+        if (message) {
+            this.props.notify({
+                type,
+                title: message.replace(/\+/g, ' ')
+            })
+            // remove error from url
+            browserHistory.push(window.location.pathname)
+        }
     }
 
     render() {
@@ -97,6 +116,10 @@ export default class SmoochIntegrationList extends React.Component {
 SmoochIntegrationList.propTypes = {
     integrations: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    notify: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
     redirectUri: PropTypes.string.isRequired
 }
+
+export default withRouter(connect(null, {notify})(SmoochIntegrationList))
