@@ -1,4 +1,6 @@
 import React, {PropTypes} from 'react'
+import {Button} from 'reactstrap'
+
 import Popover from './Popover'
 
 class AddLink extends React.Component {
@@ -66,14 +68,15 @@ class AddLink extends React.Component {
                         onKeyDown={this._onKeyDown}
                         autoFocus
                     />
-                    <button
-                        className="ui small green button ml5i"
+                    <Button
                         type="button"
+                        color="primary"
+                        className="ml-2"
                         disabled={!this.state.url}
                         onClick={this._addLink}
                     >
                         Insert
-                    </button>
+                    </Button>
                 </div>
             </Popover>
         )

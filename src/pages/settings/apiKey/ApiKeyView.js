@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Clipboard from 'clipboard'
+import {Button} from 'reactstrap'
 
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 
@@ -43,16 +44,16 @@ class ApiKeyView extends React.Component {
                         value={apiKey}
                         readOnly
                     />
-                    <button
+
+                    <Button
                         id="copyApiKey"
-                        className="ui light blue right labeled icon button"
+                        type="button"
+                        color="info"
                         data-clipboard-target="#apiKey"
                     >
-                        <i className="copy icon" />
-                        {
-                            this.state.isCopied ? 'COPIED!' : 'COPY'
-                        }
-                    </button>
+                        <i className="copy icon mr-2" />
+                        {this.state.isCopied ? 'COPIED!' : 'COPY'}
+                    </Button>
                 </div>
             </div>
         )

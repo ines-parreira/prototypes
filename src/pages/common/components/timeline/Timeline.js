@@ -38,7 +38,7 @@ export default class Timeline extends React.Component {
                             }
 
                             return null
-                        })
+                        }).toList()
                     }
                 </div>
             </div>

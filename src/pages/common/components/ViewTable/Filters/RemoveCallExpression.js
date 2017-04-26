@@ -11,7 +11,7 @@ export default class RemoveCallExpression extends React.Component {
 
         return (
             <i
-                className="fa fa-fw fa-times text-danger remove clickable"
+                className="fa fa-fw fa-times text-danger clickable"
                 onClick={() => onClick(index)}
             />
         )

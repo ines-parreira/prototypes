@@ -1,4 +1,5 @@
 import React from 'react'
+import {Button} from 'reactstrap'
 
 import Widget from './Widget'
 
@@ -14,12 +15,13 @@ const Identifier = ({name, parent, rule, actions, schemas, leftsiblings}) => {
     switch (name) {
         case 'Action':
             return (
-                <button
-                    className="ui orange button d-inline"
+                <Button
                     type="button"
+                    color="warning"
+                    className="d-inline"
                 >
                     Take action
-                </button>
+                </Button>
             )
         case 'list_of_actions':
             return <span />

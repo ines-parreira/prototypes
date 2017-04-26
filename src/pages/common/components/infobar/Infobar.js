@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {browserHistory} from 'react-router'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
+import {Button, UncontrolledTooltip} from 'reactstrap'
 
 import InfobarLayout from './InfobarLayout'
 import InfobarUserInfo from './InfobarUserInfo'
@@ -146,22 +147,28 @@ class Infobar extends React.Component {
         return (
             <div className="infobar-footer">
                 <div>
-                    <button
-                        className={classnames('ui green small button', {
-                            loading: isSavingWidgets
+                    <Button
+                        type="button"
+                        color="primary"
+                        className={classnames('mr-2', {
+                            'btn-loading': isSavingWidgets,
                         })}
                         disabled={isSavingWidgets || !isDirty}
                         onClick={this._saveWidgets}
                     >
                         Save changes
-                    </button>
-                    <button
-                        className="ui small button"
+                    </Button>
+                    <Button
+                        type="button"
+                        color="secondary"
+                        className={classnames({
+                            'btn-loading': isSavingWidgets,
+                        })}
                         disabled={isSavingWidgets || !isDirty}
                         onClick={this._cancelWidgetsUpdates}
                     >
                         Cancel
-                    </button>
+                    </Button>
                 </div>
             </div>
         )
@@ -307,6 +314,7 @@ class Infobar extends React.Component {
                 <div className="infobar-content">
                     <div className="infobar-search-wrapper d-flex align-items-center justify-content-between">
                         <Search
+                            className="mr-2"
                             placeholder="Search users by email, name or phone number..."
                             bindKey
                             shouldResetInput={this.state.data.get('shouldResetSearch')}
@@ -317,20 +325,24 @@ class Infobar extends React.Component {
                             style={{maxWidth: 'none'}}
                         />
 
-                        <button
-                            className={classnames('ui icon button icon-edit-mode', {
-                                active: isEditing,
-                                disabled: !canEditWidgets
-                            })}
+                        <Button
+                            type="button"
+                            id="toggle-widgets-edition-button"
+                            color="secondary"
+                            active={isEditing}
+                            disabled={!canEditWidgets}
                             onClick={() => {
-                                if (canEditWidgets) {
-                                    this._toggleEditionMode(!isEditing)
-                                }
+                                this._toggleEditionMode(!isEditing)
                             }}
-                            title="Manage widgets"
                         >
-                            <i className="setting icon" />
-                        </button>
+                            <i className="fa fa-fw fa-cog" />
+                        </Button>
+                        <UncontrolledTooltip
+                            placement="left"
+                            target="toggle-widgets-edition-button"
+                        >
+                            {isEditing ? 'Leave widgets edition' : 'Edit widgets'}
+                        </UncontrolledTooltip>
                     </div>
                     <div className="infobar-box">
                         {content}

@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import _get from 'lodash/get'
+import {Button} from 'reactstrap'
+
 import {getActionTemplate} from '../../../../utils'
 import Modal from '../../../common/components/Modal'
 import {JSONTree} from './../../../common/components/JSONTree'
@@ -103,17 +105,17 @@ export default class TicketMessageActions extends React.Component {
             <div className="ticket-message-actions">
                 {
                     backActions.map((action, index) => {
-                        let color = 'olive'
+                        let color = 'success'
                         let icon = 'circle check'
 
                         if (action.status === 'error') {
-                            color = 'orange'
+                            color = 'danger'
                             icon = 'circle remove'
                         } else if (action.status === 'pending') {
-                            color = 'yellow'
+                            color = 'secondary'
                             icon = 'circle'
                         } else if (action.status === 'canceled') {
-                            color = 'red'
+                            color = 'danger'
                             icon = 'ban'
                         }
 
@@ -124,10 +126,14 @@ export default class TicketMessageActions extends React.Component {
                                 key={`message-actions-${index}`}
                                 className="ticket-message-actions-item"
                             >
-                                <button className={`ui icon labeled ${color} label`} onClick={this._openModal(index)}>
+                                <Button
+                                    type="button"
+                                    color={color}
+                                    onClick={this._openModal(index)}
+                                >
                                     <i className={`icon ${icon}`} />
                                     {action.title}
-                                </button>
+                                </Button>
 
                                 {
                                     contentType && (

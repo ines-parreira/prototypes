@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
-import classNames from 'classnames'
+import classnames from 'classnames'
+import {Button} from 'reactstrap'
 
 import {InputField} from '../../../common/forms'
 import formSender from '../../../common/utils/formSender'
@@ -70,15 +71,17 @@ class ChangePasswordView extends React.Component {
                         component={InputField}
                     />
 
-                    <div className="field">
-
-                        <button
-                            className={classNames('ui', 'green', 'button', {loading: isLoading})}
+                    <div>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            className={classnames({
+                                'btn-loading': isLoading,
+                            })}
                             disabled={isLoading || invalid || pristine}
                         >
-                            Save changes
-                        </button>
-
+                            Save
+                        </Button>
                     </div>
                 </form>
             </div>

@@ -139,20 +139,24 @@ class ShopifyIntegrationDetail extends React.Component {
                             isUpdate
                             && needScopeUpdate
                             && (
-                                <button
+                                <Button
                                     type="button"
-                                    className="ui light blue button"
+                                    color="info"
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
+                                    })}
                                     disabled={isSubmitting}
-                                    onClick={() => this._updateAppPermissions()}
+                                    onClick={this._updateAppPermissions}
                                 >
                                     Update app permissions
-                                </button>
+                                </Button>
                             )
                         }
 
                         {
                             !isUpdate && (
                                 <Button
+                                    type="submit"
                                     color="primary"
                                     className={classNames('mr-2', {
                                         'btn-loading': ctaIsLoading,

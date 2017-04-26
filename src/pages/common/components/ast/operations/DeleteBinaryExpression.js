@@ -3,19 +3,16 @@ import React from 'react'
 class DeleteBinaryExpression extends React.Component {
 
     _handleClick = () => {
-        const { actions, rule, parent } = this.props
+        const {actions, rule, parent} = this.props
         actions.rules.modifyCodeast(rule.get('id'), parent, null, 'DELETE_BINARY_EXPRESSION')
     }
 
     render() {
         return (
-            <button
-                type="button"
-                className="ui circular icon mini red button delete-binaryexpression"
+            <i
+                className="fa fa-fw fa-times text-danger remove clickable delete-binaryexpression"
                 onClick={this._handleClick}
-            >
-                <i className="remove icon" />
-            </button>
+            />
         )
     }
 

@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import {Button} from 'reactstrap'
 
 import * as UsersActions from '../../../state/users/actions'
 
@@ -94,12 +95,13 @@ class UserDetailContainer extends React.Component {
                 <div className="flex-spaced-row">
                     <h1>{activeUser.get('name')}</h1>
 
-                    <button
-                        className="ui tiny green button"
+                    <Button
+                        type="button"
+                        color="success"
                         onClick={this._openModal}
                     >
                         Edit user
-                    </button>
+                    </Button>
                 </div>
 
                 {this._renderTimeline()}

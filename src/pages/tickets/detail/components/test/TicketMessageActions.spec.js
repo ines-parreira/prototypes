@@ -57,34 +57,4 @@ describe('TicketMessageActions component', () => {
         const action3Title = component.props.children[2].props.children[0].props.children[1]
         expect(action3Title).toBe('action3')
     })
-
-    it('should display icons and label colors depending on actions\' statuses', () => {
-        // Pending
-        const action1Label = component.props.children[0].props.children[0]
-        expect(action1Label.props.className).toContain('yellow')
-
-        const action1Icon = action1Label.props.children[0]
-        expect(action1Icon.props.className).toBe('icon circle')
-
-        // Error
-        const action2Label = component.props.children[1].props.children[0]
-        expect(action2Label.props.className).toContain('orange')
-
-        const action2Icon = action2Label.props.children[0]
-        expect(action2Icon.props.className).toBe('icon circle remove')
-
-        // Canceled
-        const action3Label = component.props.children[2].props.children[0]
-        expect(action3Label.props.className).toContain('red')
-
-        const action3Icon = action3Label.props.children[0]
-        expect(action3Icon.props.className).toBe('icon ban')
-
-        // Success
-        const action4Label = component.props.children[3].props.children[0]
-        expect(action4Label.props.className).toContain('olive')
-
-        const action4Icon = action4Label.props.children[0]
-        expect(action4Icon.props.className).toBe('icon circle check')
-    })
 })

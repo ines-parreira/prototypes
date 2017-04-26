@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import {Field, reduxForm} from 'redux-form'
+import {Button} from 'reactstrap'
+
 import {InputField, SelectField} from '../../../forms'
 
 class TooltipWidgetEditField extends React.Component {
@@ -75,24 +77,22 @@ class TooltipWidgetEditField extends React.Component {
                             <option value="boolean">Boolean (true/false)</option>
                             <option value="array">List</option>
                         </Field>
-                        <div className="two fields">
-                            <div className="field">
-                                <button
-                                    className="ui tiny fluid green button"
-                                    type="submit"
-                                >
-                                    Submit
-                                </button>
-                            </div>
-                            <div className="field">
-                                <button
-                                    className="ui tiny fluid basic button"
-                                    type="button"
-                                    onClick={this._closePopup}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
+
+                        <div>
+                            <Button
+                                color="primary"
+                                type="submit"
+                                className="mr-2"
+                            >
+                                Submit
+                            </Button>
+                            <Button
+                                color="secondary"
+                                type="button"
+                                onClick={this._closePopup}
+                            >
+                                Cancel
+                            </Button>
                         </div>
                     </form>
                 </div>

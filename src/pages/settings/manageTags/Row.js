@@ -155,22 +155,25 @@ export default class Row extends Component {
 
                 <td className="manage-tags-table-col-actions">
                     <div className="cell-wrapper manage-tags-table-row-actions">
-                        <button
+                        <Button
                             type="button"
+                            color="info"
                             onClick={this._onEdit}
-                            className="ui light blue basic label manage-tags-action"
+                            className="manage-tags-action mr-2"
                         >
                             Edit
-                        </button>
+                        </Button>
 
-                        <button
+                        <Button
                             id={`remove-button-${row.get('id')}`}
                             type="button"
-                            className="ui light red basic label manage-tags-action"
+                            color="danger"
+                            outline
                             onClick={this._toggleRemoveConfirmation}
+                            className="manage-tags-action"
                         >
                             Delete
-                        </button>
+                        </Button>
                         <Popover
                             placement="bottom"
                             isOpen={this.state.askRemoveConfirmation}
@@ -194,20 +197,23 @@ export default class Row extends Component {
                     </div>
 
                     <div className="cell-wrapper manage-tags-table-row-edit-item">
-                        <button
+                        <Button
                             type="button"
+                            color="secondary"
                             onClick={this._onCancel}
-                            className="ui light blue basic label manage-tags-action"
+                            className="manage-tags-action mr-2"
                         >
                             Cancel
-                        </button>
+                        </Button>
 
-                        <button
-                            className="ui light green basic label manage-tags-action"
+                        <Button
+                            type="button"
+                            color="primary"
                             onClick={this._onSave}
+                            className="manage-tags-action"
                         >
-                            Save changes
-                        </button>
+                            Save
+                        </Button>
                     </div>
                 </td>
             </tr>

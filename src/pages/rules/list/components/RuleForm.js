@@ -1,8 +1,7 @@
 import React from 'react'
-
 import {Field, reduxForm, reset} from 'redux-form'
-
-import classNames from 'classnames'
+import classnames from 'classnames'
+import {Button} from 'reactstrap'
 
 import InputField from '../../../common/forms/InputField'
 import TextAreaField from '../../../common/forms/TextAreaField'
@@ -20,10 +19,6 @@ class RuleForm extends React.Component {
 
     render() {
         const {handleSubmit, pristine, submitting, valid} = this.props
-        const submitButtonClassName = classNames('ui positive button', {
-            disabled: submitting || !valid || pristine,
-            loading: submitting,
-        })
 
         return (
             <div>
@@ -32,25 +27,36 @@ class RuleForm extends React.Component {
                         <Field
                             type="text"
                             name="title"
-                            placeholder="Rule name"
+                            label="Rule name"
                             required
                             component={InputField}
                         />
                         <Field
                             type="text"
                             name="description"
-                            placeholder="Description"
+                            label="Description"
                             component={TextAreaField}
                             rows="3"
                         />
                     </div>
                     <div className="actions pull-right mt-3">
-                        <button type="button" className="ui button" onClick={this._handleCancel}>
+                        <Button
+                            className="mr-2"
+                            color="secondary"
+                            type="button"
+                            onClick={this._handleCancel}
+                        >
                             Cancel
-                        </button>
-                        <button type="submit" className={submitButtonClassName}>
-                            Create new rule
-                        </button>
+                        </Button>
+                        <Button
+                            color="primary"
+                            className={classnames({
+                                'btn-loading': submitting,
+                            })}
+                            disabled={submitting || !valid || pristine}
+                        >
+                            Create rule
+                        </Button>
                     </div>
                 </form>
             </div>

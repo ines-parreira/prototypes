@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {hide} from 'react-notification-system-redux'
+import {Button} from 'reactstrap'
 
 import Modal from '../components/Modal'
 
@@ -49,19 +50,17 @@ class ModalNotification extends React.Component {
                 footer={
                     buttons.map((button, index) => {
                         return (
-                            <div
+                            <Button
                                 key={index}
-                                className="actions"
+                                type="button"
+                                onClick={() => {
+                                    this._handleClick(button.onClick)
+                                }}
+                                color={button.color}
+                                className="mr-2"
                             >
-                                <button
-                                    onClick={() => {
-                                        this._handleClick(button.onClick)
-                                    }}
-                                    className={`ui ${button.color} button`}
-                                >
-                                    {button.name}
-                                </button>
-                            </div>
+                                {button.name}
+                            </Button>
                         )
                     })
                 }

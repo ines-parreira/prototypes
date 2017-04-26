@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {Button} from 'reactstrap'
 
 import Modal from '../../../common/components/Modal'
 import PageHeader from '../../../common/components/PageHeader'
@@ -40,12 +41,13 @@ export default class RulesView extends React.Component {
         return (
             <div>
                 <PageHeader title="Rules">
-                    <button
-                        className="ui right floated positive button"
+                    <Button
+                        color="primary"
+                        className="pull-right"
                         onClick={this._showForm}
                     >
                         Create new rule
-                    </button>
+                    </Button>
                 </PageHeader>
                 <div>
                     <p>

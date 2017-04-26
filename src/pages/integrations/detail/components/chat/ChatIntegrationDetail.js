@@ -6,6 +6,7 @@ import {fromJS} from 'immutable'
 import _clone from 'lodash/clone'
 import Clipboard from 'clipboard'
 import {
+    Button,
     UncontrolledTooltip,
     Breadcrumb,
     BreadcrumbItem,
@@ -172,21 +173,24 @@ class ChatIntegrationDetail extends React.Component {
                 <div className={css.snippet}>
                     {
                         dirty && (
-                            <div className={classnames(css.update, 'ui yellow message')}>
-                                <p>
+                            <div
+                                className={classnames(css.update, 'ui yellow message d-flex flex-column justify-content-center')}
+                            >
+                                <div className="d-inline-block">
                                     Save the changes you made to this integration before getting the new code.
 
-                                    <button
+                                    <Button
                                         type="button"
-                                        className={classnames('ui button tiny floated right', {
-                                            loading: isSubmitting
+                                        color="secondary"
+                                        className={classnames('ml-2', {
+                                            'btn-loading': isSubmitting,
                                         })}
                                         onClick={handleSubmit(this._handleSubmit)}
                                         disabled={isSubmitting}
                                     >
                                         Save changes
-                                    </button>
-                                </p>
+                                    </Button>
+                                </div>
                             </div>
                         )
                     }
@@ -199,17 +203,16 @@ class ChatIntegrationDetail extends React.Component {
                         readOnly
                     />
 
-                    <button
+                    <Button
                         id="copy-chat-snippet"
                         type="button"
-                        className={classnames(css.copy, 'ui light blue icon button right labeled')}
+                        color="info"
+                        className={css.copy}
                         data-clipboard-target="#chat-snippet"
                     >
-                        <i className="copy icon" />
-                        {
-                            this.state.isCopied ? 'COPIED!' : 'COPY'
-                        }
-                    </button>
+                        <i className="copy icon mr-2" />
+                        {this.state.isCopied ? 'COPIED!' : 'COPY'}
+                    </Button>
                 </div>
                 <p>
                     This chat is provided through a 3rd party called Smooch, at no additional cost. You can send user
@@ -344,25 +347,30 @@ class ChatIntegrationDetail extends React.Component {
                                             component={ColorField}
                                         />
                                     </div>
-
                                 </div>
 
-                                <button
-                                    className={classnames('ui', 'green', 'button', {loading: isSubmitting})}
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    className={classnames({
+                                        'btn-loading': isSubmitting,
+                                    })}
                                     disabled={isSubmitting}
                                 >
                                     {isUpdate ? 'Save changes' : 'Add new chat'}
-                                </button>
+                                </Button>
 
                                 {
                                     isUpdate && (
-                                        <button
-                                            className="ui basic light red floated right button"
-                                            onClick={() => actions.deleteIntegration(integration)}
+                                        <Button
                                             type="button"
+                                            color="danger"
+                                            outline
+                                            className="pull-right"
+                                            onClick={() => actions.deleteIntegration(integration)}
                                         >
                                             Delete chat
-                                        </button>
+                                        </Button>
                                     )
                                 }
                             </form>

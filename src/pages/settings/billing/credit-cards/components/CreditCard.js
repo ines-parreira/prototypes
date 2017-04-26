@@ -1,16 +1,19 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import {Field, reduxForm} from 'redux-form'
-import classNames from 'classnames'
+import classnames from 'classnames'
+import Card from 'react-credit-card'
+import {Button} from 'reactstrap'
+
 import {InputField} from '../../../../common/forms'
 import {Loader} from '../../../../common/components/Loader'
 import {UPDATE_CREDIT_CARD_FORM} from '../../../../../state/billing/constants'
 import {creditCardNormalizer, creditCardCVCNormalizer, creditCardExpDateNormalizer} from '../utils'
+import {loadScript} from '../../../../../utils'
+
 import css from './CreditCard.less'
-import Card from 'react-credit-card'
 import 'react-credit-card/source/card.css'
 import 'react-credit-card/source/card-types.css'
-import {loadScript} from '../../../../../utils'
 
 // This component is used as "update" and "add" credit card
 // but the logic behind is the same, we just display `add` or `update` on UI
@@ -81,7 +84,7 @@ class CreditCard extends Component {
                     <i className="right angle icon divider" />
                     <a className="section">{action} credit card</a>
                 </div>
-                <h1>{action} Credit card</h1>
+                <h1>{action} credit card</h1>
                 <p>Enter the information of the card you'd like to use.</p>
                 <div className="ui grid">
                     <div className={`height wide column ${css.formWrapper}`}>
@@ -120,12 +123,16 @@ class CreditCard extends Component {
                                 />
                             </div>
                             <div className="field">
-                                <button
-                                    className={classNames('ui', 'green', 'button', {loading: isSubmitting})}
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    className={classnames({
+                                        'btn-loading': isSubmitting,
+                                    })}
                                     disabled={isSubmitting || invalid || pristine}
                                 >
-                                    {action} CARD
-                                </button>
+                                    {action} card
+                                </Button>
                             </div>
                         </form>
                     </div>

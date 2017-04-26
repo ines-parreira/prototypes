@@ -25,8 +25,8 @@ const usageMaxLimitReachedModalNotif = (freeTickets) => ({
     message: `You've used your ${freeTickets} free tickets this month. To keep responding to customers,
                     you need to add a payment method.`,
     buttons: [{
-        name: 'ADD PAYMENT METHOD',
-        color: 'green',
+        name: 'Add payment method',
+        color: 'primary',
         onClick: () => {
             browserHistory.push('/app/settings/billing')
         }
@@ -40,8 +40,8 @@ const accountDeactivatedModalNotif = {
     message: `Your account has been deactivated due to multiple payment failures. 
                     To re-activate your account, please update your payment method.`,
     buttons: [{
-        name: 'UPDATE PAYMENT METHOD',
-        color: 'green',
+        name: 'Update payment method',
+        color: 'primary',
         onClick: () => {
             browserHistory.push('/app/settings/billing')
         }

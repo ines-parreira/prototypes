@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
+import {Button} from 'reactstrap'
+
 import Popover from './Popover'
 import {uploadFiles} from '../../../../../../utils'
 
@@ -122,14 +124,15 @@ class AddImage extends React.Component {
                                     onKeyDown={this._onKeyDown}
                                     autoFocus
                                 />
-                                <button
-                                    className="ui small green button ml5i"
+                                <Button
                                     type="button"
+                                    color="primary"
+                                    className="ml-2"
                                     disabled={!this.state.url}
                                     onClick={this._addImage}
                                 >
                                     Insert
-                                </button>
+                                </Button>
                             </div>
                         )
                 }

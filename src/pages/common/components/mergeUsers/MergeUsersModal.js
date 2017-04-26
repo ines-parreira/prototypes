@@ -2,8 +2,9 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Field, reduxForm, formValueSelector} from 'redux-form'
-import classNames from 'classnames'
-import {UncontrolledTooltip} from 'reactstrap'
+import classnames from 'classnames'
+import {Button, UncontrolledTooltip} from 'reactstrap'
+
 import Modal from '../Modal'
 
 import {JSONTree} from './../JSONTree'
@@ -86,8 +87,6 @@ class MergeUsersModal extends React.Component {
 
     render() {
         const {destinationUser, sourceUser, handleSubmit, isLoading, primaryEmail} = this.props
-
-        const buttonClassName = classNames('ui orange button', {loading: isLoading, disabled: isLoading})
 
         let baseCustomer = destinationUser.get('customer')
         baseCustomer = isCustomerDataValid(baseCustomer) ? baseCustomer.toJS() : {}
@@ -224,15 +223,24 @@ class MergeUsersModal extends React.Component {
                     </div>
 
                     <div className="pull-right buttons-bar">
-                        <div
-                            className="ui basic grey button"
+                        <Button
+                            color="secondary"
+                            type="button"
+                            className="mr-2"
                             onClick={this._toggle}
                         >
                             Cancel
-                        </div>
-                        <button type="submit" className={buttonClassName}>
+                        </Button>
+                        <Button
+                            color="warning"
+                            type="submit"
+                            className={classnames({
+                                'btn-loading': isLoading,
+                            })}
+                            disabled={isLoading}
+                        >
                             Merge users
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </Modal>

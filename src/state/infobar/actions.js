@@ -1,8 +1,10 @@
 import React from 'react'
 import axios from 'axios'
-import {browserHistory} from 'react-router'
+import {Link} from 'react-router'
 import {fromJS} from 'immutable'
 import md5 from 'md5'
+import {Button} from 'reactstrap'
+
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
@@ -173,22 +175,24 @@ export const handleExecutedAction = (response) => ((dispatch) => {
                                     <div>
                                         {
                                             !isCurrentlyOnTicket(response.ticket_id) && (
-                                                <button
-                                                    className="ui tiny button green"
-                                                    onClick={() => browserHistory.push(`/app/ticket/${response.ticket_id}`)}
+                                                <Button
+                                                    tag={Link}
+                                                    color="primary"
+                                                    to={`/app/ticket/${response.ticket_id}`}
                                                 >
                                                     Review ticket
-                                                </button>
+                                                </Button>
                                             )
                                         }
                                     </div>
                                 ) : (
-                                    <button
-                                        className="ui tiny button green"
-                                        onClick={() => browserHistory.push(`/app/user/${response.user_id}`)}
+                                    <Button
+                                        tag={Link}
+                                        color="primary"
+                                        to={`/app/user/${response.user_id}`}
                                     >
                                         Review user
-                                    </button>
+                                    </Button>
                                 )
                         }
                     </div>

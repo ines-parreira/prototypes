@@ -98,6 +98,7 @@ export default class Search extends React.Component {
                         onChange={e => this._handleChange(e.target.value)}
                         autoFocus={this.props.autofocus}
                         disabled={disabled}
+                        style={{zIndex: 1}} // override the zIndex 2 of Bootstrap .form-control class
                     />
                     <InputGroupAddon>
                         <i className="fa fa-fw fa-search" />

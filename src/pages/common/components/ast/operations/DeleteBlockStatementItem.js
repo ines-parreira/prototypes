@@ -3,19 +3,19 @@ import React from 'react'
 export class DeleteBlockStatementItem extends React.Component {
 
     _handleClick = () => {
-        const { actions, rule, parent } = this.props
+        const {actions, rule, parent} = this.props
         actions.rules.modifyCodeast(rule.get('id'), parent, null, 'DELETE')
     }
 
     render() {
         return (
-            <button
-                type="button"
-                className="ui mini circular red icon button delete-blockstatement"
+            <span
+                className="fa-stack clickable delete-blockstatement"
                 onClick={this._handleClick}
             >
-                <i className="remove icon" />
-            </button>
+                <i className="fa fa-circle text-danger fa-stack-2x" />
+                <i className="fa fa-times fa-stack-1x" />
+            </span>
         )
     }
 

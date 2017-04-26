@@ -1,5 +1,7 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
+import {Link, browserHistory} from 'react-router'
+import {fromJS} from 'immutable'
+import {Button} from 'reactstrap'
 
 import _isEmpty from 'lodash/isEmpty'
 import _isNull from 'lodash/isNull'
@@ -8,7 +10,6 @@ import _noop from 'lodash/noop'
 import axios from 'axios'
 
 import * as types from './constants'
-import {fromJS} from 'immutable'
 import {DEFAULT_ACTIONS} from '../../config'
 import {setMacrosVisible} from '../macro/actions'
 import {TICKET_VIEWED} from '../activity/constants'
@@ -472,12 +473,13 @@ export const handleMessageActionError = (ticketId) => (dispatch) => {
                 <div className="buttons">
                     {
                         !isCurrentlyOnTicket(ticketId) && (
-                            <button
-                                className="ui tiny button green"
-                                onClick={() => browserHistory.push(`/app/ticket/${ticketId}`)}
+                            <Button
+                                tag={Link}
+                                color="primary"
+                                to={`/app/ticket/${ticketId}`}
                             >
                                 Review message
-                            </button>
+                            </Button>
                         )
                     }
                 </div>

@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment-timezone'
-import {UncontrolledTooltip} from 'reactstrap'
+import {Button, UncontrolledTooltip} from 'reactstrap'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
 import formSender from '../../../common/utils/formSender'
@@ -163,17 +163,17 @@ class YourProfileView extends React.Component {
                         component={RichTextAreaField}
                     />
 
-                    <div className="field">
-
-                        <button
-                            className={classNames('ui', 'green', 'button', {
-                                loading: loadingUser
+                    <div>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            className={classnames({
+                                'btn-loading': loadingUser,
                             })}
                             disabled={loadingUser}
                         >
-                            Save changes
-                        </button>
-
+                            Save
+                        </Button>
                     </div>
                 </form>
 
@@ -203,15 +203,17 @@ class YourProfileView extends React.Component {
                         </div>
                     </div>
 
-                    <div className="field">
-                        <button
-                            className={classNames('ui', 'green', 'button', {
-                                loading: this.state.loadingPreferences
+                    <div>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            className={classnames({
+                                'btn-loading': this.state.loadingPreferences,
                             })}
                             disabled={this.state.loadingPreferences}
                         >
                             Save preferences
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>

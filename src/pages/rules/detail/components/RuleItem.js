@@ -1,5 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
+import {Button} from 'reactstrap'
 
 import Program from '../../../common/components/ast/Program'
 
@@ -82,10 +83,10 @@ class RuleItem extends React.Component {
         return (
             <div>
                 <a className="ui red ribbon label" title="The code behind the scenes" onClick={this._handleToggleCode}>
-                    <i className="code icon"/> Code
+                    <i className="code icon" /> Code
                 </a>
                 <a className="ui floated right" title="Toggle code" onClick={this._handleToggleCode}>
-                    <i className={toggleClasses}/>
+                    <i className={toggleClasses} />
                 </a>
             </div>
         )
@@ -107,60 +108,72 @@ class RuleItem extends React.Component {
     _renderButtons() {
         const {rule, isDirty} = this.props
 
-        let rmBtn = (
-            <button
-                type="button"
-                className="ui right floated icon basic red button"
-                onClick={this._handleDeactivate}
+        let primaryBtn = (
+            <Button
+                color="primary"
+                type="submit"
+                className="mr-2"
+                disabled={!isDirty}
             >
-                Deactivate Rule
-            </button>
-
+                Save
+            </Button>
         )
         let resetBtn = (
-            <button
+            <Button
+                color="secondary"
                 type="button"
-                className={classNames('ui button', {disabled: !isDirty})}
+                disabled={!isDirty}
                 onClick={this._handleReset}
             >
-                Cancel Changes
-            </button>
+                Cancel changes
+            </Button>
         )
-        let primaryBtn = (
-            <button className={classNames('ui positive button', {disabled: !isDirty})}>
-                Save Changes
-            </button>
+        let rmBtn = (
+            <Button
+                color="warning"
+                type="button"
+                onClick={this._handleDeactivate}
+            >
+                Deactivate rule
+            </Button>
+
         )
 
         if (rule.get('deactivated_datetime')) {
-            rmBtn = (
-                <button
-                    type="button"
-                    className={classNames(
-                        'ui right floated icon basic red button',
-                        {disabled: rule.get('type') === 'system'})
-                    }
-                    onClick={this._handleRemove}
-                >
-                    Delete Rule
-                </button>
-            )
             primaryBtn = (
-                <button
+                <Button
+                    color="primary"
                     type="button"
-                    className="ui positive button"
                     onClick={this._handleActivate}
                 >
-                    Re-Activate
-                </button>
+                    Re-activate
+                </Button>
             )
             resetBtn = null
+            rmBtn = (
+                <Button
+                    color="danger"
+                    outline
+                    type="button"
+                    disabled={rule.get('type') === 'system'}
+                    onClick={this._handleRemove}
+                >
+                    Delete rule
+                </Button>
+            )
         }
+
         return (
             <div className="ui aligned segment">
                 {primaryBtn}
                 {resetBtn}
-                {rmBtn}
+                {
+                    !!rmBtn && (
+                        <div className="pull-right">
+                            {rmBtn}
+                        </div>
+                    )
+                }
             </div>
         )
     }
