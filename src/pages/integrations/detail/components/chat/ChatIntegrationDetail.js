@@ -145,7 +145,7 @@ class ChatIntegrationDetail extends React.Component {
 
         let snippet = `<script src="${window.GORGIAS_ASSETS_URL || window.location.origin}/static/public/js/gorgias-chat.js"></script>\n`
         snippet += '<script>\n'
-        snippet += `document.addEventListener('DOMContentLoaded', function() {\n`
+        snippet += 'document.addEventListener("DOMContentLoaded", function() {\n'
         snippet += `GorgiasChat.init(${cleanOptions})\n`
         snippet += '})\n'
         snippet += '</script>'

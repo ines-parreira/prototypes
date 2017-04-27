@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 import expect from 'expect'
 import * as actions from '../actions'
 import * as types from '../constants'
-import {usersInitial as initialState} from '../reducers'
+import {initialState} from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -16,7 +16,7 @@ describe('actions', () => {
         let mockServer
 
         beforeEach(() => {
-            store = mockStore(initialState)
+            store = mockStore(initialState.toJS())
             mockServer = new MockAdapter(axios)
         })
 

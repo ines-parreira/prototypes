@@ -99,8 +99,8 @@ const usageLimitNotifier = store => next => action => {
 
         // receive current account data up-to-date
         case currentAccountTypes.UPDATE_ACCOUNT_SUCCESS: {
-            const nextIsAccountActive = _action.getIn(['resp',
-                    'deactivated_datetime'], null) === null
+            const nextIsAccountActive = _action
+                .getIn(['resp', 'deactivated_datetime'], null) === null
 
             const nextHasCreditCard = _action.getIn(['resp', 'meta', 'hasCreditCard'])
             const nextHasShopifyBillingActive = _action.getIn(['resp', 'meta', 'shopify_billing', 'active'])

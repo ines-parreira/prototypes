@@ -42,16 +42,16 @@ export default class Pagination extends React.Component {
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={2}
                 onPageChange={this._handlePageClick}
-                containerClassName={"pagination"}
-                breakClassName={"page-item"}
+                containerClassName={'pagination'}
+                breakClassName={'page-item'}
                 breakLabel={<a className="page-link">...</a>}
-                pageClassName={"page-item"}
-                pageLinkClassName={"page-link"}
-                previousClassName={"page-item"}
-                previousLinkClassName={"page-link"}
-                nextClassName={"page-item"}
-                nextLinkClassName={"page-link"}
-                activeClassName={"active"}
+                pageClassName={'page-item'}
+                pageLinkClassName={'page-link'}
+                previousClassName={'page-item'}
+                previousLinkClassName={'page-link'}
+                nextClassName={'page-item'}
+                nextLinkClassName={'page-link'}
+                activeClassName={'active'}
                 {...properties}
             />
         )

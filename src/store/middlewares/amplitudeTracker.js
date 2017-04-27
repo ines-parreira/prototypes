@@ -1,8 +1,6 @@
 import _isUndefined from 'lodash/isUndefined'
 import {fromJS} from 'immutable'
 import {
-    CREATE_NEW_USER_SUCCESS,
-    UPDATE_USER_SUCCESS,
     SUBMIT_CURRENT_USER_SUCCESS
 } from '../../state/users/constants'
 import {
@@ -21,7 +19,6 @@ import {humanizeActionType} from './utils'
 
 // List of actions that are tracked on Amplitude
 const TRACKED_ACTIONS = [
-    CREATE_NEW_USER_SUCCESS,
     CREATE_MACRO_SUCCESS,
     UPDATE_MACRO_SUCCESS,
     DELETE_MACRO_SUCCESS,
@@ -34,7 +31,6 @@ const TRACKED_ACTIONS = [
 
 // List of actions that require an update of user properties on Amplitude
 const CONFIG_ACTIONS = [
-    UPDATE_USER_SUCCESS,
     SUBMIT_CURRENT_USER_SUCCESS,
 ]
 
@@ -79,7 +75,6 @@ const amplitudeTracker = store => next => action => {
         const state = store.getState()
 
         switch (action.type) {
-            case UPDATE_USER_SUCCESS:
             case SUBMIT_CURRENT_USER_SUCCESS:
                 // update information if current user information changes
                 if (state.currentUser.get('id') === action.resp.id) {

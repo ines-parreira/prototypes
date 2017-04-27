@@ -10,47 +10,48 @@ const state = {
                 redirect_uri: 'https://{shop_name}.myshopify.com/admin/oauth/authorize?scope=read_orders%2Cread_customers%2Cwrite_orders%2Cwrite_customers&state=29949774171f2ae73d6ad2c25119f8c9d879fa5dacee1bc4abe3806d7b2f144f&client_id=d783d0d0ded4ab7a13c20f47533819a3&redirect_uri=https%3A%2F%2Facme-louis.ngrok.io%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F'
             }
         },
-        integrations: [{
-            deleted_datetime: null,
-            mappings: [],
-            meta: {},
-            facebook: null,
-            http: {
-                method: 'POST',
-                form: {
-                    attachments: [{
-                        title_link: 'https://{ticket.account.domain}.gorgias.io/app/ticket/{ticket.id}',
-                        title: '{ticket.subject}',
-                        text: '{ticket.first_message.body_text}'
-                    }],
-                    text: 'New ticket <https://{ticket.account.domain}.gorgias.io/app/ticket/{ticket.id}|*{ticket.subject}*> from *{ticket.requester.name}*'
+        integrations: [
+            {
+                deleted_datetime: null,
+                mappings: [],
+                meta: {},
+                facebook: null,
+                http: {
+                    method: 'POST',
+                    form: {
+                        attachments: [{
+                            title_link: 'https://{ticket.account.domain}.gorgias.io/app/ticket/{ticket.id}',
+                            title: '{ticket.subject}',
+                            text: '{ticket.first_message.body_text}'
+                        }],
+                        text: 'New ticket <https://{ticket.account.domain}.gorgias.io/app/ticket/{ticket.id}|*{ticket.subject}*> from *{ticket.requester.name}*'
+                    },
+                    headers: {},
+                    execution_order: 99,
+                    url: 'https://hooks.slack.com/services/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',
+                    request_content_type: 'application/json',
+                    id: 3,
+                    triggers: {
+                        'ticket-created': false
+                    },
+                    response_content_type: 'application/json'
                 },
-                headers: {},
-                execution_order: 99,
-                url: 'https://hooks.slack.com/services/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',
-                request_content_type: 'application/json',
-                id: 3,
-                triggers: {
-                    'ticket-created': false
+                deactivated_datetime: null,
+                name: 'Slack Webhook',
+                user: {
+                    id: 2
                 },
-                response_content_type: 'application/json'
+                uri: '/api/integrations/4/',
+                decoration: null,
+                locked_datetime: null,
+                created_datetime: '2017-02-07T06:07:45.135436+00:00',
+                connections: [],
+                type: 'http',
+                id: 4,
+                description: 'Notify on Slack when a new ticket is created.',
+                updated_datetime: '2017-02-07T06:07:45.135448+00:00',
+                smooch: null
             },
-            deactivated_datetime: null,
-            name: 'Slack Webhook',
-            user: {
-                id: 2
-            },
-            uri: '/api/integrations/4/',
-            decoration: null,
-            locked_datetime: null,
-            created_datetime: '2017-02-07T06:07:45.135436+00:00',
-            connections: [],
-            type: 'http',
-            id: 4,
-            description: 'Notify on Slack when a new ticket is created.',
-            updated_datetime: '2017-02-07T06:07:45.135448+00:00',
-            smooch: null
-        },
             {
                 deleted_datetime: null,
                 mappings: [],
