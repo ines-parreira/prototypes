@@ -99,7 +99,9 @@ export const receivedMacro = () => ({
 export const mergeTicket = (ticket) => {
     if (!Array.isArray(ticket.messages)) {
         Raven.captureException(new Error('Trying to merge a ticket where messages is not an array'), {
-            extra: ticket
+            extra: {
+                ticket,
+            }
         })
     }
 
