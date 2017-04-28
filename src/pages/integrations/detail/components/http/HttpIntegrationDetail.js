@@ -285,7 +285,7 @@ class HttpIntegrationDetail extends React.Component {
                                     className={classNames({
                                         'btn-loading': isSubmitting,
                                     })}
-                                    onClick={() => actions.deactivateIntegration(integration)}
+                                    onClick={() => actions.deactivateIntegration(integration.get('id'))}
                                 >
                                     Deactivate integration
                                 </Button>
@@ -300,7 +300,7 @@ class HttpIntegrationDetail extends React.Component {
                                     className={classNames({
                                         'btn-loading': isSubmitting,
                                     })}
-                                    onClick={() => actions.activateIntegration(integration)}
+                                    onClick={() => actions.activateIntegration(integration.get('id'))}
                                 >
                                     Re-activate integration
                                 </Button>

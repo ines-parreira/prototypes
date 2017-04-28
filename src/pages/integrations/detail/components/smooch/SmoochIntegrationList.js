@@ -1,13 +1,30 @@
 import React, {PropTypes} from 'react'
-import classnames from 'classnames'
-import {Badge, Button} from 'reactstrap'
 import {connect} from 'react-redux'
+import {Button} from 'reactstrap'
 import {Link, browserHistory, withRouter} from 'react-router'
+
+import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
+import IntegrationList from '../IntegrationList'
+import * as integrationsActions from '../../../../../state/integrations/actions'
 import {notify} from '../../../../../state/notifications/actions'
 
-import IntegrationList from '../IntegrationList'
+@withRouter
+@connect(null, {
+    activate: integrationsActions.activateIntegration,
+    deactivate: integrationsActions.deactivateIntegration,
+    notify,
+})
+export default class SmoochIntegrationList extends React.Component {
+    static propTypes = {
+        integrations: PropTypes.object.isRequired,
+        loading: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+        notify: PropTypes.func.isRequired,
+        redirectUri: PropTypes.string.isRequired,
+        activate: PropTypes.func.isRequired,
+        deactivate: PropTypes.func.isRequired,
+    }
 
-class SmoochIntegrationList extends React.Component {
     _onLogin = () => {
         window.location.href = this.props.redirectUri
     }
@@ -30,7 +47,7 @@ class SmoochIntegrationList extends React.Component {
     }
 
     render() {
-        const {integrations, actions, loading} = this.props
+        const {integrations, loading} = this.props
 
         const longTypeDescription = (
             <div>
@@ -44,54 +61,37 @@ class SmoochIntegrationList extends React.Component {
         )
 
         const integrationToItemDisplay = (int) => {
+            const toggleIntegration = (value) => {
+                const integrationId = int.get('id')
+                return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+            }
+
             const editLink = `/app/integrations/smooch/${int.get('id')}`
-            const isLoading = int.get('id') === loading.get('delete')
             const isDisabled = int.get('deactivated_datetime')
 
             return (
                 <tr key={int.get('id')}>
-                    <td style={{verticalAlign: 'middle'}}>
+                    <td className="align-middle">
                         <Link to={editLink}>
                             <b>{int.get('name')}</b>
                         </Link>
                     </td>
-                    <td
-                        className="smallest"
-                        style={{verticalAlign: 'middle'}}
-                    >
-                        {
-                            isDisabled ? (
-                                    <Badge color="warning">
-                                        Disabled
-                                    </Badge>
-                                ) : (
-                                    <Badge color="success">
-                                        Enabled
-                                    </Badge>
-                                )
-                        }
+                    <td className="smallest align-middle">
+                        <ToggleCheckbox
+                            input={{
+                                onChange: toggleIntegration,
+                                value: !isDisabled,
+                            }}
+                        />
                     </td>
                     <td className="smallest">
                         <div className="pull-right">
                             <Button
                                 tag={Link}
                                 color="info"
-                                className="mr-2"
-                                disabled={isLoading}
                                 to={editLink}
                             >
                                 Edit
-                            </Button>
-                            <Button
-                                color="danger"
-                                outline
-                                className={classnames({
-                                    'btn-loading': isLoading,
-                                })}
-                                disabled={isLoading}
-                                onClick={() => !isLoading && actions.deleteIntegration(int)}
-                            >
-                                Delete
                             </Button>
                         </div>
                     </td>
@@ -112,14 +112,3 @@ class SmoochIntegrationList extends React.Component {
         )
     }
 }
-
-SmoochIntegrationList.propTypes = {
-    integrations: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    notify: PropTypes.func.isRequired,
-    actions: PropTypes.object.isRequired,
-    redirectUri: PropTypes.string.isRequired
-}
-
-export default withRouter(connect(null, {notify})(SmoochIntegrationList))

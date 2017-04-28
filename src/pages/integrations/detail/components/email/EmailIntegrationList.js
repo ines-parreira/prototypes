@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import classNames from 'classnames'
-import {Badge, Button} from 'reactstrap'
+import {Button} from 'reactstrap'
 
 import IntegrationList from '../IntegrationList'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
@@ -9,6 +9,12 @@ import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import gmailImg from '../../../../../../img/integrations/gmail.png'
 
 export default class EmailIntegrationList extends React.Component {
+    static propTypes = {
+        integrations: PropTypes.object.isRequired,
+        loading: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired,
+    }
+
     render() {
         const {integrations, loading} = this.props
         const longTypeDescription = (
@@ -22,7 +28,7 @@ export default class EmailIntegrationList extends React.Component {
         const integrationToItemDisplay = (int) => {
             const active = !int.get('deactivated_datetime')
             const isRowSubmitting = isSubmitting === int.get('id')
-            const isDisabled = int.get('deactivated_datetime')
+            const isGmail = int.get('type') === 'gmail'
 
             const editLink = `/app/integrations/email/${int.get('id')}`
 
@@ -36,12 +42,12 @@ export default class EmailIntegrationList extends React.Component {
                 </Button>
             )
 
-            if (!active) {
+            if (!active && isGmail) {
                 primaryBtn = (
                     <Button
-                        tag={Link}
+                        tag="a"
                         color="success"
-                        to={`/integrations/gmail/auth?integration_id=${int.get('id')}`}
+                        href={`/integrations/gmail/auth?integration_id=${int.get('id')}`}
                         className={classNames({
                             'btn-loading': isRowSubmitting,
                         })}
@@ -55,7 +61,13 @@ export default class EmailIntegrationList extends React.Component {
                 <tr key={int.get('id')}>
                     <td className="smallest">
                         {
-                            int.get('type') === 'email' ? (
+                            isGmail ? (
+                                    <img
+                                        src={gmailImg}
+                                        height="33"
+                                        alt="email-icon"
+                                    />
+                                ) : (
                                     <i
                                         className="fa fa-fw fa-envelope text-muted"
                                         style={{
@@ -64,38 +76,16 @@ export default class EmailIntegrationList extends React.Component {
                                             marginLeft: '-3px',
                                         }}
                                     />
-                                ) : (
-                                    <img
-                                        src={gmailImg}
-                                        height="33"
-                                        alt="email-icon"
-                                    />
                                 )
                         }
                     </td>
-                    <td style={{verticalAlign: 'middle'}}>
+                    <td className="align-middle">
                         <b>{int.get('name')}</b>
                         {' '}
                         <span className="text-faded ml-3">
                             {int.getIn(['meta', 'address'])}
                         </span>
 
-                    </td>
-                    <td
-                        className="smallest"
-                        style={{verticalAlign: 'middle'}}
-                    >
-                        {
-                            isDisabled ? (
-                                    <Badge color="warning">
-                                        Disabled
-                                    </Badge>
-                                ) : (
-                                    <Badge color="success">
-                                        Enabled
-                                    </Badge>
-                                )
-                        }
                     </td>
                     <td className="smallest">
                         <div className="pull-right">
@@ -121,10 +111,4 @@ export default class EmailIntegrationList extends React.Component {
             />
         )
     }
-}
-
-EmailIntegrationList.propTypes = {
-    integrations: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
 }

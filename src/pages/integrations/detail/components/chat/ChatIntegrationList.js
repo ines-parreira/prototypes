@@ -1,13 +1,26 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
-import classnames from 'classnames'
-import {Badge, Button} from 'reactstrap'
+import {connect} from 'react-redux'
+import {Button} from 'reactstrap'
 
+import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 import IntegrationList from '../IntegrationList'
+import * as integrationsActions from '../../../../../state/integrations/actions'
 
+@connect(null, {
+    activate: integrationsActions.activateIntegration,
+    deactivate: integrationsActions.deactivateIntegration,
+})
 export default class ChatIntegrationList extends React.Component {
+    static propTypes = {
+        integrations: PropTypes.object.isRequired,
+        loading: PropTypes.object.isRequired,
+        activate: PropTypes.func.isRequired,
+        deactivate: PropTypes.func.isRequired,
+    }
+
     render() {
-        const {integrations, actions, loading} = this.props
+        const {integrations, loading} = this.props
 
         const longTypeDescription = (
             <span>
@@ -17,32 +30,29 @@ export default class ChatIntegrationList extends React.Component {
         )
 
         const integrationToItemDisplay = (int) => {
+            const toggleIntegration = (value) => {
+                const integrationId = int.get('id')
+                return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+            }
+
             const editLink = `/app/integrations/smooch_inside/${int.get('id')}`
             const isLoading = int.get('id') === loading.get('delete')
             const isDisabled = int.get('deactivated_datetime')
 
             return (
                 <tr key={int.get('id')}>
-                    <td style={{verticalAlign: 'middle'}}>
+                    <td className="align-middle">
                         <Link to={editLink}>
                             <b>{int.get('name')}</b>
                         </Link>
                     </td>
-                    <td
-                        className="smallest"
-                        style={{verticalAlign: 'middle'}}
-                    >
-                        {
-                            isDisabled ? (
-                                    <Badge color="warning">
-                                        Disabled
-                                    </Badge>
-                                ) : (
-                                    <Badge color="success">
-                                        Enabled
-                                    </Badge>
-                                )
-                        }
+                    <td className="smallest align-middle">
+                        <ToggleCheckbox
+                            input={{
+                                onChange: toggleIntegration,
+                                value: !isDisabled,
+                            }}
+                        />
                     </td>
                     <td className="smallest">
                         <div className="pull-right">
@@ -54,17 +64,6 @@ export default class ChatIntegrationList extends React.Component {
                                 to={editLink}
                             >
                                 Edit
-                            </Button>
-                            <Button
-                                color="danger"
-                                outline
-                                className={classnames({
-                                    'btn-loading': isLoading,
-                                })}
-                                disabled={isLoading}
-                                onClick={() => actions.deleteIntegration(int)}
-                            >
-                                Delete
                             </Button>
                         </div>
                     </td>
@@ -84,10 +83,4 @@ export default class ChatIntegrationList extends React.Component {
             />
         )
     }
-}
-
-ChatIntegrationList.propTypes = {
-    integrations: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
 }

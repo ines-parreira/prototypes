@@ -1,11 +1,11 @@
 import axios from 'axios'
 import {sortBy as _sortBy} from 'lodash'
 import {browserHistory} from 'react-router'
-import {notify} from '../notifications/actions'
 import moment from 'moment'
 import {fromJS} from 'immutable'
-import * as types from './constants'
 
+import * as types from './constants'
+import {notify} from '../notifications/actions'
 
 export function fetchIntegrations() {
     return (dispatch) => {
@@ -201,18 +201,23 @@ function updateOrCreateIntegrationRequest(integration, action) {
     }
 }
 
-export function deactivateIntegration(integration) {
+export function deactivateIntegration(id) {
     return (dispatch) => {
-        // We set deactivated_datetime using a UTC timestamp
-        const newIntegration = integration.set('deactivated_datetime', moment().format())
-        return updateOrCreateIntegrationRequest(newIntegration)(dispatch)
+        const integration = fromJS({
+            id,
+            deactivated_datetime: moment().format(),
+        })
+        return updateOrCreateIntegrationRequest(integration)(dispatch)
     }
 }
 
-export function activateIntegration(integration) {
+export function activateIntegration(id) {
     return (dispatch) => {
-        const newIntegration = integration.set('deactivated_datetime', null)
-        return updateOrCreateIntegrationRequest(newIntegration)(dispatch)
+        const integration = fromJS({
+            id,
+            deactivated_datetime: null,
+        })
+        return updateOrCreateIntegrationRequest(integration)(dispatch)
     }
 }
 

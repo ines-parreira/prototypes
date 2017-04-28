@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 
+import ToggleCheckbox from '../../../common/forms/ToggleCheckbox'
+
 import {DatetimeLabel} from '../../../common/utils/labels'
 import RuleItem from '../../detail/components/RuleItem'
 import * as ruleSelectors from '../../../../state/rules/selectors'
@@ -15,26 +17,24 @@ class RuleTableRow extends React.Component {
         this.setState({showDetail: !this.state.showDetail})
     }
 
-    _handleActivate = (event) => {
+    _handleActivate = () => {
         const {actions, rule} = this.props
-        event.preventDefault()
         actions.rules.activate(rule.get('id'))
     }
 
-    _handleDeactivate = (event) => {
+    _handleDeactivate = () => {
         const {actions, rule} = this.props
-        event.preventDefault()
 
         if (confirm('Are you sure you want to deactivate this rule?')) {
             actions.rules.deactivate(rule.get('id'))
         }
     }
 
-    _toggleItemStatus = (event) => {
-        if (this.props.rule.get('deactivated_datetime')) {
-            this._handleActivate(event)
+    _toggleItemStatus = (value) => {
+        if (value) {
+            this._handleActivate()
         } else {
-            this._handleDeactivate(event)
+            this._handleDeactivate()
         }
     }
 
@@ -84,26 +84,14 @@ class RuleTableRow extends React.Component {
                     </td>
                     <td>
                         <div className="cell-wrapper">
-                            <div
-                                className="ui toggle checkbox"
-                                onClick={this._toggleItemStatus}
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={!rule.get('deactivated_datetime')}
-                                    readOnly
-                                />
-                                <label/>
-                            </div>
+                            <ToggleCheckbox
+                                input={{
+                                    onChange: this._toggleItemStatus,
+                                    value: !rule.get('deactivated_datetime'),
+                                }}
+                            />
                         </div>
                     </td>
-                    {/*
-                    <td>
-                        <div className="cell-wrapper">
-                            {rule.get('usage')}
-                        </div>
-                    </td>
-                    */}
                     <td className="right aligned">
                         <div className="cell-wrapper">
                             <DatetimeLabel

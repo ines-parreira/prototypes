@@ -138,7 +138,7 @@ class SmoochIntegrationDetail extends React.Component {
                                         'btn-loading': isSubmitting,
                                     })}
                                     disabled={isSubmitting}
-                                    onClick={() => actions.deactivateIntegration(integration)}
+                                    onClick={() => actions.deactivateIntegration(integration.get('id'))}
                                 >
                                     Deactivate
                                 </Button>
@@ -154,7 +154,7 @@ class SmoochIntegrationDetail extends React.Component {
                                         'btn-loading': isSubmitting,
                                     })}
                                     disabled={isSubmitting}
-                                    onClick={() => actions.activateIntegration(integration)}
+                                    onClick={() => actions.activateIntegration(integration.get('id'))}
                                 >
                                     Re-activate
                                 </Button>

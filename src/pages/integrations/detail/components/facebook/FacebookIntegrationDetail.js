@@ -54,7 +54,7 @@ export default class FacebookIntegrationDetail extends React.Component {
 
     _disable = () => {
         this.setState({askDisableConfirmation: false})
-        this.props.actions.deactivateIntegration(this.props.integration)
+        this.props.actions.deactivateIntegration(this.props.integration.get('id'))
         browserHistory.push('/app/integrations/facebook')
     }
 
@@ -66,6 +66,7 @@ export default class FacebookIntegrationDetail extends React.Component {
         const {integration, loading} = this.props
 
         const page = integration.get('facebook') || fromJS({})
+        const isDisabled = integration.get('deactivated_datetime')
 
         if (loading.get('integration') || page.isEmpty()) {
             return <Loader />
@@ -144,33 +145,39 @@ export default class FacebookIntegrationDetail extends React.Component {
                     >
                         Save changes
                     </Button>
-                    <Button
-                        color="warning"
-                        outline
-                        id="disable-integration-button"
-                        onClick={this._toggleDisableConfirmation}
-                    >
-                        Disable this page
-                    </Button>
-                    <Popover
-                        placement="bottom"
-                        isOpen={this.state.askDisableConfirmation}
-                        target="disable-integration-button"
-                        toggle={this._toggleDisableConfirmation}
-                    >
-                        <PopoverTitle>Are you sure?</PopoverTitle>
-                        <PopoverContent>
-                            <p>
-                                This page will not be synchronised with Gorgias anymore.
-                            </p>
-                            <Button
-                                color="success"
-                                onClick={this._disable}
-                            >
-                                Confirm
-                            </Button>
-                        </PopoverContent>
-                    </Popover>
+                    {
+                        !isDisabled && (
+                            <span>
+                                <Button
+                                    color="warning"
+                                    outline
+                                    id="disable-integration-button"
+                                    onClick={this._toggleDisableConfirmation}
+                                >
+                                    Disable this page
+                                </Button>
+                                <Popover
+                                    placement="bottom"
+                                    isOpen={this.state.askDisableConfirmation}
+                                    target="disable-integration-button"
+                                    toggle={this._toggleDisableConfirmation}
+                                >
+                                    <PopoverTitle>Are you sure?</PopoverTitle>
+                                    <PopoverContent>
+                                        <p>
+                                            This page will not be synchronised with Gorgias anymore.
+                                        </p>
+                                        <Button
+                                            color="success"
+                                            onClick={this._disable}
+                                        >
+                                            Confirm
+                                        </Button>
+                                    </PopoverContent>
+                                </Popover>
+                            </span>
+                        )
+                    }
                 </div>
             </div>
         )

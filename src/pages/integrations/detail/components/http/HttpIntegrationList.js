@@ -1,14 +1,27 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
-import classNames from 'classnames'
-import {Badge, Button} from 'reactstrap'
+import {connect} from 'react-redux'
+import {Button} from 'reactstrap'
 import _truncate from 'lodash/truncate'
 
+import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 import IntegrationList from '../IntegrationList'
+import * as integrationsActions from '../../../../../state/integrations/actions'
 
+@connect(null, {
+    activate: integrationsActions.activateIntegration,
+    deactivate: integrationsActions.deactivateIntegration,
+})
 export default class HttpIntegrationList extends React.Component {
+    static propTypes = {
+        integrations: PropTypes.object.isRequired,
+        loading: PropTypes.object.isRequired,
+        activate: PropTypes.func.isRequired,
+        deactivate: PropTypes.func.isRequired,
+    }
+
     render() {
-        const {integrations, actions, loading} = this.props
+        const {integrations, loading} = this.props
         const longTypeDescription = (
             <div>
                 <p>
@@ -27,67 +40,19 @@ export default class HttpIntegrationList extends React.Component {
             </div>
         )
 
-        const isSubmitting = loading.get('updateIntegration')
-
         const integrationToItemDisplay = (int) => {
-            const active = !int.get('deactivated_datetime')
-            const isRowSubmitting = isSubmitting === int.get('id')
+            const toggleIntegration = (value) => {
+                const integrationId = int.get('id')
+                return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+            }
+
             const isDisabled = int.get('deactivated_datetime')
 
             const editLink = `/app/integrations/http/${int.get('id')}`
 
-            let primaryBtn = (
-                <Button
-                    tag={Link}
-                    color="info"
-                    to={editLink}
-                >
-                    Edit
-                </Button>
-            )
-
-            let rmBtn = (
-                <Button
-                    color="warning"
-                    outline
-                    className={classNames('ml-2', {
-                        'btn-loading': isRowSubmitting,
-                    })}
-                    disabled={isRowSubmitting}
-                    onClick={() => actions.deactivateIntegration(int)}
-                >
-                    Deactivate
-                </Button>
-            )
-
-            if (!active) {
-                primaryBtn = (
-                    <Button
-                        color="success"
-                        className={classNames('mr-2', {
-                            'btn-loading': isRowSubmitting,
-                        })}
-                        disabled={isRowSubmitting}
-                        onClick={() => actions.activateIntegration(int)}
-                    >
-                        Re-activate
-                    </Button>
-                )
-
-                rmBtn = (
-                    <Button
-                        color="danger"
-                        outline
-                        onClick={() => actions.deleteIntegration(int)}
-                    >
-                        Delete
-                    </Button>
-                )
-            }
-
             return (
                 <tr key={int.get('id')}>
-                    <td style={{verticalAlign: 'middle'}}>
+                    <td className="align-center align-middle">
                         <Link to={editLink}>
                             <b>{int.get('name')}</b>
                         </Link>
@@ -95,28 +60,24 @@ export default class HttpIntegrationList extends React.Component {
                         <span className="text-faded ml-3">
                             {_truncate(int.get('description'), {length: 100})}
                         </span>
-
                     </td>
-                    <td
-                        className="smallest"
-                        style={{verticalAlign: 'middle'}}
-                    >
-                        {
-                            isDisabled ? (
-                                    <Badge color="warning">
-                                        Disabled
-                                    </Badge>
-                                ) : (
-                                    <Badge color="success">
-                                        Enabled
-                                    </Badge>
-                                )
-                        }
+                    <td className="smallest align-middle">
+                        <ToggleCheckbox
+                            input={{
+                                onChange: toggleIntegration,
+                                value: !isDisabled,
+                            }}
+                        />
                     </td>
                     <td className="smallest">
                         <div className="pull-right">
-                            {primaryBtn}
-                            {rmBtn}
+                            <Button
+                                tag={Link}
+                                color="info"
+                                to={editLink}
+                            >
+                                Edit
+                            </Button>
                         </div>
                     </td>
                 </tr>
@@ -135,10 +96,4 @@ export default class HttpIntegrationList extends React.Component {
             />
         )
     }
-}
-
-HttpIntegrationList.propTypes = {
-    integrations: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
 }

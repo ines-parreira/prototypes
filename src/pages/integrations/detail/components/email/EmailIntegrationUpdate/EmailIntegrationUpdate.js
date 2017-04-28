@@ -210,9 +210,11 @@ class EmailIntegrationUpdate extends React.Component {
                 deleteIntegration
             }
         } = this.props
+
         const isSubmitting = loading.get('updateIntegration') === integration.get('id')
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
+        const isGmail = integration.get('type') === 'gmail'
 
         return (
             <div className="mt-4">
@@ -255,11 +257,12 @@ class EmailIntegrationUpdate extends React.Component {
                         Save changes
                     </Button>
                     {
-                        isDeactivated && (
+                        isDeactivated && isGmail && (
                             <Button
-                                tag={Link}
+                                className="ml-2"
+                                tag="a"
                                 color="success"
-                                to={`/integrations/gmail/auth?integration_id=${integration.get('id')}`}
+                                href={`/integrations/gmail/auth?integration_id=${integration.get('id')}`}
                             >
                                 Re-activate
                             </Button>

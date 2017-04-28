@@ -1,12 +1,27 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {Badge, Button} from 'reactstrap'
+import {Button} from 'reactstrap'
+import {connect} from 'react-redux'
 
+import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
+import * as integrationsActions from '../../../../../state/integrations/actions'
+
+@connect(null, {
+    activate: integrationsActions.activateIntegration,
+    deactivate: integrationsActions.deactivateIntegration,
+})
 export default class FacebookPageRow extends React.Component {
-    _enable = () => {
-        const {integration, actions} = this.props
-        actions.activateIntegration(integration)
+    static propTypes = {
+        integration: PropTypes.object.isRequired,
+        activate: PropTypes.func.isRequired,
+        deactivate: PropTypes.func.isRequired,
     }
+
+    _toggleIntegration = (value) => {
+        const integrationId = this.props.integration.get('id')
+        return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+    }
+
 
     render() {
         const {integration} = this.props
@@ -31,57 +46,33 @@ export default class FacebookPageRow extends React.Component {
                         src={page.getIn(['picture', 'data', 'url'])}
                     />
                 </td>
-                <td style={{verticalAlign: 'middle'}}>
+                <td className="align-middle">
                     <b>{page.get('name')}</b>
                     {' '}
                     <span className="text-faded ml-3">
                         {page.get('category')}
                     </span>
                 </td>
-                <td
-                    className="smallest"
-                    style={{verticalAlign: 'middle'}}
-                >
-                    {
-                        isDisabled ? (
-                                <Badge color="warning">
-                                    Disabled
-                                </Badge>
-                            ) : (
-                                <Badge color="success">
-                                    Enabled
-                                </Badge>
-                            )
-                    }
+                <td className="smallest align-middle">
+                    <ToggleCheckbox
+                        input={{
+                            onChange: this._toggleIntegration,
+                            value: !isDisabled,
+                        }}
+                    />
                 </td>
                 <td className="smallest">
                     <div className="pull-right">
-                        {
-                            isDisabled ? (
-                                    <Button
-                                        color="success"
-                                        onClick={this._enable}
-                                    >
-                                        Enable
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        tag={Link}
-                                        color="info"
-                                        to={`/app/integrations/facebook/${integration.get('id')}`}
-                                    >
-                                        Edit
-                                    </Button>
-                                )
-                        }
+                        <Button
+                            tag={Link}
+                            color="info"
+                            to={`/app/integrations/facebook/${integration.get('id')}`}
+                        >
+                            Edit
+                        </Button>
                     </div>
                 </td>
             </tr>
         )
     }
-}
-
-FacebookPageRow.propTypes = {
-    integration: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
 }
