@@ -11,7 +11,7 @@ export function creditCardNormalizer(value, previousValue) {
 }
 
 export function creditCardCVCNormalizer(value, previousValue) {
-    if (/^\d{0,3}$/.test(value)) {
+    if (/^\d{0,4}$/.test(value)) {
         return value
     }
     return previousValue
