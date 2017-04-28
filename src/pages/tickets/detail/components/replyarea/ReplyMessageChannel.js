@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import md5 from 'md5'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
@@ -119,9 +120,11 @@ class ReplyMessageChannel extends React.Component {
             )
         }
 
+        // Here we add the hash of the source of the last message, because if the source changes, we want to trigger
+        // the re-set of the receivers of the new message.
         const parentId = messages.isEmpty()
             ? 'new'
-            : `${ticket.get('id', '')} - ${messages.last().get('id', '')}`
+            : `${ticket.get('id', '')} - ${messages.last().get('id', '')} - ${md5(messages.last().get('source'))}`
 
         const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api']
 
