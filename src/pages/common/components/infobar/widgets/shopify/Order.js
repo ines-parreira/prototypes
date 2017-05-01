@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu} from 'reactstrap'
+import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 import {humanizeString} from '../../../../../../utils'
 
@@ -56,6 +56,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
             {
                 actionName: 'shopifyCancelOrder',
                 reason: 'cancel this order',
+                tooltip: 'Cancel & refund the order on Shopify. Notify the customer via email',
                 child: (
                     <div>
                         <i className="ban icon" />
@@ -117,6 +118,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                                 actionName={action.actionName}
                                 reason={action.reason}
                                 payload={payload}
+                                tooltip={action.tooltip}
                             >
                                 {action.child}
                             </ActionButton>
@@ -125,7 +127,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                 }
                 {
                     dropdownOptions.length > 0 && (
-                        <UncontrolledButtonDropdown>
+                        <UncontrolledButtonDropdown className="action-dropdown">
                             <DropdownToggle
                                 caret
                                 className="caret-only"
@@ -143,6 +145,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                                                 actionName={action.actionName}
                                                 reason={action.reason}
                                                 payload={payload}
+                                                tag={DropdownItem}
                                             >
                                                 {action.child}
                                             </ActionButton>

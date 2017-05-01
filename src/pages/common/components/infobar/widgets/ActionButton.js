@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
+import {UncontrolledTooltip} from 'reactstrap'
 
 import {getActionByName} from '../../../../../config/actions'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
@@ -29,7 +30,8 @@ class ActionButton extends React.Component {
         getPendingActionCallback: PropTypes.func.isRequired,
         payload: PropTypes.object,
         reason: PropTypes.string.isRequired,
-        tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+        tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
+        tooltip: PropTypes.string,
     }
 
     static defaultProps = {
@@ -108,6 +110,7 @@ class ActionButton extends React.Component {
         const {
             children,
             tag: Tag,
+            tooltip,
             ...attributes
         } = _omit(this.props, ['className', 'actionName', 'getPendingActionCallback', 'payload', 'reason', 'executeAction'])
         let {className} = this.props
@@ -119,6 +122,7 @@ class ActionButton extends React.Component {
 
         return (
             <Tag
+                id={this.id}
                 className={classnames(css.button, className, {
                     'disabled loading btn-loading': this.state.isLoading,
                     'btn-success': this.state.showSuccess,
@@ -129,6 +133,17 @@ class ActionButton extends React.Component {
                 {...attributes}
             >
                 {children}
+                {
+                    tooltip && this.id && (
+                        <UncontrolledTooltip
+                            placement="top"
+                            target={this.id}
+                            delay={0}
+                        >
+                            {tooltip}
+                        </UncontrolledTooltip>
+                    )
+                }
             </Tag>
         )
     }
