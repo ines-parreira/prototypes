@@ -49,6 +49,24 @@ export default class PeriodPicker extends React.Component {
             label = start
         }
 
+        const button = (
+            <Button
+                className="selected-date-range-btn"
+                style={{width: '100%'}}
+                disabled={isDisabled}
+            >
+                <i className="fa fa-fw fa-calendar mr-2" />
+                <span>
+                        {label}
+                    </span>
+                <i className="fa fa-fw fa-caret-down" />
+            </Button>
+        )
+
+        if (isDisabled) {
+            return button
+        }
+
         return (
             <DateRangePicker
                 startDate={this.state.startDate}
@@ -61,17 +79,7 @@ export default class PeriodPicker extends React.Component {
                 cancelClass="btn-secondary"
                 alwaysShowCalendars
             >
-                <Button
-                    className="selected-date-range-btn"
-                    style={{width: '100%'}}
-                    disabled={isDisabled}
-                >
-                    <i className="fa fa-fw fa-calendar mr-2" />
-                    <span>
-                        {label}
-                    </span>
-                    <i className="fa fa-fw fa-caret-down" />
-                </Button>
+                {button}
             </DateRangePicker>
         )
     }
