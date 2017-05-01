@@ -106,16 +106,16 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         icon: 'mail blue'
     },
     {
-        type: 'facebook',
-        title: 'Facebook',
-        description: 'Create tickets when your customers post on your page or contact you on Messenger',
-        image: 'integrations/facebook.png',
-    },
-    {
         type: 'smooch_inside',
         title: 'Chat',
         description: 'Add a chat on your website',
         image: 'integrations/chat.png',
+    },
+    {
+        type: 'facebook',
+        title: 'Facebook',
+        description: 'Create tickets when your customers post on your page or contact you on Messenger',
+        image: 'integrations/facebook.png',
     },
     {
         type: 'smooch',
@@ -142,6 +142,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/woocommerce.png',
     },
     {
+        title: 'Prestashop',
+        description: 'See customer profiles & orders next to support conversations. Refund orders with macros',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#prestashop',
+        image: 'integrations/prestashop.png',
+    },
+    {
         title: 'Salesforce',
         description: 'Display customer information next to tickets',
         url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#salesforce',
@@ -152,6 +158,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Display shipping info next to tickets',
         url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#shipstation',
         image: 'integrations/shipstation.png',
+    },
+    {
+        title: 'Loyalty Lion',
+        description: 'See loyalty points next to tickets. Award points with macros.',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#loyalty-lion',
+        image: 'integrations/loyaltylion.png',
     },
     {
         title: 'Slack',
