@@ -4,12 +4,6 @@ import {fromJS} from 'immutable'
 import {Emoji} from '../../Emoji'
 
 export const BlankState = ({message, stats}) => {
-    // return empty if still loading stats,
-    // to avoid jumpyness.
-    if (stats.getIn(['_internal', 'loading', 'stats'])) {
-        return null
-    }
-
     // total closed tickets in the last 7 days
     const closedTickets = stats.getIn(['agents', 0, 1])
 
@@ -18,33 +12,43 @@ export const BlankState = ({message, stats}) => {
             count: 10,
             icon: 'sun',
             title: 'No more tickets here!',
-            text: <span>
-                You closed {closedTickets} tickets this week, that's a good start
-                <Emoji name="ok_hand" />
-            </span>
+            text: (
+                <div>
+                    You closed {closedTickets} tickets this week, that's a good start
+                    <Emoji name="ok_hand" />
+                </div>
+            )
         },
         {
             count: 100,
             icon: 'check circle',
             title: 'Done!',
-            text: <span>
-                You've helped {closedTickets} people this week, you deserve some
-                <Emoji name="cookie" />
-            </span>
+            text: (
+                <div>
+                    You've helped {closedTickets} people this week, you deserve some
+                    <Emoji name="cookie" />
+                </div>
+            )
         },
         {
             count: 500,
             icon: 'asterisk',
             title: 'All good!',
-            text: <span>
-                You closed {closedTickets} tickets this week, you're awesome
-                <Emoji name="rocket" />
-            </span>
+            text: (
+                <div>
+                    You closed {closedTickets} tickets this week, you're awesome
+                    <Emoji name="rocket" />
+                </div>
+            )
         }
     ]
 
     // default content
-    let content = <p>This view is empty. Enjoy your day!</p>
+    let content = (
+        <div>
+            This view is empty. Enjoy your day!
+        </div>
+    )
 
     // if custom message, show that.
     if (message) {
@@ -68,13 +72,13 @@ export const BlankState = ({message, stats}) => {
 
             content = (
                 <div className="blank-state-message">
-                    <i className={iconClassName}/>
+                    <i className={iconClassName} />
                     <h2 className="blank-state-message-title">
                         {messageMatch.title}
                     </h2>
-                    <p className="blank-state-message-text">
+                    <div className="blank-state-message-text">
                         {messageMatch.text}
-                    </p>
+                    </div>
                 </div>
             )
         }

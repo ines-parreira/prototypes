@@ -385,7 +385,7 @@ export function bulkUpdate(activeView, ids, key, value) {
                     type: types.BULK_UPDATE_SUCCESS
                 })
 
-                setTimeout(() => dispatch(fetchPage(1)), 800)
+                setTimeout(() => dispatch(fetchPage()), 800)
 
                 dispatch(notify({
                     type: 'success',

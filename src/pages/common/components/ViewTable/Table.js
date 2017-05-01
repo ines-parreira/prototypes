@@ -56,6 +56,23 @@ export default class Table extends React.Component {
         this.props.toggleSelection(itemsIds, true)
     }
 
+    _renderPagination = () => {
+        const {pagination} = this.props
+
+        return (
+            <Pagination
+                pageCount={pagination.get('nb_pages') || 1}
+                currentPage={pagination.get('page') || 1}
+                onChange={(page) => {
+                    // update page query param of current location (add/update "page" param)
+                    const location = Object.assign({}, browserHistory.getCurrentLocation())
+                    Object.assign(location.query, {page})
+                    browserHistory.push(location)
+                }}
+            />
+        )
+    }
+
     render() {
         const {
             activeView,
@@ -64,7 +81,6 @@ export default class Table extends React.Component {
             isSearch,
             items,
             fields,
-            pagination,
             selectedItemsIds,
             type,
         } = this.props
@@ -99,7 +115,12 @@ export default class Table extends React.Component {
                 )
             }
 
-            return <BlankState message={message} />
+            return (
+                <div>
+                    <BlankState message={message} />
+                    {this._renderPagination()}
+                </div>
+            )
         }
 
         const areAllSelected = items.size === selectedItemsIds.size
@@ -156,16 +177,7 @@ export default class Table extends React.Component {
                     </tbody>
                 </table>
 
-                <Pagination
-                    pageCount={pagination.get('nb_pages') || 1}
-                    currentPage={pagination.get('page') || 1}
-                    onChange={(page) => {
-                        // update page query param of current location (add/update "page" param)
-                        const location = Object.assign({}, browserHistory.getCurrentLocation())
-                        Object.assign(location.query, {page})
-                        browserHistory.push(location)
-                    }}
-                />
+                {this._renderPagination()}
             </div>
         )
     }

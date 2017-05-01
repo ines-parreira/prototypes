@@ -19,27 +19,14 @@ function setup(props) {
 describe('BlankState component', () => {
     it('default with undefined props', () => {
         const {output} = setup()
-        expect(output).toEqual(<div className="blank-state"><p>This view is empty. Enjoy your day!</p></div>)
+        expect(output).toEqual(<div className="blank-state"><div>This view is empty. Enjoy your day!</div></div>)
     })
 
     it('custom message', () => {
         const {output} = setup({
-            message: <p>Custom message</p>
+            message: <div>Custom message</div>
         })
-        expect(output).toEqual(<div className="blank-state"><p>Custom message</p></div>)
-    })
-
-    it('null when loading', () => {
-        const {output} = setup({
-            stats: fromJS({
-                _internal: {
-                    loading: {
-                        stats: true
-                    }
-                }
-            })
-        })
-        expect(output).toEqual(null)
+        expect(output).toEqual(<div className="blank-state"><div>Custom message</div></div>)
     })
 
     it('more than 10 tickets closed', () => {
