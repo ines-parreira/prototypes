@@ -60,16 +60,10 @@ export default class Page extends React.Component {
     }
 
     componentDidMount() {
-        let shouldFetchDiscreetly = false
         const suggestedViewId = this.props.getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
 
-        // if the displayed view is already the active view, just fetch items discreetly
-        if (this.props.hasActiveView && this.props.activeView.get('id') === suggestedViewId) {
-            shouldFetchDiscreetly = true
-        }
-
         this.props.setViewActive(this.props.getView(suggestedViewId))
-        this.props.fetchPage(this.props.currentPage, shouldFetchDiscreetly)
+        this.props.fetchPage(this.props.currentPage)
     }
 
     componentWillReceiveProps(nextProps) {
