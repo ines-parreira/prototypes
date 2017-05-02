@@ -26,7 +26,6 @@ export const newMessage = (channel, sourceType) => fromJS({
     via: 'helpdesk',
     public: true,
     from_agent: true,
-    receiver: null,
     sender: null,
     source: {
         type: sourceType,
@@ -436,13 +435,13 @@ export default (state = initialState, action) => {
         }
 
         case types.SET_RECEIVERS: {
-            let newState = state
             const receivers = _pick(action.receivers, getReceiversProperties())
             const replaceAll = action.replaceAll
 
-            const currentSource = newState.getIn(['newMessage', 'source'], fromJS({})).toJS()
+            const currentSource = state.getIn(['newMessage', 'source'], fromJS({})).toJS()
 
             let newReceivers = {}
+
             if (replaceAll) { // we replace all receivers in source by passed ones
                 newReceivers = receivers
             } else { // we merge existing receivers with passed ones
@@ -454,28 +453,7 @@ export default (state = initialState, action) => {
             const sourceWithoutReceivers = _omit(currentSource, getReceiversProperties())
 
             // setting new receivers in source
-            newState = newState.setIn(['newMessage', 'source'], fromJS(_assign(sourceWithoutReceivers, newReceivers)))
-
-            // completing receiver property based on receivers source data
-            const toReceivers = newState.getIn(['newMessage', 'source', 'to'], fromJS([])).toJS()
-
-            if (toReceivers.length) {
-                const firstReceiver = toReceivers[0]
-                let storedData = firstReceiver.id
-                    ? {id: firstReceiver.id}
-                    : {email: firstReceiver.address}
-                storedData = fromJS(storedData)
-
-                if (!newState.getIn(['newMessage', 'receiver'], null)) {
-                    newState = newState.setIn(['newMessage', 'receiver'], storedData)
-                }
-            } else {
-                if (!newState.getIn(['newMessage', 'source', 'to'], fromJS([])).size) {
-                    newState = newState.setIn(['newMessage', 'receiver'], null)
-                }
-            }
-
-            return newState
+            return state.setIn(['newMessage', 'source'], fromJS(_assign(sourceWithoutReceivers, newReceivers)))
         }
 
         case types.MARK_TICKET_DIRTY:
