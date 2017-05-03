@@ -2,10 +2,6 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 
 export default class InfobarSearchResultsList extends React.Component {
-    _onClick = (user) => {
-        this.props.fetchPreviewUser(user.get('id'))
-    }
-
     render() {
         const {searchResults, defaultUserId} = this.props
 
@@ -28,7 +24,7 @@ export default class InfobarSearchResultsList extends React.Component {
                                 <div
                                     className={className}
                                     key={idx}
-                                    onClick={() => this._onClick(user)}
+                                    onClick={() => this.props.onUserClick(user)}
                                 >
                                     <div>
                                         {
@@ -66,5 +62,5 @@ export default class InfobarSearchResultsList extends React.Component {
 InfobarSearchResultsList.propTypes = {
     searchResults: PropTypes.object.isRequired,
     defaultUserId: PropTypes.number,
-    fetchPreviewUser: PropTypes.func.isRequired
+    onUserClick: PropTypes.func.isRequired
 }

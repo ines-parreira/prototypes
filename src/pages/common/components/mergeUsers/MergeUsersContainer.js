@@ -9,7 +9,7 @@ import {makeIsLoading} from './../../../../state/users/selectors'
 
 class MergeUsersContainer extends React.Component {
     render() {
-        const {destinationUser, sourceUser, display, actions, usersIsLoading} = this.props
+        const {destinationUser, sourceUser, display, actions, onClose, usersIsLoading} = this.props
 
         if (!destinationUser || destinationUser.isEmpty()) {
             return null
@@ -24,7 +24,7 @@ class MergeUsersContainer extends React.Component {
                 isOpen={display}
                 destinationUser={destinationUser}
                 sourceUser={sourceUser}
-                toggleModal={actions.infobar.toggleMergeUsersModal}
+                toggleModal={onClose}
                 mergeUsers={actions.users.mergeUsers}
                 isLoading={usersIsLoading('merge')}
             />
@@ -42,6 +42,7 @@ MergeUsersContainer.propTypes = {
     sourceUser: PropTypes.object.isRequired,
     display: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired,
     usersIsLoading: PropTypes.func.isRequired
 }
 

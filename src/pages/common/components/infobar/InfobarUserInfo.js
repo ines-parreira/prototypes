@@ -138,30 +138,30 @@ class InfobarUserInfo extends React.Component {
             return null
         }
 
-        return [
-            <div key="separator" className="infobar-section-separator"></div>,
-            shouldSuggestTemplateGeneration
-                ? this._renderGenerateButton()
-                : <InfobarWidgets
-                    key="widgets"
-                    source={sources}
-                    widgets={contextWidgets}
-                    editing={
-                        isEditing
-                            ? {
-                                isEditing,
-                                isDragging,
-                                actions,
-                                state: widgets,
-                                canDrop: (targetAbsolutePath) => {
-                                    const group = widgets.getIn(['_internal', 'drag', 'group'])
-                                    return canDrop(group, targetAbsolutePath)
-                                }
+        if (shouldSuggestTemplateGeneration) {
+            return this._renderGenerateButton()
+        }
+
+        return (
+            <InfobarWidgets
+                source={sources}
+                widgets={contextWidgets}
+                editing={
+                    isEditing
+                        ? {
+                            isEditing,
+                            isDragging,
+                            actions,
+                            state: widgets,
+                            canDrop: (targetAbsolutePath) => {
+                                const group = widgets.getIn(['_internal', 'drag', 'group'])
+                                return canDrop(group, targetAbsolutePath)
                             }
-                            : undefined
-                    }
-                />
-        ]
+                        }
+                        : undefined
+                }
+            />
+        )
     }
 
     /**
@@ -174,13 +174,9 @@ class InfobarUserInfo extends React.Component {
             return null
         }
 
-        return [
-            <div key="separator" className="infobar-section-separator"></div>,
-            <InfobarAddIntegrationSuggestion
-                key="integration-suggestion"
-                user={this.props.user}
-            />
-        ]
+        return (
+            <InfobarAddIntegrationSuggestion user={this.props.user} />
+        )
     }
 
     /**
@@ -335,9 +331,7 @@ class InfobarUserInfo extends React.Component {
                     </div>
                     {this._renderUserChannels(user.get('channels', fromJS([])))}
                 </div>
-                {
-                    areSourcesReady(sources, context) ? this._renderWidgets() : this._renderSuggestion()
-                }
+                {areSourcesReady(sources, context) ? this._renderWidgets() : this._renderSuggestion()}
             </div>
         )
     }

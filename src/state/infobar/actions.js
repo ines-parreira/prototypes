@@ -21,9 +21,9 @@ export const search = (query, searchType = 'infobar-user') => ((dispatch) => {
     })
         .then((json = {}) => json.data)
         .then(resp => {
-            dispatch({
+            return dispatch({
                 type: searchType === 'infobar-user' ? types.SEARCH_USERS_SUCCESS : types.SEARCH_TICKETS_SUCCESS,
-                resp
+                resp,
             })
         }, error => {
             return dispatch({
@@ -34,8 +34,25 @@ export const search = (query, searchType = 'infobar-user') => ((dispatch) => {
         })
 })
 
-export const resetSearch = () => ({
-    type: types.RESET_SEARCH
+export const similarUser = (userId) => ((dispatch) => {
+    dispatch({
+        type: types.SEARCH_SIMILAR_USER_START
+    })
+
+    return axios.get(`/api/users/${userId}/similar/`)
+        .then((json = {}) => json.data)
+        .then(resp => {
+            return dispatch({
+                type: types.SEARCH_SIMILAR_USER_SUCCESS,
+                user: resp,
+            })
+        }, error => {
+            return dispatch({
+                type: types.SEARCH_SIMILAR_USER_ERROR,
+                error,
+                reason: 'Failed to do the search similar users. Please try again...'
+            })
+        })
 })
 
 export const fetchUserPicture = (email = '') => ((dispatch) => {
@@ -49,7 +66,7 @@ export const fetchUserPicture = (email = '') => ((dispatch) => {
 
     return axios.get(GRAVATAR_URL)
         .then(() => {
-            dispatch({
+            return dispatch({
                 type: types.FETCH_USER_PICTURE_SUCCESS,
                 url: GRAVATAR_URL,
                 email
@@ -89,7 +106,7 @@ export const fetchPreviewUser = (userId) => ((dispatch) => {
     return axios.get(`/api/users/${userId}/`)
         .then((json = {}) => json.data)
         .then(resp => {
-            dispatch({
+            return dispatch({
                 type: types.FETCH_PREVIEW_USER_SUCCESS,
                 resp
             })
@@ -100,16 +117,6 @@ export const fetchPreviewUser = (userId) => ((dispatch) => {
                 reason: 'Couldn\'t fetch the user. Please try again in a few minutes.'
             })
         })
-})
-
-export const setInfobarMode = (mode) => ({
-    type: types.SET_INFOBAR_MODE,
-    mode
-})
-
-export const toggleMergeUsersModal = (value) => ({
-    type: types.TOGGLE_MERGE_USERS_MODAL,
-    value
 })
 
 /**

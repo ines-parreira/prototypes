@@ -1,37 +1,60 @@
 import React, {PropTypes} from 'react'
-import {browserHistory} from 'react-router'
 import classnames from 'classnames'
+import {connect} from 'react-redux'
+import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {Button, UncontrolledTooltip} from 'reactstrap'
+import {areSourcesReady} from './utils'
 
+import * as infobarActions from '../../../../state/infobar/actions'
+
+import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
+
+import {Loader} from '../Loader'
 import InfobarLayout from './InfobarLayout'
 import InfobarUserInfo from './InfobarUserInfo'
 import MergeUsersContainer from './../mergeUsers/MergeUsersContainer'
-import {Loader} from '../Loader'
-import {areSourcesReady} from './utils'
-
 import InfobarSearchResultsList from './InfobarSearchResultsList'
 import Search from '../Search'
 
-class Infobar extends React.Component {
-    constructor(props) {
-        super(props)
+import css from './Infobar.less'
 
-        this.state = {
-            data: fromJS({
-                shouldForceSearch: false,
-                shouldResetSearch: false,
-                isInitialized: false
-            })
-        }
+@connect(null, {
+    search: infobarActions.search,
+    searchSimilarUser: infobarActions.similarUser,
+})
+export default class Infobar extends React.Component {
+    static propTypes = {
+        identifier: PropTypes.string.isRequired,
+        actions: PropTypes.object.isRequired,
+        infobar: PropTypes.object.isRequired,
+        isRouteEditingWidgets: PropTypes.bool.isRequired,
+        user: PropTypes.object.isRequired,
+        widgets: PropTypes.object.isRequired,
+        sources: PropTypes.object.isRequired,
+        context: PropTypes.string.isRequired,
+        search: PropTypes.func.isRequired,
+        searchSimilarUser: PropTypes.func.isRequired,
+    }
+
+    static defaultProps = {
+        user: fromJS({})
+    }
+
+    state = {
+        isSearching: false,
+        isFetchingUser: false,
+        displaySearchResults: false,
+        displaySelectedUser: false,
+        showMergeUserModal: false,
+        searchResults: fromJS([]),
+        selectedUser: fromJS({}),
+        suggestedUser: fromJS({}),
     }
 
     componentWillReceiveProps(nextProps) {
-        let newState = this.state
-
         if (this.props.identifier !== nextProps.identifier) {
-            nextProps.actions.infobar.resetSearch()
-            newState = {data: newState.data.set('isInitialized', false)}
+            this._resetSearch()
         }
 
         const isEditingParam = !!nextProps.isRouteEditingWidgets
@@ -43,84 +66,60 @@ class Infobar extends React.Component {
             nextProps.actions.widgets.stopEditionMode()
         }
 
-        const wasMerging = this.props.infobar.getIn(['_internal', 'mergeUsersModal', 'display'])
-        const isMerging = nextProps.infobar.getIn(['_internal', 'mergeUsersModal', 'display'])
-        const modeIsDefault = nextProps.infobar.getIn(['_internal', 'mode']) === 'default'
+        // if user changed then try to find a suggestion of other user to merge with it
+        if (!this.props.user.equals(nextProps.user)) {
+            this.setState({suggestedUser: fromJS({})})
 
-        // e.g. if we just succeeded a merging
-        newState = {data: newState.data.set('shouldResetSearch', wasMerging && !isMerging && modeIsDefault)}
+            if (nextProps.user.isEmpty()) {
+                return
+            }
 
-        // todo(@jebarjonet): redo this component
-        // Initialization (force search if there's no customer data, auto-open result if there's just one)
-        // if (!this.state.data.get('isInitialized') && !nextProps.user.isEmpty()) {
-        //     const customer = nextProps.user.get('customer', fromJS({}))
-        //     const hasCustomer = isCustomerDataValid(customer)
-        //
-        //     const shouldForceSearch = !hasCustomer && nextProps.user.get('name', '')
-        //
-        //     const results = nextProps.infobar.get('searchResults')
-        //
-        //     if (shouldForceSearch) {
-        //         newState = {data: newState.data.set('shouldForceSearch', true)}
-        //     } else {
-        //         newState = {data: newState.data.set('isInitialized', true)}
-        //     }
-        //
-        //     if (results.size >= 1) {
-        //         if (results.size === 1) {
-        //             nextProps.actions.infobar.setInfobarMode('default')
-        //             newState = {
-        //                 data: newState.data.merge({
-        //                     shouldForceSearch: false,
-        //                     shouldResetSearch: true
-        //                 })
-        //             }
-        //         }
-        //
-        //         newState = {data: newState.data.set('isInitialized', true)}
-        //     }
-        // }
+            const customer = nextProps.user.get('customer') || fromJS({})
 
-        this.setState(newState)
-    }
+            if (!customer.isEmpty()) {
+                return
+            }
 
-    componentWillUnmount() {
-        this.props.actions.infobar.resetSearch()
-    }
+            this.props.searchSimilarUser(nextProps.user.get('id')).then(({user: suggestion}) => {
+                suggestion = fromJS(suggestion)
 
-    /**
-     * Populate infobar state from search results
-     */
-    _search = (query) => {
-        if (query) {
-            this.props.actions.infobar.search(query, 'infobar-user')
-        } else {
-            this.props.actions.infobar.resetSearch()
+                if (!suggestion.isEmpty()) {
+                    this.setState({
+                        suggestedUser: suggestion,
+                    })
+                }
+            })
         }
     }
 
-    /**
-     * Save edited widgets to database
-     */
-    _saveWidgets = () => {
-        const {actions, widgets} = this.props
+    _mode = (state = this.state) => {
+        // the following succession of conditions is in a particular order
+        // which is important for the good display of each of those
+        // /!\ do not mix it without testing it carefully
 
-        const editedItems = widgets.getIn(['_internal', 'editedItems'], fromJS([])).toJS()
+        if (state.isSearching) {
+            return 'loading'
+        }
 
-        actions.widgets.submitWidgets(editedItems)
+        if (state.isFetchingUser) {
+            return 'loading'
+        }
+
+        if (state.displaySelectedUser) {
+            return 'selected'
+        }
+
+        if (state.displaySearchResults) {
+            return 'results'
+        }
+
+        return 'default'
     }
 
-    /**
-     * Cancel widgets edition modifications
-     */
-    _cancelWidgetsUpdates = () => {
-        const {actions, context} = this.props
-        actions.widgets.startEditionMode(context)
+    _isEditing = () => {
+        return this.props.widgets.getIn(['_internal', 'isEditing']) && this.props.isRouteEditingWidgets
     }
 
-    /**
-     * Set the edition mode to passed one
-     */
     _toggleEditionMode = (isEditing) => {
         const {identifier, context} = this.props
 
@@ -135,9 +134,17 @@ class Infobar extends React.Component {
         }
     }
 
-    /**
-     * Render edition options such as save or cancel
-     */
+    _saveWidgets = () => {
+        const {actions, widgets} = this.props
+        const editedItems = widgets.getIn(['_internal', 'editedItems'], fromJS([])).toJS()
+        actions.widgets.submitWidgets(editedItems)
+    }
+
+    _cancelWidgetsUpdates = () => {
+        const {actions, context} = this.props
+        actions.widgets.startEditionMode(context)
+    }
+
     _renderWidgetsEditionTools = () => {
         const {widgets} = this.props
 
@@ -174,140 +181,201 @@ class Infobar extends React.Component {
         )
     }
 
-    render() {
+    _onSearch = (query) => {
+        if (query) {
+            this.setState({isSearching: true})
+            this.props.search(query, 'infobar-user').then(({resp}) => {
+                this.setState({
+                    displaySelectedUser: false,
+                    displaySearchResults: true,
+                    isSearching: false,
+                    searchResults: fromJS(resp.data.slice(0, 8)),
+                })
+            })
+        } else {
+            this._resetSearch()
+        }
+    }
+
+    _resetSearch = () => {
+        this.setState({
+            displaySearchResults: false,
+            searchResults: fromJS([]),
+        })
+    }
+
+    _renderUserInfo = (user) => {
+        const isEditing = this._isEditing()
+
+        const sources = this.props.sources
+            .setIn(['ticket', 'requester'], user)
+            .set('user', user)
+
+        return (
+            <InfobarUserInfo
+                actions={this.props.actions.widgets}
+                fetchUserPicture={this.props.actions.infobar.fetchUserPicture}
+                infobar={this.props.infobar}
+                isEditing={isEditing}
+                sources={sources}
+                user={user}
+                widgets={this.props.widgets}
+            />
+        )
+    }
+
+    _renderContent = () => {
         const {
             actions,
-            user,
-            widgets,
-            infobar,
-            identifier,
-            sources
+            sources,
         } = this.props
 
-        let content = <Loader />
+        const mode = this._mode()
 
-        const mode = infobar.getIn(['_internal', 'mode'], 'default')
+        if (mode === 'loading') {
+            return <Loader />
+        }
 
-        const isLoading = infobar
-            .getIn(['_internal', 'loading'], fromJS({}))
-            .some((loading, key) => {
-                // only match loading.search or loading.displayedUser
-                return ['search', 'displayedUser'].includes(key) ? loading : false
-            })
+        if (mode === 'selected') {
+            const hasDestinationUser = !this.props.user.isEmpty()
 
-        const isEditing = widgets.getIn(['_internal', 'isEditing']) && this.props.isRouteEditingWidgets
-        const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
-
-        // if there is no complete user to display, search the user name
-        const shouldForceSearch = this.state.data.get('shouldForceSearch') && !this.state.data.get('isInitialized')
-        const forcedQuery = shouldForceSearch ? user.get('name', '') : null
-
-        const context = widgets.get('currentContext', '')
-
-        const canEditWidgets = !isLoading
-            && hasFetchedWidgets
-            && areSourcesReady(sources, context)
-            && mode === 'default'
-            && !forcedQuery
-
-        const defaultUserId = sources.getIn(['ticket', 'requester', 'id'], null) || sources.getIn(['user', 'id'], null)
-
-        if (isLoading) {
-            // loading
-            content = <Loader />
-        } else if (mode === 'default') {
-            // current user info
-            content = (
-                !hasFetchedWidgets
-                    ? <Loader />
-                    : <InfobarUserInfo
-                        actions={actions.widgets}
-                        fetchUserPicture={actions.infobar.fetchUserPicture}
-                        infobar={infobar}
-                        isEditing={isEditing}
-                        sources={sources}
-                        user={user}
-                        widgets={widgets}
-                    />
-            )
-        } else if (mode === 'search') {
-            // list of found users
-            content = (
+            return (
                 <div>
-                    <div className="preview-buttons-wrapper">
-                        <div
-                            className="ui button left-button"
-                            onClick={() => actions.infobar.resetSearch()}
+                    <div className="mb-3">
+                        <Button
+                            onClick={() => {
+                                this.setState({
+                                    displaySelectedUser: false,
+                                    selectedUser: fromJS({}),
+                                })
+                            }}
                         >
-                            <i className="ui arrow left icon" />
-                            BACK
-                        </div>
-                    </div>
-                    <InfobarSearchResultsList
-                        searchResults={infobar.get('searchResults')}
-                        defaultUserId={defaultUserId}
-                        fetchPreviewUser={actions.infobar.fetchPreviewUser}
-                    />
-                </div>
-            )
-        } else if (mode === 'preview') {
-            // selected user info
-            const tweakedUser = infobar.get('displayedUser')
-            const isDefaultUser = tweakedUser.get('id') === defaultUserId
-
-            const mergeClassName = classnames('ui button right-button', {
-                disabled: isDefaultUser
-            })
-
-            const tweakedSources = sources
-                .setIn(['ticket', 'requester'], tweakedUser)
-                .set('user', tweakedUser)
-
-            const hasDestinationUser = !user.isEmpty()
-
-            content = (
-                <div>
-                    <div className="preview-buttons-wrapper">
-                        <div
-                            className="ui button left-button"
-                            onClick={() => actions.infobar.setInfobarMode('search')}
-                        >
-                            <i className="ui arrow left icon" />
-                            BACK
-                        </div>
+                            <i className="fa fa-fw fa-arrow-left mr-2" />
+                            Back
+                        </Button>
                         {
                             hasDestinationUser
+                            && this.state.selectedUser.get('id') !== this.props.user.get('id')
                             && (
-                                <div
-                                    className={mergeClassName}
-                                    onClick={() => actions.infobar.toggleMergeUsersModal()}
+                                <Button
+                                    className="pull-right"
+                                    onClick={() => {
+                                        this.setState({showMergeUserModal: true})
+                                        logEvent('Clicked "Merge" button on user searched in infobar')
+                                    }}
                                 >
-                                    MERGE
-                                </div>
+                                    Merge
+                                </Button>
                             )
                         }
                     </div>
-                    <InfobarUserInfo
-                        actions={actions.widgets}
-                        fetchUserPicture={actions.infobar.fetchUserPicture}
-                        infobar={infobar}
-                        isEditing={isEditing}
-                        sources={tweakedSources}
-                        user={tweakedUser}
-                        widgets={widgets}
-                        isDefaultUser={isDefaultUser}
-                    />
+                    {this._renderUserInfo(this.state.selectedUser)}
                     <MergeUsersContainer
-                        display={infobar.getIn(['_internal', 'mergeUsersModal', 'display'])}
-                        destinationUser={user}
-                        sourceUser={tweakedUser}
+                        display={this.state.showMergeUserModal}
+                        destinationUser={this.props.user}
+                        sourceUser={this.state.selectedUser}
+                        onClose={() => {
+                            this.setState({showMergeUserModal: false})
+                        }}
                     />
                 </div>
             )
-        } else if (!identifier) {
-            // if new ticket for example
-            content = null
         }
+
+        if (mode === 'results') {
+            const defaultUserId = sources.getIn(['ticket', 'requester', 'id']) || sources.getIn(['user', 'id'])
+
+            return (
+                <div>
+                    <div className="mb-3">
+                        <Button onClick={() => this._resetSearch()}>
+                            <i className="fa fa-fw fa-arrow-left mr-2" />
+                            Back
+                        </Button>
+                    </div>
+                    <InfobarSearchResultsList
+                        searchResults={this.state.searchResults}
+                        defaultUserId={defaultUserId}
+                        onUserClick={(user) => {
+                            this.setState({isFetchingUser: true})
+                            return actions.infobar.fetchPreviewUser(user.get('id')).then(({resp}) => {
+                                this.setState({
+                                    displaySelectedUser: true,
+                                    isFetchingUser: false,
+                                    selectedUser: fromJS(resp),
+                                })
+                            })
+                        }}
+                    />
+                </div>
+            )
+        }
+
+        if (!this.props.identifier) {
+            return null
+        }
+
+        const displaySuggestedUser = !this.state.suggestedUser.isEmpty()
+            && !this.state.suggestedUser.get('customer', fromJS({})).isEmpty()
+
+        return (
+            <div>
+                {this._renderUserInfo(this.props.user)}
+                {
+                    displaySuggestedUser && (
+                        <div>
+                            <div className="infobar-section-separator" />
+                            <div className={classnames(css['suggested-user'])}>
+                                <h4>Is this the same user?</h4>
+                                <p>
+                                    We have found someone similar to the requester of this ticket. If it is the same
+                                    person,
+                                    merge them together to get a unified view of this user.
+                                </p>
+                                <div style={{marginBottom: '30px'}}>
+                                    <Button
+                                        className="mr-2"
+                                        type="button"
+                                        color="secondary"
+                                        onClick={() => {
+                                            logEvent('Clicked "Merge" button on suggested user in infobar')
+                                            this.setState({showMergeUserModal: true})
+                                        }}
+                                    >
+                                        Merge
+                                    </Button>
+                                </div>
+                                {this._renderUserInfo(this.state.suggestedUser)}
+                                <MergeUsersContainer
+                                    display={this.state.showMergeUserModal}
+                                    destinationUser={this.props.user}
+                                    sourceUser={this.state.suggestedUser}
+                                    onClose={() => {
+                                        this.setState({showMergeUserModal: false})
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+        )
+    }
+
+    render() {
+        const {
+            widgets,
+            sources,
+        } = this.props
+
+        const isEditing = this._isEditing()
+        const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
+
+        const context = widgets.get('currentContext', '')
+
+        const canEditWidgets = hasFetchedWidgets
+            && areSourcesReady(sources, context)
+            && !this.state.displaySelectedUser
 
         return (
             <InfobarLayout>
@@ -317,11 +385,7 @@ class Infobar extends React.Component {
                             className="mr-2"
                             placeholder="Search users by email, name or phone number..."
                             bindKey
-                            shouldResetInput={this.state.data.get('shouldResetSearch')}
-                            onChange={this._search}
-                            forcedQuery={forcedQuery}
-                            location={identifier}
-                            disabled={isEditing}
+                            onChange={this._onSearch}
                             style={{maxWidth: 'none'}}
                         />
 
@@ -345,30 +409,11 @@ class Infobar extends React.Component {
                         </UncontrolledTooltip>
                     </div>
                     <div className="infobar-box">
-                        {content}
+                        {this._renderContent()}
                     </div>
                 </div>
-                {
-                    isEditing && this._renderWidgetsEditionTools()
-                }
+                {isEditing && this._renderWidgetsEditionTools()}
             </InfobarLayout>
         )
     }
 }
-
-Infobar.propTypes = {
-    identifier: PropTypes.string.isRequired,
-    actions: PropTypes.object.isRequired,
-    infobar: PropTypes.object.isRequired,
-    isRouteEditingWidgets: PropTypes.bool.isRequired,
-    user: PropTypes.object.isRequired,
-    widgets: PropTypes.object.isRequired,
-    sources: PropTypes.object.isRequired,
-    context: PropTypes.string.isRequired,
-}
-
-Infobar.defaultProps = {
-    user: fromJS({})
-}
-
-export default Infobar

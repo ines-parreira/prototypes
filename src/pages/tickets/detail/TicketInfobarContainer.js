@@ -27,7 +27,7 @@ class TicketInfobarContainer extends React.Component {
         } = this.props
 
         // the || is used to replace null
-        const user = ticket.get('requester', fromJS({})) || fromJS({})
+        const user = ticket.get('requester') || fromJS({})
 
         return (
             <Infobar
