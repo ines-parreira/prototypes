@@ -26,7 +26,10 @@ export default {
                             to: [
                                 {
                                     name: 'Acme Support',
-                                    address: '1053263268098545'
+                                    messenger_id: null,
+                                    address: '1053263268098545',
+                                    id: 2,
+                                    facebook_id: '1053263268098545'
                                 }
                             ],
                             conversation_id: 't_mid.1464181269480:2ba9b77d8b5721a622',
@@ -34,7 +37,10 @@ export default {
                             type: 'facebook-message',
                             from: {
                                 name: 'blah blah',
-                                address: '10209352850648048'
+                                messenger_id: null,
+                                address: '10209352850648048',
+                                id: 4,
+                                facebook_id: '10209352850648048'
                             }
                         },
                         meta: null,
@@ -182,7 +188,10 @@ export default {
                             to: [
                                 {
                                     name: 'Acme Support',
+                                    messenger_id: null,
                                     address: '1053263268098545',
+                                    id: 2,
+                                    facebook_id: '1053263268098545'
                                 }
                             ],
                             conversation_id: 't_mid.1464181269480:2ba9b77d8b5721a622',
@@ -190,7 +199,10 @@ export default {
                             type: 'facebook-message',
                             from: {
                                 name: 'blah blah',
+                                messenger_id: null,
                                 address: '10209352850648048',
+                                id: 4,
+                                facebook_id: '10209352850648048'
                             }
                         },
                         meta: null,

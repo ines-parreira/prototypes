@@ -19,27 +19,34 @@ expect.extend(expectImmutable)
 
 const users = {
     email: [{
+        id: 1,
         name: 'Support',
         address: 'support@acme.com',
     }, {
+        id: 2,
         name: 'Nicolas',
         address: 'nico@las.com',
     }, {
+        id: 3,
         name: 'Julie',
         address: 'ju@lie.com',
     }, {
+        id: 4,
         name: 'Fabien',
         address: 'fa@bien.com',
     }],
     chat: [{
+        id: 11,
         name: 'Support',
-        address: '0987654321',
+        smooch_id: '0987654321',
     }, {
+        id: 12,
         name: 'Nicolas',
-        address: '1234567890',
+        smooch_id: '1234567890',
     }, {
+        id: 13,
         name: 'Julie',
-        address: '2345678901',
+        smooch_id: '2345678901',
     }]
 }
 
@@ -94,15 +101,18 @@ const ticket = fromJS({
 const receiversExample = guessReceiversFromTicket(ticket)
 const receiversValueExample = {
     to: [{
+        id: users.email[1].id,
         name: users.email[1].name,
         label: displayUserNameFromSource(users.email[1], 'email'),
         value: users.email[1].address,
     }, {
+        id: users.email[2].id,
         name: users.email[2].name,
         label: displayUserNameFromSource(users.email[2], 'email'),
         value: users.email[2].address,
     }],
     cc: [{
+        id: users.email[3].id,
         name: users.email[3].name,
         label: displayUserNameFromSource(users.email[3], 'email'),
         value: users.email[3].address,
@@ -110,13 +120,16 @@ const receiversValueExample = {
 }
 const receiversStateExample = {
     to: [{
+        id: receiversValueExample.to[0].id,
         name: receiversValueExample.to[0].name,
         address: receiversValueExample.to[0].value,
     }, {
+        id: receiversValueExample.to[1].id,
         name: receiversValueExample.to[1].name,
         address: receiversValueExample.to[1].value,
     }],
     cc: [{
+        id: receiversValueExample.cc[0].id,
         name: receiversValueExample.cc[0].name,
         address: receiversValueExample.cc[0].value,
     }],
@@ -156,6 +169,7 @@ describe('Ticket utils', () => {
 
             expect(receivers).toEqual({
                 to: [users.chat[1]],
+                cc: [],
             })
         })
 
@@ -168,6 +182,7 @@ describe('Ticket utils', () => {
 
             expect(receivers).toEqual({
                 to: [users.chat[0]],
+                cc: [],
             })
         })
     })

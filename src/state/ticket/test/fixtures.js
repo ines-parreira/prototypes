@@ -19,6 +19,7 @@ export const smoochTicket = fromJS({
             ],
             from: {
                 name: 'Monumental Halibut',
+                smooch_id: '20c0993066ec2e8601b7de22',
                 address: '20c0993066ec2e8601b7de22'
             },
             type: 'chat'
@@ -34,7 +35,8 @@ export const smoochTicket = fromJS({
             to: [
                 {
                     name: 'Monumental Halibut',
-                    address: '20c0993066ec2e8601b7de22'
+                    smooch_id: '20c0993066ec2e8601b7de22',
+                    address: ''
                 }
             ],
             from: {
@@ -100,6 +102,8 @@ export const facebookPost = fromJS({
             source: {
                 from: {
                     address: '1232353100194770',
+                    id: 5,
+                    facebook_id: '1232353100194770',
                     name: 'Check-my Motherfockin Resume'
                 },
                 post_id: '519388858269125_626477354226941',
@@ -108,6 +112,7 @@ export const facebookPost = fromJS({
                 to: [
                     {
                         address: '',
+                        id: 1,
                         name: 'Acme Support'
                     }
                 ]
@@ -128,6 +133,7 @@ export const facebookPost = fromJS({
                 to: [
                     {
                         address: '',
+                        id: 5,
                         name: 'Check-my Motherfockin Resume'
                     }
                 ],
