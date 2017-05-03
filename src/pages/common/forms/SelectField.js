@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {Input} from 'reactstrap'
+import {Input, FormText} from 'reactstrap'
 
 class SelectField extends React.Component {
     componentDidMount() {
@@ -15,6 +15,7 @@ class SelectField extends React.Component {
             label,
             required,
             tooltip,
+            help,
             defaultValue, // eslint-disable-line
             meta, // eslint-disable-line
             ...rest,
@@ -24,7 +25,10 @@ class SelectField extends React.Component {
             <div className="ui field">
                 {
                     label && (
-                        <label htmlFor={input.name}>
+                        <label
+                            htmlFor={input.name}
+                            className="control-label"
+                        >
                             {label}
                             {tooltip}
                         </label>
@@ -44,6 +48,13 @@ class SelectField extends React.Component {
                     }
                     {children}
                 </Input>
+                {
+                    help && (
+                        <FormText color="muted">
+                            {help}
+                        </FormText>
+                    )
+                }
             </div>
         )
     }
@@ -56,6 +67,7 @@ SelectField.defaultProps = {
 SelectField.propTypes = {
     children: PropTypes.node,
     defaultValue: PropTypes.string,
+    help: PropTypes.node,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
     required: PropTypes.bool,

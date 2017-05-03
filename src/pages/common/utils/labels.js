@@ -1,12 +1,11 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import {Badge} from 'reactstrap'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
 import {fromJS} from 'immutable'
-import {UncontrolledTooltip} from 'reactstrap'
-import {formatDatetime, isImmutable} from '../../../utils'
+import {Badge, UncontrolledTooltip} from 'reactstrap'
+import {formatDatetime, toJS, isImmutable} from '../../../utils'
 import {USER_CHANNEL_CLASS} from '../../../config'
 
 /**
@@ -130,6 +129,8 @@ SourceDetailLabel.propTypes = {
  * ROLE
  */
 export const RoleLabel = ({roles = 'user'}) => {
+    roles = toJS(roles)
+
     if (!_isArray(roles)) {
         roles = [roles]
     }

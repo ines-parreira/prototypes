@@ -33,6 +33,8 @@ import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCardContainer'
 import ManageTagsContainer from './settings/manageTags/ManageTags'
 
+import * as Team from './settings/team'
+
 export default (
     <Route
         path="/app"
@@ -218,6 +220,28 @@ export default (
                     navbar: SettingsNavbarContainer
                 }}
             />
+            <Route path="team">
+                <IndexRoute
+                    components={{
+                        content: UserRoleRequired(Team.List, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path="add"
+                    components={{
+                        content: UserRoleRequired(Team.Form, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path="update/:id"
+                    components={{
+                        content: UserRoleRequired(Team.Form, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+            </Route>
             <Route path="billing">
                 <IndexRoute
                     components={{
@@ -243,7 +267,7 @@ export default (
             <Route
                 path="manage-tags"
                 components={{
-                    content: ManageTagsContainer,
+                    content: UserRoleRequired(ManageTagsContainer, 'admin'),
                     navbar: SettingsNavbarContainer
                 }}
             />

@@ -507,6 +507,12 @@ export const isImmutable = object => Immutable.Iterable.isIterable(object)
 export const toImmutable = object => isImmutable(object) ? object : fromJS(object)
 
 /**
+ * Return a passed object as plain JS (not Immutable)
+ * @param object
+ */
+export const toJS = object => isImmutable(object) ? object.toJS() : object
+
+/**
  * Return field path
  * @param field
  * @returns {*|string|string|string}

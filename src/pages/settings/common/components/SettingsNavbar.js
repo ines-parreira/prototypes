@@ -31,12 +31,16 @@ export default class SettingsNavbar extends React.Component {
             name: 'General',
             links: [{
                 requiredRole: 'admin',
+                to: 'team',
+                text: 'Team members'
+            }, {
+                requiredRole: 'admin',
                 to: 'billing',
                 text: 'Billing'
             }, {
                 requiredRole: 'admin',
                 to: 'manage-tags',
-                text: 'Manage tags'
+                text: 'Tags'
             }]
         }]
 

@@ -42,3 +42,5 @@ Loader.propTypes = {
     size: PropTypes.oneOf(['mini', 'tiny', 'small', 'medium', 'large']),
     message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 }
+
+export default Loader
