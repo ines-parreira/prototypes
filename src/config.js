@@ -55,11 +55,11 @@ export const SOURCE_VALUE_PROP = {
     email: 'address',
     phone: 'address',
     'ottspott-call': 'address',
-    chat: 'smooch_id',
+    chat: 'address',
     api: null,
-    'facebook-message': 'name',
-    'facebook-comment': 'name',
-    'facebook-post': 'name'
+    'facebook-message': 'address',
+    'facebook-comment': 'address',
+    'facebook-post': 'address'
 }
 
 export const USER_CHANNEL_CLASS = {

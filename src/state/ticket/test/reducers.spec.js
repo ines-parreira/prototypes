@@ -333,7 +333,6 @@ describe('Ticket reducer', () => {
 
             const expected = initialState.mergeDeep({
                 newMessage: {
-                    receiver: {id: receiver.id},
                     source: {
                         to: fromJS([expectedReceiver])
                     }

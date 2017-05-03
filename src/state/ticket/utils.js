@@ -107,10 +107,18 @@ export function guessReceiversFromTicket(ticket, channels = fromJS([])) {
             return !isSupportAddress(receiver.get('address'), supportAddresses)
         })
 
-    return {
-        to: cleanReceivers(toReceivers).toJS(),
-        cc: cleanReceivers(ccReceivers).toJS(),
+    const ret = {
+        to: cleanReceivers(toReceivers).toJS()
     }
+
+    const cc = cleanReceivers(ccReceivers).toJS()
+
+    // To avoid setting an empty `cc` field in every source
+    if (cc && cc.length) {
+        ret.cc = cc
+    }
+
+    return ret
 }
 
 /**
@@ -120,14 +128,11 @@ export function guessReceiversFromTicket(ticket, channels = fromJS([])) {
  * @returns {*}
  */
 export function receiversValueFromState(options, sourceType) {
-    const valueProp = getValuePropFromSourceType(sourceType)
-
     _forEach(options, (users, index) => {
         options[index] = users.map((user) => ({
-            id: user.id,
             name: user.name,
             label: displayUserNameFromSource(user, sourceType),
-            value: user[valueProp] || user.address,
+            value: user.address,
         }))
     })
 
@@ -151,9 +156,7 @@ export function receiversStateFromValue(value, sourceType) {
 
     _forEach(newValue, (users, index) => {
         newValue[index] = users.map((user) => ({
-            id: user.id,
             name: user.name,
-            [valueProp]: user.value,
             address: user.value,
         }))
     })
