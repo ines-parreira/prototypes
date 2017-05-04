@@ -41,17 +41,13 @@ export default class Right extends React.Component {
             options = agents.map((agent) => {
                 if (agent.get('id') === currentUser.get('id')) {
                     // replace my name with 'Me'
-                    let me = agent.set('name', 'Me')
-
                     // if we're getting the selected value from the view,
                     // replace the current user id with {current_user.id},
                     // that's the way the filter value is stored in the view.
                     // for the select element to match the active item.
-                    if (node.raw.includes('{current_user.id}')) {
-                        me = me.set('id', '{current_user.id}')
-                    }
-
-                    return me
+                    return agent
+                        .set('name', 'Me')
+                        .set('id', '{current_user.id}')
                 }
 
                 return agent
