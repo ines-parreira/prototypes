@@ -76,7 +76,7 @@ export default class Infobar extends React.Component {
 
             const customer = nextProps.user.get('customer') || fromJS({})
 
-            if (!customer.isEmpty()) {
+            if (!isCustomerDataValid(customer)) {
                 return
             }
 
@@ -84,11 +84,9 @@ export default class Infobar extends React.Component {
                 suggestion = fromJS(suggestion)
 
                 if (!suggestion.isEmpty()) {
-                    const customer = suggestion.get('customer')
+                    const customer = suggestion.get('customer') || fromJS({})
 
-                    const isCustomerValid = isCustomerDataValid(customer)
-
-                    if (isCustomerValid) {
+                    if (isCustomerDataValid(customer)) {
                         this.setState({
                             suggestedUser: suggestion,
                         })
