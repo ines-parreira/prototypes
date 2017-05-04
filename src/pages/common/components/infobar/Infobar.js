@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {Button, UncontrolledTooltip} from 'reactstrap'
-import {areSourcesReady} from './utils'
+import {areSourcesReady, isCustomerDataValid} from './utils'
 
 import * as infobarActions from '../../../../state/infobar/actions'
 
@@ -84,9 +84,15 @@ export default class Infobar extends React.Component {
                 suggestion = fromJS(suggestion)
 
                 if (!suggestion.isEmpty()) {
-                    this.setState({
-                        suggestedUser: suggestion,
-                    })
+                    const customer = suggestion.get('customer')
+
+                    const isCustomerValid = isCustomerDataValid(customer)
+
+                    if (isCustomerValid) {
+                        this.setState({
+                            suggestedUser: suggestion,
+                        })
+                    }
                 }
             })
         }
