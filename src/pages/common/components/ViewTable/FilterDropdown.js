@@ -38,16 +38,33 @@ class FilterDropdown extends React.Component {
         this.props.onClose()
     }
 
-    onClick = (newValue) => {
+    _left = () => {
         const viewConfig = this.props.viewConfig
+        return `${viewConfig.get('singular')}.${fieldPath(this.props.field)}`
+    }
 
-        const left = `${viewConfig.get('singular')}.${fieldPath(this.props.field)}`
+    onClick = (newValue) => {
+        const left = this._left()
 
-        this.props.addFieldFilter(this.props.field.toJS(), {
+        this._addFilter({
             left,
             operator: equalityOperator(left, this.props.schemas),
-            right: resolveLiteral(newValue, left)
+            right: resolveLiteral(newValue, left),
         })
+    }
+
+    _onClickUnassigned = () => {
+        const left = this._left()
+
+        this._addFilter({
+            left,
+            operator: 'isEmpty',
+            right: 0,
+        })
+    }
+
+    _addFilter = (filter) => {
+        this.props.addFieldFilter(this.props.field.toJS(), filter)
 
         // trigger add callback
         this.props.onAdd()
@@ -126,10 +143,10 @@ class FilterDropdown extends React.Component {
             )
         }
 
-        return this.state.enum.map((value, key) => {
+        let options = this.state.enum.map((value, key) => {
             let renderValue = value
 
-            // special displays for some properties in the dropdown
+            // special displays for some columns in the dropdown
             if (field.get('name') === 'tags') {
                 // display tags as tags
                 renderValue = value.get('name')
@@ -154,6 +171,25 @@ class FilterDropdown extends React.Component {
                 </DropdownItem>
             )
         })
+
+        // special option added for some columns in the dropdown
+        if (field.get('name') === 'assignee') {
+            options = options.unshift(
+                <DropdownItem
+                    key="unassigned"
+                    type="button"
+                    onClick={this._onClickUnassigned}
+                >
+                    Unassigned
+                </DropdownItem>,
+                <DropdownItem
+                    key="unassigned-divider"
+                    divider
+                />
+            )
+        }
+
+        return options
     }
 
     render() {
