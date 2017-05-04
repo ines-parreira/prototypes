@@ -160,7 +160,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/shipstation.png',
     },
     {
-        title: 'Loyalty Lion',
+        title: 'LoyaltyLion',
         description: 'See loyalty points next to tickets. Award points with macros.',
         url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#loyalty-lion',
         image: 'integrations/loyaltylion.png',
