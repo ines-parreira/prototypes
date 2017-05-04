@@ -166,6 +166,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/loyaltylion.png',
     },
     {
+        title: 'Yotpo',
+        description: 'Display product reviews customers left next to support tickets.',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#yotpo',
+        image: 'integrations/yotpo.png',
+    },
+    {
         title: 'Slack',
         description: 'Post notifications on Slack when tickets are created or updated',
         url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#slack',
