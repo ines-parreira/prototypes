@@ -68,9 +68,14 @@ export default class List extends React.Component {
                         color="success"
                         to="/app/settings/team/add/"
                     >
-                        Add agent
+                        Add team member
                     </Button>
                 </div>
+
+                <p>
+                    Manage team members for your Gorgias account. Team members can respond to tickets. You can add as
+                    many team members as you want.
+                </p>
 
                 <Table>
                     <tbody>

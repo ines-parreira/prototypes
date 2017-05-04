@@ -145,12 +145,12 @@ export default class Form extends React.Component {
                         <Link to="/app/settings/team">Team members</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>
-                        {isUpdate ? `Edit ${agent.get('name')}` : 'Add agent'}
+                        {isUpdate ? `Edit ${agent.get('name')}` : 'Add team member'}
                     </BreadcrumbItem>
                 </Breadcrumb>
 
                 <h1 className="mb-3">
-                    {isUpdate ? `Editing agent: ${agent.get('name')}` : 'Add agent'}
+                    {isUpdate ? `Editing ${agent.get('name')}` : 'Add team member'}
                 </h1>
 
                 <BootstrapForm onSubmit={this._onSubmit}>
@@ -196,7 +196,7 @@ export default class Form extends React.Component {
                             })}
                             disabled={this.state.isSubmitting}
                         >
-                            {isUpdate ? 'Save changes' : 'Create agent'}
+                            {isUpdate ? 'Save changes' : 'Create team member'}
                         </Button>
                         {
                             isUpdate && (
