@@ -9,7 +9,7 @@ import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbarContainer from './tickets/common/TicketNavbarContainer'
 import TicketListContainer from './tickets/list/TicketListContainer'
-import RuleContainer from './rules/list/RuleContainer'
+import RuleContainer from './settings/rules/list/RuleContainer'
 import UserListContainer from './users/list/UserListContainer'
 import UserNavbarContainer from './users/common/UserNavbarContainer'
 import UserDetailContainer from './users/detail/UserDetailContainer'
@@ -26,7 +26,6 @@ import ApiKeyView from './settings/apiKey/ApiKeyView'
 import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
-import RulesNavbarContainer from './rules/common/RulesNavbarContainer'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
 import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
@@ -171,14 +170,6 @@ export default (
             <Route path=":integrationId" />
         </Route>
         <Route
-            path="rules"
-            components={{
-                content: RuleContainer,
-                navbar: RulesNavbarContainer
-            }}
-            noContainerWidthLimit
-        />
-        <Route
             path="stats"
             components={{
                 content: OverviewStatsContainer,
@@ -198,6 +189,14 @@ export default (
                     content: YourProfileContainer,
                     navbar: SettingsNavbarContainer
                 }}
+            />
+            <Route
+                path="rules"
+                components={{
+                    content: RuleContainer,
+                    navbar: SettingsNavbarContainer
+                }}
+                noContainerWidthLimit
             />
             <Route
                 path="profile"

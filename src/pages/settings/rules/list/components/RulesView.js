@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react'
 import {Button} from 'reactstrap'
 
-import Modal from '../../../common/components/Modal'
-import PageHeader from '../../../common/components/PageHeader'
+import Modal from '../../../../common/components/Modal'
+import PageHeader from '../../../../common/components/PageHeader'
 
 import RuleForm from './RuleForm'
 import RuleTable from './RuleTable'
-import {getAST, getCode} from '../../../../utils'
+import {getAST, getCode} from '../../../../../utils'
 
 export default class RulesView extends React.Component {
     state = {
@@ -30,9 +30,10 @@ export default class RulesView extends React.Component {
         values.code = 'if (eq(event.type, \'ticket-message-created\')) {}'
         values.code_ast = getAST(values.code)
         values.code = getCode(values.code_ast)
-        return this.props.actions.rules.create(values).then(() => {
-            this._hideForm()
-        })
+        return this.props.actions.rules.create(values)
+            .then(() => {
+                this._hideForm()
+            })
     }
 
     render() {
@@ -66,7 +67,6 @@ export default class RulesView extends React.Component {
                                 actions={actions}
                                 rules={rules}
                             />
-
                         </div>
                     )
                 }

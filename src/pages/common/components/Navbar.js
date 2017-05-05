@@ -46,9 +46,6 @@ const mainMenu = [{
     url: '/app/stats',
     label: 'Statistics',
 }, {
-    url: '/app/rules',
-    label: 'Rules',
-}, {
     url: '/app/settings',
     label: 'Settings',
 }]

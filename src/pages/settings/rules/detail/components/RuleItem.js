@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import {Button} from 'reactstrap'
 
-import Program from '../../../common/components/ast/Program'
+import Program from '../../../../common/components/ast/Program'
 
 class RuleItem extends React.Component {
     constructor() {

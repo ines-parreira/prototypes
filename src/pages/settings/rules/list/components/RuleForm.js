@@ -3,9 +3,9 @@ import {Field, reduxForm, reset} from 'redux-form'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
-import InputField from '../../../common/forms/InputField'
-import TextAreaField from '../../../common/forms/TextAreaField'
-import formSender from '../../../common/utils/formSender'
+import InputField from '../../../../common/forms/InputField'
+import TextAreaField from '../../../../common/forms/TextAreaField'
+import formSender from '../../../../common/utils/formSender'
 
 class RuleForm extends React.Component {
     _handleCancel = () => {

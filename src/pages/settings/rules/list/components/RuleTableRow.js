@@ -1,16 +1,15 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 
-import ToggleCheckbox from '../../../common/forms/ToggleCheckbox'
+import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 
-import {DatetimeLabel} from '../../../common/utils/labels'
+import {DatetimeLabel} from '../../../../common/utils/labels'
 import RuleItem from '../../detail/components/RuleItem'
-import * as ruleSelectors from '../../../../state/rules/selectors'
+import * as ruleSelectors from '../../../../../state/rules/selectors'
 
 class RuleTableRow extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {showDetail: false}
+    state = {
+        showDetail: false,
     }
 
     _toggleItem = () => {

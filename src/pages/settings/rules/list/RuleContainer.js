@@ -4,8 +4,8 @@ import {bindActionCreators} from 'redux'
 
 import RulesView from './components/RulesView'
 
-import * as RuleActions from '../../../state/rules/actions'
-import {getRules} from '../../../state/rules/selectors'
+import * as RuleActions from '../../../../state/rules/actions'
+import {getRules} from '../../../../state/rules/selectors'
 
 const mapStateToProps = (state) => ({
     rules: getRules(state),
