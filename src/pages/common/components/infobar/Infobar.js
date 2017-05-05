@@ -327,6 +327,7 @@ export default class Infobar extends React.Component {
 
         const displaySuggestedUser = !this.state.suggestedUser.isEmpty()
             && !this.state.suggestedUser.get('customer', fromJS({})).isEmpty()
+            && !this.props.widgets.getIn(['_internal', 'isEditing'])
 
         return (
             <div>
