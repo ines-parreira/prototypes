@@ -60,6 +60,7 @@ class AddLink extends React.Component {
             >
                 <div className="flex">
                     <input
+                        className="form-control"
                         ref="input"
                         type="text"
                         placeholder="External url..."

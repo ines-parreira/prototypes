@@ -1,5 +1,7 @@
 import React from 'react'
 import {Entity} from 'draft-js'
+import {UncontrolledTooltip} from 'reactstrap'
+
 import {linkify} from '../../../../../utils'
 
 /* eslint-disable react/prop-types */
@@ -15,14 +17,27 @@ export default [{
     },
     component: ({children, entityKey}) => {
         const {url} = Entity.get(entityKey).getData()
+        const id = `link-${entityKey}`
         return (
-            <a href={url} target="_blank" rel="noopener noreferrer">
+            <a
+                href={url}
+                id={id}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
                 {children}
+                <UncontrolledTooltip
+                    placement="top"
+                    target={id}
+                    delay={0}
+                >
+                    {url}
+                </UncontrolledTooltip>
             </a>
         )
     },
 }, {
-    // FOUND URL IN TEXT
+    // URL FOUND IN TEXT
     strategy: (contentBlock, callback) => {
         const links = linkify.match(contentBlock.get('text'))
 
@@ -36,7 +51,11 @@ export default [{
         const links = linkify.match(decoratedText)
         const url = links && links[0] ? links[0].url : ''
         return (
-            <a href={url} target="_blank" rel="noopener noreferrer">
+            <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
                 {children}
             </a>
         )

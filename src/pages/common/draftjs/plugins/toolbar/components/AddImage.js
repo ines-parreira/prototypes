@@ -115,6 +115,7 @@ class AddImage extends React.Component {
                         ) : (
                             <div className="flex">
                                 <input
+                                    className="form-control"
                                     key="url"
                                     ref="input"
                                     type="text"
