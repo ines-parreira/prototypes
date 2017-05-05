@@ -85,9 +85,28 @@ export class TicketView extends React.Component {
 
         const isHistoryDisplayed = ticket.getIn(['_internal', 'displayHistory'])
 
+        const userHistory = this.props.users.get('userHistory') || fromJS({})
+        const historyTickets = userHistory.get('tickets') || fromJS([])
+        const historyOpenedTickets = historyTickets
+            .filter(t => t.get('id') !== ticket.get('id')) // remove current ticket from history for the count
+            .filter(t => t.get('status') !== 'closed') // count only open and new tickets
+            .size
+        const hasOpenedTicketsInHistory = historyOpenedTickets > 0
+
         const historyButtonLabel = isHistoryDisplayed
             ? 'Hide user history'
-            : <p><i className="icon arrow circle up" />Show user history ({itemsCountInHistory})</p>
+            : (
+                <p>
+                    <i className="icon arrow circle up mr-1" />
+                    {
+                        hasOpenedTicketsInHistory ? (
+                                <span>Show other open tickets ({historyOpenedTickets})</span>
+                            ) : (
+                                <span>Show user history ({itemsCountInHistory})</span>
+                            )
+                    }
+                </p>
+            )
 
         const transparentHistoryButton = !ticket.get('id')
             || !users.getIn(['userHistory', 'hasHistory'])
@@ -112,15 +131,16 @@ export class TicketView extends React.Component {
                         actions={this.props.actions.ticket}
                         currentTicketId={this.props.ticket.get('id')}
                         isDisplayed={isHistoryDisplayed}
-                        userHistory={this.props.users.get('userHistory')}
+                        userHistory={userHistory}
                     />
                     {
                         !hideHistoryButton && (
-                            <div className="previous-btn-container">
+                            <div className="history-btn-container">
                                 <button
-                                    className={classnames('ticket-previous-btn ui small button', {
+                                    className={classnames('ticket-history-btn ui small button', {
                                         transparent: transparentHistoryButton,
                                         rounded: isHistoryDisplayed,
+                                        highlighted: hasOpenedTicketsInHistory,
                                     })}
                                     onClick={() => {
                                         const shouldOpenHistory = ticket.get('id')

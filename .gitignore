@@ -50,6 +50,7 @@ nosetests.xml
 coverage.xml
 *,cover
 npm-debug.log
+.yarnclean
 .babel.json
 node_modules
 
