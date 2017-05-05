@@ -108,8 +108,12 @@ class TicketDetailContainer extends React.Component {
         // leaving ticket and request user from socket io
         const io = new SocketIO()
         const ticketId = this.props.params.ticketId
+        const requesterId = this.props.ticket.getIn(['requester', 'id'])
         if (ticketId) {
             io.leaveTicket(ticketId)
+        }
+        if (requesterId) {
+            io.leaveUser(requesterId)
         }
 
         this.props.actions.ticket.clearTicket()
