@@ -24,8 +24,8 @@ export default class TicketSubmitButtons extends React.Component {
         // we use `next` var to determine if the ticket is closed after send action
         if (!isSending) {
             logEvent('Sent message', {
-                ticket: _pick(this.props.ticket.toJS(), ['id']),
-                andClose: next
+                ticket: _pick(this.props.ticket.toJS(), ['id', 'channel']),
+                andClose: next,
             })
         }
     }

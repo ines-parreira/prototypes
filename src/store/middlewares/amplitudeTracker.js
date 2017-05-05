@@ -1,5 +1,6 @@
 import _isUndefined from 'lodash/isUndefined'
 import {fromJS} from 'immutable'
+import _pick from 'lodash/pick'
 import {
     SUBMIT_CURRENT_USER_SUCCESS
 } from '../../state/users/constants'
@@ -101,7 +102,7 @@ const amplitudeTracker = store => next => action => {
                 actionProps = actionProps.merge({
                     id: action.macro.get('id'),
                     name: action.macro.get('name'),
-                    ticket: state.ticket.get('id'),
+                    ticket: _pick(this.props.ticket.toJS(), ['id', 'channel']),
                 })
                 break
             case ADD_ATTACHMENT_SUCCESS:

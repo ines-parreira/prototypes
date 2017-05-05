@@ -4,7 +4,9 @@ import {browserHistory, withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import _pick from 'lodash/pick'
 
+import {logEvent} from '../../../store/middlewares/amplitudeTracker'
 import shortcutManager from '../../common/utils/shortcutManager'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
@@ -196,6 +198,10 @@ class TicketDetailContainer extends React.Component {
                             e.preventDefault()
                         }
                         this._submit()
+                        logEvent('Sent message', {
+                            ticket: _pick(this.props.ticket.toJS(), ['id', 'channel']),
+                            andClose: false,
+                        })
                     }
                 }
             },
@@ -206,6 +212,10 @@ class TicketDetailContainer extends React.Component {
                             e.preventDefault()
                         }
                         this._submit('closed', true)
+                        logEvent('Sent message', {
+                            ticket: _pick(this.props.ticket.toJS(), ['id', 'channel']),
+                            andClose: true,
+                        })
                     }
                 }
             }
