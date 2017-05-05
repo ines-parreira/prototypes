@@ -50,12 +50,21 @@ export function isUppercase(string) {
 }
 
 /**
- * Return true if passed customer data is valid (not empty, Immutable Map, etc.)
+ * Return true if passed customer data is valid (Immutable Map, etc.)
  * @param customer
  * @returns {boolean}
  */
 export const isCustomerDataValid = (customer) => {
-    return !!customer && utils.isImmutable(customer) && !customer.isEmpty()
+    return !!customer && utils.isImmutable(customer)
+}
+
+/**
+ * Return true if passed customer data is valid and not empty
+ * @param customer
+ * @returns {boolean}
+ */
+export const isCustomerDataPresent = (customer) => {
+    return isCustomerDataValid(customer) && !customer.isEmpty()
 }
 
 /**
@@ -167,7 +176,7 @@ export function areSourcesReady(sources, context, everySources = false) {
 
         const sourceData = currentSource.getIn(immutableSourcePath, fromJS({}))
 
-        return isCustomerDataValid(sourceData)
+        return isCustomerDataPresent(sourceData)
     })
 }
 

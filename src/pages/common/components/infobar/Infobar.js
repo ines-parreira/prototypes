@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {Button, UncontrolledTooltip} from 'reactstrap'
-import {areSourcesReady, isCustomerDataValid} from './utils'
+import {areSourcesReady, isCustomerDataValid, isCustomerDataPresent} from './utils'
 
 import * as infobarActions from '../../../../state/infobar/actions'
 
@@ -81,16 +81,22 @@ export default class Infobar extends React.Component {
             }
 
             this.props.searchSimilarUser(nextProps.user.get('id')).then(({user: suggestion}) => {
+                if (!suggestion) {
+                    return
+                }
+
                 suggestion = fromJS(suggestion)
 
-                if (!suggestion.isEmpty()) {
-                    const customer = suggestion.get('customer') || fromJS({})
+                if (suggestion.isEmpty()) {
+                    return
+                }
 
-                    if (isCustomerDataValid(customer)) {
-                        this.setState({
-                            suggestedUser: suggestion,
-                        })
-                    }
+                const customer = suggestion.get('customer') || fromJS({})
+
+                if (isCustomerDataPresent(customer)) {
+                    this.setState({
+                        suggestedUser: suggestion,
+                    })
                 }
             })
         }
