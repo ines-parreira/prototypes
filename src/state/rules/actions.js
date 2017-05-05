@@ -55,9 +55,9 @@ export const fail = (error, reason) => ({
 export const create = (data) => (dispatch) => {
     return axios.post('/api/rules/', data)
         .then((response) => {
-            dispatch(addRuleEnd(response.data))
+            return dispatch(addRuleEnd(response.data))
         }, (error) => {
-            dispatch(fail(error, 'Unable to create the rule'))
+            return dispatch(fail(error, 'Unable to create the rule'))
         })
 }
 
@@ -69,20 +69,22 @@ export const save = (data) => {
     return dispatch => {
         return axios.put(`/api/rules/${data.id}/`, data)
             .then(() => {
-                dispatch({
-                    type: types.UPDATE_RULE_SUCCESS,
-                    ruleId: data.id
-                })
                 dispatch(notify({
                     type: 'success',
                     message: 'Rule saved successfully',
                 }))
+
+                return dispatch({
+                    type: types.UPDATE_RULE_SUCCESS,
+                    ruleId: data.id
+                })
             }, (error) => {
-                dispatch({
+                dispatch(fail(error, 'Unable to save the rule'))
+
+                return dispatch({
                     type: types.UPDATE_RULE_ERROR,
                     ruleId: data.id
                 })
-                dispatch(fail(error, 'Unable to save the rule'))
             })
     }
 }
@@ -94,13 +96,14 @@ export const save = (data) => {
 export const activate = (id) => (dispatch) => (
     axios.put(`/api/rules/${id}/`, {deactivated_datetime: null})
         .then(() => {
-            dispatch(({
-                type: types.ACTIVATE_RULE,
-                id,
-            }))
             dispatch(notify({
                 type: 'success',
                 message: 'Rule activated successfully',
+            }))
+
+            return dispatch(({
+                type: types.ACTIVATE_RULE,
+                id,
             }))
         }, error => {
             return dispatch(fail(error, 'Unable to activate the rule'))
@@ -115,13 +118,14 @@ export const activate = (id) => (dispatch) => (
 export const deactivate = (id) => (dispatch) => (
     axios.put(`/api/rules/${id}/`, {deactivated_datetime: new Date()})
         .then(() => {
-            dispatch(({
-                type: types.DEACTIVATE_RULE,
-                id,
-            }))
             dispatch(notify({
                 type: 'success',
                 message: 'Rule deactivated successfully',
+            }))
+
+            return dispatch(({
+                type: types.DEACTIVATE_RULE,
+                id,
             }))
         }, error => {
             return dispatch(fail(error, 'Unable to deactivate the rule'))
@@ -135,13 +139,14 @@ export const deactivate = (id) => (dispatch) => (
 export const remove = (id) => (dispatch) => (
     axios.delete(`/api/rules/${id}/`)
         .then(() => {
-            dispatch(({
-                type: types.REMOVE_RULE,
-                id,
-            }))
             dispatch(notify({
                 type: 'success',
                 message: 'Rule deleted successfully',
+            }))
+
+            return dispatch(({
+                type: types.REMOVE_RULE,
+                id,
             }))
         }, error => {
             return dispatch(fail(error, 'Unable to delete the rule'))
@@ -177,7 +182,7 @@ export function submitRule(url, comment) {
         return axios.post(url, comment)
             .then((json = {}) => json.data)
             .then(resp => {
-                dispatch(addRuleEnd(resp))
+                return dispatch(addRuleEnd(resp))
             }, error => {
                 return dispatch(fail(error, 'Unable to submit the rule'))
             })
@@ -192,7 +197,7 @@ export function fetchRules() {
         return axios.get(url)
             .then((json = {}) => json.data)
             .then(resp => {
-                dispatch(receiveRules(resp.data))
+                return dispatch(receiveRules(resp.data))
             }, error => {
                 return dispatch(fail(error, 'Unable to receive rules'))
             })

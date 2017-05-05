@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {Badge} from 'reactstrap'
 
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 
@@ -7,15 +8,7 @@ import {DatetimeLabel} from '../../../../common/utils/labels'
 import RuleItem from '../../detail/components/RuleItem'
 import * as ruleSelectors from '../../../../../state/rules/selectors'
 
-class RuleTableRow extends React.Component {
-    state = {
-        showDetail: false,
-    }
-
-    _toggleItem = () => {
-        this.setState({showDetail: !this.state.showDetail})
-    }
-
+class RuleRow extends React.Component {
     _handleActivate = () => {
         const {actions, rule} = this.props
         actions.rules.activate(rule.get('id'))
@@ -40,7 +33,7 @@ class RuleTableRow extends React.Component {
     _renderDetail = () => {
         const {rule, actions, selectors} = this.props
 
-        if (!this.state.showDetail) {
+        if (!this.props.isOpen) {
             return null
         }
 
@@ -64,7 +57,7 @@ class RuleTableRow extends React.Component {
             <tbody className="table-row">
                 <tr>
                     <td
-                        onClick={this._toggleItem}
+                        onClick={this.props.toggleOpening}
                         style={{cursor: 'pointer'}}
                     >
                         <div className="cell-wrapper">
@@ -73,7 +66,15 @@ class RuleTableRow extends React.Component {
                                     {rule.get('title')}
                                 </span>
                                 {
-                                    rule.get('type') === 'system' && <label className="ui red thin label">SYSTEM</label>
+                                    rule.get('type') === 'system' && (
+                                        <Badge
+                                            className="ml-2"
+                                            color="danger"
+                                        >
+                                            <i className="fa fa-fw fa-exclamation-triangle mr-2" />
+                                            SYSTEM
+                                        </Badge>
+                                    )
                                 }
                                 <div className="sub header">
                                     {rule.get('description')}
@@ -106,11 +107,13 @@ class RuleTableRow extends React.Component {
     }
 }
 
-RuleTableRow.propTypes = {
+RuleRow.propTypes = {
     actions: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
     rule: PropTypes.object.isRequired,
-    selectors: PropTypes.object.isRequired
+    selectors: PropTypes.object.isRequired,
+    toggleOpening: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => ({
@@ -120,4 +123,4 @@ const mapStateToProps = (state) => ({
     }
 })
 
-export default connect(mapStateToProps)(RuleTableRow)
+export default connect(mapStateToProps)(RuleRow)
