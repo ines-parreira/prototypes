@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router'
 import classNames from 'classnames'
+import {UncontrolledTooltip} from 'reactstrap'
+
 import {isCurrentlyOnTicket} from '../../../utils'
 import {logEvent} from '../../../store/middlewares/amplitudeTracker'
 
@@ -81,7 +83,19 @@ class RecentChats extends React.Component {
         return (
             <div className="RecentChats">
                 <div className="item">
-                    <h4>ACTIVE CHATS</h4>
+                    <h4>
+                        <span id="active-chats-title">
+                            ACTIVE CHATS
+                        </span>
+                    </h4>
+                    <UncontrolledTooltip
+                        placement="right"
+                        target="active-chats-title"
+                        delay={0}
+                    >
+                        Open chats assigned to you or unassigned
+                    </UncontrolledTooltip>
+
                     <div className="menu">
                         {
                             tickets.map((e, index) => (

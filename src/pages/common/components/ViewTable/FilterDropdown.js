@@ -15,6 +15,7 @@ import {equalityOperator, resolveLiteral, isImmutable, fieldPath} from '../../..
 import {fieldEnumSearch} from '../../../../state/views/actions'
 
 import * as schemasSelectors from '../../../../state/schemas/selectors'
+import * as usersHelpers from '../../../../state/users/helpers'
 
 @onClickOutside
 class FilterDropdown extends React.Component {
@@ -150,6 +151,8 @@ class FilterDropdown extends React.Component {
             if (field.get('name') === 'tags') {
                 // display tags as tags
                 renderValue = value.get('name')
+            } else if (field.get('name') === 'requester') {
+                renderValue = usersHelpers.getDisplayName(value)
             } else if (typeof value === 'object' || field.get('name') === 'roles') {
                 renderValue = (
                     <RenderLabel

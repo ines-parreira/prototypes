@@ -12,6 +12,7 @@ import Timeline from '../../common/components/timeline/Timeline'
 import Modal from '../../common/components/Modal'
 
 import {getActiveUser, makeIsLoading} from '../../../state/users/selectors'
+import * as usersHelpers from '../../../state/users/helpers'
 
 class UserDetailContainer extends React.Component {
     constructor(props) {
@@ -93,7 +94,7 @@ class UserDetailContainer extends React.Component {
         return (
             <div className="UserDetailContainer">
                 <div className="flex-spaced-row">
-                    <h1>{activeUser.get('name')}</h1>
+                    <h1>{usersHelpers.getDisplayName(activeUser)}</h1>
 
                     <Button
                         type="button"
