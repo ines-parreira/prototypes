@@ -169,7 +169,7 @@ export const handleExecutedAction = (response) => ((dispatch) => {
     if (response.status === 'error') {
         dispatch(notify({
             type: 'error',
-            title: 'Something went wrong on your last action :/',
+            title: 'Something went wrong on your last action 😞',
             autoDismiss: false,
             children: (
                 <div>

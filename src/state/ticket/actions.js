@@ -465,7 +465,7 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
 export const handleMessageActionError = (ticketId) => (dispatch) => {
     return dispatch(notify({
         type: 'error',
-        title: 'Something went wrong on your last message :/',
+        title: 'Something went wrong on your last message 😞',
         autoDismiss: false,
         children: (
             <div>
