@@ -102,7 +102,7 @@ const amplitudeTracker = store => next => action => {
                 actionProps = actionProps.merge({
                     id: action.macro.get('id'),
                     name: action.macro.get('name'),
-                    ticket: _pick(this.props.ticket.toJS(), ['id', 'channel']),
+                    ticket: _pick(state.ticket.toJS(), ['id', 'channel']),
                 })
                 break
             case ADD_ATTACHMENT_SUCCESS:
