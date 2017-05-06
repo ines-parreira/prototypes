@@ -64,6 +64,16 @@ class FilterDropdown extends React.Component {
         })
     }
 
+    _onClickMe = () => {
+        const left = this._left()
+
+        this._addFilter({
+            left,
+            operator: 'eq',
+            right: '\'{current_user.id}\'',
+        })
+    }
+
     _addFilter = (filter) => {
         this.props.addFieldFilter(this.props.field.toJS(), filter)
 
@@ -184,6 +194,13 @@ class FilterDropdown extends React.Component {
                     onClick={this._onClickUnassigned}
                 >
                     Unassigned
+                </DropdownItem>,
+                <DropdownItem
+                    key="me"
+                    type="button"
+                    onClick={this._onClickMe}
+                >
+                    Current user (me)
                 </DropdownItem>,
                 <DropdownItem
                     key="unassigned-divider"

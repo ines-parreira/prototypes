@@ -29,7 +29,7 @@ export default class Right extends React.Component {
     }
 
     render() {
-        const {node, objectPath, agents, tags, currentUser, onChange, index, empty} = this.props
+        const {node, objectPath, agents, tags, onChange, index, empty} = this.props
 
         if (empty) {
             return <span />
@@ -38,20 +38,12 @@ export default class Right extends React.Component {
         let options = fromJS([])
 
         if (objectPath === 'ticket.assignee_user.id') {
-            options = agents.map((agent) => {
-                if (agent.get('id') === currentUser.get('id')) {
-                    // replace my name with 'Me'
-                    // if we're getting the selected value from the view,
-                    // replace the current user id with {current_user.id},
-                    // that's the way the filter value is stored in the view.
-                    // for the select element to match the active item.
-                    return agent
-                        .set('name', 'Me')
-                        .set('id', '{current_user.id}')
-                }
+            options = agents
 
-                return agent
-            })
+            options = options.unshift(fromJS({
+                name: 'Current user (me)',
+                id: '{current_user.id}',
+            }))
         }
 
         // we want tags names as key, not their ID, like 'refund', 'billing', etc.
