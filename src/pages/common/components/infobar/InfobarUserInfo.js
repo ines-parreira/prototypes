@@ -234,7 +234,7 @@ class InfobarUserInfo extends React.Component {
                 addressComponent = <span>{address}</span>
             }
 
-            const iconClass = USER_CHANNEL_CLASS[channel.get('type')]
+            const iconClass = USER_CHANNEL_CLASS(channel.get('type'))
 
             if (!iconClass) {
                 return null

@@ -115,14 +115,24 @@ ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 /**
  *  Source DETAIL
  */
-export const SourceDetailLabel = ({value}) => (
-    <div>
-        <i className={USER_CHANNEL_CLASS[value.get('type')]} />
-        {value.get('name') ? `${value.get('name')} <${value.get('address')}>` : value.get('address')}
-    </div>
-)
-SourceDetailLabel.propTypes = {
-    value: PropTypes.object.isRequired
+export const IntegrationsDetailLabel = ({integration}) => {
+    const type = integration.get('type')
+    let label = integration.get('name', integration.get('address'))
+
+    if (['email', 'gmail'].includes(type)) {
+        label = `${integration.get('name')} <${integration.get('address')}>`
+    }
+
+    return (
+
+        <div>
+            <i className={USER_CHANNEL_CLASS(integration.get('type'))}/>
+            {label}
+        </div>
+    )
+}
+IntegrationsDetailLabel.propTypes = {
+    integration: PropTypes.object.isRequired
 }
 
 /**
@@ -202,7 +212,6 @@ const mapStateToProps = (state) => ({
 })
 connect(mapStateToProps)(DatetimeLabel)
 
-
 export const RenderLabel = ({field, value}) => {
     if (!value) {
         return null
@@ -223,20 +232,20 @@ export const RenderLabel = ({field, value}) => {
                 />
             )
         case 'status':
-            return <StatusLabel status={value} />
+            return <StatusLabel status={value}/>
         case 'priority':
-            return <PriorityLabel priority={value} />
+            return <PriorityLabel priority={value}/>
         case 'assignee':
-            return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
-        case 'source':
-            return typeof value === 'string' ? <div>{value}</div> : <SourceDetailLabel value={value} />
+            return value.get('name') ? <AgentLabel name={value.get('name')}/> : null
+        case 'integrations':
+            return typeof value === 'string' ? <div>{value}</div> : <IntegrationsDetailLabel integration={value}/>
         case 'requester':
-            return <UserLabel name={value.get('name')} />
+            return <UserLabel name={value.get('name')}/>
         case 'roles':
-            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value} />
+            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value}/>
         case 'via':
         case 'channel':
-            return <ChannelLabel channel={value} />
+            return <ChannelLabel channel={value}/>
         default:
             return <span>{value}</span>
     }

@@ -2,7 +2,6 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import * as constants from './constants'
 import {stripHTML} from '../utils'
-import {displayUserNameFromSource} from '../pages/tickets/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
 
 import _isUndefined from 'lodash/isUndefined'
@@ -67,11 +66,14 @@ const config = [{
             title: 'Subject',
         },
         {
-            name: 'source',
-            title: 'Source',
-            path: 'messages.source.to.address',
+            name: 'integrations',
+            title: 'Integrations',
+            path: 'messages.integration_id',
             filter: {
-                type: 'source',
+                type: 'integrations',
+            },
+            dropdown: {
+                width: '350px'
             }
         },
         {
@@ -182,30 +184,18 @@ const config = [{
                     </div>
                 )
             }
-            case 'from': {
-                if (!item.get('first_source')) {
-                    break
-                }
-
-                // get the part of "source" that we want
-                const source = item.getIn(['first_source', 'from'], fromJS({})).toJS()
-
-                // display the user based on the message type
-                return displayUserNameFromSource(source, item.getIn(['first_source', 'type']))
-            }
-            case 'source': {
-                if (!item.get('first_source')) {
-                    break
-                }
-
-                let source = item.getIn(['first_source', 'from'], fromJS({}))
-
-                if (!item.get('from_agent')) {
-                    source = item.getIn(['first_source', 'to'], fromJS([])).first() || fromJS({})
-                }
-
-                // display the user based on the message type
-                return displayUserNameFromSource(source.toJS(), item.getIn(['first_source', 'type']))
+            case 'integrations': {
+                return item.get('integrations', fromJS([]))
+                    .map(inte => {
+                        if (!inte) {
+                            return ''
+                        }
+                        if (['email', 'gmail'].includes(inte.get('type'))) {
+                            return `${inte.get('name', '')} <${inte.get('address', '')}>`
+                        }
+                        return inte.get('name', '')
+                    })
+                    .join(', ')
             }
             case 'tags': {
                 return (

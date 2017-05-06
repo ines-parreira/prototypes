@@ -78,3 +78,15 @@ export const getRedirectUri = type => createSelector(
 export const makeGetRedirectUri = state => type => getRedirectUri(type)(state)
 
 export const makeGetFormValues = state => form => getFormValues(form)(state)
+
+// return the list of integration used to send messages from the helpdesk
+export const getMessagingIntegrations = createSelector(
+    [getIntegrationsByTypes(['email', 'gmail', 'smooch', 'smooch_inside', 'facebook'])],
+        integrations => integrations.map(inte => {
+            if (inte.get('type') === 'facebook') {
+                return inte.set('name', inte.getIn(['facebook', 'name']))
+            }
+            return inte
+        })
+)
+

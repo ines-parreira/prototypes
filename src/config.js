@@ -62,15 +62,28 @@ export const SOURCE_VALUE_PROP = {
     'facebook-post': 'address'
 }
 
-export const USER_CHANNEL_CLASS = {
-    email: 'icon mail',
-    twitter: 'icon twitter',
-    facebook: 'icon facebook square',
-    'facebook-account': 'icon facebook square',
-    'facebook-message': 'icon facebook-messenger',
-    chat: 'icon comments',
-    phone: 'icon phone',
-    'ottspott-call': 'icon phone',
+export const USER_CHANNEL_CLASS = (type) => {
+    switch (type) {
+        case 'email':
+        case 'gmail':
+            return 'icon mail'
+        case 'twitter':
+            return 'icon twitter'
+        case 'facebook':
+        case 'facebook-account':
+            return 'icon facebook square'
+        case 'facebook-message':
+            return 'icon facebook-messenger'
+        case 'chat':
+        case 'smooch':
+        case 'smooch_inside':
+            return 'icon comments'
+        case 'phone':
+        case 'ottspott-call':
+            return 'icon phone'
+        default:
+            return ''
+    }
 }
 
 export const TICKET_STATUSES = ['open', 'new', 'closed']

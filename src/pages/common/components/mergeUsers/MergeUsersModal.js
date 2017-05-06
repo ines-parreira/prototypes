@@ -71,7 +71,7 @@ class MergeUsersModal extends React.Component {
                 .map((channel, idx) => ({
                     label: (
                         <div key={idx}>
-                            <i className={USER_CHANNEL_CLASS[channel.get('type')]} /> {channel.get('address')}
+                            <i className={USER_CHANNEL_CLASS(channel.get('type'))} /> {channel.get('address')}
                         </div>
                     ),
                     value: channel.toJS()

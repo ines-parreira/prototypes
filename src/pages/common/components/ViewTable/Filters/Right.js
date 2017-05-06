@@ -6,10 +6,19 @@ import {Button} from 'reactstrap'
 import {TICKET_STATUSES} from '../../../../../config'
 import RightSelect from './RightSelect'
 import {getTags} from '../../../../../state/tags/selectors'
+import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
 
 @connect((state) => {
+    const integrations = getMessagingIntegrations(state).map(inte => {
+        if (['email', 'gmail'].includes(inte.get('type'))) {
+            return inte.set('name', `${inte.get('name')} <${inte.getIn(['meta', 'address'])}>`)
+        }
+        return inte
+    })
+
     return {
         tags: getTags(state),
+        integrations
     }
 })
 export default class Right extends React.Component {
@@ -17,6 +26,7 @@ export default class Right extends React.Component {
         node: PropTypes.object.isRequired,
         index: PropTypes.number.isRequired,
         agents: PropTypes.object.isRequired,
+        integrations: PropTypes.object.isRequired,
         tags: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
         onChange: PropTypes.func.isRequired,
@@ -29,7 +39,7 @@ export default class Right extends React.Component {
     }
 
     render() {
-        const {node, objectPath, agents, tags, onChange, index, empty} = this.props
+        const {node, objectPath, agents, tags, integrations, onChange, index, empty} = this.props
 
         if (empty) {
             return <span />
@@ -44,6 +54,10 @@ export default class Right extends React.Component {
                 name: 'Current user (me)',
                 id: '{current_user.id}',
             }))
+        }
+
+        if (objectPath === 'ticket.messages.integration_id') {
+            options = integrations
         }
 
         // we want tags names as key, not their ID, like 'refund', 'billing', etc.

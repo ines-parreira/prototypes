@@ -46,11 +46,14 @@ class FilterDropdown extends React.Component {
 
     onClick = (newValue) => {
         const left = this._left()
-
+        // if value cannot be resolved, we use the `id` attribute of the object given
+        // Useful with `ticket.messages.integration_id` field
+        // because `newValue` do not have an `integration_id` attribute
+        const right = resolveLiteral(newValue, left) || newValue.id
         this._addFilter({
             left,
             operator: equalityOperator(left, this.props.schemas),
-            right: resolveLiteral(newValue, left),
+            right
         })
     }
 
@@ -220,12 +223,13 @@ class FilterDropdown extends React.Component {
         }
 
         const canSearch = !!field.getIn(['filter', 'type'])
+        const width = field.getIn(['dropdown', 'width'], '230px')
 
         return (
             <UncontrolledDropdown isOpen>
                 <DropdownMenu
                     style={{
-                        width: canSearch && '230px',
+                        width: canSearch && width,
                     }}
                 >
                     {this.renderSearch()}

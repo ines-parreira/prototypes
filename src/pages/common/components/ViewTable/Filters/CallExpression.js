@@ -28,11 +28,6 @@ const CallExpression = ({view, schemas, node, updateOperator, removeCondition, i
     const property = findProperty(objectPath, schemas)
     let operators = property && property.meta ? property.meta.operators : BASIC_OPERATORS
 
-    // TODO(@xarg): The only operator supported by source.to.address is contains. Remove this when we fix the others.
-    if (objectPath === 'ticket.messages.source.to.address') {
-        operators = {contains: operators.contains}
-    }
-
     return (
         <div className="CallExpression">
             <Left
