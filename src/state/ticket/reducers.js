@@ -493,10 +493,9 @@ export default (state = initialState, action) => {
 
         case types.MERGE_TICKET: {
             const {ticket} = action
-            const ticketData = fromJS(ticket)
 
             // if received ticket data does not concern current ticket, do nothing
-            if (ticketData.get('id') !== state.get('id')) {
+            if (ticket.get('id') !== state.get('id')) {
                 return state
             }
 
@@ -504,8 +503,8 @@ export default (state = initialState, action) => {
 
             // merge received ticket with current ticket
             updatableFields.forEach((key) => {
-                if (ticketData.has(key)) {
-                    newState = newState.set(key, ticketData.get(key))
+                if (ticket.has(key)) {
+                    newState = newState.set(key, ticket.get(key))
                 }
             })
 

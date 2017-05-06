@@ -1,5 +1,7 @@
 import axios from 'axios'
 import {fromJS} from 'immutable'
+import Push from 'push.js'
+
 import {fetchPage} from '../../state/views/actions'
 import {notify} from '../../state/notifications/actions'
 import * as currentAccountTypes from '../currentAccount/constants'
@@ -7,14 +9,10 @@ import * as billingTypes from '../billing/constants'
 import * as viewsTypes from '../views/constants'
 import * as types from './constants'
 import {shouldUpdateView} from './utils'
-import {isCurrentlyOnTicket, toQueryParams} from '../../utils'
+import {toQueryParams, playNotificationSound} from '../../utils'
 
 import * as viewsSelectors from '../views/selectors'
 import {POLL_ACTIVITY_TIMEOUT} from '../../config'
-
-const notificationSoundData = require('../../../audio/notification.mp3')
-const notificationSound = new Audio(notificationSoundData)
-notificationSound.load()
 
 export const pollActivity = () => (dispatch, getState) => {
     const {activity, views} = getState()
@@ -130,8 +128,8 @@ export const pollChats = () => (dispatch, getState) => {
 
             const currentTickets = fromJS(resp.tickets || [])
 
-            // comparing previous and current tickets from activity to trigger a sound notification if necessary
-            const shouldSoundNotify = currentTickets
+            // comparing previous and current tickets from activity to trigger a notification if necessary
+            const shouldNotify = currentTickets
                 .filter(t => t.get('is_unread'))
                 .some((currentTicket) => {
                     const previousTicket = previousTickets.find(t => t.get('id') === currentTicket.get('id'))
@@ -145,16 +143,21 @@ export const pollChats = () => (dispatch, getState) => {
                         isNew = true
                     }
 
-                    // if currently on the ticket, no sound
-                    if (isCurrentlyOnTicket(currentTicket.get('id'))) {
-                        isNew = false
-                    }
-
                     return isNew
                 })
 
-            if (shouldSoundNotify) {
-                notificationSound.play()
+            if (shouldNotify) {
+                playNotificationSound()
+                Push.create('New activity on Gorgias', {
+                    body: 'A ticket needs your attention',
+                    timeout: 5000,
+                    icon: `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/logo.png`,
+                    onClick: function () {
+                        // send on helpdesk and close notification
+                        window.focus()
+                        this.close()
+                    }
+                })
             }
         }, error => {
             console.error('Failed polling chats', error)

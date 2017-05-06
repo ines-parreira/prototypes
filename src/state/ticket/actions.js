@@ -2,6 +2,7 @@ import React from 'react'
 import {Link, browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {Button} from 'reactstrap'
+import Push from 'push.js'
 
 import _isEmpty from 'lodash/isEmpty'
 import _isNull from 'lodash/isNull'
@@ -15,7 +16,14 @@ import {setMacrosVisible} from '../macro/actions'
 import {TICKET_VIEWED} from '../activity/constants'
 import {notify} from '../notifications/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
-import {getLastMessage, isCurrentlyOnTicket, getActionTemplate, uploadFiles} from '../../utils'
+import {
+    getLastMessage,
+    isCurrentlyOnTicket,
+    getActionTemplate,
+    uploadFiles,
+    isTabActive,
+    playNotificationSound,
+} from '../../utils'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -96,7 +104,7 @@ export const receivedMacro = () => ({
     type: types.RECEIVED_MACRO
 })
 
-export const mergeTicket = (ticket) => {
+export const mergeTicket = (ticket) => (dispatch, getState) => {
     if (!Array.isArray(ticket.messages)) {
         Raven.captureException(new Error('Trying to merge a ticket where messages is not an array'), {
             extra: {
@@ -105,10 +113,38 @@ export const mergeTicket = (ticket) => {
         })
     }
 
-    return {
+    ticket = fromJS(ticket)
+
+    // notification on new message while not on tab
+    if (!isTabActive()) {
+        const {ticket: previousTicket} = getState()
+
+        const messagesLength = ticket.get('messages', fromJS([])).size
+        const previousMessagesLength = previousTicket.get('messages', fromJS([])).size
+
+        const newMessage = ticket.get('messages', fromJS([])).last()
+
+        if (messagesLength !== previousMessagesLength && newMessage && !newMessage.get('from_agent')) {
+            const from = newMessage.getIn(['sender', 'name'], 'Gorgias')
+            const body = newMessage.get('body_text', 'You received an answer')
+            playNotificationSound()
+            Push.create(from, {
+                body: body,
+                timeout: 5000,
+                icon: `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/logo.png`,
+                onClick: function () {
+                    // send on helpdesk and close notification
+                    window.focus()
+                    this.close()
+                }
+            })
+        }
+    }
+
+    return dispatch({
         type: types.MERGE_TICKET,
         ticket,
-    }
+    })
 }
 
 export const mergeRequester = (user) => {
