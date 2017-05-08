@@ -51,7 +51,7 @@ export default class Right extends React.Component {
             options = agents
 
             options = options.unshift(fromJS({
-                name: 'Current user (me)',
+                name: 'Me (current user)',
                 id: '{current_user.id}',
             }))
         }

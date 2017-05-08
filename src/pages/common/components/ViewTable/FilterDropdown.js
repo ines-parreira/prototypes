@@ -203,7 +203,7 @@ class FilterDropdown extends React.Component {
                     type="button"
                     onClick={this._onClickMe}
                 >
-                    Current user (me)
+                    Me (current user)
                 </DropdownItem>,
                 <DropdownItem
                     key="unassigned-divider"
