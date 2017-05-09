@@ -108,7 +108,7 @@ export function fetchViews(currentViewId) {
             type: types.FETCH_VIEW_LIST_START
         })
 
-        return axios.get('/api/views')
+        return axios.get('/api/views/')
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
