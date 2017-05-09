@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {Button, UncontrolledTooltip} from 'reactstrap'
-import {areSourcesReady, isCustomerDataValid, isCustomerDataPresent} from './utils'
+import {areSourcesReady, isCustomerDataPresent} from './utils'
 
 import * as infobarActions from '../../../../state/infobar/actions'
 
@@ -76,7 +76,8 @@ export default class Infobar extends React.Component {
 
             const customer = nextProps.user.get('customer') || fromJS({})
 
-            if (!isCustomerDataValid(customer)) {
+            // if there is already a customer, don't suggest merge
+            if (isCustomerDataPresent(customer)) {
                 return
             }
 
