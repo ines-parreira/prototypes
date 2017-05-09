@@ -98,16 +98,17 @@ export function cancel(tag) {
  */
 export const save = (tag) => {
     return dispatch => {
-        dispatch({
-            type: types.SAVE_TAG,
-            tag
-        })
-
         return axios.put(`/api/tags/${tag.id}/`, tag)
-            .then(() => dispatch(notify({
-                type: 'success',
-                message: 'Tag saved successfully',
-            })))
+            .then(() => {
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Tag saved successfully',
+                }))
+                return dispatch({
+                    type: types.SAVE_TAG,
+                    tag
+                })
+            })
             .catch(error => {
                 return dispatch(fail(error, 'Unable to save tag'))
             })
@@ -130,7 +131,10 @@ export const create = (tag) => {
                 type: types.CREATE_TAG_SUCCESS,
                 tag: resp.data
             }), (error) => {
-                dispatch(fail(error, 'Unable to create the tag'))
+                return dispatch({
+                    type: types.CREATE_TAG_ERROR,
+                    error
+                })
             })
     }
 }

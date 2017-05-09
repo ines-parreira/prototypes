@@ -70,6 +70,9 @@ export default (state = initialState, action) => {
                 .set('items', state.get('items').push(fromJS(action.tag)))
                 .setIn(['_internal', 'creating'], false)
 
+        case types.CREATE_TAG_ERROR:
+            return state.setIn(['_internal', 'creating'], false)
+
         case types.REMOVE_TAG:
             return state
                 .set('items', state.get('items').splice(state.get('items').findIndex(item => {
