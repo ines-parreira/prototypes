@@ -1,4 +1,3 @@
-import expect from 'expect'
 import {fromJS} from 'immutable'
 import reducers from '../reducers'
 import * as types from '../constants'

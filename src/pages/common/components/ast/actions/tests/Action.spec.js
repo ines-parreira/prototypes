@@ -1,6 +1,5 @@
 import schemasJSON from '../../../../../../fixtures/openapi.json'
 import {fromJS} from 'immutable'
-import expect from 'expect'
 import {validateEmailList, validateBody, validateSendEmail, validateTags} from '../Action'
 const schemas = fromJS(schemasJSON)
 
@@ -17,7 +16,7 @@ describe('Action', () => {
                 '{ticket.assignee_user.email}, {ticket.receiver.email}, email2@example.com,'
             ]
             valid.forEach(input => {
-                expect(validateEmailList(input, schemas)).toNotExist()
+                expect(validateEmailList(input, schemas)).toBeFalsy()
             })
         })
 
@@ -30,7 +29,7 @@ describe('Action', () => {
                 '{message.from_agent}, {ticket.receiver.email}, email2@example.com,'
             ]
             invalid.forEach(input => {
-                expect(validateEmailList(input, schemas)).toExist()
+                expect(validateEmailList(input, schemas)).toBeTruthy()
             })
         })
     })
@@ -38,13 +37,13 @@ describe('Action', () => {
     describe('validateBody', () => {
         it('should validate body', () => {
             expect(validateBody({body_html: 'hey'}, schemas))
-                .toNotExist()
+                .toBeFalsy()
             expect(validateBody({body_text: 'hey'}, schemas))
-                .toNotExist()
+                .toBeFalsy()
         })
 
         it('should return errors and not validate body', () => {
-            expect(validateBody({}, schemas)).toExist()
+            expect(validateBody({}, schemas)).toBeTruthy()
         })
     })
 
@@ -82,7 +81,7 @@ describe('Action', () => {
 
             emails.forEach(email => {
                 const result = validateSendEmail(email, schemas)
-                expect(result).toBeA(Array)
+                expect(result).toBeInstanceOf(Array)
                 expect(result.length > 0).toBe(true)
             })
         })
@@ -90,11 +89,11 @@ describe('Action', () => {
 
     describe('validateTags', () => {
         it('should validate tags', () => {
-            expect(validateTags({tags: 'hey'}, schemas)).toNotExist()
+            expect(validateTags({tags: 'hey'}, schemas)).toBeFalsy()
         })
 
         it('should return errors and not validate tags', () => {
-            expect(validateTags({tags: ''}, schemas)).toExist()
+            expect(validateTags({tags: ''}, schemas)).toBeTruthy()
         })
     })
 })

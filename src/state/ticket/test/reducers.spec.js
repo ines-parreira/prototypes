@@ -1,11 +1,10 @@
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
+import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import reducer, {newMessage, initialState} from '../reducers'
 import {getLastSameSourceTypeMessage} from '../utils'
 import * as types from '../constants'
 
-expect.extend(expectImmutable)
+jest.addMatchers(immutableMatchers)
 
 describe('Ticket reducer', () => {
     it('should return the initial state', () => {
@@ -70,7 +69,7 @@ describe('Ticket reducer', () => {
 
         expect(
             reducer(initialState, {type: types.RECORD_MACRO, macro: fromJS({id: '666'})})
-        ).toEqualImmutable(
+        ).toEqual(
             expected
         )
     })
@@ -187,14 +186,14 @@ describe('Ticket reducer', () => {
 
     it('should add tags to ticket', () => {
         const args = fromJS({tags: 'npm,drama'})
-        const expected = initialState.set('tags', [
+        const expected = initialState.set('tags', fromJS([
             {name: 'npm'},
             {name: 'drama'},
-        ])
+        ]))
 
         expect(
             reducer(initialState, {type: types.ADD_TICKET_TAGS, args})
-        ).toEqualImmutable(
+        ).toEqual(
             expected
         )
     })

@@ -1,58 +1,58 @@
-import expect from 'expect'
 import React from 'react'
+import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import TestUtils from 'react-addons-test-utils'
 import {BlankState} from '../components/BlankState'
-
-function setup(props) {
-    const renderer = TestUtils.createRenderer()
-    renderer.render(<BlankState {...props} />)
-    const output = renderer.getRenderOutput()
-
-    return {
-        props,
-        output,
-        renderer
-    }
-}
 
 describe('BlankState component', () => {
     it('default with undefined props', () => {
-        const {output} = setup()
-        expect(output).toEqual(<div className="blank-state"><div>This view is empty. Enjoy your day!</div></div>)
+        const component = shallow(
+            <BlankState />
+        )
+        expect(component).toContainReact(<div className="blank-state"><div>This view is empty. Enjoy your day!</div></div>)
     })
 
     it('custom message', () => {
-        const {output} = setup({
-            message: <div>Custom message</div>
-        })
-        expect(output).toEqual(<div className="blank-state"><div>Custom message</div></div>)
+        const component = shallow(
+            <BlankState
+                message={<div>Custom message</div>}
+            />
+        )
+        expect(component).toContainReact(<div className="blank-state"><div>Custom message</div></div>)
     })
 
     it('more than 10 tickets closed', () => {
-        const {output} = setup({
-            stats: fromJS({
-                agents: [['Alex', 11]]
-            })
-        })
-        expect(output.props.children.props.children[1].props.children).toEqual('No more tickets here!')
+        const component = shallow(
+            <BlankState
+                stats={fromJS({
+                    agents: [['Alex', 11]]
+                })}
+            />
+        )
+
+        expect(component.find('.blank-state-message')).toIncludeText('No more tickets here!')
     })
 
     it('more than 100 tickets closed', () => {
-        const {output} = setup({
-            stats: fromJS({
-                agents: [['Alex', 101]]
-            })
-        })
-        expect(output.props.children.props.children[1].props.children).toEqual('Done!')
+        const component = shallow(
+            <BlankState
+                stats={fromJS({
+                    agents: [['Alex', 101]]
+                })}
+            />
+        )
+
+        expect(component.find('.blank-state-message')).toIncludeText('Done!')
     })
 
     it('more than 500 tickets closed', () => {
-        const {output} = setup({
-            stats: fromJS({
-                agents: [['Alex', 501]]
-            })
-        })
-        expect(output.props.children.props.children[1].props.children).toEqual('All good!')
+        const component = shallow(
+            <BlankState
+                stats={fromJS({
+                    agents: [['Alex', 501]]
+                })}
+            />
+        )
+
+        expect(component.find('.blank-state-message')).toIncludeText('All good!')
     })
 })

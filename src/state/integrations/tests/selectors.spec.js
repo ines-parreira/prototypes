@@ -1,6 +1,5 @@
 import {getIntegrationsState, getIntegrations, getEmailIntegrations, getChannels} from '../selectors'
 import state from './fixtures'
-import expect from 'expect'
 import {fromJS} from 'immutable'
 
 describe('selectors', () => {

@@ -2,7 +2,6 @@ import state from './fixtures'
 import {getIntegrationsState, getEmailIntegrations} from '../selectors'
 import reducers from '../reducers'
 import * as types from '../constants'
-import expect from 'expect'
 
 describe('selectors', () => {
     describe('integrations', () => {

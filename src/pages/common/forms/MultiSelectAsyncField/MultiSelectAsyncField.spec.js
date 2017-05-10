@@ -1,29 +1,20 @@
-import expect from 'expect'
 import React from 'react'
-import TestUtils from 'react-addons-test-utils'
+import {shallow} from 'enzyme'
+import _noop from 'lodash/noop'
 import MultiSelectAsyncField from './'
-
-function setup(props) {
-    const renderer = TestUtils.createRenderer()
-    renderer.render(<MultiSelectAsyncField {...props} />)
-    const output = renderer.getRenderOutput()
-
-    return {
-        props,
-        output,
-        renderer
-    }
-}
 
 describe('MultiSelectAsyncField component', () => {
     it('empty items', () => {
-        const {output} = setup({
-            input: {
-                value: [],
-            },
-        })
+        const component = shallow(
+            <MultiSelectAsyncField
+                input = {{
+                    value: []
+                }}
+                loadOptions = {_noop}
+            />
+        )
 
-        expect(output.props.children[0].props.children[0].length).toEqual(0)
+        expect(component.children().at(0).find('> div').length).toEqual(0)
     })
 
     it('multiple items correct amount', () => {
@@ -33,13 +24,16 @@ describe('MultiSelectAsyncField component', () => {
             label: 'Lucien',
         }]
 
-        const {output} = setup({
-            input: {
-                value: values,
-            },
-        })
+        const component = shallow(
+            <MultiSelectAsyncField
+                input = {{
+                    value: values
+                }}
+                loadOptions = {_noop}
+            />
+        )
 
-        expect(output.props.children[0].props.children[0].length).toEqual(2)
+        expect(component.children().at(0).find('> div').length).toEqual(2)
     })
 
     it('multiple items correct content', () => {
@@ -49,14 +43,17 @@ describe('MultiSelectAsyncField component', () => {
             label: 'Lucien',
         }]
 
-        const {output} = setup({
-            input: {
-                value: values,
-            },
-        })
+        const component = shallow(
+            <MultiSelectAsyncField
+                input = {{
+                    value: values
+                }}
+                loadOptions = {_noop}
+            />
+        )
 
-        output.props.children[0].props.children[0].forEach((item, index) => {
-            expect(item.props.children[0].props.children).toEqual(values[index].label)
+        component.children().at(0).find('> div').forEach((item, index) => {
+            expect(item.find('> span').first()).toHaveText(values[index].label)
         })
     })
 })

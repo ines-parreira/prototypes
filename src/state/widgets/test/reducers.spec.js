@@ -1,10 +1,9 @@
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
+import * as immutableMatchers from 'jest-immutable-matchers'
 
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 
-expect.extend(expectImmutable)
+jest.addMatchers(immutableMatchers)
 
 describe('reducers', () => {
     describe('widgets', () => {

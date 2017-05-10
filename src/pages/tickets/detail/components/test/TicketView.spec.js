@@ -1,12 +1,9 @@
 import React from 'react'
-import TestUtils from 'react-addons-test-utils'
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
+import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import _noop from 'lodash/noop'
 
 import {TicketView} from '../TicketView'
-
-expect.extend(expectImmutable)
 
 describe('TicketView component', () => {
     const ticket = fromJS({
@@ -43,14 +40,13 @@ describe('TicketView component', () => {
     const users = fromJS({
         agents: []
     })
+    const agents = fromJS([])
 
     describe('visible', () => {
         let component
 
-        before('render element', () => {
-            const renderer = TestUtils.createRenderer()
-
-            renderer.render(
+        beforeAll(() => {
+            component = shallow(
                 <TicketView
                     actions={actions}
                     ticket={ticket}
@@ -63,24 +59,24 @@ describe('TicketView component', () => {
                     applyMacro={() => {}}
                     computeNextUrl={() => {}}
                     view={{}}
+                    agents={agents}
+                    hideTicket={_noop}
+                    usersIsLoading={_noop}
+                    isTicketHidden={false}
                 />
             )
-
-            component = renderer.getRenderOutput()
         })
 
         it('should not have the hidden classes', () => {
-            expect(component.props.className).toNotContain('transition')
+            expect(component).not.toHaveClassName('transition')
         })
     })
 
     describe('hidden', () => {
         let component
 
-        before('render element', () => {
-            const renderer = TestUtils.createRenderer()
-
-            renderer.render(
+        beforeAll(() => {
+            component = shallow(
                 <TicketView
                     actions={actions}
                     ticket={ticket}
@@ -93,15 +89,16 @@ describe('TicketView component', () => {
                     applyMacro={() => {}}
                     computeNextUrl={() => {}}
                     view={{}}
+                    agents={agents}
+                    hideTicket={_noop}
+                    usersIsLoading={_noop}
                     isTicketHidden
                 />
             )
-
-            component = renderer.getRenderOutput()
         })
 
         it('should have the hidden classes', () => {
-            expect(component.props.className).toContain('transition out fade right')
+            expect(component).toHaveClassName('transition out fade right')
         })
     })
 })

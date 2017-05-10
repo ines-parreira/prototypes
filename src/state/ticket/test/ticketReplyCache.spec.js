@@ -1,9 +1,5 @@
-import expect from 'expect'
 import {fromJS} from 'immutable'
-import expectImmutable from 'expect-immutable'
 import {TicketReplyCache, defaultTicket, CACHE_MAX_ITEMS} from '../ticketReplyCache'
-
-expect.extend(expectImmutable)
 
 // Storage Mock
 const storageMock = () => {

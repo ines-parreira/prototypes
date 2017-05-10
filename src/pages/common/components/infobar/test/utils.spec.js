@@ -1,4 +1,3 @@
-import expect from 'expect'
 import {fromJS} from 'immutable'
 import * as utils from '../utils'
 
@@ -197,7 +196,7 @@ describe('widgets infobar utils', () => {
         }
 
         it('templating OK', () => {
-            expect(utils.jsonToWidget(source)).toInclude(result)
+            expect(utils.jsonToWidget(source)).toEqual(result)
         })
     })
 })

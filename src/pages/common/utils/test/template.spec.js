@@ -1,10 +1,6 @@
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
 import moment from 'moment'
 import {renderTemplate} from '../template'
 import {formatDatetime} from '../../../../utils'
-
-expect.extend(expectImmutable)
 
 describe('components utils : template', () => {
     describe('renderTemplate', () => {
@@ -12,7 +8,7 @@ describe('components utils : template', () => {
          *  Because others tests could edit this setting.
          *  We ensure we use the default value for these tests.
          **/
-        before(() => moment.locale('en'))
+        beforeAll(() => moment.locale('en'))
 
         it('does not throw error when context is undefined', () => {
             expect(renderTemplate('Hello')).toBe('Hello')

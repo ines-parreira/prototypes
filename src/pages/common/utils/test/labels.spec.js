@@ -1,11 +1,14 @@
 import React from 'react'
-import TestUtils from 'react-addons-test-utils'
-import expect from 'expect'
+import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import expectImmutable from 'expect-immutable'
 import * as labels from '../labels'
 
-expect.extend(expectImmutable)
+/* DatetimeLabel uses Math.random.
+ * Mock it to always return the same data.
+ */
+const mockMath = Object.create(global.Math)
+mockMath.random = () => 1
+global.Math = mockMath
 
 describe('components utils : labels', () => {
     describe('RenderLabel', () => {
@@ -56,40 +59,34 @@ describe('components utils : labels', () => {
                     expected: null
                 }
             ].forEach(element => {
-                const renderer = TestUtils.createRenderer()
-
                 const renderedComponent = labels.RenderLabel({
                     field: fromJS({name: element.type}),
                     value: fromJS(element.value),
                 })
 
-                // if renderedComponent is an element, let's render it with the TestUtils renderer
+                // if renderedComponent is an element, shallow render it
                 let rendered
 
-                if (TestUtils.isElement(renderedComponent)) {
-                    renderer.render(renderedComponent)
-
-                    rendered = renderer.getRenderOutput()
+                if (React.isValidElement(renderedComponent)) {
+                    rendered = shallow(renderedComponent)
                 } else {
                     rendered = renderedComponent
                 }
 
                 let expected
 
-                // if the expected result is an element, let's render it with the TestUtils renderer
-                if (TestUtils.isElement(element.expected)) {
-                    renderer.render(
-                        element.expected
-                    )
+                it(`${element.type} label`, () => {
+                    // if the expected result is an element, shallow render it
+                    if (React.isValidElement(element.expected)) {
+                        expected = shallow(element.expected)
 
-                    expected = renderer.getRenderOutput()
+                        expect(rendered).toEqual(expected)
+                    } else {
+                        expected = element.expected
 
-                    expect(rendered).toEqual(expected)
-                } else {
-                    expected = element.expected
-
-                    expect(rendered).toBe(expected)
-                }
+                        expect(rendered).toBe(expected)
+                    }
+                })
             })
         })
     })

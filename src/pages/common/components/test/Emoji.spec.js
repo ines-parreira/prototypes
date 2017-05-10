@@ -1,33 +1,26 @@
-import expect from 'expect'
 import React from 'react'
-import TestUtils from 'react-addons-test-utils'
+import renderer from 'react-test-renderer'
 import {Emoji} from '../Emoji'
-
-function setup(props) {
-    const renderer = TestUtils.createRenderer()
-    renderer.render(<Emoji {...props} />)
-    const output = renderer.getRenderOutput()
-
-    return {
-        props,
-        output,
-        renderer
-    }
-}
 
 describe('Emoji component', () => {
     it('unsupported char', () => {
-        const {output} = setup({name: 'x'})
-        expect(output).toEqual(<img src="/static/public/img/emoji/72x72/78.png" alt="x" className="emoji" />)
+        const component = renderer.create(
+            <Emoji name={'x'}/>
+        ).toJSON()
+        expect(component).toMatchSnapshot()
     })
 
     it('supported emoji char', () => {
-        const {output} = setup({name: '👌'})
-        expect(output).toEqual(<img src="/static/public/img/emoji/72x72/1f44c.png" alt="👌" className="emoji" />)
+        const component = renderer.create(
+            <Emoji name={'👌'}/>
+        ).toJSON()
+        expect(component).toMatchSnapshot()
     })
 
     it('supported alias', () => {
-        const {output} = setup({name: 'ok_hand'})
-        expect(output).toEqual(<img src="/static/public/img/emoji/72x72/1f44c.png" alt="👌" className="emoji" />)
+        const component = renderer.create(
+            <Emoji name={'ok_hand'}/>
+        ).toJSON()
+        expect(component).toMatchSnapshot()
     })
 })

@@ -1,4 +1,3 @@
-import expect from 'expect'
 import {humanizeActionType} from '../utils'
 describe('store', () => {
     describe('middlewares', () => {

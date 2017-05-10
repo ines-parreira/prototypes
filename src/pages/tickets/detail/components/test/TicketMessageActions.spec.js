@@ -1,15 +1,9 @@
 import React from 'react'
-import TestUtils from 'react-addons-test-utils'
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
+import {shallow} from 'enzyme'
 
 import TicketMessageActions from '../TicketMessageActions'
 
-expect.extend(expectImmutable)
-
 describe('TicketMessageActions component', () => {
-    let component
-
     const args = {
         headers: {
             Authorization: 'auth',
@@ -33,28 +27,21 @@ describe('TicketMessageActions component', () => {
         ]
     }
 
-    before('render element', () => {
-        const renderer = TestUtils.createRenderer()
-
-        renderer.render(
-            <TicketMessageActions
-                message={message}
-            />
-        )
-
-        component = renderer.getRenderOutput()
-    })
+    let component = shallow(
+        <TicketMessageActions
+            message={message}
+        />
+    )
 
     it('should display only actions with execution in back-end', () => {
-        const actionList = component.props.children
-        expect(actionList.length).toBe(4)
+        expect(component.children().length).toBe(4)
     })
 
     it('should display actions titles', () => {
-        const action1Title = component.props.children[0].props.children[0].props.children[1]
-        expect(action1Title).toBe('action1')
+        const action1Title = component.find('.ticket-message-actions-item Button').at(0).children().at(1)
+        expect(action1Title).toIncludeText('action1')
 
-        const action3Title = component.props.children[2].props.children[0].props.children[1]
-        expect(action3Title).toBe('action3')
+        const action3Title = component.find('.ticket-message-actions-item Button').at(2).children().at(1)
+        expect(action3Title).toIncludeText('action3')
     })
 })

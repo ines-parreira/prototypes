@@ -2,7 +2,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import expect from 'expect'
 import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
@@ -43,7 +42,7 @@ describe('actions', () => {
 
                     expect(triggeredActions[1].type).toEqual(types.SUBMIT_USER_SUCCESS)
 
-                    expect(triggeredActions[1].resp).toExist()
+                    expect(triggeredActions[1].resp).toBeTruthy()
                 })
         })
 
@@ -71,7 +70,7 @@ describe('actions', () => {
 
                     expect(triggeredActions[1].type).toEqual(types.SUBMIT_USER_SUCCESS)
 
-                    expect(triggeredActions[1].resp).toExist()
+                    expect(triggeredActions[1].resp).toBeTruthy()
                 })
         })
     })

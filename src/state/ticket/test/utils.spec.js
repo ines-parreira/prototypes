@@ -1,5 +1,4 @@
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
+import * as immutableMatchers from 'jest-immutable-matchers'
 import {getChannels} from '../../integrations/selectors'
 import integrationState from '../../integrations/tests/fixtures'
 import {smoochTicket, emailTicket, facebookPost} from './fixtures'
@@ -15,7 +14,7 @@ import {
     displayUserNameFromSource,
 } from '../../../pages/tickets/common/utils'
 
-expect.extend(expectImmutable)
+jest.addMatchers(immutableMatchers)
 
 const users = {
     email: [{

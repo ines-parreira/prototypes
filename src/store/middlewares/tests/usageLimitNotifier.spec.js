@@ -1,6 +1,4 @@
-import expect from 'expect'
 import configureMockStore from 'redux-mock-store'
-import expectImmutable from 'expect-immutable'
 import thunk from 'redux-thunk'
 import _assign from 'lodash/assign'
 import _some from 'lodash/some'
@@ -13,7 +11,6 @@ import * as ticketTypes from '../../../state/ticket/constants'
 import * as notifs from '../../../fixtures/notifications'
 import plan from '../../../fixtures/plan'
 import moment from 'moment'
-expect.extend(expectImmutable)
 
 const middlewares = [thunk, usageLimitNotifier]
 const mockStore = configureMockStore(middlewares)
@@ -32,7 +29,7 @@ const baseState = {
     }),
     currentAccount: fromJS({
         // init this date after effective date of plan which is equal to `now`
-        created_datetime: moment().add('minute', 5),
+        created_datetime: moment().add(5, 'minute'),
         deactivated_datetime: null,
         meta: null
     })

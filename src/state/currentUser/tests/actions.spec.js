@@ -1,6 +1,4 @@
-import expect from 'expect'
 import configureMockStore from 'redux-mock-store'
-import expectImmutable from 'expect-immutable'
 import thunk from 'redux-thunk'
 import * as types from '../constants'
 import {submitSetting} from '../actions'
@@ -9,8 +7,6 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {userSetting} from '../../../fixtures/user'
 import {fromJS} from 'immutable'
-
-expect.extend(expectImmutable)
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

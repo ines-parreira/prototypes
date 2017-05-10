@@ -1,10 +1,9 @@
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
+import * as immutableMatchers from 'jest-immutable-matchers'
 import * as types from '../constants'
 import reducer, {initialState} from '../reducers'
 import {fromJS} from 'immutable'
 
-expect.extend(expectImmutable)
+jest.addMatchers(immutableMatchers)
 
 const card = {
     brand: 'visa',

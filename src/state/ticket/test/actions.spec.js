@@ -1,6 +1,5 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import expect from 'expect'
 import * as actions from '../actions'
 import integrationState from '../../integrations/tests/fixtures'
 import {getChannels} from '../../integrations/selectors'

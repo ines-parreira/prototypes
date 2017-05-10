@@ -1,5 +1,3 @@
-import expect from 'expect'
-
 import {fromJS} from 'immutable'
 
 import * as helpers from '../helpers'

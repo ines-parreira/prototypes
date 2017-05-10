@@ -1,12 +1,9 @@
 import React from 'react'
-import TestUtils from 'react-addons-test-utils'
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
+import {shallow} from 'enzyme'
 import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
 
 import {TicketTags} from '../TicketTags'
-
-expect.extend(expectImmutable)
 
 describe('TicketTags component', () => {
     let component
@@ -24,23 +21,19 @@ describe('TicketTags component', () => {
         { name: 'tag5' }
     ])
 
-    before('render element', () => {
-        const renderer = TestUtils.createRenderer()
-
-        renderer.render(
+    beforeAll(() => {
+        component = shallow(
             <TicketTags
                 tags={tags}
                 ticketTags={ticketTags}
-                addTag={() => {}}
-                removeTag={() => {}}
+                addTags={_noop}
+                removeTag={_noop}
+                fieldEnumSearch={_noop}
             />
         )
-
-        component = renderer.getRenderOutput()
     })
 
     it('should display current tags', () => {
-        const ticketTagsList = component.props.children[0]
-        expect(ticketTagsList.size).toBe(ticketTags.size)
+        expect(component.children().length - 1).toBe(ticketTags.size)
     })
 })

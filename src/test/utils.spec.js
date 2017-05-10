@@ -1,4 +1,3 @@
-import expect from 'expect'
 import moment from 'moment'
 import {fromJS} from 'immutable'
 import plan from '../fixtures/plan'
@@ -12,7 +11,7 @@ describe('global utils', () => {
          *  Because others tests could edit this setting.
          *  We ensure we use the default value for these tests.
          **/
-        before(() => moment.locale('en'))
+        beforeAll(() => moment.locale('en'))
 
         it('invalid', () => {
             // to disable warning

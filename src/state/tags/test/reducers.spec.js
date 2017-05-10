@@ -1,26 +1,25 @@
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
+import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 
-expect.extend(expectImmutable)
+jest.addMatchers(immutableMatchers)
 
 describe('reducers', () => {
     describe('tags', () => {
         // Simulates current tags in state
-        const currentFakeTags = [
+        const currentFakeTags = fromJS([
             {name: 'current_fake_name'},
             {name: 'other_current_fake_name'}
-        ]
+        ])
 
         // Simulates the arrival of new tags
-        const newFakeTags = [
+        const newFakeTags = fromJS([
             {name: 'new_fake_name'},
             {name: 'other_new_fake_name'}
-        ]
+        ])
 
         it('should return the initial state', () => {
             expect(

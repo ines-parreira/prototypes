@@ -1,12 +1,8 @@
 import React from 'react'
-import TestUtils from 'react-addons-test-utils'
-import expect from 'expect'
-import expectImmutable from 'expect-immutable'
+import {shallow} from 'enzyme'
 
 import {List} from 'immutable'
 import TicketAttachments from '../TicketAttachments'
-
-expect.extend(expectImmutable)
 
 describe('TicketAttachments component', () => {
     // attachments is an immutable list of pojos
@@ -25,65 +21,48 @@ describe('TicketAttachments component', () => {
     describe('read-only', () => {
         let component
 
-        before('render element', () => {
-            const renderer = TestUtils.createRenderer()
-
-            renderer.render(
+        beforeAll(() => {
+            component = shallow(
                 <TicketAttachments
                     removable={false}
                     attachments={attachments}
                     deleteAttachment={deleteAttachment}
                 />
             )
-
-            component = renderer.getRenderOutput()
         })
 
         it('should display all attachments', () => {
-            const attachmentsList = component.props.children
-            expect(attachmentsList.size).toBe(attachments.size)
+            expect(component.children().length).toBe(attachments.size)
         })
 
         it('should set a preview on the first attachment', () => {
-            const attachment = component.props.children.get(0)
-
-            expect(attachment.props.style.backgroundImage).toBe('url(bar)')
+            expect(component.children().at(0)).toHaveStyle('backgroundImage', 'url(bar)')
         })
 
         it('should not set a preview on the second attachment', () => {
-            const attachment = component.props.children.get(1)
-
-            expect(attachment.props.style).toBe(null)
+            expect(component.children().at(1)).toHaveProp('style', null)
         })
 
         it('should not show the remove button', () => {
-            const attachment = component.props.children.get(0).props.children
-
-            expect(attachment.props.children[2]).toBe(null)
+            expect(component.find('.attachments-item-remove')).not.toBePresent()
         })
     })
 
     describe('removable', () => {
         let component
 
-        before('render element', () => {
-            const renderer = TestUtils.createRenderer()
-
-            renderer.render(
+        beforeAll(() => {
+            component = shallow(
                 <TicketAttachments
                     removable
                     attachments={attachments}
                     deleteAttachment={deleteAttachment}
                 />
             )
-
-            component = renderer.getRenderOutput()
         })
 
         it('should show the remove button', () => {
-            const attachment = component.props.children.get(0).props.children
-
-            expect(attachment.props.children[2]).toNotBe(null)
+            expect(component.find('.attachments-item-remove')).toBePresent()
         })
     })
 })

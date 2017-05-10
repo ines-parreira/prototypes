@@ -1,4 +1,3 @@
-import expect from 'expect'
 import {formatErrors} from '../formSender'
 
 describe('formSender', () => {

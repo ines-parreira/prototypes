@@ -1,14 +1,10 @@
-import expect from 'expect'
 import configureMockStore from 'redux-mock-store'
-import expectImmutable from 'expect-immutable'
 import thunk from 'redux-thunk'
 import * as types from '../constants'
 import {fetchCurrentUsage, fetchInvoices, fetchCreditCard} from '../actions'
 import {initialState} from '../reducers'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-
-expect.extend(expectImmutable)
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

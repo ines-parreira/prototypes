@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Emoji component supported alias 1`] = `
+<img
+  alt="👌"
+  className="emoji"
+  src="/static/public/img/emoji/72x72/1f44c.png"
+/>
+`;
+
+exports[`Emoji component supported emoji char 1`] = `
+<img
+  alt="👌"
+  className="emoji"
+  src="/static/public/img/emoji/72x72/1f44c.png"
+/>
+`;
+
+exports[`Emoji component unsupported char 1`] = `
+<img
+  alt="x"
+  className="emoji"
+  src="/static/public/img/emoji/72x72/78.png"
+/>
+`;
