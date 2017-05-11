@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loader component inline 1`] = `
+<div
+  className="ui active inline loader"
+/>
+`;
+
+exports[`Loader component loading 1`] = `
+<div
+  className="loader-container"
+>
+  <div
+    className="loader-inner"
+  >
+    <div
+      className="ui active text loader"
+    >
+      Loading...
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Loader component not loading 1`] = `
+<div
+  className="loader-container"
+>
+  <div
+    className="loader-inner"
+  >
+    Loading...
+  </div>
+</div>
+`;
+
+exports[`Loader component simple message 1`] = `
+<div
+  className="loader-container"
+>
+  <div
+    className="loader-inner"
+  >
+    <div
+      className="ui active text loader"
+    >
+      hello
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Loader component size 1`] = `
+<div
+  className="loader-container"
+>
+  <div
+    className="loader-inner"
+  >
+    <div
+      className="ui active large text loader"
+    >
+      Loading...
+    </div>
+  </div>
+</div>
+`;
