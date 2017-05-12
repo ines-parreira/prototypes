@@ -8,7 +8,7 @@ import * as RuleActions from '../../../../state/rules/actions'
 import {getRules} from '../../../../state/rules/selectors'
 
 const mapStateToProps = (state) => ({
-    rules: getRules(state),
+    rules: getRules(state).filter(rule => rule.get('type') !== 'system'), // hide system rules
 })
 
 const mapDispatchToProps = (dispatch) => ({
