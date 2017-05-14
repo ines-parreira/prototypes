@@ -43,7 +43,13 @@ export const getAgents = createSelector(
 
 export const getAgent = id => createSelector(
     [getAgents],
-    agents => agents.find(agent => agent.get('id').toString() === id.toString(), null, fromJS({}))
+    agents => {
+        if (!id) {
+            return fromJS({})
+        }
+
+        return agents.find(agent => agent.get('id', '').toString() === id.toString(), null, fromJS({}))
+    }
 )
 
 export const makeGetAgent = state => id => getAgent(id)(state)
@@ -77,7 +83,7 @@ export const getOtherAgentsLocation = createSelector(
         return locations.map((location) => {
             const users = location
                 .get('users', fromJS([]))
-                .filter(agent => agent.get('id').toString() !== currentUser.get('id').toString())
+                .filter(agent => agent.get('id', '').toString() !== currentUser.get('id', '').toString())
             return location.set('users', users)
         })
     }
@@ -92,7 +98,7 @@ export const getAgentsIdsOnTicket = ticketId => createSelector(
         }
 
         const agentsLocationInfo = agentsLocation.find((info) => {
-            return info.get('ticket').toString() === ticketId.toString()
+            return info.get('ticket', '').toString() === ticketId.toString()
         })
 
         if (agentsLocationInfo) {
@@ -122,7 +128,7 @@ export const getAgentsOnTicket = ticketId => createSelector(
 export const getOtherAgentsOnTicket = ticketId => createSelector(
     [currentUserSelectors.getCurrentUser, getAgentsOnTicket(ticketId)],
     (currentUser, agents) => {
-        return agents.filter(agent => agent.get('id').toString() !== currentUser.get('id').toString())
+        return agents.filter(agent => agent.get('id', '').toString() !== currentUser.get('id', '').toString())
     }
 )
 
