@@ -32,7 +32,7 @@ export const getFacebookIntegrations = createSelector(
     [getIntegrations],
     state => state
         .filter(integration => integration.get('type') === 'facebook')
-        .sort((a, b) => a.getIn(['facebook', 'name']) > b.getIn(['facebook', 'name']) ? 1 : -1)
+        .sort((a, b) => (a.getIn(['facebook', 'name']) || '').localeCompare((b.getIn(['facebook', 'name']) || '')))
 )
 
 export const getEmailIntegrations = createSelector(
@@ -82,11 +82,13 @@ export const makeGetFormValues = state => form => getFormValues(form)(state)
 // return the list of integration used to send messages from the helpdesk
 export const getMessagingIntegrations = createSelector(
     [getIntegrationsByTypes(['email', 'gmail', 'smooch', 'smooch_inside', 'facebook'])],
-        integrations => integrations.map(inte => {
+    (integrations) => {
+        return integrations.map((inte) => {
             if (inte.get('type') === 'facebook') {
                 return inte.set('name', inte.getIn(['facebook', 'name']))
             }
             return inte
         })
+    }
 )
 
