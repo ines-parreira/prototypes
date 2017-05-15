@@ -3,6 +3,8 @@ import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 import {getFormValues} from 'redux-form'
 
+import {compare} from '../../utils'
+
 export const getIntegrationsState = state => state.integrations || fromJS({})
 
 export const getIntegrations = createSelector(
@@ -32,7 +34,7 @@ export const getFacebookIntegrations = createSelector(
     [getIntegrations],
     state => state
         .filter(integration => integration.get('type') === 'facebook')
-        .sort((a, b) => (a.getIn(['facebook', 'name']) || '').localeCompare((b.getIn(['facebook', 'name']) || '')))
+        .sort((a, b) => compare(a.getIn(['facebook', 'name']), b.getIn(['facebook', 'name'])))
 )
 
 export const getEmailIntegrations = createSelector(

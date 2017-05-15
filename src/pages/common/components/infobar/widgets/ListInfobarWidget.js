@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {List} from 'immutable'
 
+import {compare} from '../../../../../utils'
 import InfobarWidget from '../InfobarWidget'
 
 class ListInfobarWidget extends React.Component {
@@ -37,9 +38,7 @@ class ListInfobarWidget extends React.Component {
         if (!isEditing && orderByConfig) {
             // format of config : "-name" would tell order by 'name' DESC
             const orderByProperty = orderByConfig.slice(1)
-            orderedSource = orderedSource.sort((a, b) => a.get(orderByProperty) - b.get(orderByProperty))
-            orderedSource = orderedSource
-                .sort((a, b) => (a.get(orderByProperty) || '').localeCompare((b.get(orderByProperty) || '')))
+            orderedSource = orderedSource.sort((a, b) => compare(a.get(orderByProperty), b.get(orderByProperty)))
 
             const orderByDirection = orderByConfig.slice(0, 1)
             if (orderByDirection === '-') {

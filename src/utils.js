@@ -747,3 +747,21 @@ export function humanizeString(text) {
         .upperFirst()
         .value()
 }
+
+/**
+ * Compare two values and return order symbol, used in sort for Immutable
+ * @param a
+ * @param b
+ * @returns {number}
+ */
+export const compare = (a, b) => {
+    if (a < b) {
+        return -1
+    }
+
+    if (a > b) {
+        return 1
+    }
+
+    return 0
+}
