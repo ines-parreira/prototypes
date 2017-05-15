@@ -90,3 +90,12 @@ export const isPublic = (sourceType) => {
 export const isRichType = (sourceType) => {
     return ['email', 'internal-note'].includes(sourceType)
 }
+
+/**
+ * Return true if type supports only images as attachments (no PDF, etc.)
+ * @param sourceType
+ * @returns {boolean}
+ */
+export const acceptsOnlyImages = (sourceType) => {
+    return ['chat'].includes(sourceType)
+}

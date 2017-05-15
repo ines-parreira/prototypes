@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import classnames from 'classnames'
 import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _throttle from 'lodash/throttle'
@@ -6,7 +7,7 @@ import {RichTextAreaField} from '../../../../common/forms'
 
 import {EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
-import {isRichType} from '../../../../../config/ticket'
+import {isRichType, acceptsOnlyImages} from '../../../../../config/ticket'
 
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
 
@@ -126,11 +127,12 @@ class TicketReplyEditor extends React.Component {
         const {ticket, newMessageType} = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
+        const newMessageAcceptsOnlyImages = acceptsOnlyImages(newMessageType)
 
         const attachmentInputProps = {}
 
         // if not rich type (like chat or Facebook message), only accept images
-        if (!isNewMessageRichType) {
+        if (newMessageAcceptsOnlyImages) {
             attachmentInputProps.accept = 'image/*'
         }
 
@@ -166,7 +168,10 @@ class TicketReplyEditor extends React.Component {
                                                 <i className="notched circle loading icon" />
                                             ) : (
                                                 <i
-                                                    className="attach icon"
+                                                    className={classnames('icon', {
+                                                        attach: !newMessageAcceptsOnlyImages,
+                                                        'file image outline': newMessageAcceptsOnlyImages,
+                                                    })}
                                                     title="Add attachment"
                                                 />
                                             )
