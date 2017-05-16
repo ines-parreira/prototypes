@@ -2,7 +2,7 @@ import {makeGetProperty} from './state/ticket/selectors'
 import _get from 'lodash/get'
 
 export const POLL_ACTIVITY_INTERVAL = 10000
-export const CHAT_POLLING_INTERVAL = 8000
+export const CHAT_POLLING_INTERVAL = 9000
 export const POLL_ACTIVITY_TIMEOUT = 8000
 
 // TODO @jebarjonet switch all configuration to modular version
