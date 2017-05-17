@@ -98,13 +98,13 @@ class TicketListInfobarContainer extends React.Component {
                                 target="_blank"
                                 className={css.button}
                                 onClick={() => {
-                                    logEvent(`Clicked add a "Helpdocs" integration on Onboarding widget`)
+                                    logEvent('Clicked add a "Helpdocs" integration on Onboarding widget')
                                 }}
                             >
                                 <img
                                     role="presentation"
                                     className="logo"
-                                    src="static/private/img/integrations/helpdocs.png"
+                                    src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/integrations/helpdocs.png`}
                                 />
                                 <span>Add helpcenter</span>
                             </a>
