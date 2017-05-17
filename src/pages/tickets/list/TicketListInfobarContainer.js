@@ -93,8 +93,24 @@ class TicketListInfobarContainer extends React.Component {
                                     )
                                 })
                             }
+                            <a
+                                href="https://gorgias.helpdocs.io/integrations/helpdocs"
+                                target="_blank"
+                                className={css.button}
+                                onClick={() => {
+                                    logEvent(`Clicked add a "Helpdocs" integration on Onboarding widget`)
+                                }}
+                            >
+                                <img
+                                    role="presentation"
+                                    className="logo"
+                                    src="static/private/img/integrations/helpdocs.png"
+                                />
+                                <span>Add helpcenter</span>
+                            </a>
                         </div>
                     }
+
                     <Link
                         className={css.sub}
                         to="/app/integrations"

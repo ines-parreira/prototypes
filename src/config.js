@@ -149,6 +149,18 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/shopify.png',
     },
     {
+        title: 'Helpdocs',
+        description: 'Create a knowledge base & connect it to Gorgias',
+        url: 'https://gorgias.helpdocs.io/integrations/helpdocs',
+        image: 'integrations/helpdocs.png',
+    },
+    {
+        title: 'Elev.io',
+        description: 'Let your customers contact you from your help center',
+        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#elev-io',
+        image: 'integrations/elevio.png',
+    },
+    {
         title: 'WooCommerce',
         description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
         url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#woocommerce',
@@ -195,12 +207,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Trigger zaps with macros',
         url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#zapier',
         image: 'integrations/zapier.png',
-    },
-    {
-        title: 'Elev.io',
-        description: 'Let your customers contact you from your help center',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#elev-io',
-        image: 'integrations/elevio.png',
     }
 ]
 
