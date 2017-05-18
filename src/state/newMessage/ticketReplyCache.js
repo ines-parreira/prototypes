@@ -1,6 +1,3 @@
-/* cache ticket reply details in localStorage
- */
-
 import {fromJS} from 'immutable'
 
 const CACHE_KEY_SEPARATOR = '~'

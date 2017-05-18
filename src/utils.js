@@ -470,7 +470,7 @@ export function convertFromHTML(html) {
             if (nodeName === 'img') {
                 return Entity.create(
                     'img',
-                    'IMMUTABLE',
+                    'MUTABLE',
                     {
                         src: node.src,
                         width: node.width,
@@ -485,7 +485,7 @@ export function convertFromHTML(html) {
     // see https://github.com/HubSpot/draft-convert/issues/30
     const blocks = converted.getBlocksAsArray().map((block) => {
         if (block.getType() === 'atomic') {
-            return block.set('text', '')
+            return block.set('text', ' ')
         }
 
         return block
