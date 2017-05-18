@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable'
-import {TicketReplyCache, defaultTicket, CACHE_MAX_ITEMS} from '../ticketReplyCache'
+import {TicketReplyCache, defaultTicket, CACHE_MAX_ITEMS} from '../../newMessage/ticketReplyCache'
 
 // Storage Mock
 const storageMock = () => {

@@ -6,8 +6,8 @@ import SearchInput from 'react-search-input'
 
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
-import {onlySignature} from '../../../../../state/ticket/responseUtils'
-import * as ticketSelectors from './../../../../../state/ticket/selectors'
+import {onlySignature} from '../../../../../state/newMessage/responseUtils'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getPreferences} from './../../../../../state/currentUser/selectors'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
@@ -21,18 +21,18 @@ export class TicketReplyArea extends React.Component {
     componentDidMount() {
         window.addEventListener('keydown', this._hideMacros)
 
-        if (this.props.ticket.getIn(CONTENT_STATE_PATH) === null) {
+        if (this.props.newMessage.getIn(CONTENT_STATE_PATH) === null) {
             this._setMacrosVisible(this.props.newMessageType === 'email')
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        const prevContentState = this.props.ticket.getIn(CONTENT_STATE_PATH)
-        const nextContextState = nextProps.ticket.getIn(CONTENT_STATE_PATH)
+        const prevContentState = this.props.newMessage.getIn(CONTENT_STATE_PATH)
+        const nextContextState = nextProps.newMessage.getIn(CONTENT_STATE_PATH)
 
         // here we make sure that we only toggle the macros
         // if the current contentState is null.
-        if (prevContentState === null) {
+        if (prevContentState === null && this.props.newMessageType === 'email') {
             // default
             let showMacros = nextProps.preferences.get('show_macros')
 
@@ -48,8 +48,7 @@ export class TicketReplyArea extends React.Component {
             // macros are hidden if there is more text than the signature
             const shouldHideMacros = (
                 nextContextState &&
-                nextContextState.hasText() &&
-                !onlySignature(nextContextState, nextProps.currentUser)
+                nextContextState.hasText() && !onlySignature(nextContextState, nextProps.currentUser)
             )
 
             if (shouldHideMacros) {
@@ -143,13 +142,14 @@ TicketReplyArea.propTypes = {
     previewMacroInModal: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     preferences: PropTypes.object.isRequired,
-
+    newMessage: PropTypes.object.isRequired,
     newMessageType: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
-        newMessageType: ticketSelectors.getNewMessageType(state),
+        newMessageType: newMessageSelectors.getNewMessageType(state),
+        newMessage: state.newMessage,
         preferences: getPreferences(state)
     }
 }

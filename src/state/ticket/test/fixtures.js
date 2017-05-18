@@ -1,11 +1,6 @@
 import {fromJS} from 'immutable'
 
 export const smoochTicket = fromJS({
-    newMessage: {
-        source: {
-            type: 'chat'
-        }
-    },
     messages: [{
         source: {
             extra: {
@@ -49,11 +44,6 @@ export const smoochTicket = fromJS({
 })
 
 export const emailTicket = fromJS({
-    newMessage: {
-        source: {
-            type: 'email'
-        }
-    },
     messages: [{
         source: {
             to: [{
@@ -90,11 +80,6 @@ export const emailTicket = fromJS({
 })
 
 export const facebookPost = fromJS({
-    newMessage: {
-        source: {
-            type: 'facebook-comment'
-        }
-    },
     messages: [
         {
             source: {

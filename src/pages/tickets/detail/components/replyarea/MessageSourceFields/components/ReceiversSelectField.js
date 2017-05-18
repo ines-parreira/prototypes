@@ -9,7 +9,7 @@ import {
     receiversStateFromValue
 } from '../../../../../../../state/ticket/utils'
 import _debounce from 'lodash/debounce'
-import {updatePotentialRequesters} from '../../../../../../../state/ticket/actions'
+import {updatePotentialRequesters} from '../../../../../../../state/newMessage/actions'
 
 class ReceiversSelectField extends React.Component {
     static propTypes = {

@@ -83,14 +83,9 @@ const ticket = fromJS({
             type: 'internal-note',
         }
     }],
-    newMessage: {
-        source: {
-            type: 'email',
-        }
-    }
 })
 
-const receiversExample = guessReceiversFromTicket(ticket)
+const receiversExample = guessReceiversFromTicket(ticket, 'email')
 const receiversValueExample = {
     to: [{
         name: users.email[1].name,
@@ -125,9 +120,7 @@ const channels = getChannels(integrationState)
 describe('Ticket utils', () => {
     describe('guessReceiversFromTicket', () => {
         it('guess receivers email', () => {
-            const updatedTicket = ticket
-                .setIn(['newMessage', 'source', 'type'], 'email')
-            const receivers = guessReceiversFromTicket(updatedTicket)
+            const receivers = guessReceiversFromTicket(ticket, 'email')
 
             expect(receivers).toEqual({
                 to: [users.email[1], users.email[2]],
@@ -138,9 +131,8 @@ describe('Ticket utils', () => {
         it('guess receivers email inverted', () => {
             // invert from_agent property
             const updatedTicket = ticket
-                .setIn(['newMessage', 'source', 'type'], 'email')
                 .setIn(['messages', 4, 'from_agent'], false)
-            const receivers = guessReceiversFromTicket(updatedTicket)
+            const receivers = guessReceiversFromTicket(updatedTicket, 'email')
 
             expect(receivers).toEqual({
                 to: [users.email[0]],
@@ -149,9 +141,7 @@ describe('Ticket utils', () => {
         })
 
         it('guess receivers chat', () => {
-            const updatedTicket = ticket
-                .setIn(['newMessage', 'source', 'type'], 'chat')
-            const receivers = guessReceiversFromTicket(updatedTicket)
+            const receivers = guessReceiversFromTicket(ticket, 'chat')
 
             expect(receivers).toEqual({
                 to: [users.chat[1]],
@@ -161,9 +151,8 @@ describe('Ticket utils', () => {
         it('guess receivers chat inverted', () => {
             // invert from_agent property
             const updatedTicket = ticket
-                .setIn(['newMessage', 'source', 'type'], 'chat')
                 .setIn(['messages', 1, 'from_agent'], false)
-            const receivers = guessReceiversFromTicket(updatedTicket)
+            const receivers = guessReceiversFromTicket(updatedTicket, 'chat')
 
             expect(receivers).toEqual({
                 to: [users.chat[0]],
@@ -205,13 +194,13 @@ describe('Ticket utils', () => {
     describe('getNewMessageSender', () => {
         it('should return `from` field from last message from agent (chat, messenger)', () => {
             const expected = smoochTicket.getIn(['messages', 1, 'source', 'from'])
-            expect(getNewMessageSender(smoochTicket, channels))
+            expect(getNewMessageSender(smoochTicket, 'chat', channels))
                 .toEqualImmutable(expected)
         })
 
         it('should return `from` field from last message from agent (facebook post)', () => {
             const expected = facebookPost.getIn(['messages', 1, 'source', 'from'])
-            expect(getNewMessageSender(facebookPost, channels))
+            expect(getNewMessageSender(facebookPost, 'facebook-comment', channels))
                 .toEqualImmutable(expected)
         })
 
@@ -219,7 +208,7 @@ describe('Ticket utils', () => {
             // delete last message from agent
             const _smoochTicket = smoochTicket.deleteIn(['messages', 1])
             const expected = _smoochTicket.getIn(['messages', 0, 'source', 'to', 0])
-            expect(getNewMessageSender(_smoochTicket, channels))
+            expect(getNewMessageSender(_smoochTicket, 'chat', channels))
                 .toEqualImmutable(expected)
         })
 
@@ -227,7 +216,7 @@ describe('Ticket utils', () => {
             // delete last message from agent
             const _facebookPost = facebookPost.deleteIn(['messages', 1])
             const expected = _facebookPost.getIn(['messages', 0, 'source', 'to', 0])
-            expect(getNewMessageSender(_facebookPost, channels))
+            expect(getNewMessageSender(_facebookPost, 'facebook-comment', channels))
                 .toEqualImmutable(expected)
         })
 
@@ -235,13 +224,13 @@ describe('Ticket utils', () => {
             // remove messages, to simulate a new ticket
             const _emailTicket = emailTicket.set('messages', fromJS([]))
             const expected = getPreferredChannel('email', channels)
-            expect(getNewMessageSender(_emailTicket, channels))
+            expect(getNewMessageSender(_emailTicket, 'email', channels))
                 .toEqualImmutable(expected)
         })
 
         it('should return `from` field from last message from agent', () => {
             const expected = emailTicket.getIn(['messages', 1, 'source', 'from'])
-            expect(getNewMessageSender(emailTicket, channels))
+            expect(getNewMessageSender(emailTicket, 'email', channels))
                 .toEqualImmutable(expected)
         })
 
@@ -249,7 +238,7 @@ describe('Ticket utils', () => {
             // delete last message from agent
             const _emailTicket = emailTicket.deleteIn(['messages', 1])
             const expected = _emailTicket.getIn(['messages', 0, 'source', 'to', 1])
-            expect(getNewMessageSender(emailTicket, channels))
+            expect(getNewMessageSender(emailTicket, 'email', channels))
                 .toEqualImmutable(expected)
         })
 
@@ -262,7 +251,7 @@ describe('Ticket utils', () => {
                         .set('to', fromJS([]))
                 })
             const expected = _emailTicket.getIn(['messages', 0, 'source', 'cc', 1])
-            expect(getNewMessageSender(emailTicket, channels))
+            expect(getNewMessageSender(emailTicket, 'email', channels))
                 .toEqualImmutable(expected)
         })
 
@@ -270,13 +259,12 @@ describe('Ticket utils', () => {
             // remove address that can match
             const _emailTicket = emailTicket.deleteIn(['messages', 1])
             const expected = getPreferredChannel('email', channels)
-            expect(getNewMessageSender(_emailTicket, channels))
+            expect(getNewMessageSender(_emailTicket, 'email', channels))
                 .toEqualImmutable(expected)
         })
 
         it('should return empty Map (internal-note)', () => {
-            const _emailTicket = emailTicket.setIn(['newMessage', 'source', 'type'], 'internal-note')
-            expect(getNewMessageSender(_emailTicket, channels))
+            expect(getNewMessageSender(emailTicket, 'internal-note', channels))
                 .toEqualImmutable(fromJS({}))
         })
     })

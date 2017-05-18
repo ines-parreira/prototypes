@@ -7,12 +7,9 @@ import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from '
 import {ticketSourceTypes} from '../../../../../utils'
 import MessageSourceFields from './MessageSourceFields/'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
-import {
-    getNewMessageType,
-    getNewMessageChannel,
-    getMessages,
-    hasNewMessageRecipients,
-} from '../../../../../state/ticket/selectors'
+import * as newMessageActions from '../../../../../state/newMessage/actions'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import {getMessages} from '../../../../../state/ticket/selectors'
 import * as integrationSelectors from '../../../../../state/integrations/selectors'
 import _reduce from 'lodash/reduce'
 
@@ -25,16 +22,6 @@ class ReplyMessageChannel extends React.Component {
 
     componentDidMount() {
         window.addEventListener('click', this._updateMessageSourceFieldsOpening)
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const {hasRecipients} = nextProps
-        const {hasRecipients: hadRecipients} = this.props
-
-        // at any props change, open the dropdown when no receivers
-        if (this._canChangeReceivers() && (!hasRecipients && hadRecipients === hasRecipients)) {
-            this._toggleReceiversArea(true)
-        }
     }
 
     componentWillUnmount() {
@@ -59,6 +46,10 @@ class ReplyMessageChannel extends React.Component {
         // open recipients area only for emails
         if (this._canChangeReceivers()) {
             if (hasRecipients) {
+                if (!e) {
+                    return
+                }
+
                 // ignore click if clicked on ignored components (such as the channel picker dropdown)
                 const shouldBeIgnored = ignoredComponentsRefs.some((id) => {
                     return !this.refs[id] || (this.refs[id] && $(this.refs[id])[0].contains(e.target))
@@ -67,6 +58,7 @@ class ReplyMessageChannel extends React.Component {
                 if (!shouldBeIgnored) {
                     const hasClickedInComponent = this.refs.messageChannel
                         && $(this.refs.messageChannel)[0].contains(e.target)
+
                     this._toggleReceiversArea(hasClickedInComponent)
                 }
             } else {
@@ -102,13 +94,13 @@ class ReplyMessageChannel extends React.Component {
     }
 
     _setSourceType = (sourceType) => {
-        this.props.actions.ticket.setSourceType(sourceType)
+        this.props.setSourceType(sourceType)
     }
 
     _renderReceiversArea = () => {
-        const {ticket, messages, accountChannels} = this.props
+        const {ticket, messages, sourceType, isNewMessagePublic, accountChannels} = this.props
 
-        if (!ticket.getIn(['newMessage', 'public'])) {
+        if (!isNewMessagePublic) {
             return (
                 <div className="message-source-fields">
                     <div className="message-source-field">
@@ -134,7 +126,7 @@ class ReplyMessageChannel extends React.Component {
 
         return (
             <MessageSourceFields
-                initialValues={guessReceiversFromTicket(ticket, accountChannels)}
+                initialValues={guessReceiversFromTicket(ticket, sourceType, accountChannels)}
                 enabled={isInputEnabled}
                 parentId={parentId.toString()}
                 canOpen={this._canChangeReceivers()}
@@ -253,23 +245,30 @@ ReplyMessageChannel.propTypes = {
     actions: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired,
+    setSourceType: PropTypes.func.isRequired,
     sourceType: PropTypes.string.isRequired,
     channel: PropTypes.string.isRequired,
     accountChannels: PropTypes.object.isRequired,
     messages: PropTypes.object.isRequired,
     hasRecipients: PropTypes.bool.isRequired,
+    isNewMessagePublic: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const sourceType = getNewMessageType(state)
+    const sourceType = newMessageSelectors.getNewMessageType(state)
     return {
         sourceType,
-        channel: getNewMessageChannel(state),
+        channel: newMessageSelectors.getNewMessageChannel(state),
         accountChannels: integrationSelectors.getChannelsByType(sourceType)(state),
         isUpdate: !!ownProps.ticket.get('id'),
         messages: getMessages(state),
-        hasRecipients: hasNewMessageRecipients(state),
+        hasRecipients: newMessageSelectors.hasNewMessageRecipients(state),
+        isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
     }
 }
 
-export default connect(mapStateToProps)(ReplyMessageChannel)
+const mapDispatchToProps = {
+    setSourceType: newMessageActions.setSourceType,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReplyMessageChannel)

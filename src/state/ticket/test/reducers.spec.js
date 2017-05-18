@@ -1,6 +1,6 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
-import reducer, {newMessage, initialState} from '../reducers'
+import reducer, {initialState} from '../reducers'
 import {getLastSameSourceTypeMessage} from '../utils'
 import * as types from '../constants'
 
@@ -15,88 +15,11 @@ describe('Ticket reducer', () => {
         )
     })
 
-    it('should return new state with attachment loading to true', () => {
-        const expected = initialState.setIn(['_internal', 'loading', 'addAttachment'], true)
-
-        expect(
-            reducer(initialState, {type: types.ADD_ATTACHMENT_START})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should merge correctly newMessage and state dirty', () => {
-        const expected = initialState.mergeDeep({
-            newMessage: {
-                attachments: initialState.getIn(['newMessage', 'attachments']).concat(['resp']),
-            },
-            state: {
-                dirty: true,
-            }
-        })
-            .setIn(['_internal', 'loading', 'addAttachment'], false)
-
-        expect(
-            reducer(initialState, {type: types.ADD_ATTACHMENT_SUCCESS, resp: ['resp']})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should return state with dirty state and delete corect index attachments', () => {
-        const fakeAttachments = initialState.mergeDeep({
-            newMessage: {
-                attachments: initialState.getIn(['newMessage', 'attachments']).concat(['test1', 'test2'])
-            }
-        })
-
-        const expected = fakeAttachments
-            .setIn(['newMessage', 'attachments'], fakeAttachments.getIn(['newMessage', 'attachments']).delete(0))
-            .setIn(['state', 'dirty'], true)
-
-        expect(
-            reducer(fakeAttachments, {type: types.DELETE_ATTACHMENT, index: 0})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should return state with new micro ID', () => {
-        const expected = initialState.setIn(
-            ['newMessage', 'macros'],
-            initialState.getIn(['newMessage', 'macros']).push({id: '666'})
-        )
-
-        expect(
-            reducer(initialState, {type: types.RECORD_MACRO, macro: fromJS({id: '666'})})
-        ).toEqual(
-            expected
-        )
-    })
-
     it('should return correct loading state equal true', () => {
         let expected = initialState.setIn(['_internal', 'loading', 'deleteMessage'], true)
 
         expect(
             reducer(initialState, {type: types.DELETE_TICKET_MESSAGE_START})
-        ).toEqualImmutable(
-            expected
-        )
-
-        expected = initialState.setIn(['_internal', 'loading', 'submitMessage'], true)
-
-        expect(
-            reducer(initialState, {type: types.SUBMIT_TICKET_START})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should return loading state equal false', () => {
-        const expected = initialState.setIn(['_internal', 'loading', 'submitMessage'], false)
-
-        expect(
-            reducer(initialState, {type: types.SUBMIT_TICKET_ERROR})
         ).toEqualImmutable(
             expected
         )
@@ -108,49 +31,6 @@ describe('Ticket reducer', () => {
             reducer(currentTicket, {type: types.SUBMIT_TICKET_SUCCESS, resp: {id: 'fake'}})
         ).toEqualImmutable(
             currentTicket
-        )
-    })
-
-    it('should return newState ticket is resetMessage is false', () => {
-        const expected = initialState
-            .merge(fromJS({}))
-            .mergeDeep({
-                state: {
-                    dirty: false,
-                    query: ''
-                }
-            })
-
-        expect(
-            reducer(initialState, {type: types.SUBMIT_TICKET_SUCCESS, resp: {}, resetMessage: false})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should return newState with a reset message', () => {
-        const expected = initialState
-            .merge(fromJS({}))
-            .mergeDeep({
-                state: {
-                    dirty: false,
-                    query: ''
-                },
-                messages: fromJS([newMessage('email', 'email')])
-            })
-
-        const currentTicket = initialState.mergeDeep({
-            messages: fromJS([newMessage('email', 'email')])
-        })
-
-        expect(
-            reducer(currentTicket, {
-                type: types.SUBMIT_TICKET_SUCCESS,
-                resp: {channel: 'email'},
-                resetMessage: true
-            })
-        ).toEqualImmutable(
-            expected
         )
     })
 
@@ -272,44 +152,6 @@ describe('Ticket reducer', () => {
         )
     })
 
-    it('should set source facebook', () => {
-        const expected = initialState
-            .setIn(['newMessage', 'channel'], 'facebook')
-            .setIn(['newMessage', 'source', 'type'], 'facebook')
-            .setIn(['newMessage', 'public'], true)
-
-        expect(
-            reducer(initialState, {type: types.SET_SOURCE_TYPE, sourceType: 'facebook'})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should set source internal-note', () => {
-        // we need to have at least 1 message before setting the internal note
-        // otherwise we can't set the source type correctly
-        const state = initialState.set('messages',
-            fromJS([initialState.get('newMessage').setIn(['source', 'type'], 'email')]))
-        const expected = state.mergeDeep({
-            newMessage: {
-                source: {
-                    type: 'internal-note'
-                },
-                public: false
-            }
-        })
-
-        expect(
-            reducer(state, {type: types.SET_SOURCE_TYPE, sourceType: 'internal-note'})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    // TODO (@gauthierd-):
-    // SET_RESPONSE_TEXT action need a test
-    // I did not have time to do this test
-
     it('should setup a new ticket', () => {
         const expected = initialState
 
@@ -318,40 +160,6 @@ describe('Ticket reducer', () => {
         ).toEqualImmutable(
             expected
         )
-    })
-
-    describe('SET_RECEIVERS action', () => {
-        it('should set receivers', () => {
-            const receiver = {
-                id: 3,
-                name: 'Dark Vador',
-                address: 'dark.vador@gmail.com'
-            }
-
-            const expectedReceiver = fromJS(receiver)
-
-            const expected = initialState.mergeDeep({
-                newMessage: {
-                    source: {
-                        to: fromJS([expectedReceiver])
-                    }
-                },
-                state: {
-                    query: ''
-                }
-            })
-
-            expect(
-                reducer(initialState, {
-                    type: types.SET_RECEIVERS,
-                    receivers: {
-                        to: [receiver],
-                    }
-                })
-            ).toEqualImmutable(
-                expected
-            )
-        })
     })
 
     it('should mark ticket dirty', () => {
@@ -371,21 +179,6 @@ describe('Ticket reducer', () => {
             reducer(currentTicket, {type: types.DELETE_TICKET_MESSAGE_SUCCESS, messageId: 'foo'})
         ).toEqualImmutable(
             initialState
-        )
-    })
-
-    it('should handle SET_SENDER', () => {
-        const action = {
-            type: types.SET_SENDER,
-            sender: fromJS({
-                name: 'Acme Support',
-                address: 'support@acme.com'
-            })
-        }
-        expect(
-            reducer(initialState, action)
-        ).toEqualImmutable(
-            initialState.setIn(['newMessage', 'source', 'from'], action.sender)
         )
     })
 

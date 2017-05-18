@@ -1,10 +1,9 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import classnames from 'classnames'
 import ReceiversSelectField from './components/ReceiversSelectField'
 import SenderSelectField from './components/SenderSelectField/index'
-import * as ticketActions from '../../../../../../state/ticket/actions'
+import * as newMessageActions from '../../../../../../state/newMessage/actions'
 import {
     getNewMessageType,
     getNewMessageChannel,
@@ -13,12 +12,8 @@ import {
     getContactProperties,
     getOptionalContactProperties,
     areNewMessageContactPropertiesFulfilled,
-} from '../../../../../../state/ticket/selectors'
+} from '../../../../../../state/newMessage/selectors'
 import * as integrationSelectors from '../../../../../../state/integrations/selectors'
-import {
-    receiversValueFromState,
-    receiversStateFromValue,
-} from '../../../../../../state/ticket/utils'
 import {displayUserNameFromSource} from '../../../../common/utils'
 import _upperFirst from 'lodash/upperFirst'
 import _uniq from 'lodash/uniq'
@@ -28,10 +23,6 @@ import _xor from 'lodash/xor'
 class MessageSourceFields extends React.Component {
     state = {
         displayedFields: [], // optional fields that are displayed
-    }
-
-    componentDidMount() {
-        this._setInitialValues()
     }
 
     componentWillReceiveProps(nextProps) {
@@ -47,15 +38,6 @@ class MessageSourceFields extends React.Component {
         // if closing or opening, recalculating optional fields that we want to keep open
         if (wasOpen !== isOpen) {
             this._openUsedOptionalFields()
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        const shouldSetInitialValues = prevProps.sourceType !== this.props.sourceType
-            || prevProps.parentId !== this.props.parentId
-
-        if (shouldSetInitialValues) {
-            this._setInitialValues()
         }
     }
 
@@ -75,13 +57,6 @@ class MessageSourceFields extends React.Component {
         this.setState({
             displayedFields: displayedOptionalFields,
         })
-    }
-
-    _setInitialValues = () => {
-        const {sourceType, setReceivers, setSender} = this.props
-        const value = receiversValueFromState(this.props.initialValues, sourceType)
-        setReceivers(receiversStateFromValue(value, sourceType))
-        setSender()
     }
 
     _toggleOptionalField = (field) => {
@@ -267,11 +242,9 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        setSender: bindActionCreators(ticketActions.setSender, dispatch),
-        setReceivers: bindActionCreators(ticketActions.setReceivers, dispatch)
-    }
+const mapDispatchToProps = {
+    setSender: newMessageActions.setSender,
+    setReceivers: newMessageActions.setReceivers,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageSourceFields)

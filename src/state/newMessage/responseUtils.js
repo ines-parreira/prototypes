@@ -198,7 +198,7 @@ export const addSignature = (context) => {
     let signatureBlocks = null
     const signatureHTML = action.currentUser.get('signature_html')
     const signatureText = action.currentUser.get('signature_text')
-    if (signatureHTML && isRichType(selectors.getNewMessageType({ticket: state}))) {
+    if (signatureHTML && isRichType(selectors.getNewMessageType({newMessage: state}))) {
         signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${signatureHTML}`).getBlocksAsArray()
     } else if (signatureText) {
         signatureBlocks = ContentState.createFromText(`${signatureTextPrefix}${signatureText}`).getBlocksAsArray()
@@ -232,7 +232,7 @@ export const applyMacro = (context) => {
         return context
     }
 
-    const ticketState = state.toJS()
+    const ticketState = action.ticket.toJS()
     const currentUser = _pick(action.currentUser.toJS(), ['name', 'firstname', 'lastname', 'email'])
 
     const variables = {
@@ -245,7 +245,7 @@ export const applyMacro = (context) => {
     const html = renderTemplate(action.args.get('body_html', ''), variables)
 
     let blocks = []
-    if (html && isRichType(selectors.getNewMessageType({ticket: state}))) {
+    if (html && isRichType(selectors.getNewMessageType({newMessage: state}))) {
         blocks = convertFromHTML(html).getBlocksAsArray()
     } else {
         blocks = ContentState.createFromText(text).getBlocksAsArray()

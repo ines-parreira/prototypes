@@ -688,10 +688,7 @@ export function getActionTemplate(actionName) {
     return ACTION_TEMPLATES.find(template => template.name === actionName) || {}
 }
 
-export const createImmutableSelector = createSelectorCreator(
-    defaultMemoize,
-    Immutable.is,
-)
+export const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is)
 
 export function loadScript(url, callback) {
     const elem = document.createElement('script')

@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {UncontrolledTooltip} from 'reactstrap'
 
 import {isRichType} from '../../../../../config/ticket'
-import * as ticketSelectors from '../../../../../state/ticket/selectors'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import Preview from '../../../common/macros/Preview'
 
 class TicketMacros extends React.Component {
@@ -116,7 +116,7 @@ TicketMacros.defaultProps = {
 
 function mapStateToProps(state) {
     return {
-        newMessageType: ticketSelectors.getNewMessageType(state),
+        newMessageType: newMessageSelectors.getNewMessageType(state),
     }
 }
 

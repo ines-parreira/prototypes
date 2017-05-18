@@ -1,8 +1,8 @@
 import {fromJS} from 'immutable'
-import {isImmutable} from '../../utils'
 import {createSelector} from 'reselect'
 
-export const getReceiversProperties = () => ['to', 'cc', 'bcc']
+import {createImmutableSelector} from '../../utils'
+import {getNewMessageState} from '../newMessage/selectors'
 
 export const getTicketState = state => state.ticket || fromJS({})
 
@@ -11,22 +11,21 @@ export const makeGetProperty = property => createSelector(
     state => state.get(property)
 )
 
-export const getTicket = createSelector(
+export const getTicket = createImmutableSelector(
     [getTicketState],
     state => state
         .delete('_internal')
         .delete('state')
-        .delete('newMessage') || fromJS({})
 )
 
-export const getCustomer = createSelector(
+export const getCustomer = createImmutableSelector(
     [getTicketState],
     state => state.getIn(['requester', 'customer']) || fromJS({})
 )
 
-export const getLoading = createSelector(
+export const getLoading = createImmutableSelector(
     [getTicketState],
-    state => state.getIn(['_internal', 'loading'], fromJS({}))
+    state => state.getIn(['_internal', 'loading']) || fromJS({})
 )
 
 // in props usage
@@ -40,23 +39,30 @@ export const isLoading = name => createSelector(
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
 export const makeIsLoading = state => name => isLoading(name)(state)
 
-export const getMessages = createSelector(
+export const isDirty = createSelector(
+    [getTicketState, getNewMessageState],
+    (ticketSate, newMessageState) => {
+        return !!(ticketSate.getIn(['state', 'dirty']) || newMessageState.getIn(['state', 'dirty']))
+    }
+)
+
+export const getMessages = createImmutableSelector(
     [getTicketState],
     state => state.get('messages') || fromJS([])
 )
 
-export const getCustomerRatings = createSelector(
+export const getCustomerRatings = createImmutableSelector(
     [getTicketState],
     state => state.get('customer_ratings') || fromJS([])
 )
 
-export const getEvents = createSelector(
+export const getEvents = createImmutableSelector(
     [getTicketState],
     state => state.get('events') || fromJS([])
 )
 
 // return elements we display in the body of a ticket (messages, ratings, events, etc.)
-export const getBody = createSelector(
+export const getBody = createImmutableSelector(
     [getMessages, getCustomerRatings, getEvents],
     (messages, ratings, events) => {
         messages = messages.map((message) => {
@@ -79,92 +85,3 @@ export const getBody = createSelector(
             .sortBy(element => element.get('created_datetime'))
     }
 )
-
-export const getNewMessage = createSelector(
-    [getTicketState],
-    state => state.get('newMessage', fromJS({}))
-)
-
-export const getNewMessageType = createSelector(
-    [getNewMessage],
-    state => state.getIn(['source', 'type']) || 'email'
-)
-
-export const getNewMessageChannel = createSelector(
-    [getNewMessage],
-    state => state.get('channel') || 'email'
-)
-
-export const getNewMessageSource = createSelector(
-    [getNewMessage],
-    state => state.get('source', fromJS({}))
-)
-
-// in props usage
-// property like 'to', 'from', 'cc', etc.
-// ex: newMessageTo: getNewMessageSourceProperty('to')(state)
-export const getNewMessageSourceProperty = property => createSelector(
-    [getNewMessageSource],
-    state => state.get(property, fromJS({}))
-)
-
-// in component usage
-// ex: newMessageSourceProperty: makeGetNewMessageSourceProperty(state)
-// then : const newMessageTo = newMessageSourceProperty('to')
-export const makeGetNewMessageSourceProperty = state => property => getNewMessageSourceProperty(property)(state)
-
-export const getMandatoryContactProperties = (sourceType) => () => { // eslint-disable-line no-unused-vars
-    return ['to']
-}
-
-export const getOptionalContactProperties = (sourceType) => () => {
-    return sourceType === 'email' ? ['cc', 'bcc'] : []
-}
-
-// return all contact properties (mandatory + optional) for a source type
-export const getContactProperties = sourceType => createSelector(
-    [getMandatoryContactProperties(sourceType), getOptionalContactProperties(sourceType)],
-    (mandatory, optional) => mandatory.concat(optional)
-)
-
-export const getNewMessageMandatoryContactProperties = createSelector(
-    [getNewMessageType],
-    sourceType => getMandatoryContactProperties(sourceType)()
-)
-
-export const getNewMessageContactProperties = createSelector(
-    [getNewMessageType],
-    sourceType => getContactProperties(sourceType)()
-)
-
-// true if mandatory contact properties (such as 'to') are not empty for current new message
-export const areNewMessageContactPropertiesFulfilled = createSelector(
-    [getNewMessageMandatoryContactProperties, makeGetNewMessageSourceProperty],
-    (mandatoryProperties, getFromSource) => {
-        return mandatoryProperties.every((property => {
-            const value = getFromSource(property)
-            return isImmutable(value) ? !value.isEmpty() : !!value
-        }))
-    }
-)
-
-// return all recipients values merged in an immutable array
-export const getNewMessageRecipients = createSelector(
-    [getNewMessageContactProperties, makeGetNewMessageSourceProperty],
-    (recipientProperties, getFromSource) => {
-        return recipientProperties.filter(prop => prop !== 'from')
-            .reduce((result, prop) => {
-                const recipients = getFromSource(prop)
-                recipients.forEach(recipient => {
-                    result = result.push(fromJS(recipient))
-                })
-                return result
-            }, fromJS([]))
-    }
-)
-
-export const hasNewMessageRecipients = createSelector(
-    [getNewMessageRecipients],
-    recipients => !recipients.isEmpty()
-)
-

@@ -20,9 +20,70 @@ import * as SettingsActions from '../../../state/settings/actions'
 import MacroContainer from '../common/macros/MacroContainer'
 import SocketIO from '../../common/utils/socketio'
 
+import * as newMessageActions from '../../../state/newMessage/actions'
 import * as viewsSelectors from '../../../state/views/selectors'
+import * as ticketSelectors from '../../../state/ticket/selectors'
 
-class TicketDetailContainer extends React.Component {
+@withRouter
+@connect((state) => {
+    return {
+        activeView: viewsSelectors.getActiveView(state),
+        currentUser: state.currentUser,
+        macros: state.macros,
+        pagination: viewsSelectors.getPagination(state),
+        users: state.users,
+        routing: state.routing,
+        ticket: state.ticket,
+        newMessage: state.newMessage,
+        tickets: state.tickets,
+        isTicketDirty: ticketSelectors.isDirty(state),
+    }
+}, (dispatch) => {
+    return {
+        actions: {
+            macro: bindActionCreators(MacroActions, dispatch),
+            settings: bindActionCreators(SettingsActions, dispatch),
+            tag: bindActionCreators(TagActions, dispatch),
+            ticket: bindActionCreators(TicketActions, dispatch),
+            user: bindActionCreators(UserActions, dispatch),
+            views: bindActionCreators(ViewsActions, dispatch),
+        },
+        submitTicket: bindActionCreators(newMessageActions.submitTicket, dispatch),
+        submitTicketMessage: bindActionCreators(newMessageActions.submitTicketMessage, dispatch),
+    }
+})
+export default class TicketDetailContainer extends React.Component {
+    static propTypes = {
+        params: PropTypes.shape({
+            view: PropTypes.string,
+            page: PropTypes.string,
+            ticketId: PropTypes.string
+        }).isRequired,
+        isTicketDirty: PropTypes.bool.isRequired,
+
+        actions: PropTypes.object.isRequired,
+        submitTicket: PropTypes.func.isRequired,
+        submitTicketMessage: PropTypes.func.isRequired,
+        activeView: PropTypes.object.isRequired,
+        currentUser: PropTypes.object,
+        macros: PropTypes.object,
+        ticket: PropTypes.object,
+        newMessage: PropTypes.object,
+        tickets: PropTypes.object,
+        users: PropTypes.object,
+        pagination: ImmutablePropTypes.map.isRequired,
+
+        routing: PropTypes.object,
+
+        // React Router
+        router: PropTypes.object.isRequired,
+        route: PropTypes.object.isRequired
+    }
+
+    static defaultProps = {
+        isTicketDirty: false,
+    }
+
     state = {
         isTicketHidden: false,
     }
@@ -261,9 +322,10 @@ class TicketDetailContainer extends React.Component {
     }
 
     _submit = (status, next, action, resetMessage = true) => {
-        let ticket = this.props.ticket
+        const {isTicketDirty} = this.props
+        let {newMessage, ticket} = this.props
 
-        if (ticket.getIn(['_internal', 'loading', 'submitMessage']) || (!ticket.getIn(['state', 'dirty']) && !action)) {
+        if (newMessage.getIn(['_internal', 'loading', 'submitMessage']) || (!isTicketDirty && !action)) {
             // We're already submitting something, we dont want to POST twice.
             // Or the ticket isn't dirty, and we don't want to send an empty message.
             return
@@ -273,7 +335,7 @@ class TicketDetailContainer extends React.Component {
 
         // The ticket does not exist yet.
         if (!ticket.get('id')) {
-            const receiver = ticket.getIn(['newMessage', 'receiver'])
+            const receiver = newMessage.getIn(['newMessage', 'receiver'])
             const sender = {id: this.props.currentUser.get('id')}
             ticket = ticket.mergeDeep({
                 sender,
@@ -285,7 +347,7 @@ class TicketDetailContainer extends React.Component {
             })
 
             if (ticket.get('subject') || window.confirm('Are you sure you want to create a ticket with no subject?')) {
-                promise = this.props.actions.ticket.submitTicket(
+                promise = this.props.submitTicket(
                     ticket,
                     status,
                     this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
@@ -294,7 +356,7 @@ class TicketDetailContainer extends React.Component {
                 )
             }
         } else {
-            promise = this.props.actions.ticket.submitTicketMessage(
+            promise = this.props.submitTicketMessage(
                 status,
                 this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
                 action,
@@ -356,54 +418,3 @@ class TicketDetailContainer extends React.Component {
         )
     }
 }
-
-TicketDetailContainer.propTypes = {
-    params: PropTypes.shape({
-        view: PropTypes.string,
-        page: PropTypes.string,
-        ticketId: PropTypes.string
-    }).isRequired,
-
-    actions: PropTypes.object.isRequired,
-    activeView: PropTypes.object.isRequired,
-    currentUser: PropTypes.object,
-    macros: PropTypes.object,
-    ticket: PropTypes.object,
-    tickets: PropTypes.object,
-    users: PropTypes.object,
-    pagination: ImmutablePropTypes.map.isRequired,
-
-    routing: PropTypes.object,
-
-    // React Router
-    router: PropTypes.object.isRequired,
-    route: PropTypes.object.isRequired
-}
-
-function mapStateToProps(state) {
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        currentUser: state.currentUser,
-        macros: state.macros,
-        pagination: viewsSelectors.getPagination(state),
-        users: state.users,
-        routing: state.routing,
-        ticket: state.ticket,
-        tickets: state.tickets,
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: {
-            macro: bindActionCreators(MacroActions, dispatch),
-            settings: bindActionCreators(SettingsActions, dispatch),
-            tag: bindActionCreators(TagActions, dispatch),
-            ticket: bindActionCreators(TicketActions, dispatch),
-            user: bindActionCreators(UserActions, dispatch),
-            views: bindActionCreators(ViewsActions, dispatch)
-        }
-    }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TicketDetailContainer))

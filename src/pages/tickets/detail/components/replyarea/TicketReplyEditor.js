@@ -9,7 +9,8 @@ import {EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import {isRichType, acceptsOnlyImages} from '../../../../../config/ticket'
 
-import * as ticketSelectors from '../../../../../state/ticket/selectors'
+import * as newMessageActions from '../../../../../state/newMessage/actions'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
@@ -17,11 +18,15 @@ const dndPlugin = createDndPlugin()
 
 // throttle the updating of the redux because it's slow otherwise when we type
 const _updateMessageText = _throttle((props, editorState) => {
-    props.actions.ticket.setResponseText(Map({
+    if (!props.newMessage.getIn(['state', 'cacheAdded'])) {
+        return
+    }
+
+    props.setResponseText(Map({
         contentState: editorState.getCurrentContent(),
         selectionState: editorState.getSelection()
     }))
-}, 100)
+}, 200)
 
 class TicketReplyEditor extends React.Component {
     componentWillMount() {
@@ -29,7 +34,7 @@ class TicketReplyEditor extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const forceUpdate = nextProps.ticket.getIn(['state', 'forceUpdate'])
+        const forceUpdate = nextProps.newMessage.getIn(['state', 'forceUpdate'])
 
         if (forceUpdate) {
             setTimeout(() => {
@@ -47,7 +52,7 @@ class TicketReplyEditor extends React.Component {
     }
 
     _getEditorStateFromReducer = (props) => {
-        const state = props.ticket.get('state')
+        const state = props.newMessage.get('state')
         const contentState = state.get('contentState')
         const selectionState = state.get('selectionState')
 
@@ -86,7 +91,7 @@ class TicketReplyEditor extends React.Component {
     }
 
     _handleFiles = (files) => {
-        this.props.actions.ticket.addAttachments(this.props.ticket, files)
+        this.props.addAttachments(this.props.ticket, files)
     }
 
     _handleDroppedFiles = (selection, files) => {
@@ -124,7 +129,7 @@ class TicketReplyEditor extends React.Component {
     }
 
     render() {
-        const {ticket, newMessageType} = this.props
+        const {newMessage, newMessageType} = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
         const newMessageAcceptsOnlyImages = acceptsOnlyImages(newMessageType)
@@ -153,7 +158,7 @@ class TicketReplyEditor extends React.Component {
                     tabIndex="4"
                     spellCheck
                     canDropFiles
-                    readOnly={ticket.getIn(['_internal', 'loading', 'submitMessage'])}
+                    readOnly={newMessage.getIn(['_internal', 'loading', 'submitMessage'])}
                     toolbarProps={{
                         hideActions: !isNewMessageRichType,
                         buttons: [
@@ -163,7 +168,7 @@ class TicketReplyEditor extends React.Component {
                                     style={{margin: 0}}
                                 >
                                     {
-                                        ticket.getIn(['_internal', 'loading', 'addAttachment'])
+                                        newMessage.getIn(['_internal', 'loading', 'addAttachment'])
                                             ? (
                                                 <i className="notched circle loading icon" />
                                             ) : (
@@ -181,7 +186,13 @@ class TicketReplyEditor extends React.Component {
                                     id="attachments-input"
                                     type="file"
                                     multiple
-                                    onChange={e => this._handleFiles(e.target.files)}
+                                    onChange={(event) => {
+                                        return this._handleFiles(event.target.files)
+                                    }}
+                                    onClick={(event) => {
+                                        // empty input on click
+                                        return event.target.value = null
+                                    }}
                                     {...attachmentInputProps}
                                 />
                             </div>
@@ -193,18 +204,26 @@ class TicketReplyEditor extends React.Component {
     }
 }
 
-
 TicketReplyEditor.propTypes = {
+    addAttachments: PropTypes.func.isRequired,
+    setResponseText: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     newMessageType: PropTypes.string.isRequired,
+    newMessage: PropTypes.object.isRequired,
     autoFocus: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
-        newMessageType: ticketSelectors.getNewMessageType(state),
+        newMessageType: newMessageSelectors.getNewMessageType(state),
+        newMessage: state.newMessage,
     }
 }
 
-export default connect(mapStateToProps)(TicketReplyEditor)
+const mapDispatchToProps = {
+    addAttachments: newMessageActions.addAttachments,
+    setResponseText: newMessageActions.setResponseText,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyEditor)

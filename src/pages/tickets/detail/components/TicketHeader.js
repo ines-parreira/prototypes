@@ -8,8 +8,8 @@ import TicketAssignee from './ticketdetails/TicketAssignee'
 
 export default class TicketHeader extends React.Component {
     shouldComponentUpdate(nextProps) {
-        const currentTicket = this.props.ticket.delete('newMessage').delete('messages').delete('state')
-        const nextTicket = nextProps.ticket.delete('newMessage').delete('messages').delete('state')
+        const currentTicket = this.props.ticket.delete('messages').delete('state')
+        const nextTicket = nextProps.ticket.delete('messages').delete('state')
 
         return !currentTicket.equals(nextTicket)
     }

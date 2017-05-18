@@ -9,7 +9,7 @@ import TicketBody from './TicketBody'
 import Timeline from '../../../common/components/timeline/Timeline'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
-import TicketSubmitButtonsContainer from './replyarea/TicketSubmitButtonsContainer'
+import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 import * as tagsSelectors from '../../../../state/tags/selectors'
@@ -217,7 +217,7 @@ export class TicketView extends React.Component {
                             ticket={this.props.ticket}
                         />
 
-                        <TicketSubmitButtonsContainer
+                        <TicketSubmitButtons
                             ticket={ticket}
                             submit={this._handlePreSubmit}
                         />

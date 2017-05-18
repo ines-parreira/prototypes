@@ -7,12 +7,13 @@ import {notify} from '../../state/notifications/actions'
 import * as currentAccountTypes from '../../state/currentAccount/constants'
 import * as billingTypes from '../../state/billing/constants'
 import * as ticketTypes from '../../state/ticket/constants'
+import * as newMessageTypes from '../../state/newMessage/constants'
 import _some from 'lodash/some'
 
 const TRACKED_ACTIONS = [
     currentAccountTypes.UPDATE_ACCOUNT_SUCCESS,
     billingTypes.FETCH_CURRENT_USAGE_SUCCESS,
-    ticketTypes.SUBMIT_TICKET_MESSAGE_SUCCESS,
+    newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS,
     ticketTypes.SUBMIT_TICKET_SUCCESS,
     ticketTypes.FETCH_TICKET_START,
     billingTypes.UPDATE_CREDIT_CARD_SUCCESS
@@ -72,7 +73,7 @@ const usageLimitNotifier = store => next => action => {
     switch (action.type) {
         // user send a message
         case ticketTypes.SUBMIT_TICKET_SUCCESS:
-        case ticketTypes.SUBMIT_TICKET_MESSAGE_SUCCESS: {
+        case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
             setTimeout(() => {
                 if (!isAccountActive) {
                     store.dispatch(notify(accountDeactivatedModalNotif))

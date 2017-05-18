@@ -21,19 +21,7 @@ export function displayUserNameFromSource(user, sourceType) {
 }
 
 export function isTicketDifferent(currentTicket, nextTicket) {
-    const cTicket = currentTicket
-        .deleteIn(['newMessage', 'body_text'])
-        .deleteIn(['newMessage', 'body_html'])
-        .deleteIn(['state', 'contentState'])
-        .deleteIn(['state', 'selectionState'])
-
-    const nTicket = nextTicket
-        .deleteIn(['newMessage', 'body_text'])
-        .deleteIn(['newMessage', 'body_html'])
-        .deleteIn(['state', 'contentState'])
-        .deleteIn(['state', 'selectionState'])
-
-    return !cTicket.equals(nTicket)
+    return !currentTicket.equals(nextTicket)
 }
 
 /**

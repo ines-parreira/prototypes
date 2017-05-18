@@ -6,11 +6,13 @@ import {
 } from '../../state/users/constants'
 import {
     SUBMIT_TICKET_SUCCESS,
-    RECORD_MACRO,
-    ADD_ATTACHMENT_SUCCESS,
     ADD_TICKET_TAGS,
     SET_STATUS
 } from '../../state/ticket/constants'
+import {
+    NEW_MESSAGE_RECORD_MACRO,
+    NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
+} from '../../state/newMessage/constants'
 import {
     CREATE_MACRO_SUCCESS,
     UPDATE_MACRO_SUCCESS,
@@ -24,8 +26,8 @@ const TRACKED_ACTIONS = [
     UPDATE_MACRO_SUCCESS,
     DELETE_MACRO_SUCCESS,
     SUBMIT_TICKET_SUCCESS,
-    RECORD_MACRO,
-    ADD_ATTACHMENT_SUCCESS,
+    NEW_MESSAGE_RECORD_MACRO,
+    NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
     ADD_TICKET_TAGS,
     SET_STATUS
 ]
@@ -97,7 +99,7 @@ const amplitudeTracker = store => next => action => {
                     ticket: state.ticket.get('id'),
                 })
                 break
-            case RECORD_MACRO:
+            case NEW_MESSAGE_RECORD_MACRO:
                 actionName = 'Used macro'
                 actionProps = actionProps.merge({
                     id: action.macro.get('id'),
@@ -105,7 +107,7 @@ const amplitudeTracker = store => next => action => {
                     ticket: _pick(state.ticket.toJS(), ['id', 'channel']),
                 })
                 break
-            case ADD_ATTACHMENT_SUCCESS:
+            case NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS:
                 actionProps = actionProps.merge({
                     ticket: state.ticket.get('id'),
                 })

@@ -1,3 +1,5 @@
+import {compare} from '../utils'
+
 export const DEFAULT_CHANNEL = 'email'
 export const DEFAULT_SOURCE_TYPE = 'email'
 
@@ -6,12 +8,17 @@ export const SYSTEM_SOURCE_TYPES = ['internal-note', 'system-message']
 // source types that can not be used to answer
 export const UNUSABLE_SOURCE_TYPES = ['phone', 'facebook', 'api', 'facebook-post', 'ottspott-call', 'system-message']
 
+export const orderedMessages = (messages) => {
+    return messages.sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
+}
+
 /**
  * Get the most recent message that was not a system-type message
  * @param messages
  * @returns {*}
  */
 export function lastNonSystemTypeMessage(messages) {
+    messages = orderedMessages(messages)
     const filteredMessages = messages.filter(message => !SYSTEM_SOURCE_TYPES.includes(message.getIn(['source', 'type'])))
     return !filteredMessages.isEmpty() && filteredMessages.last()
 }
@@ -53,6 +60,12 @@ export const sourceTypeToChannel = (sourceType, messages) => {
  * Return source type we should set on a **new** message based on the source type of messages we're responding to
  */
 export const responseSourceType = (messages) => {
+    messages = orderedMessages(messages)
+
+    if (!messages) {
+        return DEFAULT_SOURCE_TYPE
+    }
+
     const lastMessage = lastNonSystemTypeMessage(messages)
 
     // some messages don't have sources - failed imports, api, etc..

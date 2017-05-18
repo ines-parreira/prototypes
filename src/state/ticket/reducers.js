@@ -1,66 +1,26 @@
 import * as types from './constants'
 import * as userTypes from './../users/constants'
 import {fromJS} from 'immutable'
-import {convertToHTML} from '../../utils'
-import * as responseUtils from './responseUtils'
-import ticketReplyCache from './ticketReplyCache'
+import ticketReplyCache from '../newMessage/ticketReplyCache'
 import SocketIO from '../../pages/common/utils/socketio'
-import {
-    getReceiversProperties,
-} from './selectors'
-import * as ticketConfig from '../../config/ticket'
+
+import * as newMessageTypes from '../newMessage/constants'
 
 import _isUndefined from 'lodash/isUndefined'
 import _isString from 'lodash/isString'
 import _get from 'lodash/get'
-import _pick from 'lodash/pick'
-import _assign from 'lodash/assign'
-import _omit from 'lodash/omit'
-
-import {
-    getSourceTypeOfResponse,
-    getChannelFromSourceType,
-} from './utils'
-
-export const newMessage = (channel, sourceType) => fromJS({
-    via: 'helpdesk',
-    public: true,
-    from_agent: true,
-    sender: null,
-    source: {
-        type: sourceType,
-        from: {}, // = ticket.messages[first].from_agent ? ticket.messages[first].source.from : ... .to
-        to: [],
-        cc: [],
-        bcc: [],
-    },
-    subject: '',
-    body_text: '',
-    body_html: '',
-    channel,
-    attachments: [],
-    macros: []
-})
 
 export const initialState = fromJS({
     state: {
         dirty: false,
-        query: '',
-        signatureAdded: false,
-        cacheAdded: false,
-        forceUpdate: true,
-        contentState: null,
-        selectionState: null,
+        latestEventDatetime: null,
         appliedMacro: null,
-        latestEventDatetime: null
     },
     _internal: {
         displayHistory: false,
         shouldDisplayHistoryOnNextPage: false,
         loading: {
-            addAttachment: false,
             fetchTicket: false,
-            submitMessage: false,
             deleteMessage: false,
             updateMessageIds: [] // store the ids of all the messages being updated
         },
@@ -77,67 +37,12 @@ export const initialState = fromJS({
     receiver: null,
     priority: 'normal',
     tags: [],
-    newMessage: newMessage('email', 'email')
 })
 
-const updatableFields = initialState.keySeq().filter(key => !['state', '_internal', 'newMessage'].includes(key))
+const updatableFields = initialState.keySeq().filter(key => !['state', '_internal'].includes(key))
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case types.ADD_ATTACHMENT_START:
-            return state.setIn(['_internal', 'loading', 'addAttachment'], true)
-
-        case types.ADD_ATTACHMENT_SUCCESS: {
-            let newState = state
-
-            if (action.ticketId === state.get('id')) {
-                newState = newState.mergeDeep({
-                    newMessage: {
-                        attachments: state.getIn(['newMessage', 'attachments'], fromJS([])).concat(action.resp)
-                    },
-                    state: {
-                        dirty: true
-                    }
-                })
-            }
-
-            return newState.setIn(['_internal', 'loading', 'addAttachment'], false)
-        }
-
-        case types.ADD_ATTACHMENTS:
-            return state.updateIn(
-                ['newMessage', 'attachments'],
-                fromJS([]),
-                (attachements => attachements.concat(action.args.get('attachments').toJS()))
-            )
-
-        case types.ADD_ATTACHMENT_ERROR:
-            return state.setIn(['_internal', 'loading', 'addAttachment'], false)
-
-        case types.DELETE_ATTACHMENT:
-            return state
-                .setIn(['newMessage', 'attachments'], state.getIn(['newMessage', 'attachments'], fromJS([])).delete(action.index))
-                .setIn(['state', 'dirty'], true)
-
-        case types.RECORD_MACRO:
-            return state.setIn(
-                ['newMessage', 'macros'],
-                state.getIn(['newMessage', 'macros'], fromJS([])).push({id: action.macro.get('id')})
-            )
-
-        case types.SUBMIT_TICKET_MESSAGE_START: {
-            return state.mergeDeep({
-                state: {
-                    dirty: false
-                },
-                _internal: {
-                    loading: {
-                        submitMessage: true
-                    }
-                }
-            })
-        }
-
         case types.UPDATE_TICKET_MESSAGE_START: {
             return state.mergeDeep({
                 _internal: {
@@ -148,77 +53,17 @@ export default (state = initialState, action) => {
             })
         }
 
-        case types.SUBMIT_TICKET_START:
-            return state.setIn(['_internal', 'loading', 'submitMessage'], true)
-
-        case types.SUBMIT_TICKET_ERROR:
-        case types.SUBMIT_TICKET_MESSAGE_ERROR:
-            return state.setIn(['_internal', 'loading', 'submitMessage'], false)
-
         case types.DELETE_TICKET_MESSAGE_START:
             return state.setIn(['_internal', 'loading', 'deleteMessage'], true)
 
         case types.DELETE_TICKET_MESSAGE_ERROR:
             return state.setIn(['_internal', 'loading', 'deleteMessage'], false)
 
-        case types.SUBMIT_TICKET_SUCCESS: {
-            if (action.resp.id !== state.get('id') && state.get('id')) {
-                return state
-            }
-
+        case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
             // Make sure we reset the cache before we send the message
             ticketReplyCache.delete(state.get('id'))
 
-            const newState = state
-                .merge(fromJS(action.resp))
-                .mergeDeep({
-                    state: {
-                        dirty: false,
-                        contentState: null,
-                        selectionState: null,
-                        signatureAdded: false,
-                        cacheAdded: false,
-                        appliedMacro: null,
-                        query: '',
-                        forceUpdate: true,
-                    }
-                })
-                .setIn(['_internal', 'loading', 'submitMessage'], false)
-
-            return action.resetMessage ? newState.set('newMessage', newMessage(
-                    action.resp.channel,
-                    getSourceTypeOfResponse(newState.get('messages'))
-                )) : newState
-        }
-
-        case types.SUBMIT_TICKET_MESSAGE_SUCCESS: {
-            // Make sure we reset the cache before we send the message
-            ticketReplyCache.delete(action.resp.ticket_id)
-
-            // If we changed the displayed ticket (e.g. submit and close), we dont want to change the state.
-            if (action.resp.ticket_id !== state.get('id') && state.get('id')) {
-                return state
-            }
-
-            let newState = state
-
-            newState = newState.mergeDeep({
-                state: {
-                    dirty: false,
-                    contentState: null,
-                    selectionState: null,
-                    signatureAdded: false,
-                    cacheAdded: false,
-                    query: '',
-                    forceUpdate: true,
-                }
-            }).setIn(['_internal', 'loading', 'submitMessage'], false)
-
-
-            return action.resetMessage ? newState.set('newMessage', newMessage(
-                    action.resp.channel,
-                    getSourceTypeOfResponse(newState.get('messages', fromJS([])))
-                )) : newState
+            return state.merge(fromJS(action.resp))
         }
 
         case types.FETCH_TICKET_START: {
@@ -240,7 +85,6 @@ export default (state = initialState, action) => {
             }
 
             const newState = state.merge(fromJS(action.resp))
-            const sourceType = getSourceTypeOfResponse(newState.get('messages'))
 
             const ticketId = newState.get('id')
             const requesterId = newState.getIn(['requester', 'id'])
@@ -253,20 +97,11 @@ export default (state = initialState, action) => {
                 io.joinUser(requesterId)
             }
 
-            return newState.set('newMessage', newMessage(
-                getChannelFromSourceType(sourceType, newState.get('messages')),
-                sourceType
-            ))
-                .mergeDeep({
-                    state: {
-                        dirty: false,
-                        contentState: null,
-                        selectionState: null,
-                        signatureAdded: false,
-                        query: ''
-                    }
-                })
-                .setIn(['_internal', 'loading', 'fetchTicket'], false)
+            return newState
+        }
+
+        case newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
+            return state.setIn(['_internal', 'loading', 'fetchTicket'], false)
         }
 
         case types.FETCH_TICKET_ERROR: {
@@ -343,15 +178,6 @@ export default (state = initialState, action) => {
             return state.set('subject', subject)
         }
 
-        case types.SET_SOURCE_TYPE: {
-            const channel = getChannelFromSourceType(action.sourceType, state.get('messages'))
-
-            return state
-                .setIn(['newMessage', 'channel'], channel)
-                .setIn(['newMessage', 'source', 'type'], action.sourceType)
-                .setIn(['newMessage', 'public'], ticketConfig.isPublic(action.sourceType))
-        }
-
         case types.APPLY_MACRO: {
             ticketReplyCache.set(action.ticketId, {
                 macro: action.macro
@@ -364,6 +190,11 @@ export default (state = initialState, action) => {
                 macro: null
             })
             return state.setIn(['state', 'appliedMacro'], null)
+        }
+
+        case types.FETCH_TICKET_REPLY_MACRO: {
+            const cache = ticketReplyCache.get(state.get('id')).get('macro')
+            return state.setIn(['state', 'appliedMacro'], cache)
         }
 
         case types.UPDATE_ACTION_ARGS_ON_APPLIED: {
@@ -382,82 +213,6 @@ export default (state = initialState, action) => {
                 ticketReplyCache.set(action.ticketId, updatedCache)
             }
             return state.deleteIn(['state', 'appliedMacro', 'actions', action.actionIndex.toString()])
-        }
-
-        case types.FETCH_TICKET_REPLY_MACRO: {
-            const cache = ticketReplyCache.get(state.get('id')).get('macro')
-            return state.setIn(['state', 'appliedMacro'], cache)
-        }
-
-        case types.SET_RESPONSE_TEXT: {
-            let contentState = action.args.get('contentState') || state.getIn(['state', 'contentState'])
-            let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
-            const appliedMacro = state.getIn(['state', 'appliedMacro'])
-
-            action.ticketId = state.get('id')
-
-            let context = {
-                action,
-                state,
-                contentState,
-                selectionState,
-                appliedMacro,
-            }
-
-            context = responseUtils.addCache(context)
-            // only deal with signature when email
-            if (state.getIn(['newMessage', 'source', 'type']) === 'email') {
-                context = responseUtils.addSignature(context)
-            }
-            context = responseUtils.applyMacro(context)
-            responseUtils.updateCache(context)
-
-            contentState = context.contentState
-            selectionState = context.selectionState
-
-            const dirty = contentState && contentState.hasText() && !responseUtils.onlySignature(contentState,
-                    action.currentUser)
-            return context.state.mergeDeep({
-                newMessage: {
-                    body_text: contentState ? contentState.getPlainText() : '',
-                    body_html: contentState ? convertToHTML(contentState) : ''
-                },
-                state: {
-                    dirty,
-                    forceUpdate: !!context.forceUpdate,
-                    signatureAdded: !!context.signatureAdded,
-                    cacheAdded: !!context.cacheAdded,
-                }
-            })
-            // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
-                .setIn(['state', 'contentState'], contentState)
-                .setIn(['state', 'selectionState'], selectionState)
-        }
-
-        case types.SET_SENDER: {
-            return state.setIn(['newMessage', 'source', 'from'], action.sender)
-        }
-
-        case types.SET_RECEIVERS: {
-            const receivers = _pick(action.receivers, getReceiversProperties())
-            const replaceAll = action.replaceAll
-
-            const currentSource = state.getIn(['newMessage', 'source'], fromJS({})).toJS()
-
-            let newReceivers = {}
-
-            if (replaceAll) { // we replace all receivers in source by passed ones
-                newReceivers = receivers
-            } else { // we merge existing receivers with passed ones
-                const currentReceivers = _pick(currentSource, getReceiversProperties())
-                newReceivers = _assign(currentReceivers, receivers)
-            }
-
-            // removing current receivers from source
-            const sourceWithoutReceivers = _omit(currentSource, getReceiversProperties())
-
-            // setting new receivers in source
-            return state.setIn(['newMessage', 'source'], fromJS(_assign(sourceWithoutReceivers, newReceivers)))
         }
 
         case types.MARK_TICKET_DIRTY:

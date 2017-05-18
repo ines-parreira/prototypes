@@ -1,4 +1,3 @@
-import {makeGetProperty} from './state/ticket/selectors'
 import _get from 'lodash/get'
 
 export const POLL_ACTIVITY_INTERVAL = 10000
@@ -278,35 +277,35 @@ export const ACTION_TEMPLATES = [
         name: 'addTags',
         title: 'Add tags',
         partialUpdateKey: 'tags',
-        partialUpdateValue: makeGetProperty('tags'),
+        partialUpdateValue: 'tags',
     },
     {
         execution: 'front',
         name: 'setStatus',
         title: 'Set status',
         partialUpdateKey: 'status',
-        partialUpdateValue: makeGetProperty('status'),
+        partialUpdateValue: 'status',
     },
     {
         execution: 'front',
         name: 'setAssignee',
         title: 'Assign an agent',
         partialUpdateKey: 'assignee_user',
-        partialUpdateValue: makeGetProperty('assignee_user'),
+        partialUpdateValue: 'assignee_user',
     },
     // {
     //     execution: 'front',
     //     name: 'setPriority',
     //     title: 'Set priority',
     //     partialUpdateKey: 'priority',
-    //     partialUpdateValue: makeGetProperty('priority'),
+    //     partialUpdateValue: 'priority',
     // },
     {
         execution: 'front',
         name: 'setSubject',
         title: 'Set subject',
         partialUpdateKey: 'subject',
-        partialUpdateValue: makeGetProperty('subject'),
+        partialUpdateValue: 'subject',
     },
     {
         execution: 'back',

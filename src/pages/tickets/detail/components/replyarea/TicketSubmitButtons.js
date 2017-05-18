@@ -1,24 +1,47 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 import _pick from 'lodash/pick'
 import classNames from 'classnames'
-import {isTicketDifferent} from './../../../common/utils'
+import {Button, UncontrolledTooltip} from 'reactstrap'
+import moment from 'moment'
+
+import {hasReachedLimit} from '../../../../../utils'
 import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
-import {Button, UncontrolledTooltip} from 'reactstrap'
 
+import * as ticketSelectors from '../../../../../state/ticket/selectors'
+
+@connect((state) => {
+    const {currentAccount, billing} = state
+    const isAccountActive = currentAccount.get('deactivated_datetime') === null
+    const hasCreditCard = currentAccount.getIn(['meta', 'hasCreditCard'])
+    const plan = billing.get('plan')
+    const tickets = billing.getIn(['currentUsage', 'data', 'tickets'], 0)
+    const hasReachedMaxLimit = hasReachedLimit('max', tickets, plan, currentAccount.get('created_datetime', moment()))
+
+    return {
+        canSendMessage: isAccountActive && (hasCreditCard || !hasReachedMaxLimit),
+        isTicketDirty: ticketSelectors.isDirty(state),
+        newMessage: state.newMessage,
+    }
+})
 export default class TicketSubmitButtons extends React.Component {
-    static defaultProps = {
-        canSendMessage: true
+    static propTypes = {
+        ticket: PropTypes.object.isRequired,
+        newMessage: PropTypes.object.isRequired,
+        submit: PropTypes.func.isRequired,
+        canSendMessage: PropTypes.bool.isRequired,
+        isTicketDirty: PropTypes.bool.isRequired,
     }
 
-    shouldComponentUpdate(nextProps) {
-        const {canSendMessage, ticket} = this.props
-        return isTicketDifferent(ticket, nextProps.ticket) || canSendMessage !== nextProps.canSendMessage
+    static defaultProps = {
+        canSendMessage: true,
+        isTicketDirty: false,
     }
 
     submit = (status, next) => {
-        const isSending = this.props.ticket.getIn(['_internal', 'loading', 'submitMessage'])
+        const isSending = this.props.newMessage.getIn(['_internal', 'loading', 'submitMessage'])
 
         this.props.submit(status, next)
         // we use `next` var to determine if the ticket is closed after send action
@@ -31,11 +54,10 @@ export default class TicketSubmitButtons extends React.Component {
     }
 
     render() {
-        const {canSendMessage} = this.props
-        const ticketState = this.props.ticket.get('state')
-        const disabled = !canSendMessage || !ticketState.get('dirty')
+        const {newMessage, isTicketDirty, canSendMessage} = this.props
+        const disabled = !canSendMessage || !isTicketDirty
         const commonClasses = {
-            'btn-loading': this.props.ticket.getIn(['_internal', 'loading', 'submitMessage']),
+            'btn-loading': newMessage.getIn(['_internal', 'loading', 'submitMessage']),
         }
 
         return (
@@ -78,10 +100,4 @@ export default class TicketSubmitButtons extends React.Component {
             </div>
         )
     }
-}
-
-TicketSubmitButtons.propTypes = {
-    ticket: PropTypes.object.isRequired,
-    submit: PropTypes.func.isRequired,
-    canSendMessage: PropTypes.bool.isRequired
 }

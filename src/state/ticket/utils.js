@@ -2,10 +2,12 @@ import {fromJS} from 'immutable'
 import _forEach from 'lodash/forEach'
 import _isArray from 'lodash/isArray'
 import _toLower from 'lodash/toLower'
+
+import {makeGetProperty} from './selectors'
 import {SOURCE_VALUE_PROP} from '../../config'
 import * as ticketConfig from '../../config/ticket'
 import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
-import {getActionTemplate} from '../../utils'
+import {getActionTemplate, toImmutable} from '../../utils'
 
 /**
  * Get the most recent messages which have the matching sourceType
@@ -14,6 +16,8 @@ import {getActionTemplate} from '../../utils'
  * @returns {*}
  */
 export function getLastSameSourceTypeMessage(messages, sourceType) {
+    messages = ticketConfig.orderedMessages(messages)
+
     const msg = messages.filter((m) => m.getIn(['source', 'type']) === sourceType).last()
 
     if (!msg && sourceType === 'facebook-comment') {
@@ -28,6 +32,7 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
  * source type of the message we're responding to.
  */
 export function getSourceTypeOfResponse(messages) {
+    messages = toImmutable(messages)
     return ticketConfig.responseSourceType(messages)
 }
 
@@ -36,6 +41,7 @@ export function getSourceTypeOfResponse(messages) {
  * Returns undefined for internal note as we dont have enough information to guess the channel.
  */
 export function getChannelFromSourceType(sourceType, messages) {
+    messages = toImmutable(messages)
     return ticketConfig.sourceTypeToChannel(sourceType, messages)
 }
 
@@ -69,27 +75,27 @@ export function getValuePropFromSourceType(sourceType) {
 /**
  * Guess receivers from a ticket based on its messages
  * @param ticket
+ * @param newMessageSourceType
  * @param channels
  * @returns {*}
  */
-export function guessReceiversFromTicket(ticket, channels = fromJS([])) {
+export function guessReceiversFromTicket(ticket, newMessageSourceType, channels = fromJS([])) {
     let toReceivers = fromJS([])
     let ccReceivers = fromJS([])
     const messages = ticket.get('messages', fromJS([]))
 
-    if (!messages.size) {
+    if (messages.isEmpty()) {
         return {
             to: []
         }
     }
 
     const supportAddresses = channels.map(channel => channel.get('address'))
-    const sourceType = ticket.getIn(['newMessage', 'source', 'type'])
-    const lastMessage = getLastSameSourceTypeMessage(messages, sourceType)
+    const lastMessage = getLastSameSourceTypeMessage(messages, newMessageSourceType)
 
     if (lastMessage) {
         if (lastMessage.get('from_agent')) {
-            toReceivers = lastMessage.getIn(['source', 'to'])
+            toReceivers = toReceivers.concat(lastMessage.getIn(['source', 'to']))
         } else {
             toReceivers = toReceivers.push(lastMessage.getIn(['source', 'from']))
 
@@ -100,10 +106,16 @@ export function guessReceiversFromTicket(ticket, channels = fromJS([])) {
         ccReceivers = lastMessage.getIn(['source', 'cc'], fromJS([]))
     }
 
-    // remove our support addresses of the receivers
     const cleanReceivers = receivers => receivers
-        .map(receiver => receiver.get('address') ? receiver.update('address', _toLower) : receiver)
-        .filter(receiver => {
+        .filter(receiver => !!receiver) // remove falsy values
+        .map(receiver => { // set address to lowercase
+            if (receiver.get('address')) {
+                return receiver.update('address', _toLower)
+            }
+
+            return receiver
+        })
+        .filter(receiver => { // remove support addresses
             return !isSupportAddress(receiver.get('address'), supportAddresses)
         })
 
@@ -183,7 +195,7 @@ export function buildPartialUpdateFromAction(actionNames, state) {
         .map(actionName => getActionTemplate(actionName))
         .filter(config => !!config.partialUpdateKey)
         .reduce((result, config) => {
-            result[config.partialUpdateKey] = config.partialUpdateValue(state)
+            result[config.partialUpdateKey] = makeGetProperty(config.partialUpdateValue)(state)
             return result
         }, {})
 }
@@ -212,28 +224,27 @@ export function getPreferredChannel(channelType, channels) {
 /**
  * Return sender based on ticket messages and available channels
  * @param ticket
+ * @param newMessageSourceType
  * @param channels Available account channels (from email and gmail integrations)
  * @returns {*}
  */
-export function getNewMessageSender(ticket, channels) {
-    const channelType = ticket.getIn(['newMessage', 'source', 'type'], '')
-
-    if (channelType === 'internal-note') {
+export function getNewMessageSender(ticket, newMessageSourceType, channels) {
+    if (newMessageSourceType === 'internal-note') {
         return fromJS({})
     }
 
-    const preferredChannel = getPreferredChannel(channelType, channels) || fromJS({})
+    const preferredChannel = getPreferredChannel(newMessageSourceType, channels) || fromJS({})
     const lastMessage = ticket.get('messages')
         .findLast(message => {
             const type = message.getIn(['source', 'type'], '')
 
             // a message can be a facebook post
             // or a comment but agent can only respond with a comment
-            if (channelType === 'facebook-comment') {
-                return [channelType, 'facebook-post'].includes(type)
+            if (newMessageSourceType === 'facebook-comment') {
+                return [newMessageSourceType, 'facebook-post'].includes(type)
             }
 
-            return type === channelType
+            return type === newMessageSourceType
         })
 
     // smooch, messenger

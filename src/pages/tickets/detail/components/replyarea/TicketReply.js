@@ -1,23 +1,45 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
+import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 
 import TicketAttachments from './TicketAttachments'
 import TicketReplyAction from './TicketReplyAction'
 import TicketReplyEditor from './TicketReplyEditor'
 
+import * as newMessageActions from '../../../../../state/newMessage/actions'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getActionTemplate} from '../../../../../utils'
 
+@connect((state) => {
+    return {
+        isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
+        newMessage: state.newMessage,
+    }
+}, {
+    deleteAttachment: newMessageActions.deleteAttachment,
+})
 export default class TicketReply extends React.Component {
+    static propTypes = {
+        autoFocus: PropTypes.bool.isRequired,
+        actions: PropTypes.object.isRequired,
+        deleteAttachment: PropTypes.func.isRequired,
+        className: PropTypes.string,
+        ticket: PropTypes.object.isRequired,
+        newMessage: PropTypes.object.isRequired,
+        appliedMacro: PropTypes.object,
+        isNewMessagePublic: PropTypes.bool.isRequired,
+    }
+
     _renderAttachments = () => {
-        const {ticket, actions} = this.props
+        const {newMessage} = this.props
 
         return (
             <div className="attachments-wrapper">
                 <TicketAttachments
                     removable
-                    attachments={ticket.getIn(['newMessage', 'attachments'], fromJS([]))}
-                    deleteAttachment={actions.ticket.deleteAttachment}
+                    attachments={newMessage.getIn(['newMessage', 'attachments'], fromJS([]))}
+                    deleteAttachment={this.props.deleteAttachment}
                 />
             </div>
         )
@@ -54,9 +76,10 @@ export default class TicketReply extends React.Component {
     }
 
     render() {
-        const {ticket, actions, autoFocus} = this.props
+        const {ticket, isNewMessagePublic, actions, autoFocus} = this.props
+
         const className = classNames('TicketReply', this.props.className, {
-            internal: ticket.get('newMessage') && !ticket.getIn(['newMessage', 'public']),
+            internal: !isNewMessagePublic,
         })
 
         return (
@@ -72,12 +95,4 @@ export default class TicketReply extends React.Component {
             </div>
         )
     }
-}
-
-TicketReply.propTypes = {
-    autoFocus: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
-    className: PropTypes.string,
-    ticket: PropTypes.object.isRequired,
-    appliedMacro: PropTypes.object,
 }

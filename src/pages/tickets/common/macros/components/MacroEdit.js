@@ -20,6 +20,7 @@ import {getSortedIntegrationActionsNames} from './../../utils'
 import css from './MacroEdit.less'
 
 import * as ticketTypes from '../../../../../state/ticket/constants'
+import * as newMessageTypes from '../../../../../state/newMessage/constants'
 import {ACTION_TEMPLATES} from '../../../../../config'
 import {getActionTemplate, humanizeString} from './../../../../../utils'
 
@@ -173,7 +174,7 @@ class MacroEdit extends React.Component {
                                         ),
                                     }
                                     break
-                                case ticketTypes.SET_RESPONSE_TEXT:
+                                case newMessageTypes.SET_RESPONSE_TEXT:
                                     config = {
                                         title: 'Set response text',
                                         content: (
@@ -223,7 +224,7 @@ class MacroEdit extends React.Component {
                                         ),
                                     }
                                     break
-                                case ticketTypes.ADD_ATTACHMENTS:
+                                case newMessageTypes.ADD_ATTACHMENTS:
                                     config = {
                                         title: 'Add attachments',
                                         content: (

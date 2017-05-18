@@ -3,8 +3,8 @@ import thunk from 'redux-thunk'
 import * as actions from '../actions'
 import integrationState from '../../integrations/tests/fixtures'
 import {getChannels} from '../../integrations/selectors'
-import {getPreferredChannel} from '../utils'
-import {smoochTicket, emailTicket} from './fixtures'
+import {getPreferredChannel} from '../../ticket/utils'
+import {smoochTicket, emailTicket} from '../../ticket/test/fixtures'
 import * as types from '../constants'
 import {initialState} from '../reducers'
 import {fromJS} from 'immutable'
@@ -13,20 +13,21 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 describe('actions', () => {
-    describe('ticket', () => {
+    describe('new message', () => {
         const channels = getChannels(integrationState)
         let store
 
         it('dispatch setSender - with address', () => {
             store = mockStore({
                 integrations: integrationState.integrations,
-                ticket: initialState
+                ticket: emailTicket,
+                newMessage: initialState,
             })
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
-                type: types.SET_SENDER,
+                type: types.NEW_MESSAGE_SET_SENDER,
                 sender: fromJS({
                     name: 'Acme Support',
                     address: 'support@acme.com'
@@ -42,13 +43,14 @@ describe('actions', () => {
             })
             store = mockStore({
                 integrations: integrationState.integrations,
-                ticket: smoochTicket
+                ticket: smoochTicket,
+                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
             })
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
-                type: types.SET_SENDER,
+                type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
         })
@@ -63,13 +65,14 @@ describe('actions', () => {
             })
             store = mockStore({
                 integrations: integrationState.integrations,
-                ticket: _smoochTicket
+                ticket: _smoochTicket,
+                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
             })
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
-                type: types.SET_SENDER,
+                type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
         })
@@ -84,13 +87,14 @@ describe('actions', () => {
             })
             store = mockStore({
                 integrations: integrationState.integrations,
-                ticket: _emailTicket
+                ticket: _emailTicket,
+                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
-                type: types.SET_SENDER,
+                type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
         })
@@ -103,13 +107,14 @@ describe('actions', () => {
             })
             store = mockStore({
                 integrations: integrationState.integrations,
-                ticket: emailTicket
+                ticket: emailTicket,
+                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
-                type: types.SET_SENDER,
+                type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
         })
@@ -124,13 +129,14 @@ describe('actions', () => {
             })
             store = mockStore({
                 integrations: integrationState.integrations,
-                ticket: _emailTicket
+                ticket: _emailTicket,
+                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
-                type: types.SET_SENDER,
+                type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
         })
@@ -150,13 +156,14 @@ describe('actions', () => {
             })
             store = mockStore({
                 integrations: integrationState.integrations,
-                ticket: _emailTicket
+                ticket: _emailTicket,
+                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
-                type: types.SET_SENDER,
+                type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
         })
@@ -171,28 +178,29 @@ describe('actions', () => {
             })
             store = mockStore({
                 integrations: integrationState.integrations,
-                ticket: _emailTicket
+                ticket: _emailTicket,
+                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
-                type: types.SET_SENDER,
+                type: types.NEW_MESSAGE_SET_SENDER,
                 sender: expectedSender
             }])
         })
 
         it('dispatch setSender - empty Map (internal-note)', () => {
-            const _emailTicket = emailTicket.setIn(['newMessage', 'source', 'type'], 'internal-note')
             store = mockStore({
                 integrations: integrationState.integrations,
-                ticket: _emailTicket
+                ticket: emailTicket,
+                newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'internal-note'),
             })
             store.dispatch(actions.setSender())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([{
-                type: types.SET_SENDER,
+                type: types.NEW_MESSAGE_SET_SENDER,
                 sender: fromJS({})
             }])
         })
