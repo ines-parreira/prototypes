@@ -27,6 +27,9 @@ import {
     buildPartialUpdateFromAction,
 } from './utils'
 
+import * as integrationSelectors from '../integrations/selectors'
+import SocketIO from '../../pages/common/utils/socketio'
+
 const Raven = window.Raven
 
 export const mergeTicket = (ticket) => (dispatch, getState) => {
@@ -333,6 +336,10 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch, getSt
             })
 
             dispatch(newMessageActions.initializeMessageDraft())
+
+            // Notify the server that we viewed this ticket
+            const io = new SocketIO()
+            io._sendTicketViewed(ticketId)
 
             return newMessageActions.resetReceiversAndSender(dispatch, getState)
         }, error => {
