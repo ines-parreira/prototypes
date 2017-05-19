@@ -1,12 +1,10 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Badge} from 'reactstrap'
+import {Button, Badge, Card, CardBlock} from 'reactstrap'
 
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 
-import {DatetimeLabel} from '../../../../common/utils/labels'
 import RuleItem from '../../detail/components/RuleItem'
-import * as ruleSelectors from '../../../../../state/rules/selectors'
 
 class RuleRow extends React.Component {
     _handleActivate = () => {
@@ -30,80 +28,84 @@ class RuleRow extends React.Component {
         }
     }
 
-    _renderDetail = () => {
-        const {rule, actions, selectors} = this.props
-
-        if (!this.props.isOpen) {
-            return null
-        }
+    _renderClosed = () => {
+        const {rule} = this.props
 
         return (
-            <tr className="no-hover">
-                <td colSpan="100%">
-                    <RuleItem
-                        rule={rule}
-                        actions={actions}
-                        isDirty={selectors.isDirty(rule.get('id'))}
+            <tr key={rule.get('id')}>
+                <td className="align-center align-middle">
+                    <div>
+                        <a onClick={this.props.toggleOpening}>
+                            <b>{rule.get('title')}</b>
+                        </a>
+                        {
+                            rule.get('type') === 'system' && (
+                                <Badge
+                                    className="ml-2"
+                                    color="danger"
+                                >
+                                    <i className="fa fa-fw fa-exclamation-triangle mr-2" />
+                                    SYSTEM
+                                </Badge>
+                            )
+                        }
+                    </div>
+                    <a
+                        className="text-faded"
+                        onClick={this.props.toggleOpening}
+                    >
+                        {rule.get('description')}
+                    </a>
+                </td>
+                <td className="smallest align-middle">
+                    <ToggleCheckbox
+                        input={{
+                            onChange: this._toggleItemStatus,
+                            value: !rule.get('deactivated_datetime'),
+                        }}
                     />
+                </td>
+                <td className="smallest align-middle">
+                    <div className="pull-right">
+                        <Button
+                            type="submit"
+                            color="info"
+                            onClick={this.props.toggleOpening}
+                        >
+                            Edit
+                        </Button>
+                    </div>
+                </td>
+            </tr>
+        )
+    }
+
+    _renderOpened = () => {
+        const {rule, actions} = this.props
+
+        return (
+            <tr key={rule.get('id')}>
+                <td colSpan="100">
+                    <Card>
+                        <CardBlock>
+                            <RuleItem
+                                rule={rule}
+                                actions={actions}
+                                toggleOpening={this.props.toggleOpening}
+                            />
+                        </CardBlock>
+                    </Card>
                 </td>
             </tr>
         )
     }
 
     render() {
-        const {currentUser, rule} = this.props
+        if (this.props.isOpen) {
+            return this._renderOpened()
+        }
 
-        return (
-            <tbody className="table-row">
-                <tr>
-                    <td
-                        onClick={this.props.toggleOpening}
-                        style={{cursor: 'pointer'}}
-                    >
-                        <div className="cell-wrapper">
-                            <div className="ui header">
-                                <span className="subject">
-                                    {rule.get('title')}
-                                </span>
-                                {
-                                    rule.get('type') === 'system' && (
-                                        <Badge
-                                            className="ml-2"
-                                            color="danger"
-                                        >
-                                            <i className="fa fa-fw fa-exclamation-triangle mr-2" />
-                                            SYSTEM
-                                        </Badge>
-                                    )
-                                }
-                                <div className="sub header">
-                                    {rule.get('description')}
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div className="cell-wrapper">
-                            <ToggleCheckbox
-                                input={{
-                                    onChange: this._toggleItemStatus,
-                                    value: !rule.get('deactivated_datetime'),
-                                }}
-                            />
-                        </div>
-                    </td>
-                    <td className="right aligned">
-                        <div className="cell-wrapper">
-                            <DatetimeLabel
-                                dateTime={rule.get('updated_datetime')}
-                                timezone={currentUser.get('timezone')}
-                            />
-                        </div>
-                    </td>
-                </tr>
-                {this._renderDetail()}
-            </tbody>
-        )
+        return this._renderClosed()
     }
 }
 
@@ -111,16 +113,12 @@ RuleRow.propTypes = {
     actions: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
     rule: PropTypes.object.isRequired,
-    selectors: PropTypes.object.isRequired,
     toggleOpening: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => ({
     currentUser: state.currentUser,
-    selectors: {
-        isDirty: ruleSelectors.makeIsDirty(state)
-    }
 })
 
 export default connect(mapStateToProps)(RuleRow)

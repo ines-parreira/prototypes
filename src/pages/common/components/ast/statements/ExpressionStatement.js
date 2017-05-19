@@ -1,11 +1,12 @@
 import React, {PropTypes} from 'react'
 import Expression from '../expression/Expression'
+import {DeleteBlockStatementItem} from '../operations'
 
 /*
  interface ExpressionStatement <: Statement {
  type: "ExpressionStatement";
  expression: Expression;
-}
+ }
  */
 export default class ExpressionStatement extends React.Component {
     render() {
@@ -14,6 +15,11 @@ export default class ExpressionStatement extends React.Component {
 
         return (
             <div className="ExpressionStatement">
+                <DeleteBlockStatementItem
+                    parent={parent}
+                    rule={rule}
+                    actions={actions}
+                />
                 <Expression
                     {...expression}
                     parent={parentNew}

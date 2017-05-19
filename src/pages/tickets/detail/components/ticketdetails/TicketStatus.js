@@ -13,6 +13,7 @@ export default class TicketStatus extends React.Component {
         return (
             <div className="d-inline-block mr-2">
                 <Button
+                    type="button"
                     id="change-status-button"
                     className={classnames('d-inline-block', css.button)}
                     color={toClose ? 'secondary' : 'success'}

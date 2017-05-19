@@ -1,13 +1,27 @@
-import React from 'react'
-import classNames from 'classnames'
-import {Button} from 'reactstrap'
+import React, {PropTypes} from 'react'
+import classnames from 'classnames'
+import {Button, Form as BootstrapForm, FormGroup} from 'reactstrap'
+import _xor from 'lodash/xor'
 
+import {TextAreaField} from '../../../../common/forms'
+import TriggersSelector from './TriggersSelector'
+
+import EditableTitle from '../../../../common/components/EditableTitle'
 import Program from '../../../../common/components/ast/Program'
+import ErrorMessage from '../../../../common/components/ErrorMessage'
+
+import * as rulesHelpers from '../../../../../state/rules/helpers'
 
 class RuleItem extends React.Component {
-    constructor() {
-        super()
-        this.state = {showCode: false}
+    state = {
+        description: '',
+        eventTypes: [],
+        isDeactivating: false,
+        isDeleting: false,
+        isResetting: false,
+        isSubmitting: false,
+        showCode: false,
+        title: '',
     }
 
     componentDidMount() {
@@ -16,6 +30,16 @@ class RuleItem extends React.Component {
         if (!rule.get('code')) {
             actions.rules.initialiseCodeAST(rule.get('id'))
         }
+
+        this.setState({
+            description: rule.get('description') || '',
+            eventTypes: rulesHelpers.eventTypes(rule),
+            title: rule.get('title') || '',
+        })
+    }
+
+    _canSubmit = () => {
+        return this.state.eventTypes.length > 0
     }
 
     _handleSubmit = (event) => {
@@ -26,12 +50,17 @@ class RuleItem extends React.Component {
         const confirmMsg = 'You\'re about to modify a system rule, this may prevent you from sending ' +
             'messages to your customers. Are you sure?'
 
-        if (rule.get('type') === 'user' || confirm(confirmMsg)) {
-            actions.rules.save({
+        this.setState({isSubmitting: true})
+        if (this._canSubmit() && (this.props.rule.get('type') === 'user' || confirm(confirmMsg))) {
+            return actions.rules.save({
                 id: rule.get('id'),
-                title: rule.get('title'),
+                description: this.state.description,
+                event_types: this.state.eventTypes.join(','),
+                title: this.state.title,
                 code: rule.get('code'),
                 code_ast: rule.get('code_ast'),
+            }).then(() => {
+                this.setState({isSubmitting: false})
             })
         }
     }
@@ -40,15 +69,23 @@ class RuleItem extends React.Component {
         const {actions, rule} = this.props
         event.preventDefault()
 
+        this.setState({isResetting: true})
         if (confirm('Are you sure you want to reset this rule?')) {
-            actions.rules.reset(rule.get('id'))
+            return actions.rules.reset(rule.get('id'))
+                .then(() => {
+                    this.setState({isResetting: false})
+                })
         }
     }
 
     _handleActivate = (event) => {
         const {actions, rule} = this.props
         event.preventDefault()
-        actions.rules.activate(rule.get('id'))
+        this.setState({isDeactivating: true})
+        return actions.rules.activate(rule.get('id'))
+            .then(() => {
+                this.setState({isDeactivating: false})
+            })
     }
 
     _handleDeactivate = (event) => {
@@ -56,7 +93,11 @@ class RuleItem extends React.Component {
         event.preventDefault()
 
         if (confirm('Are you sure you want to deactivate this rule?')) {
-            actions.rules.deactivate(rule.get('id'))
+            this.setState({isDeactivating: true})
+            return actions.rules.deactivate(rule.get('id'))
+                .then(() => {
+                    this.setState({isDeactivating: false})
+                })
         }
     }
 
@@ -65,18 +106,28 @@ class RuleItem extends React.Component {
         event.preventDefault()
 
         if (confirm('Are you sure you want to delete this rule?')) {
-            actions.rules.remove(rule.get('id'))
+            this.setState({isDeleting: true})
+            return actions.rules.remove(rule.get('id'))
+                .then(() => {
+                    this.setState({isDeleting: false})
+                })
         }
     }
 
     _handleToggleCode = () => {
-        this.setState({
+        return this.setState({
             showCode: !this.state.showCode
         })
     }
 
+    _handleChangeTriggers = (trigger) => {
+        return this.setState({
+            eventTypes: _xor(this.state.eventTypes, [trigger])
+        })
+    }
+
     _renderToggleCode() {
-        const toggleClasses = classNames('angle cursor icon', {
+        const toggleClasses = classnames('angle cursor icon', {
             up: this.state.showCode,
             down: !this.state.showCode
         })
@@ -106,74 +157,81 @@ class RuleItem extends React.Component {
     }
 
     _renderButtons() {
-        const {rule, isDirty} = this.props
+        const {rule} = this.props
 
-        let primaryBtn = (
-            <Button
-                color="primary"
-                type="submit"
-                className="mr-2"
-                disabled={!isDirty}
-            >
-                Save
-            </Button>
-        )
-        let resetBtn = (
-            <Button
-                color="secondary"
-                type="button"
-                disabled={!isDirty}
-                onClick={this._handleReset}
-            >
-                Cancel changes
-            </Button>
-        )
-        let rmBtn = (
-            <Button
-                color="warning"
-                type="button"
-                onClick={this._handleDeactivate}
-            >
-                Deactivate rule
-            </Button>
-
-        )
-
-        if (rule.get('deactivated_datetime')) {
-            primaryBtn = (
-                <Button
-                    color="primary"
-                    type="button"
-                    onClick={this._handleActivate}
-                >
-                    Re-activate
-                </Button>
-            )
-            resetBtn = null
-            rmBtn = (
-                <Button
-                    color="danger"
-                    outline
-                    type="button"
-                    disabled={rule.get('type') === 'system'}
-                    onClick={this._handleRemove}
-                >
-                    Delete rule
-                </Button>
-            )
-        }
+        const isDeactivated = rule.get('deactivated_datetime')
 
         return (
-            <div className="ui aligned segment">
-                {primaryBtn}
-                {resetBtn}
-                {
-                    !!rmBtn && (
-                        <div className="pull-right">
-                            {rmBtn}
-                        </div>
-                    )
-                }
+            <div className="d-flex justify-content-between">
+                <div>
+                    <Button
+                        color="primary"
+                        type="submit"
+                        className={classnames('mr-2', {
+                            'btn-loading': this.state.isSubmitting,
+                        })}
+                        disabled={this.state.isSubmitting || !this._canSubmit()}
+                    >
+                        Save
+                    </Button>
+                    <Button
+                        color="secondary"
+                        type="button"
+                        className={classnames({
+                            'btn-loading': this.state.isResetting,
+                        })}
+                        disabled={this.state.isResetting}
+                        onClick={this._handleReset}
+                    >
+                        Cancel changes
+                    </Button>
+                </div>
+                <div className="pull-right">
+                    {
+                        isDeactivated ? (
+                                <Button
+                                    color="primary"
+                                    type="button"
+                                    className={classnames({
+                                        'btn-loading': this.state.isDeactivating,
+                                    })}
+                                    disabled={this.state.isDeactivating}
+                                    onClick={this._handleActivate}
+                                >
+                                    Activate
+                                </Button>
+                            ) : (
+                                <Button
+                                    color="warning"
+                                    type="button"
+                                    outline
+                                    className={classnames({
+                                        'btn-loading': this.state.isDeactivating,
+                                    })}
+                                    disabled={this.state.isDeactivating}
+                                    onClick={this._handleDeactivate}
+                                >
+                                    Deactivate
+                                </Button>
+                            )
+                    }
+                    {
+                        rule.get('type') !== 'system' && (
+                            <Button
+                                className={classnames('ml-2', {
+                                    'btn-loading': this.state.isDeleting,
+                                })}
+                                disabled={this.state.isDeleting}
+                                color="danger"
+                                type="button"
+                                outline
+                                onClick={this._handleRemove}
+                            >
+                                Delete rule
+                            </Button>
+                        )
+                    }
+                </div>
             </div>
         )
     }
@@ -181,32 +239,84 @@ class RuleItem extends React.Component {
 
     render() {
         const {rule, actions} = this.props
+
         let codeAST = rule.get('code_ast')
+
         if (codeAST) {
             codeAST = codeAST.toJS()
         }
 
         return (
-            <form onSubmit={this._handleSubmit}>
-                <div className="item">
-                    <div className="ui segments">
-                        <Program
-                            {...codeAST}
-                            rule={rule}
-                            actions={actions}
-                        />
-                        {this._renderButtons()}
-                    </div>
+            <BootstrapForm onSubmit={this._handleSubmit}>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                    <EditableTitle
+                        title={this.state.title}
+                        placeholder="Name"
+                        size="md"
+                        update={name => this.setState({title: name})}
+                    />
+                    <i
+                        className="fa fa-fw fa-close clickable pull-right"
+                        onClick={this.props.toggleOpening}
+                    />
                 </div>
-            </form>
+                <FormGroup>
+                    <TextAreaField
+                        placeholder="Description"
+                        rows="2"
+                        input={{
+                            value: this.state.description,
+                            onChange: e => this.setState({description: e.target.value}),
+                        }}
+                    />
+                </FormGroup>
+                <FormGroup className="mb-4">
+                    <div
+                        className="d-flex align-items-center"
+                        style={{marginBottom: '10px'}}
+                    >
+                        <Button
+                            className="btn-frozen"
+                            color="info"
+                            type="button"
+                            style={{marginRight: '5px'}}
+                        >
+                            WHEN
+                        </Button>
+                        <TriggersSelector
+                            triggers={this.state.eventTypes}
+                            onChange={this._handleChangeTriggers}
+                        />
+                        {
+                            this.state.eventTypes.length === 0 && (
+                                <ErrorMessage
+                                    key="errors"
+                                    className="m0i ml15i p5i"
+                                    errors="You need to select at least one trigger"
+                                    inline
+                                />
+                            )
+                        }
+                    </div>
+                    <Program
+                        {...codeAST}
+                        rule={rule}
+                        actions={actions}
+                        triggers={this.state.eventTypes}
+                        onChangeTriggers={this._handleChangeTriggers}
+                    />
+                </FormGroup>
+
+                {this._renderButtons()}
+            </BootstrapForm>
         )
     }
 }
 
 RuleItem.propTypes = {
-    rule: React.PropTypes.object,
-    actions: React.PropTypes.object,
-    isDirty: React.PropTypes.bool
+    rule: PropTypes.object,
+    actions: PropTypes.object,
+    toggleOpening: PropTypes.func.isRequired,
 }
 
 export default RuleItem

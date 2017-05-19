@@ -3,11 +3,11 @@ import _trim from 'lodash/trim'
 
 /**
  * Return name of user
- * @param rawUser
+ * @param user
  * @returns {string}
  */
-export const getDisplayName = (rawUser) => {
-    let user = toImmutable(rawUser)
+export const getDisplayName = (user) => {
+    user = toImmutable(user)
 
     // if not an immutable map
     if (!isImmutable(user)) {

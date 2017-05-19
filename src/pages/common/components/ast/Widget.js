@@ -95,7 +95,7 @@ class Widget extends React.Component {
         }
 
         // todo(@xarg): should be defined in the schema what values are allowed
-        const rootObjects = ['ticket', 'message', 'event']
+        const rootObjects = ['ticket', 'message']
 
         if (left.size === 1 && left.get(0) === 'definitions') {
             // we are at the root here, only allow some values

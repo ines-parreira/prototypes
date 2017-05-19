@@ -1,6 +1,6 @@
 import React from 'react'
-
 import classNames from 'classnames'
+import {Label} from 'reactstrap'
 
 export default class TextAreaField extends React.Component {
     render() {
@@ -15,8 +15,18 @@ export default class TextAreaField extends React.Component {
 
         return (
             <div className={fieldClassName}>
-                {label && <label htmlFor={input.name}>{label}</label>}
+                {
+                    label && (
+                        <Label
+                            htmlFor={input.name}
+                            className="control-label"
+                        >
+                            {label}
+                        </Label>
+                    )
+                }
                 <textarea
+                    className="form-control"
                     {...props}
                     rows={rows}
                     placeholder={placeholder}

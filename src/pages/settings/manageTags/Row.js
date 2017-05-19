@@ -187,6 +187,7 @@ export default class Row extends Component {
                                     <b>It will be removed from all tickets</b>.
                                 </p>
                                 <Button
+                                    type="submit"
                                     color="success"
                                     onClick={this._onRemove}
                                 >

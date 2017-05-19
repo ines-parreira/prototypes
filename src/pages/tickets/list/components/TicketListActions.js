@@ -172,6 +172,7 @@ class TicketListActions extends React.Component {
                     toggle={this._toggleAgentsDropdown}
                 >
                     <Button
+                        type="button"
                         color="secondary"
                         onClick={() => this._bulkUpdate('assignee_user', {
                             id: currentUser.get('id'),
@@ -236,6 +237,7 @@ class TicketListActions extends React.Component {
                     className="mr-2"
                 >
                     <Button
+                        type="button"
                         color="secondary"
                         onClick={() => this._bulkUpdate('status', 'closed')}
                     >
@@ -354,6 +356,7 @@ class TicketListActions extends React.Component {
                             ticket{this.props.selectedItemsIds.size > 1 && 's'}?
                         </p>
                         <Button
+                            type="submit"
                             color="success"
                             onClick={this._bulkDelete}
                         >

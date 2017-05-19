@@ -158,6 +158,7 @@ export default class Add extends React.Component {
 
                     <div className="mt-3">
                         <Button
+                            type="button"
                             color="primary"
                             className={classnames({
                                 'btn-loading': this.state.isSubmitting,

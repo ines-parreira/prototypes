@@ -2,18 +2,10 @@ import React from 'react'
 
 import Hoverable from '../../Hoverable'
 import Statement from './Statement'
-import { DeleteBlockStatementItem } from '../operations'
 
 
-let BlockStatementItem = ({ actions, body, rule, parent, schemas }, { hovered }) => (
+let BlockStatementItem = ({actions, body, rule, parent, schemas}) => (
     <div className="BlockStatementItem">
-        {hovered && (
-            <DeleteBlockStatementItem
-                parent={parent}
-                rule={rule}
-                actions={actions}
-            />
-        )}
         <Statement
             {...body}
             parent={parent}
@@ -32,16 +24,12 @@ BlockStatementItem.propTypes = {
     schemas: React.PropTypes.object,
 }
 
-BlockStatementItem.contextTypes = {
-    hovered: React.PropTypes.bool,
-}
-
 BlockStatementItem = Hoverable(BlockStatementItem)
 
 class BlockStatement extends React.Component {
 
     _renderStatements = () => {
-        const { body, rule, actions, parent, schemas } = this.props
+        const {body, rule, actions, parent, schemas} = this.props
 
         return body.map((bodyItem, idx) => (
             <div className="BlockStatementItem" key={idx}>

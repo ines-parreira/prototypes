@@ -27,7 +27,7 @@ class RuleForm extends React.Component {
                         <Field
                             type="text"
                             name="title"
-                            label="Rule name"
+                            label="Name"
                             required
                             component={InputField}
                         />
@@ -49,6 +49,7 @@ class RuleForm extends React.Component {
                             Cancel
                         </Button>
                         <Button
+                            type="submit"
                             color="primary"
                             className={classnames({
                                 'btn-loading': submitting,

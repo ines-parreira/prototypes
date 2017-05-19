@@ -24,7 +24,7 @@ const Literal = ({ value, rule, actions, parent, leftsiblings, schemas }) => {
             {value === '' && (
                 <ErrorMessage
                     key="errors"
-                    className="m0i ml15i p10i"
+                    className="m0i ml15i p5i"
                     errors={'This field cannot be empty'}
                     inline
                 />

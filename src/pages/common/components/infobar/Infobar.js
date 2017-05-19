@@ -254,6 +254,7 @@ export default class Infobar extends React.Component {
                 <div>
                     <div className="mb-3">
                         <Button
+                            type="button"
                             onClick={() => {
                                 this.setState({
                                     displaySelectedUser: false,
@@ -269,6 +270,7 @@ export default class Infobar extends React.Component {
                             && this.state.selectedUser.get('id') !== this.props.user.get('id')
                             && (
                                 <Button
+                                    type="submit"
                                     className="pull-right"
                                     onClick={() => {
                                         this.setState({showMergeUserModal: true})
@@ -299,7 +301,10 @@ export default class Infobar extends React.Component {
             return (
                 <div>
                     <div className="mb-3">
-                        <Button onClick={() => this._resetSearch()}>
+                        <Button
+                            type="button"
+                            onClick={() => this._resetSearch()}
+                        >
                             <i className="fa fa-fw fa-arrow-left mr-2" />
                             Back
                         </Button>

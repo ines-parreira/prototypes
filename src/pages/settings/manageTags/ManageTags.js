@@ -142,6 +142,7 @@ export default class ManageTags extends Component {
                                         <b>They will be removed from all tickets</b>.
                                     </p>
                                     <Button
+                                        type="submit"
                                         color="success"
                                         onClick={this._bulkDelete}
                                     >

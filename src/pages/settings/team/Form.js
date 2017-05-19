@@ -190,6 +190,7 @@ export default class Form extends React.Component {
                     </FormGroup>
                     <FormGroup>
                         <Button
+                            type="submit"
                             color="primary"
                             className={classnames('mr-2', {
                                 'btn-loading': this.state.isSubmitting,
@@ -237,6 +238,7 @@ export default class Form extends React.Component {
                                                 You are about to <b>delete</b> this team member.
                                             </p>
                                             <Button
+                                                type="submit"
                                                 color="success"
                                                 onClick={() => {
                                                     this._toggleDeleteConfirmation()

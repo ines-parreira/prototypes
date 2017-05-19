@@ -267,6 +267,7 @@ class HttpIntegrationDetail extends React.Component {
 
                     <div className="field">
                         <Button
+                            type="submit"
                             color="primary"
                             className={classNames('mr-2', {
                                 'btn-loading': isSubmitting,

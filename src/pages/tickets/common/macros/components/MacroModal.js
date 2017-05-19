@@ -146,6 +146,7 @@ export default class MacroModal extends React.Component {
                                 {
                                     !selectionMode && (
                                         <Button
+                                            type="submit"
                                             color="info"
                                             onClick={this._addNewMacro}
                                             block
@@ -160,6 +161,7 @@ export default class MacroModal extends React.Component {
                                     selectionMode ? (
                                             <div className="d-inline-block pull-right">
                                                 <Button
+                                                    type="submit"
                                                     color="primary"
                                                     onClick={this._applyMacro}
                                                 >
@@ -172,6 +174,7 @@ export default class MacroModal extends React.Component {
                                                     {
                                                         isUpdate && (
                                                             <Button
+                                                                type="submit"
                                                                 color="danger"
                                                                 outline
                                                                 onClick={this._deleteMacro}
@@ -185,6 +188,7 @@ export default class MacroModal extends React.Component {
                                                     {
                                                         isUpdate ? (
                                                                 <Button
+                                                                    type="submit"
                                                                     color="primary"
                                                                     onClick={this._updateMacro}
                                                                 >
@@ -192,6 +196,7 @@ export default class MacroModal extends React.Component {
                                                                 </Button>
                                                             ) : (
                                                                 <Button
+                                                                    type="submit"
                                                                     color="primary"
                                                                     onClick={this._createMacro}
                                                                 >

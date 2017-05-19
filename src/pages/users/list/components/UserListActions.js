@@ -82,6 +82,7 @@ class UserListActions extends React.Component {
                             user{this.props.selectedItemsIds.size > 1 && 's'}?
                         </p>
                         <Button
+                            type="submit"
                             color="success"
                             onClick={this._bulkDelete}
                         >
@@ -101,6 +102,7 @@ class UserListActions extends React.Component {
                 {areBulkActionsDisplayed && this._renderBulkActions()}
 
                 <Button
+                    type="button"
                     color="primary"
                     onClick={this._openModal}
                 >

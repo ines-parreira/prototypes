@@ -54,7 +54,7 @@ export default class Row extends React.Component {
         return (
             <tr>
                 <td className="align-middle">
-                    {agent.get('name')}
+                    <b>{agent.get('name')}</b>
                     {' '}
                     <span className="text-faded ml-2">
                         {agent.get('email')}
@@ -74,6 +74,7 @@ export default class Row extends React.Component {
                         Edit
                     </Button>
                     <Button
+                        type="submit"
                         id={id}
                         color="danger"
                         outline

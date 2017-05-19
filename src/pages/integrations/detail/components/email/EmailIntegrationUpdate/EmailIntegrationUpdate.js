@@ -248,6 +248,7 @@ class EmailIntegrationUpdate extends React.Component {
                         }
                     />
                     <Button
+                        type="submit"
                         color="primary"
                         disabled={pristine || isSubmitting || isDeleting}
                         className={classNames({

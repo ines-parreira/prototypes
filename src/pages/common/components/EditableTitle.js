@@ -79,14 +79,14 @@ export default class EditableTitle extends React.Component {
     }
 
     render() {
-        const {className, placeholder, style} = this.props
+        const {className, size, placeholder, style} = this.props
 
         return (
             <Input
                 getRef="title"
                 type="text"
                 tabIndex="1"
-                size="lg"
+                size={size}
                 style={style}
                 disabled={this.props.disabled}
                 className={classnames(className, css.component, {
@@ -115,6 +115,7 @@ EditableTitle.propTypes = {
     update: PropTypes.func.isRequired,
     focus: PropTypes.bool,
     select: PropTypes.bool,
+    size: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
     style: PropTypes.object.isRequired,
     forceEditMode: PropTypes.bool,
@@ -125,4 +126,5 @@ EditableTitle.defaultProps = {
     className: '',
     update: _noop,
     style: {},
+    size: 'xl',
 }

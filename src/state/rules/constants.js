@@ -20,7 +20,6 @@ export const RESET_RULE_SUCCESS = 'RESET_RULE_SUCCESS'
 export const OBJECT_DEFINITIONS = {
     ticket: 'Ticket',
     message: 'TicketMessage',
-    event: 'Event',
     user: 'User'
 }
 
@@ -81,43 +80,8 @@ export const ACTION_DEFAULT_STATE = {
     replyToTicket: REPLY_TO_TICKET_ACTION_DEFAULT,
 }
 
-export const DEFAULT_IF_STATEMENT = {
+export const DEFAULT_STATEMENT = {
     type: 'Program',
     sourceType: 'script',
-    body: [
-        {
-            type: 'IfStatement',
-            test: {
-                type: 'CallExpression',
-                callee: {
-                    type: 'Identifier',
-                    name: 'eq'
-                },
-                arguments: [
-                    {
-                        type: 'MemberExpression',
-                        computed: false,
-                        object: {
-                            type: 'Identifier',
-                            name: 'ticket'
-                        },
-                        property: {
-                            type: 'Identifier',
-                            name: 'status'
-                        }
-                    },
-                    {
-                        type: 'Literal',
-                        value: 'open',
-                        raw: '\'open\''
-                    }
-                ],
-            },
-            consequent: {
-                body: [],
-                type: 'BlockStatement',
-            },
-            alternate: null,
-        },
-    ],
+    body: [],
 }

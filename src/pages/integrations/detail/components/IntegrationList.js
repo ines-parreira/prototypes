@@ -65,6 +65,7 @@ export default class IntegrationList extends React.Component {
                     {
                         !this.props.createIntegrationButtonHidden && (
                             <Button
+                                type="submit"
                                 color="primary"
                                 onClick={this.onButtonClick}
                             >

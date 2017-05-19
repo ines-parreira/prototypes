@@ -192,6 +192,7 @@ export default class FacebookIntegrationSetup extends React.Component {
 
                     <div className="mt-3">
                         <Button
+                            type="submit"
                             color="primary"
                             className={classNames({
                                 'btn-loading': loading.get('updateIntegration'),

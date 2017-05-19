@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react'
-import {Button} from 'reactstrap'
+import {Button, Table} from 'reactstrap'
+import {fromJS} from 'immutable'
+import moment from 'moment'
 import _xor from 'lodash/xor'
 
 import Modal from '../../../../common/components/Modal'
@@ -29,9 +31,11 @@ export default class RulesView extends React.Component {
 
     _handleSubmit = (values) => {
         // add some default values for the rule
-        values.code = 'if (eq(event.type, \'ticket-message-created\')) {}'
+        values.event_types = 'ticket-message-created'
+        values.code = ''
         values.code_ast = getAST(values.code)
         values.code = getCode(values.code_ast)
+        values.deactivated_datetime = moment().format()
         return this.props.actions.rules.create(values)
             .then(({rule}) => {
                 this._hideForm()
@@ -56,6 +60,7 @@ export default class RulesView extends React.Component {
             <div>
                 <PageHeader title="Rules">
                     <Button
+                        type="submit"
                         color="primary"
                         className="pull-right"
                         onClick={this._showForm}
@@ -63,7 +68,8 @@ export default class RulesView extends React.Component {
                         Create new rule
                     </Button>
                 </PageHeader>
-                <div>
+
+                <div className="mb-3">
                     <p>
                         Rules provide a way to control the behavior of Gorgias during certain events or perform periodic
                         tasks.
@@ -73,39 +79,29 @@ export default class RulesView extends React.Component {
                         the text 'refund' or send a satisfaction survey after the ticket was closed for more than 48h.
                     </p>
                 </div>
-                {
-                    rules && !rules.isEmpty() && (
-                        <div className="rule-category">
-                            <table className="main-table view-table">
-                                <thead>
-                                    <tr>
-                                        <td className="cell-wrapper cell-short">
-                                            <div><span>Details</span></div>
-                                        </td>
-                                        <td className="cell-wrapper cell-short">
-                                            <div><span>Status</span></div>
-                                        </td>
-                                        <td className="cell-wrapper cell-short">
-                                            <div><span>Updated</span></div>
-                                        </td>
-                                    </tr>
-                                </thead>
-                                {
-                                    rules.map((rule, i) => {
-                                        const id = rule.get('id')
 
-                                        return (
-                                            <RuleRow
-                                                actions={actions}
-                                                key={i}
-                                                rule={rule}
-                                                toggleOpening={() => this._toggleRuleOpening(id)}
-                                                isOpen={this.state.openedRules.includes(id)}
-                                            />
-                                        )
-                                    }).toList()
-                                }
-                            </table>
+                {
+                    !rules.isEmpty() && (
+                        <div className="rule-category">
+                            <Table hover>
+                                <tbody>
+                                    {
+                                        rules.map((rule, i) => {
+                                            const id = rule.get('id')
+
+                                            return (
+                                                <RuleRow
+                                                    actions={actions}
+                                                    key={i}
+                                                    rule={rule}
+                                                    toggleOpening={() => this._toggleRuleOpening(id)}
+                                                    isOpen={this.state.openedRules.includes(id)}
+                                                />
+                                            )
+                                        }).toList()
+                                    }
+                                </tbody>
+                            </Table>
                         </div>
                     )
                 }
@@ -128,4 +124,9 @@ export default class RulesView extends React.Component {
 RulesView.propTypes = {
     actions: PropTypes.object,
     rules: PropTypes.object,
+}
+
+
+RulesView.defaultProps = {
+    rules: fromJS([]),
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {AddActionOrIfStatement, AddLogicalAndCondition} from '../operations'
+import {AddActionOrIfStatement, AddLogicalCondition, DeleteBlockStatementItem} from '../operations'
 import Expression from '../expression/Expression'
 import Statement from './Statement'
 
@@ -16,7 +16,12 @@ import Statement from './Statement'
  */
 let TestExpression = ({actions, rule, parent, schemas, test}) => (
     <div className="test">
-        <AddLogicalAndCondition
+        <DeleteBlockStatementItem
+            parent={parent}
+            rule={rule}
+            actions={actions}
+        />
+        <AddLogicalCondition
             actions={actions}
             rule={rule}
             parent={parent.push('test')}

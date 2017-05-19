@@ -63,6 +63,7 @@ export default class TicketSubmitButtons extends React.Component {
         return (
             <div className="TicketSubmitButtons">
                 <Button
+                    type="submit"
                     id="submit-button"
                     color="primary"
                     className={classNames('mr-2', commonClasses)}
@@ -80,6 +81,7 @@ export default class TicketSubmitButtons extends React.Component {
                     {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_TICKET)}
                 </UncontrolledTooltip>
                 <Button
+                    type="submit"
                     id="submit-and-close-button"
                     color="primary"
                     outline

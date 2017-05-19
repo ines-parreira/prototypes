@@ -160,7 +160,7 @@ class Action extends React.Component {
             return (
                 <ErrorMessage
                     key="errors"
-                    className="m0i ml10i pv10i"
+                    className="m0i ml10i pv5i"
                     errors={'An action cannot be empty'}
                     inline
                 />
@@ -191,7 +191,7 @@ class Action extends React.Component {
                 config.note ? <div className="rule-note" key="note">{config.note}</div> : null,
                 <ErrorMessage
                     key="errors"
-                    className="m0i ml15i p10i"
+                    className="m0i ml15i p5i"
                     errors={errors}
                     inline
                 />
@@ -207,16 +207,17 @@ class Action extends React.Component {
             return (
                 <div className="ui segment">
                     {childrenWithProps}
-                    {config.note ? <div className="rule-note">{config.note}</div> : null}
-                    <ErrorMessage errors={errors}/>
+                    {!!config.note && <div className="rule-note">{config.note}</div>}
+                    <ErrorMessage errors={errors} />
                 </div>
             )
         }
+
         return (
             <div className="ui segment">
                 {children}
-                {config.note ? <div className="rule-note">{config.note}</div> : null}
-                <ErrorMessage errors={errors}/>
+                {!!config.note && <div className="rule-note">{config.note}</div>}
+                <ErrorMessage errors={errors} className="m0i ml10i pv5i" />
             </div>
         )
     }

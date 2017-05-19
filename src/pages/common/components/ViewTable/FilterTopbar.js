@@ -157,6 +157,7 @@ class FilterTopbar extends React.Component {
                         isUpdate ? (
                                 <span>
                                     <Button
+                                        type="submit"
                                         id="update-view-button"
                                         color="primary"
                                         className={classNames('mr-2', {
@@ -179,6 +180,7 @@ class FilterTopbar extends React.Component {
                                                 You are about to edit this view for <b>all users</b>.
                                             </p>
                                             <Button
+                                                type="submit"
                                                 color="success"
                                                 onClick={this._onClickUpdate}
                                             >
@@ -187,6 +189,7 @@ class FilterTopbar extends React.Component {
                                         </PopoverContent>
                                     </Popover>
                                     <Button
+                                        type="submit"
                                         color="secondary"
                                         className={classNames({
                                             'btn-loading': this.state.isSubmitting,
@@ -199,6 +202,7 @@ class FilterTopbar extends React.Component {
                                 </span>
                             ) : (
                                 <Button
+                                    type="submit"
                                     color="primary"
                                     className={classNames({
                                         'btn-loading': this.state.isSubmitting,
@@ -212,6 +216,7 @@ class FilterTopbar extends React.Component {
                     }
 
                     <Button
+                        type="submit"
                         color="secondary"
                         className="pull-right"
                         disabled={isSubmitting}

@@ -28,7 +28,7 @@ const Property = ({value, actions, leftsiblings, parent, rule, schemas, config =
                 schemas={schemas}
                 config={config}
             />
-            <ErrorMessage errors={errors}/>
+            <ErrorMessage errors={errors} />
         </div>
     )
 }

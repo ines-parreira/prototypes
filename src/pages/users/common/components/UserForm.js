@@ -225,6 +225,7 @@ class UserForm extends React.Component {
 
                 <div className="pull-right">
                     <Button
+                        type="submit"
                         color="primary"
                         className={classNames({
                             'btn-loading': submitting

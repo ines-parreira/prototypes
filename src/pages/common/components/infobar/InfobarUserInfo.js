@@ -257,6 +257,7 @@ class InfobarUserInfo extends React.Component {
                 {
                     hasMoreChannels && (
                         <Button
+                            type="button"
                             color="link"
                             onClick={() => this.setState({showAllUserChannels: true})}
                             style={{paddingLeft: 0}}

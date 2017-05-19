@@ -1,10 +1,9 @@
 import axios from 'axios'
-import {List} from 'immutable'
+import {fromJS, List} from 'immutable'
 
 import * as types from './constants'
 import {notify} from '../notifications/actions'
 
-/* Actions */
 export const addRuleStart = (type, code) => ({
     type: types.ADD_RULE_START,
     title: type,
@@ -68,7 +67,8 @@ export const create = (data) => (dispatch) => {
 export const save = (data) => {
     return dispatch => {
         return axios.put(`/api/rules/${data.id}/`, data)
-            .then(() => {
+            .then((json = {}) => json.data)
+            .then((resp) => {
                 dispatch(notify({
                     type: 'success',
                     message: 'Rule saved successfully',
@@ -76,7 +76,8 @@ export const save = (data) => {
 
                 return dispatch({
                     type: types.UPDATE_RULE_SUCCESS,
-                    ruleId: data.id
+                    ruleId: data.id,
+                    rule: fromJS(resp),
                 })
             }, (error) => {
                 dispatch(fail(error, 'Unable to save the rule'))
@@ -95,6 +96,7 @@ export const save = (data) => {
  */
 export const activate = (id) => (dispatch) => (
     axios.put(`/api/rules/${id}/`, {deactivated_datetime: null})
+        .then((json = {}) => json.data)
         .then(() => {
             dispatch(notify({
                 type: 'success',
@@ -117,6 +119,7 @@ export const activate = (id) => (dispatch) => (
  */
 export const deactivate = (id) => (dispatch) => (
     axios.put(`/api/rules/${id}/`, {deactivated_datetime: new Date()})
+        .then((json = {}) => json.data)
         .then(() => {
             dispatch(notify({
                 type: 'success',
@@ -138,6 +141,7 @@ export const deactivate = (id) => (dispatch) => (
  */
 export const remove = (id) => (dispatch) => (
     axios.delete(`/api/rules/${id}/`)
+        .then((json = {}) => json.data)
         .then(() => {
             dispatch(notify({
                 type: 'success',
@@ -168,7 +172,7 @@ export const reset = (id) => (dispatch) => (
             return dispatch(modifyCodeast(
                 id,
                 List([]),
-                response.code_ast || types.DEFAULT_IF_STATEMENT,
+                response.code_ast || types.DEFAULT_STATEMENT,
                 'UPDATE'
             ))
         })

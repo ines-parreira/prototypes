@@ -35,13 +35,13 @@ const LogicalExpression = ({operator, left, right, rule, parent, actions, leftsi
                 />
             </span>
             <div>
-                    <Button
-                        className="btn-frozen"
-                        type="button"
-                        color="warning"
-                    >
-                        {operator === '&&' ? 'and' : 'or'}
-                    </Button>
+                <Button
+                    className="btn-frozen"
+                    type="button"
+                    color="warning"
+                >
+                    {operator === '&&' ? 'AND' : 'OR'}
+                </Button>
                 <span className="right">
                     <Expression
                         {...right}

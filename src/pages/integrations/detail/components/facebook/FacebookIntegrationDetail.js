@@ -137,6 +137,7 @@ export default class FacebookIntegrationDetail extends React.Component {
 
                 <div className="mt-3">
                     <Button
+                        type="submit"
                         color="primary"
                         className={classNames('mr-2', {
                             'btn-loading': loading.get('updateIntegration'),
@@ -149,6 +150,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                         !isDisabled && (
                             <span>
                                 <Button
+                                    type="submit"
                                     color="warning"
                                     outline
                                     id="disable-integration-button"
@@ -168,6 +170,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                                             This page will not be synchronised with Gorgias anymore.
                                         </p>
                                         <Button
+                                            type="submit"
                                             color="success"
                                             onClick={this._disable}
                                         >

@@ -130,6 +130,7 @@ class EmailIntegrationCreate extends React.Component {
                         required
                     />
                     <Button
+                        type="submit"
                         block
                         color="primary"
                         className={classNames({

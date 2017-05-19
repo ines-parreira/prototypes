@@ -119,6 +119,7 @@ class SmoochIntegrationDetail extends React.Component {
                     }
                     <div className="field">
                         <Button
+                            type="submit"
                             color="primary"
                             className={classNames({
                                 'btn-loading': ctaIsLoading,

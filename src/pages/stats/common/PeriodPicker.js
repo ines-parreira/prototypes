@@ -51,6 +51,7 @@ export default class PeriodPicker extends React.Component {
 
         const button = (
             <Button
+                type="button"
                 className="selected-date-range-btn"
                 style={{width: '100%'}}
                 disabled={isDisabled}

@@ -92,7 +92,8 @@ export default (state = initialState, action) => {
             const {id} = action
             let stateItem = state.getIn(['rules', id.toString()])
 
-            let ast = types.DEFAULT_IF_STATEMENT
+            // let ast = types.DEFAULT_IF_STATEMENT
+            let ast = types.DEFAULT_STATEMENT
             const code = getCode(ast)
             ast = getAST(code)
 
@@ -187,7 +188,15 @@ export default (state = initialState, action) => {
                         body: [value],
                     }))
                 } else {
-                    stateItemNew = stateItem.updateIn(pathFull.toJS(), list => list.push(value))
+                    stateItemNew = stateItem.updateIn(pathFull.toJS(), list => {
+                        // add action at the beginning of the body (more readable for user)
+                        if (value.type === 'ExpressionStatement') {
+                            return list.unshift(value)
+                        }
+
+                        // add conditions at the end of the body
+                        return list.push(value)
+                    })
                 }
             }
             if (operation === 'DELETE') {
@@ -197,7 +206,7 @@ export default (state = initialState, action) => {
             }
 
             // Add logical AND operation in TEST block of IFSTATEMENT.
-            if (operation === 'UPDATE_LOGICAL_AND') {
+            if (operation === 'UPDATE_LOGICAL_OPERATOR') {
                 const test = stateItem.getIn(pathFull.toJS())
                 value.left = test.toJS()
                 stateItemNew = stateItem.updateIn(pathFull.toJS(), () => value)
@@ -209,7 +218,7 @@ export default (state = initialState, action) => {
              * enforced like:
              * if (ticket.status == 'channel' && (ticket.status == 'channel' && ticket.status == 'new'))
              *
-             * This assumption will stay true since in UPDATE_LOGICAL_AND, we force this order.
+             * This assumption will stay true since in UPDATE_LOGICAL_OPERATOR, we force this order.
              */
 
             if (operation === 'DELETE_BINARY_EXPRESSION') {
@@ -238,8 +247,12 @@ export default (state = initialState, action) => {
             )
         }
 
+        case types.UPDATE_RULE_SUCCESS: {
+            const newState = markAsClean(action.ruleId, state)
+            return newState.update('rules', rules => rules.set(action.ruleId.toString(), action.rule))
+        }
+
         case types.RESET_RULE_SUCCESS:
-        case types.UPDATE_RULE_SUCCESS:
         case types.UPDATE_RULE_ERROR:
             return markAsClean(action.ruleId, state)
 

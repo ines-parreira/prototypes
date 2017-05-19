@@ -42,6 +42,7 @@ export default class FacebookIntegrationLogin extends React.Component {
                 <p>Please login to Facebook and give Gorgias the permissions to access and manage your pages.</p>
 
                 <Button
+                    type="submit"
                     color="primary"
                     className={classNames({
                         'btn-loading': isLoading,

@@ -113,11 +113,14 @@ class SearchableSelectField extends React.Component {
                                         <DropdownItem
                                             key={item.value}
                                             type="button"
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                e.stopPropagation()
+                                                this._handleOptionClick(item.value)
+                                            }}
+                                            toggle={false}
                                         >
-                                            <Label
-                                                check
-                                                onChange={() => this._handleOptionClick(item.value)}
-                                            >
+                                            <Label check>
                                                 <Input
                                                     className="mr-2"
                                                     type="checkbox"

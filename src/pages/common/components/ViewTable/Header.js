@@ -144,6 +144,7 @@ class Header extends React.Component {
                                                         You are about to <b>delete</b> this view for <b>all users</b>.
                                                     </p>
                                                     <Button
+                                                        type="submit"
                                                         color="success"
                                                         onClick={() => {
                                                             this.props.deleteView(activeView)

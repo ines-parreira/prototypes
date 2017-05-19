@@ -1,5 +1,5 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {mount} from 'enzyme'
 
 import TicketMessageActions from '../TicketMessageActions'
 
@@ -27,7 +27,7 @@ describe('TicketMessageActions component', () => {
         ]
     }
 
-    let component = shallow(
+    let component = mount(
         <TicketMessageActions
             message={message}
         />
@@ -38,10 +38,10 @@ describe('TicketMessageActions component', () => {
     })
 
     it('should display actions titles', () => {
-        const action1Title = component.find('.ticket-message-actions-item Button').at(0).children().at(1)
-        expect(action1Title).toIncludeText('action1')
+        const action1Button = component.find('.ticket-message-actions-item button').at(0)
+        expect(action1Button.text()).toBe('action1')
 
-        const action3Title = component.find('.ticket-message-actions-item Button').at(2).children().at(1)
-        expect(action3Title).toIncludeText('action3')
+        const action3Button = component.find('.ticket-message-actions-item button').at(2)
+        expect(action3Button).toIncludeText('action3')
     })
 })

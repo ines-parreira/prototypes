@@ -52,12 +52,15 @@ class ShowMoreFieldsDropdown extends React.Component {
                                         key={field.get('name')}
                                         type="button"
                                         className={css.item}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            e.stopPropagation()
+                                            this._setFieldVisibility(field.get('name'), !isChecked)
+                                        }}
+                                        toggle={false}
                                     >
                                         <Label
                                             check
-                                            onChange={() => {
-                                                this._setFieldVisibility(field.get('name'), !isChecked)
-                                            }}
                                             className={css.label}
                                         >
                                             <Input
