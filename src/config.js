@@ -160,6 +160,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/elevio.png',
     },
     {
+        title: 'Magento',
+        description: 'Display customer & orders info next to tickets. Edit orders with macros',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Magento',
+        image: 'integrations/magento.png',
+    },
+    {
         title: 'WooCommerce',
         description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
         url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#woocommerce',
