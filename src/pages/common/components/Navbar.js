@@ -1,10 +1,12 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
+import ToggleCheckbox from '../../../pages/common/forms/ToggleCheckbox'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
-
+import {submitSetting} from '../../../state/currentUser/actions'
+import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import './Navbar.less'
 
 // A <Link /> with some default styles
@@ -50,22 +52,44 @@ const mainMenu = [{
     label: 'Settings',
 }]
 
-class Navbar extends React.Component {
+const mapStateToProps = (state) => ({
+    currentUser: currentUserSelectors.getCurrentUser(state),
+    currentUserPreferences: currentUserSelectors.getPreferences(state),
+    availableForChat: currentUserSelectors.getChatStatus(state)
+})
+
+@connect(mapStateToProps, {submitSetting})
+export default class Navbar extends React.Component {
+    static propTypes = {
+        currentUser: PropTypes.object.isRequired,
+        currentUserPreferences: PropTypes.object.isRequired,
+        availableForChat: PropTypes.bool.isRequired,
+        activeContent: PropTypes.string,
+        children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+        submitSetting: PropTypes.func.isRequired
+    }
+
     componentWillMount() {
         this.state = {
             title: _capitalize(this.props.activeContent)
         }
     }
 
+    _updateShowChatPreferences = () => {
+        const {currentUserPreferences, submitSetting} = this.props
+        const newPreferences = currentUserPreferences.updateIn(['data', 'available_for_chat'], status => !status)
+        submitSetting(newPreferences.toJS())
+    }
+
     render() {
-        const {currentUser} = this.props
+        const {currentUser, availableForChat} = this.props
 
         return (
             <div className="nav-primary">
                 <UncontrolledDropdown className="nav-dropdown">
                     <DropdownToggle>
                         <span style={{fontSize: '18px'}}>{this.state.title}</span>
-                        <i className="fa fa-caret-down" />
+                        <i className="fa fa-caret-down"/>
                     </DropdownToggle>
                     <DropdownMenu>
                         {
@@ -97,25 +121,40 @@ class Navbar extends React.Component {
                         <span>
                             <i
                                 className="fa fa-circle mr-2"
-                                style={{color: '#2DCF57'}}
+                                style={{color: availableForChat ? '#2DCF57' : '#FF9600'}}
                             />
                             {currentUser.get('name')}
                         </span>
-                        <i className="fa fa-ellipsis-h" />
+                        <i className="fa fa-ellipsis-h"/>
                     </DropdownToggle>
                     <DropdownMenu>
+                        <DropdownItem className="mt-2" toggle={false}>
+                            <span className="mr-4">
+                                Available for chat
+                            </span>
+                            <span className="ml-3">
+                                <ToggleCheckbox
+                                    input={{
+                                        onChange: this._updateShowChatPreferences,
+                                        value: availableForChat,
+                                    }}
+                                    inline
+                                />
+                            </span>
+                        </DropdownItem>
+                        <DropdownItem divider/>
                         <DropdownItem
                             tag={NavLink}
                             to="/app/settings/profile"
                         >
-                            <i className="fa fa-fw fa-user mr-2" />
+                            <i className="fa fa-fw fa-user mr-2"/>
                             Your profile
                         </DropdownItem>
                         <DropdownItem
                             tag="a"
                             href="/logout"
                         >
-                            <i className="fa fa-fw fa-sign-out mr-2" />
+                            <i className="fa fa-fw fa-sign-out mr-2"/>
                             Log out
                         </DropdownItem>
                     </DropdownMenu>
@@ -124,16 +163,3 @@ class Navbar extends React.Component {
         )
     }
 }
-
-Navbar.propTypes = {
-    currentUser: PropTypes.object.isRequired,
-    activeContent: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired
-}
-
-const mapStateToProps = (state) => ({
-    currentUser: state.currentUser
-})
-
-export default connect(mapStateToProps)(Navbar)
-

@@ -24,9 +24,11 @@ describe('actions', () => {
         it('should submit setting (create)', () => {
             const setting = fromJS(userSetting).delete('id').toJS()
             const expectedActions = [{
-                type: types.SUBMIT_SETTING_START
+                type: types.SUBMIT_SETTING_START,
+                settingType: 'ticket-views',
             }, {
                 type: types.SUBMIT_SETTING_SUCCESS,
+                settingType: 'ticket-views',
                 isUpdate: false,
                 resp: userSetting
             }]
@@ -40,9 +42,12 @@ describe('actions', () => {
 
         it('should submit setting (update)', () => {
             const expectedActions = [{
-                type: types.SUBMIT_SETTING_START
+                type: types.SUBMIT_SETTING_START,
+                settingType: 'ticket-views'
+
             }, {
                 type: types.SUBMIT_SETTING_SUCCESS,
+                settingType: 'ticket-views',
                 isUpdate: true,
                 resp: userSetting
             }]

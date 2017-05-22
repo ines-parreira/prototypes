@@ -41,7 +41,7 @@ TicketNavbarContainer.propTypes = {
 const mapStateToProps = (state) => {
     return {
         setting: getSettingsByType('ticket-views')(state),
-        isLoading: state.currentUser.getIn(['_internal', 'loading'], false)
+        isLoading: state.currentUser.getIn(['_internal', 'loading', 'settings', 'ticket-views'], false)
     }
 }
 

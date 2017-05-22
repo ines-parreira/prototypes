@@ -85,7 +85,7 @@ class RecentChats extends React.Component {
                 <div className="item">
                     <h4>
                         <span id="active-chats-title">
-                            ACTIVE CHATS
+                            CHATS
                         </span>
                     </h4>
                     <UncontrolledTooltip

@@ -14,18 +14,21 @@ describe('reducers', () => {
 
         it('should handle SUBMIT_SETTING_START', () => {
             const action = {
-                type: types.SUBMIT_SETTING_START
+                type: types.SUBMIT_SETTING_START,
+                settingType: 'preferences'
             }
-            const expectedState = initialState.setIn(['_internal', 'loading'], true)
+            const expectedState = initialState.setIn(['_internal', 'loading', 'settings', 'preferences'], true)
 
             expect(reducer(initialState, action)).toEqualImmutable(expectedState)
         })
 
         it('should handle SUBMIT_SETTING_ERROR', () => {
             const action = {
-                type: types.SUBMIT_SETTING_ERROR
+                type: types.SUBMIT_SETTING_ERROR,
+                settingType: 'preferences'
+
             }
-            const expectedState = initialState.setIn(['_internal', 'loading'], false)
+            const expectedState = initialState.setIn(['_internal', 'loading', 'settings', 'preferences'], false)
 
             expect(reducer(initialState, action)).toEqualImmutable(expectedState)
         })
@@ -34,11 +37,12 @@ describe('reducers', () => {
             const _initialState = initialState.merge(currentUser)
             const action = {
                 type: types.SUBMIT_SETTING_SUCCESS,
+                settingType: 'preferences',
                 isUpdate: false,
                 resp: userSetting
             }
             const expectedState = _initialState
-                .setIn(['_internal', 'loading'], false)
+                .setIn(['_internal', 'loading', 'settings', 'preferences'], false)
                 .updateIn(['settings'], settings => settings.push(fromJS(action.resp)))
 
             expect(reducer(_initialState, action)).toEqualImmutable(expectedState)
@@ -51,11 +55,12 @@ describe('reducers', () => {
                 .update('settings', settings => settings.push(_setting))
             const action = {
                 type: types.SUBMIT_SETTING_SUCCESS,
+                settingType: 'preferences',
                 isUpdate: true,
                 resp: userSetting
             }
             const expectedState = _initialState
-                .setIn(['_internal', 'loading'], false)
+                .setIn(['_internal', 'loading', 'settings', 'preferences'], false)
                 .updateIn(['settings'], settings => {
                     return settings.map(setting => {
                         if (setting.get('id') === action.resp.id) {

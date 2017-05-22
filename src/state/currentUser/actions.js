@@ -34,7 +34,8 @@ export function submitSetting(data, notification) {
         let promise
 
         dispatch({
-            type: types.SUBMIT_SETTING_START
+            type: types.SUBMIT_SETTING_START,
+            settingType: data.type
         })
 
         if (isUpdate) {
@@ -48,6 +49,7 @@ export function submitSetting(data, notification) {
             .then(resp => {
                 dispatch({
                     type: types.SUBMIT_SETTING_SUCCESS,
+                    settingType: data.type,
                     isUpdate,
                     resp
                 })
@@ -63,6 +65,7 @@ export function submitSetting(data, notification) {
             }, error => {
                 return dispatch({
                     type: types.SUBMIT_SETTING_ERROR,
+                    settingType: data.type,
                     error,
                     reason: 'Failed to update settings'
                 })

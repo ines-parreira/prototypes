@@ -53,3 +53,9 @@ export const getPreferences = createSelector(
         .mergeDeep(state.find((s) => s.get('type') === 'preferences'))
     }
 )
+export const getChatStatus = createSelector(
+    [getPreferences],
+    state => {
+        return state.getIn(['data', 'available_for_chat'], true)
+    }
+)

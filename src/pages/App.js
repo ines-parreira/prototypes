@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import {Container} from 'reactstrap'
 import classnames from 'classnames'
-import _forEach from 'lodash/forEach'
 import _last from 'lodash/last'
 
 import {fetchUser, fetchUsers} from '../state/users/actions'
@@ -24,7 +23,6 @@ import 'react-bootstrap-daterangepicker/css/daterangepicker.css'
 import 'font-awesome/css/font-awesome.css'
 
 import '../../css/main.less'
-
 import css from './App.less'
 
 import * as activityActions from '../state/activity/actions'
@@ -45,8 +43,6 @@ class App extends React.Component {
         }
 
         if (shouldPoll) {
-            _forEach(intervals, interval => clearInterval(interval))
-
             intervals.activity = setInterval(this.props.pollActivity, POLL_ACTIVITY_INTERVAL)
             intervals.chats = setInterval(this.props.pollChats, CHAT_POLLING_INTERVAL)
         }
@@ -78,7 +74,7 @@ class App extends React.Component {
         return (
             <DocumentTitle title="Gorgias">
                 <div className={classnames(css.page)}>
-                    <BannerNotifications notifications={bannerNotifications} />
+                    <BannerNotifications notifications={bannerNotifications}/>
 
                     {
                         modalNotifications.map((notification) => (
@@ -94,17 +90,17 @@ class App extends React.Component {
 
                         {
                             currentRoute.noContainerPadding ? (
-                                    <Container
-                                        fluid
-                                        className={classnames(css['main-content'])}
-                                    >
-                                        {this.props.content || this.props.children}
-                                    </Container>
-                                ) : (
-                                    <FullPage>
-                                        {this.props.content || this.props.children}
-                                    </FullPage>
-                                )
+                                <Container
+                                    fluid
+                                    className={classnames(css['main-content'])}
+                                >
+                                    {this.props.content || this.props.children}
+                                </Container>
+                            ) : (
+                                <FullPage>
+                                    {this.props.content || this.props.children}
+                                </FullPage>
+                            )
                         }
 
                         {this.props.infobar}

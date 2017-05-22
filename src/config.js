@@ -680,5 +680,6 @@ export const NOTIFICATION_UIDS = {
  * Default currentUser preferences
  */
 export const DEFAULT_PREFERENCES = {
-    show_macros: false
+    show_macros: false,
+    available_for_chat: true
 }

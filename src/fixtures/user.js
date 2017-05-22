@@ -159,7 +159,10 @@ export const currentUser = {
     id: 2,
     firstname: 'Alex',
     _internal: {
-        loading: false
+        loading: {
+            settings: {},
+            curentUser: false
+        }
     },
     email: 'alex@gorgias.io',
     roles: [

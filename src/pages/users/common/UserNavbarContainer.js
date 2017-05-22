@@ -39,7 +39,7 @@ UserNavbarContainer.propTypes = {
 const mapStateToProps = (state) => {
     return {
         setting: getSettingsByType('user-views')(state),
-        isLoading: state.currentUser.getIn(['_internal', 'loading'], false)
+        isLoading: state.currentUser.getIn(['_internal', 'loading', 'settings', 'user-views'], false)
     }
 }
 
