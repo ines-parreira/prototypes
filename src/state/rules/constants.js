@@ -20,7 +20,6 @@ export const RESET_RULE_SUCCESS = 'RESET_RULE_SUCCESS'
 export const OBJECT_DEFINITIONS = {
     ticket: 'Ticket',
     message: 'TicketMessage',
-    event: 'Event',
     user: 'User'
 }
 
