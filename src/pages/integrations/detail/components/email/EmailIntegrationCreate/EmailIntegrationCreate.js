@@ -95,6 +95,10 @@ class EmailIntegrationCreate extends React.Component {
                         <i className="fa fa-fw fa-google fa-lg mr-2" />
                         Connect your google account
                     </Button>
+
+                    <p className="text-muted text-center">
+                        Improve email deliverability, keep your data on your Google account, import last 100 emails (optional)
+                    </p>
                     <div className="ui horizontal divider mt20i mb15i">
                         OR
                     </div>

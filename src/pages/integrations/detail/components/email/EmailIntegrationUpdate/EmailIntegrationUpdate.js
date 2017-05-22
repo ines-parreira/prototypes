@@ -163,17 +163,22 @@ class EmailIntegrationUpdate extends React.Component {
 
         return (
             <div className="ui form">
+                <h3>
+                    Setup instructions
+                </h3>
                 <p>
-                    Follow
+                    Forward emails from <b>{address}</b> to the address below. Need help? Follow our
                     {' '}
-                    <b>
-                        <a target="_blank" href="https://support.google.com/mail/answer/10957?hl=en">
-                            this tutorial
-                        </a>
-                    </b>
-                    {' '}
-                    to receive emails from <b>{address}</b> in Gorgias, and add the address below as a
-                    forwarding address:
+                    <a
+                        target="_blank"
+                        href="https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding"
+                        onClick={() => {
+                            logEvent('Clicked step by step instructions in add email integration')
+                        }}
+                    >
+                        step by step tutorial
+                    </a>
+                    .
                 </p>
                 <div className={`field ${css.form}`}>
                     <div className="ui action input fluid">

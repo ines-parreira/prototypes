@@ -165,10 +165,29 @@ class ChatIntegrationDetail extends React.Component {
                 <h3>
                     Setup instructions
                 </h3>
-
                 <p>
                     To add or update the chat to your website, add the following code before the <kbd>{'</body>'}</kbd>
-                    {' '}on your page:
+                    {' '}on your page. See detailed instructions for{' '}
+                    <a
+                        target="_blank"
+                        href="https://gorgias.helpdocs.io/integrations/chat#Adding_the_chat_on_Shopify"
+                        onClick={() => {
+                            logEvent('Clicked see chat instructions for Shopify')
+                        }}
+                    >
+                        Shopify
+                    </a>
+                    {' '}and{' '}
+                    <a
+                        target="_blank"
+                        href="https://gorgias.helpdocs.io/integrations/chat#Adding_the_chat_with_Google_Tag_Manager"
+                        onClick={() => {
+                            logEvent('Clicked see chat instructions for Google Tag Manager')
+                        }}
+                    >
+                    Google Tag Manager
+                    </a>
+                    .
                 </p>
                 <div className={css.snippet}>
                     {
