@@ -69,8 +69,8 @@ class RuleItem extends React.Component {
         const {actions, rule} = this.props
         event.preventDefault()
 
-        this.setState({isResetting: true})
         if (confirm('Are you sure you want to reset this rule?')) {
+            this.setState({isResetting: true})
             return actions.rules.reset(rule.get('id'))
                 .then(() => {
                     this.setState({isResetting: false})

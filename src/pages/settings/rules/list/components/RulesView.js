@@ -31,7 +31,7 @@ export default class RulesView extends React.Component {
 
     _handleSubmit = (values) => {
         // add some default values for the rule
-        values.event_types = 'ticket-message-created'
+        values.event_types = 'ticket-created'
         values.code = ''
         values.code_ast = getAST(values.code)
         values.code = getCode(values.code_ast)
