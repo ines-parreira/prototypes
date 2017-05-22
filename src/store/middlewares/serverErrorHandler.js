@@ -15,6 +15,22 @@ const IGNORED_PREFIXS = [
 ]
 
 const serverErrorHandler = store => next => action => {
+    const status = _get(action, 'error.response.status', '')
+
+    // notify user and redirect him to the login page when his session has expired
+    if (status === 419 || status === 401) {
+        store.dispatch(notify({
+            type: 'error',
+            title: 'Your session has expired. You will be redirected on the login page in a few seconds.',
+        }))
+
+        setTimeout(() => {
+            window.location.href = `${window.location.origin}/login`
+        }, 3000)
+
+        return next(action)
+    }
+
     const shouldDisplayError = action
         && action.error
         && !_some(IGNORED_PREFIXS, (prefix) => action.type.startsWith(prefix))
