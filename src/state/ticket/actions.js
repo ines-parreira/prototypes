@@ -10,7 +10,6 @@ import axios from 'axios'
 
 import * as newMessageActions from '../newMessage/actions'
 import * as types from './constants'
-import * as selectors from './selectors'
 import * as newMessageTypes from '../newMessage/constants'
 
 import {DEFAULT_ACTIONS} from '../../config'
@@ -27,7 +26,6 @@ import {
     buildPartialUpdateFromAction,
 } from './utils'
 
-import * as integrationSelectors from '../integrations/selectors'
 import SocketIO from '../../pages/common/utils/socketio'
 
 const Raven = window.Raven

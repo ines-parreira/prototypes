@@ -16,6 +16,7 @@ import {
 } from 'reactstrap'
 
 import {Loader} from '../../../../common/components/Loader'
+import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import {InputField, TextAreaField, ColorField, FileField} from '../../../../common/forms'
 import formSender from '../../../../common/utils/formSender'
 import ChatIntegrationPreview from './ChatIntegrationPreview'
