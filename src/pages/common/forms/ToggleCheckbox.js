@@ -22,6 +22,7 @@ export default class  extends React.Component {
         const style = {}
         if (this.props.inline) {
             style.verticalAlign = 'middle'
+            style.overflow = 'visible'
         }
 
         return (
