@@ -22,8 +22,8 @@ export default (state = initialState, action) => {
     switch (action.type) {
         case userTypes.FETCH_CURRENT_USER_START:
         case userTypes.SUBMIT_CURRENT_USER_START:
-            return state.setIn(['_internal', 'loading', 'currentUser'], true)
         case types.CHANGE_PASSWORD_START:
+            return state.setIn(['_internal', 'loading', 'currentUser'], true)
         case types.SUBMIT_SETTING_START:
             return state.setIn(['_internal', 'loading', 'settings', action.settingType], true)
 
@@ -41,10 +41,10 @@ export default (state = initialState, action) => {
             return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
 
         case userTypes.SUBMIT_CURRENT_USER_SUCCESS:
-            return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
-
         case types.CHANGE_PASSWORD_ERROR:
         case types.CHANGE_PASSWORD_SUCCESS:
+            return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
+
         case userTypes.SUBMIT_CURRENT_USER_ERROR:
         case types.SUBMIT_SETTING_ERROR:
             return state.setIn(['_internal', 'loading', 'settings', action.settingType], false)

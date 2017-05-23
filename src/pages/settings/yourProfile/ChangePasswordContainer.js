@@ -10,7 +10,7 @@ class ChangePasswordContainer extends React.Component {
     render() {
         return (
             <ChangePasswordView
-                isLoading={this.props.currentUser.getIn(['_internal', 'loading'])}
+                isLoading={this.props.currentUser.getIn(['_internal', 'loading', 'currentUser'])}
                 actions={this.props.actions}
             />
         )
