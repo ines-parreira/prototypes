@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+import _difference from 'lodash/difference'
 import _values from 'lodash/values'
 import _forEach from 'lodash/forEach'
 import {DEFAULT_SOURCE_PATHS} from '../../config'
@@ -54,7 +55,7 @@ export function getContextFromSourcePath(sourcePath) {
 
     _forEach(config, (contextConfig, context) => {
         _forEach(contextConfig, (path, type) => {
-            if (_.difference(path, sourcePath).length === 0) {
+            if (_difference(path, sourcePath).length === 0) {
                 result = {
                     context,
                     type,
