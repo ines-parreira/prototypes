@@ -16,6 +16,7 @@ class SourceWidget extends React.Component {
             editing,
         } = this.props
 
+
         const {updatedTemplate, data, type, path} = prepareWidgetToDisplay(template, source, parent)
 
         const isParentList = parent && parent.get('type') === 'list'

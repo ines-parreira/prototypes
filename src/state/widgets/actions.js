@@ -4,6 +4,8 @@ import {notify} from '../notifications/actions'
 import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
+import _last from 'lodash/last'
+import * as integrationsSelectors from './../integrations/selectors'
 
 import {getSources} from '../widgets/selectors'
 
@@ -109,6 +111,25 @@ export function cancelDrag() {
 export function drop(eventType, targetParentTemplatePath = '', key = '', toIndex = 0, fromIndex = 0) {
     return (dispatch, getState) => {
         const state = getState()
+        const splitKey = key.split('.')
+        let type = null
+        let integrationId = null
+
+        // If there's an integration matching the `sourcePath` of the object we just dropped, then we want to
+        // include its id in the call to the reducer; this way we can set the `integration_id` correctly in the new
+        // widget, and filter out widget that are already present in the list.
+        if (splitKey.includes('integrations')) {
+            const currentIntegrationId = parseInt(_last(splitKey))
+
+            if (!isNaN(currentIntegrationId)) {
+                const integration = integrationsSelectors.getIntegrationById(currentIntegrationId)(state)
+
+                if (integration) {
+                    type = integration.get('type')
+                    integrationId = currentIntegrationId
+                }
+            }
+        }
 
         dispatch({
             type: types.DROP,
@@ -118,6 +139,8 @@ export function drop(eventType, targetParentTemplatePath = '', key = '', toIndex
             fromIndex,
             targetParentTemplatePath,
             source: getSources(state),
+            widgetType: type,
+            integrationId
         })
     }
 }
@@ -166,7 +189,7 @@ export function submitWidgets(data) {
         items = items.map((item, i) => {
             const updatedItem = item
             updatedItem.order = i
-            return _pick(updatedItem, ['id', 'order', 'template', 'context', 'type'])
+            return _pick(updatedItem, ['id', 'order', 'template', 'context', 'type', 'integration_id'])
         })
 
         return axios

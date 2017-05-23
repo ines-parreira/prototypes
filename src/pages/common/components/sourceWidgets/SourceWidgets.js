@@ -3,7 +3,6 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import SourceWidget from './SourceWidget'
 import DragWrapper from '../dragging/WidgetsDragWrapper'
-import {getSourcePathFromContext} from '../../../../state/widgets/utils'
 
 class SourceWidgets extends React.Component {
     render() {
@@ -33,9 +32,9 @@ class SourceWidgets extends React.Component {
                             .map((widget, i) => {
                                 let passedTemplate = widget
                                     .get('template', fromJS({}))
-                                    .set('templatePath', `${i.toString()}.template`)
+                                    .set('templatePath', `${widget.get('order').toString()}.template`)
 
-                                const sourcePath = getSourcePathFromContext(widget.get('context'), widget.get('type'))
+                                const sourcePath = widget.get('sourcePath')
                                 passedTemplate = passedTemplate.set('path', sourcePath)
 
                                 return (

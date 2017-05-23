@@ -5,15 +5,15 @@ import Order from './Order'
 const shopify = (args) => {
     const path = args.template.get('absolutePath', []).join('.')
 
-    if (path.endsWith('_shopify.customer')) {
+    if (path.match(/integrations.[0-9]+.customer$/)) {
         return Customer()
     }
 
-    if (path.endsWith('_shopify.orders.[]')) {
+    if (path.match(/integrations.[0-9]+.orders.\[]$/)) {
         return Order()
     }
 
-    if (path.endsWith('_shopify.orders.[].line_items.[]')) {
+    if (path.match(/integrations.[0-9]+.orders.\[].line_items.\[]$/)) {
         return Item()
     }
 

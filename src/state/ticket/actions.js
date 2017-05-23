@@ -253,11 +253,49 @@ const renderObject = (argument, context) => {
 export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
     // render macro action arguments
     let state = getState()
-    const ticketState = state.ticket.toJS()
+    const ticketState = state.ticket
 
     const renderedMacro = macro.set('actions', macro.get('actions').map(
-        action => action.set('arguments', action.get('arguments').map(
-            argument => renderObject(argument, {ticket: ticketState})
+        (action) => action.set('arguments', action.get('arguments').map(
+            (argument) => {
+                let variables = argument.match(/\{ticket.requester.integrations.shopify[\w\d\]\[._-]+\}/g)
+                let newArg = argument
+
+                if (variables) {
+                    // If a variable is a Shopify variable, we try to replace `integrations.shopify` with
+                    // `integrations[correct-shopify-integration-id]`.
+                    variables.forEach((variable) => {
+                        if (variable.includes('integrations.shopify')) {
+                            const integrationIds = []
+
+                            ticketState.getIn(['requester', 'integrations']).forEach((integrationData, integrationId) => {
+                                if (integrationData.get('__integration_type__') === 'shopify') {
+                                    integrationIds.push(integrationId)
+                                }
+                            })
+
+                            let newVariable = null
+
+                            if (integrationIds.length === 1) {
+                                newVariable = variable.replace('integrations.shopify', `integrations[${integrationIds[0]}]`)
+                            }
+
+                            if (integrationIds.length > 1) {
+                                dispatch(notify({
+                                    type: 'error',
+                                    title: 'We couldn\'t replace variables in your macro, because this user has data ' +
+                                    'on multiple Shopify stores.'
+                                }))
+                                return
+                            }
+
+                            newArg = newArg.replace(variable, newVariable)
+                        }
+                    })
+                }
+
+                return renderObject(newArg, {ticket: ticketState.toJS()})
+            }
         ))
     ))
 
@@ -267,7 +305,7 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
         ticketId
     })
 
-    const actions = macro.get('actions', fromJS([]))
+    const actions = renderedMacro.get('actions', fromJS([]))
 
     actions.forEach(action => dispatch(applyMacroAction(action)))
 

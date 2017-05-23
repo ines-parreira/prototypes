@@ -70,7 +70,8 @@ export default class InfobarWidget extends React.Component {
             isEditing,
             source: data || fromJS({}),
         }
-        if (updatedTemplate.get('absolutePath', []).includes('_shopify')) {
+
+        if (widget.get('type') === 'shopify') {
             extension = {
                 ...extension,
                 ...shopify(passedData),

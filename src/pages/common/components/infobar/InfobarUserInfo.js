@@ -144,6 +144,7 @@ class InfobarUserInfo extends React.Component {
 
         return (
             <InfobarWidgets
+                context={this.props.widgets.get('currentContext', '')}
                 source={sources}
                 widgets={contextWidgets}
                 editing={

@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
             const receivedItems = fromJS(action.items)
 
             return state
-                .set('items', reorderWidgets(receivedItems))
+                .set('items', receivedItems)
                 .setIn(['_internal', 'hasFetchedWidgets'], true)
                 .setIn(['_internal', 'hasGeneratedWidgets'], false)
         }
@@ -117,7 +117,9 @@ export default (state = initialState, action) => {
                 toIndex,
                 fromIndex,
                 targetParentTemplatePath,
-                source
+                source,
+                widgetType,
+                integrationId
             } = action
 
             const currentGroup = state.getIn(['_internal', 'drag', 'group'])
@@ -171,38 +173,58 @@ export default (state = initialState, action) => {
                     order: widgetsItems.size,
                     context,
                     child: widget,
-                    sourcePath: strippedSourceFlattenAbsolutePath,
+                    sourcePath: strippedSourceFlattenAbsolutePath.split('.'),
+                    widgetType
                 })
+
+                if (integrationId) {
+                    widget = widget.set('integration_id', integrationId)
+                }
             }
 
             // get first child widget, may be useful later
             const childWidget = widget.get('widgets', fromJS([])).first()
 
             // current list at the path to put generated widgets
-            const currentList = newState
-                .getIn(widgetsItems, fromJS([]))
+            const currentList = newState.getIn(widgetsItems, fromJS([]))
 
             if (eventType === 'add') {
                 // on add, insert the element at previously calculated path
                 const element = isDraggingARootSource ? widget : childWidget
+                let shouldAddWidget = true
 
-                newState = newState
-                    .setIn(
-                        widgetsItems,
-                        currentList
-                            .insert(toIndex, element)
-                    )
+                if (isDraggingARootSource) {
+                    newState.getIn(widgetsItems).forEach((widget) => {
+                        const type = element.get('type')
+                        const integrationId = element.get('integration_id')
+                        const typeIsAlreadyPresent = type !== 'http' && widget.get('type') === type
+                        const integrationIdIsAlreadyPresent = type === 'http' && widget.get('type') === type
+                            && widget.get('integration_id') === integrationId
+
+                        if (typeIsAlreadyPresent || integrationIdIsAlreadyPresent) {
+                            shouldAddWidget = false
+                        }
+                    })
+                }
+
+                if (shouldAddWidget) {
+                    newState = newState
+                        .setIn(
+                            widgetsItems,
+                            reorderWidgets(currentList.insert(toIndex, element))
+                        ).setIn(['_internal', 'isDirty'], true)
+                }
             } else if (eventType === 'update') {
                 // on update, move the element in previously calculated path
                 const oldItem = currentList.get(fromIndex)
-                const newList = currentList.delete(fromIndex).insert(toIndex, oldItem)
+                const newList = reorderWidgets(currentList.delete(fromIndex).insert(toIndex, oldItem))
 
                 newState = newState
                     .setIn(widgetsItems, newList)
+                    .setIn(['_internal', 'isDirty'], true)
             }
 
             return newState
-                .setIn(['_internal', 'isDirty'], true)
         }
 
         case types.REMOVE_EDITED_WIDGET: {
@@ -240,9 +262,11 @@ export default (state = initialState, action) => {
 
             // remove the widget
             return state
-                .setIn(widgetsPath, state
-                    .getIn(widgetsPath)
-                    .removeIn(newTemplatePath.split('.'))
+                .setIn(widgetsPath, reorderWidgets(
+                        state
+                            .getIn(widgetsPath)
+                            .removeIn(newTemplatePath.split('.'))
+                    )
                 )
                 .setIn(['_internal', 'isDirty'], true)
         }
@@ -272,11 +296,10 @@ export default (state = initialState, action) => {
         case types.SUBMIT_WIDGET_SUCCESS: {
             const items = state.get('items', fromJS([]))
             let updatedItems = itemsWithUpdatedWidgets(items, action.context, fromJS(action.items))
-            updatedItems = reorderWidgets(updatedItems)
 
             return state
                 .set('items', updatedItems)
-                .setIn(['_internal', 'editedItems'], updatedItems)
+                .setIn(['_internal', 'editedItems'], fromJS(action.items))
                 .setIn(['_internal', 'loading', 'saving'], false)
                 .setIn(['_internal', 'isDirty'], false)
         }

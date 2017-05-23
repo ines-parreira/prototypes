@@ -23,6 +23,16 @@ export const getCustomer = createImmutableSelector(
     state => state.getIn(['requester', 'customer']) || fromJS({})
 )
 
+export const getIntegrationsData = createSelector(
+    [getTicketState],
+    state => state.getIn(['requester', 'integrations']) || fromJS({})
+)
+
+export const getIntegrationDataByIntegrationId = integrationId => createSelector(
+    [getIntegrationsData],
+    state => state.get(integrationId) || fromJS({})
+)
+
 export const getLoading = createImmutableSelector(
     [getTicketState],
     state => state.getIn(['_internal', 'loading']) || fromJS({})

@@ -1,17 +1,55 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 import {Link, browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
+import * as integrationsSelectors from './../../../../state/integrations/selectors'
 
 import SourceWidgets from './SourceWidgets'
 
-export default class SourceWrapper extends React.Component {
+export const WIDGET_DATA_TYPES = [
+    {
+        type: 'shopify',
+        title: 'Shopify data',
+        description: (
+            <div>
+                The following data comes from your{' '}
+                <Link to="/app/integrations/http" target="_blank"><b>Shopify stores</b></Link>.
+            </div>
+        )
+    },
+
+    {
+        type: 'http',
+        title: 'HTTP data',
+        description: (
+            <div>
+                The following data comes from your server, after you configured{' '}
+                <Link to="/app/integrations/http" target="_blank"><b>HTTP integrations</b></Link>.
+            </div>
+        )
+    },
+    {
+        type: 'custom',
+        title: 'Customer data',
+        description: (
+            <div>
+                The following data comes is the one you push yourself using our{' '}
+                <Link to="https://docs.gorgias.io" target="_blank"><b>API</b></Link>.
+            </div>
+        )
+    },
+
+]
+
+class SourceWrapper extends React.Component {
     state = {
         widgetsTemplate: fromJS([]),
+        availableTypes: fromJS([])
     }
 
     componentWillReceiveProps(nextProps) {
-        const {sources, widgets} = nextProps
+        const {sources, widgets, getIntegrationById} = nextProps
 
         const context = widgets.get('currentContext', '')
 
@@ -20,10 +58,46 @@ export default class SourceWrapper extends React.Component {
         const shouldGenerateWidgets = areSourcesReady(sources, context)
             && !hasWidgetsTemplates
 
-        // generate widgets template from incoming json and use it to display source widgets
-        // i.e. the things you can drag into the infobar
+        // Generate widgets template from incoming json and use it to display source widgets (i.e. the things you can
+        // drag into the infobar).
+        // If there's integrations widgets, we only want one widget per integration_type (except for HTTP integrations,
+        // for which we want a widget per integration).
         if (shouldGenerateWidgets) {
-            this.setState({widgetsTemplate: fromJS(jsonToWidgets(sources.toJS(), context))})
+            let widgetsTemplate = fromJS(jsonToWidgets(sources.toJS(), context))
+            const typesAlreadyDisplayed = []
+
+            // Make sure we only have one `sourceWidget` per type, except for HTTP
+            widgetsTemplate = widgetsTemplate.map((widgetTemplate) => {
+                let ret = widgetTemplate
+
+                if (widgetTemplate.get('sourcePath').includes('integrations')) {
+                    const integrationId = widgetTemplate.get('sourcePath').last()
+
+                    // If the integrationId is not a valid int, something is wrong so we discard the widget
+                    if (isNaN(parseInt(integrationId))) {
+                        return false
+                    }
+
+                    const integration = getIntegrationById(parseInt(integrationId))
+
+                    // If there's already a sourceWidget of this type, we don't want another one (except for http)
+                    if (typesAlreadyDisplayed.includes(integration.get('type')) && integration.get('type') !== 'http') {
+                        return false
+                    }
+
+                    typesAlreadyDisplayed.push(integration.get('type'))
+                    ret = widgetTemplate.set('type', integration.get('type'))
+                } else {
+                    typesAlreadyDisplayed.push('custom')
+                }
+
+                return ret
+            }).filter((w) => w)  // filter out null values
+
+            this.setState({
+                widgetsTemplate: widgetsTemplate,
+                availableTypes: new Set(typesAlreadyDisplayed)
+            })
         }
     }
 
@@ -57,25 +131,32 @@ export default class SourceWrapper extends React.Component {
                 </p>
 
                 <div className="source-widgets">
-                    <div className="ui card data-fields">
-                        <div className="header">
-                            <div className="title">Customer data</div>
-                            <div>
-                                The following data comes from your server, after you configured&nbsp;
-                                <Link to="/app/integrations/http" target="_blank"><b>HTTP integrations</b></Link>.
+                    {
+                        WIDGET_DATA_TYPES.map((widgetDataType, idx) => {
+                            return this.state.availableTypes.has(widgetDataType.type) && (
+                            <div className="ui card data-fields" key={idx}>
+                                <div className="header">
+                                    <div className="title">{widgetDataType.title}</div>
+                                    {widgetDataType.description}
+                                </div>
+                                <div className="content">
+                                    <SourceWidgets
+                                        source={sources}
+                                        widgets={
+                                            this.state.widgetsTemplate.filter(
+                                                (widgetTemplate) => widgetTemplate.get('type') === widgetDataType.type
+                                            )
+                                        }
+                                        editing={{
+                                            isDragging,
+                                            actions: this.props.actions.widgets
+                                        }}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className="content">
-                            <SourceWidgets
-                                source={sources}
-                                widgets={this.state.widgetsTemplate}
-                                editing={{
-                                    isDragging,
-                                    actions: this.props.actions.widgets
-                                }}
-                            />
-                        </div>
-                    </div>
+                        )
+                        })
+                    }
                 </div>
 
             </div>
@@ -88,5 +169,14 @@ SourceWrapper.propTypes = {
     identifier: PropTypes.string.isRequired,
     sources: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    getIntegrationById: PropTypes.func.isRequired
 }
+
+const mapStateToProps = (state) => {
+    return {
+        getIntegrationById: integrationsSelectors.makeGetIntegrationById(state)
+    }
+}
+
+export default connect(mapStateToProps)(SourceWrapper)

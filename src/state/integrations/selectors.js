@@ -19,6 +19,8 @@ export const getIntegrationById = id => createSelector(
     }
 )
 
+export const makeGetIntegrationById = state => id => getIntegrationById(id)(state)
+
 export const getIntegrationsByTypes = types => createSelector(
     [getIntegrations],
     (integrations) => {

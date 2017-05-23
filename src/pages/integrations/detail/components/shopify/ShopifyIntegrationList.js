@@ -6,13 +6,8 @@ import {Button} from 'reactstrap'
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 import IntegrationList from '../IntegrationList'
 import * as integrationsActions from '../../../../../state/integrations/actions'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
-@connect((state) => {
-    return {
-        hasIntegration: !integrationsSelectors.getIntegrationsByTypes('shopify')(state).isEmpty(),
-    }
-}, {
+@connect(null, {
     activate: integrationsActions.activateIntegration,
     deactivate: integrationsActions.deactivateIntegration,
 })
@@ -20,7 +15,6 @@ export default class ShopifyIntegrationList extends React.Component {
     static propTypes = {
         integrations: PropTypes.object.isRequired,
         loading: PropTypes.object.isRequired,
-        hasIntegration: PropTypes.bool.isRequired,
         activate: PropTypes.func.isRequired,
         deactivate: PropTypes.func.isRequired,
     }
@@ -88,7 +82,6 @@ export default class ShopifyIntegrationList extends React.Component {
                 integrations={integrations.filter((v) => v.get('type') === 'shopify')}
                 createIntegration={() => browserHistory.push('/app/integrations/shopify/new')}
                 createIntegrationButtonText="Add Shopify"
-                createIntegrationButtonHidden={this.props.hasIntegration}
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

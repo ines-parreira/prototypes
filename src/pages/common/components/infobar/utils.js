@@ -206,8 +206,12 @@ export function canDisplayWidget(widget, source) {
     }), initialSourceName)
 }
 
-export function makeWrapper({order, context, child, sourcePath}) {
-    const type = getContextFromSourcePath(sourcePath).type
+export function makeWrapper({order, context, child, sourcePath, widgetType}) {
+    let type = getContextFromSourcePath(sourcePath).type
+
+    if (widgetType) {
+        type = widgetType
+    }
 
     let wrapperWidget = fromJS({
         type: 'wrapper',
@@ -227,6 +231,7 @@ export function makeWrapper({order, context, child, sourcePath}) {
         order,
         context,
         template: wrapperWidget,
+        sourcePath
     })
 }
 
@@ -354,6 +359,25 @@ export function jsonToWidgets(json, context = 'ticket') {
 
     try {
         const sourcePaths = getSourcePathFromContext(context)
+        const integrationsPath = sourcePaths.find(path => {
+            return _.includes(path, 'integrations')
+        })
+
+        const integrationsData = _.get(json, integrationsPath, {})
+
+        // Add all `sourcePaths` matching integrations data
+        // Transform:
+        //  [['user', 'customer'], ['user', 'integrations']]
+        // To:
+        //  [['user', 'customer'], ['user', 'integrations', '1'], ['user', 'integrations', '2']]
+        _.forEach(integrationsData, (integrationData, integrationId) => {
+            const newPath = integrationsPath.slice()
+            newPath.push(integrationId.toString())
+            sourcePaths.push(newPath)
+        })
+
+        const idx = sourcePaths.indexOf(integrationsPath)
+        sourcePaths.splice(idx, 1)
 
         const response = sourcePaths
             .map((sourcePath, i) => {
@@ -440,15 +464,20 @@ export function prepareWidgetToDisplay(template = fromJS({}), source = fromJS({}
         }
     }
 
-    let updatedTemplate = template.set('absolutePath', absolutePath)
+    absolutePath = utils.toJS(absolutePath)
 
+    let updatedTemplate = template.set('absolutePath', absolutePath)
     let path = updatedTemplate.get('path', '')
+
+    path = utils.toJS(path)
+
     if (path && !_.isArray(path)) {
-        updatedTemplate = updatedTemplate.set('path', [path])
+        path = [path]
     }
 
+    updatedTemplate = updatedTemplate.set('path', path)
+
     // get data of widget in shortcuts
-    path = updatedTemplate.get('path', '')
     const data = path ? source.getIn(path) : source
     const type = updatedTemplate.get('type', '')
 

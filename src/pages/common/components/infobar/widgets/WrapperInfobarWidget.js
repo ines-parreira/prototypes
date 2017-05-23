@@ -3,20 +3,26 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
+import _last from 'lodash/last'
 
 import InfobarWidget from '../InfobarWidget'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
 @connect((state, ownProps) => {
-    const {widget} = ownProps
+    const {widget, template} = ownProps
+    let integrations = integrationsSelectors.getIntegrationsByTypes(widget.get('type'))(state)
 
-    // todo(jebarjonet) use integrationId instead of integration type
-    // see https://github.com/gorgias/gorgias/issues/1334#issuecomment-290482595
-    const integrations = integrationsSelectors.getIntegrationsByTypes(widget.get('type'))(state)
+    const absolutePath = template.get('absolutePath')
+    const integrationId = parseInt(_last(absolutePath))
+
+    if (!isNaN(integrationId)) {
+        const integration = integrationsSelectors.getIntegrationById(integrationId)(state)
+        integrations = integration ? fromJS([integration]) : fromJS([])
+    }
 
     return {
-        integration: integrations.isEmpty() ? fromJS({}) : integrations.first(),
+        integration: integrations.isEmpty() ? fromJS({}) : integrations.first()
     }
 })
 class WrapperInfobarWidget extends React.Component {

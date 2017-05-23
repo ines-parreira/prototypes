@@ -19,15 +19,11 @@ import css from './Event.less'
 
     const integration = integrationsSelectors.getIntegrationById(event.getIn(['data', 'integration_id']))(state)
 
-    const customer = ticketSelectors.getCustomer(state)
-
-    // todo(jebarjonet) use integrationId instead of integration type
-    // see https://github.com/gorgias/gorgias/issues/1334#issuecomment-290482595
-    const customerForIntegration = customer.getIn([`_${integration.get('type')}`]) || fromJS({})
+    const customerForIntegration = ticketSelectors
+        .getIntegrationDataByIntegrationId(integration.get('id', '').toString())(state)
 
     return {
         currentUser: currentUserSelectors.getCurrentUser(state),
-        customer,
         customerForIntegration,
         integration,
     }
@@ -35,7 +31,6 @@ import css from './Event.less'
 export default class Event extends React.Component {
     static propTypes = {
         currentUser: ImmutablePropTypes.map.isRequired,
-        customer: ImmutablePropTypes.map.isRequired,
         customerForIntegration: ImmutablePropTypes.map.isRequired,
         event: ImmutablePropTypes.map.isRequired,
         isLast: PropTypes.bool.isRequired,

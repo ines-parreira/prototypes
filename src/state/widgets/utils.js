@@ -54,7 +54,7 @@ export function getContextFromSourcePath(sourcePath) {
 
     _forEach(config, (contextConfig, context) => {
         _forEach(contextConfig, (path, type) => {
-            if (path === sourcePath) {
+            if (_.difference(path, sourcePath).length === 0) {
                 result = {
                     context,
                     type,
