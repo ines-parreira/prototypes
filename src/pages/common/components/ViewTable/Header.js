@@ -85,9 +85,7 @@ class Header extends React.Component {
     }
 
     _toggleDeleteConfirmation = () => {
-        this.setState({
-            askDeleteConfirmation: !this.state.askDeleteConfirmation,
-        })
+        this.setState({askDeleteConfirmation: !this.state.askDeleteConfirmation})
     }
 
     render() {
@@ -127,7 +125,6 @@ class Header extends React.Component {
                                         </DropdownItem>
                                         <DropdownItem divider />
                                         <DropdownItem
-                                            id="settings-view-button"
                                             type="button"
                                             onClick={this._toggleDeleteConfirmation}
                                         >

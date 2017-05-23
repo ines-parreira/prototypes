@@ -341,13 +341,15 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch, getSt
 
             return newMessageActions.resetReceiversAndSender(dispatch, getState)
         }, error => {
-            return displayLoading
-                ? dispatch({
-                    type: types.FETCH_TICKET_ERROR,
-                    error,
-                    reason: `Failed to fetch ticket ${ticketId}`
-                })
-                : null
+            if (!displayLoading) {
+                return Promise.resolve()
+            }
+
+            return dispatch({
+                type: types.FETCH_TICKET_ERROR,
+                error,
+                reason: `Failed to fetch ticket ${ticketId}`
+            })
         })
 }
 
@@ -439,5 +441,24 @@ export function displayHistoryOnNextPage(state = true) {
     return {
         type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
         state
+    }
+}
+
+export function deleteTicket(id) {
+    return (dispatch) => {
+        return axios.delete(`/api/tickets/${id}/`)
+            .then((json = {}) => json.data)
+            .then(() => {
+                return dispatch(notify({
+                    type: 'success',
+                    message: 'Ticket deleted'
+                }))
+            }, error => {
+                return dispatch({
+                    type: types.DELETE_TICKET_ERROR,
+                    error,
+                    reason: `Failed to delete the ticket ${id}`,
+                })
+            })
     }
 }

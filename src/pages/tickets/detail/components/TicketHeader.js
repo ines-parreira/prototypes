@@ -1,17 +1,39 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
+import {
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    Button,
+    Popover,
+    PopoverTitle,
+    PopoverContent,
+} from 'reactstrap'
 
 import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 
-export default class TicketHeader extends React.Component {
-    shouldComponentUpdate(nextProps) {
-        const currentTicket = this.props.ticket.delete('messages').delete('state')
-        const nextTicket = nextProps.ticket.delete('messages').delete('state')
+import * as ticketActions from '../../../../state/ticket/actions'
 
-        return !currentTicket.equals(nextTicket)
+@connect(null, {
+    deleteTicket: ticketActions.deleteTicket,
+})
+export default class TicketHeader extends React.Component {
+    static propTypes = {
+        ticket: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired,
+        deleteTicket: PropTypes.func.isRequired,
+
+        computeNextUrl: PropTypes.func.isRequired,
+        hideTicket: PropTypes.func.isRequired,
+    }
+
+    state = {
+        askDeleteConfirmation: false,
     }
 
     _toggleStatus = (status) => {
@@ -19,18 +41,31 @@ export default class TicketHeader extends React.Component {
         return this._setStatus(newStatus)
     }
 
-    _setStatus = (status) => {
-        const {actions, computeNextUrl, hideTicket} = this.props
-
+    _goToNextUrl = () => {
+        const {computeNextUrl, hideTicket} = this.props
         const nextUrl = computeNextUrl(true)
+        // redirect to the next ticket after the transition is done.
+        if (nextUrl) {
+            hideTicket()
+            // delay redirect to let the hiding animation appear
+            setTimeout(() => browserHistory.push(nextUrl), 300)
+        }
+    }
 
-        actions.ticket.setStatus(status, () => {
-            // redirect to the next ticket after the transition is done.
-            if (nextUrl) {
-                hideTicket()
-                // delay redirect to let the hiding animation appear
-                setTimeout(() => browserHistory.push(nextUrl), 300)
-            }
+    _setStatus = (status) => {
+        return this.props.actions.ticket.setStatus(status, () => {
+            this._goToNextUrl()
+        })
+    }
+
+    _toggleDeleteConfirmation = () => {
+        this.setState({askDeleteConfirmation: !this.state.askDeleteConfirmation})
+    }
+
+    _deleteTicket = () => {
+        this._toggleDeleteConfirmation()
+        return this.props.deleteTicket(this.props.ticket.get('id')).then(() => {
+            this._goToNextUrl()
         })
     }
 
@@ -41,13 +76,55 @@ export default class TicketHeader extends React.Component {
 
         return (
             <div className="ticket-header mb-2">
-                <EditableTitle
-                    className="mb-2"
-                    title={ticket.get('subject')}
-                    placeholder="Subject"
-                    update={actions.ticket.setSubject}
-                    focus={!ticket.get('id')}
-                />
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                    <EditableTitle
+                        title={ticket.get('subject')}
+                        placeholder="Subject"
+                        update={actions.ticket.setSubject}
+                        focus={!ticket.get('id')}
+                    />
+
+                    <UncontrolledDropdown className="ml-2">
+                        <DropdownToggle
+                            color="secondary"
+                            type="button"
+                            size="sm"
+                            id="ticket-actions-button"
+                        >
+                            <i className="fa fa-fw fa-caret-down" />
+                        </DropdownToggle>
+                        <DropdownMenu right>
+                            <DropdownItem
+                                type="button"
+                                onClick={this._toggleDeleteConfirmation}
+                            >
+                                <span className="text-danger">
+                                    Delete ticket
+                                </span>
+                                <Popover
+                                    placement="bottom"
+                                    isOpen={this.state.askDeleteConfirmation}
+                                    target="ticket-actions-button"
+                                    toggle={this._toggleDeleteConfirmation}
+                                >
+                                    <PopoverTitle>Are you sure?</PopoverTitle>
+                                    <PopoverContent>
+                                        <p>
+                                            You are about to <b>delete</b> this ticket.
+                                        </p>
+                                        <Button
+                                            type="submit"
+                                            color="success"
+                                            onClick={this._deleteTicket}
+                                        >
+                                            Confirm
+                                        </Button>
+                                    </PopoverContent>
+                                </Popover>
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                </div>
 
                 <div className="d-flex justify-content-between">
                     <div className="d-inline-flex">
@@ -76,12 +153,4 @@ export default class TicketHeader extends React.Component {
             </div>
         )
     }
-}
-
-TicketHeader.propTypes = {
-    ticket: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-
-    computeNextUrl: PropTypes.func.isRequired,
-    hideTicket: PropTypes.func.isRequired,
 }
