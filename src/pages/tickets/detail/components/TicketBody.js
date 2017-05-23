@@ -11,7 +11,6 @@ import Event from './Event'
 @connect((state) => {
     return {
         currentUser: state.currentUser,
-        elements: ticketSelectors.getBody(state),
         loadingState: ticketSelectors.getLoading(state),
         ticket: state.ticket,
     }

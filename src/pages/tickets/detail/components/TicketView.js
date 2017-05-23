@@ -14,12 +14,15 @@ import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 import * as tagsSelectors from '../../../../state/tags/selectors'
 import * as usersSelectors from '../../../../state/users/selectors'
+import * as ticketSelectors from '../../../../state/ticket/selectors'
 
 import * as viewsUtils from '../../../../state/views/utils'
 
 import css from './TicketView.less'
 
 export class TicketView extends React.Component {
+    wasAtBottomOfPage = false // used to track if user was at the bottom of the page
+
     componentWillMount() {
         const shouldDisplayHistoryOnNextPage = this.props.ticket.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
         const displayHistory = this.props.ticket.getIn(['_internal', 'displayHistory'])
@@ -30,6 +33,21 @@ export class TicketView extends React.Component {
 
         if (shouldDisplayHistoryOnNextPage) {
             this.props.actions.ticket.displayHistoryOnNextPage(false)
+        }
+    }
+
+    componentWillReceiveProps() {
+        // save before props update if user was at bottom of the page (probably answering something)
+        const element = document.getElementsByClassName('ticket-content')[0]
+        this.wasAtBottomOfPage = (element.scrollHeight - element.scrollTop) === element.offsetHeight
+    }
+
+    componentDidUpdate(prevProps) {
+        // if ticket body (messages, events, etc.) changes but user is at bottom of the page,
+        // then keep him at the bottom of the page
+        if (!prevProps.ticketBody.equals(this.props.ticketBody) && this.wasAtBottomOfPage) {
+            const element = document.getElementsByClassName('ticket-content')[0]
+            element.scrollTop = element.scrollHeight
         }
     }
 
@@ -155,7 +173,7 @@ export class TicketView extends React.Component {
                                             actions.ticket.toggleHistory(false)
                                         }
 
-                                        document.getElementsByClassName('TicketDetailContainer')[0].scrollTop = 0
+                                        // document.getElementsByClassName('TicketDetailContainer')[0].scrollTop = 0
 
                                         logEvent(eventName, {
                                             nbOfTicketsInTimeline: users.getIn(['userHistory', 'tickets']).size,
@@ -191,7 +209,7 @@ export class TicketView extends React.Component {
                 >
                     {
                         !isCreating && (
-                            <TicketBody />
+                            <TicketBody elements={this.props.ticketBody} />
                         )
                     }
 
@@ -242,6 +260,7 @@ TicketView.propTypes = {
     submit: PropTypes.func.isRequired,
     tags: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
+    ticketBody: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired,
     usersIsLoading: PropTypes.func.isRequired,
     view: PropTypes.object
@@ -257,6 +276,7 @@ function mapStateToProps(state) {
         agents: usersSelectors.getAgents(state),
         agentsViewing: usersSelectors.getOtherAgentsOnTicket(state.ticket.get('id'))(state),
         currentUser: state.currentUser,
+        ticketBody: ticketSelectors.getBody(state),
         macros: state.macros,
         users: state.users,
         usersIsLoading: usersSelectors.makeIsLoading(state),
