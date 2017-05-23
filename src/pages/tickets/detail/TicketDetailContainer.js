@@ -397,12 +397,7 @@ export default class TicketDetailContainer extends React.Component {
 
         return (
             <DocumentTitle title={this.props.ticket.get('id') ? this.props.ticket.get('subject') : 'New ticket'}>
-                <div
-                    className="TicketDetailContainer"
-                    onScroll={() => {
-                        this.forceUpdate()
-                    }}
-                >
+                <div className="TicketDetailContainer">
                     <TicketView
                         actions={this.props.actions}
                         applyMacro={this._applyMacro}
