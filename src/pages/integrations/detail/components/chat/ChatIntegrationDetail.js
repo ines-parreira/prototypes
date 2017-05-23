@@ -15,7 +15,6 @@ import {
     Col,
 } from 'reactstrap'
 
-import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import {Loader} from '../../../../common/components/Loader'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import {InputField, TextAreaField, ColorField, FileField} from '../../../../common/forms'
