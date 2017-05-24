@@ -103,7 +103,7 @@ class YourProfileView extends React.Component {
                     <Field
                         type="text"
                         name="name"
-                        label="Name"
+                        label="Your name"
                         placeholder="John Doe"
                         required
                         component={InputField}
@@ -111,8 +111,8 @@ class YourProfileView extends React.Component {
                     <Field
                         type="email"
                         name="email"
-                        label="Email"
-                        placeholder="john.doe@gorgias.io"
+                        label="Your email"
+                        placeholder="john.doe@acme.com"
                         required
                         component={InputField}
                     />

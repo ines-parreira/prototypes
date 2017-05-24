@@ -183,6 +183,7 @@ export default class Form extends React.Component {
                                 onChange: value => this.setState({role: value}),
                             }}
                             required
+                            help="Agents can view & respond to tickets. Admins can add/remove team members, manage tags & billing."
                         >
                             <option value="agent">Agent</option>
                             <option value="admin">Admin</option>

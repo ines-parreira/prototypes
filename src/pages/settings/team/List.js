@@ -73,10 +73,11 @@ export default class List extends React.Component {
                 </div>
 
                 <p>
-                    Manage team members for your Gorgias account. Team members can respond to tickets. You can add as
-                    many team members as you want.
+                    Manage team members for your Gorgias account. Team members can view tickets and respond to them.
                 </p>
-
+                <p>
+                    You can <strong>add as many team members as you want</strong>, at no additional cost.
+                </p>
                 <Table>
                     <tbody>
                         {

@@ -80,9 +80,8 @@ export default class Billing extends Component {
                 <p>
                     Gorgias' pricing is based on the <strong>number of tickets you respond to every
                     month</strong>.
-                    We only count tickets that contain <strong>at least one message from an agent</strong> in
-                    your
-                    team.
+                    We only count tickets that contain <strong>at least one message from a team member</strong> that
+                    were sent from Gorgias. Spam tickets don't count.
                 </p>
                 {
                     costExample ? (
@@ -98,8 +97,8 @@ export default class Billing extends Component {
                         )
                 }
                 <p>
-                    Learn more on our <Link to="https://gorgias.io/pricing" target="_blank"><strong>pricing
-                    page</strong></Link>.
+                    Learn more on our <Link to="https://gorgias.io/pricing" target="_blank">pricing
+                    page</Link>.
                 </p>
                 <div className="mb-4">
                     <h6>
