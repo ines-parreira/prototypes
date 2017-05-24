@@ -258,6 +258,10 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
     const renderedMacro = macro.set('actions', macro.get('actions').map(
         (action) => action.set('arguments', action.get('arguments').map(
             (argument) => {
+                if (!argument || !argument.match) {
+                    return argument
+                }
+
                 let variables = argument.match(/\{ticket.requester.integrations.shopify[\w\d\]\[._-]+\}/g)
                 let newArg = argument
 
