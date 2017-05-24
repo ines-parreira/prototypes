@@ -142,7 +142,7 @@ class CardInfobarWidget extends React.Component {
 
         const childWidgets = template.get('widgets', fromJS([]))
 
-        const isTransparent = !template.getIn(['meta', 'displayCard'])
+        const isTransparent = !template.getIn(['meta', 'displayCard'], true)
         const className = classnames('ui card', {
             'can-drop': editing && editing.canDrop(ap),
             draggable: !isParentList,
