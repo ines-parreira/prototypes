@@ -75,7 +75,7 @@ class WrapperInfobarWidget extends React.Component {
         const tp = template.get('templatePath')
 
         return (
-            <div className="ui card wrapper draggable">
+            <div className="ui card wrapper transparent draggable">
                 <div className="content">
                     {
                         isEditing

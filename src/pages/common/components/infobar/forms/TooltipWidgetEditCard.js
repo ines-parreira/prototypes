@@ -4,7 +4,7 @@ import {Field, reduxForm} from 'redux-form'
 import {fromJS} from 'immutable'
 import {Button} from 'reactstrap'
 
-import {InputField, SelectField} from '../../../forms'
+import {InputField, SelectField, CheckboxField} from '../../../forms'
 import {isSimpleTemplateWidget} from '../utils'
 
 class TooltipWidgetEditCard extends React.Component {
@@ -18,7 +18,8 @@ class TooltipWidgetEditCard extends React.Component {
             // we need to specify the initial values for each field
             // otherwise they will not be sent if they are empty
             meta: fromJS({
-                link: ''
+                link: '',
+                displayCard: true
             }).merge(template.get('meta', fromJS({}))).toJS()
         }
 
@@ -121,6 +122,15 @@ class TooltipWidgetEditCard extends React.Component {
                                     name="card.meta.link"
                                     placeholder="http://myapi.com/{id}"
                                     component={InputField}
+                                />
+                            )
+                        }
+                        {
+                            !editionHiddenFields.includes('displayCard') && (
+                                <Field
+                                    label="Display card"
+                                    name="card.meta.displayCard"
+                                    component={CheckboxField}
                                 />
                             )
                         }

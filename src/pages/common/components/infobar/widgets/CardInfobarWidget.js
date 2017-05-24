@@ -140,13 +140,15 @@ class CardInfobarWidget extends React.Component {
         const ap = template.get('absolutePath')
         const tp = template.get('templatePath')
 
+        const childWidgets = template.get('widgets', fromJS([]))
+
+        const isTransparent = !template.getIn(['meta', 'displayCard'])
         const className = classnames('ui card', {
             'can-drop': editing && editing.canDrop(ap),
             draggable: !isParentList,
-            closed: !this.state.open && !isEditing
+            closed: !this.state.open && !isEditing,
+            transparent: isTransparent
         })
-
-        const childWidgets = template.get('widgets', fromJS([]))
 
         // display content (or at least space under card title) if we are in edition mode or if there is data to display
         const shouldDisplayCardContent = editing || !childWidgets.isEmpty()
@@ -164,7 +166,7 @@ class CardInfobarWidget extends React.Component {
                     && (
                         <div className="title header clearfix">
                             {
-                                !isEditing
+                                !isTransparent && !isEditing
                                 && shouldDisplayCardContent
                                 && (
                                     <span
@@ -175,7 +177,7 @@ class CardInfobarWidget extends React.Component {
                                     </span>
                                 )
                             }
-                            {this._renderTitle(template, source.toJS())}
+                            {!isTransparent && this._renderTitle(template, source.toJS())}
                             {
                                 isEditing
                                 && isParentList
