@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import moment from 'moment'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 
@@ -21,6 +22,15 @@ export default class TicketBody extends React.Component {
         elements: PropTypes.object.isRequired,
         loadingState: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
+    }
+
+    constructor(props) {
+        super(props)
+
+        this.lastMessageDatetimeAfterMount = null
+        if (!props.elements.isEmpty()) {
+            this.lastMessageDatetimeAfterMount = moment(props.elements.last().get('created_datetime'))
+        }
     }
 
     shouldComponentUpdate(nextProps) {
@@ -70,6 +80,7 @@ export default class TicketBody extends React.Component {
                                 loading={isLoading}
                                 ticket={this.props.ticket}
                                 currentUser={this.props.currentUser}
+                                lastMessageDatetimeAfterMount={this.lastMessageDatetimeAfterMount}
                             />
                         )
                     })

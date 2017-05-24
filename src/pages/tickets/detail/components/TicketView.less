@@ -11,11 +11,13 @@
     background-color: #f3a60b;
     color: white;
     padding: 6px @padding-sides;
+    overflow: hidden;
     transition: all .1s linear;
 
     &.hidden {
       height: 0;
       padding: 0 @padding-sides;
+      color: transparent;
     }
   }
 }

@@ -146,7 +146,7 @@ export function getCode(ast) {
  * @param {Object} options filters to apply on messages
  * @returns {Object|Array}
  */
-export function getLastMessage(messages, options) {
+export function getLastMessage(messages, options = null) {
     if (!messages || !messages.length) {
         return
     }

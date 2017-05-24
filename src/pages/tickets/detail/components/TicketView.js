@@ -173,8 +173,6 @@ export class TicketView extends React.Component {
                                             actions.ticket.toggleHistory(false)
                                         }
 
-                                        // document.getElementsByClassName('TicketDetailContainer')[0].scrollTop = 0
-
                                         logEvent(eventName, {
                                             nbOfTicketsInTimeline: users.getIn(['userHistory', 'tickets']).size,
                                             channel: ticket.get('channel'),

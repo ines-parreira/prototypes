@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {List} from 'immutable'
+import moment from 'moment'
 import classnames from 'classnames'
 import {isArray as _isArray} from 'lodash'
 import {Popover, PopoverContent} from 'reactstrap'
@@ -213,12 +214,16 @@ export default class TicketMessage extends React.Component {
         }
 
         const loading = (pending && !error) || this.props.loading
+        // appear animation if message is created after the ticket body component is mounted
+        const appear = !!this.props.lastMessageDatetimeAfterMount
+            && moment(message.created_datetime).diff(this.props.lastMessageDatetimeAfterMount) > 0
 
-        const className = classnames('ui raw segment ticket-message', css.component,
+        const className = classnames('ticket-message', css.component,
             {
                 'ticket-message-agent': message.from_agent,
                 internal: !message.public,
-                loading
+                loading,
+                appear,
             }
         )
 
@@ -274,5 +279,6 @@ TicketMessage.propTypes = {
     message: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     ticket: PropTypes.object,
-    currentUser: PropTypes.object.isRequired
+    currentUser: PropTypes.object.isRequired,
+    lastMessageDatetimeAfterMount: PropTypes.object.isRequired,
 }
