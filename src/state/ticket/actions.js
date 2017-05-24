@@ -250,57 +250,66 @@ const renderObject = (argument, context) => {
     return ret
 }
 
+const replaceVariables = (argument, state, dispatch) => {
+    let ticketState = state.ticket
+
+    let variables = argument.match(/\{ticket.requester.integrations.shopify[\w\d\]\[._-]+\}/g)
+    let newArg = argument
+
+    if (variables) {
+        // If a variable is a Shopify variable, we try to replace `integrations.shopify` with
+        // `integrations[correct-shopify-integration-id]`.
+        variables.forEach((variable) => {
+            if (variable.includes('integrations.shopify')) {
+                const integrationIds = []
+
+                ticketState.getIn(['requester', 'integrations']).forEach((integrationData, integrationId) => {
+                    if (integrationData.get('__integration_type__') === 'shopify') {
+                        integrationIds.push(integrationId)
+                    }
+                })
+
+                let newVariable = null
+
+                if (integrationIds.length === 1) {
+                    newVariable = variable.replace('integrations.shopify', `integrations[${integrationIds[0]}]`)
+                }
+
+                if (integrationIds.length > 1) {
+                    dispatch(notify({
+                        type: 'error',
+                        title: 'We couldn\'t replace variables in your macro, because this user has data ' +
+                        'on multiple Shopify stores.'
+                    }))
+                    return
+                }
+
+                newArg = newArg.replace(variable, newVariable)
+            }
+        })
+    }
+
+    return renderObject(newArg, {ticket: ticketState.toJS(), current_user: state.currentUser.toJS()})
+}
+
+const nestedReplace = (obj, state, dispatch) => {
+    if (typeof obj === 'string') {
+        return replaceVariables(obj, state, dispatch)
+    }
+
+    if (typeof obj === 'object') {
+        return obj.map((item) => nestedReplace(item, state, dispatch))
+    }
+
+    return obj
+}
+
 export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
     // render macro action arguments
     let state = getState()
-    const ticketState = state.ticket
 
     const renderedMacro = macro.set('actions', macro.get('actions').map(
-        (action) => action.set('arguments', action.get('arguments').map(
-            (argument) => {
-                if (!argument || !argument.match) {
-                    return argument
-                }
-
-                let variables = argument.match(/\{ticket.requester.integrations.shopify[\w\d\]\[._-]+\}/g)
-                let newArg = argument
-
-                if (variables) {
-                    // If a variable is a Shopify variable, we try to replace `integrations.shopify` with
-                    // `integrations[correct-shopify-integration-id]`.
-                    variables.forEach((variable) => {
-                        if (variable.includes('integrations.shopify')) {
-                            const integrationIds = []
-
-                            ticketState.getIn(['requester', 'integrations']).forEach((integrationData, integrationId) => {
-                                if (integrationData.get('__integration_type__') === 'shopify') {
-                                    integrationIds.push(integrationId)
-                                }
-                            })
-
-                            let newVariable = null
-
-                            if (integrationIds.length === 1) {
-                                newVariable = variable.replace('integrations.shopify', `integrations[${integrationIds[0]}]`)
-                            }
-
-                            if (integrationIds.length > 1) {
-                                dispatch(notify({
-                                    type: 'error',
-                                    title: 'We couldn\'t replace variables in your macro, because this user has data ' +
-                                    'on multiple Shopify stores.'
-                                }))
-                                return
-                            }
-
-                            newArg = newArg.replace(variable, newVariable)
-                        }
-                    })
-                }
-
-                return renderObject(newArg, {ticket: ticketState.toJS()})
-            }
-        ))
+        (action) => action.set('arguments', nestedReplace(action.get('arguments'), state, dispatch))
     ))
 
     dispatch({
