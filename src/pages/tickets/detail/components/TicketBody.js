@@ -78,8 +78,7 @@ export default class TicketBody extends React.Component {
                                 key={element.get('id')}
                                 message={element.toJS()}
                                 loading={isLoading}
-                                ticket={this.props.ticket}
-                                currentUser={this.props.currentUser}
+                                timezone={this.props.currentUser.get('timezone')}
                                 lastMessageDatetimeAfterMount={this.lastMessageDatetimeAfterMount}
                             />
                         )

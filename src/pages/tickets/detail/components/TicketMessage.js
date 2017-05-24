@@ -197,7 +197,7 @@ export default class TicketMessage extends React.Component {
     }
 
     render() {
-        const {message, ticket} = this.props
+        const {message, timezone} = this.props
 
         let error = false
         let pending = false
@@ -230,10 +230,10 @@ export default class TicketMessage extends React.Component {
         return (
             <div className={className}>
                 {
-                    !loading && error && this._renderActionFailed(message.id, ticket.get('id'), message.actions)
+                    !loading && error && this._renderActionFailed(message.id, message.ticket_id, message.actions)
                 }
                 {
-                    !loading && message.failed_datetime && this._renderMessageNotSent(message.id, ticket.get('id'))
+                    !loading && message.failed_datetime && this._renderMessageNotSent(message.id, message.ticket_id)
                 }
                 <div className={classnames('ticket-message-header', css.header)}>
                     <div className="ticket-message-header-details">
@@ -263,7 +263,7 @@ export default class TicketMessage extends React.Component {
                             settings={{
                                 position: 'top left'
                             }}
-                            timezone={this.props.currentUser.get('timezone')}
+                            timezone={timezone}
                         />
                     </span>
                 </div>
@@ -278,7 +278,6 @@ export default class TicketMessage extends React.Component {
 TicketMessage.propTypes = {
     message: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
-    ticket: PropTypes.object,
-    currentUser: PropTypes.object.isRequired,
+    timezone: PropTypes.string,
     lastMessageDatetimeAfterMount: PropTypes.object.isRequired,
 }
