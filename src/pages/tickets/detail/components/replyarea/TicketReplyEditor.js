@@ -26,7 +26,7 @@ const _updateMessageText = _throttle((props, editorState) => {
         contentState: editorState.getCurrentContent(),
         selectionState: editorState.getSelection()
     }))
-}, 200)
+}, 100)
 
 class TicketReplyEditor extends React.Component {
     componentWillMount() {
