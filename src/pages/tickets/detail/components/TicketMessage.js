@@ -216,6 +216,7 @@ export default class TicketMessage extends React.Component {
         const loading = (pending && !error) || this.props.loading
         // appear animation if message is created after the ticket body component is mounted
         const appear = !!this.props.lastMessageDatetimeAfterMount
+            && !message.from_agent
             && moment(message.created_datetime).diff(this.props.lastMessageDatetimeAfterMount) > 0
 
         const className = classnames('ticket-message', css.component,
