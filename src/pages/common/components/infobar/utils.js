@@ -365,6 +365,8 @@ export function jsonToWidgets(json, context = 'ticket') {
 
         const integrationsData = _.get(json, integrationsPath, {})
 
+        const typeByPath = {}
+
         // Add all `sourcePaths` matching integrations data
         // Transform:
         //  [['user', 'customer'], ['user', 'integrations']]
@@ -373,6 +375,7 @@ export function jsonToWidgets(json, context = 'ticket') {
         _.forEach(integrationsData, (integrationData, integrationId) => {
             const newPath = integrationsPath.slice()
             newPath.push(integrationId.toString())
+            typeByPath[newPath] = integrationData['__integration_type__']
             sourcePaths.push(newPath)
         })
 
@@ -401,6 +404,7 @@ export function jsonToWidgets(json, context = 'ticket') {
                     context,
                     child: template,
                     sourcePath,
+                    widgetType: typeByPath[sourcePath] || null
                 })
             })
 
