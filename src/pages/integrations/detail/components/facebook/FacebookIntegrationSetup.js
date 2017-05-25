@@ -65,7 +65,15 @@ export default class FacebookIntegrationSetup extends React.Component {
 
     _onChange = (event) => {
         const [id, name] = event.target.name.split('.')
-        this.state.pages[id][name] = event.target.checked
+        const value = event.target.checked
+        this.state.pages[id][name] = value
+
+        // if page_enabled option changes, set the same value for following values
+        if (name === 'page_enabled') {
+            this.state.pages[id]['private_messages_enabled'] = value
+            this.state.pages[id]['posts_enabled'] = value
+        }
+
         this.setState(this.state)
     }
 

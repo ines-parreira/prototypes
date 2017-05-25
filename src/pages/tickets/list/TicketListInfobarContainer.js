@@ -40,6 +40,8 @@ class TicketListInfobarContainer extends React.Component {
             return !integrations.find(integration => integration.get('type') === suggestion.type)
         })
 
+        const hasShopifyIntegration = integrations.some(integration => integration.get('type') === 'shopify')
+
         const hidingDate = moment(currentUser.get('created_datetime')).add(14, 'days')
 
         // hide bar if current user is not an admin
@@ -63,10 +65,9 @@ class TicketListInfobarContainer extends React.Component {
                 <div
                     className={classnames(css.page, 'infobar-content')}
                 >
-                    <div className={css.icon}>✌️</div>
                     <h1>
-                        Welcome to Gorgias <br />
-                        {currentUser.get('firstname')}!
+                        Welcome<br />
+                        {currentUser.get('firstname')}
                     </h1>
                     {
                         <div className={css.buttons}>
@@ -93,12 +94,31 @@ class TicketListInfobarContainer extends React.Component {
                                     )
                                 })
                             }
+                            {
+                                hasShopifyIntegration && (
+                                    <a
+                                        href="https://gorgias.helpdocs.io/integrations/http-integrations#Shipstation"
+                                        target="_blank"
+                                        className={css.button}
+                                        onClick={() => {
+                                            logEvent('Clicked add a "shipstation" integration on Onboarding widget')
+                                        }}
+                                    >
+                                        <img
+                                            role="presentation"
+                                            className="logo"
+                                            src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/integrations/shipstation.png`}
+                                        />
+                                        <span>Add Shipstation</span>
+                                    </a>
+                                )
+                            }
                             <a
                                 href="https://gorgias.helpdocs.io/integrations/helpdocs"
                                 target="_blank"
                                 className={css.button}
                                 onClick={() => {
-                                    logEvent('Clicked add a "Helpdocs" integration on Onboarding widget')
+                                    logEvent('Clicked add a "helpdocs" integration on Onboarding widget')
                                 }}
                             >
                                 <img

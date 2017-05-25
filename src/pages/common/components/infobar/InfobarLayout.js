@@ -7,9 +7,8 @@ class InfobarLayout extends React.Component {
 
         this.cursorX = null
         this.originalWidth = 0
-        // a special method of minesweeping by @xarg
-        this.minWidth = _max([window.innerWidth / 5.1, 280])
-        this.maxWidth = window.innerWidth / 2.3
+        this.minWidth = _max([window.innerWidth / 5.1, 350])
+        this.maxWidth = window.innerWidth / 2
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'
 

@@ -24,15 +24,24 @@ export default class ShopifyIntegrationList extends React.Component {
 
         const longTypeDescription = (
             <div>
-                <p>Shopify is an e-commerce platform. By connecting your Shopify store to Gorgias, you can:</p>
+                <p>Shopify is an e-commerce platform. Connect your Shopify store to Gorgias and:</p>
 
                 <ul>
-                    <li>See Shopify profile and orders & shipping status next to support tickets</li>
-                    <li>Edit orders, issue refunds, etc. directly from support conversations</li>
-                    <li>Search users by order number, shipping address and match anonymous chat tickets with existing
-                        Shopify customers
+                    <li>
+                        Display <b>Shopify profiles and orders</b> next to support tickets
+                    </li>
+                    <li>
+                        <b>Edit orders, issue refunds</b>, etc. directly from support conversations
+                    </li>
+                    <li>
+                        <b>Sync all your Shopify customers</b> in Gorgias. This way, if a customer contacts you on
+                        Facebook, you can match them with the Shopify customer in your records.
                     </li>
                 </ul>
+
+                <p>
+                    You can <b>connect multiple Shopify stores</b>.
+                </p>
             </div>
         )
 

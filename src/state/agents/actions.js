@@ -13,7 +13,7 @@ export const createAgent = (agent) => (dispatch) => {
 
             dispatch(notify({
                 type: 'success',
-                message: 'Team member created',
+                message: `Team member created. We've sent login instructions to ${resp.get('email')}.`,
             }))
 
             return dispatch({

@@ -156,7 +156,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Elev.io',
         description: 'Let your customers contact you from your help center',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#elev-io',
+        url: 'https://gorgias.helpdocs.io/integrations/elevio',
         image: 'integrations/elevio.png',
     },
     {
@@ -174,49 +174,49 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'WooCommerce',
         description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#woocommerce',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#WooCommerce',
         image: 'integrations/woocommerce.png',
     },
     {
         title: 'Prestashop',
         description: 'See customer profiles & orders next to support conversations. Refund orders with macros',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#prestashop',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Prestashop',
         image: 'integrations/prestashop.png',
     },
     {
         title: 'Salesforce',
         description: 'Display customer information next to tickets',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#salesforce',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Salesforce',
         image: 'integrations/salesforce.png',
     },
     {
         title: 'Shipstation',
         description: 'Display shipping info next to tickets',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#shipstation',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Shipstation',
         image: 'integrations/shipstation.png',
     },
     {
         title: 'LoyaltyLion',
         description: 'See loyalty points next to tickets. Award points with macros.',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#loyalty-lion',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#LoyaltyLion',
         image: 'integrations/loyaltylion.png',
     },
     {
         title: 'Yotpo',
         description: 'Display product reviews customers left next to support tickets.',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#yotpo',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Yotpo',
         image: 'integrations/yotpo.png',
     },
     {
         title: 'Slack',
         description: 'Post notifications on Slack when tickets are created or updated',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#slack',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Slack',
         image: 'integrations/slack.png',
     },
     {
         title: 'Zapier',
         description: 'Trigger zaps with macros',
-        url: 'http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#zapier',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Zapier',
         image: 'integrations/zapier.png',
     }
 ]

@@ -153,6 +153,14 @@ export default class Form extends React.Component {
                     {isUpdate ? `Editing ${agent.get('name')}` : 'Add team member'}
                 </h1>
 
+                {
+                    !isUpdate && (
+                        <p>
+                            We'll send login instructions via email when you add this user.
+                        </p>
+                    )
+                }
+
                 <BootstrapForm onSubmit={this._onSubmit}>
                     <FormGroup>
                         <InputField
