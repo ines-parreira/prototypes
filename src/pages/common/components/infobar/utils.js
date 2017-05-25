@@ -206,7 +206,7 @@ export function canDisplayWidget(widget, source) {
     }), initialSourceName)
 }
 
-export function makeWrapper({order, context, child, sourcePath, widgetType}) {
+export function makeWrapper({order, context, child, sourcePath, widgetType, integrationId}) {
     let type = getContextFromSourcePath(sourcePath).type
 
     if (widgetType) {
@@ -231,7 +231,8 @@ export function makeWrapper({order, context, child, sourcePath, widgetType}) {
         order,
         context,
         template: wrapperWidget,
-        sourcePath
+        sourcePath,
+        integration_id: integrationId
     })
 }
 
@@ -365,7 +366,7 @@ export function jsonToWidgets(json, context = 'ticket') {
 
         const integrationsData = _.get(json, integrationsPath, {})
 
-        const typeByPath = {}
+        let typeByPath = fromJS({})
 
         // Add all `sourcePaths` matching integrations data
         // Transform:
@@ -375,7 +376,10 @@ export function jsonToWidgets(json, context = 'ticket') {
         _.forEach(integrationsData, (integrationData, integrationId) => {
             const newPath = integrationsPath.slice()
             newPath.push(integrationId.toString())
-            typeByPath[newPath] = integrationData['__integration_type__']
+            typeByPath = typeByPath.set(newPath, fromJS({
+                type: integrationData['__integration_type__'],
+                integrationId
+            }))
             sourcePaths.push(newPath)
         })
 
@@ -404,7 +408,8 @@ export function jsonToWidgets(json, context = 'ticket') {
                     context,
                     child: template,
                     sourcePath,
-                    widgetType: typeByPath[sourcePath] || null
+                    widgetType: typeByPath.getIn([sourcePath, 'type']) || null,
+                    integrationId: typeByPath.getIn([sourcePath, 'integrationId']) || null
                 })
             })
 

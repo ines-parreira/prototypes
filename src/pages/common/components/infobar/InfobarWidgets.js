@@ -33,7 +33,23 @@ class InfobarWidgets extends React.Component {
             if (item.get('type') === 'widget') {
                 widget = item.get('widget', fromJS({}))
 
-                sourcePath = getSourcePathFromContext(widget.get('context'), widget.get('type'))
+                if (widget.get('type') !== 'custom') {
+                    let integration = null
+                    if (widget.get('type') !== 'http') {
+                        integration = integrations.find((i) => i.get('type').toString() === widget.get('type'))
+                    } else {
+                        integration = integrations.find((i) => i.get('id').toString() === widget.get('integration_id').toString())
+                    }
+
+                    if (!integration || integration.isEmpty()) {
+                        return
+                    }
+
+                    sourcePath = genericSourcePath.slice()
+                    sourcePath.push(integration.get('id').toString())
+                } else {
+                    sourcePath = getSourcePathFromContext(widget.get('context'), widget.get('type'))
+                }
             } else if (item.get('type') === 'data') {
                 const integrationId = item.get('integrationId')
 
@@ -62,7 +78,7 @@ class InfobarWidgets extends React.Component {
                 .set('path', sourcePath)
                 .set('templatePath', `${widget.get('order')}.template`)
 
-            if (!canDisplayWidget(template, source)) {
+            if (!canDisplayWidget(template, source) && !isEditing) {
                 return
             }
 
@@ -76,6 +92,7 @@ class InfobarWidgets extends React.Component {
         preparedDisplayList = preparedDisplayList.sort((a, b) => {
             return compare(a.getIn(['widget', 'order']), b.getIn(['widget', 'order']))
         })
+
 
         // We create the components separately from the rest of the function because we want to assign `templatePath`
         // AFTER having sorted the results by `widget.order`.
@@ -125,14 +142,16 @@ class InfobarWidgets extends React.Component {
         // We build a single list of all elements we want to display
         let displayList = fromJS([])
 
-        integrationDatas.forEach((data, integrationId) => {
-            displayList = displayList.push(fromJS({
-                type: 'data',
-                integrationId
-            }))
-        })
+        if (!isEditing) {
+            integrationDatas.forEach((data, integrationId) => {
+                displayList = displayList.push(fromJS({
+                    type: 'data',
+                    integrationId
+                }))
+            })
+        }
 
-        customerWidgets.forEach((widget) => {
+        (isEditing ? widgets : customerWidgets).forEach((widget) => {
             displayList = displayList.push(fromJS({
                 type: 'widget',
                 widget
