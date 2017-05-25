@@ -113,7 +113,7 @@ class EmailIntegrationUpdate extends React.Component {
                 </span>
             ) : (
                 <span>
-                    Completed: <b>{mailsImported}</b> mails have been imported.
+                    Completed: <b>{mailsImported}</b> emails have been imported.
                 </span>
             )
 
