@@ -181,7 +181,7 @@ export function mergeUsers(baseUserId, mergeUserId, data) {
 
                 dispatch(notify({
                     type: 'success',
-                    message: 'Users successfully merged. Search data is being updated, it might take a few minutes.'
+                    message: 'Users successfully merged.'
                 }))
             }, error => {
                 dispatch({

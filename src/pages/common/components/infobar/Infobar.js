@@ -284,6 +284,7 @@ export default class Infobar extends React.Component {
                     </div>
                     {this._renderUserInfo(this.state.selectedUser)}
                     <MergeUsersContainer
+                        isTicketContext={!sources.get('ticket', fromJS({})).isEmpty()}
                         display={this.state.showMergeUserModal}
                         destinationUser={this.props.user}
                         sourceUser={this.state.selectedUser}
@@ -364,6 +365,7 @@ export default class Infobar extends React.Component {
                                 </div>
                                 {this._renderUserInfo(this.state.suggestedUser)}
                                 <MergeUsersContainer
+                                    isTicketContext={!sources.get('ticket', fromJS({})).isEmpty()}
                                     display={this.state.showMergeUserModal}
                                     destinationUser={this.props.user}
                                     sourceUser={this.state.suggestedUser}

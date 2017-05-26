@@ -16,18 +16,15 @@ import ErrorMessage from '../components/ErrorMessage'
  */
 class MultiSelectBinaryChoiceField extends React.Component {
     componentWillReceiveProps(nextProps) {
-        const {requiredValue} = nextProps
-        let isActive = false
+        const {requiredValues} = nextProps
+        const activeIds = this.props.input.value.map((channel) => channel.id)
 
-        _forEach(this.props.input.value, channel => {
-            if (_isEqual(channel, requiredValue)) {
-                isActive = true
+        // Force selection of non-selected required values
+        _forEach(requiredValues, (requiredValue) => {
+            if (!activeIds.includes(requiredValue.id)) {
+                this._onChange(requiredValue, true)
             }
         })
-
-        if (this.props.input.value && !isActive) {
-            this._onChange(requiredValue, true)
-        }
     }
 
     _onChange(value, forceAdd = false) {
@@ -57,10 +54,12 @@ class MultiSelectBinaryChoiceField extends React.Component {
         this.forceUpdate() // force rerender because redux-form doesn't inject the new value
     }
 
-    _expandOptionsSet = (optionSet) => (
-        optionSet.map((option, idx) => {
+    _expandOptionsSet = (optionSet) => {
+        const requiredValuesIds = this.props.requiredValues.map((requiredValue) => requiredValue.id)
+
+        return optionSet.map((option, idx) => {
             const active = _find(this.props.input.value, (channel) => _isEqual(channel, option.value))
-            const disabled = _isEqual(this.props.requiredValue, option.value)
+            const disabled = requiredValuesIds.includes(option.value.id)
             const className = classNames({active, disabled}, 'option')
 
             return (
@@ -73,7 +72,7 @@ class MultiSelectBinaryChoiceField extends React.Component {
                 </div>
             )
         })
-    )
+    }
 
     render() {
         const {options, meta, label, tooltip} = this.props
@@ -109,7 +108,7 @@ MultiSelectBinaryChoiceField.propTypes = {
     meta: PropTypes.object.isRequired,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
-    requiredValue: PropTypes.object,
+    requiredValues: PropTypes.array,
     tooltip: PropTypes.object,
     propertiesToCompare: PropTypes.array.isRequired,
 }

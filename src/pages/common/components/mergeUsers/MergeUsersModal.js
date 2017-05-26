@@ -86,7 +86,7 @@ class MergeUsersModal extends React.Component {
     }
 
     render() {
-        const {destinationUser, sourceUser, handleSubmit, isLoading, primaryEmail} = this.props
+        const {destinationUser, sourceUser, handleSubmit, isLoading, primaryEmail, requiredAddresses} = this.props
 
         let baseCustomer = destinationUser.get('customer')
         baseCustomer = isCustomerDataPresent(baseCustomer) ? baseCustomer.toJS() : {}
@@ -94,7 +94,13 @@ class MergeUsersModal extends React.Component {
         mergeCustomer = isCustomerDataPresent(mergeCustomer) ? mergeCustomer.toJS() : {}
 
         const allChannels = destinationUser.get('channels').toJS().concat(sourceUser.get('channels').toJS())
-        const requiredChannelValue = allChannels.find(channel => channel.address === primaryEmail)
+
+        const allRequiredAddresses = requiredAddresses.toJS()
+        allRequiredAddresses.push(primaryEmail)
+
+        const requiredChannelValues = allChannels.filter(
+            (channel) => allRequiredAddresses.includes(channel.address)
+        )
 
         return (
             <Modal
@@ -197,7 +203,7 @@ class MergeUsersModal extends React.Component {
                             )}
                             name="user.channels"
                             component={MultiSelectBinaryChoiceField}
-                            requiredValue={requiredChannelValue}
+                            requiredValues={requiredChannelValues}
                             options={[
                                 this._generateChannelOptions(destinationUser),
                                 this._generateChannelOptions(sourceUser)
@@ -257,7 +263,8 @@ MergeUsersModal.propTypes = {
     toggleModal: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    primaryEmail: PropTypes.string
+    primaryEmail: PropTypes.string,
+    requiredAddresses: PropTypes.object
 }
 
 const selector = formValueSelector('mergeUsersForm')

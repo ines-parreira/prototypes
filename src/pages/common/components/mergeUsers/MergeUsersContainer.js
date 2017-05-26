@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as UsersActions from './../../../../state/users/actions'
@@ -6,10 +7,20 @@ import * as InfobarActions from './../../../../state/infobar/actions'
 import MergeUsersModal from './MergeUsersModal'
 
 import {makeIsLoading} from './../../../../state/users/selectors'
+import {getMessages} from './../../../../state/ticket/selectors'
 
 class MergeUsersContainer extends React.Component {
     render() {
-        const {destinationUser, sourceUser, display, actions, onClose, usersIsLoading} = this.props
+        const {
+            destinationUser,
+            sourceUser,
+            display,
+            actions,
+            onClose,
+            usersIsLoading,
+            isTicketContext,
+            ticketMessages
+        } = this.props
 
         if (!destinationUser || destinationUser.isEmpty()) {
             return null
@@ -17,6 +28,18 @@ class MergeUsersContainer extends React.Component {
 
         if (!sourceUser || sourceUser.isEmpty()) {
             return null
+        }
+
+        const requiredAddresses = []
+
+        if (isTicketContext && ticketMessages) {
+            ticketMessages.forEach((message) => {
+                requiredAddresses.push(message.getIn(['source', 'from', 'address'], null))
+
+                message.getIn(['source', 'to'], fromJS([])).forEach((sourceField) => {
+                    requiredAddresses.push(sourceField.get('address', null))
+                })
+            })
         }
 
         return (
@@ -27,6 +50,7 @@ class MergeUsersContainer extends React.Component {
                 toggleModal={onClose}
                 mergeUsers={actions.users.mergeUsers}
                 isLoading={usersIsLoading('merge')}
+                requiredAddresses={fromJS(requiredAddresses).toSet().filter((address) => address)}
             />
         )
     }
@@ -34,7 +58,8 @@ class MergeUsersContainer extends React.Component {
 
 MergeUsersContainer.defaultProps = {
     display: false,
-    isLoading: false
+    isLoading: false,
+    isTicketContext: false
 }
 
 MergeUsersContainer.propTypes = {
@@ -43,12 +68,16 @@ MergeUsersContainer.propTypes = {
     display: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
-    usersIsLoading: PropTypes.func.isRequired
+    usersIsLoading: PropTypes.func.isRequired,
+
+    isTicketContext: PropTypes.bool.isRequired,
+    ticketMessages: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
     return {
         usersIsLoading: makeIsLoading(state),
+        ticketMessages: getMessages(state)
     }
 }
 
