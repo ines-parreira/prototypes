@@ -190,7 +190,7 @@ describe('actions', () => {
             }])
         })
 
-        it('dispatch setSender - empty Map (internal-note)', () => {
+        it('dispatch setSender - empty name and address (internal-note)', () => {
             store = mockStore({
                 integrations: integrationState.integrations,
                 ticket: emailTicket,
@@ -201,7 +201,10 @@ describe('actions', () => {
 
             expect(expectedActions).toEqual([{
                 type: types.NEW_MESSAGE_SET_SENDER,
-                sender: fromJS({})
+                sender: fromJS({
+                    name: '',
+                    address: ''
+                })
             }])
         })
     })

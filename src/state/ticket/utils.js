@@ -232,7 +232,10 @@ export function getPreferredChannel(channelType, channels) {
  */
 export function getNewMessageSender(ticket, newMessageSourceType, channels) {
     if (newMessageSourceType === 'internal-note') {
-        return fromJS({})
+        return fromJS({
+            name: '',
+            address: ''
+        })
     }
 
     const preferredChannel = getPreferredChannel(newMessageSourceType, channels) || fromJS({})
@@ -315,6 +318,8 @@ export function getPendingMessageIndex(pendingMessages, message) {
     const whitelist = (v, key) => props.includes(key)
 
     pendingMessages.some((pending, i) => {
+        console.log(_pickBy(pending, whitelist))
+        console.log(_pickBy(message, whitelist))
         if (_isEqual(_pickBy(pending, whitelist), _pickBy(message, whitelist))) {
             index = i
             return true

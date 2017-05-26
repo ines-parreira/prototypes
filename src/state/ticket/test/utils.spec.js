@@ -263,9 +263,12 @@ describe('Ticket utils', () => {
                 .toEqualImmutable(expected)
         })
 
-        it('should return empty Map (internal-note)', () => {
+        it('should return an empty name and address (internal-note)', () => {
             expect(getNewMessageSender(emailTicket, 'internal-note', channels))
-                .toEqualImmutable(fromJS({}))
+                .toEqualImmutable(fromJS({
+                    name: '',
+                    address: '',
+                }))
         })
     })
 })
