@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {StatusLabel} from '../../utils/labels'
-import {formatDatetime, stripHTML, getLastMessage} from '../../../../utils'
+import {formatDatetime, stripHTML} from '../../../../utils'
 import {browserHistory} from 'react-router'
 import classnames from 'classnames'
 
