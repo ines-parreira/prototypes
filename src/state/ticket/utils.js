@@ -318,8 +318,6 @@ export function getPendingMessageIndex(pendingMessages, message) {
     const whitelist = (v, key) => props.includes(key)
 
     pendingMessages.some((pending, i) => {
-        console.log(_pickBy(pending, whitelist))
-        console.log(_pickBy(message, whitelist))
         if (_isEqual(_pickBy(pending, whitelist), _pickBy(message, whitelist))) {
             index = i
             return true
