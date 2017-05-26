@@ -61,6 +61,11 @@ export const getMessages = createImmutableSelector(
     state => state.get('messages') || fromJS([])
 )
 
+export const getPendingMessages = createImmutableSelector(
+    [getTicketState],
+    state => state.getIn(['_internal', 'pendingMessages']) || fromJS([])
+)
+
 export const getCustomerRatings = createImmutableSelector(
     [getTicketState],
     state => state.get('customer_ratings') || fromJS([])
@@ -73,10 +78,16 @@ export const getEvents = createImmutableSelector(
 
 // return elements we display in the body of a ticket (messages, ratings, events, etc.)
 export const getBody = createImmutableSelector(
-    [getMessages, getCustomerRatings, getEvents],
-    (messages, ratings, events) => {
+    [getMessages, getPendingMessages, getCustomerRatings, getEvents],
+    (messages, pendingMessages, ratings, events) => {
         messages = messages.map((message) => {
             return message.set('isMessage', true)
+        })
+
+        pendingMessages = pendingMessages.map((message) => {
+            return message
+                .set('isPending', !message.get('failed_datetime'))
+                .set('isMessage', true)
         })
 
         ratings = ratings.map((rating) => {
@@ -90,6 +101,7 @@ export const getBody = createImmutableSelector(
         })
 
         return messages
+            .concat(pendingMessages)
             .concat(ratings)
             .concat(events)
             .sortBy(element => element.get('created_datetime'))

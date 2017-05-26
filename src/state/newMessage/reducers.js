@@ -2,7 +2,6 @@ import * as types from './constants'
 import {fromJS} from 'immutable'
 import {convertToHTML} from '../../utils'
 import * as responseUtils from './responseUtils'
-import ticketReplyCache from './ticketReplyCache'
 import {
     getReceiversProperties,
 } from './selectors'
@@ -105,14 +104,38 @@ export default (state = initialState, action) => {
             return state.set('newMessage', newMessage('email', 'email'))
         }
 
-        case types.NEW_MESSAGE_SUBMIT_TICKET_START:
-        case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START:
-            return state.setIn(['_internal', 'loading', 'submitMessage'], true)
+        case types.NEW_MESSAGE_SUBMIT_TICKET_START: {
+            return state
+                .setIn(['_internal', 'loading', 'submitMessage'], true)
                 .setIn(['state', 'dirty'], false)
+        }
 
-        case types.NEW_MESSAGE_SUBMIT_TICKET_ERROR:
-        case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR:
+        case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
+            const {channel} = action.message
+            let messages = fromJS(action.messages)
+
+            let newState = state
+                .mergeDeep({
+                    state: {
+                        dirty: false,
+                        contentState: null,
+                        selectionState: null,
+                        signatureAdded: false,
+                        cacheAdded: false,
+                        forceUpdate: true,
+                    }
+                })
+
+            if (!action.resetMessage) {
+                return newState
+            }
+
+            return newState.set('newMessage', newMessage(channel, getSourceTypeOfResponse(messages)))
+        }
+
+        case types.NEW_MESSAGE_SUBMIT_TICKET_ERROR: {
             return state.setIn(['_internal', 'loading', 'submitMessage'], false)
+        }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
             const {channel} = action.resp
@@ -131,33 +154,6 @@ export default (state = initialState, action) => {
                     }
                 })
                 .setIn(['_internal', 'loading', 'submitMessage'], false)
-
-            if (!action.resetMessage) {
-                return newState
-            }
-
-            return newState.set('newMessage', newMessage(channel, getSourceTypeOfResponse(messages)))
-        }
-
-        case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
-            const {channel, ticket_id} = action.resp
-            let messages = fromJS(action.messages)
-
-            // Make sure we reset the cache before we send the message
-            ticketReplyCache.delete(ticket_id)
-
-            let newState = state
-
-            newState = newState.mergeDeep({
-                state: {
-                    dirty: false,
-                    contentState: null,
-                    selectionState: null,
-                    signatureAdded: false,
-                    cacheAdded: false,
-                    forceUpdate: true,
-                }
-            }).setIn(['_internal', 'loading', 'submitMessage'], false)
 
             if (!action.resetMessage) {
                 return newState

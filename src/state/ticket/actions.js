@@ -513,3 +513,10 @@ export function deleteTicket(id) {
             })
     }
 }
+
+export function deleteTicketPendingMessage(message) {
+    return {
+        type: types.DELETE_TICKET_PENDING_MESSAGE,
+        message
+    }
+}

@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
+import _noop from 'lodash/noop'
 
 import TicketHeader from './TicketHeader'
 import TicketBody from './TicketBody'
@@ -93,7 +94,8 @@ export class TicketView extends React.Component {
             usersIsLoading,
             actions,
             computeNextUrl,
-            isTicketHidden
+            isTicketHidden,
+            setStatus,
         } = this.props
 
         const isCreating = !ticket.get('id')
@@ -207,7 +209,10 @@ export class TicketView extends React.Component {
                 >
                     {
                         !isCreating && (
-                            <TicketBody elements={this.props.ticketBody} />
+                            <TicketBody
+                                elements={this.props.ticketBody}
+                                setStatus={setStatus}
+                            />
                         )
                     }
 
@@ -261,11 +266,13 @@ TicketView.propTypes = {
     ticketBody: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired,
     usersIsLoading: PropTypes.func.isRequired,
-    view: PropTypes.object
+    setStatus: PropTypes.func.isRequired,
+    view: PropTypes.object,
 }
 
 TicketView.defaultProps = {
     agentsViewing: fromJS([]),
+    setStatus: _noop
 }
 
 function mapStateToProps(state) {

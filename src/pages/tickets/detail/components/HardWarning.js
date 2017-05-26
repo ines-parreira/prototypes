@@ -5,12 +5,54 @@ import classnames from 'classnames'
 import {UncontrolledTooltip} from 'reactstrap'
 
 import * as TicketActions from '../../../../state/ticket/actions'
+import * as NewMessageActions from '../../../../state/newMessage/actions'
 import {getActionTemplate, stripErrorMessage} from './../../../../utils'
 
 class HardWarning extends React.Component {
-    render() {
+    retry = () => {
         const {
             message,
+            actions,
+            ticketId,
+            messageId,
+            setStatus,
+        } = this.props
+
+        if (messageId) {
+            return actions.ticket.updateTicketMessage(ticketId, messageId, {failed_datetime: null}, 'retry')
+        } else {
+            const status = message.getIn(['_internal', 'status'])
+            return actions
+                .newMessage
+                .retrySubmitTicketMessage(message)
+                .then(() => {
+                    if (status) {
+                        return setStatus(status)
+                    }
+
+                    return message
+                })
+        }
+    }
+
+    cancel = () => {
+        const {
+            message,
+            actions,
+            ticketId,
+            messageId,
+        } = this.props
+
+        if (messageId) {
+            return actions.ticket.deleteMessage(ticketId, messageId)
+        } else {
+            return actions.ticket.deleteTicketPendingMessage(message)
+        }
+    }
+
+    render() {
+        const {
+            error,
             retryTooltipMessage,
             actions,
             ticketId,
@@ -21,6 +63,8 @@ class HardWarning extends React.Component {
             cancel,
         } = this.props
 
+        const uid = Date.now()
+
         let retryButton = null
         let forceButton = null
         let cancelButton = null
@@ -28,14 +72,14 @@ class HardWarning extends React.Component {
         const commonClassName = 'ui labeled icon tiny button hard-warning-tooltip'
 
         if (retry) {
-            const id = `retry-button-${messageId}`
+            const id = `retry-button-${uid}`
 
             retryButton = (
                 <span className="mr-2">
                     <div
                         id={id}
                         className={classnames(commonClassName, 'light blue')}
-                        onClick={() => actions.updateTicketMessage(ticketId, messageId, {failed_datetime: null}, 'retry')}
+                        onClick={this.retry}
                     >
                         <i className="refresh icon" />
                         Retry
@@ -52,14 +96,14 @@ class HardWarning extends React.Component {
         }
 
         if (force) {
-            const id = `force-button-${messageId}`
+            const id = `force-button-${uid}`
 
             forceButton = (
                 <span className="mr-2">
                     <div
                         id={id}
                         className={classnames(commonClassName, 'orange')}
-                        onClick={() => actions.updateTicketMessage(ticketId, messageId, {}, 'force')}
+                        onClick={() => actions.ticket.updateTicketMessage(ticketId, messageId, {}, 'force')}
                     >
                         <i className="chevron right icon" />
                         Force
@@ -76,14 +120,14 @@ class HardWarning extends React.Component {
         }
 
         if (cancel) {
-            const id = `cancel-button-${messageId}`
+            const id = `cancel-button-${uid}`
 
             cancelButton = (
                 <span className="mr-2">
                     <div
                         id={id}
                         className={classnames(commonClassName, 'red')}
-                        onClick={() => actions.deleteMessage(ticketId, messageId)}
+                        onClick={this.cancel}
                     >
                         <i className="ban icon" />
                         Cancel
@@ -116,7 +160,7 @@ class HardWarning extends React.Component {
                         >
                             <div className="hard-warning">
                                 <i className="inverted red circular warning sign icon" />
-                                {message}
+                                {error}
                             </div>
 
                             <div>
@@ -157,18 +201,22 @@ class HardWarning extends React.Component {
 }
 
 HardWarning.defaultProps = {
-    message: '',
+    error: '',
     messageActions: [],
     retryTooltipMessage: 'Retry to send the message.'
 }
 
 HardWarning.propTypes = {
-    message: PropTypes.string,
+    error: PropTypes.string,
     retryTooltipMessage: PropTypes.string,
     actions: PropTypes.object.isRequired,
 
     ticketId: PropTypes.number.isRequired,
-    messageId: PropTypes.number.isRequired,
+
+    message: PropTypes.object,
+    messageId: PropTypes.number,
+
+    setStatus: PropTypes.func,
 
     messageActions: PropTypes.array,
 
@@ -179,7 +227,10 @@ HardWarning.propTypes = {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(TicketActions, dispatch)
+        actions: {
+            ticket: bindActionCreators(TicketActions, dispatch),
+            newMessage: bindActionCreators(NewMessageActions, dispatch),
+        }
     }
 }
 

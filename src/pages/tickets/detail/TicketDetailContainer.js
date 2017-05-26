@@ -370,20 +370,24 @@ export default class TicketDetailContainer extends React.Component {
         if (status && promise) {
             // set status
             promise.then(() => {
-                this.props.actions.ticket.setStatus(status, () => {
-                    if (status === 'closed') {
-                        const nextUrl = this._computeNextUrl(true)
-
-                        // redirect to the next ticket after the transition is done.
-                        if (nextUrl) {
-                            this._hideTicket()
-                            // delay redirect to let the hiding animation appear
-                            setTimeout(() => browserHistory.push(nextUrl), 300)
-                        }
-                    }
-                })
+                return this._setStatus(status)
             })
         }
+    }
+
+    _setStatus = (status) => {
+        return this.props.actions.ticket.setStatus(status, () => {
+            if (status === 'closed') {
+                const nextUrl = this._computeNextUrl(true)
+
+                // redirect to the next ticket after the transition is done.
+                if (nextUrl) {
+                    this._hideTicket()
+                    // delay redirect to let the hiding animation appear
+                    setTimeout(() => browserHistory.push(nextUrl), 300)
+                }
+            }
+        })
     }
 
     render() {
@@ -406,6 +410,7 @@ export default class TicketDetailContainer extends React.Component {
                         isTicketHidden={this.state.isTicketHidden}
                         submit={this._submit}
                         view={this.props.activeView}
+                        setStatus={this._setStatus}
                     />
                     <MacroContainer />
                 </div>

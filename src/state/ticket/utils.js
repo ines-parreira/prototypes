@@ -2,6 +2,8 @@ import {fromJS} from 'immutable'
 import _forEach from 'lodash/forEach'
 import _isArray from 'lodash/isArray'
 import _toLower from 'lodash/toLower'
+import _isEqual from 'lodash/isEqual'
+import _pickBy from 'lodash/pickBy'
 
 import {makeGetProperty} from './selectors'
 import {SOURCE_VALUE_PROP} from '../../config'
@@ -285,4 +287,39 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
 
     // no channels found so, we use the preferred channel
     return preferredChannel
+}
+
+/**
+ * Return pending message index
+ * match a newly posted message to a pending message and return it's index
+ * @param pendingMessages E.g: []
+ * @param message { body_html: '', ... }
+ * @returns {*}
+ */
+export function getPendingMessageIndex(pendingMessages, message) {
+    let index = -1
+
+    if (!pendingMessages.length) {
+        return index
+    }
+
+    // props that are the same in the post body and the response
+    const props = [
+        'body_html',
+        'body_text',
+        'channel',
+        'from_agent',
+        'source',
+    ]
+
+    const whitelist = (v, key) => props.includes(key)
+
+    pendingMessages.some((pending, i) => {
+        if (_isEqual(_pickBy(pending, whitelist), _pickBy(message, whitelist))) {
+            index = i
+            return true
+        }
+    })
+
+    return index
 }

@@ -20,3 +20,39 @@
     margin-left: 8px;
   }
 }
+
+/* loading state.
+ * keyframe animation is broken for :local styles,
+ * when using css-modules + less:
+ * https://github.com/css-modules/css-modules/issues/141
+ */
+
+@keyframes ticket-message-loading-spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ticket-message-loading {
+  position: relative;
+  opacity: .6;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 50%;
+    margin-top: -0.4em;
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.6) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);
+    animation: ticket-message-loading-spin 0.4s infinite linear;
+  }
+}

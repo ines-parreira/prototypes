@@ -22,6 +22,7 @@ export default class TicketBody extends React.Component {
         elements: PropTypes.object.isRequired,
         loadingState: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
+        setStatus: PropTypes.func.isRequired,
     }
 
     constructor(props) {
@@ -39,7 +40,7 @@ export default class TicketBody extends React.Component {
     }
 
     render() {
-        const {elements, loadingState} = this.props
+        const {elements, loadingState, setStatus} = this.props
 
         if (elements.size === 0) {
             return null
@@ -69,17 +70,21 @@ export default class TicketBody extends React.Component {
                             )
                         }
 
-                        const isLoading = !!loadingState
+                        const isLoading = (
+                            !!loadingState
                             .get('updateMessage', fromJS([]))
                             .find(messageId => messageId === element.get('id'))
+                            || element.get('isPending', false)
+                        )
 
                         return (
                             <TicketMessage
-                                key={element.get('id')}
+                                key={index}
                                 message={element.toJS()}
                                 loading={isLoading}
                                 timezone={this.props.currentUser.get('timezone')}
                                 lastMessageDatetimeAfterMount={this.lastMessageDatetimeAfterMount}
+                                setStatus={setStatus}
                             />
                         )
                     })

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
-import {List} from 'immutable'
 import moment from 'moment'
-import classnames from 'classnames'
+import {List, fromJS} from 'immutable'
+import classnamesBind from 'classnames/bind'
 import {isArray as _isArray} from 'lodash'
 import {Popover, PopoverContent} from 'reactstrap'
 import TicketMessageActions from './TicketMessageActions'
@@ -13,6 +13,8 @@ import {getValuePropFromSourceType} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
 
 import css from './TicketMessage.less'
+
+const classnames = classnamesBind.bind(css)
 
 export default class TicketMessage extends React.Component {
     state = {
@@ -171,27 +173,36 @@ export default class TicketMessage extends React.Component {
         ]
     }
 
-    _renderMessageNotSent(messageId, ticketId) {
+    _renderMessageNotSent() {
+        const {message, setStatus} = this.props
+
         return (
             <HardWarning
-                message="This message was not sent: error while sending the message."
-                messageId={messageId}
-                ticketId={ticketId}
-                retry cancel
+                error="This message was not sent: error while sending the message."
+                message={fromJS(message)}
+                messageId={message.id}
+                ticketId={message.ticket_id}
+                setStatus={setStatus}
+                retry
+                cancel
             />
         )
     }
 
-    _renderActionFailed(messageId, ticketId, messageActions) {
+    _renderActionFailed() {
+        const {message} = this.props
+
         const rMsg = 'Retry to execute the failed action(s) automatically, and send the message if it succeeds.'
         return (
             <HardWarning
-                message="This message was not sent: one or more actions failed."
+                error="This message was not sent: one or more actions failed."
                 retryTooltipMessage={rMsg}
-                messageId={messageId}
-                ticketId={ticketId}
-                messageActions={messageActions}
-                retry force cancel
+                messageId={message.id}
+                ticketId={message.ticket_id}
+                messageActions={message.actions}
+                retry
+                force
+                cancel
             />
         )
     }
@@ -223,18 +234,18 @@ export default class TicketMessage extends React.Component {
             {
                 'ticket-message-agent': message.from_agent,
                 internal: !message.public,
-                loading,
                 appear,
+                'ticket-message-loading': loading,
             }
         )
 
         return (
             <div className={className}>
                 {
-                    !loading && error && this._renderActionFailed(message.id, message.ticket_id, message.actions)
+                    !loading && error && this._renderActionFailed()
                 }
                 {
-                    !loading && message.failed_datetime && this._renderMessageNotSent(message.id, message.ticket_id)
+                    !loading && message.failed_datetime && this._renderMessageNotSent()
                 }
                 <div className={classnames('ticket-message-header', css.header)}>
                     <div className="ticket-message-header-details">
@@ -281,4 +292,5 @@ TicketMessage.propTypes = {
     loading: PropTypes.bool.isRequired,
     timezone: PropTypes.string,
     lastMessageDatetimeAfterMount: PropTypes.object.isRequired,
+    setStatus: PropTypes.func.isRequired,
 }

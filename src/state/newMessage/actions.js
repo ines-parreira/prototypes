@@ -341,24 +341,32 @@ function onMessageSent(dispatch) {
 /**
  * @param action: A parameter to decide on what to do when an action failed. (Retry/ignore/cancel, etc.)
  */
-export function submitTicketMessage(status, macroActions, action, resetMessage = true) {
+export function submitTicketMessage(status, macroActions, action, resetMessage = true, retryMessage) {
     return (dispatch, getState) => {
         const {ticket, currentUser, newMessage} = getState()
+        // temporary message id
+        let messageId = Date.now()
+        let messageToSend
 
-        dispatch({
-            type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
-        })
+        // message already parsed
+        if (!!retryMessage) {
+            messageId = retryMessage.getIn(['_internal', 'id'])
 
-        const data = prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActions, currentUser)
+            messageToSend = retryMessage.get('originalMessage')
+        } else {
+            const data = prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActions, currentUser)
 
-        if (!data || _isNull(data)) {
-            return dispatch({
-                type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
-                reason: 'Message was not sent. Sent data is invalid.'
-            })
+            if (!data || _isNull(data)) {
+                return dispatch({
+                    type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
+                    reason: 'Message was not sent. Sent data is invalid.',
+                    message: messageToSend,
+                    messageId,
+                })
+            }
+
+            messageToSend = getLastMessage(data.messages)
         }
-
-        const messageToSend = getLastMessage(data.messages)
 
         // Execute front-end validations for each action of the message
         if (messageToSend.actions) {
@@ -376,13 +384,33 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
                             return dispatch({
                                 type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                                 error: 'Action validation error.',
-                                reason: validator.error
+                                reason: validator.error,
+                                message: messageToSend,
+                                messageId,
                             })
                         }
                     }
                 }
             }
         }
+
+        let state = getState()
+
+        dispatch({
+            type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+            message: messageToSend,
+            messageId,
+            resetMessage,
+            retry: !!retryMessage,
+            status: status,
+            messages: ticketSelectors.getMessages(state),
+        })
+
+        onMessageSent(dispatch)
+
+        // We're trying to add a signature if any
+        dispatch(setResponseText())
+        resetReceiversAndSender(dispatch, getState)
 
         let promise
 
@@ -398,8 +426,6 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
         return promise
             .then((json = {}) => json.data)
             .then(resp => {
-                onMessageSent(dispatch)
-
                 let state = getState()
                 let {ticket: _ticket} = state
 
@@ -410,21 +436,33 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
                         resetMessage,
                         resp,
                         messages: ticketSelectors.getMessages(state),
+                        messageId,
                     })
                 }
 
-                // We're trying to add a signature if any
-                dispatch(setResponseText())
-
-                return resetReceiversAndSender(dispatch, getState)
+                return resp
             }, error => {
-                return dispatch({
+                dispatch({
                     type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                     error,
-                    reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.'
+                    reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.',
+                    message: messageToSend,
+                    messageId,
                 })
+
+                return promise
             })
     }
+}
+
+export function retrySubmitTicketMessage(message) {
+    return submitTicketMessage(
+        message.getIn(['_internal', 'status']),
+        false,
+        false,
+        false,
+        message
+    )
 }
 
 export function submitTicket(ticket, status, macroActions, currentUser, resetMessage = true) {
