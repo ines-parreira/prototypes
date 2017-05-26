@@ -7,7 +7,7 @@ import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 const InfobarAddIntegrationSuggestion = ({user}) => (
     <div className="widgets-list">
         <div>
-            <div className="ui card wrapper">
+            <div className="ui card wrapper transparent">
                 <div className="content">
                     <div>
                         <div className="ui card blurred">
