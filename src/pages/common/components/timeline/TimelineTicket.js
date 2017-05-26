@@ -21,20 +21,13 @@ export default class TimelineTicket extends React.Component {
             return null
         }
 
-        const previewedMessage = getLastMessage(ticket.get('messages').toJS())
-
-        if (!previewedMessage) {
-            return null
-        }
-
         // Optionally show how many messages a ticket has in the subject
         let subject = stripHTML(ticket.get('subject'))
-        const messageCount = this.props.ticket.get('messages').size
+
+        const messageCount = ticket.get('messages_count')
         if (messageCount > 1) {
             subject = `(${messageCount}) ${subject}`
         }
-
-        const body = previewedMessage.body_html ? stripHTML(previewedMessage.body_html) : previewedMessage.body_text
 
         return (
             <div
@@ -47,7 +40,7 @@ export default class TimelineTicket extends React.Component {
                             {subject}
                         </span>
                         <div className="body sub header">
-                            {body}
+                            {ticket.get('excerpt')}
                         </div>
                     </div>
                 </div>
