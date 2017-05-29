@@ -4,6 +4,7 @@ import {Field, reduxForm} from 'redux-form'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _clone from 'lodash/clone'
+import _replace from 'lodash/replace'
 import Clipboard from 'clipboard'
 import {
     Button,
@@ -12,7 +13,7 @@ import {
     BreadcrumbItem,
     Container,
     Row,
-    Col,
+    Col, Card, CardBlock, CardHeader, Alert,
 } from 'reactstrap'
 
 import {Loader} from '../../../../common/components/Loader'
@@ -44,7 +45,8 @@ class ChatIntegrationDetail extends React.Component {
         this.formValues = this._getFormValues(props)
 
         this.state = {
-            isCopied: false
+            isCopied: false,
+            isShopifySnippet: false
         }
     }
 
@@ -136,20 +138,54 @@ class ChatIntegrationDetail extends React.Component {
             conversationColor: integration.getIn(['decoration', 'conversation_color']),
             smooch: {
                 appToken: integration.getIn(['meta', 'app_token']),
+                properties: {
+                    current_page: 'window.location.href'
+                },
                 customText: {
                     introductionText: integration.getIn(['decoration', 'header_text'])
                 }
             }
         }
 
-        const cleanOptions = JSON.stringify(this._cleanOptions(options), null, '  ')
+        const cleanOptions = _replace(
+            JSON.stringify(this._cleanOptions(options), null, '  '),
+            '"window.location.href"',
+            'window.location.href'
+        )
 
         let snippet = `<script src="${window.GORGIAS_ASSETS_URL || window.location.origin}/static/public/js/gorgias-chat.js"></script>\n`
-        snippet += '<script>\n'
-        snippet += 'document.addEventListener("DOMContentLoaded", function() {\n'
-        snippet += `GorgiasChat.init(${cleanOptions})\n`
-        snippet += '})\n'
-        snippet += '</script>'
+
+        if (!this.state.isShopifySnippet) {
+            snippet += '<script>\n'
+            snippet += 'document.addEventListener("DOMContentLoaded", function() {\n'
+            snippet += `GorgiasChat.init(${cleanOptions})\n`
+            snippet += '})\n'
+            snippet += '</script>'
+        } else {
+            const extendedOptions = Object.assign({}, options)
+            extendedOptions.smooch.givenName = '{{ customer.name }}'
+            extendedOptions.smooch.email = '{{ customer.email }}'
+
+            const cleanExtendedOptions = _replace(
+                JSON.stringify(this._cleanOptions(extendedOptions), null, '  '),
+                '"window.location.href"',
+                'window.location.href'
+            )
+
+            snippet += '{% if customer %}\n'
+            snippet += '<script>\n'
+            snippet += 'document.addEventListener("DOMContentLoaded", function() {\n'
+            snippet += `GorgiasChat.init(${cleanExtendedOptions})\n`
+            snippet += '})\n'
+            snippet += '</script>\n'
+            snippet += '{% else %}\n'
+            snippet += '<script>\n'
+            snippet += 'document.addEventListener("DOMContentLoaded", function() {\n'
+            snippet += `GorgiasChat.init(${cleanOptions})\n`
+            snippet += '})\n'
+            snippet += '</script>\n'
+            snippet += '{% endif %}\n'
+        }
 
         return snippet
     }
@@ -215,13 +251,40 @@ class ChatIntegrationDetail extends React.Component {
                         )
                     }
 
-                    <textarea
-                        className="ui info message"
-                        id="chat-snippet"
-                        value={this._renderSnippet(integration)}
-                        rows="12"
-                        readOnly
-                    />
+                    <Card>
+                        <CardHeader>
+                            <Button
+                                type="button"
+                                color={this.state.isShopifySnippet ? 'link' : 'info'}
+                                onClick={() => this.setState({isShopifySnippet: false})}
+                            >
+                                Standard code
+                            </Button>
+                            <Button
+                                type="button"
+                                color={this.state.isShopifySnippet ? 'info' : 'link'}
+                                className="ml-2"
+                                onClick={() => this.setState({isShopifySnippet: true})}
+                            >
+                                Shopify code
+                            </Button>
+                        </CardHeader>
+
+                        <CardBlock style={{padding: 0}}>
+                            <Alert color="info" style={{margin: 0}}>
+                                <pre
+                                    style={{
+                                        display: 'flex',
+                                        height: '200px',
+                                        color: 'inherit'
+                                    }}
+                                    id="chat-snippet"
+                                >
+                                    {this._renderSnippet(integration)}
+                                </pre>
+                            </Alert>
+                        </CardBlock>
+                    </Card>
 
                     <Button
                         id="copy-chat-snippet"
