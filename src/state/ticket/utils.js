@@ -144,9 +144,9 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
 export function receiversValueFromState(options, sourceType) {
     _forEach(options, (users, index) => {
         options[index] = users.map((user) => ({
-            name: user.name,
+            name: user.name || '',
             label: displayUserNameFromSource(user, sourceType),
-            value: user.address,
+            value: user.address || '',
         }))
     })
 
@@ -170,8 +170,8 @@ export function receiversStateFromValue(value, sourceType) {
 
     _forEach(newValue, (users, index) => {
         newValue[index] = users.map((user) => ({
-            name: user.name,
-            address: user.value,
+            name: user.name || '',
+            address: user.value || '',
         }))
     })
 
