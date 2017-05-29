@@ -7,12 +7,10 @@ import {Button, UncontrolledTooltip} from 'reactstrap'
 
 import Modal from '../Modal'
 
-import {JSONTree} from './../JSONTree'
 import {USER_CHANNEL_CLASS} from './../../../../config'
 import BinaryChoiceField from '../../forms/BinaryChoiceField'
 import MultiSelectBinaryChoiceField from '../../forms/MultiSelectBinaryChoiceField'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
-import {isCustomerDataPresent} from '../infobar/utils'
 
 class MergeUsersModal extends React.Component {
     componentDidMount = () => {
@@ -87,11 +85,6 @@ class MergeUsersModal extends React.Component {
 
     render() {
         const {destinationUser, sourceUser, handleSubmit, isLoading, primaryEmail, requiredAddresses} = this.props
-
-        let baseCustomer = destinationUser.get('customer')
-        baseCustomer = isCustomerDataPresent(baseCustomer) ? baseCustomer.toJS() : {}
-        let mergeCustomer = sourceUser.get('customer')
-        mergeCustomer = isCustomerDataPresent(mergeCustomer) ? mergeCustomer.toJS() : {}
 
         const allChannels = destinationUser.get('channels').toJS().concat(sourceUser.get('channels').toJS())
 
@@ -210,22 +203,6 @@ class MergeUsersModal extends React.Component {
                             ]}
                             propertiesToCompare={['address', 'type']}
                         />
-                        <Field
-                            type="json"
-                            label="Customer data"
-                            name="user.customer"
-                            component={BinaryChoiceField}
-                            options={[
-                                {
-                                    label: <JSONTree data={fromJS(baseCustomer)} />,
-                                    value: baseCustomer
-                                },
-                                {
-                                    label: <JSONTree data={fromJS(mergeCustomer)} />,
-                                    value: mergeCustomer
-                                }
-                            ]}
-                        />
                     </div>
 
                     <div className="pull-right buttons-bar">
@@ -238,7 +215,7 @@ class MergeUsersModal extends React.Component {
                             Cancel
                         </Button>
                         <Button
-                            color="warning"
+                            color="success"
                             type="submit"
                             className={classnames({
                                 'btn-loading': isLoading,
