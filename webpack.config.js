@@ -7,13 +7,14 @@ const pkg = require('./package.json')
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const HASH = process.env.GIT_COMMIT ? process.env.GIT_COMMIT : '[hash]'
 
-const srcDir = './g/static/private'
+const srcDir = path.join(__dirname, 'g/static/private')
 const jsBundleFile = __PRODUCTION__ ? `${HASH}.build.min.js` : 'build.js'
 const styleBundleFile = __PRODUCTION__ ? `${HASH}.build.min.css` : 'build.css'
 
 let plugins = [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/),
-    new ExtractTextPlugin(styleBundleFile, {
+    new ExtractTextPlugin({
+        filename: styleBundleFile,
         allChunks: true
     }),
     new webpack.optimize.CommonsChunkPlugin({
@@ -24,36 +25,23 @@ let plugins = [
     new ManifestPlugin(),
     new webpack.ProvidePlugin({
         Tether: 'tether',
-    })
+    }),
+    // escodegen throws a warning
+    new webpack.ContextReplacementPlugin(/escodegen/, /^$/)
 ]
 
-if (__PRODUCTION__) {
-    plugins = plugins.concat([
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production')
-            }
-        }),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                screw_ie8: true, // React doesn't support IE8
-                warnings: false
-            },
-            mangle: {
-                screw_ie8: true
-            },
-            output: {
-                comments: false,
-                screw_ie8: true
-            }
-        })
-    ])
+const devServer = {
+    host: '0.0.0.0',
+}
+
+if (!__PRODUCTION__) {
+    // disable host check for dev env (if using proxy)
+    devServer.disableHostCheck = true
 }
 
 const cssOnlyPackages = ['semantic-ui', 'bootstrap', 'font-awesome']
 const vendors = Object.keys(pkg.dependencies).filter(m => !cssOnlyPackages.includes(m))
+
 module.exports = {
     devtool: __PRODUCTION__ ? 'source-map' : 'eval',
     entry: {
@@ -65,15 +53,13 @@ module.exports = {
         pathinfo: true,
         filename: jsBundleFile
     },
-    noParse: vendors.map((name) => {
-        return path.join(__dirname, 'node_modules', name)
-    }),
+    devServer,
     plugins,
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
-                loader: 'babel',
+                loader: 'babel-loader',
                 exclude: /node_modules/
             },
             {
@@ -86,11 +72,20 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader'
+                })
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader',
+                        'less-loader'
+                    ]
+                })
             },
             // custom fonts
             {
