@@ -88,9 +88,11 @@ class MergeUsersModal extends React.Component {
     render() {
         const {destinationUser, sourceUser, handleSubmit, isLoading, primaryEmail, requiredAddresses} = this.props
 
-        let baseCustomer = destinationUser.get('customer')
+        let baseCustomer = destinationUser.get('customer') || fromJS({})
+        baseCustomer = baseCustomer.delete('_shopify')
         baseCustomer = isCustomerDataPresent(baseCustomer) ? baseCustomer.toJS() : {}
-        let mergeCustomer = sourceUser.get('customer')
+        let mergeCustomer = sourceUser.get('customer') || fromJS({})
+        mergeCustomer = mergeCustomer.delete('_shopify')
         mergeCustomer = isCustomerDataPresent(mergeCustomer) ? mergeCustomer.toJS() : {}
 
         const allChannels = destinationUser.get('channels').toJS().concat(sourceUser.get('channels').toJS())
@@ -238,7 +240,7 @@ class MergeUsersModal extends React.Component {
                             Cancel
                         </Button>
                         <Button
-                            color="warning"
+                            color="success"
                             type="submit"
                             className={classnames({
                                 'btn-loading': isLoading,
