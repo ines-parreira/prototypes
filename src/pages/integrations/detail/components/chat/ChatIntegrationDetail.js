@@ -203,26 +203,26 @@ class ChatIntegrationDetail extends React.Component {
                     Setup instructions
                 </h3>
                 <p>
-                    To add or update the chat to your website, add the following code before the <kbd>{'</body>'}</kbd>
-                    {' '}on your page. See detailed instructions for{' '}
+                    To activate or update the chat, copy the code below and paste it on your website above the <kbd>{'</body>'}</kbd>
+                    {' '}tag. If you need help,{' '}
                     <a
                         target="_blank"
-                        href="https://gorgias.helpdocs.io/integrations/chat#Adding_the_chat_on_Shopify"
+                        href="https://gorgias.helpdocs.io/integrations/chat?utm_source=chat_integration"
                         onClick={() => {
-                            logEvent('Clicked see chat instructions for Shopify')
+                            logEvent('Clicked see chat tutorial')
                         }}
                     >
-                        Shopify
+                        follow this tutorial
                     </a>
-                    {' '}and{' '}
+                    {' '}or{' '}
                     <a
                         target="_blank"
-                        href="https://gorgias.helpdocs.io/integrations/chat#Adding_the_chat_with_Google_Tag_Manager"
+                        href="https://calendly.com/romainl/30"
                         onClick={() => {
-                            logEvent('Clicked see chat instructions for Google Tag Manager')
+                            logEvent('Clicked book a setup call to add chat')
                         }}
                     >
-                    Google Tag Manager
+                    book a 5min setup call
                     </a>
                     .
                 </p>
@@ -297,18 +297,6 @@ class ChatIntegrationDetail extends React.Component {
                         {this.state.isCopied ? 'COPIED!' : 'COPY'}
                     </Button>
                 </div>
-                <p>
-                    This chat is provided through a 3rd party called Smooch, at no additional cost. You can send user
-                    data to better
-                    identify who you are talking to. Check out {' '}
-                    <a
-                        href="http://docs.smooch.io/javascript/"
-                        target="_blank"
-                    >
-                        their documentation
-                    </a> to learn how
-                    to do it.
-                </p>
             </div>
         )
     }
