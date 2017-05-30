@@ -40,13 +40,13 @@ describe('reducers', () => {
             expect(
                 fetchTagsFromServer(initialState)
             ).toEqualImmutable(
-                initialState.merge(fromJS({items: newFakeTags, _internal: {pagination: {page: 1}}}))
+                initialState.merge(fromJS({items: newFakeTags, _internal: {pagination: {page: 1}}, meta: {}}))
             )
 
             expect(
                 fetchTagsFromServer(fromJS({items: currentFakeTags}))
             ).toEqualImmutable(
-                fromJS({items: newFakeTags, _internal: {pagination: {page: 1}}})
+                fromJS({items: newFakeTags, _internal: {pagination: {page: 1}}, meta: {}})
             )
         })
 

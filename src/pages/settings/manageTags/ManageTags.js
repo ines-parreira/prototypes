@@ -23,7 +23,8 @@ import * as tagsActions from '../../../state/tags/actions'
     create: tagsActions.create,
     remove: tagsActions.remove,
     selectAll: tagsActions.selectAll,
-    setPage: tagsActions.setPage
+    setPage: tagsActions.setPage,
+    merge: tagsActions.merge
 })
 export default class ManageTags extends Component {
     static propTypes = {
@@ -33,6 +34,7 @@ export default class ManageTags extends Component {
         remove: PropTypes.func.isRequired,
         selectAll: PropTypes.func.isRequired,
         setPage: PropTypes.func.isRequired,
+        merge: PropTypes.func.isRequired,
     }
 
     state = {
@@ -84,6 +86,14 @@ export default class ManageTags extends Component {
             })
     }
 
+    _merge = () => {
+        this.setState({askMergeConfirmation: false})
+        const selectedTagMeta = this.props.tags.get('meta', fromJS({})).filter((meta) => meta.get('selected'))
+        this.props.merge(selectedTagMeta.keySeq().toList()).then(() => {
+            return this.props.fetch()
+        })
+    }
+
     _toggleCreationPopup = () => {
         this.setState({showCreationPopup: !this.state.showCreationPopup})
     }
@@ -92,19 +102,23 @@ export default class ManageTags extends Component {
         this.setState({askRemoveConfirmation: !this.state.askRemoveConfirmation})
     }
 
+    _toggleMergeConfirmation = () => {
+        this.setState({askMergeConfirmation: !this.state.askMergeConfirmation})
+    }
+
     render() {
         const {tags, selectAll} = this.props
         const {sort, reverse} = this.state
 
         // check if any items are selected
-        const selected = tags.get('meta', fromJS({})).some((meta) => {
+        const selected = tags.get('meta', fromJS({})).filter((meta) => {
             if (meta.get('selected')) {
                 return true
             }
-        })
+        }).size
 
         const manageTagsClassName = classnames({
-            'manage-tags-bulk': selected
+            'manage-tags-bulk': selected > 0
         })
 
         const createTagFormClassName = classnames('ui form', {
@@ -121,6 +135,42 @@ export default class ManageTags extends Component {
 
                     <div className="column right aligned">
                         <div className="manage-tags-bulk-actions">
+                            {
+                                selected > 1 && (
+                                    <span>
+                                        <Button
+                                            id="bulk-merge-button"
+                                            color="secondary"
+                                            type="button"
+                                            className="mr-2"
+                                            onClick={this._toggleMergeConfirmation}
+                                        >
+                                            Merge
+                                        </Button>
+                                        <Popover
+                                            placement="bottom"
+                                            isOpen={this.state.askMergeConfirmation}
+                                            target="bulk-merge-button"
+                                            toggle={this._toggleMergeConfirmation}
+                                        >
+                                            <PopoverTitle>Are you sure?</PopoverTitle>
+                                            <PopoverContent>
+                                                <p>
+                                                    Are you sure you want to merge these tags?{' '}
+                                                    <b>This action cannot be undone</b>.
+                                                </p>
+                                                <Button
+                                                    type="submit"
+                                                    color="success"
+                                                    onClick={this._merge}
+                                                >
+                                                    Confirm
+                                                </Button>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </span>
+                                )
+                            }
                             <Button
                                 id="bulk-remove-button"
                                 color="secondary"

@@ -163,6 +163,31 @@ export const remove = (id) => {
 }
 
 /**
+ * Merge tags
+ * @param ids: an array of ids of the tags which should be merged
+ */
+export const merge = (ids) => {
+    return (dispatch) => {
+        dispatch({
+            type: types.MERGE_TAGS,
+            ids
+        })
+
+        const destinationId = ids.last()
+
+        return axios.put(`/api/tags/${destinationId}/merge/`, {'source_tags_ids': ids.pop().toJS()})
+            .then(() => {
+                return dispatch(notify({
+                    type: 'success',
+                    message: 'Tags merged successfully',
+                }))
+            }, (error) => {
+                return dispatch(fail(error, 'Unable to merge these tags'))
+            })
+    }
+}
+
+/**
  * Set a page in pagination
  *
  * @param page

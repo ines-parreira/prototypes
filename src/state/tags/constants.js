@@ -18,3 +18,5 @@ export const CREATE_TAG_SUCCESS = 'CREATE_TAG_SUCCESS'
 export const CREATE_TAG_ERROR = 'CREATE_TAG_ERROR'
 
 export const REMOVE_TAG = 'REMOVE_TAG'
+
+export const MERGE_TAGS = 'MERGE_TAGS'

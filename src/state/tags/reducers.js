@@ -12,6 +12,7 @@ export default (state = initialState, action) => {
         case types.FETCH_TAG_LIST_SUCCESS:
             return state
                 .set('items', fromJS(action.resp.data))
+                .set('meta', fromJS({}))  // reset selection and editing state for all tags
                 .setIn(['_internal', 'pagination'], fromJS(action.resp.meta))
 
         case types.ADD_TAGS:
