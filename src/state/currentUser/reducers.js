@@ -41,9 +41,11 @@ export default (state = initialState, action) => {
             return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
 
         case userTypes.SUBMIT_CURRENT_USER_SUCCESS:
-        case types.CHANGE_PASSWORD_ERROR:
         case types.CHANGE_PASSWORD_SUCCESS:
             return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
+
+        case types.CHANGE_PASSWORD_ERROR:
+            return state.setIn(['_internal', 'loading', 'currentUser'], false)
 
         case userTypes.SUBMIT_CURRENT_USER_ERROR:
         case types.SUBMIT_SETTING_ERROR:
