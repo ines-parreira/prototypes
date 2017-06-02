@@ -116,7 +116,7 @@ export default (
                 navbar: TicketNavbarContainer,
                 infobar: TicketInfobarContainer
             }}
-            noContainerPadding // no padding in App wrapper
+            noContainerWidthLimit // no width limit in App wrapper
             isEditingWidgets // is an edition mode route for widgets
         />
         <Route
