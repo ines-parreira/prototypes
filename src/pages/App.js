@@ -94,7 +94,7 @@ class App extends React.Component {
                         <div className={css.content}>
                             <BannerNotifications notifications={bannerNotifications} />
 
-                            <div className="mobile-nav hidden-sm-up d-flex justify-content-between align-items-center">
+                            <div className="mobile-nav hidden-md-up d-flex justify-content-between align-items-center">
                                 <Button
                                     className="mr-3"
                                     type="button"
