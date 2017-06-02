@@ -36,7 +36,7 @@ export default class EmailIntegrationList extends React.Component {
                 <tr key={int.get('id')}>
                     <td className="smallest">
                         {
-                            !isGmail ? (
+                            isGmail ? (
                                     <img
                                         src={gmailImg}
                                         height="23"
