@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
-import {Button} from 'reactstrap'
 
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 import IntegrationList from '../IntegrationList'
@@ -36,14 +35,15 @@ export default class ChatIntegrationList extends React.Component {
             }
 
             const editLink = `/app/integrations/smooch_inside/${int.get('id')}`
-            const isLoading = int.get('id') === loading.get('delete')
             const isDisabled = int.get('deactivated_datetime')
 
             return (
                 <tr key={int.get('id')}>
-                    <td className="align-middle">
+                    <td className="link-full-td">
                         <Link to={editLink}>
-                            <b>{int.get('name')}</b>
+                            <div>
+                                <b>{int.get('name')}</b>
+                            </div>
                         </Link>
                     </td>
                     <td className="smallest align-middle">
@@ -53,19 +53,6 @@ export default class ChatIntegrationList extends React.Component {
                                 value: !isDisabled,
                             }}
                         />
-                    </td>
-                    <td className="smallest">
-                        <div className="pull-right">
-                            <Button
-                                tag={Link}
-                                color="info"
-                                className="mr-2"
-                                disabled={isLoading}
-                                to={editLink}
-                            >
-                                Edit
-                            </Button>
-                        </div>
                     </td>
                 </tr>
             )

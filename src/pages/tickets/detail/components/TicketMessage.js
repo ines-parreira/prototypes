@@ -106,7 +106,9 @@ export default class TicketMessage extends React.Component {
                         id={id}
                         className={`icon ${icons[source.type]}`}
                     />
-                    {legend}
+                    <span className="hidden-sm-down">
+                        {legend}
+                    </span>
                 </span>
                 <Popover
                     placement="bottom"
@@ -151,7 +153,10 @@ export default class TicketMessage extends React.Component {
             }
 
             fromWidget = (
-                <span key="from-widget" className="ticket-message-from">
+                <span
+                    key="from-widget"
+                    className="hidden-sm-down ticket-message-from"
+                >
                     from <a target="_blank" href={message.meta.current_page}>
                         {displayString}
                     </a>
@@ -161,7 +166,10 @@ export default class TicketMessage extends React.Component {
 
         if (message.via === 'rule') {
             viaWidget = (
-                <span key="via-widget" className="ticket-message-from">
+                <span
+                    key="via-widget"
+                    className="hidden-sm-down ticket-message-from"
+                >
                     sent via a <b><i className="icon setting" />Rule</b>
                 </span>
             )

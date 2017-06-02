@@ -261,7 +261,7 @@ class OverviewStatsView extends React.Component {
         return (
             <div className="view stats">
                 <PageHeader title="Overview">
-                    <div className="ui right floated flex">
+                    <div className="ui right floated d-flex flex-wrap">
                         <SearchableSelectField
                             plural="agents"
                             singular="agent"

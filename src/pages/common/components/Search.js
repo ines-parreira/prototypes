@@ -100,7 +100,7 @@ export default class Search extends React.Component {
                         disabled={disabled}
                         style={{zIndex: 1}} // override the zIndex 2 of Bootstrap .form-control class
                     />
-                    <InputGroupAddon>
+                    <InputGroupAddon className="hidden-sm-down">
                         <i className="fa fa-fw fa-search" />
                     </InputGroupAddon>
                 </InputGroup>

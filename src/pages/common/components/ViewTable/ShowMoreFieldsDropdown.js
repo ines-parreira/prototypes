@@ -32,6 +32,7 @@ class ShowMoreFieldsDropdown extends React.Component {
                 onClick={() => logEvent('Opened more fields (column options)')}
             >
                 <DropdownToggle
+                    className="hidden-sm-down"
                     color="link"
                     type="button"
                     style={{

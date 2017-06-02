@@ -199,7 +199,7 @@ const config = [{
             }
             case 'tags': {
                 return (
-                    <div>
+                    <div className="d-flex">
                         {
                             item.get('tags', fromJS([]))
                                 .map((tag) => (

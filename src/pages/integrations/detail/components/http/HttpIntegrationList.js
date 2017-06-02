@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
-import {Button} from 'reactstrap'
 import _truncate from 'lodash/truncate'
 
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
@@ -52,14 +51,15 @@ export default class HttpIntegrationList extends React.Component {
 
             return (
                 <tr key={int.get('id')}>
-                    <td className="align-center align-middle">
+                    <td className="link-full-td">
                         <Link to={editLink}>
-                            <b>{int.get('name')}</b>
+                            <div>
+                                <b className="mr-2">{int.get('name')}</b>
+                                <span className="text-faded hidden-sm-down">
+                                    {_truncate(int.get('description'), {length: 100})}
+                                </span>
+                            </div>
                         </Link>
-                        {' '}
-                        <span className="text-faded ml-3">
-                            {_truncate(int.get('description'), {length: 100})}
-                        </span>
                     </td>
                     <td className="smallest align-middle">
                         <ToggleCheckbox
@@ -68,17 +68,6 @@ export default class HttpIntegrationList extends React.Component {
                                 value: !isDisabled,
                             }}
                         />
-                    </td>
-                    <td className="smallest">
-                        <div className="pull-right">
-                            <Button
-                                tag={Link}
-                                color="info"
-                                to={editLink}
-                            >
-                                Edit
-                            </Button>
-                        </div>
                     </td>
                 </tr>
             )

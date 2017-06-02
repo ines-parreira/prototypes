@@ -46,10 +46,6 @@ export default class List extends React.Component {
             })
     }
 
-    _fetchPageAfterUpdate = () => {
-        return this._fetchPage(this.props.pagination.get('page'))
-    }
-
     render() {
         const {agents, pagination} = this.props
 
@@ -78,7 +74,7 @@ export default class List extends React.Component {
                 <p>
                     You can <strong>add as many team members as you want</strong>, at no additional cost.
                 </p>
-                <Table>
+                <Table hover>
                     <tbody>
                         {
                             agents.map((agent) => {
@@ -86,7 +82,6 @@ export default class List extends React.Component {
                                     <Row
                                         key={agent.get('id')}
                                         agent={agent}
-                                        fetchPageAfterUpdate={this._fetchPageAfterUpdate}
                                     />
                                 )
                             })

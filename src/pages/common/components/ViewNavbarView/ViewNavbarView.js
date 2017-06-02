@@ -31,6 +31,10 @@ class ViewNavbarView extends Component {
         getViewCount: PropTypes.func.isRequired,
     }
 
+    static contextTypes = {
+        closePanel: PropTypes.func.isRequired,
+    }
+
     state = {
         hasEditMode: false
     }
@@ -49,7 +53,7 @@ class ViewNavbarView extends Component {
         const settingButtonClass = classnames(css['setting-button'], {
             [css.active]: hasEditMode
         })
-        const settingIconClass = classnames('fa fa-fw', {
+        const settingIconClass = classnames('hidden-sm-down fa fa-fw', {
             'fa-cog': !hasEditMode,
             'fa-close': hasEditMode
         })
@@ -115,6 +119,9 @@ class ViewNavbarView extends Component {
                                                 to={`/app/${objectName}/${view.get('id')}/${view.get('slug')}`}
                                                 className={classes}
                                                 title={`${view.get('name')} ${count}`}
+                                                onClick={() => {
+                                                    this.context.closePanel()
+                                                }}
                                             >
                                                 {`${view.get('name')} ${compactCount}`}
                                             </Link>

@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import {UncontrolledTooltip} from 'reactstrap'
+import {UncontrolledTooltip, Button} from 'reactstrap'
 
 import {isRichType} from '../../../../../config/ticket'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
@@ -40,13 +40,16 @@ class TicketMacros extends React.Component {
         const macrosVisible = macros.get('visible')
 
         let content = (
-            <div className="ui grid">
-                <div className="macro-list four wide column">
+            <div
+                className="d-flex"
+                style={{height: '100%'}}
+            >
+                <div className="macro-list">
                     <div className="ui aligned selection relaxed list">
                         {items.map(this.renderMacroListItem).toList()}
                     </div>
                 </div>
-                <div className="macro-preview-container twelve wide column">
+                <div className="macro-preview-container">
                     <a
                         className="ui basic label manage-macros"
                         onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}
@@ -77,22 +80,31 @@ class TicketMacros extends React.Component {
         }
         return (
             <div className="TicketMacros">
-                <a
-                    id="clear-macro-button"
-                    className={classnames('clear-macros', {
-                        hidden: !macrosVisible
-                    })}
-                    onClick={() => setMacrosVisible(false)}
-                >
-                    <i className="fa fa-fw fa-close" />
-                </a>
-                <UncontrolledTooltip
-                    placement="top"
-                    target="clear-macro-button"
-                    delay={0}
-                >
-                    <strong>Esc</strong> to close the macro list.
-                </UncontrolledTooltip>
+                {
+                    macrosVisible && (
+                        <a
+                            id="clear-macro-button"
+                            className="clear-macros"
+                            onClick={() => setMacrosVisible(false)}
+                        >
+                            <i className="fa fa-fw fa-close hidden-sm-down" />
+                            <Button
+                                color="secondary"
+                                size="sm"
+                                className="hidden-md-up"
+                            >
+                                Close
+                            </Button>
+                            <UncontrolledTooltip
+                                placement="top"
+                                target="clear-macro-button"
+                                delay={0}
+                            >
+                                <strong>Esc</strong> to close the macro list.
+                            </UncontrolledTooltip>
+                        </a>
+                    )
+                }
 
                 {content}
             </div>

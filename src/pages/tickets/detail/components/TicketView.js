@@ -155,7 +155,7 @@ export class TicketView extends React.Component {
                     />
                     {
                         !hideHistoryButton && (
-                            <div className="history-btn-container">
+                            <div className="history-btn-container hidden-sm-down">
                                 <button
                                     className={classnames('ticket-history-btn ui small button', {
                                         transparent: transparentHistoryButton,
@@ -217,6 +217,7 @@ export class TicketView extends React.Component {
                     }
 
                     <form
+                        className={css['new-message-form']}
                         onSubmit={this._handleSubmit}
                         ref="newMessageForm"
                     >

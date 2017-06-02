@@ -8,6 +8,7 @@ import _get from 'lodash/get'
 import _uniq from 'lodash/uniq'
 import _compact from 'lodash/compact'
 import _trim from 'lodash/trim'
+import _last from 'lodash/last'
 import _ from 'lodash'
 
 import {createSelectorCreator, defaultMemoize} from 'reselect'
@@ -761,4 +762,12 @@ export const compare = (a, b) => {
     }
 
     return 0
+}
+
+/**
+ * Return current route object from routes config
+ * @param routes (this.props.routes in a component)
+ */
+export const currentRoute = (routes) => {
+    return _last(routes)
 }

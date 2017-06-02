@@ -9,6 +9,7 @@ import currentAccountReducer from './currentAccount/reducers'
 import currentUserReducer from './currentUser/reducers'
 import infobarReducer from './infobar/reducers'
 import integrationsReducer from './integrations/reducers'
+import layoutReducer from './layout/reducers'
 import macrosReducer from './macro/reducers'
 import newMessageReducer from './newMessage/reducers'
 import rulesReducer from './rules/reducers'
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     form: formReducer,
     infobar: infobarReducer,
     integrations: integrationsReducer,
+    layout: layoutReducer,
     macros: macrosReducer,
     newMessage: newMessageReducer,
     notifications: notificationsReducer,

@@ -1,8 +1,10 @@
+@import "../../../../../css/new/mixins";
+
 :local .page {
   &:not(.history-displayed) {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    max-height: 100%;
   }
 
   .viewers-banner {
@@ -18,6 +20,18 @@
       height: 0;
       padding: 0 @padding-sides;
       color: transparent;
+    }
+  }
+
+  .new-message-form {
+    @media @mobiles {
+      margin: 0 -16px;
+
+      :global .TicketSubmitButtons {
+        margin-left: 16px;
+        margin-right: 16px;
+        text-align: right;
+      }
     }
   }
 }

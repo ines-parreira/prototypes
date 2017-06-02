@@ -47,15 +47,22 @@ class UserListContainer extends React.Component {
 
         return (
             <DocumentTitle title={title}>
-                <ViewTable
-                    type="user"
-                    items={users}
-                    view={activeView}
-                    isUpdate={isUpdate}
-                    isSearch={isSearch}
-                    urlViewId={urlViewId}
-                    ActionsComponent={UserListActions}
-                />
+                <div
+                    className="d-flex flex-column"
+                    style={{
+                        width: '100%',
+                    }}
+                >
+                    <ViewTable
+                        type="user"
+                        items={users}
+                        view={activeView}
+                        isUpdate={isUpdate}
+                        isSearch={isSearch}
+                        urlViewId={urlViewId}
+                        ActionsComponent={UserListActions}
+                    />
+                </div>
             </DocumentTitle>
         )
     }

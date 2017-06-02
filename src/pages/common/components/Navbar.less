@@ -17,14 +17,17 @@
       font-size: 15px;
       padding: 18px @padding;
       width: 100%;
-      display: flex;
       font-weight: 700;
       background: #19415d;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
       transition: all .1s linear;
       box-shadow: none !important;
+
+      > div { // content is wrapped in div because some browsers forbid flex in buttons
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
 
       &:hover,
       &:active {
@@ -75,6 +78,8 @@
     flex: 1;
     overflow: auto;
     background-color: transparent !important;
+    margin: 0;
+    padding: 14px 0;
 
     .item > h4 {
       color: white;

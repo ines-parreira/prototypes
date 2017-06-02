@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {Button} from 'reactstrap'
 import {connect} from 'react-redux'
 
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
@@ -32,13 +31,15 @@ export default class FacebookPageRow extends React.Component {
             return null
         }
 
+        const editLink = `/app/integrations/facebook/${integration.get('id')}`
+
         return (
             <tr className="FacebookPageRow">
                 <td className="smallest">
                     <img
                         style={{
-                            height: '33px',
-                            maxWidth: '33px',
+                            height: '23px',
+                            maxWidth: '23px',
                             overflow: 'hidden',
                         }}
                         className="rounded"
@@ -46,12 +47,15 @@ export default class FacebookPageRow extends React.Component {
                         src={page.getIn(['picture', 'data', 'url'])}
                     />
                 </td>
-                <td className="align-middle">
-                    <b>{page.get('name')}</b>
-                    {' '}
-                    <span className="text-faded ml-3">
-                        {page.get('category')}
-                    </span>
+                <td className="link-full-td">
+                    <Link to={editLink}>
+                        <div>
+                            <b className="mr-2">{page.get('name')}</b>
+                            <span className="text-faded">
+                                {page.get('category')}
+                            </span>
+                        </div>
+                    </Link>
                 </td>
                 <td className="smallest align-middle">
                     <ToggleCheckbox
@@ -60,17 +64,6 @@ export default class FacebookPageRow extends React.Component {
                             value: !isDisabled,
                         }}
                     />
-                </td>
-                <td className="smallest">
-                    <div className="pull-right">
-                        <Button
-                            tag={Link}
-                            color="info"
-                            to={`/app/integrations/facebook/${integration.get('id')}`}
-                        >
-                            Edit
-                        </Button>
-                    </div>
                 </td>
             </tr>
         )

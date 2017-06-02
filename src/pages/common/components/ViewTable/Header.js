@@ -104,10 +104,10 @@ class Header extends React.Component {
         return (
             <div>
                 <div>
-                    <div className="clearfix mb-2">
+                    <div className="d-flex justify-content-between mb-2">
                         {
                             isUpdate && !isSearch && (
-                                <UncontrolledDropdown className="d-inline-block">
+                                <UncontrolledDropdown className="d-inline-block hidden-sm-down">
                                     <DropdownToggle
                                         caret
                                         type="button"
@@ -161,7 +161,7 @@ class Header extends React.Component {
                         {
                             isSearch && (
                                 <Link
-                                    className="btn btn-secondary"
+                                    className="btn btn-secondary mr-2"
                                     to={this._goBackUrl()}
                                 >
                                     <i className="fa fa-fw fa-arrow-left mr-2" />

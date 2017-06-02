@@ -125,7 +125,7 @@ export class TicketTags extends React.Component {
         const {ticketTags, removeTag} = this.props
 
         return (
-            <div className="d-inline-flex align-items-center flex-wrap">
+            <div className="d-inline-flex align-items-center flex-wrap hidden-sm-down">
                 {
                     ticketTags
                         .sort((a, b) => a.get('name').toLowerCase() > b.get('name').toLowerCase() ? 1 : -1)

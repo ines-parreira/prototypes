@@ -32,64 +32,54 @@ export default class EmailIntegrationList extends React.Component {
 
             const editLink = `/app/integrations/email/${int.get('id')}`
 
-            let primaryBtn = (
-                <Button
-                    tag={Link}
-                    color="info"
-                    to={editLink}
-                >
-                    Edit
-                </Button>
-            )
-
-            if (!active && isGmail) {
-                primaryBtn = (
-                    <Button
-                        tag="a"
-                        color="success"
-                        href={`/integrations/gmail/auth?integration_id=${int.get('id')}`}
-                        className={classNames({
-                            'btn-loading': isRowSubmitting,
-                        })}
-                    >
-                        Re-activate
-                    </Button>
-                )
-            }
-
             return (
                 <tr key={int.get('id')}>
                     <td className="smallest">
                         {
-                            isGmail ? (
+                            !isGmail ? (
                                     <img
                                         src={gmailImg}
-                                        height="33"
+                                        height="23"
                                         alt="email-icon"
                                     />
                                 ) : (
                                     <i
                                         className="fa fa-fw fa-envelope text-muted"
                                         style={{
-                                            fontSize: '41px',
-                                            marginTop: '-8px',
+                                            fontSize: '25px',
+                                            marginTop: '-2px',
                                             marginLeft: '-3px',
                                         }}
                                     />
                                 )
                         }
                     </td>
-                    <td className="align-middle">
-                        <b>{int.get('name')}</b>
-                        {' '}
-                        <span className="text-faded ml-3">
-                            {int.getIn(['meta', 'address'])}
-                        </span>
-
+                    <td className="link-full-td">
+                        <Link to={editLink}>
+                            <div>
+                                <b className="mr-2">{int.get('name')}</b>
+                                <span className="text-faded">
+                                    {int.getIn(['meta', 'address'])}
+                                </span>
+                            </div>
+                        </Link>
                     </td>
                     <td className="smallest">
                         <div className="pull-right">
-                            {primaryBtn}
+                            {
+                                !active && isGmail && (
+                                    <Button
+                                        tag="a"
+                                        color="success"
+                                        href={`/integrations/gmail/auth?integration_id=${int.get('id')}`}
+                                        className={classNames({
+                                            'btn-loading': isRowSubmitting,
+                                        })}
+                                    >
+                                        Re-activate
+                                    </Button>
+                                )
+                            }
                         </div>
                     </td>
                 </tr>

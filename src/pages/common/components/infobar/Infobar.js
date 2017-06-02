@@ -271,7 +271,7 @@ export default class Infobar extends React.Component {
                             && (
                                 <Button
                                     type="submit"
-                                    className="pull-right"
+                                    className="pull-right hidden-sm-down"
                                     onClick={() => {
                                         this.setState({showMergeUserModal: true})
                                         logEvent('Clicked "Merge" button on user searched in infobar')
@@ -341,7 +341,7 @@ export default class Infobar extends React.Component {
                 {this._renderUserInfo(this.props.user)}
                 {
                     displaySuggestedUser && (
-                        <div>
+                        <div className="hidden-sm-down">
                             <div className="infobar-section-separator" />
                             <div className={classnames(css['suggested-user'])}>
                                 <h4>Is this the same user?</h4>
@@ -401,7 +401,6 @@ export default class Infobar extends React.Component {
                 <div className="infobar-content">
                     <div className="infobar-search-wrapper d-flex align-items-center justify-content-between">
                         <Search
-                            className="mr-2"
                             placeholder="Search users by email, name or phone number..."
                             bindKey
                             onChange={this._onSearch}
@@ -409,6 +408,7 @@ export default class Infobar extends React.Component {
                         />
 
                         <Button
+                            className="hidden-sm-down ml-2"
                             type="button"
                             id="toggle-widgets-edition-button"
                             color="secondary"

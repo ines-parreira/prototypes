@@ -131,7 +131,7 @@ export default class Table extends React.Component {
                     <thead>
                         <tr>
                             <td
-                                className="cell-wrapper cell-short clickable"
+                                className="cell-wrapper cell-short clickable hidden-sm-down"
                                 onClick={this._toggleSelectAll}
                             >
                                 <span className="ui checkbox">

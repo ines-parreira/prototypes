@@ -1,9 +1,15 @@
+@import "../../../../../../css/new/mixins";
+
 .editor-toolbar {
   display: flex;
   position: absolute;
   flex-direction: row;
   bottom: 7px;
   left: 9px;
+
+  @media @mobiles {
+    display: none !important;
+  }
 
   .icon {
     font-size: 14px;

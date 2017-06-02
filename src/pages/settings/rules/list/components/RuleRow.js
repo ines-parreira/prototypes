@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Button, Badge, Card, CardBlock} from 'reactstrap'
+import {Badge, Card, CardBlock} from 'reactstrap'
 
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 
@@ -33,28 +33,27 @@ class RuleRow extends React.Component {
 
         return (
             <tr key={rule.get('id')}>
-                <td className="align-center align-middle">
-                    <div>
-                        <a onClick={this.props.toggleOpening}>
-                            <b>{rule.get('title')}</b>
-                        </a>
-                        {
-                            rule.get('type') === 'system' && (
-                                <Badge
-                                    className="ml-2"
-                                    color="danger"
-                                >
-                                    <i className="fa fa-fw fa-exclamation-triangle mr-2" />
-                                    SYSTEM
-                                </Badge>
-                            )
-                        }
-                    </div>
-                    <a
-                        className="text-faded"
-                        onClick={this.props.toggleOpening}
-                    >
-                        {rule.get('description')}
+                <td className="link-full-td">
+                    <a onClick={this.props.toggleOpening}>
+                        <div>
+                            <span className="mr-2">
+                                <b>{rule.get('title')}</b>
+                                {
+                                    rule.get('type') === 'system' && (
+                                        <Badge
+                                            className="ml-2"
+                                            color="danger"
+                                        >
+                                            <i className="fa fa-fw fa-exclamation-triangle mr-2" />
+                                            SYSTEM
+                                        </Badge>
+                                    )
+                                }
+                            </span>
+                            <span className="text-faded">
+                                {rule.get('description')}
+                            </span>
+                        </div>
                     </a>
                 </td>
                 <td className="smallest align-middle">
@@ -64,17 +63,6 @@ class RuleRow extends React.Component {
                             value: !rule.get('deactivated_datetime'),
                         }}
                     />
-                </td>
-                <td className="smallest align-middle">
-                    <div className="pull-right">
-                        <Button
-                            type="submit"
-                            color="info"
-                            onClick={this.props.toggleOpening}
-                        >
-                            Edit
-                        </Button>
-                    </div>
                 </td>
             </tr>
         )

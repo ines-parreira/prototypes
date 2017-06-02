@@ -33,7 +33,7 @@ export default class IntegrationList extends React.Component {
         const integrationTitle = integrationConfig.get('title')
 
         return (
-            <div>
+            <div className="integrations-list">
                 <Breadcrumb>
                     <BreadcrumbItem>
                         <Link to="/app/integrations">Integrations</Link>
@@ -100,15 +100,6 @@ export default class IntegrationList extends React.Component {
         )
     }
 }
-
-/*
-
- <table className="ui selectable very basic padded table">
- <tbody>
- {integrations.valueSeq().map(integrationToItemDisplay)}
- </tbody>
- </table>
- */
 
 IntegrationList.propTypes = {
     integrationType: PropTypes.string.isRequired, // The type of the integrations we're displaying

@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+
 import * as ViewsActions from '../../../state/views/actions'
 import TicketsNavbarView from './components/TicketsNavbarView'
 import RecentChats from '../../common/components/RecentChats'

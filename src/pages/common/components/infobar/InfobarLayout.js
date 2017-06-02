@@ -1,7 +1,22 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import classnames from 'classnames'
 import _max from 'lodash/max'
 
-class InfobarLayout extends React.Component {
+import * as layoutSelectors from '../../../../state/layout/selectors'
+
+@connect((state) => ({
+    isOpenedPanel: layoutSelectors.isOpenedPanel('infobar')(state),
+}))
+export default class InfobarLayout extends React.Component {
+    static propTypes = {
+        children: PropTypes.oneOfType([
+            PropTypes.object,
+            PropTypes.array
+        ]),
+        isOpenedPanel: PropTypes.bool.isRequired,
+    }
+
     constructor(props) {
         super(props)
 
@@ -75,7 +90,9 @@ class InfobarLayout extends React.Component {
 
         return (
             <div
-                className="infobar"
+                className={classnames('infobar infobar-panel', {
+                    'hidden-panel': !this.props.isOpenedPanel,
+                })}
                 ref="container"
                 style={style}
             >
@@ -87,12 +104,3 @@ class InfobarLayout extends React.Component {
         )
     }
 }
-
-InfobarLayout.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.array
-    ])
-}
-
-export default InfobarLayout

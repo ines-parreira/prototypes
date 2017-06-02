@@ -17,7 +17,7 @@ class PageHeader extends React.Component {
     render() {
         const {title, children} = this.props
         return (
-            <div className="d-flex align-items-center justify-content-between mb-2">
+            <div className="d-flex align-items-center justify-content-between flex-wrap mb-2">
                 <h1
                     className="ui header"
                     style={{marginBottom: 0}}

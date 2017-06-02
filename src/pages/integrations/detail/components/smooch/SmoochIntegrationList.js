@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Button} from 'reactstrap'
 import {Link, browserHistory, withRouter} from 'react-router'
 
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
@@ -71,9 +70,11 @@ export default class SmoochIntegrationList extends React.Component {
 
             return (
                 <tr key={int.get('id')}>
-                    <td className="align-middle">
+                    <td className="link-full-td">
                         <Link to={editLink}>
-                            <b>{int.get('name')}</b>
+                            <div>
+                                <b>{int.get('name')}</b>
+                            </div>
                         </Link>
                     </td>
                     <td className="smallest align-middle">
@@ -83,17 +84,6 @@ export default class SmoochIntegrationList extends React.Component {
                                 value: !isDisabled,
                             }}
                         />
-                    </td>
-                    <td className="smallest">
-                        <div className="pull-right">
-                            <Button
-                                tag={Link}
-                                color="info"
-                                to={editLink}
-                            >
-                                Edit
-                            </Button>
-                        </div>
                     </td>
                 </tr>
             )

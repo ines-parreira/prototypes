@@ -1,6 +1,12 @@
+@import '../../../../css/new/mixins';
+
 :local .component {
   width: 100%;
   max-width: 280px;
+
+  @media @mobiles {
+    max-width: none;
+  }
 
   .input {
     width: 100%;

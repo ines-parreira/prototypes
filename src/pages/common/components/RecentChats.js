@@ -7,52 +7,58 @@ import {UncontrolledTooltip} from 'reactstrap'
 import {isCurrentlyOnTicket} from '../../../utils'
 import {logEvent} from '../../../store/middlewares/amplitudeTracker'
 
-const RecentChatsItem = ({recentTicket, position}) => {
-    const channel = recentTicket.get('channel')
-
-    const iconClasses = classNames('action icon', {
-        mail: channel === 'email',
-        comments: channel === 'chat',
-        facebook: ['facebook', 'facebook-post', 'facebook-comment'].includes(channel),
-        comment: channel === 'internal-note',
-        setting: channel === 'system-message',
-        'facebook-messenger': channel === 'facebook-message',
-        help: channel === 'unknown',
-    })
-
-    const text = recentTicket.get('subject')
-
-    // track on click
-    const _onClick = () => {
-        logEvent('Clicked on recent activity item', {
-            position,
-            ticket: recentTicket.toJS(),
-        })
+class RecentChatsItem extends React.Component {
+    static propTypes = {
+        recentTicket: PropTypes.object.isRequired,
+        position: PropTypes.number.isRequired
     }
 
-    // is the current link active or not?
-    const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
-    const linkClasses = classNames('item', {
-        active: isActive,
-        'has-something-new': recentTicket.get('is_unread') && !isActive,
-    })
+    static contextTypes = {
+        closePanel: PropTypes.func.isRequired,
+    }
 
-    return (
-        <Link
-            onClick={_onClick}
-            to={`/app/ticket/${recentTicket.get('id')}`}
-            className={linkClasses}
-            title={text}
-        >
-            <i className={iconClasses} />
-            <span>{text}</span>
-        </Link>
-    )
-}
+    render() {
+        const {recentTicket, position} = this.props
 
-RecentChatsItem.propTypes = {
-    recentTicket: PropTypes.object.isRequired,
-    position: PropTypes.number.isRequired
+        const channel = recentTicket.get('channel')
+
+        const iconClasses = classNames('action icon', {
+            mail: channel === 'email',
+            comments: channel === 'chat',
+            facebook: ['facebook', 'facebook-post', 'facebook-comment'].includes(channel),
+            comment: channel === 'internal-note',
+            setting: channel === 'system-message',
+            'facebook-messenger': channel === 'facebook-message',
+            help: channel === 'unknown',
+        })
+
+        const text = recentTicket.get('subject')
+
+        // is the current link active or not?
+        const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
+        const linkClasses = classNames('item', {
+            active: isActive,
+            'has-something-new': recentTicket.get('is_unread') && !isActive,
+        })
+
+        return (
+            <Link
+                onClick={() => {
+                    logEvent('Clicked on recent activity item', {
+                        position,
+                        ticket: recentTicket.toJS(),
+                    })
+                    this.context.closePanel()
+                }}
+                to={`/app/ticket/${recentTicket.get('id')}`}
+                className={linkClasses}
+                title={text}
+            >
+                <i className={iconClasses} />
+                <span>{text}</span>
+            </Link>
+        )
+    }
 }
 
 class RecentChats extends React.Component {

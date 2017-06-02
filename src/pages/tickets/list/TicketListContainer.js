@@ -54,7 +54,12 @@ class TicketListContainer extends React.Component {
 
         return (
             <DocumentTitle title={title}>
-                <div style={{height: '100%'}}>
+                <div
+                    className="d-flex flex-column"
+                    style={{
+                        width: '100%',
+                    }}
+                >
                     <ViewTable
                         type="ticket"
                         items={tickets}

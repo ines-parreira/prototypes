@@ -47,7 +47,7 @@ class Row extends React.Component {
                 })}
             >
                 <td
-                    className="cell-wrapper cell-short clickable"
+                    className="cell-wrapper cell-short clickable hidden-sm-down"
                     onClick={this._toggleSelection}
                 >
                     {

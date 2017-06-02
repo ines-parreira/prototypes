@@ -150,7 +150,7 @@ export default class Form extends React.Component {
                 </Breadcrumb>
 
                 <h1 className="mb-3">
-                    {isUpdate ? `Editing ${agent.get('name')}` : 'Add team member'}
+                    {isUpdate ? `Edit ${agent.get('name')}` : 'Add team member'}
                 </h1>
 
                 {

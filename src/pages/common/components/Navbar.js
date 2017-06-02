@@ -1,12 +1,17 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import ToggleCheckbox from '../../../pages/common/forms/ToggleCheckbox'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+
 import {submitSetting} from '../../../state/currentUser/actions'
+import * as layoutActions from '../../../state/layout/actions'
+
+import * as layoutSelectors from '../../../state/layout/selectors'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
+
+import ToggleCheckbox from '../../../pages/common/forms/ToggleCheckbox'
 import './Navbar.less'
 
 // A <Link /> with some default styles
@@ -19,7 +24,7 @@ const NavLink = (props) => {
         url = url.slice(0, -1)
     }
 
-    const className = classnames('dropdown-item', {
+    const className = classnames(props.className, 'dropdown-item', {
         current: window.location.pathname.includes(url),
     })
 
@@ -33,6 +38,7 @@ const NavLink = (props) => {
 
 NavLink.propTypes = {
     to: PropTypes.string.isRequired,
+    className: PropTypes.string,
 }
 
 const mainMenu = [{
@@ -47,18 +53,21 @@ const mainMenu = [{
 }, {
     url: '/app/stats',
     label: 'Statistics',
+    className: 'hidden-sm-down',
 }, {
     url: '/app/settings',
     label: 'Settings',
 }]
 
-const mapStateToProps = (state) => ({
+@connect((state) => ({
     currentUser: currentUserSelectors.getCurrentUser(state),
     currentUserPreferences: currentUserSelectors.getPreferences(state),
-    availableForChat: currentUserSelectors.getChatStatus(state)
+    availableForChat: currentUserSelectors.getChatStatus(state),
+    isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
+}), {
+    submitSetting,
+    closePanels: layoutActions.closePanels,
 })
-
-@connect(mapStateToProps, {submitSetting})
 export default class Navbar extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object.isRequired,
@@ -66,13 +75,29 @@ export default class Navbar extends React.Component {
         availableForChat: PropTypes.bool.isRequired,
         activeContent: PropTypes.string,
         children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-        submitSetting: PropTypes.func.isRequired
+        submitSetting: PropTypes.func.isRequired,
+        isOpenedPanel: PropTypes.bool.isRequired,
+        closePanels: PropTypes.func.isRequired,
+    }
+
+    static childContextTypes = {
+        closePanel: PropTypes.func.isRequired,
+    }
+
+    getChildContext() {
+        return {
+            closePanel: this._closePanel,
+        }
     }
 
     componentWillMount() {
         this.state = {
             title: _capitalize(this.props.activeContent)
         }
+    }
+
+    _closePanel = () => {
+        return this.props.closePanels()
     }
 
     _updateShowChatPreferences = () => {
@@ -85,21 +110,31 @@ export default class Navbar extends React.Component {
         const {currentUser, availableForChat} = this.props
 
         return (
-            <div className="nav-primary">
+            <div
+                className={classnames('nav-primary navbar-panel', {
+                    'hidden-panel': !this.props.isOpenedPanel,
+                })}
+            >
                 <UncontrolledDropdown className="nav-dropdown">
                     <DropdownToggle>
-                        <span style={{fontSize: '18px'}}>{this.state.title}</span>
-                        <i className="fa fa-caret-down"/>
+                        <div>
+                            <div style={{fontSize: '18px'}}>{this.state.title}</div>
+                            <i className="fa fa-caret-down" />
+                        </div>
                     </DropdownToggle>
                     <DropdownMenu>
                         {
                             mainMenu.map((item) => {
                                 return (
                                     <DropdownItem
+                                        className={item.className}
                                         key={item.label}
                                         tag={NavLink}
                                         to={item.url}
-                                        onClick={() => this.setState({title: item.label})}
+                                        onClick={() => {
+                                            this.setState({title: item.label})
+                                            this._closePanel()
+                                        }}
                                     >
                                         {item.label}
                                     </DropdownItem>
@@ -118,43 +153,53 @@ export default class Navbar extends React.Component {
                     dropup
                 >
                     <DropdownToggle>
-                        <span>
-                            <i
-                                className="fa fa-circle mr-2"
-                                style={{color: availableForChat ? '#2DCF57' : '#FF9600'}}
-                            />
-                            {currentUser.get('name')}
-                        </span>
-                        <i className="fa fa-ellipsis-h"/>
+                        <div>
+                            <span>
+                                <i
+                                    className="fa fa-circle mr-2"
+                                    style={{color: availableForChat ? '#2DCF57' : '#FF9600'}}
+                                />
+                                {currentUser.get('name')}
+                            </span>
+                            <i className="fa fa-ellipsis-h" />
+                        </div>
                     </DropdownToggle>
                     <DropdownMenu>
-                        <DropdownItem className="mt-2" toggle={false}>
-                            <span className="mr-4">
-                                Available for chat
-                            </span>
-                            <span className="ml-3">
-                                <ToggleCheckbox
-                                    input={{
-                                        onChange: this._updateShowChatPreferences,
-                                        value: availableForChat,
-                                    }}
-                                    inline
-                                />
-                            </span>
+                        <DropdownItem
+                            className="mt-2"
+                            toggle={false}
+                        >
+                            <div className="d-flex justify-content-between align-items-center">
+                                <div>
+                                    Available for chat
+                                </div>
+                                <div>
+                                    <ToggleCheckbox
+                                        input={{
+                                            onChange: this._updateShowChatPreferences,
+                                            value: availableForChat,
+                                        }}
+                                        inline
+                                    />
+                                </div>
+                            </div>
                         </DropdownItem>
-                        <DropdownItem divider/>
+                        <DropdownItem divider />
                         <DropdownItem
                             tag={NavLink}
                             to="/app/settings/profile"
+                            onClick={() => {
+                                this._closePanel()
+                            }}
                         >
-                            <i className="fa fa-fw fa-user mr-2"/>
+                            <i className="fa fa-fw fa-user mr-2" />
                             Your profile
                         </DropdownItem>
                         <DropdownItem
                             tag="a"
                             href="/logout"
                         >
-                            <i className="fa fa-fw fa-sign-out mr-2"/>
+                            <i className="fa fa-fw fa-sign-out mr-2" />
                             Log out
                         </DropdownItem>
                     </DropdownMenu>
