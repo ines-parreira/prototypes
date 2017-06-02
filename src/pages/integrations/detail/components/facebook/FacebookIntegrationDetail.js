@@ -25,6 +25,14 @@ export default class FacebookIntegrationDetail extends React.Component {
         askDisableConfirmation: false,
     }
 
+    componentWillMount() {
+        const settings = this.props.integration.getIn(['facebook', 'settings'], fromJS({}))
+
+        if (!settings.isEmpty()) {
+            this.setState({settings: settings.toJS()})
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         // set default state
         if (nextProps.integration && !nextProps.integration.isEmpty()
@@ -63,7 +71,7 @@ export default class FacebookIntegrationDetail extends React.Component {
     }
 
     render() {
-        const {integration, loading} = this.props
+        const {integration, loading, actions} = this.props
 
         const page = integration.get('facebook') || fromJS({})
         const isDisabled = integration.get('deactivated_datetime')
@@ -181,6 +189,16 @@ export default class FacebookIntegrationDetail extends React.Component {
                             </span>
                         )
                     }
+                    <Button
+                        type="button"
+                        color="danger"
+                        className={classNames('pull-right', {
+                            'btn-loading': false,
+                        })}
+                        onClick={() => actions.deleteIntegration(integration)}
+                    >
+                        Delete
+                    </Button>
                 </div>
             </div>
         )

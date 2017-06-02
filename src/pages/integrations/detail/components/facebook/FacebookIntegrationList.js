@@ -9,7 +9,7 @@ import * as integrationsSelectors from '../../../../../state/integrations/select
 
 @connect((state) => {
     return {
-        integrations: integrationsSelectors.getFacebookIntegrations(state),
+        integrations: integrationsSelectors.getFacebookIntegrations(state)
     }
 })
 export default class FacebookIntegrationList extends React.Component {

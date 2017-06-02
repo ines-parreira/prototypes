@@ -29,7 +29,7 @@ import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/in
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
         const {actions, params} = this.props
-        actions.fetchIntegrations()
+        actions.fetchIntegrations(true)
 
         // We need this to allow the user to refresh the settings page.
         // If we don't fetch it, the state is empty on refresh.

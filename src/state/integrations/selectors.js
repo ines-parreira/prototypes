@@ -39,6 +39,11 @@ export const getFacebookIntegrations = createSelector(
         .sort((a, b) => compare(a.getIn(['facebook', 'name']), b.getIn(['facebook', 'name'])))
 )
 
+export const getFacebookOnboardingPages = createSelector(
+    [getIntegrationsState],
+    state => state.getIn(['extra', 'facebook', 'onboardingPages']) || fromJS([])
+)
+
 export const getEmailIntegrations = createSelector(
     [getIntegrations],
     state => state.filter(integration => ['email', 'gmail'].includes(integration.get('type')))

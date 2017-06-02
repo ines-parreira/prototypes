@@ -12,7 +12,7 @@ describe('selectors', () => {
             }
             const newState = reducers(state.integrations, action)
             const expected = getIntegrationsState(state).update('integrations', integrations => (
-                integrations.valueSeq().filter(int => int.get('id') !== action.id)
+                integrations.valueSeq().filter(int => int.get('id') !== action.id).toList()
             )).setIn(['state', 'loading', 'delete'], false)
 
             expect(newState).toEqual(expected)

@@ -15,9 +15,12 @@ import {Loader} from '../../../../common/components/Loader'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
+import css from './FacebookIntegrationSetup.less'
+
 @connect((state) => {
+    // Here we only want the DELETED integrations of the current_user
     return {
-        integrations: integrationsSelectors.getFacebookIntegrations(state),
+        integrations: integrationsSelectors.getFacebookOnboardingPages(state)
     }
 })
 export default class FacebookIntegrationSetup extends React.Component {
@@ -27,39 +30,55 @@ export default class FacebookIntegrationSetup extends React.Component {
         loading: PropTypes.object.isRequired,
     }
 
-    constructor(props) {
-        super()
-        this.state = {
-            pages: {}
-        }
+    componentWillMount() {
+        this._initializeState(this.props)
+    }
 
-        // setting initial state
-        props.integrations.forEach(i => {
-            this.state.pages[i.get('id')] = {
-                page_enabled: true,
-                private_messages_enabled: true,
-                posts_enabled: true,
-                import_history_enabled: false,
-            }
-        })
+    componentWillReceiveProps(nextProps) {
+        if (this.props.integrations.isEmpty() && !nextProps.integrations.isEmpty()) {
+            this._initializeState(nextProps)
+        }
+    }
+
+    _initializeState(props) {
+        const pages = {}
+
+        props.integrations
+            .forEach((i) => {
+                pages[i.get('id')] = {
+                    page_enabled: false,
+                    private_messages_enabled: true,
+                    posts_enabled: true,
+                    import_history_enabled: false,
+                }
+            })
+
+        this.setState({pages})
     }
 
     _handleSubmit = (e) => {
         e.preventDefault()
         const {actions, integrations} = this.props
 
-        integrations.forEach(i => {
-            const settings = this.state.pages[i.get('id')]
+        const data = []
+
+        integrations.forEach((integration) => {
+            const settings = this.state.pages[integration.get('id')] || {}
+
             if (settings.page_enabled) {
-                delete settings.page_enabled
-                const updated = i.set('deactivated_datetime', null).mergeDeep({
-                    facebook: {
-                        settings
-                    }
-                })
-                actions.updateOrCreateIntegration(updated, 'onboard')
+                const updated = integration
+                    .set('deleted_datetime', null)
+                    .mergeDeep({
+                        facebook: {
+                            settings
+                        }
+                    })
+
+                data.push(updated.toJS())
             }
         })
+
+        actions.activateFacebookOnboardingPage(data).then(() => actions.fetchIntegrations())
         browserHistory.push('/app/integrations/facebook')
     }
 
@@ -91,17 +110,18 @@ export default class FacebookIntegrationSetup extends React.Component {
         return (
             <div className="ui list">
                 {
-                    integrations.map(i => {
+                    integrations.map((i) => {
                         const id = i.get('id')
                         const page = i.get('facebook')
+
                         return (
                             <div
-                                className="ui item mb-4"
+                                className={classNames('ui item', css.setupListItem)}
                                 key={id}
                             >
                                 <div className="d-flex align-items-center mb-3">
                                     <img
-                                        className="ui image rounded mr-3"
+                                        className={classNames('ui image rounded mr-3', css.icon)}
                                         alt={page.get('name')}
                                         src={page.getIn(['picture', 'data', 'url'])}
                                     />
@@ -206,7 +226,7 @@ export default class FacebookIntegrationSetup extends React.Component {
                                 'btn-loading': loading.get('updateIntegration'),
                             })}
                         >
-                            Finish setup
+                            Add Pages
                         </Button>
                     </div>
                 </form>

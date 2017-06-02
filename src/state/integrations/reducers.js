@@ -68,7 +68,7 @@ export default (state = initialState, action) => {
 
         case types.DELETE_INTEGRATION_SUCCESS:
             return state.update('integrations', integrations => (
-                integrations.valueSeq().filter(int => int.get('id') !== action.id)
+                integrations.valueSeq().filter(int => int.get('id') !== action.id).toList()
             )).setIn(['state', 'loading', 'delete'], false)
 
         case types.DELETE_INTEGRATION_ERROR:

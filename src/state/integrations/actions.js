@@ -7,13 +7,19 @@ import {fromJS} from 'immutable'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
 
-export function fetchIntegrations() {
+export function fetchIntegrations(withDeleted = false) {
     return (dispatch) => {
         dispatch({
             type: types.FETCH_INTEGRATIONS_START
         })
 
-        return axios.get('/api/integrations/')
+        const params = {}
+
+        if (withDeleted) {
+            params.with_deleted = 'true'
+        }
+
+        return axios.get('/api/integrations/', {params})
             .then((json = {}) => json.data)
             .then(resp => {
                 const newResp = resp
@@ -163,7 +169,7 @@ export function deleteIntegration(integration) {
     }
 }
 
-function updateOrCreateIntegrationRequest(integration, action) {
+function updateOrCreateIntegrationRequest(integration, action, withDeleted) {
     return (dispatch) => {
         const isUpdate = integration.get('id')
 
@@ -174,10 +180,21 @@ function updateOrCreateIntegrationRequest(integration, action) {
 
         let promise
 
+        const params = {}
+
+        if (action) {
+            params.action = action
+        }
+
+        if (withDeleted) {
+            params.with_deleted = 'true'
+        }
+
         if (isUpdate) {
             promise = axios.put(
-                `/api/integrations/${integration.get('id')}/${action ? `?action=${action}` : ''}`,
-                integration.toJS()
+                `/api/integrations/${integration.get('id')}/`,
+                integration.toJS(),
+                {params}
             )
         } else {
             promise = axios.post('/api/integrations/', integration.toJS())
@@ -227,11 +244,11 @@ export function activateIntegration(id) {
  * @param action
  * @returns {Function}
  */
-export function updateOrCreateIntegration(integration, action) {
+export function updateOrCreateIntegration(integration, action, withDeleted) {
     return (dispatch) => {
         // We make sure that the integration is active
         const newIntegration = integration.set('deactivated_datetime', null)
-        return updateOrCreateIntegrationRequest(newIntegration, action)(dispatch)
+        return updateOrCreateIntegrationRequest(newIntegration, action, withDeleted)(dispatch)
     }
 }
 
@@ -282,6 +299,33 @@ export function importEmails(integration) {
                     type: types.GMAIL_INTEGRATION_IMPORT_ERROR,
                     error,
                     reason: 'Failed to start importation'
+                })
+            })
+    }
+}
+
+export function activateFacebookOnboardingPage(data) {
+    return (dispatch) => {
+        dispatch({
+            type: types.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_START
+        })
+
+        return axios.put('/integrations/facebook/onboarding-pages/', data)
+            .then((json = {}) => json.data)
+            .then((resp) => {
+                dispatch(notify({
+                    type: 'success',
+                    message: `Facebook page${data.length > 1 ? 's' : ''} successfully activated.`
+                }))
+                return dispatch({
+                    type: types.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
+                    resp
+                })
+            }, (error) => {
+                return dispatch({
+                    type: types.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_ERROR,
+                    error,
+                    reason: 'Failed to activate your Facebook page'
                 })
             })
     }
