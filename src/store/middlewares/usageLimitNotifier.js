@@ -1,197 +1,100 @@
 import {fromJS} from 'immutable'
 import {browserHistory} from 'react-router'
 import {hide} from 'react-notification-system-redux'
-import {NOTIFICATION_UIDS as UIDS} from '../../config'
-import {hasReachedLimit} from '../../utils'
 import {notify} from '../../state/notifications/actions'
 import * as currentAccountTypes from '../../state/currentAccount/constants'
-import * as billingTypes from '../../state/billing/constants'
 import * as ticketTypes from '../../state/ticket/constants'
 import * as newMessageTypes from '../../state/newMessage/constants'
-import _some from 'lodash/some'
+import * as currentAccountSelectors from '../../state/currentAccount/selectors'
 
 const TRACKED_ACTIONS = [
     currentAccountTypes.UPDATE_ACCOUNT_SUCCESS,
-    billingTypes.FETCH_CURRENT_USAGE_SUCCESS,
-    newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS,
-    ticketTypes.SUBMIT_TICKET_SUCCESS,
-    ticketTypes.FETCH_TICKET_START,
-    billingTypes.UPDATE_CREDIT_CARD_SUCCESS
+    newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+    ticketTypes.FETCH_TICKET_START
 ]
 
-const usageMaxLimitReachedModalNotif = (freeTickets) => ({
-    style: 'modal',
-    dismissible: true,
-    title: 'Free limit reached',
-    message: `You've used your ${freeTickets} free tickets this month. To keep responding to customers,
-                    you need to add a payment method.`,
-    buttons: [{
-        name: 'Add payment method',
-        color: 'primary',
-        onClick: () => {
-            browserHistory.push('/app/settings/billing')
-        }
-    }]
-})
+export const USAGE_NOTIFICATION_BANNER = 99
+export const PAYMENT_MODAL = 100
 
-const accountDeactivatedModalNotif = {
-    style: 'modal',
-    dismissible: false,
-    title: 'Account deactivated',
-    message: `Your account has been deactivated due to multiple payment failures. 
-                    To re-activate your account, please update your payment method.`,
-    buttons: [{
-        name: 'Update payment method',
-        color: 'primary',
-        onClick: () => {
-            browserHistory.push('/app/settings/billing')
-        }
-    }]
+
+const _showPaymentModal = (store, notification) => {
+    store.dispatch(hide(PAYMENT_MODAL))
+    store.dispatch(notify({
+        uid: PAYMENT_MODAL,
+        style: 'modal',
+        type: notification.get('type'),
+        dismissible: true,
+        title: 'Trial limits reached',
+        message: notification.get('message'),
+        buttons: [{
+            name: 'Update payment method',
+            color: 'primary',
+            onClick: () => {
+                browserHistory.push('/app/settings/billing')
+            }
+        }]
+    }))
 }
 
 // Middleware used to notify user about free limit usage
 const usageLimitNotifier = store => next => action => {
-    const {currentAccount, billing, notifications} = store.getState()
-
     if (!TRACKED_ACTIONS.includes(action.type)) {
         return next(action)
     }
 
     const _action = fromJS(action)
-    const plan = billing.get('plan')
-    const freeTickets = plan.get('free_tickets')
-    const tickets = billing.getIn(['currentUsage', 'data', 'tickets'])
+    const state = store.getState()
+    const accountStatus = currentAccountSelectors.getAccountStatus(state)
 
-    const isAboveMinLimit = hasReachedLimit('min', tickets, plan)
-    const isAboveDefaultLimit = hasReachedLimit('default', tickets, plan)
-    const isAboveMaxLimit = hasReachedLimit('max', tickets, plan)
-    const isAccountActive = currentAccount.get('deactivated_datetime', null) === null
-    const hasCreditCard = currentAccount.getIn(['meta', 'hasCreditCard'], false)
-    const hasShopifyBillingActive = currentAccount.getIn(['meta', 'shopify_billing', 'active'], false)
-    const isPaying = hasCreditCard || hasShopifyBillingActive
+    if (accountStatus.isEmpty()) {
+        return next(action)
+    }
+
+    const notification = accountStatus.get('notification') || fromJS({})
+    const status = accountStatus.get('status') || 'active'
 
     switch (action.type) {
-        // user send a message
-        case ticketTypes.SUBMIT_TICKET_SUCCESS:
-        case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
-            setTimeout(() => {
-                if (!isAccountActive) {
-                    store.dispatch(notify(accountDeactivatedModalNotif))
-                } else if (!isPaying && isAboveDefaultLimit) {
-                    store.dispatch(notify(usageMaxLimitReachedModalNotif(freeTickets)))
-                }
-            }, 800)
+        // agent tries to send a message
+        case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
+            if (status === 'deactivated' && notification) {
+                _showPaymentModal(store, notification)
+                return
+            }
             break
         }
 
-        // user open a ticket
+        // user opens a ticket
         case ticketTypes.FETCH_TICKET_START: {
             if (!_action.get('displayLoading', false)) {
                 break
             }
-
-            if (!isAccountActive) {
-                store.dispatch(notify(accountDeactivatedModalNotif))
-            } else if (!isPaying && isAboveMaxLimit) {
-                store.dispatch(notify(usageMaxLimitReachedModalNotif(freeTickets)))
+            if (status === 'deactivated' && notification) {
+                _showPaymentModal(store, notification)
             }
             break
         }
 
-        // receive current account data up-to-date
+        // receive current account data update
         case currentAccountTypes.UPDATE_ACCOUNT_SUCCESS: {
-            const nextIsAccountActive = _action
-                .getIn(['resp', 'deactivated_datetime'], null) === null
+            const nextAccountStatus = _action.getIn(['resp', 'status'])
+            const nextStatus = nextAccountStatus.get('status') || 'active'
+            const nextNotification = nextAccountStatus.get('notification') || fromJS({})
 
-            const nextHasCreditCard = _action.getIn(['resp', 'meta', 'hasCreditCard'])
-            const nextHasShopifyBillingActive = _action.getIn(['resp', 'meta', 'shopify_billing', 'active'])
-            const nextIsPaying = nextHasCreditCard || nextHasShopifyBillingActive
-
-            const isAlreadyNotified = _some(notifications, {uid: UIDS.accountDeactivated}) ||
-                _some(notifications, {uid: UIDS.accountDeactivatedCardUpdated})
-
-            // user has registered a credit card
-            if (!isPaying && nextIsPaying) {
-                store.dispatch(hide(UIDS.freeMinLimitReached))
-                store.dispatch(hide(UIDS.freeDefaultLimitReached))
+            // Hide the notification if the status was changed
+            if (!accountStatus.equals(nextAccountStatus)) {
+                store.dispatch(hide(USAGE_NOTIFICATION_BANNER))
             }
 
-            // account is deactivated and not notified or has been deactivated
-            if (((!isAccountActive && !isAlreadyNotified) || (isAccountActive)) && !nextIsAccountActive) {
+            if (nextStatus !== 'active' || !nextNotification.isEmpty()) {
                 store.dispatch(notify({
-                    uid: UIDS.accountDeactivated,
+                    uid: USAGE_NOTIFICATION_BANNER,
                     style: 'banner',
-                    type: 'error',
+                    type: nextNotification.get('type'),
                     dismissible: false,
+                    message: nextNotification.get('message'),
                     onClick: () => {
                         browserHistory.push('/app/settings/billing')
-                    },
-                    allowHtml: true,
-                    message: `Your account has been deactivated due to multiple payment failures. 
-                    To re-activate your account, please update your payment method <a>here</a>.`
-                }))
-            } else if (!isAccountActive && nextIsAccountActive) {
-                store.dispatch(hide(UIDS.accountDeactivated))
-                store.dispatch(hide(UIDS.accountDeactivatedCardUpdated))
-            }
-            break
-        }
-
-        // receive current usage up-to-date
-        case billingTypes.FETCH_CURRENT_USAGE_SUCCESS: {
-            // account is unlimited
-            if (isPaying) {
-                break
-            }
-
-            const nextTickets = _action.getIn(['resp', 'data', 'tickets'])
-            const nextIsAboveMinLimit = hasReachedLimit('min', nextTickets, plan)
-            const nextIsAboveDefaultLimit = hasReachedLimit('default', nextTickets, plan)
-
-            if ((!isAboveMinLimit && nextIsAboveMinLimit) ||
-                (!isAboveDefaultLimit && nextIsAboveDefaultLimit)) {
-                let uid = UIDS.freeMinLimitReached
-                let level = 'warning'
-                let message = `You're getting close to the ${freeTickets} free tickets limit.`
-
-                if (nextIsAboveDefaultLimit) {
-                    // user has reach default limit, so we remove previous notification
-                    store.dispatch(hide(UIDS.freeMinLimitReached))
-
-                    uid = UIDS.freeDefaultLimitReached
-                    level = 'error'
-                    message = `You've reached the ${freeTickets} free tickets limit.`
-                }
-
-                store.dispatch(notify({
-                    uid,
-                    style: 'banner',
-                    type: level,
-                    dismissible: false,
-                    onClick: () => {
-                        browserHistory.push('/app/settings/billing')
-                    },
-                    allowHtml: true,
-                    message: `${message} Add a payment method <a>here</a> to keep responding to customers.`
-                }))
-            }
-            break
-        }
-        case billingTypes.UPDATE_CREDIT_CARD_SUCCESS: {
-            if (isAccountActive) {
-                store.dispatch(notify({
-                    type: 'success',
-                    message: 'Credit card has been successfully updated.'
-                }))
-            } else {
-                store.dispatch(hide(UIDS.accountDeactivated))
-                store.dispatch(notify({
-                    uid: UIDS.accountDeactivatedCardUpdated,
-                    style: 'banner',
-                    type: 'info',
-                    dismissible: true,
-                    autoDismiss: 0,
-                    message: 'We are attempting to pay invoices with your new card. Your account is now active.'
+                    }
                 }))
             }
             break
@@ -199,7 +102,6 @@ const usageLimitNotifier = store => next => action => {
         default:
             break
     }
-
     return next(action)
 }
 

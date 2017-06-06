@@ -2,7 +2,7 @@
 
 exports[`Loader component inline 1`] = `
 <div
-  className="ui active inline loader"
+  className="ui active medium inline loader"
 />
 `;
 
@@ -14,7 +14,7 @@ exports[`Loader component loading 1`] = `
     className="loader-inner"
   >
     <div
-      className="ui active text loader"
+      className="ui active medium text loader"
     >
       Loading...
     </div>
@@ -42,7 +42,7 @@ exports[`Loader component simple message 1`] = `
     className="loader-inner"
   >
     <div
-      className="ui active text loader"
+      className="ui active medium text loader"
     >
       hello
     </div>

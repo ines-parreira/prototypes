@@ -1,0 +1,215 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BillingPaymentMethod.spec.js component should render empty card 1`] = `
+<BillingPaymentMethod
+  creditCard={
+    Immutable.Map {
+    }
+  }
+  fetchCreditCard={[Function]}
+  fetchPaymentMethod={[Function]}
+  paymentIsActive={true}
+  paymentMethod="stripe"
+>
+  <div
+    className="mb-5"
+  >
+    <h4>
+      Payment method
+    </h4>
+    <div>
+      <p
+        className="mt-2 mb-2"
+      >
+        No credit card registered
+      </p>
+      <ei
+        color="success"
+        tag={[Function]}
+        to="/app/settings/billing/add-credit-card"
+      >
+        <Link
+          className="btn btn-success"
+          onClick={[Function]}
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/settings/billing/add-credit-card"
+        >
+          <a
+            className="btn btn-success"
+            onClick={[Function]}
+            style={Object {}}
+          >
+            Add Credit Card
+          </a>
+        </Link>
+      </ei>
+    </div>
+  </div>
+</BillingPaymentMethod>
+`;
+
+exports[`BillingPaymentMethod.spec.js component should render loading 1`] = `
+<BillingPaymentMethod
+  creditCard={
+    Immutable.Map {
+    }
+  }
+  fetchCreditCard={[Function]}
+  fetchPaymentMethod={[Function]}
+  paymentIsActive={true}
+  paymentMethod="stripe"
+>
+  <Loader
+    inline={false}
+    inverted={false}
+    loading={true}
+    message="Loading..."
+    size="medium"
+  >
+    <div
+      className="loader-container"
+    >
+      <div
+        className="loader-inner"
+      >
+        <div
+          className="ui active medium text loader"
+        >
+          Loading...
+        </div>
+      </div>
+    </div>
+  </Loader>
+</BillingPaymentMethod>
+`;
+
+exports[`BillingPaymentMethod.spec.js component should render shopify active 1`] = `
+<BillingPaymentMethod
+  creditCard={
+    Immutable.Map {
+    }
+  }
+  fetchCreditCard={[Function]}
+  fetchPaymentMethod={[Function]}
+  paymentIsActive={true}
+  paymentMethod="shopify"
+>
+  <div
+    className="mb-5"
+  >
+    <h4>
+      Payment method
+    </h4>
+    <div>
+      <p
+        className="mt-2 mb-2"
+      >
+        Payment with Shopify activated.
+      </p>
+    </div>
+  </div>
+</BillingPaymentMethod>
+`;
+
+exports[`BillingPaymentMethod.spec.js component should render shopify inactive 1`] = `
+<BillingPaymentMethod
+  creditCard={
+    Immutable.Map {
+    }
+  }
+  fetchCreditCard={[Function]}
+  fetchPaymentMethod={[Function]}
+  paymentIsActive={false}
+  paymentMethod="shopify"
+>
+  <div
+    className="mb-5"
+  >
+    <h4>
+      Payment method
+    </h4>
+    <div>
+      <ei
+        color="success"
+        href="/integrations/shopify/billing/activate/"
+        tag="a"
+      >
+        <a
+          className="btn btn-success"
+          href="/integrations/shopify/billing/activate/"
+          onClick={[Function]}
+        >
+          Activate billing with Shopify
+        </a>
+      </ei>
+    </div>
+  </div>
+</BillingPaymentMethod>
+`;
+
+exports[`BillingPaymentMethod.spec.js component should render stripe 1`] = `
+<BillingPaymentMethod
+  creditCard={
+    Immutable.Map {
+      brand: "Visa",
+      last4: 4242,
+      exp_month: 9,
+      exp_year: 2017,
+    }
+  }
+  fetchCreditCard={[Function]}
+  fetchPaymentMethod={[Function]}
+  paymentIsActive={true}
+  paymentMethod="stripe"
+>
+  <div
+    className="mb-5"
+  >
+    <h4>
+      Payment method
+    </h4>
+    <div>
+      <p
+        className="mt-2 mb-2"
+      >
+        <span>
+          Visa
+           ending in 
+          <strong>
+            4242
+             
+          </strong>
+          and expiring on 
+          <em>
+            9
+            /
+            2017
+          </em>
+        </span>
+      </p>
+      <ei
+        color="secondary"
+        tag={[Function]}
+        to="/app/settings/billing/update-credit-card"
+      >
+        <Link
+          className="btn btn-secondary"
+          onClick={[Function]}
+          onlyActiveOnIndex={false}
+          style={Object {}}
+          to="/app/settings/billing/update-credit-card"
+        >
+          <a
+            className="btn btn-secondary"
+            onClick={[Function]}
+            style={Object {}}
+          >
+            Update Credit Card
+          </a>
+        </Link>
+      </ei>
+    </div>
+  </div>
+</BillingPaymentMethod>
+`;

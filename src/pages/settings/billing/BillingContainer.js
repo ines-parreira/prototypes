@@ -1,32 +1,51 @@
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
-import {fromJS} from 'immutable'
-import Billing from './components/Billing'
-import {fetchCurrentUsage, fetchInvoices, fetchCreditCard} from '../../../state/billing/actions'
+import React, {Component, PropTypes} from 'react'
+
+import BillingCurrentSubscription from './BillingCurrentSubscription'
+import BillingPlans from './BillingPlans'
+import BillingUsage from './BillingUsage'
+import BillingPaymentMethod from './BillingPaymentMethod'
+import BillingInvoices from './BillingInvoices'
 import {notify} from '../../../state/notifications/actions'
-import * as currentAccountSelectors from './../../../state/currentAccount/selectors'
 
-function mapStateToProps(state) {
-    const billing = state.billing
+@withRouter
+@connect(null, {notify})
+export default class BillingContainer extends Component {
+    static propTypes = {
+        // Router
+        notify: PropTypes.func.isRequired,
+        location: PropTypes.object.isRequired,
+    }
 
-    return {
-        isFetchingCurrentUsage: billing.getIn(['_internal', 'loading', 'fetchCurrentUsage'], false),
-        isFetchingCreditCard: billing.getIn(['_internal', 'loading', 'fetchCreditCard'], false),
-        isFetchingInvoices: billing.getIn(['_internal', 'loading', 'fetchInvoices'], false),
-        plan: billing.get('plan'),
-        usage: billing.get('currentUsage', fromJS({})),
-        creditCard: billing.get('creditCard', fromJS({})),
-        // only give paid and unpaid invoices with at least one attempt of payment
-        invoices: billing.get('invoices', fromJS([]))
-            .filter((invoice) => invoice.get('attempted') && invoice.get('amount_due') > 0),
-        paymentMethod: currentAccountSelectors.paymentMethod(state),
-        paymentIsActive: currentAccountSelectors.paymentIsActive(state),
+    componentWillMount() {
+        if (this.props.location.query.error === 'shopify-billing') {
+            this.props.notify({
+                message: 'Something went wrong while activating billing with Shopify, please try again later.',
+                type: 'error'
+            })
+        } else if (this.props.location.query.success === 'shopify-billing') {
+            this.props.notify({
+                message: 'Billing with Shopify activated.',
+                type: 'success'
+            })
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>
+                    <i className="fa fa-fw fa-credit-card blue icon mr-2"/>
+                    Billing
+                </h1>
+
+                <BillingCurrentSubscription />
+                <BillingPlans/>
+                <BillingUsage/>
+                <BillingPaymentMethod/>
+                <BillingInvoices/>
+            </div>
+        )
     }
 }
-
-export default withRouter(connect(mapStateToProps, {
-    fetchCurrentUsage,
-    fetchInvoices,
-    fetchCreditCard,
-    notify
-})(Billing))

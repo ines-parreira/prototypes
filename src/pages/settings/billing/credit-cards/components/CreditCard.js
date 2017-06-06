@@ -1,16 +1,15 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import {Field, reduxForm} from 'redux-form'
-import classnames from 'classnames'
+import classNames from 'classnames'
 import Card from 'react-credit-card'
-import {Button} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, FormText} from 'reactstrap'
 
 import {InputField} from '../../../../common/forms'
-import {Loader} from '../../../../common/components/Loader'
-import {UPDATE_CREDIT_CARD_FORM} from '../../../../../state/billing/constants'
-import {creditCardNormalizer, creditCardCVCNormalizer, creditCardExpDateNormalizer} from '../utils'
+import Loader from '../../../../common/components/Loader'
+import {creditCardCVCNormalizer, creditCardExpDateNormalizer, creditCardNormalizer} from '../utils'
 import {loadScript} from '../../../../../utils'
-
+import {UPDATE_CREDIT_CARD_FORM} from '../../../../../state/billing/constants'
 import css from './CreditCard.less'
 import 'react-credit-card/source/card.css'
 import 'react-credit-card/source/card-types.css'
@@ -20,7 +19,6 @@ import 'react-credit-card/source/card-types.css'
 class CreditCard extends Component {
     static propTypes = {
         location: PropTypes.object.isRequired,
-        isSubmitting: PropTypes.bool.isRequired,
         updateCreditCard: PropTypes.func.isRequired,
         handleSubmit: PropTypes.func.isRequired,
         invalid: PropTypes.bool.isRequired,
@@ -39,16 +37,31 @@ class CreditCard extends Component {
     }
 
     state = {
+        isSubmitting: false,
         isStripeLoaded: !!window.Stripe
     }
 
     componentWillMount() {
         // load Stripe.js cause we need it to create token for credit card
-        loadScript('https://js.stripe.com/v2/', () => {
-            if (window.STRIPE_PUBLIC_KEY) {
-                Stripe.setPublishableKey(window.STRIPE_PUBLIC_KEY)
-                this.setState({isStripeLoaded: true})
-            }
+        if (typeof Stripe === 'undefined') {
+            loadScript('https://js.stripe.com/v2/', () => {
+                if (window.STRIPE_PUBLIC_KEY) {
+                    Stripe.setPublishableKey(window.STRIPE_PUBLIC_KEY)
+                    this.setState({isStripeLoaded: true})
+                }
+            })
+        }
+    }
+
+    _submit = (formData) => {
+        this.setState({
+            isSubmitting: true
+        })
+
+        return this.props.updateCreditCard(formData).then(() => {
+            this.setState({
+                isSubmitting: false
+            })
         })
     }
 
@@ -62,10 +75,8 @@ class CreditCard extends Component {
 
         const {
             handleSubmit,
-            isSubmitting,
             invalid,
             pristine,
-            updateCreditCard,
             number,
             name,
             expDate,
@@ -79,16 +90,18 @@ class CreditCard extends Component {
 
         return (
             <div>
-                <div className="ui large breadcrumb">
-                    <Link className="section" to="app/settings/billing/">Billing</Link>
-                    <i className="right angle icon divider" />
-                    <a className="section">{action} credit card</a>
-                </div>
-                <h1>{action} credit card</h1>
+                <Breadcrumb>
+                    <BreadcrumbItem>
+                        <Link className="section" to="/app/settings/billing/">Billing</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>{action} credit card</BreadcrumbItem>
+                </Breadcrumb>
+
+                <h1>{action} Credit card</h1>
                 <p>Enter the information of the card you'd like to use.</p>
                 <div className="ui grid">
                     <div className={`height wide column ${css.formWrapper}`}>
-                        <form className="ui form" onSubmit={handleSubmit(updateCreditCard)}>
+                        <form className="ui form" onSubmit={handleSubmit(this._submit)}>
                             <Field
                                 type="text"
                                 name="number"
@@ -124,15 +137,19 @@ class CreditCard extends Component {
                             </div>
                             <div className="field">
                                 <Button
-                                    type="submit"
-                                    color="primary"
-                                    className={classnames({
-                                        'btn-loading': isSubmitting,
-                                    })}
-                                    disabled={isSubmitting || invalid || pristine}
+                                    color="success"
+                                    className={classNames({'btn-loading': this.state.isSubmitting})}
+                                    disabled={this.state.isSubmitting || invalid || pristine}
                                 >
-                                    {action} card
+                                    {action} Card
                                 </Button>
+                                { action === 'Add' && (
+                                    <FormText color="muted">
+                                        <strong>Note: </strong>
+                                        You'll be charged for the current period of your plan once you add your Credit
+                                        Card.
+                                    </FormText>
+                                )}
                             </div>
                         </form>
                     </div>

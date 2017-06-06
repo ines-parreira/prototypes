@@ -31,8 +31,6 @@ describe('actions', () => {
                 }
             }
             const expectedActions = [{
-                type: types.FETCH_CURRENT_USAGE_START
-            }, {
                 type: types.FETCH_CURRENT_USAGE_SUCCESS,
                 resp: usage
             }]
@@ -52,8 +50,6 @@ describe('actions', () => {
                 amount_due: 1234
             }]
             const expectedActions = [{
-                type: types.FETCH_INVOICES_START
-            }, {
                 type: types.FETCH_INVOICES_SUCCESS,
                 resp: invoices
             }]
@@ -75,8 +71,6 @@ describe('actions', () => {
                 exp_year: 35
             }
             const expectedActions = [{
-                type: types.FETCH_CREDIT_CARD_START
-            }, {
                 type: types.FETCH_CREDIT_CARD_SUCCESS,
                 resp: card
             }]

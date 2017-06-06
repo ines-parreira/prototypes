@@ -18,24 +18,6 @@ describe('reducers', () => {
             expect(reducer(undefined, {})).toEqualImmutable(initialState)
         })
 
-        it('should handle FETCH_CURRENT_USAGE_START', () => {
-            const action = {
-                type: types.FETCH_CURRENT_USAGE_START
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'fetchCurrentUsage'], true)
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
-        it('should handle FETCH_CURRENT_USAGE_ERROR', () => {
-            const action = {
-                type: types.FETCH_CURRENT_USAGE_ERROR
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'fetchCurrentUsage'], false)
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
         it('should handle FETCH_CURRENT_USAGE_SUCCESS', () => {
             const usage = {
                 data: {
@@ -51,27 +33,7 @@ describe('reducers', () => {
                 type: types.FETCH_CURRENT_USAGE_SUCCESS,
                 resp: usage
             }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'fetchCurrentUsage'], false)
-            .set('currentUsage', fromJS(usage))
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
-        it('should handle FETCH_INVOICES_START', () => {
-            const action = {
-                type: types.FETCH_INVOICES_START
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'fetchInvoices'], true)
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
-        it('should handle FETCH_INVOICES_ERROR', () => {
-            const action = {
-                type: types.FETCH_INVOICES_ERROR
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'fetchInvoices'], false)
-
+            const expectedState = initialState.set('currentUsage', fromJS(usage))
             expect(reducer(initialState, action)).toEqualImmutable(expectedState)
         })
 
@@ -86,26 +48,7 @@ describe('reducers', () => {
                 type: types.FETCH_INVOICES_SUCCESS,
                 resp: invoices
             }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'fetchInvoices'], false)
-                .set('invoices', fromJS(invoices))
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
-        it('should handle FETCH_CREDIT_CARD_START', () => {
-            const action = {
-                type: types.FETCH_CREDIT_CARD_START
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'fetchCreditCard'], true)
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
-        it('should handle FETCH_CREDIT_CARD_ERROR', () => {
-            const action = {
-                type: types.FETCH_CREDIT_CARD_ERROR
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'fetchCreditCard'], false)
+            const expectedState = initialState.set('invoices', fromJS(invoices))
 
             expect(reducer(initialState, action)).toEqualImmutable(expectedState)
         })
@@ -115,26 +58,7 @@ describe('reducers', () => {
                 type: types.FETCH_CREDIT_CARD_SUCCESS,
                 resp: card
             }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'fetchCreditCard'], false)
-                .set('creditCard', fromJS(card))
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
-        it('should handle UPDATE_CREDIT_CARD_START', () => {
-            const action = {
-                type: types.UPDATE_CREDIT_CARD_START
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'updateCreditCard'], true)
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
-        it('should handle UPDATE_CREDIT_CARD_ERROR', () => {
-            const action = {
-                type: types.UPDATE_CREDIT_CARD_ERROR
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'updateCreditCard'], false)
+            const expectedState = initialState.set('creditCard', fromJS(card))
 
             expect(reducer(initialState, action)).toEqualImmutable(expectedState)
         })
@@ -144,8 +68,20 @@ describe('reducers', () => {
                 type: types.UPDATE_CREDIT_CARD_SUCCESS,
                 resp: card
             }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'updateCreditCard'], false)
-                .set('creditCard', fromJS(card))
+            const expectedState = initialState.set('creditCard', fromJS(card))
+
+            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
+        })
+        it('should handle UPDATE_SUBSCRIPTION_SUCCESS', () => {
+            const action = {
+                type: types.UPDATE_SUBSCRIPTION_SUCCESS,
+                resp: {
+                    data: {
+                        plan: 'plan'
+                    }
+                }
+            }
+            const expectedState = initialState.set('currentPlanId', 'plan')
 
             expect(reducer(initialState, action)).toEqualImmutable(expectedState)
         })

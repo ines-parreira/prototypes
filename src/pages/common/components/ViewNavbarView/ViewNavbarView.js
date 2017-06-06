@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {UncontrolledTooltip} from 'reactstrap'
 
 import {compactInteger, getPluralObjectName} from '../../../../utils'
-import {Loader} from './../../../common/components/Loader'
+import Loader from './../../../common/components/Loader'
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 
 import * as viewsActions from '../../../../state/views/actions'

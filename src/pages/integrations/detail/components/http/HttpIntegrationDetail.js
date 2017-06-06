@@ -13,7 +13,7 @@ import {
 } from 'reactstrap'
 
 import {AVAILABLE_HTTP_METHODS} from '../../../../../config'
-import {Loader} from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader'
 import {
     InputField,
     SelectField,

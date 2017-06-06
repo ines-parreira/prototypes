@@ -11,7 +11,7 @@ import {
     BreadcrumbItem,
 } from 'reactstrap'
 
-import {Loader} from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader'
 import {LabeledInputField} from '../../../../common/forms'
 import formSender from '../../../../common/utils/formSender'
 

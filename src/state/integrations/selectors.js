@@ -12,6 +12,11 @@ export const getIntegrations = createSelector(
     state => state.get('integrations', fromJS([]))
 )
 
+export const getActiveIntegrations = createSelector(
+    [getIntegrations],
+    state => state.filter(i => !i.get('deactivated_datetime'))
+)
+
 export const getIntegrationById = id => createSelector(
     [getIntegrations],
     (integrations) => {

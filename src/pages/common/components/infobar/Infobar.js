@@ -10,7 +10,7 @@ import * as infobarActions from '../../../../state/infobar/actions'
 
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
-import {Loader} from '../Loader'
+import Loader from '../Loader'
 import InfobarLayout from './InfobarLayout'
 import InfobarUserInfo from './InfobarUserInfo'
 import MergeUsersContainer from './../mergeUsers/MergeUsersContainer'

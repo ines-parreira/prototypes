@@ -10,8 +10,7 @@ function mapStateToProps(state) {
         number: selector(state, 'number'),
         name: selector(state, 'name'),
         expDate: selector(state, 'expDate'),
-        cvc: selector(state, 'cvc'),
-        isSubmitting: state.billing.getIn(['_internal', 'loading', 'updateCreditCard'], false)
+        cvc: selector(state, 'cvc')
     }
 }
 

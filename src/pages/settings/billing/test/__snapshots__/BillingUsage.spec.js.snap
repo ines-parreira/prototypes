@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BillingUsage component should display loader 1`] = `
+<BillingUsage
+  currentUsage={
+    Immutable.Map {
+    }
+  }
+  fetchCurrentUsage={[Function]}
+>
+  <Loader
+    inline={false}
+    inverted={false}
+    loading={true}
+    message="Loading..."
+    size="medium"
+  >
+    <div
+      className="loader-container"
+    >
+      <div
+        className="loader-inner"
+      >
+        <div
+          className="ui active medium text loader"
+        >
+          Loading...
+        </div>
+      </div>
+    </div>
+  </Loader>
+</BillingUsage>
+`;
+
+exports[`BillingUsage component should display price 1`] = `
+<BillingUsage
+  currentUsage={
+    Immutable.Map {
+      meta: Immutable.Map {
+        start_datetime: "2010-10-10",
+        end_datetime: "2010-10-11",
+      },
+      data: Immutable.Map {
+        cost: 10,
+        tickets: 10,
+      },
+    }
+  }
+  fetchCurrentUsage={[Function]}
+>
+  <div
+    className="mb-5"
+  >
+    <h4>
+      Extra tickets cost:
+       
+      <small
+        className="text-faded"
+      >
+        Oct 10
+         - 
+        Oct 11
+      </small>
+    </h4>
+    <bt
+      className="mb-2"
+      tag="div"
+    >
+      <div
+        className="mb-2 row"
+      >
+        <Ot
+          sm="4"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="col col-sm-4"
+          >
+            <na
+              tag="div"
+            >
+              <div
+                className="card-group"
+              >
+                <ta
+                  block={true}
+                  className="text-center"
+                  tag="div"
+                >
+                  <div
+                    className="text-center card card-block"
+                  >
+                    <h3>
+                      10
+                    </h3>
+                    <div>
+                      tickets
+                    </div>
+                  </div>
+                </ta>
+                <ta
+                  block={true}
+                  className="text-center"
+                  tag="div"
+                >
+                  <div
+                    className="text-center card card-block"
+                  >
+                    <h3>
+                      $
+                      10
+                    </h3>
+                    <div>
+                      cost
+                    </div>
+                  </div>
+                </ta>
+              </div>
+            </na>
+          </div>
+        </Ot>
+      </div>
+    </bt>
+    <p>
+      If you have any questions or if you want to unsubscribe, please contact us at 
+      <a
+        href="mailto:support@gorgias.io"
+      >
+        support@gorgias.io
+      </a>
+      .
+    </p>
+  </div>
+</BillingUsage>
+`;
+
+exports[`BillingUsage component should load with empty props 1`] = `
+<BillingUsage
+  currentUsage={
+    Immutable.Map {
+      meta: Immutable.Map {
+        start_datetime: "2010-10-10",
+        end_datetime: "2010-10-11",
+      },
+    }
+  }
+  fetchCurrentUsage={[Function]}
+>
+  <div
+    className="mb-5"
+  >
+    <h4>
+      Extra tickets cost:
+       
+      <small
+        className="text-faded"
+      >
+        Oct 10
+         - 
+        Oct 11
+      </small>
+    </h4>
+    <bt
+      className="mb-2"
+      tag="div"
+    >
+      <div
+        className="mb-2 row"
+      >
+        <Ot
+          sm="4"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="col col-sm-4"
+          >
+            <na
+              tag="div"
+            >
+              <div
+                className="card-group"
+              >
+                <ta
+                  block={true}
+                  className="text-center"
+                  tag="div"
+                >
+                  <div
+                    className="text-center card card-block"
+                  >
+                    <h3 />
+                    <div>
+                      tickets
+                    </div>
+                  </div>
+                </ta>
+                <ta
+                  block={true}
+                  className="text-center"
+                  tag="div"
+                >
+                  <div
+                    className="text-center card card-block"
+                  >
+                    <h3>
+                      $
+                    </h3>
+                    <div>
+                      cost
+                    </div>
+                  </div>
+                </ta>
+              </div>
+            </na>
+          </div>
+        </Ot>
+      </div>
+    </bt>
+    <p>
+      If you have any questions or if you want to unsubscribe, please contact us at 
+      <a
+        href="mailto:support@gorgias.io"
+      >
+        support@gorgias.io
+      </a>
+      .
+    </p>
+  </div>
+</BillingUsage>
+`;

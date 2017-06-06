@@ -7,7 +7,7 @@ import {
     Button,
 } from 'reactstrap'
 
-import {Loader} from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader'
 
 export default class FacebookIntegrationLogin extends React.Component {
     _onLogin = () => {

@@ -13,7 +13,7 @@ import {
     BreadcrumbItem,
 } from 'reactstrap'
 
-import {Loader} from '../../../../../common/components/Loader'
+import Loader from '../../../../../common/components/Loader'
 import {InputField} from '../../../../../common/forms'
 import css from './EmailIntegrationUpdate.less'
 import formSender from '../../../../../common/utils/formSender'

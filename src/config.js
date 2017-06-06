@@ -667,16 +667,6 @@ export const NOTIFICATIONS_STYLE_CONFIG = {
 }
 
 /**
- * Notification uids for known notifications
- */
-export const NOTIFICATION_UIDS = {
-    freeMinLimitReached: 2,
-    freeDefaultLimitReached: 3,
-    accountDeactivated: 4,
-    accountDeactivatedCardUpdated: 5,
-}
-
-/**
  * Default currentUser preferences
  */
 export const DEFAULT_PREFERENCES = {

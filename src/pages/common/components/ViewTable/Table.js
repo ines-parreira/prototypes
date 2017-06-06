@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 
-import {Loader} from '../Loader'
+import Loader from '../Loader'
 import BlankState from '../BlankState'
 import Pagination from '../Pagination'
 

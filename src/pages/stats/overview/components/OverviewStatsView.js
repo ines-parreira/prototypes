@@ -8,7 +8,7 @@ import {UncontrolledTooltip} from 'reactstrap'
 
 import PeriodPicker from '../../common/PeriodPicker'
 import PageHeader from '../../../common/components/PageHeader'
-import {Loader} from '../../../common/components/Loader'
+import Loader from '../../../common/components/Loader'
 import {renderDifference, comparedPeriodString} from '../../common/utils'
 import {fieldEnumSearch} from '../../../../state/views/actions'
 import SearchableSelectField from '../../common/SearchableSelectField'

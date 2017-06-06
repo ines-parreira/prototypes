@@ -6,7 +6,7 @@ import {Button} from 'reactstrap'
 
 import * as UsersActions from '../../../state/users/actions'
 
-import {Loader} from '../../common/components/Loader'
+import Loader from '../../common/components/Loader'
 import UserForm from '../common/components/UserForm'
 import Timeline from '../../common/components/timeline/Timeline'
 import Modal from '../../common/components/Modal'

@@ -17,32 +17,6 @@ class BannerNotification extends Component {
         dismissible: true
     }
 
-    state = {
-        show: false,
-        isActive: false
-    }
-
-    componentDidMount() {
-        this._show()
-    }
-
-    // play "leave" css animation
-    componentWillLeave(callback) {
-        this.setState({isActive: false})
-
-        setTimeout(() => {
-            callback()
-        }, 1000)
-    }
-
-    _show = () => {
-        this.setState({show: true})
-        // play "enter" css animation
-        setTimeout(() => {
-            this.setState({isActive: true})
-        }, 1000)
-    }
-
     _onClick = () => {
         const {uid, onClick, dismissible, hide} = this.props
 
@@ -57,16 +31,10 @@ class BannerNotification extends Component {
 
     render() {
         const {level, message, allowHtml} = this.props
-        const {show, isActive} = this.state
-
-        if (!show) {
-            return null
-        }
-
         const classnames = classNames(
             'banner-notification',
             `banner-notification--${level}`, {
-                'banner-notification--active': isActive
+                'banner-notification--active': true
             })
 
         return (

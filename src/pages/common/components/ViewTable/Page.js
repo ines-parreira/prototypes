@@ -6,7 +6,7 @@ import {withRouter} from 'react-router'
 import classnames from 'classnames'
 import _get from 'lodash/get'
 
-import {Loader} from '../Loader'
+import Loader from '../Loader'
 import Header from './Header'
 import Table from './Table'
 

@@ -12,7 +12,7 @@ import {
     BreadcrumbItem,
 } from 'reactstrap'
 
-import {Loader} from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader'
 import {CheckboxField} from '../../../../common/forms'
 
 export default class FacebookIntegrationDetail extends React.Component {

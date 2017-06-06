@@ -16,7 +16,7 @@ import {
     Col, Card, CardBlock, CardHeader, Alert,
 } from 'reactstrap'
 
-import {Loader} from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import {InputField, TextAreaField, ColorField, FileField} from '../../../../common/forms'
 import formSender from '../../../../common/utils/formSender'

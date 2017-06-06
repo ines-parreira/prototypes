@@ -5,7 +5,7 @@ import {UncontrolledTooltip} from 'reactstrap'
 import {renderDifference, comparedPeriodString} from '../../common/utils'
 import PeriodPicker from '../../common/PeriodPicker'
 import PageHeader from '../../../common/components/PageHeader'
-import {Loader} from '../../../common/components/Loader'
+import Loader from '../../../common/components/Loader'
 import {humanizeString} from '../../../../utils'
 
 export default class SimpleStatsView extends React.Component {

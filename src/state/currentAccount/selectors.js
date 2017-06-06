@@ -3,9 +3,25 @@ import {fromJS} from 'immutable'
 
 export const getCurrentAccountState = (state) => state.currentAccount || fromJS({})
 
+
 export const getCurrentAccountMeta = createSelector(
     [getCurrentAccountState],
     state => state.get('meta') || fromJS({})
+)
+
+export const getAccountStatus = createSelector(
+    [getCurrentAccountState],
+    state => state.get('status') || fromJS({})
+)
+
+export const isAccountActive = createSelector(
+    [getAccountStatus],
+    state => state.get('status') === 'active'
+)
+
+export const getCurrentSubscription = createSelector(
+    [getCurrentAccountState],
+    state => state.get('current_subscription') || fromJS({})
 )
 
 export const hasCreditCard = createSelector(

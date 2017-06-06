@@ -1,0 +1,449 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BillingPlans component should display matching current plan 1`] = `
+<div
+  className="mb-5"
+>
+  <h4>
+    Plans
+  </h4>
+  <bt
+    tag="div"
+  >
+    <Ot
+      sm="9"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <da
+        tag="div"
+      >
+        <ta
+          className="text-center"
+          outline={true}
+          tag="div"
+        >
+          <ba
+            tag="div"
+          >
+            <Xa
+              tag="h4"
+            >
+              my plan
+            </Xa>
+            <div
+              className="mb-4 mt-3"
+            >
+              <h3>
+                <em>
+                  $
+                </em>
+              </h3>
+              per 
+            </div>
+            <div>
+              <strong>
+                Includes:
+              </strong>
+            </div>
+            <div>
+              Unlimited agents
+            </div>
+            <div>
+              <strong>
+                100
+              </strong>
+               tickets included
+            </div>
+            <div>
+              <span>
+                <strong>
+                  + 
+                  $
+                  NaN
+                </strong>
+                 per 
+                100
+                 tickets 
+              </span>
+              <a
+                id="additional-tickets-tooltip-plan1"
+              >
+                <i
+                  className="fa fa-question-circle"
+                />
+              </a>
+              <UncontrolledTooltip
+                target="additional-tickets-tooltip-plan1"
+              >
+                If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
+              </UncontrolledTooltip>
+            </div>
+            <div
+              className="mb-3"
+            >
+              <strong>
+                10
+              </strong>
+               integrations
+            </div>
+            <ei
+              className=""
+              color="secondary"
+              disabled={true}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+              Your current plan
+            </ei>
+          </ba>
+        </ta>
+      </da>
+    </Ot>
+  </bt>
+  <div
+    className="mt-2"
+  >
+    <strong>
+      Are all tickets counted? What about spam?
+    </strong>
+    <div>
+      <span>
+        We bill for a ticket only if your team uses Gorgias to send replies to customers. 
+      </span>
+      <span>
+        Specifically we bill you if the ticket:
+      </span>
+      <ul>
+        <li>
+          Has at least 1 reply sent using the helpdesk by a team member (agent).
+        </li>
+        <li>
+          Or is sent using an automatic reply (using the Rules).
+        </li>
+      </ul>
+    </div>
+    <p>
+      <strong>
+        Note:
+      </strong>
+       Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are not billed.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`BillingPlans component should display multiple plans 1`] = `
+<div
+  className="mb-5"
+>
+  <h4>
+    Plans
+  </h4>
+  <bt
+    tag="div"
+  >
+    <Ot
+      sm="9"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <da
+        tag="div"
+      >
+        <ta
+          className="text-center"
+          outline={true}
+          tag="div"
+        >
+          <ba
+            tag="div"
+          >
+            <Xa
+              tag="h4"
+            >
+              my plan
+            </Xa>
+            <div
+              className="mb-4 mt-3"
+            >
+              <h3>
+                <em>
+                  $
+                </em>
+              </h3>
+              per 
+            </div>
+            <div>
+              <strong>
+                Includes:
+              </strong>
+            </div>
+            <div>
+              Unlimited agents
+            </div>
+            <div>
+              <strong>
+                100
+              </strong>
+               tickets included
+            </div>
+            <div>
+              <span>
+                <strong>
+                  + 
+                  $
+                  NaN
+                </strong>
+                 per 
+                100
+                 tickets 
+              </span>
+              <a
+                id="additional-tickets-tooltip-plan1"
+              >
+                <i
+                  className="fa fa-question-circle"
+                />
+              </a>
+              <UncontrolledTooltip
+                target="additional-tickets-tooltip-plan1"
+              >
+                If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
+              </UncontrolledTooltip>
+            </div>
+            <div
+              className="mb-3"
+            >
+              <strong>
+                10
+              </strong>
+               integrations
+            </div>
+            <ei
+              className=""
+              color="secondary"
+              disabled={true}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+              Your current plan
+            </ei>
+          </ba>
+        </ta>
+        <ta
+          className="text-center"
+          outline={true}
+          tag="div"
+        >
+          <ba
+            tag="div"
+          >
+            <Xa
+              tag="h4"
+            >
+              my second plan
+            </Xa>
+            <div
+              className="mb-4 mt-3"
+            >
+              <h3>
+                <em>
+                  $
+                </em>
+              </h3>
+              per 
+            </div>
+            <div>
+              <strong>
+                Includes:
+              </strong>
+            </div>
+            <div>
+              Unlimited agents
+            </div>
+            <div>
+              <strong>
+                1000
+              </strong>
+               tickets included
+            </div>
+            <div>
+              <span>
+                <strong>
+                  + 
+                  $
+                  NaN
+                </strong>
+                 per 
+                100
+                 tickets 
+              </span>
+              <a
+                id="additional-tickets-tooltip-plan2"
+              >
+                <i
+                  className="fa fa-question-circle"
+                />
+              </a>
+              <UncontrolledTooltip
+                target="additional-tickets-tooltip-plan2"
+              >
+                If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
+              </UncontrolledTooltip>
+            </div>
+            <div
+              className="mb-3"
+            >
+              <strong>
+                100
+              </strong>
+               integrations
+            </div>
+            <ei
+              className=""
+              color="info"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+              Switch to my second plan
+            </ei>
+          </ba>
+        </ta>
+      </da>
+    </Ot>
+  </bt>
+  <div
+    className="mt-2"
+  >
+    <strong>
+      Are all tickets counted? What about spam?
+    </strong>
+    <div>
+      <span>
+        We bill for a ticket only if your team uses Gorgias to send replies to customers. 
+      </span>
+      <span>
+        Specifically we bill you if the ticket:
+      </span>
+      <ul>
+        <li>
+          Has at least 1 reply sent using the helpdesk by a team member (agent).
+        </li>
+        <li>
+          Or is sent using an automatic reply (using the Rules).
+        </li>
+      </ul>
+    </div>
+    <p>
+      <strong>
+        Note:
+      </strong>
+       Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are not billed.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`BillingPlans component should load with empty props 1`] = `
+<BillingPlans
+  currentPlanId="some-plan"
+  isAllowedToChangePlan={[Function]}
+  notify={[Function]}
+  plans={
+    Immutable.Map {
+    }
+  }
+  updateSubscription={[Function]}
+>
+  <div
+    className="mb-5"
+  >
+    <h4>
+      Plans
+    </h4>
+    <bt
+      tag="div"
+    >
+      <div
+        className="row"
+      >
+        <Ot
+          sm="9"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="col col-sm-9"
+          >
+            <da
+              tag="div"
+            >
+              <div
+                className="card-deck"
+              />
+            </da>
+          </div>
+        </Ot>
+      </div>
+    </bt>
+    <div
+      className="mt-2"
+    >
+      <strong>
+        Are all tickets counted? What about spam?
+      </strong>
+      <div>
+        <span>
+          We bill for a ticket only if your team uses Gorgias to send replies to customers. 
+        </span>
+        <span>
+          Specifically we bill you if the ticket:
+        </span>
+        <ul>
+          <li>
+            Has at least 1 reply sent using the helpdesk by a team member (agent).
+          </li>
+          <li>
+            Or is sent using an automatic reply (using the Rules).
+          </li>
+        </ul>
+      </div>
+      <p>
+        <strong>
+          Note:
+        </strong>
+         Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are not billed.
+      </p>
+    </div>
+  </div>
+</BillingPlans>
+`;

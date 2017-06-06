@@ -14,7 +14,7 @@ import {
 import formSender from '../../../../common/utils/formSender'
 import InputField from './../../../../common/forms/InputField'
 
-import {Loader} from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader'
 
 class SmoochIntegrationDetail extends React.Component {
     constructor(props) {

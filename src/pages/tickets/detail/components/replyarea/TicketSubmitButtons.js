@@ -3,9 +3,7 @@ import {connect} from 'react-redux'
 import _pick from 'lodash/pick'
 import classNames from 'classnames'
 import {Button, UncontrolledTooltip} from 'reactstrap'
-import moment from 'moment'
 
-import {hasReachedLimit} from '../../../../../utils'
 import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
@@ -13,15 +11,11 @@ import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
 
 @connect((state) => {
-    const {currentAccount, billing} = state
+    const {currentAccount} = state
     const isAccountActive = currentAccount.get('deactivated_datetime') === null
-    const hasCreditCard = currentAccount.getIn(['meta', 'hasCreditCard'])
-    const plan = billing.get('plan')
-    const tickets = billing.getIn(['currentUsage', 'data', 'tickets'], 0)
-    const hasReachedMaxLimit = hasReachedLimit('max', tickets, plan, currentAccount.get('created_datetime', moment()))
 
     return {
-        canSendMessage: isAccountActive && (hasCreditCard || !hasReachedMaxLimit),
+        canSendMessage: isAccountActive,
         isTicketDirty: ticketSelectors.isDirty(state),
         newMessage: state.newMessage,
     }

@@ -11,7 +11,7 @@ import {
 } from 'reactstrap'
 
 import {CheckboxField} from '../../../../common/forms'
-import {Loader} from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
