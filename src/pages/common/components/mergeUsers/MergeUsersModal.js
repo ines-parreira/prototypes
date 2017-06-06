@@ -12,7 +12,7 @@ import {USER_CHANNEL_CLASS} from './../../../../config'
 import BinaryChoiceField from '../../forms/BinaryChoiceField'
 import MultiSelectBinaryChoiceField from '../../forms/MultiSelectBinaryChoiceField'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
-import {isCustomerDataPresent} from '../infobar/utils'
+import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 
 class MergeUsersModal extends React.Component {
     componentDidMount = () => {
@@ -89,10 +89,18 @@ class MergeUsersModal extends React.Component {
         const {destinationUser, sourceUser, handleSubmit, isLoading, primaryEmail, requiredAddresses} = this.props
 
         let baseCustomer = destinationUser.get('customer') || fromJS({})
-        baseCustomer = baseCustomer.delete('_shopify')
+
+        if (isCustomerDataValid(baseCustomer)) {
+            baseCustomer = baseCustomer.delete('_shopify')
+        }
+
         baseCustomer = isCustomerDataPresent(baseCustomer) ? baseCustomer.toJS() : {}
         let mergeCustomer = sourceUser.get('customer') || fromJS({})
-        mergeCustomer = mergeCustomer.delete('_shopify')
+
+        if (isCustomerDataValid(mergeCustomer)) {
+            mergeCustomer = mergeCustomer.delete('_shopify')
+        }
+
         mergeCustomer = isCustomerDataPresent(mergeCustomer) ? mergeCustomer.toJS() : {}
 
         const allChannels = destinationUser.get('channels').toJS().concat(sourceUser.get('channels').toJS())

@@ -263,11 +263,13 @@ const replaceVariables = (argument, state, dispatch) => {
             if (variable.includes('integrations.shopify')) {
                 const integrationIds = []
 
-                ticketState.getIn(['requester', 'integrations']).forEach((integrationData, integrationId) => {
-                    if (integrationData.get('__integration_type__') === 'shopify') {
-                        integrationIds.push(integrationId)
-                    }
-                })
+                ticketState
+                    .getIn(['requester', 'integrations'], fromJS([]))
+                    .forEach((integrationData, integrationId) => {
+                        if (integrationData.get('__integration_type__') === 'shopify') {
+                            integrationIds.push(integrationId)
+                        }
+                    })
 
                 let newVariable = null
 
