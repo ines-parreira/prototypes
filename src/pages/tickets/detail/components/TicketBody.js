@@ -40,7 +40,7 @@ export default class TicketBody extends React.Component {
     }
 
     render() {
-        const {elements, loadingState, setStatus} = this.props
+        const {elements, ticket, loadingState, setStatus} = this.props
 
         if (elements.size === 0) {
             return null
@@ -81,6 +81,7 @@ export default class TicketBody extends React.Component {
                             <TicketMessage
                                 key={index}
                                 message={element.toJS()}
+                                ticket={ticket}
                                 loading={isLoading}
                                 timezone={this.props.currentUser.get('timezone')}
                                 lastMessageDatetimeAfterMount={this.lastMessageDatetimeAfterMount}

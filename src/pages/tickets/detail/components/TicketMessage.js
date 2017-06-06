@@ -182,14 +182,14 @@ export default class TicketMessage extends React.Component {
     }
 
     _renderMessageNotSent() {
-        const {message, setStatus} = this.props
+        const {message, ticket, setStatus} = this.props
 
         return (
             <HardWarning
                 error="This message was not sent: error while sending the message."
                 message={fromJS(message)}
                 messageId={message.id}
-                ticketId={message.ticket_id}
+                ticketId={message.ticket_id || ticket.get('id')}
                 setStatus={setStatus}
                 retry
                 cancel
@@ -198,7 +198,7 @@ export default class TicketMessage extends React.Component {
     }
 
     _renderActionFailed() {
-        const {message} = this.props
+        const {message, ticket} = this.props
 
         const rMsg = 'Retry to execute the failed action(s) automatically, and send the message if it succeeds.'
         return (
@@ -206,7 +206,7 @@ export default class TicketMessage extends React.Component {
                 error="This message was not sent: one or more actions failed."
                 retryTooltipMessage={rMsg}
                 messageId={message.id}
-                ticketId={message.ticket_id}
+                ticketId={message.ticket_id || ticket.get('id')}
                 messageActions={message.actions}
                 retry
                 force
@@ -300,5 +300,6 @@ TicketMessage.propTypes = {
     loading: PropTypes.bool.isRequired,
     timezone: PropTypes.string,
     lastMessageDatetimeAfterMount: PropTypes.object.isRequired,
+    ticket: PropTypes.object.isRequired,
     setStatus: PropTypes.func.isRequired,
 }
