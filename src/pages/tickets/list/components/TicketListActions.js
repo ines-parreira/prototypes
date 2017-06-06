@@ -65,7 +65,7 @@ class TicketListActions extends React.Component {
             return
         }
 
-        this._bulkUpdate('tag', {name})
+        this._bulkUpdate('tags', [name])
         this.setState({tagsSearch: ''})
     }
 
@@ -120,7 +120,7 @@ class TicketListActions extends React.Component {
                 <DropdownItem
                     key={name}
                     type="button"
-                    onClick={() => this._bulkUpdate('tag', tag.toJS())}
+                    onClick={() => this._bulkUpdate('tags', [tag.get('name')])}
                 >
                     {name}
                 </DropdownItem>
@@ -320,18 +320,6 @@ class TicketListActions extends React.Component {
                             onClick={this.props.actions.macro.openModal}
                         >
                             Apply macro
-                        </DropdownItem>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => this._bulkUpdate('priority', 'high')}
-                        >
-                            Mark as high priority
-                        </DropdownItem>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => this._bulkUpdate('priority', 'normal')}
-                        >
-                            Mark as normal priority
                         </DropdownItem>
                         <DropdownItem divider />
                         <DropdownItem

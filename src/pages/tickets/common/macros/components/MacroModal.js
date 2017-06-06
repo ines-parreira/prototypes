@@ -53,7 +53,7 @@ export default class MacroModal extends React.Component {
                     }
 
                     e.preventDefault()
-                    this.cancel()
+                    this._toggle()
                     this.props.actions.tickets.bulkUpdate(
                         this.props.selectedItemsIds,
                         'macro',
@@ -81,7 +81,7 @@ export default class MacroModal extends React.Component {
     _applyMacro = () => {
         const {activeView, currentMacro, actions, selectedItemsIds} = this.props
 
-        this.cancel()
+        this._toggle()
         const value = currentMacro ? currentMacro.toJS() : null
         return actions.views.bulkUpdate(activeView, selectedItemsIds, 'macro', value)
     }
