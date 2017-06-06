@@ -51,7 +51,7 @@ const ChatIntegrationPreview = ({name, decoration, currentUser}) => {
                     className={css.titlebar}
                     style={titlebarStyle}
                 >
-                    How can we help?
+                    {nonbreak(decoration.get('window_title', 'How can we help?'))}
 
                     <i className={classnames(css.icon, css.times)}></i>
                 </div>
@@ -92,10 +92,10 @@ const ChatIntegrationPreview = ({name, decoration, currentUser}) => {
                 <div className={css.footer}>
                     <i className={classnames(css.icon, css.camera)}></i>
                     <div className={css.placeholder}>
-                        Type a message...
+                        {nonbreak(decoration.get('input_placeholder', 'Type a message...'))}
                     </div>
                     <button type="button">
-                        Send
+                        {nonbreak(decoration.get('send_button_text', 'Send'))}
                     </button>
                 </div>
             </div>

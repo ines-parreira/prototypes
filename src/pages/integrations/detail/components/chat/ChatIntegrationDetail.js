@@ -142,7 +142,10 @@ class ChatIntegrationDetail extends React.Component {
                     current_page: 'window.location.href'
                 },
                 customText: {
-                    introductionText: integration.getIn(['decoration', 'header_text'])
+                    headerText: integration.getIn(['decoration', 'window_title']),
+                    introductionText: integration.getIn(['decoration', 'header_text']),
+                    inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
+                    sendButtonText: integration.getIn(['decoration', 'send_button_text'])
                 }
             }
         }
@@ -394,9 +397,30 @@ class ChatIntegrationDetail extends React.Component {
                                         />
 
                                         <Field
-                                            name="decoration.header_text"
+                                            name="decoration.window_title"
                                             label="Header text"
                                             component={TextAreaField}
+                                            rows="2"
+                                        />
+
+                                        <Field
+                                            name="decoration.header_text"
+                                            label="Introduction text"
+                                            component={TextAreaField}
+                                            rows="2"
+                                        />
+
+                                        <Field
+                                            name="decoration.input_placeholder"
+                                            label="Input placeholder"
+                                            component={InputField}
+                                            rows="2"
+                                        />
+
+                                        <Field
+                                            name="decoration.send_button_text"
+                                            label="Send button text"
+                                            component={InputField}
                                             rows="2"
                                         />
 
