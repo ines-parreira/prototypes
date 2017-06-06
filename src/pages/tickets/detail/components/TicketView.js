@@ -40,7 +40,7 @@ export class TicketView extends React.Component {
     componentWillReceiveProps() {
         // save before props update if user was at bottom of the page (probably answering something)
         const element = document.getElementsByClassName('ticket-content')[0]
-        this.wasAtBottomOfPage = (element.scrollHeight - element.scrollTop) === element.offsetHeight
+        this.wasAtBottomOfPage = (element.scrollHeight - element.scrollTop) <= element.offsetHeight + 40
     }
 
     componentDidUpdate(prevProps) {
