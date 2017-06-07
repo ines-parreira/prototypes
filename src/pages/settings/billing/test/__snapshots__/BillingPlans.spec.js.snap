@@ -2,12 +2,13 @@
 
 exports[`BillingPlans component should display matching current plan 1`] = `
 <div
-  className="mb-5"
+  className="mb-4"
 >
   <h4>
     Plans
   </h4>
   <bt
+    className="mb-3"
     tag="div"
   >
     <Ot
@@ -110,18 +111,15 @@ exports[`BillingPlans component should display matching current plan 1`] = `
       </da>
     </Ot>
   </bt>
-  <div
-    className="mt-2"
-  >
-    <strong>
-      Are all tickets counted? What about spam?
-    </strong>
-    <div>
+  <div>
+    <p>
+      <strong>
+        Are all tickets counted? What about spam?
+      </strong>
+    </p>
+    <p>
       <span>
-        We bill for a ticket only if your team uses Gorgias to send replies to customers. 
-      </span>
-      <span>
-        Specifically we bill you if the ticket:
+        We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
       </span>
       <ul>
         <li>
@@ -131,7 +129,7 @@ exports[`BillingPlans component should display matching current plan 1`] = `
           Or is sent using an automatic reply (using the Rules).
         </li>
       </ul>
-    </div>
+    </p>
     <p>
       <strong>
         Note:
@@ -144,12 +142,13 @@ exports[`BillingPlans component should display matching current plan 1`] = `
 
 exports[`BillingPlans component should display multiple plans 1`] = `
 <div
-  className="mb-5"
+  className="mb-4"
 >
   <h4>
     Plans
   </h4>
   <bt
+    className="mb-3"
     tag="div"
   >
     <Ot
@@ -333,18 +332,15 @@ exports[`BillingPlans component should display multiple plans 1`] = `
       </da>
     </Ot>
   </bt>
-  <div
-    className="mt-2"
-  >
-    <strong>
-      Are all tickets counted? What about spam?
-    </strong>
-    <div>
+  <div>
+    <p>
+      <strong>
+        Are all tickets counted? What about spam?
+      </strong>
+    </p>
+    <p>
       <span>
-        We bill for a ticket only if your team uses Gorgias to send replies to customers. 
-      </span>
-      <span>
-        Specifically we bill you if the ticket:
+        We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
       </span>
       <ul>
         <li>
@@ -354,7 +350,7 @@ exports[`BillingPlans component should display multiple plans 1`] = `
           Or is sent using an automatic reply (using the Rules).
         </li>
       </ul>
-    </div>
+    </p>
     <p>
       <strong>
         Note:
@@ -377,16 +373,17 @@ exports[`BillingPlans component should load with empty props 1`] = `
   updateSubscription={[Function]}
 >
   <div
-    className="mb-5"
+    className="mb-4"
   >
     <h4>
       Plans
     </h4>
     <bt
+      className="mb-3"
       tag="div"
     >
       <div
-        className="row"
+        className="mb-3 row"
       >
         <Ot
           sm="9"
@@ -415,18 +412,15 @@ exports[`BillingPlans component should load with empty props 1`] = `
         </Ot>
       </div>
     </bt>
-    <div
-      className="mt-2"
-    >
-      <strong>
-        Are all tickets counted? What about spam?
-      </strong>
-      <div>
+    <div>
+      <p>
+        <strong>
+          Are all tickets counted? What about spam?
+        </strong>
+      </p>
+      <p>
         <span>
-          We bill for a ticket only if your team uses Gorgias to send replies to customers. 
-        </span>
-        <span>
-          Specifically we bill you if the ticket:
+          We bill for a ticket only if your team uses Gorgias to send replies to customers. Specifically we bill you if the ticket:
         </span>
         <ul>
           <li>
@@ -436,7 +430,7 @@ exports[`BillingPlans component should load with empty props 1`] = `
             Or is sent using an automatic reply (using the Rules).
           </li>
         </ul>
-      </div>
+      </p>
       <p>
         <strong>
           Note:

@@ -49,7 +49,7 @@ exports[`BillingUsage component should display price 1`] = `
   fetchCurrentUsage={[Function]}
 >
   <div
-    className="mb-5"
+    className="mb-4"
   >
     <h4>
       Extra tickets cost:
@@ -156,7 +156,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
   fetchCurrentUsage={[Function]}
 >
   <div
-    className="mb-5"
+    className="mb-4"
   >
     <h4>
       Extra tickets cost:
