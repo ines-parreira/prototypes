@@ -1,8 +1,7 @@
 import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import classnames from 'classnames'
-import {UncontrolledTooltip} from 'reactstrap'
+import {UncontrolledTooltip, Button} from 'reactstrap'
 
 import * as TicketActions from '../../../../state/ticket/actions'
 import * as NewMessageActions from '../../../../state/newMessage/actions'
@@ -69,21 +68,21 @@ class HardWarning extends React.Component {
         let forceButton = null
         let cancelButton = null
 
-        const commonClassName = 'ui labeled icon tiny button hard-warning-tooltip'
-
         if (retry) {
             const id = `retry-button-${uid}`
 
             retryButton = (
                 <span className="mr-2">
-                    <div
+                    <Button
                         id={id}
-                        className={classnames(commonClassName, 'light blue')}
+                        size="sm"
+                        type="button"
+                        color="info"
                         onClick={this.retry}
                     >
                         <i className="refresh icon" />
                         Retry
-                    </div>
+                    </Button>
                     <UncontrolledTooltip
                         placement="top"
                         target={id}
@@ -100,14 +99,16 @@ class HardWarning extends React.Component {
 
             forceButton = (
                 <span className="mr-2">
-                    <div
+                    <Button
                         id={id}
-                        className={classnames(commonClassName, 'orange')}
+                        size="sm"
+                        type="button"
+                        color="warning"
                         onClick={() => actions.ticket.updateTicketMessage(ticketId, messageId, {}, 'force')}
                     >
                         <i className="chevron right icon" />
                         Force
-                    </div>
+                    </Button>
                     <UncontrolledTooltip
                         placement="top"
                         target={id}
@@ -123,15 +124,17 @@ class HardWarning extends React.Component {
             const id = `cancel-button-${uid}`
 
             cancelButton = (
-                <span className="mr-2">
-                    <div
+                <span>
+                    <Button
                         id={id}
-                        className={classnames(commonClassName, 'red')}
+                        size="sm"
+                        type="button"
+                        color="danger"
                         onClick={this.cancel}
                     >
                         <i className="ban icon" />
                         Cancel
-                    </div>
+                    </Button>
                     <UncontrolledTooltip
                         placement="top"
                         target={id}
@@ -150,18 +153,8 @@ class HardWarning extends React.Component {
             >
                 <div className="content">
                     <div className="center">
-                        <div
-                            className="ui segment"
-                            style={{
-                                margin: 'auto',
-                                width: '500px',
-                                padding: '20px 0',
-                            }}
-                        >
-                            <div className="hard-warning">
-                                <i className="inverted red circular warning sign icon" />
-                                {error}
-                            </div>
+                        <div className="ui segment p-3">
+                            <div className="text-danger mb-3">{error}</div>
 
                             <div>
                                 {
