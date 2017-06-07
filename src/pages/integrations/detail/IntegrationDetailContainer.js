@@ -25,6 +25,7 @@ import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDet
 import EmailIntegrationList from './components/email/EmailIntegrationList'
 import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/index'
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/index'
+import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/index'
 
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
@@ -59,6 +60,7 @@ class IntegrationDetailContainer extends React.Component {
         const isDetail = !!params.integrationId
         const isUpdate = isDetail && params.integrationId !== 'new'
         const isSetup = params.integrationId === 'setup'
+        const isForwarding = params.extra === 'forwarding'
 
         const commonProps = {
             integration: integrations.get('integration', fromJS({})),
@@ -72,6 +74,16 @@ class IntegrationDetailContainer extends React.Component {
             case 'email':
                 if (isDetail) {
                     if (isUpdate) {
+                        if (isForwarding) {
+                            return (
+                                <EmailIntegrationCreateForwarding
+                                    actions={actions}
+                                    integration={commonProps.integration}
+                                    loading={commonProps.loading}
+                                />
+                            )
+                        }
+
                         return (
                             <EmailIntegrationUpdate
                                 actions={actions}

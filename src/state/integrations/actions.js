@@ -56,7 +56,7 @@ function onCreateSuccess(dispatch, resp) {
 
     fetchIntegrations()(dispatch)
 
-    browserHistory.push(`/app/integrations/${resp.type}/${resp.id || ''}`)
+    browserHistory.push(`/app/integrations/${resp.type}/${resp.id || ''}${resp.type === 'email' ? '/forwarding' : ''}`)
 
     dispatch(notify({
         type: 'success',

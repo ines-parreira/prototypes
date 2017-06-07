@@ -8,6 +8,8 @@ import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import gmailImg from '../../../../../../img/integrations/gmail.png'
 
+import css from './EmailIntegrationList.less'
+
 export default class EmailIntegrationList extends React.Component {
     static propTypes = {
         integrations: PropTypes.object.isRequired,
@@ -29,6 +31,8 @@ export default class EmailIntegrationList extends React.Component {
             const active = !int.get('deactivated_datetime')
             const isRowSubmitting = isSubmitting === int.get('id')
             const isGmail = int.get('type') === 'gmail'
+
+            const isForwardingOn = int.getIn(['meta', 'is_forwarding_on'])
 
             const editLink = `/app/integrations/email/${int.get('id')}`
 
@@ -65,7 +69,7 @@ export default class EmailIntegrationList extends React.Component {
                         </Link>
                     </td>
                     <td className="smallest">
-                        <div className="pull-right">
+                        <div>
                             {
                                 !active && isGmail && (
                                     <Button
@@ -81,6 +85,21 @@ export default class EmailIntegrationList extends React.Component {
                                 )
                             }
                         </div>
+                    </td>
+                    <td className="smallest align-middle">
+                        {
+                            !isGmail && !isForwardingOn && (
+                                <div>
+                                    <i className={classNames('fa fa-circle', css.forwardingIcon)}/>
+                                    <a
+                                        target="_blank"
+                                        href="https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding"
+                                    >
+                                        No recent email. Is forwarding on?
+                                    </a>
+                                </div>
+                            )
+                        }
                     </td>
                 </tr>
             )

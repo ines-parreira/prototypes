@@ -2,9 +2,10 @@ import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
-import classNames from 'classnames'
 import {Link, browserHistory, withRouter} from 'react-router'
 import _capitalize from 'lodash/capitalize'
+import classNames from 'classnames'
+import {InputField} from '../../../../../common/forms'
 import {
     Button,
     UncontrolledTooltip,
@@ -12,11 +13,12 @@ import {
     BreadcrumbItem,
 } from 'reactstrap'
 
-import {InputField} from '../../../../../common/forms'
 import css from './EmailIntegrationCreate.less'
 import formSender from '../../../../../common/utils/formSender'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import {notify} from '../../../../../../state/notifications/actions'
+
+import googleLogo from './../../../../../../../../public/img/google-icon.svg'
 
 class EmailIntegrationCreate extends React.Component {
     componentDidMount() {
@@ -86,14 +88,14 @@ class EmailIntegrationCreate extends React.Component {
                     <Button
                         tag="a"
                         href="/integrations/gmail/auth"
-                        color="danger"
                         block
                         onClick={() => {
                             logEvent('connect_gmail_account_click')
                         }}
+                        className={css.gmailButton}
                     >
-                        <i className="fa fa-fw fa-google fa-lg mr-2" />
-                        Connect your google account
+                        <img src={googleLogo} style={{height: '100%'}}/>
+                        <p>Connect Google email account</p>
                     </Button>
 
                     <p className="text-muted text-center">
