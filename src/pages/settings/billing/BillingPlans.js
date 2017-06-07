@@ -44,9 +44,9 @@ export class BillingPlans extends Component {
         const {isUpdating} = this.state
 
         return (
-            <div className="mb-5">
+            <div className="mb-4">
                 <h4>Plans</h4>
-                <Row>
+                <Row className="mb-3">
                     <Col sm="9">
                         <CardDeck>
                             {plans.map((plan, planId) => {
@@ -78,7 +78,7 @@ export class BillingPlans extends Component {
                                                         + {plan.get('currencySign')}{costPerTicket}
                                                     </strong> per {costMultiplier} tickets </span>
                                                 <a id={`additional-tickets-tooltip-${planId}`}>
-                                                    <i className="fa fa-question-circle"/>
+                                                    <i className="fa fa-question-circle" />
                                                 </a>
                                                 <UncontrolledTooltip target={`additional-tickets-tooltip-${planId}`}>
                                                     If you reply to more tickets than included in your plan
@@ -105,18 +105,26 @@ export class BillingPlans extends Component {
                     </Col>
                 </Row>
 
-                <div className="mt-2">
-                    <strong>Are all tickets counted? What about spam?</strong>
-                    <div>
-                        <span>We bill for a ticket only if your team uses Gorgias to send replies to customers. </span>
-                        <span>Specifically we bill you if the ticket:</span>
+                <div>
+                    <p>
+                        <strong>Are all tickets counted? What about spam?</strong>
+                    </p>
+
+                    <p>
+                        <span>
+                            We bill for a ticket only if your team uses Gorgias to send replies to customers.
+                            Specifically we bill you if the ticket:
+                        </span>
                         <ul>
                             <li>Has at least 1 reply sent using the helpdesk by a team member (agent).</li>
                             <li>Or is sent using an automatic reply (using the Rules).</li>
                         </ul>
-                    </div>
-                    <p><strong>Note:</strong> Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are not
-                        billed.</p>
+                    </p>
+
+                    <p>
+                        <strong>Note:</strong> Tickets that are imported into Gorgias from Facebook, Gmail, etc.. are
+                        not billed.
+                    </p>
                 </div>
             </div>
         )

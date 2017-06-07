@@ -31,7 +31,7 @@ export default class FullPage extends React.Component {
                         [css['no-limit']]: currentRoute.noContainerWidthLimit,
                     })}
                 >
-                    <Col>
+                    <Col className={css.col}>
                         {this.props.children}
                     </Col>
                 </Row>

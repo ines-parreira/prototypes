@@ -14,27 +14,28 @@ export default class IntegrationList extends React.Component {
 
         return (
             <div>
-                <PageHeader title="Integrations"/>
+                <PageHeader title="Integrations" />
 
-                <div>
+                <p>
                     Gorgias is most useful when you connect it to other applications. Integrations let you
                     communicate with customers through multiple channels, pull more information about them
                     and perform actions in outside tools directly from Gorgias.
-                </div>
+                </p>
+
                 {
                     !isAllowedToCreate && (
                         <Alert color="danger">
-                            <i className="fa fa-exclamation-circle"/>
+                            <i className="fa fa-exclamation-circle" />
                             <strong> Your account has reached the integration limit. </strong>
-                            <span>To add more integrations, upgrade your <Link
-                                to="/app/settings/billing">plan</Link>.</span>
+                            To add more integrations, upgrade your <Link
+                            to="/app/settings/billing" className="alert-link">plan</Link>.
                         </Alert>
                     )
                 }
                 <div className="div-table">
                     {
                         list.map((c, i) => (
-                            <IntegrationListRow key={i} integrationConfig={c}/>
+                            <IntegrationListRow key={i} integrationConfig={c} />
                         ))
                     }
                 </div>

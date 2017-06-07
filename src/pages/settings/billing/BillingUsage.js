@@ -30,7 +30,7 @@ export class BillingUsage extends Component {
         }
 
         return (
-            <div className="mb-5">
+            <div className="mb-4">
                 <h4>
                     Extra tickets cost:{' '}
                     <small className="text-faded">
