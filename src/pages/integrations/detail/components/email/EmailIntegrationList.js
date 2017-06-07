@@ -91,11 +91,12 @@ export default class EmailIntegrationList extends React.Component {
                             !isGmail && !isForwardingOn && (
                                 <div>
                                     <i className={classNames('fa fa-circle', css.forwardingIcon)}/>
+                                    No recent email.{' '}
                                     <a
                                         target="_blank"
                                         href="https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding"
                                     >
-                                        No recent email. Is forwarding on?
+                                        Is forwarding on?
                                     </a>
                                 </div>
                             )
