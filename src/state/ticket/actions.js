@@ -28,18 +28,15 @@ import {
 
 import SocketIO from '../../pages/common/utils/socketio'
 
-const Raven = window.Raven
-
 export const mergeTicket = (ticket) => (dispatch, getState) => {
-    if (!Array.isArray(ticket.messages)) {
-        Raven.captureException(new Error('Trying to merge a ticket where messages is not an array'), {
-            extra: {
-                ticket,
-            }
-        })
-    }
-
     ticket = fromJS(ticket)
+    const state = getState()
+    const {ticket: ticketState} = state
+
+    // if received ticket data does not concern current ticket, do nothing
+    if (ticket.get('id') !== ticketState.get('id')) {
+        return Promise.resolve()
+    }
 
     // notification on new message while not on tab
     if (!isTabActive()) {
@@ -67,10 +64,20 @@ export const mergeTicket = (ticket) => (dispatch, getState) => {
         }
     }
 
-    return dispatch({
+    const currentMessages = ticketState.get('messages', fromJS([]))
+    const messagesDifference = ticket.get('messages', fromJS([])).size - currentMessages.size
+
+    const mergeDispatch = dispatch({
         type: types.MERGE_TICKET,
         ticket,
+        messagesDifference,
     })
+
+    if (messagesDifference) {
+        dispatch(newMessageActions.resetFromTicket(ticket))
+    }
+
+    return mergeDispatch
 }
 
 export const mergeRequester = (user) => {
@@ -344,7 +351,7 @@ export const clearAppliedMacro = (ticketId) => ({
     ticketId
 })
 
-export const fetchTicket = (ticketId, displayLoading = true) => (dispatch, getState) => {
+export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
     if (ticketId === 'new') {
         return dispatch(newMessageActions.initializeMessageDraft())
     }
@@ -392,7 +399,7 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch, getSt
             const io = new SocketIO()
             io._sendTicketViewed(ticketId)
 
-            return newMessageActions.resetReceiversAndSender(dispatch, getState)
+            return dispatch(newMessageActions.resetReceiversAndSender)
         }, error => {
             if (!displayLoading) {
                 return Promise.resolve()
@@ -479,7 +486,7 @@ export function clearTicket() {
             shouldDisplayHistoryOnNextPage,
         })
 
-        return newMessageActions.resetReceiversAndSender(dispatch, getState)
+        return dispatch(newMessageActions.resetReceiversAndSender)
     }
 }
 

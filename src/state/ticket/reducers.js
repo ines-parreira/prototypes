@@ -314,13 +314,7 @@ export default (state = initialState, action) => {
         }
 
         case types.MERGE_TICKET: {
-            const {ticket} = action
-
-            // if received ticket data does not concern current ticket, do nothing
-            if (ticket.get('id') !== state.get('id')) {
-                return state
-            }
-
+            const {ticket, messagesDifference} = action
             let newState = state
 
             // merge received ticket with current ticket
@@ -332,12 +326,9 @@ export default (state = initialState, action) => {
 
             // sockets are faster then the success callback,
             // so we need to remove pending messages here,
-            // to void `jumping` messages.
-            const messages = state.get('messages')
-            const diff = newState.get('messages').size - messages.size
-
-            if (diff) {
-                const newMessages = newState.get('messages').slice(-diff)
+            // to avoid `jumping` messages
+            if (messagesDifference) {
+                const newMessages = newState.get('messages').slice(-messagesDifference)
 
                 newMessages.forEach((message) => {
                     const pendingMessages = newState.getIn(['_internal', 'pendingMessages'], [])

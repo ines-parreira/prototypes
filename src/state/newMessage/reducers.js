@@ -137,6 +137,15 @@ export default (state = initialState, action) => {
             return state.setIn(['_internal', 'loading', 'submitMessage'], false)
         }
 
+        case types.NEW_MESSAGE_RESET_FROM_TICKET: {
+            const {ticket} = action
+            const messages = ticket.get('messages', fromJS([]))
+
+            const sourceType = getSourceTypeOfResponse(messages)
+
+            return state.set('newMessage', newMessage(getChannelFromSourceType(sourceType), sourceType))
+        }
+
         case types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
             const {channel} = action.resp
             let messages = fromJS(action.resp.messages)

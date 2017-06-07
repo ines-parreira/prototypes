@@ -438,7 +438,7 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
 
         // We're trying to add a signature if any
         dispatch(setResponseText())
-        resetReceiversAndSender(dispatch, getState)
+        dispatch(resetReceiversAndSender)
 
         let promise
 
@@ -530,7 +530,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
                     resp,
                 })
 
-                return resetReceiversAndSender(dispatch, getState)
+                return dispatch(resetReceiversAndSender)
             }, error => {
                 return dispatch({
                     type: types.NEW_MESSAGE_SUBMIT_TICKET_ERROR,
@@ -538,6 +538,16 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
                     reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us'
                 })
             })
+    }
+}
+
+export function resetFromTicket(ticket) {
+    return (dispatch) => {
+        dispatch({
+            type: types.NEW_MESSAGE_RESET_FROM_TICKET,
+            ticket,
+        })
+        return dispatch(resetReceiversAndSender)
     }
 }
 
