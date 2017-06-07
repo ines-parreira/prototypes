@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import {getLastMessage, compare} from '../utils'
+import {isForwardedMessage} from '../state/ticket/utils'
 
 export const DEFAULT_CHANNEL = 'email'
 export const DEFAULT_SOURCE_TYPE = 'email'
@@ -20,7 +21,9 @@ export const orderedMessages = (messages) => {
  */
 export function lastNonSystemTypeMessage(messages) {
     messages = orderedMessages(messages)
-    const filteredMessages = messages.filter(message => !SYSTEM_SOURCE_TYPES.includes(message.getIn(['source', 'type'])))
+    const filteredMessages = messages.filter(message => {
+        return !SYSTEM_SOURCE_TYPES.includes(message.getIn(['source', 'type'])) && !isForwardedMessage(message)
+    })
     return !filteredMessages.isEmpty() && fromJS(getLastMessage(filteredMessages.toJS()))
 }
 

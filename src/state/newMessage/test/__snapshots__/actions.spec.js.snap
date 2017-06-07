@@ -1,0 +1,408 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`actions new message prepare() email-forward 1`] = `
+Array [
+  Object {
+    "subject": "Fwd: ",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Marc",
+                              address: "marc.wall@gmail.com",
+                        },
+                        Immutable.Map {
+                              name: "Acme Support",
+                              address: "support@acme.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Steve Frizeli",
+                        address: "marie.curie@gmail.com",
+                  },
+                  type: "chat",
+            },
+            id: 151,
+            from_agent: false,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  cc: Immutable.List [
+                  ],
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Steve Frizeli",
+                              address: "steve.frizeli@gmail.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Acme Support",
+                        address: "support@acme.com",
+                  },
+                  type: "email",
+            },
+            id: 152,
+            from_agent: true,
+      },
+],
+    "sourceType": "email",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {
+      "forward": true,
+    },
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.com",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "receivers": Object {},
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "resp": Array [],
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS",
+  },
+]
+`;
+
+exports[`actions new message prepare() other types 1`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Marc",
+                              address: "marc.wall@gmail.com",
+                        },
+                        Immutable.Map {
+                              name: "Acme Support",
+                              address: "support@acme.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Steve Frizeli",
+                        address: "marie.curie@gmail.com",
+                  },
+                  type: "chat",
+            },
+            id: 151,
+            from_agent: false,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  cc: Immutable.List [
+                  ],
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Steve Frizeli",
+                              address: "steve.frizeli@gmail.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Acme Support",
+                        address: "support@acme.com",
+                  },
+                  type: "email",
+            },
+            id: 152,
+            from_agent: true,
+      },
+],
+    "sourceType": "email",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "steve.frizeli@gmail.com",
+          "name": "Steve Frizeli",
+        },
+      ],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.com",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`actions new message prepare() other types 2`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Marc",
+                              address: "marc.wall@gmail.com",
+                        },
+                        Immutable.Map {
+                              name: "Acme Support",
+                              address: "support@acme.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Steve Frizeli",
+                        address: "marie.curie@gmail.com",
+                  },
+                  type: "chat",
+            },
+            id: 151,
+            from_agent: false,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  cc: Immutable.List [
+                  ],
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Steve Frizeli",
+                              address: "steve.frizeli@gmail.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Acme Support",
+                        address: "support@acme.com",
+                  },
+                  type: "email",
+            },
+            id: 152,
+            from_agent: true,
+      },
+],
+    "sourceType": "chat",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "steve.frizeli@gmail.com",
+          "name": "Steve Frizeli",
+        },
+      ],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.com",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`actions new message prepare() other types 3`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Marc",
+                              address: "marc.wall@gmail.com",
+                        },
+                        Immutable.Map {
+                              name: "Acme Support",
+                              address: "support@acme.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Steve Frizeli",
+                        address: "marie.curie@gmail.com",
+                  },
+                  type: "chat",
+            },
+            id: 151,
+            from_agent: false,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  cc: Immutable.List [
+                  ],
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Steve Frizeli",
+                              address: "steve.frizeli@gmail.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Acme Support",
+                        address: "support@acme.com",
+                  },
+                  type: "email",
+            },
+            id: 152,
+            from_agent: true,
+      },
+],
+    "sourceType": "facebook-comment",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "steve.frizeli@gmail.com",
+          "name": "Steve Frizeli",
+        },
+      ],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.com",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`actions new message prepare() other types 4`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Marc",
+                              address: "marc.wall@gmail.com",
+                        },
+                        Immutable.Map {
+                              name: "Acme Support",
+                              address: "support@acme.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Steve Frizeli",
+                        address: "marie.curie@gmail.com",
+                  },
+                  type: "chat",
+            },
+            id: 151,
+            from_agent: false,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  cc: Immutable.List [
+                  ],
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Steve Frizeli",
+                              address: "steve.frizeli@gmail.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Acme Support",
+                        address: "support@acme.com",
+                  },
+                  type: "email",
+            },
+            id: 152,
+            from_agent: true,
+      },
+],
+    "sourceType": "facebook-message",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "steve.frizeli@gmail.com",
+          "name": "Steve Frizeli",
+        },
+      ],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.com",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`actions new message setSubject() default value 1`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+]
+`;
+
+exports[`actions new message setSubject() given value 1`] = `
+Array [
+  Object {
+    "subject": "hello world",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+]
+`;

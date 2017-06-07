@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`New message reducer should handle NEW_MESSAGE_SET_SUBJECT 1`] = `
+Immutable.Map {
+  state: Immutable.Map {
+    dirty: false,
+    signatureAdded: false,
+    cacheAdded: false,
+    forceUpdate: true,
+    contentState: null,
+    selectionState: null,
+    appliedMacro: null,
+  },
+  _internal: Immutable.Map {
+    loading: Immutable.Map {
+      addAttachment: false,
+      submitMessage: false,
+    },
+  },
+  newMessage: Immutable.Map {
+    channel: "email",
+    macros: Immutable.List [
+    ],
+    body_html: "",
+    public: true,
+    body_text: "",
+    subject: "Hello World!",
+    via: "helpdesk",
+    from_agent: true,
+    attachments: Immutable.List [
+    ],
+    sender: null,
+    source: Immutable.Map {
+      type: "email",
+      from: Immutable.Map {
+      },
+      to: Immutable.List [
+      ],
+      cc: Immutable.List [
+      ],
+      bcc: Immutable.List [
+      ],
+    },
+  },
+}
+`;

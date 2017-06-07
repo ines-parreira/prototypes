@@ -2,8 +2,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import * as actions from '../actions'
 import integrationState from '../../integrations/tests/fixtures'
-import {getChannels} from '../../integrations/selectors'
-import {getPreferredChannel} from '../../ticket/utils'
+import * as integrationSelectors from '../../integrations/selectors'
+import {getPreferredChannel,} from '../../ticket/utils'
 import {smoochTicket, emailTicket} from '../../ticket/test/fixtures'
 import * as types from '../constants'
 import {initialState} from '../reducers'
@@ -14,7 +14,7 @@ const mockStore = configureMockStore(middlewares)
 
 describe('actions', () => {
     describe('new message', () => {
-        const channels = getChannels(integrationState)
+        const channels = integrationSelectors.getChannels(integrationState)
         let store
 
         it('dispatch setSender - with address', () => {
@@ -206,6 +206,55 @@ describe('actions', () => {
                     address: ''
                 })
             }])
+        })
+        describe('setSubject()', () => {
+
+            it('default value', () => {
+                store = mockStore({
+                    newMessage: initialState
+                })
+                store.dispatch(actions.setSubject())
+                const expectedActions = store.getActions()
+
+                expect(expectedActions).toMatchSnapshot()
+            })
+
+            it('given value', () => {
+                store = mockStore({
+                    newMessage: initialState
+                })
+                store.dispatch(actions.setSubject('hello world'))
+                const expectedActions = store.getActions()
+
+                expect(expectedActions).toMatchSnapshot()
+            })
+        })
+
+        describe('prepare()', () => {
+            it('email-forward', () => {
+                store = mockStore({
+                    ticket: emailTicket,
+                    newMessage: initialState
+                })
+                store.dispatch(actions.prepare('email-forward'))
+                const expectedActions = store.getActions()
+
+                expect(expectedActions).toMatchSnapshot()
+            })
+
+            it('other types', () => {
+                const sourceTypes = ['email', 'chat', 'facebook-comment', 'facebook-message']
+
+                sourceTypes.forEach(sourceType => {
+                    store = mockStore({
+                        ticket: emailTicket,
+                        newMessage: initialState
+                    })
+                    store.dispatch(actions.prepare(sourceType))
+
+                    expect(store.getActions()).toMatchSnapshot()
+                })
+            })
         })
     })
 })

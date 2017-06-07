@@ -66,6 +66,13 @@ export const getPendingMessages = createImmutableSelector(
     state => state.getIn(['_internal', 'pendingMessages']) || fromJS([])
 )
 
+export const getLastMessage = createImmutableSelector(
+    [getMessages],
+    state => state
+        .sortBy(message => message.get('created_datetime'))
+        .last()
+)
+
 export const getCustomerRatings = createImmutableSelector(
     [getTicketState],
     state => state.get('customer_ratings') || fromJS([])

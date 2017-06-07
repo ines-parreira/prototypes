@@ -1,6 +1,5 @@
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
-
 import {isImmutable, createImmutableSelector} from '../../utils'
 
 export const getReceiversProperties = () => ['to', 'cc', 'bcc']
@@ -47,6 +46,14 @@ export const isNewMessagePublic = createImmutableSelector(
     [getNewMessage],
     state => state.get('public') || false
 )
+
+export const isForward = (() => {
+    const isForwardedMessage = require('../ticket/utils').isForwardedMessage
+    return createSelector(
+        [getNewMessage],
+        message => isForwardedMessage(message)
+    )
+})()
 
 // in props usage
 // property like 'to', 'from', 'cc', etc.
@@ -116,3 +123,16 @@ export const hasNewMessageRecipients = createSelector(
     recipients => !recipients.isEmpty()
 )
 
+export const hasAttachments = createSelector(
+    [getNewMessage],
+    message => !(message.get('attachments') || fromJS([])).isEmpty()
+)
+
+// Determine if the new message is ready to be sent
+export const isReady = createSelector(
+    [getNewMessage, hasNewMessageRecipients, hasAttachments, isNewMessagePublic, isForward],
+    (newMessage, hasRecipients, hasAttachments, isNewMessagePublic, isForward) => {
+        return (newMessage.get('body_text') || hasAttachments || isForward)
+            && (hasRecipients || !isNewMessagePublic)
+    }
+)

@@ -78,6 +78,7 @@ class ReplyMessageChannel extends React.Component {
             default: '',
             'internal-note': 'comment yellow',
             email: 'mail blue',
+            'email-forward': 'reply blue',
             chat: 'purple comments',
             'facebook-comment': 'facebook square blue',
             'facebook-message': 'facebook-messenger blue'
@@ -91,10 +92,6 @@ class ReplyMessageChannel extends React.Component {
         }
 
         return popupChannelClassNames.default
-    }
-
-    _setSourceType = (sourceType) => {
-        this.props.setSourceType(sourceType)
     }
 
     _renderReceiversArea = () => {
@@ -136,7 +133,7 @@ class ReplyMessageChannel extends React.Component {
     }
 
     render() {
-        const {isUpdate, messages} = this.props
+        const {isUpdate, messages, prepareNewMessage, isForward} = this.props
 
         const sources = ticketSourceTypes(messages.toJS())
 
@@ -148,6 +145,8 @@ class ReplyMessageChannel extends React.Component {
         const suggestFacebookComment = isUpdate && (sources.includes('facebook-post') || sources.includes('facebook-comment'))
         const suggestFacebookMessage = isUpdate && sources.includes('facebook-message')
         const suggestInternalNote = isUpdate
+        const suggestForwardByEmail = isUpdate
+        const iconLabel = isForward ? 'email-forward' : this.props.sourceType
 
         return (
             <div
@@ -166,28 +165,35 @@ class ReplyMessageChannel extends React.Component {
                             type="button"
                             className={css['dropdown-toggle']}
                         >
-                            <i className={this._getChannelIconClassName(this.props.sourceType)} />
+                            <i className={this._getChannelIconClassName(iconLabel)} />
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem
                                 type="button"
-                                onClick={() => {
-                                    this._setSourceType('email')
-                                }}
+                                onClick={() => { prepareNewMessage('email') }}
                             >
                                 <i className={classnames('mr-2', this._getChannelIconClassName('email'))} />
-                                Email
+                                Reply via email
                             </DropdownItem>
+                            {
+                                suggestForwardByEmail && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => { prepareNewMessage('email-forward') }}
+                                    >
+                                        <i className={classnames('mr-2', this._getChannelIconClassName('email-forward'))} />
+                                        Forward by email
+                                    </DropdownItem>
+                                )
+                            }
                             {
                                 suggestChat && (
                                     <DropdownItem
                                         type="button"
-                                        onClick={() => {
-                                            this._setSourceType('chat')
-                                        }}
+                                        onClick={() => { prepareNewMessage('chat') }}
                                     >
                                         <i className={classnames('mr-2', this._getChannelIconClassName('chat'))} />
-                                        Chat message
+                                        Reply via chat
                                     </DropdownItem>
                                 )
                             }
@@ -195,12 +201,10 @@ class ReplyMessageChannel extends React.Component {
                                 suggestFacebookComment && (
                                     <DropdownItem
                                         type="button"
-                                        onClick={() => {
-                                            this._setSourceType('facebook-comment')
-                                        }}
+                                        onClick={() => { prepareNewMessage('facebook-comment') }}
                                     >
                                         <i className={classnames('mr-2', this._getChannelIconClassName('facebook-comment'))} />
-                                        Facebook comment
+                                        Reply via Facebook post
                                     </DropdownItem>
                                 )
                             }
@@ -208,12 +212,10 @@ class ReplyMessageChannel extends React.Component {
                                 suggestFacebookMessage && (
                                     <DropdownItem
                                         type="button"
-                                        onClick={() => {
-                                            this._setSourceType('facebook-message')
-                                        }}
+                                        onClick={() => { prepareNewMessage('facebook-message') }}
                                     >
                                         <i className={classnames('mr-2', this._getChannelIconClassName('facebook-message'))} />
-                                        Facebook private message
+                                        Reply via Messenger
                                     </DropdownItem>
                                 )
                             }
@@ -221,12 +223,10 @@ class ReplyMessageChannel extends React.Component {
                                 suggestInternalNote && (
                                     <DropdownItem
                                         type="button"
-                                        onClick={() => {
-                                            this._setSourceType('internal-note')
-                                        }}
+                                        onClick={() => { prepareNewMessage('internal-note') }}
                                     >
                                         <i className={classnames('mr-2', this._getChannelIconClassName('internal-note'))} />
-                                        Internal note
+                                        Leave an internal note
                                     </DropdownItem>
                                 )
                             }
@@ -245,13 +245,14 @@ ReplyMessageChannel.propTypes = {
     actions: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired,
-    setSourceType: PropTypes.func.isRequired,
     sourceType: PropTypes.string.isRequired,
     channel: PropTypes.string.isRequired,
     accountChannels: PropTypes.object.isRequired,
     messages: PropTypes.object.isRequired,
     hasRecipients: PropTypes.bool.isRequired,
     isNewMessagePublic: PropTypes.bool.isRequired,
+    isForward: PropTypes.bool.isRequired,
+    prepareNewMessage: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -264,11 +265,12 @@ const mapStateToProps = (state, ownProps) => {
         messages: getMessages(state),
         hasRecipients: newMessageSelectors.hasNewMessageRecipients(state),
         isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
+        isForward: newMessageSelectors.isForward(state)
     }
 }
 
 const mapDispatchToProps = {
-    setSourceType: newMessageActions.setSourceType,
+    prepareNewMessage: newMessageActions.prepare,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReplyMessageChannel)

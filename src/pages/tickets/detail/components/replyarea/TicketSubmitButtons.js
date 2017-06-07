@@ -8,7 +8,7 @@ import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 
-import * as ticketSelectors from '../../../../../state/ticket/selectors'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 
 @connect((state) => {
     const {currentAccount} = state
@@ -16,7 +16,7 @@ import * as ticketSelectors from '../../../../../state/ticket/selectors'
 
     return {
         canSendMessage: isAccountActive,
-        isTicketDirty: ticketSelectors.isDirty(state),
+        isNewMessageReady: newMessageSelectors.isReady(state),
         newMessage: state.newMessage,
     }
 })
@@ -26,12 +26,12 @@ export default class TicketSubmitButtons extends React.Component {
         newMessage: PropTypes.object.isRequired,
         submit: PropTypes.func.isRequired,
         canSendMessage: PropTypes.bool.isRequired,
-        isTicketDirty: PropTypes.bool.isRequired,
+        isNewMessageReady: PropTypes.bool.isRequired,
     }
 
     static defaultProps = {
         canSendMessage: true,
-        isTicketDirty: false,
+        isNewMessageReady: false,
     }
 
     submit = (status, next) => {
@@ -48,8 +48,8 @@ export default class TicketSubmitButtons extends React.Component {
     }
 
     render() {
-        const {newMessage, isTicketDirty, canSendMessage} = this.props
-        const disabled = !canSendMessage || !isTicketDirty
+        const {newMessage, isNewMessageReady, canSendMessage} = this.props
+        const disabled = !canSendMessage || !isNewMessageReady
         const commonClasses = {
             'btn-loading': newMessage.getIn(['_internal', 'loading', 'submitMessage']),
         }

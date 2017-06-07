@@ -3,6 +3,7 @@ import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 
 import _isNull from 'lodash/isNull'
+import _assign from 'lodash/assign'
 import _pick from 'lodash/pick'
 import axios from 'axios'
 
@@ -155,16 +156,53 @@ export const setSender = (sender) => (dispatch, getState) => {
 }
 
 export const setSourceType = (sourceType) => (dispatch, getState) => {
-    const state = getState()
-    const {ticket} = state
-
     dispatch({
         type: types.NEW_MESSAGE_SET_SOURCE_TYPE,
         sourceType,
-        messages: ticket.get('messages'),
+        messages: getState().ticket.get('messages'),
     })
+}
 
-    return resetReceiversAndSender(dispatch, getState)
+export const setSubject = (subject = '') => ({
+    type: types.NEW_MESSAGE_SET_SUBJECT,
+    subject
+})
+
+export const setSourceExtra = (extra) => ({
+    type: types.NEW_MESSAGE_SET_SOURCE_EXTRA,
+    extra
+})
+
+/**
+ * Prepare the new message based on its source type
+ * @param {String} sourceType the new source type
+ */
+export const prepare = (sourceType) => (dispatch, getState) => {
+    switch (sourceType) {
+        case 'email-forward': {
+            const state = getState()
+            const currentTicket = ticketSelectors.getTicket(state)
+            const attachments = toJS(ticketSelectors.getLastMessage(state).get('attachments') || fromJS([]))
+
+            dispatch(setSubject(`Fwd: ${currentTicket.get('subject', '')}`))
+            dispatch(setSourceType('email'))
+            dispatch(setSourceExtra({forward: true}))
+            dispatch(setSender())
+            dispatch(setReceivers())
+            dispatch({
+                type: types.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
+                resp: attachments
+            })
+            break
+        }
+        default: {
+            dispatch(setSubject())
+            dispatch(setSourceType(sourceType))
+            dispatch(setSourceExtra({}))
+            resetReceiversAndSender(dispatch, getState)
+            break
+        }
+    }
 }
 
 /**
@@ -226,7 +264,7 @@ function prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActi
             lastSameTypeMessage = lastSameTypeMessage.toJS()
 
             if (lastSameTypeMessage.source.extra) {
-                data.newMessage.source.extra = lastSameTypeMessage.source.extra
+                data.newMessage.source.extra = _assign({}, data.newMessage.source.extra, lastSameTypeMessage.source.extra)
             }
         }
 
@@ -251,24 +289,14 @@ function prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActi
             }
         }
 
-        if ((data.newMessage.body_text.length > 0) || (data.newMessage.attachments.length > 0)) {
-            if (macroActions) {
-                data.newMessage.actions = macroActions.map(curAction => formatAction(
-                    curAction,
-                    fromJS(getActionTemplate(curAction.get('name'))),
-                    {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
-                ))
-            }
-            data.messages.push(data.newMessage)
-        } else if (!data.messages.length) {
-            dispatch(notify({
-                type: 'error',
-                title: 'You need to write a message.',
-                message: 'You can\'t create a new ticket without at least a message.'
-            }))
-            return null
+        if (macroActions) {
+            data.newMessage.actions = macroActions.map(curAction => formatAction(
+                curAction,
+                fromJS(getActionTemplate(curAction.get('name'))),
+                {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
+            ))
         }
-
+        data.messages.push(data.newMessage)
         delete data.newMessage
     }
 

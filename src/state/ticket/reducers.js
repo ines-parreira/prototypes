@@ -378,7 +378,6 @@ export default (state = initialState, action) => {
                     ]) === action.message.getIn(['_internal', 'id']))
 
                 if (~messageIndex) {
-                    console.log(messageIndex, messages.splice(messageIndex, 1))
                     return messages.splice(messageIndex, 1)
                 }
 

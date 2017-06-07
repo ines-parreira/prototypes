@@ -209,4 +209,12 @@ describe('New message reducer', () => {
             initialState.setIn(['newMessage', 'source', 'from'], action.sender)
         )
     })
+
+    it('should handle NEW_MESSAGE_SET_SUBJECT', () => {
+        const action = {
+            type: types.NEW_MESSAGE_SET_SUBJECT,
+            subject: 'Hello World!'
+        }
+        expect(reducer(initialState, action)).toMatchSnapshot()
+    })
 })

@@ -1,0 +1,92 @@
+import * as selectors from '../selectors'
+import {initialState} from '../reducers'
+import {fromJS, List} from 'immutable'
+
+describe('selectors', () => {
+    describe('new message', () => {
+        let state
+
+        beforeEach(() => {
+            state = {
+                newMessage: initialState
+            }
+        })
+
+        describe('isForwarded()', () => {
+
+            it('should detect forwarded message', () => {
+                state.newMessage = state.newMessage.setIn(['newMessage', 'source', 'extra', 'forward'], true)
+                expect(selectors.isForward(state)).toEqual(true)
+            })
+
+            it('should not detect forwarded message', () => {
+                state.newMessage = state.newMessage.setIn(['newMessage', 'source', 'type'], 'email')
+                expect(selectors.isForward(state)).toEqual(false)
+            })
+        })
+
+        describe('isReady()', () => {
+            it('should be ready (reply with body)', () => {
+                state.newMessage = state.newMessage
+                    .setIn(['newMessage', 'body_text'], 'Hello World')
+                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                expect(selectors.isReady(state)).toEqual(true)
+            })
+
+            it('should be ready (reply with attachments)', () => {
+                state.newMessage = state.newMessage
+                    .setIn(['newMessage', 'attachments'], List([{}]))
+                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                expect(selectors.isReady(state)).toEqual(true)
+            })
+
+            it('should be ready (forward with message)', () => {
+                state.newMessage = state.newMessage
+                    .setIn(['newMessage', 'body_text'], 'Hello World')
+                    .setIn(['newMessage', 'source', 'extra', 'forward'], true)
+                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                expect(selectors.isReady(state)).toEqual(true)
+            })
+
+            it('should be ready (forward without message)', () => {
+                state.newMessage = state.newMessage
+                    .setIn(['newMessage', 'body_text'], '')
+                    .setIn(['newMessage', 'source', 'extra', 'forward'], true)
+                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                expect(selectors.isReady(state)).toEqual(true)
+            })
+
+            it('should be ready (private message)', () => {
+                state.newMessage = state.newMessage
+                    .setIn(['newMessage', 'body_text'], 'Hello world!')
+                    .setIn(['newMessage', 'public'], false)
+                    .setIn(['newMessage', 'source', 'to'], fromJS([]))
+                expect(selectors.isReady(state)).toEqual(true)
+            })
+
+            it('should not be ready (reply without recipients)', () => {
+                state.newMessage = state.newMessage
+                    .setIn(['newMessage', 'body_text'], 'Hello World')
+                expect(selectors.isReady(state)).toEqual(false)
+            })
+
+            it('should not be ready (reply without message and attachments)', () => {
+                state.newMessage = state.newMessage
+                    .setIn(['newMessage', 'attachments'], null)
+                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                expect(selectors.isReady(state)).toEqual(false)
+            })
+
+            it('should not be ready (forward without recipients)', () => {
+                state.newMessage = state.newMessage
+                    .setIn(['newMessage', 'subject'], 'Fwd: Hello world!')
+                expect(selectors.isReady(state)).toEqual(false)
+            })
+            it('should not be ready (private message without message)', () => {
+                state.newMessage = state.newMessage
+                    .setIn(['newMessage', 'source', 'type'], 'internal-note')
+                expect(selectors.isReady(state)).toEqual(false)
+            })
+        })
+    })
+})

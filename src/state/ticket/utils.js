@@ -18,8 +18,9 @@ import {getActionTemplate, toImmutable} from '../../utils'
  * @returns {*}
  */
 export function getLastSameSourceTypeMessage(messages, sourceType) {
-    messages = ticketConfig.orderedMessages(messages)
-
+    messages = ticketConfig
+        .orderedMessages(messages)
+        .filter(m => !isForwardedMessage(m))
     const msg = messages.filter((m) => m.getIn(['source', 'type']) === sourceType).last()
 
     if (!msg && sourceType === 'facebook-comment') {
@@ -325,4 +326,9 @@ export function getPendingMessageIndex(pendingMessages, message) {
     })
 
     return index
+}
+
+// Return whether or not the message is forwarded
+export function isForwardedMessage(message) {
+    return toImmutable(message).getIn(['source', 'extra', 'forward']) || false
 }

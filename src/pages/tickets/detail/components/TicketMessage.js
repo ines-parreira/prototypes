@@ -9,7 +9,7 @@ import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
 import {displayUserNameFromSource} from '../../common/utils'
 import {DatetimeLabel, AgentLabel} from '../../../common/utils/labels'
-import {getValuePropFromSourceType} from '../../../../state/ticket/utils'
+import {getValuePropFromSourceType, isForwardedMessage} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
 
 import css from './TicketMessage.less'
@@ -68,6 +68,7 @@ export default class TicketMessage extends React.Component {
 
         const icons = {
             email: 'mail',
+            'email-forward': 'reply',
             chat: 'comments',
             api: 'code',
             phone: 'phone',
@@ -83,6 +84,7 @@ export default class TicketMessage extends React.Component {
             from: {},
             to: []
         }, message.source)
+        const iconLabel = isForwardedMessage(message) ? 'email-forward' : source.type
 
         let legend = ''
         const hasLegend = !source.type.startsWith('facebook')
@@ -104,7 +106,7 @@ export default class TicketMessage extends React.Component {
                 >
                     <i
                         id={id}
-                        className={`icon ${icons[source.type]}`}
+                        className={`icon ${icons[iconLabel]}`}
                     />
                     <span className="hidden-sm-down">
                         {legend}

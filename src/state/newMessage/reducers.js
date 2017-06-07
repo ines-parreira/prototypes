@@ -187,6 +187,10 @@ export default (state = initialState, action) => {
                 .setIn(['newMessage', 'public'], ticketConfig.isPublic(sourceType))
         }
 
+        case types.NEW_MESSAGE_SET_SOURCE_EXTRA: {
+            return state.setIn(['newMessage', 'source', 'extra'], fromJS(action.extra))
+        }
+
         case types.SET_RESPONSE_TEXT: {
             let contentState = action.args.get('contentState') || state.getIn(['state', 'contentState'])
             let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
@@ -233,6 +237,10 @@ export default (state = initialState, action) => {
 
         case types.NEW_MESSAGE_SET_SENDER: {
             return state.setIn(['newMessage', 'source', 'from'], action.sender)
+        }
+
+        case types.NEW_MESSAGE_SET_SUBJECT: {
+            return state.setIn(['newMessage', 'subject'], action.subject)
         }
 
         case types.NEW_MESSAGE_SET_RECEIVERS: {
