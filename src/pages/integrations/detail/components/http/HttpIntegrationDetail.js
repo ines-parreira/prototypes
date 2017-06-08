@@ -22,6 +22,7 @@ import {
 } from '../../../../common/forms'
 import HeaderFieldArray from './HeaderFieldArray'
 import formSender from '../../../../common/utils/formSender'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 export const defaultContent = {
     type: 'http',
@@ -310,16 +311,14 @@ class HttpIntegrationDetail extends React.Component {
 
                         {
                             isUpdate && (
-                                <Button
-                                    type="button"
+                                <ConfirmButton
+                                    className="pull-right"
                                     color="danger"
-                                    className={classNames('pull-right', {
-                                        'btn-loading': isSubmitting,
-                                    })}
-                                    onClick={() => actions.deleteIntegration(integration)}
+                                    confirm={() => actions.deleteIntegration(integration)}
+                                    content="Are you sure you want to delete this integration?"
                                 >
                                     Delete
-                                </Button>
+                                </ConfirmButton>
                             )
                         }
                     </div>

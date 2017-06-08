@@ -13,6 +13,7 @@ import {
 
 import formSender from '../../../../common/utils/formSender'
 import InputField from './../../../../common/forms/InputField'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import Loader from '../../../../common/components/Loader'
 
@@ -164,18 +165,15 @@ class SmoochIntegrationDetail extends React.Component {
 
                         {
                             isUpdate && (
-                                <Button
-                                    type="button"
+                                <ConfirmButton
+                                    className="pull-right"
                                     color="danger"
                                     outline
-                                    className={classNames('pull-right', {
-                                        'btn-loading': isSubmitting,
-                                    })}
-                                    disabled={isSubmitting}
-                                    onClick={() => actions.deleteIntegration(integration)}
+                                    confirm={() => actions.deleteIntegration(integration)}
+                                    content="Are you sure you want to delete this integration?"
                                 >
                                     Delete
-                                </Button>
+                                </ConfirmButton>
                             )
                         }
                     </div>

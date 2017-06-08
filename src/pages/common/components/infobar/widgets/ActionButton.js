@@ -3,7 +3,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
-import {UncontrolledTooltip} from 'reactstrap'
+import {UncontrolledTooltip, Button} from 'reactstrap'
+
+import Modal from '../../Modal'
 
 import {getActionByName} from '../../../../../config/actions'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
@@ -48,6 +50,7 @@ class ActionButton extends React.Component {
         showSuccess: false,
         showError: false,
         isLoading: false,
+        showConfirmation: false
     }
 
     constructor(props, context) {
@@ -72,14 +75,6 @@ class ActionButton extends React.Component {
     }
 
     _confirmAction = () => {
-        if (this.state.isLoading) {
-            return
-        }
-
-        if (!confirm(`Are you sure you want to ${this.props.reason}?`)) {
-            return
-        }
-
         const actionConfig = getActionByName(this.props.actionName)
 
         if (actionConfig) {
@@ -104,6 +99,12 @@ class ActionButton extends React.Component {
                 this.setState({showSuccess: true})
                 setTimeout(() => this.setState({showSuccess: false}), 4000)
             })
+
+        this._toggleConfirmation()
+    }
+
+    _toggleConfirmation = () => {
+        this.setState({showConfirmation: !this.state.showConfirmation})
     }
 
     render() {
@@ -113,7 +114,10 @@ class ActionButton extends React.Component {
             tooltip,
             ...attributes
         } = _omit(this.props, ['className', 'actionName', 'getPendingActionCallback', 'payload', 'reason', 'executeAction'])
-        let {className} = this.props
+        let {
+            className,
+            reason
+        } = this.props
 
         // remove the "basic" button style when there is an error or a success to show the color better
         if (this.state.showSuccess || this.state.showError) {
@@ -121,30 +125,57 @@ class ActionButton extends React.Component {
         }
 
         return (
-            <Tag
-                id={this.id}
-                className={classnames(css.button, className, {
-                    'disabled loading btn-loading': this.state.isLoading,
-                    'btn-success': this.state.showSuccess,
-                    'btn-danger': this.state.showError,
-                })}
-                disabled={this.state.isLoading}
-                onClick={this._confirmAction}
-                {...attributes}
-            >
-                {children}
-                {
-                    tooltip && this.id && (
-                        <UncontrolledTooltip
-                            placement="top"
-                            target={this.id}
-                            delay={0}
-                        >
-                            {tooltip}
-                        </UncontrolledTooltip>
-                    )
-                }
-            </Tag>
+            <div className={css.container}>
+                <Tag
+                    id={this.id}
+                    className={classnames(css.button, className, {
+                        'disabled loading btn-loading': this.state.isLoading,
+                        'btn-success': this.state.showSuccess,
+                        'btn-danger': this.state.showError,
+                    })}
+                    disabled={this.state.isLoading}
+                    onClick={this._toggleConfirmation}
+                    {...attributes}
+                >
+                    {children}
+                    {
+                        tooltip && this.id && (
+                            <UncontrolledTooltip
+                                placement="top"
+                                target={this.id}
+                                delay={0}
+                            >
+                                {tooltip}
+                            </UncontrolledTooltip>
+                        )
+                    }
+                </Tag>
+                <Modal
+                    size="sm"
+                    isOpen={this.state.showConfirmation}
+                    onClose={this._toggleConfirmation}
+                    footer={(
+                        <div className="w-100">
+                            <Button
+                                color="success"
+                                onClick={this._confirmAction}
+                            >
+                                Yes
+                            </Button>
+                            <Button
+                                className="pull-right"
+                                onClick={this._toggleConfirmation}
+                            >
+                                No
+                            </Button>
+                        </div>
+                    )}
+                >
+                    <p>
+                        Are you sure you want to {reason}?
+                    </p>
+                </Modal>
+            </div>
         )
     }
 }

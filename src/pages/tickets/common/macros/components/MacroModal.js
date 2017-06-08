@@ -16,6 +16,7 @@ import MacroPreview from './MacroPreview'
 import {DEFAULT_ACTIONS} from '../../../../../config'
 import shortcutManager from '../../../../common/utils/shortcutManager'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import css from './MacroModal.less'
 
@@ -99,9 +100,7 @@ export default class MacroModal extends React.Component {
     }
 
     _deleteMacro = () => {
-        if (confirm(`Do you really want to delete the macro ${this.props.currentMacro.get('name', '')} ?`)) {
-            return this.props.actions.macro.deleteMacro(this.props.currentMacro.get('id', ''))
-        }
+        return this.props.actions.macro.deleteMacro(this.props.currentMacro.get('id', ''))
     }
 
     _toggle = () => {
@@ -173,14 +172,14 @@ export default class MacroModal extends React.Component {
                                                 <div className="d-inline-block">
                                                     {
                                                         isUpdate && (
-                                                            <Button
-                                                                type="submit"
+                                                            <ConfirmButton
                                                                 color="danger"
                                                                 outline
-                                                                onClick={this._deleteMacro}
+                                                                confirm={this._deleteMacro}
+                                                                content={`Do you really want to delete the macro ${this.props.currentMacro.get('name', '')}?`}
                                                             >
                                                                 Delete macro
-                                                            </Button>
+                                                            </ConfirmButton>
                                                         )
                                                     }
                                                 </div>

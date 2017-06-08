@@ -1,12 +1,20 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Badge, Card, CardBlock} from 'reactstrap'
+import {Badge, Card, CardBlock, Button, Popover, PopoverTitle, PopoverContent} from 'reactstrap'
 
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 
 import RuleItem from '../../detail/components/RuleItem'
 
 class RuleRow extends React.Component {
+    state = {
+        showConfirmation: false
+    }
+
+    _toggleConfirmation = () => {
+        this.setState({showConfirmation: !this.state.showConfirmation})
+    }
+
     _handleActivate = () => {
         const {actions, rule} = this.props
         actions.rules.activate(rule.get('id'))
@@ -15,21 +23,23 @@ class RuleRow extends React.Component {
     _handleDeactivate = () => {
         const {actions, rule} = this.props
 
-        if (confirm('Are you sure you want to deactivate this rule?')) {
-            actions.rules.deactivate(rule.get('id'))
-        }
+        actions.rules.deactivate(rule.get('id'))
+        this._toggleConfirmation()
     }
 
-    _toggleItemStatus = (value) => {
-        if (value) {
+    _toggleItemStatus = () => {
+        const checked = !!this.props.rule.get('deactivated_datetime')
+        if (checked) {
             this._handleActivate()
         } else {
-            this._handleDeactivate()
+            this._toggleConfirmation()
         }
     }
 
     _renderClosed = () => {
         const {rule} = this.props
+        const {showConfirmation} = this.state
+        const toggleId = `rule-toggle-${rule.get('id')}`
 
         return (
             <tr key={rule.get('id')}>
@@ -57,12 +67,37 @@ class RuleRow extends React.Component {
                     </a>
                 </td>
                 <td className="smallest align-middle">
-                    <ToggleCheckbox
-                        input={{
-                            onChange: this._toggleItemStatus,
-                            value: !rule.get('deactivated_datetime'),
-                        }}
-                    />
+                    <div id={toggleId}>
+                        <ToggleCheckbox
+                            input={{
+                                onChange: this._toggleItemStatus,
+                                value: !rule.get('deactivated_datetime'),
+                            }}
+                        />
+                    </div>
+                    <Popover
+                        placement="left"
+                        isOpen={showConfirmation}
+                        target={toggleId}
+                        toggle={this._toggleConfirmation}
+                    >
+                        <PopoverTitle>
+                            Are you sure?
+                        </PopoverTitle>
+                        <PopoverContent>
+                            <p>
+                                Are you sure you want to deactivate this rule?
+                            </p>
+
+                            <Button
+                                type="submit"
+                                color="success"
+                                onClick={this._handleDeactivate}
+                            >
+                                Confirm
+                            </Button>
+                        </PopoverContent>
+                    </Popover>
                 </td>
             </tr>
         )

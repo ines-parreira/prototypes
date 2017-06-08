@@ -21,6 +21,7 @@ import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import {GMAIL_IMPORTED_THREADS} from '../../../../../../config'
+import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 class EmailIntegrationUpdate extends React.Component {
     state = {
@@ -82,10 +83,6 @@ class EmailIntegrationUpdate extends React.Component {
     _importEmails = () => {
         const {integration, importEmails} = this.props
 
-        if (!confirm('Are you sure you want to import emails?')) {
-            return
-        }
-
         logEvent('Import Gmail emails')
 
         return formSender(importEmails(fromJS({
@@ -141,16 +138,14 @@ class EmailIntegrationUpdate extends React.Component {
                 </p>
                 {
                     !importActivated && (
-                        <Button
+                        <ConfirmButton
                             color="primary"
-                            type="button"
-                            onClick={this._importEmails}
-                            className={classNames({
-                                'btn-loading': isLoading,
-                            })}
+                            loading={isLoading}
+                            confirm={this._importEmails}
+                            content="Are you sure you want to import emails?"
                         >
                             Import emails
-                        </Button>
+                        </ConfirmButton>
                     )
                 }
             </div>
@@ -274,17 +269,15 @@ class EmailIntegrationUpdate extends React.Component {
                             </Button>
                         )
                     }
-                    <Button
-                        type="button"
+
+                    <ConfirmButton
+                        className="pull-right"
                         color="danger"
-                        disabled={isSubmitting || isDeleting}
-                        onClick={() => deleteIntegration(integration, 'email')}
-                        className={classNames('pull-right', {
-                            'btn-loading': isDeleting
-                        })}
+                        confirm={() => deleteIntegration(integration, 'email')}
+                        content="Are you sure you want to delete this integration?"
                     >
                         Delete email address
-                    </Button>
+                    </ConfirmButton>
                 </form>
             </div>
         )

@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Field, reduxForm, formValueSelector} from 'redux-form'
-import classnames from 'classnames'
 import {Button, UncontrolledTooltip} from 'reactstrap'
 
 import Modal from '../Modal'
@@ -13,6 +12,7 @@ import BinaryChoiceField from '../../forms/BinaryChoiceField'
 import MultiSelectBinaryChoiceField from '../../forms/MultiSelectBinaryChoiceField'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
+import ConfirmButton from '../ConfirmButton'
 
 class MergeUsersModal extends React.Component {
     componentDidMount = () => {
@@ -49,19 +49,16 @@ class MergeUsersModal extends React.Component {
     }
 
     _handleSubmit = (data) => {
-        // submit user to merge
-        if (confirm('This action is irreversible. Are you sure you want to merge those users?')) {
-            logEvent('Confirmed MergeUser', {
-                finalUser: data.user.channels.map(channel => channel.type)
-            })
-            return this.props.mergeUsers(
-                this.props.destinationUser.get('id'),
-                this.props.sourceUser.get('id'),
-                data.user
-            ).then(() => {
-                this._toggle()
-            })
-        }
+        logEvent('Confirmed MergeUser', {
+            finalUser: data.user.channels.map(channel => channel.type)
+        })
+        return this.props.mergeUsers(
+            this.props.destinationUser.get('id'),
+            this.props.sourceUser.get('id'),
+            data.user
+        ).then(() => {
+            this._toggle()
+        })
     }
 
     _generateChannelOptions = (user) => {
@@ -247,16 +244,15 @@ class MergeUsersModal extends React.Component {
                         >
                             Cancel
                         </Button>
-                        <Button
+
+                        <ConfirmButton
                             color="success"
                             type="submit"
-                            className={classnames({
-                                'btn-loading': isLoading,
-                            })}
-                            disabled={isLoading}
+                            loading={isLoading}
+                            content="This action is irreversible. Are you sure you want to merge those users?"
                         >
                             Merge users
-                        </Button>
+                        </ConfirmButton>
                     </div>
                 </form>
             </Modal>

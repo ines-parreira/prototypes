@@ -1,14 +1,15 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import _pick from 'lodash/pick'
-import classNames from 'classnames'
-import {Button, UncontrolledTooltip} from 'reactstrap'
+import {UncontrolledTooltip} from 'reactstrap'
 
 import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 @connect((state) => {
     const {currentAccount} = state
@@ -37,7 +38,6 @@ export default class TicketSubmitButtons extends React.Component {
     submit = (status, next) => {
         const isSending = this.props.newMessage.getIn(['_internal', 'loading', 'submitMessage'])
 
-        this.props.submit(status, next)
         // we use `next` var to determine if the ticket is closed after send action
         if (!isSending) {
             logEvent('Sent message', {
@@ -45,28 +45,34 @@ export default class TicketSubmitButtons extends React.Component {
                 andClose: next,
             })
         }
+
+        return this.props.submit(status, next)
     }
 
     render() {
-        const {newMessage, isNewMessageReady, canSendMessage} = this.props
+        const {newMessage, isNewMessageReady, canSendMessage, ticket} = this.props
         const disabled = !canSendMessage || !isNewMessageReady
-        const commonClasses = {
-            'btn-loading': newMessage.getIn(['_internal', 'loading', 'submitMessage']),
-        }
+        const loading = newMessage.getIn(['_internal', 'loading', 'submitMessage'])
+
+        const hasTitle = !!ticket.get('subject')
+        const titleConfirmation = 'Are you sure you want to create a ticket with no subject?'
 
         return (
             <div className="TicketSubmitButtons">
-                <Button
-                    type="submit"
+                <ConfirmButton
                     id="submit-button"
+                    type="submit"
+                    className="mr-2"
                     color="primary"
-                    className={classNames('mr-2', commonClasses)}
                     disabled={disabled}
                     tabIndex="4"
-                    onClick={() => this.submit()}
+                    skip={hasTitle}
+                    confirm={() => this.submit()}
+                    content={titleConfirmation}
+                    loading={loading}
                 >
                     Send
-                </Button>
+                </ConfirmButton>
                 <UncontrolledTooltip
                     placement="top"
                     target="submit-button"
@@ -74,18 +80,21 @@ export default class TicketSubmitButtons extends React.Component {
                 >
                     {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_TICKET)}
                 </UncontrolledTooltip>
-                <Button
-                    type="submit"
+
+                <ConfirmButton
                     id="submit-and-close-button"
+                    type="submit"
                     color="primary"
                     outline
-                    className={classNames(commonClasses)}
                     disabled={disabled}
                     tabIndex="5"
-                    onClick={() => this.submit('closed', true)}
+                    skip={hasTitle}
+                    confirm={() => this.submit('closed', true)}
+                    content={titleConfirmation}
+                    loading={loading}
                 >
                     Send &amp; Close
-                </Button>
+                </ConfirmButton>
                 <UncontrolledTooltip
                     placement="top"
                     target="submit-and-close-button"

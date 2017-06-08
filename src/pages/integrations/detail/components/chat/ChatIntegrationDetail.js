@@ -21,6 +21,7 @@ import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import {InputField, TextAreaField, ColorField, FileField} from '../../../../common/forms'
 import formSender from '../../../../common/utils/formSender'
 import ChatIntegrationPreview from './ChatIntegrationPreview'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import css from './ChatIntegrationDetail.less'
 
@@ -457,15 +458,15 @@ class ChatIntegrationDetail extends React.Component {
 
                                 {
                                     isUpdate && (
-                                        <Button
-                                            type="button"
+                                        <ConfirmButton
+                                            className="pull-right"
                                             color="danger"
                                             outline
-                                            className="pull-right"
-                                            onClick={() => actions.deleteIntegration(integration)}
+                                            confirm={() => actions.deleteIntegration(integration)}
+                                            content="Are you sure you want to delete this integration?"
                                         >
                                             Delete chat
-                                        </Button>
+                                        </ConfirmButton>
                                     )
                                 }
                             </form>

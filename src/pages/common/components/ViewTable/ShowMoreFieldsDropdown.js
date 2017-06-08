@@ -12,13 +12,17 @@ import {
 
 import {setFieldVisibility} from '../../../../state/views/actions'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
+import {notify} from '../../../../state/notifications/actions'
 
 import css from './ShowMoreFieldsDropdown.less'
 
 class ShowMoreFieldsDropdown extends React.Component {
     _setFieldVisibility = (name, state) => {
         if (!state && this.props.visibleFields.size <= 1) {
-            return window.alert('You can not remove all columns of a view')
+            return this.props.notify({
+                type: 'error',
+                message: 'You can not remove all columns of a view',
+            })
         }
 
         return this.props.setFieldVisibility(name, state)
@@ -85,11 +89,13 @@ ShowMoreFieldsDropdown.propTypes = {
     setFieldVisibility: PropTypes.func,
     fields: PropTypes.object,
     visibleFields: PropTypes.object.isRequired,
+    notify: PropTypes.func.isRequired,
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        setFieldVisibility: bindActionCreators(setFieldVisibility, dispatch)
+        setFieldVisibility: bindActionCreators(setFieldVisibility, dispatch),
+        notify: bindActionCreators(notify, dispatch),
     }
 }
 

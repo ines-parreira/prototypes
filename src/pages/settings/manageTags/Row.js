@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {
     Input,
+    Label,
     Button,
     Popover,
     PopoverTitle,
@@ -62,10 +63,6 @@ export default class Row extends Component {
     _onSave = (e) => {
         e.preventDefault()
 
-        if (!this.state.name) {
-            return window.alert('You need to give a name to that tag')
-        }
-
         const row = this.props.row
             .set('name', this.state.name)
             .set('decoration', this.state.decoration)
@@ -107,6 +104,7 @@ export default class Row extends Component {
         const rowClassName = classnames('manage-tags-table-row', {
             'manage-tags-table-row-edit': (meta.get('edit') === true)
         })
+        const submitId = `manage-tags-row-${Date.now()}`
 
         return (
             <tr className={rowClassName}>
@@ -130,7 +128,10 @@ export default class Row extends Component {
                         </TagLabel>
                     </div>
 
-                    <div className="cell-wrapper manage-tags-table-row-edit-item align-items-center">
+                    <form
+                        className="cell-wrapper manage-tags-table-row-edit-item align-items-center"
+                        onSubmit={this._onSave}
+                    >
                         <Input
                             className="mr-2"
                             value={this.state.name}
@@ -144,7 +145,9 @@ export default class Row extends Component {
                                 onChange: this._changeColor
                             }}
                         />
-                    </div>
+
+                        <input type="submit" id={submitId} className="hidden" />
+                    </form>
                 </td>
 
                 <td className="manage-tags-table-col-count">
@@ -207,14 +210,12 @@ export default class Row extends Component {
                             Cancel
                         </Button>
 
-                        <Button
-                            type="button"
-                            color="primary"
-                            onClick={this._onSave}
-                            className="manage-tags-action"
+                        <Label
+                            for={submitId}
+                            className="manage-tags-action btn btn-primary"
                         >
                             Save
-                        </Button>
+                        </Label>
                     </div>
                 </td>
             </tr>

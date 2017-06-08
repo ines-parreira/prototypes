@@ -344,15 +344,13 @@ export default class TicketDetailContainer extends React.Component {
                 }
             })
 
-            if (ticket.get('subject') || window.confirm('Are you sure you want to create a ticket with no subject?')) {
-                promise = this.props.submitTicket(
-                    ticket,
-                    status,
-                    this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
-                    this.props.currentUser,
-                    resetMessage
-                )
-            }
+            promise = this.props.submitTicket(
+                ticket,
+                status,
+                this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
+                this.props.currentUser,
+                resetMessage
+            )
         } else {
             promise = this.props.submitTicketMessage(
                 status,
@@ -371,6 +369,8 @@ export default class TicketDetailContainer extends React.Component {
                 return this._setStatus(status)
             })
         }
+
+        return promise
     }
 
     _setStatus = (status) => {

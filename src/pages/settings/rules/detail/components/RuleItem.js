@@ -9,6 +9,7 @@ import TriggersSelector from './TriggersSelector'
 import EditableTitle from '../../../../common/components/EditableTitle'
 import Program from '../../../../common/components/ast/Program'
 import ErrorMessage from '../../../../common/components/ErrorMessage'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import * as rulesHelpers from '../../../../../state/rules/helpers'
 
@@ -47,11 +48,8 @@ class RuleItem extends React.Component {
 
         event.preventDefault()
 
-        const confirmMsg = 'You\'re about to modify a system rule, this may prevent you from sending ' +
-            'messages to your customers. Are you sure?'
-
         this.setState({isSubmitting: true})
-        if (this._canSubmit() && (this.props.rule.get('type') === 'user' || confirm(confirmMsg))) {
+        if (this._canSubmit()) {
             return actions.rules.save({
                 id: rule.get('id'),
                 description: this.state.description,
@@ -65,17 +63,13 @@ class RuleItem extends React.Component {
         }
     }
 
-    _handleReset = (event) => {
+    _handleReset = () => {
         const {actions, rule} = this.props
-        event.preventDefault()
-
-        if (confirm('Are you sure you want to reset this rule?')) {
-            this.setState({isResetting: true})
-            return actions.rules.reset(rule.get('id'))
-                .then(() => {
-                    this.setState({isResetting: false})
-                })
-        }
+        this.setState({isResetting: true})
+        return actions.rules.reset(rule.get('id'))
+            .then(() => {
+                this.setState({isResetting: false})
+            })
     }
 
     _handleActivate = (event) => {
@@ -88,30 +82,24 @@ class RuleItem extends React.Component {
             })
     }
 
-    _handleDeactivate = (event) => {
+    _handleDeactivate = () => {
         const {actions, rule} = this.props
-        event.preventDefault()
 
-        if (confirm('Are you sure you want to deactivate this rule?')) {
-            this.setState({isDeactivating: true})
-            return actions.rules.deactivate(rule.get('id'))
-                .then(() => {
-                    this.setState({isDeactivating: false})
-                })
-        }
+        this.setState({isDeactivating: true})
+        return actions.rules.deactivate(rule.get('id'))
+            .then(() => {
+                this.setState({isDeactivating: false})
+            })
     }
 
-    _handleRemove = (event) => {
+    _handleRemove = () => {
         const {actions, rule} = this.props
-        event.preventDefault()
 
-        if (confirm('Are you sure you want to delete this rule?')) {
-            this.setState({isDeleting: true})
-            return actions.rules.remove(rule.get('id'))
-                .then(() => {
-                    this.setState({isDeleting: false})
-                })
-        }
+        this.setState({isDeleting: true})
+        return actions.rules.remove(rule.get('id'))
+            .then(() => {
+                this.setState({isDeleting: false})
+            })
     }
 
     _handleToggleCode = () => {
@@ -164,27 +152,25 @@ class RuleItem extends React.Component {
         return (
             <div className="d-flex justify-content-between">
                 <div>
-                    <Button
+                    <ConfirmButton
+                        className="mr-2"
                         color="primary"
                         type="submit"
-                        className={classnames('mr-2', {
-                            'btn-loading': this.state.isSubmitting,
-                        })}
+                        skip={rule.get('type') === 'user'}
+                        loading={this.state.isSubmitting}
                         disabled={this.state.isSubmitting || !this._canSubmit()}
+                        content="You're about to modify a system rule, this may prevent you from sending messages to your customers. Are you sure?"
                     >
                         Save
-                    </Button>
-                    <Button
+                    </ConfirmButton>
+                    <ConfirmButton
                         color="secondary"
-                        type="button"
-                        className={classnames({
-                            'btn-loading': this.state.isResetting,
-                        })}
-                        disabled={this.state.isResetting}
-                        onClick={this._handleReset}
+                        loading={this.state.isResetting}
+                        confirm={this._handleReset}
+                        content="Are you sure you want to reset this rule?"
                     >
                         Cancel changes
-                    </Button>
+                    </ConfirmButton>
                 </div>
                 <div className="pull-right">
                     {
@@ -201,34 +187,29 @@ class RuleItem extends React.Component {
                                     Activate
                                 </Button>
                             ) : (
-                                <Button
+                                <ConfirmButton
                                     color="warning"
-                                    type="button"
                                     outline
-                                    className={classnames({
-                                        'btn-loading': this.state.isDeactivating,
-                                    })}
-                                    disabled={this.state.isDeactivating}
-                                    onClick={this._handleDeactivate}
+                                    loading={this.state.isDeactivating}
+                                    confirm={this._handleDeactivate}
+                                    content="Are you sure you want to deactivate this rule?"
                                 >
                                     Deactivate
-                                </Button>
+                                </ConfirmButton>
                             )
                     }
                     {
                         rule.get('type') !== 'system' && (
-                            <Button
-                                className={classnames('ml-2', {
-                                    'btn-loading': this.state.isDeleting,
-                                })}
-                                disabled={this.state.isDeleting}
+                            <ConfirmButton
+                                className="ml-2"
                                 color="danger"
-                                type="button"
                                 outline
-                                onClick={this._handleRemove}
+                                loading={this.state.isDeleting}
+                                confirm={this._handleRemove}
+                                content="Are you sure you want to delete this rule?"
                             >
                                 Delete rule
-                            </Button>
+                            </ConfirmButton>
                         )
                     }
                 </div>

@@ -128,44 +128,38 @@ export function fetchIntegration(integrationId, integrationType, waitingForAuthe
 
 
 export function deleteIntegration(integration) {
-    if (window.confirm('Are you sure you want to delete this integration?')) {
-        return (dispatch) => {
-            dispatch({
-                type: types.DELETE_INTEGRATION_START,
-                id: integration.get('id')
-            })
+    return (dispatch) => {
+        dispatch({
+            type: types.DELETE_INTEGRATION_START,
+            id: integration.get('id')
+        })
 
-            axios.delete(`/api/integrations/${integration.get('id')}/`)
-                .then((json = {}) => json.data)
-                .then(() => {
-                    dispatch({
-                        type: types.DELETE_INTEGRATION_SUCCESS,
-                        id: integration.get('id')
-                    })
-                    const currentUrl = window.location.pathname
-                    const indexOfId = currentUrl.lastIndexOf(integration.get('id'))
-
-                    if (~indexOfId) {
-                        const nextUrl = currentUrl.substr(0, indexOfId)
-                        browserHistory.push(nextUrl)
-                    }
-
-                    dispatch(notify({
-                        type: 'success',
-                        message: 'Integration successfully deleted'
-                    }))
-                }, error => {
-                    return dispatch({
-                        type: types.DELETE_INTEGRATION_ERROR,
-                        error,
-                        reason: 'Failed to delete the integration'
-                    })
+        return axios.delete(`/api/integrations/${integration.get('id')}/`)
+            .then((json = {}) => json.data)
+            .then(() => {
+                dispatch({
+                    type: types.DELETE_INTEGRATION_SUCCESS,
+                    id: integration.get('id')
                 })
-        }
-    }
+                const currentUrl = window.location.pathname
+                const indexOfId = currentUrl.lastIndexOf(integration.get('id'))
 
-    return {
-        type: types.DELETE_INTEGRATION_CANCEL
+                if (~indexOfId) {
+                    const nextUrl = currentUrl.substr(0, indexOfId)
+                    browserHistory.push(nextUrl)
+                }
+
+                return dispatch(notify({
+                    type: 'success',
+                    message: 'Integration successfully deleted'
+                }))
+            }, error => {
+                return dispatch({
+                    type: types.DELETE_INTEGRATION_ERROR,
+                    error,
+                    reason: 'Failed to delete the integration'
+                })
+            })
     }
 }
 
