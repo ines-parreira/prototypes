@@ -7,16 +7,14 @@ import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 
+import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 @connect((state) => {
-    const {currentAccount} = state
-    const isAccountActive = currentAccount.get('deactivated_datetime') === null
-
     return {
-        canSendMessage: isAccountActive,
+        canSendMessage: currentAccountSelectors.isAccountActive(state),
         isNewMessageReady: newMessageSelectors.isReady(state),
         newMessage: state.newMessage,
     }
