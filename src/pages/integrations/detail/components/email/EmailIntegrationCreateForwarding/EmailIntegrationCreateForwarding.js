@@ -23,27 +23,27 @@ const servicesWithTutorials = [
     {
         img: groups,
         title: 'Google Groups',
-        link: 'https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding#G_Suite_Groups'
+        link: 'http://docs.gorgias.io/general/how-to-set-up-email-forwarding#G_Suite_Groups'
     },
     {
         img: outlook,
         title: 'Outlook',
-        link: 'https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding#Outlook.com'
+        link: 'http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Outlook.com'
     },
     {
         img: office,
         title: 'Office 365',
-        link: 'https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding#Office_365'
+        link: 'http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Office_365'
     },
     {
         img: exchange,
         title: 'Microsoft Exchange',
-        link: 'https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding#Microsoft_Exchange'
+        link: 'http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Microsoft_Exchange'
     },
     {
         img: zoho,
         title: 'Zoho Mail',
-        link: 'https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding#Zoho_Mail'
+        link: 'http://docs.gorgias.io/general/how-to-set-up-email-forwarding#Zoho_Mail'
     }
 ]
 

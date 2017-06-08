@@ -211,7 +211,7 @@ class ChatIntegrationDetail extends React.Component {
                     {' '}tag. If you need help,{' '}
                     <a
                         target="_blank"
-                        href="https://gorgias.helpdocs.io/integrations/chat?utm_source=chat_integration"
+                        href="http://docs.gorgias.io/integrations/chat?utm_source=chat_integration"
                         onClick={() => {
                             logEvent('Clicked see chat tutorial')
                         }}

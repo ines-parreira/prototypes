@@ -94,7 +94,7 @@ export default class EmailIntegrationList extends React.Component {
                                     No recent email.{' '}
                                     <a
                                         target="_blank"
-                                        href="https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding"
+                                        href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding"
                                     >
                                         Is forwarding on?
                                     </a>

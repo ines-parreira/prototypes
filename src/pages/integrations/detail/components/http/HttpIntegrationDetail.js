@@ -163,7 +163,7 @@ class HttpIntegrationDetail extends React.Component {
                     Add the details about the HTTP integration you want to add below. If you need help, you can
                     check our {' '}
                     <a
-                        href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#your-custom-back-office-app"
+                        href="http://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
                         target="_blank"
                     >
                         docs

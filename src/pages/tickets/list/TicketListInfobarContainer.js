@@ -97,7 +97,7 @@ class TicketListInfobarContainer extends React.Component {
                             {
                                 hasShopifyIntegration && (
                                     <a
-                                        href="https://gorgias.helpdocs.io/integrations/http-integrations#Shipstation"
+                                        href="http://docs.gorgias.io/integrations/http-integrations#Shipstation"
                                         target="_blank"
                                         className={css.button}
                                         onClick={() => {
@@ -114,7 +114,7 @@ class TicketListInfobarContainer extends React.Component {
                                 )
                             }
                             <a
-                                href="https://gorgias.helpdocs.io/integrations/helpdocs"
+                                href="http://docs.gorgias.io/integrations/helpdocs"
                                 target="_blank"
                                 className={css.button}
                                 onClick={() => {

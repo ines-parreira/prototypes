@@ -166,7 +166,7 @@ class EmailIntegrationUpdate extends React.Component {
                     {' '}
                     <a
                         target="_blank"
-                        href="https://gorgias.helpdocs.io/general/how-to-set-up-email-forwarding"
+                        href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding"
                         onClick={() => {
                             logEvent('Clicked step by step instructions in add email integration')
                         }}

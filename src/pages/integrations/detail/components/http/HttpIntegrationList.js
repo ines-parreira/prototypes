@@ -30,7 +30,7 @@ export default class HttpIntegrationList extends React.Component {
                 </p>
                 <p>
                     <a
-                        href="http://help.gorgias.io/en/latest/src/helpdesk/01-integrations.html#your-custom-back-office-app"
+                        href="http://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
                         target="_blank"
                     >
                         Learn more
