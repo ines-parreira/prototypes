@@ -6,6 +6,7 @@ import {fromJS} from 'immutable'
 import _clone from 'lodash/clone'
 import _isEmpty from 'lodash/isEmpty'
 import {
+    Alert,
     Button,
     Breadcrumb,
     BreadcrumbItem,
@@ -97,6 +98,8 @@ class ShopifyIntegrationDetail extends React.Component {
 
         const needScopeUpdate = integration.getIn(['meta', 'need_scope_update'])
 
+        const isSyncOver = integration.getIn(['meta', 'sync_state', 'is_initialized'])
+
         if (loading.get('integration')) {
             return <Loader />
         }
@@ -115,12 +118,42 @@ class ShopifyIntegrationDetail extends React.Component {
                     </BreadcrumbItem>
                 </Breadcrumb>
 
-                <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
+                <h1 className="mb-4">{isUpdate ? integration.get('name') : 'Add integration'}</h1>
 
-                <p>Let's connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along with
-                    their order information. This way, when they contact you, you'll be able to see their Shopify
-                    information next to tickets. </p>
-
+                {
+                    !isUpdate && (
+                        <p>
+                            Let's connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along
+                            with their order information. This way, when they contact you, you'll be able to see their
+                            Shopify information next to tickets.
+                        </p>
+                    )
+                }
+                {
+                    isUpdate && (
+                        isSyncOver
+                        ? (
+                            <p>
+                                All your Shopify users have been imported. You can now see their info in the
+                                sidebar. <Link to="/app/users">Review your users.</Link>
+                            </p>
+                        ) : (
+                            <Alert color="info" className="mb-4">
+                                <p>
+                                    <b className="alert-heading">
+                                        <i className="fa fa-refresh fa-spin mr-2"/>
+                                        Importing your Shopify customers
+                                    </b>
+                                    </p>
+                                <p>
+                                    We're currently importing all your Shopify customers. This way, you'll see
+                                    customer info & orders next to tickets. We'll notify you via email when the
+                                    import is done. <Link to="/app/users">Review imported users.</Link>
+                                </p>
+                            </Alert>
+                        )
+                    )
+                }
                 <form
                     className="ui form"
                     onSubmit={handleSubmit(this._handleSubmit)}

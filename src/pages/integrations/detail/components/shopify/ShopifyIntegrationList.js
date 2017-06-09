@@ -1,10 +1,13 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
+import Slider from 'react-slick'
 
 import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
 import IntegrationList from '../IntegrationList'
 import * as integrationsActions from '../../../../../state/integrations/actions'
+
+import css from './ShopifyIntegrationList.less'
 
 @connect(null, {
     activate: integrationsActions.activateIntegration,
@@ -21,26 +24,53 @@ export default class ShopifyIntegrationList extends React.Component {
     render() {
         const {integrations, loading} = this.props
 
+        const sliderSettings = {
+            dots: true,
+            slidesToShow: 2,
+            arrows: false,
+            autoplay: true,
+            autoplaySpeed: 3000
+        }
+
+        const imagesUrl = [
+            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/shopify-carousel_1@0,25x.jpg`,
+            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/shopify-carousel_2@0,25x.jpg`,
+            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/shopify-carousel_3@0,25x.jpg`
+        ]
+
         const longTypeDescription = (
             <div>
-                <p>Shopify is an e-commerce platform. Connect your Shopify store to Gorgias and:</p>
+                <p>Shopify is an e-commerce platform used by 300,000+ stores.</p>
 
+                <div className={css.carouselContainer}>
+                    <Slider {...sliderSettings}>
+                        {
+                            imagesUrl.map((url, idx) => (
+                                <div key={idx} className={css.carouselContent}>
+                                    <a href={url} target="_blank">
+                                        <img src={url}/>
+                                    </a>
+                                </div>
+                            ))
+                        }
+                    </Slider>
+                </div>
+
+                <h4>How Gorgias works with Shopify</h4>
                 <ul>
                     <li>
-                        Display <b>Shopify profiles and orders</b> next to support tickets
+                        See Shopify profiles, orders & shipping status next to support tickets
                     </li>
                     <li>
-                        <b>Edit orders, issue refunds</b>, etc. directly from support conversations
+                        Edit orders, issue refunds, etc. directly from support conversations
                     </li>
                     <li>
-                        <b>Sync all your Shopify customers</b> in Gorgias. This way, if a customer contacts you on
-                        Facebook, you can match them with the Shopify customer in your records.
+                        Search users by order number, shipping address... and match anonymous chat tickets with
+                        existing Shopify customers
                     </li>
                 </ul>
 
-                <p>
-                    You can <b>connect multiple Shopify stores</b>.
-                </p>
+                <h4>Your Shopify stores</h4>
             </div>
         )
 
