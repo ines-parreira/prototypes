@@ -23,6 +23,7 @@ import {convertToHTML as _convertToHTML, convertFromHTML as _convertFromHTML} fr
 import Immutable, {fromJS} from 'immutable'
 import md5 from 'md5'
 import linkifyIt from 'linkify-it'
+import htmlparser from 'htmlparser2'
 import {ACTION_TEMPLATES} from './config'
 
 const notificationSoundData = require('../../private/audio/notification.mp3')
@@ -335,6 +336,63 @@ export function sanitizeHtmlDefault(html) {
         },
         nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title']
     })
+}
+
+/**
+ * Append a proxy URL before the images src so we can control their width and protect our agents privacy
+ *
+ * @param html - the html body that contains the images
+ * @param format
+ */
+export const proxifyImages = (html, format = '1000x') => {
+    if (html.indexOf('img') === -1) {
+        return html
+    }
+
+    if (!window.IMAGE_PROXY_URL) {
+        throw new Error('window.IMAGE_PROXY_URL is not defined')
+    }
+
+    const selfClosing = ['img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta']
+
+    let result = ''
+    const parser = new htmlparser.Parser({
+        onopentag: (name, attributes) => {
+            result += `<${name}`
+            const attributesKeys = Object.keys(attributes)
+            // Add a space if we have attributes so we have nicely formatted tags: <tag attr="val">
+            if (attributesKeys.length) {
+                result += ' '
+            }
+
+            const attributePairs = []
+            attributesKeys.forEach((k) => {
+                let v = attributes[k]
+                if (name === 'img' && k === 'src') {
+                    v = `${window.IMAGE_PROXY_URL}${format}/${attributes.src}`
+                }
+                attributePairs.push(`${k}="${v}"`)
+            })
+            result += attributePairs.join(' ')
+
+            if (selfClosing.indexOf(name) !== -1) {
+                result += '/>'
+            } else {
+                result += '>'
+            }
+        },
+        ontext: (text) => {
+            result += text
+        },
+        onclosetag: (name) => {
+            if (selfClosing.indexOf(name) === -1) {
+                result += `</${name}>`
+            }
+        }
+    })
+    parser.write(html)
+    parser.end()
+    return result
 }
 
 /**

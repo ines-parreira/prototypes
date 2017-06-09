@@ -26,7 +26,7 @@ export default class TicketAttachments extends React.Component {
 
         return (
             <div className="attachments-item-meta-type">
-                <i className={`icon ${iconClass}`} />
+                <i className={`icon ${iconClass}`}/>
                 {iconLabel}
             </div>
         )
@@ -44,7 +44,7 @@ export default class TicketAttachments extends React.Component {
 
     renderRemoveIcon(idx) {
         if (this.props.removable) {
-            return <i className="attachments-item-remove remove action icon" onClick={this.removeAttachment(idx)} />
+            return <i className="attachments-item-remove remove action icon" onClick={this.removeAttachment(idx)}/>
         }
         return null
     }
@@ -54,8 +54,12 @@ export default class TicketAttachments extends React.Component {
             return null
         }
 
+        if (!window.IMAGE_PROXY_URL) {
+            throw new Error('window.IMAGE_PROXY_URL is not defined 123')
+        }
+
         return {
-            backgroundImage: `url(${attachment.url})`
+            backgroundImage: `url(${window.IMAGE_PROXY_URL}120x80/${attachment.url})`
         }
     }
 

@@ -370,4 +370,48 @@ describe('global utils', () => {
                 .toEqual(schemas.getIn(['definitions', 'Ticket', 'properties', 'tags']).toJS())
         })
     })
+
+
+    describe('proxifyImages', () => {
+        beforeEach(() => {
+            window.IMAGE_PROXY_URL = 'http://proxy-url/'
+        })
+
+        it('should not touch html with not img', () => {
+            expect(utils.proxifyImages('<span>123</span>')).toMatchSnapshot()
+        })
+
+        it('should work with no format', () => {
+            expect(utils.proxifyImages('<img src="hello" />')).toMatchSnapshot()
+        })
+
+        it('should work with format', () => {
+            expect(utils.proxifyImages('<img src="hello" />'), '100x100').toMatchSnapshot()
+        })
+
+        it('should raise if IMAGE_PROXY_URL is not defined', () => {
+            window.IMAGE_PROXY_URL = ''
+            expect(() => utils.proxifyImages('<img src="hello" />')).toThrow()
+        })
+
+        it('should work with no src', () => {
+            expect(utils.proxifyImages('<img alt="no-src" />')).toMatchSnapshot()
+        })
+
+        it('should work with self closing', () => {
+            expect(utils.proxifyImages('<br />')).toMatchSnapshot()
+        })
+
+        it('should work with richer complex html', () => {
+            expect(utils.proxifyImages(`<div class="something">
+<i>italic</i><b>bold</b><u>under</u>
+<span>xxxxxsp <span>inside <span>inside a span</span></span> </span>
+<uknown-tag>11233</uknown-tag>
+<img alt="no-src">
+<img src="some-image" alt="bla ">
+<strong><img src="image2"></strong>
+</div>
+`)).toMatchSnapshot()
+        })
+    })
 })

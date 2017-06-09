@@ -16,7 +16,8 @@ describe('TicketAttachments component', () => {
         url: 'foo'
     })
 
-    function deleteAttachment() {}
+    function deleteAttachment() {
+    }
 
     describe('read-only', () => {
         let component
@@ -36,7 +37,10 @@ describe('TicketAttachments component', () => {
         })
 
         it('should set a preview on the first attachment', () => {
-            expect(component.children().at(0)).toHaveStyle('backgroundImage', 'url(bar)')
+            expect(component.children().at(0)).toHaveStyle(
+                'backgroundImage',
+                `url(${window.IMAGE_PROXY_URL}120x80/bar)`
+            )
         })
 
         it('should not set a preview on the second attachment', () => {

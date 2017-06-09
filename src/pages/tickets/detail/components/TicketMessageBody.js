@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import linkifyStr from 'linkifyjs/string'
-import {sanitizeHtmlDefault} from '../../../../utils'
+import {sanitizeHtmlDefault, proxifyImages} from '../../../../utils'
 
 export default class TicketMessageBody extends React.Component {
     constructor() {
@@ -43,7 +43,7 @@ export default class TicketMessageBody extends React.Component {
             }
         }
 
-        body = sanitizeHtmlDefault(body)
+        body = proxifyImages(sanitizeHtmlDefault(body), '1000x')
 
         return (
             <div className={classNames}>

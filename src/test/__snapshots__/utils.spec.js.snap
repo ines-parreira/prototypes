@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`global utils proxifyImages should not touch html with not img 1`] = `"<span>123</span>"`;
+
+exports[`global utils proxifyImages should work with format 1`] = `"<img src=\\"http://proxy-url/1000x/hello\\"/>"`;
+
+exports[`global utils proxifyImages should work with no format 1`] = `"<img src=\\"http://proxy-url/1000x/hello\\"/>"`;
+
+exports[`global utils proxifyImages should work with no src 1`] = `"<img alt=\\"no-src\\"/>"`;
+
+exports[`global utils proxifyImages should work with richer complex html 1`] = `
+"<div class=\\"something\\">
+<i>italic</i><b>bold</b><u>under</u>
+<span>xxxxxsp <span>inside <span>inside a span</span></span> </span>
+<uknown-tag>11233</uknown-tag>
+<img alt=\\"no-src\\"/>
+<img src=\\"http://proxy-url/1000x/some-image\\" alt=\\"bla \\"/>
+<strong><img src=\\"http://proxy-url/1000x/image2\\"/></strong>
+</div>
+"
+`;
+
+exports[`global utils proxifyImages should work with self closing 1`] = `"<br />"`;
