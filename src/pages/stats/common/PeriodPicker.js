@@ -23,6 +23,15 @@ export default class PeriodPicker extends React.Component {
         }
     }
 
+    shouldComponentUpdate(nextProps) {
+        // because react-bootstrap-daterangepicker lib is based on weird DOM manipulation,
+        // trigger redraw only when really needed
+        return !this.props.startDatetime.isSame(nextProps.startDatetime)
+            || !this.props.endDatetime.isSame(nextProps.endDatetime)
+            || this.props.isDisabled !== nextProps.isDisabled
+            || this.props.onChange !== nextProps.onChange
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.startDatetime && nextProps.endDatetime) {
             this.setState({
