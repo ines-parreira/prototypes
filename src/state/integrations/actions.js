@@ -218,7 +218,7 @@ export function deactivateIntegration(id) {
             id,
             deactivated_datetime: moment().format(),
         })
-        return updateOrCreateIntegrationRequest(integration)(dispatch)
+        return dispatch(updateOrCreateIntegrationRequest(integration))
     }
 }
 
@@ -228,7 +228,7 @@ export function activateIntegration(id) {
             id,
             deactivated_datetime: null,
         })
-        return updateOrCreateIntegrationRequest(integration)(dispatch)
+        return dispatch(updateOrCreateIntegrationRequest(integration))
     }
 }
 
@@ -240,30 +240,7 @@ export function activateIntegration(id) {
  */
 export function updateOrCreateIntegration(integration, action, withDeleted) {
     return (dispatch) => {
-        // We make sure that the integration is active
-        const newIntegration = integration.set('deactivated_datetime', null)
-        return updateOrCreateIntegrationRequest(newIntegration, action, withDeleted)(dispatch)
-    }
-}
-
-export function testHttpIntegration(integration) {
-    return (dispatch) => {
-        console.log('fake test', integration)
-
-        dispatch({
-            type: types.TEST_HTTP_INTEGRATION_START
-        })
-
-        setTimeout(() => {
-            dispatch({
-                type: types.TEST_HTTP_INTEGRATION_SUCCESS,
-                response: {
-                    json: {
-                        hello: 'world'
-                    }
-                }
-            })
-        }, 2000)
+        return dispatch(updateOrCreateIntegrationRequest(integration, action, withDeleted))
     }
 }
 
