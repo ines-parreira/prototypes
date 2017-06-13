@@ -6,6 +6,7 @@ import SocketIO from '../../pages/common/utils/socketio'
 
 import * as newMessageTypes from '../newMessage/constants'
 import {getPendingMessageIndex} from './utils'
+import {compare} from '../../utils'
 
 import _isUndefined from 'lodash/isUndefined'
 import _isString from 'lodash/isString'
@@ -322,6 +323,11 @@ export default (state = initialState, action) => {
                 if (ticket.has(key)) {
                     newState = newState.set(key, ticket.get(key))
                 }
+            })
+
+            // order messages by created datetime
+            newState = newState.update('messages', messages => {
+                return messages.sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
             })
 
             // sockets are faster then the success callback,
