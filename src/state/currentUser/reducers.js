@@ -49,7 +49,11 @@ export default (state = initialState, action) => {
 
         case userTypes.SUBMIT_CURRENT_USER_ERROR:
         case types.SUBMIT_SETTING_ERROR:
-            return state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
+            return state
+                .setIn(['_internal', 'loading', 'currentUser'], false)
+                .setIn(['_internal', 'loading', 'settings', action.settingType], false)
+
+
         case types.SUBMIT_SETTING_SUCCESS: {
             const newState = state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
             if (action.isUpdate) {
