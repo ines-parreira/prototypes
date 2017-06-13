@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 import {connect} from 'react-redux'
-import _throttle from 'lodash/throttle'
+import _debounce from 'lodash/debounce'
 import {RichTextAreaField} from '../../../../common/forms'
 
 import {EditorState, ContentState} from 'draft-js'
@@ -16,8 +16,8 @@ import 'draft-js-emoji-plugin/lib/plugin.css'
 
 const dndPlugin = createDndPlugin()
 
-// throttle the updating of the redux because it's slow otherwise when we type
-const _updateMessageText = _throttle((props, editorState) => {
+// debounce the updating of the redux because it's slow otherwise when we type
+const _updateMessageText = _debounce((props, editorState) => {
     if (!props.newMessage.getIn(['state', 'cacheAdded'])) {
         return
     }
