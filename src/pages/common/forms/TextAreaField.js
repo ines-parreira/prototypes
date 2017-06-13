@@ -42,7 +42,7 @@ TextAreaField.defaultProps = {
 
 TextAreaField.propTypes = {
     input: React.PropTypes.object.isRequired,
-    label: React.PropTypes.string,
+    label: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.element]),
     placeholder: React.PropTypes.string,
     required: React.PropTypes.bool,
     rows: React.PropTypes.string

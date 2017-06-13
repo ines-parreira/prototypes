@@ -15,14 +15,21 @@ class PageHeader extends React.Component {
     )
 
     render() {
-        const {title, children} = this.props
+        const {title, children, icon} = this.props
         return (
             <div className="d-flex align-items-center justify-content-between flex-wrap mb-2">
                 <h1
-                    className="ui header"
-                    style={{marginBottom: 0}}
+                    className="d-flex align-items-center"
                 >
-                    {title}
+                    {icon && (
+                        <i
+                            className={`fa fa-fw fa-${icon} mr-2`}
+                            style={{color: '#0993f4'}}
+                        />
+                    )}
+                    <div>
+                        {title}
+                    </div>
                 </h1>
 
                 {children && this._renderChildren()}
@@ -33,6 +40,7 @@ class PageHeader extends React.Component {
 
 PageHeader.propTypes = {
     title: React.PropTypes.string.isRequired,
+    icon: React.PropTypes.string.isRequired,
     children: React.PropTypes.element,
 }
 

@@ -50,3 +50,11 @@ export const paymentIsActive = (state) => {
 
     return hasCreditCard(state)
 }
+
+export const getChatSettings = createSelector(
+    [getCurrentAccountState],
+    (account) => {
+        const settings = account.get('settings') || fromJS([])
+        return settings.find(setting => setting.get('type') === 'chat') || fromJS({})
+    }
+)
