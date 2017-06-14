@@ -1,7 +1,10 @@
 import React from 'react'
+import classnames from 'classnames'
 import _isFunction from 'lodash/isFunction'
+
 import Widget from './Widget'
-import ErrorMessage from '../../../common/components/ErrorMessage'
+import Errors from './Errors'
+
 /*
  interface Property <: Node {
  type: "Property";
@@ -10,38 +13,43 @@ import ErrorMessage from '../../../common/components/ErrorMessage'
  kind: "init" | "get" | "set";
  }
  */
-const Property = ({value, actions, leftsiblings, parent, rule, schemas, config = {}}) => {
-    let errors = null
-
-    if (value.value && _isFunction(config.validate)) {
-        errors = config.validate(value.value, schemas)
+export default class Property extends React.Component {
+    static propTypes = {
+        compact: React.PropTypes.bool.isRequired,
+        parent: React.PropTypes.object.isRequired,
+        schemas: React.PropTypes.object.isRequired,
+        theKey: React.PropTypes.object.isRequired,
+        value: React.PropTypes.object.isRequired,
+        config: React.PropTypes.object,
     }
-    return (
-        <div className="field">
-            <Widget
-                value={value.value}
-                type={config.widget}
-                parent={parent.push('value', 'value')}
-                leftsiblings={leftsiblings}
-                actions={actions}
-                rule={rule}
-                schemas={schemas}
-                config={config}
-            />
-            <ErrorMessage errors={errors} />
-        </div>
-    )
-}
 
-Property.propTypes = {
-    rule: React.PropTypes.object.isRequired,
-    actions: React.PropTypes.object.isRequired,
-    leftsiblings: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    schemas: React.PropTypes.object.isRequired,
-    theKey: React.PropTypes.object.isRequired,
-    value: React.PropTypes.object.isRequired,
-    config: React.PropTypes.object,
-}
+    static defaultProps = {
+        compact: false,
+    }
 
-export default Property
+    render() {
+        const {value, parent, schemas, config = {}} = this.props
+
+        let errors = null
+
+        if (value.value && _isFunction(config.validate)) {
+            errors = config.validate(value.value, schemas)
+        }
+
+        return (
+            <div
+                className={classnames({
+                    'd-flex': this.props.compact, // flex this wrapper if inline so we don't have spacing issues
+                })}
+            >
+                <Widget
+                    {...this.props}
+                    value={value.value}
+                    type={config.widget}
+                    parent={parent.push('value', 'value')}
+                />
+                <Errors belowInput>{errors}</Errors>
+            </div>
+        )
+    }
+}

@@ -6,6 +6,9 @@ import {
     Button,
     Breadcrumb,
     BreadcrumbItem,
+    InputGroup,
+    InputGroupButton,
+    Input,
 } from 'reactstrap'
 
 import css from './EmailIntegrationCreateForwarding.less'
@@ -70,64 +73,61 @@ class EmailIntegrationCreateForwarding extends React.Component {
         const address = integration.getIn(['meta', 'address'], '')
 
         return (
-            <div className="ui form">
-                <h3 className="mt-5">
-                    Let's setup email forwarding
-                </h3>
-                <p>
-                    Forward emails from <b>{address}</b> to the address below.
-                </p>
-                <div className={`field ${css.form}`}>
-                    <div className="ui action input fluid">
-                        <input
+            <div>
+                <div className="mb-4">
+                    <p>
+                        Forward emails from <b>{address}</b> to the address below.
+                    </p>
+
+                    <InputGroup>
+                        <Input
                             id="forwarding-email"
                             type="text"
                             value={`${address.split('@')[0]}@${domain}.gorgias.io`}
-                            className={`${css['email-input']}`}
                             readOnly
                         />
-                        <Button
-                            id="copy-forwarding-email"
-                            type="button"
-                            color="info"
-                            data-clipboard-target="#forwarding-email"
-                        >
-                            <i className="copy icon mr-2" />
-                            {this.state.isCopied ? 'COPIED!' : 'COPY'}
-                        </Button>
-                    </div>
-                </div>
-
-                <p className="mt-5">
-                   Below are some handful tutorial to setup email forwarding depending on your email provider:
-                </p>
-
-                <div className={css.cardContainer}>
-                    {
-                        servicesWithTutorials.map((config, idx) => (
+                        <InputGroupButton>
                             <Button
-                                key={idx}
-                                color="secondary"
-                                size="lg"
-                                tag="a"
-                                href={config.link}
-                                target="_blank"
-                                className={css.forwardingCard}
+                                id="copy-forwarding-email"
+                                color="info"
+                                data-clipboard-target="#forwarding-email"
                             >
-                                <img src={config.img}/>
-                                <div>{config.title}</div>
+                                <i className="copy icon mr-2" />
+                                {this.state.isCopied ? 'COPIED!' : 'COPY'}
                             </Button>
-                        ))
-                    }
+                        </InputGroupButton>
+                    </InputGroup>
                 </div>
 
-                <p className="mt-3">
-                    Using GMail or G Suite?{' '}
-                    <Link to="/app/integrations/email/new">Connect your account in one click.</Link>
-                </p>
+                <div className="mb-4">
+                    <p>Below are some handful tutorial to setup email forwarding depending on your email provider:</p>
+
+                    <div className="d-flex flex-wrap">
+                        {
+                            servicesWithTutorials.map((config, idx) => (
+                                <Button
+                                    key={idx}
+                                    color="secondary"
+                                    size="lg"
+                                    tag="a"
+                                    href={config.link}
+                                    target="_blank"
+                                    className={css.forwardingCard}
+                                >
+                                    <img src={config.img} />
+                                    <div>{config.title}</div>
+                                </Button>
+                            ))
+                        }
+                    </div>
+
+                    <p>
+                        Using GMail or G Suite?{' '}
+                        <Link to="/app/integrations/email/new">Connect your account in one click.</Link>
+                    </p>
+                </div>
 
                 <Button
-                    className="mt-4"
                     color="primary"
                     tag={Link}
                     to={`/app/integrations/email/${integration.get('id')}`}
@@ -137,8 +137,6 @@ class EmailIntegrationCreateForwarding extends React.Component {
             </div>
         )
     }
-
-
 
     render() {
         return (
@@ -156,7 +154,7 @@ class EmailIntegrationCreateForwarding extends React.Component {
                 </Breadcrumb>
 
                 <h1>
-                    Add email address
+                    Let's setup email forwarding
                 </h1>
 
                 {this._renderInstructions()}

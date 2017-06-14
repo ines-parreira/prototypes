@@ -1,10 +1,13 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
+import {Row, Col, FormGroup, Label} from 'reactstrap'
+
 import {AVAILABLE_HTTP_METHODS, JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../../../../../../config'
-import ParametersEditor from '../../../../../common/components/ParametersEditor'
-import JsonField from '../../../../../common/forms/JsonField'
+
+import ParametersEditor from '../ParametersEditor'
+
 import InputField from '../../../../../common/forms/InputField'
-import SelectField from '../../../../../common/forms/SelectField'
+import JsonField from '../../../../../common/forms/JsonField'
 
 export default class HttpAction extends React.Component {
     _setTitle = (title) => {
@@ -28,10 +31,9 @@ export default class HttpAction extends React.Component {
 
         let field = (
             <JsonField
-                input={{
-                    value: action.getIn(['arguments', 'json']),
-                    onChange: v => this._setArgument('json', v)
-                }}
+                name="json"
+                value={action.getIn(['arguments', 'json'])}
+                onChange={value => this._setArgument('json', value)}
             />
         )
 
@@ -47,8 +49,8 @@ export default class HttpAction extends React.Component {
         }
 
         return (
-            <div className="field">
-                <label>Body</label>
+            <FormGroup>
+                <Label>Body</Label>
                 <div className="d-inline fields">
                     <div className="action field pl-0">
                         <div
@@ -71,7 +73,7 @@ export default class HttpAction extends React.Component {
                 </div>
 
                 {field}
-            </div>
+            </FormGroup>
         )
     }
 
@@ -80,65 +82,64 @@ export default class HttpAction extends React.Component {
 
         return (
             <div className="http">
-                <div className="ui form">
-                    <div className="field required">
-                        <label>Action Title</label>
-                        <input
+                <InputField
+                    type="text"
+                    name="title"
+                    label="Title"
+                    value={action.get('title')}
+                    onChange={this._setTitle}
+                    required
+                />
+                <Row>
+                    <Col xs="3">
+                        <InputField
+                            type="select"
+                            name="method"
+                            label="Method"
+                            value={action.getIn(['arguments', 'method'])}
+                            onChange={value => this._setArgument('method', value)}
+                            required
+                        >
+                            {
+                                AVAILABLE_HTTP_METHODS.map((method) =>
+                                    <option
+                                        key={method}
+                                        value={method}
+                                    >
+                                        {method}
+                                    </option>
+                                )
+                            }
+                        </InputField>
+                    </Col>
+                    <Col xs="9">
+                        <InputField
                             type="text"
-                            value={action.get('title')}
-                            onChange={(e) => this._setTitle(e.target.value)}
-                            required="required"
+                            name="url"
+                            label="URL"
+                            value={action.getIn(['arguments', 'url'])}
+                            onChange={value => this._setArgument('url', value)}
+                            required
                         />
-                    </div>
-                    <div className="fields">
-                        <div className="three wide field">
-                            <label>Method</label>
-                            <SelectField
-                                input={{
-                                    value: action.getIn(['arguments', 'method']),
-                                    onChange: v => this._setArgument('method', v)
-                                }}
-                                required
-                            >
-                                {
-                                    AVAILABLE_HTTP_METHODS.map((method) =>
-                                        <option
-                                            key={method}
-                                            value={method}
-                                        >
-                                            {method}
-                                        </option>
-                                    )
-                                }
-                            </SelectField>
-                        </div>
-                        <div className="thirteen wide field required">
-                            <label>URL</label>
-                            <InputField
-                                input={{
-                                    value: action.getIn(['arguments', 'url']),
-                                    onChange: e => this._setArgument('url', e.target.value)
-                                }}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="field">
-                        <label>URL Parameters</label>
-                        <ParametersEditor
-                            list={action.getIn(['arguments', 'params'])}
-                            updateDict={d => this._setArgument('params', d)}
-                        />
-                    </div>
-                    <div className="field">
-                        <label>Headers</label>
-                        <ParametersEditor
-                            list={action.getIn(['arguments', 'headers'])}
-                            updateDict={d => this._setArgument('headers', d)}
-                        />
-                    </div>
-                    {this._renderBody(action)}
-                </div>
+                    </Col>
+                </Row>
+                <FormGroup>
+                    <Label>URL Parameters</Label>
+                    <ParametersEditor
+                        name="params"
+                        list={action.getIn(['arguments', 'params'])}
+                        updateDict={d => this._setArgument('params', d)}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label>Headers</Label>
+                    <ParametersEditor
+                        name="headers"
+                        list={action.getIn(['arguments', 'headers'])}
+                        updateDict={d => this._setArgument('headers', d)}
+                    />
+                </FormGroup>
+                {this._renderBody(action)}
             </div>
         )
     }

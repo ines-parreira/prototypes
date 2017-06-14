@@ -11,7 +11,7 @@ import * as layoutActions from '../../../state/layout/actions'
 import * as layoutSelectors from '../../../state/layout/selectors'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 
-import ToggleCheckbox from '../../../pages/common/forms/ToggleCheckbox'
+import ToggleButton from '../../../pages/common/components/ToggleButton'
 import './Navbar.less'
 
 // A <Link /> with some default styles
@@ -174,11 +174,9 @@ export default class Navbar extends React.Component {
                                     Available for chat
                                 </div>
                                 <div>
-                                    <ToggleCheckbox
-                                        input={{
-                                            onChange: this._updateShowChatPreferences,
-                                            value: availableForChat,
-                                        }}
+                                    <ToggleButton
+                                        value={availableForChat}
+                                        onChange={this._updateShowChatPreferences}
                                         inline
                                     />
                                 </div>

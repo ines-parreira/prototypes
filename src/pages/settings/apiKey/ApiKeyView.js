@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Clipboard from 'clipboard'
-import {Button} from 'reactstrap'
+import {InputGroup, InputGroupButton, Button, Input} from 'reactstrap'
 
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 
@@ -37,24 +37,25 @@ class ApiKeyView extends React.Component {
                 </p>
 
                 <h4>Your personal API key</h4>
-                <div className="ui action input fluid">
-                    <input
+
+                <InputGroup>
+                    <Input
                         id="apiKey"
                         type="text"
                         value={apiKey}
                         readOnly
                     />
-
-                    <Button
-                        id="copyApiKey"
-                        type="button"
-                        color="info"
-                        data-clipboard-target="#apiKey"
-                    >
-                        <i className="copy icon mr-2" />
-                        {this.state.isCopied ? 'COPIED!' : 'COPY'}
-                    </Button>
-                </div>
+                    <InputGroupButton>
+                        <Button
+                            id="copyApiKey"
+                            color="info"
+                            data-clipboard-target="#apiKey"
+                        >
+                            <i className="copy icon mr-2" />
+                            {this.state.isCopied ? 'COPIED!' : 'COPY'}
+                        </Button>
+                    </InputGroupButton>
+                </InputGroup>
             </div>
         )
     }

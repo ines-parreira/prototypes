@@ -4,11 +4,10 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Link, browserHistory, withRouter} from 'react-router'
 import _capitalize from 'lodash/capitalize'
-import classNames from 'classnames'
-import {InputField} from '../../../../../common/forms'
+import classnames from 'classnames'
 import {
+    Form,
     Button,
-    UncontrolledTooltip,
     Breadcrumb,
     BreadcrumbItem,
 } from 'reactstrap'
@@ -17,6 +16,8 @@ import css from './EmailIntegrationCreate.less'
 import formSender from '../../../../../common/utils/formSender'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import {notify} from '../../../../../../state/notifications/actions'
+
+import ReduxFormInputField from '../../../../../common/forms/ReduxFormInputField'
 
 import googleLogo from './../../../../../../../../public/img/google-icon.svg'
 
@@ -79,12 +80,9 @@ class EmailIntegrationCreate extends React.Component {
                     Add email address
                 </h1>
 
-                <form
-                    className={`ui form ${css.form}`}
-                    onSubmit={handleSubmit((values) => this._handleSubmit('email', values))}
-                >
-                    <p>Choose the type of email account you want to add.</p>
-                    <br />
+                <p>Choose the type of email account you want to add.</p>
+
+                <div className={css.form}>
                     <Button
                         tag="a"
                         href="/integrations/gmail/auth"
@@ -92,61 +90,55 @@ class EmailIntegrationCreate extends React.Component {
                         onClick={() => {
                             logEvent('connect_gmail_account_click')
                         }}
-                        className={css.gmailButton}
+                        className={classnames('mb-2', css.gmailButton)}
                     >
-                        <img src={googleLogo} style={{height: '100%'}}/>
+                        <img src={googleLogo} style={{height: '100%'}} />
                         <p>Connect Google email account</p>
                     </Button>
 
                     <p className="text-muted text-center">
-                        Improve email deliverability, keep your data on your Google account, import last 100 emails (optional)
+                        Improve email deliverability, keep your data on your Google account, import last 100 emails
+                        (optional)
                     </p>
+
                     <div className="ui horizontal divider mt20i mb15i">
                         OR
                     </div>
-                    <Field
-                        type="text"
-                        name="name"
-                        placeholder={`${_capitalize(domain)} Support`}
-                        component={InputField}
-                        label={
-                            <span>
-                                Address name
-                                <i
-                                    id="address-name"
-                                    className="help circle link icon"
-                                />
-                                <UncontrolledTooltip
-                                    placement="top"
-                                    target="address-name"
-                                    delay={0}
-                                >
-                                    The name that customers will see when they receive emails from you
-                                </UncontrolledTooltip>
-                            </span>
-                        }
-                        required
-                    />
-                    <Field
-                        type="email"
-                        name="meta.address"
-                        label="Email address"
-                        placeholder={`support@${domain}.com`}
-                        component={InputField}
-                        required
-                    />
-                    <Button
-                        type="submit"
-                        block
-                        color="primary"
-                        className={classNames({
-                            'btn-loading': isSubmitting,
-                        })}
-                        disabled={isSubmitting}
-                    >
-                        Connect this email account
-                    </Button>
-                </form>
+
+                    <Form onSubmit={handleSubmit((values) => this._handleSubmit('email', values))}>
+                        <Field
+                            type="text"
+                            name="name"
+                            label="Address name"
+                            placeholder={`${_capitalize(domain)} Support`}
+                            required
+                            help="The name that customers will see when they receive emails from you"
+                            component={ReduxFormInputField}
+                        />
+                        <Field
+                            type="email"
+                            name="meta.address"
+                            label="Email address"
+                            placeholder={`support@${domain}.com`}
+                            required
+                            component={ReduxFormInputField}
+                        />
+
+                        <div>
+                            <Button
+                                type="submit"
+                                block
+                                color="primary"
+                                className={classnames({
+                                    'btn-loading': isSubmitting,
+                                })}
+                                disabled={isSubmitting}
+                            >
+                                Connect this email account
+                            </Button>
+                        </div>
+                    </Form>
+                </div>
             </div>
         )
     }

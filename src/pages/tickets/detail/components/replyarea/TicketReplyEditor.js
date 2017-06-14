@@ -3,10 +3,11 @@ import classnames from 'classnames'
 import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
-import {RichTextAreaField} from '../../../../common/forms'
 
 import {EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
+
+import RichField from '../../../../common/forms/RichField'
 import {isRichType, acceptsOnlyImages} from '../../../../../config/ticket'
 
 import * as newMessageActions from '../../../../../state/newMessage/actions'
@@ -143,17 +144,15 @@ class TicketReplyEditor extends React.Component {
 
         return (
             <div className="ui reply form">
-                <RichTextAreaField
+                <RichField
                     ref={(richArea) => {
                         this.richArea = richArea
                     }}
-                    input={{
-                        value: {
-                            text: newMessage.getIn(['newMessage', 'body_text']),
-                            html: newMessage.getIn(['newMessage', 'body_html']),
-                        },
-                        onChange: this._updateReducer,
+                    value={{
+                        text: newMessage.getIn(['newMessage', 'body_text']),
+                        html: newMessage.getIn(['newMessage', 'body_html']),
                     }}
+                    onChange={this._updateReducer}
                     handleDroppedFiles={this._handleDroppedFiles}
                     tabIndex="4"
                     spellCheck

@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _truncate from 'lodash/truncate'
 import {
+    FormGroup,
     Button,
     Popover,
     PopoverTitle,
@@ -13,8 +14,9 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
-import {CheckboxField} from '../../../../common/forms'
 import AutoResponderSection from '../../../common/AutoResponderSection'
+
+import BooleanField from '../../../../common/forms/BooleanField'
 
 export default class FacebookIntegrationDetail extends React.Component {
     state = {
@@ -44,8 +46,8 @@ export default class FacebookIntegrationDetail extends React.Component {
         }
     }
 
-    _onChange = (event) => {
-        this.state.settings[event.target.name] = event.target.checked
+    _onChange = (value, name) => {
+        this.state.settings[name] = value
         this.setState(this.state)
     }
 
@@ -113,41 +115,33 @@ export default class FacebookIntegrationDetail extends React.Component {
 
                 <AutoResponderSection/>
 
-                <h3>Settings</h3>
-                <div className="ui form">
-                    <div className="field">
-                        <CheckboxField
-                            label="Enable Facebook Messenger"
+                <div>
+                    <FormGroup>
+                        <BooleanField
                             name="private_messages_enabled"
-                            input={{
-                                value: this.state.settings.private_messages_enabled,
-                                onChange: this._onChange,
-                            }}
+                            type="checkbox"
+                            label="Enable Facebook Messenger"
+                            value={this.state.settings.private_messages_enable}
+                            onChange={value => this._onChange(value, 'private_messages_enabled')}
                         />
-                    </div>
-                    <div className="field">
-                        <CheckboxField
-                            label="Enable Facebook Posts & Comments"
+                        <BooleanField
                             name="posts_enabled"
-                            input={{
-                                value: this.state.settings.posts_enabled,
-                                onChange: this._onChange,
-                            }}
+                            type="checkbox"
+                            label="Enable Facebook posts & comments"
+                            value={this.state.settings.posts_enabled}
+                            onChange={value => this._onChange(value, 'posts_enabled')}
                         />
-                    </div>
-                    <div className="field">
-                        <CheckboxField
-                            label="Import 30 days of history (posts, comments and messages) as closed tickets"
+                        <BooleanField
                             name="import_history_enabled"
-                            input={{
-                                value: this.state.settings.import_history_enabled,
-                                onChange: this._onChange,
-                            }}
+                            type="checkbox"
+                            label="Import 30 days of history (posts, comments and messages) as closed tickets"
+                            value={this.state.settings.import_history_enabled}
+                            onChange={value => this._onChange(value, 'import_history_enabled')}
                         />
-                    </div>
+                    </FormGroup>
                 </div>
 
-                <div className="mt-3">
+                <div>
                     <Button
                         type="submit"
                         color="primary"

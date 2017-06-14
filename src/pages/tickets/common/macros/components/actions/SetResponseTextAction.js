@@ -1,7 +1,13 @@
 import React, {PropTypes} from 'react'
-import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {
+    UncontrolledButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+} from 'reactstrap'
 
-import {RichTextAreaField} from '../../../../../common/forms'
+import RichField from '../../../../../common/forms/RichField'
+
 import {insertText} from '../../../../../../utils'
 
 export default class SetResponseTextAction extends React.Component {
@@ -125,17 +131,15 @@ export default class SetResponseTextAction extends React.Component {
                 <div className="textarea-toolbar">
                     {this._renderInsertVariable()}
                 </div>
-                <RichTextAreaField
+                <RichField
                     ref={(richArea) => {
                         this.richArea = richArea
                     }}
-                    input={{
-                        value: {
-                            text: action.getIn(['arguments', 'body_text'], ''),
-                            html: action.getIn(['arguments', 'body_html'], ''),
-                        },
-                        onChange: this._setResponseText,
+                    value={{
+                        text: action.getIn(['arguments', 'body_text'], ''),
+                        html: action.getIn(['arguments', 'body_html'], ''),
                     }}
+                    onChange={this._setResponseText}
                 />
             </div>
         )

@@ -1,10 +1,11 @@
 import React, {PropTypes} from 'react'
 import {Field, reduxForm} from 'redux-form'
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
+import {Form, Button} from 'reactstrap'
 
-import {InputField} from '../../../common/forms'
 import formSender from '../../../common/utils/formSender'
+
+import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
 
 const validate = (values) => {
     const errors = {}
@@ -40,35 +41,32 @@ class ChangePasswordView extends React.Component {
                     set instead.
                 </p>
 
-                <form
-                    className="ui form"
-                    onSubmit={handleSubmit(this._handleSubmit)}
-                >
+                <Form onSubmit={handleSubmit(this._handleSubmit)}>
                     <Field
                         type="password"
                         name="old_password"
                         label="Current password"
                         placeholder="Current password"
                         required
-                        component={InputField}
+                        component={ReduxFormInputField}
                     />
                     <Field
                         type="password"
                         name="new_password"
                         label="New password"
                         placeholder="New password"
-                        min={6}
+                        min="6"
                         required
-                        component={InputField}
+                        component={ReduxFormInputField}
                     />
                     <Field
                         type="password"
                         name="confirm_new_password"
                         label="Confirm new password"
-                        placeholder="New password"
-                        min={6}
+                        placeholder="Confirm new password"
+                        min="6"
                         required
-                        component={InputField}
+                        component={ReduxFormInputField}
                     />
 
                     <div>
@@ -83,7 +81,7 @@ class ChangePasswordView extends React.Component {
                             Save
                         </Button>
                     </div>
-                </form>
+                </Form>
             </div>
         )
     }

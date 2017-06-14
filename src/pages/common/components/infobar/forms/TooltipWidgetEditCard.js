@@ -2,10 +2,12 @@ import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import {Field, reduxForm} from 'redux-form'
 import {fromJS} from 'immutable'
-import {Button} from 'reactstrap'
+import {Form, FormGroup, Button} from 'reactstrap'
 
-import {InputField, SelectField, CheckboxField} from '../../../forms'
 import {isSimpleTemplateWidget} from '../utils'
+
+import ReduxFormInputField from '../../../forms/ReduxFormInputField'
+import BooleanField from '../../../forms/BooleanField'
 
 class TooltipWidgetEditCard extends React.Component {
     componentDidMount() {
@@ -105,50 +107,54 @@ class TooltipWidgetEditCard extends React.Component {
                 onClick={this._preventPropagation}
             >
                 <div className="content">
-                    <form
-                        className="ui form"
-                        onSubmit={handleSubmit(this._handleSubmit)}
-                    >
+                    <Form onSubmit={handleSubmit(this._handleSubmit)}>
                         <Field
-                            label="Title"
+                            type="text"
                             name="card.title"
+                            label="Title"
                             placeholder="Order {id}"
-                            component={InputField}
+                            component={ReduxFormInputField}
                         />
                         {
                             !editionHiddenFields.includes('link') && (
                                 <Field
-                                    label="Link"
+                                    type="text"
                                     name="card.meta.link"
+                                    label="Link"
                                     placeholder="http://myapi.com/{id}"
-                                    component={InputField}
+                                    component={ReduxFormInputField}
                                 />
                             )
                         }
                         {
                             !editionHiddenFields.includes('displayCard') && (
-                                <Field
-                                    label="Display card"
-                                    name="card.meta.displayCard"
-                                    component={CheckboxField}
-                                />
+                                <FormGroup>
+                                    <Field
+                                        type="checkbox"
+                                        name="card.meta.displayCard"
+                                        label="Display card"
+                                        component={ReduxFormInputField}
+                                        tag={BooleanField}
+                                    />
+                                </FormGroup>
                             )
                         }
                         {
                             isParentList && [
                                 <Field
                                     key="limit"
-                                    label="Limit"
                                     type="number"
                                     name="list.meta.limit"
-                                    placeholder="Limit"
-                                    component={InputField}
+                                    label="Limit"
+                                    placeholder="ex: 0"
+                                    component={ReduxFormInputField}
                                 />,
                                 <Field
                                     key="order"
-                                    label="Order by"
+                                    type="select"
                                     name="list.meta.orderBy"
-                                    component={SelectField}
+                                    label="Order by"
+                                    component={ReduxFormInputField}
                                 >
                                     {
                                         orderByOptions
@@ -189,7 +195,7 @@ class TooltipWidgetEditCard extends React.Component {
                                 Cancel
                             </Button>
                         </div>
-                    </form>
+                    </Form>
                 </div>
             </div>
         )

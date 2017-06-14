@@ -3,12 +3,12 @@ import classnames from 'classnames'
 import {Button, Form as BootstrapForm, FormGroup} from 'reactstrap'
 import _xor from 'lodash/xor'
 
-import {TextAreaField} from '../../../../common/forms'
+import InputField from '../../../../common/forms/InputField'
 import TriggersSelector from './TriggersSelector'
 
 import EditableTitle from '../../../../common/components/EditableTitle'
 import Program from '../../../../common/components/ast/Program'
-import ErrorMessage from '../../../../common/components/ErrorMessage'
+import Errors from '../../../../common/components/ast/Errors'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import * as rulesHelpers from '../../../../../state/rules/helpers'
@@ -242,13 +242,12 @@ class RuleItem extends React.Component {
                     />
                 </div>
                 <FormGroup>
-                    <TextAreaField
+                    <InputField
+                        type="textarea"
                         placeholder="Description"
                         rows="2"
-                        input={{
-                            value: this.state.description,
-                            onChange: e => this.setState({description: e.target.value}),
-                        }}
+                        value={this.state.description}
+                        onChange={value => this.setState({description: value})}
                     />
                 </FormGroup>
                 <FormGroup className="mb-4">
@@ -270,12 +269,7 @@ class RuleItem extends React.Component {
                         />
                         {
                             this.state.eventTypes.length === 0 && (
-                                <ErrorMessage
-                                    key="errors"
-                                    className="m0i ml15i p5i"
-                                    errors="You need to select at least one trigger"
-                                    inline
-                                />
+                                <Errors inline>You need to select at least one trigger</Errors>
                             )
                         }
                     </div>

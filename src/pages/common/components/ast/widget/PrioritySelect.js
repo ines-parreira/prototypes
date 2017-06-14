@@ -7,7 +7,14 @@ const PrioritySelect = ({onChange, schemas, value}) => {
     const options = schemas.getIn([
         'definitions', 'Ticket', 'properties', 'priority', 'meta', 'enum'
     ]).toList()
-    return <Select value={value} onChange={onChange} options={options}/>
+
+    return (
+        <Select
+            value={value}
+            onChange={onChange}
+            options={options}
+        />
+    )
 }
 
 PrioritySelect.propTypes = {

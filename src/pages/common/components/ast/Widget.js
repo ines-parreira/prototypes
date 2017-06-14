@@ -10,7 +10,6 @@ import MacroSelect from './widget/MacroSelect'
 import AssigneeSelect from './widget/AssigneeSelect'
 
 import InputField from '../../forms/InputField'
-import TextAreaField from '../../forms/TextAreaField'
 
 class Widget extends React.Component {
     _handleChange = (value) => {
@@ -23,13 +22,13 @@ class Widget extends React.Component {
 
         return (
             <InputField
+                type="text"
                 label={config.name}
-                input={{
-                    value,
-                    onChange: e => this._handleChange(e.target.value),
-                }}
+                value={value}
+                onChange={this._handleChange}
                 placeholder={config.placeholder || ''}
                 required={config.required || false}
+                inline={this.props.compact || false}
             />
         )
     }
@@ -38,12 +37,12 @@ class Widget extends React.Component {
         const {config = {}} = this.props
 
         return (
-            <TextAreaField
+            <InputField
+                type="textarea"
+                rows="8"
                 label={config.name}
-                input={{
-                    value,
-                    onChange: e => this._handleChange(e.target.value),
-                }}
+                value={value}
+                onChange={this._handleChange}
                 placeholder={config.placeholder || ''}
                 required={config.required || false}
             />
@@ -173,6 +172,7 @@ Widget.propTypes = {
     actions: React.PropTypes.object,
     type: React.PropTypes.string,
     leftsiblings: React.PropTypes.object,
+    compact: React.PropTypes.bool,
 
     config: React.PropTypes.object,
 }

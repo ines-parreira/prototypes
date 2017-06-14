@@ -1,20 +1,13 @@
 import React, {Component, PropTypes} from 'react'
 import {fromJS} from 'immutable'
+
+import FileField from '../../../../../common/forms/FileField'
+
 import {mapFileFormatToSemanticIcon} from '../../../utils'
 
 export default class AddAttachmentsAction extends Component {
-    state = {
-        isLoading: false,
-    }
-
-    _openFileBrowser = () => {
-        this.refs.fileInput.click()
-    }
-
-    _addAttachments = (event) => {
-        this.setState({isLoading: true})
-        this.props.addAttachments(this.props.index, event.target.files)
-            .then(() => this.setState({isLoading: false}))
+    _addAttachments = (files) => {
+        this.props.addAttachments(this.props.index, files)
     }
 
     _removeAttachment = (fileIndex) => {
@@ -45,20 +38,13 @@ export default class AddAttachmentsAction extends Component {
         return (
             <div>
                 {this._renderAttachments()}
-                {this.state.isLoading && <div className="ui small inline active loader loader-no-dimmer" />}
-                <div
-                    className="ticket-tag-add-btn ui button ml10i"
-                    onClick={this._openFileBrowser}
-                >
-                    <i className="plus icon" />
-                    Add files
-                </div>
-                <input
-                    className="hidden"
-                    ref="fileInput"
-                    type="file"
-                    multiple
+                <FileField
+                    placeholder="Select files..."
                     onChange={this._addAttachments}
+                    inline
+                    multiple
+                    noPreview
+                    returnFiles
                 />
             </div>
         )

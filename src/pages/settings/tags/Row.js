@@ -1,17 +1,16 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {
-    Input,
-    Label,
+    Form,
     Button,
     Popover,
     PopoverTitle,
     PopoverContent,
 } from 'reactstrap'
 
-import {ColorField} from '../../common/forms'
+import InputField from '../../common/forms/InputField'
+import ColorPicker from '../../common/components/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
 
 import * as tagsActions from '../../../state/tags/actions'
@@ -83,16 +82,12 @@ export default class Row extends Component {
         this.props.select(this.props.row.toJS())
     }
 
-    _changeName = (e) => {
-        this.setState({
-            name: e.target.value
-        })
+    _changeName = (value) => {
+        this.setState({name: value})
     }
 
-    _changeColor = (color) => {
-        this.setState({
-            decoration: this.state.decoration.set('color', color)
-        })
+    _changeColor = (value) => {
+        this.setState({decoration: this.state.decoration.set('color', value)})
     }
 
     _toggleRemoveConfirmation = () => {
@@ -101,13 +96,70 @@ export default class Row extends Component {
 
     render() {
         const {row, meta} = this.props
-        const rowClassName = classnames('manage-tags-table-row', {
-            'manage-tags-table-row-edit': (meta.get('edit') === true)
-        })
-        const submitId = `manage-tags-row-${Date.now()}`
+
+        const isEditing = meta.get('edit')
+
+        if (isEditing) {
+            return (
+                <tr>
+                    <td
+                        className="cell-wrapper cell-short clickable"
+                        onClick={this._onSelect}
+                    >
+                    <span className="ui checkbox">
+                        <input
+                            type="checkbox"
+                            checked={meta.get('selected', false)}
+                        />
+                        <label />
+                    </span>
+                    </td>
+
+                    <td colSpan="100">
+                        <Form
+                            className="cell-wrapper d-flex justify-content-between align-items-center"
+                            onSubmit={this._onSave}
+                        >
+                            <div className="d-flex align-items-center">
+                                <div className="mr-2">
+                                    <InputField
+                                        value={this.state.name}
+                                        onChange={this._changeName}
+                                        required
+                                        inline
+                                    />
+                                </div>
+
+                                <ColorPicker
+                                    value={this.state.decoration.get('color')}
+                                    onChange={this._changeColor}
+                                />
+                            </div>
+
+                            <div>
+                                <Button
+                                    type="button"
+                                    color="secondary"
+                                    onClick={this._onCancel}
+                                    className="mr-2"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                >
+                                    Save
+                                </Button>
+                            </div>
+                        </Form>
+                    </td>
+                </tr>
+            )
+        }
 
         return (
-            <tr className={rowClassName}>
+            <tr>
                 <td
                     className="cell-wrapper cell-short clickable"
                     onClick={this._onSelect}
@@ -121,64 +173,44 @@ export default class Row extends Component {
                     </span>
                 </td>
 
-                <td className="manage-tags-table-col-name">
-                    <div className="cell-wrapper manage-tags-table-row-item">
+                <td>
+                    <div className="cell-wrapper">
                         <TagLabel decoration={row.get('decoration')}>
                             {row.get('name')}
                         </TagLabel>
                     </div>
-
-                    <form
-                        className="cell-wrapper manage-tags-table-row-edit-item align-items-center"
-                        onSubmit={this._onSave}
-                    >
-                        <Input
-                            className="mr-2"
-                            value={this.state.name}
-                            onChange={this._changeName}
-                            required
-                        />
-
-                        <ColorField
-                            input={{
-                                value: this.state.decoration.get('color'),
-                                onChange: this._changeColor
-                            }}
-                        />
-
-                        <input type="submit" id={submitId} className="hidden" />
-                    </form>
                 </td>
 
-                <td className="manage-tags-table-col-count">
-                    <div className="cell-wrapper manage-tags-table-row-item">
+                <td className="smallest">
+                    <div className="cell-wrapper justify-content-center">
                         {row.get('usage_count')}
                     </div>
                 </td>
 
-                <td className="manage-tags-table-col-actions">
-                    <div className="cell-wrapper manage-tags-table-row-actions">
+                <td className="smallest">
+                    <div className="cell-wrapper">
                         <Button
                             type="button"
-                            color="info"
+                            color="link"
                             onClick={this._onEdit}
-                            className="manage-tags-action mr-2"
+                            className="p-0 mr-3"
                         >
+                            <i className="fa fa-fw fa-pencil mr-1" />
                             Edit
                         </Button>
 
                         <Button
                             id={`remove-button-${row.get('id')}`}
                             type="button"
-                            color="danger"
-                            outline
+                            color="link"
                             onClick={this._toggleRemoveConfirmation}
-                            className="manage-tags-action"
+                            className="p-0"
                         >
+                            <i className="fa fa-fw fa-close mr-1" />
                             Delete
                         </Button>
                         <Popover
-                            placement="bottom"
+                            placement="left"
                             isOpen={this.state.askRemoveConfirmation}
                             target={`remove-button-${row.get('id')}`}
                             toggle={this._toggleRemoveConfirmation}
@@ -198,24 +230,6 @@ export default class Row extends Component {
                                 </Button>
                             </PopoverContent>
                         </Popover>
-                    </div>
-
-                    <div className="cell-wrapper manage-tags-table-row-edit-item">
-                        <Button
-                            type="button"
-                            color="secondary"
-                            onClick={this._onCancel}
-                            className="manage-tags-action mr-2"
-                        >
-                            Cancel
-                        </Button>
-
-                        <Label
-                            for={submitId}
-                            className="manage-tags-action btn btn-primary"
-                        >
-                            Save
-                        </Label>
                     </div>
                 </td>
             </tr>

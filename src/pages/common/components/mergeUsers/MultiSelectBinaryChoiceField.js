@@ -7,7 +7,7 @@ import _forEach from 'lodash/forEach'
 import _pick from 'lodash/pick'
 import _compact from 'lodash/compact'
 import _isUndefined from 'lodash/isUndefined'
-import ErrorMessage from '../components/ErrorMessage'
+import ErrorMessage from '../ErrorMessage'
 
 /**
  * Allow to pick values from multiples sources and build a single one.

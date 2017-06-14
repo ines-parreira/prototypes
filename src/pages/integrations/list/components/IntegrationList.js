@@ -25,7 +25,7 @@ export default class IntegrationList extends React.Component {
                 {
                     !isAllowedToCreate && (
                         <Alert color="danger">
-                            <i className="fa fa-exclamation-circle" />
+                            <i className="fa fa-exclamation-circle mr-2" />
                             <strong> Your account has reached the integration limit. </strong>
                             To add more integrations, upgrade your <Link
                             to="/app/settings/billing" className="alert-link">plan</Link>.

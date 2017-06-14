@@ -3,7 +3,7 @@ import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import _truncate from 'lodash/truncate'
 
-import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
+import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import * as integrationsActions from '../../../../../state/integrations/actions'
 
@@ -62,11 +62,9 @@ export default class HttpIntegrationList extends React.Component {
                         </Link>
                     </td>
                     <td className="smallest align-middle">
-                        <ToggleCheckbox
-                            input={{
-                                onChange: toggleIntegration,
-                                value: !isDisabled,
-                            }}
+                        <ToggleButton
+                            value={!isDisabled}
+                            onChange={toggleIntegration}
                         />
                     </td>
                 </tr>

@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react'
 
-import classNames from 'classnames'
 import {List, Map, fromJS} from 'immutable'
 
+import InputField from '../../../forms/InputField'
 
 class Select extends React.Component {
     _getOptions = () => {
@@ -29,14 +29,15 @@ class Select extends React.Component {
 
     render() {
         const {className, onChange, value} = this.props
-        const selectClassName = classNames('ui search dropdown', className)
         const options = this._getOptions()
 
         return (
-            <select
-                className={selectClassName}
+            <InputField
+                type="select"
                 value={value}
-                onChange={e => onChange(e.target.value)}
+                onChange={onChange}
+                className={className}
+                inline
             >
                 {
                     options.map((option, idx) => (
@@ -48,7 +49,7 @@ class Select extends React.Component {
                         </option>
                     ))
                 }
-            </select>
+            </InputField>
         )
     }
 

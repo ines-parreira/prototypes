@@ -1,14 +1,15 @@
-import React, { PropTypes } from 'react'
+import React, {PropTypes} from 'react'
+
+import Errors from './Errors'
 import Widget from './Widget'
-import ErrorMessage from '../../../common/components/ErrorMessage'
 
 /*
  interface Literal <: Node, Expression {
  type: "Literal";
  value: string | boolean | null | number | RegExp;
-}
+ }
  */
-const Literal = ({ value, rule, actions, parent, leftsiblings, schemas }) => {
+const Literal = ({value, rule, actions, parent, leftsiblings, schemas}) => {
     const parentNew = parent.push('value')
 
     return (
@@ -20,15 +21,13 @@ const Literal = ({ value, rule, actions, parent, leftsiblings, schemas }) => {
                 actions={actions}
                 schemas={schemas}
                 leftsiblings={leftsiblings}
+                compact
             />
-            {value === '' && (
-                <ErrorMessage
-                    key="errors"
-                    className="m0i ml15i p5i"
-                    errors={'This field cannot be empty'}
-                    inline
-                />
-            )}
+            {
+                value === '' && (
+                    <Errors inline>This field cannot be empty</Errors>
+                )
+            }
         </span>
     )
 }

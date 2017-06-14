@@ -1,15 +1,17 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import MultiSelectAsyncField from '../../../../../../common/forms/MultiSelectAsyncField/index'
+import _debounce from 'lodash/debounce'
+
 import {isEmail} from '../../../../../../../utils'
 import {
     getValuePropFromSourceType,
     receiversValueFromState,
     receiversStateFromValue
 } from '../../../../../../../state/ticket/utils'
-import _debounce from 'lodash/debounce'
 import {updatePotentialRequesters} from '../../../../../../../state/newMessage/actions'
+
+import MultiSelectAsyncField from './MultiSelectAsyncField/index'
 
 class ReceiversSelectField extends React.Component {
     static propTypes = {

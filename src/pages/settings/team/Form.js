@@ -17,7 +17,8 @@ import {
 
 import {toJS} from '../../../utils'
 import Loader from '../../common/components/Loader'
-import {InputField, SelectField} from '../../common/forms'
+
+import InputField from '../../common/forms/InputField'
 
 import * as actions from '../../../state/agents/actions'
 import * as helpers from '../../../state/agents/helpers'
@@ -162,41 +163,36 @@ export default class Form extends React.Component {
                 }
 
                 <BootstrapForm onSubmit={this._onSubmit}>
-                    <FormGroup>
-                        <InputField
-                            label="Name"
-                            input={{
-                                value: this.state.name,
-                                onChange: e => this.setState({name: e.target.value}),
-                            }}
-                            required
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <InputField
-                            label="Email"
-                            type="email"
-                            input={{
-                                value: this.state.email,
-                                onChange: e => this.setState({email: e.target.value}),
-                            }}
-                            required
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <SelectField
-                            label="Role"
-                            input={{
-                                value: this.state.role,
-                                onChange: value => this.setState({role: value}),
-                            }}
-                            required
-                            help="Agents can view & respond to tickets. Admins can add/remove team members, manage tags & billing."
-                        >
-                            <option value="agent">Agent</option>
-                            <option value="admin">Admin</option>
-                        </SelectField>
-                    </FormGroup>
+                    <InputField
+                        type="text"
+                        name="name"
+                        label="Name"
+                        value={this.state.name}
+                        onChange={value => this.setState({name: value})}
+                        placeholder="John Doe"
+                        required
+                    />
+                    <InputField
+                        type="email"
+                        name="email"
+                        label="Email"
+                        value={this.state.email}
+                        onChange={value => this.setState({email: value})}
+                        placeholder="john@doe.com"
+                        required
+                    />
+                    <InputField
+                        type="select"
+                        name="role"
+                        label="Role"
+                        value={this.state.role}
+                        onChange={value => this.setState({role: value})}
+                        required
+                        help="Agents can view & respond to tickets. Admins can add/remove team members, manage tags & billing."
+                    >
+                        <option value="agent">Agent</option>
+                        <option value="admin">Admin</option>
+                    </InputField>
                     <FormGroup>
                         <Button
                             type="submit"

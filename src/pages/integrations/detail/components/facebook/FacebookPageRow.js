@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 
-import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
+import ToggleButton from '../../../../common/components/ToggleButton'
 import * as integrationsActions from '../../../../../state/integrations/actions'
 
 @connect(null, {
@@ -58,11 +58,9 @@ export default class FacebookPageRow extends React.Component {
                     </Link>
                 </td>
                 <td className="smallest align-middle">
-                    <ToggleCheckbox
-                        input={{
-                            onChange: this._toggleIntegration,
-                            value: !isDisabled,
-                        }}
+                    <ToggleButton
+                        value={!isDisabled}
+                        onChange={this._toggleIntegration}
                     />
                 </td>
             </tr>

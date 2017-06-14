@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
 
 import {generateDefaultAction} from '../../../../../state/macro/utils'
 
@@ -47,12 +47,9 @@ class MacroEdit extends React.Component {
         this.props.setActions(actions)
     }
 
-    _addAttachment = (...args) => {
-        return this.props.addAttachments(...args)
-            .then(({index, files}) => {
-                const actions = this.props.actions.updateIn([index, 'arguments', 'attachments'], attachments => attachments.concat(fromJS(files)))
-                this.props.setActions(actions)
-            })
+    _addAttachment = (index, files) => {
+        const actions = this.props.actions.updateIn([index, 'arguments', 'attachments'], attachments => attachments.concat(fromJS(files)))
+        this.props.setActions(actions)
     }
 
     _deleteAttachment = (actionIndex, fileIndex) => {
@@ -136,9 +133,9 @@ class MacroEdit extends React.Component {
                             className="ui content input"
                             style={{width: '100%'}}
                         >
-                            <input
+                            <Input
                                 type="text"
-                                onChange={e => this.props.setName(e.target.value)}
+                                onChange={this.props.setName}
                                 value={currentMacro.get('name') || ''}
                                 required
                             />
@@ -343,7 +340,6 @@ class MacroEdit extends React.Component {
 }
 
 MacroEdit.propTypes = {
-    addAttachments: PropTypes.func.isRequired,
     currentMacro: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
@@ -359,7 +355,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-    addAttachments: macroActions.addAttachments,
     setName: macroActions.setName,
 }
 

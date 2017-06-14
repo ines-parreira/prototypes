@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
+import InputField from './InputField'
 import classnames from 'classnames'
-import _uniqueId from 'lodash/uniqueId'
 import {
     FormGroup,
     Label,
@@ -9,36 +9,23 @@ import {
 } from 'reactstrap'
 
 import Errors from './Errors'
-import FormField from './FormField'
 
 import {defined} from '../../../utils'
 
 import css from './InputField.less'
 
-export default class InputField extends FormField {
+export default class BooleanField extends InputField {
     static propTypes = Object.assign({
-        children: PropTypes.node,
         inline: PropTypes.bool,
-        placeholder: PropTypes.string,
-        type: PropTypes.string.isRequired,
-    }, FormField.propTypes)
+    }, InputField.propTypes)
 
     static defaultProps = {
-        type: 'text',
+        type: 'checkbox',
     }
 
-    componentWillMount() {
-        this.id = this._getId()
-    }
-
-    _onChange = (e) => {
-        const value = e.target.value
+    _onChange = () => {
+        const value = !this.props.value
         this.props.onChange(value)
-    }
-
-    _getId = () => {
-        const name = this.props.name || _uniqueId('input-')
-        return `id-${name}`
     }
 
     _getField = () => {
@@ -50,16 +37,18 @@ export default class InputField extends FormField {
             label, // eslint-disable-line
             name, // eslint-disable-line
             onChange, // eslint-disable-line
+            value,
             ...rest,
         } = this.props
 
         return (
             <BootstrapInput
-                className={classnames({
+                className={classnames('form-check-input', {
                     'form-control-danger': error,
                 })}
                 id={this.id}
                 onChange={this._onChange}
+                checked={value}
                 {...rest}
             >
                 {children}
@@ -70,10 +59,6 @@ export default class InputField extends FormField {
     render() {
         const color = this.props.error ? 'danger' : ''
 
-        if (this.props.type === 'hidden') {
-            return <input {...this.props} />
-        }
-
         return (
             <FormGroup
                 className={classnames({
@@ -81,20 +66,18 @@ export default class InputField extends FormField {
                     'd-inline-block': this.props.inline,
                 })}
                 color={color}
+                check
             >
-                {
-                    this.props.label && (
-                        <Label
-                            htmlFor={this.id}
-                            className="control-label"
-                        >
-                            {this.props.label}
-                        </Label>
-                    )
-                }
-                <div>
+                <Label
+                    htmlFor={this.id}
+                    className="control-label"
+                    check
+                >
                     {this._getField()}
-                </div>
+                    <span>
+                        {this.props.label}
+                    </span>
+                </Label>
                 {
                     this.props.error && (
                         <Errors>
@@ -113,4 +96,3 @@ export default class InputField extends FormField {
         )
     }
 }
-

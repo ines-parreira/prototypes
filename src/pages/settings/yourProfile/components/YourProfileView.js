@@ -4,12 +4,14 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment-timezone'
-import {Button, UncontrolledTooltip} from 'reactstrap'
+import {Form, FormGroup, Button} from 'reactstrap'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
 import formSender from '../../../common/utils/formSender'
 
-import {InputField, RichTextAreaField, SelectField} from '../../../common/forms'
+import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
+import BooleanField from '../../../common/forms/BooleanField'
+import RichField from '../../../common/forms/RichField'
 
 class YourProfileView extends React.Component {
     constructor(props) {
@@ -71,17 +73,6 @@ class YourProfileView extends React.Component {
             })
     }
 
-    _changePreference = (e) => {
-        let value = e.target.value
-        if (typeof e.target.checked !== 'undefined') {
-            value = e.target.checked
-        }
-
-        this.setState({
-            preferences: this.state.preferences.set(e.target.name, value)
-        })
-    }
-
     render() {
         const {handleSubmit, isLoading} = this.props
         const loadingUser = isLoading && !this.state.loadingPreferences
@@ -96,17 +87,14 @@ class YourProfileView extends React.Component {
                     Update your profile information.
                 </p>
 
-                <form
-                    className="ui form"
-                    onSubmit={handleSubmit(this._handleSubmit)}
-                >
+                <Form onSubmit={handleSubmit(this._handleSubmit)}>
                     <Field
                         type="text"
                         name="name"
                         label="Your name"
                         placeholder="John Doe"
                         required
-                        component={InputField}
+                        component={ReduxFormInputField}
                     />
                     <Field
                         type="email"
@@ -114,36 +102,24 @@ class YourProfileView extends React.Component {
                         label="Your email"
                         placeholder="john.doe@acme.com"
                         required
-                        component={InputField}
+                        component={ReduxFormInputField}
                     />
                     <Field
+                        type="select"
                         name="timezone"
                         label="Timezone"
-                        component={SelectField}
+                        component={ReduxFormInputField}
                     >
                         {
                             moment.tz.names().map((name, idx) => <option key={idx} value={name}>{name}</option>)
                         }
                     </Field>
                     <Field
+                        type="select"
                         name="language"
                         label="Language"
-                        component={SelectField}
-                        tooltip={(
-                            <span>
-                                    <i
-                                        id="language"
-                                        className="help circle link icon"
-                                    />
-                                    <UncontrolledTooltip
-                                        placement="top"
-                                        target="language"
-                                        delay={0}
-                                    >
-                                        Changing the language also changes the time format
-                                    </UncontrolledTooltip>
-                                </span>
-                        )}
+                        component={ReduxFormInputField}
+                        help="Changing the language also changes the time format"
                     >
                         {
                             AVAILABLE_LANGUAGES.map((locale, idx) => (
@@ -160,7 +136,8 @@ class YourProfileView extends React.Component {
                         type="text"
                         name="signature"
                         label="Signature"
-                        component={RichTextAreaField}
+                        component={ReduxFormInputField}
+                        tag={RichField}
                     />
 
                     <div>
@@ -175,7 +152,7 @@ class YourProfileView extends React.Component {
                             Save
                         </Button>
                     </div>
-                </form>
+                </Form>
 
                 <form
                     className="ui form mt30"
@@ -185,23 +162,15 @@ class YourProfileView extends React.Component {
                         Preferences
                     </h4>
 
-                    <div className="ui field">
-                        <div className="ui checkbox">
-                            <input
-                                id="show_macros"
-                                name="show_macros"
-                                type="checkbox"
-                                checked={this.state.preferences.get('show_macros')}
-                                onChange={this._changePreference}
-                            />
-                            <label
-                                className="clickable"
-                                htmlFor="show_macros"
-                            >
-                                Display macros by default on emails
-                            </label>
-                        </div>
-                    </div>
+                    <FormGroup>
+                        <BooleanField
+                            name="show_macros"
+                            type="checkbox"
+                            label="Display macros by default on emails"
+                            value={this.state.preferences.get('show_macros')}
+                            onChange={value => this.setState({preferences: this.state.preferences.set('show_macros', value)})}
+                        />
+                    </FormGroup>
 
                     <div>
                         <Button

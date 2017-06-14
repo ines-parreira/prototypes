@@ -1,9 +1,12 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {isFunction as _isFunction} from 'lodash'
-import ErrorMessage from '../../../../common/components/ErrorMessage'
+import _isFunction from 'lodash/isFunction'
+import _isArray from 'lodash/isArray'
+
 import ActionSelect from './ActionSelect'
+import Errors from '../Errors'
+
 import {isEmailList, findProperty} from '../../../../../utils'
 
 export function validateEmailList(value, schemas) {
@@ -66,7 +69,7 @@ export const actionsConfig = {
             },
             body_html: {
                 name: 'HTML',
-                widget: 'textarea'
+                widget: 'textarea',
             }
         },
         validate: validateBody
@@ -78,6 +81,7 @@ export const actionsConfig = {
             to: {
                 name: 'To',
                 placeholder: 'Don\'t forget to add a recipient!',
+                required: true,
                 validate: validateEmailList
             },
             cc: {
@@ -115,7 +119,7 @@ export const actionsConfig = {
             },
             body_html: {
                 name: 'HTML*',
-                widget: 'textarea'
+                widget: 'textarea',
             }
         },
         validate: validateBody
@@ -154,16 +158,12 @@ export const actionsConfig = {
 
 class Action extends React.Component {
     _renderBody = () => {
-        const {children, value} = this.props
+        const {value} = this.props
+        let {children} = this.props
 
         if (!value) {
             return (
-                <ErrorMessage
-                    key="errors"
-                    className="m0i ml10i pv5i"
-                    errors={'An action cannot be empty'}
-                    inline
-                />
+                <Errors inline>An action cannot be empty</Errors>
             )
         }
 
@@ -185,31 +185,27 @@ class Action extends React.Component {
             errors = config.validate(values)
         }
 
+        if (!_isArray(errors)) {
+            errors = [errors]
+        }
+
+        // add 'compact' as a property of children
+        children = React.Children.map(children,
+            (child) => React.cloneElement(child, {compact: !!config.compact})
+        )
+
         if (config.compact) {
             return [
                 <span key="children">{children}</span>,
                 config.note ? <div className="rule-note" key="note">{config.note}</div> : null,
-                <ErrorMessage
-                    key="errors"
-                    className="m0i ml15i p5i"
-                    errors={errors}
-                    inline
-                />
+                <Errors key="errors" inline>{errors}</Errors>,
             ]
         }
 
         // pass the args to children so that they know how to render themselves
         if (config.args) {
-            const childrenWithProps = React.Children.map(children,
+            children = React.Children.map(children,
                 (child) => React.cloneElement(child, {config: config.args})
-            )
-
-            return (
-                <div className="ui segment">
-                    {childrenWithProps}
-                    {!!config.note && <div className="rule-note">{config.note}</div>}
-                    <ErrorMessage errors={errors} />
-                </div>
             )
         }
 
@@ -217,7 +213,7 @@ class Action extends React.Component {
             <div className="ui segment">
                 {children}
                 {!!config.note && <div className="rule-note">{config.note}</div>}
-                <ErrorMessage errors={errors} className="m0i ml10i pv5i" />
+                <Errors>{errors.map((error, id) => <div key={id}>{error}</div>)}</Errors>
             </div>
         )
     }

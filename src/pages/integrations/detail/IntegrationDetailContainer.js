@@ -2,6 +2,9 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
+
+import {compare} from '../../../utils'
+
 import * as IntegrationsActions from '../../../state/integrations/actions'
 import * as IntegrationsSelectors from '../../../state/integrations/selectors'
 
@@ -64,7 +67,8 @@ class IntegrationDetailContainer extends React.Component {
 
         const commonProps = {
             integration: integrations.get('integration', fromJS({})),
-            integrations: integrations.get('integrations', fromJS([])),
+            integrations: integrations.get('integrations', fromJS([]))
+                .sort((a, b) => compare(a.get('name', '').toLowerCase(), b.get('name', '').toLowerCase())),
             loading: integrations.getIn(['state', 'loading'], fromJS({})),
         }
 

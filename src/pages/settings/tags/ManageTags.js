@@ -3,11 +3,14 @@ import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {
+    Form,
     Button,
     Popover,
     PopoverTitle,
     PopoverContent,
 } from 'reactstrap'
+
+import InputField from '../../common/forms/InputField'
 
 import Table from './Table'
 import Pagination from '../../common/components/Pagination'
@@ -111,25 +114,19 @@ export default class ManageTags extends Component {
         const {sort, reverse} = this.state
 
         // check if any items are selected
-        const selected = tags.get('meta', fromJS({})).filter((meta) => {
-            if (meta.get('selected')) {
-                return true
-            }
-        }).size
+        const selected = tags.get('meta', fromJS({}))
+            .filter(meta => meta.get('selected'))
+            .size
 
         const manageTagsClassName = classnames({
             'manage-tags-bulk': selected > 0
-        })
-
-        const createTagFormClassName = classnames('ui form', {
-            loading: tags.getIn(['_internal', 'creating'])
         })
 
         return (
             <div className={manageTagsClassName}>
                 <div className="manage-tags d-flex justify-content-between">
                     <h1 className="column">
-                        <i className="tag blue icon ml5ni mr10i" />
+                        <i className="tag blue icon mr-2" />
                         Manage tags
                     </h1>
 
@@ -171,77 +168,88 @@ export default class ManageTags extends Component {
                                     </span>
                                 )
                             }
-                            <Button
-                                id="bulk-remove-button"
-                                color="secondary"
-                                type="button"
-                                onClick={this._toggleRemoveConfirmation}
-                            >
-                                Delete
-                            </Button>
-                            <Popover
-                                placement="bottom"
-                                isOpen={this.state.askRemoveConfirmation}
-                                target="bulk-remove-button"
-                                toggle={this._toggleRemoveConfirmation}
-                            >
-                                <PopoverTitle>Are you sure?</PopoverTitle>
-                                <PopoverContent>
-                                    <p>
-                                        Are you sure you want to delete these tags?{' '}
-                                        <b>They will be removed from all tickets</b>.
-                                    </p>
-                                    <Button
-                                        type="submit"
-                                        color="success"
-                                        onClick={this._bulkDelete}
-                                    >
-                                        Confirm
-                                    </Button>
-                                </PopoverContent>
-                            </Popover>
-                        </div>
-
-                        <Button
-                            id="create-tag-button"
-                            color="primary"
-                            type="button"
-                            onClick={this._toggleCreationPopup}
-                        >
-                            Create tag
-                        </Button>
-                        <Popover
-                            placement="bottom"
-                            isOpen={this.state.showCreationPopup}
-                            target="create-tag-button"
-                            toggle={this._toggleCreationPopup}
-                        >
-                            <PopoverTitle>Create a new tag</PopoverTitle>
-                            <PopoverContent>
-                                <form
-                                    className={createTagFormClassName}
-                                    onSubmit={this._onCreate}
-                                >
-                                    <div className="d-flex">
-                                        <input
-                                            type="text"
-                                            className="mr-2"
-                                            placeholder="New tag name"
-                                            required
-                                            value={this.state.newTag}
-                                            autoFocus
-                                            onChange={e => this.setState({newTag: e.target.value})}
-                                        />
+                            {
+                                selected > 0 && (
+                                    <span>
                                         <Button
-                                            color="success"
-                                            type="submit"
+                                            id="bulk-remove-button"
+                                            color="secondary"
+                                            type="button"
+                                            className="mr-2"
+                                            onClick={this._toggleRemoveConfirmation}
                                         >
-                                            <i className="fa fa-fw fa-check" />
+                                            Delete
                                         </Button>
-                                    </div>
-                                </form>
-                            </PopoverContent>
-                        </Popover>
+                                        <Popover
+                                            placement="bottom"
+                                            isOpen={this.state.askRemoveConfirmation}
+                                            target="bulk-remove-button"
+                                            toggle={this._toggleRemoveConfirmation}
+                                        >
+                                            <PopoverTitle>Are you sure?</PopoverTitle>
+                                            <PopoverContent>
+                                                <p>
+                                                    Are you sure you want to delete these tags?{' '}
+                                                    <b>They will be removed from all tickets</b>.
+                                                </p>
+                                                <Button
+                                                    type="submit"
+                                                    color="success"
+                                                    onClick={this._bulkDelete}
+                                                >
+                                                    Confirm
+                                                </Button>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </span>
+                                )
+                            }
+
+                            <span>
+                                <Button
+                                    id="create-tag-button"
+                                    color="primary"
+                                    type="button"
+                                    onClick={this._toggleCreationPopup}
+                                >
+                                    Create tag
+                                </Button>
+                                <Popover
+                                    placement="bottom"
+                                    isOpen={this.state.showCreationPopup}
+                                    target="create-tag-button"
+                                    toggle={this._toggleCreationPopup}
+                                >
+                                    <PopoverTitle>Create a new tag</PopoverTitle>
+                                    <PopoverContent>
+                                        <Form onSubmit={this._onCreate}>
+                                            <div className="d-flex align-items-center">
+                                                <div className="mr-2">
+                                                    <InputField
+                                                        type="text"
+                                                        placeholder="New tag name"
+                                                        value={this.state.newTag}
+                                                        autoFocus
+                                                        onChange={value => this.setState({newTag: value})}
+                                                        required
+                                                        inline
+                                                    />
+                                                </div>
+                                                <Button
+                                                    color="success"
+                                                    type="submit"
+                                                    className={classnames({
+                                                        'btn-loading': tags.getIn(['_internal', 'creating']),
+                                                    })}
+                                                >
+                                                    <i className="fa fa-fw fa-check" />
+                                                </Button>
+                                            </div>
+                                        </Form>
+                                    </PopoverContent>
+                                </Popover>
+                            </span>
+                        </div>
                     </div>
                 </div>
 

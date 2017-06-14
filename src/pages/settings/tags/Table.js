@@ -73,7 +73,7 @@ class Table extends Component {
                             columns.map((column, i) => (
                                 <td key={i}>
                                     <div>
-                                        <div className={`cell-wrapper manage-tags-table-col-${column.field}`}>
+                                        <div className="cell-wrapper">
                                             <div onClick={this._onSort(column.field)}>
                                             <span className="clickable filterable">
                                                 {column.title}

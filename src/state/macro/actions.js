@@ -1,7 +1,6 @@
 import axios from 'axios'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
-import {uploadFiles} from '../../utils'
 
 export const openModal = () => ({
     type: types.OPEN_MODAL
@@ -148,27 +147,6 @@ export const deleteMacro = (macroId) => (dispatch) => {
                 type: types.DELETE_MACRO_ERROR,
                 error,
                 reason: 'Failed to delete macro'
-            })
-        })
-}
-
-// Add attachments for macro "addAttachements" Action
-export const addAttachments = (actionIndex, files) => (dispatch) => {
-    dispatch({
-        type: types.ADD_ATTACHMENTS_MACRO_START
-    })
-
-    return uploadFiles(files)
-        .then(resp => {
-            return {
-                index: actionIndex,
-                files: resp,
-            }
-        }, error => {
-            return dispatch({
-                type: types.ADD_ATTACHMENTS_MACRO_ERROR,
-                error,
-                reason: 'Failed to upload files. Please try again later'
             })
         })
 }

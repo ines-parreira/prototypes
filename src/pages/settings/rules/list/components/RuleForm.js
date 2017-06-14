@@ -1,11 +1,11 @@
 import React from 'react'
 import {Field, reduxForm, reset} from 'redux-form'
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
+import {Form, Button} from 'reactstrap'
 
-import InputField from '../../../../common/forms/InputField'
-import TextAreaField from '../../../../common/forms/TextAreaField'
 import formSender from '../../../../common/utils/formSender'
+
+import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
 
 class RuleForm extends React.Component {
     _handleCancel = () => {
@@ -22,21 +22,21 @@ class RuleForm extends React.Component {
 
         return (
             <div>
-                <form className="ui form" onSubmit={handleSubmit(this._handleSubmit)}>
+                <Form onSubmit={handleSubmit(this._handleSubmit)}>
                     <div className="content">
                         <Field
                             type="text"
                             name="title"
                             label="Name"
                             required
-                            component={InputField}
+                            component={ReduxFormInputField}
                         />
                         <Field
-                            type="text"
+                            type="textarea"
                             name="description"
                             label="Description"
-                            component={TextAreaField}
                             rows="3"
+                            component={ReduxFormInputField}
                         />
                     </div>
                     <div className="actions pull-right mt-3">
@@ -59,7 +59,7 @@ class RuleForm extends React.Component {
                             Create rule
                         </Button>
                     </div>
-                </form>
+                </Form>
             </div>
         )
     }

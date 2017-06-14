@@ -1,19 +1,21 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import InputField from './InputField'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
 import {EditorState, RichUtils, ContentState} from 'draft-js'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
-import {convertToHTML, convertFromHTML} from '../../../utils'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import createToolbarPlugin from '../draftjs/plugins/toolbar'
 
+import {convertToHTML, convertFromHTML} from '../../../utils'
+
 import 'draft-js-emoji-plugin/lib/plugin.css'
 
-export default class RichTextAreaField extends React.Component {
+export default class RichField extends InputField {
     constructor(props) {
         super(props)
 
@@ -48,12 +50,12 @@ export default class RichTextAreaField extends React.Component {
     }
 
     componentWillMount() {
-        this._updateEditorState(this.props.input.value)
+        this._updateEditorState(this.props.value)
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!_isEqual(nextProps.input.value, this.props.input.value)) {
-            this._updateEditorState(nextProps.input.value)
+        if (!_isEqual(nextProps.value, this.props.value)) {
+            this._updateEditorState(nextProps.value)
         }
     }
 
@@ -125,75 +127,62 @@ export default class RichTextAreaField extends React.Component {
                 callback()
             }
 
-            this.props.input.onChange({
+            this.props.onChange({
                 text: contentState.getPlainText(),
                 html: convertToHTML(contentState),
             })
         })
     }
 
-    render() {
+    _getField = () => {
         const {
+            children, // eslint-disable-line
+            disabled, // eslint-disable-line
+            error, // eslint-disable-line
+            help, // eslint-disable-line
+            inline, // eslint-disable-line
+            label, // eslint-disable-line
+            name, // eslint-disable-line
+            onChange, // eslint-disable-line
+            placeholder, // eslint-disable-line
+            required, // eslint-disable-line
+            type, // eslint-disable-line
+            value, // eslint-disable-line
             canDropFiles,
-            input,
-            label,
-            required,
             toolbarProps,
-            ...rest
+            ...rest,
         } = this.props
+
         const {EmojiSuggestions} = this.emojiPlugin
         const {Toolbar} = this.toolbarPlugin
 
         return (
-            <div
-                className={classnames('field', {
-                    required,
-                })}
-            >
-                {label && <label htmlFor={input.name}>{label}</label>}
-                <div className="rich-textarea-wrapper">
-                    <div
-                        className={classnames('editor-wrapper', {
-                            drop: this.state.isDragging && canDropFiles,
-                        })}
-                        style={{paddingBottom: '26px'}}
-                        onClick={this._focusEditor}
-                        onDragOver={() => this.setState({isDragging: true})}
-                        onDragLeave={() => this.setState({isDragging: false})}
-                        onDrop={() => this.setState({isDragging: false})}
-                    >
-                        <Editor
-                            editorState={this.state.editorState}
-                            onChange={editorState => this._onChange(editorState)}
-                            plugins={this.plugins}
-                            handleKeyCommand={this._handleKeyCommand}
-                            handleDroppedFiles={this._handleDroppedFiles}
-                            ref={(editor) => {
-                                this.editor = editor
-                            }}
-                            {...rest}
-                        />
-                        <EmojiSuggestions />
-                    </div>
-                    <Toolbar {...toolbarProps} />
+            <div className="rich-textarea-wrapper">
+                <div
+                    className={classnames('editor-wrapper', {
+                        drop: this.state.isDragging && canDropFiles,
+                    })}
+                    style={{paddingBottom: '26px'}}
+                    onClick={this._focusEditor}
+                    onDragOver={() => this.setState({isDragging: true})}
+                    onDragLeave={() => this.setState({isDragging: false})}
+                    onDrop={() => this.setState({isDragging: false})}
+                >
+                    <Editor
+                        editorState={this.state.editorState}
+                        onChange={editorState => this._onChange(editorState)}
+                        plugins={this.plugins}
+                        handleKeyCommand={this._handleKeyCommand}
+                        handleDroppedFiles={this._handleDroppedFiles}
+                        ref={(editor) => {
+                            this.editor = editor
+                        }}
+                        {...rest}
+                    />
+                    <EmojiSuggestions />
                 </div>
+                <Toolbar {...toolbarProps} />
             </div>
         )
     }
-}
-
-RichTextAreaField.defaultProps = {
-    canDropFiles: false,
-    required: false,
-    toolbarProps: {},
-}
-
-RichTextAreaField.propTypes = {
-    canDropFiles: PropTypes.bool.isRequired,
-    handleDroppedFiles: PropTypes.func,
-    input: PropTypes.object.isRequired,
-    label: PropTypes.string,
-    placeholder: PropTypes.string,
-    required: PropTypes.bool.isRequired,
-    toolbarProps: PropTypes.object.isRequired,
 }

@@ -7,6 +7,10 @@ import _clone from 'lodash/clone'
 import _cloneDeep from 'lodash/cloneDeep'
 import _forIn from 'lodash/forIn'
 import {
+    Form,
+    FormGroup,
+    FormText,
+    Label,
     Button,
     Breadcrumb,
     BreadcrumbItem,
@@ -14,15 +18,13 @@ import {
 
 import {AVAILABLE_HTTP_METHODS} from '../../../../../config'
 import Loader from '../../../../common/components/Loader'
-import {
-    InputField,
-    SelectField,
-    MultiSelectField,
-    JsonField,
-} from '../../../../common/forms'
 import HeaderFieldArray from './HeaderFieldArray'
 import formSender from '../../../../common/utils/formSender'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+
+import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
+import BooleanField from '../../../../common/forms/BooleanField'
+import JsonField from '../../../../common/forms/JsonField'
 
 export const defaultContent = {
     type: 'http',
@@ -134,8 +136,6 @@ class HttpIntegrationDetail extends React.Component {
     render() {
         const {actions, handleSubmit, integration, isUpdate, loading} = this.props
 
-        // const { isTestShown } = this.state
-
         const isSubmitting = loading.get('updateIntegration')
 
         const isActive = !integration.get('deactivated_datetime')
@@ -159,7 +159,8 @@ class HttpIntegrationDetail extends React.Component {
                 </Breadcrumb>
 
                 <h1>{isUpdate ? integration.get('name') : 'Add new HTTP integration'}</h1>
-                <div>
+
+                <p>
                     Add the details about the HTTP integration you want to add below. If you need help, you can
                     check our {' '}
                     <a
@@ -168,64 +169,65 @@ class HttpIntegrationDetail extends React.Component {
                     >
                         docs
                     </a> or contact us.
-                </div>
+                </p>
 
-                <form
-                    className="ui form"
-                    onSubmit={handleSubmit(this._handleSubmit)}
-                >
+                <Form onSubmit={handleSubmit(this._handleSubmit)}>
                     <Field
+                        type="text"
                         name="name"
                         label="Integration name"
-                        placeholder="Name"
                         required
-                        component={InputField}
+                        component={ReduxFormInputField}
                     />
                     <Field
+                        type="text"
                         name="description"
                         label="Description"
-                        placeholder="Description"
-                        component={InputField}
+                        component={ReduxFormInputField}
                     />
+                    <FormGroup>
+                        <Label className="control-label">Triggers</Label>
+                        <p>
+                            <FormText color="muted">
+                                This HTTP integration will be executed when any of the events below happens.
+                            </FormText>
+                        </p>
+                        <Field
+                            name="http.triggers.ticket-created"
+                            type="checkbox"
+                            label="Ticket created"
+                            component={ReduxFormInputField}
+                            tag={BooleanField}
+                        />
+                        <Field
+                            name="http.triggers.ticket-updated"
+                            type="checkbox"
+                            label="Ticket updated"
+                            component={ReduxFormInputField}
+                            tag={BooleanField}
+                        />
+                    </FormGroup>
                     <Field
-                        name="http.triggers"
-                        label="Triggers"
-                        placeholder="Triggers"
-                        description="This HTTP integration will be executed when any of the events above happens."
-                        ref="httpTriggers"
-                        required
-                        component={MultiSelectField}
-                        options={[
-                            {
-                                label: 'Ticket Created',
-                                slug: 'ticket-created'
-                            },
-                            {
-                                label: 'Ticket Updated',
-                                slug: 'ticket-updated'
-                            }
-                        ]}
-                    />
-                    <Field
+                        type="text"
                         name="http.url"
                         label="URL"
                         placeholder="https://company.com/api/users?email={ticket.requester.email}"
-                        ref="httpUrl"
                         required
-                        component={InputField}
-                        description={(
-                            <span>
-                                    You can use <code>{'{ticket.requester.email}'}</code> to pass the email of the
-                                    ticket requester. See
-                                    other <a href="http://docs.gorgias.io/#/definitions/User" target="_blank">vars</a>.
-                                </span>
+                        help={(
+                            <div>
+                                You can use <code>{'{ticket.requester.email}'}</code> to pass the email of the
+                                ticket requester. See
+                                other <a href="http://docs.gorgias.io/#/definitions/User" target="_blank">vars</a>.
+                            </div>
                         )}
+                        component={ReduxFormInputField}
                     />
                     <Field
+                        type="select"
                         name="http.method"
                         label="HTTP Method"
                         required
-                        component={SelectField}
+                        component={ReduxFormInputField}
                     >
                         {
                             AVAILABLE_HTTP_METHODS.map((method) =>
@@ -239,34 +241,38 @@ class HttpIntegrationDetail extends React.Component {
                         }
                     </Field>
                     <Field
+                        type="select"
                         name="http.request_content_type"
                         label="Request content type"
                         required
-                        component={SelectField}
+                        component={ReduxFormInputField}
                     >
                         <option value="application/json">application/json</option>
                     </Field>
                     <Field
+                        type="select"
                         name="http.response_content_type"
                         label="Response content type"
                         required
-                        component={SelectField}
+                        component={ReduxFormInputField}
                     >
                         <option value="application/json">application/json</option>
                     </Field>
-
-                    <FieldArray
-                        name="http.headers"
-                        component={HeaderFieldArray}
-                    />
-
+                    <FormGroup>
+                        <FieldArray
+                            name="http.headers"
+                            component={HeaderFieldArray}
+                        />
+                    </FormGroup>
                     <Field
                         name="http.form"
                         label="Request Body (JSON)"
-                        component={JsonField}
+                        rows="8"
+                        component={ReduxFormInputField}
+                        tag={JsonField}
                     />
 
-                    <div className="field">
+                    <div>
                         <Button
                             type="submit"
                             color="primary"
@@ -322,7 +328,7 @@ class HttpIntegrationDetail extends React.Component {
                             )
                         }
                     </div>
-                </form>
+                </Form>
             </div>
         )
     }

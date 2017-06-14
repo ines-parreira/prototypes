@@ -8,13 +8,14 @@ import _isUndefined from 'lodash/isUndefined'
 import _find from 'lodash/find'
 import _clone from 'lodash/clone'
 import _isError from 'lodash/isError'
-import {Button} from 'reactstrap'
+import {Form, Button} from 'reactstrap'
 
 import {submitUser} from '../../../../state/users/actions'
-import {InputField, SelectField} from '../../../common/forms'
 import UserChannelAddressField from './UserChannelAddressField'
 import ErrorMessage from '../../../common/components/ErrorMessage'
 import formSender from '../../../common/utils/formSender'
+
+import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
 
 export const defaultContent = {
     roles: [{
@@ -161,19 +162,18 @@ class UserForm extends React.Component {
         let {error} = this.props
 
         return (
-            <form
-                className="ui form"
-                onSubmit={handleSubmit(this._handleSubmit)}
-            >
+            <Form onSubmit={handleSubmit(this._handleSubmit)}>
                 <div className="mb-2">
                     <ErrorMessage errors={error} />
 
                     <Field
+                        type="text"
                         name="name"
                         label="Name"
-                        placeholder="Name"
-                        component={InputField}
+                        placeholder="John Doe"
                         help="Give a name to the user to make it easier to identify"
+                        required
+                        component={ReduxFormInputField}
                     />
 
                     {
@@ -181,10 +181,11 @@ class UserForm extends React.Component {
                                 <p>This user is a <b>Gorgias Staff</b> member</p>
                             ) : (
                                 <Field
+                                    type="select"
                                     name="role"
                                     label="Role"
                                     required
-                                    component={SelectField}
+                                    component={ReduxFormInputField}
                                 >
                                     <option value="user">User</option>
                                     <option value="agent">Agent</option>
@@ -235,7 +236,7 @@ class UserForm extends React.Component {
                         {isUpdate ? 'Update user' : 'Add user'}
                     </Button>
                 </div>
-            </form>
+            </Form>
         )
     }
 }

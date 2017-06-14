@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
+import {Input} from 'reactstrap'
 
 import Select from './Select'
 
@@ -28,9 +29,11 @@ class AssigneeSelect extends React.Component {
 
         if (options.isEmpty()) {
             return (
-                <div className="ui input">
-                    <input type="text" placeholder="Loading agents..." readOnly="true"/>
-                </div>
+                <Input
+                    type="text"
+                    placeholder="Loading agents..."
+                    readOnly
+                />
             )
         }
 

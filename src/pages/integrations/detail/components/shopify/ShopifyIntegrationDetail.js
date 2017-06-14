@@ -7,15 +7,17 @@ import _clone from 'lodash/clone'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
+    Form,
     Button,
     Breadcrumb,
     BreadcrumbItem,
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
-import {LabeledInputField} from '../../../../common/forms'
 import formSender from '../../../../common/utils/formSender'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+
+import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
 
 export const defaultContent = {
     type: 'shopify',
@@ -67,7 +69,7 @@ class ShopifyIntegrationDetail extends React.Component {
 
     _handleSubmit = (values) => {
         let doc = fromJS(defaultContent).mergeDeep(values)
-        const name = doc.get('name')
+        let name = doc.get('name')
 
         doc = doc.setIn(['meta', 'shop_name'], name)
 
@@ -132,43 +134,41 @@ class ShopifyIntegrationDetail extends React.Component {
                 {
                     isUpdate && (
                         isSyncOver
-                        ? (
-                            <p>
-                                All your Shopify users have been imported. You can now see their info in the
-                                sidebar. <Link to="/app/users">Review your users.</Link>
-                            </p>
-                        ) : (
-                            <Alert color="info" className="mb-4">
+                            ? (
                                 <p>
-                                    <b className="alert-heading">
-                                        <i className="fa fa-refresh fa-spin mr-2"/>
-                                        Importing your Shopify customers
-                                    </b>
-                                    </p>
-                                <p>
-                                    We're currently importing all your Shopify customers. This way, you'll see
-                                    customer info & orders next to tickets. We'll notify you via email when the
-                                    import is done. <Link to="/app/users">Review imported users.</Link>
+                                    All your Shopify users have been imported. You can now see their info in the
+                                    sidebar. <Link to="/app/users">Review your users.</Link>
                                 </p>
-                            </Alert>
-                        )
+                            ) : (
+                                <Alert color="info" className="mb-4">
+                                    <p>
+                                        <b className="alert-heading">
+                                            <i className="fa fa-refresh fa-spin mr-2" />
+                                            Importing your Shopify customers
+                                        </b>
+                                    </p>
+                                    <p>
+                                        We're currently importing all your Shopify customers. This way, you'll see
+                                        customer info & orders next to tickets. We'll notify you via email when the
+                                        import is done. <Link to="/app/users">Review imported users.</Link>
+                                    </p>
+                                </Alert>
+                            )
                     )
                 }
-                <form
-                    className="ui form"
-                    onSubmit={handleSubmit(this._handleSubmit)}
-                >
+
+                <Form onSubmit={handleSubmit(this._handleSubmit)}>
                     <Field
+                        type="text"
                         name="name"
                         label="Store name"
-                        rightLabel=".myshopify.com"
-                        maxWidth="50%"
-                        placeholder="The name of your Shopify shop"
+                        placeholder={'ex: "acme" for acme.myshopify.com'}
                         required
-                        readOnly={isUpdate}
-                        component={LabeledInputField}
+                        disabled={isUpdate}
+                        component={ReduxFormInputField}
                     />
-                    <div className="field">
+
+                    <div>
                         {
                             isUpdate
                             && needScopeUpdate
@@ -246,7 +246,7 @@ class ShopifyIntegrationDetail extends React.Component {
                             )
                         }
                     </div>
-                </form>
+                </Form>
             </div>
         )
     }

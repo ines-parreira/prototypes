@@ -94,9 +94,9 @@ const ChatIntegrationPreview = ({name, decoration, currentUser}) => {
                     <div className={css.placeholder}>
                         {nonbreak(decoration.get('input_placeholder', 'Type a message...'))}
                     </div>
-                    <button type="button">
+                    <strong>
                         {nonbreak(decoration.get('send_button_text', 'Send'))}
-                    </button>
+                    </strong>
                 </div>
             </div>
 

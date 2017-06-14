@@ -7,22 +7,29 @@ import _clone from 'lodash/clone'
 import _replace from 'lodash/replace'
 import Clipboard from 'clipboard'
 import {
+    Form,
     Button,
-    UncontrolledTooltip,
     Breadcrumb,
     BreadcrumbItem,
     Container,
     Row,
-    Col, Card, CardBlock, CardHeader, Alert,
+    Col,
+    Card,
+    CardBlock,
+    CardHeader,
+    Alert,
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
-import {InputField, TextAreaField, ColorField, FileField} from '../../../../common/forms'
 import formSender from '../../../../common/utils/formSender'
 import ChatIntegrationPreview from './ChatIntegrationPreview'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import AutoResponderSection from '../../../common/AutoResponderSection'
+
+import ColorField from '../../../../common/forms/ColorField'
+import FileField from '../../../../common/forms/FileField'
+import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
 
 import css from './ChatIntegrationDetail.less'
 
@@ -203,13 +210,10 @@ class ChatIntegrationDetail extends React.Component {
         }
 
         return (
-            <div className="mb-4">
-                <h3>
-                    Setup instructions
-                </h3>
+            <div>
                 <p>
-                    To activate or update the chat, copy the code below and paste it on your website above the <kbd>{'</body>'}</kbd>
-                    {' '}tag. If you need help,{' '}
+                    To activate or update the chat, copy the code below and paste it on your website above the
+                    {' '}<kbd>{'</body>'}</kbd>{' '}tag. If you need help,{' '}
                     <a
                         target="_blank"
                         href="http://docs.gorgias.io/integrations/chat?utm_source=chat_integration"
@@ -227,7 +231,7 @@ class ChatIntegrationDetail extends React.Component {
                             logEvent('Clicked book a setup call to add chat')
                         }}
                     >
-                    book a 5min setup call
+                        book a 5min setup call
                     </a>
                     .
                 </p>
@@ -332,151 +336,113 @@ class ChatIntegrationDetail extends React.Component {
                 <h1>{isUpdate ? `Chat: ${integration.get('name')}` : 'Add new chat'}</h1>
 
                 {this._renderInstructions(isUpdate, isSubmitting)}
+
                 <AutoResponderSection/>
 
                 <Container fluid>
                     <Row>
-                        <Col
-                            style={{paddingLeft: 0}}
-                        >
-                            <h3 className="mb-3">
-                                Widget settings
-                            </h3>
+                        <Col style={{paddingLeft: 0}}>
+                            <Form onSubmit={handleSubmit(this._handleSubmit)}>
+                                <Field
+                                    type="text"
+                                    name="name"
+                                    label="Chat title"
+                                    placeholder="Ex: Company Support"
+                                    required
+                                    help={!isUpdate && 'Can be set only once! If you want to change the title you will have to create another chat'}
+                                    readOnly={isUpdate}
+                                    component={ReduxFormInputField}
+                                />
 
-                            <form
-                                className="ui form"
-                                onSubmit={handleSubmit(this._handleSubmit)}
-                            >
-                                <div className={css.form}>
-                                    <div className={css.fieldset}>
-                                        <Field
-                                            name="name"
-                                            label={(
-                                                <span>
-                                                Chat title
-                                                <i
-                                                    id="company-name"
-                                                    className="help circle link icon"
-                                                />
-                                                <UncontrolledTooltip
-                                                    placement="top"
-                                                    target="company-name"
-                                                    delay={0}
-                                                >
-                                                    Can be set only once! If you want to change the title you will
-                                                    have to create another chat
-                                                </UncontrolledTooltip>
-                                            </span>
-                                            )}
-                                            placeholder="Ex: Company Support"
-                                            required
-                                            component={InputField}
-                                            readOnly={isUpdate}
-                                        />
+                                <Field
+                                    name="decoration.icon"
+                                    label="Company icon"
+                                    accept="image/*"
+                                    help="The image must have a square format. Example: 200x200 pixels"
+                                    component={ReduxFormInputField}
+                                    tag={FileField}
+                                />
 
-                                        <Field
-                                            name="decoration.icon"
-                                            component={FileField}
-                                            accept="image/*"
-                                            ratio="square"
-                                            label={(
-                                                <span>
-                                                Company icon
-                                                <i
-                                                    id="company-icon"
-                                                    className="help circle link icon"
-                                                />
-                                                <UncontrolledTooltip
-                                                    placement="top"
-                                                    target="company-icon"
-                                                    delay={0}
-                                                >
-                                                    The image must have a square format. Example: 200x200 pixels
-                                                </UncontrolledTooltip>
-                                            </span>
-                                            )}
-                                        />
+                                <Field
+                                    type="textarea"
+                                    name="decoration.window_title"
+                                    label="Header text"
+                                    rows="2"
+                                    component={ReduxFormInputField}
+                                />
 
-                                        <Field
-                                            name="decoration.window_title"
-                                            label="Header text"
-                                            component={TextAreaField}
-                                            rows="2"
-                                        />
+                                <Field
+                                    type="textarea"
+                                    name="decoration.header_text"
+                                    label="Introduction text"
+                                    rows="2"
+                                    component={ReduxFormInputField}
+                                />
 
-                                        <Field
-                                            name="decoration.header_text"
-                                            label="Introduction text"
-                                            component={TextAreaField}
-                                            rows="2"
-                                        />
+                                <Field
+                                    type="text"
+                                    name="decoration.input_placeholder"
+                                    label="Input placeholder"
+                                    component={ReduxFormInputField}
+                                />
 
-                                        <Field
-                                            name="decoration.input_placeholder"
-                                            label="Input placeholder"
-                                            component={InputField}
-                                            rows="2"
-                                        />
+                                <Field
+                                    type="text"
+                                    name="decoration.send_button_text"
+                                    label="Send button text"
+                                    component={ReduxFormInputField}
+                                />
 
-                                        <Field
-                                            name="decoration.send_button_text"
-                                            label="Send button text"
-                                            component={InputField}
-                                            rows="2"
-                                        />
+                                <Field
+                                    name="decoration.header_color"
+                                    label="Header color"
+                                    component={ReduxFormInputField}
+                                    tag={ColorField}
+                                />
 
-                                        <Field
-                                            name="decoration.header_color"
-                                            label="Header color"
-                                            component={ColorField}
-                                        />
+                                <Field
+                                    name="decoration.conversation_color"
+                                    label="Conversation color"
+                                    component={ReduxFormInputField}
+                                    tag={ColorField}
+                                />
 
-                                        <Field
-                                            name="decoration.conversation_color"
-                                            label="Conversation color"
-                                            component={ColorField}
-                                        />
+                                <Field
+                                    name="decoration.chat_icon_color"
+                                    label="Chat icon color"
+                                    component={ReduxFormInputField}
+                                    tag={ColorField}
+                                />
 
-                                        <Field
-                                            name="decoration.chat_icon_color"
-                                            label="Chat icon color"
-                                            component={ColorField}
-                                        />
-                                    </div>
+                                <div>
+                                    <Button
+                                        type="submit"
+                                        color="primary"
+                                        className={classnames({
+                                            'btn-loading': isSubmitting,
+                                        })}
+                                        disabled={isSubmitting}
+                                    >
+                                        {isUpdate ? 'Save changes' : 'Add new chat'}
+                                    </Button>
+
+                                    {
+                                        isUpdate && (
+                                            <ConfirmButton
+                                                className="pull-right"
+                                                color="danger"
+                                                outline
+                                                confirm={() => actions.deleteIntegration(integration)}
+                                                content="Are you sure you want to delete this integration?"
+                                            >
+                                                Delete chat
+                                            </ConfirmButton>
+                                        )
+                                    }
                                 </div>
-
-                                <Button
-                                    type="submit"
-                                    color="primary"
-                                    className={classnames({
-                                        'btn-loading': isSubmitting,
-                                    })}
-                                    disabled={isSubmitting}
-                                >
-                                    {isUpdate ? 'Save changes' : 'Add new chat'}
-                                </Button>
-
-                                {
-                                    isUpdate && (
-                                        <ConfirmButton
-                                            className="pull-right"
-                                            color="danger"
-                                            outline
-                                            confirm={() => actions.deleteIntegration(integration)}
-                                            content="Are you sure you want to delete this integration?"
-                                        >
-                                            Delete chat
-                                        </ConfirmButton>
-                                    )
-                                }
-                            </form>
+                            </Form>
                         </Col>
-                        <Col
-                            style={{padding: 0}}
-                        >
-                            <h3 className="mb-3">
-                                Preview
-                            </h3>
+                        <Col style={{padding: 0}}>
                             <ChatIntegrationPreview
                                 currentUser={currentUser}
                                 name={this.formValues.get('name')}

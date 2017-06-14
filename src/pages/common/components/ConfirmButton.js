@@ -73,9 +73,9 @@ export default class ConfirmButton extends React.Component {
         })
 
         Promise
-        .resolve(this.props.confirm())
-        .then(this._hideLoading)
-        .catch(this._hideLoading)
+            .resolve(this.props.confirm())
+            .then(this._hideLoading)
+            .catch(this._hideLoading)
     }
 
     render() {

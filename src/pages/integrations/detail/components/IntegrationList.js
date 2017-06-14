@@ -43,23 +43,22 @@ export default class IntegrationList extends React.Component {
                     </BreadcrumbItem>
                 </Breadcrumb>
 
-                <div className="d-flex justify-content-between align-item-center mb-3">
-                    <h1
-                        className="ui header"
-                        style={{marginBottom: 0}}
-                    >
-                        {integrationConfig.get('image') ?
-                            <img
-                                role="presentation"
-                                className="logo"
-                                src={getIconFromType(integrationType)}
-                            />
-                            :
-                            <i className={`icon ${integrationConfig.get('icon')} pt0i`} />
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h1 className="d-flex align-items-center m-0">
+                        {
+                            integrationConfig.get('image') ? (
+                                    <img
+                                        role="presentation"
+                                        className="mr-3"
+                                        src={getIconFromType(integrationType)}
+                                    />
+                                )
+                                : (
+                                    <i className={`icon ${integrationConfig.get('icon')} mr-3`} />
+                                )
                         }
-                        <div className="content">
-                            {integrationTitle}
-                        </div>
+
+                        {integrationTitle}
                     </h1>
 
                     {

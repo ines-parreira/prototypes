@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import ErrorMessage from '../components/ErrorMessage'
+import ErrorMessage from '../ErrorMessage'
 
 /**
  * Allow to pick values from multiples sources and build a single one.

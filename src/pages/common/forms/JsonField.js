@@ -1,105 +1,91 @@
 import React from 'react'
-import classNames from 'classnames'
-import ErrorMessage from '../components/ErrorMessage'
+import classnames from 'classnames'
+import {Input, FormGroup} from 'reactstrap'
 
-export default class JsonField extends React.Component {
+import InputField from './InputField'
+import Errors from './Errors'
+
+export default class JsonField extends InputField {
     constructor(props) {
         super(props)
 
-        let text = JSON.stringify(props.input.value, undefined, 4)
+        let text = JSON.stringify(props.value, undefined, 4)
 
         if (text === '""') {
             text = null
         }
 
-        this.default = ''
+        this.default = '{}'
 
         this.state = {
-            isCorrectJson: true,
-            text: text || this.default
+            isJsonValid: true,
+            value: text || this.default,
         }
     }
 
-    _onChange(v) {
-        let correct = true
+    _onChange = (e) => {
+        const value = e.target.value
+        let isJsonValid = true
+        let parsedValue = JSON.parse(this.default)
 
         try {
-            this.props.input.onChange(JSON.parse(v || ''))
+            parsedValue = JSON.parse(value)
         } catch (e) {
-            if (v !== '') {
-                correct = false
-            } else {
-                this.props.input.onChange('')
+            if (value !== '') {
+                isJsonValid = false
             }
         }
 
+        if (isJsonValid) {
+            this.props.onChange(parsedValue)
+        }
+
         this.setState({
-            isCorrectJson: correct,
-            text: v || ''
+            isJsonValid,
+            value: value || this.default,
         })
     }
 
-    _onBlur = (e) => {
-        if (e.target.value === '') {
-            this._onChange(this.default)
-        }
-    }
+    _getField = () => {
+        const {
+            children,
+            error,
+            type, // eslint-disable-line
+            help, // eslint-disable-line
+            inline, // eslint-disable-line
+            label, // eslint-disable-line
+            name, // eslint-disable-line
+            onChange, // eslint-disable-line
+            value, // eslint-disable-line
+            ...rest,
+        } = this.props
 
-    _renderWarning = (isCorrectJson) => {
-        if (isCorrectJson) {
-            return
-        }
-
-        const error = 'Invalid JSON : changes will not be saved until the JSON is fixed'
-
-        return <ErrorMessage errors={error} />
-    }
-
-    render() {
-        const {input, label, placeholder, required} = this.props
-
-        // we want our own control of this input, so we do not inherit onChange and value
-        const props = {
-            onBlur: this._onBlur
-        }
-
-        if (required) {
-            props.required = true
-        }
-
-        props.onChange = (e) => this._onChange(e.target.value)
-
-        props.value = this.state.text
-
-        const fieldClassName = classNames('field', {
-            required,
-            error: !this.state.isCorrectJson
-        })
+        const isInvalid = !this.state.isJsonValid
+        const color = isInvalid ? 'danger' : ''
 
         return (
-            <div className={fieldClassName}>
-                {
-                    label && (
-                        <label htmlFor={input.name}>{label}</label>
-                    )
-                }
-                <textarea
-                    {...props}
-                    placeholder={placeholder}
-                />
-                {this._renderWarning(this.state.isCorrectJson)}
-            </div>
+            <FormGroup color={color}>
+                <div className="controls">
+                    <Input
+                        type="textarea"
+                        rows="6"
+                        className={classnames({
+                            'form-control-danger': error || isInvalid,
+                        })}
+                        id={this.id}
+                        onChange={this._onChange}
+                        value={this.state.value}
+                        {...rest}
+                    >
+                        {children}
+                    </Input>
+                    {
+                        isInvalid && (
+                            <Errors>Invalid JSON : changes will not be saved until the JSON is fixed</Errors>
+                        )
+                    }
+                </div>
+            </FormGroup>
         )
     }
-}
-
-JsonField.defaultProps = {
-    required: false
-}
-
-JsonField.propTypes = {
-    input: React.PropTypes.object.isRequired,
-    label: React.PropTypes.string,
-    placeholder: React.PropTypes.string,
-    required: React.PropTypes.bool,
 }

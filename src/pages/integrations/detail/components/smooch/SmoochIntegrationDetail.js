@@ -6,15 +6,17 @@ import classNames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
 import {
+    Form,
     Button,
     Breadcrumb,
     BreadcrumbItem,
 } from 'reactstrap'
 
 import formSender from '../../../../common/utils/formSender'
-import InputField from './../../../../common/forms/InputField'
+
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import AutoResponderSection from '../../../common/AutoResponderSection'
+import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
 
 import Loader from '../../../../common/components/Loader'
 
@@ -105,23 +107,22 @@ class SmoochIntegrationDetail extends React.Component {
 
                 <AutoResponderSection/>
 
-                <form
-                    className="ui form"
-                    onSubmit={handleSubmit(this._handleSubmit)}
-                >
+                <Form onSubmit={handleSubmit(this._handleSubmit)}>
                     {
                         isUpdate && (
                             <Field
+                                type="text"
                                 name="name"
-                                label="Smooch App Name"
+                                label="Smooch app name"
                                 placeholder="The name of your Smooch app"
                                 defaultValue={integration.get('name')}
                                 required
-                                component={InputField}
+                                component={ReduxFormInputField}
                             />
                         )
                     }
-                    <div className="field">
+
+                    <div>
                         <Button
                             type="submit"
                             color="primary"
@@ -180,7 +181,7 @@ class SmoochIntegrationDetail extends React.Component {
                             )
                         }
                     </div>
-                </form>
+                </Form>
             </div>
         )
     }

@@ -45,6 +45,10 @@ export const playNotificationSound = () => {
     notificationSound.play()
 }
 
+export const defined = (item) => {
+    return !_.isUndefined(item) && item !== null
+}
+
 /**
  * Serialize an object and return it's md5 hash.
  * @param obj the object of which we want the hash

@@ -1,218 +1,117 @@
-/* FileField
- */
+import React, {PropTypes} from 'react'
+import {Button, Input} from 'reactstrap'
+import _isArray from 'lodash/isArray'
 
-import React, {Component, PropTypes} from 'react'
-import classnames from 'classnames'
-import _last from 'lodash/last'
 import {uploadFiles} from '../../../utils'
+
+import InputField from './InputField'
 
 import css from './FileField.less'
 
-const extensions = ['jpg', 'jpeg', 'png', 'bmp', 'svg']
+export default class FileField extends InputField {
+    static propTypes = Object.assign({
+        noPreview: PropTypes.bool.isRequired,
+        returnFiles: PropTypes.bool.isRequired,
+    }, InputField.propTypes)
 
-class FileField extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            errors: [],
-            loading: false
-        }
+    static defaultProps = {
+        noPreview: false,
+        placeholder: 'Select a file...',
+        returnFiles: false, // return urls of files only by default
+        type: 'file',
     }
 
-    // return string after last slash
-    _getUrlName(url) {
-        return url.split('/').pop()
-    }
-
-    _isImageUrl(url) {
-        const fileExtension = _last(url.split('.'))
-        return extensions.includes(fileExtension)
-    }
-
-    _isImageFile(file) {
-        return file.type.includes('image/')
-    }
-
-    _isRatio(ratio, preview) {
-        const image = new Image()
-        image.src = preview
-
-        return new Promise((resolve, reject) => {
-            image.onload = () => {
-                if (ratio === 'square') {
-                    if (image.width === image.height) {
-                        return resolve()
-                    } else {
-                        return reject()
-                    }
-                }
-
-                resolve()
-            }
-        })
+    state = {
+        isUploading: false,
     }
 
     _onChange = (e) => {
         const files = e.target.files
-        const upload = []
-        const errors = []
+        this.setState({isUploading: true})
+        uploadFiles(files).then((files) => {
+            this.setState({isUploading: false})
 
-        this.setState({
-            loading: true
-        })
+            // if we want to return files, return them otherwise return urls only
+            if (this.props.returnFiles) {
+                return this.props.onChange(files)
+            }
 
-        // check image ratio
-        const promises = Array.prototype.map.call(files, (file) => {
-            return new Promise((resolve) => {
-                if (this._isImageFile(file)) {
-                    const reader = new FileReader()
-                    reader.onload = (readerEvent) => {
-                        this
-                        ._isRatio(this.props.ratio, readerEvent.target.result)
-                        .then(() => {
-                            upload.push(file)
-
-                            resolve(file)
-                        })
-                        .catch(() => {
-                            errors.push(`This image should be a ${this.props.ratio}.`)
-
-                            resolve(file)
-                        })
-                    }
-                    reader.readAsDataURL(file)
-                } else {
-                    upload.push(file)
-                }
-            })
-        })
-
-        return Promise
-        .all(promises)
-        .then(() => {
-            this.setState({
-                errors
-            })
-
-            return uploadFiles(upload)
-        })
-        .then((res) => {
-            this.setState({
-                loading: false
-            })
-
-            // don't remove existing images,
-            // when uploads is empty because of errors.
-            if (!res.length) {
+            if (files.length < 1) {
                 return
             }
 
-            // return string if only one image uploaded
-            let val = res[0].url
+            const image = files[0]
+            let result = image.url
 
-            if (res.length > 1) {
-                val = res.map((f) => {
-                    return f.url
-                })
+            if (!result) {
+                return
             }
 
-            this.props.input.onChange(val)
+            if (files.length > 1) {
+                result = files.map(file => file.url)
+            }
 
-            return val
-        })
-        .catch((err) => {
-            this.setState({
-                loading: false,
-                errors: [err.toString()]
-            })
+            this.props.onChange(result)
         })
     }
 
-    _renderOnePreview = (file, i) => {
+    _getField = () => {
+        const {
+            children, // eslint-disable-line
+            error, // eslint-disable-line
+            help, // eslint-disable-line
+            inline, // eslint-disable-line
+            label, // eslint-disable-line
+            noPreview,
+            onChange, // eslint-disable-line
+            placeholder,
+            returnFiles, // eslint-disable-line
+            value,
+            ...rest,
+        } = this.props
+        const {isUploading} = this.state
+
+        const disabled = isUploading
+
+        const previewUrl = _isArray(value) ? value[0] : value
+
         return (
-            <div className={css.preview} key={i}>
-                {this._isImageUrl(file) ?
-                    <img src={file} className="ui image" role="presentation"/> :
-                    <p>
-                        <i className="file icon" />
-                        {this._getUrlName(file)}
-                    </p>
+            <div className="d-flex align-center">
+                {
+                    !noPreview && previewUrl && (
+                        <div className={css.preview}>
+                            <img src={previewUrl} />
+                        </div>
+                    )
                 }
-            </div>
-        )
-    }
 
-    _renderPreviews = (value) => {
-        if (!value) {
-            return null
-        }
-
-        let files = value
-
-        // support array of files
-        if (typeof files === 'string') {
-            files = [value]
-        }
-
-        return files.map(this._renderOnePreview)
-    }
-
-    render() {
-        const {input, label, className, required, accept} = this.props
-        const {errors, loading} = this.state
-
-        const fieldClassName = classnames({
-            required,
-        }, className, 'ui field')
-
-        return (
-            <div className={fieldClassName}>
-                {label && <label htmlFor={input.name}>{label}</label>}
-
-                <input type="hidden" {...input} />
-
-                <label
-                    className={classnames(css.button, 'ui basic grey button file-field', {
-                        loading
-                    })}
+                <Button
+                    className={css.label}
+                    tag="label"
+                    color="secondary"
+                    disabled={disabled}
                 >
-                    UPLOAD NEW ICON
-
-                    <input
-                        type="file"
-                        accept={accept}
+                    {
+                        isUploading ? (
+                                <div>
+                                    <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2" />
+                                    Uploading...
+                                </div>
+                            ) : (
+                                <div>
+                                    {placeholder}
+                                </div>
+                            )
+                    }
+                    <Input
+                        id={this.id}
                         onChange={this._onChange}
+                        hidden
+                        disabled={disabled}
+                        {...rest}
                     />
-                </label>
-
-                {this._renderPreviews(input.value)}
-
-                {errors.length
-                    ? (<div className="ui negative message">
-                        {errors.map((err, i) => <p key={i}>{err}</p>)}
-                    </div>)
-                    : ''
-                }
+                </Button>
             </div>
         )
     }
 }
-
-FileField.defaultProps = {
-    className: '',
-    required: false,
-    accept: '*'
-}
-
-FileField.propTypes = {
-    input: PropTypes.object.isRequired,
-    meta: PropTypes.object.isRequired,
-    className: PropTypes.string,
-    accept: PropTypes.string,
-    ratio: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    required: PropTypes.bool
-}
-
-export default FileField

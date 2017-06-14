@@ -43,7 +43,7 @@
 
     .titlebar {
       position: relative;
-      padding: .4em 1.6em;
+      padding: .6em 1.6em;
       background: @primary;
 
       color: #fff;
@@ -126,7 +126,7 @@
     float: left;
     clear: both;
     width: 60%;
-    padding: .4em;
+    padding: .6em;
     margin-bottom: .8em;
     background: #f4f4f4;
     border-radius: 5px;
@@ -158,17 +158,22 @@
   }
 
   .footer {
+    display: flex;
+    width: 100%;
+    align-items: center;
     overflow: hidden;
-    padding: .4em;
+    padding: .6em .8em;
     border-top: 1px solid #efefef;
-
     color: @gray;
 
     .icon,
     .placeholder {
       display: inline-block;
-
       vertical-align: middle;
+    }
+
+    .placeholder {
+      flex-grow: 100;
     }
 
     .icon {
@@ -185,6 +190,9 @@
   }
 
   .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     float: right;
     width: 3.625em;
     height: 3.625em;
@@ -193,14 +201,9 @@
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
 
     .icon {
-      display: inline-block;
       width: 55%;
       height: 55%;
-      margin-left: 50%;
-      margin-top: 50%;
-      transform: translate(-50%, -50%);
       background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible; shape-rendering: geometricPrecision;"><filter id="dots"><feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur><feOffset dx="0" dy="4" result="offsetblur"></feOffset><feComponentTransfer><feFuncA type="linear" slope="0.4"></feFuncA></feComponentTransfer><feComposite operator="in" in2="offsetblur"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><path fill="#fff" filter="url(#dots)" d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"></path></svg>');
-      background-size: cover;
     }
   }
 

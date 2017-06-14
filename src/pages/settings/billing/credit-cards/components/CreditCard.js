@@ -3,19 +3,19 @@ import {Link} from 'react-router'
 import {Field, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 import Card from 'react-credit-card'
-import {Breadcrumb, BreadcrumbItem, Button, FormText} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Form, FormText, Row, Col} from 'reactstrap'
 
-import {InputField} from '../../../../common/forms'
 import Loader from '../../../../common/components/Loader'
 import {creditCardCVCNormalizer, creditCardExpDateNormalizer, creditCardNormalizer} from '../utils'
 import {loadScript} from '../../../../../utils'
 import {UPDATE_CREDIT_CARD_FORM} from '../../../../../state/billing/constants'
+
+import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
+
 import css from './CreditCard.less'
 import 'react-credit-card/source/card.css'
 import 'react-credit-card/source/card-types.css'
 
-// This component is used as "update" and "add" credit card
-// but the logic behind is the same, we just display `add` or `update` on UI
 class CreditCard extends Component {
     static propTypes = {
         location: PropTypes.object.isRequired,
@@ -66,12 +66,8 @@ class CreditCard extends Component {
     }
 
     render() {
-        // get url to determine if it is an creation or an update
-        // logic behind is the same, we just display `add` or `update` on UI
-        let action = 'Add'
-        if (/update-credit-card/.test(this.props.location.pathname)) {
-            action = 'Update'
-        }
+        const isUpdating = /update-credit-card/.test(this.props.location.pathname)
+        const action = isUpdating ? 'Update' : 'Add'
 
         const {
             handleSubmit,
@@ -101,13 +97,14 @@ class CreditCard extends Component {
                 <p>Enter the information of the card you'd like to use.</p>
                 <div className="ui grid">
                     <div className={`height wide column ${css.formWrapper}`}>
-                        <form className="ui form" onSubmit={handleSubmit(this._submit)}>
+                        <Form onSubmit={handleSubmit(this._submit)}>
                             <Field
                                 type="text"
                                 name="number"
                                 label="Card number"
                                 placeholder="4657 7894 1234 7895"
-                                component={InputField}
+                                required
+                                component={ReduxFormInputField}
                                 normalize={creditCardNormalizer}
                             />
                             <Field
@@ -115,27 +112,34 @@ class CreditCard extends Component {
                                 name="name"
                                 label="Name on the card"
                                 placeholder="Marie Curie"
-                                component={InputField}
+                                required
+                                component={ReduxFormInputField}
                             />
-                            <div className="two fields">
-                                <Field
-                                    type="text"
-                                    name="expDate"
-                                    label="Expiration date"
-                                    placeholder="05 / 21"
-                                    component={InputField}
-                                    normalize={creditCardExpDateNormalizer}
-                                />
-                                <Field
-                                    type="text"
-                                    name="cvc"
-                                    label="CVC"
-                                    placeholder="693"
-                                    component={InputField}
-                                    normalize={creditCardCVCNormalizer}
-                                />
-                            </div>
-                            <div className="field">
+                            <Row>
+                                <Col>
+                                    <Field
+                                        type="text"
+                                        name="expDate"
+                                        label="Expiration date"
+                                        placeholder="05 / 21"
+                                        required
+                                        component={ReduxFormInputField}
+                                        normalize={creditCardExpDateNormalizer}
+                                    />
+                                </Col>
+                                <Col>
+                                    <Field
+                                        type="text"
+                                        name="cvc"
+                                        label="CVC"
+                                        placeholder="693"
+                                        required
+                                        component={ReduxFormInputField}
+                                        normalize={creditCardCVCNormalizer}
+                                    />
+                                </Col>
+                            </Row>
+                            <div>
                                 <Button
                                     color="success"
                                     className={classNames({'btn-loading': this.state.isSubmitting})}
@@ -143,15 +147,8 @@ class CreditCard extends Component {
                                 >
                                     {action} Card
                                 </Button>
-                                { action === 'Add' && (
-                                    <FormText color="muted">
-                                        <strong>Note: </strong>
-                                        You'll be charged for the current period of your plan once you add your Credit
-                                        Card.
-                                    </FormText>
-                                )}
                             </div>
-                        </form>
+                        </Form>
                     </div>
                     <div className="height wide column">
                         <div className="mt15">
@@ -163,6 +160,19 @@ class CreditCard extends Component {
                             />
                         </div>
                     </div>
+
+                    <div>
+                        {
+                            !isUpdating && (
+                                <FormText color="muted">
+                                    <strong>Note: </strong>
+                                    You'll be charged for the current period of your plan once you add your
+                                    Credit
+                                    Card.
+                                </FormText>
+                            )
+                        }
+                    </div>
                 </div>
             </div>
         )
@@ -171,27 +181,29 @@ class CreditCard extends Component {
 
 function validateForm(values) {
     const errors = {}
+
+    if (typeof Stripe === 'undefined') {
+        return errors
+    }
+
     // validate card number
-    if (!values.number || !Stripe.card.validateCardNumber(values.number)) {
+    if (values.number && !Stripe.card.validateCardNumber(values.number)) {
         errors.number = 'Please provide a valid card number'
     }
-    // validate name
-    if (!values.name) {
-        errors.name = 'Please provide owner name of the card'
-    }
+
     // validate expiration date
-    if (!values.expDate) {
-        errors.expDate = 'Please provide expiration date of the card'
-    } else {
+    if (values.expDate) {
         const expiry = values.expDate.split('/')
         if (!Stripe.card.validateExpiry(expiry[0], expiry[1])) {
             errors.expDate = 'Please provide a valid expiration date'
         }
     }
+
     // validate CVC
-    if (!values.cvc || !Stripe.card.validateCVC(values.cvc)) {
+    if (values.cvc && !Stripe.card.validateCVC(values.cvc)) {
         errors.cvc = 'Please provide a valid CVC'
     }
+
     return errors
 }
 

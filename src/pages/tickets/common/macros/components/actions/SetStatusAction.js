@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {upperFirst as _upperFirst} from 'lodash'
 
 import {TICKET_STATUSES} from '../../../../../../config'
-import SelectField from '../../../../../common/forms/SelectField'
+import InputField from '../../../../../common/forms/InputField'
 
 export default class SetStatusAction extends React.Component {
     componentDidMount() {
@@ -17,11 +17,10 @@ export default class SetStatusAction extends React.Component {
 
         return (
             <div className="field">
-                <SelectField
-                    input={{
-                        value: action.getIn(['arguments', 'status']),
-                        onChange: v => updateActionArgs(index, fromJS({status: v})),
-                    }}
+                <InputField
+                    type="select"
+                    value={action.getIn(['arguments', 'status'])}
+                    onChange={value => updateActionArgs(index, fromJS({status: value}))}
                     required
                 >
                     {
@@ -34,7 +33,7 @@ export default class SetStatusAction extends React.Component {
                             </option>
                         )
                     }
-                </SelectField>
+                </InputField>
             </div>
         )
     }

@@ -1,9 +1,10 @@
 import React from 'react'
 import {Field} from 'redux-form'
-import {Button} from 'reactstrap'
+import {FormGroup, Label, Row, Col, Button} from 'reactstrap'
 
-import {InputField} from '../../../common/forms'
 import ErrorMessage from '../../../common/components/ErrorMessage'
+
+import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
 
 class UserContactField extends React.Component {
     render() {
@@ -17,28 +18,33 @@ class UserContactField extends React.Component {
         } = this.props
 
         return (
-            <div
-                className="field fields-array"
-                style={{marginBottom: '18px'}}
-            >
-                {label && <label>{label}</label>}
+            <FormGroup>
+                {label && <Label>{label}</Label>}
                 {meta.invalid && <ErrorMessage errors={meta.error} />}
                 {
                     fields.map((contact, index) =>
-                        <Field
+                        <Row
                             key={index}
-                            name={`${contact}.address`}
-                            type={type}
-                            placeholder={placeholder}
-                            buttons={[{
-                                className: 'btn-danger',
-                                label: <i className="fa fa-fw fa-trash-o fa-lg" />,
-                                onClick() {
-                                    fields.remove(index)
-                                }
-                            }]}
-                            component={InputField}
-                        />
+                            className="mb-3 form-row"
+                        >
+                            <Col xs="10">
+                                <Field
+                                    type={type}
+                                    name={`${contact}.address`}
+                                    placeholder={placeholder}
+                                    component={ReduxFormInputField}
+                                />
+                            </Col>
+                            <Col xs="2">
+                                <Button
+                                    color="danger"
+                                    type="button"
+                                    onClick={() => fields.remove(index)}
+                                >
+                                    <i className="fa fa-fw fa-trash-o fa-lg" />
+                                </Button>
+                            </Col>
+                        </Row>
                     )
                 }
 
@@ -51,7 +57,7 @@ class UserContactField extends React.Component {
                     <i className="fa fa-fw fa-plus mr-2" />
                     {addLabel}
                 </Button>
-            </div>
+            </FormGroup>
         )
     }
 }

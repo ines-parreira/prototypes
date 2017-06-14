@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
+import {Input} from 'reactstrap'
 
 export default class SetSubjectAction extends React.Component {
     componentDidMount() {
@@ -14,11 +15,8 @@ export default class SetSubjectAction extends React.Component {
 
     render() {
         return (
-            <div
-                className="ui content input"
-                style={{width: '100%'}}
-            >
-                <input
+            <div>
+                <Input
                     type="text"
                     onChange={e => this._updateSubject(e.target.value)}
                     value={this.props.action.getIn(['arguments', 'subject'], '')}

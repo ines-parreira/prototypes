@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Badge, Card, CardBlock, Button, Popover, PopoverTitle, PopoverContent} from 'reactstrap'
 
-import ToggleCheckbox from '../../../../common/forms/ToggleCheckbox'
+import ToggleButton from '../../../../common/components/ToggleButton'
 
 import RuleItem from '../../detail/components/RuleItem'
 
@@ -68,11 +68,9 @@ class RuleRow extends React.Component {
                 </td>
                 <td className="smallest align-middle">
                     <div id={toggleId}>
-                        <ToggleCheckbox
-                            input={{
-                                onChange: this._toggleItemStatus,
-                                value: !rule.get('deactivated_datetime'),
-                            }}
+                        <ToggleButton
+                            value={!rule.get('deactivated_datetime')}
+                            onChange={this._toggleItemStatus}
                         />
                     </div>
                     <Popover

@@ -1,36 +1,24 @@
-/* FileField
- */
+:local {
+  .preview {
+    @size: 33px;
 
- :local {
-    .button {
-        display: inline-block !important;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: @size;
+    width: @size;
+    margin-right: 8px;
 
-        vertical-align: top;
-        cursor: pointer;
-
-        input {
-            width: 0.1px;
-            height: 0.1px;
-            opacity: 0;
-            overflow: hidden;
-            position: absolute;
-            z-index: -1;
-        }
+    > img {
+      max-height: @size;
+      max-width: @size;
+      border-radius: 3px;
+      overflow: hidden;
     }
+  }
 
-    .preview {
-        height: 2.8em;
-        margin-left: 1em;
-    }
-
-    .preview,
-    .preview img {
-        display: inline-block !important;
-
-        vertical-align: top !important;
-    }
-
-    .preview img {
-        max-height: 100%;
-    }
+  .label {
+    cursor: pointer;
+    margin: 0;
+  }
 }

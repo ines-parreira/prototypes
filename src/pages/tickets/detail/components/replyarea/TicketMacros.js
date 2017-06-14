@@ -15,19 +15,17 @@ class TicketMacros extends React.Component {
     }
 
     renderMacroListItem = (macro) => {
-        const containerOpts = {
-            key: macro.get('id'),
-            className: classnames('item macro-item', {
-                active: macro.get('id') === this.props.macros.getIn(['selected', 'id'])
-            }),
-            onMouseEnter: () => this.props.previewMacro(macro),
-            onClick: () => this.props.applyMacro(macro),
-        }
-
         return (
-            <div {...containerOpts}>
+            <div
+                key={macro.get('id')}
+                className={classnames('macro-item', {
+                    active: macro.get('id') === this.props.macros.getIn(['selected', 'id'])
+                })}
+                onMouseEnter={() => this.props.previewMacro(macro)}
+                onClick={() => this.props.applyMacro(macro)}
+            >
                 <div className="content">
-                    <div className="">{macro.get('name')}</div>
+                    {macro.get('name')}
                 </div>
             </div>
         )
@@ -45,9 +43,7 @@ class TicketMacros extends React.Component {
                 style={{height: '100%'}}
             >
                 <div className="macro-list">
-                    <div className="ui aligned selection relaxed list">
-                        {items.map(this.renderMacroListItem).toList()}
-                    </div>
+                    {items.map(this.renderMacroListItem).toList()}
                 </div>
                 <div className="macro-preview-container">
                     <a

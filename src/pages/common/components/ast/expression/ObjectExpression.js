@@ -11,43 +11,41 @@ import Property from '../Property'
  })
 
  */
-const ObjectExpression = ({properties, leftsiblings, parent, actions, rule, schemas, config}) => {
-    const propertiesComp = properties.map((property, idx) => {
-        let leftsiblings2
-        if (leftsiblings !== undefined) {
-            leftsiblings2 = leftsiblings.push(property.key.name)
-        }
+export default class ObjectExpression extends React.Component {
+    static propTypes = {
+        leftsiblings: React.PropTypes.object.isRequired,
+        parent: React.PropTypes.object.isRequired,
+        properties: React.PropTypes.array.isRequired,
+        config: React.PropTypes.object,
+    }
 
-        const parentProperty = parent.push('properties', idx)
-        const argConfig = config ? config[property.key.name] : undefined
+    render() {
+        const {properties, leftsiblings, parent, config} = this.props
+
+        const propertiesComp = properties.map((property, idx) => {
+            let leftsiblings2
+            if (leftsiblings !== undefined) {
+                leftsiblings2 = leftsiblings.push(property.key.name)
+            }
+
+            const parentProperty = parent.push('properties', idx)
+            const argConfig = config ? config[property.key.name] : undefined
+
+            return (
+                <Property
+                    {...this.props}
+                    {...property}
+                    key={idx}
+                    theKey={property.key}
+                    leftsiblings={leftsiblings2}
+                    parent={parentProperty}
+                    config={argConfig}
+                />
+            )
+        })
+
         return (
-            <Property
-                {...property}
-                key={idx}
-                theKey={property.key}
-                leftsiblings={leftsiblings2}
-                parent={parentProperty}
-                actions={actions}
-                schemas={schemas}
-                config={argConfig}
-                rule={rule}
-            />
+            <div>{propertiesComp}</div>
         )
-    })
-
-    return (
-        <div className="ui form">{propertiesComp}</div>
-    )
+    }
 }
-
-ObjectExpression.propTypes = {
-    actions: React.PropTypes.object.isRequired,
-    rule: React.PropTypes.object.isRequired,
-    leftsiblings: React.PropTypes.object.isRequired,
-    parent: React.PropTypes.object.isRequired,
-    properties: React.PropTypes.array.isRequired,
-    schemas: React.PropTypes.object.isRequired,
-    config: React.PropTypes.object,
-}
-
-export default ObjectExpression

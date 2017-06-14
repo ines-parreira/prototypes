@@ -5,12 +5,15 @@ import {Field, reduxForm, getFormValues} from 'redux-form'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import _pick from 'lodash/pick'
+
 import ReactSortable from './../../../common/components/dragging/ReactSortable'
-import CheckboxField from '../../forms/CheckboxField'
-import {compactInteger} from '../../../../utils'
+import ReduxFormInputField from '../../forms/ReduxFormInputField'
+import BooleanField from '../../forms/BooleanField'
+
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 import {submitSetting} from '../../../../state/currentUser/actions'
 import {sortViews} from './utils'
+
 import css from './ViewNavbarViewEditor.less'
 
 class ViewNavbarViewEditor extends Component {
@@ -35,8 +38,7 @@ class ViewNavbarViewEditor extends Component {
         const {isLoading} = this.state
         const formValues = fromJS(this.props.formValues || {})
         const nextFormValues = fromJS(nextProps.formValues || {})
-        const formHasChanged = this.props.formValues && nextProps.formValues &&
-            !nextFormValues.get('data').equals(formValues.get('data'))
+        const formHasChanged = this.props.formValues && nextProps.formValues && !nextFormValues.get('data').equals(formValues.get('data'))
 
         // one or more views has been added while edit mode is enabled,
         // so we add view settings to the form data if it does not exist
@@ -99,32 +101,29 @@ class ViewNavbarViewEditor extends Component {
 
         return newView.map(view => {
             const viewId = view.get('id')
-            const itemClass = classnames('item', css.viewItem, {
-                [css.draggable]: !view.get('hide')
-            })
 
             return (
                 <div
                     key={viewId}
                     data-id={viewId}
-                    className={itemClass}
-                    onClick={() => {
-                        change(`data.${viewId}.hide`, !formValues.data[viewId].hide)
-                    }}
+                    className={classnames('item', css.viewItem, {
+                        [css.draggable]: !view.get('hide')
+                    })}
                 >
                     <Field
                         type="checkbox"
-                        label={`${view.get('name')} (${compactInteger(view.get('count', 0))})`}
-                        labelClassName={css.viewItemName}
+                        label={view.get('name')}
                         name={`data.${viewId}.hide`}
                         input={{
                             value: !formData.getIn([viewId.toString(), 'hide'], false),
-                            onChange: ({target}) => {
-                                change(`data.${viewId}.hide`, !target.checked)
-                                logEvent(`${target.checked ? 'Showed' : 'Hided'} a view`)
+                            onChange: (value) => {
+                                change(`data.${viewId}.hide`, !value)
+                                logEvent(`${value ? 'Showed' : 'Hided'} a view`)
                             }
                         }}
-                        component={CheckboxField}
+                        inline
+                        component={ReduxFormInputField}
+                        tag={BooleanField}
                     />
                 </div>
             )
@@ -143,27 +142,27 @@ class ViewNavbarViewEditor extends Component {
         })
 
         return !isLoading && (
-            <div>
-                <ReactSortable
-                    options={{
-                        sort: true,
-                        draggable: `.${css.draggable}`,
-                        chosenClass: css.chosen,
-                        ghostClass: css.ghost,
-                        animation: 150
-                    }}
-                    onChange={this._updateOrder}
-                >
-                    {this._renderViews(views)}
-                </ReactSortable>
-                <Link className={createButtonClass} to={`/app/${objectName}/new`}>
-                    <div>
-                        <i className="plus icon"/>
-                        Create new view
-                    </div>
-                </Link>
-            </div>
-        )
+                <div>
+                    <ReactSortable
+                        options={{
+                            sort: true,
+                            draggable: `.${css.draggable}`,
+                            chosenClass: css.chosen,
+                            ghostClass: css.ghost,
+                            animation: 150
+                        }}
+                        onChange={this._updateOrder}
+                    >
+                        {this._renderViews(views)}
+                    </ReactSortable>
+                    <Link className={createButtonClass} to={`/app/${objectName}/new`}>
+                        <div>
+                            <i className="plus icon" />
+                            Create new view
+                        </div>
+                    </Link>
+                </div>
+            )
     }
 }
 

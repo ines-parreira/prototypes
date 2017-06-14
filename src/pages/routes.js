@@ -31,7 +31,7 @@ import TicketListInfobarContainer from './tickets/list/TicketListInfobarContaine
 import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCardContainer'
-import ManageTagsContainer from './settings/manageTags/ManageTags'
+import ManageTagsContainer from './settings/tags/ManageTags'
 
 import * as Team from './settings/team'
 

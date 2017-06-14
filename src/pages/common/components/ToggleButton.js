@@ -1,25 +1,25 @@
-import React, {PropTypes} from 'react'
+import React, {Component, PropTypes} from 'react'
 import classnames from 'classnames'
 
-export default class  extends React.Component {
+export default class ToggleButton extends Component {
     static propTypes = {
-        inline: PropTypes.bool.isRequired,
-        input: PropTypes.object.isRequired,
-        disabled: PropTypes.bool.isRequired
+        disabled: PropTypes.bool,
+        inline: PropTypes.bool,
+        onChange: PropTypes.func.isRequired,
+        value: PropTypes.bool.isRequired,
     }
 
-    static defaultProps = {
-        disabled: false,
-        inline: false
-    }
-
-    _onClick = (e) => {
+    _onChange = (e) => {
         e.preventDefault()
-        return this.props.input.onChange(!this.props.input.value)
+        const value = !this.props.value
+        this.props.onChange(value)
     }
 
     render() {
+        const {value} = this.props
+
         const style = {}
+
         if (this.props.inline) {
             style.verticalAlign = 'middle'
             style.overflow = 'visible'
@@ -30,12 +30,12 @@ export default class  extends React.Component {
                 className={classnames('ui toggle checkbox', {
                     'd-flex': !this.props.inline
                 })}
-                onClick={this._onClick}
+                onClick={this._onChange}
                 style={style}
             >
                 <input
                     type="checkbox"
-                    checked={this.props.input.value}
+                    checked={value}
                     readOnly
                     disabled={this.props.disabled}
                 />

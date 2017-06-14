@@ -1,11 +1,14 @@
 import React, {Component, PropTypes} from 'react'
 import classnames from 'classnames'
-import {Button, FormGroup, UncontrolledTooltip} from 'reactstrap'
+import {Form, Label, Button, FormGroup} from 'reactstrap'
 import {connect} from 'react-redux'
-import PageHeader from '../../../pages/common/components/PageHeader'
-import TextAreaField from '../../../pages/common/forms/TextAreaField'
+
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import * as currentAccountActions from '../../../state/currentAccount/actions'
+
+import InputField from '../../common/forms/InputField'
+import BooleanField from '../../common/forms/BooleanField'
+import PageHeader from '../../../pages/common/components/PageHeader'
 
 function mapStateToProps(state) {
     return {
@@ -34,14 +37,6 @@ export default class ChatContainer extends Component {
         }
     }
 
-    _onChangeAutoResponderEnabled = ({target: {checked}}) => {
-        this.setState({autoResponderEnabled: checked})
-    }
-
-    _onChangeAutoResponderText = ({target: {value}}) => {
-        this.setState({autoResponderText: value})
-    }
-
     _submitAccountChatSetting = (event) => {
         event.preventDefault()
 
@@ -65,67 +60,38 @@ export default class ChatContainer extends Component {
 
         return (
             <div>
-                <PageHeader title="Chat" icon="comments"/>
+                <PageHeader title="Chat" icon="comments" />
                 <div className="mb-3">
                     <p>
                         When your team is not available to chat, you can configure an auto-response for your customers.
                         This will impact chat & Facebook Messenger.
                     </p>
-                    <form onSubmit={this._submitAccountChatSetting}>
+                    <Form onSubmit={this._submitAccountChatSetting}>
                         <FormGroup>
-                            <label className="control-label">
+                            <Label>
                                 Auto-responder status
-                            </label>
-                            <div className="ui field">
-                                <div className="ui checkbox">
-                                    <input
-                                        id="enable-auto-responder"
-                                        name="enable-auto-responder"
-                                        type="checkbox"
-                                        checked={autoResponderEnabled}
-                                        onChange={this._onChangeAutoResponderEnabled}
-                                    />
-                                    <label
-                                        className="clickable"
-                                        htmlFor="enable-auto-responder"
-                                    >
-                                        Enable auto-responder when no agent is available for chat
-                                    </label>
-                                </div>
-                            </div>
-
+                            </Label>
+                            <BooleanField
+                                name="enable_auto_responder"
+                                type="checkbox"
+                                label="Enable auto-responder when no agent is available for chat"
+                                value={autoResponderEnabled}
+                                onChange={value => this.setState({autoResponderEnabled: value})}
+                            />
                         </FormGroup>
-                        <FormGroup>
-                            <div className="ui field">
-                                <TextAreaField
-                                    label={
-                                        <span>
 
-                                        Auto-responder text
-                                         <span>
-                                    <i
-                                        id="auto-response-text"
-                                        className="help circle link icon"
-                                    />
-                                    <UncontrolledTooltip
-                                        placement="top"
-                                        target="auto-response-text"
-                                        delay={0}
-                                    >
-                                        When all people available for chat reach the maximum number of open chats,
-                                        the user gets this auto-response.
-                                    </UncontrolledTooltip>
-                                </span>
-                                    </span>
-                                    }
-                                    input={{
-                                        value: autoResponderText,
-                                        onChange: this._onChangeAutoResponderText,
-                                    }}
-                                />
-                            </div>
-                        </FormGroup>
-                        <FormGroup>
+                        <InputField
+                            type="textarea"
+                            name="text"
+                            label="Auto-responder text"
+                            value={autoResponderText}
+                            onChange={value => this.setState({autoResponderText: value})}
+                            help="When all people available for chat reach the maximum number of open chats, the user gets this auto-response"
+                            rows="3"
+                            required
+                        />
+
+                        <div>
                             <Button
                                 type="submit"
                                 color="primary"
@@ -133,12 +99,11 @@ export default class ChatContainer extends Component {
                                     'btn-loading': isUpdating
                                 })}
                                 disabled={isUpdating}
-
                             >
                                 Save
                             </Button>
-                        </FormGroup>
-                    </form>
+                        </div>
+                    </Form>
                 </div>
             </div>
         )

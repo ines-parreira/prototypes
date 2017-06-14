@@ -5,13 +5,16 @@ import {Link, browserHistory} from 'react-router'
 import classNames from 'classnames'
 import _truncate from 'lodash/truncate'
 import {
+    Form,
+    FormGroup,
     Breadcrumb,
     BreadcrumbItem,
     Button,
 } from 'reactstrap'
 
-import {CheckboxField} from '../../../../common/forms'
 import Loader from '../../../../common/components/Loader'
+
+import BooleanField from '../../../../common/forms/BooleanField'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
@@ -82,9 +85,7 @@ export default class FacebookIntegrationSetup extends React.Component {
         browserHistory.push('/app/integrations/facebook')
     }
 
-    _onChange = (event) => {
-        const [id, name] = event.target.name.split('.')
-        const value = event.target.checked
+    _onChange = (value, id, name) => {
         this.state.pages[id][name] = value
 
         // if page_enabled option changes, set the same value for following values
@@ -108,7 +109,7 @@ export default class FacebookIntegrationSetup extends React.Component {
         }
 
         return (
-            <div className="ui list">
+            <div>
                 {
                     integrations.map((i) => {
                         const id = i.get('id')
@@ -116,8 +117,8 @@ export default class FacebookIntegrationSetup extends React.Component {
 
                         return (
                             <div
-                                className={classNames('ui item', css.setupListItem)}
                                 key={id}
+                                className="mb-3"
                             >
                                 <div className="d-flex align-items-center mb-3">
                                     <img
@@ -134,50 +135,41 @@ export default class FacebookIntegrationSetup extends React.Component {
                                         </p>
                                     </div>
                                 </div>
-                                <div className="ui content">
-                                    <div className="field">
-                                        <CheckboxField
-                                            label="Enable this page"
+
+                                <div>
+                                    <FormGroup>
+                                        <BooleanField
                                             name={`${id}.page_enabled`}
-                                            input={{
-                                                value: this._getValue(id, 'page_enabled'),
-                                                onChange: this._onChange,
-                                            }}
+                                            type="checkbox"
+                                            label="Enable this page"
+                                            value={this._getValue(id, 'page_enabled')}
+                                            onChange={value => this._onChange(value, id, 'page_enabled')}
                                         />
-                                    </div>
-                                    <div className="field">
-                                        <CheckboxField
-                                            label="Enable Facebook Messenger"
+                                        <BooleanField
                                             name={`${id}.private_messages_enabled`}
-                                            input={{
-                                                value: this._getValue(id, 'private_messages_enabled'),
-                                                disabled: !this._getValue(id, 'page_enabled'),
-                                                onChange: this._onChange,
-                                            }}
+                                            type="checkbox"
+                                            label="Enable Facebook Messenger"
+                                            value={this._getValue(id, 'private_messages_enabled')}
+                                            onChange={value => this._onChange(value, id, 'private_messages_enabled')}
+                                            disabled={!this._getValue(id, 'page_enabled')}
                                         />
-                                    </div>
-                                    <div className="field">
-                                        <CheckboxField
-                                            label="Enable Facebook Posts & Comments"
+                                        <BooleanField
                                             name={`${id}.posts_enabled`}
-                                            input={{
-                                                value: this._getValue(id, 'posts_enabled'),
-                                                disabled: !this._getValue(id, 'page_enabled'),
-                                                onChange: this._onChange,
-                                            }}
+                                            type="checkbox"
+                                            label="Enable Facebook posts & comments"
+                                            value={this._getValue(id, 'posts_enabled')}
+                                            onChange={value => this._onChange(value, id, 'posts_enabled')}
+                                            disabled={!this._getValue(id, 'page_enabled')}
                                         />
-                                    </div>
-                                    <div className="field">
-                                        <CheckboxField
-                                            label="Import 30 days of history (posts, comments and messages) as closed tickets"
+                                        <BooleanField
                                             name={`${id}.import_history_enabled`}
-                                            input={{
-                                                value: this._getValue(id, 'import_history_enabled'),
-                                                disabled: !this._getValue(id, 'page_enabled'),
-                                                onChange: this._onChange,
-                                            }}
+                                            type="checkbox"
+                                            label="Import 30 days of history (posts, comments and messages) as closed tickets"
+                                            value={this._getValue(id, 'import_history_enabled')}
+                                            onChange={value => this._onChange(value, id, 'import_history_enabled')}
+                                            disabled={!this._getValue(id, 'page_enabled')}
                                         />
-                                    </div>
+                                    </FormGroup>
                                 </div>
                             </div>
                         )
@@ -212,10 +204,7 @@ export default class FacebookIntegrationSetup extends React.Component {
                 <h1>Facebook Pages setup</h1>
                 <p>One last step: choose the pages you want to manage with Gorgias.</p>
 
-                <form
-                    className="ui form"
-                    onSubmit={this._handleSubmit}
-                >
+                <Form onSubmit={this._handleSubmit}>
                     {this._renderPages()}
 
                     <div className="mt-3">
@@ -229,7 +218,7 @@ export default class FacebookIntegrationSetup extends React.Component {
                             Add Pages
                         </Button>
                     </div>
-                </form>
+                </Form>
             </div>
         )
     }

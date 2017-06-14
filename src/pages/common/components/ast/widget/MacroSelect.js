@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
+import {Input} from 'reactstrap'
+
 import {getActionTemplate} from './../../../../../utils'
 
 import Select from './Select'
@@ -45,9 +47,11 @@ class MacroSelect extends React.Component {
 
         if (options.isEmpty()) {
             return (
-                <div className="ui input">
-                    <input type="text" placeholder="Loading macros..." readOnly="true"/>
-                </div>
+                <Input
+                    type="text"
+                    placeholder="Loading macros..."
+                    readOnly
+                />
             )
         }
 

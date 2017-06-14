@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import {Field, reduxForm} from 'redux-form'
-import {Button} from 'reactstrap'
+import {Form, Button} from 'reactstrap'
 
-import {InputField, SelectField} from '../../../forms'
+import ReduxFormInputField from '../../../forms/ReduxFormInputField'
 
 class TooltipWidgetEditField extends React.Component {
     componentDidMount() {
@@ -53,21 +53,20 @@ class TooltipWidgetEditField extends React.Component {
                 onClick={this._preventPropagation}
             >
                 <div className="content">
-                    <form
-                        className="ui form"
-                        onSubmit={handleSubmit(this._handleSubmit)}
-                    >
+                    <Form onSubmit={handleSubmit(this._handleSubmit)}>
                         <Field
-                            label="Title"
+                            type="text"
                             name="title"
+                            label="Title"
                             required
-                            component={InputField}
+                            component={ReduxFormInputField}
                         />
                         <Field
-                            label="Type"
+                            type="select"
                             name="type"
+                            label="Type"
                             required
-                            component={SelectField}
+                            component={ReduxFormInputField}
                         >
                             <option value="text">Text</option>
                             <option value="date">Date</option>
@@ -94,7 +93,7 @@ class TooltipWidgetEditField extends React.Component {
                                 Cancel
                             </Button>
                         </div>
-                    </form>
+                    </Form>
                 </div>
             </div>
         )

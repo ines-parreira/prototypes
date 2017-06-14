@@ -7,21 +7,24 @@ import _capitalize from 'lodash/capitalize'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import {
+    Form,
     Button,
-    UncontrolledTooltip,
     Breadcrumb,
     BreadcrumbItem,
+    InputGroup,
+    InputGroupButton,
+    Input,
 } from 'reactstrap'
 
 import Loader from '../../../../../common/components/Loader'
-import {InputField} from '../../../../../common/forms'
-import css from './EmailIntegrationUpdate.less'
 import formSender from '../../../../../common/utils/formSender'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import {GMAIL_IMPORTED_THREADS} from '../../../../../../config'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
+
+import ReduxFormInputField from '../../../../../common/forms/ReduxFormInputField'
 
 class EmailIntegrationUpdate extends React.Component {
     state = {
@@ -157,7 +160,7 @@ class EmailIntegrationUpdate extends React.Component {
         const address = integration.getIn(['meta', 'address'], '')
 
         return (
-            <div className="ui form">
+            <div>
                 <h3>
                     Setup instructions
                 </h3>
@@ -175,26 +178,25 @@ class EmailIntegrationUpdate extends React.Component {
                     </a>
                     .
                 </p>
-                <div className={`field ${css.form}`}>
-                    <div className="ui action input fluid">
-                        <input
-                            id="forwarding-email"
-                            type="text"
-                            value={`${address.split('@')[0]}@${domain}.gorgias.io`}
-                            className={`${css['email-input']}`}
-                            readOnly
-                        />
+
+                <InputGroup>
+                    <Input
+                        id="forwarding-email"
+                        type="text"
+                        value={`${address.split('@')[0]}@${domain}.gorgias.io`}
+                        readOnly
+                    />
+                    <InputGroupButton>
                         <Button
                             id="copy-forwarding-email"
-                            type="button"
                             color="info"
                             data-clipboard-target="#forwarding-email"
                         >
                             <i className="copy icon mr-2" />
                             {this.state.isCopied ? 'COPIED!' : 'COPY'}
                         </Button>
-                    </div>
-                </div>
+                    </InputGroupButton>
+                </InputGroup>
             </div>
         )
     }
@@ -218,67 +220,54 @@ class EmailIntegrationUpdate extends React.Component {
 
         return (
             <div className="mt-4">
-                <h2 className="ui header">
+                <h3>
                     Settings
-                </h2>
-                <form
-                    className={`ui form ${css.form}`}
-                    onSubmit={handleSubmit((values) => this._handleSubmit('email', values))}
-                >
+                </h3>
+                <Form onSubmit={handleSubmit((values) => this._handleSubmit('email', values))}>
                     <Field
                         type="text"
                         name="name"
+                        label="Address name"
                         placeholder={`${_capitalize(domain)} Support`}
-                        component={InputField}
-                        label={
-                            <div>
-                                Address name
-                                <i
-                                    id="address-name"
-                                    className="help circle link icon"
-                                />
-                                <UncontrolledTooltip
-                                    placement="top"
-                                    target="address-name"
-                                    delay={0}
-                                >
-                                    The name that customers will see when they receive emails from you
-                                </UncontrolledTooltip>
-                            </div>
-                        }
+                        required
+                        help="The name that customers will see when they receive emails from you"
+                        component={ReduxFormInputField}
                     />
-                    <Button
-                        type="submit"
-                        color="primary"
-                        disabled={pristine || isSubmitting || isDeleting}
-                        className={classNames({
-                            'btn-loading': isSubmitting,
-                        })}
-                    >
-                        Save changes
-                    </Button>
-                    {
-                        isDeactivated && isGmail && (
-                            <Button
-                                className="ml-2"
-                                tag="a"
-                                color="success"
-                                href={`/integrations/gmail/auth?integration_id=${integration.get('id')}`}
-                            >
-                                Re-activate
-                            </Button>
-                        )
-                    }
 
-                    <ConfirmButton
-                        className="pull-right"
-                        color="danger"
-                        confirm={() => deleteIntegration(integration, 'email')}
-                        content="Are you sure you want to delete this integration?"
-                    >
-                        Delete email address
-                    </ConfirmButton>
-                </form>
+                    <div>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            disabled={pristine || isSubmitting || isDeleting}
+                            className={classNames({
+                                'btn-loading': isSubmitting,
+                            })}
+                        >
+                            Save changes
+                        </Button>
+                        {
+                            isDeactivated && isGmail && (
+                                <Button
+                                    className="ml-2"
+                                    tag="a"
+                                    color="success"
+                                    href={`/integrations/gmail/auth?integration_id=${integration.get('id')}`}
+                                >
+                                    Re-activate
+                                </Button>
+                            )
+                        }
+
+                        <ConfirmButton
+                            className="pull-right"
+                            color="danger"
+                            confirm={() => deleteIntegration(integration, 'email')}
+                            content="Are you sure you want to delete this integration?"
+                        >
+                            Delete email address
+                        </ConfirmButton>
+                    </div>
+                </Form>
             </div>
         )
     }
