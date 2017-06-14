@@ -132,7 +132,8 @@ export const hasAttachments = createSelector(
 export const isReady = createSelector(
     [getNewMessage, hasNewMessageRecipients, hasAttachments, isNewMessagePublic, isForward],
     (newMessage, hasRecipients, hasAttachments, isNewMessagePublic, isForward) => {
-        return (newMessage.get('body_text') || hasAttachments || isForward)
+        const hasText = /\S/.test(newMessage.get('body_text') || '')
+        return (hasText || hasAttachments || isForward)
             && (hasRecipients || !isNewMessagePublic)
     }
 )

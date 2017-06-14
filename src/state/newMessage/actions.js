@@ -468,17 +468,15 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
                     })
                 }
 
-                return resp
+                return Promise.resolve(resp)
             }, error => {
-                dispatch({
+                return dispatch({
                     type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                     error,
                     reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.',
                     message: messageToSend,
                     messageId,
                 })
-
-                return promise
             })
     }
 }
@@ -530,7 +528,9 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
                     resp,
                 })
 
-                return dispatch(resetReceiversAndSender)
+                dispatch(resetReceiversAndSender)
+
+                return Promise.resolve(resp)
             }, error => {
                 return dispatch({
                     type: types.NEW_MESSAGE_SUBMIT_TICKET_ERROR,

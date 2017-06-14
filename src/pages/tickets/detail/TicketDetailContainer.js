@@ -21,6 +21,9 @@ import MacroContainer from '../common/macros/MacroContainer'
 import SocketIO from '../../common/utils/socketio'
 
 import * as newMessageActions from '../../../state/newMessage/actions'
+
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+import * as newMessageSelectors from '../../../state/newMessage/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 import * as ticketSelectors from '../../../state/ticket/selectors'
 
@@ -37,6 +40,7 @@ import * as ticketSelectors from '../../../state/ticket/selectors'
         newMessage: state.newMessage,
         tickets: state.tickets,
         isTicketDirty: ticketSelectors.isDirty(state),
+        canSendMessage: currentAccountSelectors.isAccountActive(state) && newMessageSelectors.isReady(state),
     }
 }, (dispatch) => {
     return {
@@ -60,6 +64,7 @@ export default class TicketDetailContainer extends React.Component {
             ticketId: PropTypes.string
         }).isRequired,
         isTicketDirty: PropTypes.bool.isRequired,
+        canSendMessage: PropTypes.bool.isRequired,
 
         actions: PropTypes.object.isRequired,
         submitTicket: PropTypes.func.isRequired,
@@ -258,11 +263,12 @@ export default class TicketDetailContainer extends React.Component {
                         if (e.preventDefault) {
                             e.preventDefault()
                         }
+
+                        if (!this.props.canSendMessage) {
+                            return
+                        }
+
                         this._submit()
-                        logEvent('Sent message', {
-                            ticket: _pick(this.props.ticket.toJS(), ['id', 'channel']),
-                            andClose: false,
-                        })
                     }
                 }
             },
@@ -272,11 +278,12 @@ export default class TicketDetailContainer extends React.Component {
                         if (e.preventDefault) {
                             e.preventDefault()
                         }
+
+                        if (!this.props.canSendMessage) {
+                            return
+                        }
+
                         this._submit('closed', true)
-                        logEvent('Sent message', {
-                            ticket: _pick(this.props.ticket.toJS(), ['id', 'channel']),
-                            andClose: true,
-                        })
                     }
                 }
             }
@@ -328,6 +335,15 @@ export default class TicketDetailContainer extends React.Component {
             // Or the ticket isn't dirty, and we don't want to send an empty message.
             return
         }
+
+        if (!this.props.canSendMessage) {
+            return
+        }
+
+        logEvent('Sent message', {
+            ticket: _pick(ticket.toJS(), ['id', 'channel']),
+            andClose: !!next,
+        })
 
         let promise
 

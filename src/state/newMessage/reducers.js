@@ -19,7 +19,7 @@ import {
     getChannelFromSourceType,
 } from '../ticket/utils'
 
-export const newMessage = (channel, sourceType) => fromJS({
+export const makeNewMessage = (channel, sourceType) => fromJS({
     via: 'helpdesk',
     public: true,
     from_agent: true,
@@ -55,7 +55,7 @@ export const initialState = fromJS({
             submitMessage: false,
         },
     },
-    newMessage: newMessage('email', 'email')
+    newMessage: makeNewMessage('email', 'email')
 })
 
 export default (state = initialState, action) => {
@@ -101,7 +101,7 @@ export default (state = initialState, action) => {
             )
 
         case ticketTypes.CLEAR_TICKET: {
-            return state.set('newMessage', newMessage('email', 'email'))
+            return state.set('newMessage', makeNewMessage('email', 'email'))
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_START: {
@@ -130,7 +130,7 @@ export default (state = initialState, action) => {
                 return newState
             }
 
-            return newState.set('newMessage', newMessage(channel, getSourceTypeOfResponse(messages)))
+            return newState.set('newMessage', makeNewMessage(channel, getSourceTypeOfResponse(messages)))
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_ERROR: {
@@ -143,7 +143,14 @@ export default (state = initialState, action) => {
 
             const sourceType = getSourceTypeOfResponse(messages)
 
-            return state.set('newMessage', newMessage(getChannelFromSourceType(sourceType), sourceType))
+            const newMessage = makeNewMessage(getChannelFromSourceType(sourceType), sourceType)
+                .set('subject', state.getIn(['newMessage', 'subject']))
+                .set('body_text', state.getIn(['newMessage', 'body_text']))
+                .set('body_html', state.getIn(['newMessage', 'body_html']))
+                .set('attachments', state.getIn(['newMessage', 'attachments']))
+                .set('macros', state.getIn(['newMessage', 'macros']))
+
+            return state.set('newMessage', newMessage)
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
@@ -168,13 +175,13 @@ export default (state = initialState, action) => {
                 return newState
             }
 
-            return newState.set('newMessage', newMessage(channel, getSourceTypeOfResponse(messages)))
+            return newState.set('newMessage', makeNewMessage(channel, getSourceTypeOfResponse(messages)))
         }
 
         case types.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
             const {messages} = action.resp
             const sourceType = getSourceTypeOfResponse(messages)
-            return state.set('newMessage', newMessage(getChannelFromSourceType(sourceType, messages), sourceType))
+            return state.set('newMessage', makeNewMessage(getChannelFromSourceType(sourceType, messages), sourceType))
                 .mergeDeep({
                     state: {
                         dirty: false,

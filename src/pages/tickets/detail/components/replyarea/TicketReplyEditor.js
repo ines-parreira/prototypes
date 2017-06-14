@@ -149,8 +149,8 @@ class TicketReplyEditor extends React.Component {
                     }}
                     input={{
                         value: {
-                            text: '',
-                            html: '',
+                            text: newMessage.getIn(['newMessage', 'body_text']),
+                            html: newMessage.getIn(['newMessage', 'body_html']),
                         },
                         onChange: this._updateReducer,
                     }}

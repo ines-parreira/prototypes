@@ -1,6 +1,6 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
-import reducer, {newMessage, initialState} from '../reducers'
+import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
@@ -121,7 +121,7 @@ describe('New message reducer', () => {
                 type: types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
                 resp: {
                     channel: 'email',
-                    messages: [newMessage('email', 'email')],
+                    messages: [makeNewMessage('email', 'email')],
                 },
                 resetMessage: true
             })

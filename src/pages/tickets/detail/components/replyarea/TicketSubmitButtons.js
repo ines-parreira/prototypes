@@ -1,11 +1,9 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import _pick from 'lodash/pick'
 import {UncontrolledTooltip} from 'reactstrap'
 
 import shortcutManager from '../../../../common/utils/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
-import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 
 import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
@@ -14,8 +12,7 @@ import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 @connect((state) => {
     return {
-        canSendMessage: currentAccountSelectors.isAccountActive(state),
-        isNewMessageReady: newMessageSelectors.isReady(state),
+        canSendMessage: currentAccountSelectors.isAccountActive(state) && newMessageSelectors.isReady(state),
         newMessage: state.newMessage,
     }
 })
@@ -25,31 +22,21 @@ export default class TicketSubmitButtons extends React.Component {
         newMessage: PropTypes.object.isRequired,
         submit: PropTypes.func.isRequired,
         canSendMessage: PropTypes.bool.isRequired,
-        isNewMessageReady: PropTypes.bool.isRequired,
-    }
-
-    static defaultProps = {
-        canSendMessage: true,
-        isNewMessageReady: false,
     }
 
     submit = (status, next) => {
         const isSending = this.props.newMessage.getIn(['_internal', 'loading', 'submitMessage'])
 
-        // we use `next` var to determine if the ticket is closed after send action
-        if (!isSending) {
-            logEvent('Sent message', {
-                ticket: _pick(this.props.ticket.toJS(), ['id', 'channel']),
-                andClose: next,
-            })
+        if (isSending) {
+            return
         }
 
-        return this.props.submit(status, next)
+        this.props.submit(status, next)
     }
 
     render() {
-        const {newMessage, isNewMessageReady, canSendMessage, ticket} = this.props
-        const disabled = !canSendMessage || !isNewMessageReady
+        const {newMessage, canSendMessage, ticket} = this.props
+        const disabled = !canSendMessage
         const loading = newMessage.getIn(['_internal', 'loading', 'submitMessage'])
 
         const hasTitle = !!ticket.get('subject')
