@@ -68,7 +68,7 @@ class IntegrationDetailContainer extends React.Component {
         const commonProps = {
             integration: integrations.get('integration', fromJS({})),
             integrations: integrations.get('integrations', fromJS([]))
-                .sort((a, b) => compare(a.get('name', '').toLowerCase(), b.get('name', '').toLowerCase())),
+                .sort((a, b) => compare((a.get('name') || '').toLowerCase(), (b.get('name') || '').toLowerCase())),
             loading: integrations.getIn(['state', 'loading'], fromJS({})),
         }
 
