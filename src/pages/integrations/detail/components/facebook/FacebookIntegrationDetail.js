@@ -14,6 +14,7 @@ import {
 
 import Loader from '../../../../common/components/Loader'
 import {CheckboxField} from '../../../../common/forms'
+import AutoResponderSection from '../../../common/AutoResponderSection'
 
 export default class FacebookIntegrationDetail extends React.Component {
     state = {
@@ -110,6 +111,9 @@ export default class FacebookIntegrationDetail extends React.Component {
                     </div>
                 </div>
 
+                <AutoResponderSection/>
+
+                <h3>Settings</h3>
                 <div className="ui form">
                     <div className="field">
                         <CheckboxField

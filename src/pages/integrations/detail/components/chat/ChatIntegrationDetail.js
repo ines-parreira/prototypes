@@ -22,6 +22,7 @@ import {InputField, TextAreaField, ColorField, FileField} from '../../../../comm
 import formSender from '../../../../common/utils/formSender'
 import ChatIntegrationPreview from './ChatIntegrationPreview'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+import AutoResponderSection from '../../../common/AutoResponderSection'
 
 import css from './ChatIntegrationDetail.less'
 
@@ -202,7 +203,7 @@ class ChatIntegrationDetail extends React.Component {
         }
 
         return (
-            <div>
+            <div className="mb-4">
                 <h3>
                     Setup instructions
                 </h3>
@@ -331,8 +332,7 @@ class ChatIntegrationDetail extends React.Component {
                 <h1>{isUpdate ? `Chat: ${integration.get('name')}` : 'Add new chat'}</h1>
 
                 {this._renderInstructions(isUpdate, isSubmitting)}
-
-                <br />
+                <AutoResponderSection/>
 
                 <Container fluid>
                     <Row>

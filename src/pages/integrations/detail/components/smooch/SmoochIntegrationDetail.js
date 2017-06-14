@@ -14,6 +14,7 @@ import {
 import formSender from '../../../../common/utils/formSender'
 import InputField from './../../../../common/forms/InputField'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+import AutoResponderSection from '../../../common/AutoResponderSection'
 
 import Loader from '../../../../common/components/Loader'
 
@@ -101,6 +102,8 @@ class SmoochIntegrationDetail extends React.Component {
                 </Breadcrumb>
 
                 <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
+
+                <AutoResponderSection/>
 
                 <form
                     className="ui form"
