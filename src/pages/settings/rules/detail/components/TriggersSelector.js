@@ -54,8 +54,7 @@ export default class TriggersSelector extends React.Component {
                             <DropdownToggle
                                 color="link"
                                 type="button"
-                                className="mr-1 ml-1 d-inline-flex align-items-center"
-                                style={{padding: 0}}
+                                className="mr-1 ml-1 p-0 d-inline-flex align-items-center"
                             >
                                 <i className="fa fa-fw fa-plus mr-1" />
                                 {selectedTriggers.length === 0 && 'Select a trigger'}

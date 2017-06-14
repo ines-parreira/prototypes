@@ -153,10 +153,9 @@ export class TicketTags extends React.Component {
                     toggle={this._toggle}
                 >
                     <DropdownToggle
-                        className="d-inline-flex align-items-center"
+                        className="d-inline-flex align-items-center p-0"
                         color="link"
                         type="button"
-                        style={{padding: 0}}
                     >
                         <i className="fa fa-fw fa-plus" />
                         {

@@ -68,7 +68,7 @@ export default class EmailIntegrationList extends React.Component {
                             </div>
                         </Link>
                     </td>
-                    <td className="smallest">
+                    <td className="smallest align-middle p-0">
                         <div>
                             {
                                 !active && isGmail && (

@@ -279,8 +279,8 @@ class ChatIntegrationDetail extends React.Component {
                             </Button>
                         </CardHeader>
 
-                        <CardBlock style={{padding: 0}}>
-                            <Alert color="info" style={{margin: 0}}>
+                        <CardBlock className="p-0">
+                            <Alert color="info" className="m-0">
                                 <pre
                                     style={{
                                         display: 'flex',
@@ -442,7 +442,7 @@ class ChatIntegrationDetail extends React.Component {
                                 </div>
                             </Form>
                         </Col>
-                        <Col style={{padding: 0}}>
+                        <Col className="p-0">
                             <ChatIntegrationPreview
                                 currentUser={currentUser}
                                 name={this.formValues.get('name')}

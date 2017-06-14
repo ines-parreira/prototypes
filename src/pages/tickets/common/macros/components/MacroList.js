@@ -28,10 +28,7 @@ export default class MacroList extends React.Component {
 
         return (
             <div style={{height: '100%'}}>
-                <div
-                    className="ui secondary vertical fluid menu"
-                    style={{margin: 0}}
-                >
+                <div className="ui secondary vertical fluid menu m-0">
                     <div
                         className="ui icon input"
                         style={{
@@ -59,12 +56,11 @@ export default class MacroList extends React.Component {
 
                             const props = {
                                 key: macro.get('id'),
-                                className: classnames('item', {
+                                className: classnames('item m-0', {
                                     active: currentMacro && macro.get('id') === currentMacro.get('id'),
                                     disabled: isDisabled
                                 }),
                                 onClick: isDisabled ? null : () => actions.previewMacroInModal(macro.get('id')),
-                                style: {margin: '0'},
                             }
 
                             return (

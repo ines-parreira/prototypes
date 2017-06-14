@@ -163,7 +163,7 @@ export default class TicketAssignee extends React.Component {
                     <DropdownToggle
                         color="link"
                         type="button"
-                        style={{padding: 0}}
+                        className="p-0"
                     >
                         {
                             currentAssignee ? (

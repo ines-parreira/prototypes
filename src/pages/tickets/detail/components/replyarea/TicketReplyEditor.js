@@ -164,7 +164,7 @@ class TicketReplyEditor extends React.Component {
                             <div className="attachment">
                                 <label
                                     htmlFor="attachments-input"
-                                    style={{margin: 0}}
+                                    className="m-0"
                                 >
                                     {
                                         newMessage.getIn(['_internal', 'loading', 'addAttachment'])
