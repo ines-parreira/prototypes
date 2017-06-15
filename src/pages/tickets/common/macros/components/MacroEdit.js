@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input} from 'reactstrap'
+import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 import {generateDefaultAction} from '../../../../../state/macro/utils'
 
