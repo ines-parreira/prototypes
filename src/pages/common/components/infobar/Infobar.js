@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {Button, UncontrolledTooltip} from 'reactstrap'
-import {areSourcesReady, isCustomerDataPresent} from './utils'
+import {areSourcesReady} from './utils'
 
 import * as infobarActions from '../../../../state/infobar/actions'
 
@@ -52,6 +52,10 @@ export default class Infobar extends React.Component {
         suggestedUser: fromJS({}),
     }
 
+    componentWillMount() {
+        this._updateSimilarUser(this.props)
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.props.identifier !== nextProps.identifier) {
             this._resetSearch()
@@ -68,39 +72,32 @@ export default class Infobar extends React.Component {
 
         // if user changed then try to find a suggestion of other user to merge with it
         if (!this.props.user.equals(nextProps.user)) {
-            this.setState({suggestedUser: fromJS({})})
-
-            if (nextProps.user.isEmpty()) {
-                return
-            }
-
-            const customer = nextProps.user.get('customer') || fromJS({})
-
-            // if there is already a customer, don't suggest merge
-            if (isCustomerDataPresent(customer)) {
-                return
-            }
-
-            this.props.searchSimilarUser(nextProps.user.get('id')).then(({user: suggestion}) => {
-                if (!suggestion) {
-                    return
-                }
-
-                suggestion = fromJS(suggestion)
-
-                if (suggestion.isEmpty()) {
-                    return
-                }
-
-                const customer = suggestion.get('customer') || fromJS({})
-
-                if (isCustomerDataPresent(customer)) {
-                    this.setState({
-                        suggestedUser: suggestion,
-                    })
-                }
-            })
+            this._updateSimilarUser(nextProps)
         }
+    }
+
+    _updateSimilarUser = (props) => {
+        this.setState({suggestedUser: fromJS({})})
+
+        if (props.user.isEmpty()) {
+            return
+        }
+
+        this.props.searchSimilarUser(props.user.get('id')).then(({user: suggestion}) => {
+            if (!suggestion) {
+                return
+            }
+
+            suggestion = fromJS(suggestion)
+
+            if (suggestion.isEmpty()) {
+                return
+            }
+
+            this.setState({
+                suggestedUser: suggestion,
+            })
+        })
     }
 
     _mode = (state = this.state) => {
@@ -333,7 +330,6 @@ export default class Infobar extends React.Component {
         }
 
         const displaySuggestedUser = !this.state.suggestedUser.isEmpty()
-            && !this.state.suggestedUser.get('customer', fromJS({})).isEmpty()
             && !this.props.widgets.getIn(['_internal', 'isEditing'])
 
         return (

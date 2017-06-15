@@ -57,7 +57,9 @@ export default (state = initialState, action) => {
         }
 
         case types.FETCH_USER_START: {
-            return state.setIn(['_internal', 'loading', 'active'], true)
+            return state
+                .set('active', fromJS({}))
+                .setIn(['_internal', 'loading', 'active'], true)
         }
 
         case types.FETCH_USER_SUCCESS: {
