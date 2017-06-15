@@ -23,6 +23,7 @@ class CreditCard extends Component {
         handleSubmit: PropTypes.func.isRequired,
         invalid: PropTypes.bool.isRequired,
         pristine: PropTypes.bool.isRequired,
+        currentPlan: PropTypes.object.isRequired,
         number: PropTypes.string,
         name: PropTypes.string,
         expDate: PropTypes.string,
@@ -66,9 +67,6 @@ class CreditCard extends Component {
     }
 
     render() {
-        const isUpdating = /update-credit-card/.test(this.props.location.pathname)
-        const action = isUpdating ? 'Update' : 'Add'
-
         const {
             handleSubmit,
             invalid,
@@ -76,8 +74,14 @@ class CreditCard extends Component {
             number,
             name,
             expDate,
-            cvc
+            cvc,
+            currentPlan
         } = this.props
+        const isUpdating = /update-credit-card/.test(this.props.location.pathname)
+        const action = isUpdating ? 'Update' : 'Add'
+        const payment = (isUpdating || currentPlan.get('amount') === 0) ? '' :
+            ` and pay ${currentPlan.get('currencySign')}${currentPlan.get('amount')}`
+
         const {isStripeLoaded} = this.state
 
         if (!isStripeLoaded) {
@@ -145,7 +149,7 @@ class CreditCard extends Component {
                                     className={classNames({'btn-loading': this.state.isSubmitting})}
                                     disabled={this.state.isSubmitting || invalid || pristine}
                                 >
-                                    {action} Card
+                                    {action} Credit Card {payment}
                                 </Button>
                             </div>
                         </Form>
