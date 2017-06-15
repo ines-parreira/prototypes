@@ -26,6 +26,8 @@ import {getActionTemplate, humanizeString} from './../../../../../utils'
 
 import * as macroActions from './../../../../../state/macro/actions'
 
+import InputField from '../../../../common/forms/InputField'
+
 class MacroEdit extends React.Component {
     _updateActionArguments = (index, args = fromJS({})) => {
         const actions = this.props.actions.setIn([index, 'arguments'], args)
@@ -129,17 +131,12 @@ class MacroEdit extends React.Component {
                         <div className={classnames('mb-2', css.title)}>
                             Macro name
                         </div>
-                        <div
-                            className="ui content input"
-                            style={{width: '100%'}}
-                        >
-                            <Input
-                                type="text"
-                                onChange={this.props.setName}
-                                value={currentMacro.get('name') || ''}
-                                required
-                            />
-                        </div>
+                        <InputField
+                            type="text"
+                            onChange={this.props.setName}
+                            value={currentMacro.get('name') || ''}
+                            required
+                        />
                     </div>
 
                     {
