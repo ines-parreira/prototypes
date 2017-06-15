@@ -86,7 +86,6 @@ export default class ChatContainer extends Component {
                             label="Auto-responder text"
                             value={autoResponderText}
                             onChange={value => this.setState({autoResponderText: value})}
-                            help="When all people available for chat reach the maximum number of open chats, the user gets this auto-response"
                             rows="3"
                             required
                         />
