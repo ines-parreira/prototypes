@@ -106,3 +106,9 @@ export const getMessagingIntegrations = createSelector(
     }
 )
 
+export const hasIntegrationOfTypes = types => createSelector(
+    [getIntegrationsByTypes(types)],
+    integrations => !integrations.isEmpty()
+)
+
+export const makeHasIntegrationOfTypes = state => types => hasIntegrationOfTypes(types)(state)

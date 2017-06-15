@@ -21,6 +21,8 @@ import css from './MacroEdit.less'
 
 import * as ticketTypes from '../../../../../state/ticket/constants'
 import * as newMessageTypes from '../../../../../state/newMessage/constants'
+import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+
 import {ACTION_TEMPLATES} from '../../../../../config'
 import {getActionTemplate, humanizeString} from './../../../../../utils'
 
@@ -109,7 +111,7 @@ class MacroEdit extends React.Component {
     }
 
     render() {
-        const {currentMacro} = this.props
+        const {currentMacro, hasIntegrationOfTypes} = this.props
 
         if (!currentMacro) {
             return null
@@ -269,9 +271,7 @@ class MacroEdit extends React.Component {
                     }
 
                     <div className="mt-3">
-                        <UncontrolledButtonDropdown
-                            className="mr-2"
-                        >
+                        <UncontrolledButtonDropdown className="mr-2">
                             <DropdownToggle
                                 color="info"
                                 caret
@@ -284,11 +284,7 @@ class MacroEdit extends React.Component {
 
                         {
                             integrationMenus.map((actions, key) => {
-                                const hasCurrentTypeIntegrations = this.props.integrations.some(
-                                    integration => integration.get('type') === key
-                                )
-
-                                if (!hasCurrentTypeIntegrations) {
+                                if (!hasIntegrationOfTypes(key)) {
                                     return null
                                 }
 
@@ -343,11 +339,13 @@ MacroEdit.propTypes = {
     integrations: PropTypes.object.isRequired,
     setActions: PropTypes.func.isRequired,
     setName: PropTypes.func.isRequired,
+    hasIntegrationOfTypes: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
         integrations: state.integrations.get('integrations', fromJS([])),
+        hasIntegrationOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(state),
     }
 }
 

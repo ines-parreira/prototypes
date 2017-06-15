@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
@@ -6,11 +7,25 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
+import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
+
 import RichField from '../../../../../common/forms/RichField'
 
 import {insertText} from '../../../../../../utils'
 
+@connect((state) => {
+    return {
+        hasIntegrationOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(state),
+    }
+})
 export default class SetResponseTextAction extends React.Component {
+    static propTypes = {
+        action: PropTypes.object.isRequired,
+        index: PropTypes.number.isRequired,
+        updateActionArgs: PropTypes.func.isRequired,
+        hasIntegrationOfTypes: PropTypes.func.isRequired,
+    }
+
     _insertText = (text) => {
         if (!this.richArea) {
             return
@@ -30,6 +45,8 @@ export default class SetResponseTextAction extends React.Component {
     _insertVariable = variable => this._insertText(`{${variable}}`)
 
     _renderInsertVariable = () => {
+        const {hasIntegrationOfTypes} = this.props
+
         return (
             <div>
                 <UncontrolledButtonDropdown>
@@ -83,7 +100,7 @@ export default class SetResponseTextAction extends React.Component {
                         type="button"
                         style={{color: 'inherit'}}
                     >
-                        Current user
+                        You (as agent)
                     </DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem
@@ -120,6 +137,54 @@ export default class SetResponseTextAction extends React.Component {
                         </DropdownItem>
                     </DropdownMenu>
                 </UncontrolledButtonDropdown>
+                {
+                    hasIntegrationOfTypes('shopify') && (
+                        <UncontrolledButtonDropdown>
+                            <DropdownToggle
+                                color="link"
+                                caret
+                                type="button"
+                                style={{color: 'inherit'}}
+                            >
+                                Shopify
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        this._insertVariable('ticket.requester.integrations.shopify.orders[0].order_number')
+                                    }}
+                                >
+                                    Last order's number
+                                </DropdownItem>
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        this._insertVariable('ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_urls')
+                                    }}
+                                >
+                                    Tracking url of last order
+                                </DropdownItem>
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        this._insertVariable('ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_numbers')
+                                    }}
+                                >
+                                    Tracking number of last order
+                                </DropdownItem>
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        this._insertVariable('ticket.requester.integrations.shopify.orders[0].fulfillments[0].shipment_status')
+                                    }}
+                                >
+                                    Delivery status of last order
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledButtonDropdown>
+                    )
+                }
             </div>
         )
     }
@@ -144,10 +209,4 @@ export default class SetResponseTextAction extends React.Component {
             </div>
         )
     }
-}
-
-SetResponseTextAction.propTypes = {
-    action: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-    updateActionArgs: PropTypes.func.isRequired,
 }
