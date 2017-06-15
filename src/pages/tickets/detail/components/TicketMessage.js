@@ -8,11 +8,16 @@ import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
 import {displayUserNameFromSource} from '../../common/utils'
+import {formatDatetime} from './../../../../utils'
 import {DatetimeLabel, AgentLabel} from '../../../common/utils/labels'
 import {getValuePropFromSourceType, isForwardedMessage} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
 
 import css from './TicketMessage.less'
+
+import {
+    UncontrolledTooltip
+} from 'reactstrap'
 
 const classnames = classnamesBind.bind(css)
 
@@ -218,7 +223,7 @@ export default class TicketMessage extends React.Component {
     }
 
     render() {
-        const {message, timezone} = this.props
+        const {message, timezone, isLastReadMessage} = this.props
 
         let error = false
         let pending = false
@@ -280,6 +285,23 @@ export default class TicketMessage extends React.Component {
                             fontSize: '13px'
                         }}
                     >
+                        {
+                            message.from_agent && isLastReadMessage && (
+                                <span>
+                                    <i
+                                        id="read-status"
+                                        className={classnames('fa fa-check', css.isReadIcon)}
+                                    />
+                                    <UncontrolledTooltip
+                                        placement="top"
+                                        target="read-status"
+                                        delay={0}
+                                    >
+                                        Seen {formatDatetime(message.opened_datetime, timezone).toLowerCase()}
+                                    </UncontrolledTooltip>
+                                </span>
+                            )
+                        }
                         <DatetimeLabel
                             dateTime={message.created_datetime}
                             settings={{
@@ -304,4 +326,5 @@ TicketMessage.propTypes = {
     lastMessageDatetimeAfterMount: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     setStatus: PropTypes.func.isRequired,
+    isLastReadMessage: PropTypes.bool
 }

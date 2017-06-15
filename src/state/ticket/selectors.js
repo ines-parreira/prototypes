@@ -73,6 +73,16 @@ export const getLastMessage = createImmutableSelector(
         .last()
 )
 
+export const getReadMessages = createImmutableSelector(
+    [getMessages],
+    state => state.filter((message) => message.get('opened_datetime')) || fromJS([])
+)
+
+export const getLastReadMessage = createImmutableSelector(
+    [getReadMessages],
+    (state) => state.maxBy((message) => message.get('sent_datetime')) || fromJS({})
+)
+
 export const getCustomerRatings = createImmutableSelector(
     [getTicketState],
     state => state.get('customer_ratings') || fromJS([])

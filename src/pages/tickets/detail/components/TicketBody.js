@@ -14,6 +14,7 @@ import Event from './Event'
         currentUser: state.currentUser,
         loadingState: ticketSelectors.getLoading(state),
         ticket: state.ticket,
+        lastReadMessage: ticketSelectors.getLastReadMessage(state)
     }
 })
 export default class TicketBody extends React.Component {
@@ -23,6 +24,7 @@ export default class TicketBody extends React.Component {
         loadingState: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
         setStatus: PropTypes.func.isRequired,
+        lastReadMessage: PropTypes.object
     }
 
     constructor(props) {
@@ -40,7 +42,7 @@ export default class TicketBody extends React.Component {
     }
 
     render() {
-        const {elements, ticket, loadingState, setStatus} = this.props
+        const {elements, ticket, loadingState, setStatus, lastReadMessage} = this.props
 
         if (elements.size === 0) {
             return null
@@ -86,6 +88,7 @@ export default class TicketBody extends React.Component {
                                 timezone={this.props.currentUser.get('timezone')}
                                 lastMessageDatetimeAfterMount={this.lastMessageDatetimeAfterMount}
                                 setStatus={setStatus}
+                                isLastReadMessage={element.get('id') === lastReadMessage.get('id')}
                             />
                         )
                     })

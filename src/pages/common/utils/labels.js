@@ -173,7 +173,7 @@ RoleLabel.propTypes = {roles: PropTypes.oneOfType([PropTypes.array, PropTypes.ob
 export class DatetimeLabel extends React.Component {
     static propTypes = {
         dateTime: PropTypes.string,
-        timezone: PropTypes.string
+        timezone: PropTypes.string,
     }
 
     constructor(props) {
