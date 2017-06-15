@@ -1,9 +1,11 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import SearchInput from 'react-search-input'
 import classnames from 'classnames'
+import _noop from 'lodash/noop'
 
 import {getActionTemplate} from '../../../../../utils'
+
+import InputField from '../../../../common/forms/InputField'
 
 export default class MacroList extends React.Component {
     state = {
@@ -27,23 +29,14 @@ export default class MacroList extends React.Component {
         }))
 
         return (
-            <div style={{height: '100%'}}>
+            <div>
                 <div className="ui secondary vertical fluid menu m-0">
-                    <div
-                        className="ui icon input"
-                        style={{
-                            width: '100%',
-                            padding: '12px 0',
-                        }}
-                    >
-                        <SearchInput
-                            value={this.state.searchTerm}
-                            onChange={this.searchUpdated}
-                            className="ui icon input full-width prompt shortcuts-enable"
-                            placeholder="Search for a macro"
-                        />
-                        <i className="search icon" />
-                    </div>
+                    <InputField
+                        value={this.state.searchTerm}
+                        onChange={this.searchUpdated}
+                        className="mt-3 shortcuts-enable"
+                        placeholder="Search a macro..."
+                    />
                     {
                         curMacros.map(macro => {
                             let isDisabled = false
@@ -54,21 +47,19 @@ export default class MacroList extends React.Component {
                                     .some(action => getActionTemplate(action.get('name')).execution === 'back')
                             }
 
-                            const props = {
-                                key: macro.get('id'),
-                                className: classnames('item m-0', {
-                                    active: currentMacro && macro.get('id') === currentMacro.get('id'),
-                                    disabled: isDisabled
-                                }),
-                                onClick: isDisabled ? null : () => actions.previewMacroInModal(macro.get('id')),
-                            }
-
                             return (
-                                <a {...props}>
+                                <a
+                                    key={macro.get('id')}
+                                    className={classnames('item m-0', {
+                                        active: currentMacro && macro.get('id') === currentMacro.get('id'),
+                                        disabled: isDisabled,
+                                    })}
+                                    onClick={isDisabled ? _noop : () => actions.previewMacroInModal(macro.get('id'))}
+                                >
                                     {macro.get('name')}
                                 </a>
                             )
-                        }).toList().toJS()
+                        }).toList()
                     }
                 </div>
             </div>
