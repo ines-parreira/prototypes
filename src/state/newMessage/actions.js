@@ -473,6 +473,7 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
                 return dispatch({
                     type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                     error,
+                    verbose: true,
                     reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.',
                     message: messageToSend,
                     messageId,
@@ -535,6 +536,7 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
                 return dispatch({
                     type: types.NEW_MESSAGE_SUBMIT_TICKET_ERROR,
                     error,
+                    verbose: true,
                     reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us'
                 })
             })

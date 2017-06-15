@@ -1,6 +1,6 @@
 import _some from 'lodash/some'
 import _get from 'lodash/get'
-import {stripErrorMessage} from '../../utils'
+import {stripErrorMessage, errorToChildren} from '../../utils'
 import {notify} from '../../state/notifications/actions'
 
 /**
@@ -39,8 +39,7 @@ const serverErrorHandler = store => next => action => {
         && !_some(IGNORED_PREFIXS, (prefix) => action.type.startsWith(prefix))
 
     if (shouldDisplayError) {
-        let message =
-            error.msg
+        let message = error.msg
             || action.reason
             || `Unknown error for action ${action.type}`
 
@@ -48,10 +47,21 @@ const serverErrorHandler = store => next => action => {
 
         message = stripErrorMessage(message)
 
-        store.dispatch(notify({
+        const notification = {
             type: 'error',
-            message,
-        }))
+        }
+
+        if (action.verbose) {
+            action.children = errorToChildren(action.error)
+        }
+
+        if (action.children) {
+            notification.children = action.children
+        } else {
+            notification.message = message
+        }
+
+        store.dispatch(notify(notification))
     }
 
     return next(action)

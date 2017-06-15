@@ -1,4 +1,5 @@
 import _has from 'lodash/has'
+import _map from 'lodash/map'
 import _upperFirst from 'lodash/upperFirst'
 import _isString from 'lodash/isString'
 import _isNumber from 'lodash/isNumber'
@@ -11,6 +12,7 @@ import _trim from 'lodash/trim'
 import _last from 'lodash/last'
 import _ from 'lodash'
 
+import React from 'react'
 import {createSelectorCreator, defaultMemoize} from 'reselect'
 import axios from 'axios'
 import esprima from 'esprima'
@@ -832,4 +834,48 @@ export const compare = (a, b) => {
  */
 export const currentRoute = (routes) => {
     return _last(routes)
+}
+
+/**
+ * Add form errors coming from server to error.msg
+ * This is used to display form errors in error notification
+ * Ex: error: {msg: 'Failed to add message', data: {hello: ['world'], receiver: ['Missing data', 'Invalid value']}}
+ * will return the same error with error.msg as:
+ * "
+ * Failed to add message
+ *
+ * - hello: world
+ * - receiver: Missing data
+ * - receiver: Invalid value
+ * "
+ * @param incomingError server error
+ */
+export const errorToChildren = (incomingError) => {
+    const error = _get(incomingError, 'response.data.error', {})
+    const {data} = error
+
+    const hasErrors = !!data
+    const Tag = hasErrors ? 'p' : 'div'
+    let message = error.msg || 'Some errors occurred'
+
+    return (
+        <div>
+            <Tag>
+                {message}
+            </Tag>
+            {
+                hasErrors && (
+                    <ul className="m-0">
+                        {
+                            _map(data, (fieldErrors, fieldName) => {
+                                return fieldErrors.map((fieldError) => {
+                                    return <li>{fieldName}: {fieldError}</li>
+                                })
+                            })
+                        }
+                    </ul>
+                )
+            }
+        </div>
+    )
 }

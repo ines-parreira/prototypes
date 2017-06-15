@@ -64,11 +64,15 @@ export const notify = (message) => (dispatch, getState) => {
 
     // calculate auto dismiss time if autoDismiss is not set
     if (finalMessage.dismissible && finalMessage.autoDismiss === 0) {
-        const wordsPerMinute = 230
-        const readText = `${finalMessage.title} ${finalMessage.message}`
-        let readingTime = _words(readText).length * 60 / wordsPerMinute
-        readingTime = _max([3, Math.ceil(readingTime)])
-        finalMessage.autoDismiss = readingTime
+        if (finalMessage.children) {
+            finalMessage.autoDismiss = 20
+        } else {
+            const wordsPerMinute = 230
+            const readText = `${finalMessage.title} ${finalMessage.message}`
+            let readingTime = _words(readText).length * 60 / wordsPerMinute
+            readingTime = _max([3, Math.ceil(readingTime)])
+            finalMessage.autoDismiss = readingTime
+        }
     }
 
     const notificationsState = ((getState() || {}).notifications || [])
