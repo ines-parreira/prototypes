@@ -290,14 +290,15 @@ export default class TicketMessage extends React.Component {
                                 <span>
                                     <i
                                         id="read-status"
-                                        className={classnames('fa fa-check', css.isReadIcon)}
+                                        className="fa fa-check mr-2"
                                     />
                                     <UncontrolledTooltip
                                         placement="top"
                                         target="read-status"
                                         delay={0}
                                     >
-                                        Seen {formatDatetime(message.opened_datetime, timezone).toLowerCase()}
+                                        Seen by customer{' '}
+                                        {formatDatetime(message.opened_datetime, timezone).toLowerCase()}
                                     </UncontrolledTooltip>
                                 </span>
                             )
