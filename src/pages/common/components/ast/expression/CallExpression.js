@@ -47,7 +47,7 @@ class CallExpression extends React.Component {
         // arguments: Expression1, Expression2
         if (parent.contains('test')) {
             const root = Immutable.List(['definitions'])
-            let left = root.push(...getSyntaxTreeLeaves(funcArgs[0]))
+            let left = root.concat(getSyntaxTreeLeaves(funcArgs[0]))
 
             // we find the first object after the definitions, Ex: ticket => Ticket
             // this is needed to match the swagger spec structure

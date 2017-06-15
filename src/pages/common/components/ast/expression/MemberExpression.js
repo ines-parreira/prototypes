@@ -15,7 +15,7 @@ import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
 const MemberExpression = ({object, property, rule, actions, parent, leftsiblings, schemas}) => {
     let left
     if (leftsiblings) {
-        left = leftsiblings.push(...getSyntaxTreeLeaves(object))
+        left = leftsiblings.concat(getSyntaxTreeLeaves(object))
         // We need to match the object definision ticket => definitions, Ticket
         // this is needed to match the swagger spec structure
         const definition = OBJECT_DEFINITIONS[left.get(1)]

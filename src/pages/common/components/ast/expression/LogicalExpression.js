@@ -18,7 +18,7 @@ const LogicalExpression = ({operator, left, right, rule, parent, actions, leftsi
     let leftsiblings3
 
     if (leftsiblings) {
-        leftsiblings2 = leftsiblings.push(...getSyntaxTreeLeaves(left))
+        leftsiblings2 = leftsiblings.concat(getSyntaxTreeLeaves(left))
         leftsiblings3 = leftsiblings2.push('operator')
     }
 
