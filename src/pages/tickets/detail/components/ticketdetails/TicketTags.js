@@ -16,10 +16,6 @@ export class TicketTags extends React.Component {
         search: '',
     }
 
-    componentDidMount() {
-        this._search()
-    }
-
     _addTag = (name) => {
         if (!name) {
             return
