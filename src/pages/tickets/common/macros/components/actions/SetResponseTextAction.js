@@ -100,7 +100,7 @@ export default class SetResponseTextAction extends React.Component {
                         type="button"
                         style={{color: 'inherit'}}
                     >
-                        You (as agent)
+                        Current agent
                     </DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem
