@@ -6,8 +6,6 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    Label,
-    Input,
 } from 'reactstrap'
 
 import {setFieldVisibility} from '../../../../state/views/actions'
