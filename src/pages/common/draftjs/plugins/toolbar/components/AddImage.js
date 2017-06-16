@@ -3,7 +3,8 @@ import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
 import Popover from './Popover'
-import {uploadFiles} from '../../../../../../utils'
+
+import FileField from '../../../../forms/FileField'
 
 import css from '../Toolbar.less'
 
@@ -16,31 +17,15 @@ class AddImage extends React.Component {
     state = {
         url: '',
         mode: 'upload',
-        isUploading: false,
     }
 
     _changeMode = (mode) => {
         this.setState({mode})
     }
 
-    _handleFiles = (files) => {
-        this.setState({isUploading: true})
-        uploadFiles(files).then((images) => {
-            if (images.length < 1) {
-                return
-            }
-
-            const image = images[0]
-            const url = image.url
-
-            if (!url) {
-                return
-            }
-
-            this.props.functions.addImage(url)
-            this.popover._close()
-            this.setState({isUploading: false})
-        })
+    _handleImage = (url) => {
+        this.props.functions.addImage(url)
+        this.popover._close()
     }
 
     _addImage = () => {
@@ -95,23 +80,14 @@ class AddImage extends React.Component {
                 </div>
                 {
                     this.state.mode === 'upload' ? (
-                            <div>
-                                {
-                                    this.state.isUploading ? (
-                                            <span>
-                                                <i className="notched circle loading icon" />
-                                                <span className="ml5i">Uploading...</span>
-                                            </span>
-                                        ) : (
-                                            <input
-                                                key="file"
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={e => this._handleFiles(e.target.files)}
-                                            />
-                                        )
-                                }
-                            </div>
+                            <FileField
+                                key="file"
+                                accept="image/*"
+                                placeholder="Select image..."
+                                onChange={this._handleImage}
+                                inline
+                                noPreview
+                            />
                         ) : (
                             <div className="flex">
                                 <input

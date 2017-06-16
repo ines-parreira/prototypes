@@ -143,7 +143,7 @@ class TicketReplyEditor extends React.Component {
         }
 
         return (
-            <div className="ui reply form">
+            <div className="TicketReplyEditor">
                 <RichField
                     ref={(richArea) => {
                         this.richArea = richArea

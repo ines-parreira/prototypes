@@ -111,7 +111,6 @@ class ViewNavbarViewEditor extends Component {
                     })}
                 >
                     <Field
-                        type="checkbox"
                         label={view.get('name')}
                         name={`data.${viewId}.hide`}
                         input={{

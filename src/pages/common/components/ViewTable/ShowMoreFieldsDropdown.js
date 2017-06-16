@@ -14,7 +14,7 @@ import {setFieldVisibility} from '../../../../state/views/actions'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 import {notify} from '../../../../state/notifications/actions'
 
-import css from './ShowMoreFieldsDropdown.less'
+import BooleanField from '../../forms/BooleanField'
 
 class ShowMoreFieldsDropdown extends React.Component {
     _setFieldVisibility = (name, state) => {
@@ -46,7 +46,12 @@ class ShowMoreFieldsDropdown extends React.Component {
                     <i className="fa fa-fw fa-table" />
                 </DropdownToggle>
                 <DropdownMenu right>
-                    <DropdownItem header>Columns</DropdownItem>
+                    <DropdownItem
+                        className="pb-2"
+                        header
+                    >
+                        Columns
+                    </DropdownItem>
                     {
                         this.props.fields
                             .map((field) => {
@@ -56,25 +61,16 @@ class ShowMoreFieldsDropdown extends React.Component {
                                     <DropdownItem
                                         key={field.get('name')}
                                         type="button"
-                                        className={css.item}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            e.stopPropagation()
-                                            this._setFieldVisibility(field.get('name'), !isChecked)
-                                        }}
+                                        className="pt-1 pb-1"
+                                        style={{height: '28px'}}
                                         toggle={false}
                                     >
-                                        <Label
-                                            check
-                                            className={css.label}
-                                        >
-                                            <Input
-                                                className="mr-2"
-                                                type="checkbox"
-                                                checked={isChecked}
-                                            />
-                                            {' '}{field.get('title')}
-                                        </Label>
+                                        <BooleanField
+                                            value={isChecked}
+                                            onChange={value => this._setFieldVisibility(field.get('name'), value)}
+                                            label={field.get('title')}
+                                            inline
+                                        />
                                     </DropdownItem>
                                 )
                             })
