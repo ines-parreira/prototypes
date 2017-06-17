@@ -95,10 +95,14 @@ export default (state = initialState, action) => {
                 .setIn(['state', 'dirty'], true)
 
         case types.NEW_MESSAGE_RECORD_MACRO:
-            return state.setIn(
-                ['newMessage', 'macros'],
-                state.getIn(['newMessage', 'macros'], fromJS([])).push({id: action.macro.get('id')})
-            )
+            const macroId = action.macro.get('id')
+
+            // if macro already added, do not do anything
+            if (state.getIn(['newMessage', 'macros']).find(macro => macro.id === macroId)) {
+                return state
+            }
+
+            return state.updateIn(['newMessage', 'macros'], macros => macros.push({id: macroId}))
 
         case ticketTypes.CLEAR_TICKET: {
             return state.set('newMessage', makeNewMessage('email', 'email'))
