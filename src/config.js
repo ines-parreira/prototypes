@@ -1,4 +1,5 @@
 import _get from 'lodash/get'
+import _find from 'lodash/find'
 
 export const POLL_ACTIVITY_INTERVAL = 10000
 export const CHAT_POLLING_INTERVAL = 9000
@@ -441,15 +442,25 @@ export const ACTION_TEMPLATES = [
         arguments: {},
         validators: [
             {
-                validate: (customer) => customer._shopify,
+                validate: (requester) => {
+                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return _get(shopifyIntegration, ['orders'])
+                },
                 error: 'This user has no order to cancel.'
             },
             {
-                validate: (customer) => _get(customer, ['_shopify', 'orders', 0, 'financial_status']) !== 'fulfilled',
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return _get(shopifyIntegration, ['orders', 0, 'financial_status']) !== 'fulfilled'
+                },
                 error: 'The last order has already been fulfilled, it\'s not cancellable.'
             }
         ]
@@ -476,13 +487,19 @@ export const ACTION_TEMPLATES = [
         arguments: {},
         validators: [
             {
-                validate: (customer) => customer._shopify,
+                validate: (requester) => {
+                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return _get(shopifyIntegration, ['orders'])
+                },
                 error: 'This user has no order to duplicate.'
-            }
+            },
         ]
     },
     {
@@ -532,15 +549,25 @@ export const ACTION_TEMPLATES = [
         },
         validators: [
             {
-                validate: (customer) => customer._shopify,
+                validate: (requester) => {
+                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return _get(shopifyIntegration, ['orders'])
+                },
                 error: 'This user has no order to edit.'
             },
             {
-                validate: (customer) => _get(customer, ['_shopify', 'orders', 0, 'financial_status']) !== 'fulfilled',
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return _get(shopifyIntegration, ['orders', 0, 'financial_status']) !== 'fulfilled'
+                },
                 error: 'The last order has already been fulfilled, you can\'t edit it\'s shipping address.'
             }
         ]
@@ -556,17 +583,25 @@ export const ACTION_TEMPLATES = [
         ],
         validators: [
             {
-                validate: (customer) => customer._shopify,
+                validate: (requester) => {
+                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return _get(shopifyIntegration, ['orders'])
+                },
                 error: 'This user has no order to refund.'
             },
             {
-                validate: (customer) => !['refunded', 'accepted'].includes(
-                    _get(customer, ['_shopify', 'orders', 0, 'financial_status'])
-                ),
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
+                },
                 error: 'The last order has already been refunded or hasn\'t been paid for yet.'
             }
         ]
@@ -582,17 +617,25 @@ export const ACTION_TEMPLATES = [
         ],
         validators: [
             {
-                validate: (customer) => customer._shopify,
+                validate: (requester) => {
+                    return _find(requester.integrations, {'__integration_type__': 'shopify'})
+                },
                 error: 'This user has no Shopify data.'
             },
             {
-                validate: (customer) => _get(customer, ['_shopify', 'orders']),
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return _get(shopifyIntegration, ['orders'])
+                },
                 error: 'This user has no order to refund.'
             },
             {
-                validate: (customer) => !['refunded', 'accepted'].includes(
-                    _get(customer, ['_shopify', 'orders', 0, 'financial_status'])
-                ),
+                validate: (requester) => {
+                    const shopifyIntegration = _find(requester.integrations, {'__integration_type__': 'shopify'})
+
+                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
+                },
                 error: 'The last order has already been refunded or hasn\'t been paid for yet.'
             }
         ]

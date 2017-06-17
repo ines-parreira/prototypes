@@ -403,10 +403,10 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
 
                 if (template.validators) {
                     // We can't just have a fallback in the get, in case ticket.requester.customer === null
-                    const customer = (ticket.getIn(['requester', 'customer']) || fromJS({})).toJS()
+                    const requester = (ticket.getIn(['requester']) || fromJS({})).toJS()
 
                     for (const validator of template.validators) {
-                        const res = validator.validate(customer)
+                        const res = validator.validate(requester)
 
                         if (!res) {
                             return dispatch({
