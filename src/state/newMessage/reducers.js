@@ -60,8 +60,9 @@ export const initialState = fromJS({
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case types.NEW_MESSAGE_ADD_ATTACHMENT_START:
+        case types.NEW_MESSAGE_ADD_ATTACHMENT_START: {
             return state.setIn(['_internal', 'loading', 'addAttachment'], true)
+        }
 
         case types.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS: {
             return state.mergeDeep({
@@ -79,22 +80,23 @@ export default (state = initialState, action) => {
             })
         }
 
-        case types.ADD_ATTACHMENTS:
-            return state.updateIn(
-                ['newMessage', 'attachments'],
-                fromJS([]),
-                (attachements => attachements.concat(action.args.get('attachments').toJS()))
-            )
+        case types.ADD_ATTACHMENTS: {
+            return state.updateIn(['newMessage', 'attachments'], fromJS([]), (attachements) => {
+                return attachements.concat(action.args.get('attachments').toJS())
+            })
+        }
 
-        case types.NEW_MESSAGE_ADD_ATTACHMENT_ERROR:
+        case types.NEW_MESSAGE_ADD_ATTACHMENT_ERROR: {
             return state.setIn(['_internal', 'loading', 'addAttachment'], false)
+        }
 
-        case types.NEW_MESSAGE_DELETE_ATTACHMENT:
+        case types.NEW_MESSAGE_DELETE_ATTACHMENT: {
             return state
                 .setIn(['newMessage', 'attachments'], state.getIn(['newMessage', 'attachments'], fromJS([])).delete(action.index))
                 .setIn(['state', 'dirty'], true)
+        }
 
-        case types.NEW_MESSAGE_RECORD_MACRO:
+        case types.NEW_MESSAGE_RECORD_MACRO: {
             const macroId = action.macro.get('id')
 
             // if macro already added, do not do anything
@@ -103,6 +105,7 @@ export default (state = initialState, action) => {
             }
 
             return state.updateIn(['newMessage', 'macros'], macros => macros.push({id: macroId}))
+        }
 
         case ticketTypes.CLEAR_TICKET: {
             return state.set('newMessage', makeNewMessage('email', 'email'))
