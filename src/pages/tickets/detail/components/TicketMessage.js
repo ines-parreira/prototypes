@@ -3,7 +3,8 @@ import moment from 'moment'
 import {List, fromJS} from 'immutable'
 import classnamesBind from 'classnames/bind'
 import {isArray as _isArray} from 'lodash'
-import {Popover, PopoverContent} from 'reactstrap'
+import {Popover, PopoverContent, UncontrolledTooltip} from 'reactstrap'
+
 import TicketMessageActions from './TicketMessageActions'
 import TicketMessageBody from './TicketMessageBody'
 import TicketAttachments from './replyarea/TicketAttachments'
@@ -12,12 +13,9 @@ import {formatDatetime} from './../../../../utils'
 import {DatetimeLabel, AgentLabel} from '../../../common/utils/labels'
 import {getValuePropFromSourceType, isForwardedMessage} from '../../../../state/ticket/utils'
 import HardWarning from './HardWarning'
+import {sourceTypeToIcon} from './../../../../config/ticket'
 
 import css from './TicketMessage.less'
-
-import {
-    UncontrolledTooltip
-} from 'reactstrap'
 
 const classnames = classnamesBind.bind(css)
 
@@ -71,20 +69,7 @@ export default class TicketMessage extends React.Component {
             return null
         }
 
-        const icons = {
-            email: 'mail',
-            'email-forward': 'reply',
-            chat: 'comments',
-            api: 'code',
-            phone: 'phone',
-            'ottspott-call': 'phone',
-            'facebook-message': 'facebook-messenger',
-            'facebook-comment': 'facebook square',
-            'facebook-post': 'facebook square',
-            'system-message': 'setting'
-        }
-
-        const source = Object.assign({}, {
+        const source = Object.assign({
             type: '',
             from: {},
             to: []
@@ -111,11 +96,15 @@ export default class TicketMessage extends React.Component {
                 >
                     <i
                         id={id}
-                        className={`icon ${icons[iconLabel]}`}
+                        className={`${sourceTypeToIcon(iconLabel)} uncolored`}
                     />
-                    <span className="hidden-sm-down">
-                        {legend}
-                    </span>
+                    {
+                        hasLegend && (
+                            <span className="hidden-sm-down ml-1">
+                                {legend}
+                            </span>
+                        )
+                    }
                 </span>
                 <Popover
                     placement="bottom"
@@ -177,7 +166,7 @@ export default class TicketMessage extends React.Component {
                     key="via-widget"
                     className="hidden-sm-down ticket-message-from"
                 >
-                    sent via a <b><i className="icon setting" />Rule</b>
+                    sent via a <b><i className="fa fa-fw fa-cog mr-1" /> Rule</b>
                 </span>
             )
         }

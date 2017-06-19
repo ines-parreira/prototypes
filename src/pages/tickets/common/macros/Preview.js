@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
-import classnames from 'classnames'
-import {mapFileFormatToSemanticIcon, getSortedIntegrationActions} from '../../common/utils'
+import {fileIconFromContentType, getSortedIntegrationActions} from '../../common/utils'
 import {AgentLabel} from '../../../common/utils/labels'
 import {getIconFromType} from './../../../../state/integrations/helpers'
 import {getActionTemplate, sanitizeHtmlDefault} from './../../../../utils'
@@ -15,7 +14,7 @@ class Preview extends React.Component {
                 <div className="ui label macro-legend">ATTACH FILES:</div>
                 {attachments.getIn(['arguments', 'attachments']).map((file, index) => (
                     <div key={index} className="ui label mb5i">
-                        <i className={`${mapFileFormatToSemanticIcon(file.get('content_type'))} icon`} />
+                        <i className={`fa fa-fw  ${fileIconFromContentType(file.get('content_type'))} mr-2`} />
                         {file.get('name')}
                     </div>
                 ))}
@@ -71,28 +70,6 @@ class Preview extends React.Component {
                 >
                     <AgentLabel name={setAssigneeAction.getIn(['arguments', 'assignee_user', 'name'])} />
                 </span>
-            </div>
-        )
-    }
-
-    renderSetPriority(setPriorityAction) {
-        if (!setPriorityAction) {
-            return null
-        }
-
-        return (
-            <div className="macro-data">
-                <div className="ui label macro-legend">SET PRIORITY:</div>
-                <a className="ticket-flag-btn ticket-details-item">
-                    <i
-                        className={classnames(
-                            'ticket-priority',
-                            setPriorityAction.getIn(['arguments', 'priority']) === 'high' ? '' : 'outline',
-                            'icon',
-                            'flag'
-                        )}
-                    />
-                </a>
             </div>
         )
     }
@@ -154,7 +131,6 @@ class Preview extends React.Component {
         const addTagsActions = macro.get('actions').filter(action => action.get('name') === 'addTags')
         const responseTextAction = macro.get('actions').find(action => action.get('name') === 'setResponseText')
         const setStatusAction = macro.get('actions').find(action => action.get('name') === 'setStatus')
-        const setPriorityAction = macro.get('actions').find(action => action.get('name') === 'setPriority')
         const setAssigneeAction = macro.get('actions').find(action => action.get('name') === 'setAssignee')
         const setSubjectAction = macro.get('actions').find(action => action.get('name') === 'setSubject')
         const addAttachmentsActions = macro.get('actions').find(action => action.get('name') === 'addAttachments')
@@ -187,7 +163,6 @@ class Preview extends React.Component {
                 {this.renderSetStatus(setStatusAction)}
                 {this.renderAddTags(addTagsActions)}
                 {this.renderSetAssignee(setAssigneeAction)}
-                {this.renderSetPriority(setPriorityAction)}
                 {this.renderSetSubject(setSubjectAction)}
                 {
                     sortedBackActions.map((v, k) => this.renderBackActions(k, v)).toList().toJS()

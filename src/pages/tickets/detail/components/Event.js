@@ -143,9 +143,9 @@ export default class Event extends React.Component {
                             title={isError ? 'Fail' : 'Success'}
                         >
                             <i
-                                className={classnames('fitted icon', {
-                                    remove: isError,
-                                    check: isSuccess,
+                                className={classnames('fa fa-fw', {
+                                    'fa-close': isError,
+                                    'fa-check': isSuccess,
                                 })}
                             />
                         </div>

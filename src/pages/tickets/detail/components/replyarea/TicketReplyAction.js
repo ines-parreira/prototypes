@@ -140,7 +140,7 @@ export default class TicketReplyAction extends React.Component {
                     <span>{action.get('title')}</span>
                 </div>
                 <i
-                    className="large icon remove red circle right floated"
+                    className="fa fa-fw fa-close text-danger close-icon"
                     onClick={() => remove(this.props.index, ticketId)}
                 />
                 {argsComponent}
@@ -150,7 +150,7 @@ export default class TicketReplyAction extends React.Component {
                         {
                             notes.map((note, idx) => (
                                 <div key={idx} className="text-light-black">
-                                    <i className="info circle icon"/>
+                                    <i className="fa fa-fw fa-info-circle"/>
                                     {note}
                                 </div>
                             ))

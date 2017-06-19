@@ -25,21 +25,22 @@ export function isTicketDifferent(currentTicket, nextTicket) {
 }
 
 /**
- * Map file format like 'image/png' to the semantic ui
- * @param {string} format E.G : 'image/png'
+ * Map file content type like 'image/png' to Font-Awesome class
+ * @param {string} contentType E.G : 'image/png'
  * @returns {string}
  */
-export function mapFileFormatToSemanticIcon(format) {
-    const icon = 'file'
-
-    switch (true) {
-        case /(png|jpe?g)/.test(format):
-            return `${icon} image outline`
-        case /pdf/.test(format):
-            return `${icon} pdf outline`
-        default:
-            return `${icon} text outline`
+export function fileIconFromContentType(contentType) {
+    if (contentType === 'application/pdf') {
+        return 'fa-file-pdf-o'
+    } else if (contentType.startsWith('image/')) {
+        return 'fa-file-image-o'
+    } else if (contentType === 'application/msword') {
+        return 'fa-file-word-o'
+    } else if (contentType.startsWith('text/')) {
+        return 'fa-file-text-o'
     }
+
+    return 'fa-file-o'
 }
 
 /**

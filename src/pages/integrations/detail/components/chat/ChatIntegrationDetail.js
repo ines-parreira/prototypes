@@ -302,8 +302,8 @@ class ChatIntegrationDetail extends React.Component {
                         className={css.copy}
                         data-clipboard-target="#chat-snippet"
                     >
-                        <i className="copy icon mr-2" />
-                        {this.state.isCopied ? 'COPIED!' : 'COPY'}
+                        <i className="fa fa-fw fa-files-o mr-2" />
+                        {this.state.isCopied ? 'Copied!' : 'Copy'}
                     </Button>
                 </div>
             </div>

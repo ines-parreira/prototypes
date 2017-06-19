@@ -7,19 +7,19 @@ export default [
     {
         label: 'Bold',
         name: 'Bold',
-        icon: 'bold',
+        icon: 'fa-bold',
         style: 'BOLD'
     },
     {
         label: 'Italic',
         name: 'Italic',
-        icon: 'italic',
+        icon: 'fa-italic',
         style: 'ITALIC'
     },
     {
         label: 'Underline',
         name: 'Underline',
-        icon: 'underline',
+        icon: 'fa-underline',
         style: 'UNDERLINE'
     },
     {

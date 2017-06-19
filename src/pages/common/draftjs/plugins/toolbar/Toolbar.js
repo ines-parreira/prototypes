@@ -67,7 +67,7 @@ class Toolbar extends React.Component {
                 onMouseDown={this._preventDefault}
             >
                 <i
-                    className={`${action.icon} icon`}
+                    className={classnames('fa fa-fw', action.icon)}
                     title={action.name}
                 />
             </div>

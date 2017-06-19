@@ -5,12 +5,12 @@ import {Emoji} from '../../Emoji'
 
 export const BlankState = ({message, stats}) => {
     // total closed tickets in the last 7 days
-    const closedTickets = stats.getIn(['agents', 0, 1])
+    const closedTickets = stats.getIn(['agents', 0, 1], 0)
 
     const messages = [
         {
             count: 10,
-            icon: 'sun',
+            icon: 'fa-sun-o',
             title: 'No more tickets here!',
             text: (
                 <div>
@@ -21,7 +21,7 @@ export const BlankState = ({message, stats}) => {
         },
         {
             count: 100,
-            icon: 'check circle',
+            icon: 'fa-check',
             title: 'Done!',
             text: (
                 <div>
@@ -32,7 +32,7 @@ export const BlankState = ({message, stats}) => {
         },
         {
             count: 500,
-            icon: 'asterisk',
+            icon: 'fa-asterisk',
             title: 'All good!',
             text: (
                 <div>
@@ -56,19 +56,15 @@ export const BlankState = ({message, stats}) => {
     } else {
         // match message based on number of closed tickets
         let messageMatch
-        messages.reverse().some(msg => {
-            if (closedTickets > msg.count) {
-                messageMatch = msg
+        messages.reverse().some((message) => {
+            if (closedTickets > message.count) {
+                messageMatch = message
                 return true
             }
         })
 
         if (messageMatch) {
-            const iconClassName = classnames(
-                'blank-state-message-icon',
-                'icon',
-                messageMatch.icon
-            )
+            const iconClassName = classnames('blank-state-message-icon fa fa-fw', messageMatch.icon)
 
             content = (
                 <div className="blank-state-message">

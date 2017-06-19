@@ -1,11 +1,13 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+import classnames from 'classnames'
 import {Link, withRouter} from 'react-router'
-import classNames from 'classnames'
 import {UncontrolledTooltip} from 'reactstrap'
 
 import {isCurrentlyOnTicket} from '../../../utils'
 import {logEvent} from '../../../store/middlewares/amplitudeTracker'
+
+import {sourceTypeToIcon} from '../../../config/ticket'
 
 class RecentChatsItem extends React.Component {
     static propTypes = {
@@ -22,21 +24,11 @@ class RecentChatsItem extends React.Component {
 
         const channel = recentTicket.get('channel')
 
-        const iconClasses = classNames('action icon', {
-            mail: channel === 'email',
-            comments: channel === 'chat',
-            facebook: ['facebook', 'facebook-post', 'facebook-comment'].includes(channel),
-            comment: channel === 'internal-note',
-            setting: channel === 'system-message',
-            'facebook-messenger': channel === 'facebook-message',
-            help: channel === 'unknown',
-        })
-
         const text = recentTicket.get('subject')
 
         // is the current link active or not?
         const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
-        const linkClasses = classNames('item', {
+        const linkClasses = classnames('item', {
             active: isActive,
             'has-something-new': recentTicket.get('is_unread') && !isActive,
         })
@@ -54,7 +46,7 @@ class RecentChatsItem extends React.Component {
                 className={linkClasses}
                 title={text}
             >
-                <i className={iconClasses} />
+                <i className={classnames('uncolored mr-2', sourceTypeToIcon(channel))} />
                 <span>{text}</span>
             </Link>
         )

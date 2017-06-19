@@ -192,8 +192,8 @@ class EmailIntegrationUpdate extends React.Component {
                             color="info"
                             data-clipboard-target="#forwarding-email"
                         >
-                            <i className="copy icon mr-2" />
-                            {this.state.isCopied ? 'COPIED!' : 'COPY'}
+                            <i className="fa fa-fw fa-files-o mr-2" />
+                            {this.state.isCopied ? 'Copied!' : 'Copy'}
                         </Button>
                     </InputGroupButton>
                 </InputGroup>

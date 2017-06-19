@@ -1,10 +1,12 @@
 import React, {PropTypes} from 'react'
+import classnames from 'classnames'
 import {Link} from 'react-router'
 import {fromJS} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Table, Button} from 'reactstrap'
 
 import NoIntegration from './NoIntegration'
 import {getIntegrationsList, getIconFromType} from '../../../../state/integrations/helpers'
+import {sourceTypeToIcon} from '../../../../config/ticket'
 
 /**
  * A generic component to edit integrations of a given type.
@@ -54,7 +56,7 @@ export default class IntegrationList extends React.Component {
                                     />
                                 )
                                 : (
-                                    <i className={`icon ${integrationConfig.get('icon')} mr-3`} />
+                                    <i className={classnames('mr-2', sourceTypeToIcon(integrationConfig.get('type')))} />
                                 )
                         }
 

@@ -169,12 +169,12 @@ class TicketReplyEditor extends React.Component {
                                     {
                                         newMessage.getIn(['_internal', 'loading', 'addAttachment'])
                                             ? (
-                                                <i className="notched circle loading icon" />
+                                                <i className="fa fa-fw fa-circle-o-notch fa-spin" />
                                             ) : (
                                                 <i
-                                                    className={classnames('icon', {
-                                                        attach: !newMessageAcceptsOnlyImages,
-                                                        'file image outline': newMessageAcceptsOnlyImages,
+                                                    className={classnames('fa fa-fw', {
+                                                        'fa-paperclip': !newMessageAcceptsOnlyImages,
+                                                        'fa-file-image-o': newMessageAcceptsOnlyImages,
                                                     })}
                                                     title="Add attachment"
                                                 />

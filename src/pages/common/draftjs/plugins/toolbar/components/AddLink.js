@@ -49,7 +49,7 @@ class AddLink extends React.Component {
     render() {
         return (
             <Popover
-                icon="linkify"
+                icon="fa-link"
                 name={this.props.action.name}
                 isActive={this.props.isActive}
                 isDisabled={this.props.isDisabled}

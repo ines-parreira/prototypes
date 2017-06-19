@@ -56,7 +56,7 @@ class FieldInfobarWidget extends React.Component {
         return (
             <span className="tools">
                 <i
-                    className="red link remove icon"
+                    className="fa fa-fw fa-close text-danger"
                     onClick={this._deleteField}
                 />
             </span>

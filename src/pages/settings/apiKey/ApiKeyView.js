@@ -27,7 +27,7 @@ class ApiKeyView extends React.Component {
         return (
             <div>
                 <h1>
-                    <i className="key alternative blue icon ml5ni mr10i" />
+                    <i className="fa fa-fw fa-key blue mr-2" />
                     API key
                 </h1>
                 <p>
@@ -51,8 +51,8 @@ class ApiKeyView extends React.Component {
                             color="info"
                             data-clipboard-target="#apiKey"
                         >
-                            <i className="copy icon mr-2" />
-                            {this.state.isCopied ? 'COPIED!' : 'COPY'}
+                            <i className="fa fa-fw fa-files-o mr-2" />
+                            {this.state.isCopied ? 'Copied!' : 'Copy'}
                         </Button>
                     </InputGroupButton>
                 </InputGroup>

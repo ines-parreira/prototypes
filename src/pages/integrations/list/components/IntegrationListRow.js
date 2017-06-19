@@ -2,30 +2,25 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classNames from 'classnames'
+
 import {getIconFromUrl} from '../../../../state/integrations/helpers'
+import {sourceTypeToIcon} from '../../../../config/ticket'
 
 class IntegrationListRow extends React.Component {
     render() {
-        const {integrationConfig, onClickAdd, onClickUpdate, isLoading, hasAnIntegration} = this.props
+        const {integrationConfig, hasAnIntegration} = this.props
 
         const nextUrl = `/app/integrations/${integrationConfig.get('type')}`
 
-        const onClick = hasAnIntegration ? onClickUpdate : onClickAdd
-
         const isExternalLink = !!integrationConfig.get('url')
 
-        const buttonClasses = ['icon', {
-            'notched circle loading': isLoading,
-            'angle right': !isLoading && !isExternalLink,
-            external: !isLoading && isExternalLink,
+        const buttonClasses = ['fa fa-fw', {
+            'fa-chevron-right': !isExternalLink,
+            'fa-external-link': isExternalLink,
         }]
 
         const linkConfig = {
             to: isExternalLink ? integrationConfig.get('url') : nextUrl,
-        }
-
-        if (onClick) {
-            linkConfig.onClick = onClick
         }
 
         if (isExternalLink) {
@@ -49,10 +44,10 @@ class IntegrationListRow extends React.Component {
                                 />
                             ) : (
                                 <i
-                                    className={`icon ${integrationConfig.get('icon')}`}
+                                    className={sourceTypeToIcon(integrationConfig.get('type'))}
                                     style={{
                                         fontSize: '54px',
-                                        marginTop: '-20px',
+                                        marginTop: '-6px',
                                     }}
                                 />
                             )
@@ -81,9 +76,6 @@ class IntegrationListRow extends React.Component {
 
 IntegrationListRow.propTypes = {
     integrationConfig: PropTypes.object.isRequired,
-    onClickAdd: PropTypes.func,
-    onClickUpdate: PropTypes.func,
-    isLoading: PropTypes.bool,
     hasAnIntegration: PropTypes.bool.isRequired,
 }
 

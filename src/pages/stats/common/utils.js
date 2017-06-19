@@ -32,9 +32,9 @@ export const renderDifference = (percentage, moreIsBetter) => {
                 percentage !== 0
                 && (
                     <i
-                        className={classnames('icon arrow', {
-                            up: percentage > 0,
-                            down: percentage < 0
+                        className={classnames('fa fa-fw', {
+                            'fa-arrow-up': percentage > 0,
+                            'fa-arrow-down': percentage < 0
                         })}
                     />
                 )

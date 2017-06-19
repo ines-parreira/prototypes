@@ -6,7 +6,6 @@ import {fromJS} from 'immutable'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
 import TicketMessage from './TicketMessage'
-import CustomerRating from './CustomerRating'
 import Event from './Event'
 
 @connect((state) => {
@@ -53,13 +52,7 @@ export default class TicketBody extends React.Component {
                 {
                     elements.map((element, index) => {
                         if (element.get('isRating')) {
-                            return (
-                                <CustomerRating
-                                    key={index}
-                                    rating={element}
-                                    currentUser={this.props.currentUser}
-                                />
-                            )
+                            return null // no rating component for now
                         }
 
                         if (element.get('isEvent')) {

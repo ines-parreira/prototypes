@@ -6,7 +6,7 @@ import {UncontrolledTooltip, Row, Col} from 'reactstrap'
 import InputField from '../../../../common/forms/InputField'
 
 export default class ParametersEditor extends React.Component {
-    addRow() {
+    addRow = () => {
         this.props.updateDict(this.props.list.push(Map({
             key: '',
             value: '',
@@ -15,11 +15,11 @@ export default class ParametersEditor extends React.Component {
         })))
     }
 
-    deleteRow(index) {
+    deleteRow = (index) => {
         this.props.updateDict(this.props.list.delete(index))
     }
 
-    changeValue(key, index, value) {
+    changeValue = (key, index, value) => {
         this.props.updateDict(this.props.list.setIn([index, key], value))
     }
 
@@ -30,23 +30,23 @@ export default class ParametersEditor extends React.Component {
             <div>
                 {
                     list.map((dict, index) => {
-                        const editableClassName = classnames('ui circular action write icon', {
-                            grey: !dict.get('editable'),
-                            'blue inverted': dict.get('editable'),
-                        })
-
-                        const editableTitle = dict.get('editable')
-                            ? 'Click to make this field not editable'
-                            : 'Click to make this field editable'
-
-                        const requiredClassName = classnames('ui circular action asterisk icon', {
-                            grey: !dict.get('required'),
-                            'blue inverted': dict.get('required'),
+                        const requiredClassName = classnames('btn btn-sm mr-2', {
+                            'btn-secondary': !dict.get('required'),
+                            'btn-info': dict.get('required'),
                         })
 
                         const requiredTitle = dict.get('required')
                             ? 'Click to make this field not required'
                             : 'Click to make this field required'
+
+                        const editableClassName = classnames('btn btn-sm mr-2', {
+                            'btn-secondary': !dict.get('editable'),
+                            'btn-info': dict.get('editable'),
+                        })
+
+                        const editableTitle = dict.get('editable')
+                            ? 'Click to make this field not editable'
+                            : 'Click to make this field editable'
 
                         return (
                             <Row
@@ -73,11 +73,14 @@ export default class ParametersEditor extends React.Component {
                                     xs="3"
                                     className="d-flex align-items-center"
                                 >
-                                    <i
+                                    <button
+                                        type="button"
                                         id={`parameter-required-${name}-${index}`}
                                         className={requiredClassName}
                                         onClick={() => this.changeValue('required', index, !dict.get('required'))}
-                                    />
+                                    >
+                                        <i className="fa fa-fw fa-asterisk" />
+                                    </button>
                                     <UncontrolledTooltip
                                         placement="top"
                                         target={`parameter-required-${name}-${index}`}
@@ -85,11 +88,14 @@ export default class ParametersEditor extends React.Component {
                                     >
                                         {requiredTitle}
                                     </UncontrolledTooltip>
-                                    <i
+                                    <button
+                                        type="button"
                                         id={`parameter-editable-${name}-${index}`}
                                         className={editableClassName}
                                         onClick={() => this.changeValue('editable', index, !dict.get('editable'))}
-                                    />
+                                    >
+                                        <i className="fa fa-fw fa-pencil" />
+                                    </button>
                                     <UncontrolledTooltip
                                         placement="top"
                                         target={`parameter-editable-${name}-${index}`}
@@ -98,7 +104,7 @@ export default class ParametersEditor extends React.Component {
                                         {editableTitle}
                                     </UncontrolledTooltip>
                                     <i
-                                        className="red close action icon"
+                                        className="fa fa-fw fa-close text-danger"
                                         onClick={() => this.deleteRow(index)}
                                     />
                                 </Col>
@@ -106,7 +112,10 @@ export default class ParametersEditor extends React.Component {
                         )
                     })
                 }
-                <i className="plus square action icon" onClick={() => this.addRow()} />
+                <i
+                    className="fa fa-fw fa-plus clickable"
+                    onClick={this.addRow}
+                />
             </div>
         )
     }

@@ -28,13 +28,12 @@ class Table extends Component {
         return this.props.sort
     }
 
-    _sortIconClassName = (sort, reverse, field) => classnames(
-        'action sort icon caret',
-        {
-            down: (sort === field && !reverse),
-            up: (sort === field && reverse)
-        }
-    )
+    _sortIconClassName = (sort, reverse, field) => {
+        return classnames('fa fa-fw', {
+            'fa-sort-desc': (sort === field && !reverse),
+            'fa-sort-asc': (sort === field && reverse)
+        })
+    }
 
     _onSort = (sort) => {
         return () => {

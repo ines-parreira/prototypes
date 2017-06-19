@@ -173,7 +173,7 @@ class CardInfobarWidget extends React.Component {
                                         className="dropdown-icon clickable"
                                         onClick={this._toggleCardExpand}
                                     >
-                                        <i className="dropdown icon" />
+                                        <i className="fa fa-fw fa-caret-down" />
                                     </span>
                                 )
                             }
@@ -189,11 +189,11 @@ class CardInfobarWidget extends React.Component {
                                     && (
                                         <span>
                                             <i
-                                                className="grey link setting icon"
+                                                className="fa fa-fw fa-cog text-faded clickable"
                                                 onClick={this._startWidgetEdition}
                                             />
                                             <i
-                                                className="red link remove icon"
+                                                className="fa fa-fw fa-close text-danger clickable"
                                                 onClick={isParentList ? this._deleteList : this._deleteCard}
                                             />
                                         </span>

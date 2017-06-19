@@ -48,7 +48,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                 reason: 'refund the shipping cost of this order',
                 child: (
                     <div>
-                        <i className="shipping icon" />
+                        <i className="fa fa-fw fa-truck mr-2" />
                         Refund shipping
                     </div>
                 )
@@ -59,7 +59,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                 tooltip: 'Cancel & refund the order on Shopify. Notify the customer via email',
                 child: (
                     <div>
-                        <i className="ban icon" />
+                        <i className="fa fa-fw fa-ban mr-1" />
                         Cancel
                     </div>
                 )
@@ -69,7 +69,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                 reason: 'refund this order',
                 child: (
                     <div>
-                        <i className="repeat icon" />
+                        <i className="fa fa-fw fa-repeat mr-2" />
                         Full refund
                     </div>
                 )
@@ -79,7 +79,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                 reason: 'duplicate this order',
                 child: (
                     <div>
-                        <i className="copy icon" />
+                        <i className="fa fa-fw fa-clone mr-2" />
                         Duplicate order
                     </div>
                 )

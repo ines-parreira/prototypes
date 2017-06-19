@@ -15,10 +15,7 @@ class PageHeader extends React.Component {
                 <h1 className="d-flex align-items-center">
                     {
                         icon && (
-                            <i
-                                className={`fa fa-fw fa-${icon} mr-2`}
-                                style={{color: '#0993f4'}}
-                            />
+                            <i className={`fa fa-fw fa-${icon} blue mr-2`} />
                         )
                     }
                     <div>

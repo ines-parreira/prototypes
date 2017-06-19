@@ -1,17 +1,14 @@
 import React from 'react'
 
 export default class NoMatch extends React.Component {
-
     render() {
         return (
-            <div>
-                <h1 className="ui center aligned icon header">
-                    <i className="find icon"/>
-                    <div className="content">
-                        Error! That page was not found :(
-                        <div className="sub header">Use the dropdown on the left to navigate to the page you want!</div>
-                    </div>
-                </h1>
+            <div
+                className="d-flex flex-column justify-content-center align-items-center"
+                style={{height: '100%'}}
+            >
+                <h1><i className="fa fa-fw fa-search" /></h1>
+                <h1>Error! That page was not found :(</h1>
             </div>
         )
     }

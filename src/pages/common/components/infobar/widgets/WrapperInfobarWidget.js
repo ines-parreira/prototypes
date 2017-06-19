@@ -83,7 +83,7 @@ class WrapperInfobarWidget extends React.Component {
                             <div className="header clearfix">
                                 <span className="tools">
                                     <i
-                                        className="red link remove icon"
+                                        className="fa fa-fw fa-close text-danger"
                                         onClick={this._deleteWrapper}
                                     />
                                 </span>

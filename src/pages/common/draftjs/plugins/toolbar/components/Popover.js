@@ -73,7 +73,7 @@ class Popover extends React.Component {
                 <i
                     onMouseUp={this._open}
                     title={this.props.name}
-                    className={classnames('icon', this.props.icon, css.button, {
+                    className={classnames('fa fa-fw', this.props.icon, css.button, {
                         [css.active]: isActive,
                         [css.disabled]: isDisabled,
                     })}

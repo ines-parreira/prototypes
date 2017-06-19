@@ -57,6 +57,7 @@ export default class List extends React.Component {
             <div>
                 <div className="d-flex align-items-center justify-content-between mb-3">
                     <h1>
+                        <i className="fa fa-fw fa-users blue mr-2" />
                         Team members
                     </h1>
                     <Button

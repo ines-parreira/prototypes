@@ -58,7 +58,10 @@ export default class RulesView extends React.Component {
 
         return (
             <div>
-                <PageHeader title="Rules">
+                <PageHeader
+                    title="Rules"
+                    icon="tasks"
+                >
                     <Button
                         type="submit"
                         color="primary"

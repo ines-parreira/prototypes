@@ -125,8 +125,8 @@ export default class ManageTags extends Component {
         return (
             <div className={manageTagsClassName}>
                 <div className="manage-tags d-flex justify-content-between">
-                    <h1 className="column">
-                        <i className="tag blue icon mr-2" />
+                    <h1>
+                        <i className="fa fa-fw fa-tag blue mr-2" />
                         Manage tags
                     </h1>
 

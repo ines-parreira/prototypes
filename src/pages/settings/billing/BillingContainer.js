@@ -36,15 +36,15 @@ export default class BillingContainer extends Component {
         return (
             <div>
                 <h1>
-                    <i className="fa fa-fw fa-credit-card blue icon mr-2"/>
+                    <i className="fa fa-fw fa-credit-card blue mr-2" />
                     Billing
                 </h1>
 
                 <BillingCurrentSubscription />
-                <BillingPlans/>
-                <BillingUsage/>
-                <BillingPaymentMethod/>
-                <BillingInvoices/>
+                <BillingPlans />
+                <BillingUsage />
+                <BillingPaymentMethod />
+                <BillingInvoices />
             </div>
         )
     }

@@ -38,12 +38,12 @@ class HeaderCell extends React.Component {
 
     _renderOrderIcon = (isOrderingField = false) => {
         const {orderDirection} = this.props
-        let className = 'icon sort'
+        let className = 'fa fa-fw fa-sort'
 
         if (isOrderingField) {
-            className = classnames(className, {
-                'caret down': orderDirection === 'desc',
-                'caret up': orderDirection === 'asc',
+            className = classnames('fa fa-fw', {
+                'fa-sort-desc': orderDirection === 'desc',
+                'fa-sort-asc': orderDirection === 'asc',
             })
         }
 

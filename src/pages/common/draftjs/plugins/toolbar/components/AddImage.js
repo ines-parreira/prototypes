@@ -58,7 +58,7 @@ class AddImage extends React.Component {
     render() {
         return (
             <Popover
-                icon="file image outline"
+                icon="fa-file-image-o"
                 name={this.props.action.name}
                 ref={(popover) => {
                     this.popover = popover

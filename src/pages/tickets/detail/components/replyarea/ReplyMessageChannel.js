@@ -11,7 +11,8 @@ import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getMessages} from '../../../../../state/ticket/selectors'
 import * as integrationSelectors from '../../../../../state/integrations/selectors'
-import _reduce from 'lodash/reduce'
+
+import {sourceTypeToIcon} from './../../../../../config/ticket'
 
 import css from './ReplyMessageChannel.less'
 
@@ -71,27 +72,6 @@ class ReplyMessageChannel extends React.Component {
 
     _toggleReceiversArea = (state = !this.state.isReceiversAreaOpen) => {
         this.setState({isReceiversAreaOpen: state})
-    }
-
-    _getChannelIconClassName = (sourceType) => {
-        const popupChannelClassNames = _reduce({
-            default: '',
-            'internal-note': 'comment yellow',
-            email: 'mail blue',
-            'email-forward': 'reply blue',
-            chat: 'purple comments',
-            'facebook-comment': 'facebook square blue',
-            'facebook-message': 'facebook-messenger blue'
-        }, (result, value, key) => {
-            result[key] = `action icon ${value}`
-            return result
-        }, {})
-
-        if (Object.keys(popupChannelClassNames).includes(sourceType)) {
-            return popupChannelClassNames[sourceType]
-        }
-
-        return popupChannelClassNames.default
     }
 
     _renderReceiversArea = () => {
@@ -165,23 +145,27 @@ class ReplyMessageChannel extends React.Component {
                             type="button"
                             className={css['dropdown-toggle']}
                         >
-                            <i className={this._getChannelIconClassName(iconLabel)} />
+                            <i className={sourceTypeToIcon(iconLabel)} />
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem
                                 type="button"
-                                onClick={() => { prepareNewMessage('email') }}
+                                onClick={() => {
+                                    prepareNewMessage('email')
+                                }}
                             >
-                                <i className={classnames('mr-2', this._getChannelIconClassName('email'))} />
+                                <i className={classnames('mr-2', sourceTypeToIcon('email'))} />
                                 Reply via email
                             </DropdownItem>
                             {
                                 suggestForwardByEmail && (
                                     <DropdownItem
                                         type="button"
-                                        onClick={() => { prepareNewMessage('email-forward') }}
+                                        onClick={() => {
+                                            prepareNewMessage('email-forward')
+                                        }}
                                     >
-                                        <i className={classnames('mr-2', this._getChannelIconClassName('email-forward'))} />
+                                        <i className={classnames('mr-2', sourceTypeToIcon('email-forward'))} />
                                         Forward by email
                                     </DropdownItem>
                                 )
@@ -190,9 +174,11 @@ class ReplyMessageChannel extends React.Component {
                                 suggestChat && (
                                     <DropdownItem
                                         type="button"
-                                        onClick={() => { prepareNewMessage('chat') }}
+                                        onClick={() => {
+                                            prepareNewMessage('chat')
+                                        }}
                                     >
-                                        <i className={classnames('mr-2', this._getChannelIconClassName('chat'))} />
+                                        <i className={classnames('mr-2', sourceTypeToIcon('chat'))} />
                                         Reply via chat
                                     </DropdownItem>
                                 )
@@ -201,9 +187,11 @@ class ReplyMessageChannel extends React.Component {
                                 suggestFacebookComment && (
                                     <DropdownItem
                                         type="button"
-                                        onClick={() => { prepareNewMessage('facebook-comment') }}
+                                        onClick={() => {
+                                            prepareNewMessage('facebook-comment')
+                                        }}
                                     >
-                                        <i className={classnames('mr-2', this._getChannelIconClassName('facebook-comment'))} />
+                                        <i className={classnames('mr-2', sourceTypeToIcon('facebook-comment'))} />
                                         Reply via Facebook post
                                     </DropdownItem>
                                 )
@@ -212,9 +200,11 @@ class ReplyMessageChannel extends React.Component {
                                 suggestFacebookMessage && (
                                     <DropdownItem
                                         type="button"
-                                        onClick={() => { prepareNewMessage('facebook-message') }}
+                                        onClick={() => {
+                                            prepareNewMessage('facebook-message')
+                                        }}
                                     >
-                                        <i className={classnames('mr-2', this._getChannelIconClassName('facebook-message'))} />
+                                        <i className={classnames('mr-2', sourceTypeToIcon('facebook-message'))} />
                                         Reply via Messenger
                                     </DropdownItem>
                                 )
@@ -223,9 +213,11 @@ class ReplyMessageChannel extends React.Component {
                                 suggestInternalNote && (
                                     <DropdownItem
                                         type="button"
-                                        onClick={() => { prepareNewMessage('internal-note') }}
+                                        onClick={() => {
+                                            prepareNewMessage('internal-note')
+                                        }}
                                     >
-                                        <i className={classnames('mr-2', this._getChannelIconClassName('internal-note'))} />
+                                        <i className={classnames('mr-2', sourceTypeToIcon('internal-note'))} />
                                         Leave an internal note
                                     </DropdownItem>
                                 )

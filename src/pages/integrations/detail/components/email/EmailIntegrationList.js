@@ -44,7 +44,6 @@ export default class EmailIntegrationList extends React.Component {
                                     <img
                                         src={gmailImg}
                                         height="23"
-                                        alt="email-icon"
                                     />
                                 ) : (
                                     <i

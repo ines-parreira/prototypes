@@ -30,11 +30,6 @@ describe('components utils : labels', () => {
                     expected: <labels.StatusLabel status="open" />
                 },
                 {
-                    type: 'priority',
-                    value: 'high',
-                    expected: <labels.PriorityLabel priority="high" />
-                },
-                {
                     type: 'assignee',
                     value: {
                         name: 'Mario'

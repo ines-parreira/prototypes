@@ -62,34 +62,7 @@ export const SOURCE_VALUE_PROP = {
     'facebook-post': 'address'
 }
 
-export const USER_CHANNEL_CLASS = (type) => {
-    switch (type) {
-        case 'email':
-        case 'gmail':
-            return 'icon mail'
-        case 'twitter':
-            return 'icon twitter'
-        case 'facebook':
-        case 'facebook-account':
-            return 'icon facebook square'
-        case 'facebook-message':
-            return 'icon facebook-messenger'
-        case 'chat':
-        case 'smooch':
-        case 'smooch_inside':
-            return 'icon comments'
-        case 'phone':
-        case 'ottspott-call':
-            return 'icon phone'
-        default:
-            return ''
-    }
-}
-
 export const TICKET_STATUSES = ['open', 'new', 'closed']
-export const CHANNELS = ['email', 'phone', 'sms', 'chat', 'twitter', 'facebook', 'api']
-export const VIA = CHANNELS.concat(['form', 'helpdesk', 'app', 'rule'])
-export const ANSWERABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-post', 'facebook-comment', 'facebook-message']
 
 /**
  * Widget related
@@ -116,13 +89,11 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         subTypes: ['email', 'gmail'],
         title: 'Email',
         description: 'Connect your support email addresses and respond to your customers from Gorgias',
-        icon: 'mail blue'
     },
     {
         type: 'smooch_inside',
         title: 'Chat',
         description: 'Add a chat on your website',
-        image: 'integrations/chat.png',
     },
     {
         type: 'facebook',

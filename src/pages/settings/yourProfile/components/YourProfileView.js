@@ -80,9 +80,10 @@ class YourProfileView extends React.Component {
         return (
             <div>
                 <h1>
-                    <i className="user alternative blue icon ml5ni mr10i" />
+                    <i className="fa fa-fw fa-user blue mr-2" />
                     Your profile
                 </h1>
+
                 <p>
                     Update your profile information.
                 </p>

@@ -3,12 +3,13 @@ import {fromJS} from 'immutable'
 import {bindActionCreators} from 'redux'
 import _upperFirst from 'lodash/upperFirst'
 
-import {CHANNELS} from '../../../config'
 import OverviewStatsView from './components/OverviewStatsView'
 import {setFilter, fetchStats} from '../../../state/stats/actions'
 import {getDisplayName} from '../../../state/users/helpers'
 import {getAgents} from '../../../state/users/selectors'
 import {getTags} from '../../../state/tags/selectors'
+
+const CHANNELS = ['email', 'phone', 'chat', 'facebook', 'api']
 
 const mapStateToProps = (state) => ({
     tags: getTags(state).toJS(),

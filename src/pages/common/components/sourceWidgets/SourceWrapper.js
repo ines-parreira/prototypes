@@ -120,7 +120,7 @@ class SourceWrapper extends React.Component {
                 <h1>
                     Manage widgets
                     <i
-                        className="icon remove grey right floated link"
+                        className="fa fa-fw fa-close pull-right text-faded"
                         onClick={this._leaveEditionMode}
                     />
                 </h1>

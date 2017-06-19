@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
@@ -11,8 +12,8 @@ import ProfileImage from './../ProfileImage'
 import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
 import {itemsWithContext} from '../../../../state/widgets/utils'
 import {getDisplayName} from '../../../../state/users/helpers'
-import {USER_CHANNEL_CLASS} from '../../../../config'
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
+import {sourceTypeToIcon} from '../../../../config/ticket'
 
 class InfobarUserInfo extends React.Component {
     static childContextTypes = {
@@ -235,18 +236,12 @@ class InfobarUserInfo extends React.Component {
                 addressComponent = <span>{address}</span>
             }
 
-            const iconClass = USER_CHANNEL_CLASS(channel.get('type'))
-
-            if (!iconClass) {
-                return null
-            }
-
             return (
                 <p
                     key={idx}
                     className="user-channel"
                 >
-                    <i className={iconClass} />
+                    <i className={classnames('uncolored mr-2', sourceTypeToIcon(channel.get('type')))} />
                     {addressComponent}
                 </p>
             )

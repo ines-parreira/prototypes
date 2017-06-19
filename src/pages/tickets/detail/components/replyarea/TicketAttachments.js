@@ -1,33 +1,16 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
 
+import {fileIconFromContentType} from '../../../common/utils'
+
 export default class TicketAttachments extends React.Component {
     // only re-render if we have a different set of attachments
     shouldComponentUpdate = (nextProps) => !this.props.attachments.equals(nextProps.attachments)
 
     renderAttachmentIcon(contentType) {
-        let iconClass = 'attach'
-        let iconLabel = ''
-
-        if (contentType === 'application/pdf') {
-            iconClass = 'file pdf outline'
-            iconLabel = 'pdf'
-        } else if (contentType.startsWith('image/')) {
-            iconClass = 'file image outline'
-            // extract image type
-            iconLabel = contentType.replace('image/', '')
-        } else if (contentType === 'application/msword') {
-            iconClass = 'file word outline'
-            iconLabel = 'word'
-        } else if (contentType.startsWith('text/')) {
-            iconClass = 'file text outline'
-            iconLabel = 'text'
-        }
-
         return (
             <div className="attachments-item-meta-type">
-                <i className={`icon ${iconClass}`}/>
-                {iconLabel}
+                <i className={`fa fa-fw ${fileIconFromContentType(contentType)}`} />
             </div>
         )
     }
@@ -44,7 +27,12 @@ export default class TicketAttachments extends React.Component {
 
     renderRemoveIcon(idx) {
         if (this.props.removable) {
-            return <i className="attachments-item-remove remove action icon" onClick={this.removeAttachment(idx)}/>
+            return (
+                <i
+                    className="attachments-item-remove fa fa-fw fa-close"
+                    onClick={this.removeAttachment(idx)}
+                />
+            )
         }
         return null
     }

@@ -393,7 +393,7 @@ class MultiSelectAsyncField extends React.Component {
                                     className={css['item-remove-button']}
                                     onClick={(e) => this._onItemClickRemove(e, index)}
                                 >
-                                    <i className="remove icon" />
+                                    <i className="fa fa-fw fa-close" />
                                 </span>
                             </div>
                         ))

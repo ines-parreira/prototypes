@@ -116,3 +116,41 @@ export const isRichType = (sourceType) => {
 export const acceptsOnlyImages = (sourceType) => {
     return ['chat'].includes(sourceType)
 }
+
+/**
+ * Return an icon for any message source type, message channel or integration type
+ * @param sourceType
+ * @returns {*}
+ */
+export const sourceTypeToIcon = (sourceType) => {
+    switch (sourceType) {
+        case 'internal-note':
+            return 'fa fa-fw fa-comment yellow'
+        case 'email':
+        case 'gmail':
+            return 'fa fa-fw fa-envelope blue'
+        case 'email-forward':
+            return 'fa fa-fw fa-reply blue'
+        case 'chat':
+        case 'smooch':
+        case 'smooch_inside':
+            return 'fa fa-fw fa-comments purple'
+        case 'api':
+            return 'fa fa-fw fa-code'
+        case 'phone':
+        case 'ottspott-call':
+            return 'fa fa-fw fa-phone'
+        case 'facebook':
+        case 'facebook-post':
+        case 'facebook-comment':
+            return 'fa fa-fw fa-facebook-square blue'
+        case 'facebook-message':
+            return 'fa fa-fw fa-facebook-messenger blue' // custom font
+        case 'system-message':
+            return 'fa fa-fw fa-cog'
+        case 'twitter':
+            return 'fa fa-fw fa-twitter blue'
+        default:
+            return 'fa fa-fw fa-question'
+    }
+}

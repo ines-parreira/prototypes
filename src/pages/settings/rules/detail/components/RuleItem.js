@@ -21,7 +21,6 @@ class RuleItem extends React.Component {
         isDeleting: false,
         isResetting: false,
         isSubmitting: false,
-        showCode: false,
         title: '',
     }
 
@@ -102,46 +101,10 @@ class RuleItem extends React.Component {
             })
     }
 
-    _handleToggleCode = () => {
-        return this.setState({
-            showCode: !this.state.showCode
-        })
-    }
-
     _handleChangeTriggers = (trigger) => {
         return this.setState({
             eventTypes: _xor(this.state.eventTypes, [trigger])
         })
-    }
-
-    _renderToggleCode() {
-        const toggleClasses = classnames('angle cursor icon', {
-            up: this.state.showCode,
-            down: !this.state.showCode
-        })
-        return (
-            <div>
-                <a className="ui red ribbon label" title="The code behind the scenes" onClick={this._handleToggleCode}>
-                    <i className="code icon" /> Code
-                </a>
-                <a className="ui floated right" title="Toggle code" onClick={this._handleToggleCode}>
-                    <i className={toggleClasses} />
-                </a>
-            </div>
-        )
-    }
-
-    _renderCode() {
-        const {rule} = this.props
-        const code = rule.get('code')
-        if (this.state.showCode) {
-            return (
-                <pre>
-                     <code>{code && code.trim()}</code>
-                 </pre>
-            )
-        }
-        return null
     }
 
     _renderButtons() {

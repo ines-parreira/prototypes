@@ -80,7 +80,7 @@ class HardWarning extends React.Component {
                         color="info"
                         onClick={this.retry}
                     >
-                        <i className="refresh icon" />
+                        <i className="fa fa-fw fa-refresh mr-2" />
                         Retry
                     </Button>
                     <UncontrolledTooltip
@@ -106,7 +106,7 @@ class HardWarning extends React.Component {
                         color="warning"
                         onClick={() => actions.ticket.updateTicketMessage(ticketId, messageId, {}, 'force')}
                     >
-                        <i className="chevron right icon" />
+                        <i className="fa fa-fw fa-chevron-right mr-2" />
                         Force
                     </Button>
                     <UncontrolledTooltip
@@ -132,7 +132,7 @@ class HardWarning extends React.Component {
                         color="danger"
                         onClick={this.cancel}
                     >
-                        <i className="ban icon" />
+                        <i className="fa fa-fw fa-ban mr-2" />
                         Cancel
                     </Button>
                     <UncontrolledTooltip

@@ -6,7 +6,7 @@ import _isArray from 'lodash/isArray'
 import {fromJS} from 'immutable'
 import {Badge, UncontrolledTooltip} from 'reactstrap'
 import {formatDatetime, toJS, isImmutable} from '../../../utils'
-import {USER_CHANNEL_CLASS} from '../../../config'
+import {sourceTypeToIcon} from '../../../config/ticket'
 
 /**
  * AGENT
@@ -56,17 +56,6 @@ TagLabel.propTypes = {
 TagLabel.defaultProps = {
     style: {},
 }
-
-/**
- * PRIORITY
- */
-export const PriorityLabel = ({priority}) => {
-    const className = classnames('ticket-priority flag icon', priority, {
-        outline: priority !== 'high'
-    })
-    return <i className={className} />
-}
-PriorityLabel.propTypes = {priority: PropTypes.string.isRequired}
 
 /**
  * STATUS
@@ -124,9 +113,8 @@ export const IntegrationsDetailLabel = ({integration}) => {
     }
 
     return (
-
         <div>
-            <i className={USER_CHANNEL_CLASS(integration.get('type'))}/>
+            <i className={classnames('mr-2', sourceTypeToIcon(integration.get('type')))} />
             {label}
         </div>
     )
@@ -232,20 +220,18 @@ export const RenderLabel = ({field, value}) => {
                 />
             )
         case 'status':
-            return <StatusLabel status={value}/>
-        case 'priority':
-            return <PriorityLabel priority={value}/>
+            return <StatusLabel status={value} />
         case 'assignee':
-            return value.get('name') ? <AgentLabel name={value.get('name')}/> : null
+            return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
         case 'integrations':
-            return typeof value === 'string' ? <div>{value}</div> : <IntegrationsDetailLabel integration={value}/>
+            return typeof value === 'string' ? <div>{value}</div> : <IntegrationsDetailLabel integration={value} />
         case 'requester':
-            return <UserLabel name={value.get('name')}/>
+            return <UserLabel name={value.get('name')} />
         case 'roles':
-            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value}/>
+            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value} />
         case 'via':
         case 'channel':
-            return <ChannelLabel channel={value}/>
+            return <ChannelLabel channel={value} />
         default:
             return <span>{value}</span>
     }

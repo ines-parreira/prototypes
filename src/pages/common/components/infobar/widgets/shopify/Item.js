@@ -59,7 +59,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                         quantity: 1,
                     }}
                 >
-                    <i className="repeat icon" />
+                    <i className="fa fa-fw fa-repeat mr-2" />
                     Refund one
                 </ActionButton>
                 {
@@ -72,7 +72,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                             reason={`refund ${quantity} ${source.get('name')}`}
                             payload={payload}
                         >
-                            <i className="repeat icon" />
+                            <i className="fa fa-fw fa-repeat mr-2" />
                             Refund {quantity}
                         </ActionButton>
                     )

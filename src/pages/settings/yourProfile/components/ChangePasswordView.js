@@ -33,7 +33,7 @@ class ChangePasswordView extends React.Component {
         return (
             <div>
                 <h1>
-                    <i className="lock alternative blue icon ml5ni mr10i" />
+                    <i className="fa fa-fw fa-lock blue mr-2" />
                     Change password
                 </h1>
                 <p>

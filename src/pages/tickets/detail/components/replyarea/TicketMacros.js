@@ -64,13 +64,14 @@ class TicketMacros extends React.Component {
             content = (
                 <div className="no-result-container">
                     <h4>You don't have any macros yet.</h4>
-                    <div
-                        className="ui small light labeled icon blue button"
-                        onClick={() => openModal()}
+                    <Button
+                        type="button"
+                        color="info"
+                        onClick={openModal}
                     >
-                        <i className="plus icon" />
+                        <i className="fa fa-fw fa-plus mr-2" />
                         Create a new macro
-                    </div>
+                    </Button>
                 </div>
             )
         }

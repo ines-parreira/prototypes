@@ -106,17 +106,17 @@ export default class TicketMessageActions extends React.Component {
                 {
                     backActions.map((action, index) => {
                         let color = 'success'
-                        let icon = 'circle check'
+                        let icon = 'fa-check'
 
                         if (action.status === 'error') {
                             color = 'danger'
-                            icon = 'circle remove'
+                            icon = 'fa-close'
                         } else if (action.status === 'pending') {
                             color = 'secondary'
-                            icon = 'circle'
+                            icon = 'fa-circle-o-notch fa-spin'
                         } else if (action.status === 'canceled') {
                             color = 'danger'
-                            icon = 'ban'
+                            icon = 'fa-ban'
                         }
 
                         const contentType = _get(action, 'arguments.content_type')
@@ -131,7 +131,7 @@ export default class TicketMessageActions extends React.Component {
                                     color={color}
                                     onClick={this._openModal(index)}
                                 >
-                                    <i className={`icon ${icon}`} />
+                                    <i className={`fa fa-fw ${icon}`} />
                                     {action.title}
                                 </Button>
 

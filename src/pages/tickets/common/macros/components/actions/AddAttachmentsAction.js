@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import FileField from '../../../../../common/forms/FileField'
 
-import {mapFileFormatToSemanticIcon} from '../../../utils'
+import {fileIconFromContentType} from '../../../utils'
 
 export default class AddAttachmentsAction extends Component {
     _addAttachments = (files) => {
@@ -21,12 +21,12 @@ export default class AddAttachmentsAction extends Component {
                 return (
                     <a
                         key={index}
-                        className="ui label mb5i mr5i"
+                        className="ui label mr-1 mb-1"
                     >
-                        <i className={`${mapFileFormatToSemanticIcon(file.get('content_type'))} icon`} />
-                        {file.get('name')}
+                        <i className={`fa fa-fw ${fileIconFromContentType(file.get('content_type'))} mr-2`} />
+                        <span className="mr-2">{file.get('name')}</span>
                         <i
-                            className="remove icon ml10i mr0i"
+                            className="fa fa-fw fa-close"
                             onClick={() => this._removeAttachment(index)}
                         />
                     </a>

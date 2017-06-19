@@ -227,7 +227,7 @@ class OverviewStatsView extends React.Component {
                                                 this._renderTooltip(
                                                     `title-${config.get('name')}`,
                                                     config.get('tooltip'),
-                                                    <i className="help circle link icon" />
+                                                    <i className="fa fa-fw fa-question-circle ml-1" />
                                                 )
                                             }
                                         </div>

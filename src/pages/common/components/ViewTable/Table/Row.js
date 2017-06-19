@@ -57,7 +57,7 @@ class Row extends React.Component {
                                 className={css.viewers}
                                 title={viewsUtils.agentsViewingMessage(agentsViewing)}
                             >
-                                <i className="unhide icon" />
+                                <i className="fa fa-fw fa-eye" />
                             </div>
                         )
                     }

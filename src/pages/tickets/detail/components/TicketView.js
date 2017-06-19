@@ -78,8 +78,8 @@ export class TicketView extends React.Component {
                     // we want to hide text during animation if there is no agents viewing
                     agentsViewing.size > 0 && (
                         <span>
-                            <i className="unhide icon" />
-                            {' '}{viewsUtils.agentsViewingMessage(agentsViewing)}
+                            <i className="fa fa-fw fa-eye mr-2" />
+                            {viewsUtils.agentsViewingMessage(agentsViewing)}
                         </span>
                     )
                 }
@@ -117,7 +117,7 @@ export class TicketView extends React.Component {
             ? 'Hide user history'
             : (
                 <p>
-                    <i className="icon arrow circle up mr-1" />
+                    <i className="fa fa-fw fa-arrow-up mr-1" />
                     {
                         hasOpenedTicketsInHistory ? (
                                 <span>Show other open tickets ({historyOpenedTickets})</span>

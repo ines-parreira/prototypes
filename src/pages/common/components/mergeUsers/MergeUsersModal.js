@@ -1,13 +1,15 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import classnames from 'classnames'
 import {Field, reduxForm, formValueSelector} from 'redux-form'
 import {Button, UncontrolledTooltip} from 'reactstrap'
 
 import Modal from '../Modal'
 
 import {JSONTree} from './../JSONTree'
-import {USER_CHANNEL_CLASS} from './../../../../config'
+
+import {sourceTypeToIcon} from '../../../../config/ticket'
 import BinaryChoiceField from './BinaryChoiceField'
 import MultiSelectBinaryChoiceField from './MultiSelectBinaryChoiceField'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
@@ -68,7 +70,8 @@ class MergeUsersModal extends React.Component {
                 .map((channel, idx) => ({
                     label: (
                         <div key={idx}>
-                            <i className={USER_CHANNEL_CLASS(channel.get('type'))} /> {channel.get('address')}
+                            <i className={classnames('mr-2', sourceTypeToIcon(channel.get('type')))} />
+                            {channel.get('address')}
                         </div>
                     ),
                     value: channel.toJS()
@@ -134,8 +137,8 @@ class MergeUsersModal extends React.Component {
                                 {
                                     label: (
                                         <span>
-                                            <i className="user icon" />
-                                            {destinationUser.get('name') || ''}
+                                            <i className="fa fa-fw fa-user mr-2" />
+                                            {destinationUser.get('name')}
                                         </span>
                                     ),
                                     value: destinationUser.get('name') || ''
@@ -143,8 +146,8 @@ class MergeUsersModal extends React.Component {
                                 {
                                     label: (
                                         <span>
-                                            <i className="user icon" />
-                                            {sourceUser.get('name') || ''}
+                                            <i className="fa fa-fw fa-user mr-2" />
+                                            {sourceUser.get('name')}
                                         </span>
                                     ),
                                     value: sourceUser.get('name') || ''
@@ -159,7 +162,7 @@ class MergeUsersModal extends React.Component {
                                 <span>
                                         <i
                                             id="merge-primary-email"
-                                            className="help circle link icon"
+                                            className="fa fa-fw fa-question-circle ml-2"
                                         />
                                         <UncontrolledTooltip
                                             placement="top"
@@ -174,8 +177,8 @@ class MergeUsersModal extends React.Component {
                                 {
                                     label: (
                                         <span>
-                                            <i className="mail icon" />
-                                            {destinationUser.get('email') || ''}
+                                            <i className={classnames('mr-2', sourceTypeToIcon('email'))} />
+                                            {destinationUser.get('email')}
                                         </span>
                                     ),
                                     value: destinationUser.get('email') || ''
@@ -183,8 +186,8 @@ class MergeUsersModal extends React.Component {
                                 {
                                     label: (
                                         <span>
-                                            <i className="mail icon" />
-                                            {sourceUser.get('email') || ''}
+                                            <i className={classnames('mr-2', sourceTypeToIcon('email'))} />
+                                            {sourceUser.get('email')}
                                         </span>
                                     ),
                                     value: sourceUser.get('email') || ''
@@ -195,18 +198,18 @@ class MergeUsersModal extends React.Component {
                             label="Contact info"
                             tooltip={(
                                 <span>
-                                        <i
-                                            id="merge-contact-info"
-                                            className="help circle link icon"
-                                        />
-                                        <UncontrolledTooltip
-                                            placement="top"
-                                            target="merge-contact-info"
-                                            delay={0}
-                                        >
-                                            You can not deselect the contact info associated with the primary email
-                                        </UncontrolledTooltip>
-                                    </span>
+                                    <i
+                                        id="merge-contact-info"
+                                        className="fa fa-fw fa-question-circle ml-2"
+                                    />
+                                    <UncontrolledTooltip
+                                        placement="top"
+                                        target="merge-contact-info"
+                                        delay={0}
+                                    >
+                                        You can not deselect the contact info associated with the primary email
+                                    </UncontrolledTooltip>
+                                </span>
                             )}
                             name="user.channels"
                             component={MultiSelectBinaryChoiceField}
