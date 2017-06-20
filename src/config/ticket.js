@@ -141,6 +141,7 @@ export const sourceTypeToIcon = (sourceType) => {
         case 'ottspott-call':
             return 'fa fa-fw fa-phone'
         case 'facebook':
+        case 'facebook-account':
         case 'facebook-post':
         case 'facebook-comment':
             return 'fa fa-fw fa-facebook-square blue'
