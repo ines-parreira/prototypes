@@ -56,6 +56,11 @@ export default class SettingsNavbar extends React.Component {
                 to: 'manage-tags',
                 text: 'Tags',
                 className: 'hidden-sm-down',
+            }, {
+                requiredRole: 'admin',
+                to: 'import-data',
+                text: 'Import data',
+                className: 'hidden-sm-down'
             }]
         }]
 

@@ -99,7 +99,7 @@ export function fetchIntegration(integrationId, integrationType, waitingForAuthe
 
         return axios.get(`/api/integrations/${integrationId}`)
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 dispatch({
                     type: types.FETCH_INTEGRATION_SUCCESS,
                     integration: resp
@@ -114,7 +114,7 @@ export function fetchIntegration(integrationId, integrationType, waitingForAuthe
                         onCreateSuccess(dispatch, resp)
                     }
                 }
-            }, error => {
+            }, (error) => {
                 // We redirect to the integrations home page if we can't find the wanted integration on the server
                 browserHistory.replace(`/app/integrations/${integrationType}`)
                 return dispatch({
@@ -153,7 +153,7 @@ export function deleteIntegration(integration) {
                     type: 'success',
                     message: 'Integration successfully deleted'
                 }))
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: types.DELETE_INTEGRATION_ERROR,
                     error,
@@ -196,17 +196,51 @@ function updateOrCreateIntegrationRequest(integration, action, withDeleted) {
 
         return promise
             .then((json = {}) => json.data)
-            .then(resp => {
+            .then((resp) => {
                 if (isUpdate) {
                     onUpdateSuccess(dispatch, resp)
                 } else {
                     onCreateSuccess(dispatch, resp)
                 }
-            }, error => {
+            }, (error) => {
                 return dispatch({
                     type: isUpdate ? types.UPDATE_INTEGRATION_ERROR : types.CREATE_INTEGRATION_ERROR,
                     error,
                     reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration'
+                })
+            })
+    }
+}
+
+export function createImportIntegration(integration) {
+    return (dispatch) => {
+        const isUpdate = !!integration.get('id')
+
+        dispatch({
+            type: types.CREATE_INTEGRATION_START,
+            integration
+        })
+
+        return axios.post('/api/integrations/', integration.toJS())
+            .then((json = {}) => json.data)
+            .then((resp) => {
+                browserHistory.push('/app/settings/import-data/')
+
+                dispatch(notify({
+                    type: 'success',
+                    message: 'Import successfully started'
+                }))
+
+                return dispatch({
+                    type: types.CREATE_INTEGRATION_SUCCESS,
+                    resp
+                })
+            }, (error) => {
+                return dispatch({
+                    type: isUpdate ? types.UPDATE_INTEGRATION_ERROR : types.CREATE_INTEGRATION_ERROR,
+                    error,
+                    reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration',
+                    verbose: true
                 })
             })
     }

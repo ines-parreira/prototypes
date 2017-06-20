@@ -1,0 +1,111 @@
+import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {Link} from 'react-router'
+import {fromJS} from 'immutable'
+
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    Form
+} from 'reactstrap'
+
+import InputField from '../../../common/forms/InputField'
+import * as integrationActions from './../../../../state/integrations/actions'
+import classnames from 'classnames'
+
+
+
+@connect(null, {
+    createIntegration: integrationActions.createImportIntegration,
+})
+export default class ImportZendeskDetail extends React.Component {
+    static propTypes = {
+        createIntegration: PropTypes.func.isRequired
+    }
+
+    state = {
+        domain: '',
+        email: '',
+        apiKey: '',
+        isLoading: false
+    }
+
+    _onSubmit = (e) => {
+        e.preventDefault()
+        this.setState({isLoading: true})
+
+        const integration = fromJS({
+            name: this.state.domain,
+            type: 'zendesk',
+            connections: [{
+                type: 'zendesk_auth_data',
+                data: {
+                    email: this.state.email,
+                    domain: this.state.domain,
+                    api_key: this.state.apiKey
+                }
+            }],
+            deactivated_datetime: new Date().toISOString()
+        })
+
+        return this.props.createIntegration(integration).then(() => {this.setState({isLoading: false})})
+    }
+
+    render() {
+        return (
+            <div className="integrations-list">
+                <Breadcrumb>
+                    <BreadcrumbItem>
+                        <Link to="/app/settings/import-data">Import data</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        Zendesk import
+                    </BreadcrumbItem>
+                </Breadcrumb>
+
+                <h1 className="mb-3">
+                    Zendesk import
+                </h1>
+
+                <Form onSubmit={this._onSubmit}>
+                    <InputField
+                        type="text"
+                        name="domain"
+                        label="Zendesk subdomain"
+                        placeholder="If the URL of your Zendesk is 'https://acme.zendesk.com/', your subdomain is 'acme'"
+                        onChange={(value) => this.setState({domain: value})}
+                        required
+                    />
+                    <InputField
+                        type="text"
+                        name="email"
+                        label="Login email"
+                        placeholder="The email address you use to login on your Zendesk"
+                        onChange={(value) => this.setState({email: value})}
+                        required
+                    />
+                    <InputField
+                        type="text"
+                        name="apiKey"
+                        label="API Key"
+                        placeholder=""
+                        onChange={(value) => this.setState({apiKey: value})}
+                        required
+                        help="In your Zendesk, go to Settings > Channels > API, create a new token named Gorgias Import,
+                        and copy/paste it in the field above."
+                    />
+
+                    <Button
+                        type="submit"
+                        color="success"
+                        className={classnames({'btn-loading': this.state.isLoading})}
+                        disabled={this.state.isLoading}
+                    >
+                        Start import
+                    </Button>
+                </Form>
+            </div>
+        )
+    }
+}

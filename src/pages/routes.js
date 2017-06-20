@@ -32,6 +32,8 @@ import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCardContainer'
 import ManageTagsContainer from './settings/tags/ManageTags'
+import ImportDataContainer from './settings/importData/ImportDataContainer'
+import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
 
 import * as Team from './settings/team'
 
@@ -280,6 +282,21 @@ export default (
                     navbar: SettingsNavbarContainer
                 }}
             />
+            <Route path="import-data">
+                <IndexRoute
+                    components={{
+                        content: UserRoleRequired(ImportDataContainer, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+                <Route
+                    path="zendesk"
+                    components={{
+                        content: UserRoleRequired(ImportZendeskDetail, 'admin'),
+                        navbar: SettingsNavbarContainer
+                    }}
+                />
+            </Route>
         </Route>
         <Route path="*" component={NoMatch} />
     </Route>
