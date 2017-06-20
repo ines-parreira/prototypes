@@ -195,6 +195,14 @@ export default class Navbar extends React.Component {
                         </DropdownItem>
                         <DropdownItem
                             tag="a"
+                            href="http://docs.gorgias.io/"
+                            target="_blank"
+                        >
+                            <i className="fa fa-fw fa-book mr-2" />
+                            Documentation
+                        </DropdownItem>
+                        <DropdownItem
+                            tag="a"
                             href="/logout"
                         >
                             <i className="fa fa-fw fa-sign-out mr-2" />

@@ -1,27 +1,26 @@
 import React, {PropTypes} from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {isAdmin} from '../../../utils'
-import moment from 'moment'
 
-import {ONBOARDING_INTEGRATION_SUGGESTIONS} from '../../../config'
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
 
 import * as integrationsSelectors from '../../../state/integrations/selectors'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
+import * as usersSelectors from '../../../state/users/selectors'
 
 import {logEvent} from '../../../store/middlewares/amplitudeTracker'
-import {getIconFromType} from '../../../state/integrations/helpers'
 
 import css from './TicketListInfobarContainer.less'
 
-const suggestions = ONBOARDING_INTEGRATION_SUGGESTIONS
-
 class TicketListInfobarContainer extends React.Component {
     static propTypes = {
-        currentUser: PropTypes.object.isRequired,
-        integrations: PropTypes.object.isRequired,
+        agents: ImmutablePropTypes.list.isRequired,
+        currentUser: ImmutablePropTypes.map.isRequired,
+        emailIntegrations: ImmutablePropTypes.list.isRequired,
+        hasIntegrationsOfTypes: PropTypes.func.isRequired,
     }
 
     _hideBoarding = () => {
@@ -30,31 +29,22 @@ class TicketListInfobarContainer extends React.Component {
     }
 
     render() {
-        const {
-            currentUser,
-            integrations,
-        } = this.props
+        const {agents, currentUser, emailIntegrations, hasIntegrationsOfTypes} = this.props
 
-        const displayedSuggestions = suggestions.filter((suggestion) => {
-            // remove suggestions that have already at least an integration
-            return !integrations.find(integration => integration.get('type') === suggestion.type)
-        })
+        const hasReceivedEmail = emailIntegrations
+            .filter(integration => !integration.getIn(['meta', 'address']).endsWith('.gorgias.io')) // remove generated gorgias addresses
+            .some(integration => {
+                // gmail is connected or forwarding is on
+                return integration.get('type') === 'gmail' || integration.getIn(['meta', 'is_forwarding_on'])
+            })
 
-        const hasShopifyIntegration = integrations.some(integration => integration.get('type') === 'shopify')
+        const hasConnectedFacebook = hasIntegrationsOfTypes('facebook')
 
-        const hidingDate = moment(currentUser.get('created_datetime')).add(14, 'days')
+        const hasConnectedChat = hasIntegrationsOfTypes(['smooch', 'smooch_inside'])
 
-        // hide bar if current user is not an admin
-        const shouldHide = !isAdmin(currentUser)
-            // or if boarding infobar has been hidden
-            || window.localStorage.getItem('hideBoarding')
-            // or if there is no suggestions (already added every suggested integrations)
-            || !displayedSuggestions.length
-            // or if a certain time has passed since user creation AND at least an integration has been made
-            || (
-                moment().isAfter(hidingDate)
-                && displayedSuggestions.length < suggestions.length
-            )
+        const hasInvitedTeamMembers = agents.size > 1
+
+        const shouldHide = !isAdmin(currentUser) || window.localStorage.getItem('hideBoarding')
 
         if (shouldHide) {
             return null
@@ -69,77 +59,74 @@ class TicketListInfobarContainer extends React.Component {
                         Welcome<br />
                         {currentUser.get('firstname')}
                     </h1>
-                    {
-                        <div className={css.buttons}>
-                            {
-                                displayedSuggestions.map((suggestion) => {
-                                    const type = suggestion.type
 
-                                    return (
-                                        <Link
-                                            key={type}
-                                            className={css.button}
-                                            to={suggestion.url}
-                                            onClick={() => {
-                                                logEvent(`Clicked add a "${type}" integration on Onboarding widget`)
-                                            }}
-                                        >
-                                            <img
-                                                role="presentation"
-                                                className="logo"
-                                                src={getIconFromType(type)}
-                                            />
-                                            <span>{suggestion.title}</span>
-                                        </Link>
-                                    )
-                                })
-                            }
-                            {
-                                hasShopifyIntegration && (
-                                    <a
-                                        href="http://docs.gorgias.io/integrations/http-integrations#Shipstation"
-                                        target="_blank"
-                                        className={css.button}
-                                        onClick={() => {
-                                            logEvent('Clicked add a "shipstation" integration on Onboarding widget')
-                                        }}
-                                    >
-                                        <img
-                                            role="presentation"
-                                            className="logo"
-                                            src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/integrations/shipstation.png`}
-                                        />
-                                        <span>Add Shipstation</span>
-                                    </a>
-                                )
-                            }
-                            <a
-                                href="http://docs.gorgias.io/integrations/helpdocs"
-                                target="_blank"
-                                className={css.button}
-                                onClick={() => {
-                                    logEvent('Clicked add a "helpdocs" integration on Onboarding widget')
-                                }}
-                            >
-                                <img
-                                    role="presentation"
-                                    className="logo"
-                                    src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/integrations/helpdocs.png`}
-                                />
-                                <span>Add helpcenter</span>
-                            </a>
-                        </div>
-                    }
+                    <p>
+                        Follow these steps to get started:
+                    </p>
 
-                    <Link
-                        className={css.sub}
-                        to="/app/integrations"
-                        onClick={() => {
-                            logEvent('Clicked add "other apps" on Onboarding widget')
-                        }}
-                    >
-                        Connect other apps
-                    </Link>
+                    <div className={css.buttons}>
+                        <Link
+                            to="/app/integrations/email"
+                            className={css.button}
+                            onClick={() => {
+                                logEvent('Clicked "Receive 1st email" on Onboarding widget')
+                            }}
+                        >
+                            <i
+                                className={classnames('fa fa-fw fa-check-circle', {
+                                    'text-success': hasReceivedEmail,
+                                    'text-faded': !hasReceivedEmail,
+                                })}
+                            />
+                            <div>Receive 1st email</div>
+                        </Link>
+                        <Link
+                            to="/app/integrations/smooch_inside"
+                            className={css.button}
+                            onClick={() => {
+                                logEvent('Clicked "Connect a chat" on Onboarding widget')
+                            }}
+                        >
+                            <i
+                                className={classnames('fa fa-fw fa-check-circle', {
+                                    'text-success': hasConnectedChat,
+                                    'text-faded': !hasConnectedChat,
+                                })}
+                            />
+                            <div>Connect a chat</div>
+                        </Link>
+                        <Link
+                            to="/app/integrations/facebook"
+                            className={css.button}
+                            onClick={() => {
+                                logEvent('Clicked "Connect Facebook" on Onboarding widget')
+                            }}
+                        >
+                            <i
+                                className={classnames('fa fa-fw fa-check-circle', {
+                                    'text-success': hasConnectedFacebook,
+                                    'text-faded': !hasConnectedFacebook,
+                                })}
+                            />
+                            <div>Connect Facebook</div>
+                        </Link>
+                        <Link
+                            to="/app/settings/team"
+                            className={css.button}
+                            onClick={() => {
+                                logEvent('Clicked "Add team members" on Onboarding widget')
+                            }}
+                        >
+                            <i
+                                className={classnames('fa fa-fw fa-check-circle', {
+                                    'text-success': hasInvitedTeamMembers,
+                                    'text-faded': !hasInvitedTeamMembers,
+                                })}
+                            />
+                            <div>Add team members</div>
+                        </Link>
+                    </div>
+
                     <a
                         className={css.bottom}
                         onClick={this._hideBoarding}
@@ -154,8 +141,10 @@ class TicketListInfobarContainer extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        integrations: integrationsSelectors.getIntegrations(state),
+        agents: usersSelectors.getAgents(state),
         currentUser: currentUserSelectors.getCurrentUser(state),
+        emailIntegrations: integrationsSelectors.getEmailIntegrations(state),
+        hasIntegrationsOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(state),
     }
 }
 

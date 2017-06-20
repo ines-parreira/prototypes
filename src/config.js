@@ -193,21 +193,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     }
 ]
 
-// used on infobar after new account creation to suggest integrations to add
-export const ONBOARDING_INTEGRATION_SUGGESTIONS = [{
-    title: 'Connect Shopify',
-    type: 'shopify',
-    url: 'app/integrations/shopify/new',
-}, {
-    title: 'Connect Facebook',
-    type: 'facebook',
-    url: 'app/integrations/facebook',
-}, {
-    title: 'Connect chat',
-    type: 'smooch_inside',
-    url: 'app/integrations/smooch_inside',
-}]
-
 // Number of threads imported from Gmail
 export const GMAIL_IMPORTED_THREADS = 100
 /**

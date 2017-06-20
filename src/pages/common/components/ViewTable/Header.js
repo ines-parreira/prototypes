@@ -112,6 +112,7 @@ class Header extends React.Component {
                                         caret
                                         type="button"
                                         id="settings-view-button"
+                                        className="mr-2"
                                     >
                                         <i className="fa fa-cog fa-fw mr-2" />
                                         Settings

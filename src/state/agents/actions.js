@@ -29,31 +29,6 @@ export const createAgent = (agent) => (dispatch) => {
         })
 }
 
-export const createAgents = (agents = []) => (dispatch) => {
-    agents = toJS(agents)
-    return axios.post('/api/agents/', agents)
-        .then((json = {}) => json.data)
-        .then(resp => {
-            resp = toImmutable(resp)
-
-            dispatch(notify({
-                type: 'success',
-                message: 'Team members created',
-            }))
-
-            return dispatch({
-                type: types.CREATE_AGENTS_SUCCESS,
-                resp,
-            })
-        }, error => {
-            return dispatch({
-                type: types.CREATE_AGENTS_ERROR,
-                error,
-                reason: 'Failed to create team members',
-            })
-        })
-}
-
 export const deleteAgent = (id) => (dispatch) => {
     return axios.delete(`/api/users/${id}/`)
         .then((json = {}) => json.data)
@@ -66,6 +41,7 @@ export const deleteAgent = (id) => (dispatch) => {
             return dispatch({
                 type: types.DELETE_AGENT_SUCCESS,
                 resp,
+                id,
             })
         }, error => {
             return dispatch({

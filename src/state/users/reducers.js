@@ -1,8 +1,10 @@
+import {fromJS} from 'immutable'
+import {isAgent} from '../../utils'
+
 import * as types from './constants'
+import * as agentsTypes from '../agents/constants'
 import * as ticketTypes from '../ticket/constants'
 import * as viewsTypes from '../views/constants'
-import {isAgent} from '../../utils'
-import {fromJS} from 'immutable'
 
 export const initialState = fromJS({
     active: {},
@@ -96,22 +98,22 @@ export default (state = initialState, action) => {
                 }
             }
 
-            const existingAgent = newState.get('agents')
+            const existingAgentIndex = newState.get('agents')
                 .findIndex(user => user.get('id') === responseUser.get('id'))
 
             // if is an agent, add/update in list of agents
             if (isAgent(responseUser)) {
-                if (~existingAgent) {
-                    newState = newState.setIn(['agents', existingAgent], responseUser)
+                if (~existingAgentIndex) {
+                    newState = newState.setIn(['agents', existingAgentIndex], responseUser)
                 } else {
-                    newState = newState.set('agents', newState.get('agents').push(responseUser))
+                    newState = newState.update('agents', agents => agents.push(responseUser))
                 }
             } else {
                 // otherwise remove him
-                if (~existingAgent) {
-                    newState = newState.set('agents', newState.get('agents')
-                        .filter(user => user.get('id') !== responseUser.get('id'))
-                    )
+                if (~existingAgentIndex) {
+                    newState = newState.update('agents', (agents) => {
+                        return agents.filter(user => user.get('id') !== responseUser.get('id'))
+                    })
                 }
             }
 
@@ -189,6 +191,26 @@ export default (state = initialState, action) => {
 
         case types.SET_AGENTS_LOCATION: {
             return state.set('agentsLocation', fromJS(action.data))
+        }
+
+        case agentsTypes.CREATE_AGENT_SUCCESS: {
+            return state.update('agents', agents => agents.push(action.resp))
+        }
+
+        case agentsTypes.UPDATE_AGENT_SUCCESS: {
+            const agent = action.resp
+
+            const existingAgentIndex = state.get('agents').findIndex(user => user.get('id') === agent.get('id'))
+
+            if (!~existingAgentIndex) {
+                return state
+            }
+
+            return state.setIn(['agents', existingAgentIndex], agent)
+        }
+
+        case agentsTypes.DELETE_AGENT_SUCCESS: {
+            return state.update('agents', agents => agents.filter(user => user.get('id').toString() !== action.id.toString()))
         }
 
         default:
