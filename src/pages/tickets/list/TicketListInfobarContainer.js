@@ -3,6 +3,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
+import moment from 'moment'
+
 import {isAdmin} from '../../../utils'
 
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
@@ -44,7 +46,11 @@ class TicketListInfobarContainer extends React.Component {
 
         const hasInvitedTeamMembers = agents.size > 1
 
-        const shouldHide = !isAdmin(currentUser) || window.localStorage.getItem('hideBoarding')
+        const hidingDate = moment(currentUser.get('created_datetime')).add(10, 'days')
+
+        const shouldHide = !isAdmin(currentUser)
+            || window.localStorage.getItem('hideBoarding')
+            || moment().isAfter(hidingDate)
 
         if (shouldHide) {
             return null
