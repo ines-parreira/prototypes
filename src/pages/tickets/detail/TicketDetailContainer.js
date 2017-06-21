@@ -320,9 +320,15 @@ export default class TicketDetailContainer extends React.Component {
         } else if (!activeView.isEmpty()) {
             nextTicketUrl = `/app/tickets/${activeView.get('id')}/${activeView.get('slug')}`
 
-            const page = this.props.pagination.get('page')
-            if (page && page > 1) {
-                nextTicketUrl += `?page=${page}`
+            // if the active view is a search view, come back to it
+            const searchedTerm = activeView.get('search')
+            if (searchedTerm) {
+                nextTicketUrl = `/app/tickets/search?q=${searchedTerm}`
+            } else {
+                const page = this.props.pagination.get('page')
+                if (page && page > 1) {
+                    nextTicketUrl += `?page=${page}`
+                }
             }
         }
 
