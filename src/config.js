@@ -168,27 +168,45 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/shipstation.png',
     },
     {
+        title: 'ShippingEasy',
+        description: 'Display tracking info next to tickets & automatically respond to "where is my order" questions.',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#ShippingEasy',
+        image: 'integrations/shippingeasy.png',
+    },
+    {
         title: 'LoyaltyLion',
         description: 'See loyalty points next to tickets. Award points with macros.',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#LoyaltyLion',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#LoyaltyLion',
         image: 'integrations/loyaltylion.png',
+    },
+    {
+        title: 'Swell',
+        description: 'Display loyalty points next to tickets. Award points with macros.',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Swell_Rewards',
+        image: 'integrations/swell.png',
     },
     {
         title: 'Yotpo',
         description: 'Display product reviews customers left next to support tickets.',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#Yotpo',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Yotpo',
         image: 'integrations/yotpo.png',
     },
     {
         title: 'Slack',
         description: 'Post notifications on Slack when tickets are created or updated',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#Slack',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Slack',
         image: 'integrations/slack.png',
+    },
+    {
+        title: 'Segment',
+        description: 'Use Gorgias activity data in other apps.',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Segment',
+        image: 'integrations/segment.png',
     },
     {
         title: 'Zapier',
         description: 'Trigger zaps with macros',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#Zapier',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Zapier',
         image: 'integrations/zapier.png',
     }
 ]
