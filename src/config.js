@@ -192,6 +192,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/yotpo.png',
     },
     {
+        title: 'Mailchimp',
+        description: 'Display what lists the customer is on, along with their attributes.',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Mailchimp',
+        image: 'integrations/mailchimp.png',
+    },
+    {
         title: 'Slack',
         description: 'Post notifications on Slack when tickets are created or updated',
         url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Slack',
