@@ -29,7 +29,7 @@ export default class SettingsNavbar extends React.Component {
                 text: 'Change password'
             }, {
                 to: 'api',
-                text: 'API key',
+                text: 'REST API',
                 className: 'hidden-sm-down',
             }]
         }, {

@@ -22,7 +22,7 @@ import SimpleStatsContainer from './stats/simple/SimpleStatsContainer'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
 import ChangePasswordContainer from './settings/yourProfile/ChangePasswordContainer'
-import ApiKeyView from './settings/apiKey/ApiKeyView'
+import APIView from './settings/api/APIView'
 
 import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
@@ -227,7 +227,7 @@ export default (
             <Route
                 path="api"
                 components={{
-                    content: ApiKeyView,
+                    content: APIView,
                     navbar: SettingsNavbarContainer
                 }}
             />
