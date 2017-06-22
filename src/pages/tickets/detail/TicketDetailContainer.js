@@ -323,7 +323,7 @@ export default class TicketDetailContainer extends React.Component {
             // if the active view is a search view, come back to it
             const searchedTerm = activeView.get('search')
             if (searchedTerm) {
-                nextTicketUrl = `/app/tickets/search?q=${searchedTerm}`
+                nextTicketUrl = `/app/tickets/search?q=${encodeURIComponent(searchedTerm)}`
             } else {
                 const page = this.props.pagination.get('page')
                 if (page && page > 1) {

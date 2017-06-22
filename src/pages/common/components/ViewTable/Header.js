@@ -70,7 +70,7 @@ class Header extends React.Component {
 
         if (searchQuery) {
             // add search to view and ask page of view (will return search result)
-            browserHistory.push(`/app/${config.get('routeList')}/search?q=${searchQuery}`)
+            browserHistory.push(`/app/${config.get('routeList')}/search?q=${encodeURIComponent(searchQuery)}`)
         } else {
             // set the previous view back
             browserHistory.push(this._goBackUrl())
