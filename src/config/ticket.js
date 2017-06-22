@@ -15,6 +15,24 @@ export const orderedMessages = (messages) => {
 }
 
 /**
+ * Return true if passed source type can be used to answer (can be used as a source type in a new message)
+ * @param sourceType
+ * @returns {boolean}
+ */
+export const isAnswerableType = (sourceType) => {
+    return !UNUSABLE_SOURCE_TYPES.includes(sourceType)
+}
+
+/**
+ * Return true if passed source type is a system source type
+ * @param sourceType
+ * @returns {boolean}
+ */
+export const isSystemType = (sourceType) => {
+    return SYSTEM_SOURCE_TYPES.includes(sourceType)
+}
+
+/**
  * Get the most recent message that was not a system-type message
  * @param messages
  * @returns {*}
@@ -22,7 +40,7 @@ export const orderedMessages = (messages) => {
 export function lastNonSystemTypeMessage(messages) {
     messages = orderedMessages(messages)
     const filteredMessages = messages.filter(message => {
-        return !SYSTEM_SOURCE_TYPES.includes(message.getIn(['source', 'type'])) && !isForwardedMessage(message)
+        return !isSystemType(message.getIn(['source', 'type'])) && !isForwardedMessage(message)
     })
     return !filteredMessages.isEmpty() && fromJS(getLastMessage(filteredMessages.toJS()))
 }
@@ -38,7 +56,7 @@ export const sourceTypeToChannel = (sourceType, messages) => {
         return DEFAULT_CHANNEL
     }
 
-    if (SYSTEM_SOURCE_TYPES.includes(sourceType)) {
+    if (isSystemType(sourceType)) {
         const lastMessage = lastNonSystemTypeMessage(messages)
 
         if (!lastMessage) {
@@ -83,7 +101,7 @@ export const responseSourceType = (messages) => {
         return 'facebook-comment'
     }
 
-    if (UNUSABLE_SOURCE_TYPES.includes(lastSourceType)) {
+    if (!isAnswerableType(lastSourceType)) {
         return DEFAULT_SOURCE_TYPE
     }
 

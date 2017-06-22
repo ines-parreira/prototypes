@@ -20,10 +20,6 @@ export function displayUserNameFromSource(user, sourceType) {
     return label
 }
 
-export function isTicketDifferent(currentTicket, nextTicket) {
-    return !currentTicket.equals(nextTicket)
-}
-
 /**
  * Map file content type like 'image/png' to Font-Awesome class
  * @param {string} contentType E.G : 'image/png'

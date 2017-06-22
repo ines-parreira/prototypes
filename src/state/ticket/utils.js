@@ -87,12 +87,6 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
     let ccReceivers = fromJS([])
     const messages = ticket.get('messages', fromJS([]))
 
-    if (messages.isEmpty()) {
-        return {
-            to: []
-        }
-    }
-
     const supportAddresses = channels.map(channel => channel.get('address'))
     const lastMessage = getLastSameSourceTypeMessage(messages, newMessageSourceType)
 
@@ -131,6 +125,27 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
     // To avoid setting an empty `cc` field in every source
     if (cc && cc.length) {
         ret.cc = cc
+    }
+
+    // if no `to` has been found in messages, try to pick it from requester channels
+    if (ret.to.length === 0) {
+        // if selected type needs a `to` field
+        if (!ticketConfig.isSystemType(newMessageSourceType)) {
+            const newMessageChannel = ticketConfig.sourceTypeToChannel(newMessageSourceType, messages)
+            const requesterChannel = ticket.getIn(['requester', 'channels'], fromJS([]))
+                .filter(channel => channel.get('type') === newMessageChannel) // keep only matching channels
+                .sortBy(channel => !channel.get('preferred')) // preferred channel is now first of the list
+                .first()
+
+            if (requesterChannel) {
+                const receivers = fromJS([{
+                    name: ticket.getIn(['requester', 'name']) || '',
+                    address: requesterChannel.get(getValuePropFromSourceType(newMessageSourceType)) || '',
+                }])
+                ret.to = cleanReceivers(receivers).toJS()
+            }
+
+        }
     }
 
     return ret

@@ -44,6 +44,51 @@ const users = {
 }
 
 const ticket = fromJS({
+    requester: {
+        name: 'Patrick',
+        channels: [
+            {
+                address: 'nico@las.com',
+                id: 5,
+                preferred: false,
+                type: 'email',
+                user: {
+                    id: 10,
+                    name: 'Nicolas'
+                }
+            },
+            {
+                address: 'support@acme.com',
+                id: 6,
+                preferred: false,
+                type: 'email',
+                user: {
+                    id: 11,
+                    name: 'Support'
+                }
+            },
+            {
+                address: 'ju@lie.com',
+                id: 4,
+                preferred: true,
+                type: 'email',
+                user: {
+                    id: 9,
+                    name: 'Julie'
+                }
+            },
+            {
+                address: '0987654321',
+                id: 7,
+                preferred: true,
+                type: 'chat',
+                user: {
+                    id: 12,
+                    name: 'Support'
+                }
+            }
+        ],
+    },
     messages: [{
         from_agent: false,
         source: {
@@ -120,6 +165,15 @@ const channels = getChannels(integrationState)
 
 describe('Ticket utils', () => {
     describe('guessReceiversFromTicket', () => {
+        it('guess receivers empty', () => {
+            const updatedTicket = ticket.delete('messages').delete('requester')
+            const receivers = guessReceiversFromTicket(updatedTicket, 'email')
+
+            expect(receivers).toEqual({
+                to: [],
+            })
+        })
+
         it('guess receivers email', () => {
             const receivers = guessReceiversFromTicket(ticket, 'email')
 
@@ -157,6 +211,34 @@ describe('Ticket utils', () => {
 
             expect(receivers).toEqual({
                 to: [users.chat[0]],
+            })
+        })
+
+        it('guess receivers from requester email', () => {
+            const updatedTicket = ticket.delete('messages')
+            const receivers = guessReceiversFromTicket(updatedTicket, 'email')
+
+            const receiver = {
+                ...users.email[2],
+                name: updatedTicket.getIn(['requester', 'name'])
+            }
+
+            expect(receivers).toEqual({
+                to: [receiver],
+            })
+        })
+
+        it('guess receivers from requester chat', () => {
+            const updatedTicket = ticket.delete('messages')
+            const receivers = guessReceiversFromTicket(updatedTicket, 'chat')
+
+            const receiver = {
+                ...users.chat[0],
+                name: updatedTicket.getIn(['requester', 'name'])
+            }
+
+            expect(receivers).toEqual({
+                to: [receiver],
             })
         })
     })
@@ -275,11 +357,11 @@ describe('Ticket utils', () => {
 
     describe('isForwardedMessage()', () => {
         it('should detect forwarded message', () => {
-            expect(isForwardedMessage(fromJS({source: {extra:{forward: true}}}))).toEqual(true)
+            expect(isForwardedMessage(fromJS({source: {extra: {forward: true}}}))).toEqual(true)
         })
 
         it('should not detect forwarded message', () => {
-            expect(isForwardedMessage(fromJS({source: {extra:{forward: false}}}))).toEqual(false)
+            expect(isForwardedMessage(fromJS({source: {extra: {forward: false}}}))).toEqual(false)
             expect(isForwardedMessage(fromJS({}))).toEqual(false)
         })
     })
