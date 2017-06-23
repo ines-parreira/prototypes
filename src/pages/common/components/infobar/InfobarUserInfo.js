@@ -275,13 +275,15 @@ class InfobarUserInfo extends React.Component {
     _renderGenerateButton = () => {
         return (
             <div className="no-result-container">
-                <h4>You're not showing any widgets here yet.</h4>
-                <div
-                    className="ui small light blue button"
+                <p>
+                    You're not showing any widgets here yet.
+                </p>
+                <Button
+                    color="info"
                     onClick={this._generateWidgets}
                 >
                     Generate default widgets
-                </div>
+                </Button>
             </div>
         )
     }
@@ -292,7 +294,6 @@ class InfobarUserInfo extends React.Component {
             infobar,
             user,
             sources,
-            isDefaultUser,
             widgets
         } = this.props
 
@@ -316,13 +317,6 @@ class InfobarUserInfo extends React.Component {
                         <h2>
                             <Link to={`/app/user/${user.get('id')}`}>
                                 {getDisplayName(user)}
-                                {
-                                    isDefaultUser && (
-                                        <span className="ui light blue horizontal label right middle">
-                                            Current User
-                                        </span>
-                                    )
-                                }
                             </Link>
                         </h2>
                     </div>
@@ -343,7 +337,6 @@ InfobarUserInfo.propTypes = {
     sources: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     widgets: PropTypes.object,
-    isDefaultUser: PropTypes.bool,
 }
 
 InfobarUserInfo.defaultProps = {

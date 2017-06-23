@@ -131,7 +131,7 @@ export default class TicketMessageActions extends React.Component {
                                     color={color}
                                     onClick={this._openModal(index)}
                                 >
-                                    <i className={`fa fa-fw ${icon}`} />
+                                    <i className={`fa fa-fw ${icon} mr-2`} />
                                     {action.title}
                                 </Button>
 

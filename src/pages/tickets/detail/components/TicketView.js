@@ -116,7 +116,7 @@ export class TicketView extends React.Component {
         const historyButtonLabel = isHistoryDisplayed
             ? 'Hide user history'
             : (
-                <p>
+                <div>
                     <i className="fa fa-fw fa-arrow-up mr-1" />
                     {
                         hasOpenedTicketsInHistory ? (
@@ -125,7 +125,7 @@ export class TicketView extends React.Component {
                                 <span>Show user history ({itemsCountInHistory})</span>
                             )
                     }
-                </p>
+                </div>
             )
 
         const transparentHistoryButton = !ticket.get('id')
@@ -157,7 +157,7 @@ export class TicketView extends React.Component {
                         !hideHistoryButton && (
                             <div className="history-btn-container hidden-sm-down">
                                 <button
-                                    className={classnames('ticket-history-btn ui small button', {
+                                    className={classnames('ticket-history-btn', {
                                         transparent: transparentHistoryButton,
                                         rounded: isHistoryDisplayed,
                                         highlighted: hasOpenedTicketsInHistory,

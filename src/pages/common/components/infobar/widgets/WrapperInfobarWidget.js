@@ -2,9 +2,10 @@ import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
-import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import _last from 'lodash/last'
+import {Card, CardBlock} from 'reactstrap'
 
+import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import InfobarWidget from '../InfobarWidget'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
@@ -75,22 +76,22 @@ class WrapperInfobarWidget extends React.Component {
         const tp = template.get('templatePath')
 
         return (
-            <div className="ui card wrapper transparent draggable">
-                <div className="content">
-                    {
-                        isEditing
-                        && (
-                            <div className="header clearfix">
+            <Card className="wrapper transparent draggable">
+                {
+                    isEditing
+                    && (
+                        <CardBlock className="header clearfix">
                                 <span className="tools">
                                     <i
-                                        className="fa fa-fw fa-close text-danger"
+                                        className="fa fa-fw fa-close text-danger clickable"
                                         onClick={this._deleteWrapper}
                                     />
                                 </span>
-                            </div>
-                        )
-                    }
+                        </CardBlock>
+                    )
+                }
 
+                <CardBlock className="content">
                     <DragWrapper
                         actions={editing && editing.actions}
                         sort
@@ -124,8 +125,8 @@ class WrapperInfobarWidget extends React.Component {
                                 })
                         }
                     </DragWrapper>
-                </div>
-            </div>
+                </CardBlock>
+            </Card>
         )
     }
 }

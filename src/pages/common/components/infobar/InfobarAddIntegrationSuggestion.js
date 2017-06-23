@@ -1,22 +1,22 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {Button} from 'reactstrap'
+import {Card, CardBlock, Button} from 'reactstrap'
 
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 const InfobarAddIntegrationSuggestion = ({user}) => (
     <div className="widgets-list">
         <div>
-            <div className="ui card wrapper transparent">
-                <div className="content">
+            <Card className="wrapper transparent">
+                <CardBlock className="content">
                     <div>
-                        <div className="ui card blurred">
-                            <div className="title header clearfix">
+                        <Card className="blurred">
+                            <CardBlock className="header clearfix">
                                 <span>
                                     👤 {user.get('name') || 'Nadia'} - 4 orders
                                 </span>
-                            </div>
-                            <div className="content">
+                            </CardBlock>
+                            <CardBlock className="content">
                                 <div>
                                     <div className="simple-field">
                                         <span className="field-label">Spent:</span>
@@ -53,8 +53,8 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
                                         <span className="field-value">email</span>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </CardBlock>
+                        </Card>
                         <div className="no-result-container suggestion">
                             <div
                                 className="mb-3"
@@ -76,8 +76,8 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
                             </Button>
                         </div>
                     </div>
-                </div>
-            </div>
+                </CardBlock>
+            </Card>
         </div>
     </div>
 )

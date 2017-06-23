@@ -1,14 +1,21 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
+import _uniqueId from 'lodash/uniqueId'
+import {Popover, PopoverContent} from 'reactstrap'
+
 import TooltipWidgetEditField from '../forms/TooltipWidgetEditField'
 
 import {displayLabel} from '../utils'
 
 class FieldInfobarWidget extends React.Component {
+    state = {
+        displayPopup: false,
+    }
+
     constructor(props) {
         super(props)
 
-        this.isEdited = false
+        this.uniqueId = _uniqueId('field-widget-')
     }
 
     componentWillReceiveProps(nextProps) {
@@ -17,7 +24,7 @@ class FieldInfobarWidget extends React.Component {
         if (editing) {
             const tp = template.get('templatePath')
             const currentlyEditedWidgetPath = editing.state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
-            this.isEdited = isEditing && tp === currentlyEditedWidgetPath
+            this.setState({displayPopup: isEditing && tp === currentlyEditedWidgetPath})
         }
     }
 
@@ -56,11 +63,15 @@ class FieldInfobarWidget extends React.Component {
         return (
             <span className="tools">
                 <i
-                    className="fa fa-fw fa-close text-danger"
+                    className="fa fa-fw fa-close text-danger clickable"
                     onClick={this._deleteField}
                 />
             </span>
         )
+    }
+
+    _togglePopup = () => {
+        return this.props.editing.actions.stopWidgetEdition()
     }
 
     /**
@@ -70,25 +81,38 @@ class FieldInfobarWidget extends React.Component {
      */
     _renderTooltip = () => {
         const {editing, template} = this.props
-        if (this.isEdited) {
-            return (
-                <TooltipWidgetEditField
-                    template={template}
-                    actions={editing.actions}
-                />
-            )
+
+        if (!editing) {
+            return null
         }
+
+        return (
+            <Popover
+                placement="left"
+                isOpen={this.state.displayPopup}
+                target={this.uniqueId}
+                toggle={this._togglePopup}
+            >
+                <PopoverContent>
+                    <TooltipWidgetEditField
+                        template={template}
+                        actions={editing.actions}
+                    />
+                </PopoverContent>
+            </Popover>
+        )
     }
 
     render() {
         const {template, value} = this.props
 
         const className = classnames('simple-field draggable', {
-            edited: this.isEdited
+            edited: this.state.displayPopup,
         })
 
         return (
             <div
+                id={this.uniqueId}
                 className={className}
                 onClick={this._startWidgetEdition}
             >

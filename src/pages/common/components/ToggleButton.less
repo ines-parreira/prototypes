@@ -1,0 +1,70 @@
+:local {
+  .switch {
+    position: relative;
+    display: block;
+    width: 50px;
+    height: 23px;
+    margin: 0;
+
+    input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 3px;
+      background-color: #ccc;
+      transition: .4s;
+
+      &::before {
+        position: absolute;
+        content: '';
+        height: 19px;
+        width: 12px;
+        left: 2px;
+        bottom: 2px;
+        border-radius: 3px;
+        background-color: #fff;
+        transition: .4s;
+      }
+
+      &::after {
+        position: absolute;
+        font-weight: normal;
+        content: 'OFF';
+        font-size: 13px;
+        left: 20px;
+        bottom: 2px;
+        color: #fff;
+        transition: .4s;
+      }
+
+      &:hover {
+        background-color: #bdbdbd;
+      }
+    }
+
+    input:checked + .slider {
+      background-color: #2dcf57;
+    }
+
+    input:checked:hover + .slider {
+      background-color: #24a545;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(34px);
+    }
+
+    input:checked + .slider::after {
+      content: 'ON';
+      right: 22px;
+      left: initial;
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import {createFilter} from 'react-search-input'
 import * as types from './constants'
 import {fromJS, Map} from 'immutable'
 import {getMacrosWithoutExternalActions, generateDefaultAction} from './utils'
@@ -59,8 +58,10 @@ export default (state = macrosInitial, action) => {
 
         case types.PREVIEW_ADJACENT_MACRO: {
             const selectedMacro = state.get('selected')
-            items = state.get('items').toIndexedSeq().toJS()
-            items = fromJS(items.filter(createFilter(state.getIn(['state', 'query']), ['name'])))
+
+            const items = state.get('items').toList().filter(item => {
+                return item.get('name', '').toLowerCase().includes(state.getIn(['state', 'query'], '').toLowerCase())
+            })
 
             const curIdx = selectedMacro ? items.findIndex(item => item.get('id') === selectedMacro.get('id')) : 0
 
@@ -76,15 +77,15 @@ export default (state = macrosInitial, action) => {
         case types.PREVIEW_ADJACENT_MACRO_IN_MODAL: {
             const selectedMacro = state.get('modalSelected')
 
-            items = state.get('items')
+            let items = state.get('items')
 
             if (action.noExternal) {
                 items = getMacrosWithoutExternalActions(items)
             }
 
-            items = items.toIndexedSeq().toJS()
-
-            items = fromJS(items.filter(createFilter(state.getIn(['state', 'modalQuery']), ['name'])))
+            items = items.toList().filter(item => {
+                return item.get('name', '').toLowerCase().includes(state.getIn(['state', 'modalQuery'], '').toLowerCase())
+            })
 
             const curIdx = selectedMacro ? items.findIndex(item => item.get('id') === selectedMacro.get('id')) : 0
 
@@ -119,8 +120,9 @@ export default (state = macrosInitial, action) => {
             newState = state.setIn(['state', queryField], action.query)
 
             const selectedMacro = newState.get(selectedField)
-            items = newState.get('items').toIndexedSeq().toJS()
-            items = fromJS(items.filter(createFilter(newState.getIn(['state', queryField]), ['name'])))
+            items = state.get('items').toList().filter(item => {
+                return item.get('name', '').toLowerCase().includes(state.getIn(['state', queryField], '').toLowerCase())
+            })
 
             if (!items.isEmpty()) {
                 if (!selectedMacro) {

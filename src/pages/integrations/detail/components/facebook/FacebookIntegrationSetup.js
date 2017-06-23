@@ -122,7 +122,7 @@ export default class FacebookIntegrationSetup extends React.Component {
                             >
                                 <div className="d-flex align-items-center mb-3">
                                     <img
-                                        className={classNames('ui image rounded mr-3', css.icon)}
+                                        className={classNames('image rounded mr-3', css.icon)}
                                         alt={page.get('name')}
                                         src={page.getIn(['picture', 'data', 'url'])}
                                     />

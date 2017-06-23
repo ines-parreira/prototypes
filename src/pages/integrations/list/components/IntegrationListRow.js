@@ -54,16 +54,14 @@ class IntegrationListRow extends React.Component {
                     }
                 </div>
                 <div>
-                    <div className="ui header">
-                        <span className="subject">
-                            {integrationConfig.get('title')}
-                            {
-                                hasAnIntegration && (
-                                    <span> ({integrationConfig.get('count')})</span>
-                                )
-                            }
-                        </span>
-                    </div>
+                    <h5 className="mb-1">
+                        {integrationConfig.get('title')}
+                        {
+                            hasAnIntegration && (
+                                <span> ({integrationConfig.get('count')})</span>
+                            )
+                        }
+                    </h5>
                     {integrationConfig.get('description')}
                 </div>
                 <div>

@@ -1,11 +1,13 @@
 import React, {PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {UncontrolledTooltip, Button} from 'reactstrap'
+import {UncontrolledTooltip, Button, Card, CardBlock} from 'reactstrap'
 
 import * as TicketActions from '../../../../state/ticket/actions'
 import * as NewMessageActions from '../../../../state/newMessage/actions'
 import {getActionTemplate, stripErrorMessage} from './../../../../utils'
+
+import css from './HardWarning.less'
 
 class HardWarning extends React.Component {
     retry = () => {
@@ -147,47 +149,43 @@ class HardWarning extends React.Component {
         }
 
         return (
-            <div
-                className="ui active inverted dimmer"
-                data-opacity="0"
-            >
-                <div className="content">
-                    <div className="center">
-                        <div className="ui segment p-3">
-                            <div className="text-danger mb-3">{error}</div>
+            <div className={css.component}>
+                <div className={css.dimmer} />
+                <Card>
+                    <CardBlock>
+                        <div className="text-danger mb-3">{error}</div>
 
-                            <div>
-                                {
-                                    messageActions.map((action, idx) => {
-                                        if (action.status === 'error' && action.response.msg) {
-                                            const template = getActionTemplate(action.name)
+                        <div>
+                            {
+                                messageActions.map((action, idx) => {
+                                    if (action.status === 'error' && action.response.msg) {
+                                        const template = getActionTemplate(action.name)
 
-                                            const transformedMsg = stripErrorMessage(action.response.msg)
+                                        const transformedMsg = stripErrorMessage(action.response.msg)
 
-                                            return (
-                                                <div
-                                                    key={idx}
-                                                    style={{color: '#000', margin: '10px 0'}}
-                                                >
-                                                    The action <b>{template.title}</b> failed
-                                                    because <b>{transformedMsg}</b>.
-                                                </div>
-                                            )
-                                        }
+                                        return (
+                                            <div
+                                                key={idx}
+                                                style={{color: '#000', margin: '10px 0'}}
+                                            >
+                                                The action <b>{template.title}</b> failed
+                                                because <b>{transformedMsg}</b>.
+                                            </div>
+                                        )
+                                    }
 
-                                        return null
-                                    })
-                                }
-                            </div>
-
-                            <div>
-                                {retryButton}
-                                {forceButton}
-                                {cancelButton}
-                            </div>
+                                    return null
+                                })
+                            }
                         </div>
-                    </div>
-                </div>
+
+                        <div className={css.buttons}>
+                            {retryButton}
+                            {forceButton}
+                            {cancelButton}
+                        </div>
+                    </CardBlock>
+                </Card>
             </div>
         )
     }

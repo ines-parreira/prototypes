@@ -2240,14 +2240,6 @@ draft-js-block-breakout-plugin@^1.0.1:
   dependencies:
     immutable "~3.7.4"
 
-draft-js-buttons@^2.0.0-beta9:
-  version "2.0.0-beta9"
-  resolved "https://registry.yarnpkg.com/draft-js-buttons/-/draft-js-buttons-2.0.0-beta9.tgz#1e46fc3de2a6b75a45bb13b5f7e924a1b7bd29f3"
-  dependencies:
-    draft-js ">=0.9.1"
-    react ">=15.3.1"
-    union-class-names "^1.0.0"
-
 draft-js-dnd-plugin@2.0.0-beta6:
   version "2.0.0-beta6"
   resolved "https://registry.yarnpkg.com/draft-js-dnd-plugin/-/draft-js-dnd-plugin-2.0.0-beta6.tgz#812251f00e8cea1389e65ea8755677885918d92e"
@@ -2270,19 +2262,6 @@ draft-js-emoji-plugin@2.0.0-beta6:
     find-with-regex "^1.0.2"
     immutable ">=3.8.1"
     lodash.keys "^4.2.0"
-    react ">=15.3.1"
-    react-dom ">=15.3.1"
-    union-class-names "^1.0.0"
-
-draft-js-inline-toolbar-plugin@^2.0.0-beta6:
-  version "2.0.0-beta9"
-  resolved "https://registry.yarnpkg.com/draft-js-inline-toolbar-plugin/-/draft-js-inline-toolbar-plugin-2.0.0-beta9.tgz#15cdbacd98b29be5c9cc07313116b419b00d09a8"
-  dependencies:
-    decorate-component-with-props "^1.0.2"
-    draft-js ">=0.9.1"
-    draft-js-buttons "^2.0.0-beta9"
-    find-with-regex "^1.0.2"
-    immutable ">=3.8.1"
     react ">=15.3.1"
     react-dom ">=15.3.1"
     union-class-names "^1.0.0"
@@ -3189,10 +3168,6 @@ function.prototype.name@^1.0.0:
     function-bind "^1.1.0"
     is-callable "^1.1.2"
 
-fuse.js@^2.2.0:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-2.6.1.tgz#d118e00f9a859f7b354ed4f7740214249e32a57a"
-
 gauge@~2.7.1:
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/gauge/-/gauge-2.7.2.tgz#15cecc31b02d05345a5d6b0e171cdb3ad2307774"
@@ -3774,16 +3749,6 @@ history@^3.0.0:
     invariant "^2.2.1"
     loose-envify "^1.2.0"
     query-string "^4.2.2"
-    warning "^3.0.0"
-
-history@^4.5.0:
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/history/-/history-4.5.1.tgz#44935a51021e3b8e67ebac267a35675732aba569"
-  dependencies:
-    invariant "^2.2.1"
-    loose-envify "^1.2.0"
-    resolve-pathname "^2.0.0"
-    value-equal "^0.2.0"
     warning "^3.0.0"
 
 hmac-drbg@^1.0.0:
@@ -6467,7 +6432,7 @@ react-notification-system-redux@^1.0.8:
   dependencies:
     react-notification-system "^0.2.7"
 
-react-notification-system@^0.2.10, react-notification-system@^0.2.7:
+react-notification-system@^0.2.7:
   version "0.2.11"
   resolved "https://registry.yarnpkg.com/react-notification-system/-/react-notification-system-0.2.11.tgz#c954ab7f3c355b34ca5f85d6b3fc4236070e7788"
   dependencies:
@@ -6487,10 +6452,6 @@ react-paginate@^4.3.1:
     react "^15.0.0"
     react-addons-create-fragment "^15.0.0"
 
-react-portal@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-3.0.0.tgz#9304fce836e8a3216b22588f8dc91b447728f0ae"
-
 react-redux@^4.4.5:
   version "4.4.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-4.4.6.tgz#4b9d32985307a11096a2dd61561980044fcc6209"
@@ -6509,12 +6470,6 @@ react-router@^3.0.0:
     invariant "^2.2.1"
     loose-envify "^1.2.0"
     warning "^3.0.0"
-
-react-search-input@^0.10.3:
-  version "0.10.4"
-  resolved "https://registry.yarnpkg.com/react-search-input/-/react-search-input-0.10.4.tgz#5bd1b39766e02d6e9b2d3f313b8882d73b487f25"
-  dependencies:
-    fuse.js "^2.2.0"
 
 react-select@1.0.0-beta14:
   version "1.0.0-beta14"
@@ -6542,10 +6497,6 @@ react-slick@^0.14.11:
     json2mq "^0.2.0"
     object-assign "^4.1.0"
     slick-carousel "^1.6.0"
-
-react-sticky@^5.0.5:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/react-sticky/-/react-sticky-5.0.5.tgz#995871273f8a001fa4d462d3b96f381ee54b2649"
 
 react-test-renderer@^15.4.2:
   version "15.5.4"
@@ -6886,10 +6837,6 @@ resolve-dir@^0.1.0:
 resolve-from@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-1.0.1.tgz#26cbfe935d1aeeeabb29bc3fe5aeb01e93d44226"
-
-resolve-pathname@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/resolve-pathname/-/resolve-pathname-2.0.2.tgz#e55c016eb2e9df1de98e85002282bfb38c630436"
 
 resolve-url@~0.2.1:
   version "0.2.1"
@@ -7896,10 +7843,6 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
-
-value-equal@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-0.2.0.tgz#4f41c60a3fc011139a2ec3d3340a8998ae8b69c0"
 
 vary@~1.1.0:
   version "1.1.0"

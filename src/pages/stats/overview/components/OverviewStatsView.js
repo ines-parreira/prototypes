@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _isNumber from 'lodash/isNumber'
 import _debounce from 'lodash/debounce'
-import {UncontrolledTooltip} from 'reactstrap'
+import {Card, CardBlock, UncontrolledTooltip} from 'reactstrap'
 
 import PeriodPicker from '../../common/PeriodPicker'
 import PageHeader from '../../../common/components/PageHeader'
@@ -142,19 +142,16 @@ class OverviewStatsView extends React.Component {
     }, 300)
 
     // render helper tooltip displaying description of each statistic
-    _renderTooltip = (id, text, content, options = {}) => {
+    _renderTooltip = (id, text, content) => {
         return (
             <span>
-                <span
-                    id={id}
-                >
+                <span id={id}>
                     {content}
                 </span>
                 <UncontrolledTooltip
                     placement="top"
                     target={id}
                     delay={0}
-                    {...options}
                 >
                     {text}
                 </UncontrolledTooltip>
@@ -169,7 +166,7 @@ class OverviewStatsView extends React.Component {
 
         if (value || value === 0) {
             return (
-                <span className="value">
+                <div className="value">
                     {value}
                     {
                         this._renderTooltip(
@@ -178,19 +175,14 @@ class OverviewStatsView extends React.Component {
                             renderDifference(
                                 stats.getIn(['difference_period', key]),
                                 config.get('moreIsBetter')
-                            ),
-                            {
-                                tether: {
-                                    offset: '-10px 0',
-                                },
-                            }
+                            )
                         )
                     }
-                </span>
+                </div>
             )
         }
 
-        return <span className="value">n/a</span>
+        return <div className="value">n/a</div>
     }
 
     // render the grid of statistics
@@ -205,9 +197,9 @@ class OverviewStatsView extends React.Component {
         const currentPeriod = stats.get('current_period') || fromJS({})
 
         return (
-            <div className="ui card stats-card">
-                <div className="content">
-                    <div className="ui statistics">
+            <Card className="stats-card">
+                <CardBlock>
+                    <div className="statistics">
                         {
                             availableStats.map((config) => {
                                 const currentPeriodStat = currentPeriod.find((value, key) => key === config.get('name'))
@@ -237,8 +229,8 @@ class OverviewStatsView extends React.Component {
                             })
                         }
                     </div>
-                </div>
-            </div>
+                </CardBlock>
+            </Card>
         )
     }
 
@@ -261,7 +253,7 @@ class OverviewStatsView extends React.Component {
         return (
             <div className="view stats">
                 <PageHeader title="Overview">
-                    <div className="ui right floated d-flex flex-wrap">
+                    <div className="d-flex flex-wrap pull-right">
                         <SearchableSelectField
                             plural="agents"
                             singular="agent"
@@ -292,7 +284,7 @@ class OverviewStatsView extends React.Component {
                         />
                     </div>
                 </PageHeader>
-                {isLoading ? <Loader loading /> : this._renderStatistics()}
+                {isLoading ? <Loader /> : this._renderStatistics()}
             </div>
         )
     }

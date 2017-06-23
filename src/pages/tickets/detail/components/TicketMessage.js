@@ -258,7 +258,7 @@ export default class TicketMessage extends React.Component {
                         {
                             message.sender.name
                             && (
-                                <span className="ticket-message-author ui small header">
+                                <span className="ticket-message-author">
                                     {message.sender.name}
                                 </span>
                             )

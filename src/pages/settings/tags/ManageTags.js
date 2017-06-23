@@ -130,7 +130,7 @@ export default class ManageTags extends Component {
                         Manage tags
                     </h1>
 
-                    <div className="column right aligned">
+                    <div className="pull-right">
                         <div className="manage-tags-bulk-actions">
                             {
                                 selected > 1 && (

@@ -104,7 +104,7 @@ export default class ParametersEditor extends React.Component {
                                         {editableTitle}
                                     </UncontrolledTooltip>
                                     <i
-                                        className="fa fa-fw fa-close text-danger"
+                                        className="fa fa-fw fa-close text-danger clickable"
                                         onClick={() => this.deleteRow(index)}
                                     />
                                 </Col>

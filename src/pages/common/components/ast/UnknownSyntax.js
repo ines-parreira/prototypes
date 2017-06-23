@@ -1,9 +1,13 @@
 import React from 'react'
+import {Badge} from 'reactstrap'
 
-const UnknownSyntax = ({ type }) => (
-    <div className="unknownstatement ui red label">
+const UnknownSyntax = ({type}) => (
+    <Badge
+        className="unknownstatement"
+        color="danger"
+    >
         Unknown {type}
-    </div>
+    </Badge>
 )
 
 UnknownSyntax.propTypes = {

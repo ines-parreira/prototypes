@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
-import {UncontrolledTooltip} from 'reactstrap'
+import classnames from 'classnames'
+import {UncontrolledTooltip, Table} from 'reactstrap'
 
 import {renderDifference, comparedPeriodString} from '../../common/utils'
 import PeriodPicker from '../../common/PeriodPicker'
@@ -67,17 +68,24 @@ export default class SimpleStatsView extends React.Component {
         const columns = ['name', 'count', 'delta', 'percentage']
 
         return (
-            <table className="ui  padded single line table">
+            <Table hover>
                 <thead>
                     <tr>
                         {
                             fields
                                 .map(field => field.get('label'))
-                                .map((field, index) =>
-                                    <th key={index}>
-                                        {field.toUpperCase()}
-                                    </th>
-                                )
+                                .map((field, index) => {
+                                    return (
+                                        <th
+                                            key={index}
+                                            className={classnames({
+                                                'text-center': index > 0,
+                                            })}
+                                        >
+                                            {field.toUpperCase()}
+                                        </th>
+                                    )
+                                })
                         }
                     </tr>
                 </thead>
@@ -95,12 +103,17 @@ export default class SimpleStatsView extends React.Component {
                             ) : stats.map((row, index) =>
                                 <tr key={index}>
                                     {
-                                        columns.map((type) => {
+                                        columns.map((type, i) => {
                                             const cell = row.get(type)
                                             const field = fields.find(f => f.get('name') === type)
 
                                             return (
-                                                <td key={type}>
+                                                <td
+                                                    key={type}
+                                                    className={classnames({
+                                                        'text-center': i > 0,
+                                                    })}
+                                                >
                                                     {this._renderCell(cell, field.get('type'), index)}
                                                 </td>
                                             )
@@ -110,7 +123,7 @@ export default class SimpleStatsView extends React.Component {
                             ).toList()
                     }
                 </tbody>
-            </table>
+            </Table>
         )
     }
 
@@ -123,7 +136,7 @@ export default class SimpleStatsView extends React.Component {
         return (
             <div className="view stats">
                 <PageHeader title={humanizeString(type)}>
-                    <div className="ui right floated flex">
+                    <div className="d-flex pull-right">
                         <PeriodPicker
                             startDatetime={startDatetime}
                             endDatetime={endDatetime}
@@ -132,7 +145,7 @@ export default class SimpleStatsView extends React.Component {
                         />
                     </div>
                 </PageHeader>
-                {isLoading ? <Loader loading /> : this._renderStatistics()}
+                {isLoading ? <Loader /> : this._renderStatistics()}
             </div>
         )
     }

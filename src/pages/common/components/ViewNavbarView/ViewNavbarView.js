@@ -5,7 +5,6 @@ import classnames from 'classnames'
 import {UncontrolledTooltip} from 'reactstrap'
 
 import {compactInteger, getPluralObjectName} from '../../../../utils'
-import Loader from './../../../common/components/Loader'
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 
 import * as viewsActions from '../../../../state/views/actions'
@@ -53,10 +52,6 @@ class ViewNavbarView extends Component {
         const settingButtonClass = classnames(css['setting-button'], {
             [css.active]: hasEditMode
         })
-        const settingIconClass = classnames('hidden-sm-down fa fa-fw', {
-            'fa-cog': !hasEditMode,
-            'fa-close': hasEditMode
-        })
 
         let displayedViews = views
 
@@ -69,15 +64,23 @@ class ViewNavbarView extends Component {
             <div>
                 <div className="item">
                     <h4>
-                        VIEWS
+                        Views
                         <span
                             onClick={this._toggleHasEditMode}
                             className={settingButtonClass}
                         >
                             <span id="navbar-views-settings">
                                 {isLoading
-                                    ? <Loader size="mini" inline inverted />
-                                    : <i className={settingIconClass} />
+                                    ? (
+                                        <i className="fa fa-fw fa-circle-o-notch fa-spin" />
+                                    ) : (
+                                        <i
+                                            className={classnames('hidden-sm-down fa fa-fw', {
+                                                'fa-cog': !hasEditMode,
+                                                'fa-close': hasEditMode
+                                            })}
+                                        />
+                                    )
                                 }
                             </span>
                             <UncontrolledTooltip

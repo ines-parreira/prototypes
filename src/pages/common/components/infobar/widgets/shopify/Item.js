@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
+import {Badge} from 'reactstrap'
 
 import ActionButton from '../ActionButton'
 
@@ -100,9 +101,9 @@ class BeforeContent extends React.Component { // eslint-disable-line
                     Refunded:
                 </span>
                 <span className="field-value">
-                    <span className="ui mini yellow label mr5i">
+                    <Badge color="warning">
                         {refundedQuantity} item{refundedQuantity > 1 && 's'}
-                        </span>
+                    </Badge>
                 </span>
             </div>
         )

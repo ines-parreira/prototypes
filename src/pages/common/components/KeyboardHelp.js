@@ -1,4 +1,5 @@
 import React from 'react'
+import {Badge} from 'reactstrap'
 
 import Modal from '../components/Modal'
 
@@ -44,7 +45,7 @@ export default class KeyboardHelp extends React.Component {
                         return (
                             <div
                                 key={i}
-                                className="keyboard-shortcuts-group"
+                                className="mb-4"
                             >
                                 <h3>{component.description}</h3>
 
@@ -59,13 +60,14 @@ export default class KeyboardHelp extends React.Component {
                                         return (
                                             <div
                                                 key={j}
-                                                className="keyboard-shortcuts-group-item"
+                                                className="mb-2"
                                             >
-                                                <div
-                                                    className="ui label horizontal keyboard-shortcuts-group-item-key"
+                                                <Badge
+                                                    color="secondary"
+                                                    className="keyboard-shortcuts-group-item-key mr-2"
                                                 >
                                                     {shortcutManager.getActionKeys(action)}
-                                                </div>
+                                                </Badge>
 
                                                 {action.description}
                                             </div>

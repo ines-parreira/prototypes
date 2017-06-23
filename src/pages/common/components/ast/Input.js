@@ -1,14 +1,15 @@
 import React from 'react'
+import {Badge} from 'reactstrap'
 
 class Input extends React.Component {
 
     _handleChange = (event) => {
-        const { actions, rule, parent } = this.props
+        const {actions, rule, parent} = this.props
         actions.modifyCodeast(rule.get('id'), parent, event.target.value, 'UPDATE')
     }
 
     render() {
-        const { widgetType } = this.props
+        const {widgetType} = this.props
 
         switch (widgetType) {
             case 'input':
@@ -17,9 +18,9 @@ class Input extends React.Component {
                 return <textarea value={this.props.value} onChange={this._handleChange} />
             default:
                 return (
-                    <div className="ui red horizontal label">
+                    <Badge color="danger">
                         Not recognized type with value: {this.props.value}
-                    </div>
+                    </Badge>
                 )
         }
     }

@@ -14,7 +14,12 @@ import {sourceTypeToIcon} from '../../../config/ticket'
 export const AgentLabel = ({name = ''}) => {
     return (
         <div className="agent-label d-inline-flex align-items-center">
-            <span className="agent-id-label ui medium yellow label">A</span>
+            <Badge
+                className="agent-id-label"
+                color="warning"
+            >
+                A
+            </Badge>
             {
                 name && (
                     <span className="secondary-action">
@@ -95,9 +100,9 @@ StatusLabel.propTypes = {
  * CHANNEL
  */
 export const ChannelLabel = ({channel}) => (
-    <span className={`ticket-channel ui label ${channel}`}>
+    <Badge color="secondary">
         {channel}
-    </span>
+    </Badge>
 )
 ChannelLabel.propTypes = {channel: PropTypes.string.isRequired}
 
@@ -143,15 +148,25 @@ export const RoleLabel = ({roles = 'user'}) => {
         }
     }
 
+    let color = 'secondary'
+    let role = 'User'
+
     if (roles.includes('staff')) {
-        return <div className="ui red smaller label">Staff</div>
+        color = 'danger'
+        role = 'Staff'
     } else if (roles.includes('admin')) {
-        return <div className="ui blue smaller label">Admin</div>
+        color = 'info'
+        role = 'Admin'
     } else if (roles.includes('agent')) {
-        return <div className="ui yellow smaller label">Agent</div>
+        color = 'warning'
+        role = 'Agent'
     }
 
-    return <div className="ui grey smaller label">User</div>
+    return (
+        <Badge color={color}>
+            {role}
+        </Badge>
+    )
 }
 RoleLabel.propTypes = {roles: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.string]).isRequired}
 

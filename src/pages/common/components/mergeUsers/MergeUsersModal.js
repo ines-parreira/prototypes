@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {Field, reduxForm, formValueSelector} from 'redux-form'
-import {Button, UncontrolledTooltip} from 'reactstrap'
+import {Button, Form, UncontrolledTooltip} from 'reactstrap'
 
 import Modal from '../Modal'
 
@@ -120,10 +120,7 @@ class MergeUsersModal extends React.Component {
                 size="lg"
                 header="Merge users"
             >
-                <form
-                    className="ui form"
-                    onSubmit={handleSubmit(this._handleSubmit)}
-                >
+                <Form onSubmit={handleSubmit(this._handleSubmit)}>
                     <div className="content">
                         <p className="merge-instructions">
                             Select what data you want to keep, then click the "Merge Users" button.
@@ -257,7 +254,7 @@ class MergeUsersModal extends React.Component {
                             Merge users
                         </ConfirmButton>
                     </div>
-                </form>
+                </Form>
             </Modal>
         )
     }

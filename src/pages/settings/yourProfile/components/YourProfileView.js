@@ -88,7 +88,10 @@ class YourProfileView extends React.Component {
                     Update your profile information.
                 </p>
 
-                <Form onSubmit={handleSubmit(this._handleSubmit)}>
+                <Form
+                    className="mb-4"
+                    onSubmit={handleSubmit(this._handleSubmit)}
+                >
                     <Field
                         type="text"
                         name="name"
@@ -155,14 +158,11 @@ class YourProfileView extends React.Component {
                     </div>
                 </Form>
 
-                <form
-                    className="ui form mt30"
-                    onSubmit={this._savePreferences}
-                >
-                    <h4 className="ui header">
-                        Preferences
-                    </h4>
+                <h4>
+                    Preferences
+                </h4>
 
+                <form onSubmit={this._savePreferences}>
                     <FormGroup>
                         <BooleanField
                             name="show_macros"

@@ -17,7 +17,7 @@ export default class MacroPreview extends React.Component {
 
         return (
             <div className="MacroPreview">
-                <div className="ui vertical segment">
+                <div className="mt-3 mb-3">
                     <h2>{currentMacro.get('name') || ''}</h2>
 
                     <Preview

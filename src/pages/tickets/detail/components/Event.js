@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
+import {Card, CardBlock} from 'reactstrap'
 
 import {getActionByName} from '../../../../config/actions'
 import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
@@ -74,11 +75,11 @@ export default class Event extends React.Component {
                         {
                             payload.map((value, key) => {
                                 return (
-                                    <div>
+                                    <div key={key}>
                                         <b>{humanizeString(key)}</b>: {value}
                                     </div>
                                 )
-                            })
+                            }).toList()
                         }
                     </div>
                 </div>
@@ -188,13 +189,16 @@ export default class Event extends React.Component {
                         />
                     </div>
                 </div>
-                <div
-                    className={classnames('ui secondary segment', css.details, {
+
+                <Card
+                    className={classnames(css.details, {
                         [css.hidden]: !this.state.showDetails,
                     })}
                 >
-                    {this._renderDetails(isError, event.get('data'))}
-                </div>
+                    <CardBlock>
+                        {this._renderDetails(isError, event.get('data'))}
+                    </CardBlock>
+                </Card>
             </div>
         )
     }

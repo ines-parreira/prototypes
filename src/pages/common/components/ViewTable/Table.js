@@ -86,7 +86,7 @@ export default class Table extends React.Component {
         } = this.props
 
         if (isLoading('fetchList')) {
-            return <Loader loading />
+            return <Loader />
         }
 
         // if empty view or view fields => show message
@@ -134,13 +134,10 @@ export default class Table extends React.Component {
                                 className="cell-wrapper cell-short clickable hidden-sm-down"
                                 onClick={this._toggleSelectAll}
                             >
-                                <span className="ui checkbox">
-                                    <input
-                                        type="checkbox"
-                                        checked={areAllSelected}
-                                    />
-                                    <label />
-                                </span>
+                                <input
+                                    type="checkbox"
+                                    checked={areAllSelected}
+                                />
                             </td>
                             {
                                 fields.map((field, index) => {

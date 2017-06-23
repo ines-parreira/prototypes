@@ -239,7 +239,7 @@ class ChatIntegrationDetail extends React.Component {
                     {
                         dirty && (
                             <div
-                                className={classnames(css.update, 'ui yellow message d-flex flex-column justify-content-center')}
+                                className={css.update}
                             >
                                 <div className="d-inline-block">
                                     Save the changes you made to this integration before getting the new code.

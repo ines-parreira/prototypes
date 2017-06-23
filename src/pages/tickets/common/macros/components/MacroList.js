@@ -30,7 +30,7 @@ export default class MacroList extends React.Component {
 
         return (
             <div>
-                <div className="ui secondary vertical fluid menu m-0">
+                <div className="macro-list p-0">
                     <InputField
                         value={this.state.searchTerm}
                         onChange={this.searchUpdated}
@@ -48,16 +48,16 @@ export default class MacroList extends React.Component {
                             }
 
                             return (
-                                <a
+                                <div
                                     key={macro.get('id')}
-                                    className={classnames('item m-0', {
+                                    className={classnames('macro-item m-0', {
                                         active: currentMacro && macro.get('id') === currentMacro.get('id'),
                                         disabled: isDisabled,
                                     })}
                                     onClick={isDisabled ? _noop : () => actions.previewMacroInModal(macro.get('id'))}
                                 >
                                     {macro.get('name')}
-                                </a>
+                                </div>
                             )
                         }).toList()
                     }

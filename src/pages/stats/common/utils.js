@@ -22,7 +22,7 @@ export const renderDifference = (percentage, moreIsBetter) => {
     }
 
     return (
-        <span
+        <div
             className={classnames('stats-difference', {
                 positive: colorLabel && isPositive,
                 negative: colorLabel && !isPositive
@@ -39,7 +39,7 @@ export const renderDifference = (percentage, moreIsBetter) => {
                     />
                 )
             } {percentage}%
-        </span>
+        </div>
     )
 }
 

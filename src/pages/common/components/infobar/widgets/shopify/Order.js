@@ -1,8 +1,7 @@
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {UncontrolledButtonDropdown, Badge, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 import {humanizeString} from '../../../../../../utils'
 
@@ -162,11 +161,11 @@ class AfterTitle extends React.Component { // eslint-disable-line
 }
 
 const statusColors = {
-    pending: 'basic',
-    partially_paid: 'olive',
-    paid: 'green',
-    partially_refunded: 'yellow',
-    refunded: 'yellow',
+    pending: 'secondary',
+    partially_paid: 'success',
+    paid: 'success',
+    partially_refunded: 'warning',
+    refunded: 'warning',
 }
 
 class BeforeContent extends React.Component { // eslint-disable-line
@@ -190,12 +189,17 @@ class BeforeContent extends React.Component { // eslint-disable-line
                     Status:
                 </span>
                 <span className="field-value">
-                    <span className={classnames('ui mini label', statusColors[status] || 'grey')}>
+                    <Badge color={statusColors[status] || 'secondary'}>
                         {humanizeString(status)}
-                    </span>
+                    </Badge>
                     {
                         isOrderCancelled && (
-                            <span className="ui mini orange label mr5i">Cancelled</span>
+                            <Badge
+                                color="danger"
+                                className="ml-2"
+                            >
+                                Cancelled
+                            </Badge>
                         )
                     }
                 </span>

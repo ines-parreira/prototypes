@@ -128,7 +128,7 @@ export default class InfobarWidget extends React.Component {
             }
             case 'divider': {
                 return (
-                    <div className="ui divider"></div>
+                    <div className="divider" />
                 )
             }
             default:

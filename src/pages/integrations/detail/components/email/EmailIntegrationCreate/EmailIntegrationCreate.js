@@ -101,9 +101,7 @@ class EmailIntegrationCreate extends React.Component {
                         (optional)
                     </p>
 
-                    <div className="ui horizontal divider mt20i mb15i">
-                        OR
-                    </div>
+                    <div className="divider">OR</div>
 
                     <Form onSubmit={handleSubmit((values) => this._handleSubmit('email', values))}>
                         <Field

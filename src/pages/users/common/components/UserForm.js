@@ -12,7 +12,6 @@ import {Form, Button} from 'reactstrap'
 
 import {submitUser} from '../../../../state/users/actions'
 import UserChannelAddressField from './UserChannelAddressField'
-import ErrorMessage from '../../../common/components/ErrorMessage'
 import formSender from '../../../common/utils/formSender'
 
 import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
@@ -159,13 +158,10 @@ class UserForm extends React.Component {
 
     render() {
         const {handleSubmit, isUpdate, isUserStaff, submitting} = this.props
-        let {error} = this.props
 
         return (
             <Form onSubmit={handleSubmit(this._handleSubmit)}>
                 <div className="mb-2">
-                    <ErrorMessage errors={error} />
-
                     <Field
                         type="text"
                         name="name"
@@ -252,7 +248,6 @@ UserForm.propTypes = {
     user: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
-    error: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
 }
 
 UserForm.defaultProps = {

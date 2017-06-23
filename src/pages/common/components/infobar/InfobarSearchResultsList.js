@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
+import {Card, CardBlock, Badge} from 'reactstrap'
 
 export default class InfobarSearchResultsList extends React.Component {
     render() {
@@ -16,31 +17,32 @@ export default class InfobarSearchResultsList extends React.Component {
                     {
                         searchResults.map((user, idx) => {
                             const isDefaultUser = user.get('id') === defaultUserId
-                            const className = classnames('ui segment InfobarSearchResultsDetail', {
+                            const className = classnames('InfobarSearchResultsDetail mb-2', {
                                 'current-user': isDefaultUser
                             })
 
                             return (
-                                <div
+                                <Card
                                     className={className}
                                     key={idx}
                                     onClick={() => this.props.onUserClick(user)}
                                 >
-                                    <div>
+                                    <CardBlock>
                                         {
                                             user.get('name') && (
-                                                <h4>
+                                                <h5>
                                                     {user.get('name')}
                                                     {
                                                         isDefaultUser && (
-                                                            <span
-                                                                className="ui light blue horizontal label right middle"
+                                                            <Badge
+                                                                color="info"
+                                                                className="ml-2"
                                                             >
                                                                 Current User
-                                                            </span>
+                                                            </Badge>
                                                         )
                                                     }
-                                                </h4>
+                                                </h5>
                                             )
                                         }
                                         {
@@ -48,8 +50,8 @@ export default class InfobarSearchResultsList extends React.Component {
                                                 <p>{user.get('email')}</p>
                                             )
                                         }
-                                    </div>
-                                </div>
+                                    </CardBlock>
+                                </Card>
                             )
                         })
                     }

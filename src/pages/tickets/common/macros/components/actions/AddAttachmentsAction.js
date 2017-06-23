@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {fromJS} from 'immutable'
+import {Badge} from 'reactstrap'
 
 import FileField from '../../../../../common/forms/FileField'
 
@@ -19,17 +20,18 @@ export default class AddAttachmentsAction extends Component {
         return this.props.action.getIn(['arguments', 'attachments'], fromJS([]))
             .map((file, index) => {
                 return (
-                    <a
+                    <Badge
                         key={index}
-                        className="ui label mr-1 mb-1"
+                        color="secondary"
+                        className="mr-1 mb-1"
                     >
                         <i className={`fa fa-fw ${fileIconFromContentType(file.get('content_type'))} mr-2`} />
                         <span className="mr-2">{file.get('name')}</span>
                         <i
-                            className="fa fa-fw fa-close"
+                            className="fa fa-fw fa-close clickable"
                             onClick={() => this._removeAttachment(index)}
                         />
-                    </a>
+                    </Badge>
                 )
             })
     }

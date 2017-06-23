@@ -119,16 +119,13 @@ class EmailIntegrationUpdate extends React.Component {
 
         return (
             <div>
-                <h2 className="ui header">
-                    Import {
-                    isImporting && (
-                        <Loader
-                            inline
-                            size="mini"
-                            className="ml10i"
-                        />
-                    )
-                }
+                <h2>
+                    {
+                        isImporting && (
+                            <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2" />
+                        )
+                    }
+                    Import
                 </h2>
                 <p>
                     {

@@ -2,6 +2,8 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import _ from 'lodash'
 import moment from 'moment'
+import {Badge} from 'reactstrap'
+
 import {DatetimeLabel} from '../../utils/labels'
 import * as utils from '../../../../utils'
 import {getSourcePathFromContext, getContextFromSourcePath} from '../../../../state/widgets/utils'
@@ -563,8 +565,8 @@ export function guessFieldValueFromRawData(data, type) {
                 }
 
                 fieldValue = isTrue
-                    ? <a className="ui mini green label">True</a>
-                    : <a className="ui mini red label">False</a>
+                    ? <Badge color="success">True</Badge>
+                    : <Badge color="danger">False</Badge>
                 break
             }
             case 'array': {

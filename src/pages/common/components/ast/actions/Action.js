@@ -1,5 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
+import {Card, CardBlock} from 'reactstrap'
 
 import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
@@ -210,11 +211,13 @@ class Action extends React.Component {
         }
 
         return (
-            <div className="ui segment">
-                {children}
-                {!!config.note && <div className="rule-note">{config.note}</div>}
-                <Errors>{errors.map((error, id) => <div key={id}>{error}</div>)}</Errors>
-            </div>
+            <Card className="mt-3">
+                <CardBlock>
+                    {children}
+                    {!!config.note && <div className="rule-note">{config.note}</div>}
+                    <Errors>{errors.map((error, id) => <div key={id}>{error}</div>)}</Errors>
+                </CardBlock>
+            </Card>
         )
     }
 

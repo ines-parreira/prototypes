@@ -60,13 +60,10 @@ class Table extends Component {
                             className="cell-wrapper cell-short clickable"
                             onClick={onSelectAll}
                         >
-                            <span className="ui checkbox">
-                                <input
-                                    type="checkbox"
-                                    checked={rows.getIn(['_internal', 'selectAll'], false)}
-                                />
-                                <label />
-                            </span>
+                            <input
+                                type="checkbox"
+                                checked={rows.getIn(['_internal', 'selectAll'], false)}
+                            />
                         </td>
                         {
                             columns.map((column, i) => (

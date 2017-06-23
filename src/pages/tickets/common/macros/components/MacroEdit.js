@@ -128,7 +128,7 @@ class MacroEdit extends React.Component {
 
         return (
             <form>
-                <div className="ui vertical segment">
+                <div className="mt-3 mb-3">
                     <div>
                         <div className={classnames('mb-2', css.title)}>
                             Macro name
@@ -254,7 +254,7 @@ class MacroEdit extends React.Component {
 
                             return (
                                 <div key={key}>
-                                    <div className={classnames('ui divider', css.divider)} />
+                                    <hr />
                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                         <div className={css.title}>
                                             {config.title}

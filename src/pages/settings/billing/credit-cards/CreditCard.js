@@ -1,18 +1,21 @@
 import React, {Component, PropTypes} from 'react'
+import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import {Field, reduxForm} from 'redux-form'
+import {Field, reduxForm, formValueSelector} from 'redux-form'
 import classNames from 'classnames'
 import Card from 'react-credit-card'
-import {Breadcrumb, BreadcrumbItem, Button, Form, FormText, Row, Col} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Form, Row, Col} from 'reactstrap'
 
-import Loader from '../../../../common/components/Loader'
-import {creditCardCVCNormalizer, creditCardExpDateNormalizer, creditCardNormalizer} from '../utils'
-import {loadScript} from '../../../../../utils'
-import {UPDATE_CREDIT_CARD_FORM} from '../../../../../state/billing/constants'
+import {updateCreditCard} from '../../../../state/billing/actions'
+import {currentPlan as currentPlanSelector} from '../../../../state/billing/selectors'
 
-import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
+import Loader from '../../../common/components/Loader'
+import {creditCardCVCNormalizer, creditCardExpDateNormalizer, creditCardNormalizer} from './utils'
+import {loadScript} from '../../../../utils'
+import {UPDATE_CREDIT_CARD_FORM} from '../../../../state/billing/constants'
 
-import css from './CreditCard.less'
+import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
+
 import 'react-credit-card/source/card.css'
 import 'react-credit-card/source/card-types.css'
 
@@ -98,9 +101,11 @@ class CreditCard extends Component {
                 </Breadcrumb>
 
                 <h1>{action} Credit card</h1>
+
                 <p>Enter the information of the card you'd like to use.</p>
-                <div className="ui grid">
-                    <div className={`height wide column ${css.formWrapper}`}>
+
+                <Row>
+                    <Col>
                         <Form onSubmit={handleSubmit(this._submit)}>
                             <Field
                                 type="text"
@@ -108,6 +113,7 @@ class CreditCard extends Component {
                                 label="Card number"
                                 placeholder="4657 7894 1234 7895"
                                 required
+                                help={!isUpdating && 'You will be charged for the current period of your plan once you add your Credit Card'}
                                 component={ReduxFormInputField}
                                 normalize={creditCardNormalizer}
                             />
@@ -153,31 +159,16 @@ class CreditCard extends Component {
                                 </Button>
                             </div>
                         </Form>
-                    </div>
-                    <div className="height wide column">
-                        <div className="mt15">
-                            <Card
-                                number={number.replace(/ /g, '')}
-                                cvc={cvc}
-                                expiry={expDate.replace(' / ', '')}
-                                name={name}
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        {
-                            !isUpdating && (
-                                <FormText color="muted">
-                                    <strong>Note: </strong>
-                                    You'll be charged for the current period of your plan once you add your
-                                    Credit
-                                    Card.
-                                </FormText>
-                            )
-                        }
-                    </div>
-                </div>
+                    </Col>
+                    <Col className="mt-4">
+                        <Card
+                            number={number.replace(/ /g, '')}
+                            cvc={cvc}
+                            expiry={expDate.replace(' / ', '')}
+                            name={name}
+                        />
+                    </Col>
+                </Row>
             </div>
         )
     }
@@ -211,7 +202,20 @@ function validateForm(values) {
     return errors
 }
 
-export default reduxForm({
+function mapStateToProps(state) {
+    const selector = formValueSelector(UPDATE_CREDIT_CARD_FORM)
+    return {
+        currentPlan: currentPlanSelector(state),
+        number: selector(state, 'number'),
+        name: selector(state, 'name'),
+        expDate: selector(state, 'expDate'),
+        cvc: selector(state, 'cvc')
+    }
+}
+
+export default connect(mapStateToProps, {
+    updateCreditCard
+})(reduxForm({
     form: UPDATE_CREDIT_CARD_FORM,
     validate: validateForm
-})(CreditCard)
+})(CreditCard))

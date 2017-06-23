@@ -106,13 +106,10 @@ export default class Row extends Component {
                         className="cell-wrapper cell-short clickable"
                         onClick={this._onSelect}
                     >
-                    <span className="ui checkbox">
                         <input
                             type="checkbox"
                             checked={meta.get('selected', false)}
                         />
-                        <label />
-                    </span>
                     </td>
 
                     <td colSpan="100">
@@ -164,13 +161,10 @@ export default class Row extends Component {
                     className="cell-wrapper cell-short clickable"
                     onClick={this._onSelect}
                 >
-                    <span className="ui checkbox">
-                        <input
-                            type="checkbox"
-                            checked={meta.get('selected', false)}
-                        />
-                        <label />
-                    </span>
+                    <input
+                        type="checkbox"
+                        checked={meta.get('selected', false)}
+                    />
                 </td>
 
                 <td>

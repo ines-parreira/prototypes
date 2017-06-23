@@ -144,7 +144,7 @@ export default class Navbar extends React.Component {
                     </DropdownMenu>
                 </UncontrolledDropdown>
 
-                <div className="navbar-content ui fluid inverted blue large vertical menu">
+                <div className="navbar-content">
                     {this.props.children}
                 </div>
 
@@ -177,7 +177,6 @@ export default class Navbar extends React.Component {
                                     <ToggleButton
                                         value={availableForChat}
                                         onChange={this._updateShowChatPreferences}
-                                        inline
                                     />
                                 </div>
                             </div>

@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react'
-import ReactDOM from 'react-dom'
 import {Field, reduxForm} from 'redux-form'
 import {fromJS} from 'immutable'
 import {Form, FormGroup, Button} from 'reactstrap'
@@ -12,8 +11,6 @@ import BooleanField from '../../../forms/BooleanField'
 class TooltipWidgetEditCard extends React.Component {
     componentDidMount() {
         const {template, parent, isParentList} = this.props
-
-        document.addEventListener('click', this._onClickOutside, false)
 
         const cardModel = {
             title: template.get('title', ''),
@@ -46,20 +43,6 @@ class TooltipWidgetEditCard extends React.Component {
             this.props.initialize({
                 card: cardModel,
             })
-        }
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('click', this._onClickOutside, false)
-    }
-
-    _preventPropagation = (e) => {
-        e.stopPropagation()
-    }
-
-    _onClickOutside = (e) => {
-        if (!ReactDOM.findDOMNode(this).contains(e.target)) {
-            this._closePopup(e)
         }
     }
 
@@ -102,102 +85,95 @@ class TooltipWidgetEditCard extends React.Component {
         }
 
         return (
-            <div
-                className="ui popup fake-popup bottom left visible"
-                onClick={this._preventPropagation}
-            >
-                <div className="content">
-                    <Form onSubmit={handleSubmit(this._handleSubmit)}>
+            <Form onSubmit={handleSubmit(this._handleSubmit)}>
+                <Field
+                    type="text"
+                    name="card.title"
+                    label="Title"
+                    placeholder="Order {id}"
+                    component={ReduxFormInputField}
+                />
+                {
+                    !editionHiddenFields.includes('link') && (
                         <Field
                             type="text"
-                            name="card.title"
-                            label="Title"
-                            placeholder="Order {id}"
+                            name="card.meta.link"
+                            label="Link"
+                            placeholder="http://myapi.com/{id}"
                             component={ReduxFormInputField}
                         />
-                        {
-                            !editionHiddenFields.includes('link') && (
-                                <Field
-                                    type="text"
-                                    name="card.meta.link"
-                                    label="Link"
-                                    placeholder="http://myapi.com/{id}"
-                                    component={ReduxFormInputField}
-                                />
-                            )
-                        }
-                        {
-                            !editionHiddenFields.includes('displayCard') && (
-                                <FormGroup>
-                                    <Field
-                                        type="checkbox"
-                                        name="card.meta.displayCard"
-                                        label="Display card"
-                                        component={ReduxFormInputField}
-                                        tag={BooleanField}
-                                    />
-                                </FormGroup>
-                            )
-                        }
-                        {
-                            isParentList && [
-                                <Field
-                                    key="limit"
-                                    type="number"
-                                    name="list.meta.limit"
-                                    label="Limit"
-                                    placeholder="ex: 0"
-                                    component={ReduxFormInputField}
-                                />,
-                                <Field
-                                    key="order"
-                                    type="select"
-                                    name="list.meta.orderBy"
-                                    label="Order by"
-                                    component={ReduxFormInputField}
-                                >
-                                    {
-                                        orderByOptions
-                                            .map((option) => {
-                                                return ['-', '+']
-                                                    .map((order) => {
-                                                        const value = `${order}${option.value}`
-                                                        const label = `${option.label} (${order === '-' ? 'DESC' : 'ASC'})`
+                    )
+                }
+                {
+                    !editionHiddenFields.includes('displayCard') && (
+                        <FormGroup>
+                            <Field
+                                type="checkbox"
+                                name="card.meta.displayCard"
+                                label="Display card"
+                                component={ReduxFormInputField}
+                                tag={BooleanField}
+                            />
+                        </FormGroup>
+                    )
+                }
+                {
+                    isParentList && [
+                        <Field
+                            key="limit"
+                            type="number"
+                            name="list.meta.limit"
+                            label="Limit"
+                            placeholder="ex: 0"
+                            component={ReduxFormInputField}
+                        />,
+                        <Field
+                            key="order"
+                            type="select"
+                            name="list.meta.orderBy"
+                            label="Order by"
+                            component={ReduxFormInputField}
+                        >
+                            {
+                                orderByOptions
+                                    .map((option) => {
+                                        return ['-', '+']
+                                            .map((order) => {
+                                                const value = `${order}${option.value}`
+                                                const label = `${option.label} (${order === '-' ? 'DESC' : 'ASC'})`
 
-                                                        return (
-                                                            <option
-                                                                value={value}
-                                                                key={value}
-                                                            >
-                                                                {label}
-                                                            </option>
-                                                        )
-                                                    })
+                                                return (
+                                                    <option
+                                                        value={value}
+                                                        key={value}
+                                                    >
+                                                        {label}
+                                                    </option>
+                                                )
                                             })
-                                    }
-                                </Field>
-                            ]
-                        }
+                                    })
+                            }
+                        </Field>
+                    ]
+                }
 
-                        <div>
-                            <Button
-                                color="primary"
-                                type="submit"
-                                className="mr-2"
-                            >
-                                Submit
-                            </Button>
-                            <Button
-                                color="secondary"
-                                type="button"
-                                onClick={this._closePopup}
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </Form>
+                <div>
+                    <Button
+                        color="primary"
+                        type="submit"
+                        className="mr-2"
+                    >
+                        Submit
+                    </Button>
+                    <Button
+                        color="secondary"
+                        type="button"
+                        onClick={this._closePopup}
+                    >
+                        Cancel
+                    </Button>
                 </div>
-            </div>
+            </Form>
         )
     }
 }

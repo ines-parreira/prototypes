@@ -7,7 +7,7 @@ import _forEach from 'lodash/forEach'
 import _pick from 'lodash/pick'
 import _compact from 'lodash/compact'
 import _isUndefined from 'lodash/isUndefined'
-import ErrorMessage from '../ErrorMessage'
+import {FormGroup} from 'reactstrap'
 
 /**
  * Allow to pick values from multiples sources and build a single one.
@@ -75,10 +75,10 @@ class MultiSelectBinaryChoiceField extends React.Component {
     }
 
     render() {
-        const {options, meta, label, tooltip} = this.props
+        const {options, label, tooltip} = this.props
 
         return (
-            <div className="ui field multi-select-binary-choice">
+            <FormGroup className="multi-select-binary-choice">
                 {
                     label && (
                         <div className="label">{label}{tooltip}</div>
@@ -96,9 +96,7 @@ class MultiSelectBinaryChoiceField extends React.Component {
                         ))
                     }
                 </div>
-                {meta.invalid && <ErrorMessage errors={meta.error} />}
-                {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
-            </div>
+            </FormGroup>
         )
     }
 }

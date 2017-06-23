@@ -1,9 +1,11 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import _last from 'lodash/last'
+import {Card, CardBlock, CardTitle} from 'reactstrap'
+
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import {humanizeString} from '../../../../../utils'
-import _last from 'lodash/last'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
 import SourceWidget from '../SourceWidget'
@@ -46,14 +48,16 @@ class WrapperSourceWidget extends React.Component {
         }
 
         return (
-            <div
-                className={`ui card wrapper draggable ${parent.get('type')}`}
+            <Card
+                className={`wrapper draggable ${parent.get('type')}`}
                 data-key={template.get('path').join('.')}
             >
-                <div className="content">
-                    <div className="header clearfix">
+                <CardBlock className="header">
+                    <CardTitle>
                         {displayName}
-                    </div>
+                    </CardTitle>
+                </CardBlock>
+                <CardBlock className="content">
                     <DragWrapper
                         actions={editing && editing.actions}
                         group={{
@@ -82,8 +86,8 @@ class WrapperSourceWidget extends React.Component {
                                 })
                         }
                     </DragWrapper>
-                </div>
-            </div>
+                </CardBlock>
+            </Card>
         )
     }
 }

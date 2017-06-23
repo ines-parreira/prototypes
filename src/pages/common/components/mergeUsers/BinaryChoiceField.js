@@ -1,14 +1,14 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import ErrorMessage from '../ErrorMessage'
+import {FormGroup} from 'reactstrap'
 
 /**
  * Allow to pick values from multiples sources and build a single one.
  * Only one value can be picked from each source
  * ex: used in merge users feature for merging names
  */
-const BinaryChoiceField = ({input, options, meta, label, type, tooltip}) => {
+const BinaryChoiceField = ({input, options, label, type, tooltip}) => {
     if (type === 'json' && input.value === '') {
         // Unfortunately necessary because of https://github.com/erikras/redux-form/issues/2062
         input.value = null
@@ -37,7 +37,7 @@ const BinaryChoiceField = ({input, options, meta, label, type, tooltip}) => {
     })
 
     return (
-        <div className="ui field binary-choice">
+        <FormGroup className="binary-choice">
             {
                 label && (
                     <div className="label">{label}{tooltip}</div>
@@ -57,9 +57,7 @@ const BinaryChoiceField = ({input, options, meta, label, type, tooltip}) => {
                     {secondOption.label || '(no value)'}
                 </div>
             </div>
-            {meta.invalid && <ErrorMessage errors={meta.error} />}
-            {meta.touched && <ErrorMessage errors={meta.warning} isWarning />}
-        </div>
+        </FormGroup>
     )
 }
 

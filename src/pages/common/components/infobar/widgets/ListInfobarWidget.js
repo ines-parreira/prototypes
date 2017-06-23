@@ -92,7 +92,7 @@ class ListInfobarWidget extends React.Component {
                     && isParentOfCard
                     && hasExcluded
                     && (
-                        <div className="ui message blue footer clearfix">
+                        <div className="footer clearfix">
                             {
                                 hasExcluded && (
                                     <span>{exclusionMessage}</span>

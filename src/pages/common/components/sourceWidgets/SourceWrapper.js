@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link, browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
+import {Card, CardBlock} from 'reactstrap'
+
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
 import * as integrationsSelectors from './../../../../state/integrations/selectors'
 
@@ -134,27 +136,32 @@ class SourceWrapper extends React.Component {
                     {
                         WIDGET_DATA_TYPES.map((widgetDataType, idx) => {
                             return this.state.availableTypes.has(widgetDataType.type) && (
-                            <div className="ui card data-fields" key={idx}>
-                                <div className="header">
-                                    <div className="title">{widgetDataType.title}</div>
-                                    {widgetDataType.description}
-                                </div>
-                                <div className="content">
-                                    <SourceWidgets
-                                        source={sources}
-                                        widgets={
-                                            this.state.widgetsTemplate.filter(
-                                                (widgetTemplate) => widgetTemplate.get('type') === widgetDataType.type
-                                            )
-                                        }
-                                        editing={{
-                                            isDragging,
-                                            actions: this.props.actions.widgets
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        )
+                                    <Card
+                                        className="data-fields"
+                                        key={idx}
+                                    >
+                                        <CardBlock className="header">
+                                            <div className="title">
+                                                {widgetDataType.title}
+                                                </div>
+                                            {widgetDataType.description}
+                                        </CardBlock>
+                                        <CardBlock className="content">
+                                            <SourceWidgets
+                                                source={sources}
+                                                widgets={
+                                                    this.state.widgetsTemplate.filter(
+                                                        (widgetTemplate) => widgetTemplate.get('type') === widgetDataType.type
+                                                    )
+                                                }
+                                                editing={{
+                                                    isDragging,
+                                                    actions: this.props.actions.widgets
+                                                }}
+                                            />
+                                        </CardBlock>
+                                    </Card>
+                                )
                         })
                     }
                 </div>

@@ -9,32 +9,4 @@ describe('Loader component', () => {
         ).toJSON()
         expect(component).toMatchSnapshot()
     })
-
-    it('inline', () => {
-        const component = renderer.create(
-            <Loader inline/>
-        ).toJSON()
-        expect(component).toMatchSnapshot()
-    })
-
-    it('loading', () => {
-        const component = renderer.create(
-            <Loader loading/>
-        ).toJSON()
-        expect(component).toMatchSnapshot()
-    })
-
-    it('not loading', () => {
-        const component = renderer.create(
-            <Loader loading={false}/>
-        ).toJSON()
-        expect(component).toMatchSnapshot()
-    })
-
-    it('size', () => {
-        const component = renderer.create(
-            <Loader size="large"/>
-        ).toJSON()
-        expect(component).toMatchSnapshot()
-    })
 })

@@ -42,12 +42,15 @@ class TicketMacros extends React.Component {
                 className="d-flex"
                 style={{height: '100%'}}
             >
-                <div className="macro-list">
+                <div
+                    className="macro-list"
+                    style={{width: '25%'}}
+                >
                     {items.map(this.renderMacroListItem).toList()}
                 </div>
                 <div className="macro-preview-container">
                     <a
-                        className="ui basic label manage-macros"
+                        className="btn btn-secondary manage-macros"
                         onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}
                     >
                         Manage macros

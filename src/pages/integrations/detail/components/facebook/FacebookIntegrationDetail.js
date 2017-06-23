@@ -99,7 +99,7 @@ export default class FacebookIntegrationDetail extends React.Component {
 
                 <div className="d-flex align-items-center mb-3">
                     <img
-                        className="ui image rounded mr-3"
+                        className="image rounded mr-3"
                         alt={page.get('name')}
                         src={page.getIn(['picture', 'data', 'url'])}
                     />

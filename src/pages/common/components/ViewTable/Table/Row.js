@@ -61,13 +61,10 @@ class Row extends React.Component {
                             </div>
                         )
                     }
-                    <span className="ui checkbox">
-                        <input
-                            type="checkbox"
-                            checked={isSelected}
-                        />
-                        <label />
-                    </span>
+                    <input
+                        type="checkbox"
+                        checked={isSelected}
+                    />
                 </td>
                 {
                     fields.map((field) => (

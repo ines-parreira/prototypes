@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react'
-import {StatusLabel} from '../../utils/labels'
-import {formatDatetime, stripHTML} from '../../../../utils'
 import {browserHistory} from 'react-router'
 import classnames from 'classnames'
+import {Card, CardBlock} from 'reactstrap'
 
+import {StatusLabel} from '../../utils/labels'
+import {formatDatetime, stripHTML} from '../../../../utils'
 
 export default class TimelineTicket extends React.Component {
     _goToTicket = () => {
@@ -30,29 +31,29 @@ export default class TimelineTicket extends React.Component {
         }
 
         return (
-            <div
-                className={classnames('TimelineTicket ui segment', {current: this.props.isCurrent})}
+            <Card
+                className={classnames('TimelineTicket', {current: this.props.isCurrent})}
                 onClick={this._goToTicket}
             >
-                <div>
-                    <div className="ui header">
-                        <span className="subject">
+                <CardBlock>
+                    <div>
+                        <h5 className="mb-1">
                             {subject}
-                        </span>
-                        <div className="body sub header">
+                        </h5>
+                        <div>
                             {ticket.get('excerpt')}
                         </div>
                     </div>
-                </div>
 
-                <div>
-                    <StatusLabel status={ticket.get('status')} />
-                </div>
+                    <div>
+                        <StatusLabel status={ticket.get('status')} />
+                    </div>
 
-                <div>
-                    <p className="created-datetime text-center">{formatDatetime(ticket.get('created_datetime'))}</p>
-                </div>
-            </div>
+                    <div>
+                        <p className="created-datetime text-center">{formatDatetime(ticket.get('created_datetime'))}</p>
+                    </div>
+                </CardBlock>
+            </Card>
         )
     }
 }

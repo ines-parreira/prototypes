@@ -2,15 +2,12 @@ import React from 'react'
 import {Field} from 'redux-form'
 import {FormGroup, Label, Row, Col, Button} from 'reactstrap'
 
-import ErrorMessage from '../../../common/components/ErrorMessage'
-
 import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
 
 class UserContactField extends React.Component {
     render() {
         const {
             fields,
-            meta,
             placeholder,
             type,
             addLabel,
@@ -20,7 +17,6 @@ class UserContactField extends React.Component {
         return (
             <FormGroup>
                 {label && <Label>{label}</Label>}
-                {meta.invalid && <ErrorMessage errors={meta.error} />}
                 {
                     fields.map((contact, index) =>
                         <Row

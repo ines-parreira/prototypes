@@ -163,24 +163,23 @@ const config = [{
 
                 const body = stripHTML(item.get('excerpt'))
 
-                if (!body) {
-                    return (
-                        <div className="ui header">
-                            <span className="subject">
-                                {subject}
-                            </span>
-                        </div>
-                    )
-                }
-
                 return (
-                    <div className="ui header">
-                        <span className="subject">
+                    <div
+                        style={{
+                            marginTop: '-5px',
+                            marginBottom: '-5px',
+                        }}
+                    >
+                        <div className="subject">
                             {subject}
-                        </span>
-                        <div className="body sub header">
-                            {body}
                         </div>
+                        {
+                            !!body && (
+                                <div className="description">
+                                    {body}
+                                </div>
+                            )
+                        }
                     </div>
                 )
             }

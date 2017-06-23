@@ -96,6 +96,7 @@ export function submitUser(data, userId) {
                 return dispatch({
                     type: isCurrentUser ? types.SUBMIT_CURRENT_USER_ERROR : types.SUBMIT_USER_ERROR,
                     error,
+                    verbose: true,
                     reason: `Failed to ${isUpdate ? 'update' : 'create'} user`
                 })
             })
@@ -187,6 +188,7 @@ export function mergeUsers(baseUserId, mergeUserId, data) {
                 dispatch({
                     type: types.MERGE_USERS_ERROR,
                     error,
+                    verbose: true,
                     reason: 'Couldn\'t merge users. Please try again in a few minutes.'
                 })
             })

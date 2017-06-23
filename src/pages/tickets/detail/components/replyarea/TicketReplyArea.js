@@ -1,8 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import SearchInput from 'react-search-input'
+import {Input} from 'reactstrap'
 
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
@@ -82,10 +81,10 @@ export class TicketReplyArea extends React.Component {
         const isNewTicket = !this.props.ticket.get('id')
         const macrosVisible = macros.get('visible')
 
-        if (this.refs.search && this.refs.search.state.searchTerm && macros.get('items').size) {
-            const filters = ['name']
-            const items = macros.get('items').valueSeq().toJS()
-            macros = macros.set('items', fromJS(items.filter(this.refs.search.filter(filters))))
+        if (this.state.searchTerm && !macros.get('items').isEmpty()) {
+            macros = macros.update('items', items => {
+                return items.filter(item => item.get('name', '').toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+            })
         }
 
         return (
@@ -93,13 +92,12 @@ export class TicketReplyArea extends React.Component {
                 'TicketReplyArea-macros-visible': macrosVisible
             })}>
                 <div className="TicketReplyArea-search">
-                    <SearchInput
-                        ref="search"
+                    <Input
                         tabIndex="3"
                         onFocus={() => this._setMacrosVisible(true)}
-                        onChange={this._searchUpdated}
-                        className="ui transparent input full-width shortcuts-enable"
-                        placeholder="Search for a macro"
+                        onChange={e => this._searchUpdated(e.target.value)}
+                        className="shortcuts-enable"
+                        placeholder="Search for a macro..."
                         autoFocus={macrosVisible && !isNewTicket}
                     />
                 </div>

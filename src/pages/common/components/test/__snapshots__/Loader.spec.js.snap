@@ -1,39 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Loader component inline 1`] = `
-<div
-  className="ui active medium inline loader"
-/>
-`;
-
-exports[`Loader component loading 1`] = `
-<div
-  className="loader-container"
->
-  <div
-    className="loader-inner"
-  >
-    <div
-      className="ui active medium text loader"
-    >
-      Loading...
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Loader component not loading 1`] = `
-<div
-  className="loader-container"
->
-  <div
-    className="loader-inner"
-  >
-    Loading...
-  </div>
-</div>
-`;
-
 exports[`Loader component simple message 1`] = `
 <div
   className="loader-container"
@@ -41,26 +7,13 @@ exports[`Loader component simple message 1`] = `
   <div
     className="loader-inner"
   >
+    <i
+      className="fa fa-fw fa-circle-o-notch fa-spin"
+    />
     <div
-      className="ui active medium text loader"
+      className="mt-2"
     >
       hello
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Loader component size 1`] = `
-<div
-  className="loader-container"
->
-  <div
-    className="loader-inner"
-  >
-    <div
-      className="ui active large text loader"
-    >
-      Loading...
     </div>
   </div>
 </div>

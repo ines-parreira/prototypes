@@ -124,10 +124,6 @@ exports[`BillingInvoices component should display loader 1`] = `
 >
   <Loader
     inline={false}
-    inverted={false}
-    loading={true}
-    message="Loading..."
-    size="medium"
   >
     <div
       className="loader-container"
@@ -135,11 +131,9 @@ exports[`BillingInvoices component should display loader 1`] = `
       <div
         className="loader-inner"
       >
-        <div
-          className="ui active medium text loader"
-        >
-          Loading...
-        </div>
+        <i
+          className="fa fa-fw fa-circle-o-notch fa-spin"
+        />
       </div>
     </div>
   </Loader>

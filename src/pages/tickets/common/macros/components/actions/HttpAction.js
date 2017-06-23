@@ -7,6 +7,7 @@ import {AVAILABLE_HTTP_METHODS, JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../.
 import ParametersEditor from '../ParametersEditor'
 
 import InputField from '../../../../../common/forms/InputField'
+import BooleanField from '../../../../../common/forms/BooleanField'
 import JsonField from '../../../../../common/forms/JsonField'
 
 export default class HttpAction extends React.Component {
@@ -42,6 +43,7 @@ export default class HttpAction extends React.Component {
         if (isFormData) {
             field = (
                 <ParametersEditor
+                    name="body"
                     list={action.getIn(['arguments', 'form'], fromJS([]))}
                     updateDict={d => this._setArgument('form', d)}
                 />
@@ -51,25 +53,20 @@ export default class HttpAction extends React.Component {
         return (
             <FormGroup>
                 <Label>Body</Label>
+
                 <div className="d-inline fields">
-                    <div className="action field pl-0">
-                        <div
-                            className="ui radio checkbox"
-                            onClick={() => this._setArgument('content_type', FORM_CONTENT_TYPE)}
-                        >
-                            <input type="radio" checked={isFormData} readOnly />
-                            <label>{FORM_CONTENT_TYPE}</label>
-                        </div>
-                    </div>
-                    <div className="action field pl-0">
-                        <div
-                            className="ui radio checkbox"
-                            onClick={() => this._setArgument('content_type', JSON_CONTENT_TYPE)}
-                        >
-                            <input type="radio" checked={!isFormData} readOnly />
-                            <label>{JSON_CONTENT_TYPE}</label>
-                        </div>
-                    </div>
+                    <BooleanField
+                        type="radio"
+                        value={isFormData}
+                        onChange={() => this._setArgument('content_type', FORM_CONTENT_TYPE)}
+                        label={FORM_CONTENT_TYPE}
+                    />
+                    <BooleanField
+                        type="radio"
+                        value={!isFormData}
+                        onChange={() => this._setArgument('content_type', JSON_CONTENT_TYPE)}
+                        label={JSON_CONTENT_TYPE}
+                    />
                 </div>
 
                 {field}

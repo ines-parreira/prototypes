@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
+import _uniqueId from 'lodash/uniqueId'
+import {Card, CardBlock, Popover, PopoverContent} from 'reactstrap'
+
 import {renderTemplate} from '../utils'
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import TooltipWidgetEditCard from '../forms/TooltipWidgetEditCard'
@@ -11,8 +14,10 @@ class CardInfobarWidget extends React.Component {
     constructor(props) {
         super(props)
 
+        this.uniqueId = _uniqueId('card-widget-')
+
         this.state = {
-            isEdited: false,
+            displayPopup: false,
             open: props.open,
         }
     }
@@ -23,7 +28,7 @@ class CardInfobarWidget extends React.Component {
         if (isEditing) {
             const tp = isParentList ? parent.get('templatePath', '') : template.get('templatePath', '')
             const currentlyEditedWidgetPath = editing.state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
-            this.setState({isEdited: tp === currentlyEditedWidgetPath})
+            this.setState({displayPopup: tp === currentlyEditedWidgetPath})
         }
     }
 
@@ -67,6 +72,10 @@ class CardInfobarWidget extends React.Component {
         }
     }
 
+    _togglePopup = () => {
+        return this.props.editing.actions.stopWidgetEdition()
+    }
+
     /**
      * Render tooltip of edition
      * @returns {JSX}
@@ -74,14 +83,26 @@ class CardInfobarWidget extends React.Component {
      */
     _renderTooltip = () => {
         const {editing} = this.props
-        if (this.state.isEdited) {
-            return (
-                <TooltipWidgetEditCard
-                    {...this.props}
-                    actions={editing.actions}
-                />
-            )
+
+        if (!editing) {
+            return null
         }
+
+        return (
+            <Popover
+                placement="left"
+                isOpen={this.state.displayPopup}
+                target={this.uniqueId}
+                toggle={this._togglePopup}
+            >
+                <PopoverContent>
+                    <TooltipWidgetEditCard
+                        {...this.props}
+                        actions={editing.actions}
+                    />
+                </PopoverContent>
+            </Popover>
+        )
     }
 
     _renderTitle = (template, source) => {
@@ -143,7 +164,7 @@ class CardInfobarWidget extends React.Component {
         const childWidgets = template.get('widgets', fromJS([]))
 
         const isTransparent = !template.getIn(['meta', 'displayCard'], true)
-        const className = classnames('ui card', {
+        const className = classnames({
             'can-drop': editing && editing.canDrop(ap),
             draggable: !isParentList,
             closed: !this.state.open && !isEditing,
@@ -157,14 +178,17 @@ class CardInfobarWidget extends React.Component {
         let firstNonTextWidget = false
 
         let content = (
-            <div
+            <Card
                 className={className}
                 data-key={template.get('path')}
             >
                 {
                     (template.get('title') || isEditing)
                     && (
-                        <div className="title header clearfix">
+                        <CardBlock
+                            id={this.uniqueId}
+                            className="header clearfix"
+                        >
                             {
                                 !isTransparent && !isEditing
                                 && shouldDisplayCardContent
@@ -202,10 +226,10 @@ class CardInfobarWidget extends React.Component {
                             </span>
                             {this._renderTooltip()}
                             {!!AfterTitle && <AfterTitle {...this.props} />}
-                        </div>
+                        </CardBlock>
                     )
                 }
-                <div
+                <CardBlock
                     className={classnames('content', {
                         hidden: !shouldDisplayCardContent,
                     })}
@@ -262,8 +286,8 @@ class CardInfobarWidget extends React.Component {
                                 )
                             )
                     }
-                </div>
-            </div>
+                </CardBlock>
+            </Card>
         )
 
         if (Wrapper) {

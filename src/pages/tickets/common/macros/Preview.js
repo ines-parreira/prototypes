@@ -1,6 +1,9 @@
 import React, {PropTypes} from 'react'
+import _capitalize from 'lodash/capitalize'
+import {Badge} from 'reactstrap'
+
 import {fileIconFromContentType, getSortedIntegrationActions} from '../../common/utils'
-import {AgentLabel} from '../../../common/utils/labels'
+import {TagLabel, AgentLabel, StatusLabel} from '../../../common/utils/labels'
 import {getIconFromType} from './../../../../state/integrations/helpers'
 import {getActionTemplate, sanitizeHtmlDefault} from './../../../../utils'
 
@@ -11,13 +14,21 @@ class Preview extends React.Component {
         }
         return (
             <div className="macro-data">
-                <div className="ui label macro-legend">ATTACH FILES:</div>
-                {attachments.getIn(['arguments', 'attachments']).map((file, index) => (
-                    <div key={index} className="ui label mb5i">
-                        <i className={`fa fa-fw  ${fileIconFromContentType(file.get('content_type'))} mr-2`} />
-                        {file.get('name')}
-                    </div>
-                ))}
+                <strong className="text-muted mr-2">
+                    Attach files:
+                </strong>
+                {
+                    attachments.getIn(['arguments', 'attachments']).map((file, index) => (
+                        <Badge
+                            key={index}
+                            color="secondary"
+                            className="mr-1 mb-1"
+                        >
+                            <i className={`fa fa-fw  ${fileIconFromContentType(file.get('content_type'))} mr-2`} />
+                            {file.get('name')}
+                        </Badge>
+                    ))
+                }
             </div>
         )
     }
@@ -26,10 +37,10 @@ class Preview extends React.Component {
         if (setStatusAction) {
             return (
                 <div className="macro-data">
-                    <div className="ui label macro-legend">SET STATUS:</div>
-                    <div className={`ui label smaller ticket-status ${setStatusAction.getIn(['arguments', 'status'])}`}>
-                        {setStatusAction.getIn(['arguments', 'status'])}
-                    </div>
+                    <strong className="text-muted mr-2">
+                        Set status:
+                    </strong>
+                    <StatusLabel status={setStatusAction.getIn(['arguments', 'status'])} />
                 </div>
             )
         }
@@ -42,13 +53,15 @@ class Preview extends React.Component {
 
         return (
             <div className="macro-data">
-                <div className="ui label macro-legend">ADD TAGS:</div>
+                <strong className="text-muted mr-2">
+                    Add tags:
+                </strong>
                 {
                     addTagsActions.map((action) => (
-                        action.getIn(['arguments', 'tags'], '').split(',').map((tag, i) => (
-                            <div key={`action-tag-${action.id}-${i}`} className="ui label ticket-tag no-icon">
+                        action.getIn(['arguments', 'tags'], '').split(',').map((tag) => (
+                            <TagLabel key={tag}>
                                 {tag}
-                            </div>
+                            </TagLabel>
                         ))
                     )).toJS()
                 }
@@ -63,7 +76,9 @@ class Preview extends React.Component {
 
         return (
             <div className="macro-data">
-                <div className="ui label macro-legend">ASSIGN TO:</div>
+                <strong className="text-muted mr-2">
+                    Assign to:
+                </strong>
                 <span
                     key={`action-assign-${setAssigneeAction.id}`}
                     className="ticket-owner-btn ticket-details-item"
@@ -81,7 +96,9 @@ class Preview extends React.Component {
 
         return (
             <div className="macro-data">
-                <div className="ui label macro-legend">SET SUBJECT:</div>
+                <strong className="text-muted mr-2">
+                    Set subject:
+                </strong>
                 <b className="integration-action">
                     {setSubjectAction.getIn(['arguments', 'subject'])}
                 </b>
@@ -99,9 +116,9 @@ class Preview extends React.Component {
                 key={integrationType}
                 className="macro-data integration-actions"
             >
-                <div className="ui label macro-legend">
-                    {integrationType.toUpperCase()} ACTIONS:
-                </div>
+                <strong className="text-muted mr-2">
+                    {_capitalize(integrationType)} actions:
+                </strong>
                 {
                     integrationActions.map((action, idx) =>
                         <div

@@ -139,7 +139,7 @@ export default class Page extends React.Component {
         const {ActionsComponent, activeView, isSearch, isUpdate, type} = this.props
 
         if (activeView.isEmpty()) {
-            return <Loader loading />
+            return <Loader />
         }
 
         return (

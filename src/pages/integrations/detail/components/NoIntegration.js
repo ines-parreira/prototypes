@@ -1,15 +1,12 @@
 import React, {PropTypes} from 'react'
+import Loader from '../../../common/components/Loader'
 
 export default class NoIntegration extends React.Component {
     render() {
         const {loading} = this.props
 
         if (loading) {
-            return (
-                <div className="ui active text loader">
-                    Loading...
-                </div>
-            )
+            return <Loader />
         }
 
         return (

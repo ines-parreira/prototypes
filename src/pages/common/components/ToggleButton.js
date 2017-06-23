@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
-import classnames from 'classnames'
+
+import css from './ToggleButton.less'
 
 export default class ToggleButton extends Component {
     static propTypes = {
@@ -26,26 +27,18 @@ export default class ToggleButton extends Component {
         }
 
         return (
-            <div
-                className={classnames('ui toggle checkbox', {
-                    'd-flex': !this.props.inline
-                })}
+            <label
+                className={css.switch}
                 onClick={this._onChange}
-                style={style}
             >
                 <input
                     type="checkbox"
                     checked={value}
-                    readOnly
                     disabled={this.props.disabled}
+                    readOnly
                 />
-                <label
-                    style={{
-                        margin: 0,
-                        paddingLeft: '52px' // perfect width (no extra space on the right of the toggle)
-                    }}
-                />
-            </div>
+                <div className={css.slider} />
+            </label>
         )
     }
 }

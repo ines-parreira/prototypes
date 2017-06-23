@@ -1,9 +1,12 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
+
 import {getActionTemplate} from './../../../../../utils'
 
 import {FORM_CONTENT_TYPE} from './../../../../../config'
 import {getIconUrl, getIconFromUrl} from './../../../../../state/integrations/helpers'
+
+import InputField from '../../../../common/forms/InputField'
 
 export default class TicketReplyAction extends React.Component {
     setListDictValue(arg, value, category) {
@@ -30,30 +33,36 @@ export default class TicketReplyAction extends React.Component {
         )
     }
 
-    renderListDictArgs(title, args, category) {
-        if (args.size) {
-            return (
-                <div className="eight wide column">
-                    {
-                        !!title && <h5>{title}</h5>
-                    }
-                    {
-                        args.map((arg, key) => (
-                            <div key={key} className="ui input arg-input">
-                                <div style={{marginRight: '10px'}}>{arg.get('key')}</div>
-                                <input
-                                    type="text"
-                                    value={arg.get('value')}
-                                    onChange={(e) => this.setListDictValue(arg, e.target.value, category)}
-                                    required={arg.get('required')}
-                                />
-                            </div>
-                        )).toList().toJS()
-                    }
-                </div>
-            )
+    renderListDictArgs = (title, args, category) => {
+        if (args.isEmpty()) {
+            return null
         }
-        return null
+
+        return (
+            <div className="mb-3">
+                {
+                    !!title && (
+                        <div className="mb-2">
+                            <strong>{title}</strong>
+                        </div>
+                    )
+                }
+                {
+                    args.map((arg, key) => (
+                        <div key={key} className="arg-input">
+                            <div className="mr-3">{arg.get('key')}</div>
+                            <InputField
+                                type="text"
+                                value={arg.get('value')}
+                                onChange={(value) => this.setListDictValue(arg, value, category)}
+                                required={arg.get('required')}
+                                inline
+                            />
+                        </div>
+                    )).toList()
+                }
+            </div>
+        )
     }
 
     renderArgs = (args) => {
@@ -61,19 +70,20 @@ export default class TicketReplyAction extends React.Component {
         const sortedArgs = args.sortBy((v, k) => template.arguments[k].display_order)
 
         return (
-            <div className="eight wide column">
+            <div>
                 {
                     sortedArgs.map((value, key) => (
-                        <div key={key} className="ui input arg-input">
-                            <div style={{marginRight: '10px'}}>{key}</div>
-                            <input
+                        <div key={key} className="arg-input">
+                            <div className="mr-3">{key}</div>
+                            <InputField
                                 type="text"
                                 value={value}
-                                onChange={(e) => this.setValue(key, e.target.value, null)}
+                                onChange={(value) => this.setValue(key, value, null)}
                                 required={template.arguments[key].required || false}
+                                inline
                             />
                         </div>
-                    )).toList().toJS()
+                    )).toList()
                 }
             </div>
         )
@@ -108,7 +118,7 @@ export default class TicketReplyAction extends React.Component {
 
             if (shouldDisplayArgs) {
                 argsComponent = (
-                    <div className="ui grid args-wrapper">
+                    <div className="args-wrapper mt-2">
                         {this.renderListDictArgs('Headers', headersArgs, 'headers')}
                         {this.renderListDictArgs('URL Parameters', paramsArgs, 'params')}
                         {this.renderListDictArgs('Form Data', formData, 'form')}
@@ -120,7 +130,7 @@ export default class TicketReplyAction extends React.Component {
 
             if (args && !args.isEmpty()) {
                 argsComponent = (
-                    <div className="ui grid args-wrapper">
+                    <div className="args-wrapper mt-2">
                         {this.renderArgs(args)}
                     </div>
                 )
@@ -134,7 +144,7 @@ export default class TicketReplyAction extends React.Component {
                 <div className="title">
                     {
                         !!type && (
-                            <img className="action-logo" role="presentation" src={icon}/>
+                            <img className="action-logo" role="presentation" src={icon} />
                         )
                     }
                     <span>{action.get('title')}</span>
@@ -147,14 +157,14 @@ export default class TicketReplyAction extends React.Component {
                 {
                     !!notes && (
                         <div className="notes">
-                        {
-                            notes.map((note, idx) => (
-                                <div key={idx} className="text-light-black">
-                                    <i className="fa fa-fw fa-info-circle"/>
-                                    {note}
-                                </div>
-                            ))
-                        }
+                            {
+                                notes.map((note, idx) => (
+                                    <div key={idx} className="text-light-black">
+                                        <i className="fa fa-fw fa-info-circle" />
+                                        {note}
+                                    </div>
+                                ))
+                            }
                         </div>
                     )
                 }
