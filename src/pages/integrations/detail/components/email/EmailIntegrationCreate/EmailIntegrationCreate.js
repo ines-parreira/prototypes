@@ -93,7 +93,7 @@ class EmailIntegrationCreate extends React.Component {
                         className={classnames('mb-2', css.gmailButton)}
                     >
                         <img src={googleLogo} style={{height: '100%'}} />
-                        <p>Connect Google email account</p>
+                        <div>Connect Google email account</div>
                     </Button>
 
                     <p className="text-muted text-center">

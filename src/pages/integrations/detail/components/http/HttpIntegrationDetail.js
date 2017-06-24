@@ -305,6 +305,7 @@ class HttpIntegrationDetail extends React.Component {
                                 <Button
                                     type="button"
                                     color="success"
+                                    outline
                                     className={classNames({
                                         'btn-loading': isSubmitting,
                                     })}

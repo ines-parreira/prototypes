@@ -38,6 +38,7 @@
     "esprima": "^2.7.3",
     "font-awesome": "^4.7.0",
     "immutable": "^3.8.1",
+    "less": "^2.7.2",
     "linkify-it": "^2.0.3",
     "linkifyjs": "^2.1.0",
     "lodash": "^4.15.0",
@@ -69,7 +70,6 @@
     "redux-thunk": "^2.1.0",
     "reselect": "^2.5.4",
     "sanitize-html": "^1.13.0",
-    "semantic-ui": "2.1.8",
     "slick-carousel": "^1.6.0",
     "socket.io-client": "^1.7.2",
     "sortablejs": "gorgias/Sortable"
