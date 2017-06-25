@@ -397,7 +397,7 @@ export default class Infobar extends React.Component {
                 <div className="infobar-content">
                     <div className="infobar-search-wrapper d-flex align-items-center justify-content-between">
                         <Search
-                            placeholder="Search users by email, name or phone number..."
+                            placeholder="Search users by name, email, phone or order id..."
                             bindKey
                             onChange={this._onSearch}
                             style={{maxWidth: 'none'}}
