@@ -70,7 +70,7 @@ const config = [{
             title: 'Integrations',
             path: 'messages.integration_id',
             filter: {
-                type: 'integrations',
+                type: 'integration',
             },
             dropdown: {
                 width: '350px'
