@@ -10,9 +10,9 @@ import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
 import * as types from './constants'
 
-export const search = (query, searchType = 'user_profile') => ((dispatch) => {
+export const search = (query, searchType = 'infobar-user') => ((dispatch) => {
     dispatch({
-        type: searchType === 'user_profile' ? types.SEARCH_USERS_START : types.SEARCH_TICKETS_START
+        type: searchType === 'infobar-user' ? types.SEARCH_USERS_START : types.SEARCH_TICKETS_START
     })
 
     return axios.post('/api/search/', {
@@ -22,12 +22,12 @@ export const search = (query, searchType = 'user_profile') => ((dispatch) => {
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({
-                type: searchType === 'user_profile' ? types.SEARCH_USERS_SUCCESS : types.SEARCH_TICKETS_SUCCESS,
+                type: searchType === 'infobar-user' ? types.SEARCH_USERS_SUCCESS : types.SEARCH_TICKETS_SUCCESS,
                 resp,
             })
         }, error => {
             return dispatch({
-                type: searchType === 'user_profile' ? types.SEARCH_USERS_ERROR : types.SEARCH_TICKETS_ERROR,
+                type: searchType === 'infobar-user' ? types.SEARCH_USERS_ERROR : types.SEARCH_TICKETS_ERROR,
                 error,
                 reason: 'Failed to do the search. Please try again...'
             })
@@ -179,28 +179,28 @@ export const handleExecutedAction = (response) => ((dispatch) => {
                     <div className="buttons">
                         {
                             response.ticket_id ? (
-                                <div>
-                                    {
-                                        !isCurrentlyOnTicket(response.ticket_id) && (
-                                            <Button
-                                                tag={Link}
-                                                color="primary"
-                                                to={`/app/ticket/${response.ticket_id}`}
-                                            >
-                                                Review ticket
-                                            </Button>
-                                        )
-                                    }
-                                </div>
-                            ) : (
-                                <Button
-                                    tag={Link}
-                                    color="primary"
-                                    to={`/app/user/${response.user_id}`}
-                                >
-                                    Review user
-                                </Button>
-                            )
+                                    <div>
+                                        {
+                                            !isCurrentlyOnTicket(response.ticket_id) && (
+                                                <Button
+                                                    tag={Link}
+                                                    color="primary"
+                                                    to={`/app/ticket/${response.ticket_id}`}
+                                                >
+                                                    Review ticket
+                                                </Button>
+                                            )
+                                        }
+                                    </div>
+                                ) : (
+                                    <Button
+                                        tag={Link}
+                                        color="primary"
+                                        to={`/app/user/${response.user_id}`}
+                                    >
+                                        Review user
+                                    </Button>
+                                )
                         }
                     </div>
                 </div>
