@@ -61,12 +61,12 @@ exports[`BillingInvoices component should display invoices 1`] = `
             </td>
             <td>
               <Zs
-                color="error"
+                color="danger"
                 pill={false}
                 tag="span"
               >
                 <span
-                  className="badge badge-error"
+                  className="badge badge-danger"
                 >
                   Unpaid
                 </span>

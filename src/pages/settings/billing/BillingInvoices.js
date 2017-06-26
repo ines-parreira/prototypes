@@ -57,7 +57,7 @@ export class BillingInvoices extends Component {
                                     {paid ? (
                                         <Badge color="success">Paid</Badge>
                                     ) : (
-                                        <Badge color="error">Unpaid</Badge>
+                                        <Badge color="danger">Unpaid</Badge>
                                     )}
                                 </td>
                                 <td>{tickets} </td>
