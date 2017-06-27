@@ -183,14 +183,14 @@ class CardInfobarWidget extends React.Component {
                 data-key={template.get('path')}
             >
                 {
-                    (template.get('title') || isEditing)
+                    ((template.get('title') && !isTransparent) || isEditing)
                     && (
                         <CardBlock
                             id={this.uniqueId}
                             className="header clearfix"
                         >
                             {
-                                !isTransparent && !isEditing
+                                !isEditing
                                 && shouldDisplayCardContent
                                 && (
                                     <span
