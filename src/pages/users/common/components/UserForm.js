@@ -214,7 +214,7 @@ class UserForm extends React.Component {
                     <FieldArray
                         name="phone"
                         label="Phone numbers"
-                        placeholder="754-3010"
+                        placeholder="+1 111 111 1111"
                         addLabel="Add an phone number"
                         component={UserChannelAddressField}
                     />
@@ -268,4 +268,21 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'user'})(UserForm))
+const validate = (values) => {
+    let errors = {}
+
+    // validate phones
+    if (values.phone && values.phone.length) {
+        errors['phone'] = {}
+
+        values.phone.forEach((phone, index) => {
+            if (phone.address && !/^\+[\d-\(\) ]+$/.test(phone.address)) {
+                errors['phone'][index] = {'address': 'Please enter an international phone number'}
+            }
+        })
+    }
+
+    return errors
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'user', validate})(UserForm))
