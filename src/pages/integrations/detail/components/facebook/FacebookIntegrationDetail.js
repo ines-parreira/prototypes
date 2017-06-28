@@ -121,7 +121,7 @@ export default class FacebookIntegrationDetail extends React.Component {
                             name="private_messages_enabled"
                             type="checkbox"
                             label="Enable Facebook Messenger"
-                            value={this.state.settings.private_messages_enable}
+                            value={this.state.settings.private_messages_enabled}
                             onChange={value => this._onChange(value, 'private_messages_enabled')}
                         />
                         <BooleanField
