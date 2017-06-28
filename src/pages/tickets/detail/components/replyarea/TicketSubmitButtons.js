@@ -39,6 +39,7 @@ export default class TicketSubmitButtons extends React.Component {
         const disabled = !canSendMessage
         const loading = newMessage.getIn(['_internal', 'loading', 'submitMessage'])
 
+        const isUpdating = !!ticket.get('id')
         const hasTitle = !!ticket.get('subject')
         const titleConfirmation = 'Are you sure you want to create a ticket with no subject?'
 
@@ -51,7 +52,7 @@ export default class TicketSubmitButtons extends React.Component {
                     color="primary"
                     disabled={disabled}
                     tabIndex="4"
-                    skip={hasTitle}
+                    skip={hasTitle || isUpdating}
                     confirm={() => this.submit()}
                     content={titleConfirmation}
                     loading={loading}
@@ -73,7 +74,7 @@ export default class TicketSubmitButtons extends React.Component {
                     outline
                     disabled={disabled}
                     tabIndex="5"
-                    skip={hasTitle}
+                    skip={hasTitle || isUpdating}
                     confirm={() => this.submit('closed', true)}
                     content={titleConfirmation}
                     loading={loading}
