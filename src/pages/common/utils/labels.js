@@ -115,6 +115,8 @@ export const IntegrationsDetailLabel = ({integration}) => {
 
     if (['email', 'gmail'].includes(type) && integration.get('address')) {
         label = `${integration.get('name')} <${integration.get('address')}>`
+    } else if (type === 'aircall' && integration.get('address')) {
+        label = `${integration.get('name')} (${integration.get('address')})`
     }
 
     return (
