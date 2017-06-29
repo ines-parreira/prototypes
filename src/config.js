@@ -86,12 +86,6 @@ export const DEFAULT_SOURCE_PATHS = {
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
-        type: 'aircall',
-        title: 'Aircall',
-        description: 'Provide phone support & create tickets when customers call you.',
-        image: 'integrations/aircall.png'
-    },
-    {
         type: 'email',
         subTypes: ['email', 'gmail'],
         title: 'Email',
@@ -107,6 +101,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Facebook',
         description: 'Create tickets when your customers post on your page or contact you on Messenger',
         image: 'integrations/facebook.png',
+    },
+    {
+        type: 'aircall',
+        title: 'Aircall',
+        description: 'Provide phone support & create tickets when customers call you.',
+        image: 'integrations/aircall.png'
     },
     {
         type: 'smooch',
