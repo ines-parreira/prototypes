@@ -4,7 +4,8 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
-import {Button} from 'reactstrap'
+import {Button, UncontrolledTooltip} from 'reactstrap'
+import Clipboard from 'clipboard'
 
 import InfobarWidgets from './InfobarWidgets'
 import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
@@ -45,6 +46,8 @@ class InfobarUserInfo extends React.Component {
 
     componentWillMount() {
         this._initWidgets()
+
+        new Clipboard('.copy-address i')
     }
 
     componentWillReceiveProps(nextProps) {
@@ -231,9 +234,9 @@ class InfobarUserInfo extends React.Component {
             }
 
             if (props) {
-                addressComponent = <a {...props}>{address}</a>
+                addressComponent = <a {...props} id={`address-copied-${idx}`}>{address}</a>
             } else {
-                addressComponent = <span>{address}</span>
+                addressComponent = <span id={`address-copied-${idx}`}>{address}</span>
             }
 
             return (
@@ -241,8 +244,24 @@ class InfobarUserInfo extends React.Component {
                     key={idx}
                     className="user-channel"
                 >
-                    <i className={classnames('uncolored mr-2', sourceTypeToIcon(channel.get('type')))} />
+                    <i
+                        className={classnames('uncolored mr-2', sourceTypeToIcon(channel.get('type')))}
+                    />
                     {addressComponent}
+                    <span className="copy-address ml-2">
+                        <i
+                            id={`copy-icon-${idx}`}
+                            className="fa fa-fw fa-clipboard clickable"
+                            data-clipboard-target={`#address-copied-${idx}`}
+                        />
+                        <UncontrolledTooltip
+                            placement="top"
+                            target={`copy-icon-${idx}`}
+                            delay={{show: 1000, hide: 0}}
+                        >
+                            Copy
+                        </UncontrolledTooltip>
+                    </span>
                 </p>
             )
         })

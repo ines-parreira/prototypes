@@ -19,6 +19,7 @@ export default class APIView extends React.Component {
         email: PropTypes.string.isRequired,
         apiKey: PropTypes.string.isRequired
     }
+
     state = {
         isCopiedurl: false,
         isCopiedemail: false,
@@ -82,7 +83,7 @@ export default class APIView extends React.Component {
         return (
             <div>
                 <h1>
-                    <i className="fa fa-fw fa-code blue mr-2"/>
+                    <i className="fa fa-fw fa-code blue mr-2" />
                     REST API
                 </h1>
                 <p>
@@ -114,7 +115,7 @@ export default class APIView extends React.Component {
                                 color="info"
                                 data-clipboard-target="#url"
                             >
-                                <i className="fa fa-fw fa-files-o mr-2"/>
+                                <i className="fa fa-fw fa-files-o mr-2" />
                                 {this.state.isCopiedurl ? 'Copied!' : 'Copy'}
                             </Button>
                         </InputGroupButton>
@@ -135,7 +136,7 @@ export default class APIView extends React.Component {
                                 color="info"
                                 data-clipboard-target="#email"
                             >
-                                <i className="fa fa-fw fa-files-o mr-2"/>
+                                <i className="fa fa-fw fa-files-o mr-2" />
                                 {this.state.isCopiedemail ? 'Copied!' : 'Copy'}
                             </Button>
                         </InputGroupButton>
@@ -156,13 +157,13 @@ export default class APIView extends React.Component {
                                 color="info"
                                 data-clipboard-target="#apiKey"
                             >
-                                <i className="fa fa-fw fa-files-o mr-2"/>
+                                <i className="fa fa-fw fa-files-o mr-2" />
                                 {this.state.isCopiedapiKey ? 'Copied!' : 'Copy'}
                             </Button>
                         </InputGroupButton>
                     </InputGroup>
                 </FormGroup>
-                <br/>
+                <br />
                 <h4>Postman collection</h4>
                 <p>
                     You can also import our <a href="https://www.getpostman.com/" target="_blank">Postman </a>
