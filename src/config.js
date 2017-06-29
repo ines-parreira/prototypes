@@ -139,12 +139,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/elevio.png',
     },
     {
-        title: 'Aircall',
-        description: 'Provide phone support & create tickets when customers call you',
-        url: 'http://docs.gorgias.io/integrations/aircall',
-        image: 'integrations/aircall.png',
-    },
-    {
         title: 'Magento',
         description: 'Display customer & orders info next to tickets. Edit orders with macros',
         url: 'http://docs.gorgias.io/integrations/http-integrations#Magento',
