@@ -170,8 +170,9 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
     }
 
     newAst = toJS(newAst)
+    const code = getCode(newAst)
     return {
-        code: getCode(newAst),
-        ast: newAst,
+        code,
+        ast: getAST(code),
     }
 }
