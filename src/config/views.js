@@ -54,10 +54,6 @@ const config = [{
     plural: 'tickets', // plural version for sentences
     mainField: 'details', // mandatory field (+ where are displayed bulk actions)
     fields: [
-        // {
-        //     name: 'priority',
-        //     title: 'Priority',
-        // },
         {
             name: 'details',
             title: 'Details',
@@ -106,13 +102,6 @@ const config = [{
             title: 'Status',
             filter: {
                 enum: constants.TICKET_STATUSES,
-            }
-        },
-        {
-            name: 'via',
-            title: 'Via',
-            filter: {
-                enum: constants.TICKET_VIA,
             }
         },
         {

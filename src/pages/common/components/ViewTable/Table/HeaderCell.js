@@ -7,7 +7,6 @@ import _noop from 'lodash/noop'
 
 import {fieldPath as getFieldPath} from '../../../../../utils'
 
-import FilterDropdown from '../FilterDropdown'
 import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown'
 
 import * as viewsActions from '../../../../../state/views/actions'
@@ -17,7 +16,6 @@ class HeaderCell extends React.Component {
     static propTypes = {
         ActionsComponent: PropTypes.func,
         activeView: ImmutablePropTypes.map.isRequired,
-        addFieldFilter: PropTypes.func.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         fetchPage: PropTypes.func.isRequired,
         field: ImmutablePropTypes.map.isRequired,
@@ -29,14 +27,6 @@ class HeaderCell extends React.Component {
         selectedItemsIds: ImmutablePropTypes.list.isRequired,
         setOrderDirection: PropTypes.func.isRequired,
         type: PropTypes.string.isRequired,
-    }
-
-    state = {
-        showFilters: false,
-    }
-
-    _showFilters = (state) => {
-        this.setState({showFilters: state})
     }
 
     _renderOrderIcon = (isOrderingField = false) => {
@@ -78,9 +68,7 @@ class HeaderCell extends React.Component {
         if (field.get('filter') && !isSearch) {
             action = field.getIn(['filter', 'sort']) ? 'sort' : 'filter'
 
-            if (action === 'filter') {
-                onClick = () => this._showFilters(!this.state.showFilters)
-            } else if (action === 'sort') {
+            if (action === 'sort') {
                 onClick = () => {
                     const newOrderDirection = orderDirection === 'desc' ? 'asc' : 'desc'
                     setOrderDirection(fieldPath, newOrderDirection)
@@ -105,14 +93,10 @@ class HeaderCell extends React.Component {
                                     <div
                                         onClick={onClick}
                                         className={classnames({
-                                            clickable: !!action,
+                                            clickable: action === 'sort',
                                         })}
                                     >
-                                        <span
-                                            className={classnames({
-                                                filterable: action === 'filter',
-                                            })}
-                                        >
+                                        <span>
                                             {field.get('title')}
                                         </span>
                                         {
@@ -120,19 +104,6 @@ class HeaderCell extends React.Component {
                                         }
                                     </div>
                                 )
-                        }
-                        {
-                            action === 'filter'
-                            && this.state.showFilters
-                            && (
-                                <FilterDropdown
-                                    viewConfig={config}
-                                    field={field}
-                                    addFieldFilter={this.props.addFieldFilter}
-                                    onClose={() => this._showFilters(false)}
-                                    onAdd={() => fetchPage(1)}
-                                />
-                            )
                         }
                     </div>
                     {
@@ -159,7 +130,6 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = {
-    addFieldFilter: viewsActions.addFieldFilter,
     fetchPage: viewsActions.fetchPage,
     setOrderDirection: viewsActions.setOrderDirection,
 }

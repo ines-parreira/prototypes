@@ -8,7 +8,7 @@ import Hoverable from '../../Hoverable'
 import ObjectExpression from './ObjectExpression'
 import {DeleteBinaryExpression} from '../operations'
 
-import getSyntaxTreeLeaves from '../utils'
+import {getSyntaxTreeLeaves} from '../utils'
 import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
 
 /*

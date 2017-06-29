@@ -8,23 +8,30 @@ import {
     Popover,
     PopoverTitle,
     PopoverContent,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
     Card,
     CardFooter,
     CardBlock,
 } from 'reactstrap'
 
 import Filters from './Filters'
-import {slugify} from '../../../../utils'
+import {equalityOperator, slugify, fieldPath} from '../../../../utils'
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import * as usersSelectors from '../../../../state/users/selectors'
+import * as schemasSelectors from '../../../../state/schemas/selectors'
 
 class FilterTopbar extends React.Component {
     static propTypes = {
         activeView: ImmutablePropTypes.map.isRequired,
+        addFieldFilter: PropTypes.func.isRequired,
         agents: PropTypes.object.isRequired,
+        areFiltersValid: PropTypes.bool.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         currentUser: PropTypes.object.isRequired,
         fetchPage: PropTypes.func.isRequired,
@@ -34,6 +41,7 @@ class FilterTopbar extends React.Component {
         updateFieldFilter: PropTypes.func.isRequired,
         updateFieldFilterOperator: PropTypes.func.isRequired,
         resetView: PropTypes.func.isRequired,
+        schemas: PropTypes.object.isRequired,
         submitView: PropTypes.func.isRequired,
     }
 
@@ -42,16 +50,32 @@ class FilterTopbar extends React.Component {
         askUpdateConfirmation: false,
     }
 
+    componentWillReceiveProps(nextProps) {
+        // fetch page again when filters changed and that filters are valid
+        if (this.props.activeView.get('filters') !== nextProps.activeView.get('filters') && nextProps.areFiltersValid) {
+            this.props.fetchPage(1)
+        }
+    }
+
     _onClickUpdate = () => {
+        if (!this.props.areFiltersValid) {
+            return
+        }
+
         this.setState({
             isSubmitting: true,
             askUpdateConfirmation: false,
         })
+
         this._submitView(this.props.activeView)
         logEvent('Updated view')
     }
 
     _onClickNew = () => {
+        if (!this.props.areFiltersValid) {
+            return
+        }
+
         this.setState({
             isSubmitting: true
         })
@@ -76,6 +100,21 @@ class FilterTopbar extends React.Component {
         logEvent('Saved as new view')
     }
 
+    _left = (field) => {
+        const viewConfig = this.props.config
+        return `${viewConfig.get('singular')}.${fieldPath(field)}`
+    }
+
+    _onClickFilter = (field) => {
+        const left = this._left(field)
+
+        this.props.addFieldFilter(field.toJS(), {
+            left,
+            operator: equalityOperator(left, this.props.schemas),
+            right: '\'\'',
+        })
+    }
+
     _cancel = () => {
         const {config, isUpdate, fetchPage, resetView} = this.props
         if (isUpdate) {
@@ -89,6 +128,10 @@ class FilterTopbar extends React.Component {
     }
 
     _createView = () => {
+        if (!this.props.areFiltersValid) {
+            return
+        }
+
         this.setState({
             isSubmitting: true
         })
@@ -119,38 +162,55 @@ class FilterTopbar extends React.Component {
     }
 
     render() {
-        const {activeView, isUpdate, agents, currentUser} = this.props
+        const {config, activeView, areFiltersValid, isUpdate, agents, currentUser} = this.props
         const {isSubmitting} = this.state
 
         if (!activeView.get('editMode')) {
             return null
         }
 
+        const filterableFields = config.get('fields')
+            .filter(field => field.get('filter') && !field.getIn(['filter', 'sort']))
+            .sortBy(field => field.get('title'))
+
         return (
             <Card className="mt-2">
                 <CardBlock className="filter-topbar-content">
                     <Filters
                         view={activeView}
-                        removeFieldFilter={(...args) => {
-                            this.props.removeFieldFilter(...args)
-                            this.props.fetchPage(1)
-                        }}
-                        updateFieldFilterOperator={(...args) => {
-                            this.props.updateFieldFilterOperator(...args)
-                            this.props.fetchPage(1)
-                        }}
+                        removeFieldFilter={this.props.removeFieldFilter}
+                        updateFieldFilterOperator={this.props.updateFieldFilterOperator}
                         agents={agents}
                         currentUser={currentUser}
-                        updateFieldFilter={(...args) => {
-                            this.props.updateFieldFilter(...args)
-                            this.props.fetchPage(1)
-                        }}
+                        updateFieldFilter={this.props.updateFieldFilter}
                     />
 
-                    <span className="text-muted">
-                        <i className="fa fa-fw fa-info-circle mr-2" />
-                        Click on a column's name to add a filter.
-                    </span>
+                    <UncontrolledDropdown>
+                        <DropdownToggle
+                            caret
+                            type="button"
+                            className="mr-2"
+                            onClick={() => logEvent('Click add filter on a view')}
+                        >
+                            <i className="fa fa-plus fa-fw mr-2" />
+                            Add filter
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            {
+                                filterableFields.map((field) => {
+                                    return (
+                                        <DropdownItem
+                                            key={field.get('name')}
+                                            type="button"
+                                            onClick={() => this._onClickFilter(field)}
+                                        >
+                                            {field.get('title')}
+                                        </DropdownItem>
+                                    )
+                                })
+                            }
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                 </CardBlock>
                 <CardFooter>
                     {
@@ -163,7 +223,7 @@ class FilterTopbar extends React.Component {
                                         className={classNames('mr-2', {
                                             'btn-loading': this.state.isSubmitting,
                                         })}
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting || !areFiltersValid}
                                         onClick={this._toggleUpdateConfirmation}
                                     >
                                         Update view
@@ -194,7 +254,7 @@ class FilterTopbar extends React.Component {
                                         className={classNames({
                                             'btn-loading': this.state.isSubmitting,
                                         })}
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting || !areFiltersValid}
                                         onClick={this._onClickNew}
                                     >
                                         Save as new view
@@ -207,7 +267,7 @@ class FilterTopbar extends React.Component {
                                     className={classNames({
                                         'btn-loading': this.state.isSubmitting,
                                     })}
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || !areFiltersValid}
                                     onClick={this._createView}
                                 >
                                     Create view
@@ -234,15 +294,18 @@ const mapStateToProps = (state, ownProps) => {
     return {
         agents: usersSelectors.getAgents(state),
         activeView: viewsSelectors.getActiveView(state),
+        areFiltersValid: viewsSelectors.areFiltersValid(state),
         config: viewsSelectors.getViewConfig(ownProps.type),
         currentUser: state.currentUser,
         isEditMode: viewsSelectors.isEditMode(state),
         pristineActiveView: viewsSelectors.getPristineActiveView(state),
+        schemas: schemasSelectors.getSchemas(state),
         selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
     }
 }
 
 const mapDispatchToProps = {
+    addFieldFilter: viewsActions.addFieldFilter,
     fetchPage: viewsActions.fetchPage,
     toggleSelection: viewsActions.toggleSelection,
     updateView: viewsActions.updateView,

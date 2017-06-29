@@ -51,13 +51,11 @@ function walk(ast, index, key, value) {
 
 // traverse filters_ast and replace the callee name of the CallExpression found at `index
 // once replaced, we return the new AST
-export function updateFilterOperator(view, index, operator) {
-    const ast = view.get('filters_ast')
+export function updateFilterOperator(ast, index, operator) {
     return walk(ast, index, ['callee', 'name'], operator)
 }
 
-export function updateFilterValue(view, index, value) {
-    const ast = view.get('filters_ast')
+export function updateFilterValue(ast, index, value) {
     return walk(ast, index, ['arguments', 1, 'value'], value)
 }
 

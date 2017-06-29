@@ -3,8 +3,8 @@ import React from 'react'
 class DeleteBinaryExpression extends React.Component {
 
     _handleClick = () => {
-        const {actions, rule, parent} = this.props
-        actions.rules.modifyCodeast(rule.get('id'), parent, null, 'DELETE_BINARY_EXPRESSION')
+        const {actions, parent} = this.props
+        actions.modifyCodeAST(parent, null, 'DELETE_BINARY_EXPRESSION')
     }
 
     render() {

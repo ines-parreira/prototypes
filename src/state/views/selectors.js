@@ -37,9 +37,11 @@ export const isEditMode = createSelector(
     state => state.get('editMode') || false
 )
 
-export const getActiveViewType = createSelector(
+export const areFiltersValid = createSelector(
     [getActiveView],
-    state => state.get('type') || ''
+    (view) => {
+        return !view.get('filters').includes(', \'\')')
+    }
 )
 
 export const getActiveViewOrderDirection = createSelector(
@@ -55,6 +57,13 @@ export const getActiveViewOrderBy = createSelector(
 export const getActiveViewFilters = createSelector(
     [getActiveView],
     state => state.get('filters') || ''
+)
+
+export const getActiveViewConfig = createSelector(
+    [getActiveView],
+    (view) => {
+        return getViewConfigByType(view.get('type'))
+    }
 )
 
 /**

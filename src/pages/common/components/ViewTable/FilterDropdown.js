@@ -1,23 +1,20 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
-import onClickOutside from 'react-onclickoutside'
 import {
-    UncontrolledDropdown,
+    Dropdown,
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
 
 import Search from '../Search'
 import {RenderLabel} from '../../utils/labels'
-import {equalityOperator, resolveLiteral, isImmutable, fieldPath} from '../../../../utils'
+import {resolveLiteral, isImmutable, fieldPath} from '../../../../utils'
 import {fieldEnumSearch} from '../../../../state/views/actions'
 
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 import * as usersHelpers from '../../../../state/users/helpers'
 
-@onClickOutside
 class FilterDropdown extends React.Component {
     state = {
         isLoading: false,
@@ -34,11 +31,6 @@ class FilterDropdown extends React.Component {
         this.onSearch()
     }
 
-    // used by onClickOutside HOC
-    handleClickOutside = () => {
-        this.props.onClose()
-    }
-
     _left = () => {
         const viewConfig = this.props.viewConfig
         return `${viewConfig.get('singular')}.${fieldPath(this.props.field)}`
@@ -50,41 +42,15 @@ class FilterDropdown extends React.Component {
         // Useful with `ticket.messages.integration_id` field
         // because `newValue` do not have an `integration_id` attribute
         const right = resolveLiteral(newValue, left) || newValue.id
-        this._addFilter({
-            left,
-            operator: equalityOperator(left, this.props.schemas),
-            right
-        })
+        this.props.updateFieldFilter(right)
     }
 
     _onClickUnassigned = () => {
-        const left = this._left()
-
-        this._addFilter({
-            left,
-            operator: 'isEmpty',
-            right: 0,
-        })
+        this.props.updateFieldFilterOperator('isEmpty')
     }
 
     _onClickMe = () => {
-        const left = this._left()
-
-        this._addFilter({
-            left,
-            operator: 'eq',
-            right: '\'{current_user.id}\'',
-        })
-    }
-
-    _addFilter = (filter) => {
-        this.props.addFieldFilter(this.props.field.toJS(), filter)
-
-        // trigger add callback
-        this.props.onAdd()
-
-        // trigger close callback
-        this.props.onClose()
+        this.props.updateFieldFilter('{current_user.id}')
     }
 
     // query search from server and save it in state
@@ -226,7 +192,10 @@ class FilterDropdown extends React.Component {
         const width = field.getIn(['dropdown', 'width'], '230px')
 
         return (
-            <UncontrolledDropdown isOpen>
+            <Dropdown
+                isOpen
+                toggle={this.props.toggleDropdown}
+            >
                 <DropdownMenu
                     style={{
                         width: canSearch && width,
@@ -235,7 +204,7 @@ class FilterDropdown extends React.Component {
                     {this.renderSearch()}
                     {this.renderEnum()}
                 </DropdownMenu>
-            </UncontrolledDropdown>
+            </Dropdown>
         )
     }
 }
@@ -244,15 +213,10 @@ FilterDropdown.propTypes = {
     viewConfig: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
-    addFieldFilter: PropTypes.func.isRequired,
+    updateFieldFilter: PropTypes.func.isRequired,
+    updateFieldFilterOperator: PropTypes.func.isRequired,
     fieldEnumSearch: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
-    onAdd: PropTypes.func.isRequired,
-}
-
-FilterDropdown.defaultProps = {
-    onClose: _noop,
-    onAdd: _noop,
+    toggleDropdown: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {

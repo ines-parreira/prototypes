@@ -1,7 +1,7 @@
 import React from 'react'
 import Expression from '../expression/Expression'
 
-import getSyntaxTreeLeaves from '../utils'
+import {getSyntaxTreeLeaves} from '../utils'
 import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
 
 /*

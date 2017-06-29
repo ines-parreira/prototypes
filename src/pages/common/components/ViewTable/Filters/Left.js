@@ -3,6 +3,8 @@ import {fromJS} from 'immutable'
 import {Button} from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
 
+import {humanizeString} from '../../../../../utils'
+
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
 export default class Left extends React.Component {
@@ -28,7 +30,7 @@ export default class Left extends React.Component {
                 tag="div"
                 color="info"
             >
-                {field ? field.get('title') : _capitalize(suffixPath)}
+                {field ? field.get('title') : _capitalize(humanizeString(suffixPath))}
             </Button>
         )
     }

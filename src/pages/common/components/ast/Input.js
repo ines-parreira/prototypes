@@ -4,8 +4,8 @@ import {Badge} from 'reactstrap'
 class Input extends React.Component {
 
     _handleChange = (event) => {
-        const {actions, rule, parent} = this.props
-        actions.modifyCodeast(rule.get('id'), parent, event.target.value, 'UPDATE')
+        const {actions, parent} = this.props
+        actions.modifyCodeAST(parent, event.target.value, 'UPDATE')
     }
 
     render() {

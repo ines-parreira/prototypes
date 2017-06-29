@@ -13,7 +13,7 @@ import {sourceTypeToIcon} from '../../../config/ticket'
  */
 export const AgentLabel = ({name = ''}) => {
     return (
-        <div className="agent-label d-inline-flex align-items-center">
+        <span className="agent-label d-inline-flex align-items-center">
             <Badge
                 className="agent-id-label"
                 color="warning"
@@ -27,7 +27,7 @@ export const AgentLabel = ({name = ''}) => {
                     </span>
                 )
             }
-        </div>
+        </span>
     )
 }
 AgentLabel.propTypes = {name: PropTypes.string}
@@ -35,7 +35,7 @@ AgentLabel.propTypes = {name: PropTypes.string}
 /**
  * USER
  */
-export const UserLabel = ({name = ''}) => <div>{name}</div>
+export const UserLabel = ({name = ''}) => <span>{name}</span>
 UserLabel.propTypes = {name: PropTypes.string}
 
 /**
@@ -113,15 +113,15 @@ export const IntegrationsDetailLabel = ({integration}) => {
     const type = integration.get('type')
     let label = integration.get('name', integration.get('address'))
 
-    if (['email', 'gmail'].includes(type)) {
+    if (['email', 'gmail'].includes(type) && integration.get('address')) {
         label = `${integration.get('name')} <${integration.get('address')}>`
     }
 
     return (
-        <div>
+        <span>
             <i className={classnames('mr-2', sourceTypeToIcon(integration.get('type')))} />
             {label}
-        </div>
+        </span>
     )
 }
 IntegrationsDetailLabel.propTypes = {
@@ -239,7 +239,7 @@ export const RenderLabel = ({field, value}) => {
         case 'assignee':
             return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
         case 'integrations':
-            return typeof value === 'string' ? <div>{value}</div> : <IntegrationsDetailLabel integration={value} />
+            return typeof value === 'string' ? <span>{value}</span> : <IntegrationsDetailLabel integration={value} />
         case 'requester':
             return <UserLabel name={value.get('name')} />
         case 'roles':

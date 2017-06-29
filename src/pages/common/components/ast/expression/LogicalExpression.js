@@ -3,7 +3,7 @@ import {Button} from 'reactstrap'
 
 import Expression from '../expression/Expression'
 
-import getSyntaxTreeLeaves from '../utils'
+import {getSyntaxTreeLeaves} from '../utils'
 
 /*
  interface LogicalExpression <: Expression {
@@ -36,7 +36,7 @@ const LogicalExpression = ({operator, left, right, rule, parent, actions, leftsi
             </span>
             <div>
                 <Button
-                    className="btn-frozen"
+                    className="btn-frozen mr-1"
                     type="button"
                     color="warning"
                 >

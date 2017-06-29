@@ -25,7 +25,7 @@ export const receiveRules = (rules) => ({
     rules
 })
 
-export const modifyCodeast = (id, path, value, operation) => (dispatch, getState) => (
+export const modifyCodeAST = (id, path, value, operation) => (dispatch, getState) => (
     dispatch({
         type: types.RULES_UPDATE_CODE_AST,
         schemas: getState().schemas,
@@ -169,7 +169,7 @@ export const reset = (id) => (dispatch) => (
                 type: types.RESET_RULE_SUCCESS,
                 ruleId: id
             })
-            return dispatch(modifyCodeast(
+            return dispatch(modifyCodeAST(
                 id,
                 List([]),
                 response.code_ast || types.DEFAULT_STATEMENT,

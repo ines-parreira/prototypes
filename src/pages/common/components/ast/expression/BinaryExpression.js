@@ -3,7 +3,7 @@ import React from 'react'
 import Expression from './Expression'
 import Widget from '../Widget'
 
-import getSyntaxTreeLeaves from '../utils'
+import {getSyntaxTreeLeaves} from '../utils'
 
 /*
  interface BinaryExpression <: Expression {

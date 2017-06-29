@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
+import {fromJS} from 'immutable'
 import {Button, Form as BootstrapForm, FormGroup} from 'reactstrap'
 import _xor from 'lodash/xor'
 
@@ -12,6 +13,8 @@ import Errors from '../../../../common/components/ast/Errors'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import * as rulesHelpers from '../../../../../state/rules/helpers'
+
+import {toJS} from '../../../../../utils'
 
 class RuleItem extends React.Component {
     state = {
@@ -239,7 +242,12 @@ class RuleItem extends React.Component {
                     <Program
                         {...codeAST}
                         rule={rule}
-                        actions={actions}
+                        actions={{
+                            modifyCodeAST: (...args) => {
+                                return actions.rules.modifyCodeAST(rule.get('id'), ...args)
+                            },
+                            getCondition: path => rule.getIn(['code_ast'].concat(toJS(path))) || fromJS({}),
+                        }}
                         triggers={this.state.eventTypes}
                         onChangeTriggers={this._handleChangeTriggers}
                     />

@@ -32,6 +32,7 @@ class ShowMoreFieldsDropdown extends React.Component {
 
         return (
             <UncontrolledDropdown
+                className="d-flex"
                 onClick={() => logEvent('Opened more fields (column options)')}
             >
                 <DropdownToggle

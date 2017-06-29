@@ -265,8 +265,6 @@ export function resolveLiteral(value, path) {
     switch (typeof value) {
         case 'object':
             return resolveLiteral(value[path.split('.').reverse()[0]], path)
-        case 'string':
-            return `'${value}'`
         default:
             return value
     }
@@ -598,10 +596,7 @@ export const toJS = object => isImmutable(object) ? object.toJS() : object
  * @returns {*|string|string|string}
  */
 export const fieldPath = (field = {}) => {
-    if (isImmutable(field)) {
-        field = field.toJS()
-    }
-
+    field = toJS(field)
     return field.path || field.name
 }
 

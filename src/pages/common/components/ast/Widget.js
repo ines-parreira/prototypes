@@ -11,10 +11,12 @@ import AssigneeSelect from './widget/AssigneeSelect'
 
 import InputField from '../../forms/InputField'
 
+import {humanizeString} from '../../../../utils'
+
 class Widget extends React.Component {
     _handleChange = (value) => {
-        const {actions, rule, parent} = this.props
-        return actions.rules.modifyCodeast(rule.get('id'), parent, value, 'UPDATE')
+        const {actions, parent} = this.props
+        return actions.modifyCodeAST(parent, value, 'UPDATE')
     }
 
     _input = (value) => {
@@ -79,6 +81,9 @@ class Widget extends React.Component {
     render() {
         const {leftsiblings, schemas, value} = this.props
 
+        // todo should depend on triggers (should be described in schemas)
+        const rootObjects = ['ticket', 'message']
+
         if (!(schemas && schemas.size && leftsiblings && leftsiblings.size)) {
             return null
         }
@@ -92,9 +97,6 @@ class Widget extends React.Component {
             description: '',
             options: [],
         }
-
-        // todo(@xarg): should be defined in the schema what values are allowed
-        const rootObjects = ['ticket', 'message']
 
         if (left.size === 1 && left.get(0) === 'definitions') {
             // we are at the root here, only allow some values
@@ -115,6 +117,13 @@ class Widget extends React.Component {
                     widget.description = ''
                 }
             }
+
+            widget.options = widget.options.map((option) => {
+                return {
+                    value: option,
+                    label: humanizeString(option).toLowerCase(),
+                }
+            })
         } else if (left.last() === 'operators') {
             // operators are using simple select widget, all we need is the options
             const operators = schemas.getIn(left)

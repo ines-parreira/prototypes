@@ -1,17 +1,9 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button} from 'reactstrap'
 
 import Hoverable from '../../Hoverable'
 
-import * as rulesSelectors from '../../../../../state/rules/selectors'
-
 @Hoverable
-@connect((state, ownProps) => {
-    return {
-        statementOperator: rulesSelectors.getIfStatementOperator(ownProps.rule.get('id'), ownProps.parent)(state),
-    }
-})
 export default class AddLogicalCondition extends React.Component {
     static propTypes = {
         rule: React.PropTypes.object.isRequired,
@@ -59,8 +51,8 @@ export default class AddLogicalCondition extends React.Component {
             },
         }
 
-        const {actions, rule, parent} = this.props
-        actions.rules.modifyCodeast(rule.get('id'), parent, actionNode, 'UPDATE_LOGICAL_OPERATOR')
+        const {actions, parent} = this.props
+        actions.modifyCodeAST(parent, actionNode, 'UPDATE_LOGICAL_OPERATOR')
     }
 
     _handleOrClick = () => {
@@ -96,12 +88,32 @@ export default class AddLogicalCondition extends React.Component {
             },
         }
 
-        const {actions, rule, parent} = this.props
-        actions.rules.modifyCodeast(rule.get('id'), parent, actionNode, 'UPDATE_LOGICAL_OPERATOR')
+        const {actions, parent} = this.props
+        actions.modifyCodeAST(parent, actionNode, 'UPDATE_LOGICAL_OPERATOR')
     }
 
     render() {
-        const {title, statementOperator} = this.props
+        const {title, actions, parent} = this.props
+
+        // return operator of first test operator
+        // '&&' if first operator is an AND, '||' if it is a OR and null if there is no operator
+        // (test with only one condition)
+        const condition = actions.getCondition(parent)
+        const statementOperator = condition.get('operator') || null
+
+        // if there is no condition, display a button that will create it
+        if (condition.isEmpty()) {
+            return (
+                <Button
+                    type="button"
+                    color="info"
+                    className="mr-1"
+                    onClick={() => this._handleAndClick()}
+                >
+                    {title}
+                </Button>
+            )
+        }
 
         return (
             <UncontrolledButtonDropdown>
@@ -109,6 +121,7 @@ export default class AddLogicalCondition extends React.Component {
                     caret
                     type="button"
                     color="info"
+                    className="mr-1"
                 >
                     {title}
                 </DropdownToggle>

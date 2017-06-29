@@ -5,8 +5,8 @@ import {actionsConfig} from './Action'
 
 class ActionSelect extends React.Component {
     _handleClick = (value) => {
-        const {actions, rule, parent} = this.props
-        actions.rules.modifyCodeast(rule.get('id'), parent, value, 'UPDATE')
+        const {actions, parent} = this.props
+        actions.modifyCodeAST(parent, value, 'UPDATE')
     }
 
     render() {
@@ -19,7 +19,7 @@ class ActionSelect extends React.Component {
             <UncontrolledButtonDropdown>
                 <DropdownToggle
                     caret
-                    className="mr-2"
+                    className="mr-1"
                     color="success"
                     type="button"
                 >

@@ -1,108 +1,132 @@
 import React, {PropTypes} from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
-import {Button} from 'reactstrap'
+import {Badge} from 'reactstrap'
 
-import {TICKET_STATUSES} from '../../../../../config'
-import RightSelect from './RightSelect'
-import {getTags} from '../../../../../state/tags/selectors'
+import {UserLabel, IntegrationsDetailLabel} from '../../../utils/labels'
+import {fieldPath} from '../../../../../utils'
+
+import * as viewsActions from '../../../../../state/views/actions'
+
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
+import * as viewsSelectors from '../../../../../state/views/selectors'
+
+import FilterDropdown from '../FilterDropdown'
 
 @connect((state) => {
-    const integrations = getMessagingIntegrations(state).map(inte => {
-        if (['email', 'gmail'].includes(inte.get('type'))) {
-            return inte.set('name', `${inte.get('name')} <${inte.getIn(['meta', 'address'])}>`)
-        } else if (inte.get('type') == 'aircall') {
-            return inte.set('name', `${inte.get('name')} (${inte.getIn(['meta', 'address'])})`)
-        }
-        return inte
-    })
-
     return {
-        tags: getTags(state),
-        integrations
+        integrations: getMessagingIntegrations(state),
+        config: viewsSelectors.getActiveViewConfig(state),
+        areFiltersValid: viewsSelectors.areFiltersValid(state),
     }
+}, {
+    fetchPage: viewsActions.fetchPage,
 })
 export default class Right extends React.Component {
     static propTypes = {
+        areFiltersValid: PropTypes.bool.isRequired,
+        config: ImmutablePropTypes.map.isRequired,
+        view: PropTypes.object.isRequired,
         node: PropTypes.object.isRequired,
         index: PropTypes.number.isRequired,
         agents: PropTypes.object.isRequired,
         integrations: PropTypes.object.isRequired,
-        tags: PropTypes.object.isRequired,
+        fetchPage: PropTypes.func.isRequired,
         currentUser: PropTypes.object.isRequired,
-        onChange: PropTypes.func.isRequired,
+        updateFieldFilter: PropTypes.func.isRequired,
+        updateFieldFilterOperator: PropTypes.func.isRequired,
         objectPath: PropTypes.string.isRequired,
-        empty: PropTypes.bool.isRequired
+        empty: PropTypes.bool.isRequired,
     }
 
     static defaultProps = {
         empty: false
     }
 
+    state = {
+        dropdownOpen: false,
+    }
+
+    _toggleDropdown = () => {
+        this.setState({dropdownOpen: !this.state.dropdownOpen})
+    }
+
     render() {
-        const {node, objectPath, agents, tags, integrations, onChange, index, empty} = this.props
+        const {node, config, objectPath, updateFieldFilter, updateFieldFilterOperator, index, empty} = this.props
 
         if (empty) {
             return <span />
         }
 
-        let options = fromJS([])
+        const fields = config.get('fields', fromJS([]))
+        const field = fields.find(field => objectPath === `${config.get('singular')}.${fieldPath(field)}`)
 
-        if (objectPath === 'ticket.assignee_user.id') {
-            options = agents
-
-            options = options.unshift(fromJS({
-                name: 'Me (current user)',
-                id: '{current_user.id}',
-            }))
-        }
-
-        if (objectPath === 'ticket.messages.integration_id') {
-            options = integrations
-        }
-
-        // we want tags names as key, not their ID, like 'refund', 'billing', etc.
-        if (objectPath === 'ticket.tags.name') {
-            options = tags.map((tag) => {
-                const name = tag.get('name')
-                return fromJS({
-                    id: name,
-                    name
-                })
-            })
-        }
-
-        // we want status as keys, like 'open', 'close', etc.
-        if (objectPath === 'ticket.status') {
-            options = fromJS(TICKET_STATUSES.map((status) => {
-                return {
-                    id: status,
-                    name: status
-                }
-            }))
-        }
-
-        if (options.size) {
+        if (!field) {
             return (
-                <RightSelect
-                    node={node}
-                    options={options}
-                    onChange={onChange}
-                    index={index}
-                />
+                <div>
+                    <div className="btn btn-outline-danger btn-frozen mr-2">
+                        {node.value}
+                    </div>
+                    <Badge color="danger">
+                        System condition
+                    </Badge>
+                </div>
             )
         }
 
+        let displayedValue = node.value
+
+
+        if (displayedValue === '{current_user.id}') { // display current user variable
+            displayedValue = 'Me (current user)'
+        } else if (field.get('name') === 'integrations') { // display integration
+            const integration = this.props.integrations.find(integration => integration.get('id') === displayedValue)
+            if (integration) {
+                displayedValue = (
+                    <IntegrationsDetailLabel integration={integration} />
+                )
+            }
+        } else if (field.get('name') === 'assignee') { // display assignee
+            const assignee = this.props.agents.find(agent => agent.get('id') === displayedValue)
+            if (assignee) {
+                displayedValue = (
+                    <UserLabel name={assignee.get('name')} />
+                )
+            }
+        } else if (field.get('name') === 'requester') { // display requester
+            displayedValue = `User #${displayedValue}`
+        }
+
         return (
-            <Button
-                className="btn-frozen"
-                tag="div"
-                color="info"
-                outline
-            >
-                {node.value}
-            </Button>
+            <div>
+                <div
+                    onClick={this._toggleDropdown}
+                >
+                    {
+                        node.value === '' ? (
+                                <div className="btn btn-secondary dropdown-toggle clickable">
+                                    Select a value
+                                </div>
+                            ) : (
+                                <div className="btn btn-outline-info dropdown-toggle clickable">
+                                    {displayedValue}
+                                </div>
+                            )
+                    }
+                </div>
+                {
+                    this.state.dropdownOpen && (
+                        <FilterDropdown
+                            viewConfig={config}
+                            field={field}
+                            updateFieldFilter={(value) => updateFieldFilter(index, value)}
+                            updateFieldFilterOperator={(value) => updateFieldFilterOperator(index, value)}
+                            toggleDropdown={this._toggleDropdown}
+                        />
+                    )
+                }
+            </div>
         )
     }
 }

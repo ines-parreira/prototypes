@@ -27,8 +27,8 @@ class AddActionOrIfStatement extends React.Component {
             }
         }
 
-        const {actions, rule, parent} = this.props
-        actions.rules.modifyCodeast(rule.get('id'), parent.push('body'), actionNode, 'INSERT')
+        const {actions, parent} = this.props
+        actions.modifyCodeAST(parent.push('body'), actionNode, 'INSERT')
     }
 
     _addIfStatement = () => {
@@ -70,8 +70,8 @@ class AddActionOrIfStatement extends React.Component {
             }
         }
 
-        const {actions, rule, parent} = this.props
-        actions.rules.modifyCodeast(rule.get('id'), parent.push('body'), actionNode, 'INSERT')
+        const {actions, parent} = this.props
+        actions.modifyCodeAST(parent.push('body'), actionNode, 'INSERT')
     }
 
     render() {
@@ -82,7 +82,7 @@ class AddActionOrIfStatement extends React.Component {
                 <DropdownToggle
                     caret
                     type="button"
-                    className="mr-2"
+                    className="mr-1"
                     color="info"
                 >
                     {title}

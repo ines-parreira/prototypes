@@ -1,8 +1,10 @@
 import React, {PropTypes} from 'react'
 import ReactSelect from 'react-select'
-import 'react-select/dist/react-select.css'
 import {List} from 'immutable'
 import sortBy from 'lodash/sortBy'
+import _isObject from 'lodash/isObject'
+
+import 'react-select/dist/react-select.css'
 
 export default class Select extends React.Component {
     _getOptions = () => {
@@ -10,10 +12,16 @@ export default class Select extends React.Component {
 
         if (options) {
             if (Array.isArray(options) || List.isList(options)) {
-                options = options.map((o) => ({
-                    value: o.toString(),
-                    label: o.toString()
-                }))
+                options = options.map((option) => {
+                    if (_isObject(option)) {
+                        return option
+                    }
+
+                    return {
+                        value: option.toString(),
+                        label: option.toString(),
+                    }
+                })
             } else {
                 options = Object.keys(options).map((key) => ({
                     value: key.toString(),

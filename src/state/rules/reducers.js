@@ -1,7 +1,7 @@
 import {fromJS, OrderedMap} from 'immutable'
 import fromPairs from 'lodash/fromPairs'
 import {getCode, getAST} from '../../utils'
-import {updateCallExpression, getObjectExpression} from './utils'
+import {updateCodeAst} from '../../pages/common/components/ast/utils'
 
 import * as types from './constants'
 
@@ -68,9 +68,6 @@ export default (state = initialState, action) => {
             )
         }
 
-        case types.RULES_REQUESTS_POSTS:
-            return state
-
         case types.RULES_RECEIVE_POSTS: {
             // Given the code of the rules received from server convert the code to AST
             const rules = action.rules.map((ruleItem) => {
@@ -109,142 +106,17 @@ export default (state = initialState, action) => {
         }
 
         case types.RULES_UPDATE_CODE_AST: {
-            const {id, path, value, operation, schemas} = action
-            const stateItem = state.getIn(['rules', id.toString()])
-            const pathFull = path.unshift('code_ast')
+            const {path, value, operation, schemas} = action
+            const id = action.id.toString()
+            const ast = state.getIn(['rules', id, 'code_ast'])
 
-            let stateItemNew
+            const updatedCodeAst = fromJS(updateCodeAst(schemas, ast, path, value, operation))
 
-            if (operation === 'UPDATE') {
-                // First update the value directly based on the full path
-                stateItemNew = stateItem.updateIn(pathFull.toJS(), () => value)
+            const newState = state
+                .setIn(['rules', id, 'code'], updatedCodeAst.get('code'))
+                .setIn(['rules', id, 'code_ast'], updatedCodeAst.get('ast'))
 
-                /* When we do an update for a node, the possible choices after that
-                 * node will be generated with a default value
-                 * Ex: if(eq(ticket.status,'open')){}
-                 * When "status" is changed to "channel", the expression is transformed to:
-                 * if (eq(ticket.channel, 'email')){}
-                 */
-
-                // Do the updates only in the IfStatement.test
-                if (pathFull.contains('test')) {
-                    const argumentsIndex = pathFull.lastIndexOf('arguments')
-                    if (~argumentsIndex) {
-                        const pathParentCallExpression = pathFull.setSize(argumentsIndex)
-                        // generate a new CallExpression with some default values based on the schema
-                        stateItemNew = updateCallExpression(
-                            stateItemNew,
-                            pathParentCallExpression,
-                            pathFull,
-                            schemas
-                        )
-                    }
-                } else {
-                    // Update the arguments for actions when action name is updated
-                    const argumentsIndex = pathFull.lastIndexOf('arguments')
-                    const index2 = pathFull.lastIndexOf(0)
-
-                    // We check if this update, edit the first argument of a CallExpression
-                    if (~argumentsIndex && ~index2 && (index2 - argumentsIndex) === 1) {
-                        const pathParentCallExpression = pathFull.setSize(argumentsIndex)
-                        const calleeName = stateItemNew.getIn(pathParentCallExpression.push('callee', 'name'))
-
-                        if (calleeName === 'Action') {
-                            // We override the second argument with the default value of the new action type
-                            // This is done so we have a default value for a newly created action
-                            stateItemNew = stateItemNew.updateIn(
-                                pathParentCallExpression.push('arguments', 1),
-                                () => getObjectExpression(types.ACTION_DEFAULT_STATE[value] || {})
-                            )
-                        }
-                    }
-                }
-            }
-
-            if (operation === 'INSERT') {
-                const valueP = stateItem.getIn(pathFull.toJS())
-
-                /*
-                 * In the case of pathNew = ["code_ast", "body", 0, "alternate", "body"]
-                 * But in the real code, else part, "alternate" is null.
-                 * We need to change the code
-                 * I)  if(x){}
-                 * to
-                 * II) if(x){} else{}
-                 *
-                 * In the Syntax tree level, it's equivalent to change
-                 * I)  "alternate": null
-                 * to
-                 * II) "alternate": {
-                 *        "type": "BlockStatement"
-                 *        "body": []
-                 *     }
-                 */
-
-                if ((valueP === undefined) && (pathFull.get(pathFull.size - 2) === 'alternate')) {
-                    const pathElse = pathFull.pop()
-                    stateItemNew = stateItem.updateIn(pathElse.toJS(), () => fromJS({
-                        type: 'BlockStatement',
-                        body: [value],
-                    }))
-                } else {
-                    stateItemNew = stateItem.updateIn(pathFull.toJS(), list => {
-                        // add action at the beginning of the body (more readable for user)
-                        if (value.type === 'ExpressionStatement') {
-                            return list.unshift(value)
-                        }
-
-                        // add conditions at the end of the body
-                        return list.push(value)
-                    })
-                }
-            }
-            if (operation === 'DELETE') {
-                const lastIndex = pathFull.last()
-                const pathNew = pathFull.pop()
-                stateItemNew = stateItem.updateIn(pathNew.toJS(), list => list.delete(lastIndex))
-            }
-
-            // Add logical AND operation in TEST block of IFSTATEMENT.
-            if (operation === 'UPDATE_LOGICAL_OPERATOR') {
-                const test = stateItem.getIn(pathFull.toJS())
-                value.left = test.toJS()
-                stateItemNew = stateItem.updateIn(pathFull.toJS(), () => value)
-            }
-
-            /*
-             * Operating on the syntax tree to delete the binary expression.
-             * We assume the statement includes only AND. And the order is
-             * enforced like:
-             * if (ticket.status == 'channel' && (ticket.status == 'channel' && ticket.status == 'new'))
-             *
-             * This assumption will stay true since in UPDATE_LOGICAL_OPERATOR, we force this order.
-             */
-
-            if (operation === 'DELETE_BINARY_EXPRESSION') {
-                const lastIndex = pathFull.last()
-                const pathNew = pathFull.pop()
-
-                if (lastIndex === 'left') {
-                    const right = stateItem.getIn(pathNew.push('right').toJS())
-                    stateItemNew = stateItem.updateIn(pathNew.toJS(), () => right)
-                } else if (lastIndex === 'right') {
-                    const left = stateItem.getIn(pathNew.push('left').toJS())
-                    stateItemNew = stateItem.updateIn(pathNew.toJS(), () => left)
-                } else {
-                    // We shouldn't reach here normally.
-                    return state
-                }
-            }
-
-            const stateItemObj = stateItemNew.toJS()
-            stateItemObj.code = getCode(stateItemObj.code_ast)
-            stateItemObj.code_ast = getAST(stateItemObj.code)  // To apply, ast syntax options (loc, ...)
-
-            return markAsDirty(
-                id.toString(),
-                state.setIn(['rules', id.toString()], fromJS(stateItemObj))
-            )
+            return markAsDirty(id, newState)
         }
 
         case types.UPDATE_RULE_SUCCESS: {

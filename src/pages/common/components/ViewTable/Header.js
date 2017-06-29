@@ -112,7 +112,7 @@ class Header extends React.Component {
                                         className="mr-2"
                                     >
                                         <i className="fa fa-cog fa-fw mr-2" />
-                                        Settings
+                                        View settings
                                     </DropdownToggle>
                                     <DropdownMenu>
                                         <DropdownItem

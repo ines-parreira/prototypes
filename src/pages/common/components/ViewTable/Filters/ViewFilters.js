@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+
 import CallExpression from './CallExpression'
 
 import * as schemasSelectors from '../../../../../state/schemas/selectors'
@@ -14,7 +15,7 @@ export class ViewFilters extends React.Component {
     }
 
     render() {
-        const {view, schemas, agents, currentUser, updateFieldFilter} = this.props
+        const {view, schemas, agents, currentUser, updateFieldFilter, updateFieldFilterOperator} = this.props
 
         if (!view || !schemas || schemas.isEmpty()) {
             return null
@@ -22,7 +23,7 @@ export class ViewFilters extends React.Component {
 
         if (!view.get('filters_ast') || !view.getIn(['filters_ast', 'body']).size) {
             return (
-                <p>
+                <p className="text-muted mt-2">
                     No filters selected
                 </p>
             )
@@ -47,6 +48,7 @@ export class ViewFilters extends React.Component {
                                 agents={agents}
                                 currentUser={currentUser}
                                 updateFieldFilter={updateFieldFilter}
+                                updateFieldFilterOperator={updateFieldFilterOperator}
                             />
                         </div>
                     )
@@ -68,10 +70,10 @@ ViewFilters.propTypes = {
     view: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
     removeFieldFilter: PropTypes.func.isRequired,
-    updateFieldFilterOperator: PropTypes.func.isRequired,
     agents: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    updateFieldFilter: PropTypes.func.isRequired
+    updateFieldFilter: PropTypes.func.isRequired,
+    updateFieldFilterOperator: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
