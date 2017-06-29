@@ -156,6 +156,8 @@ export function fetchUserHistory(userId, options) {
                         resp
                     })
                 }
+
+                return Promise.resolve(resp)
             }, error => {
                 return dispatch({
                     type: types.FETCH_USER_HISTORY_ERROR,
@@ -184,8 +186,10 @@ export function mergeUsers(baseUserId, mergeUserId, data) {
                     type: 'success',
                     message: 'Users successfully merged.'
                 }))
+
+                return Promise.resolve(resp)
             }, error => {
-                dispatch({
+                return dispatch({
                     type: types.MERGE_USERS_ERROR,
                     error,
                     verbose: true,

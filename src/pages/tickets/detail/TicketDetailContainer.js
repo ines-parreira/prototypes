@@ -131,7 +131,7 @@ export default class TicketDetailContainer extends React.Component {
         ) {
             const askedUserId = nextProps.ticket.getIn(['requester', 'id'], '')
             this.props.actions.user.fetchUserHistory(askedUserId, {
-                successCondition(state) {
+                successCondition: (state) => {
                     return state.ticket.getIn(['requester', 'id'], '').toString() === askedUserId.toString()
                 }
             })

@@ -14,12 +14,9 @@ import {
 
 import * as ViewsActions from '../../../../state/views/actions'
 import * as UsersActions from '../../../../state/users/actions'
-import UserForm from '../../common/components/UserForm'
-import Modal from '../../../common/components/Modal'
 
 class UserListActions extends React.Component {
     state = {
-        isUserFormOpen: false,
         askDeleteConfirmation: false,
     }
 
@@ -29,37 +26,28 @@ class UserListActions extends React.Component {
         return actions.views.bulkDelete(view, selectedItemsIds)
     }
 
-    _openModal = () => {
-        this.setState({isUserFormOpen: true})
-    }
-
-    _closeModal = () => {
-        this.setState({isUserFormOpen: false})
-    }
-
-    _fetchView = () => {
-        this.props.actions.views.fetchPage(1)
-    }
-
     _toggleDeleteConfirmation = () => {
         this.setState({askDeleteConfirmation: !this.state.askDeleteConfirmation})
     }
 
     _renderBulkActions = () => {
+        const areItemsSelected = !this.props.selectedItemsIds.isEmpty()
+
         return (
             <div className="d-inline-flex align-items-center">
                 <UncontrolledButtonDropdown
-                    className="mr-2"
+                    size="sm"
                 >
                     <DropdownToggle
                         id="bulk-more-button"
                         color="secondary"
-                        caret
                         type="button"
+                        caret
+                        disabled={!areItemsSelected}
                     >
-                        More
+                        Actions
                     </DropdownToggle>
-                    <DropdownMenu right>
+                    <DropdownMenu>
                         <DropdownItem
                             type="button"
                             className="text-danger"
@@ -95,30 +83,9 @@ class UserListActions extends React.Component {
     }
 
     render() {
-        const areBulkActionsDisplayed = !this.props.selectedItemsIds.isEmpty()
-
         return (
-            <div className="d-inline-flex align-items-center pull-right">
-                {areBulkActionsDisplayed && this._renderBulkActions()}
-
-                <Button
-                    type="button"
-                    color="primary"
-                    onClick={this._openModal}
-                >
-                    Add user
-                </Button>
-
-                <Modal
-                    isOpen={this.state.isUserFormOpen}
-                    onClose={this._closeModal}
-                    header="Add user"
-                >
-                    <UserForm
-                        closeModal={this._closeModal}
-                        onSuccess={this._fetchView}
-                    />
-                </Modal>
+            <div className="d-inline-flex align-items-center">
+                {this._renderBulkActions()}
             </div>
         )
     }

@@ -2,12 +2,14 @@ import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
+import {Link} from 'react-router'
+import {Button} from 'reactstrap'
+
 import MacroContainer from '../common/macros/MacroContainer'
 import {compactInteger} from '../../../utils'
 import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
 
 import * as tagsActions from '../../../state/tags/actions'
-import * as viewsActions from '../../../state/views/actions'
 
 import * as ticketsSelectors from '../../../state/tickets/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
@@ -68,6 +70,17 @@ class TicketListContainer extends React.Component {
                         isSearch={isSearch}
                         urlViewId={urlViewId}
                         ActionsComponent={TicketListActions}
+                        viewButtons={(
+                            <div className="d-inline-flex align-items-center">
+                                <Button
+                                    tag={Link}
+                                    color="primary"
+                                    to="/app/ticket/new"
+                                >
+                                    Create ticket
+                                </Button>
+                            </div>
+                        )}
                     />
                     <MacroContainer
                         activeView={activeView}
@@ -99,7 +112,6 @@ function mapStateToProps(state, ownProps) {
 
     return {
         activeView: viewsSelectors.getActiveView(state),
-        getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
         hasActiveView: viewsSelectors.hasActiveView(state),
         selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
         tickets: ticketsSelectors.getTickets(state),
@@ -110,7 +122,6 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
     fetchTags: tagsActions.fetchTags,
-    fetchPage: viewsActions.fetchPage,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketListContainer)

@@ -19,7 +19,8 @@ class MergeUsersContainer extends React.Component {
             onClose,
             usersIsLoading,
             isTicketContext,
-            ticketMessages
+            ticketMessages,
+            onSuccess,
         } = this.props
 
         if (!destinationUser || destinationUser.isEmpty()) {
@@ -51,6 +52,7 @@ class MergeUsersContainer extends React.Component {
                 mergeUsers={actions.users.mergeUsers}
                 isLoading={usersIsLoading('merge')}
                 requiredAddresses={fromJS(requiredAddresses).toSet().filter((address) => address)}
+                onSuccess={onSuccess}
             />
         )
     }
@@ -69,6 +71,7 @@ MergeUsersContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
     usersIsLoading: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func,
 
     isTicketContext: PropTypes.bool.isRequired,
     ticketMessages: PropTypes.object.isRequired

@@ -9,7 +9,7 @@ export default class MacroPreview extends React.Component {
             return (
                 <div className="MacroPreview">
                     <div className="no-result-container">
-                        <h4>You don't have any macro you can apply on a batch of tickets.</h4>
+                        <p>You don't have any macro you can apply on a batch of tickets.</p>
                     </div>
                 </div>
             )

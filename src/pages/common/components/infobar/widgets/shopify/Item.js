@@ -59,6 +59,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                         ...payload,
                         quantity: 1,
                     }}
+                    tooltip="Refund item without restocking it"
                 >
                     <i className="fa fa-fw fa-repeat mr-2" />
                     Refund one
@@ -72,6 +73,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
                             actionName="shopifyRefundOrderItem"
                             reason={`refund ${quantity} ${source.get('name')}`}
                             payload={payload}
+                            tooltip="Refund items without restocking them"
                         >
                             <i className="fa fa-fw fa-repeat mr-2" />
                             Refund {quantity}

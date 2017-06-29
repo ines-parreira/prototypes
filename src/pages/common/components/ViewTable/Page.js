@@ -35,7 +35,6 @@ import css from './Page.less'
 })
 export default class Page extends React.Component {
     static propTypes = {
-        // a React element not instantiated is a function
         ActionsComponent: PropTypes.func,
         activeView: ImmutablePropTypes.map.isRequired,
         config: ImmutablePropTypes.map.isRequired,
@@ -52,6 +51,7 @@ export default class Page extends React.Component {
         type: PropTypes.string.isRequired,
         urlViewId: PropTypes.string,
         updateView: PropTypes.func.isRequired,
+        viewButtons: PropTypes.node,
     }
 
     static defaultProps = {
@@ -120,10 +120,18 @@ export default class Page extends React.Component {
     }
 
     _renderTable = () => {
-        const {type, items, config, isSearch, activeView} = this.props
+        const {ActionsComponent, type, items, config, isSearch, activeView} = this.props
 
         const displayedFields = config.get('fields', fromJS([]))
-            .filter(field => activeView.get('fields', fromJS([])).contains(field.get('name')))
+            .filter(field => {
+                // display field if mandatory from config
+                if (config.get('mainField') === field.get('name')) {
+                    return true
+                }
+
+                // display field if present in active view fields list
+                return activeView.get('fields', fromJS([])).contains(field.get('name'))
+            })
 
         return (
             <Table
@@ -131,12 +139,13 @@ export default class Page extends React.Component {
                 items={items}
                 fields={displayedFields}
                 isSearch={isSearch}
+                ActionsComponent={ActionsComponent}
             />
         )
     }
 
     render() {
-        const {ActionsComponent, activeView, isSearch, isUpdate, type} = this.props
+        const {activeView, isSearch, isUpdate, type} = this.props
 
         if (activeView.isEmpty()) {
             return <Loader />
@@ -148,8 +157,8 @@ export default class Page extends React.Component {
                     <Header
                         isSearch={isSearch}
                         isUpdate={isUpdate}
-                        ActionsComponent={ActionsComponent}
                         type={type}
+                        viewButtons={this.props.viewButtons}
                     />
                 </div>
                 <div className={classnames(css.table, 'container-padding')}>

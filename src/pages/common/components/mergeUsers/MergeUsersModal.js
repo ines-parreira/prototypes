@@ -54,12 +54,17 @@ class MergeUsersModal extends React.Component {
         logEvent('Confirmed MergeUser', {
             finalUser: data.user.channels.map(channel => channel.type)
         })
+
         return this.props.mergeUsers(
             this.props.destinationUser.get('id'),
             this.props.sourceUser.get('id'),
             data.user
-        ).then(() => {
+        ).then(({error}) => {
             this._toggle()
+
+            if (!error && this.props.onSuccess) {
+                this.props.onSuccess()
+            }
         })
     }
 
@@ -267,6 +272,7 @@ MergeUsersModal.propTypes = {
     sourceUser: PropTypes.object.isRequired,
     mergeUsers: PropTypes.func.isRequired,
     toggleModal: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func,
     isOpen: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     primaryEmail: PropTypes.string,

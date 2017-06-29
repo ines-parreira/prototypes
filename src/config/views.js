@@ -52,6 +52,7 @@ const config = [{
     api: 'tickets', // api endpoint for this object
     singular: 'ticket', // singular version for sentences
     plural: 'tickets', // plural version for sentences
+    mainField: 'details', // mandatory field (+ where are displayed bulk actions)
     fields: [
         // {
         //     name: 'priority',
@@ -240,6 +241,7 @@ const config = [{
     api: 'users',
     singular: 'user',
     plural: 'users',
+    mainField: 'name',
     fields: [
         {
             name: 'name',

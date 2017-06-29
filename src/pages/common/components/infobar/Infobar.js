@@ -7,6 +7,7 @@ import {Button, UncontrolledTooltip} from 'reactstrap'
 import {areSourcesReady} from './utils'
 
 import * as infobarActions from '../../../../state/infobar/actions'
+import * as usersActions from '../../../../state/users/actions'
 
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
@@ -20,21 +21,23 @@ import Search from '../Search'
 import css from './Infobar.less'
 
 @connect(null, {
+    fetchUserHistory: usersActions.fetchUserHistory,
     search: infobarActions.search,
     searchSimilarUser: infobarActions.similarUser,
 })
 export default class Infobar extends React.Component {
     static propTypes = {
-        identifier: PropTypes.string.isRequired,
         actions: PropTypes.object.isRequired,
+        context: PropTypes.string.isRequired,
+        fetchUserHistory: PropTypes.func.isRequired,
+        identifier: PropTypes.string.isRequired,
         infobar: PropTypes.object.isRequired,
         isRouteEditingWidgets: PropTypes.bool.isRequired,
-        user: PropTypes.object.isRequired,
-        widgets: PropTypes.object.isRequired,
-        sources: PropTypes.object.isRequired,
-        context: PropTypes.string.isRequired,
         search: PropTypes.func.isRequired,
         searchSimilarUser: PropTypes.func.isRequired,
+        sources: PropTypes.object.isRequired,
+        user: PropTypes.object.isRequired,
+        widgets: PropTypes.object.isRequired,
     }
 
     static defaultProps = {
@@ -205,6 +208,23 @@ export default class Infobar extends React.Component {
         }
     }
 
+    _fetchUserHistory = () => {
+        if (this.props.user.isEmpty()) {
+            return
+        }
+
+        const askedUserId = this.props.user.get('id')
+
+        // wait 1.5s before fetching user history after merge (merge can take some time and is async)
+        setTimeout(() => {
+            this.props.fetchUserHistory(askedUserId, {
+                successCondition: () => {
+                    return this.props.user.get('id').toString() === askedUserId.toString()
+                }
+            })
+        }, 1500)
+    }
+
     _resetSearch = () => {
         this.setState({
             displaySearchResults: false,
@@ -285,6 +305,7 @@ export default class Infobar extends React.Component {
                         display={this.state.showMergeUserModal}
                         destinationUser={this.props.user}
                         sourceUser={this.state.selectedUser}
+                        onSuccess={this._fetchUserHistory}
                         onClose={() => {
                             this.setState({showMergeUserModal: false})
                         }}
@@ -365,6 +386,7 @@ export default class Infobar extends React.Component {
                                     display={this.state.showMergeUserModal}
                                     destinationUser={this.props.user}
                                     sourceUser={this.state.suggestedUser}
+                                    onSuccess={this._fetchUserHistory}
                                     onClose={() => {
                                         this.setState({showMergeUserModal: false})
                                     }}
@@ -397,7 +419,7 @@ export default class Infobar extends React.Component {
                 <div className="infobar-content">
                     <div className="infobar-search-wrapper d-flex align-items-center justify-content-between">
                         <Search
-                            placeholder="Search users by name, email, phone or order id..."
+                            placeholder="Search for users by email, order number, etc."
                             bindKey
                             onChange={this._onSearch}
                             style={{maxWidth: 'none'}}

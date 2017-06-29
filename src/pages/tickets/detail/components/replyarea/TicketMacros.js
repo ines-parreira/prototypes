@@ -66,7 +66,7 @@ class TicketMacros extends React.Component {
         if (!items.size) {
             content = (
                 <div className="no-result-container">
-                    <h4>You don't have any macros yet.</h4>
+                    <p>You don't have any macros yet.</p>
                     <Button
                         type="button"
                         color="info"

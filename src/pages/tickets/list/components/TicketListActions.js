@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {bindActionCreators} from 'redux'
-import {Link} from 'react-router'
 import {
     UncontrolledButtonDropdown,
     ButtonDropdown,
@@ -160,6 +159,8 @@ class TicketListActions extends React.Component {
     _renderBulkActions = () => {
         const {currentUser} = this.props
 
+        const areItemsSelected = !this.props.selectedItemsIds.isEmpty()
+
         const agents = this.props.agents.filter((agent) => {
             return agent.get('name').toLowerCase().includes(this.state.agentsSearch.toLowerCase())
         })
@@ -170,6 +171,7 @@ class TicketListActions extends React.Component {
                     className="mr-2"
                     isOpen={this.state.agentsDropdownOpen}
                     toggle={this._toggleAgentsDropdown}
+                    size="sm"
                 >
                     <Button
                         type="button"
@@ -178,6 +180,7 @@ class TicketListActions extends React.Component {
                             id: currentUser.get('id'),
                             name: currentUser.get('name'),
                         })}
+                        disabled={!areItemsSelected}
                     >
                         Assign to me
                     </Button>
@@ -185,9 +188,9 @@ class TicketListActions extends React.Component {
                         caret
                         type="button"
                         color="secondary"
+                        disabled={!areItemsSelected}
                     />
                     <DropdownMenu
-                        right
                         style={{width: '230px'}}
                     >
                         <DropdownItem
@@ -235,11 +238,13 @@ class TicketListActions extends React.Component {
                 </ButtonDropdown>
                 <UncontrolledButtonDropdown
                     className="mr-2"
+                    size="sm"
                 >
                     <Button
                         type="button"
                         color="secondary"
                         onClick={() => this._bulkUpdate('status', 'closed')}
+                        disabled={!areItemsSelected}
                     >
                         Close
                     </Button>
@@ -247,6 +252,7 @@ class TicketListActions extends React.Component {
                         caret
                         type="button"
                         color="secondary"
+                        disabled={!areItemsSelected}
                     />
                     <DropdownMenu right>
                         <DropdownItem header>
@@ -271,16 +277,19 @@ class TicketListActions extends React.Component {
                     className="mr-2"
                     isOpen={this.state.tagsDropdownOpen}
                     toggle={this._toggleTagsDropdown}
+                    size="sm"
                 >
                     <DropdownToggle
                         caret
                         type="button"
                         color="secondary"
+                        disabled={!areItemsSelected}
                     >
                         Add tag
                     </DropdownToggle>
                     <DropdownMenu
                         right
+                        disabled={!areItemsSelected}
                         style={{width: '230px'}}
                     >
                         <DropdownItem
@@ -304,13 +313,14 @@ class TicketListActions extends React.Component {
                     </DropdownMenu>
                 </ButtonDropdown>
                 <UncontrolledButtonDropdown
-                    className="mr-2"
+                    size="sm"
                 >
                     <DropdownToggle
                         id="bulk-more-button"
                         color="secondary"
-                        caret
                         type="button"
+                        caret
+                        disabled={!areItemsSelected}
                     >
                         More
                     </DropdownToggle>
@@ -357,19 +367,9 @@ class TicketListActions extends React.Component {
     }
 
     render() {
-        const areBulkActionsDisplayed = !this.props.selectedItemsIds.isEmpty()
-
         return (
-            <div className="d-inline-flex align-items-center pull-right">
-                {areBulkActionsDisplayed && this._renderBulkActions()}
-
-                <Button
-                    tag={Link}
-                    color="primary"
-                    to="/app/ticket/new"
-                >
-                    Create ticket
-                </Button>
+            <div className="d-inline-flex align-items-center">
+                {this._renderBulkActions()}
             </div>
         )
     }

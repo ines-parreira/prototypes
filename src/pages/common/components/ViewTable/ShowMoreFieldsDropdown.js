@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {
@@ -53,7 +54,8 @@ class ShowMoreFieldsDropdown extends React.Component {
                     {
                         this.props.fields
                             .map((field) => {
-                                const isChecked = visibleFieldsNames.includes(field.get('name'))
+                                const isMandatory = this.props.config.get('mainField') === field.get('name')
+                                const isChecked = visibleFieldsNames.includes(field.get('name')) || isMandatory
 
                                 return (
                                     <DropdownItem
@@ -62,12 +64,14 @@ class ShowMoreFieldsDropdown extends React.Component {
                                         className="pt-1 pb-1"
                                         style={{height: '28px'}}
                                         toggle={false}
+                                        disabled={isMandatory}
                                     >
                                         <BooleanField
                                             value={isChecked}
                                             onChange={value => this._setFieldVisibility(field.get('name'), value)}
                                             label={field.get('title')}
                                             inline
+                                            disabled={isMandatory}
                                         />
                                     </DropdownItem>
                                 )
@@ -80,6 +84,7 @@ class ShowMoreFieldsDropdown extends React.Component {
 }
 
 ShowMoreFieldsDropdown.propTypes = {
+    config: ImmutablePropTypes.map.isRequired,
     setFieldVisibility: PropTypes.func,
     fields: PropTypes.object,
     visibleFields: PropTypes.object.isRequired,

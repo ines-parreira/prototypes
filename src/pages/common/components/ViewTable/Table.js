@@ -32,6 +32,7 @@ import css from './Table.less'
 })
 export default class Table extends React.Component {
     static propTypes = {
+        ActionsComponent: PropTypes.func,
         activeView: ImmutablePropTypes.map.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         fetchPage: PropTypes.func.isRequired,
@@ -75,6 +76,7 @@ export default class Table extends React.Component {
 
     render() {
         const {
+            ActionsComponent,
             activeView,
             config,
             isLoading,
@@ -149,6 +151,9 @@ export default class Table extends React.Component {
                                             type={type}
                                             isLast={fields.size === index + 1}
                                             isSearch={isSearch}
+                                            activeView={activeView}
+                                            selectedItemsIds={selectedItemsIds}
+                                            ActionsComponent={ActionsComponent}
                                         />
                                     )
                                 })

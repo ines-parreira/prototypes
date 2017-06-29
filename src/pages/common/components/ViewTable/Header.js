@@ -25,8 +25,6 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 
 class Header extends React.Component {
     static propTypes = {
-        // a React element not instantiated is a function
-        ActionsComponent: PropTypes.func,
         activeView: ImmutablePropTypes.map.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         deleteView: PropTypes.func.isRequired,
@@ -36,9 +34,9 @@ class Header extends React.Component {
         item: ImmutablePropTypes.map.isRequired,
         lastViewId: PropTypes.number,
         router: PropTypes.object.isRequired,
-        selectedItemsIds: ImmutablePropTypes.list.isRequired,
         type: PropTypes.string.isRequired,
         updateView: PropTypes.func.isRequired,
+        viewButtons: PropTypes.node,
     }
 
     static defaultProps = {
@@ -90,13 +88,12 @@ class Header extends React.Component {
 
     render() {
         const {
-            ActionsComponent,
             activeView,
             config,
             isSearch,
             isUpdate,
-            selectedItemsIds,
             type,
+            viewButtons,
         } = this.props
 
         const isEditMode = activeView.get('editMode')
@@ -207,14 +204,7 @@ class Header extends React.Component {
                                 )
                         }
 
-                        {
-                            ActionsComponent && (
-                                <ActionsComponent
-                                    view={activeView}
-                                    selectedItemsIds={selectedItemsIds}
-                                />
-                            )
-                        }
+                        {viewButtons}
                     </div>
                 </div>
                 <FilterTopbar
@@ -231,7 +221,6 @@ const mapStateToProps = (state, ownProps) => {
         activeView: viewsSelectors.getActiveView(state),
         config: viewsSelectors.getViewConfig(ownProps.type),
         lastViewId: viewsSelectors.getLastViewId(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
     }
 }
 

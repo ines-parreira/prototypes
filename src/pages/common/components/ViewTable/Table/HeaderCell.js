@@ -15,6 +15,8 @@ import * as viewsSelectors from '../../../../../state/views/selectors'
 
 class HeaderCell extends React.Component {
     static propTypes = {
+        ActionsComponent: PropTypes.func,
+        activeView: ImmutablePropTypes.map.isRequired,
         addFieldFilter: PropTypes.func.isRequired,
         config: ImmutablePropTypes.map.isRequired,
         fetchPage: PropTypes.func.isRequired,
@@ -24,6 +26,7 @@ class HeaderCell extends React.Component {
         isSearch: PropTypes.bool.isRequired,
         orderBy: PropTypes.string.isRequired,
         orderDirection: PropTypes.string.isRequired,
+        selectedItemsIds: ImmutablePropTypes.list.isRequired,
         setOrderDirection: PropTypes.func.isRequired,
         type: PropTypes.string.isRequired,
     }
@@ -52,6 +55,7 @@ class HeaderCell extends React.Component {
 
     render() {
         const {
+            ActionsComponent,
             config,
             fetchPage,
             field,
@@ -62,6 +66,8 @@ class HeaderCell extends React.Component {
             orderDirection,
             setOrderDirection
         } = this.props
+
+        const isMainField = config.get('mainField') === field.get('name')
 
         const fieldPath = getFieldPath(field)
 
@@ -87,23 +93,34 @@ class HeaderCell extends React.Component {
             <td>
                 <div>
                     <div className="cell-wrapper">
-                        <div
-                            onClick={onClick}
-                            className={classnames({
-                                clickable: !!action,
-                            })}
-                        >
-                            <span
-                                className={classnames({
-                                    filterable: action === 'filter',
-                                })}
-                            >
-                                {field.get('title')}
-                            </span>
-                            {
-                                action === 'sort' && this._renderOrderIcon(fieldPath === orderBy)
-                            }
-                        </div>
+                        {
+                            isMainField ? (
+                                    ActionsComponent && (
+                                        <ActionsComponent
+                                            view={this.props.activeView}
+                                            selectedItemsIds={this.props.selectedItemsIds}
+                                        />
+                                    )
+                                ) : (
+                                    <div
+                                        onClick={onClick}
+                                        className={classnames({
+                                            clickable: !!action,
+                                        })}
+                                    >
+                                        <span
+                                            className={classnames({
+                                                filterable: action === 'filter',
+                                            })}
+                                        >
+                                            {field.get('title')}
+                                        </span>
+                                        {
+                                            action === 'sort' && this._renderOrderIcon(fieldPath === orderBy)
+                                        }
+                                    </div>
+                                )
+                        }
                         {
                             action === 'filter'
                             && this.state.showFilters
@@ -121,6 +138,7 @@ class HeaderCell extends React.Component {
                     {
                         isLast && !isSearch && (
                             <ShowMoreFieldsDropdown
+                                config={config}
                                 fields={config.get('fields', fromJS([]))}
                                 visibleFields={fields}
                             />

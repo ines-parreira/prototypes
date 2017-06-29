@@ -66,6 +66,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
             {
                 actionName: 'shopifyFullRefundOrder',
                 reason: 'refund this order',
+                tooltip: 'Refund order without restocking items',
                 child: (
                     <div>
                         <i className="fa fa-fw fa-repeat mr-2" />

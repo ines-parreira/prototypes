@@ -34,9 +34,14 @@ export default class IntegrationList extends React.Component {
                 }
                 <div className="div-table">
                     {
-                        list.map((c, i) => (
-                            <IntegrationListRow key={i} integrationConfig={c} />
-                        ))
+                        list.map((config, index) => {
+                            return (
+                                <IntegrationListRow
+                                    key={index}
+                                    integrationConfig={config}
+                                />
+                            )
+                        })
                     }
                 </div>
             </div>

@@ -30,7 +30,7 @@ export default class InfobarSearchResultsList extends React.Component {
                                     <CardBlock>
                                         {
                                             user.get('name') && (
-                                                <h5>
+                                                <h5 className="m-0">
                                                     {user.get('name')}
                                                     {
                                                         isDefaultUser && (
@@ -47,7 +47,7 @@ export default class InfobarSearchResultsList extends React.Component {
                                         }
                                         {
                                             user.get('email') && (
-                                                <p>{user.get('email')}</p>
+                                                <div className="mt-2">{user.get('email')}</div>
                                             )
                                         }
                                     </CardBlock>

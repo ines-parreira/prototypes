@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classNames from 'classnames'
+import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 import {getIconFromUrl} from '../../../../state/integrations/helpers'
 import {sourceTypeToIcon} from '../../../../config/ticket'
@@ -30,6 +31,9 @@ class IntegrationListRow extends React.Component {
         return (
             <Link
                 className="IntegrationListRow"
+                onClick={() => logEvent('Clicked on integration', {
+                    integration: integrationConfig.get('title')
+                })}
                 {...linkConfig}
             >
                 <div

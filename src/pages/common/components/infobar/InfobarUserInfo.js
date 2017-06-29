@@ -293,7 +293,7 @@ class InfobarUserInfo extends React.Component {
      */
     _renderGenerateButton = () => {
         return (
-            <div className="no-result-container">
+            <div className="no-result-container mt-5">
                 <p>
                     You're not showing any widgets here yet.
                 </p>
