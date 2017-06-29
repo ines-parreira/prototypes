@@ -12,6 +12,8 @@ import {getMessagingIntegrations} from '../../../../../state/integrations/select
     const integrations = getMessagingIntegrations(state).map(inte => {
         if (['email', 'gmail'].includes(inte.get('type'))) {
             return inte.set('name', `${inte.get('name')} <${inte.getIn(['meta', 'address'])}>`)
+        } else if (inte.get('type') == 'aircall') {
+            return inte.set('name', `${inte.get('name')} (${inte.getIn(['meta', 'address'])})`)
         }
         return inte
     })

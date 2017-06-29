@@ -8,6 +8,9 @@ import {compare} from '../../../utils'
 import * as IntegrationsActions from '../../../state/integrations/actions'
 import * as IntegrationsSelectors from '../../../state/integrations/selectors'
 
+import AircallIntegrationList from './components/aircall/AircallIntegrationList'
+import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'
+
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup'
@@ -75,6 +78,19 @@ class IntegrationDetailContainer extends React.Component {
         const redirectUri = this.props.getRedirectUri(params.integrationType)
 
         switch (params.integrationType) {
+            case 'aircall':
+                if (isDetail) {
+                    return (
+                        <AircallIntegrationCreate/>
+                    )
+                }
+                return (
+                    <AircallIntegrationList
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
+
             case 'email':
                 if (isDetail) {
                     if (isUpdate) {

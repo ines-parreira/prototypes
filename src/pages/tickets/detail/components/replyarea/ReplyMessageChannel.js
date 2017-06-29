@@ -131,9 +131,7 @@ class ReplyMessageChannel extends React.Component {
         return (
             <div
                 ref="messageChannel"
-                className={classnames('ReplyMessageChannel', {
-                    open: this.state.isReceiversAreaOpen,
-                })}
+                className="ReplyMessageChannel open"
             >
                 <div
                     ref="channelPicker"

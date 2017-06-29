@@ -8,7 +8,7 @@ export const DEFAULT_SOURCE_TYPE = 'email'
 export const SYSTEM_SOURCE_TYPES = ['internal-note', 'system-message']
 
 // source types that can not be used to answer
-export const UNUSABLE_SOURCE_TYPES = ['phone', 'facebook', 'api', 'facebook-post', 'ottspott-call', 'system-message']
+export const UNUSABLE_SOURCE_TYPES = ['aircall', 'phone', 'facebook', 'api', 'facebook-post', 'ottspott-call', 'system-message']
 
 export const orderedMessages = (messages) => {
     return messages.sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
@@ -155,6 +155,7 @@ export const sourceTypeToIcon = (sourceType) => {
             return 'fa fa-fw fa-comments purple'
         case 'api':
             return 'fa fa-fw fa-code'
+        case 'aircall':
         case 'phone':
         case 'ottspott-call':
             return 'fa fa-fw fa-phone'

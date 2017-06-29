@@ -95,7 +95,7 @@ export const makeGetFormValues = state => form => getFormValues(form)(state)
 
 // return the list of integration used to send messages from the helpdesk
 export const getMessagingIntegrations = createSelector(
-    [getIntegrationsByTypes(['email', 'gmail', 'smooch', 'smooch_inside', 'facebook'])],
+    [getIntegrationsByTypes(['aircall', 'email', 'gmail', 'smooch', 'smooch_inside', 'facebook'])],
     (integrations) => {
         return integrations.map((inte) => {
             if (inte.get('type') === 'facebook') {
@@ -112,3 +112,8 @@ export const hasIntegrationOfTypes = types => createSelector(
 )
 
 export const makeHasIntegrationOfTypes = state => types => hasIntegrationOfTypes(types)(state)
+
+export const getIntegrationExtra = type => createSelector(
+    [getIntegrationsState],
+    state => state.getIn(['extra', type]) || fromJS({})
+)
