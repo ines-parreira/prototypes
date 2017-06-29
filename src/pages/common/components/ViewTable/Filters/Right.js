@@ -81,17 +81,17 @@ export default class Right extends React.Component {
         if (displayedValue === '{current_user.id}') { // display current user variable
             displayedValue = 'Me (current user)'
         } else if (field.get('name') === 'integrations') { // display integration
-            const integration = this.props.integrations.find(integration => integration.get('id') === displayedValue)
+            const integration = this.props.integrations.find(integration => integration.get('id').toString() === displayedValue.toString())
             if (integration) {
                 displayedValue = (
                     <IntegrationsDetailLabel integration={integration} />
                 )
             }
         } else if (field.get('name') === 'assignee') { // display assignee
-            const assignee = this.props.agents.find(agent => agent.get('id') === displayedValue)
+            const assignee = this.props.agents.find(agent => agent.get('id').toString() === displayedValue.toString())
             if (assignee) {
                 displayedValue = (
-                    <UserLabel name={assignee.get('name')} />
+                    <UserLabel user={assignee} />
                 )
             }
         } else if (field.get('name') === 'requester') { // display requester

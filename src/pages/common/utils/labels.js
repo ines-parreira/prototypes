@@ -1,12 +1,16 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
-import {fromJS} from 'immutable'
+import _isString from 'lodash/isString'
 import {Badge, UncontrolledTooltip} from 'reactstrap'
+
 import {formatDatetime, toJS, isImmutable} from '../../../utils'
 import {sourceTypeToIcon} from '../../../config/ticket'
+
+import * as usersHelpers from '../../../state/users/helpers'
 
 /**
  * AGENT
@@ -35,8 +39,16 @@ AgentLabel.propTypes = {name: PropTypes.string}
 /**
  * USER
  */
-export const UserLabel = ({name = ''}) => <span>{name}</span>
-UserLabel.propTypes = {name: PropTypes.string}
+export const UserLabel = ({user}) => {
+    if (_isString(user)) {
+        return <span>{user}</span>
+    }
+
+    return (
+        <span>{usersHelpers.getDisplayName(user)}</span>
+    )
+}
+UserLabel.propTypes = {user: PropTypes.object.isRequired}
 
 /**
  * TAG
@@ -243,7 +255,7 @@ export const RenderLabel = ({field, value}) => {
         case 'integrations':
             return typeof value === 'string' ? <span>{value}</span> : <IntegrationsDetailLabel integration={value} />
         case 'requester':
-            return <UserLabel name={value.get('name')} />
+            return <UserLabel user={value} />
         case 'roles':
             return <RoleLabel roles={isImmutable(value) ? value.toJS() : value} />
         case 'via':
