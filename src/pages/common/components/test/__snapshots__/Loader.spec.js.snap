@@ -11,7 +11,7 @@ exports[`Loader component simple message 1`] = `
       className="fa fa-fw fa-circle-o-notch fa-spin"
     />
     <div
-      className="mt-2"
+      className="mt-3"
     >
       hello
     </div>
