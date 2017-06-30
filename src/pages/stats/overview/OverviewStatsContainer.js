@@ -9,7 +9,7 @@ import {getDisplayName} from '../../../state/users/helpers'
 import {getAgents} from '../../../state/users/selectors'
 import {getTags} from '../../../state/tags/selectors'
 
-const CHANNELS = ['email', 'phone', 'chat', 'facebook', 'api']
+const CHANNELS = ['aircall', 'api', 'chat', 'email', 'facebook', 'phone']
 
 const mapStateToProps = (state) => ({
     tags: getTags(state).toJS(),

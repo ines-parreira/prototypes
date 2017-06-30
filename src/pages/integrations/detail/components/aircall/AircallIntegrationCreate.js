@@ -57,17 +57,17 @@ export default class AircallIntegrationCreate extends Component {
                     <p>
                         Follow these instructions to connect Aircall:
                         <ul>
-
                             <li>1. Copy the webhook url below</li>
-                            <li>2. Add a Gorgias integration in your Aircall account, under <a
-                                href="https://dashboard-v2.aircall.io/integrations" target="_blank">
-                                integrations</a>
+                            <li>2. Add a Webhook integration in your Aircall account, under{' '}
+                                <a href="https://dashboard-v2.aircall.io/integrations" target="_blank">
+                                    integrations
+                                </a>
                             </li>
                             <li>3. Paste the webhook url in the url field, and save</li>
                         </ul>
                     </p>
                     <p>
-                        Gorgias will automatically create an Aircall integration for each of our Aircall
+                        Gorgias will automatically create an Aircall integration for each of your Aircall
                         numbers when you will receive or make a call.
                     </p>
                     <label>Webhook url</label>
@@ -84,7 +84,7 @@ export default class AircallIntegrationCreate extends Component {
                                 color="info"
                                 data-clipboard-target="#webhookUrl"
                             >
-                                <i className="fa fa-fw fa-files-o mr-2" />
+                                <i className="fa fa-fw fa-files-o mr-2"/>
                                 {this.state.isCopied ? 'Copied!' : 'Copy'}
                             </Button>
                         </InputGroupButton>
