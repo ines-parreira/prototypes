@@ -18,7 +18,7 @@ export default class Loader extends React.Component {
                     <i className="fa fa-fw fa-circle-o-notch fa-spin" />
                     {
                         !inline && message && (
-                            <div className="mt-2">
+                            <div className="mt-3">
                                 {message}
                             </div>
                         )

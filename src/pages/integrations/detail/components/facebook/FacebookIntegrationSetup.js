@@ -118,7 +118,7 @@ export default class FacebookIntegrationSetup extends React.Component {
                         return (
                             <div
                                 key={id}
-                                className="mb-3"
+                                className="mb-5"
                             >
                                 <div className="d-flex align-items-center mb-3">
                                     <img
@@ -127,12 +127,12 @@ export default class FacebookIntegrationSetup extends React.Component {
                                         src={page.getIn(['picture', 'data', 'url'])}
                                     />
                                     <div className="d-flex flex-column">
-                                        <h2 className="header">
+                                        <h3 className="header mb-1">
                                             {page.get('name')}
-                                        </h2>
-                                        <p className="text-faded">
+                                        </h3>
+                                        <div className="text-faded">
                                             {_truncate(page.get('about'), {length: 100})}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
 

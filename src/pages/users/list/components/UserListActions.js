@@ -84,7 +84,7 @@ class UserListActions extends React.Component {
 
     render() {
         return (
-            <div className="d-inline-flex align-items-center">
+            <div className="d-inline-flex align-items-center hidden-sm-down">
                 {this._renderBulkActions()}
             </div>
         )

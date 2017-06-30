@@ -167,6 +167,43 @@ class TicketListActions extends React.Component {
 
         return (
             <div className="d-inline-flex align-items-center">
+                <UncontrolledButtonDropdown
+                    className="mr-2"
+                    size="sm"
+                >
+                    <Button
+                        type="button"
+                        color="secondary"
+                        onClick={() => this._bulkUpdate('status', 'closed')}
+                        disabled={!areItemsSelected}
+                    >
+                        Close
+                    </Button>
+                    <DropdownToggle
+                        caret
+                        type="button"
+                        color="secondary"
+                        disabled={!areItemsSelected}
+                    />
+                    <DropdownMenu>
+                        <DropdownItem header>
+                            Set status
+                        </DropdownItem>
+                        {
+                            ['open', 'new'].map((status) => {
+                                return (
+                                    <DropdownItem
+                                        key={status}
+                                        type="button"
+                                        onClick={() => this._bulkUpdate('status', status)}
+                                    >
+                                        {_capitalize(status)}
+                                    </DropdownItem>
+                                )
+                            })
+                        }
+                    </DropdownMenu>
+                </UncontrolledButtonDropdown>
                 <ButtonDropdown
                     className="mr-2"
                     isOpen={this.state.agentsDropdownOpen}
@@ -191,6 +228,7 @@ class TicketListActions extends React.Component {
                         disabled={!areItemsSelected}
                     />
                     <DropdownMenu
+                        right
                         style={{width: '230px'}}
                     >
                         <DropdownItem
@@ -236,43 +274,6 @@ class TicketListActions extends React.Component {
                         }
                     </DropdownMenu>
                 </ButtonDropdown>
-                <UncontrolledButtonDropdown
-                    className="mr-2"
-                    size="sm"
-                >
-                    <Button
-                        type="button"
-                        color="secondary"
-                        onClick={() => this._bulkUpdate('status', 'closed')}
-                        disabled={!areItemsSelected}
-                    >
-                        Close
-                    </Button>
-                    <DropdownToggle
-                        caret
-                        type="button"
-                        color="secondary"
-                        disabled={!areItemsSelected}
-                    />
-                    <DropdownMenu right>
-                        <DropdownItem header>
-                            Set status
-                        </DropdownItem>
-                        {
-                            ['open', 'new'].map((status) => {
-                                return (
-                                    <DropdownItem
-                                        key={status}
-                                        type="button"
-                                        onClick={() => this._bulkUpdate('status', status)}
-                                    >
-                                        {_capitalize(status)}
-                                    </DropdownItem>
-                                )
-                            })
-                        }
-                    </DropdownMenu>
-                </UncontrolledButtonDropdown>
                 <ButtonDropdown
                     className="mr-2"
                     isOpen={this.state.tagsDropdownOpen}
@@ -368,7 +369,7 @@ class TicketListActions extends React.Component {
 
     render() {
         return (
-            <div className="d-inline-flex align-items-center">
+            <div className="d-inline-flex align-items-center hidden-sm-down">
                 {this._renderBulkActions()}
             </div>
         )

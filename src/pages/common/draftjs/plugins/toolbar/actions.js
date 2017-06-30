@@ -65,8 +65,8 @@ export default [
             addLink: (block, action, editorState, setEditorState, url) => {
                 const selection = editorState.getSelection()
 
-                // if no 'http' at the beginning of the url, add it
-                if (!/^https?:\/\//i.test(url)) {
+                // if no 'http' at the beginning of the url AND it is not a variable, add it
+                if (!/^https?:\/\//i.test(url) && !url.startsWith('{')) {
                     url = `http://${url}`
                 }
 
