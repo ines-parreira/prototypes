@@ -120,7 +120,9 @@ export function formatDatetime(datetime, timezone, format = 'calendar') {
         }
 
         if (format === 'calendar') {
-            return momentDate.calendar()
+            return momentDate.calendar(null, {
+                lastWeek: 'dddd' // Tuesday, Friday, etc.. The default is: [Last] dddd
+            })
         }
 
         return momentDate.format(format)
