@@ -108,7 +108,7 @@ export default (state = initialState, action) => {
         }
 
         case ticketTypes.CLEAR_TICKET: {
-            return state.set('newMessage', makeNewMessage('email', 'email'))
+            return initialState
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_START: {
