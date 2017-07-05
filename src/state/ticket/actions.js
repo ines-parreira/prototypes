@@ -48,8 +48,8 @@ export const mergeTicket = (ticket) => (dispatch, getState) => {
         const newMessage = ticket.get('messages', fromJS([])).last()
 
         if (messagesLength !== previousMessagesLength && newMessage && !newMessage.get('from_agent')) {
-            const from = newMessage.getIn(['sender', 'name'], 'Gorgias')
-            const body = newMessage.get('body_text', 'You received an answer')
+            const from = newMessage.getIn(['sender', 'name']) || 'Gorgias'
+            const body = newMessage.get('body_text') || 'You received an answer'
             playNotificationSound()
             Push.create(from, {
                 body: body,
