@@ -143,6 +143,15 @@ export const actionsConfig = {
     //     compact: true,
     //     name: 'Set priority',
     // },
+    setSubject: {
+        compact: true,
+        name: 'Set subject',
+        args: {
+            subject: {
+                name: 'Subject'
+            }
+        }
+    },
     setStatus: {
         compact: true,
         name: 'Set status',

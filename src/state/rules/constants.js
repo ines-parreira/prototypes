@@ -56,6 +56,10 @@ const SET_STATUS_ACTION_DEFAULT = {
     status: 'closed',
 }
 
+const SET_SUBJECT_ACTION_DEFAULT = {
+    subject: '',
+}
+
 const SET_PRIORITY_ACTION_DEFAULT = {
     priority: 'high',
 }
@@ -75,6 +79,7 @@ export const ACTION_DEFAULT_STATE = {
     addTags: ADD_TAGS_ACTION_DEFAULT,
     setTags: SET_TAGS_ACTION_DEFAULT,
     setStatus: SET_STATUS_ACTION_DEFAULT,
+    setSubject: SET_SUBJECT_ACTION_DEFAULT,
     setPriority: SET_PRIORITY_ACTION_DEFAULT,
     setAssignee: ASSIGN_USER_ACTION_DEFAULT,
     replyToTicket: REPLY_TO_TICKET_ACTION_DEFAULT,
