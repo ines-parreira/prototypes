@@ -167,7 +167,7 @@ export default class TicketAssignee extends React.Component {
                     >
                         {
                             currentAssignee ? (
-                                    <AgentLabel name={currentAssignee} />
+                                    <AgentLabel name={currentAssignee} maxWidth="100" />
                                 ) : (
                                     <span className="text-muted">
                                         Unassigned
