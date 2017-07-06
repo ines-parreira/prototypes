@@ -250,6 +250,7 @@ export function equalityOperator(field, schemas) {
     switch (prop.type) {
         case 'integer':
             return 'eq'
+        case 'array':
         case 'string':
             if (prop.meta && prop.meta.operators) {
                 if (_has(prop.meta.operators, 'contains')) {
@@ -257,8 +258,6 @@ export function equalityOperator(field, schemas) {
                 }
             }
             return 'eq'
-        case 'array':
-            return 'contains'
         default:
             return 'eq'
     }
