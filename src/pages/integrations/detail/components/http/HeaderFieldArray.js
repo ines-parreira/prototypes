@@ -1,13 +1,34 @@
 import React from 'react'
-import {Field} from 'redux-form'
 import _trim from 'lodash/trim'
+import _clone from 'lodash/clone'
 import {Row, Col, Button} from 'reactstrap'
 
-import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
+import InputField from '../../../../common/forms/InputField'
 
 export default class HeaderFieldArray extends React.Component {
     static propTypes = {
-        fields: React.PropTypes.object,
+        fields: React.PropTypes.array,
+        onChange: React.PropTypes.func,
+    }
+
+    _add = () => {
+        return this.props.onChange(_clone(this.props.fields).concat([{
+            key: '',
+            value: ''
+        }]))
+    }
+
+    _update = (index, key, value) => {
+        const fields = _clone(this.props.fields)
+        fields[index][key] = value
+
+        return this.props.onChange(fields)
+    }
+
+    _remove = (index) => {
+        const fields = _clone(this.props.fields)
+        fields.splice(index, 1)
+        return this.props.onChange(fields)
     }
 
     render() {
@@ -26,20 +47,21 @@ export default class HeaderFieldArray extends React.Component {
                             className="mb-3 form-row"
                         >
                             <Col xs="5">
-                                <Field
+                                <InputField
                                     type="text"
                                     name={`${header}.key`}
                                     placeholder="Key"
-                                    component={ReduxFormInputField}
-                                    format={value => _trim(value)}
+                                    value={header.key}
+                                    onChange={(value) => { this._update(index, 'key', _trim(value))}}
                                 />
                             </Col>
                             <Col xs="5">
-                                <Field
+                                <InputField
                                     type="text"
                                     name={`${header}.value`}
                                     placeholder="Value"
-                                    component={ReduxFormInputField}
+                                    value={header.value}
+                                    onChange={(value) => { this._update(index, 'value', value)}}
                                 />
                             </Col>
                             <Col xs="2">
@@ -47,7 +69,7 @@ export default class HeaderFieldArray extends React.Component {
                                     className="pull-right"
                                     color="danger"
                                     type="button"
-                                    onClick={() => fields.remove(index)}
+                                    onClick={() => this._remove(index)}
                                 >
                                     Remove
                                 </Button>
@@ -59,7 +81,7 @@ export default class HeaderFieldArray extends React.Component {
                     size="sm"
                     color="secondary"
                     type="button"
-                    onClick={() => fields.push({})}
+                    onClick={this._add}
                 >
                     Add header
                 </Button>

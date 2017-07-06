@@ -1,17 +1,20 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {Field, reduxForm} from 'redux-form'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import _clone from 'lodash/clone'
 import _replace from 'lodash/replace'
+import _pick from 'lodash/pick'
+import _merge from 'lodash/merge'
+import _defaults from 'lodash/defaults'
+import _isEqual from 'lodash/isEqual'
+import {browserHistory} from 'react-router'
 import Clipboard from 'clipboard'
 import {
-    Form,
     Button,
     Breadcrumb,
     BreadcrumbItem,
     Container,
+    Form,
     Row,
     Col,
     Card,
@@ -22,22 +25,28 @@ import {
 
 import Loader from '../../../../common/components/Loader'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
-import formSender from '../../../../common/utils/formSender'
 import ChatIntegrationPreview from './ChatIntegrationPreview'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
 import AutoResponderSection from '../../../common/AutoResponderSection'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 
+import InputField from '../../../../common/forms/InputField'
 import ColorField from '../../../../common/forms/ColorField'
 import FileField from '../../../../common/forms/FileField'
-import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
 
 import css from './ChatIntegrationDetail.less'
 
 export const defaultContent = {
-    type: 'smooch_inside'
+    type: 'smooch_inside',
+    name: '',
+    windowTitle: 'We\'re here to chat, so ask us anything!',
+    headerText: '',
+    inputPlaceholder: '',
+    sendButtonText: '',
+    headerColor: '#0d87dd',
+    conversationColor: '#0d87dd',
+    chatIconColor: '#0d87dd',
+    icon: ''
 }
-
-const formName = 'smoochInsideIntegration'
 
 class ChatIntegrationDetail extends React.Component {
     constructor(props) {
@@ -45,34 +54,21 @@ class ChatIntegrationDetail extends React.Component {
 
         // used to know if form has been asynchronously initialized when updating
         this.isInitialized = !props.isUpdate
-
-        // populating new integration form
-        if (!props.isUpdate) {
-            props.initialize(_clone(defaultContent))
-        }
-
-        this.formValues = this._getFormValues(props)
-
-        this.state = {
-            isCopied: false,
-            isShopifySnippet: false
-        }
     }
+
+    state = _merge({
+        isCopied: false,
+        isShopifySnippet: false,
+    }, defaultContent)
 
     componentWillUpdate(nextProps) {
         const {integration, isUpdate, loading} = nextProps
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
-            this.props.initialize(integration.toJS())
+            this.setState(this._getIntegration(integration))
             this.isInitialized = true
         }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // getFormValues updates only on next tick:
-        // https://github.com/erikras/redux-form/issues/883#issuecomment-216022940
-        this.formValues = this._getFormValues(nextProps)
     }
 
     componentDidMount() {
@@ -85,40 +81,61 @@ class ChatIntegrationDetail extends React.Component {
         })
     }
 
-    _getFormValues(props) {
-        const defaults = {
-            name: '',
-            decoration: {
-                header_color: '',
-                header_text: 'We\'re here to chat, so ask us anything!'
-            }
-        }
-        let formValues = fromJS(props.getFormValues(formName) || defaults)
-
-        // decoration can be null
-        if (!formValues.get('decoration')) {
-            formValues = formValues.set('decoration', fromJS(defaults.decoration))
-        }
-
-        return formValues
+    _getIntegration = (integration) => {
+        return _defaults({
+            name: integration.get('name'),
+            windowTitle: integration.getIn(['decoration', 'window_title']),
+            headerText: integration.getIn(['decoration', 'header_text']),
+            inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
+            sendButtonText: integration.getIn(['decoration', 'send_button_text']),
+            headerColor: integration.getIn(['decoration', 'header_color']),
+            conversationColor: integration.getIn(['decoration', 'conversation_color']),
+            chatIconColor: integration.getIn(['decoration', 'chat_icon_color']),
+            icon: integration.getIn(['decoration', 'icon'])
+        }, defaultContent)
     }
 
-    _handleSubmit = (values) => {
-        let doc = fromJS(defaultContent).mergeDeep(values)
+    _isDirty = () => {
+        const oldIntegration = this._getIntegration(this.props.integration)
+        const newIntegration = _pick(this.state, Object.keys(defaultContent))
+        return this.isInitialized && !_isEqual(oldIntegration, newIntegration)
+    }
+
+    _isSubmitting = () => {
+        const {loading, integration} = this.props
+        return loading.get('updateIntegration') === integration.get('id', true)
+    }
+
+    _handleSubmit = (e) => {
+        e.preventDefault()
+        const form = _pick(this.state, ['name', 'type'])
+        form.decoration = {
+            window_title: this.state.windowTitle,
+            input_placeholder: this.state.inputPlaceholder,
+            send_button_text: this.state.sendButtonText,
+            conversation_color: this.state.conversationColor,
+            chat_icon_color: this.state.chatIconColor,
+            header_color: this.state.headerColor,
+            header_text: this.state.headerText,
+            icon: this.state.icon
+        }
 
         // if update, set ids for server
         if (this.props.isUpdate) {
-            const integration = this.props.integration
-            doc = doc.set('id', integration.get('id'))
+            form.id = this.props.integration.get('id')
         }
 
-        return formSender(this.props.actions.updateOrCreateIntegration(doc))
-            .then((res) => {
-                // reload the form,
-                // to reset dirty.
-                this.isInitialized = false
+        return this.props.actions.updateOrCreateIntegration(fromJS(form))
+            .then(({error} = {}) => {
+                if (error) {
+                    return
+                }
 
-                return res
+                // reload the integration
+                this.isInitialized = false
+                if (!this.props.isUpdate) {
+                    browserHistory.push(`app/integrations/${defaultContent.type}/`)
+                }
             })
     }
 
@@ -203,7 +220,8 @@ class ChatIntegrationDetail extends React.Component {
     }
 
     _renderInstructions = (isUpdate, isSubmitting) => {
-        const {integration, dirty, handleSubmit} = this.props
+        const {integration} = this.props
+        const dirty = this._isDirty()
 
         if (!isUpdate || !integration.get('id')) {
             return null
@@ -250,7 +268,7 @@ class ChatIntegrationDetail extends React.Component {
                                         className={classnames('ml-2', {
                                             'btn-loading': isSubmitting,
                                         })}
-                                        onClick={handleSubmit(this._handleSubmit)}
+                                        onClick={this._handleSubmit}
                                         disabled={isSubmitting}
                                     >
                                         Save changes
@@ -311,9 +329,8 @@ class ChatIntegrationDetail extends React.Component {
     }
 
     render() {
-        const {actions, handleSubmit, integration, isUpdate, loading, currentUser} = this.props
-
-        const isSubmitting = loading.get('updateIntegration')
+        const {actions, integration, isUpdate, loading, currentUser} = this.props
+        const isSubmitting = this._isSubmitting()
 
         if (loading.get('integration')) {
             return <Loader />
@@ -341,112 +358,128 @@ class ChatIntegrationDetail extends React.Component {
 
                 <Container fluid>
                     <Row>
-                        <Col style={{paddingLeft: 0}}>
-                            <Form onSubmit={handleSubmit(this._handleSubmit)}>
-                                <Field
-                                    type="text"
-                                    name="name"
-                                    label="Chat title"
-                                    placeholder="Ex: Company Support"
-                                    required
-                                    help={!isUpdate && 'Can be set only once! If you want to change the title you will have to create another chat'}
-                                    readOnly={isUpdate}
-                                    component={ReduxFormInputField}
-                                />
+                        <Col
+                            style={{paddingLeft: 0}}
+                        >
+                            <h3 className="mb-3">
+                                Widget settings
+                            </h3>
 
-                                <Field
-                                    name="decoration.icon"
-                                    label="Company icon"
-                                    accept="image/*"
-                                    help="The image must have a square format. Example: 200x200 pixels"
-                                    component={ReduxFormInputField}
-                                    tag={FileField}
-                                />
+                            <Form
+                                className="ui form"
+                                onSubmit={this._handleSubmit}
+                            >
+                                <div className={css.form}>
+                                    <div className={css.fieldset}>
+                                        <InputField
+                                            type="text"
+                                            label="Chat title"
+                                            help={!isUpdate && 'Can be set only once! If you want to change the title you will have to create another chat'}
+                                            value={this.state.name}
+                                            onChange={value => this.setState({name: value})}
+                                            placeholder="Ex: Company Support"
+                                            readOnly={isUpdate}
+                                            required
+                                        />
 
-                                <Field
-                                    type="textarea"
-                                    name="decoration.window_title"
-                                    label="Header text"
-                                    rows="2"
-                                    component={ReduxFormInputField}
-                                />
+                                        <FileField
+                                            label="Company icon"
+                                            help="The image must have a square format. Example: 200x200 pixels"
+                                            value={this.state.icon}
+                                            onChange={url => this.setState({icon: url})}
+                                            accept="image/*"
+                                        />
 
-                                <Field
-                                    type="textarea"
-                                    name="decoration.header_text"
-                                    label="Introduction text"
-                                    rows="2"
-                                    component={ReduxFormInputField}
-                                />
+                                        <InputField
+                                            type="textarea"
+                                            label="Header text"
+                                            value={this.state.windowTitle}
+                                            onChange={value => this.setState({windowTitle: value})}
+                                            rows="2"
+                                            required
+                                        />
 
-                                <Field
-                                    type="text"
-                                    name="decoration.input_placeholder"
-                                    label="Input placeholder"
-                                    component={ReduxFormInputField}
-                                />
+                                        <InputField
+                                            type="textarea"
+                                            value={this.state.headerText}
+                                            onChange={value => this.setState({headerText: value})}
+                                            label="Introduction text"
+                                            rows="2"
+                                        />
 
-                                <Field
-                                    type="text"
-                                    name="decoration.send_button_text"
-                                    label="Send button text"
-                                    component={ReduxFormInputField}
-                                />
+                                        <InputField
+                                            type="text"
+                                            value={this.state.inputPlaceholder}
+                                            onChange={value => this.setState({inputPlaceholder: value})}
+                                            label="Input placeholder"
+                                        />
 
-                                <Field
-                                    name="decoration.header_color"
-                                    label="Header color"
-                                    component={ReduxFormInputField}
-                                    tag={ColorField}
-                                />
+                                        <InputField
+                                            type="text"
+                                            value={this.state.sendButtonText}
+                                            onChange={value => this.setState({sendButtonText: value})}
+                                            label="Send button text"
+                                        />
 
-                                <Field
-                                    name="decoration.conversation_color"
-                                    label="Conversation color"
-                                    component={ReduxFormInputField}
-                                    tag={ColorField}
-                                />
+                                        <ColorField
+                                            value={this.state.headerColor}
+                                            onChange={value => this.setState({headerColor: value})}
+                                            label="Header color"
+                                        />
 
-                                <Field
-                                    name="decoration.chat_icon_color"
-                                    label="Chat icon color"
-                                    component={ReduxFormInputField}
-                                    tag={ColorField}
-                                />
+                                        <ColorField
+                                            value={this.state.conversationColor}
+                                            onChange={value => this.setState({conversationColor: value})}
+                                            label="Conversation color"
+                                        />
 
-                                <div>
-                                    <Button
-                                        type="submit"
-                                        color="primary"
-                                        className={classnames({
-                                            'btn-loading': isSubmitting,
-                                        })}
-                                        disabled={isSubmitting}
-                                    >
-                                        {isUpdate ? 'Save changes' : 'Add new chat'}
-                                    </Button>
+                                        <ColorField
+                                            value={this.state.chatIconColor}
+                                            onChange={value => this.setState({chatIconColor: value})}
+                                            label="Chat icon color"
+                                        />
 
-                                    {
-                                        isUpdate && (
-                                            <ConfirmButton
-                                                className="pull-right"
-                                                color="danger"
-                                                outline
-                                                confirm={() => actions.deleteIntegration(integration)}
-                                                content="Are you sure you want to delete this integration?"
-                                            >
-                                                Delete chat
-                                            </ConfirmButton>
-                                        )
-                                    }
+                                    </div>
                                 </div>
+
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    className={classnames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    disabled={isSubmitting}
+                                >
+                                    {isUpdate ? 'Save changes' : 'Add new chat'}
+                                </Button>
+
+                                {
+                                    isUpdate && (
+                                        <ConfirmButton
+                                            className="pull-right"
+                                            color="danger"
+                                            outline
+                                            confirm={() => actions.deleteIntegration(integration)}
+                                            content="Are you sure you want to delete this integration?"
+                                        >
+                                            Delete chat
+                                        </ConfirmButton>
+                                    )
+                                }
                             </Form>
                         </Col>
                         <Col className="p-0">
                             <ChatIntegrationPreview
                                 currentUser={currentUser}
-                                name={this.formValues.get('name')}
-                                decoration={this.formValues.get('decoration')}
+                                name={this.state.name}
+                                windowTitle={this.state.windowTitle}
+                                headerText={this.state.headerText}
+                                inputPlaceholder={this.state.inputPlaceholder}
+                                sendButtonText={this.state.sendButtonText}
+                                headerColor={this.state.headerColor}
+                                conversationColor={this.state.conversationColor}
+                                chatIconColor={this.state.chatIconColor}
+                                icon={this.state.icon}
                             />
                         </Col>
                     </Row>
@@ -457,17 +490,11 @@ class ChatIntegrationDetail extends React.Component {
 }
 
 ChatIntegrationDetail.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    initialize: PropTypes.func.isRequired,
     integration: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired,
-    getFormValues: PropTypes.func.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    dirty: PropTypes.bool.isRequired
+    currentUser: PropTypes.object.isRequired
 }
 
-export default reduxForm({
-    form: formName,
-})(ChatIntegrationDetail)
+export default ChatIntegrationDetail

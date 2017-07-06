@@ -1,13 +1,13 @@
 import React, {PropTypes, Component} from 'react'
 import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router'
-import {Field, reduxForm, getFormValues} from 'redux-form'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import _pick from 'lodash/pick'
+import _merge from 'lodash/merge'
+import _isUndefined from 'lodash/isUndefined'
 
 import ReactSortable from './../../../common/components/dragging/ReactSortable'
-import ReduxFormInputField from '../../forms/ReduxFormInputField'
 import BooleanField from '../../forms/BooleanField'
 
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
@@ -20,81 +20,114 @@ class ViewNavbarViewEditor extends Component {
     static propTypes = {
         views: PropTypes.object.isRequired,
         objectName: PropTypes.string.isRequired,
-        isUpdate: PropTypes.bool.isRequired,
-        isLoading: PropTypes.bool.isRequired,
-        change: PropTypes.func.isRequired,
         submitSetting: PropTypes.func.isRequired,
-        formValues: PropTypes.object,
         setting: PropTypes.object,
         location: PropTypes.object.isRequired
     }
 
-    state = {
-        isLoading: false
+    static defaultProps = {
+        setting: fromJS({})
+    }
+
+    constructor(props) {
+        super(props)
+
+        this.state = _merge({
+            hide: {},
+            displayOrder: {},
+        }, this._getSettings(props.views))
     }
 
     componentWillReceiveProps(nextProps) {
-        const {change, isUpdate} = this.props
-        const {isLoading} = this.state
-        const formValues = fromJS(this.props.formValues || {})
-        const nextFormValues = fromJS(nextProps.formValues || {})
-        const formHasChanged = this.props.formValues && nextProps.formValues && !nextFormValues.get('data').equals(formValues.get('data'))
-
-        // one or more views has been added while edit mode is enabled,
-        // so we add view settings to the form data if it does not exist
-        if (nextProps.formValues) {
-            nextProps.views.forEach(view => {
-                const viewId = view.get('id')
-                if (!nextProps.formValues.data[viewId]) {
-                    change(`data.${viewId}`, _pick(view.toJS(), ['hide, display_order']))
-                }
-            })
-        }
-
-        // update setting
-        if (formHasChanged) {
-            this._submitSetting(nextFormValues.toJS())
-        }
-
-        // create setting
-        if (!isUpdate && !isLoading) {
-            this.setState({isLoading: true})
-            this._submitSetting(nextFormValues.toJS()).then((resp) => {
-                // add id to the setting (form values)
-                change('id', resp.id)
-                // when setting have an id, we allow user to modify it
-                this.setState({isLoading: false})
-            })
-        }
+        this.setState(_merge(
+            this._getSettings(nextProps.views),
+            this.state
+        ))
     }
 
-    _submitSetting = (values) => {
-        return this.props.submitSetting(values)
+    _getSettings = (views) => {
+        const newSettings = {
+            hide: {},
+            displayOrder: {}
+        }
+
+        views.forEach(view => {
+            const viewId = view.get('id')
+            newSettings.hide[`${viewId}`] = view.get('hide')
+            newSettings.displayOrder[`${viewId}`] = view.get('display_order')
+        })
+
+        return newSettings
+    }
+
+    _submitSetting = () => {
+        const oldSettings = {}
+        this.props.views.forEach((view) => {
+            oldSettings[view.get('id')] = _pick(view.toJS(), ['hide', 'display_order'])
+        })
+
+        const newSettings = {}
+        const properties = [
+            {local: 'hide', remote: 'hide'},
+            {local: 'displayOrder', remote: 'display_order'}
+        ]
+
+        properties.forEach(({local, remote}) => {
+            Object.keys(this.state[local]).forEach((id) => {
+                newSettings[id] = newSettings[id] || {}
+                newSettings[id][remote] = this.state[local][id]
+            })
+        })
+
+        return this.props.submitSetting(_merge(
+            this.props.setting.toJS(),
+            {data: _merge(oldSettings, newSettings)}
+        ))
+    }
+
+    _updateField = (value) => {
+        this.setState(_merge(this.state, value))
+
+        this._submitSetting()
+
+        logEvent(`${value ? 'Showed' : 'Hided'} a view`)
     }
 
     _updateOrder = (orders) => {
-        const {change, setting} = this.props
-        let newSetting = setting.get('data', fromJS({}))
+        const newDisplayOrder = {}
 
-        // update form values with the new orders
         orders.forEach((id, index) => {
-            newSetting = newSetting.setIn([id, 'display_order'], index)
+            newDisplayOrder[id] = index
         })
-        change('data', newSetting.toJS())
+
+        this.setState(_merge(this.state, {
+            displayOrder: newDisplayOrder
+        }))
+
+        this._submitSetting()
+
         logEvent('Moved a view')
     }
 
+    _getDisplayOrder = (view) => {
+        const displayOrder = this.state.displayOrder[view.get('id').toString()]
+
+        if (_isUndefined(displayOrder)) {
+            return view.get('display_order')
+        }
+
+        return displayOrder
+    }
+
     _renderViews = (views) => {
-        const {change, formValues} = this.props
-        const formData = fromJS(formValues || {}).get('data', fromJS({}))
         let newView = views
 
         // re-sort views with `display_order` values of the form
-        if (!formData.isEmpty()) {
+        if (Object.keys(this.state.displayOrder).length > 0) {
             newView = newView.map(view => {
                 return view.set(
                     'display_order',
-                    formData.getIn([view.get('id').toString(), 'display_order'], view.get('display_order'))
+                    this._getDisplayOrder(view)
                 )
             }).sort(sortViews)
         }
@@ -110,19 +143,16 @@ class ViewNavbarViewEditor extends Component {
                         [css.draggable]: !view.get('hide')
                     })}
                 >
-                    <Field
+                    <BooleanField
                         label={view.get('name')}
-                        name={`data.${viewId}.hide`}
-                        input={{
-                            value: !formData.getIn([viewId.toString(), 'hide'], false),
-                            onChange: (value) => {
-                                change(`data.${viewId}.hide`, !value)
-                                logEvent(`${value ? 'Showed' : 'Hided'} a view`)
+                        name={`hide.${viewId}`}
+                        value={!this.state.hide[viewId.toString()]}
+                        onChange={(value) => this._updateField({
+                            hide: {
+                                [`${viewId}`]: !value
                             }
-                        }}
+                        })}
                         inline
-                        component={ReduxFormInputField}
-                        tag={BooleanField}
                     />
                 </div>
             )
@@ -135,49 +165,38 @@ class ViewNavbarViewEditor extends Component {
             objectName,
             location: {pathname}
         } = this.props
-        const {isLoading} = this.state
         const createButtonClass = classnames('mt10 item', {
             active: pathname.includes(`${objectName}/new`)
         })
 
-        return !isLoading && (
-                <div>
-                    <ReactSortable
-                        options={{
-                            sort: true,
-                            draggable: `.${css.draggable}`,
-                            chosenClass: css.chosen,
-                            ghostClass: css.ghost,
-                            animation: 150
-                        }}
-                        onChange={this._updateOrder}
-                    >
-                        {this._renderViews(views)}
-                    </ReactSortable>
-                    <Link className={createButtonClass} to={`/app/${objectName}/new`}>
-                        <div>
-                            <i className="fa fa-fw fa-plus mr-2" />
-                            Create new view
-                        </div>
-                    </Link>
-                </div>
-            )
-    }
-}
-
-const VIEW_SETTING_FORM = 'VIEW_SETTING_FORM'
-
-function mapStateToProps(state) {
-    return {
-        formValues: getFormValues(VIEW_SETTING_FORM)(state),
+        return (
+            <div>
+                <ReactSortable
+                    options={{
+                        sort: true,
+                        draggable: `.${css.draggable}`,
+                        chosenClass: css.chosen,
+                        ghostClass: css.ghost,
+                        animation: 150
+                    }}
+                    onChange={this._updateOrder}
+                >
+                    {this._renderViews(views)}
+                </ReactSortable>
+                <Link className={createButtonClass} to={`/app/${objectName}/new`}>
+                    <div>
+                        <i className="fa fa-fw fa-plus mr-2" />
+                        Create new view
+                    </div>
+                </Link>
+            </div>
+        )
     }
 }
 
 const ViewNavbarViewEditorWithRouter = withRouter(ViewNavbarViewEditor)
 
-const ReduxViewNavbarViewEditor = reduxForm({form: VIEW_SETTING_FORM})(ViewNavbarViewEditorWithRouter)
-
-export default connect(mapStateToProps, {
+export default connect(null, {
     submitSetting
-})(ReduxViewNavbarViewEditor)
+})(ViewNavbarViewEditorWithRouter)
 

@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
+import _noop from 'lodash/noop'
 import {FormGroup} from 'reactstrap'
 
 /**
@@ -8,12 +9,7 @@ import {FormGroup} from 'reactstrap'
  * Only one value can be picked from each source
  * ex: used in merge users feature for merging names
  */
-const BinaryChoiceField = ({input, options, label, type, tooltip}) => {
-    if (type === 'json' && input.value === '') {
-        // Unfortunately necessary because of https://github.com/erikras/redux-form/issues/2062
-        input.value = null
-    }
-
+const BinaryChoiceField = ({value, options, label, tooltip, onChange}) => {
     const firstOption = {
         label: typeof options[0] === 'object' ? options[0].label : options[0],
         value: typeof options[0] === 'object' ? options[0].value : options[0]
@@ -21,7 +17,7 @@ const BinaryChoiceField = ({input, options, label, type, tooltip}) => {
 
     const firstIsDisabled = !firstOption.value
     firstOption.className = classNames('option', {
-        active: _isEqual(input.value, firstOption.value),
+        active: _isEqual(value, firstOption.value),
         disabled: firstIsDisabled
     })
 
@@ -32,7 +28,7 @@ const BinaryChoiceField = ({input, options, label, type, tooltip}) => {
 
     const secondIsDisabled = !secondOption.value
     secondOption.className = classNames('option', {
-        active: _isEqual(input.value, secondOption.value),
+        active: _isEqual(value, secondOption.value),
         disabled: secondIsDisabled
     })
 
@@ -46,13 +42,13 @@ const BinaryChoiceField = ({input, options, label, type, tooltip}) => {
             <div className="options">
                 <div
                     className={firstOption.className}
-                    onClick={!firstIsDisabled ? () => input.onChange(firstOption.value) : null}
+                    onClick={!firstIsDisabled ? () => onChange(firstOption.value) : null}
                 >
                     {firstOption.label || '(no value)'}
                 </div>
                 <div
                     className={secondOption.className}
-                    onClick={!secondIsDisabled ? () => input.onChange(secondOption.value) : null}
+                    onClick={!secondIsDisabled ? () => onChange(secondOption.value) : null}
                 >
                     {secondOption.label || '(no value)'}
                 </div>
@@ -62,16 +58,18 @@ const BinaryChoiceField = ({input, options, label, type, tooltip}) => {
 }
 
 BinaryChoiceField.defaultProps = {
-    type: 'text'
+    onChange: _noop
 }
 
 BinaryChoiceField.propTypes = {
-    type: PropTypes.string.isRequired,
-    input: PropTypes.object.isRequired,
-    meta: PropTypes.object.isRequired,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
-    tooltip: PropTypes.object
+    tooltip: PropTypes.object,
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object
+    ]),
+    onChange: PropTypes.func
 }
 
 export default BinaryChoiceField

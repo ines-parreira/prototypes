@@ -1,9 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Link, withRouter} from 'react-router'
-import {Field, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
-import _clone from 'lodash/clone'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
@@ -14,10 +12,8 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
-import formSender from '../../../../common/utils/formSender'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
-
-import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
+import InputField from '../../../../common/forms/InputField'
 
 export const defaultContent = {
     type: 'shopify',
@@ -30,11 +26,10 @@ class ShopifyIntegrationDetail extends React.Component {
 
         // used to know if form has been asynchronously initialized when updating
         this.isInitialized = !props.isUpdate
+    }
 
-        // populating new integration form
-        if (!props.isUpdate) {
-            props.initialize(_clone(defaultContent))
-        }
+    state = {
+        name: ''
     }
 
     componentWillReceiveProps(nextProps) {
@@ -62,13 +57,19 @@ class ShopifyIntegrationDetail extends React.Component {
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
-            this.props.initialize(integration.toJS())
+            this.setState({
+                name: integration.get('name')
+            })
             this.isInitialized = true
         }
     }
 
-    _handleSubmit = (values) => {
-        let doc = fromJS(defaultContent).mergeDeep(values)
+    _handleSubmit = (e) => {
+        e.preventDefault()
+
+        let doc = fromJS(defaultContent).mergeDeep({
+            name: this.state.name
+        })
         let name = doc.get('name')
 
         doc = doc.setIn(['meta', 'shop_name'], name)
@@ -77,7 +78,7 @@ class ShopifyIntegrationDetail extends React.Component {
         if (this.props.isUpdate) {
             const integration = this.props.integration
             doc = doc.set('id', integration.get('id'))
-            return formSender(this.props.actions.updateOrCreateIntegration(doc))
+            return this.props.actions.updateOrCreateIntegration(doc)
         }
 
         window.location.href = this.props.redirectUri.replace('{shop_name}', name)
@@ -89,7 +90,7 @@ class ShopifyIntegrationDetail extends React.Component {
     }
 
     render() {
-        const {actions, handleSubmit, integration, isUpdate, loading} = this.props
+        const {actions, integration, isUpdate, loading} = this.props
 
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
@@ -157,15 +158,16 @@ class ShopifyIntegrationDetail extends React.Component {
                     )
                 }
 
-                <Form onSubmit={handleSubmit(this._handleSubmit)}>
-                    <Field
+                <Form onSubmit={this._handleSubmit}>
+                    <InputField
                         type="text"
                         name="name"
                         label="Store name"
                         placeholder={'ex: "acme" for acme.myshopify.com'}
                         required
                         disabled={isUpdate}
-                        component={ReduxFormInputField}
+                        value={this.state.name}
+                        onChange={(name) => this.setState({name})}
                     />
 
                     <div>
@@ -253,9 +255,6 @@ class ShopifyIntegrationDetail extends React.Component {
 }
 
 ShopifyIntegrationDetail.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    initialize: PropTypes.func.isRequired,
-
     integration: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
@@ -268,6 +267,4 @@ ShopifyIntegrationDetail.propTypes = {
     params: PropTypes.object.isRequired
 }
 
-export default withRouter(reduxForm({
-    form: 'shopifyIntegration',
-})(ShopifyIntegrationDetail))
+export default withRouter(ShopifyIntegrationDetail)

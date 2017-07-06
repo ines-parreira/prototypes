@@ -1,10 +1,9 @@
 import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
-import {Field, FieldArray, reduxForm} from 'redux-form'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
-import _clone from 'lodash/clone'
-import _cloneDeep from 'lodash/cloneDeep'
+import _merge from 'lodash/merge'
+import _pick from 'lodash/pick'
 import _forIn from 'lodash/forIn'
 import {
     Form,
@@ -19,10 +18,9 @@ import {
 import {AVAILABLE_HTTP_METHODS} from '../../../../../config'
 import Loader from '../../../../common/components/Loader'
 import HeaderFieldArray from './HeaderFieldArray'
-import formSender from '../../../../common/utils/formSender'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
-import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
+import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
 import JsonField from '../../../../common/forms/JsonField'
 
@@ -43,15 +41,21 @@ class HttpIntegrationDetail extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {isTestShown: false}
-
         // used to know if form has been asynchronously initialized when updating
         this.isInitialized = !props.isUpdate
+    }
 
-        // populating new integration form
-        if (!props.isUpdate) {
-            props.initialize(_clone(defaultContent))
-        }
+    state = {
+        isTestShown: false,
+        name: '',
+        description: '',
+        url: '',
+        method: defaultContent.http.method,
+        requestContentType: defaultContent.http.request_content_type,
+        responseContentType: defaultContent.http.response_content_type,
+        ticketCreated: defaultContent.http.triggers['ticket-created'],
+        ticketUpdated: defaultContent.http.triggers['ticket-updated'],
+        headers: [],
     }
 
     componentWillUpdate(nextProps) {
@@ -59,19 +63,30 @@ class HttpIntegrationDetail extends React.Component {
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
-            const updatedIntegration = integration.toJS()
-
-            // transforming 'headers' and 'form' into arrays
-            const transformationList = ['headers']
-            transformationList.forEach((param) => {
-                updatedIntegration.http[param] = this._objectToParameters(
-                    updatedIntegration.http[param]
-                )
-            })
-
-            this.props.initialize(updatedIntegration)
+            this.setState(this._getIntegration(integration))
             this.isInitialized = true
         }
+    }
+
+    _getIntegration = (integration) => {
+        return {
+            name: integration.get('name'),
+            description: integration.get('description') || '',
+            headers: this._objectToParameters(
+                integration.getIn(['http', 'headers']).toJS()
+            ),
+            url: integration.getIn(['http', 'url']),
+            method: integration.getIn(['http', 'integration']),
+            requestContentType: integration.getIn(['http', 'request_content_type']),
+            responseContentType: integration.getIn(['http', 'response_content_type']),
+            ticketCreated: integration.getIn(['http', 'triggers', 'ticket-created']),
+            ticketUpdated: integration.getIn(['http', 'triggers', 'ticket-updated']),
+        }
+    }
+
+    _isSubmitting = () => {
+        const {loading, integration} = this.props
+        return loading.get('updateIntegration') === integration.get('id', true)
     }
 
     /**
@@ -109,34 +124,35 @@ class HttpIntegrationDetail extends React.Component {
         }, {})
     }
 
-    _handleSubmit = (values) => {
-        // We create a deep copy of values because it is a reference to the redux state
-        // The following transformations DON'T HAVE TO EDIT the redux state
-        let doc = _cloneDeep(values)
-
-        // transforming 'headers' and 'form' into objects
-        const transformationList = ['headers']
-        transformationList.forEach((param) => {
-            doc.http[param] = this._parametersToObject(doc.http[param])
-        })
-
-        doc = fromJS(defaultContent).mergeDeep(doc)
+    _handleSubmit = (e) => {
+        e.preventDefault()
+        const doc = _merge(_pick(this.state, [
+            'type',
+            'name',
+            'description'
+        ]), defaultContent)
+        // transforming headers into objects
+        doc.http.headers = this._parametersToObject(this.state.headers)
+        doc.http.url = this.state.url
+        doc.http.method = this.state.method
+        doc.http.request_content_type = this.state.requestContentType
+        doc.http.response_content_type = this.state.responseContentType
+        doc.http.triggers['ticket-created'] = this.state.ticketCreated
+        doc.http.triggers['ticket-updated'] = this.state.ticketUpdated
 
         // if update, set ids for server
         if (this.props.isUpdate) {
             const {integration} = this.props
-            doc = doc
-                .set('id', integration.get('id'))
-                .setIn(['http', 'id'], integration.getIn(['http', 'id']))
+            doc.id = integration.get('id')
+            doc.http.id = integration.getIn(['http', 'id'])
         }
 
-        return formSender(this.props.actions.updateOrCreateIntegration(doc))
+        return this.props.actions.updateOrCreateIntegration(fromJS(doc))
     }
 
     render() {
-        const {actions, handleSubmit, integration, isUpdate, loading} = this.props
-
-        const isSubmitting = loading.get('updateIntegration')
+        const {actions, integration, isUpdate, loading} = this.props
+        const isSubmitting = this._isSubmitting()
 
         const isActive = !integration.get('deactivated_datetime')
 
@@ -171,19 +187,21 @@ class HttpIntegrationDetail extends React.Component {
                     </a> or contact us.
                 </p>
 
-                <Form onSubmit={handleSubmit(this._handleSubmit)}>
-                    <Field
+                <Form onSubmit={this._handleSubmit}>
+                    <InputField
                         type="text"
                         name="name"
                         label="Integration name"
+                        value={this.state.name}
+                        onChange={value => this.setState({name: value})}
                         required
-                        component={ReduxFormInputField}
                     />
-                    <Field
+                    <InputField
                         type="text"
                         name="description"
                         label="Description"
-                        component={ReduxFormInputField}
+                        value={this.state.description}
+                        onChange={value => this.setState({description: value})}
                     />
                     <FormGroup>
                         <Label className="control-label">Triggers</Label>
@@ -192,22 +210,22 @@ class HttpIntegrationDetail extends React.Component {
                                 This HTTP integration will be executed when any of the events below happens.
                             </FormText>
                         </p>
-                        <Field
+                        <BooleanField
                             name="http.triggers.ticket-created"
                             type="checkbox"
                             label="Ticket created"
-                            component={ReduxFormInputField}
-                            tag={BooleanField}
+                            value={this.state.ticketCreated}
+                            onChange={value => this.setState({ticketCreated: value})}
                         />
-                        <Field
+                        <BooleanField
                             name="http.triggers.ticket-updated"
                             type="checkbox"
                             label="Ticket updated"
-                            component={ReduxFormInputField}
-                            tag={BooleanField}
+                            value={this.state.ticketUpdated}
+                            onChange={value => this.setState({ticketUpdated: value})}
                         />
                     </FormGroup>
-                    <Field
+                    <InputField
                         type="text"
                         name="http.url"
                         label="URL"
@@ -220,14 +238,16 @@ class HttpIntegrationDetail extends React.Component {
                                 other <a href="http://docs.gorgias.io/#/definitions/User" target="_blank">vars</a>.
                             </div>
                         )}
-                        component={ReduxFormInputField}
+                        value={this.state.url}
+                        onChange={value => this.setState({url: value})}
                     />
-                    <Field
+                    <InputField
                         type="select"
                         name="http.method"
                         label="HTTP Method"
+                        value={this.state.method}
+                        onChange={value => this.setState({method: value})}
                         required
-                        component={ReduxFormInputField}
                     >
                         {
                             AVAILABLE_HTTP_METHODS.map((method) =>
@@ -239,37 +259,40 @@ class HttpIntegrationDetail extends React.Component {
                                 </option>
                             )
                         }
-                    </Field>
-                    <Field
+                    </InputField>
+                    <InputField
                         type="select"
                         name="http.request_content_type"
                         label="Request content type"
                         required
-                        component={ReduxFormInputField}
+                        value={this.state.requestContentType}
+                        onChange={value => this.setState({requestContentType: value})}
                     >
                         <option value="application/json">application/json</option>
-                    </Field>
-                    <Field
+                    </InputField>
+                    <InputField
                         type="select"
                         name="http.response_content_type"
                         label="Response content type"
+                        value={this.state.responseContentType}
+                        onChange={value => this.setState({responseContentType: value})}
                         required
-                        component={ReduxFormInputField}
                     >
                         <option value="application/json">application/json</option>
-                    </Field>
+                    </InputField>
                     <FormGroup>
-                        <FieldArray
+                        <HeaderFieldArray
                             name="http.headers"
-                            component={HeaderFieldArray}
+                            fields={this.state.headers}
+                            onChange={value => this.setState({headers: value})}
                         />
                     </FormGroup>
-                    <Field
+                    <JsonField
                         name="http.form"
                         label="Request Body (JSON)"
                         rows="8"
-                        component={ReduxFormInputField}
-                        tag={JsonField}
+                        value={this.state.body}
+                        onChange={value => this.setState({body: value})}
                     />
 
                     <div>
@@ -337,14 +360,10 @@ class HttpIntegrationDetail extends React.Component {
 }
 
 HttpIntegrationDetail.propTypes = {
-    initialize: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     integration: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     loading: PropTypes.object.isRequired,
 }
 
-export default reduxForm({
-    form: 'httpIntegration',
-})(HttpIntegrationDetail)
+export default HttpIntegrationDetail

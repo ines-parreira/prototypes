@@ -1,48 +1,42 @@
 import React, {PropTypes} from 'react'
-import {Field, reduxForm} from 'redux-form'
 import {fromJS} from 'immutable'
 import {Form, FormGroup, Button} from 'reactstrap'
 
 import {isSimpleTemplateWidget} from '../utils'
 
-import ReduxFormInputField from '../../../forms/ReduxFormInputField'
 import BooleanField from '../../../forms/BooleanField'
+import InputField from '../../../forms/InputField'
 
 class TooltipWidgetEditCard extends React.Component {
+    state = {
+        title: '',
+        link: '',
+        displayCard: true,
+        limit: '',
+        orderBy: ''
+    }
+
     componentDidMount() {
         const {template, parent, isParentList} = this.props
 
         const cardModel = {
             title: template.get('title', ''),
-            // we need to specify the initial values for each field
-            // otherwise they will not be sent if they are empty
-            meta: fromJS({
-                link: '',
-                displayCard: true
-            }).merge(template.get('meta', fromJS({}))).toJS()
+            link: template.getIn(['meta', 'link'], ''),
+            displayCard: template.getIn(['meta', 'displayCard'], true)
         }
 
         const listModel = {
-            // we need to specify the initial values for each field
-            // otherwise they will not be sent if they are empty
-            meta: fromJS({
-                limit: '',
-                orderBy: ''
-            }).merge(parent.get('meta', fromJS({}))).toJS()
+            limit: parent.getIn(['meta', 'limit'], ''),
+            orderBy: parent.getIn(['meta', 'orderBy'], '')
         }
 
         // populating the form
         if (isParentList) {
             // editing the parent list AND the card inside that list
-            this.props.initialize({
-                card: cardModel,
-                list: listModel,
-            })
+            this.setState(Object.assign({}, cardModel, listModel))
         } else {
             // editing only the card
-            this.props.initialize({
-                card: cardModel,
-            })
+            this.setState(cardModel)
         }
     }
 
@@ -53,25 +47,39 @@ class TooltipWidgetEditCard extends React.Component {
         this.props.actions.stopWidgetEdition()
     }
 
-    _handleSubmit = (values) => {
+    _handleSubmit = (e) => {
+        e.preventDefault()
         const {isParentList} = this.props
+        const card = {
+            title: this.state.title,
+            meta: {
+                link: this.state.link,
+                displayCard: this.state.displayCard
+            }
+        }
+        const list = {
+            meta: {
+                limit: this.state.limit,
+                orderBy: this.state.orderBy
+            }
+        }
 
         if (isParentList) {
             // saving the parent list AND the card inside that list
             this.props.actions.updateEditedWidget({
-                ...values.list,
-                widgets: [{...values.card}]
+                ...list,
+                widgets: [{...card}]
             })
         } else {
             // saving only the card
-            this.props.actions.updateEditedWidget(values.card)
+            this.props.actions.updateEditedWidget(card)
         }
 
         this._closePopup()
     }
 
     render() {
-        const {handleSubmit, isParentList, template, editionHiddenFields} = this.props
+        const {isParentList, template, editionHiddenFields} = this.props
 
         let orderByOptions = fromJS([])
         if (isParentList) {
@@ -85,54 +93,58 @@ class TooltipWidgetEditCard extends React.Component {
         }
 
         return (
-            <Form onSubmit={handleSubmit(this._handleSubmit)}>
-                <Field
+            <Form onSubmit={this._handleSubmit}>
+                <InputField
                     type="text"
                     name="card.title"
                     label="Title"
                     placeholder="Order {id}"
-                    component={ReduxFormInputField}
+                    value={this.state.title}
+                    onChange={title => this.setState({title})}
                 />
                 {
                     !editionHiddenFields.includes('link') && (
-                        <Field
+                        <InputField
                             type="text"
                             name="card.meta.link"
                             label="Link"
                             placeholder="http://myapi.com/{id}"
-                            component={ReduxFormInputField}
+                            value={this.state.link}
+                            onChange={link => this.setState({link})}
                         />
                     )
                 }
                 {
                     !editionHiddenFields.includes('displayCard') && (
                         <FormGroup>
-                            <Field
+                            <BooleanField
                                 type="checkbox"
                                 name="card.meta.displayCard"
                                 label="Display card"
-                                component={ReduxFormInputField}
-                                tag={BooleanField}
+                                value={this.state.displayCard}
+                                onChange={displayCard => this.setState({displayCard})}
                             />
                         </FormGroup>
                     )
                 }
                 {
                     isParentList && [
-                        <Field
+                        <InputField
                             key="limit"
                             type="number"
                             name="list.meta.limit"
                             label="Limit"
                             placeholder="ex: 0"
-                            component={ReduxFormInputField}
+                            value={this.state.limit}
+                            onChange={limit => this.setState({limit})}
                         />,
-                        <Field
+                        <InputField
                             key="order"
                             type="select"
                             name="list.meta.orderBy"
                             label="Order by"
-                            component={ReduxFormInputField}
+                            value={this.state.orderBy}
+                            onChange={orderBy => this.setState({orderBy})}
                         >
                             {
                                 orderByOptions
@@ -153,7 +165,7 @@ class TooltipWidgetEditCard extends React.Component {
                                             })
                                     })
                             }
-                        </Field>
+                        </InputField>
                     ]
                 }
 
@@ -181,8 +193,6 @@ class TooltipWidgetEditCard extends React.Component {
 TooltipWidgetEditCard.propTypes = {
     editionHiddenFields: PropTypes.array.isRequired,
 
-    initialize: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     template: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     isParentList: PropTypes.bool.isRequired,
@@ -194,6 +204,4 @@ TooltipWidgetEditCard.defaultProps = {
     isParentList: false,
 }
 
-export default reduxForm({
-    form: 'tooltipWidgetCard',
-})(TooltipWidgetEditCard)
+export default TooltipWidgetEditCard

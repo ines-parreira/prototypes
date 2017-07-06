@@ -3,22 +3,21 @@ import classnames from 'classnames'
 
 import css from './ChatIntegrationPreview.less'
 
-const ChatIntegrationPreview = ({name, decoration, currentUser}) => {
-    const titlebarStyle = {
-        backgroundColor: decoration.get('header_color')
-    }
-
-    const bubbleStyle = {
-        backgroundColor: decoration.get('conversation_color')
-    }
-
-    const buttonStyle = {
-        backgroundColor: decoration.get('chat_icon_color')
-    }
+const ChatIntegrationPreview = ({
+    name,
+    currentUser,
+    windowTitle,
+    headerText,
+    inputPlaceholder,
+    sendButtonText,
+    headerColor,
+    conversationColor,
+    chatIconColor,
+    icon,
+}) => {
+    const _bgColor = (color) => ({backgroundColor: color})
 
     function _renderBrandIcon() {
-        const icon = decoration.get('icon')
-
         if (icon) {
             // icon is url
             let preview = icon
@@ -49,9 +48,9 @@ const ChatIntegrationPreview = ({name, decoration, currentUser}) => {
             <div className={css.dialog}>
                 <div
                     className={css.titlebar}
-                    style={titlebarStyle}
+                    style={_bgColor(headerColor)}
                 >
-                    {nonbreak(decoration.get('window_title', 'How can we help?'))}
+                    {nonbreak(windowTitle || 'How can we help?')}
 
                     <i className={classnames(css.icon, css.times)}></i>
                 </div>
@@ -65,14 +64,14 @@ const ChatIntegrationPreview = ({name, decoration, currentUser}) => {
                             {nonbreak(name)}
                         </h2>
                         <p>
-                            {nonbreak(decoration.get('header_text'))}
+                            {nonbreak(headerText)}
                         </p>
                     </div>
                 </div>
                 <div className={css.content}>
                     <div
                         className={classnames(css.bubble, css.primary)}
-                        style={bubbleStyle}
+                        style={_bgColor(conversationColor)}
                     >
                         Hey, I'm wondering about the status of my order
                     </div>
@@ -92,17 +91,18 @@ const ChatIntegrationPreview = ({name, decoration, currentUser}) => {
                 <div className={css.footer}>
                     <i className={classnames(css.icon, css.camera)}></i>
                     <div className={css.placeholder}>
-                        {nonbreak(decoration.get('input_placeholder', 'Type a message...'))}
+                        {nonbreak(inputPlaceholder || 'Type a message...')}
                     </div>
-                    <strong>
-                        {nonbreak(decoration.get('send_button_text', 'Send'))}
-                    </strong>
+
+                    <span className={classnames(css.send)}>
+                        {nonbreak(sendButtonText || 'Send')}
+                    </span>
                 </div>
             </div>
 
             <div
                 className={css.button}
-                style={buttonStyle}
+                style={_bgColor(chatIconColor)}
             >
                 <i className={css.icon}></i>
             </div>
@@ -110,14 +110,17 @@ const ChatIntegrationPreview = ({name, decoration, currentUser}) => {
     )
 }
 
-ChatIntegrationPreview.defaultProps = {
-    name: ''
-}
-
 ChatIntegrationPreview.propTypes = {
     name: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
-    decoration: PropTypes.object
+    windowTitle: PropTypes.string,
+    headerText: PropTypes.string,
+    inputPlaceholder: PropTypes.string,
+    sendButtonText: PropTypes.string,
+    headerColor: PropTypes.string,
+    conversationColor: PropTypes.string,
+    chatIconColor: PropTypes.string,
+    icon: PropTypes.string,
 }
 
 export default ChatIntegrationPreview

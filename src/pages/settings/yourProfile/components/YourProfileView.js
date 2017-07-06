@@ -1,63 +1,78 @@
 import React, {PropTypes} from 'react'
-import {Field, reduxForm} from 'redux-form'
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
-import _cloneDeep from 'lodash/cloneDeep'
+import _merge from 'lodash/merge'
+import _pick from 'lodash/pick'
 import moment from 'moment-timezone'
 import {Form, FormGroup, Button} from 'reactstrap'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
-import formSender from '../../../common/utils/formSender'
 
-import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
 import BooleanField from '../../../common/forms/BooleanField'
 import RichField from '../../../common/forms/RichField'
+import InputField from '../../../common/forms/InputField'
+
+const defaultContent = {
+    name: '',
+    email: '',
+    timezone: '',
+    language: '',
+}
 
 class YourProfileView extends React.Component {
     constructor(props) {
         super(props)
 
         this.isInitialized = false
-        this.state = {
-            loadingPreferences: false,
-            preferences: props.preferences.get('data')
-        }
 
-        if (!props.currentUser.isEmpty()) {
-            this._init(props)
-        }
+        this.state = _merge({
+            loadingPreferences: false,
+            preferences: props.preferences.get('data'),
+            signature: {
+                text: '',
+                html: '',
+            },
+        }, this._getForm(props))
     }
 
     componentWillUpdate(nextProps) {
         if (!this.isInitialized && !nextProps.currentUser.isEmpty()) {
-            this._init(nextProps)
+            this.setState(this._getForm(nextProps))
+            this.isInitialized = true
         }
     }
 
-    _init(props) {
-        const formData = props.currentUser
-            .set('signature', fromJS({
-                text: props.currentUser.get('signature_text', ''),
-                html: props.currentUser.get('signature_html', '')
-            }))
+    _getForm(props) {
+        if (props.currentUser.isEmpty()) {
+            return defaultContent
+        }
 
-        props.initialize(formData.toJS())
-        this.isInitialized = true
+        return _merge(
+            _pick(props.currentUser.toJS(), Object.keys(defaultContent)),
+            {
+                signature: {
+                    text: props.currentUser.get('signature_text', ''),
+                    html: props.currentUser.get('signature_html', '')
+                }
+            }
+        )
     }
 
-    _handleSubmit = (values) => {
-        const normalizedValues = _cloneDeep(values)
-
-        normalizedValues.signature_text = values.signature.text
-        normalizedValues.signature_html = values.signature.html
-        delete normalizedValues.signature
+    _handleSubmit = (e) => {
+        e.preventDefault()
+        const normalizedValues = _merge(
+            _pick(this.state, Object.keys(defaultContent)),
+            {
+                signature_text: this.state.signature.text,
+                signature_html: this.state.signature.html
+            }
+        )
 
         // if no text, set no html
         if (!normalizedValues.signature_text) {
             normalizedValues.signature_html = ''
         }
 
-        return formSender(this.props.actions.submitUser(normalizedValues, 0))
+        return this.props.actions.submitUser(normalizedValues, 0)
     }
 
     _savePreferences = (e) => {
@@ -74,7 +89,7 @@ class YourProfileView extends React.Component {
     }
 
     render() {
-        const {handleSubmit, isLoading} = this.props
+        const {isLoading} = this.props
         const loadingUser = isLoading && !this.state.loadingPreferences
 
         return (
@@ -90,40 +105,44 @@ class YourProfileView extends React.Component {
 
                 <Form
                     className="mb-4"
-                    onSubmit={handleSubmit(this._handleSubmit)}
+                    onSubmit={this._handleSubmit}
                 >
-                    <Field
+                    <InputField
                         type="text"
                         name="name"
                         label="Your name"
                         placeholder="John Doe"
                         required
-                        component={ReduxFormInputField}
+                        value={this.state.name}
+                        onChange={name => this.setState({name})}
                     />
-                    <Field
+                    <InputField
                         type="email"
                         name="email"
                         label="Your email"
                         placeholder="john.doe@acme.com"
                         required
-                        component={ReduxFormInputField}
+                        value={this.state.email}
+                        onChange={email => this.setState({email})}
                     />
-                    <Field
+                    <InputField
                         type="select"
                         name="timezone"
                         label="Timezone"
-                        component={ReduxFormInputField}
+                        value={this.state.timezone}
+                        onChange={timezone => this.setState({timezone})}
                     >
                         {
                             moment.tz.names().map((name, idx) => <option key={idx} value={name}>{name}</option>)
                         }
-                    </Field>
-                    <Field
+                    </InputField>
+                    <InputField
                         type="select"
                         name="language"
                         label="Language"
-                        component={ReduxFormInputField}
                         help="Changing the language also changes the time format"
+                        value={this.state.language}
+                        onChange={language => this.setState({language})}
                     >
                         {
                             AVAILABLE_LANGUAGES.map((locale, idx) => (
@@ -135,13 +154,12 @@ class YourProfileView extends React.Component {
                                 </option>
                             ))
                         }
-                    </Field>
-                    <Field
-                        type="text"
+                    </InputField>
+                    <RichField
                         name="signature"
                         label="Signature"
-                        component={ReduxFormInputField}
-                        tag={RichField}
+                        value={this.state.signature}
+                        onChange={signature => this.setState({signature})}
                     />
 
                     <div>
@@ -192,8 +210,6 @@ class YourProfileView extends React.Component {
 }
 
 YourProfileView.propTypes = {
-    initialize: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     submitSetting: PropTypes.func.isRequired,
@@ -201,6 +217,4 @@ YourProfileView.propTypes = {
     isLoading: PropTypes.bool
 }
 
-export default reduxForm({
-    form: 'myProfile',
-})(YourProfileView)
+export default YourProfileView

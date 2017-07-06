@@ -11,6 +11,7 @@ import _compact from 'lodash/compact'
 import _trim from 'lodash/trim'
 import _last from 'lodash/last'
 import _ from 'lodash'
+import _flatMapDeep from 'lodash/flatMapDeep'
 
 import React from 'react'
 import {createSelectorCreator, defaultMemoize} from 'reselect'
@@ -834,6 +835,17 @@ export const currentRoute = (routes) => {
 }
 
 /**
+ * Deep flatten object, keeping only values.
+ */
+const _valuesDeep = (obj) => {
+    if (typeof obj === 'object' && !obj.hasOwnProperty('length')) {
+        return _flatMapDeep(obj, _valuesDeep)
+    }
+
+    return obj
+}
+
+/**
  * Add form errors coming from server to error.msg
  * This is used to display form errors in error notification
  * Ex: error: {msg: 'Failed to add message', data: {hello: ['world'], receiver: ['Missing data', 'Invalid value']}}
@@ -865,7 +877,7 @@ export const errorToChildren = (incomingError) => {
                     <ul className="m-0">
                         {
                             _map(data, (fieldErrors, fieldName) => {
-                                return fieldErrors.map((fieldError) => {
+                                return _valuesDeep(fieldErrors).map((fieldError) => {
                                     return <li>{fieldName}: {fieldError}</li>
                                 })
                             })

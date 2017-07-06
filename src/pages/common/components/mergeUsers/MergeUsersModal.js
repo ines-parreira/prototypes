@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react'
-import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {Field, reduxForm, formValueSelector} from 'redux-form'
+import _clone from 'lodash/clone'
+import _pick from 'lodash/pick'
+import _omit from 'lodash/omit'
 import {Button, Form, UncontrolledTooltip} from 'reactstrap'
 
 import Modal from '../Modal'
@@ -16,22 +17,29 @@ import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import ConfirmButton from '../ConfirmButton'
 
+const defaultContent = {
+    name: '',
+    email: '',
+    customer: {},
+    channels: []
+}
+
 class MergeUsersModal extends React.Component {
+    state = _clone(defaultContent)
+
     componentDidMount = () => {
         const {sourceUser} = this.props
-        const initData = {
-            user: this.props.destinationUser.map((v, k) => {
-                if (!v) {
-                    return sourceUser.get(k)
-                }
+        const initData = this.props.destinationUser.map((v, k) => {
+            if (!v) {
+                return sourceUser.get(k)
+            }
 
-                return v
-            }).toJS()
-        }
+            return v
+        }).toJS()
 
-        initData.user.channels = initData.user.channels.concat(sourceUser.get('channels').toJS())
+        initData.channels = initData.channels.concat(sourceUser.get('channels').toJS())
 
-        this.props.initialize(initData)
+        this.setState(_pick(initData, Object.keys(defaultContent)))
     }
 
     componentWillReceiveProps(nextProps) {
@@ -50,7 +58,12 @@ class MergeUsersModal extends React.Component {
         }
     }
 
-    _handleSubmit = (data) => {
+    _handleSubmit = (e) => {
+        e.preventDefault()
+        const data = {
+            user: _pick(this.state, Object.keys(defaultContent))
+        }
+
         logEvent('Confirmed MergeUser', {
             finalUser: data.user.channels.map(channel => channel.type)
         })
@@ -91,7 +104,8 @@ class MergeUsersModal extends React.Component {
     }
 
     render() {
-        const {destinationUser, sourceUser, handleSubmit, isLoading, primaryEmail, requiredAddresses} = this.props
+        const {destinationUser, sourceUser, isLoading, requiredAddresses} = this.props
+        const primaryEmail = this.state.email
 
         let baseCustomer = destinationUser.get('customer') || fromJS({})
 
@@ -125,16 +139,15 @@ class MergeUsersModal extends React.Component {
                 size="lg"
                 header="Merge users"
             >
-                <Form onSubmit={handleSubmit(this._handleSubmit)}>
+                <Form onSubmit={this._handleSubmit}>
                     <div className="content">
                         <p className="merge-instructions">
                             Select what data you want to keep, then click the "Merge Users" button.
                             The fields in blue will be kept.
                         </p>
-                        <Field
+                        <BinaryChoiceField
                             label="Name"
                             name="user.name"
-                            component={BinaryChoiceField}
                             options={[
                                 {
                                     label: (
@@ -155,11 +168,12 @@ class MergeUsersModal extends React.Component {
                                     value: sourceUser.get('name') || ''
                                 }
                             ]}
+                            value={this.state.name}
+                            onChange={name => this.setState({name})}
                         />
-                        <Field
+                        <BinaryChoiceField
                             label="Primary email"
                             name="user.email"
-                            component={BinaryChoiceField}
                             tooltip={(
                                 <span>
                                         <i
@@ -195,8 +209,10 @@ class MergeUsersModal extends React.Component {
                                     value: sourceUser.get('email') || ''
                                 }
                             ]}
+                            value={this.state.email}
+                            onChange={email => this.setState({email})}
                         />
-                        <Field
+                        <MultiSelectBinaryChoiceField
                             label="Contact info"
                             tooltip={(
                                 <span>
@@ -214,19 +230,18 @@ class MergeUsersModal extends React.Component {
                                 </span>
                             )}
                             name="user.channels"
-                            component={MultiSelectBinaryChoiceField}
                             requiredValues={requiredChannelValues}
                             options={[
                                 this._generateChannelOptions(destinationUser),
                                 this._generateChannelOptions(sourceUser)
                             ]}
                             propertiesToCompare={['address', 'type']}
+                            value={this.state.channels}
+                            onChange={channels => this.setState({channels})}
                         />
-                        <Field
-                            type="json"
+                        <BinaryChoiceField
                             label="Customer data"
                             name="user.customer"
-                            component={BinaryChoiceField}
                             options={[
                                 {
                                     label: <JSONTree data={fromJS(baseCustomer)} />,
@@ -237,6 +252,8 @@ class MergeUsersModal extends React.Component {
                                     value: mergeCustomer
                                 }
                             ]}
+                            value={_omit(this.state.customer, ['_shopify'])}
+                            onChange={customer => this.setState({customer})}
                         />
                     </div>
 
@@ -266,8 +283,6 @@ class MergeUsersModal extends React.Component {
 }
 
 MergeUsersModal.propTypes = {
-    initialize: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     destinationUser: PropTypes.object.isRequired,
     sourceUser: PropTypes.object.isRequired,
     mergeUsers: PropTypes.func.isRequired,
@@ -279,15 +294,5 @@ MergeUsersModal.propTypes = {
     requiredAddresses: PropTypes.object
 }
 
-const selector = formValueSelector('mergeUsersForm')
-
-const mapStateToProps = (state) => ({
-    primaryEmail: selector(state, 'user.email')
-})
-
-export default connect(mapStateToProps)(
-    reduxForm({
-        form: 'mergeUsersForm',
-    })(MergeUsersModal)
-)
+export default MergeUsersModal
 

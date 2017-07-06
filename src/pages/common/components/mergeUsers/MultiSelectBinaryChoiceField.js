@@ -7,6 +7,7 @@ import _forEach from 'lodash/forEach'
 import _pick from 'lodash/pick'
 import _compact from 'lodash/compact'
 import _isUndefined from 'lodash/isUndefined'
+import _noop from 'lodash/noop'
 import {FormGroup} from 'reactstrap'
 
 /**
@@ -17,7 +18,7 @@ import {FormGroup} from 'reactstrap'
 class MultiSelectBinaryChoiceField extends React.Component {
     componentWillReceiveProps(nextProps) {
         const {requiredValues} = nextProps
-        const activeIds = this.props.input.value.map((channel) => channel.id)
+        const activeIds = this.props.value.map((channel) => channel.id)
 
         // Force selection of non-selected required values
         _forEach(requiredValues, (requiredValue) => {
@@ -32,7 +33,7 @@ class MultiSelectBinaryChoiceField extends React.Component {
             return
         }
 
-        const newVal = _compact(this.props.input.value) || []
+        const newVal = _compact(this.props.value) || []
 
         // compare whole value by default
         let referenceValue = value
@@ -50,15 +51,14 @@ class MultiSelectBinaryChoiceField extends React.Component {
             newVal.splice(index, 1)
         }
 
-        this.props.input.onChange(newVal)
-        this.forceUpdate() // force rerender because redux-form doesn't inject the new value
+        this.props.onChange(newVal)
     }
 
     _expandOptionsSet = (optionSet) => {
         const requiredValuesIds = this.props.requiredValues.map((requiredValue) => requiredValue.id)
 
         return optionSet.map((option, idx) => {
-            const active = _find(this.props.input.value, (channel) => _isEqual(channel, option.value))
+            const active = _find(this.props.value, (channel) => _isEqual(channel, option.value))
             const disabled = requiredValuesIds.includes(option.value.id)
             const className = classNames({active, disabled}, 'option')
 
@@ -102,17 +102,18 @@ class MultiSelectBinaryChoiceField extends React.Component {
 }
 
 MultiSelectBinaryChoiceField.propTypes = {
-    input: PropTypes.object.isRequired,
-    meta: PropTypes.object.isRequired,
+    value: PropTypes.array.isRequired,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
     requiredValues: PropTypes.array,
     tooltip: PropTypes.object,
     propertiesToCompare: PropTypes.array.isRequired,
+    onChange: PropTypes.func
 }
 
 MultiSelectBinaryChoiceField.defaultProps = {
     propertiesToCompare: [],
+    onChange: _noop
 }
 
 export default MultiSelectBinaryChoiceField

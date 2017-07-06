@@ -1,25 +1,30 @@
 import React, {PropTypes} from 'react'
 import {fromJS} from 'immutable'
-import {Field, FieldArray, reduxForm} from 'redux-form'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import classNames from 'classnames'
 import _isUndefined from 'lodash/isUndefined'
+import _pick from 'lodash/pick'
+import _merge from 'lodash/merge'
 import _find from 'lodash/find'
 import _clone from 'lodash/clone'
 import _isError from 'lodash/isError'
 import {Form, Button} from 'reactstrap'
 
 import {submitUser} from '../../../../state/users/actions'
-import UserChannelAddressField from './UserChannelAddressField'
-import formSender from '../../../common/utils/formSender'
+import UserChannelFieldArray from './UserChannelFieldArray'
+import InputField from '../../../common/forms/InputField'
 
-import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
-
-export const defaultContent = {
+const defaultContent = {
+    name: '',
+    role: 'user',
     roles: [{
         name: 'agent',
     }],
+    email: [{address: ''}],
+    twitter: [{address: ''}],
+    phone: [{address: ''}],
+    channels: [],
 }
 
 const updatableChannels = ['email', 'twitter', 'phone']
@@ -28,28 +33,43 @@ class UserForm extends React.Component {
     constructor(props) {
         super(props)
 
-        this.isInitialized = !props.isUpdate
-
-        this._initializeForm()
+        this.state = _merge({
+            submitting: false,
+            errors: {},
+        }, this._getForm())
     }
 
-    componentWillUpdate() {
-        if (!this.isInitialized && this.props.isUpdate) {
-            this._initializeForm()
+    _validate = (values) => {
+        let errors = {}
+
+        // validate phones
+        if (values.phone && values.phone.length) {
+            values.phone.forEach((phone, index) => {
+                if (phone.address && !/^\+[\d-\(\) ]+$/.test(phone.address)) {
+                    errors['phone'] = errors['phone'] || {}
+                    errors['phone'][index] = {'address': 'Please enter an international phone number'}
+                }
+            })
         }
+
+        return errors
     }
 
-    _initializeForm = () => {
+    _updateField = (value) => {
+        const newState = Object.assign(_clone(this.state), value)
+
+        this.setState(Object.assign(value, {
+            errors: this._validate(newState)
+        }))
+    }
+
+    _getForm = () => {
         if (this.props.isUpdate) {
-            this._initializeWithData(this.props.user.toJS())
-        } else {
-            this._initializeWithData(_clone(defaultContent))
+            const user = this.props.user.toJS()
+            return this._docToForm(_pick(user, Object.keys(defaultContent)))
         }
-    }
 
-    _initializeWithData = (data) => {
-        this.props.initialize(this._docToForm(data))
-        this.isInitialized = true
+        return _clone(defaultContent)
     }
 
     _docToForm = (doc = {}) => {
@@ -129,8 +149,9 @@ class UserForm extends React.Component {
         return doc
     }
 
-    _handleSubmit = (values) => {
-        let doc = fromJS(values)
+    _handleSubmit = (e) => {
+        e.preventDefault()
+        let doc = fromJS(_pick(this.state, Object.keys(defaultContent)))
 
         let promise
 
@@ -143,50 +164,61 @@ class UserForm extends React.Component {
             promise = this.props.onSubmit(this._formToDoc(doc).toJS())
         }
 
-        return formSender(promise, {
-            globals: ['channels']
-        }).then((response) => {
-            if (!_isError(response)) {
-                if (this.props.onSuccess) {
-                    this.props.onSuccess()
-                }
+        this.setState({
+            submitting: true
+        })
 
-                this.props.closeModal()
+        return promise.then((response = {}) => {
+            this.setState({
+                submitting: false
+            })
+
+            if (response.error || _isError(response)) {
+                return
             }
+
+            if (this.props.onSuccess) {
+                this.props.onSuccess()
+            }
+
+            this.props.closeModal()
         })
     }
 
     render() {
-        const {handleSubmit, isUpdate, isUserStaff, submitting} = this.props
+        const {isUpdate, isUserStaff} = this.props
+        const invalid = Object.keys(this.state.errors).length > 0
 
         return (
-            <Form onSubmit={handleSubmit(this._handleSubmit)}>
+            <Form onSubmit={this._handleSubmit}>
                 <div className="mb-2">
-                    <Field
+                    <InputField
                         type="text"
                         name="name"
                         label="Name"
                         placeholder="John Doe"
                         help="Give a name to the user to make it easier to identify"
                         required
-                        component={ReduxFormInputField}
+                        value={this.state.name}
+                        onChange={name => this._updateField({name})}
                     />
 
                     {
                         isUserStaff ? (
                                 <p>This user is a <b>Gorgias Staff</b> member</p>
                             ) : (
-                                <Field
+                                <InputField
                                     type="select"
                                     name="role"
                                     label="Role"
                                     required
-                                    component={ReduxFormInputField}
+                                    value={this.state.role}
+                                    onChange={role => this._updateField({role})}
                                 >
                                     <option value="user">User</option>
                                     <option value="agent">Agent</option>
                                     <option value="admin">Admin</option>
-                                </Field>
+                                </InputField>
                             )
                     }
 
@@ -194,29 +226,36 @@ class UserForm extends React.Component {
                         <b>Please set below at least one contact information for this user :</b>
                     </p>
 
-                    <FieldArray
+                    <UserChannelFieldArray
                         name="email"
                         type="email"
                         label="Emails"
                         placeholder="john@snow.com"
                         addLabel="Add an email address"
-                        component={UserChannelAddressField}
+                        meta={{}}
+                        fields={this.state.email}
+                        onChange={email => this._updateField({email})}
                     />
 
-                    <FieldArray
+                    <UserChannelFieldArray
                         name="twitter"
                         label="Twitter accounts"
                         placeholder="johnSnow"
                         addLabel="Add a Twitter account"
-                        component={UserChannelAddressField}
+                        meta={{}}
+                        fields={this.state.twitter}
+                        onChange={twitter => this._updateField({twitter})}
                     />
 
-                    <FieldArray
+                    <UserChannelFieldArray
                         name="phone"
                         label="Phone numbers"
                         placeholder="+1 111 111 1111"
                         addLabel="Add an phone number"
-                        component={UserChannelAddressField}
+                        meta={{}}
+                        fields={this.state.phone}
+                        onChange={phone => this._updateField({phone})}
+                        errors={this.state.errors.phone}
                     />
                 </div>
 
@@ -225,9 +264,9 @@ class UserForm extends React.Component {
                         type="submit"
                         color="primary"
                         className={classNames({
-                            'btn-loading': submitting
+                            'btn-loading': this.state.submitting
                         })}
-                        disabled={submitting}
+                        disabled={this.state.submitting || invalid}
                     >
                         {isUpdate ? 'Update user' : 'Add user'}
                     </Button>
@@ -238,10 +277,6 @@ class UserForm extends React.Component {
 }
 
 UserForm.propTypes = {
-    initialize: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    destroy: PropTypes.func.isRequired,
     isUpdate: PropTypes.bool.isRequired,
     isUserStaff: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
@@ -268,21 +303,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const validate = (values) => {
-    let errors = {}
-
-    // validate phones
-    if (values.phone && values.phone.length) {
-        errors['phone'] = {}
-
-        values.phone.forEach((phone, index) => {
-            if (phone.address && !/^\+[\d-\(\) ]+$/.test(phone.address)) {
-                errors['phone'][index] = {'address': 'Please enter an international phone number'}
-            }
-        })
-    }
-
-    return errors
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'user', validate})(UserForm))
+export default connect(mapStateToProps, mapDispatchToProps)(UserForm)

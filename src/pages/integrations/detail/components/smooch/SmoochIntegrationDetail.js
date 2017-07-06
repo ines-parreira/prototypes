@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import {Link, withRouter} from 'react-router'
-import {Field, reduxForm} from 'redux-form'
 import {fromJS} from 'immutable'
 import classNames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
@@ -12,11 +11,9 @@ import {
     BreadcrumbItem,
 } from 'reactstrap'
 
-import formSender from '../../../../common/utils/formSender'
-
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import AutoResponderSection from '../../../common/AutoResponderSection'
-import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
+import InputField from '../../../../common/forms/InputField'
 
 import Loader from '../../../../common/components/Loader'
 
@@ -28,12 +25,18 @@ class SmoochIntegrationDetail extends React.Component {
         this.isInitialized = false
     }
 
+    state = {
+        name: ''
+    }
+
     componentWillUpdate(nextProps) {
         const {integration, isUpdate, loading} = nextProps
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
-            this.props.initialize(integration.toJS())
+            this.setState({
+                name: integration.get('name')
+            })
             this.isInitialized = true
         }
     }
@@ -62,23 +65,31 @@ class SmoochIntegrationDetail extends React.Component {
         window.location.href = this.props.redirectUri
     }
 
-    _handleSubmit = (values) => {
+    _handleSubmit = (e) => {
+        e.preventDefault()
         if (!this.props.isUpdate) {
             return this._addNewSmooch()
         }
 
-        let doc = fromJS(values)
+        let doc = fromJS({
+            name: this.state.name
+        })
 
         // only update
         const integration = this.props.integration
         doc = fromJS(_pick(doc.set('id', integration.get('id')).toJS(), ['id', 'name']))
-        return formSender(this.props.actions.updateOrCreateIntegration(doc))
+        return this.props.actions.updateOrCreateIntegration(doc)
+    }
+
+    _isSubmitting = () => {
+        const {loading, integration} = this.props
+        return loading.get('updateIntegration') === integration.get('id', true)
     }
 
     render() {
-        const {actions, integration, isUpdate, loading, handleSubmit} = this.props
+        const {actions, integration, isUpdate, loading} = this.props
 
-        const isSubmitting = loading.get('updateIntegration')
+        const isSubmitting = this._isSubmitting()
         const isActive = !integration.get('deactivated_datetime')
 
         const authenticationRequired = this.props.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
@@ -107,17 +118,17 @@ class SmoochIntegrationDetail extends React.Component {
 
                 <AutoResponderSection/>
 
-                <Form onSubmit={handleSubmit(this._handleSubmit)}>
+                <Form onSubmit={this._handleSubmit}>
                     {
                         isUpdate && (
-                            <Field
+                            <InputField
                                 type="text"
                                 name="name"
                                 label="Smooch app name"
                                 placeholder="The name of your Smooch app"
-                                defaultValue={integration.get('name')}
+                                value={this.state.name}
+                                onChange={(name) => this.setState({name})}
                                 required
-                                component={ReduxFormInputField}
                             />
                         )
                     }
@@ -188,9 +199,6 @@ class SmoochIntegrationDetail extends React.Component {
 }
 
 SmoochIntegrationDetail.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    initialize: PropTypes.func.isRequired,
-
     integration: PropTypes.object.isRequired,
     isUpdate: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
@@ -203,4 +211,4 @@ SmoochIntegrationDetail.propTypes = {
     params: PropTypes.object.isRequired
 }
 
-export default withRouter(reduxForm({form: 'smoochIntegration'})(SmoochIntegrationDetail))
+export default withRouter(SmoochIntegrationDetail)

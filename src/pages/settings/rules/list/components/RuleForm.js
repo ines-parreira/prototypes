@@ -1,42 +1,63 @@
 import React from 'react'
-import {Field, reduxForm, reset} from 'redux-form'
 import classnames from 'classnames'
 import {Form, Button} from 'reactstrap'
 
-import formSender from '../../../../common/utils/formSender'
+import InputField from '../../../../common/forms/InputField'
 
-import ReduxFormInputField from '../../../../common/forms/ReduxFormInputField'
+const defaultValues = {
+    dirty: false,
+    submitting: false,
+    title: '',
+    description: '',
+}
 
 class RuleForm extends React.Component {
-    _handleCancel = () => {
-        this.props.onCancel()
-        this.props.reset()
+    state = Object.assign({}, defaultValues)
+
+    _handleSubmit = (e) => {
+        e.preventDefault()
+        this.setState({
+            submitting: true
+        })
+
+        return this.props.onSubmit({
+            title: this.state.title,
+            description: this.state.description
+        }).then((res) => {
+            this.setState(defaultValues)
+
+            return res
+        })
     }
 
-    _handleSubmit = (values) => {
-        return formSender(this.props.onSubmit(values))
+    _updateField = (value) => {
+        this.setState(Object.assign({
+            dirty: true
+        }, value))
     }
 
     render() {
-        const {handleSubmit, pristine, submitting, valid} = this.props
+        const {onCancel} = this.props
 
         return (
             <div>
-                <Form onSubmit={handleSubmit(this._handleSubmit)}>
+                <Form onSubmit={this._handleSubmit}>
                     <div className="content">
-                        <Field
+                        <InputField
                             type="text"
                             name="title"
                             label="Name"
                             required
-                            component={ReduxFormInputField}
+                            value={this.state.title}
+                            onChange={(title) => this._updateField({title})}
                         />
-                        <Field
+                        <InputField
                             type="textarea"
                             name="description"
                             label="Description"
                             rows="3"
-                            component={ReduxFormInputField}
+                            value={this.state.description}
+                            onChange={(description) => this._updateField({description})}
                         />
                     </div>
                     <div className="actions pull-right mt-3">
@@ -44,7 +65,7 @@ class RuleForm extends React.Component {
                             className="mr-2"
                             color="secondary"
                             type="button"
-                            onClick={this._handleCancel}
+                            onClick={onCancel}
                         >
                             Cancel
                         </Button>
@@ -52,9 +73,9 @@ class RuleForm extends React.Component {
                             type="submit"
                             color="primary"
                             className={classnames({
-                                'btn-loading': submitting,
+                                'btn-loading': this.state.submitting,
                             })}
-                            disabled={submitting || !valid || pristine}
+                            disabled={this.state.submitting || !this.state.dirty}
                         >
                             Create rule
                         </Button>
@@ -66,16 +87,8 @@ class RuleForm extends React.Component {
 }
 
 RuleForm.propTypes = {
-    handleSubmit: React.PropTypes.func.isRequired,
     onSubmit: React.PropTypes.func.isRequired,
-    onCancel: React.PropTypes.func.isRequired,
-    pristine: React.PropTypes.bool.isRequired,
-    reset: React.PropTypes.func.isRequired,
-    submitting: React.PropTypes.bool.isRequired,
-    valid: React.PropTypes.bool.isRequired,
+    onCancel: React.PropTypes.func.isRequired
 }
 
-export default reduxForm({
-    form: 'ruleDetail',
-    onSubmitSuccess: (_, dispatch) => dispatch(reset('ruleDetail')),
-})(RuleForm)
+export default RuleForm

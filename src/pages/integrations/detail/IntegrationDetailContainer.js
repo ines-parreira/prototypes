@@ -57,7 +57,7 @@ class IntegrationDetailContainer extends React.Component {
     }
 
     render() {
-        const {actions, integrations, params, settings, getFormValues, currentUser} = this.props
+        const {actions, integrations, params, settings, currentUser} = this.props
 
         if (!settings.get('loaded')) {
             return null
@@ -67,9 +67,15 @@ class IntegrationDetailContainer extends React.Component {
         const isUpdate = isDetail && params.integrationId !== 'new'
         const isSetup = params.integrationId === 'setup'
         const isForwarding = params.extra === 'forwarding'
+        let integration = integrations.get('integration', fromJS({}))
+
+        // clear cached integration
+        if (integration.get('id', '').toString() !== params.integrationId) {
+            integration = fromJS({})
+        }
 
         const commonProps = {
-            integration: integrations.get('integration', fromJS({})),
+            integration: integration,
             integrations: integrations.get('integrations', fromJS([]))
                 .sort((a, b) => compare((a.get('name') || '').toLowerCase(), (b.get('name') || '').toLowerCase())),
             loading: integrations.getIn(['state', 'loading'], fromJS({})),
@@ -192,7 +198,6 @@ class IntegrationDetailContainer extends React.Component {
                             integration={commonProps.integration}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
-                            getFormValues={getFormValues}
                             currentUser={currentUser}
                         />
                     )
@@ -264,7 +269,6 @@ IntegrationDetailContainer.propTypes = {
     }).isRequired,
     settings: PropTypes.object.isRequired,
     getRedirectUri: PropTypes.func.isRequired,
-    getFormValues: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired
 }
 
@@ -272,8 +276,7 @@ const mapStateToProps = (state) => ({
     integrations: state.integrations,
     settings: state.settings,
     getRedirectUri: IntegrationsSelectors.makeGetRedirectUri(state),
-    currentUser: state.currentUser,
-    getFormValues: IntegrationsSelectors.makeGetFormValues(state)
+    currentUser: state.currentUser
 })
 
 const mapDispatchToProps = (dispatch) => ({

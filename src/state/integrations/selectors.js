@@ -1,7 +1,6 @@
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
-import {getFormValues} from 'redux-form'
 
 import {compare} from '../../utils'
 
@@ -90,8 +89,6 @@ export const getRedirectUri = type => createSelector(
 )
 
 export const makeGetRedirectUri = state => type => getRedirectUri(type)(state)
-
-export const makeGetFormValues = state => form => getFormValues(form)(state)
 
 // return the list of integration used to send messages from the helpdesk
 export const getMessagingIntegrations = createSelector(

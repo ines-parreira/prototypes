@@ -95,7 +95,7 @@ export function updateCreditCard(creditCard) {
                     exp_year: expiry[1].trim()
                 }, (status, response) => {
                     if (response.error) {
-                        resolve()
+                        resolve(response)
                         return dispatch({
                             type: types.UPDATE_CREDIT_CARD_ERROR,
                             error: response.error,
@@ -119,7 +119,7 @@ export function updateCreditCard(creditCard) {
                                 resp
                             })
                         }, (error) => {
-                            resolve()
+                            resolve(error)
                             return dispatch({
                                 type: types.UPDATE_CREDIT_CARD_ERROR,
                                 error,

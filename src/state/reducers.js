@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux'
-import {reducer as formReducer} from 'redux-form'
 import {reducer as notificationsReducer} from 'react-notification-system-redux'
 
 import activityReducer from './activity/reducers'
@@ -29,7 +28,6 @@ const rootReducer = combineReducers({
     billing: billingReducer,
     currentAccount: currentAccountReducer,
     currentUser: currentUserReducer,
-    form: formReducer,
     infobar: infobarReducer,
     integrations: integrationsReducer,
     layout: layoutReducer,

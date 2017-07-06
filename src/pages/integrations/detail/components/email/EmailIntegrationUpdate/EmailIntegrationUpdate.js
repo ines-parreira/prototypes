@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react'
-import {Field, reduxForm} from 'redux-form'
 import {Link, browserHistory, withRouter} from 'react-router'
 import Clipboard from 'clipboard'
 import {connect} from 'react-redux'
@@ -17,18 +16,22 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../../../../common/components/Loader'
-import formSender from '../../../../../common/utils/formSender'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import {GMAIL_IMPORTED_THREADS} from '../../../../../../config'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
-import ReduxFormInputField from '../../../../../common/forms/ReduxFormInputField'
+import InputField from '../../../../../common/forms/InputField'
 
 class EmailIntegrationUpdate extends React.Component {
-    state = {
-        isCopied: false,
+    constructor(props) {
+        super(props)
+
+        this.state = Object.assign({
+            isCopied: false,
+            dirty: false,
+        }, this._getForm(props.integration))
     }
 
     componentDidMount() {
@@ -53,34 +56,44 @@ class EmailIntegrationUpdate extends React.Component {
 
         // populating the form when updating an integration
         if (!this.isInitialized && !loading.get('integration')) {
-            this.props.initialize({
-                name: integration.get('name', '')
-            })
+            this.setState(this._getForm(integration))
             this.isInitialized = true
         }
     }
 
-    componentDidUpdate() {
-        // activate copy to clipboard button only for email integration
-        if (this.props.integration.get('type') === 'email') {
-            const clipboard = new Clipboard('#copy-forwarding-email')
-            clipboard.on('success', () => {
-                this.setState({isCopied: true})
-                setTimeout(() => {
-                    this.setState({isCopied: false})
-                }, 1500)
-            })
+    _getForm(integration) {
+        return {
+            name: integration.get('name', '')
         }
     }
 
-    _handleSubmit = (type, values) => {
+    _clipboardCopy = (button) => {
+        if (!button) {
+            return
+        }
+
+        const clipboard = new Clipboard(button)
+        clipboard.on('success', () => {
+            this.setState({isCopied: true})
+            setTimeout(() => {
+                this.setState({isCopied: false})
+            }, 1500)
+        })
+    }
+
+    _handleSubmit = (e) => {
+        e.preventDefault()
         const {updateOrCreateIntegration} = this.props.actions
 
         logEvent('Save email integration')
-        return formSender(updateOrCreateIntegration(fromJS({
+        return updateOrCreateIntegration(fromJS({
             id: this.props.integration.get('id'),
-            name: values.name
-        })))
+            name: this.state.name
+        })).then((res) => {
+            this.setState({dirty: false})
+
+            return res
+        })
     }
 
     _importEmails = () => {
@@ -88,12 +101,12 @@ class EmailIntegrationUpdate extends React.Component {
 
         logEvent('Import Gmail emails')
 
-        return formSender(importEmails(fromJS({
+        return importEmails(fromJS({
             id: integration.get('id'),
             meta: {
                 import_activated: true
             }
-        })))
+        }))
     }
 
     _renderImportation = () => {
@@ -185,9 +198,9 @@ class EmailIntegrationUpdate extends React.Component {
                     />
                     <InputGroupButton>
                         <Button
-                            id="copy-forwarding-email"
                             color="info"
                             data-clipboard-target="#forwarding-email"
+                            getRef={this._clipboardCopy}
                         >
                             <i className="fa fa-fw fa-files-o mr-2" />
                             {this.state.isCopied ? 'Copied!' : 'Copy'}
@@ -203,8 +216,6 @@ class EmailIntegrationUpdate extends React.Component {
             domain,
             integration,
             loading,
-            pristine,
-            handleSubmit,
             actions: {
                 deleteIntegration
             }
@@ -220,22 +231,26 @@ class EmailIntegrationUpdate extends React.Component {
                 <h3>
                     Settings
                 </h3>
-                <Form onSubmit={handleSubmit((values) => this._handleSubmit('email', values))}>
-                    <Field
+                <Form onSubmit={this._handleSubmit}>
+                    <InputField
                         type="text"
                         name="name"
                         label="Address name"
                         placeholder={`${_capitalize(domain)} Support`}
                         required
                         help="The name that customers will see when they receive emails from you"
-                        component={ReduxFormInputField}
+                        value={this.state.name}
+                        onChange={value => this.setState({
+                            dirty: true,
+                            name: value
+                        })}
                     />
 
                     <div>
                         <Button
                             type="submit"
                             color="primary"
-                            disabled={pristine || isSubmitting || isDeleting}
+                            disabled={!this.state.dirty || isSubmitting || isDeleting}
                             className={classNames({
                                 'btn-loading': isSubmitting,
                             })}
@@ -313,20 +328,13 @@ class EmailIntegrationUpdate extends React.Component {
 
 EmailIntegrationUpdate.propTypes = {
     domain: PropTypes.string.isRequired,
-    initialize: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     notify: PropTypes.func.isRequired,
     importEmails: PropTypes.func.isRequired,
     integration: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    pristine: PropTypes.bool.isRequired,
     loading: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
 }
-
-const emailIntegrationUpdateComponent = reduxForm({
-    form: 'UPDATE_EMAIL_INTEGRATION',
-})(EmailIntegrationUpdate)
 
 const mapStateToProps = state => ({
     domain: state.currentAccount.get('domain'),
@@ -337,4 +345,4 @@ const mapDispatchToProps = {
     notify: notificationActions.notify,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(emailIntegrationUpdateComponent))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmailIntegrationUpdate))

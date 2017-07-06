@@ -1,34 +1,74 @@
 import React, {PropTypes} from 'react'
-import {Field, reduxForm} from 'redux-form'
 import classnames from 'classnames'
+import _pick from 'lodash/pick'
+import _toString from 'lodash/toString'
+import _forEach from 'lodash/forEach'
 import {Form, Button} from 'reactstrap'
 
-import formSender from '../../../common/utils/formSender'
-
-import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
-
-const validate = (values) => {
-    const errors = {}
-
-    if (values.new_password !== values.confirm_new_password) {
-        errors.confirm_new_password = 'Passwords do not match.'
-    }
-
-    return errors
-}
+import InputField from '../../../common/forms/InputField'
 
 class ChangePasswordView extends React.Component {
-    constructor(props) {
-        super(props)
-        props.initialize({old_password: '', new_password: '', confirm_new_password: ''})
+    state = {
+        dirty: true,
+        errors: {},
+        old_password: '',
+        new_password: '',
+        confirm_new_password: '',
     }
 
-    _handleSubmit = (values) => {
-        return formSender(this.props.actions.changePassword(values.old_password, values.new_password))
+    _validate = (values) => {
+        const errors = {}
+
+        if (values.new_password !== values.confirm_new_password) {
+            errors.confirm_new_password = 'Passwords do not match.'
+        }
+
+        return errors
+    }
+
+    _updateField = (value) => {
+        const newState = Object.assign({}, this.state, value)
+
+        this.setState(Object.assign({}, newState, {
+            dirty: true,
+            errors: this._validate(newState)
+        }))
+    }
+
+    _handleSubmit = (e) => {
+        e.preventDefault()
+        const values = _pick(this.state, [
+            'old_password',
+            'new_password',
+            'confirm_new_password',
+        ])
+
+        return this.props.actions
+            .changePassword(values.old_password, values.new_password)
+            .then(({error} = {}) => {
+                let errors = {}
+
+                if (error &&
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.error
+                ) {
+                    errors = error.response.data.error.data
+                    _forEach(errors, (err, key) => {
+                        errors[key] = _toString(err)
+                    })
+                }
+
+                this.setState({
+                    dirty: false,
+                    errors,
+                })
+            })
     }
 
     render() {
-        const {handleSubmit, isLoading, invalid, pristine} = this.props
+        const {isLoading} = this.props
+        const invalid = Object.keys(this.state.errors).length > 0
 
         return (
             <div>
@@ -41,32 +81,38 @@ class ChangePasswordView extends React.Component {
                     set instead.
                 </p>
 
-                <Form onSubmit={handleSubmit(this._handleSubmit)}>
-                    <Field
+                <Form onSubmit={this._handleSubmit}>
+                    <InputField
                         type="password"
                         name="old_password"
                         label="Current password"
                         placeholder="Current password"
                         required
-                        component={ReduxFormInputField}
+                        value={this.state.old_password}
+                        onChange={old_password => this._updateField({old_password})}
+                        error={this.state.errors.old_password}
                     />
-                    <Field
+                    <InputField
                         type="password"
                         name="new_password"
                         label="New password"
                         placeholder="New password"
                         min="6"
                         required
-                        component={ReduxFormInputField}
+                        value={this.state.new_password}
+                        onChange={new_password => this._updateField({new_password})}
+                        error={this.state.errors.new_password}
                     />
-                    <Field
+                    <InputField
                         type="password"
                         name="confirm_new_password"
                         label="Confirm new password"
                         placeholder="Confirm new password"
                         min="6"
                         required
-                        component={ReduxFormInputField}
+                        value={this.state.confirm_new_password}
+                        onChange={confirm_new_password => this._updateField({confirm_new_password})}
+                        error={this.state.errors.confirm_new_password}
                     />
 
                     <div>
@@ -76,7 +122,7 @@ class ChangePasswordView extends React.Component {
                             className={classnames({
                                 'btn-loading': isLoading,
                             })}
-                            disabled={isLoading || invalid || pristine}
+                            disabled={isLoading || invalid || !this.state.dirty}
                         >
                             Save
                         </Button>
@@ -88,15 +134,8 @@ class ChangePasswordView extends React.Component {
 }
 
 ChangePasswordView.propTypes = {
-    initialize: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
     isLoading: PropTypes.bool,
-    invalid: PropTypes.bool,
-    pristine: PropTypes.bool,
 }
 
-export default reduxForm({
-    form: 'changePassword',
-    validate,
-})(ChangePasswordView)
+export default ChangePasswordView

@@ -1,15 +1,20 @@
 import React, {PropTypes} from 'react'
-import {Field, reduxForm} from 'redux-form'
 import {Form, Button} from 'reactstrap'
+import _pick from 'lodash/pick'
 
-import ReduxFormInputField from '../../../forms/ReduxFormInputField'
+import InputField from '../../../forms/InputField'
 
 class TooltipWidgetEditField extends React.Component {
+    state = {
+        title: '',
+        type: ''
+    }
+
     componentDidMount() {
         const {template} = this.props
 
         // populating the form
-        this.props.initialize({
+        this.setState({
             title: template.get('title', ''),
             type: template.get('type', '')
         })
@@ -22,29 +27,33 @@ class TooltipWidgetEditField extends React.Component {
         this.props.actions.stopWidgetEdition()
     }
 
-    _handleSubmit = (values) => {
-        this.props.actions.updateEditedWidget(values)
+    _handleSubmit = (e) => {
+        e.preventDefault()
+        this.props.actions.updateEditedWidget(_pick(this.state, [
+            'title',
+            'type'
+        ]))
         this._closePopup()
     }
 
     render() {
-        const {handleSubmit} = this.props
-
         return (
-            <Form onSubmit={handleSubmit(this._handleSubmit)}>
-                <Field
+            <Form onSubmit={this._handleSubmit}>
+                <InputField
                     type="text"
                     name="title"
                     label="Title"
                     required
-                    component={ReduxFormInputField}
+                    value={this.state.title}
+                    onChange={title => this.setState({title})}
                 />
-                <Field
+                <InputField
                     type="select"
                     name="type"
                     label="Type"
                     required
-                    component={ReduxFormInputField}
+                    value={this.state.type}
+                    onChange={type => this.setState({type})}
                 >
                     <option value="text">Text</option>
                     <option value="date">Date</option>
@@ -53,7 +62,7 @@ class TooltipWidgetEditField extends React.Component {
                     <option value="email">Email</option>
                     <option value="boolean">Boolean (true/false)</option>
                     <option value="array">List</option>
-                </Field>
+                </InputField>
 
                 <div>
                     <Button
@@ -77,13 +86,9 @@ class TooltipWidgetEditField extends React.Component {
 }
 
 TooltipWidgetEditField.propTypes = {
-    initialize: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     template: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 }
 
-export default reduxForm({
-    form: 'tooltipWidgetField',
-})(TooltipWidgetEditField)
+export default TooltipWidgetEditField
 

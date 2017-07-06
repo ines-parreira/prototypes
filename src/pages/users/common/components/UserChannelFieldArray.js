@@ -1,10 +1,29 @@
 import React from 'react'
-import {Field} from 'redux-form'
+import _clone from 'lodash/clone'
 import {FormGroup, Label, Row, Col, Button} from 'reactstrap'
 
-import ReduxFormInputField from '../../../common/forms/ReduxFormInputField'
+import InputField from '../../../common/forms/InputField'
 
-class UserContactField extends React.Component {
+class UserChannelFieldArray extends React.Component {
+    _add = () => {
+        return this.props.onChange(_clone(this.props.fields).concat([{
+            address: ''
+        }]))
+    }
+
+    _update = (index, key, value) => {
+        const fields = _clone(this.props.fields)
+        fields[index][key] = value
+
+        return this.props.onChange(fields)
+    }
+
+    _remove = (index) => {
+        const fields = _clone(this.props.fields)
+        fields.splice(index, 1)
+        return this.props.onChange(fields)
+    }
+
     render() {
         const {
             fields,
@@ -12,11 +31,15 @@ class UserContactField extends React.Component {
             type,
             addLabel,
             label,
+            errors,
         } = this.props
 
         return (
             <FormGroup>
                 {label && <Label>{label}</Label>}
+                {
+                    !fields.length && <p>No {label.toLowerCase()}</p>
+                }
                 {
                     fields.map((contact, index) =>
                         <Row
@@ -24,18 +47,20 @@ class UserContactField extends React.Component {
                             className="mb-3 form-row"
                         >
                             <Col xs="10">
-                                <Field
+                                <InputField
                                     type={type}
                                     name={`${contact}.address`}
                                     placeholder={placeholder}
-                                    component={ReduxFormInputField}
+                                    value={contact.address}
+                                    onChange={address => this._update(index, 'address', address)}
+                                    error={errors[index] && errors[index].address}
                                 />
                             </Col>
                             <Col xs="2">
                                 <Button
                                     color="danger"
                                     type="button"
-                                    onClick={() => fields.remove(index)}
+                                    onClick={() => this._remove(index)}
                                 >
                                     <i className="fa fa-fw fa-trash-o fa-lg" />
                                 </Button>
@@ -47,7 +72,7 @@ class UserContactField extends React.Component {
                 <Button
                     type="button"
                     size="sm"
-                    onClick={() => fields.push({})}
+                    onClick={this._add}
                     color="secondary"
                 >
                     <i className="fa fa-fw fa-plus mr-2" />
@@ -58,18 +83,22 @@ class UserContactField extends React.Component {
     }
 }
 
-UserContactField.defaultProps = {
+UserChannelFieldArray.defaultProps = {
     type: 'text',
+    label: '',
     addLabel: 'Add',
+    errors: {}
 }
 
-UserContactField.propTypes = {
+UserChannelFieldArray.propTypes = {
     type: React.PropTypes.string.isRequired,
-    fields: React.PropTypes.object.isRequired,
+    fields: React.PropTypes.array.isRequired,
     meta: React.PropTypes.object.isRequired,
     label: React.PropTypes.string,
     addLabel: React.PropTypes.string,
     placeholder: React.PropTypes.string,
+    onChange: React.PropTypes.func,
+    errors: React.PropTypes.object,
 }
 
-export default UserContactField
+export default UserChannelFieldArray

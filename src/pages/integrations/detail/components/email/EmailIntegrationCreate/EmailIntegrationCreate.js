@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react'
-import {Field, reduxForm} from 'redux-form'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Link, browserHistory, withRouter} from 'react-router'
@@ -13,11 +12,10 @@ import {
 } from 'reactstrap'
 
 import css from './EmailIntegrationCreate.less'
-import formSender from '../../../../../common/utils/formSender'
 import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import {notify} from '../../../../../../state/notifications/actions'
 
-import ReduxFormInputField from '../../../../../common/forms/ReduxFormInputField'
+import InputField from '../../../../../common/forms/InputField'
 
 import googleLogo from './../../../../../../../../public/img/google-icon.svg'
 
@@ -39,26 +37,30 @@ class EmailIntegrationCreate extends React.Component {
         }
     }
 
-    _handleSubmit = (type, values) => {
-        const {updateOrCreateIntegration} = this.props.actions
+    state = {
+        name: '',
+        email: '',
+    }
+
+    _handleSubmit = (e) => {
+        e.preventDefault()
         const integration = fromJS({
-            type,
-            name: values.name,
+            type: 'email',
+            name: this.state.name,
             meta: {
-                address: values.meta.address,
+                address: this.state.email,
                 preferred: false
             }
         })
 
         logEvent('connect_standard_email_account_click')
-        return formSender(updateOrCreateIntegration(integration))
+        return this.props.actions.updateOrCreateIntegration(integration)
     }
 
     render() {
         const {
             domain,
             loading,
-            handleSubmit,
         } = this.props
         const isSubmitting = loading.get('updateIntegration')
 
@@ -103,23 +105,25 @@ class EmailIntegrationCreate extends React.Component {
 
                     <div className="divider">OR</div>
 
-                    <Form onSubmit={handleSubmit((values) => this._handleSubmit('email', values))}>
-                        <Field
+                    <Form onSubmit={this._handleSubmit}>
+                        <InputField
                             type="text"
                             name="name"
                             label="Address name"
                             placeholder={`${_capitalize(domain)} Support`}
                             required
                             help="The name that customers will see when they receive emails from you"
-                            component={ReduxFormInputField}
+                            value={this.state.name}
+                            onChange={value => this.setState({name: value})}
                         />
-                        <Field
+                        <InputField
                             type="email"
                             name="meta.address"
                             label="Email address"
                             placeholder={`support@${domain}.com`}
                             required
-                            component={ReduxFormInputField}
+                            value={this.state.email}
+                            onChange={value => this.setState({email: value})}
                         />
 
                         <div>
@@ -145,20 +149,14 @@ class EmailIntegrationCreate extends React.Component {
 
 EmailIntegrationCreate.propTypes = {
     domain: PropTypes.string.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
-    pristine: PropTypes.bool.isRequired,
     loading: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     notify: PropTypes.func.isRequired,
 }
 
-const emailIntegrationCreateComponent = reduxForm({
-    form: 'ADD_EMAIL_INTEGRATION',
-})(EmailIntegrationCreate)
-
 const mapStateToProps = state => ({
     domain: state.currentAccount.get('domain'),
 })
 
-export default withRouter(connect(mapStateToProps, {notify})(emailIntegrationCreateComponent))
+export default withRouter(connect(mapStateToProps, {notify})(EmailIntegrationCreate))

@@ -25,7 +25,6 @@ class ViewNavbarView extends Component {
         settings: PropTypes.object,
         settingType: PropTypes.oneOf(['ticket-views', 'user-views']).isRequired,
         isLoading: PropTypes.bool.isRequired,
-        isUpdate: PropTypes.bool.isRequired,
         fetchPage: PropTypes.func.isRequired,
         getViewCount: PropTypes.func.isRequired,
     }
@@ -44,7 +43,7 @@ class ViewNavbarView extends Component {
     }
 
     render() {
-        const {views, activeView, viewType, settings, isLoading, isUpdate} = this.props
+        const {views, activeView, viewType, settings, isLoading} = this.props
         const {hasEditMode} = this.state
         // we use this to build urls
         const objectName = getPluralObjectName(viewType)
@@ -98,7 +97,6 @@ class ViewNavbarView extends Component {
                                 <ViewNavbarViewEditor
                                     initialValues={settings.toJS()}
                                     setting={settings}
-                                    isUpdate={isUpdate}
                                     isLoading={isLoading}
                                     views={displayedViews}
                                     objectName={objectName}
@@ -148,7 +146,6 @@ const mapStateToProps = (state, ownProps) => {
         activeView: getActiveView(state),
         views: getViewsByType(ownProps.viewType)(state),
         settings,
-        isUpdate: !!settings.get('id'),
     }
 }
 

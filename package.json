@@ -64,7 +64,6 @@
     "react-slick": "^0.14.11",
     "reactstrap": "^4.5.0",
     "redux": "^3.6.0",
-    "redux-form": "^6.5.0",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
     "reselect": "^2.5.4",
