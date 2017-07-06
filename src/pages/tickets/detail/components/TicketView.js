@@ -205,10 +205,8 @@ export class TicketView extends React.Component {
                 <div
                     className={classnames('ticket-content', {
                         'mt-3': isCreating,
+                        'history-displayed': isHistoryDisplayed,
                     })}
-                    style={{
-                        flexShrink: isHistoryDisplayed ? 0 : 1, // no collapsing of content when history is open
-                    }}
                 >
                     {
                         !isCreating && (
