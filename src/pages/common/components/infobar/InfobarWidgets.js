@@ -28,24 +28,40 @@ class InfobarWidgets extends React.Component {
         // widget, set it's template `path`, `templatePath` when needed
         displayList.forEach((item, idx) => {
             let widget = null
-            let sourcePath = null
+            let sourcePath = genericSourcePath.slice()
 
             if (item.get('type') === 'widget') {
                 widget = item.get('widget', fromJS({}))
 
                 if (widget.get('type') !== 'custom') {
+                    let selectedIntegrations = null
                     let integration = null
+
                     if (widget.get('type') !== 'http') {
-                        integration = integrations.find((i) => i.get('type').toString() === widget.get('type'))
+                        selectedIntegrations = integrations.filter((i) => i.get('type').toString() === widget.get('type'))
                     } else {
-                        integration = integrations.find((i) => i.get('id').toString() === widget.get('integration_id').toString())
+                        selectedIntegrations = integrations.filter((i) => i.get('id').toString() === widget.get('integration_id').toString())
                     }
 
-                    if (!integration || integration.isEmpty()) {
+                    if (!selectedIntegrations || selectedIntegrations.isEmpty()) {
                         return
                     }
 
-                    sourcePath = genericSourcePath.slice()
+                    selectedIntegrations.forEach((selectedIntegration) => {
+                        const tmpSourcePath = sourcePath.slice()
+                        tmpSourcePath.push(selectedIntegration.get('id').toString())
+
+                        // If there's something in source at sourcePath, the user has data for this integration,
+                        // so we can display the widget
+                        if (source.getIn(tmpSourcePath)) {
+                            integration = selectedIntegration
+                        }
+                    })
+
+                    if (!integration) {
+                        return
+                    }
+
                     sourcePath.push(integration.get('id').toString())
                 } else {
                     sourcePath = getSourcePathFromContext(widget.get('context'), widget.get('type'))
@@ -69,7 +85,6 @@ class InfobarWidgets extends React.Component {
                     return
                 }
 
-                sourcePath = genericSourcePath.slice()
                 sourcePath.push(integrationId)
             }
 
