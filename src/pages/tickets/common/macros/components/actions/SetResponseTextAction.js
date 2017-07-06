@@ -13,6 +13,8 @@ import RichField from '../../../../../common/forms/RichField'
 
 import {insertText} from '../../../../../../utils'
 
+import {getVariables} from '../../../../../../config/ticket'
+
 @connect((state) => {
     return {
         hasIntegrationOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(state),
@@ -47,146 +49,43 @@ export default class SetResponseTextAction extends React.Component {
     _renderInsertVariable = () => {
         const {hasIntegrationOfTypes} = this.props
 
-        return (
-            <div>
-                <UncontrolledButtonDropdown>
+        const variables = getVariables()
+
+        return variables.map((category, index) => {
+            if (category.type && !hasIntegrationOfTypes(category.type)) {
+                return null
+            }
+
+            return (
+                <UncontrolledButtonDropdown key={index}>
                     <DropdownToggle
                         color="link"
                         caret
                         type="button"
                         style={{color: 'inherit'}}
                     >
-                        Ticket requester
+                        {category.name}
                     </DropdownToggle>
                     <DropdownMenu>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => {
-                                this._insertVariable('ticket.requester.firstname')
-                            }}
-                        >
-                            First name
-                        </DropdownItem>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => {
-                                this._insertVariable('ticket.requester.lastname')
-                            }}
-                        >
-                            Last name
-                        </DropdownItem>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => {
-                                this._insertVariable('ticket.requester.name')
-                            }}
-                        >
-                            Full name
-                        </DropdownItem>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => {
-                                this._insertVariable('ticket.requester.email')
-                            }}
-                        >
-                            Email
-                        </DropdownItem>
+                        {
+                            category.children.map((variable, indexVariable) => {
+                                return (
+                                    <DropdownItem
+                                        key={indexVariable}
+                                        type="button"
+                                        onClick={() => {
+                                            this._insertVariable(variable.value)
+                                        }}
+                                    >
+                                        {variable.name}
+                                    </DropdownItem>
+                                )
+                            })
+                        }
                     </DropdownMenu>
                 </UncontrolledButtonDropdown>
-                <UncontrolledButtonDropdown>
-                    <DropdownToggle
-                        color="link"
-                        caret
-                        type="button"
-                        style={{color: 'inherit'}}
-                    >
-                        Current agent
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => {
-                                this._insertVariable('current_user.firstname')
-                            }}
-                        >
-                            First name
-                        </DropdownItem>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => {
-                                this._insertVariable('current_user.lastname')
-                            }}
-                        >
-                            Last name
-                        </DropdownItem>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => {
-                                this._insertVariable('current_user.name')
-                            }}
-                        >
-                            Full name
-                        </DropdownItem>
-                        <DropdownItem
-                            type="button"
-                            onClick={() => {
-                                this._insertVariable('current_user.email')
-                            }}
-                        >
-                            Email
-                        </DropdownItem>
-                    </DropdownMenu>
-                </UncontrolledButtonDropdown>
-                {
-                    hasIntegrationOfTypes('shopify') && (
-                        <UncontrolledButtonDropdown>
-                            <DropdownToggle
-                                color="link"
-                                caret
-                                type="button"
-                                style={{color: 'inherit'}}
-                            >
-                                Shopify
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem
-                                    type="button"
-                                    onClick={() => {
-                                        this._insertVariable('ticket.requester.integrations.shopify.orders[0].order_number')
-                                    }}
-                                >
-                                    Last order's number
-                                </DropdownItem>
-                                <DropdownItem
-                                    type="button"
-                                    onClick={() => {
-                                        this._insertVariable('ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_urls')
-                                    }}
-                                >
-                                    Tracking url of last order
-                                </DropdownItem>
-                                <DropdownItem
-                                    type="button"
-                                    onClick={() => {
-                                        this._insertVariable('ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_numbers')
-                                    }}
-                                >
-                                    Tracking number of last order
-                                </DropdownItem>
-                                <DropdownItem
-                                    type="button"
-                                    onClick={() => {
-                                        this._insertVariable('ticket.requester.integrations.shopify.orders[0].fulfillments[0].shipment_status')
-                                    }}
-                                >
-                                    Delivery status of last order
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </UncontrolledButtonDropdown>
-                    )
-                }
-            </div>
-        )
+            )
+        })
     }
 
     render() {

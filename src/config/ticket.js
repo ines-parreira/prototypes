@@ -1,4 +1,6 @@
 import {fromJS} from 'immutable'
+import _find from 'lodash/find'
+
 import {getLastMessage, compare} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
@@ -9,6 +11,73 @@ export const SYSTEM_SOURCE_TYPES = ['internal-note', 'system-message']
 
 // source types that can not be used to answer
 export const UNUSABLE_SOURCE_TYPES = ['aircall', 'phone', 'facebook', 'api', 'facebook-post', 'ottspott-call', 'system-message']
+
+// available variables in macros
+export const VARIABLES = [{
+    name: 'Ticket requester',
+    children: [{
+        name: 'First name',
+        fullName: 'Requester first name',
+        value: 'ticket.requester.firstname',
+    }, {
+        name: 'Last name',
+        fullName: 'Requester last name',
+        value: 'ticket.requester.lastname',
+    }, {
+        name: 'Full name',
+        fullName: 'Requester full name',
+        value: 'ticket.requester.name',
+    }, {
+        name: 'Email',
+        fullName: 'Requester email',
+        value: 'ticket.requester.email',
+    }],
+}, {
+    name: 'Current agent',
+    children: [{
+        name: 'First name',
+        fullName: 'Current agent first name',
+        value: 'current_user.firstname',
+    }, {
+        name: 'Last name',
+        fullName: 'Current agent last name',
+        value: 'current_user.lastname',
+    }, {
+        name: 'Full name',
+        fullName: 'Current agent full name',
+        value: 'current_user.name',
+    }, {
+        name: 'Email',
+        fullName: 'Current agent email',
+        value: 'current_user.email',
+    }],
+}, {
+    type: 'shopify',
+    name: 'Shopify',
+    children: [{
+        name: 'Last order\'s number',
+        value: 'ticket.requester.integrations.shopify.orders[0].name',
+    }, {
+        name: 'Tracking url of last order',
+        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_urls',
+    }, {
+        name: 'Tracking number of last order',
+        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_numbers',
+    }, {
+        name: 'Delivery status of last order',
+        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].shipment_status',
+    }]
+}]
+
+// previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
+export const PREVIOUS_VARIABLES = [{
+    type: 'shopify',
+    name: 'Shopify',
+    children: [{
+        name: 'Last order\'s number',
+        value: 'ticket.requester.integrations.shopify.orders[0].order_number',
+    }],
+}]
 
 export const orderedMessages = (messages) => {
     return messages.sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
@@ -173,4 +242,35 @@ export const sourceTypeToIcon = (sourceType) => {
         default:
             return 'fa fa-fw fa-question'
     }
+}
+
+export const getVariables = () => {
+    return VARIABLES
+}
+
+export const getVariablesList = (variablesList = VARIABLES) => {
+    const variables = []
+
+    variablesList.forEach((category) => {
+        category.children.forEach((variable) => {
+            const object = {
+                ...variable,
+                fullName: variable.fullName || variable.name,
+            }
+
+            if (category.type) {
+                object.type = category.type
+            }
+
+            variables.push(object)
+        })
+    })
+
+    return variables
+}
+
+export const getVariableWithValue = (value) => {
+    const variables = getVariablesList()
+    const previousVariables = getVariablesList(PREVIOUS_VARIABLES)
+    return _find(variables, {value}) || _find(previousVariables, {value})
 }

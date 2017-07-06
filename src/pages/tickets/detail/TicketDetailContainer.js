@@ -112,11 +112,10 @@ export default class TicketDetailContainer extends React.Component {
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers(['agent', 'admin'])
         this.props.actions.ticket.clearTicket()
+        this._fetchTicketData(this.props.params.ticketId)
     }
 
     componentDidMount() {
-        // fetch ticket AFTER component is mounted, draft js editor lifecycle purpose
-        this._fetchTicketData(this.props.params.ticketId)
         this._bindKeys()
     }
 

@@ -353,7 +353,14 @@ export const clearAppliedMacro = (ticketId) => ({
 
 export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
     if (ticketId === 'new') {
-        return dispatch(newMessageActions.initializeMessageDraft())
+        return new Promise((resolve) => {
+            // wait next tick before initializing the draft
+            // so that draft-js is mounted (and Editor plugins are ran) before we initialize message content
+            // otherwise on a new ticket plugins are not applied to the Editor
+            setTimeout(() => {
+                resolve(dispatch(newMessageActions.initializeMessageDraft()))
+            }, 1)
+        })
     }
 
     dispatch({

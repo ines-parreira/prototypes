@@ -37,7 +37,7 @@ export default class RichField extends InputField {
             this.dndPlugin,
             this.blockBreakoutPlugin,
             this.resizeablePlugin,
-            this.toolbarPlugin
+            this.toolbarPlugin,
         ]
 
         let editorState = EditorState.createEmpty()
@@ -97,6 +97,16 @@ export default class RichField extends InputField {
         // set content state in editor state
         editorState = EditorState.push(editorState, contentState)
 
+        // trigger plugins onChange when we force a new editor state via this function
+        // comes from Editor internal onChange function https://github.com/draft-js-plugins/draft-js-plugins/blob/55eb3b845d7e776a10def7f388624cf4c9879f5a/draft-js-plugins-editor/src/Editor/index.js#L92
+        if (this.editor) {
+            this.editor.resolvePlugins().forEach((plugin) => {
+                if (plugin.onChange) {
+                    editorState = plugin.onChange(editorState, this.editor.getPluginMethods())
+                }
+            })
+        }
+
         this.setState({editorState}, callback)
     }
 
@@ -150,6 +160,7 @@ export default class RichField extends InputField {
             value, // eslint-disable-line
             canDropFiles,
             toolbarProps,
+            displayOnly,
             ...rest,
         } = this.props
 
@@ -157,7 +168,11 @@ export default class RichField extends InputField {
         const {Toolbar} = this.toolbarPlugin
 
         return (
-            <div className="rich-textarea-wrapper">
+            <div
+                className={classnames('rich-textarea-wrapper', {
+                    'display-only': displayOnly,
+                })}
+            >
                 <div
                     className={classnames('editor-wrapper', {
                         drop: this.state.isDragging && canDropFiles,
@@ -177,6 +192,7 @@ export default class RichField extends InputField {
                         ref={(editor) => {
                             this.editor = editor
                         }}
+                        readOnly={displayOnly}
                         {...rest}
                     />
                     <EmojiSuggestions />

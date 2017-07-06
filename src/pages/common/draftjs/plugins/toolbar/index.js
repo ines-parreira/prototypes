@@ -1,10 +1,16 @@
 import decorateComponentWithProps from 'decorate-component-with-props'
-import {Entity} from 'draft-js'
+import {EditorState, Entity} from 'draft-js'
+
 import createStore from './createStore'
 import decorators from './decorators'
-import {getToolbarActions} from './utils'
+import {
+    getToolbarActions,
+    attachImmutableEntitiesToVariables,
+} from './utils'
 import Toolbar from './Toolbar'
 import Image from './components/Image'
+
+// documentation: https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
 const toolbarPlugin = (config = {}) => {
     const store = createStore()
@@ -41,7 +47,20 @@ const toolbarPlugin = (config = {}) => {
             }
 
             return null
-        }
+        },
+        onChange: (editorState) => {
+            let newEditorState = attachImmutableEntitiesToVariables(editorState)
+
+            if (!newEditorState.getCurrentContent().equals(editorState.getCurrentContent())) {
+                // forcing the current selection ensures that it will be at it's right place
+                newEditorState = EditorState.forceSelection(
+                    newEditorState,
+                    newEditorState.getSelection(),
+                )
+            }
+
+            return newEditorState
+        },
     }
 }
 

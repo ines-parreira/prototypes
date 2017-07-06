@@ -5,7 +5,9 @@ import {Badge} from 'reactstrap'
 import {fileIconFromContentType, getSortedIntegrationActions} from '../../common/utils'
 import {TagLabel, AgentLabel, StatusLabel} from '../../../common/utils/labels'
 import {getIconFromType} from './../../../../state/integrations/helpers'
-import {getActionTemplate, sanitizeHtmlDefault} from './../../../../utils'
+import {getActionTemplate} from './../../../../utils'
+
+import RichField from '../../../common/forms/RichField'
 
 class Preview extends React.Component {
     renderAddAttachments = (attachments) => {
@@ -31,6 +33,28 @@ class Preview extends React.Component {
                 }
             </div>
         )
+    }
+
+    renderResponseText(responseTextAction) {
+        if (responseTextAction) {
+            const value = {
+                text: responseTextAction.getIn(['arguments', 'body_text']),
+            }
+
+            if (this.props.displayHTML) {
+                value.html = responseTextAction.getIn(['arguments', 'body_html'])
+            }
+
+            return (
+                <div className="macro-data">
+                    <RichField
+                        value={value}
+                        onChange={() => null}
+                        displayOnly
+                    />
+                </div>
+            )
+        }
     }
 
     renderSetStatus(setStatusAction) {
@@ -139,7 +163,7 @@ class Preview extends React.Component {
     }
 
     render() {
-        const {macro, displayHTML} = this.props
+        const {macro} = this.props
 
         if (!macro || macro.isEmpty()) {
             return null
@@ -158,23 +182,6 @@ class Preview extends React.Component {
 
         const sortedBackActions = getSortedIntegrationActions(backActions)
 
-        let textPreview = null
-        if (responseTextAction) {
-            const html = responseTextAction.getIn(['arguments', 'body_html'])
-            const text = responseTextAction.getIn(['arguments', 'body_text'])
-            if (html && displayHTML) {
-                const body = sanitizeHtmlDefault(html)
-                textPreview = (
-                    <div
-                        className="text-preview rich-content-wrapper"
-                        dangerouslySetInnerHTML={{__html: body}}
-                    />
-                )
-            } else {
-                textPreview = <pre className="text-preview">{text}</pre>
-            }
-        }
-
         return (
             <div className="macro-preview">
                 {this.renderSetStatus(setStatusAction)}
@@ -185,7 +192,7 @@ class Preview extends React.Component {
                     sortedBackActions.map((v, k) => this.renderBackActions(k, v)).toList().toJS()
                 }
                 {this.renderAddAttachments(addAttachmentsActions)}
-                {textPreview}
+                {this.renderResponseText(responseTextAction)}
             </div>
         )
     }

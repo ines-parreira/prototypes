@@ -27,6 +27,7 @@ import Immutable, {fromJS} from 'immutable'
 import md5 from 'md5'
 import linkifyIt from 'linkify-it'
 import htmlparser from 'htmlparser2'
+
 import {ACTION_TEMPLATES} from './config'
 
 const notificationSoundData = require('../../private/audio/notification.mp3')

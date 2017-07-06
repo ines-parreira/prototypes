@@ -55,8 +55,12 @@ export const getIntegrationsByTypes = (integrations = [], types = []) => (
     integrations.filter(inte => types.includes(inte.get('type', '')))
 )
 
+export const getIntegrationConfig = (type) => {
+    return _find(INTEGRATION_TYPE_DESCRIPTIONS, {type})
+}
+
 export const getIconUrl = (type) => {
-    const config = _find(INTEGRATION_TYPE_DESCRIPTIONS, {type})
+    const config = getIntegrationConfig(type)
     return config && config.image ? config.image : ''
 }
 

@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import ReactDOM from 'react-dom'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
@@ -9,6 +10,17 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import Preview from '../../../common/macros/Preview'
 
 class TicketMacros extends React.Component {
+    componentDidUpdate(prevProps) {
+        // brings the preview to top when previewing another macro
+        if (this.props.macros.getIn(['selected', 'id']) !== prevProps.macros.getIn(['selected', 'id'])) {
+            const element = ReactDOM.findDOMNode(this.refs.previewContainer)
+
+            if (element) {
+                element.scrollTop = 0
+            }
+        }
+    }
+
     openModalOnSelectedMacro(selectedMacroId) {
         this.props.previewMacroInModal(selectedMacroId)
         this.props.openModal()
@@ -48,7 +60,10 @@ class TicketMacros extends React.Component {
                 >
                     {items.map(this.renderMacroListItem).toList()}
                 </div>
-                <div className="macro-preview-container">
+                <div
+                    className="macro-preview-container"
+                    ref="previewContainer"
+                >
                     <a
                         className="btn btn-secondary manage-macros"
                         onClick={() => this.openModalOnSelectedMacro(macro.get('id'))}
