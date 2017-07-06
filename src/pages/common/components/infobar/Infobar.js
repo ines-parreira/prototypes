@@ -195,7 +195,7 @@ export default class Infobar extends React.Component {
     _onSearch = (query) => {
         if (query) {
             this.setState({isSearching: true})
-            this.props.search(query, 'infobar-user').then(({resp}) => {
+            this.props.search(query, 'user_profile').then(({resp}) => {
                 this.setState({
                     displaySelectedUser: false,
                     displaySearchResults: true,
@@ -279,7 +279,7 @@ export default class Infobar extends React.Component {
                                 })
                             }}
                         >
-                            <i className="fa fa-fw fa-arrow-left mr-2" />
+                            <i className="fa fa-fw fa-arrow-left mr-2"/>
                             Back
                         </Button>
                         {
@@ -324,7 +324,7 @@ export default class Infobar extends React.Component {
                             type="button"
                             onClick={() => this._resetSearch()}
                         >
-                            <i className="fa fa-fw fa-arrow-left mr-2" />
+                            <i className="fa fa-fw fa-arrow-left mr-2"/>
                             Back
                         </Button>
                     </div>
@@ -359,7 +359,7 @@ export default class Infobar extends React.Component {
                 {
                     displaySuggestedUser && (
                         <div className="hidden-sm-down">
-                            <div className="infobar-section-separator" />
+                            <div className="infobar-section-separator"/>
                             <div className={classnames(css['suggested-user'])}>
                                 <h4>Is this the same user?</h4>
                                 <p>
@@ -436,7 +436,7 @@ export default class Infobar extends React.Component {
                                 this._toggleEditionMode(!isEditing)
                             }}
                         >
-                            <i className="fa fa-fw fa-cog" />
+                            <i className="fa fa-fw fa-cog"/>
                         </Button>
                         <UncontrolledTooltip
                             placement="left"
