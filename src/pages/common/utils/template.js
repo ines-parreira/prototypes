@@ -1,18 +1,14 @@
-import {template} from 'lodash'
-import {formatDatetime} from '../../../utils'
+import _get from 'lodash/get'
+
+export const templateRegex = /{([a-zA-Z0-9.\[\]"'_]+)}/g
 
 // render a template like: `Order {self.id}` to `Order 37337`
-export function renderTemplate(body, context = {}) {
-    try {
-        // So we can format the dates inside templates
-        const newContext = context
-        newContext.formatDatetime = formatDatetime
-
-        return template(body, {
-            interpolate: /{([\s\S]+?)}/g
-        })(newContext)
-    } catch (e) {
-        const re = /{([A-Za-z0-9._[\]]+)}/g
-        return body.replace(re, '')
-    }
+export const renderTemplate = (body, context = {}) => {
+    return body.replace(templateRegex, (match, path) => {
+        try {
+            return _get(context, path, '') || '' // replaces null values too
+        } catch (e) {
+            return ''
+        }
+    })
 }

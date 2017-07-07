@@ -278,7 +278,7 @@ const replaceVariables = (argument, state, dispatch) => {
                         }
                     })
 
-                let newVariable = null
+                let newVariable = ''
 
                 if (integrationIds.length === 1) {
                     newVariable = variable.replace('integrations.shopify', `integrations[${integrationIds[0]}]`)

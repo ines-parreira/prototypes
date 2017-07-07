@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Card, CardBlock, Popover, PopoverContent} from 'reactstrap'
 
-import {renderTemplate} from '../utils'
+import {renderTemplate} from '../../../utils/template'
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import TooltipWidgetEditCard from '../forms/TooltipWidgetEditCard'
 

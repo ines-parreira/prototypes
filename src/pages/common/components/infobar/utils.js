@@ -136,22 +136,6 @@ export function isBoolean(string) {
 }
 
 /**
- * Render template like 'Order {id}' to 'Order 134'
- * @param text
- * @param context
- * @returns {*}
- */
-export function renderTemplate(text, context = {}) {
-    try {
-        return _.template(text, {
-            interpolate: /{([\s\S]+?)}/g
-        })(context)
-    } catch (e) {
-        return text
-    }
-}
-
-/**
  * Return true if sources exist and are not empty
  * @param sources
  * @param context

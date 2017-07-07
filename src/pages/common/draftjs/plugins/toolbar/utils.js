@@ -7,6 +7,8 @@ import actions from './actions'
 
 import * as ticketConfig from '../../../../../config/ticket'
 
+import {templateRegex} from '../../../utils/template'
+
 export const getToolbarActions = () => {
     return actions.map((nativeAction) => {
         const updatedAction = {...nativeAction} // clone native action
@@ -115,7 +117,7 @@ export const attachImmutableEntitiesToVariables = (editorState) => {
             )
         }
 
-        findWithRegex(/{([a-zA-Z0-9.\[\]"'_]+)}/g, block, addEntityToVariable)
+        findWithRegex(templateRegex, block, addEntityToVariable)
     })
 
     if (!newContentState.equals(contentState)) {

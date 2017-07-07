@@ -1,15 +1,7 @@
-import moment from 'moment'
 import {renderTemplate} from '../template'
-import {formatDatetime} from '../../../../utils'
 
 describe('components utils : template', () => {
     describe('renderTemplate', () => {
-        /* We reset the moment language with its default value.
-         *  Because others tests could edit this setting.
-         *  We ensure we use the default value for these tests.
-         **/
-        beforeAll(() => moment.locale('en'))
-
         it('does not throw error when context is undefined', () => {
             expect(renderTemplate('Hello')).toBe('Hello')
         })
@@ -21,7 +13,7 @@ describe('components utils : template', () => {
         })
 
         it('interpolates nested object', () => {
-            expect(renderTemplate('Hello {somebody.name}, how about a nice {something.name} ?', {
+            expect(renderTemplate('Hello {somebody.name}, how about a nice {something.name}?', {
                 somebody: {
                     name: 'Michael'
                 },
@@ -29,7 +21,7 @@ describe('components utils : template', () => {
                     name: 'cup of tea',
                     temperature: 300
                 }
-            })).toBe('Hello Michael, how about a nice cup of tea ?')
+            })).toBe('Hello Michael, how about a nice cup of tea?')
         })
 
         it('interpolates nested nested object', () => {
@@ -40,20 +32,6 @@ describe('components utils : template', () => {
                     }
                 }
             })).toBe('Hello Michael')
-        })
-
-        it('interpolates functions', () => {
-            expect(renderTemplate('Hello {func()}', {
-                func: () => 'world'
-            })).toBe('Hello world')
-        })
-
-        it('interpolates dates correctly', () => {
-            const date = new Date
-
-            expect(renderTemplate('We are the {formatDatetime(date)}', {
-                date
-            })).toBe(`We are the ${formatDatetime(date)}`)
         })
 
         it('return passed text without templates if interpolation fails', () => {
@@ -67,6 +45,14 @@ describe('components utils : template', () => {
                     }
                 }
             })).toBe(result)
+        })
+
+        it('interpolates available variables and ignores missing ones', () => {
+            expect(renderTemplate('Hello {somebody.name}, how about a nice {something.name}?', {
+                somebody: {
+                    name: 'Michael'
+                },
+            })).toBe('Hello Michael, how about a nice ?')
         })
     })
 })
