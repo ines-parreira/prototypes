@@ -6,21 +6,17 @@ import _isEqual from 'lodash/isEqual'
 import {EditorState, RichUtils, ContentState} from 'draft-js'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
 import createDndPlugin from 'draft-js-dnd-plugin'
-import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import createToolbarPlugin from '../draftjs/plugins/toolbar'
 
 import {convertToHTML, convertFromHTML} from '../../../utils'
 
-import 'draft-js-emoji-plugin/lib/plugin.css'
-
 export default class RichField extends InputField {
     constructor(props) {
         super(props)
 
         this.dndPlugin = createDndPlugin()
-        this.emojiPlugin = createEmojiPlugin()
         this.blockBreakoutPlugin = createBlockBreakoutPlugin()
         this.resizeablePlugin = createResizeablePlugin({
             horizontal: 'absolute',
@@ -33,7 +29,6 @@ export default class RichField extends InputField {
         this.toolbarPlugin = createToolbarPlugin({imageDecorator})
 
         this.plugins = [
-            this.emojiPlugin,
             this.dndPlugin,
             this.blockBreakoutPlugin,
             this.resizeablePlugin,
@@ -164,7 +159,6 @@ export default class RichField extends InputField {
             ...rest,
         } = this.props
 
-        const {EmojiSuggestions} = this.emojiPlugin
         const {Toolbar} = this.toolbarPlugin
 
         return (
@@ -195,7 +189,6 @@ export default class RichField extends InputField {
                         readOnly={displayOnly}
                         {...rest}
                     />
-                    <EmojiSuggestions />
                 </div>
                 <Toolbar {...toolbarProps} />
             </div>

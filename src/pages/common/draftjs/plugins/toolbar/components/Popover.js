@@ -12,6 +12,7 @@ class Popover extends React.Component {
         isActive: PropTypes.bool.isRequired,
         isDisabled: PropTypes.bool.isRequired,
         name: PropTypes.string.isRequired,
+        className: PropTypes.string,
     }
 
     static defaultProps = {
@@ -66,7 +67,7 @@ class Popover extends React.Component {
     }
 
     render() {
-        const {isActive, isDisabled} = this.props
+        const {isActive, isDisabled, className} = this.props
 
         return (
             <span className={css['popover-wrapper']}>
@@ -80,7 +81,7 @@ class Popover extends React.Component {
                 />
                 <div
                     onClick={this._onClick}
-                    className={classnames(css.popover, {
+                    className={classnames(className, css.popover, {
                         [css.hidden]: !this.state.isOpen,
                     })}
                 >

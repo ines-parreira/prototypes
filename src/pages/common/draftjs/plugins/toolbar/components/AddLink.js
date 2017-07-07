@@ -3,7 +3,7 @@ import {Button} from 'reactstrap'
 
 import Popover from './Popover'
 
-class AddLink extends React.Component {
+export default class AddLink extends React.Component {
     static propTypes = {
         action: PropTypes.object.isRequired,
         functions: PropTypes.object.isRequired,
@@ -83,5 +83,3 @@ class AddLink extends React.Component {
         )
     }
 }
-
-export default AddLink

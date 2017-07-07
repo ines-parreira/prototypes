@@ -1998,20 +1998,6 @@ draft-js-dnd-plugin@2.0.0-beta6:
     react-dom ">=15.3.1"
     union-class-names "^1.0.0"
 
-draft-js-emoji-plugin@2.0.0-beta6:
-  version "2.0.0-beta6"
-  resolved "https://registry.yarnpkg.com/draft-js-emoji-plugin/-/draft-js-emoji-plugin-2.0.0-beta6.tgz#c03423e344996dc205752d237db5c75c7b86cf40"
-  dependencies:
-    decorate-component-with-props "^1.0.2"
-    draft-js ">=0.9.1"
-    emojione "^2.2.6"
-    find-with-regex "^1.0.2"
-    immutable ">=3.8.1"
-    lodash.keys "^4.2.0"
-    react ">=15.3.1"
-    react-dom ">=15.3.1"
-    union-class-names "^1.0.0"
-
 draft-js-plugins-editor@2.0.0-beta9:
   version "2.0.0-beta9"
   resolved "https://registry.yarnpkg.com/draft-js-plugins-editor/-/draft-js-plugins-editor-2.0.0-beta9.tgz#9793b46c4765c205366055e1c7c566d955561a72"
@@ -2070,13 +2056,15 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
+emoji-mart@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-1.0.1.tgz#0ef2fd2bf4b6762aab7486c26c574387f034e392"
+  dependencies:
+    measure-scrollbar "^0.1.0"
+
 emoji-regex@^6.1.0:
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-6.4.2.tgz#a30b6fee353d406d96cfb9fa765bdc82897eff6e"
-
-emojione@^2.2.6:
-  version "2.2.7"
-  resolved "https://registry.yarnpkg.com/emojione/-/emojione-2.2.7.tgz#46457cf6b9b2f8da13ae8a2e4e547de06ee15e96"
 
 emojis-list@^2.0.0:
   version "2.1.0"
@@ -2214,10 +2202,6 @@ es5-ext@^0.10.7, es5-ext@^0.10.8, es5-ext@~0.10.11, es5-ext@~0.10.2, es5-ext@~0.
   dependencies:
     es6-iterator "2"
     es6-symbol "~3.1"
-
-es6-error@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/es6-error/-/es6-error-4.0.1.tgz#eeb3e280f57e2ec48d72a9fccaf6247d3c1f5719"
 
 es6-iterator@2:
   version "2.0.0"
@@ -3295,10 +3279,6 @@ is-primitive@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/is-primitive/-/is-primitive-2.0.0.tgz#207bab91638499c07b2adf240a41a87210034575"
 
-is-promise@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
-
 is-property@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-property/-/is-property-1.0.2.tgz#57fe1c4e48474edd65b09911f26b1cd4095dda84"
@@ -3888,7 +3868,7 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
-lodash-es@^4.17.3, lodash-es@^4.2.1:
+lodash-es@^4.2.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
 
@@ -3991,10 +3971,6 @@ lodash.keys@^3.0.0, lodash.keys@^3.1.2:
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
 
-lodash.keys@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-4.2.0.tgz#a08602ac12e4fb83f91fc1fb7a360a4d9ba35205"
-
 lodash.map@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.map/-/lodash.map-4.6.0.tgz#771ec7839e3473d9c4cde28b19394c3562f4f6d3"
@@ -4047,7 +4023,7 @@ lodash.uniq@^4.3.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-"lodash@>=3.5 <5", lodash@^4.0.0, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0:
+"lodash@>=3.5 <5", lodash@^4.0.0, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -4084,6 +4060,10 @@ md5@^2.2.1:
     charenc "~0.0.1"
     crypt "~0.0.1"
     is-buffer "~1.1.1"
+
+measure-scrollbar@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/measure-scrollbar/-/measure-scrollbar-0.1.0.tgz#2bbfac6773bcbb98d814e6890554c0b92846fe6f"
 
 media-typer@0.3.0:
   version "0.3.0"
@@ -5274,18 +5254,6 @@ reduce-function-call@^1.0.1:
   resolved "https://registry.yarnpkg.com/reduce-function-call/-/reduce-function-call-1.0.2.tgz#5a200bf92e0e37751752fe45b0ab330fd4b6be99"
   dependencies:
     balanced-match "^0.4.2"
-
-redux-form@^6.5.0:
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-6.6.1.tgz#368dc4fc41301bfb1cd471b059a2215573649c8c"
-  dependencies:
-    deep-equal "^1.0.1"
-    es6-error "^4.0.0"
-    hoist-non-react-statics "^1.2.0"
-    invariant "^2.2.2"
-    is-promise "^2.1.0"
-    lodash "^4.17.3"
-    lodash-es "^4.17.3"
 
 redux-logger@^2.6.1:
   version "2.7.4"

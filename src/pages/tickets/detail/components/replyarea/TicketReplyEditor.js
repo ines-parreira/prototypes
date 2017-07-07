@@ -13,8 +13,6 @@ import {isRichType, acceptsOnlyImages} from '../../../../../config/ticket'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 
-import 'draft-js-emoji-plugin/lib/plugin.css'
-
 const dndPlugin = createDndPlugin()
 
 // debounce the updating of the redux because it's slow otherwise when we type

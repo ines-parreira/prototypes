@@ -2,6 +2,7 @@ import {RichUtils, EditorState, Entity, AtomicBlockUtils} from 'draft-js'
 import {insertText} from '../../../../../utils'
 import AddLink from './components/AddLink'
 import AddImage from './components/AddImage'
+import AddEmoji from './components/AddEmoji'
 
 export default [
     {
@@ -92,12 +93,27 @@ export default [
                     entityKey,
                     ' ',
                 )
-                newEditorState = EditorState.forceSelection(
-                    newEditorState,
-                    editorState.getCurrentContent().getSelectionAfter()
-                )
+
+                // forcing the current selection ensures that it will be at it's right place
+                newEditorState = EditorState.forceSelection(newEditorState, newEditorState.getSelection())
+
                 setEditorState(newEditorState)
             }
         },
-    }
+    },
+    {
+        label: 'Emoji',
+        name: 'Insert emoji',
+        component: AddEmoji,
+        functions: {
+            addEmoji: (block, action, editorState, setEditorState, emoji) => {
+                let newEditorState = insertText(editorState, emoji.native)
+
+                // forcing the current selection ensures that it will be at it's right place
+                newEditorState = EditorState.forceSelection(newEditorState, newEditorState.getSelection())
+
+                setEditorState(newEditorState)
+            }
+        },
+    },
 ]

@@ -53,10 +53,7 @@ const toolbarPlugin = (config = {}) => {
 
             if (!newEditorState.getCurrentContent().equals(editorState.getCurrentContent())) {
                 // forcing the current selection ensures that it will be at it's right place
-                newEditorState = EditorState.forceSelection(
-                    newEditorState,
-                    newEditorState.getSelection(),
-                )
+                newEditorState = EditorState.forceSelection(newEditorState, newEditorState.getSelection())
             }
 
             return newEditorState

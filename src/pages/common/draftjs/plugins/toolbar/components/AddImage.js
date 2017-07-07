@@ -8,7 +8,7 @@ import FileField from '../../../../forms/FileField'
 
 import css from '../Toolbar.less'
 
-class AddImage extends React.Component {
+export default class AddImage extends React.Component {
     static propTypes = {
         action: PropTypes.object.isRequired,
         functions: PropTypes.object.isRequired,
@@ -117,5 +117,3 @@ class AddImage extends React.Component {
         )
     }
 }
-
-export default AddImage
