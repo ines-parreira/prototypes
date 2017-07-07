@@ -140,6 +140,49 @@ class TicketReplyEditor extends React.Component {
             attachmentInputProps.accept = 'image/*'
         }
 
+        const toolbarProps = {
+            buttons: [
+                <div className="attachment">
+                    <label
+                        htmlFor="attachments-input"
+                        className="m-0"
+                    >
+                        {
+                            newMessage.getIn(['_internal', 'loading', 'addAttachment'])
+                                ? (
+                                    <i className="fa fa-fw fa-circle-o-notch fa-spin" />
+                                ) : (
+                                    <i
+                                        className={classnames('fa fa-fw', {
+                                            'fa-paperclip': !newMessageAcceptsOnlyImages,
+                                            'fa-file-image-o': newMessageAcceptsOnlyImages,
+                                        })}
+                                        title="Add attachment"
+                                    />
+                                )
+                        }
+                    </label>
+                    <input
+                        id="attachments-input"
+                        type="file"
+                        multiple
+                        onChange={(event) => {
+                            return this._handleFiles(event.target.files)
+                        }}
+                        onClick={(event) => {
+                            // empty input on click
+                            return event.target.value = null
+                        }}
+                        {...attachmentInputProps}
+                    />
+                </div>
+            ],
+        }
+
+        if(!isNewMessageRichType) {
+            toolbarProps.displayedActions = ['emoji']
+        }
+
         return (
             <div className="TicketReplyEditor">
                 <RichField
@@ -156,45 +199,7 @@ class TicketReplyEditor extends React.Component {
                     spellCheck
                     canDropFiles
                     readOnly={newMessage.getIn(['_internal', 'loading', 'submitMessage'])}
-                    toolbarProps={{
-                        hideActions: !isNewMessageRichType,
-                        buttons: [
-                            <div className="attachment">
-                                <label
-                                    htmlFor="attachments-input"
-                                    className="m-0"
-                                >
-                                    {
-                                        newMessage.getIn(['_internal', 'loading', 'addAttachment'])
-                                            ? (
-                                                <i className="fa fa-fw fa-circle-o-notch fa-spin" />
-                                            ) : (
-                                                <i
-                                                    className={classnames('fa fa-fw', {
-                                                        'fa-paperclip': !newMessageAcceptsOnlyImages,
-                                                        'fa-file-image-o': newMessageAcceptsOnlyImages,
-                                                    })}
-                                                    title="Add attachment"
-                                                />
-                                            )
-                                    }
-                                </label>
-                                <input
-                                    id="attachments-input"
-                                    type="file"
-                                    multiple
-                                    onChange={(event) => {
-                                        return this._handleFiles(event.target.files)
-                                    }}
-                                    onClick={(event) => {
-                                        // empty input on click
-                                        return event.target.value = null
-                                    }}
-                                    {...attachmentInputProps}
-                                />
-                            </div>
-                        ],
-                    }}
+                    toolbarProps={toolbarProps}
                 />
             </div>
         )

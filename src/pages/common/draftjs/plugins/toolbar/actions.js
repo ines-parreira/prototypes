@@ -6,25 +6,25 @@ import AddEmoji from './components/AddEmoji'
 
 export default [
     {
-        label: 'Bold',
+        key: 'bold',
         name: 'Bold',
         icon: 'fa-bold',
         style: 'BOLD'
     },
     {
-        label: 'Italic',
+        key: 'italic',
         name: 'Italic',
         icon: 'fa-italic',
         style: 'ITALIC'
     },
     {
-        label: 'Underline',
+        key: 'underline',
         name: 'Underline',
         icon: 'fa-underline',
         style: 'UNDERLINE'
     },
     {
-        label: 'Link',
+        key: 'link',
         name: 'Insert link',
         component: AddLink,
         active: (block, editorState) => {
@@ -82,7 +82,7 @@ export default [
         }
     },
     {
-        label: 'Image',
+        key: 'image',
         name: 'Insert image',
         component: AddImage,
         functions: {
@@ -102,7 +102,7 @@ export default [
         },
     },
     {
-        label: 'Emoji',
+        key: 'emoji',
         name: 'Insert emoji',
         component: AddEmoji,
         functions: {

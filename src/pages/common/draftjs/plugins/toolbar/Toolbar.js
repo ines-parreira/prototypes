@@ -9,6 +9,7 @@ class Toolbar extends React.Component {
         actions: PropTypes.array.isRequired,
         buttons: PropTypes.array.isRequired,
         hideActions: PropTypes.bool.isRequired,
+        displayedActions: PropTypes.array, // array of keys of actions that we want to display
         store: PropTypes.object.isRequired,
     }
 
@@ -41,7 +42,7 @@ class Toolbar extends React.Component {
         if (action.component) {
             return (
                 <action.component
-                    key={action.label}
+                    key={action.key}
                     action={action}
                     functions={functions}
                     isActive={isActive}
@@ -52,7 +53,7 @@ class Toolbar extends React.Component {
 
         return (
             <div
-                key={action.label}
+                key={action.key}
                 className={classnames(css.button, {
                     [css.active]: action.isActive(getEditorState),
                     [css.disabled]: isDisabled,
@@ -86,14 +87,21 @@ class Toolbar extends React.Component {
     }
 
     render() {
-        const {actions, buttons, hideActions} = this.props
+        const {actions, buttons, hideActions, displayedActions} = this.props
 
-        const displaySeparator = !hideActions && buttons.length > 0
+        let filteredActions = actions
+
+        if (hideActions) {
+            filteredActions = []
+        }
+
+        if (displayedActions) {
+            filteredActions = filteredActions.filter(action => displayedActions.includes(action.key))
+        }
 
         return (
             <div className={classnames('editor-toolbar', css.page)}>
-                {!hideActions && actions.map(this._renderAction)}
-                {displaySeparator && <span className={css.separator} />}
+                {filteredActions.map(this._renderAction)}
                 {buttons.map(this._renderButton)}
             </div>
         )
