@@ -7,6 +7,8 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
+import {attachImmutableEntitiesToVariables} from '../../../../../common/draftjs/plugins/toolbar/utils'
+
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
 
 import RichField from '../../../../../common/forms/RichField'
@@ -36,6 +38,9 @@ export default class SetResponseTextAction extends React.Component {
         // insert text at selection
         let editorState = this.richArea.state.editorState
         editorState = insertText(editorState, text)
+        // transform inserted variable in badge
+        // we do it on insertion so we do not have focus/cursor position errors
+        editorState = attachImmutableEntitiesToVariables(editorState)
         this.richArea._setEditorState(editorState)
     }
 

@@ -1,5 +1,5 @@
 import decorateComponentWithProps from 'decorate-component-with-props'
-import {EditorState, Entity} from 'draft-js'
+import {Entity} from 'draft-js'
 
 import createStore from './createStore'
 import decorators from './decorators'
@@ -49,12 +49,10 @@ const toolbarPlugin = (config = {}) => {
             return null
         },
         onChange: (editorState) => {
+            // transform variables in badges
             let newEditorState = attachImmutableEntitiesToVariables(editorState)
 
-            if (!newEditorState.getCurrentContent().equals(editorState.getCurrentContent())) {
-                // forcing the current selection ensures that it will be at it's right place
-                newEditorState = EditorState.forceSelection(newEditorState, newEditorState.getSelection())
-            }
+            // DO NOT FORCE SELECTION in this `onChange` function otherwise is focuses in the editor on each change
 
             return newEditorState
         },
