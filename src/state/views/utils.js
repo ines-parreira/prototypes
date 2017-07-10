@@ -83,3 +83,8 @@ export function agentsViewingMessage(agents) {
     const agentsNames = agents.map(agent => agent.get('name')).join(', ')
     return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} viewing`
 }
+
+export function agentsTypingMessage(agents) {
+    const agentsNames = agents.map(agent => agent.get('name')).join(', ')
+    return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} typing`
+}

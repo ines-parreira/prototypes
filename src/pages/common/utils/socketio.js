@@ -101,6 +101,11 @@ export default class SocketIO {
                 this._setAgentsLocation(json.locations)
                 break
             }
+            case 'user-typing-status-updated': {
+                log('User typing status updated', json)
+                this._setAgentsTypingStatus(json.locations)
+                break
+            }
             case 'ticket-updated': {
                 log('Ticket updated', json)
                 this._mergeTicket(json.ticket)
@@ -158,6 +163,11 @@ export default class SocketIO {
      * Update current location of agents in reducer
      */
     _setAgentsLocation = _throttle(json => this._dispatch(usersActions.setAgentsLocation(json)), 100)
+
+    /**
+     * Update current typing status of agents in reducer
+     */
+    _setAgentsTypingStatus = _throttle(json => this._dispatch(usersActions.setAgentsTypingStatus(json)), 100)
 
     /**
      * Inform the user that an action failed on one of its messages
@@ -274,6 +284,25 @@ export default class SocketIO {
         this.leave({
             objectType: 'Ticket',
             objectId: id,
+        })
+        this.leaveTypingOnTicket(id)
+    }
+
+    joinTypingOnTicket = (id) => {
+        log('Start typing on ticket', id)
+        this.join({
+            objectType: 'Ticket',
+            objectId: id,
+            action: 'typing'
+        })
+    }
+
+    leaveTypingOnTicket = (id) => {
+        log('Stopped typing on ticket', id)
+        this.leave({
+            objectType: 'Ticket',
+            objectId: id,
+            action: 'typing'
         })
     }
 }

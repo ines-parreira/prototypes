@@ -1,6 +1,7 @@
 import React from 'react'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
+import SocketIO from './../../pages/common/utils/socketio'
 
 import _isNull from 'lodash/isNull'
 import _assign from 'lodash/assign'
@@ -13,12 +14,14 @@ import * as ticketTypes from '../ticket/constants'
 import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
+
 import {
     getLastMessage,
     getActionTemplate,
     uploadFiles,
     toJS,
 } from '../../utils'
+
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -26,9 +29,12 @@ import {
     getNewMessageSender,
     getLastSameSourceTypeMessage,
 } from '../ticket/utils'
+
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
+import * as usersSelectors from '../users/selectors'
 import * as selectors from './selectors'
+import * as responseUtils from './responseUtils'
 
 export const addAttachments = (ticket, atts) => (dispatch, getState) => {
     dispatch({
@@ -98,6 +104,31 @@ export const deleteAttachment = (index) => ({
 export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
     const state = getState()
     const {ticket, currentUser} = state
+
+    const contentState = args.get('contentState')
+
+    if (contentState) {
+        const io = new SocketIO()
+        const ticketId = ticket.get('id')
+
+        if (ticketId) {
+            const plainText = contentState.getPlainText()
+
+            const usersTypingOnTicket = usersSelectors.getAgentsIdsTypingStatusOnTicket(ticketId)(state)
+
+            if (plainText && !responseUtils.onlySignature(contentState, currentUser)) {
+                // We only send the `is typing` event if the agent is not already in the list of typing users
+                if (!usersTypingOnTicket.includes(currentUser.get('id').toString())) {
+                    io.joinTypingOnTicket(ticketId)
+                }
+            } else {
+                // Re-join the `viewing` room, which will force leaving the `typing` room
+                io.joinTicket(ticketId)
+                // We also explicitly leave the typing room to trigger the handlers
+                io.leaveTypingOnTicket(ticketId)
+            }
+        }
+    }
 
     // should have the same params in state/ticket/actions/applyMacroAction
     return dispatch({

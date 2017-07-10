@@ -66,14 +66,23 @@ export class TicketView extends React.Component {
     }
 
     _renderCollisionDetection = () => {
-        const {agentsViewing} = this.props
+        const {agentsViewing, agentsTyping} = this.props
 
         return (
             <div
                 className={classnames(css['viewers-banner'], {
-                    [css.hidden]: agentsViewing.size <= 0,
+                    [css.hidden]: agentsViewing.size <= 0 && agentsTyping.size <= 0,
                 })}
             >
+                {
+                    // we want to hide text during animation if there is no agents viewing
+                    agentsTyping.size > 0 && (
+                        <span>
+                            <i className="fa fa-fw fa-pencil mr-2" />
+                            {viewsUtils.agentsTypingMessage(agentsTyping)}
+                        </span>
+                    )
+                }
                 {
                     // we want to hide text during animation if there is no agents viewing
                     agentsViewing.size > 0 && (
@@ -255,6 +264,7 @@ TicketView.propTypes = {
     actions: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     agentsViewing: PropTypes.object.isRequired,
+    agentsTyping: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
     computeNextUrl: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired,
@@ -274,6 +284,7 @@ TicketView.propTypes = {
 
 TicketView.defaultProps = {
     agentsViewing: fromJS([]),
+    agentsTyping: fromJS([]),
     setStatus: _noop
 }
 
@@ -282,6 +293,7 @@ function mapStateToProps(state) {
         activeView: state.views.get('active', fromJS({})),
         agents: usersSelectors.getAgents(state),
         agentsViewing: usersSelectors.getOtherAgentsOnTicket(state.ticket.get('id'))(state),
+        agentsTyping: usersSelectors.getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state),
         currentUser: state.currentUser,
         ticketBody: ticketSelectors.getBody(state),
         macros: state.macros,

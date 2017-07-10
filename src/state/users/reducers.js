@@ -17,6 +17,7 @@ export const initialState = fromJS({
         events: []
     },
     agentsLocation: [],
+    agentsTypingStatus: [],
     _internal: {
         loading: {
             history: false,
@@ -191,6 +192,10 @@ export default (state = initialState, action) => {
 
         case types.SET_AGENTS_LOCATION: {
             return state.set('agentsLocation', fromJS(action.data))
+        }
+
+        case types.SET_AGENTS_TYPING_STATUS: {
+            return state.set('agentsTypingStatus', fromJS(action.data))
         }
 
         case agentsTypes.CREATE_AGENT_SUCCESS: {

@@ -205,3 +205,8 @@ export const setAgentsLocation = (locations) => ({
     type: types.SET_AGENTS_LOCATION,
     data: locations,
 })
+
+export const setAgentsTypingStatus = (locations) => ({
+    type: types.SET_AGENTS_TYPING_STATUS,
+    data: locations,
+})

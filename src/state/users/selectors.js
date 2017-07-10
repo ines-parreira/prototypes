@@ -133,3 +133,52 @@ export const getOtherAgentsOnTicket = ticketId => createSelector(
 )
 
 export const makeGetOtherAgentsOnTicket = state => ticketId => getOtherAgentsOnTicket(ticketId)(state)
+
+// Location of typing agents in the app by their ids
+export const getAgentsIdsTypingStatus = createSelector(
+    [getUsersState],
+    state => state.get('agentsTypingStatus', fromJS([]))
+)
+
+// Ids of agents typing on a specific ticket
+export const getAgentsIdsTypingStatusOnTicket = ticketId => createSelector(
+    [getAgentsIdsTypingStatus],
+    (agentsTypingStatuses) => {
+        if (!ticketId) {
+            return fromJS([])
+        }
+
+        const agentsTypingStatus = agentsTypingStatuses.find((info) => {
+            return info.get('ticket', '').toString() === ticketId.toString()
+        })
+
+        if (agentsTypingStatus) {
+            return agentsTypingStatus.get('users', fromJS([]))
+        }
+
+        return fromJS([])
+    }
+)
+
+// Agents typing on a specific ticket
+export const getAgentsTypingOnTicket = ticketId => createSelector(
+    [getAgentsIdsTypingStatusOnTicket(ticketId), makeGetAgent],
+    (agentsIds, getUserObject) => {
+        if (!ticketId) {
+            return fromJS([])
+        }
+
+        // return users objects list and filter undefined ones
+        return agentsIds
+            .map(getUserObject)
+            .filter(user => !!user.get('id'))
+    }
+)
+
+// Agents typing on a specific ticket EXCEPT current user
+export const getOtherAgentsTypingOnTicket = ticketId => createSelector(
+    [currentUserSelectors.getCurrentUser, getAgentsTypingOnTicket(ticketId)],
+    (currentUser, agents) => {
+        return agents.filter(agent => agent.get('id', '').toString() !== currentUser.get('id', '').toString())
+    }
+)
