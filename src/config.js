@@ -127,6 +127,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/shopify.png',
     },
     {
+        type: 'recharge',
+        title: 'Recharge',
+        description: 'Display subscription info. Refund charges & skip monthly payments.',
+        image: 'integrations/recharge.svg',
+    },
+    {
         title: 'Helpdocs',
         description: 'Create a knowledge base & connect it to Gorgias',
         url: 'http://docs.gorgias.io/integrations/helpdocs',
@@ -618,6 +624,37 @@ export const ACTION_TEMPLATES = [
                     return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', 0, 'financial_status']))
                 },
                 error: 'The last order has already been refunded or hasn\'t been paid for yet.'
+            }
+        ]
+    },
+    {
+        execution: 'back',
+        integrationType: 'recharge',
+        name: 'rechargeCancelLastSubscription',
+        title: 'Cancel last subscription',
+        arguments: {},
+        validators: [
+            {
+                validate: (requester) => {
+                    return _find(requester.integrations, {'__integration_type__': 'recharge'})
+                },
+                error: 'This user has no Recharge data.'
+            },
+            {
+                validate: (requester) => {
+                    const rechargeIntegration = _find(requester.integrations, {'__integration_type__': 'recharge'})
+
+                    return _get(rechargeIntegration, ['subscriptions'])
+                },
+                error: 'This user has no subscription to cancel.'
+            },
+            {
+                validate: (requester) => {
+                    const rechargeIntegration = _find(requester.integrations, {'__integration_type__': 'recharge'})
+
+                    return _get(rechargeIntegration, ['subscriptions', 0, 'cancelled_at']) === null
+                },
+                error: 'The last subscription has already been cancelled.'
             }
         ]
     }

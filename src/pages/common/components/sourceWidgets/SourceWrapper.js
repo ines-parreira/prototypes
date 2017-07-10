@@ -16,11 +16,20 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link to="/app/integrations/http" target="_blank"><b>Shopify stores</b></Link>.
+                <Link to="/app/integrations/shopify" target="_blank"><b>Shopify stores</b></Link>.
             </div>
         )
     },
-
+    {
+        type: 'recharge',
+        title: 'Recharge data',
+        description: (
+            <div>
+                The following data comes from your{' '}
+                <Link to="/app/integrations/recharge" target="_blank"><b>Recharge integrations</b></Link>.
+            </div>
+        )
+    },
     {
         type: 'http',
         title: 'HTTP data',

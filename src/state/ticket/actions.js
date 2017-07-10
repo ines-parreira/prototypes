@@ -257,43 +257,78 @@ const renderObject = (argument, context) => {
     return ret
 }
 
+const replaceShopifyVariables = (ticketState, variable, dispatch, newArg) => {
+    const integrationIds = ticketState
+        .getIn(['requester', 'integrations'], fromJS([]))
+        .forEach((integrationData, integrationId) => {
+            if (integrationData.get('__integration_type__') === 'shopify') {
+                integrationIds.push(integrationId)
+            }
+        })
+        .map((_, integrationId) => integrationId).toList()
+
+    let newVariable = null
+
+    if (integrationIds.size === 1) {
+        newVariable = variable.replace('integrations.shopify', `integrations[${integrationIds.first()}]`)
+    }
+
+    if (integrationIds.size > 1) {
+        dispatch(notify({
+            type: 'error',
+            title: 'We couldn\'t replace variables in your macro, because this user has data ' +
+            'on multiple Shopify stores.'
+        }))
+        return
+    }
+
+    return newArg.replace(variable, newVariable)
+}
+
+const replaceRechargeVariables = (ticketState, variable, dispatch, newArg) => {
+    const integrationIds = ticketState
+        .getIn(['requester', 'integrations'], fromJS([]))
+        .filter((integration) => {
+            return integration.get('__integration_type__') === 'recharge'
+        })
+        .map((_, integrationId) => integrationId).toList()
+
+    let newVariable = null
+
+    if (integrationIds.size === 1) {
+        newVariable = variable.replace('integrations.recharge', `integrations[${integrationIds.first()}]`)
+    }
+
+    if (integrationIds.size > 1) {
+        dispatch(notify({
+            type: 'error',
+            title: 'We couldn\'t replace variables in your macro, because this user has data ' +
+            'on multiple Recharge stores.'
+        }))
+        return
+    }
+
+    return newArg.replace(variable, newVariable)
+}
+
 const replaceVariables = (argument, state, dispatch) => {
     let ticketState = state.ticket
 
-    let variables = argument.match(/\{ticket.requester.integrations.shopify[\w\d\]\[._-]+\}/g)
+    // If there's a var of format `ticket.requester.integrations.XXX`, then it's a dynamic variable.
+    // Else, it would be `ticket.requester.integrations[XXX]`.
+    let variables = argument.match(/\{ticket.requester.integrations.[\w\d\]\[._-]+\}/g)
     let newArg = argument
 
     if (variables) {
-        // If a variable is a Shopify variable, we try to replace `integrations.shopify` with
-        // `integrations[correct-shopify-integration-id]`.
+        // If a variable is a dynamic variable, we try to replace `integrations.{type}` with
+        // `integrations[correct-integration-id]`.
         variables.forEach((variable) => {
             if (variable.includes('integrations.shopify')) {
-                const integrationIds = []
+                newArg = replaceShopifyVariables(ticketState, variable, dispatch, newArg)
+            }
 
-                ticketState
-                    .getIn(['requester', 'integrations'], fromJS([]))
-                    .forEach((integrationData, integrationId) => {
-                        if (integrationData.get('__integration_type__') === 'shopify') {
-                            integrationIds.push(integrationId)
-                        }
-                    })
-
-                let newVariable = ''
-
-                if (integrationIds.length === 1) {
-                    newVariable = variable.replace('integrations.shopify', `integrations[${integrationIds[0]}]`)
-                }
-
-                if (integrationIds.length > 1) {
-                    dispatch(notify({
-                        type: 'error',
-                        title: 'We couldn\'t replace variables in your macro, because this user has data ' +
-                        'on multiple Shopify stores.'
-                    }))
-                    return
-                }
-
-                newArg = newArg.replace(variable, newVariable)
+            if (variable.includes('integrations.recharge')) {
+                newArg = replaceRechargeVariables(ticketState, variable, dispatch, newArg)
             }
         })
     }

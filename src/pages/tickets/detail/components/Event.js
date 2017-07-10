@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {Card, CardBlock} from 'reactstrap'
+import _capitalize from 'lodash/capitalize'
 
 import {getActionByName} from '../../../../config/actions'
 import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
@@ -163,6 +164,14 @@ export default class Event extends React.Component {
                                     </a>
                                 )
                             }
+                        </span>
+
+                        <span className={css.equalFiller}>
+                            on
+                        </span>
+
+                        <span className={css.actionName}>
+                            {_capitalize(integration.get('type'))} ({integration.get('name')})
                         </span>
 
                         <span className={css.filler}>

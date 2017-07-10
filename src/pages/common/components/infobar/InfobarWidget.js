@@ -10,6 +10,7 @@ import CardInfobarWidget from './widgets/CardInfobarWidget'
 import FieldInfobarWidget from './widgets/FieldInfobarWidget'
 
 import shopify from './widgets/shopify'
+import recharge from './widgets/recharge'
 
 export default class InfobarWidget extends React.Component {
     static propTypes = {
@@ -75,6 +76,11 @@ export default class InfobarWidget extends React.Component {
             extension = {
                 ...extension,
                 ...shopify(passedData),
+            }
+        } else if (widget.get('type') === 'recharge') {
+            extension = {
+                ...extension,
+                ...recharge(passedData),
             }
         }
 

@@ -13,6 +13,9 @@ export const actions = [{
 }, {
     name: 'shopifyRefundOrderItem',
     label: 'Refund item',
+}, {
+    name: 'rechargeCancelSubscription',
+    label: 'Cancel subscription'
 }]
 
 export const getActionByName = (name) => {

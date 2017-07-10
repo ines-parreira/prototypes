@@ -1,23 +1,62 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
-import {Link} from 'react-router'
+import {Link, withRouter} from 'react-router'
+import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Table, Button} from 'reactstrap'
 
 import NoIntegration from './NoIntegration'
 import {getIntegrationsList, getIconFromType} from '../../../../state/integrations/helpers'
+import {notify} from '../../../../state/notifications/actions'
 import {sourceTypeToIcon} from '../../../../config/ticket'
 
 /**
  * A generic component to edit integrations of a given type.
  * We can then have specific components for each integration type using this one.
  */
-export default class IntegrationList extends React.Component {
+@connect(null, {
+    notify
+})
+class IntegrationList extends React.Component {
+    static propTypes = {
+        integrationType: PropTypes.string.isRequired, // The type of the integrations we're displaying
+        integrations: PropTypes.object.isRequired, // The integrations for the relevant type only
+        createIntegration: PropTypes.func.isRequired, // The callback to create a new integration for this type.
+        createIntegrationButtonText: PropTypes.string.isRequired, // The text for the button to create a new integration
+        createIntegrationButtonOnClick: PropTypes.func, // function executed when user click on button to create a new integration
+        longTypeDescription: PropTypes.node,
+        loading: PropTypes.object.isRequired,  // A map for different loading status(es)
+        // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.
+        integrationToItemDisplay: PropTypes.func.isRequired,
+        createIntegrationButtonHidden: PropTypes.bool.isRequired,
+
+        // Router
+        location: PropTypes.object.isRequired,
+        params: PropTypes.object.isRequired,
+
+        // Actions
+        notify: PropTypes.func.isRequired
+    }
+
+    static defaultProps = {
+        createIntegrationButtonHidden: false,
+    }
+
     onButtonClick = () => {
         if (this.props.createIntegrationButtonOnClick) {
             this.props.createIntegrationButtonOnClick()
         }
         this.props.createIntegration()
+    }
+
+    componentWillMount() {
+        if (this.props.location.query.status === 'create-error') {
+            this.props.notify({
+                type: 'error',
+                message: 'Something went wrong while creating your integration. Please wait a few minutes and ' +
+                    'try again. If the problem persists, contact us at support@gorgias.io.',
+            })
+        }
     }
 
     render() {
@@ -102,19 +141,4 @@ export default class IntegrationList extends React.Component {
     }
 }
 
-IntegrationList.propTypes = {
-    integrationType: PropTypes.string.isRequired, // The type of the integrations we're displaying
-    integrations: PropTypes.object.isRequired, // The integrations for the relevant type only
-    createIntegration: PropTypes.func.isRequired, // The callback to create a new integration for this type.
-    createIntegrationButtonText: PropTypes.string.isRequired, // The text for the button to create a new integration
-    createIntegrationButtonOnClick: PropTypes.func, // function executed when user click on button to create a new integration
-    longTypeDescription: PropTypes.node,
-    loading: PropTypes.object.isRequired,  // A map for different loading status(es)
-    // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.
-    integrationToItemDisplay: PropTypes.func.isRequired,
-    createIntegrationButtonHidden: PropTypes.bool.isRequired,
-}
-
-IntegrationList.defaultProps = {
-    createIntegrationButtonHidden: false,
-}
+export default withRouter(IntegrationList)

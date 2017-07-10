@@ -6,49 +6,70 @@ import ToggleButton from '../../../../common/components/ToggleButton'
 import Carousel from './../../../common/Carousel'
 import IntegrationList from '../IntegrationList'
 import * as integrationsActions from '../../../../../state/integrations/actions'
+import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
-@connect(null, {
+import {
+    Alert
+} from 'reactstrap'
+
+@connect((state) => {
+    return {
+        redirectUri: integrationsSelectors.getRedirectUri('recharge')(state)
+    }
+}, {
     activate: integrationsActions.activateIntegration,
     deactivate: integrationsActions.deactivateIntegration,
 })
-export default class ShopifyIntegrationList extends React.Component {
+export default class RechargeIntegrationList extends React.Component {
     static propTypes = {
         integrations: PropTypes.object.isRequired,
         loading: PropTypes.object.isRequired,
         activate: PropTypes.func.isRequired,
         deactivate: PropTypes.func.isRequired,
+        redirectUri: PropTypes.string.isRequired
+    }
+
+    _shouldHideCreateButton = () => {
+        return !this.props.integrations.filter((integration) => integration.get('type') === 'shopify').size
     }
 
     render() {
         const {integrations, loading} = this.props
 
         const imagesUrl = [
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/shopify-carousel_1@0,25x.jpg`,
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/shopify-carousel_2@0,25x.jpg`,
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/shopify-carousel_3@0,25x.jpg`
+            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/recharge-carousel_1.jpg`,
+            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/recharge-carousel_2.jpg`
         ]
 
         const longTypeDescription = (
             <div>
-                <p>Shopify is an e-commerce platform used by 300,000+ stores.</p>
+                {
+                    this._shouldHideCreateButton() && (
+                        <Alert color="danger">
+                            You need to have at least one Shopify integration to add Recharge integrations.
+                        </Alert>
+                    )
+                }
 
-                <p>How Gorgias works with Shopify:</p>
+                <p>Recharge is a recurring payment app for Shopify.</p>
+
+                <p>How Gorgias works with Recharge:</p>
                 <ul>
                     <li>
-                        See Shopify profiles, orders & shipping status next to support tickets
+                        Display Recharge subscriptions next to support tickets
                     </li>
                     <li>
-                        Edit orders, issue refunds, etc. directly from support conversations
+                        Edit subscriptions in one click
                     </li>
                     <li>
-                        Search users by order number, shipping address... and match anonymous chat tickets with
-                        existing Shopify customers
+                        When a customer asks to edit their subscription, send them an auto-response with the link to
+                        manage the subscription
                     </li>
                 </ul>
 
                 <Carousel imagesUrl={imagesUrl}/>
 
-                <h4>Your Shopify stores</h4>
+                <h4>Your Recharge stores</h4>
             </div>
         )
 
@@ -59,7 +80,7 @@ export default class ShopifyIntegrationList extends React.Component {
             }
 
             const isDisabled = int.get('deactivated_datetime')
-            const editLink = `/app/integrations/shopify/${int.get('id')}`
+            const editLink = `/app/integrations/recharge/${int.get('id')}`
 
             return (
                 <tr key={int.get('id')}>
@@ -83,12 +104,13 @@ export default class ShopifyIntegrationList extends React.Component {
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType="shopify"
-                integrations={integrations.filter((v) => v.get('type') === 'shopify')}
-                createIntegration={() => browserHistory.push('/app/integrations/shopify/new')}
-                createIntegrationButtonText="Add Shopify"
+                integrationType="recharge"
+                integrations={integrations.filter((v) => v.get('type') === 'recharge')}
+                createIntegration={() => browserHistory.push('/app/integrations/recharge/new')}
+                createIntegrationButtonText="Add Recharge"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
+                createIntegrationButtonHidden={this._shouldHideCreateButton()}
             />
         )
     }

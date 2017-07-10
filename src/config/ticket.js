@@ -67,6 +67,13 @@ export const VARIABLES = [{
         name: 'Delivery status of last order',
         value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].shipment_status',
     }]
+}, {
+    type: 'recharge',
+    name: 'Recharge',
+    children: [{
+        name: 'Customer\'s hash',
+        value: 'ticket.requester.integrations.recharge.customer.hash',
+    }]
 }]
 
 // previously available variables in macros: still displayed as variables but are not available in dropdowns anymore

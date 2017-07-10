@@ -28,6 +28,9 @@ import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
 import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList'
 import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
 
+import RechargeIntegrationList from './components/recharge/RechargeIntegrationList'
+import RechargeIntegrationDetail from './components/recharge/RechargeIntegrationDetail'
+
 import EmailIntegrationList from './components/email/EmailIntegrationList'
 import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/index'
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/index'
@@ -248,6 +251,27 @@ class IntegrationDetailContainer extends React.Component {
 
                 return (
                     <ShopifyIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
+
+            case 'recharge':
+                if (isDetail) {
+                    return (
+                        <RechargeIntegrationDetail
+                            actions={actions}
+                            integration={commonProps.integration}
+                            isUpdate={isUpdate}
+                            loading={commonProps.loading}
+                            redirectUri={redirectUri}
+                        />
+                    )
+                }
+
+                return (
+                    <RechargeIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
                         loading={commonProps.loading}
