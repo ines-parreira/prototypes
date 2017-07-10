@@ -342,25 +342,6 @@ export function bulkUpdate(activeView, ids, key, value) {
                     break
                 case 'macro':
                     successMessage = `Macro successfully applied to ${ids.size} tickets.`
-
-                    for (const action of value.actions) {
-                        switch (action.name) {
-                            case 'setStatus':
-                                data.updates.status = action.arguments.status
-                                break
-                            case 'setPriority':
-                                data.updates.priority = action.arguments.priority
-                                break
-                            case 'addTags':
-                                data.updates.tags = action.arguments.tags
-                                break
-                            case 'setAssignee':
-                                data.updates.assignee_user = action.arguments.assignee_user
-                                break
-                            default:
-                                break
-                        }
-                    }
                     break
                 default:
                     break
