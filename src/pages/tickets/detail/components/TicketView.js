@@ -77,7 +77,7 @@ export class TicketView extends React.Component {
                 {
                     // we want to hide text during animation if there is no agents viewing
                     agentsTyping.size > 0 && (
-                        <span>
+                        <span className="mr-3">
                             <i className="fa fa-fw fa-pencil mr-2" />
                             {viewsUtils.agentsTypingMessage(agentsTyping)}
                         </span>
