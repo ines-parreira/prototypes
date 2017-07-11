@@ -6,6 +6,7 @@ import SocketIO from './../../pages/common/utils/socketio'
 import _isNull from 'lodash/isNull'
 import _assign from 'lodash/assign'
 import _pick from 'lodash/pick'
+import _throttle from 'lodash/throttle'
 import axios from 'axios'
 
 import * as types from './constants'
@@ -100,6 +101,10 @@ export const deleteAttachment = (index) => ({
     index
 })
 
+const _throttledIsTyping = _throttle((io, ticketId) => {
+    io.joinTypingOnTicket(ticketId)
+}, 5000)
+
 export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
     const state = getState()
     const {ticket, currentUser} = state
@@ -114,7 +119,7 @@ export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
             const plainText = contentState.getPlainText()
 
             if (plainText && !responseUtils.onlySignature(contentState, currentUser)) {
-                io.joinTypingOnTicket(ticketId)
+                _throttledIsTyping(io, ticketId)
             } else {
                 // Re-join the `viewing` room, which will force leaving the `typing` room
                 io.joinTicket(ticketId)
