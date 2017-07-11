@@ -298,6 +298,7 @@ class MacroEdit extends React.Component {
                                 return (
                                     <UncontrolledButtonDropdown
                                         key={key}
+                                        className="mr-2"
                                     >
                                         <DropdownToggle
                                             color="secondary"
