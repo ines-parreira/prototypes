@@ -89,10 +89,10 @@ class RechargeIntegrationDetail extends React.Component {
                 <InputField
                     type="text"
                     name="name"
-                    label="Store name"
+                    label="Shopify store name"
                     value={isUpdate ? integration.get('name') : undefined}
                     onChange={(value) => this.setState({store_name: value})}
-                    placeholder="Enter the name of the Shopify store to which your Recharge account is connected..."
+                    placeholder={'ex: "acme" for acme.myshopify.com'}
                     disabled={isUpdate}
                     required
                 />
