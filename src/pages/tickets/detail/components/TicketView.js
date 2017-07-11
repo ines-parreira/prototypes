@@ -68,6 +68,8 @@ export class TicketView extends React.Component {
     _renderCollisionDetection = () => {
         const {agentsViewing, agentsTyping} = this.props
 
+        const agentsViewingNotTyping = agentsViewing.filter((userId) => !agentsTyping.contains(userId))
+
         return (
             <div
                 className={classnames(css['viewers-banner'], {
@@ -85,10 +87,10 @@ export class TicketView extends React.Component {
                 }
                 {
                     // we want to hide text during animation if there is no agents viewing
-                    agentsViewing.size > 0 && (
+                    agentsViewingNotTyping.size > 0 && (
                         <span>
                             <i className="fa fa-fw fa-eye mr-2" />
-                            {viewsUtils.agentsViewingMessage(agentsViewing)}
+                            {viewsUtils.agentsViewingMessage(agentsViewingNotTyping)}
                         </span>
                     )
                 }
