@@ -260,10 +260,8 @@ const renderObject = (argument, context) => {
 const replaceShopifyVariables = (ticketState, variable, dispatch, newArg) => {
     const integrationIds = ticketState
         .getIn(['requester', 'integrations'], fromJS([]))
-        .forEach((integrationData, integrationId) => {
-            if (integrationData.get('__integration_type__') === 'shopify') {
-                integrationIds.push(integrationId)
-            }
+        .filter((integration) => {
+            return integration.get('__integration_type__') === 'shopify'
         })
         .map((_, integrationId) => integrationId).toList()
 
