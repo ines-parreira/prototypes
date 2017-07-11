@@ -32,7 +32,6 @@ import {
 
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
-import * as usersSelectors from '../users/selectors'
 import * as selectors from './selectors'
 import * as responseUtils from './responseUtils'
 
@@ -114,13 +113,8 @@ export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
         if (ticketId) {
             const plainText = contentState.getPlainText()
 
-            const usersTypingOnTicket = usersSelectors.getAgentsIdsTypingStatusOnTicket(ticketId)(state)
-
             if (plainText && !responseUtils.onlySignature(contentState, currentUser)) {
-                // We only send the `is typing` event if the agent is not already in the list of typing users
-                if (!usersTypingOnTicket.includes(currentUser.get('id').toString())) {
-                    io.joinTypingOnTicket(ticketId)
-                }
+                io.joinTypingOnTicket(ticketId)
             } else {
                 // Re-join the `viewing` room, which will force leaving the `typing` room
                 io.joinTicket(ticketId)
