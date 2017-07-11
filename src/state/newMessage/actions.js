@@ -121,9 +121,7 @@ export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
             if (plainText && !responseUtils.onlySignature(contentState, currentUser)) {
                 _throttledIsTyping(io, ticketId)
             } else {
-                // Re-join the `viewing` room, which will force leaving the `typing` room
-                io.joinTicket(ticketId)
-                // We also explicitly leave the typing room to trigger the handlers
+                _throttledIsTyping.cancel()
                 io.leaveTypingOnTicket(ticketId)
             }
         }
