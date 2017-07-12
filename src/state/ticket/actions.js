@@ -257,7 +257,7 @@ const renderObject = (argument, context) => {
     return ret
 }
 
-const replaceShopifyVariables = (ticketState, variable, dispatch, newArg) => {
+export const replaceShopifyVariables = (ticketState, variable, dispatch, newArg) => {
     const integrationIds = ticketState
         .getIn(['requester', 'integrations'], fromJS([]))
         .filter((integration) => {
@@ -283,7 +283,7 @@ const replaceShopifyVariables = (ticketState, variable, dispatch, newArg) => {
     return newArg.replace(variable, newVariable)
 }
 
-const replaceRechargeVariables = (ticketState, variable, dispatch, newArg) => {
+export const replaceRechargeVariables = (ticketState, variable, dispatch, newArg) => {
     const integrationIds = ticketState
         .getIn(['requester', 'integrations'], fromJS([]))
         .filter((integration) => {
