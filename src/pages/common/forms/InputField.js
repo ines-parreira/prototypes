@@ -21,6 +21,7 @@ export default class InputField extends FormField {
         inline: PropTypes.bool,
         placeholder: PropTypes.string,
         type: PropTypes.string.isRequired,
+        rightAddon: PropTypes.string
     }, FormField.propTypes)
 
     static defaultProps = {
@@ -45,6 +46,7 @@ export default class InputField extends FormField {
         const {
             children,
             error,
+            rightAddon, // eslint-disable-line
             help, // eslint-disable-line
             inline, // eslint-disable-line
             label, // eslint-disable-line
@@ -68,44 +70,66 @@ export default class InputField extends FormField {
     }
 
     render() {
-        const color = this.props.error ? 'danger' : ''
+        const {
+            error,
+            type,
+            required,
+            inline,
+            label,
+            rightAddon,
+            help,
+        } = this.props
 
-        if (this.props.type === 'hidden') {
-            return <input {...this.props} />
+        const color = error ? 'danger' : ''
+
+        if (type === 'hidden') {
+            const {
+                rightAddon, // eslint-disable-line
+                ...rest
+            } = this.props
+
+            return <input {...rest} />
         }
 
         return (
             <FormGroup
                 className={classnames({
-                    [css.required]: this.props.required,
-                    'd-inline-block': this.props.inline,
+                    [css.required]: required,
+                    'd-inline-block': inline,
                 })}
                 color={color}
             >
                 {
-                    this.props.label && (
+                    label && (
                         <Label
                             htmlFor={this.id}
                             className="control-label"
                         >
-                            {this.props.label}
+                            {label}
                         </Label>
                     )
                 }
-                <div>
+                <div className={classnames({'input-group': !!rightAddon})}>
                     {this._getField()}
+                    {
+                        rightAddon && (
+                            <span className="input-group-addon">
+                                {rightAddon}
+                            </span>
+                        )
+                    }
                 </div>
                 {
-                    this.props.error && (
+                    error && (
                         <Errors>
-                            {this.props.error}
+                            {error}
                         </Errors>
                     )
                 }
                 {
-                    defined(this.props.help) && (
+                    defined(help) && (
                         <FormText color="muted">
-                            {this.props.help}
+                            {help}
                         </FormText>
                     )
                 }

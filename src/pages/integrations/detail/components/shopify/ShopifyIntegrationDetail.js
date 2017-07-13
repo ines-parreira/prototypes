@@ -168,6 +168,7 @@ class ShopifyIntegrationDetail extends React.Component {
                         disabled={isUpdate}
                         value={this.state.name}
                         onChange={(name) => this.setState({name})}
+                        rightAddon=".myshopify.com"
                     />
 
                     <div>

@@ -94,6 +94,7 @@ class RechargeIntegrationDetail extends React.Component {
                     onChange={(value) => this.setState({store_name: value})}
                     placeholder={'ex: "acme" for acme.myshopify.com'}
                     disabled={isUpdate}
+                    rightAddon=".myshopify.com"
                     required
                 />
 

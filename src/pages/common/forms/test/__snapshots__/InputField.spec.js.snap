@@ -1,0 +1,468 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputField.spec.js component should render a basic text input 1`] = `
+<InputField
+  label="label"
+  onChange={[Function]}
+  placeholder="placeholder"
+  type="text"
+  value="value"
+>
+  <ml
+    className=""
+    color=""
+    tag="div"
+  >
+    <div
+      className="form-group"
+    >
+      <Hl
+        className="control-label"
+        htmlFor="id-input-1"
+        tag="label"
+      >
+        <label
+          className="control-label "
+          htmlFor="id-input-1"
+        >
+          label
+        </label>
+      </Hl>
+      <div
+        className=""
+      >
+        <ei
+          className=""
+          id="id-input-1"
+          onChange={[Function]}
+          placeholder="placeholder"
+          tag="p"
+          type="text"
+          value="value"
+        >
+          <input
+            className="form-control"
+            id="id-input-1"
+            onChange={[Function]}
+            placeholder="placeholder"
+            type="text"
+            value="value"
+          />
+        </ei>
+      </div>
+    </div>
+  </ml>
+</InputField>
+`;
+
+exports[`InputField.spec.js component should render a hidden text input 1`] = `
+<InputField
+  hidden={true}
+  label="label"
+  placeholder="placeholder"
+  type="text"
+  value="value"
+>
+  <ml
+    className=""
+    color=""
+    tag="div"
+  >
+    <div
+      className="form-group"
+    >
+      <Hl
+        className="control-label"
+        htmlFor="id-input-7"
+        tag="label"
+      >
+        <label
+          className="control-label "
+          htmlFor="id-input-7"
+        >
+          label
+        </label>
+      </Hl>
+      <div
+        className=""
+      >
+        <ei
+          className=""
+          hidden={true}
+          id="id-input-7"
+          onChange={[Function]}
+          placeholder="placeholder"
+          tag="p"
+          type="text"
+          value="value"
+        >
+          <input
+            className="form-control"
+            hidden={true}
+            id="id-input-7"
+            onChange={[Function]}
+            placeholder="placeholder"
+            type="text"
+            value="value"
+          />
+        </ei>
+      </div>
+    </div>
+  </ml>
+</InputField>
+`;
+
+exports[`InputField.spec.js component should render a required text input 1`] = `
+<InputField
+  label="label"
+  onChange={[Function]}
+  placeholder="placeholder"
+  required={true}
+  type="text"
+  value="value"
+>
+  <ml
+    className="undefined"
+    color=""
+    tag="div"
+  >
+    <div
+      className="undefined form-group"
+    >
+      <Hl
+        className="control-label"
+        htmlFor="id-input-2"
+        tag="label"
+      >
+        <label
+          className="control-label "
+          htmlFor="id-input-2"
+        >
+          label
+        </label>
+      </Hl>
+      <div
+        className=""
+      >
+        <ei
+          className=""
+          id="id-input-2"
+          onChange={[Function]}
+          placeholder="placeholder"
+          required={true}
+          tag="p"
+          type="text"
+          value="value"
+        >
+          <input
+            className="form-control"
+            id="id-input-2"
+            onChange={[Function]}
+            placeholder="placeholder"
+            required={true}
+            type="text"
+            value="value"
+          />
+        </ei>
+      </div>
+    </div>
+  </ml>
+</InputField>
+`;
+
+exports[`InputField.spec.js component should render a text input with a right addon 1`] = `
+<InputField
+  inline={true}
+  label="label"
+  placeholder="placeholder"
+  rightAddon="@rightaddon.io"
+  type="text"
+  value="value"
+>
+  <ml
+    className="d-inline-block"
+    color=""
+    tag="div"
+  >
+    <div
+      className="d-inline-block form-group"
+    >
+      <Hl
+        className="control-label"
+        htmlFor="id-input-5"
+        tag="label"
+      >
+        <label
+          className="control-label "
+          htmlFor="id-input-5"
+        >
+          label
+        </label>
+      </Hl>
+      <div
+        className="input-group"
+      >
+        <ei
+          className=""
+          id="id-input-5"
+          onChange={[Function]}
+          placeholder="placeholder"
+          tag="p"
+          type="text"
+          value="value"
+        >
+          <input
+            className="form-control"
+            id="id-input-5"
+            onChange={[Function]}
+            placeholder="placeholder"
+            type="text"
+            value="value"
+          />
+        </ei>
+        <span
+          className="input-group-addon"
+        >
+          @rightaddon.io
+        </span>
+      </div>
+    </div>
+  </ml>
+</InputField>
+`;
+
+exports[`InputField.spec.js component should render a text input with an error 1`] = `
+<InputField
+  error="the value is wrong"
+  label="label"
+  placeholder="placeholder"
+  type="text"
+  value="value"
+>
+  <ml
+    className=""
+    color="danger"
+    tag="div"
+  >
+    <div
+      className="has-danger form-group"
+    >
+      <Hl
+        className="control-label"
+        htmlFor="id-input-8"
+        tag="label"
+      >
+        <label
+          className="control-label "
+          htmlFor="id-input-8"
+        >
+          label
+        </label>
+      </Hl>
+      <div
+        className=""
+      >
+        <ei
+          className="form-control-danger"
+          id="id-input-8"
+          onChange={[Function]}
+          placeholder="placeholder"
+          tag="p"
+          type="text"
+          value="value"
+        >
+          <input
+            className="form-control-danger form-control"
+            id="id-input-8"
+            onChange={[Function]}
+            placeholder="placeholder"
+            type="text"
+            value="value"
+          />
+        </ei>
+      </div>
+      <Errors
+        tag={[Function]}
+      >
+        <cl
+          tag="div"
+        >
+          <div
+            className="form-control-feedback"
+          >
+            the value is wrong
+          </div>
+        </cl>
+      </Errors>
+    </div>
+  </ml>
+</InputField>
+`;
+
+exports[`InputField.spec.js component should render a text input with an onChange handler, and call this handler on change 1`] = `
+<InputField
+  label="label"
+  onChange={[Function]}
+  placeholder="placeholder"
+  type="text"
+  value="value"
+>
+  <ml
+    className=""
+    color=""
+    tag="div"
+  >
+    <div
+      className="form-group"
+    >
+      <Hl
+        className="control-label"
+        htmlFor="id-input-6"
+        tag="label"
+      >
+        <label
+          className="control-label "
+          htmlFor="id-input-6"
+        >
+          label
+        </label>
+      </Hl>
+      <div
+        className=""
+      >
+        <ei
+          className=""
+          id="id-input-6"
+          onChange={[Function]}
+          placeholder="placeholder"
+          tag="p"
+          type="text"
+          value="value"
+        >
+          <input
+            className="form-control"
+            id="id-input-6"
+            onChange={[Function]}
+            placeholder="placeholder"
+            type="text"
+            value="value"
+          />
+        </ei>
+      </div>
+    </div>
+  </ml>
+</InputField>
+`;
+
+exports[`InputField.spec.js component should render an inline required text input 1`] = `
+<InputField
+  inline={true}
+  label="label"
+  placeholder="placeholder"
+  required={true}
+  type="text"
+  value="value"
+>
+  <ml
+    className="undefined d-inline-block"
+    color=""
+    tag="div"
+  >
+    <div
+      className="undefined d-inline-block form-group"
+    >
+      <Hl
+        className="control-label"
+        htmlFor="id-input-4"
+        tag="label"
+      >
+        <label
+          className="control-label "
+          htmlFor="id-input-4"
+        >
+          label
+        </label>
+      </Hl>
+      <div
+        className=""
+      >
+        <ei
+          className=""
+          id="id-input-4"
+          onChange={[Function]}
+          placeholder="placeholder"
+          required={true}
+          tag="p"
+          type="text"
+          value="value"
+        >
+          <input
+            className="form-control"
+            id="id-input-4"
+            onChange={[Function]}
+            placeholder="placeholder"
+            required={true}
+            type="text"
+            value="value"
+          />
+        </ei>
+      </div>
+    </div>
+  </ml>
+</InputField>
+`;
+
+exports[`InputField.spec.js component should render an inline text input 1`] = `
+<InputField
+  inline={true}
+  label="label"
+  placeholder="placeholder"
+  type="text"
+  value="value"
+>
+  <ml
+    className="d-inline-block"
+    color=""
+    tag="div"
+  >
+    <div
+      className="d-inline-block form-group"
+    >
+      <Hl
+        className="control-label"
+        htmlFor="id-input-3"
+        tag="label"
+      >
+        <label
+          className="control-label "
+          htmlFor="id-input-3"
+        >
+          label
+        </label>
+      </Hl>
+      <div
+        className=""
+      >
+        <ei
+          className=""
+          id="id-input-3"
+          onChange={[Function]}
+          placeholder="placeholder"
+          tag="p"
+          type="text"
+          value="value"
+        >
+          <input
+            className="form-control"
+            id="id-input-3"
+            onChange={[Function]}
+            placeholder="placeholder"
+            type="text"
+            value="value"
+          />
+        </ei>
+      </div>
+    </div>
+  </ml>
+</InputField>
+`;
