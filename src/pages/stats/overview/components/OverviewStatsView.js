@@ -75,7 +75,8 @@ const availableStats = fromJS([
         name: 'median_first_response_time',
         value: v => formatDuration(v),
         tooltip: `Difference between the date when the first message was received from 
-the user and the first response of the agent. Only tickets with at least 1 response are taken into account (median)`,
+the user and the first response of the agent. Only tickets with at least 1 response are taken into account. This
+doesn't take into account responses sent by the rules (median)`,
         label: 'First response time',
         moreIsBetter: false,
     },
