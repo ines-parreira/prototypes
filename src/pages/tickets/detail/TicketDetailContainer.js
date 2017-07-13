@@ -177,9 +177,11 @@ export default class TicketDetailContainer extends React.Component {
         const io = new SocketIO()
         const ticketId = this.props.params.ticketId
         const requesterId = this.props.ticket.getIn(['requester', 'id'])
-        if (ticketId) {
+
+        if (ticketId && ticketId !== 'new') {
             io.leaveTicket(ticketId)
         }
+
         if (requesterId) {
             io.leaveUser(requesterId)
         }
