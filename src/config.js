@@ -163,6 +163,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/prestashop.png',
     },
     {
+        title: 'Veeqo',
+        description: 'Display orders & inventory status next to tickets',
+        url: 'http://docs.gorgias.io/integrations/http-integrations#veeqo',
+        image: 'integrations/veeqo.png',
+    },
+    {
         title: 'Salesforce',
         description: 'Display customer information next to tickets',
         url: 'http://docs.gorgias.io/integrations/http-integrations#Salesforce',
@@ -203,6 +209,18 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Display what lists the customer is on, along with their attributes.',
         url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Mailchimp',
         image: 'integrations/mailchimp.png',
+    },
+    {
+        title: 'Amazon',
+        description: 'Respond to support requests from Amazon',
+        url: 'http://docs.gorgias.io/integrations/amazon',
+        image: 'integrations/amazon.png',
+    },
+    {
+        title: 'eBay',
+        description: 'Respond to support requests from eBay',
+        url: 'http://docs.gorgias.io/integrations/e-bay',
+        image: 'integrations/ebay.png',
     },
     {
         title: 'Slack',
