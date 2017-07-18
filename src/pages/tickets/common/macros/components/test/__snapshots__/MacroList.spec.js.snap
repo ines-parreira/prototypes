@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MacroList component should render the the macro list 1`] = `
+exports[`MacroList component should render the macro list 1`] = `
 <MacroList
   actions={
     Object {
