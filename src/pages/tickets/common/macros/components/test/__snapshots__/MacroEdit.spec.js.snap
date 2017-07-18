@@ -1,0 +1,285 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MacroEdit component should render the the macro edit form 1`] = `
+<MacroEdit
+  actions={
+    Immutable.List [
+    ]
+  }
+  agents={
+    Immutable.Map {
+    }
+  }
+  currentMacro={
+    Immutable.Map {
+      id: 1,
+      name: "Pizza Pepperoni",
+    }
+  }
+  hasIntegrationOfTypes={[Function]}
+  setActions={[Function]}
+  setName={[Function]}
+>
+  <form>
+    <div
+      className="mt-3 mb-3"
+    >
+      <div>
+        <div
+          className="mb-2"
+        >
+          Macro name
+        </div>
+        <InputField
+          name="name"
+          onChange={[Function]}
+          required={true}
+          type="text"
+          value="Pizza Pepperoni"
+        >
+          <ml
+            className="undefined"
+            color=""
+            tag="div"
+          >
+            <div
+              className="undefined form-group"
+            >
+              <div
+                className=""
+              >
+                <ei
+                  className=""
+                  id="id-name"
+                  onChange={[Function]}
+                  required={true}
+                  tag="p"
+                  type="text"
+                  value="Pizza Pepperoni"
+                >
+                  <input
+                    className="form-control"
+                    id="id-name"
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value="Pizza Pepperoni"
+                  />
+                </ei>
+              </div>
+            </div>
+          </ml>
+        </InputField>
+      </div>
+      <div
+        className="mt-3"
+      >
+        <UncontrolledButtonDropdown
+          className="mr-2"
+        >
+          <Ms
+            className="mr-2"
+            isOpen={false}
+            toggle={[Function]}
+          >
+            <ei
+              className="mr-2"
+              group={true}
+              isOpen={false}
+              tag="div"
+              toggle={[Function]}
+            >
+              <div
+                className="mr-2 btn-group"
+              >
+                <ei
+                  aria-haspopup={true}
+                  caret={true}
+                  color="info"
+                  data-toggle="dropdown"
+                  type="button"
+                >
+                  <ei
+                    aria-expanded={false}
+                    aria-haspopup="true"
+                    className="dropdown-toggle"
+                    color="info"
+                    data-toggle="dropdown"
+                    onClick={[Function]}
+                    tag="button"
+                    type="button"
+                  >
+                    <button
+                      aria-expanded={false}
+                      aria-haspopup="true"
+                      className="dropdown-toggle btn btn-info"
+                      data-toggle="dropdown"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      Add action
+                    </button>
+                  </ei>
+                </ei>
+                <Xo
+                  tag="div"
+                >
+                  <div
+                    aria-hidden={true}
+                    className="dropdown-menu"
+                    role="menu"
+                    tabIndex="-1"
+                  >
+                    <ei
+                      header={true}
+                      tag="button"
+                      toggle={true}
+                    >
+                      <h6
+                        className="dropdown-header"
+                        onClick={[Function]}
+                        tabIndex="-1"
+                      >
+                        Ticket actions
+                      </h6>
+                    </ei>
+                    <ei
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                      type="button"
+                    >
+                      <button
+                        className="dropdown-item"
+                        onClick={[Function]}
+                        tabIndex="0"
+                        type="button"
+                      >
+                        Add response text
+                      </button>
+                    </ei>
+                    <ei
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                      type="button"
+                    >
+                      <button
+                        className="dropdown-item"
+                        onClick={[Function]}
+                        tabIndex="0"
+                        type="button"
+                      >
+                        Add attachments
+                      </button>
+                    </ei>
+                    <ei
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                      type="button"
+                    >
+                      <button
+                        className="dropdown-item"
+                        onClick={[Function]}
+                        tabIndex="0"
+                        type="button"
+                      >
+                        Add tags
+                      </button>
+                    </ei>
+                    <ei
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                      type="button"
+                    >
+                      <button
+                        className="dropdown-item"
+                        onClick={[Function]}
+                        tabIndex="0"
+                        type="button"
+                      >
+                        Set status
+                      </button>
+                    </ei>
+                    <ei
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                      type="button"
+                    >
+                      <button
+                        className="dropdown-item"
+                        onClick={[Function]}
+                        tabIndex="0"
+                        type="button"
+                      >
+                        Assign an agent
+                      </button>
+                    </ei>
+                    <ei
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                      type="button"
+                    >
+                      <button
+                        className="dropdown-item"
+                        onClick={[Function]}
+                        tabIndex="0"
+                        type="button"
+                      >
+                        Set subject
+                      </button>
+                    </ei>
+                    <ei
+                      divider={true}
+                      tag="button"
+                      toggle={true}
+                    >
+                      <div
+                        className="dropdown-divider"
+                        onClick={[Function]}
+                        tabIndex="-1"
+                      />
+                    </ei>
+                    <ei
+                      header={true}
+                      tag="button"
+                      toggle={true}
+                    >
+                      <h6
+                        className="dropdown-header"
+                        onClick={[Function]}
+                        tabIndex="-1"
+                      >
+                        External actions
+                      </h6>
+                    </ei>
+                    <ei
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                      type="button"
+                    >
+                      <button
+                        className="dropdown-item"
+                        onClick={[Function]}
+                        tabIndex="0"
+                        type="button"
+                      >
+                        HTTP hook
+                      </button>
+                    </ei>
+                  </div>
+                </Xo>
+              </div>
+            </ei>
+          </Ms>
+        </UncontrolledButtonDropdown>
+      </div>
+    </div>
+  </form>
+</MacroEdit>
+`;

@@ -30,7 +30,29 @@ import * as macroActions from './../../../../../state/macro/actions'
 
 import InputField from '../../../../common/forms/InputField'
 
-class MacroEdit extends React.Component {
+export class MacroEdit extends React.Component {
+    constructor (props) {
+        super(props)
+
+        this.state = {
+            name: props.currentMacro.get('name', '')
+        }
+    }
+
+    componentWillReceiveProps (nextProps) {
+        // macro changed
+        if (this.props.currentMacro.get('id') !== nextProps.currentMacro.get('id')) {
+            this.setState({
+                name: nextProps.currentMacro.get('name', '')
+            })
+        }
+    }
+
+    _updateName = (name) => {
+        this.setState({name})
+        this.props.setName(name)
+    }
+
     _updateActionArguments = (index, args = fromJS({})) => {
         const actions = this.props.actions.setIn([index, 'arguments'], args)
         this.props.setActions(actions)
@@ -135,8 +157,9 @@ class MacroEdit extends React.Component {
                         </div>
                         <InputField
                             type="text"
-                            onChange={this.props.setName}
-                            value={currentMacro.get('name') || ''}
+                            name="name"
+                            onChange={this._updateName}
+                            value={this.state.name}
                             required
                         />
                     </div>
@@ -337,7 +360,6 @@ MacroEdit.propTypes = {
     currentMacro: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    integrations: PropTypes.object.isRequired,
     setActions: PropTypes.func.isRequired,
     setName: PropTypes.func.isRequired,
     hasIntegrationOfTypes: PropTypes.func.isRequired,
@@ -345,7 +367,6 @@ MacroEdit.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        integrations: state.integrations.get('integrations', fromJS([])),
         hasIntegrationOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(state),
     }
 }

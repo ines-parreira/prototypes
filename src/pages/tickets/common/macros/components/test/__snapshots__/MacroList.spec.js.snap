@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MacroList component should render the the macro list 1`] = `
+<MacroList
+  actions={
+    Object {
+      "previewMacroInModal": [Function],
+    }
+  }
+  currentMacro={
+    Immutable.Map {
+      id: 1,
+      name: "Pizza Pepperoni",
+    }
+  }
+  disableExternalActions={false}
+  macros={
+    Immutable.List [
+      Immutable.Map {
+        id: 1,
+        name: "Pizza Pepperoni",
+      },
+      Immutable.Map {
+        id: 2,
+        name: "Pizza Capricciosa",
+      },
+    ]
+  }
+>
+  <div>
+    <div
+      className="macro-list p-0"
+    >
+      <InputField
+        className="mt-3 shortcuts-enable"
+        onChange={[Function]}
+        placeholder="Search a macro..."
+        type="text"
+        value=""
+      >
+        <ml
+          className=""
+          color=""
+          tag="div"
+        >
+          <div
+            className="form-group"
+          >
+            <div
+              className=""
+            >
+              <ei
+                className="mt-3 shortcuts-enable"
+                id="id-input-1"
+                onChange={[Function]}
+                placeholder="Search a macro..."
+                tag="p"
+                type="text"
+                value=""
+              >
+                <input
+                  className="mt-3 shortcuts-enable form-control"
+                  id="id-input-1"
+                  onChange={[Function]}
+                  placeholder="Search a macro..."
+                  type="text"
+                  value=""
+                />
+              </ei>
+            </div>
+          </div>
+        </ml>
+      </InputField>
+      <div
+        className="macro-item m-0 active"
+        onClick={[Function]}
+      >
+        Pizza Pepperoni
+      </div>
+      <div
+        className="macro-item m-0"
+        onClick={[Function]}
+      >
+        Pizza Capricciosa
+      </div>
+    </div>
+  </div>
+</MacroList>
+`;
