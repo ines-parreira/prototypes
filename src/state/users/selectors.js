@@ -182,3 +182,10 @@ export const getOtherAgentsTypingOnTicket = ticketId => createSelector(
         return agents.filter(agent => agent.get('id', '').toString() !== currentUser.get('id', '').toString())
     }
 )
+
+export const isAgentTypingOnTicket = ticketId => createSelector(
+    [currentUserSelectors.getCurrentUser, getAgentsTypingOnTicket(ticketId)],
+    (currentUser, agents) => {
+        return !!agents.find(agent => agent.get('id', '').toString() === currentUser.get('id', '').toString())
+    }
+)

@@ -389,6 +389,472 @@ Array [
 ]
 `;
 
+exports[`actions new message setResponseText() should always pass the args to the reducer 1`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+            source: Immutable.Map {
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Marc",
+                              address: "marc.wall@gmail.com",
+                        },
+                        Immutable.Map {
+                              name: "Acme Support",
+                              address: "support@acme.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Steve Frizeli",
+                        address: "marie.curie@gmail.com",
+                  },
+                  type: "chat",
+            },
+            id: 151,
+            from_agent: false,
+      },
+      Immutable.Map {
+            source: Immutable.Map {
+                  cc: Immutable.List [
+                  ],
+                  to: Immutable.List [
+                        Immutable.Map {
+                              name: "Steve Frizeli",
+                              address: "steve.frizeli@gmail.com",
+                        },
+                  ],
+                  from: Immutable.Map {
+                        name: "Acme Support",
+                        address: "support@acme.com",
+                  },
+                  type: "email",
+            },
+            id: 152,
+            from_agent: true,
+      },
+],
+    "sourceType": "facebook-message",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "steve.frizeli@gmail.com",
+          "name": "Steve Frizeli",
+        },
+      ],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+      name: "Acme Support",
+      address: "support@acme.com",
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                ],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "foo",
+                "type": "unstyled",
+              },
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+},
+    "currentUser": undefined,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      messages: Immutable.List [
+            Immutable.Map {
+                  source: Immutable.Map {
+                        to: Immutable.List [
+                              Immutable.Map {
+                                    name: "Marc",
+                                    address: "marc.wall@gmail.com",
+                              },
+                              Immutable.Map {
+                                    name: "Acme Support",
+                                    address: "support@acme.com",
+                              },
+                        ],
+                        from: Immutable.Map {
+                              name: "Steve Frizeli",
+                              address: "marie.curie@gmail.com",
+                        },
+                        type: "chat",
+                  },
+                  id: 151,
+                  from_agent: false,
+            },
+            Immutable.Map {
+                  source: Immutable.Map {
+                        cc: Immutable.List [
+                        ],
+                        to: Immutable.List [
+                              Immutable.Map {
+                                    name: "Steve Frizeli",
+                                    address: "steve.frizeli@gmail.com",
+                              },
+                        ],
+                        from: Immutable.Map {
+                              name: "Acme Support",
+                              address: "support@acme.com",
+                        },
+                        type: "email",
+                  },
+                  id: 152,
+                  from_agent: true,
+            },
+      ],
+},
+    "ticketId": undefined,
+    "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message setResponseText() should join the typing room of the ticket when the user is typing 1`] = `
+Array [
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                ],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "foo",
+                "type": "unstyled",
+              },
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+},
+    "currentUser": undefined,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      id: 1,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message setResponseText() should leave the typing room of the ticket when the user is not typing but is in the room 1`] = `
+Array [
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "",
+                "type": "unstyled",
+              },
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+},
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      id: 1,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message setResponseText() should not join the typing room of the ticket when the content is only the user's signature 1`] = `
+Array [
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                ],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "signature",
+                "type": "unstyled",
+              },
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+},
+    "currentUser": Immutable.Map {
+      signature_text: "signature",
+},
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      id: 1,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message setResponseText() should not join the typing room of the ticket when the user is typing in an internal-note 1`] = `
+Array [
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                ],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "foo",
+                "type": "unstyled",
+              },
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+},
+    "currentUser": undefined,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      id: 1,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message setResponseText() should not leave the typing room of the ticket when the user is not typing and not in the room 1`] = `
+Array [
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "",
+                "type": "unstyled",
+              },
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+},
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      id: 1,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+]
+`;
+
 exports[`actions new message setSubject() default value 1`] = `
 Array [
   Object {

@@ -33,6 +33,7 @@ import {
 
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
+import * as usersSelectors from '../users/selectors'
 import * as selectors from './selectors'
 import * as responseUtils from './responseUtils'
 
@@ -107,20 +108,23 @@ const _throttledIsTyping = _throttle((io, ticketId) => {
 
 export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
     const state = getState()
-    const {ticket, currentUser} = state
+    const {ticket, currentUser, newMessage} = state
 
     const contentState = args.get('contentState')
 
-    if (contentState) {
+    if (contentState && newMessage) {
         const io = new SocketIO()
         const ticketId = ticket.get('id')
 
         if (ticketId) {
             const plainText = contentState.getPlainText()
 
-            if (plainText && !responseUtils.onlySignature(contentState, currentUser)) {
+            if (plainText
+                && !responseUtils.onlySignature(contentState, currentUser)
+                && newMessage.getIn(['newMessage', 'source', 'type']) !== 'internal-note'
+            ) {
                 _throttledIsTyping(io, ticketId)
-            } else {
+            } else if (usersSelectors.isAgentTypingOnTicket(ticketId)(state)) {
                 _throttledIsTyping.cancel()
                 io.leaveTypingOnTicket(ticketId)
             }

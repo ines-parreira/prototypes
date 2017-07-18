@@ -11,6 +11,7 @@
     "test": "jest",
     "test:debug": "node --inspect --debug-brk ./node_modules/.bin/jest -i",
     "test:cover": "jest --coverage",
+    "test:update": "jest --updateSnapshot",
     "test:watch": "npm test -- --watch",
     "dll": "webpack --env.dll",
     "postinstall": "npm run dll",

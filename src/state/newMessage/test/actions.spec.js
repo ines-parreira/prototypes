@@ -1,16 +1,34 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {ContentState} from 'draft-js'
+import {fromJS} from 'immutable'
+
 import * as actions from '../actions'
+import * as types from '../constants'
+import {initialState} from '../reducers'
+
 import integrationState from '../../integrations/tests/fixtures'
 import * as integrationSelectors from '../../integrations/selectors'
 import {getPreferredChannel,} from '../../ticket/utils'
 import {smoochTicket, emailTicket} from '../../ticket/test/fixtures'
-import * as types from '../constants'
-import {initialState} from '../reducers'
-import {fromJS} from 'immutable'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
+
+// mock random key generation so they match from a snapshot to the other
+jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
+
+jest.mock('../../../pages/common/utils/socketio', () => {
+    const joinTypingOnTicket = jest.fn()
+    const leaveTypingOnTicket = jest.fn()
+
+    return () => ({
+        joinTypingOnTicket,
+        leaveTypingOnTicket
+    })
+})
+
+import SocketIO from '../../../pages/common/utils/socketio'
 
 describe('actions', () => {
     describe('new message', () => {
@@ -207,6 +225,7 @@ describe('actions', () => {
                 })
             }])
         })
+
         describe('setSubject()', () => {
 
             it('default value', () => {
@@ -254,6 +273,126 @@ describe('actions', () => {
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
+            })
+        })
+
+        describe('setResponseText()', () => {
+            beforeEach(() => {
+                SocketIO().joinTypingOnTicket.mockReset()
+                SocketIO().leaveTypingOnTicket.mockReset()
+            })
+
+            it('should always pass the args to the reducer', () => {
+                const contentState = ContentState.createFromText('foo')
+
+                store.dispatch(actions.setResponseText(fromJS({contentState})))
+
+                expect(store.getActions()).toMatchSnapshot()
+            })
+
+            it('should join the typing room of the ticket when the user is typing', () => {
+                store = mockStore({
+                    newMessage: initialState,
+                    ticket: fromJS({id: 1}),
+                    users: fromJS({
+                        agents: [{
+                            id: 1
+                        }]
+                    })
+                })
+
+                store.dispatch(actions.setResponseText(fromJS({
+                    contentState: ContentState.createFromText('foo')
+                })))
+
+                expect(store.getActions()).toMatchSnapshot()
+                expect(SocketIO().joinTypingOnTicket.mock.calls.length).toBe(1)
+            })
+
+            it('should not join the typing room of the ticket when the user is typing in an internal-note', () => {
+                store = mockStore({
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'internal-note'),
+                    ticket: fromJS({id: 1})
+                })
+
+                store.dispatch(actions.setResponseText(fromJS({
+                    contentState: ContentState.createFromText('foo')
+                })))
+
+                expect(store.getActions()).toMatchSnapshot()
+                expect(SocketIO().joinTypingOnTicket.mock.calls.length).toBe(0)
+            })
+
+            it('should not join the typing room of the ticket when the content is only the user\'s signature', () => {
+                store = mockStore({
+                    newMessage: initialState,
+                    ticket: fromJS({id: 1}),
+                    currentUser: fromJS({
+                        signature_text: 'signature'
+                    }),
+                    users: fromJS({
+                        agents: [{
+                            id: 1
+                        }]
+                    })
+                })
+
+                store.dispatch(actions.setResponseText(fromJS({
+                    contentState: ContentState.createFromText('\n\nsignature')
+                })))
+
+                expect(store.getActions()).toMatchSnapshot()
+                expect(SocketIO().joinTypingOnTicket.mock.calls.length).toBe(0)
+            })
+
+            it('should leave the typing room of the ticket when the user is not typing but is in the room', () => {
+                store = mockStore({
+                    newMessage: initialState,
+                    ticket: fromJS({id: 1}),
+                    users: fromJS({
+                        agentsTypingStatus: [{
+                            ticket: 1,
+                            users: [1]
+                        }],
+                        agents: [{
+                            id: 1
+                        }]
+                    }),
+                    currentUser: fromJS({
+                        id: 1
+                    })
+                })
+
+                store.dispatch(actions.setResponseText(fromJS({
+                    contentState: ContentState.createFromText('')
+                })))
+
+                expect(store.getActions()).toMatchSnapshot()
+                expect(SocketIO().joinTypingOnTicket.mock.calls.length).toBe(0)
+                expect(SocketIO().leaveTypingOnTicket.mock.calls.length).toBe(1)
+            })
+
+            it('should not leave the typing room of the ticket when the user is not typing and not in the room', () => {
+                store = mockStore({
+                    newMessage: initialState,
+                    ticket: fromJS({id: 1}),
+                    users: fromJS({
+                        agentsTypingStatus: [],
+                        agents: [{
+                            id: 1
+                        }]
+                    }),
+                    currentUser: fromJS({
+                        id: 1
+                    })
+                })
+
+                store.dispatch(actions.setResponseText(fromJS({
+                    contentState: ContentState.createFromText('')
+                })))
+
+                expect(store.getActions()).toMatchSnapshot()
+                expect(SocketIO().leaveTypingOnTicket.mock.calls.length).toBe(0)
             })
         })
     })
