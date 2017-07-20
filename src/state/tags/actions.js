@@ -19,7 +19,7 @@ export function addTags(tags) {
     }
 }
 
-export function fetchTags(page) {
+export function fetchTags(page, sort='usage_count', reverse=true) {
     return (dispatch, getState) => {
         dispatch({
             type: types.FETCH_TAG_LIST_START
@@ -30,7 +30,12 @@ export function fetchTags(page) {
             page = tags.getIn(['_internal', 'pagination', 'page'], 1)
         }
 
-        return axios.get('/api/tags/', {params: {page}})
+        return axios.get('/api/tags/', {
+            params: {
+                page,
+                order_by: sort,
+                order_dir: reverse ? 'desc' : 'asc'
+            }})
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -127,10 +132,16 @@ export const create = (tag) => {
         })
 
         return axios.post('/api/tags/', tag)
-            .then((resp) => dispatch({
-                type: types.CREATE_TAG_SUCCESS,
-                tag: resp.data
-            }), (error) => {
+            .then((resp) => {
+                dispatch(notify({
+                    type: 'success',
+                    message: `Created tag: ${tag.name}`
+                }))
+                dispatch({
+                    type: types.CREATE_TAG_SUCCESS,
+                    tag: resp.data
+                })
+            }, (error) => {
                 return dispatch({
                     type: types.CREATE_TAG_ERROR,
                     error
@@ -145,12 +156,7 @@ export const create = (tag) => {
  */
 export const remove = (id) => {
     return dispatch => {
-        dispatch({
-            type: types.REMOVE_TAG,
-            id
-        })
-
-        axios.delete(`/api/tags/${id}/`)
+        return axios.delete(`/api/tags/${id}/`)
             .then(() => {
                 dispatch(notify({
                     type: 'success',
@@ -158,6 +164,26 @@ export const remove = (id) => {
                 }))
             }, error => {
                 return dispatch(fail(error, 'Unable to delete the tag'))
+            })
+    }
+}
+
+/**
+ * Delete multiple tags
+ * @param ids: an array of ids of the tags that should be deleted
+ */
+export const bulkDelete = (ids) => {
+    return dispatch => {
+        return axios.delete('/api/tags/', {
+            data: {ids}
+        })
+            .then(() => {
+                dispatch(notify({
+                    type: 'success',
+                    message: `${ids.length} tags deleted successfully`
+                }))
+            }, error => {
+                return dispatch(fail(error, 'Unable to delete tags'))
             })
     }
 }

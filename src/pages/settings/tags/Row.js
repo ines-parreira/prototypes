@@ -21,6 +21,7 @@ import * as tagsActions from '../../../state/tags/actions'
     remove: tagsActions.remove,
     save: tagsActions.save,
     select: tagsActions.select,
+    fetch: tagsActions.fetchTags
 })
 export default class Row extends Component {
     static propTypes = {
@@ -30,7 +31,8 @@ export default class Row extends Component {
         save: PropTypes.func.isRequired,
         cancel: PropTypes.func.isRequired,
         remove: PropTypes.func.isRequired,
-        select: PropTypes.func.isRequired
+        select: PropTypes.func.isRequired,
+        refresh: PropTypes.func.isRequired
     }
 
     constructor(props) {
@@ -67,6 +69,9 @@ export default class Row extends Component {
             .set('decoration', this.state.decoration)
 
         this.props.save(row.toJS())
+            .then(() => {
+                this.props.refresh()
+            })
     }
 
     _onCancel = () => {
@@ -76,6 +81,9 @@ export default class Row extends Component {
     _onRemove = () => {
         this.setState({askRemoveConfirmation: false})
         return this.props.remove(this.props.row.get('id'))
+            .then(() => {
+                this.props.refresh()
+            })
     }
 
     _onSelect = () => {

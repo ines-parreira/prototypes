@@ -14,12 +14,18 @@ import InputField from '../../common/forms/InputField'
 
 import Table from './Table'
 import Pagination from '../../common/components/Pagination'
+import Loader from '../../common/components/Loader'
 
 import * as tagsActions from '../../../state/tags/actions'
 
+import * as tagsSelectors from '../../../state/tags/selectors'
+
 @connect((state) => {
     return {
-        tags: state.tags
+        tags: state.tags,
+        currentPage: tagsSelectors.getCurrentPage(state),
+        numberPages: tagsSelectors.getNumberPages(state)
+
     }
 }, {
     fetch: tagsActions.fetchTags,
@@ -27,43 +33,65 @@ import * as tagsActions from '../../../state/tags/actions'
     remove: tagsActions.remove,
     selectAll: tagsActions.selectAll,
     setPage: tagsActions.setPage,
-    merge: tagsActions.merge
+    merge: tagsActions.merge,
+    bulkDelete: tagsActions.bulkDelete
 })
 export default class ManageTags extends Component {
     static propTypes = {
         tags: PropTypes.object.isRequired,
+        currentPage: PropTypes.number.isRequired,
+        numberPages: PropTypes.number.isRequired,
         fetch: PropTypes.func.isRequired,
         create: PropTypes.func.isRequired,
         remove: PropTypes.func.isRequired,
         selectAll: PropTypes.func.isRequired,
         setPage: PropTypes.func.isRequired,
         merge: PropTypes.func.isRequired,
+        bulkDelete: PropTypes.func.isRequired
     }
 
     state = {
-        sort: 'name',
-        reverse: false,
+        sort: 'usage_count',
+        reverse: true,
         newTag: '',
         showCreationPopup: false,
         askRemoveConfirmation: false,
+        isFetching: false
     }
 
     componentDidMount() {
+        this.setState({isFetching: true})
         this.props.fetch()
+            .then(() => {
+                this.setState({isFetching: false})
+            })
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.tags.getIn(['_internal', 'pagination', 'page']) !==
-            nextProps.tags.getIn(['_internal', 'pagination', 'page'])) {
-            this.props.fetch()
+        const {currentPage} = this.props
+        const nextPage = nextProps.currentPage
+        const nextNumPages = nextProps.numberPages
+
+        if (nextPage > nextNumPages) {
+            // needed in case user deletes all tags on the last page. We want to now fetch tags for previous page
+            this.props.setPage(nextNumPages)
+        } else if (currentPage !== nextPage) {
+            this.props.fetch(nextPage, this.state.sort, this.state.reverse)
         }
     }
 
+    _fetchPage = () => {
+        this.props.fetch(this.props.currentPage, this.state.sort, this.state.reverse)
+    }
+
     _onSort = (sort, reverse) => {
-        this.setState({
-            sort,
-            reverse
-        })
+        this.props.fetch(this.props.currentPage, sort, reverse)
+            .then(() => {
+                this.setState({
+                    sort,
+                    reverse,
+                })
+            })
     }
 
     _onCreate = (e) => {
@@ -72,20 +100,27 @@ export default class ManageTags extends Component {
         this.props.create({
             name: this.state.newTag,
         }).then(() => {
+            this._fetchPage()
+        }).then(() =>
             this.setState({
                 newTag: '',
                 showCreationPopup: false,
-            })
-        })
+            }))
     }
 
     _bulkDelete = () => {
         this.setState({askRemoveConfirmation: false})
-        return this.props.tags.get('meta', fromJS({}))
+
+        let tagIDs = []
+        this.props.tags.get('meta', fromJS({}))
             .forEach((meta, key) => {
                 if (meta.get('selected')) {
-                    this.props.remove(key)
+                    tagIDs.push(key)
                 }
+            })
+        this.props.bulkDelete(tagIDs)
+            .then(() => {
+                this._fetchPage()
             })
     }
 
@@ -93,7 +128,7 @@ export default class ManageTags extends Component {
         this.setState({askMergeConfirmation: false})
         const selectedTagMeta = this.props.tags.get('meta', fromJS({})).filter((meta) => meta.get('selected'))
         this.props.merge(selectedTagMeta.keySeq().toList()).then(() => {
-            return this.props.fetch()
+            return this._fetchPage()
         })
     }
 
@@ -110,8 +145,12 @@ export default class ManageTags extends Component {
     }
 
     render() {
-        const {tags, selectAll} = this.props
-        const {sort, reverse} = this.state
+        const {tags, currentPage, numberPages, selectAll} = this.props
+        const {sort, reverse, isFetching} = this.state
+
+        if (isFetching) {
+            return <Loader />
+        }
 
         // check if any items are selected
         const selected = tags.get('meta', fromJS({}))
@@ -265,11 +304,12 @@ export default class ManageTags extends Component {
                     reverse={reverse}
                     onSort={this._onSort}
                     onSelectAll={selectAll}
+                    refresh={this._fetchPage}
                 />
 
                 <Pagination
-                    pageCount={tags.getIn(['_internal', 'pagination', 'nb_pages']) || 1}
-                    currentPage={tags.getIn(['_internal', 'pagination', 'page']) || 1}
+                    pageCount={numberPages}
+                    currentPage={currentPage}
                     onChange={page => this.props.setPage(page)}
                 />
             </div>

@@ -54,5 +54,55 @@ describe('actions', () => {
                     expect(store.getActions()).toEqual(expectedActions)
                 })
         })
+
+        it('fetch list also sorts OK', () => {
+            mockServer
+                .onGet('/api/tags/')
+                .reply(config => {
+                    if (config.params.order_by === 'name' &&
+                        config.params.order_dir === 'desc' &&
+                        config.params.page === 1) {
+                        return [200, {data: ['rejected', 'refund']}]
+                    } else {
+                        return [400]
+                    }
+
+                })
+
+            const expectedActions = [
+                {
+                    type: types.FETCH_TAG_LIST_START
+                },
+                {
+                    type: types.FETCH_TAG_LIST_SUCCESS,
+                    resp: {
+                        data: ['rejected', 'refund']
+                    }
+                }
+            ]
+
+            return store
+                .dispatch(actions.fetchTags(1, 'name', true))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions)
+                })
+        })
+
+        it('deletes multiple tags OK', () => {
+            mockServer.onDelete('/api/tags/')
+                .reply(config => {
+                    if (config.data === '{"ids":[1,2]}') {
+                        return [204]
+                    } else {
+                        return [404]
+                    }
+                })
+
+            return store
+                .dispatch(actions.bulkDelete([1, 2]))
+                .then(() => {
+                    expect(store.getActions()[0]).toHaveProperty('message', '2 tags deleted successfully')
+                })
+        })
     })
 })

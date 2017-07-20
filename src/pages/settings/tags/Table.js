@@ -5,21 +5,6 @@ import {fromJS} from 'immutable'
 import Row from './Row'
 
 class Table extends Component {
-    _sortRows = (rows, key, reverse) => {
-        return rows.sort((a, b) => {
-            if (a.get(key) < b.get(key)) {
-                return reverse ? 1 : -1
-            }
-
-            if (a.get(key) > b.get(key)) {
-                return reverse ? -1 : 1
-            }
-
-            return 0
-        })
-    }
-
-
     _getSort() {
         if (!this.props.sort) {
             return this.props.columns[0].field
@@ -50,7 +35,7 @@ class Table extends Component {
     render() {
         const {rows, columns, reverse, onSelectAll} = this.props
         const sort = this._getSort()
-        const sortedRows = this._sortRows(rows.get('items'), sort, reverse)
+        const sortedRows = rows.get('items')
 
         return (
             <table className="main-table view-table">
@@ -91,6 +76,7 @@ class Table extends Component {
                             <Row
                                 key={i}
                                 row={tag}
+                                refresh={this.props.refresh}
                                 meta={rows.getIn(['meta', tag.get('id')]) || fromJS({})}
                             />
                         ))
@@ -106,6 +92,7 @@ Table.propTypes = {
     columns: PropTypes.array.isRequired,
     onSort: PropTypes.func.isRequired,
     onSelectAll: PropTypes.func.isRequired,
+    refresh: PropTypes.func.isRequired,
 
     sort: PropTypes.string,
     reverse: PropTypes.bool

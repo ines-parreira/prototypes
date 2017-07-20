@@ -68,7 +68,6 @@ export default (state = initialState, action) => {
 
         case types.CREATE_TAG_SUCCESS:
             return state
-                .set('items', state.get('items').push(fromJS(action.tag)))
                 .setIn(['_internal', 'creating'], false)
 
         case types.CREATE_TAG_ERROR:
