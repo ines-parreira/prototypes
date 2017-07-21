@@ -52,7 +52,10 @@ class FilterTopbar extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // fetch page again when filters changed and that filters are valid
-        if (this.props.activeView.get('filters') !== nextProps.activeView.get('filters') && nextProps.areFiltersValid) {
+        const isSameView = this.props.activeView.get('id') === nextProps.activeView.get('id')
+        const filtersHaveChanged = this.props.activeView.get('filters') !== nextProps.activeView.get('filters')
+
+        if (isSameView && filtersHaveChanged && nextProps.areFiltersValid) {
             this.props.fetchPage(1)
         }
     }
