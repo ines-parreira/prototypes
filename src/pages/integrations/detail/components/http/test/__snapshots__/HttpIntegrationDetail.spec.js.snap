@@ -1,0 +1,454 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HttpIntegrationDetail component should display data about the integration 1`] = `
+<div>
+  <gs
+    tag="ol"
+  >
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations"
+      >
+        Integrations
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/http"
+      >
+        HTTP
+      </Link>
+    </bs>
+    <bs
+      active={true}
+      tag="li"
+    >
+      my little integration
+    </bs>
+  </gs>
+  <h1>
+    my little integration
+  </h1>
+  <p>
+    Add the details about the HTTP integration you want to add below. If you need help, you can check our 
+     
+    <a
+      href="http://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
+      target="_blank"
+    >
+      docs
+    </a>
+     or contact us.
+  </p>
+  <rl
+    onSubmit={[Function]}
+    tag="form"
+  >
+    <InputField
+      label="Integration name"
+      name="name"
+      onChange={[Function]}
+      required={true}
+      type="text"
+      value=""
+    />
+    <InputField
+      label="Description"
+      name="description"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <ml
+      tag="div"
+    >
+      <Hl
+        className="control-label"
+        tag="label"
+      >
+        Triggers
+      </Hl>
+      <p>
+        <vl
+          color="muted"
+          tag="small"
+        >
+          This HTTP integration will be executed when any of the events below happens.
+        </vl>
+      </p>
+      <BooleanField
+        label="Ticket created"
+        name="http.triggers.ticket-created"
+        onChange={[Function]}
+        type="checkbox"
+        value={true}
+      />
+      <BooleanField
+        label="Ticket updated"
+        name="http.triggers.ticket-updated"
+        onChange={[Function]}
+        type="checkbox"
+        value={true}
+      />
+    </ml>
+    <InputField
+      help={
+        <div>
+          You can use 
+          <code>
+            {ticket.requester.email}
+          </code>
+           to pass the email of the ticket requester. See other 
+          <a
+            href="http://docs.gorgias.io/#/definitions/User"
+            target="_blank"
+          >
+            vars
+          </a>
+          .
+        </div>
+      }
+      label="URL"
+      name="http.url"
+      onChange={[Function]}
+      placeholder="https://company.com/api/users?email={ticket.requester.email}"
+      required={true}
+      type="text"
+      value=""
+    />
+    <InputField
+      label="HTTP Method"
+      name="http.method"
+      onChange={[Function]}
+      required={true}
+      type="select"
+      value="GET"
+    >
+      <option
+        value="GET"
+      >
+        GET
+      </option>
+      <option
+        value="POST"
+      >
+        POST
+      </option>
+      <option
+        value="PUT"
+      >
+        PUT
+      </option>
+      <option
+        value="DELETE"
+      >
+        DELETE
+      </option>
+    </InputField>
+    <InputField
+      label="Request content type"
+      name="http.request_content_type"
+      onChange={[Function]}
+      required={true}
+      type="select"
+      value="application/json"
+    >
+      <option
+        value="application/json"
+      >
+        application/json
+      </option>
+    </InputField>
+    <InputField
+      label="Response content type"
+      name="http.response_content_type"
+      onChange={[Function]}
+      required={true}
+      type="select"
+      value="application/json"
+    >
+      <option
+        value="application/json"
+      >
+        application/json
+      </option>
+    </InputField>
+    <ml
+      tag="div"
+    >
+      <HeaderFieldArray
+        fields={Array []}
+        name="http.headers"
+        onChange={[Function]}
+      />
+    </ml>
+    <JsonField
+      label="Request Body (JSON)"
+      name="http.form"
+      onChange={[Function]}
+      rows="8"
+      type="text"
+    />
+    <div>
+      <ei
+        className="mr-2"
+        color="primary"
+        disabled={false}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </ei>
+      <ei
+        className=""
+        color="warning"
+        onClick={[Function]}
+        outline={true}
+        tag="button"
+        type="button"
+      >
+        Deactivate integration
+      </ei>
+      <ConfirmButton
+        className="pull-right"
+        color="danger"
+        confirm={[Function]}
+        content="Are you sure you want to delete this integration?"
+        disabled={false}
+        loading={false}
+        skip={false}
+        title="Are you sure?"
+        type="button"
+      >
+        Delete
+      </ConfirmButton>
+    </div>
+  </rl>
+</div>
+`;
+
+exports[`HttpIntegrationDetail component should display default if it's a new integration 1`] = `
+<div>
+  <gs
+    tag="ol"
+  >
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations"
+      >
+        Integrations
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/http"
+      >
+        HTTP
+      </Link>
+    </bs>
+    <bs
+      active={true}
+      tag="li"
+    >
+      Add
+    </bs>
+  </gs>
+  <h1>
+    Add new HTTP integration
+  </h1>
+  <p>
+    Add the details about the HTTP integration you want to add below. If you need help, you can check our 
+     
+    <a
+      href="http://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
+      target="_blank"
+    >
+      docs
+    </a>
+     or contact us.
+  </p>
+  <rl
+    onSubmit={[Function]}
+    tag="form"
+  >
+    <InputField
+      label="Integration name"
+      name="name"
+      onChange={[Function]}
+      required={true}
+      type="text"
+      value=""
+    />
+    <InputField
+      label="Description"
+      name="description"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <ml
+      tag="div"
+    >
+      <Hl
+        className="control-label"
+        tag="label"
+      >
+        Triggers
+      </Hl>
+      <p>
+        <vl
+          color="muted"
+          tag="small"
+        >
+          This HTTP integration will be executed when any of the events below happens.
+        </vl>
+      </p>
+      <BooleanField
+        label="Ticket created"
+        name="http.triggers.ticket-created"
+        onChange={[Function]}
+        type="checkbox"
+        value={true}
+      />
+      <BooleanField
+        label="Ticket updated"
+        name="http.triggers.ticket-updated"
+        onChange={[Function]}
+        type="checkbox"
+        value={true}
+      />
+    </ml>
+    <InputField
+      help={
+        <div>
+          You can use 
+          <code>
+            {ticket.requester.email}
+          </code>
+           to pass the email of the ticket requester. See other 
+          <a
+            href="http://docs.gorgias.io/#/definitions/User"
+            target="_blank"
+          >
+            vars
+          </a>
+          .
+        </div>
+      }
+      label="URL"
+      name="http.url"
+      onChange={[Function]}
+      placeholder="https://company.com/api/users?email={ticket.requester.email}"
+      required={true}
+      type="text"
+      value=""
+    />
+    <InputField
+      label="HTTP Method"
+      name="http.method"
+      onChange={[Function]}
+      required={true}
+      type="select"
+      value="GET"
+    >
+      <option
+        value="GET"
+      >
+        GET
+      </option>
+      <option
+        value="POST"
+      >
+        POST
+      </option>
+      <option
+        value="PUT"
+      >
+        PUT
+      </option>
+      <option
+        value="DELETE"
+      >
+        DELETE
+      </option>
+    </InputField>
+    <InputField
+      label="Request content type"
+      name="http.request_content_type"
+      onChange={[Function]}
+      required={true}
+      type="select"
+      value="application/json"
+    >
+      <option
+        value="application/json"
+      >
+        application/json
+      </option>
+    </InputField>
+    <InputField
+      label="Response content type"
+      name="http.response_content_type"
+      onChange={[Function]}
+      required={true}
+      type="select"
+      value="application/json"
+    >
+      <option
+        value="application/json"
+      >
+        application/json
+      </option>
+    </InputField>
+    <ml
+      tag="div"
+    >
+      <HeaderFieldArray
+        fields={Array []}
+        name="http.headers"
+        onChange={[Function]}
+      />
+    </ml>
+    <JsonField
+      label="Request Body (JSON)"
+      name="http.form"
+      onChange={[Function]}
+      rows="8"
+      type="text"
+    />
+    <div>
+      <ei
+        className="mr-2"
+        color="primary"
+        disabled={false}
+        tag="button"
+        type="submit"
+      >
+        Add integration
+      </ei>
+    </div>
+  </rl>
+</div>
+`;
+
+exports[`HttpIntegrationDetail component should display loading state if the integration is loading 1`] = `
+<Loader
+  inline={false}
+/>
+`;

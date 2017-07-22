@@ -23,6 +23,7 @@ import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
 import JsonField from '../../../../common/forms/JsonField'
+import {toJS} from '../../../../../utils'
 
 export const defaultContent = {
     type: 'http',
@@ -37,12 +38,12 @@ export const defaultContent = {
     }
 }
 
-class HttpIntegrationDetail extends React.Component {
-    constructor(props) {
-        super(props)
-
-        // used to know if form has been asynchronously initialized when updating
-        this.isInitialized = !props.isUpdate
+export default class HttpIntegrationDetail extends React.Component {
+    static propTypes = {
+        integration: PropTypes.object.isRequired,
+        isUpdate: PropTypes.bool.isRequired,
+        actions: PropTypes.object.isRequired,
+        loading: PropTypes.object.isRequired,
     }
 
     state = {
@@ -56,6 +57,13 @@ class HttpIntegrationDetail extends React.Component {
         ticketCreated: defaultContent.http.triggers['ticket-created'],
         ticketUpdated: defaultContent.http.triggers['ticket-updated'],
         headers: [],
+        form: undefined
+    }
+
+    constructor(props) {
+        super(props)
+
+        this.isInitialized = !props.isUpdate
     }
 
     componentWillUpdate(nextProps) {
@@ -76,11 +84,12 @@ class HttpIntegrationDetail extends React.Component {
                 integration.getIn(['http', 'headers']).toJS()
             ),
             url: integration.getIn(['http', 'url']),
-            method: integration.getIn(['http', 'integration']),
+            method: integration.getIn(['http', 'method']),
             requestContentType: integration.getIn(['http', 'request_content_type']),
             responseContentType: integration.getIn(['http', 'response_content_type']),
             ticketCreated: integration.getIn(['http', 'triggers', 'ticket-created']),
             ticketUpdated: integration.getIn(['http', 'triggers', 'ticket-updated']),
+            form: toJS(integration.getIn(['http', 'form']))
         }
     }
 
@@ -139,6 +148,7 @@ class HttpIntegrationDetail extends React.Component {
         doc.http.response_content_type = this.state.responseContentType
         doc.http.triggers['ticket-created'] = this.state.ticketCreated
         doc.http.triggers['ticket-updated'] = this.state.ticketUpdated
+        doc.http.form = this.state.form
 
         // if update, set ids for server
         if (this.props.isUpdate) {
@@ -291,8 +301,8 @@ class HttpIntegrationDetail extends React.Component {
                         name="http.form"
                         label="Request Body (JSON)"
                         rows="8"
-                        value={this.state.body}
-                        onChange={value => this.setState({body: value})}
+                        value={this.state.form}
+                        onChange={value => this.setState({form: value})}
                     />
 
                     <div>
@@ -358,12 +368,3 @@ class HttpIntegrationDetail extends React.Component {
     }
 
 }
-
-HttpIntegrationDetail.propTypes = {
-    integration: PropTypes.object.isRequired,
-    isUpdate: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-}
-
-export default HttpIntegrationDetail
