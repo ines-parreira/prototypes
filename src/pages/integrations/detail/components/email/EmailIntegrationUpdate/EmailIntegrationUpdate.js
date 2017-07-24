@@ -12,6 +12,7 @@ import {
     BreadcrumbItem,
     InputGroup,
     InputGroupButton,
+    Alert,
     Input,
 } from 'reactstrap'
 
@@ -120,22 +121,22 @@ class EmailIntegrationUpdate extends React.Component {
         const isImporting = status === 'started' || (importActivated && !status)
 
         const statusSentence = isImporting ? (
-                <span>
+            <span>
                     We are currently importing emails from <strong>{email}</strong> into Gorgias.
                     You can see it's progress here: <Link to="/app/tickets">All tickets</Link>
                 </span>
-            ) : (
-                <span>
+        ) : (
+            <span>
                     Completed: <b>{mailsImported}</b> emails have been imported.
                 </span>
-            )
+        )
 
         return (
             <div>
                 <h2>
                     {
                         isImporting && (
-                            <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2" />
+                            <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2"/>
                         )
                     }
                     Import
@@ -143,10 +144,10 @@ class EmailIntegrationUpdate extends React.Component {
                 <p>
                     {
                         importActivated ? statusSentence : (
-                                <span>
+                            <span>
                                     We will import the last <b>{GMAIL_IMPORTED_THREADS}</b> emails from <b>{email}</b> into Gorgias.
                                 </span>
-                            )
+                        )
                     }
                 </p>
                 {
@@ -179,7 +180,7 @@ class EmailIntegrationUpdate extends React.Component {
                     {' '}
                     <a
                         target="_blank"
-                        href="http://docs.gorgias.io/general/how-to-set-up-email-forwarding"
+                        href="http://docs.gorgias.io/integrations/email"
                         onClick={() => {
                             logEvent('Clicked step by step instructions in add email integration')
                         }}
@@ -188,7 +189,6 @@ class EmailIntegrationUpdate extends React.Component {
                     </a>
                     .
                 </p>
-
                 <InputGroup>
                     <Input
                         id="forwarding-email"
@@ -202,11 +202,22 @@ class EmailIntegrationUpdate extends React.Component {
                             data-clipboard-target="#forwarding-email"
                             getRef={this._clipboardCopy}
                         >
-                            <i className="fa fa-fw fa-files-o mr-2" />
+                            <i className="fa fa-fw fa-files-o mr-2"/>
                             {this.state.isCopied ? 'Copied!' : 'Copy'}
                         </Button>
                     </InputGroupButton>
                 </InputGroup>
+                <br/>
+                <Alert color="info">
+                    We also <strong>highly recommend</strong> you
+                    {' '}
+                    <a
+                        target="_blank"
+                        href="http://docs.gorgias.io/integrations/email#improve_email_deliverability_using_spf_and_dkim"
+                    >
+                        setup SPF
+                    </a> so your emails are not flagged as Spam when you send them from Gorgias.
+                </Alert>
             </div>
         )
     }
