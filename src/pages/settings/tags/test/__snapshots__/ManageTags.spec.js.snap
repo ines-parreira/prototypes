@@ -1,0 +1,244 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ManageTags component mounts correctly 1`] = `
+<div
+  className="manage-tags-bulk"
+>
+  <div
+    className="manage-tags d-flex justify-content-between"
+  >
+    <h1>
+      <i
+        className="fa fa-fw fa-tag blue mr-2"
+      />
+      Manage tags
+    </h1>
+    <div
+      className="pull-right"
+    >
+      <div
+        className="manage-tags-bulk-actions"
+      >
+        <span>
+          <ei
+            className="mr-2"
+            color="secondary"
+            id="bulk-merge-button"
+            onClick={[Function]}
+            tag="button"
+            type="button"
+          >
+            Merge
+          </ei>
+          <ei
+            isOpen={false}
+            placement="bottom"
+            target="bulk-merge-button"
+            toggle={[Function]}
+          >
+            <nn
+              tag="h3"
+            >
+              Are you sure?
+            </nn>
+            <pn
+              tag="div"
+            >
+              <p>
+                You are about to merge 
+                2
+                 tags into
+                 
+                <b />
+                .
+                <br />
+                <b>
+                  This action cannot be undone
+                </b>
+                .
+              </p>
+              <ei
+                color="success"
+                onClick={[Function]}
+                tag="button"
+                type="submit"
+              >
+                Confirm
+              </ei>
+            </pn>
+          </ei>
+        </span>
+        <span>
+          <ei
+            className="mr-2"
+            color="secondary"
+            id="bulk-remove-button"
+            onClick={[Function]}
+            tag="button"
+            type="button"
+          >
+            Delete
+          </ei>
+          <ei
+            isOpen={false}
+            placement="bottom"
+            target="bulk-remove-button"
+            toggle={[Function]}
+          >
+            <nn
+              tag="h3"
+            >
+              Are you sure?
+            </nn>
+            <pn
+              tag="div"
+            >
+              <p>
+                Are you sure you want to delete these tags?
+                 
+                <b>
+                  They will be removed from all tickets
+                </b>
+                .
+              </p>
+              <ei
+                color="success"
+                onClick={[Function]}
+                tag="button"
+                type="submit"
+              >
+                Confirm
+              </ei>
+            </pn>
+          </ei>
+        </span>
+        <span>
+          <ei
+            color="primary"
+            id="create-tag-button"
+            onClick={[Function]}
+            tag="button"
+            type="button"
+          >
+            Create tag
+          </ei>
+          <ei
+            isOpen={false}
+            placement="bottom"
+            target="create-tag-button"
+            toggle={[Function]}
+          >
+            <nn
+              tag="h3"
+            >
+              Create a new tag
+            </nn>
+            <pn
+              tag="div"
+            >
+              <rl
+                onSubmit={[Function]}
+                tag="form"
+              >
+                <div
+                  className="d-flex align-items-center"
+                >
+                  <div
+                    className="mr-2"
+                  >
+                    <InputField
+                      autoFocus={true}
+                      inline={true}
+                      onChange={[Function]}
+                      placeholder="New tag name"
+                      required={true}
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                  <ei
+                    className=""
+                    color="success"
+                    tag="button"
+                    type="submit"
+                  >
+                    <i
+                      className="fa fa-fw fa-check"
+                    />
+                  </ei>
+                </div>
+              </rl>
+            </pn>
+          </ei>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="manage-tags-description"
+  >
+    <p>
+      You can tag tickets to keep track of topics customers are contacting you about.
+    </p>
+  </div>
+  <Table
+    columns={
+      Array [
+        Object {
+          "field": "name",
+          "title": "Tag",
+        },
+        Object {
+          "field": "usage_count",
+          "title": "Tickets",
+        },
+      ]
+    }
+    onSelectAll={[Function]}
+    onSort={[Function]}
+    refresh={[Function]}
+    reverse={true}
+    rows={
+      Immutable.Map {
+        items: Immutable.List [
+          Immutable.Map {
+            id: 1,
+            name: "refund",
+          },
+          Immutable.Map {
+            id: 2,
+            name: "billing",
+          },
+          Immutable.Map {
+            id: 3,
+            name: "shipping",
+          },
+        ],
+        meta: Immutable.Map {
+          1: Immutable.Map {
+            selected: true,
+          },
+          2: Immutable.Map {
+            selected: true,
+          },
+        },
+        _internal: Immutable.Map {
+          pagination: Immutable.Map {
+            per_page: 30,
+            page: 1,
+            nb_pages: 1,
+            item_count: 3,
+            current_page: "/api/views/?page=1",
+          },
+        },
+      }
+    }
+    sort="usage_count"
+  />
+  <Pagination
+    currentPage={1}
+    onChange={[Function]}
+    pageCount={1}
+  />
+</div>
+`;

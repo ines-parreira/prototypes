@@ -15,15 +15,7 @@ import {TagLabel} from '../../common/utils/labels'
 
 import * as tagsActions from '../../../state/tags/actions'
 
-@connect(null, {
-    cancel: tagsActions.cancel,
-    edit: tagsActions.edit,
-    remove: tagsActions.remove,
-    save: tagsActions.save,
-    select: tagsActions.select,
-    fetch: tagsActions.fetchTags
-})
-export default class Row extends Component {
+export class Row extends Component {
     static propTypes = {
         row: PropTypes.object.isRequired,
         meta: PropTypes.object.isRequired,
@@ -238,3 +230,12 @@ export default class Row extends Component {
         )
     }
 }
+
+export default connect(null, {
+    cancel: tagsActions.cancel,
+    edit: tagsActions.edit,
+    remove: tagsActions.remove,
+    save: tagsActions.save,
+    select: tagsActions.select,
+    fetch: tagsActions.fetchTags
+})(Row)

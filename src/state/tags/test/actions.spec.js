@@ -1,5 +1,6 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import * as actions from '../actions'
@@ -103,6 +104,26 @@ describe('actions', () => {
                 .then(() => {
                     expect(store.getActions()[0]).toHaveProperty('message', '2 tags deleted successfully')
                 })
+        })
+
+        it('dispatches merge actions OK', () => {
+            mockServer
+                .onPut('/api/tags/3/merge/')
+                .reply(config => {
+                    if (config.data === '{"source_tags_ids":[1,2]}') {
+                        return [200]
+                    } else {
+                        return [400]
+                    }
+                })
+
+            store.dispatch(actions.merge(fromJS([1, 2, 3])))
+            const expectedActions = store.getActions()
+
+            expect(expectedActions[0]).toEqual({
+                type: types.MERGE_TAGS,
+                ids: fromJS([1, 2, 3])
+            })
         })
     })
 })

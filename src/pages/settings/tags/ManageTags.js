@@ -20,23 +20,7 @@ import * as tagsActions from '../../../state/tags/actions'
 
 import * as tagsSelectors from '../../../state/tags/selectors'
 
-@connect((state) => {
-    return {
-        tags: state.tags,
-        currentPage: tagsSelectors.getCurrentPage(state),
-        numberPages: tagsSelectors.getNumberPages(state)
-
-    }
-}, {
-    fetch: tagsActions.fetchTags,
-    create: tagsActions.create,
-    remove: tagsActions.remove,
-    selectAll: tagsActions.selectAll,
-    setPage: tagsActions.setPage,
-    merge: tagsActions.merge,
-    bulkDelete: tagsActions.bulkDelete
-})
-export default class ManageTags extends Component {
+export class ManageTags extends Component {
     static propTypes = {
         tags: PropTypes.object.isRequired,
         currentPage: PropTypes.number.isRequired,
@@ -56,7 +40,8 @@ export default class ManageTags extends Component {
         newTag: '',
         showCreationPopup: false,
         askRemoveConfirmation: false,
-        isFetching: false
+        isFetching: false,
+        mergeTagDestination: '',
     }
 
     componentDidMount() {
@@ -127,8 +112,14 @@ export default class ManageTags extends Component {
     _merge = () => {
         this.setState({askMergeConfirmation: false})
         const selectedTagMeta = this.props.tags.get('meta', fromJS({})).filter((meta) => meta.get('selected'))
-        this.props.merge(selectedTagMeta.keySeq().toList()).then(() => {
-            return this._fetchPage()
+        return this.props.merge(
+            selectedTagMeta.keySeq().toList()
+        ).then(() => {
+            this._fetchPage()
+        }).then(() => {
+            this.setState({
+                mergeTagDestination: ''
+            })
         })
     }
 
@@ -141,12 +132,19 @@ export default class ManageTags extends Component {
     }
 
     _toggleMergeConfirmation = () => {
-        this.setState({askMergeConfirmation: !this.state.askMergeConfirmation})
+        const destID = this.props.tags.get('meta', fromJS({})).filter((meta) => meta.get('selected'))
+            .keySeq().toList().last()
+        const destName = this.props.tags.get('items', fromJS([])).filter(
+            (meta) => meta.get('id').toString() === destID.toString()).first().get('name', '')
+        this.setState({
+            askMergeConfirmation: !this.state.askMergeConfirmation,
+            mergeTagDestination: destName
+        })
     }
 
     render() {
         const {tags, currentPage, numberPages, selectAll} = this.props
-        const {sort, reverse, isFetching} = this.state
+        const {sort, reverse, isFetching, mergeTagDestination} = this.state
 
         if (isFetching) {
             return <Loader />
@@ -192,7 +190,8 @@ export default class ManageTags extends Component {
                                             <PopoverTitle>Are you sure?</PopoverTitle>
                                             <PopoverContent>
                                                 <p>
-                                                    Are you sure you want to merge these tags?{' '}
+                                                    You are about to merge {selected} tags into{' '}
+                                                    <b>{mergeTagDestination}</b>.<br/>
                                                     <b>This action cannot be undone</b>.
                                                 </p>
                                                 <Button
@@ -316,3 +315,19 @@ export default class ManageTags extends Component {
         )
     }
 }
+
+export default connect((state) => {
+    return {
+        tags: state.tags,
+        currentPage: tagsSelectors.getCurrentPage(state),
+        numberPages: tagsSelectors.getNumberPages(state)
+    }
+}, {
+    fetch: tagsActions.fetchTags,
+    create: tagsActions.create,
+    remove: tagsActions.remove,
+    selectAll: tagsActions.selectAll,
+    setPage: tagsActions.setPage,
+    merge: tagsActions.merge,
+    bulkDelete: tagsActions.bulkDelete
+})(ManageTags)
