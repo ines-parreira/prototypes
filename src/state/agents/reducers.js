@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 import * as types from './constants.js'
 
-const initialState = fromJS({
+export const initialState = fromJS({
     pagination: {},
 })
 

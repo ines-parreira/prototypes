@@ -86,7 +86,7 @@ export const fetchPagination = (page = 1) => (dispatch) => { // eslint-disable-l
 }
 
 export const inviteAgent = (id) => (dispatch) => {
-    return axios.post(`/api/agents/${id}/invite/`)
+    return axios.post(`/api/users/${id}/invite/`)
         .then((json = {}) => json.data)
         .then(() => {
             return dispatch(notify({

@@ -211,9 +211,7 @@ export default class Form extends React.Component {
                                         type="button"
                                         color="secondary"
                                         onClick={this._invite}
-                                        className={classnames('hidden', {
-                                            'btn-loading': this.state.isInviting,
-                                        })}
+                                        className={classnames({'btn-loading': this.state.isInviting})}
                                         disabled={this.state.isInviting}
                                     >
                                         Re-send invitation email
