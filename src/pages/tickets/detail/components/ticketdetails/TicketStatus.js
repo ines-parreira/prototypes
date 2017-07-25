@@ -20,23 +20,19 @@ export default class TicketStatus extends React.Component {
                     onClick={() => setQuickStatus(currentStatus)}
                 >
                     <i
-                        className={classnames('fa fa-fw fa-check mr-1', css.icon, {
+                        className={classnames('fa fa-fw fa-check mr-1', {
                             [css.alone]: !toClose,
                         })}
                     />
                     {toClose && 'Close'}
                 </Button>
-                {
-                    !toClose && (
-                        <UncontrolledTooltip
-                            placement="bottom"
-                            target="change-status-button"
-                            delay={{show: 1000, hide: 0}}
-                        >
-                            Reopen
-                        </UncontrolledTooltip>
-                    )
-                }
+                <UncontrolledTooltip
+                    placement="bottom"
+                    target="change-status-button"
+                    delay={0}
+                >
+                    {toClose ? 'Close (Alt + C)' : 'Reopen'}
+                </UncontrolledTooltip>
             </div>
         )
     }

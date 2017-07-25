@@ -6,7 +6,7 @@ import usageLimitNotifier from './middlewares/usageLimitNotifier'
 import createLogger from 'redux-logger'
 import rootReducer from '../state/reducers'
 
-export default function configureStore(initialState) {
+export default function configureStore(initialState = {}) {
     let middlewares = applyMiddleware(
         thunk,
         serverErrorHandler,

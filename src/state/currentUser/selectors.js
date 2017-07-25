@@ -50,12 +50,16 @@ export const getPreferences = createSelector(
             type: 'preferences',
             data: DEFAULT_PREFERENCES
         })
-        .mergeDeep(state.find((s) => s.get('type') === 'preferences'))
+            .mergeDeep(state.find((s) => s.get('type') === 'preferences'))
     }
 )
-export const getChatStatus = createSelector(
+
+export const isAvailableForChat = createSelector(
     [getPreferences],
-    state => {
-        return state.getIn(['data', 'available_for_chat'], true)
-    }
+    state => state.getIn(['data', 'available_for_chat'], true)
+)
+
+export const isHidingTips = createSelector(
+    [getPreferences],
+    state => state.getIn(['data', 'hide_tips'], false)
 )

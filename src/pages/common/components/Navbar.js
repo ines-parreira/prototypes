@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import {UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
-import {submitSetting} from '../../../state/currentUser/actions'
+import * as currentUserActions from '../../../state/currentUser/actions'
 import * as layoutActions from '../../../state/layout/actions'
 
 import * as layoutSelectors from '../../../state/layout/selectors'
@@ -62,10 +62,10 @@ const mainMenu = [{
 @connect((state) => ({
     currentUser: currentUserSelectors.getCurrentUser(state),
     currentUserPreferences: currentUserSelectors.getPreferences(state),
-    availableForChat: currentUserSelectors.getChatStatus(state),
+    availableForChat: currentUserSelectors.isAvailableForChat(state),
     isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
 }), {
-    submitSetting,
+    submitSetting: currentUserActions.submitSetting,
     closePanels: layoutActions.closePanels,
 })
 export default class Navbar extends React.Component {
@@ -103,7 +103,7 @@ export default class Navbar extends React.Component {
     _updateShowChatPreferences = () => {
         const {currentUserPreferences, submitSetting} = this.props
         const newPreferences = currentUserPreferences.updateIn(['data', 'available_for_chat'], status => !status)
-        submitSetting(newPreferences.toJS())
+        return submitSetting(newPreferences.toJS())
     }
 
     render() {

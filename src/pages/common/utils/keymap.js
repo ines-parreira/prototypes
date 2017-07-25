@@ -10,7 +10,6 @@ export default {
                 action: (e) => {
                     // prevent h from being typed into search field
                     e.preventDefault()
-
                     browserHistory.push('/app')
                 }
             }
@@ -26,7 +25,7 @@ export default {
         }
     },
     MacroModal: {
-        description: 'Manage Macros',
+        description: 'Manage macros',
         actions: {
             PREVIEW_PREV_MACRO: {
                 key: 'up'
@@ -41,7 +40,7 @@ export default {
         }
     },
     KeyboardHelp: {
-        description: 'Help Dialog',
+        description: 'Help dialog',
         actions: {
             SHOW_HELP: {
                 key: '?',
@@ -50,7 +49,7 @@ export default {
         }
     },
     TicketDetailContainer: {
-        description: 'Ticket Details',
+        description: 'Ticket navigation',
         actions: {
             SHOW_MACROS: {
                 key: 'meta+m',
@@ -69,19 +68,30 @@ export default {
                 key: 'down'
             },
             GO_BACK: {
-                key: 'left'
+                key: 'alt+left',
+                description: 'Go to previous ticket.'
             },
             GO_FORWARD: {
-                key: 'right'
+                key: 'alt+right',
+                description: 'Go to next ticket.'
             },
             SUBMIT_TICKET: {
                 key: 'mod+enter',
-                description: 'Submit the open ticket.'
+                description: 'Send message.'
             },
             SUBMIT_CLOSE_TICKET: {
                 key: 'mod+shift+enter',
-                description: 'Submit and close the open ticket.'
+                description: 'Send message and close the ticket.'
             }
+        }
+    },
+    TicketHeader: {
+        description: 'Ticket status',
+        actions: {
+            CLOSE_TICKET: {
+                key: 'alt+c',
+                description: 'Close the ticket.'
+            },
         }
     }
 }

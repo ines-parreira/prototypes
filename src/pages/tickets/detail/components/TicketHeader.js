@@ -12,6 +12,7 @@ import {
     PopoverContent,
 } from 'reactstrap'
 
+import shortcutManager from '../../../common/utils/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
 import TicketStatus from './ticketdetails/TicketStatus'
@@ -34,6 +35,10 @@ export default class TicketHeader extends React.Component {
 
     state = {
         askDeleteConfirmation: false,
+    }
+
+    componentDidMount() {
+        this._bindKeys()
     }
 
     _toggleStatus = (status) => {
@@ -66,6 +71,17 @@ export default class TicketHeader extends React.Component {
         this._toggleDeleteConfirmation()
         return this.props.deleteTicket(this.props.ticket.get('id')).then(() => {
             this._goToNextUrl()
+        })
+    }
+
+    _bindKeys() {
+        shortcutManager.bind('TicketHeader', {
+            CLOSE_TICKET: {
+                action: (e) => {
+                    e.preventDefault()
+                    this._setStatus('closed')
+                }
+            },
         })
     }
 
