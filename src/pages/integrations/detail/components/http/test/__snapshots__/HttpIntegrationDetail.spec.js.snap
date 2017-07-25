@@ -58,14 +58,14 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       onChange={[Function]}
       required={true}
       type="text"
-      value=""
+      value="my little integration"
     />
     <InputField
       label="Description"
       name="description"
       onChange={[Function]}
       type="text"
-      value=""
+      value="just a small integration, which is very practical and friendly"
     />
     <ml
       tag="div"
@@ -96,7 +96,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
         name="http.triggers.ticket-updated"
         onChange={[Function]}
         type="checkbox"
-        value={true}
+        value={false}
       />
     </ml>
     <InputField
@@ -122,7 +122,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       placeholder="https://company.com/api/users?email={ticket.requester.email}"
       required={true}
       type="text"
-      value=""
+      value="http://httpbin.org/post"
     />
     <InputField
       label="HTTP Method"
@@ -130,7 +130,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       onChange={[Function]}
       required={true}
       type="select"
-      value="GET"
+      value="POST"
     >
       <option
         value="GET"
@@ -185,7 +185,18 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       tag="div"
     >
       <HeaderFieldArray
-        fields={Array []}
+        fields={
+          Array [
+            Object {
+              "key": "Authorization",
+              "value": "Bearer a57sd4as6d4",
+            },
+            Object {
+              "key": "Foo",
+              "value": "bar",
+            },
+          ]
+        }
         name="http.headers"
         onChange={[Function]}
       />
@@ -196,6 +207,14 @@ exports[`HttpIntegrationDetail component should display data about the integrati
       onChange={[Function]}
       rows="8"
       type="text"
+      value={
+        Object {
+          "baz": Object {
+            "bazile": "bazar",
+          },
+          "foo": "bar",
+        }
+      }
     />
     <div>
       <ei
@@ -425,13 +444,6 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
         onChange={[Function]}
       />
     </ml>
-    <JsonField
-      label="Request Body (JSON)"
-      name="http.form"
-      onChange={[Function]}
-      rows="8"
-      type="text"
-    />
     <div>
       <ei
         className="mr-2"

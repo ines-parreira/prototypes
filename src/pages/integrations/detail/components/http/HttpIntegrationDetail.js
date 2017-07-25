@@ -66,6 +66,16 @@ export default class HttpIntegrationDetail extends React.Component {
         this.isInitialized = !props.isUpdate
     }
 
+    componentWillMount() {
+        const {integration, isUpdate, loading} = this.props
+
+        // populating the form when updating an integration
+        if (!this.isInitialized && isUpdate && !loading.get('integration') && !integration.isEmpty()) {
+            this.setState(this._getIntegration(integration))
+            this.isInitialized = true
+        }
+    }
+
     componentWillUpdate(nextProps) {
         const {integration, isUpdate, loading} = nextProps
 
