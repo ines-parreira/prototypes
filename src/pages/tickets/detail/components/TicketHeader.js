@@ -98,11 +98,23 @@ export default class TicketHeader extends React.Component {
                                 <DropdownMenu right>
                                     <DropdownItem
                                         type="button"
+                                        onClick={() => {
+                                            // setTimeout allows React to complete the current JS click event triggers
+                                            // before printing the page
+                                            setTimeout(() => {
+                                                window.print()
+                                            }, 1)
+                                        }}
+                                    >
+                                        Print ticket
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        type="button"
                                         onClick={this._toggleDeleteConfirmation}
                                     >
-                                <span className="text-danger">
-                                    Delete ticket
-                                </span>
+                                        <div className="text-danger">
+                                            Delete ticket
+                                        </div>
                                         <Popover
                                             placement="bottom"
                                             isOpen={this.state.askDeleteConfirmation}

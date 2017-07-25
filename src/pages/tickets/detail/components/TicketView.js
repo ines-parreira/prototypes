@@ -229,7 +229,7 @@ export class TicketView extends React.Component {
                     }
 
                     <form
-                        className={css['new-message-form']}
+                        className={classnames('ticket-form', css['new-message-form'])}
                         onSubmit={this._handleSubmit}
                         ref="newMessageForm"
                     >
