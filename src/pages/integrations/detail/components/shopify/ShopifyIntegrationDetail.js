@@ -15,6 +15,8 @@ import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 
+import * as utils from '../../../../../utils'
+
 export const defaultContent = {
     type: 'shopify',
     meta: {}
@@ -68,7 +70,7 @@ class ShopifyIntegrationDetail extends React.Component {
         e.preventDefault()
 
         let doc = fromJS(defaultContent).mergeDeep({
-            name: this.state.name
+            name: utils.subdomain(this.state.name)
         })
         let name = doc.get('name')
 

@@ -321,6 +321,37 @@ describe('global utils', () => {
         })
     })
 
+    describe('subdomain', () => {
+        const inputs = [
+            {
+                value: '',
+                expect: ''
+            },
+            {
+                value: 'acme',
+                expect: 'acme'
+            },
+            {
+                value: 'acme.shopify.com',
+                expect: 'acme'
+            },
+            {
+                value: 'http://acme',
+                expect: 'acme'
+            },
+            {
+                value: 'http://acme.shopify.com',
+                expect: 'acme'
+            }
+        ]
+
+        it('transform OK', () => {
+            inputs.forEach((input) => {
+                expect(utils.subdomain(input.value)).toBe(input.expect)
+            })
+        })
+    })
+
     describe('resolvePropertyName', () => {
         it('should resolve property name', () => {
             expect(utils.resolvePropertyName('Attachment')).toEqual('Attachment')

@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {fromJS} from 'immutable'
-
+import classnames from 'classnames'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -12,9 +12,8 @@ import {
 
 import InputField from '../../../common/forms/InputField'
 import * as integrationActions from './../../../../state/integrations/actions'
-import classnames from 'classnames'
 
-
+import * as utils from '../../../../utils'
 
 @connect(null, {
     createIntegration: integrationActions.createImportIntegration,
@@ -35,21 +34,25 @@ export default class ImportZendeskDetail extends React.Component {
         e.preventDefault()
         this.setState({isLoading: true})
 
+        const domain = utils.subdomain(this.state.domain)
+
         const integration = fromJS({
-            name: this.state.domain,
+            name: domain,
             type: 'zendesk',
             connections: [{
                 type: 'zendesk_auth_data',
                 data: {
+                    domain,
                     email: this.state.email,
-                    domain: this.state.domain,
                     api_key: this.state.apiKey
                 }
             }],
             deactivated_datetime: new Date().toISOString()
         })
 
-        return this.props.createIntegration(integration).then(() => {this.setState({isLoading: false})})
+        return this.props.createIntegration(integration).then(() => {
+            this.setState({isLoading: false})
+        })
     }
 
     render() {
@@ -73,9 +76,10 @@ export default class ImportZendeskDetail extends React.Component {
                         type="text"
                         name="domain"
                         label="Zendesk subdomain"
-                        placeholder="If the URL of your Zendesk is 'https://acme.zendesk.com/', your subdomain is 'acme'"
+                        placeholder={'ex: "acme" for acme.zendesk.com'}
                         onChange={(value) => this.setState({domain: value})}
                         required
+                        rightAddon=".zendesk.com"
                     />
                     <InputField
                         type="text"

@@ -835,6 +835,23 @@ export const currentRoute = (routes) => {
 }
 
 /**
+ * Return subdomain of passed url
+ * ex: 'acme' for 'http://acme.shopify.com'
+ * @param url (full url, part of url, subdomain (without url))
+ */
+export const subdomain = (url) => {
+    if (!url) {
+        return url
+    }
+
+    // split url on `.` and keep the first member
+    const split = url.split('.')[0]
+
+    // split url on `://` and keep the last part
+    return _last(split.split('://'))
+}
+
+/**
  * Deep flatten object, keeping only values.
  */
 const _valuesDeep = (obj) => {
