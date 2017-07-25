@@ -66,11 +66,12 @@ export default class TicketBody extends React.Component {
                         }
 
                         const isLoading = (
-                            !!loadingState
-                            .get('updateMessage', fromJS([]))
-                            .find(messageId => messageId === element.get('id'))
+                            !!loadingState.get('updateMessageIds', fromJS([])).includes(element.get('id'))
                             || element.get('isPending', false)
                         )
+
+                        const isLastReadMessage = !lastReadMessage.isEmpty()
+                            && element.get('id') === lastReadMessage.get('id')
 
                         return (
                             <TicketMessage
@@ -81,7 +82,7 @@ export default class TicketBody extends React.Component {
                                 timezone={this.props.currentUser.get('timezone')}
                                 lastMessageDatetimeAfterMount={this.lastMessageDatetimeAfterMount}
                                 setStatus={setStatus}
-                                isLastReadMessage={element.get('id') === lastReadMessage.get('id')}
+                                isLastReadMessage={isLastReadMessage}
                             />
                         )
                     })
