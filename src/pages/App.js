@@ -91,7 +91,7 @@ class App extends React.Component {
                     <div className={css.app}>
                         {this.props.navbar}
 
-                        <div className={css.content}>
+                        <div className={classnames('app-content', css.content)}>
                             <BannerNotifications notifications={bannerNotifications} />
 
                             <div className="mobile-nav hidden-md-up d-flex justify-content-between align-items-center">
