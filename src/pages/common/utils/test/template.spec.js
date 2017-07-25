@@ -2,6 +2,13 @@ import {renderTemplate} from '../template'
 
 describe('components utils : template', () => {
     describe('renderTemplate', () => {
+        it('invalid body', () => {
+            expect(renderTemplate()).toBe('')
+            expect(renderTemplate('')).toBe('')
+            expect(renderTemplate(null)).toBe('')
+            expect(renderTemplate(undefined)).toBe('')
+        })
+
         it('does not throw error when context is undefined', () => {
             expect(renderTemplate('Hello')).toBe('Hello')
         })
