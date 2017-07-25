@@ -80,6 +80,10 @@ export default class Search extends React.Component {
         return this._debouncedSearch()
     }
 
+    _reset = () => {
+        return this._handleChange('')
+    }
+
     render() {
         const {disabled, style} = this.props
 

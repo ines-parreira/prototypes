@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search component handle change function 1`] = `
+<Search
+  disabled={false}
+  onChange={[Function]}
+  placeholder="Search..."
+  style={Object {}}
+>
+  <div
+    className=""
+    style={Object {}}
+  >
+    <El
+      tag="div"
+    >
+      <div
+        className="input-group"
+      >
+        <ei
+          disabled={false}
+          onChange={[Function]}
+          placeholder="Search..."
+          style={
+            Object {
+              "zIndex": 1,
+            }
+          }
+          tag="p"
+          type="text"
+          value="text"
+        >
+          <input
+            className="form-control"
+            disabled={false}
+            onChange={[Function]}
+            placeholder="Search..."
+            style={
+              Object {
+                "zIndex": 1,
+              }
+            }
+            type="text"
+            value="text"
+          />
+        </ei>
+        <jl
+          className="hidden-sm-down"
+          tag="div"
+        >
+          <div
+            className="hidden-sm-down input-group-addon"
+          >
+            <i
+              className="fa fa-fw fa-search"
+            />
+          </div>
+        </jl>
+      </div>
+    </El>
+  </div>
+</Search>
+`;
+
+exports[`Search component reset function 1`] = `
+<Search
+  disabled={false}
+  onChange={[Function]}
+  placeholder="Search..."
+  style={Object {}}
+>
+  <div
+    className=""
+    style={Object {}}
+  >
+    <El
+      tag="div"
+    >
+      <div
+        className="input-group"
+      >
+        <ei
+          disabled={false}
+          onChange={[Function]}
+          placeholder="Search..."
+          style={
+            Object {
+              "zIndex": 1,
+            }
+          }
+          tag="p"
+          type="text"
+          value="text"
+        >
+          <input
+            className="form-control"
+            disabled={false}
+            onChange={[Function]}
+            placeholder="Search..."
+            style={
+              Object {
+                "zIndex": 1,
+              }
+            }
+            type="text"
+            value="text"
+          />
+        </ei>
+        <jl
+          className="hidden-sm-down"
+          tag="div"
+        >
+          <div
+            className="hidden-sm-down input-group-addon"
+          >
+            <i
+              className="fa fa-fw fa-search"
+            />
+          </div>
+        </jl>
+      </div>
+    </El>
+  </div>
+</Search>
+`;
+
+exports[`Search component reset function 2`] = `
+<Search
+  disabled={false}
+  onChange={[Function]}
+  placeholder="Search..."
+  style={Object {}}
+>
+  <div
+    className=""
+    style={Object {}}
+  >
+    <El
+      tag="div"
+    >
+      <div
+        className="input-group"
+      >
+        <ei
+          disabled={false}
+          onChange={[Function]}
+          placeholder="Search..."
+          style={
+            Object {
+              "zIndex": 1,
+            }
+          }
+          tag="p"
+          type="text"
+          value=""
+        >
+          <input
+            className="form-control"
+            disabled={false}
+            onChange={[Function]}
+            placeholder="Search..."
+            style={
+              Object {
+                "zIndex": 1,
+              }
+            }
+            type="text"
+            value=""
+          />
+        </ei>
+        <jl
+          className="hidden-sm-down"
+          tag="div"
+        >
+          <div
+            className="hidden-sm-down input-group-addon"
+          >
+            <i
+              className="fa fa-fw fa-search"
+            />
+          </div>
+        </jl>
+      </div>
+    </El>
+  </div>
+</Search>
+`;

@@ -232,6 +232,13 @@ export default class Infobar extends React.Component {
         })
     }
 
+    _resetSelected = () => {
+        this.setState({
+            displaySelectedUser: false,
+            selectedUser: fromJS({}),
+        })
+    }
+
     _renderUserInfo = (user) => {
         const isEditing = this._isEditing()
 
@@ -272,14 +279,9 @@ export default class Infobar extends React.Component {
                     <div className="mb-3">
                         <Button
                             type="button"
-                            onClick={() => {
-                                this.setState({
-                                    displaySelectedUser: false,
-                                    selectedUser: fromJS({}),
-                                })
-                            }}
+                            onClick={() => this._resetSelected()}
                         >
-                            <i className="fa fa-fw fa-arrow-left mr-2"/>
+                            <i className="fa fa-fw fa-arrow-left mr-2" />
                             Back
                         </Button>
                         {
@@ -305,7 +307,16 @@ export default class Infobar extends React.Component {
                         display={this.state.showMergeUserModal}
                         destinationUser={this.props.user}
                         sourceUser={this.state.selectedUser}
-                        onSuccess={this._fetchUserHistory}
+                        onSuccess={() => {
+                            this._fetchUserHistory()
+
+                            // reset search and display current user
+                            this._resetSearch()
+                            this._resetSelected()
+                            if (this.search) {
+                                this.search._reset()
+                            }
+                        }}
                         onClose={() => {
                             this.setState({showMergeUserModal: false})
                         }}
@@ -324,7 +335,7 @@ export default class Infobar extends React.Component {
                             type="button"
                             onClick={() => this._resetSearch()}
                         >
-                            <i className="fa fa-fw fa-arrow-left mr-2"/>
+                            <i className="fa fa-fw fa-arrow-left mr-2" />
                             Back
                         </Button>
                     </div>
@@ -359,7 +370,7 @@ export default class Infobar extends React.Component {
                 {
                     displaySuggestedUser && (
                         <div className="hidden-sm-down">
-                            <div className="infobar-section-separator"/>
+                            <div className="infobar-section-separator" />
                             <div className={classnames(css['suggested-user'])}>
                                 <h4>Is this the same user?</h4>
                                 <p>
@@ -423,6 +434,9 @@ export default class Infobar extends React.Component {
                             bindKey
                             onChange={this._onSearch}
                             style={{maxWidth: 'none'}}
+                            ref={(search) => {
+                                this.search = search
+                            }}
                         />
 
                         <Button
@@ -436,7 +450,7 @@ export default class Infobar extends React.Component {
                                 this._toggleEditionMode(!isEditing)
                             }}
                         >
-                            <i className="fa fa-fw fa-cog"/>
+                            <i className="fa fa-fw fa-cog" />
                         </Button>
                         <UncontrolledTooltip
                             placement="left"
