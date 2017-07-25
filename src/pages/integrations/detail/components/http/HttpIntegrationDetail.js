@@ -297,13 +297,18 @@ export default class HttpIntegrationDetail extends React.Component {
                             onChange={value => this.setState({headers: value})}
                         />
                     </FormGroup>
-                    <JsonField
-                        name="http.form"
-                        label="Request Body (JSON)"
-                        rows="8"
-                        value={this.state.form}
-                        onChange={value => this.setState({form: value})}
-                    />
+
+                    {
+                        this.state.method !== 'GET' && (
+                            <JsonField
+                                name="http.form"
+                                label="Request Body (JSON)"
+                                rows="8"
+                                value={this.state.form}
+                                onChange={value => this.setState({form: value})}
+                            />
+                        )
+                    }
 
                     <div>
                         <Button
