@@ -1,6 +1,8 @@
 import _get from 'lodash/get'
 import _find from 'lodash/find'
 
+import {hoursToSeconds} from './utils'
+
 export const POLL_ACTIVITY_INTERVAL = 10000
 export const CHAT_POLLING_INTERVAL = 9000
 export const POLL_ACTIVITY_TIMEOUT = 8000
@@ -752,3 +754,25 @@ export const DEFAULT_PREFERENCES = {
     show_macros: false,
     available_for_chat: true
 }
+
+/**
+ * Chat inactivity time before split
+ */
+export const TIMES_BEFORE_SPLIT = [
+    {
+        value: hoursToSeconds(3),
+        label: '3 hrs'
+    },
+    {
+        value: hoursToSeconds(6),
+        label: '6 hrs'
+    },
+    {
+        value: hoursToSeconds(24),
+        label: '1 day'
+    },
+    {
+        value: hoursToSeconds(24 * 7),
+        label: '7 days'
+    }
+]

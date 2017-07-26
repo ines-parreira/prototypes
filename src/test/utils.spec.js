@@ -445,4 +445,18 @@ describe('global utils', () => {
 `)).toMatchSnapshot()
         })
     })
+
+    describe('hoursToSeconds', () => {
+        it('should return zero for undefined', () => {
+            expect(utils.hoursToSeconds()).toBe(0)
+        })
+
+        it('should return zero for non-numbers', () => {
+            expect(utils.hoursToSeconds('1')).toBe(0)
+        })
+
+        it('should convert hours to seconds', () => {
+            expect(utils.hoursToSeconds(2)).toBe(2 * 60 * 60)
+        })
+    })
 })

@@ -905,3 +905,15 @@ export const errorToChildren = (incomingError) => {
         </div>
     )
 }
+
+/**
+ * Convert hours to seconds.
+ * @param hours number of hours
+ */
+export function hoursToSeconds(hours = 0) {
+    if (typeof hours !== 'number') {
+        return 0
+    }
+
+    return 60 * 60 * hours
+}
