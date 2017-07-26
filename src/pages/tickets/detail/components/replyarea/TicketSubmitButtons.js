@@ -15,8 +15,9 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 const TIPS = [
-    <span>Press <kbd>alt →</kbd> to go to the next ticket</span>,
-    <span>Press <kbd>alt C</kbd> to close the ticket</span>,
+    <span>Press <kbd>Ctrl + K</kbd> to go to next ticket</span>,
+    <span>Press <kbd>Ctrl + J</kbd> to go to previous ticket</span>,
+    <span>Press <kbd>Ctrl + E</kbd> to close the ticket</span>,
     'You can add attachments to macros',
     'Insert order info as variables in macros',
 ]

@@ -68,11 +68,11 @@ export default {
                 key: 'down'
             },
             GO_BACK: {
-                key: 'alt+left',
+                key: 'ctrl+j',
                 description: 'Go to previous ticket.'
             },
             GO_FORWARD: {
-                key: 'alt+right',
+                key: 'ctrl+k',
                 description: 'Go to next ticket.'
             },
             SUBMIT_TICKET: {
@@ -89,7 +89,7 @@ export default {
         description: 'Ticket status',
         actions: {
             CLOSE_TICKET: {
-                key: 'alt+c',
+                key: 'ctrl+e',
                 description: 'Close the ticket.'
             },
         }
