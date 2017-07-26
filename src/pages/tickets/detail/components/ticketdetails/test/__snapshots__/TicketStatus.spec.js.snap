@@ -48,7 +48,7 @@ exports[`TicketStatus component new ticket 1`] = `
     placement="bottom"
     target="change-status-button"
   >
-    Close (Alt + C)
+    Close (Ctrl + E)
   </UncontrolledTooltip>
 </div>
 `;
@@ -75,7 +75,7 @@ exports[`TicketStatus component open ticket 1`] = `
     placement="bottom"
     target="change-status-button"
   >
-    Close (Alt + C)
+    Close (Ctrl + E)
   </UncontrolledTooltip>
 </div>
 `;

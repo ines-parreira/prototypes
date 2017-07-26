@@ -58,9 +58,9 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     <span>
       Press 
       <kbd>
-        alt →
+        Ctrl + K
       </kbd>
-       to go to the next ticket
+       to go to next ticket
     </span>
     <i
       className="fa fa-fw fa-close cursor-pointer ml-1"
