@@ -62,6 +62,7 @@ export const SOURCE_VALUE_PROP = {
     api: null,
     'facebook-message': 'address',
     'facebook-comment': 'address',
+    'facebook-messenger': 'address',
     'facebook-post': 'address'
 }
 

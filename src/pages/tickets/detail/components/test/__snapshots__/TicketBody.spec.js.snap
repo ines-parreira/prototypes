@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketBody should display events with messages 1`] = `
+<div
+  className="TicketMessages"
+>
+  <TicketMessage
+    isLastReadMessage={true}
+    lastMessageDatetimeAfterMount={"2017-07-02T02:00:00.000Z"}
+    loading={false}
+    message={
+      Object {
+        "created_datetime": "2017-07-01T18:00:00",
+        "id": 1,
+      }
+    }
+    setStatus={[Function]}
+    ticket={
+      Immutable.Map {
+        id: 1,
+      }
+    }
+    timezone="UTC"
+  />
+  <Connect(Event)
+    event={
+      Immutable.Map {
+        isEvent: true,
+        created_datetime: "2017-07-01T19:00:00",
+      }
+    }
+    isLast={true}
+  />
+</div>
+`;
+
+exports[`TicketBody should display messages 1`] = `
+<div
+  className="TicketMessages"
+>
+  <TicketMessage
+    isLastReadMessage={true}
+    lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
+    loading={false}
+    message={
+      Object {
+        "created_datetime": "2017-07-01T18:00:00",
+        "id": 1,
+      }
+    }
+    setStatus={[Function]}
+    ticket={
+      Immutable.Map {
+        id: 1,
+      }
+    }
+    timezone="UTC"
+  />
+</div>
+`;
+
+exports[`TicketBody should not pass \`isLastReadMessage\` for a new message 1`] = `
+<div
+  className="TicketMessages"
+>
+  <TicketMessage
+    isLastReadMessage={true}
+    lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
+    loading={false}
+    message={
+      Object {
+        "created_datetime": "2017-07-01T18:00:00",
+        "id": undefined,
+      }
+    }
+    setStatus={[Function]}
+    ticket={
+      Immutable.Map {
+        id: 1,
+      }
+    }
+    timezone="UTC"
+  />
+</div>
+`;
+
+exports[`TicketBody should pass \`isLastReadMessage\` only for the last read message 1`] = `
+<div
+  className="TicketMessages"
+>
+  <TicketMessage
+    isLastReadMessage={true}
+    lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
+    loading={false}
+    message={
+      Object {
+        "created_datetime": "2017-07-01T18:00:00",
+        "id": 1,
+      }
+    }
+    setStatus={[Function]}
+    ticket={
+      Immutable.Map {
+        id: 1,
+      }
+    }
+    timezone="UTC"
+  />
+  <TicketMessage
+    isLastReadMessage={false}
+    lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
+    loading={false}
+    message={
+      Object {
+        "created_datetime": "2017-07-01T19:00:00",
+        "id": 2,
+      }
+    }
+    setStatus={[Function]}
+    ticket={
+      Immutable.Map {
+        id: 1,
+      }
+    }
+    timezone="UTC"
+  />
+  <TicketMessage
+    isLastReadMessage={false}
+    lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
+    loading={false}
+    message={
+      Object {
+        "created_datetime": "2017-07-01T20:00:00",
+        "id": undefined,
+      }
+    }
+    setStatus={[Function]}
+    ticket={
+      Immutable.Map {
+        id: 1,
+      }
+    }
+    timezone="UTC"
+  />
+</div>
+`;

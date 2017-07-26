@@ -95,7 +95,7 @@ class ReplyMessageChannel extends React.Component {
             ? 'new'
             : `${ticket.get('id', '')} - ${messages.last().get('id', '')} - ${md5(messages.last().get('source'))}`
 
-        const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api']
+        const disabledChannels = ['facebook-post', 'facebook-message', 'chat', 'api', 'facebook-messenger']
 
         const isInputEnabled =
             !disabledChannels.includes(this.props.sourceType)

@@ -1,21 +1,20 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {mount} from 'enzyme'
 import TicketMessageBody from '../TicketMessageBody'
 
 describe('components', () => {
     describe('TicketMessageBody', () => {
         it('with empty props', () => {
-            const component = shallow(
+            const component = mount(
                 <TicketMessageBody
                     message={{}}
                 />
             )
 
-            expect(component).toHaveTagName('div')
-            expect(component).toHaveClassName('ticket-message-body ticket-message-body-text')
+            expect(component).toMatchSnapshot()
         })
         it('html by default', () => {
-            const component = shallow(
+            const component = mount(
                 <TicketMessageBody
                     message={{
                         body_text: 'text',
@@ -24,14 +23,11 @@ describe('components', () => {
                 />
             )
 
-            expect(component).toHaveClassName('ticket-message-body')
-            expect(component).toContainReact(
-                <div dangerouslySetInnerHTML={{__html: 'html'}}></div>
-            )
+            expect(component).toMatchSnapshot()
         })
 
         it('use text when no html', () => {
-            const component = shallow(
+            const component = mount(
                 <TicketMessageBody
                     message={{
                         body_text: 'text',
@@ -40,14 +36,11 @@ describe('components', () => {
                 />
             )
 
-            expect(component).toHaveClassName('ticket-message-body ticket-message-body-text')
-            expect(component).toContainReact(
-                <div dangerouslySetInnerHTML={{__html: 'text'}}></div>
-            )
+            expect(component).toMatchSnapshot()
         })
 
         it('use stripped_html if available', () => {
-            const component = shallow(
+            const component = mount(
                 <TicketMessageBody
                     message={{
                         body_text: 'text',
@@ -58,17 +51,11 @@ describe('components', () => {
                 />
             )
 
-            expect(component).toHaveClassName('ticket-message-body')
-            expect(component.children().at(0)).toContainReact(
-                <div dangerouslySetInnerHTML={{__html: 'stripped html'}}></div>
-            )
-            const quote = component.children().at(1)
-            expect(quote).toHaveTagName('div')
-            expect(quote).toHaveClassName('mail-quote-toggle')
+            expect(component).toMatchSnapshot()
         })
 
         it('linkify body_text', () => {
-            const component = shallow(
+            const component = mount(
                 <TicketMessageBody
                     message={{
                         body_text: 'text http://gorgias.io/',
@@ -77,16 +64,43 @@ describe('components', () => {
                 />
             )
 
-            expect(component).toHaveClassName('ticket-message-body ticket-message-body-text')
-            expect(component.children().at(0))
-            .toContainReact(
-                <div
-                  dangerouslySetInnerHTML={{
-                      __html: 'text <a ' +
-                      'href="http://gorgias.io/" class="linkified" target="_blank">http://gorgias.io/</a>',
-                  }}
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display the Facebook carousel if there\'s matching metadata', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: 'text http://gorgias.io/',
+                        body_html: '',
+                        meta: {
+                            'facebook_carousel': [{
+                                'type': 'template',
+                                'payload': {
+                                    'elements': [{
+                                        'title': 'Fixie bike',
+                                        'buttons': [{
+                                            'url': 'https://sfbicycles.myshopify.com/products/fixie-bike',
+                                            'type': 'web_url',
+                                            'title': 'View details',
+                                            'webview_height_ratio': 'tall'
+                                        }, {'type': 'element_share'}, {
+                                            'url': 'https://messenger-commerce.shopifyapps.com/redirect_to_cart',
+                                            'type': 'web_url',
+                                            'title': 'Buy now',
+                                            'webview_height_ratio': 'tall'
+                                        }],
+                                        'subtitle': '$200.00',
+                                        'image_url': 'https://cdn.shopify.com/s/files/1/1632/0429/products'
+                                    }], 'sharable': true, 'template_type': 'generic'
+                                }
+                            }]
+                        }
+                    }}
                 />
             )
+
+            expect(component).toMatchSnapshot()
         })
     })
 })

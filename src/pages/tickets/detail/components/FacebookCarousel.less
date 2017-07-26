@@ -1,0 +1,24 @@
+:local {
+  .carouselCard {
+    max-width: 300px;
+    display: inline-flex;
+    margin: 15px 15px 0 0 !important; // :(
+
+    .buttons {
+      width: 100%;
+
+      & > * {
+        border-left: 0;
+        border-right: 0;
+      }
+
+      :first-child {
+        border-radius: 0;
+      }
+
+      :last-child {
+        border-bottom: 0;
+      }
+    }
+  }
+}

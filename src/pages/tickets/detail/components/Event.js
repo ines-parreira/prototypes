@@ -16,21 +16,8 @@ import * as ticketSelectors from '../../../../state/ticket/selectors'
 
 import css from './Event.less'
 
-@connect((state, ownProps) => {
-    const {event} = ownProps
 
-    const integration = integrationsSelectors.getIntegrationById(event.getIn(['data', 'integration_id']))(state)
-
-    const customerForIntegration = ticketSelectors
-        .getIntegrationDataByIntegrationId(integration.get('id', '').toString())(state)
-
-    return {
-        currentUser: currentUserSelectors.getCurrentUser(state),
-        customerForIntegration,
-        integration,
-    }
-})
-export default class Event extends React.Component {
+export class Event extends React.Component {
     static propTypes = {
         currentUser: ImmutablePropTypes.map.isRequired,
         customerForIntegration: ImmutablePropTypes.map.isRequired,
@@ -212,3 +199,19 @@ export default class Event extends React.Component {
         )
     }
 }
+
+
+export default connect((state, ownProps) => {
+    const {event} = ownProps
+
+    const integration = integrationsSelectors.getIntegrationById(event.getIn(['data', 'integration_id']))(state)
+
+    const customerForIntegration = ticketSelectors
+        .getIntegrationDataByIntegrationId(integration.get('id', '').toString())(state)
+
+    return {
+        currentUser: currentUserSelectors.getCurrentUser(state),
+        customerForIntegration,
+        integration,
+    }
+})(Event)

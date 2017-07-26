@@ -149,10 +149,12 @@ export default class RichField extends InputField {
             label, // eslint-disable-line
             name, // eslint-disable-line
             onChange, // eslint-disable-line
-            placeholder, // eslint-disable-line
+            placeholder, //eslint-disable-line
             required, // eslint-disable-line
             type, // eslint-disable-line
             value, // eslint-disable-line
+            alertMode,  // eslint-disable-line
+            alertText,  // eslint-disable-line
             canDropFiles,
             toolbarProps,
             displayOnly,
@@ -165,6 +167,7 @@ export default class RichField extends InputField {
             <div
                 className={classnames('rich-textarea-wrapper', {
                     'display-only': displayOnly,
+                    'alert alert-warning': alertMode === 'warning'
                 })}
             >
                 <div
@@ -177,18 +180,30 @@ export default class RichField extends InputField {
                     onDragLeave={() => this.setState({isDragging: false})}
                     onDrop={() => this.setState({isDragging: false})}
                 >
-                    <Editor
-                        editorState={this.state.editorState}
-                        onChange={editorState => this._onChange(editorState)}
-                        plugins={this.plugins}
-                        handleKeyCommand={this._handleKeyCommand}
-                        handleDroppedFiles={this._handleDroppedFiles}
-                        ref={(editor) => {
-                            this.editor = editor
-                        }}
-                        readOnly={displayOnly}
-                        {...rest}
-                    />
+                    {
+                        alertMode
+                            ? (
+                                <div style={{
+                                    paddingTop: '10px',
+                                    textAlign: 'center'
+                                }}>
+                                    {alertText}
+                                </div>
+                            ) : (
+                                <Editor
+                                    editorState={this.state.editorState}
+                                    onChange={editorState => this._onChange(editorState)}
+                                    plugins={this.plugins}
+                                    handleKeyCommand={this._handleKeyCommand}
+                                    handleDroppedFiles={this._handleDroppedFiles}
+                                    ref={(editor) => {
+                                        this.editor = editor
+                                    }}
+                                    readOnly={displayOnly}
+                                    {...rest}
+                                />
+                            )
+                    }
                 </div>
                 <Toolbar {...toolbarProps} />
             </div>

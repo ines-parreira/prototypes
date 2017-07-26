@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import linkifyStr from 'linkifyjs/string'
 import {sanitizeHtmlDefault, proxifyImages} from '../../../../utils'
+import FacebookCarousel from './FacebookCarousel'
 
 export default class TicketMessageBody extends React.Component {
     constructor() {
@@ -45,10 +46,22 @@ export default class TicketMessageBody extends React.Component {
 
         body = proxifyImages(sanitizeHtmlDefault(body), '1000x')
 
-        return (
-            <div className={classNames}>
+        let content = (
+            <div>
                 <div dangerouslySetInnerHTML={{__html: body}} />
                 {quoteButton}
+            </div>
+        )
+
+        if (message.meta && message.meta.facebook_carousel) {
+            content = (
+                <FacebookCarousel data={message.meta.facebook_carousel}/>
+            )
+        }
+
+        return (
+            <div className={classNames}>
+                {content}
             </div>
         )
     }

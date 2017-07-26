@@ -143,7 +143,7 @@ export const sourceTypeToChannel = (sourceType, messages) => {
         return sourceTypeToChannel(lastSourceType, messages)
     }
 
-    if (sourceType.startsWith('facebook')) {
+    if (sourceType.startsWith('facebook') && sourceType !== 'facebook-messenger') {
         return 'facebook'
     }
 
@@ -240,6 +240,7 @@ export const sourceTypeToIcon = (sourceType) => {
         case 'facebook-post':
         case 'facebook-comment':
             return 'fa fa-fw fa-facebook-square blue'
+        case 'facebook-messenger':
         case 'facebook-message':
             return 'fa fa-fw fa-facebook-messenger blue' // custom font
         case 'system-message':

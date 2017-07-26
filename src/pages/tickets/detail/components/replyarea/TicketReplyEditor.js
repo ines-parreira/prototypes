@@ -12,8 +12,13 @@ import {isRichType, acceptsOnlyImages} from '../../../../../config/ticket'
 
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import {notify} from '../../../../../state/notifications/actions'
 
 const dndPlugin = createDndPlugin()
+
+// Those are the source type which can send either text or attachment, but not both; they also cannot send more
+// than one attachment at a time
+const RESTRAINED_SOURCE_TYPES = ['facebook-messenger']
 
 // debounce the updating of the redux because it's slow otherwise when we type
 const _updateMessageText = _debounce((props, editorState) => {
@@ -89,7 +94,46 @@ class TicketReplyEditor extends React.Component {
         _updateMessageText(this.props, editorState)
     }
 
+    _canAddAttachments = (files) => {
+        const cantAddAttachmentBecauseOfText =
+            RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
+            && this.props.newMessage.getIn(['newMessage', 'body_text'])
+
+        const cantAddAttachmentBecauseOfAttachments =
+            RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
+            && this.props.newMessage.getIn(['newMessage', 'attachments']).size >= 1
+
+        const tryToAddTooManyAttachments =
+            RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
+            && files.length > 1
+
+        if (cantAddAttachmentBecauseOfText) {
+            this.props.notify({
+                type: 'error',
+                message: 'When using Facebook, you can either send a text message, or an attachment, ' +
+                'but not both at the same time'
+            })
+
+            return false
+        }
+
+        if (cantAddAttachmentBecauseOfAttachments || tryToAddTooManyAttachments) {
+            this.props.notify({
+                type: 'error',
+                message: 'When using Facebook, you can only send attachments one by one.'
+            })
+
+            return false
+        }
+
+        return true
+    }
+
     _handleFiles = (files) => {
+        if (!this._canAddAttachments(files)) {
+            return
+        }
+
         this.props.addAttachments(this.props.ticket, files)
     }
 
@@ -98,6 +142,7 @@ class TicketReplyEditor extends React.Component {
             getEditorState: () => this.state.editorState,
             setEditorState: this._onChange
         })
+
         this._handleFiles(files)
         return false
     }
@@ -183,6 +228,15 @@ class TicketReplyEditor extends React.Component {
             toolbarProps.displayedActions = ['emoji']
         }
 
+        const cantWriteTextBecauseOfAttachments =
+            RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
+            && this.props.newMessage.getIn(['newMessage', 'attachments']).size >= 1
+
+        const alertText = cantWriteTextBecauseOfAttachments
+            ? 'When using Facebook, you can either send a text message, or an attachment, ' +
+              'but not both at the same time. If you want to write a message, remove the attachment first.'
+            : null
+
         return (
             <div className="TicketReplyEditor">
                 <RichField
@@ -198,8 +252,10 @@ class TicketReplyEditor extends React.Component {
                     tabIndex="4"
                     spellCheck
                     canDropFiles
-                    readOnly={newMessage.getIn(['_internal', 'loading', 'submitMessage'])}
+                    readOnly={newMessage.getIn(['_internal', 'loading', 'submitMessage']) || cantWriteTextBecauseOfAttachments}
                     toolbarProps={toolbarProps}
+                    alertMode={cantWriteTextBecauseOfAttachments ? 'warning' : null}
+                    alertText={alertText}
                 />
             </div>
         )
@@ -214,6 +270,7 @@ TicketReplyEditor.propTypes = {
     newMessageType: PropTypes.string.isRequired,
     newMessage: PropTypes.object.isRequired,
     autoFocus: PropTypes.bool.isRequired,
+    notify: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
@@ -226,6 +283,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
     addAttachments: newMessageActions.addAttachments,
     setResponseText: newMessageActions.setResponseText,
+    notify
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyEditor)

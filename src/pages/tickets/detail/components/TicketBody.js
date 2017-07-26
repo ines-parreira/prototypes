@@ -8,15 +8,7 @@ import * as ticketSelectors from '../../../../state/ticket/selectors'
 import TicketMessage from './TicketMessage'
 import Event from './Event'
 
-@connect((state) => {
-    return {
-        currentUser: state.currentUser,
-        loadingState: ticketSelectors.getLoading(state),
-        ticket: state.ticket,
-        lastReadMessage: ticketSelectors.getLastReadMessage(state)
-    }
-})
-export default class TicketBody extends React.Component {
+export class TicketBody extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
         elements: PropTypes.object.isRequired,
@@ -91,3 +83,13 @@ export default class TicketBody extends React.Component {
         )
     }
 }
+
+
+export default connect((state) => {
+    return {
+        currentUser: state.currentUser,
+        loadingState: ticketSelectors.getLoading(state),
+        ticket: state.ticket,
+        lastReadMessage: ticketSelectors.getLastReadMessage(state)
+    }
+})(TicketBody)
