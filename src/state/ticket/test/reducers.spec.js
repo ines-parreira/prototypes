@@ -198,4 +198,19 @@ describe('Ticket reducer', () => {
             }))
         })
     })
+
+    it('should set ticket requester', () => {
+        const requester = fromJS({
+            id: 1,
+            name: 'Pizza Pepperoni'
+        })
+        const expected = initialState.set('requester', requester)
+        const args = fromJS({requester})
+
+        expect(
+            reducer(initialState, {type: types.SET_REQUESTER, args})
+        ).toEqualImmutable(
+            expected
+        )
+    })
 })

@@ -1,9 +1,15 @@
 import configureMockStore from 'redux-mock-store'
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
+import * as immutableMatchers from 'jest-immutable-matchers'
+
 import * as types from '../constants'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
+
+jest.addMatchers(immutableMatchers)
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -11,9 +17,11 @@ const mockStore = configureMockStore(middlewares)
 describe('actions', () => {
     describe('ticket', () => {
         let store
+        let mockServer
 
         beforeEach(() => {
-            store = mockStore(initialState)
+            store = mockStore({ticket: initialState})
+            mockServer = new MockAdapter(axios)
         })
 
         it('should fail to delete ticket', () => {
@@ -24,6 +32,52 @@ describe('actions', () => {
             return store.dispatch(actions.deleteTicket(13)).then(() => {
                 store.getActions().forEach((action, index) => {
                     expect(action.type).toEqual(expectedActions[index].type)
+                })
+            })
+        })
+
+        it('should set requester with partial update', () => {
+            const expectedActions = [
+                {type: types.SET_REQUESTER},
+                {type: types.TICKET_PARTIAL_UPDATE_START},
+                {type: types.TICKET_PARTIAL_UPDATE_SUCCESS},
+            ]
+            const store = mockStore({
+                ticket: initialState.merge({id: 1})
+            })
+            const requester = fromJS({id: 1})
+
+            mockServer
+                .onPut('/api/tickets/1/')
+                .reply(200)
+
+            return store.dispatch(actions.setRequester(requester)).then(() => {
+                store.getActions().forEach((action, index) => {
+                    expect(action.type).toEqual(expectedActions[index].type)
+                })
+            })
+        })
+
+        it('should only send requester id with setRequester', () => {
+            const store = mockStore({
+                ticket: initialState.merge({id: 1})
+            })
+            const requester = fromJS({
+                id: 1,
+                custom: true
+            })
+
+            mockServer
+                .onPut('/api/tickets/1/')
+                .reply(200)
+
+            return store.dispatch(actions.setRequester(requester)).then(() => {
+                store.getActions().some((action) => {
+                    if (action.type === types.TICKET_PARTIAL_UPDATE_START) {
+                        expect(action.args.requester).toEqualImmutable(fromJS({id:1}))
+
+                        return true
+                    }
                 })
             })
         })

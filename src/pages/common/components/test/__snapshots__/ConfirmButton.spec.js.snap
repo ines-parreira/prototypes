@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmButton component should match snapshot 1`] = `
+<div
+  className="d-inline-block"
+  id="1"
+>
+  <ei
+    className=""
+    color="secondary"
+    disabled={false}
+    id="confirm-button-1"
+    onClick={[Function]}
+    tag="button"
+    type="button"
+  />
+  <ei
+    isOpen={false}
+    placement="bottom"
+    target="confirm-button-1"
+    toggle={[Function]}
+  >
+    <nn
+      tag="h3"
+    >
+      Are you sure?
+    </nn>
+    <pn
+      tag="div"
+    >
+      <p />
+      <ei
+        color="success"
+        onClick={[Function]}
+        tag="button"
+        type="submit"
+      >
+        Confirm
+      </ei>
+    </pn>
+  </ei>
+</div>
+`;

@@ -161,6 +161,19 @@ export const setAgent = (assigneeUser) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setAssignee', getState())))
 }
 
+export const setRequester = (requester) => (dispatch) => {
+    dispatch({
+        type: types.SET_REQUESTER,
+        args: fromJS({requester}),
+    })
+
+    return dispatch(ticketPartialUpdate({
+        requester: fromJS({
+            id: requester.get('id')
+        })
+    }))
+}
+
 export const setStatus = (status, onClose = _noop) => (dispatch, getState) => {
     dispatch({
         type: types.SET_STATUS,

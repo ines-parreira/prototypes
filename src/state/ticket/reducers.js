@@ -246,6 +246,11 @@ export default (state = initialState, action) => {
             return state.set('subject', subject)
         }
 
+        case types.SET_REQUESTER: {
+            const requester = action.args.get('requester')
+            return state.set('requester', requester)
+        }
+
         case types.APPLY_MACRO: {
             ticketReplyCache.set(action.ticketId, {
                 macro: action.macro

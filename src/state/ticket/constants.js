@@ -31,6 +31,8 @@ export const SET_STATUS = 'setStatus'
 export const SET_AGENT = 'setAssignee'
 export const SET_SUBJECT = 'setSubject'
 
+export const SET_REQUESTER = 'setRequester'
+
 export const REMOVE_TICKET_TAG = 'REMOVE_TICKET_TAG'
 
 export const UPDATE_ACTION_ARGS_ON_APPLIED = 'UPDATE_ACTION_ARGS_ON_APPLIED'

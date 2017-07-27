@@ -8,10 +8,12 @@ import {areSourcesReady} from './utils'
 
 import * as infobarActions from '../../../../state/infobar/actions'
 import * as usersActions from '../../../../state/users/actions'
+import * as ticketActions from '../../../../state/ticket/actions'
 
 import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 
 import Loader from '../Loader'
+import ConfirmButton from '../ConfirmButton'
 import InfobarLayout from './InfobarLayout'
 import InfobarUserInfo from './InfobarUserInfo'
 import MergeUsersContainer from './../mergeUsers/MergeUsersContainer'
@@ -24,6 +26,7 @@ import css from './Infobar.less'
     fetchUserHistory: usersActions.fetchUserHistory,
     search: infobarActions.search,
     searchSimilarUser: infobarActions.similarUser,
+    setRequester: ticketActions.setRequester,
 })
 export default class Infobar extends React.Component {
     static propTypes = {
@@ -38,6 +41,7 @@ export default class Infobar extends React.Component {
         sources: PropTypes.object.isRequired,
         user: PropTypes.object.isRequired,
         widgets: PropTypes.object.isRequired,
+        setRequester: PropTypes.func.isRequired,
     }
 
     static defaultProps = {
@@ -192,6 +196,37 @@ export default class Infobar extends React.Component {
         )
     }
 
+    _renderUserActions = () => {
+        const requester = this.props.sources.getIn(['ticket', 'requester', 'name'])
+        const newRequester = this.state.selectedUser.get('name')
+
+        return (
+            <div className="pull-right hidden-sm-down">
+                <ConfirmButton
+                    className="mr-2"
+                    placement="left"
+                    title="Change ticket requester"
+                    content={`
+                        Are you use you want to set ${newRequester} as the requester instead of ${requester}?
+                    `}
+                    confirm={this._setRequester}
+                >
+                    Set as requester
+                </ConfirmButton>
+
+                <Button
+                    type="submit"
+                    onClick={() => {
+                        this.setState({showMergeUserModal: true})
+                        logEvent('Clicked "Merge" button on user searched in infobar')
+                    }}
+                >
+                    Merge
+                </Button>
+            </div>
+        )
+    }
+
     _onSearch = (query) => {
         if (query) {
             this.setState({isSearching: true})
@@ -248,6 +283,11 @@ export default class Infobar extends React.Component {
         }
     }
 
+    _setRequester = () => {
+        return this.props.setRequester(this.state.selectedUser)
+            .then(this._returnToCurrentUserProfile)
+    }
+
     _renderUserInfo = (user) => {
         const isEditing = this._isEditing()
 
@@ -296,18 +336,7 @@ export default class Infobar extends React.Component {
                         {
                             hasDestinationUser
                             && this.state.selectedUser.get('id') !== this.props.user.get('id')
-                            && (
-                                <Button
-                                    type="submit"
-                                    className="pull-right hidden-sm-down"
-                                    onClick={() => {
-                                        this.setState({showMergeUserModal: true})
-                                        logEvent('Clicked "Merge" button on user searched in infobar')
-                                    }}
-                                >
-                                    Merge
-                                </Button>
-                            )
+                            && this._renderUserActions()
                         }
                     </div>
                     {this._renderUserInfo(this.state.selectedUser)}

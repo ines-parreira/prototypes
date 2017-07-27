@@ -89,6 +89,7 @@ export default class ConfirmButton extends React.Component {
             loading,
             confirm, // eslint-disable-line no-unused-vars
             skip, // eslint-disable-line no-unused-vars
+            placement,
             ...buttonProps
         } = this.props
 
@@ -98,7 +99,7 @@ export default class ConfirmButton extends React.Component {
 
         const isLoading = this.state.loading || loading
 
-        const uid = `confirm-button-${Date.now()}`
+        const uid = `confirm-button-${id || Date.now()}`
 
         return (
             <div className={classnames('d-inline-block', className)} id={id}>
@@ -115,7 +116,7 @@ export default class ConfirmButton extends React.Component {
                     {this.props.children}
                 </Button>
                 <Popover
-                    placement="bottom"
+                    placement={placement}
                     isOpen={showConfirmation}
                     target={uid}
                     toggle={this._hideConfirmation}
@@ -152,10 +153,12 @@ ConfirmButton.propTypes = {
     children: PropTypes.node,
     skip: PropTypes.bool,
     loading: PropTypes.bool,
+    placement: PropTypes.string
 }
 
 
 ConfirmButton.defaultProps = {
+    id: '',
     type: 'button',
     className: '',
     disabled: false,
@@ -163,5 +166,6 @@ ConfirmButton.defaultProps = {
     title: 'Are you sure?',
     content: null,
     skip: false,
-    loading: false
+    loading: false,
+    placement: 'bottom'
 }
