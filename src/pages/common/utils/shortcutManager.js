@@ -2,6 +2,7 @@ import Mousetrap from 'mousetrap'
 import * as mousetrap from 'mousetrap'
 import _merge from 'lodash/merge'
 import _clone from 'lodash/clone'
+import _get from 'lodash/get'
 import keymap from './keymap'
 import {getModifier, isEditable, closest} from '../../../utils'
 
@@ -38,6 +39,14 @@ class ShortcutManager {
             const action = componentActions[actionName]
             mousetrap.unbind(action.key)
         })
+    }
+
+    getActionConfig(component = 'global', actionName) {
+        return _get(keymap, [component, 'actions', actionName], {})
+    }
+
+    trigger(key) {
+        return mousetrap.trigger(key)
     }
 
     parseKeyPart(keyPart) {

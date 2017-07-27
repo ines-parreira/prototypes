@@ -67,11 +67,11 @@ export default {
             PREVIEW_NEXT_MACRO: {
                 key: 'down'
             },
-            GO_BACK: {
+            GO_BACK: { // remember to change this shortcut in TicketReplyEditor.js:_keyBindingFn too
                 key: 'ctrl+j',
                 description: 'Go to previous ticket.'
             },
-            GO_FORWARD: {
+            GO_FORWARD: { // remember to change this shortcut in TicketReplyEditor.js:_keyBindingFn too
                 key: 'ctrl+k',
                 description: 'Go to next ticket.'
             },
@@ -88,7 +88,7 @@ export default {
     TicketHeader: {
         description: 'Ticket status',
         actions: {
-            CLOSE_TICKET: {
+            CLOSE_TICKET: { // remember to change this shortcut in TicketReplyEditor.js:_keyBindingFn too
                 key: 'ctrl+e',
                 description: 'Close the ticket.'
             },

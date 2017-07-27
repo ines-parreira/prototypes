@@ -77,8 +77,7 @@ export default class TicketHeader extends React.Component {
     _bindKeys() {
         shortcutManager.bind('TicketHeader', {
             CLOSE_TICKET: {
-                action: (e) => {
-                    e.preventDefault()
+                action: () => {
                     this._setStatus('closed')
                 }
             },

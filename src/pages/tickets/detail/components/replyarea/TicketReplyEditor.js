@@ -4,7 +4,9 @@ import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 
-import {EditorState, ContentState} from 'draft-js'
+import shortcutManager from '../../../../common/utils/shortcutManager'
+
+import {getDefaultKeyBinding, KeyBindingUtil, EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
 
 import RichField from '../../../../common/forms/RichField'
@@ -15,6 +17,8 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {notify} from '../../../../../state/notifications/actions'
 
 const dndPlugin = createDndPlugin()
+
+const {isCtrlKeyCommand} = KeyBindingUtil
 
 // Those are the source type which can send either text or attachment, but not both; they also cannot send more
 // than one attachment at a time
@@ -172,6 +176,46 @@ class TicketReplyEditor extends React.Component {
         _updateMessageText(this.props, editorState)
     }
 
+    // remember to change these shortcuts in keymap.js too
+    _keyBindingFn = (e) => {
+        if (e.key === 'k' && isCtrlKeyCommand(e)) {
+            return 'next-ticket'
+        }
+
+        if (e.key === 'j' && isCtrlKeyCommand(e)) {
+            return 'previous-ticket'
+        }
+
+        if (e.key === 'e' && isCtrlKeyCommand(e)) {
+            return 'close-ticket'
+        }
+
+        return getDefaultKeyBinding(e)
+    }
+
+    // remember to change these shortcuts in keymap.js too
+    _handleKeyCommand = (command) => {
+        if (command === 'next-ticket') {
+            const key = shortcutManager.getActionConfig('TicketDetailContainer', 'GO_FORWARD').key
+            shortcutManager.trigger(key)
+            return 'handled'
+        }
+
+        if (command === 'previous-ticket') {
+            const key = shortcutManager.getActionConfig('TicketDetailContainer', 'GO_BACK').key
+            shortcutManager.trigger(key)
+            return 'handled'
+        }
+
+        if (command === 'close-ticket') {
+            const key = shortcutManager.getActionConfig('TicketHeader', 'CLOSE_TICKET').key
+            shortcutManager.trigger(key)
+            return 'handled'
+        }
+
+        return 'not-handled'
+    }
+
     render() {
         const {newMessage, newMessageType} = this.props
 
@@ -224,7 +268,7 @@ class TicketReplyEditor extends React.Component {
             ],
         }
 
-        if(!isNewMessageRichType) {
+        if (!isNewMessageRichType) {
             toolbarProps.displayedActions = ['emoji']
         }
 
@@ -234,7 +278,7 @@ class TicketReplyEditor extends React.Component {
 
         const alertText = cantWriteTextBecauseOfAttachments
             ? 'When using Facebook, you can either send a text message, or an attachment, ' +
-              'but not both at the same time. If you want to write a message, remove the attachment first.'
+            'but not both at the same time. If you want to write a message, remove the attachment first.'
             : null
 
         return (
@@ -256,6 +300,8 @@ class TicketReplyEditor extends React.Component {
                     toolbarProps={toolbarProps}
                     alertMode={cantWriteTextBecauseOfAttachments ? 'warning' : null}
                     alertText={alertText}
+                    keyBindingFn={this._keyBindingFn}
+                    handleKeyCommand={this._handleKeyCommand}
                 />
             </div>
         )
