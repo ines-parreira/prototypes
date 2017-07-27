@@ -459,4 +459,36 @@ describe('global utils', () => {
             expect(utils.hoursToSeconds(2)).toBe(2 * 60 * 60)
         })
     })
+
+    describe('validateWebhookURL', () => {
+        it('should not allow http protocol', () => {
+            const url = 'http://foobar.com'
+            expect(utils.validateWebhookURL(url)).not.toEqual('')
+        })
+
+        it('should not allow port specifications', () => {
+            const url = 'https://foobar.com:8080'
+            expect(utils.validateWebhookURL(url)).not.toEqual('')
+        })
+
+        it('should require a TLD', () => {
+            const url = 'https://rmq0'
+            expect(utils.validateWebhookURL(url)).not.toEqual('')
+        })
+
+        it('should not allow .local TLD', () => {
+            const url = 'https://foobar.local/'
+            expect(utils.validateWebhookURL(url)).not.toEqual('')
+        })
+
+        it('should not allow .internal TLD', () => {
+            const url = 'https://foobar.internal/'
+            expect(utils.validateWebhookURL(url)).not.toEqual('')
+        })
+
+        it('should render multiple errors for each error in url', () => {
+            const url = 'http://foobar.local'
+            expect(utils.validateWebhookURL(url)).toContain('+')
+        })
+    })
 })

@@ -10,6 +10,8 @@ import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import JsonField from '../../../../../common/forms/JsonField'
 
+import {validateWebhookURL} from '../../../../../../utils'
+
 export default class HttpAction extends React.Component {
     _setTitle = (title) => {
         this.props.updateActionTitle(
@@ -112,10 +114,13 @@ export default class HttpAction extends React.Component {
                     <Col xs="9">
                         <InputField
                             type="text"
+                            title='Example: https://company.com/api'
                             name="url"
                             label="URL"
+                            error={validateWebhookURL(action.getIn(['arguments', 'url']))}
                             value={action.getIn(['arguments', 'url'])}
                             onChange={value => this._setArgument('url', value)}
+                            help="Example: https://company.com/api"
                             required
                         />
                     </Col>

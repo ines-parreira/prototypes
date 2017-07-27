@@ -917,3 +917,47 @@ export function hoursToSeconds(hours = 0) {
 
     return 60 * 60 * hours
 }
+
+/**
+ * Function that wraps functionality for checking webhook urls
+ * @param val - url string
+ * @returns string of error messages if there are errors with url
+ */
+export const validateWebhookURL = (val) => {
+    const rules = [
+        {
+            test: /^((?!(\..)).)*$/,
+            message: 'Invlalid URL'
+        },
+        {
+            test: /^(?!https:).*:/,
+            message: 'Only https protocol allowed'
+        },
+        {
+            test: /(\.internal(\/.*)?|\.local(\/.*)?)$/,
+            message: 'Invalid top level domain'
+        },
+        {
+            test: /:\d/,
+            message: 'No port specifications allowed'
+        },
+    ]
+
+    const errors = []
+
+    if (val) {
+        const url = val.toLowerCase()
+
+        rules.forEach((rule) => {
+            if (rule.test.test(url)) {
+                errors.push(rule.message)
+            }
+        })
+    }
+
+    if (errors.length === 0) {
+        return null
+    }
+
+    return errors.join(' + ')
+}

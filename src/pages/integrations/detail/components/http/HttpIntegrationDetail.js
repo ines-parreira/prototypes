@@ -23,7 +23,7 @@ import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
 import JsonField from '../../../../common/forms/JsonField'
-import {toJS} from '../../../../../utils'
+import {toJS, validateWebhookURL} from '../../../../../utils'
 
 export const defaultContent = {
     type: 'http',
@@ -247,8 +247,10 @@ export default class HttpIntegrationDetail extends React.Component {
                     </FormGroup>
                     <InputField
                         type="text"
+                        error={validateWebhookURL(this.state.url)}
                         name="http.url"
                         label="URL"
+                        title='Example: https://company.com/api'
                         placeholder="https://company.com/api/users?email={ticket.requester.email}"
                         required
                         help={(

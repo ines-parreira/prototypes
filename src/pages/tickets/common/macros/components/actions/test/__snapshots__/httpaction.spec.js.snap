@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTP action component should render the HTTP action component 1`] = `
+<div
+  className="http"
+>
+  <InputField
+    label="Title"
+    name="title"
+    onChange={[Function]}
+    required={true}
+    type="text"
+    value="HTTP hook"
+  />
+  <bt
+    tag="div"
+  >
+    <Ot
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+      xs="3"
+    >
+      <InputField
+        label="Method"
+        name="method"
+        onChange={[Function]}
+        required={true}
+        type="select"
+      >
+        <option
+          value="GET"
+        >
+          GET
+        </option>
+        <option
+          value="POST"
+        >
+          POST
+        </option>
+        <option
+          value="PUT"
+        >
+          PUT
+        </option>
+        <option
+          value="DELETE"
+        >
+          DELETE
+        </option>
+      </InputField>
+    </Ot>
+    <Ot
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+      xs="9"
+    >
+      <InputField
+        error={null}
+        help="Example: https://company.com/api"
+        label="URL"
+        name="url"
+        onChange={[Function]}
+        required={true}
+        title="Example: https://company.com/api"
+        type="text"
+      />
+    </Ot>
+  </bt>
+  <ml
+    tag="div"
+  >
+    <Hl
+      tag="label"
+    >
+      URL Parameters
+    </Hl>
+    <ParametersEditor
+      name="params"
+      updateDict={[Function]}
+    />
+  </ml>
+  <ml
+    tag="div"
+  >
+    <Hl
+      tag="label"
+    >
+      Headers
+    </Hl>
+    <ParametersEditor
+      name="headers"
+      updateDict={[Function]}
+    />
+  </ml>
+  <ml
+    tag="div"
+  >
+    <Hl
+      tag="label"
+    >
+      Body
+    </Hl>
+    <div
+      className="d-inline fields"
+    >
+      <BooleanField
+        label="application/x-www-form-urlencoded"
+        onChange={[Function]}
+        type="radio"
+        value={false}
+      />
+      <BooleanField
+        label="application/json"
+        onChange={[Function]}
+        type="radio"
+        value={true}
+      />
+    </div>
+    <JsonField
+      name="json"
+      onChange={[Function]}
+      type="text"
+    />
+  </ml>
+</div>
+`;
