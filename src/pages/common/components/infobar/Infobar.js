@@ -239,6 +239,15 @@ export default class Infobar extends React.Component {
         })
     }
 
+    // reset search and display current user
+    _returnToCurrentUserProfile = () => {
+        this._resetSearch()
+        this._resetSelected()
+        if (this.search) {
+            this.search._reset()
+        }
+    }
+
     _renderUserInfo = (user) => {
         const isEditing = this._isEditing()
 
@@ -309,13 +318,7 @@ export default class Infobar extends React.Component {
                         sourceUser={this.state.selectedUser}
                         onSuccess={() => {
                             this._fetchUserHistory()
-
-                            // reset search and display current user
-                            this._resetSearch()
-                            this._resetSelected()
-                            if (this.search) {
-                                this.search._reset()
-                            }
+                            this._returnToCurrentUserProfile()
                         }}
                         onClose={() => {
                             this.setState({showMergeUserModal: false})
