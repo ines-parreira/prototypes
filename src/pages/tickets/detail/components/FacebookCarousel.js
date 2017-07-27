@@ -28,6 +28,7 @@ export default class FacebookCarousel extends React.Component {
                         return (
                             <div key={idx}>
                                 {
+                                    template.payload && template.payload.elements &&
                                     template.payload.elements.map((element, idx) => {
                                         return (
                                             <Card
@@ -48,7 +49,7 @@ export default class FacebookCarousel extends React.Component {
                                                     className={css.buttons}
                                                 >
                                                 {
-                                                    element.buttons.map((button, idx) => {
+                                                    element.buttons && element.buttons.map((button, idx) => {
                                                         if (button.type === 'web_url') {
                                                             return (
                                                                 <Button
