@@ -83,104 +83,13 @@ describe('actions', () => {
         })
     })
 
-    describe('replace Recharge variables', () => {
-        it('should replace the variable with null since the requester has no Recharge data', () => {
+    describe('replace variables', () => {
+        it('should return empty value if no matching integration', () => {
             const ticketState = fromJS({
                 requester: {
                     integrations: {
                         15: {
-                            __integration_type__: 'shopify',
-                            customer: {
-                                foo: 'bar'
-                            }
-                        }
-                    }
-                }
-            })
-
-            const variable = 'ticket.requester.integrations.recharge.customer.foo'
-
-            const logs = []
-            const dispatch = (arg) => logs.push(arg)
-
-            const newArg = 'Hello {ticket.requester.integration.recharge.customer.name}, ' +
-                'what is your {null}?'
-
-            const res = actions.replaceRechargeVariables(ticketState, variable, dispatch, newArg)
-
-            expect(res).toEqual(newArg)
-        })
-
-        it('should update the Recharge variable with the correct integrations id', () => {
-            const ticketState = fromJS({
-                requester: {
-                    integrations: {
-                        15: {
-                            __integration_type__: 'recharge',
-                            customer: {
-                                foo: 'bar'
-                            }
-                        }
-                    }
-                }
-            })
-
-            const variable = 'ticket.requester.integrations.recharge.customer.foo'
-
-            const logs = []
-            const dispatch = (arg) => logs.push(arg)
-
-            const newArg = 'Hello {ticket.requester.integration.recharge.customer.name}, ' +
-                'what is your {ticket.requester.integrations.recharge.customer.foo}?'
-
-            const res = actions.replaceRechargeVariables(ticketState, variable, dispatch, newArg)
-
-            expect(res).toEqual('Hello {ticket.requester.integration.recharge.customer.name}, ' +
-                'what is your {ticket.requester.integrations[15].customer.foo}?')
-        })
-
-        it('should raise an error because the user has data on multiple Recharge integrations', () => {
-            const ticketState = fromJS({
-                requester: {
-                    integrations: {
-                        15: {
-                            __integration_type__: 'recharge',
-                            customer: {
-                                foo: 'bar'
-                            }
-                        },
-                        17: {
-                            __integration_type__: 'recharge',
-                            customer: {
-                                foo: 'bar'
-                            }
-                        }
-                    }
-                }
-            })
-
-            const variable = 'ticket.requester.integrations.recharge.customer.foo'
-
-            const logs = []
-            const dispatch = (arg) => logs.push(arg)
-
-            const newArg = 'Hello {ticket.requester.integration.recharge.customer.name}, ' +
-                'what is your {ticket.requester.integrations.recharge.customer.foo}?'
-
-            const res = actions.replaceRechargeVariables(ticketState, variable, dispatch, newArg)
-
-            expect(res).toEqual(undefined)
-            expect(logs.length).toEqual(1)
-        })
-    })
-
-    describe('replace Shopify variables', () => {
-        it('should replace the variable with null since the requester has no Shopify data', () => {
-            const ticketState = fromJS({
-                requester: {
-                    integrations: {
-                        15: {
-                            __integration_type__: 'recharge',
+                            __integration_type__: 'weirdtype',
                             customer: {
                                 foo: 'bar'
                             }
@@ -195,11 +104,13 @@ describe('actions', () => {
             const dispatch = (arg) => logs.push(arg)
 
             const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
-                'what is your {null}?'
+                'what is your {ticket.requester.integrations.shopify.customer.foo}?'
 
-            const res = actions.replaceShopifyVariables(ticketState, variable, dispatch, newArg)
+            const res = actions.replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
 
-            expect(res).toEqual(newArg)
+            expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
+                'what is your {}?')
+            expect(logs.length).toEqual(1)
         })
 
         it('should update the Shopify variable with the correct integrations id', () => {
@@ -224,13 +135,14 @@ describe('actions', () => {
             const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
                 'what is your {ticket.requester.integrations.shopify.customer.foo}?'
 
-            const res = actions.replaceShopifyVariables(ticketState, variable, dispatch, newArg)
+            const res = actions.replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
 
             expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
                 'what is your {ticket.requester.integrations[15].customer.foo}?')
+            expect(logs.length).toEqual(0)
         })
 
-        it('should raise an error because the user has data on multiple Shopify integrations', () => {
+        it('should take data from first of multiple Shopify integrations', () => {
             const ticketState = fromJS({
                 requester: {
                     integrations: {
@@ -258,10 +170,55 @@ describe('actions', () => {
             const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
                 'what is your {ticket.requester.integrations.shopify.customer.foo}?'
 
-            const res = actions.replaceShopifyVariables(ticketState, variable, dispatch, newArg)
+            const res = actions.replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
 
-            expect(res).toEqual(undefined)
-            expect(logs.length).toEqual(1)
+            expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
+                'what is your {ticket.requester.integrations[15].customer.foo}?')
+            expect(logs.length).toEqual(0)
+        })
+
+        it('should take data from most recent of multiple Shopify integrations updates based on updated_at info', () => {
+            const ticketState = fromJS({
+                requester: {
+                    integrations: {
+                        15: {
+                            __integration_type__: 'shopify',
+                            customer: {
+                                foo: 'bar',
+                                updated_at: '2017-06-17T13:57:14-04:00',
+                            }
+                        },
+                        16: {
+                            __integration_type__: 'shopify',
+                            customer: {
+                                foo: 'bar',
+                                updated_at: '2017-06-19T13:57:14-04:00',
+                            }
+                        },
+                        17: {
+                            __integration_type__: 'shopify',
+                            customer: {
+                                foo: 'bar',
+                                updated_at: '2017-06-18T13:57:14-04:00',
+                            }
+                        }
+                    }
+                }
+            })
+
+            const variable = 'ticket.requester.integrations.shopify.customer.foo'
+
+            const logs = []
+            const dispatch = (arg) => logs.push(arg)
+
+            const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
+                'what is your {ticket.requester.integrations.shopify.customer.foo}?'
+
+            const res = actions.replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
+
+            expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
+                'what is your {ticket.requester.integrations[16].customer.foo}?')
+            expect(logs.length).toEqual(0)
         })
     })
 })

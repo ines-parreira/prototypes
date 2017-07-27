@@ -270,56 +270,32 @@ const renderObject = (argument, context) => {
     return ret
 }
 
-export const replaceShopifyVariables = (ticketState, variable, dispatch, newArg) => {
-    const integrationIds = ticketState
+export const replaceIntegrationVariables = (integrationType, ticketState, variable, newArgument, dispatch) => {
+    let integrations = ticketState
         .getIn(['requester', 'integrations'], fromJS([]))
         .filter((integration) => {
-            return integration.get('__integration_type__') === 'shopify'
+            return integration.get('__integration_type__') === integrationType
         })
-        .map((_, integrationId) => integrationId).toList()
 
-    let newVariable = null
-
-    if (integrationIds.size === 1) {
-        newVariable = variable.replace('integrations.shopify', `integrations[${integrationIds.first()}]`)
+    // if we have updated_at in customer, sort integrations by the update date so we use the most recent updates
+    if (!integrations.isEmpty() && integrations.first().getIn(['customer', 'updated_at'])) {
+        integrations = integrations.sortBy(integration => integration.getIn(['customer', 'updated_at'])).reverse()
     }
 
-    if (integrationIds.size > 1) {
+    const integrationIds = integrations.map((_, integrationId) => integrationId).toList()
+
+    const integrationId = integrationIds.first()
+
+    if (!integrationId) {
         dispatch(notify({
-            type: 'error',
-            title: 'We couldn\'t replace variables in your macro, because this user has data ' +
-            'on multiple Shopify stores.'
+            type: 'warning',
+            title: `This user does not have any ${integrationType} information`,
         }))
-        return
+        return newArgument.replace(variable, '')
     }
 
-    return newArg.replace(variable, newVariable)
-}
-
-export const replaceRechargeVariables = (ticketState, variable, dispatch, newArg) => {
-    const integrationIds = ticketState
-        .getIn(['requester', 'integrations'], fromJS([]))
-        .filter((integration) => {
-            return integration.get('__integration_type__') === 'recharge'
-        })
-        .map((_, integrationId) => integrationId).toList()
-
-    let newVariable = null
-
-    if (integrationIds.size === 1) {
-        newVariable = variable.replace('integrations.recharge', `integrations[${integrationIds.first()}]`)
-    }
-
-    if (integrationIds.size > 1) {
-        dispatch(notify({
-            type: 'error',
-            title: 'We couldn\'t replace variables in your macro, because this user has data ' +
-            'on multiple Recharge stores.'
-        }))
-        return
-    }
-
-    return newArg.replace(variable, newVariable)
+    const newVariable = variable.replace('integrations.shopify', `integrations[${integrationId}]`)
+    return newArgument.replace(variable, newVariable)
 }
 
 const replaceVariables = (argument, state, dispatch) => {
@@ -327,24 +303,27 @@ const replaceVariables = (argument, state, dispatch) => {
 
     // If there's a var of format `ticket.requester.integrations.XXX`, then it's a dynamic variable.
     // Else, it would be `ticket.requester.integrations[XXX]`.
-    let variables = argument.match(/\{ticket.requester.integrations.[\w\d\]\[._-]+\}/g)
-    let newArg = argument
+    let variables = argument.match(/\{ticket.requester.integrations.[\w\d\]\[._-]+}/g)
+    let newArgument = argument
 
     if (variables) {
         // If a variable is a dynamic variable, we try to replace `integrations.{type}` with
         // `integrations[correct-integration-id]`.
         variables.forEach((variable) => {
             if (variable.includes('integrations.shopify')) {
-                newArg = replaceShopifyVariables(ticketState, variable, dispatch, newArg)
+                newArgument = replaceIntegrationVariables('shopify', ticketState, variable, newArgument, dispatch)
             }
 
             if (variable.includes('integrations.recharge')) {
-                newArg = replaceRechargeVariables(ticketState, variable, dispatch, newArg)
+                newArgument = replaceIntegrationVariables('recharge', ticketState, variable, newArgument, dispatch)
             }
         })
     }
 
-    return renderObject(newArg, {ticket: ticketState.toJS(), current_user: state.currentUser.toJS()})
+    return renderObject(newArgument, {
+        ticket: ticketState.toJS(),
+        current_user: state.currentUser.toJS()
+    })
 }
 
 const nestedReplace = (obj, state, dispatch) => {

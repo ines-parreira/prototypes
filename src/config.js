@@ -715,7 +715,7 @@ export const NOTIFICATIONS_STYLE_CONFIG = {
         },
         warning: {
             border: '1px solid #C9BA9B',
-            backgroundColor: '#FFFA9B',
+            backgroundColor: '#fffad7',
             color: '#573A08'
         },
         info: {
