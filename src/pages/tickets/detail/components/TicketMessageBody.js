@@ -46,15 +46,17 @@ export default class TicketMessageBody extends React.Component {
 
         body = proxifyImages(sanitizeHtmlDefault(body), '1000x')
 
-        let content = (
+        let content = body !== 'null' && (
             <div>
                 <div dangerouslySetInnerHTML={{__html: body}} />
                 {quoteButton}
             </div>
         )
 
+        let extension = null
+
         if (message.meta && message.meta.facebook_carousel) {
-            content = (
+            extension = (
                 <FacebookCarousel data={message.meta.facebook_carousel}/>
             )
         }
@@ -62,6 +64,7 @@ export default class TicketMessageBody extends React.Component {
         return (
             <div className={classNames}>
                 {content}
+                {extension}
             </div>
         )
     }
