@@ -20,8 +20,54 @@ import * as ticketSelectors from '../../../../state/ticket/selectors'
 import * as viewsUtils from '../../../../state/views/utils'
 
 import css from './TicketView.less'
+import appCss from '../../../App.less'
 
-export class TicketView extends React.Component {
+@connect((state) => {
+    return {
+        agents: usersSelectors.getAgents(state),
+        agentsViewing: usersSelectors.getOtherAgentsOnTicket(state.ticket.get('id'))(state),
+        agentsTyping: usersSelectors.getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state),
+        currentUser: state.currentUser,
+        macros: state.macros,
+        routing: state.routing,
+        settings: state.settings,
+        tags: tagsSelectors.getTags(state),
+        ticket: state.ticket,
+        ticketBody: ticketSelectors.getBody(state),
+        users: state.users,
+        usersIsLoading: usersSelectors.makeIsLoading(state),
+        views: state.views
+    }
+})
+export default class TicketView extends React.Component {
+    static propTypes = {
+        actions: PropTypes.object.isRequired,
+        agents: PropTypes.object.isRequired,
+        agentsViewing: PropTypes.object.isRequired,
+        agentsTyping: PropTypes.object.isRequired,
+        applyMacro: PropTypes.func.isRequired,
+        computeNextUrl: PropTypes.func.isRequired,
+        currentUser: PropTypes.object.isRequired,
+        hideTicket: PropTypes.func.isRequired,
+        isTicketHidden: PropTypes.bool.isRequired,
+        macros: PropTypes.object.isRequired,
+        settings: PropTypes.object.isRequired,
+        submit: PropTypes.func.isRequired,
+        tags: PropTypes.object.isRequired,
+        ticket: PropTypes.object.isRequired,
+        ticketBody: PropTypes.object.isRequired,
+        users: PropTypes.object.isRequired,
+        usersIsLoading: PropTypes.func.isRequired,
+        setStatus: PropTypes.func.isRequired,
+        view: PropTypes.object,
+    }
+
+    static defaultProps = {
+        agentsViewing: fromJS([]),
+        agentsTyping: fromJS([]),
+        setStatus: _noop
+    }
+
     wasAtBottomOfPage = false // used to track if user was at the bottom of the page
 
     componentWillMount() {
@@ -37,17 +83,25 @@ export class TicketView extends React.Component {
         }
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
+        const isHistoryDisplayed = nextProps.ticket.getIn(['_internal', 'displayHistory'])
+
         // save before props update if user was at bottom of the page (probably answering something)
-        const element = document.getElementsByClassName('ticket-content')[0]
+        // if history is displayed we calculate scroll on `main-content` wrapper
+        const className = isHistoryDisplayed ? appCss['main-content'] : 'ticket-content'
+        const element = document.getElementsByClassName(className)[0]
         this.wasAtBottomOfPage = (element.scrollHeight - element.scrollTop) <= element.offsetHeight + 40
     }
 
     componentDidUpdate(prevProps) {
         // if ticket body (messages, events, etc.) changes but user is at bottom of the page,
         // then keep him at the bottom of the page
+        const isHistoryDisplayed = this.props.ticket.getIn(['_internal', 'displayHistory'])
+
         if (!prevProps.ticketBody.equals(this.props.ticketBody) && this.wasAtBottomOfPage) {
-            const element = document.getElementsByClassName('ticket-content')[0]
+            // if history is displayed we set scroll on `main-content` wrapper
+            const className = isHistoryDisplayed ? appCss['main-content'] : 'ticket-content'
+            const element = document.getElementsByClassName(className)[0]
             element.scrollTop = element.scrollHeight
         }
     }
@@ -261,52 +315,3 @@ export class TicketView extends React.Component {
     }
 }
 
-TicketView.propTypes = {
-    actions: PropTypes.object.isRequired,
-    agents: PropTypes.object.isRequired,
-    agentsViewing: PropTypes.object.isRequired,
-    agentsTyping: PropTypes.object.isRequired,
-    applyMacro: PropTypes.func.isRequired,
-    computeNextUrl: PropTypes.func.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    hideTicket: PropTypes.func.isRequired,
-    isTicketHidden: PropTypes.bool.isRequired,
-    macros: PropTypes.object.isRequired,
-    settings: PropTypes.object.isRequired,
-    submit: PropTypes.func.isRequired,
-    tags: PropTypes.object.isRequired,
-    ticket: PropTypes.object.isRequired,
-    ticketBody: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired,
-    usersIsLoading: PropTypes.func.isRequired,
-    setStatus: PropTypes.func.isRequired,
-    view: PropTypes.object,
-}
-
-TicketView.defaultProps = {
-    agentsViewing: fromJS([]),
-    agentsTyping: fromJS([]),
-    setStatus: _noop
-}
-
-function mapStateToProps(state) {
-    return {
-        activeView: state.views.get('active', fromJS({})),
-        agents: usersSelectors.getAgents(state),
-        agentsViewing: usersSelectors.getOtherAgentsOnTicket(state.ticket.get('id'))(state),
-        agentsTyping: usersSelectors.getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state),
-        currentUser: state.currentUser,
-        ticketBody: ticketSelectors.getBody(state),
-        macros: state.macros,
-        users: state.users,
-        usersIsLoading: usersSelectors.makeIsLoading(state),
-        routing: state.routing,
-        settings: state.settings,
-        tags: tagsSelectors.getTags(state),
-        ticket: state.ticket,
-        tickets: state.tickets,
-        views: state.views
-    }
-}
-
-export default connect(mapStateToProps)(TicketView)
