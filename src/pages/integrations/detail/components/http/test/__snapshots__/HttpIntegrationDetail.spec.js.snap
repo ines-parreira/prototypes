@@ -109,7 +109,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
           </code>
            to pass the email of the ticket requester. See other 
           <a
-            href="http://docs.gorgias.io/#/definitions/User"
+            href="http://api.gorgias.io/#/definitions/User"
             target="_blank"
           >
             vars
@@ -367,7 +367,7 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
           </code>
            to pass the email of the ticket requester. See other 
           <a
-            href="http://docs.gorgias.io/#/definitions/User"
+            href="http://api.gorgias.io/#/definitions/User"
             target="_blank"
           >
             vars

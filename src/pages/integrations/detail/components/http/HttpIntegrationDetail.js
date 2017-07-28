@@ -257,7 +257,7 @@ export default class HttpIntegrationDetail extends React.Component {
                             <div>
                                 You can use <code>{'{ticket.requester.email}'}</code> to pass the email of the
                                 ticket requester. See
-                                other <a href="http://docs.gorgias.io/#/definitions/User" target="_blank">vars</a>.
+                                other <a href="http://api.gorgias.io/#/definitions/User" target="_blank">vars</a>.
                             </div>
                         )}
                         value={this.state.url}
