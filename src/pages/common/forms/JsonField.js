@@ -6,7 +6,6 @@ import InputField from './InputField'
 import Errors from './Errors'
 
 export default class JsonField extends InputField {
-    isInitialized = false
     defaultValue = '{}'
 
     state = {
@@ -14,20 +13,18 @@ export default class JsonField extends InputField {
         value: this.defaultValue,
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.value !== nextProps.value && !this.isInitialized) {
-            let text = JSON.stringify(nextProps.value, undefined, 4)
+    componentDidMount() {
+        if (this.props.value) {
+            let text = JSON.stringify(this.props.value, undefined, 4)
 
             if (text === '""') {
                 text = null
             }
 
-            this.state = {
+            this.setState({
                 isJsonValid: true,
                 value: text || this.defaultValue,
-            }
-
-            this.isInitialized = true
+            })
         }
     }
 
