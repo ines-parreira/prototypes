@@ -1,0 +1,637 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReplyMessageChannel component existing ticket with last message as chat message 1`] = `
+<div
+  className="ReplyMessageChannel open"
+>
+  <div
+    className="channel-picker"
+  >
+    <UncontrolledDropdown>
+      <ei
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        data-toggle="dropdown"
+        type="button"
+      >
+        <i
+          className="fa fa-fw fa-comments purple"
+        />
+      </ei>
+      <Xo
+        tag="div"
+      >
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-envelope blue"
+          />
+          Reply via email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-reply blue"
+          />
+          Forward by email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-comments purple"
+          />
+          Reply via chat
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-comment yellow"
+          />
+          Leave an internal note
+        </ei>
+      </Xo>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="message-source-fields"
+  >
+    <div
+      className="message-source-field"
+    >
+      <span
+        className="receivers-list"
+      >
+        Internal note
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ReplyMessageChannel component existing ticket with message of type chat 1`] = `
+<div
+  className="ReplyMessageChannel open"
+>
+  <div
+    className="channel-picker"
+  >
+    <UncontrolledDropdown>
+      <ei
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        data-toggle="dropdown"
+        type="button"
+      >
+        <i
+          className="fa fa-fw fa-comments purple"
+        />
+      </ei>
+      <Xo
+        tag="div"
+      >
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-envelope blue"
+          />
+          Reply via email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-reply blue"
+          />
+          Forward by email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-comments purple"
+          />
+          Reply via chat
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-comment yellow"
+          />
+          Leave an internal note
+        </ei>
+      </Xo>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="message-source-fields"
+  >
+    <div
+      className="message-source-field"
+    >
+      <span
+        className="receivers-list"
+      >
+        Internal note
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ReplyMessageChannel component existing ticket with message of type email 1`] = `
+<div
+  className="ReplyMessageChannel open"
+>
+  <div
+    className="channel-picker"
+  >
+    <UncontrolledDropdown>
+      <ei
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        data-toggle="dropdown"
+        type="button"
+      >
+        <i
+          className="fa fa-fw fa-envelope blue"
+        />
+      </ei>
+      <Xo
+        tag="div"
+      >
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-envelope blue"
+          />
+          Reply via email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-reply blue"
+          />
+          Forward by email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-comment yellow"
+          />
+          Leave an internal note
+        </ei>
+      </Xo>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="message-source-fields"
+  >
+    <div
+      className="message-source-field"
+    >
+      <span
+        className="receivers-list"
+      >
+        Internal note
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ReplyMessageChannel component existing ticket with message of type facebook-comment 1`] = `
+<div
+  className="ReplyMessageChannel open"
+>
+  <div
+    className="channel-picker"
+  >
+    <UncontrolledDropdown>
+      <ei
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        data-toggle="dropdown"
+        type="button"
+      >
+        <i
+          className="fa fa-fw fa-facebook-square blue"
+        />
+      </ei>
+      <Xo
+        tag="div"
+      >
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-envelope blue"
+          />
+          Reply via email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-reply blue"
+          />
+          Forward by email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-facebook-square blue"
+          />
+          Reply via Facebook comment
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-comment yellow"
+          />
+          Leave an internal note
+        </ei>
+      </Xo>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="message-source-fields"
+  >
+    <div
+      className="message-source-field"
+    >
+      <span
+        className="receivers-list"
+      >
+        Internal note
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ReplyMessageChannel component existing ticket with message of type facebook-message 1`] = `
+<div
+  className="ReplyMessageChannel open"
+>
+  <div
+    className="channel-picker"
+  >
+    <UncontrolledDropdown>
+      <ei
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        data-toggle="dropdown"
+        type="button"
+      >
+        <i
+          className="fa fa-fw fa-facebook-messenger blue"
+        />
+      </ei>
+      <Xo
+        tag="div"
+      >
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-envelope blue"
+          />
+          Reply via email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-reply blue"
+          />
+          Forward by email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-facebook-messenger blue"
+          />
+          Reply via Messenger
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-comment yellow"
+          />
+          Leave an internal note
+        </ei>
+      </Xo>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="message-source-fields"
+  >
+    <div
+      className="message-source-field"
+    >
+      <span
+        className="receivers-list"
+      >
+        Internal note
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ReplyMessageChannel component existing ticket with message of type facebook-messenger 1`] = `
+<div
+  className="ReplyMessageChannel open"
+>
+  <div
+    className="channel-picker"
+  >
+    <UncontrolledDropdown>
+      <ei
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        data-toggle="dropdown"
+        type="button"
+      >
+        <i
+          className="fa fa-fw fa-facebook-messenger blue"
+        />
+      </ei>
+      <Xo
+        tag="div"
+      >
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-envelope blue"
+          />
+          Reply via email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-reply blue"
+          />
+          Forward by email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-facebook-messenger blue"
+          />
+          Reply via Messenger
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-comment yellow"
+          />
+          Leave an internal note
+        </ei>
+      </Xo>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="message-source-fields"
+  >
+    <div
+      className="message-source-field"
+    >
+      <span
+        className="receivers-list"
+      >
+        Internal note
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ReplyMessageChannel component existing ticket with message of type facebook-post 1`] = `
+<div
+  className="ReplyMessageChannel open"
+>
+  <div
+    className="channel-picker"
+  >
+    <UncontrolledDropdown>
+      <ei
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        data-toggle="dropdown"
+        type="button"
+      >
+        <i
+          className="fa fa-fw fa-facebook-square blue"
+        />
+      </ei>
+      <Xo
+        tag="div"
+      >
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-envelope blue"
+          />
+          Reply via email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-reply blue"
+          />
+          Forward by email
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-facebook-square blue"
+          />
+          Reply via Facebook comment
+        </ei>
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-comment yellow"
+          />
+          Leave an internal note
+        </ei>
+      </Xo>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="message-source-fields"
+  >
+    <div
+      className="message-source-field"
+    >
+      <span
+        className="receivers-list"
+      >
+        Internal note
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ReplyMessageChannel component existing ticket without messages 1`] = `null`;
+
+exports[`ReplyMessageChannel component new ticket 1`] = `
+<div
+  className="ReplyMessageChannel open"
+>
+  <div
+    className="channel-picker"
+  >
+    <UncontrolledDropdown>
+      <ei
+        aria-haspopup={true}
+        caret={true}
+        color="secondary"
+        data-toggle="dropdown"
+        type="button"
+      >
+        <i
+          className="fa fa-fw fa-envelope blue"
+        />
+      </ei>
+      <Xo
+        tag="div"
+      >
+        <ei
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="mr-2 fa fa-fw fa-envelope blue"
+          />
+          Reply via email
+        </ei>
+      </Xo>
+    </UncontrolledDropdown>
+  </div>
+  <Connect(MessageSourceFields)
+    canOpen={true}
+    enabled={true}
+    initialValues={
+      Object {
+        "to": Array [],
+      }
+    }
+    isOpen={false}
+    parentId="new"
+  />
+</div>
+`;

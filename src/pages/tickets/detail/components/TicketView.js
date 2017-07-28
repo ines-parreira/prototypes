@@ -234,7 +234,6 @@ export class TicketView extends React.Component {
                         ref="newMessageForm"
                     >
                         <ReplyMessageChannel
-                            ticket={this.props.ticket}
                             actions={this.props.actions}
                             settings={this.props.settings}
                         />

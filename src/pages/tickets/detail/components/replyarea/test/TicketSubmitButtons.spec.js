@@ -11,9 +11,9 @@ describe('TicketSubmitButtons component', () => {
     it('empty ticket', () => {
         const component = shallow(
             <TicketSubmitButtons
+                store={configureStore()}
                 ticket={fromJS({})}
                 submit={() => null}
-                store={configureStore()}
             />
         ).find('TicketSubmitButtons').dive() // dive in connect()ed component
         expect(component).toMatchSnapshot()

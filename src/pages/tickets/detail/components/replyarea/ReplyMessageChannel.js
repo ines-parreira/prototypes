@@ -16,7 +16,37 @@ import {sourceTypeToIcon} from './../../../../../config/ticket'
 
 import css from './ReplyMessageChannel.less'
 
-class ReplyMessageChannel extends React.Component {
+@connect((state) => {
+    const ticket = state.ticket
+    const sourceType = newMessageSelectors.getNewMessageType(state)
+    return {
+        accountChannels: integrationSelectors.getChannelsByType(sourceType)(state),
+        channel: newMessageSelectors.getNewMessageChannel(state),
+        hasRecipients: newMessageSelectors.hasNewMessageRecipients(state),
+        isForward: newMessageSelectors.isForward(state),
+        isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
+        isUpdate: !!ticket.get('id'),
+        messages: getMessages(state),
+        sourceType,
+        ticket,
+    }
+}, {
+    prepareNewMessage: newMessageActions.prepare,
+})
+export default class ReplyMessageChannel extends React.Component {
+    static propTypes = {
+        accountChannels: PropTypes.object.isRequired,
+        channel: PropTypes.string.isRequired,
+        hasRecipients: PropTypes.bool.isRequired,
+        isForward: PropTypes.bool.isRequired,
+        isNewMessagePublic: PropTypes.bool.isRequired,
+        isUpdate: PropTypes.bool.isRequired,
+        messages: PropTypes.object.isRequired,
+        sourceType: PropTypes.string.isRequired,
+        ticket: PropTypes.object.isRequired,
+        prepareNewMessage: PropTypes.func.isRequired,
+    }
+
     state = {
         isReceiversAreaOpen: false,
     }
@@ -124,6 +154,7 @@ class ReplyMessageChannel extends React.Component {
         const suggestChat = isUpdate && sources.includes('chat')
         const suggestFacebookComment = isUpdate && (sources.includes('facebook-post') || sources.includes('facebook-comment'))
         const suggestFacebookMessage = isUpdate && sources.includes('facebook-message')
+        const suggestFacebookMessenger = isUpdate && sources.includes('facebook-messenger')
         const suggestInternalNote = isUpdate
         const suggestForwardByEmail = isUpdate
         const iconLabel = isForward ? 'email-forward' : this.props.sourceType
@@ -190,7 +221,20 @@ class ReplyMessageChannel extends React.Component {
                                         }}
                                     >
                                         <i className={classnames('mr-2', sourceTypeToIcon('facebook-comment'))} />
-                                        Reply via Facebook post
+                                        Reply via Facebook comment
+                                    </DropdownItem>
+                                )
+                            }
+                            {
+                                suggestFacebookMessenger && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            prepareNewMessage('facebook-messenger')
+                                        }}
+                                    >
+                                        <i className={classnames('mr-2', sourceTypeToIcon('facebook-messenger'))} />
+                                        Reply via Messenger
                                     </DropdownItem>
                                 )
                             }
@@ -229,38 +273,3 @@ class ReplyMessageChannel extends React.Component {
         )
     }
 }
-
-ReplyMessageChannel.propTypes = {
-    ticket: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    settings: PropTypes.object.isRequired,
-    isUpdate: PropTypes.bool.isRequired,
-    sourceType: PropTypes.string.isRequired,
-    channel: PropTypes.string.isRequired,
-    accountChannels: PropTypes.object.isRequired,
-    messages: PropTypes.object.isRequired,
-    hasRecipients: PropTypes.bool.isRequired,
-    isNewMessagePublic: PropTypes.bool.isRequired,
-    isForward: PropTypes.bool.isRequired,
-    prepareNewMessage: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state, ownProps) => {
-    const sourceType = newMessageSelectors.getNewMessageType(state)
-    return {
-        sourceType,
-        channel: newMessageSelectors.getNewMessageChannel(state),
-        accountChannels: integrationSelectors.getChannelsByType(sourceType)(state),
-        isUpdate: !!ownProps.ticket.get('id'),
-        messages: getMessages(state),
-        hasRecipients: newMessageSelectors.hasNewMessageRecipients(state),
-        isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-        isForward: newMessageSelectors.isForward(state)
-    }
-}
-
-const mapDispatchToProps = {
-    prepareNewMessage: newMessageActions.prepare,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ReplyMessageChannel)

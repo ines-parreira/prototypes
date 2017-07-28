@@ -9,8 +9,8 @@ export const DEFAULT_SOURCE_TYPE = 'email'
 
 export const SYSTEM_SOURCE_TYPES = ['internal-note', 'system-message']
 
-// source types that can not be used to answer
-export const UNUSABLE_SOURCE_TYPES = ['aircall', 'phone', 'facebook', 'api', 'facebook-post', 'ottspott-call', 'system-message']
+// source types that can be used to answer
+export const USABLE_SOURCE_TYPES = ['email', 'chat', 'facebook-messenger', 'facebook-message', 'facebook-comment', 'internal-note']
 
 // available variables in macros
 export const VARIABLES = [{
@@ -96,7 +96,7 @@ export const orderedMessages = (messages) => {
  * @returns {boolean}
  */
 export const isAnswerableType = (sourceType) => {
-    return !UNUSABLE_SOURCE_TYPES.includes(sourceType)
+    return USABLE_SOURCE_TYPES.includes(sourceType)
 }
 
 /**
