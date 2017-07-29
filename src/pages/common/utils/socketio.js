@@ -9,7 +9,7 @@ import * as infobarActions from '../../../state/infobar/actions'
 import * as usersActions from '../../../state/users/actions'
 import * as viewsActions from '../../../state/views/actions'
 
-const socket = socketio.connect(window.WS_URL)
+const socket = socketio.connect(window.WS_URL, {transports: ['websocket']})
 
 /**
  * Log sockets info only on dev environment
