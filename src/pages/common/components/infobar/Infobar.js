@@ -206,9 +206,7 @@ export default class Infobar extends React.Component {
                     className="mr-2"
                     placement="left"
                     title="Change ticket requester"
-                    content={`
-                        Are you use you want to set ${newRequester} as the requester instead of ${requester}?
-                    `}
+                    content={`Are you use you want to set ${newRequester} as the requester instead of ${requester}?`}
                     confirm={this._setRequester}
                 >
                     Set as requester

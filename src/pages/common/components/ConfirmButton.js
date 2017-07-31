@@ -25,7 +25,7 @@ export default class ConfirmButton extends React.Component {
     }
 
     _showConfirmation = (e) => {
-        if (this.props.type === 'submit') {
+        if (this.props.type === 'submit' && !!e.target.form) {
             // don't show popover for invalid forms
             if (!e.target.form.checkValidity()) {
                 return
