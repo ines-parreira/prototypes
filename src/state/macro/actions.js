@@ -39,7 +39,7 @@ export const fetchMacros = () => (dispatch) => {
 }
 
 export const searchMacros = (term) => (dispatch) => {
-    return axios.post('/api/search/', {type: 'macro', query: term})
+    return axios.post('/api/search/', {type: 'macro', query: term, size: 50})
         .then((json = {}) => json.data)
         .then(resp => {
             return fromJS(resp.data)
