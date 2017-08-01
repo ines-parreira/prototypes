@@ -39,12 +39,12 @@ class EmailIntegrationUpdate extends React.Component {
         // display message from url
         const {
             message,
-            message_type: type = 'info'
+            message_type: status = 'info'
         } = this.props.location.query
 
         if (message) {
             this.props.notify({
-                type,
+                status,
                 title: message.replace(/\+/g, ' ')
             })
             // remove error from url

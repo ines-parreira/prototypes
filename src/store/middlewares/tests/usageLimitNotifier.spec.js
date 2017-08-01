@@ -52,7 +52,7 @@ describe('middlewares', () => {
 
         it('should notify when the user tries to send a message (account deactivated)', () => {
             const expectedAction = _assign({}, PAYMENT_MODAL, {
-                type: 'RNS_SHOW_NOTIFICATION'
+                type: 'ADD_NOTIFICATION'
             })
             // deactivate account
             store = mockStore(_assign({}, baseState, {
@@ -74,13 +74,13 @@ describe('middlewares', () => {
             })
 
             expect(_some(store.getActions(), {
-                type: 'RNS_SHOW_NOTIFICATION'
+                type: 'ADD_NOTIFICATION'
             })).toEqual(false)
         })
 
         it('should notify when the user try to send a message (account inactive)', () => {
             const expectedAction = _assign({}, PAYMENT_MODAL, {
-                type: 'RNS_SHOW_NOTIFICATION'
+                type: 'ADD_NOTIFICATION'
             })
             // deactivate account
             store = mockStore(_assign({}, baseState, {
@@ -99,7 +99,7 @@ describe('middlewares', () => {
 
         it('should notify when the user tries to open a ticket (account deactivated)', () => {
             const expectedAction = _assign({}, PAYMENT_MODAL, {
-                type: 'RNS_SHOW_NOTIFICATION'
+                type: 'ADD_NOTIFICATION'
             })
 
             // deactivate account
@@ -121,7 +121,7 @@ describe('middlewares', () => {
 
         it('should notify (with message) when the user tries to open a ticket (account deactivated)', () => {
             const expectedAction = _assign({}, PAYMENT_MODAL, {
-                type: 'RNS_SHOW_NOTIFICATION'
+                type: 'ADD_NOTIFICATION'
             })
 
             // deactivate account
@@ -147,7 +147,7 @@ describe('middlewares', () => {
 
         it('should not notify (with message) when the user tries to open a ticket (account active)', () => {
             const expectedAction = _assign({}, PAYMENT_MODAL, {
-                type: 'RNS_SHOW_NOTIFICATION'
+                type: 'ADD_NOTIFICATION'
             })
 
             // deactivate account
@@ -177,7 +177,7 @@ describe('middlewares', () => {
             })
 
             expect(_some(store.getActions(), {
-                type: 'RNS_SHOW_NOTIFICATION'
+                type: 'ADD_NOTIFICATION'
             })).toEqual(false)
         })
     })

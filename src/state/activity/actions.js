@@ -50,7 +50,7 @@ export const pollActivity = () => (dispatch, getState) => {
             if (resp.git_commit && resp.git_commit !== prevGitCommit) {
                 dispatch(notify({
                     style: 'banner',
-                    type: 'info',
+                    status: 'info',
                     dismissible: false,
                     onClick: () => {
                         window.location.reload()

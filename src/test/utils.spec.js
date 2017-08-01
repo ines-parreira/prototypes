@@ -491,4 +491,28 @@ describe('global utils', () => {
             expect(utils.validateWebhookURL(url)).toContain('+')
         })
     })
+
+    describe('errorToChildren', () => {
+        it('should return null with no data', () => {
+            expect(utils.errorToChildren({}))
+                .toEqual(null)
+        })
+
+        it('should return parsed markup', () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            data: {
+                                hello: ['world'], receiver: ['Missing data', 'Invalid value']
+                            }
+                        }
+                    }
+                }
+            }
+
+            expect(utils.errorToChildren(error))
+                .toMatch('<li>hello: world</li><li>receiver: Missing data</li><li>receiver: Invalid value</li>')
+        })
+    })
 })

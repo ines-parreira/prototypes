@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
 import BannerNotifications from './components/BannerNotifications'
-import {hide} from 'react-notification-system-redux'
+import {removeNotification as hide} from 'reapop'
 
 export default connect(null, {hide})(BannerNotifications)

@@ -70,7 +70,7 @@ export const save = (data) => {
             .then((json = {}) => json.data)
             .then((resp) => {
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Rule saved successfully',
                 }))
 
@@ -99,7 +99,7 @@ export const activate = (id) => (dispatch) => (
         .then((json = {}) => json.data)
         .then(() => {
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Rule activated successfully',
             }))
 
@@ -122,7 +122,7 @@ export const deactivate = (id) => (dispatch) => (
         .then((json = {}) => json.data)
         .then(() => {
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Rule deactivated successfully',
             }))
 
@@ -144,7 +144,7 @@ export const remove = (id) => (dispatch) => (
         .then((json = {}) => json.data)
         .then(() => {
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Rule deleted successfully',
             }))
 

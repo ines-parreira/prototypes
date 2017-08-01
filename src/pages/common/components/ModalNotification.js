@@ -1,13 +1,13 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {hide} from 'react-notification-system-redux'
+import {removeNotification as hide} from 'reapop'
 import {Button} from 'reactstrap'
 
 import Modal from '../components/Modal'
 
 class ModalNotification extends React.Component {
     static propTypes = {
-        uid: PropTypes.number.isRequired,
+        id: PropTypes.number.isRequired,
         title: PropTypes.string,
         message: PropTypes.string.isRequired,
         buttons: PropTypes.arrayOf(PropTypes.shape({
@@ -33,7 +33,7 @@ class ModalNotification extends React.Component {
     }
 
     _toggle = () => {
-        this.props.hide(this.props.uid)
+        this.props.hide(this.props.id)
     }
 
     render() {

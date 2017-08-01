@@ -20,7 +20,7 @@ const serverErrorHandler = store => next => action => {
     if ([401, 419].includes(status)) {
         if (error.msg) {
             store.dispatch(notify({
-                type: 'error',
+                status: 'error',
                 title: error.msg
             }))
         }
@@ -37,16 +37,18 @@ const serverErrorHandler = store => next => action => {
         && !_some(IGNORED_PREFIXS, (prefix) => action.type.startsWith(prefix))
 
     if (shouldDisplayError) {
-        let message = error.msg
+        let title = error.msg
             || action.reason
             || `Unknown error for action ${action.type}`
 
-        console.error('ERROR', message, action.error)
+        console.error('ERROR', title, action.error)
 
-        message = stripErrorMessage(message)
+        title = stripErrorMessage(title)
 
         const notification = {
-            type: 'error',
+            status: 'error',
+            allowHTML: true,
+            title,
         }
 
         if (action.verbose) {
@@ -54,9 +56,7 @@ const serverErrorHandler = store => next => action => {
         }
 
         if (action.children) {
-            notification.children = action.children
-        } else {
-            notification.message = message
+            notification.message = action.children
         }
 
         store.dispatch(notify(notification))

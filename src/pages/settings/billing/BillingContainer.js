@@ -22,12 +22,12 @@ export default class BillingContainer extends Component {
         if (this.props.location.query.error === 'shopify-billing') {
             this.props.notify({
                 message: 'Something went wrong while activating billing with Shopify, please try again later.',
-                type: 'error'
+                status: 'error'
             })
         } else if (this.props.location.query.success === 'shopify-billing') {
             this.props.notify({
                 message: 'Billing with Shopify activated.',
-                type: 'success'
+                status: 'success'
             })
         }
     }

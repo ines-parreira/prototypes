@@ -3,8 +3,8 @@ import classNames from 'classnames'
 
 class BannerNotification extends Component {
     static propTypes = {
-        uid: PropTypes.number.isRequired,
-        level: PropTypes.oneOf(['info', 'success', 'warning', 'error']),
+        id: PropTypes.number.isRequired,
+        status: PropTypes.oneOf(['info', 'success', 'warning', 'error']),
         onClick: PropTypes.func,
         message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
         dismissible: PropTypes.bool.isRequired,
@@ -18,22 +18,22 @@ class BannerNotification extends Component {
     }
 
     _onClick = () => {
-        const {uid, onClick, dismissible, hide} = this.props
+        const {id, onClick, dismissible, hide} = this.props
 
         if (typeof onClick === 'function') {
             onClick()
         }
 
         if (dismissible) {
-            hide(uid)
+            hide(id)
         }
     }
 
     render() {
-        const {level, message, allowHtml} = this.props
+        const {status, message, allowHtml} = this.props
         const classnames = classNames(
             'banner-notification',
-            `banner-notification--${level}`, {
+            `banner-notification--${status}`, {
                 'banner-notification--active': true
             })
 

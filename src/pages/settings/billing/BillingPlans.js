@@ -23,7 +23,7 @@ export class BillingPlans extends Component {
     _updateSubscription = (planId) => {
         if (!this.props.isAllowedToChangePlan(planId)) {
             this.props.notify({
-                type: 'error',
+                status: 'error',
                 message: 'You cannot change your current plan because you have too many active integrations. ' +
                 'Delete or deactivate a few integrations and try again.'
             })

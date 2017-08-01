@@ -1,9 +1,7 @@
-import React from 'react'
 import axios from 'axios'
-import {Link} from 'react-router'
 import {fromJS} from 'immutable'
 import md5 from 'md5'
-import {Button} from 'reactstrap'
+import {browserHistory} from 'react-router'
 
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
@@ -167,44 +165,30 @@ export const executeAction = (actionName, integrationId, userId, payload = {}, c
  */
 export const handleExecutedAction = (response) => ((dispatch) => {
     if (response.status === 'error') {
+        let buttons = [{
+            primary: true,
+            name: 'Review',
+            onClick: () => {
+                browserHistory.push(`/app/user/${response.user_id}`)
+            }
+        }]
+
+        if (response.ticket_id) {
+            if (isCurrentlyOnTicket(response.ticket_id)) {
+                buttons = []
+            } else {
+                buttons[0].onClick = () => {
+                    browserHistory.push(`/app/ticket/${response.ticket_id}`)
+                }
+            }
+        }
+
         dispatch(notify({
-            type: 'error',
+            status: 'error',
             title: 'Something went wrong on your last action 😞',
-            autoDismiss: false,
-            children: (
-                <div>
-                    <p>
-                        {stripErrorMessage(response.msg)}
-                    </p>
-                    <div className="buttons">
-                        {
-                            response.ticket_id ? (
-                                <div>
-                                    {
-                                        !isCurrentlyOnTicket(response.ticket_id) && (
-                                            <Button
-                                                tag={Link}
-                                                color="primary"
-                                                to={`/app/ticket/${response.ticket_id}`}
-                                            >
-                                                Review ticket
-                                            </Button>
-                                        )
-                                    }
-                                </div>
-                            ) : (
-                                <Button
-                                    tag={Link}
-                                    color="primary"
-                                    to={`/app/user/${response.user_id}`}
-                                >
-                                    Review user
-                                </Button>
-                            )
-                        }
-                    </div>
-                </div>
-            )
+            dismissAfter: 0,
+            message: stripErrorMessage(response.msg),
+            buttons,
         }))
 
         return dispatch({

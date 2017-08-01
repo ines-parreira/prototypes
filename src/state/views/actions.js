@@ -195,7 +195,7 @@ export function deleteView(view) {
         // prevent deletion of the last view of this type
         if (otherViewsOfType.size === 0) {
             return dispatch(notify({
-                type: 'error',
+                status: 'error',
                 title: 'This view cannot be deleted',
                 message: 'This is your last view, it needs to exist in order for the helpdesk to function correctly.'
             }))
@@ -355,8 +355,8 @@ export function bulkUpdate(activeView, ids, key, value) {
         })
 
         dispatch(notify({
-            type: 'info',
-            autoDismiss: false,
+            status: 'info',
+            dismissAfter: 0,
             closeOnNext: true,
             message: `Updating ${viewConfig.get('api')}...`
         }))
@@ -371,7 +371,7 @@ export function bulkUpdate(activeView, ids, key, value) {
                 setTimeout(() => dispatch(fetchPage()), 800)
 
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: successMessage
                 }))
             }, error => {
@@ -394,8 +394,8 @@ export function bulkDelete(activeView, ids) {
         const viewConfig = viewsConfig.getConfigByType(activeViewType)
 
         dispatch(notify({
-            type: 'info',
-            autoDismiss: false,
+            status: 'info',
+            dismissAfter: 0,
             closeOnNext: true,
             message: `Deleting ${viewConfig.get('plural')}...`
         }))
@@ -417,7 +417,7 @@ export function bulkDelete(activeView, ids) {
                 }
 
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: `${ids.size} ${viewConfig.get('plural')} successfully deleted!`
                 }))
             }, error => {

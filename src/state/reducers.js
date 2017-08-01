@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import {reducer as notificationsReducer} from 'react-notification-system-redux'
+import {reducer as notificationsReducer} from 'reapop'
 
 import activityReducer from './activity/reducers'
 import agentsReducer from './agents/reducers'
@@ -33,7 +33,7 @@ const rootReducer = combineReducers({
     layout: layoutReducer,
     macros: macrosReducer,
     newMessage: newMessageReducer,
-    notifications: notificationsReducer,
+    notifications: notificationsReducer(),
     rules: rulesReducer,
     schemas: schemasReducer,
     settings: settingsReducer,

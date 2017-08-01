@@ -14,7 +14,7 @@ export const updateAccount = (values) => (dispatch => {
                 resp
             })
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Account settings successfully updated!'
             }))
         }, error => {
@@ -41,7 +41,7 @@ export function submitSetting(setting) {
             .then((json = {}) => json.data)
             .then(setting => {
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: `${_capitalize(setting.type)} settings saved`
                 }))
 

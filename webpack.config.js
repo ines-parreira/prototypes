@@ -47,7 +47,18 @@ module.exports = (env = {}) => {
                     path: path.join(buildDir, '[name].manifest.json'),
                 }),
                 new ManifestPlugin(),
-            ]
+            ],
+            module: {
+                rules: [
+                    {
+                        test: /\.css$/,
+                        use: [
+                            'style-loader',
+                            'css-loader'
+                        ]
+                    }
+                ]
+            }
         }
     }
 

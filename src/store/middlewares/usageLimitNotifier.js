@@ -1,6 +1,6 @@
 import {fromJS} from 'immutable'
 import {browserHistory} from 'react-router'
-import {hide} from 'react-notification-system-redux'
+import {removeNotification as hide} from 'reapop'
 import {notify} from '../../state/notifications/actions'
 import * as currentAccountTypes from '../../state/currentAccount/constants'
 import * as ticketTypes from '../../state/ticket/constants'
@@ -20,9 +20,9 @@ export const PAYMENT_MODAL = 100
 const _showPaymentModal = (store, notification) => {
     store.dispatch(hide(PAYMENT_MODAL))
     store.dispatch(notify({
-        uid: PAYMENT_MODAL,
+        id: PAYMENT_MODAL,
         style: 'modal',
-        type: notification.get('type'),
+        status: notification.get('type'),
         dismissible: true,
         title: 'Trial limits reached',
         message: notification.get('message'),
@@ -87,9 +87,9 @@ const usageLimitNotifier = store => next => action => {
 
             if (nextStatus !== 'active' || !nextNotification.isEmpty()) {
                 store.dispatch(notify({
-                    uid: USAGE_NOTIFICATION_BANNER,
+                    id: USAGE_NOTIFICATION_BANNER,
                     style: 'banner',
-                    type: nextNotification.get('type'),
+                    status: nextNotification.get('type'),
                     dismissible: false,
                     message: nextNotification.get('message'),
                     onClick: () => {

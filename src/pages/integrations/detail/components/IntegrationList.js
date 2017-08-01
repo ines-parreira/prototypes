@@ -52,7 +52,7 @@ class IntegrationList extends React.Component {
     componentWillMount() {
         if (this.props.location.query.status === 'create-error') {
             this.props.notify({
-                type: 'error',
+                status: 'error',
                 message: 'Something went wrong while creating your integration. Please wait a few minutes and ' +
                     'try again. If the problem persists, contact us at support@gorgias.io.',
             })

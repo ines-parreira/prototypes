@@ -1328,6 +1328,10 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
+chain-function@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/chain-function/-/chain-function-1.0.0.tgz#0d4ab37e7e18ead0bdc47b920764118ce58733dc"
+
 chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
@@ -1940,6 +1944,10 @@ doctrine@^2.0.0:
   dependencies:
     esutils "^2.0.2"
     isarray "^1.0.0"
+
+dom-helpers@^3.2.0:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.2.1.tgz#3203e07fed217bd1f424b019735582fc37b2825a"
 
 dom-serializer@0, dom-serializer@~0.1.0:
   version "0.1.0"
@@ -4909,7 +4917,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.4:
+prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8:
   version "15.5.9"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.9.tgz#d478eef0e761396942f70c78e772f76e8be747c9"
   dependencies:
@@ -5071,18 +5079,6 @@ react-input-autosize@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-1.1.0.tgz#3fe1ac832387d8abab85f6051ceab1c9e5570853"
 
-react-notification-system-redux@^1.0.8:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/react-notification-system-redux/-/react-notification-system-redux-1.0.11.tgz#f59ca6c817b95a18687ced02eb6e1c4e721b807e"
-  dependencies:
-    react-notification-system "^0.2.7"
-
-react-notification-system@^0.2.7:
-  version "0.2.11"
-  resolved "https://registry.yarnpkg.com/react-notification-system/-/react-notification-system-0.2.11.tgz#c954ab7f3c355b34ca5f85d6b3fc4236070e7788"
-  dependencies:
-    object-assign "^4.0.1"
-
 react-paginate@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-4.3.1.tgz#5f72eba26f0b911f649beb6af36bc4e0c6d3bc85"
@@ -5143,6 +5139,16 @@ react-test-renderer@^15.4.2:
   dependencies:
     fbjs "^0.8.9"
     object-assign "^4.1.0"
+
+react-transition-group@^1.1.2:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-1.2.0.tgz#b51fc921b0c3835a7ef7c571c79fc82c73e9204f"
+  dependencies:
+    chain-function "^1.0.0"
+    dom-helpers "^3.2.0"
+    loose-envify "^1.3.1"
+    prop-types "^15.5.6"
+    warning "^3.0.0"
 
 react@>=0.14.0, react@>=15.3.1, react@^15.0.0, react@^15.3.2:
   version "15.4.2"
@@ -5234,6 +5240,17 @@ readline2@^1.0.1:
     code-point-at "^1.0.0"
     is-fullwidth-code-point "^1.0.0"
     mute-stream "0.0.5"
+
+reapop-theme-wybo@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/reapop-theme-wybo/-/reapop-theme-wybo-0.4.1.tgz#70356acd67f016c5f5411e32d2ec53f6ea492e2d"
+
+reapop@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/reapop/-/reapop-1.1.1.tgz#befc83e0e67c97417f18fadbef5e926b19e784db"
+  dependencies:
+    prop-types "^15.5.8"
+    react-transition-group "^1.1.2"
 
 rechoir@^0.6.2:
   version "0.6.2"

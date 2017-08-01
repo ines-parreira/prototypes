@@ -25,7 +25,7 @@ describe('agents', () => {
 
             return store.dispatch(actions.inviteAgent(1))
                 .then(() => {
-                    expect(store.getActions()[0]).toHaveProperty('message', 'Team member invited')
+                    expect(store.getActions()[0].payload).toHaveProperty('message', 'Team member invited')
                 })
         })
     })

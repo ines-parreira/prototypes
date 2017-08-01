@@ -106,7 +106,7 @@ export const save = (tag) => {
         return axios.put(`/api/tags/${tag.id}/`, tag)
             .then(() => {
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Tag saved successfully',
                 }))
                 return dispatch({
@@ -159,7 +159,7 @@ export const remove = (id) => {
         return axios.delete(`/api/tags/${id}/`)
             .then(() => {
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Tag deleted successfully',
                 }))
             }, error => {
@@ -204,7 +204,7 @@ export const merge = (ids) => {
         return axios.put(`/api/tags/${destinationId}/merge/`, {'source_tags_ids': ids.pop().toJS()})
             .then(() => {
                 return dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Tags merged successfully',
                 }))
             }, (error) => {

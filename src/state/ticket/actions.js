@@ -1,8 +1,6 @@
-import React from 'react'
-import {Link} from 'react-router'
 import {fromJS} from 'immutable'
-import {Button} from 'reactstrap'
 import Push from 'push.js'
+import {browserHistory} from 'react-router'
 
 import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
@@ -182,7 +180,7 @@ export const setStatus = (status, onClose = _noop) => (dispatch, getState) => {
 
     if (status === 'closed') {
         dispatch(notify({
-            type: 'success',
+            status: 'success',
             message: 'The ticket has been closed.'
         }))
 
@@ -446,30 +444,25 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
 }
 
 export const handleMessageActionError = (ticketId) => (dispatch) => {
+    let buttons = []
+
+    if (!isCurrentlyOnTicket(ticketId)) {
+        buttons = [{
+            primary: true,
+            name: 'Review',
+            onClick: () => {
+                browserHistory.push(`/app/ticket/${ticketId}`)
+            }
+        }]
+    }
+
     return dispatch(notify({
-        type: 'error',
+        status: 'error',
         title: 'Something went wrong on your last message 😞',
-        autoDismiss: false,
-        children: (
-            <div>
-                <p>
-                    The message was not sent because an action broke on it, you should review it right now.
-                </p>
-                <div className="buttons">
-                    {
-                        !isCurrentlyOnTicket(ticketId) && (
-                            <Button
-                                tag={Link}
-                                color="primary"
-                                to={`/app/ticket/${ticketId}`}
-                            >
-                                Review message
-                            </Button>
-                        )
-                    }
-                </div>
-            </div>
-        )
+        dismissAfter: 0,
+        allowHTML: true,
+        message: 'The message was not sent because an action broke on it, you should review it right now.',
+        buttons
     }))
 }
 
@@ -542,7 +535,7 @@ export function deleteTicket(id) {
             .then((json = {}) => json.data)
             .then(() => {
                 return dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Ticket deleted'
                 }))
             }, error => {

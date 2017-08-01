@@ -19,7 +19,7 @@ class ShowMoreFieldsDropdown extends React.Component {
     _setFieldVisibility = (name, state) => {
         if (!state && this.props.visibleFields.size <= 1) {
             return this.props.notify({
-                type: 'error',
+                status: 'error',
                 message: 'You can not remove all columns of a view',
             })
         }

@@ -102,7 +102,7 @@ describe('actions', () => {
             return store
                 .dispatch(actions.bulkDelete([1, 2]))
                 .then(() => {
-                    expect(store.getActions()[0]).toHaveProperty('message', '2 tags deleted successfully')
+                    expect(store.getActions()[0].payload).toHaveProperty('message', '2 tags deleted successfully')
                 })
         })
 

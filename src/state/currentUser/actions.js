@@ -16,7 +16,7 @@ export const changePassword = (oldPassword, newPassword) => (dispatch => {
                 resp
             })
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Password successfully changed!'
             }))
         }, error => {
@@ -56,7 +56,7 @@ export function submitSetting(data, notification) {
 
                 if (notification) {
                     dispatch(notify({
-                        type: 'success',
+                        status: 'success',
                         message: 'Settings successfully updated'
                     }))
                 }

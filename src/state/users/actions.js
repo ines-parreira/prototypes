@@ -87,7 +87,7 @@ export function submitUser(data, userId) {
                 })
 
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: `User successfully ${isUpdate ? 'updated' : 'created'}`
                 }))
 
@@ -119,7 +119,7 @@ export function deleteUser(userId) {
                 })
 
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'User successfully deleted'
                 }))
             }, error => {
@@ -183,7 +183,7 @@ export function mergeUsers(baseUserId, mergeUserId, data) {
                 })
 
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Users successfully merged.'
                 }))
 

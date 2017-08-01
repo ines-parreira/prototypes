@@ -13,7 +13,6 @@ import _last from 'lodash/last'
 import _ from 'lodash'
 import _flatMapDeep from 'lodash/flatMapDeep'
 
-import React from 'react'
 import {createSelectorCreator, defaultMemoize} from 'reselect'
 import axios from 'axios'
 import esprima from 'esprima'
@@ -880,31 +879,23 @@ const _valuesDeep = (obj) => {
 export const errorToChildren = (incomingError) => {
     const error = _get(incomingError, 'response.data.error', {})
     const {data} = error
-
     const hasErrors = !!data
-    const Tag = hasErrors ? 'p' : 'div'
-    let message = error.msg || 'Some errors occurred'
 
-    return (
-        <div>
-            <Tag>
-                {message}
-            </Tag>
-            {
-                hasErrors && (
-                    <ul className="m-0">
-                        {
-                            _map(data, (fieldErrors, fieldName) => {
-                                return _valuesDeep(fieldErrors).map((fieldError) => {
-                                    return <li>{fieldName}: {fieldError}</li>
-                                })
-                            })
-                        }
-                    </ul>
-                )
+    if (!hasErrors) {
+        return null
+    }
+
+    return `
+        <ul className="m-0">
+            ${
+                _map(data, (fieldErrors, fieldName) => {
+                    return _valuesDeep(fieldErrors).map((fieldError) => {
+                        return `<li>${fieldName}: ${fieldError}</li>`
+                    }).join('')
+                }).join('')
             }
-        </div>
-    )
+        </ul>
+    `
 }
 
 /**

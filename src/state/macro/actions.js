@@ -62,7 +62,7 @@ export const createMacro = (macro) => (dispatch) => {
         .then((json = {}) => json.data)
         .then(resp => {
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Macro created'
             }))
 
@@ -87,7 +87,7 @@ export const updateMacro = (macro) => (dispatch) => {
         .then((json = {}) => json.data)
         .then(resp => {
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Macro updated'
             }))
 
@@ -113,7 +113,7 @@ export const deleteMacro = (macroId) => (dispatch) => {
         .then((json = {}) => json.data)
         .then(resp => {
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Macro deleted'
             }))
 

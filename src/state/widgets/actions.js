@@ -203,7 +203,7 @@ export function submitWidgets(data) {
                 })
 
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Widgets successfully updated'
                 }))
             }, error => {

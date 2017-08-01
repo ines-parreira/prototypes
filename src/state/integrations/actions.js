@@ -59,7 +59,7 @@ function onCreateSuccess(dispatch, resp) {
     browserHistory.push(`/app/integrations/${resp.type}/${resp.id || ''}${resp.type === 'email' ? '/forwarding' : ''}`)
 
     dispatch(notify({
-        type: 'success',
+        status: 'success',
         message: 'Integration successfully added'
     }))
 }
@@ -83,7 +83,7 @@ function onUpdateSuccess(dispatch, resp) {
     fetchIntegrations()(dispatch)
 
     dispatch(notify({
-        type: 'success',
+        status: 'success',
         message: 'Integration successfully updated'
     }))
 }
@@ -150,7 +150,7 @@ export function deleteIntegration(integration) {
                 }
 
                 return dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Integration successfully deleted'
                 }))
             }, (error) => {
@@ -227,7 +227,7 @@ export function createImportIntegration(integration) {
                 browserHistory.push('/app/settings/import-data/')
 
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Import successfully started'
                 }))
 
@@ -292,7 +292,7 @@ export function importEmails(integration) {
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Importation successfully started'
                 }))
                 return dispatch({
@@ -319,7 +319,7 @@ export function activateFacebookOnboardingPage(data) {
             .then((json = {}) => json.data)
             .then((resp) => {
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: `Facebook page${data.length > 1 ? 's' : ''} successfully activated.`
                 }))
                 return dispatch({

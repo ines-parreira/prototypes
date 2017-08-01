@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import {Container, Button} from 'reactstrap'
 import classnames from 'classnames'
+import NotificationsSystem from 'reapop'
 
 import * as utils from '../utils'
 
@@ -16,8 +17,10 @@ import * as layoutSelectors from '../state/layout/selectors'
 import {setUserProperties} from '../store/middlewares/amplitudeTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
 import SocketIO from './common/utils/socketio'
-import Notifications from 'react-notification-system-redux'
-import {NOTIFICATIONS_STYLE_CONFIG, POLL_ACTIVITY_INTERVAL, CHAT_POLLING_INTERVAL} from '../config'
+
+import {POLL_ACTIVITY_INTERVAL, CHAT_POLLING_INTERVAL} from '../config'
+
+import notificationsTheme from './common/components/Notifications'
 import shortcutManager from './common/utils/shortcutManager'
 import BannerNotifications from './common/components/BannerNotifications/'
 import ModalNotification from './common/components/ModalNotification'
@@ -72,7 +75,6 @@ class App extends React.Component {
         const {notifications, openedPanel, currentRoute} = this.props
         const bannerNotifications = notifications.filter(notif => notif.style === 'banner')
         const modalNotifications = notifications.filter(notif => notif.style === 'modal')
-        const alertNotifications = notifications.filter(notif => notif.style === 'alert')
 
         const hasOpenedPanel = !!openedPanel
 
@@ -82,7 +84,7 @@ class App extends React.Component {
                     {
                         modalNotifications.map((notification) => (
                             <ModalNotification
-                                key={notification.uid}
+                                key={notification.id}
                                 {...notification}
                             />
                         ))
@@ -144,9 +146,9 @@ class App extends React.Component {
 
                     <KeyboardHelp />
 
-                    <Notifications
-                        notifications={alertNotifications}
-                        style={NOTIFICATIONS_STYLE_CONFIG}
+                    <NotificationsSystem
+                        theme={notificationsTheme}
+                        filter={n => n.style === 'alert'}
                     />
                 </div>
             </DocumentTitle>

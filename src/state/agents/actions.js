@@ -12,7 +12,7 @@ export const createAgent = (agent) => (dispatch) => {
             resp = toImmutable(resp)
 
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: `Team member created. We've sent login instructions to ${resp.get('email')}.`,
             }))
 
@@ -34,7 +34,7 @@ export const deleteAgent = (id) => (dispatch) => {
         .then((json = {}) => json.data)
         .then(resp => {
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Team member deleted',
             }))
 
@@ -90,7 +90,7 @@ export const inviteAgent = (id) => (dispatch) => {
         .then((json = {}) => json.data)
         .then(() => {
             return dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Team member invited',
             }))
         }, error => {
@@ -110,7 +110,7 @@ export const updateAgent = (id, agent) => (dispatch) => {
             resp = toImmutable(resp)
 
             dispatch(notify({
-                type: 'success',
+                status: 'success',
                 message: 'Team member updated',
             }))
 

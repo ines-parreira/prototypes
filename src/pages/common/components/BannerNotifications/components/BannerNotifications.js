@@ -5,7 +5,7 @@ const BannerNotifications = ({notifications = [], hide}) => (
     <div>
         {notifications.map((notification) => (
             <BannerNotification
-                key={notification.uid}
+                key={notification.id}
                 hide={hide}
                 {...notification}
             />

@@ -110,7 +110,7 @@ export function updateCreditCard(creditCard) {
                         .then((resp) => {
                             resolve(resp)
                             dispatch(notify({
-                                type: 'success',
+                                status: 'success',
                                 message: 'Your payment info was updated',
                             }))
                             browserHistory.push('/app/settings/billing/')
@@ -144,7 +144,7 @@ export function updateSubscription(subscription) {
             .then((json = {}) => json.data)
             .then((resp) => {
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: 'Your subscription was updated.',
                 }))
                 return dispatch({

@@ -1,4 +1,3 @@
-import React from 'react'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import moment from 'moment'
@@ -56,18 +55,17 @@ export const addAttachments = (ticket, atts) => (dispatch, getState) => {
 
         if ((previousAtts.size > 0) || (atts.length > 1) || atts.length !== attsFiltered.length) {
             dispatch(notify({
-                autoDismiss: false,
-                type: 'error',
+                dismissAfter: 0,
+                status: 'error',
                 title: 'We could not add all of your attachments !',
-                children: (
-                    <div>
-                        Facebook comments have limitations on attachments:
-                        <ul>
-                            <li>You cannot send more than one attachment.</li>
-                            <li>You can only send images or videos.</li>
-                        </ul>
-                    </div>
-                )
+                allowHTML: true,
+                message: `
+                    Facebook comments have limitations on attachments:
+                    <ul>
+                        <li>You cannot send more than one attachment.</li>
+                        <li>You can only send images or videos.</li>
+                    </ul>
+                `
             }))
             return dispatch({
                 type: types.NEW_MESSAGE_ADD_ATTACHMENT_ERROR,
@@ -315,7 +313,7 @@ function prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActi
         if (data.newMessage.channel === 'facebook') {
             if ((data.newMessage.body_text.length === 0) && (data.newMessage.attachments.length > 0)) {
                 dispatch(notify({
-                    type: 'error',
+                    status: 'error',
                     title: 'Your message cannot be sent',
                     message: 'You cannot send an attachment without a message in a Facebook comment.'
                 }))
