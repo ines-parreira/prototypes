@@ -1,4 +1,6 @@
 import axios from 'axios'
+import {fromJS} from 'immutable'
+
 import * as types from './constants'
 import {notify} from '../notifications/actions'
 
@@ -10,44 +12,9 @@ export const closeModal = () => ({
     type: types.CLOSE_MODAL
 })
 
-export const addNewMacro = () => ({
-    type: types.ADD_NEW_MACRO
-})
-
-export const setName = (name) => ({
-    type: types.SET_NAME,
-    name
-})
-
-export const previewMacroInModal = (macroId) => ({
-    type: types.PREVIEW_MACRO_IN_MODAL,
-    macroId
-})
-
 export const setMacrosVisible = (visible) => ({
     type: types.SET_MACROS_VISIBILITY,
     visible
-})
-
-export const previewMacro = (macro) => ({
-    type: types.PREVIEW_MACRO,
-    id: macro.get('id', '')
-})
-
-export const previewAdjacentMacro = (direction) => ({
-    type: types.PREVIEW_ADJACENT_MACRO,
-    direction
-})
-
-export const previewAdjacentMacroInModal = (direction, noExternal) => ({
-    type: types.PREVIEW_ADJACENT_MACRO_IN_MODAL,
-    direction,
-    noExternal
-})
-
-export const saveSearch = (query) => ({
-    type: types.SAVE_SEARCH,
-    query
 })
 
 export const fetchMacros = () => (dispatch) => {
@@ -71,6 +38,21 @@ export const fetchMacros = () => (dispatch) => {
         })
 }
 
+export const searchMacros = (term) => (dispatch) => {
+    return axios.post('/api/search/', {type: 'macro', query: term})
+        .then((json = {}) => json.data)
+        .then(resp => {
+            return fromJS(resp.data)
+        }, error => {
+            return dispatch({
+                type: types.SEARCH_MACRO_ERROR,
+                error,
+                reason: 'Failed to search macros'
+            })
+        })
+}
+
+
 export const createMacro = (macro) => (dispatch) => {
     dispatch({
         type: types.CREATE_MACRO_START
@@ -79,17 +61,15 @@ export const createMacro = (macro) => (dispatch) => {
     return axios.post('/api/macros/', macro.delete('id').toJS())
         .then((json = {}) => json.data)
         .then(resp => {
-            dispatch({
-                type: types.CREATE_MACRO_SUCCESS,
-                resp
-            })
-
-            dispatch(previewMacroInModal(resp.id))
-
             dispatch(notify({
                 type: 'success',
                 message: 'Macro created'
             }))
+
+            return dispatch({
+                type: types.CREATE_MACRO_SUCCESS,
+                resp
+            })
         }, error => {
             return dispatch({
                 type: types.CREATE_MACRO_ERROR,
@@ -106,15 +86,15 @@ export const updateMacro = (macro) => (dispatch) => {
     return axios.put(`/api/macros/${macro.get('id')}/`, macro.toJS())
         .then((json = {}) => json.data)
         .then(resp => {
-            dispatch({
-                type: types.UPDATE_MACRO_SUCCESS,
-                resp
-            })
-
             dispatch(notify({
                 type: 'success',
                 message: 'Macro updated'
             }))
+
+            return dispatch({
+                type: types.UPDATE_MACRO_SUCCESS,
+                resp
+            })
         }, error => {
             return dispatch({
                 type: types.UPDATE_MACRO_ERROR,
@@ -132,16 +112,16 @@ export const deleteMacro = (macroId) => (dispatch) => {
     return axios.delete(`/api/macros/${macroId}/`)
         .then((json = {}) => json.data)
         .then(resp => {
-            dispatch({
-                type: types.DELETE_MACRO_SUCCESS,
-                macroId,
-                resp
-            })
-
             dispatch(notify({
                 type: 'success',
                 message: 'Macro deleted'
             }))
+
+            return dispatch({
+                type: types.DELETE_MACRO_SUCCESS,
+                macroId,
+                resp
+            })
         }, error => {
             return dispatch({
                 type: types.DELETE_MACRO_ERROR,

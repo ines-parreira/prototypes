@@ -6,30 +6,50 @@ import {fromJS} from 'immutable'
 import MacroModal from './components/MacroModal'
 import * as ViewsActions from '../../../../state/views/actions'
 import * as MacroActions from '../../../../state/macro/actions'
-import {getMacrosWithoutExternalActions} from '../../../../state/macro/utils'
 import {getAgents} from '../../../../state/users/selectors'
 
 class MacroContainer extends React.Component {
+    constructor(props) {
+        super(props)
+
+        const firstMacro = props.macros.get('items', fromJS([])).first()
+        const selectedMacroId = firstMacro ? firstMacro.get('id') : null
+
+        this.state = {
+            selectedMacroId,
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        const items = this.props.macros.get('items', fromJS([]))
+        const itemsIds = items.map(item => item.get('id'))
+        const currentMacro = items.get(this.state.selectedMacroId) || fromJS({})
+
+        if (items.isEmpty()) {
+            if (this.state.selectedMacroId) { // if there are no macros but there is a selected macro, deselect it
+                this.setState({selectedMacroId: null})
+            }
+        } else {
+            if (currentMacro.isEmpty()) { // if current macro does not exist in list anymore (list changed, deleted, etc.), select first of list
+                const firstMacroId = items.first().get('id')
+                this.setState({selectedMacroId: firstMacroId})
+            } else if (!itemsIds.equals(prevProps.macros.get('items', fromJS([])).map(item => item.get('id')))) { // when macros list change, select first of list
+                const firstMacroId = items.first().get('id')
+                this.setState({selectedMacroId: firstMacroId})
+            }
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if (!this.props.macros.get('isModalOpen') &&
             nextProps.macros.get('isModalOpen') && !nextProps.macros.get('items').size
         ) {
             this.props.actions.macro.fetchMacros()
         }
+    }
 
-        if (
-            nextProps.selectionMode && ( // only in preview mode
-                (!this.props.macros.get('items').size && nextProps.macros.get('items').size) || // if we just loaded the items
-                (!this.props.macros.get('isModalOpen') && nextProps.macros.get('isModalOpen') && nextProps.macros.get('items').size) // or if we already had the items and just opened the modal
-            )
-        ) {
-            // set the first macro without external actions as 'selected'
-            const selectedMacro = getMacrosWithoutExternalActions(nextProps.macros.get('items')).first()
-
-            if (selectedMacro) {
-                nextProps.actions.macro.previewMacroInModal(selectedMacro.get('id'))
-            }
-        }
+    _handleClickItem = (macroId) => {
+        this.setState({selectedMacroId: macroId})
     }
 
     render() {
@@ -51,18 +71,22 @@ class MacroContainer extends React.Component {
             return null
         }
 
+        const items = macros.get('items')
+        const currentMacro = items.get(this.state.selectedMacroId) || fromJS({})
+
         return (
             <MacroModal
                 isOpen={isOpen}
                 activeView={activeView}
-                macros={macros.get('items')}
+                macros={items}
                 newMacro={macros.get('newMacro')}
-                currentMacro={macros.get('modalSelected')}
+                currentMacro={currentMacro}
                 agents={agents}
                 actions={actions}
                 disableExternalActions={disableExternalActions || false}
                 selectionMode={selectionMode || false}
                 selectedItemsIds={selectedItemsIds}
+                handleClickItem={this._handleClickItem}
             />
         )
     }

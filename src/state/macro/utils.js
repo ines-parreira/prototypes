@@ -2,14 +2,6 @@ import {fromJS} from 'immutable'
 import {getActionTemplate} from '../../utils'
 import _forEach from 'lodash/forEach'
 
-export function getMacrosWithoutExternalActions(currentMacros) {
-    return currentMacros.filter(
-        macro => macro.get('actions').filter(
-            action => getActionTemplate(action.get('name')).execution === 'back'
-        ).isEmpty()
-    )
-}
-
 export function generateDefaultAction(actionType) {
     const actionTemplate = getActionTemplate(actionType)
 

@@ -1,6 +1,8 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
+import configureStore from '../../../../../../store/configureStore'
 
 import MacroList from '../MacroList'
 
@@ -17,30 +19,19 @@ describe('MacroList component', () => {
         }
     ])
     const currentMacro = macros.first()
-    const previewMacroInModal = jest.fn()
-    const actions = {
-        previewMacroInModal
-    }
 
     beforeEach(() => {
-        component = mount(
+        component = shallow(
             <MacroList
                 macros={macros}
                 currentMacro={currentMacro}
-                actions={actions}
                 disableExternalActions={false}
+                store={configureStore()}
             />
-        )
+        ).find('MacroList').dive() // dive in connect()ed component
     })
 
     it('should render the macro list', () => {
         expect(component).toMatchSnapshot()
-    })
-
-    it ('should activate the second macro', () => {
-        const macroItem = component.find('.macro-item').at(1)
-        macroItem.simulate('click')
-
-        expect(previewMacroInModal).toBeCalledWith(2)
     })
 })

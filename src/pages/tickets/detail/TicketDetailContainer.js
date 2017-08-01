@@ -157,12 +157,6 @@ export default class TicketDetailContainer extends React.Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        const prevMacros = prevProps.macros.get('items')
-        const macros = this.props.macros.get('items')
-        if (prevMacros.size === 0 && macros.size !== 0) {
-            this.props.actions.macro.previewMacro(macros.valueSeq().first())
-        }
-
         if (prevProps.macros.get('isModalOpen') && !this.props.macros.get('isModalOpen')) {
             this._bindKeys()
         }
@@ -207,33 +201,6 @@ export default class TicketDetailContainer extends React.Component {
                 action: () => {
                     if (macrosVisible() && !modalVisible()) {
                         this.props.actions.macro.setMacrosVisible(false)
-                    }
-                }
-            },
-            APPLY_MACRO: {
-                action: (e) => {
-                    if (macrosVisible() && !modalVisible()) {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        if (this.props.macros.get('selected')) {
-                            this._applyMacro(this.props.macros.get('selected'))
-                        }
-                    }
-                }
-            },
-            PREVIEW_PREV_MACRO: {
-                action: (e) => {
-                    if (macrosVisible() && !modalVisible()) {
-                        e.preventDefault()
-                        this.props.actions.macro.previewAdjacentMacro('prev')
-                    }
-                }
-            },
-            PREVIEW_NEXT_MACRO: {
-                action: (e) => {
-                    if (macrosVisible() && !modalVisible()) {
-                        e.preventDefault()
-                        this.props.actions.macro.previewAdjacentMacro('next')
                     }
                 }
             },
@@ -290,10 +257,6 @@ export default class TicketDetailContainer extends React.Component {
                 }
             }
         })
-    }
-
-    _applyMacro = (macro) => {
-        this.props.actions.ticket.applyMacro(macro, this.props.ticket.get('id'))
     }
 
     _computeNextUrl = (ascending) => {
@@ -426,7 +389,6 @@ export default class TicketDetailContainer extends React.Component {
                 <div className="TicketDetailContainer">
                     <TicketView
                         actions={this.props.actions}
-                        applyMacro={this._applyMacro}
                         computeNextUrl={this._computeNextUrl}
                         hideTicket={this._hideTicket}
                         isTicketHidden={this.state.isTicketHidden}

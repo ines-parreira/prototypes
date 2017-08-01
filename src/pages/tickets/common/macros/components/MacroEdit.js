@@ -26,33 +26,9 @@ import * as integrationsSelectors from '../../../../../state/integrations/select
 import {ACTION_TEMPLATES} from '../../../../../config'
 import {getActionTemplate, humanizeString} from './../../../../../utils'
 
-import * as macroActions from './../../../../../state/macro/actions'
-
 import InputField from '../../../../common/forms/InputField'
 
 export class MacroEdit extends React.Component {
-    constructor (props) {
-        super(props)
-
-        this.state = {
-            name: props.currentMacro.get('name', '')
-        }
-    }
-
-    componentWillReceiveProps (nextProps) {
-        // macro changed
-        if (this.props.currentMacro.get('id') !== nextProps.currentMacro.get('id')) {
-            this.setState({
-                name: nextProps.currentMacro.get('name', '')
-            })
-        }
-    }
-
-    _updateName = (name) => {
-        this.setState({name})
-        this.props.setName(name)
-    }
-
     _updateActionArguments = (index, args = fromJS({})) => {
         const actions = this.props.actions.setIn([index, 'arguments'], args)
         this.props.setActions(actions)
@@ -158,8 +134,8 @@ export class MacroEdit extends React.Component {
                         <InputField
                             type="text"
                             name="name"
-                            onChange={this._updateName}
-                            value={this.state.name}
+                            onChange={this.props.setName}
+                            value={this.props.name}
                             required
                         />
                     </div>
@@ -359,6 +335,7 @@ export class MacroEdit extends React.Component {
 MacroEdit.propTypes = {
     currentMacro: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
     actions: PropTypes.object.isRequired,
     setActions: PropTypes.func.isRequired,
     setName: PropTypes.func.isRequired,
@@ -371,8 +348,4 @@ function mapStateToProps(state) {
     }
 }
 
-const mapDispatchToProps = {
-    setName: macroActions.setName,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MacroEdit)
+export default connect(mapStateToProps)(MacroEdit)

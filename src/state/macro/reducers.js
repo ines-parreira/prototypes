@@ -1,8 +1,21 @@
-import * as types from './constants'
 import {fromJS, Map} from 'immutable'
-import {getMacrosWithoutExternalActions, generateDefaultAction} from './utils'
 
-const macroInitial = fromJS({
+import * as types from './constants'
+import {generateDefaultAction} from './utils'
+import {toImmutable} from '../../utils'
+
+export const macroListToMap = (macros) => {
+    macros = toImmutable(macros)
+    let items = Map()
+
+    macros.forEach((macro) => {
+        items = items.set(macro.get('id'), fromJS(macro))
+    })
+
+    return items.sortBy(i => i.get('usage', 0)).reverse()
+}
+
+export const macroInitial = fromJS({
     id: 'new',
     name: 'New macro',
     actions: [
@@ -11,22 +24,12 @@ const macroInitial = fromJS({
 })
 
 const macrosInitial = fromJS({
-    _internal: {
-        loading: {}
-    },
-    state: {
-        query: '',
-        modalQuery: ''
-    },
     visible: true,
-    selected: {},
     isModalOpen: false,
-    modalSelected: null,
     items: {}
 })
 
 export default (state = macrosInitial, action) => {
-    let items
     let newState = state
 
     switch (action.type) {
@@ -36,103 +39,21 @@ export default (state = macrosInitial, action) => {
         case types.OPEN_MODAL:
             return state.set('isModalOpen', true)
 
-        case types.ADD_NEW_MACRO:
-            return state.set('modalSelected', macroInitial)
-
         case types.CREATE_MACRO_SUCCESS:
         case types.UPDATE_MACRO_SUCCESS:
             return state.setIn(['items', action.resp.id], fromJS(action.resp))
 
         case types.DELETE_MACRO_SUCCESS:
-            newState = state.set('items', newState.get('items').delete(action.macroId))
-            return newState.set('modalSelected', newState.get('items').first())
-
-        case types.PREVIEW_MACRO:
-            return state.set('selected', state.getIn(['items', action.id]))
-
-        case types.PREVIEW_MACRO_IN_MODAL:
-            return state.set('modalSelected', state.getIn(['items', action.macroId]))
+            return state.set('items', newState.get('items').delete(action.macroId))
 
         case types.SET_MACROS_VISIBILITY:
             return state.set('visible', action.visible)
 
-        case types.PREVIEW_ADJACENT_MACRO: {
-            const selectedMacro = state.get('selected')
-
-            const items = state.get('items').toList().filter(item => {
-                return item.get('name', '').toLowerCase().includes(state.getIn(['state', 'query'], '').toLowerCase())
-            })
-
-            const curIdx = selectedMacro ? items.findIndex(item => item.get('id') === selectedMacro.get('id')) : 0
-
-            if (action.direction === 'next') {
-                return state.set('selected', curIdx + 1 <= items.size - 1 ? items.get(curIdx + 1) : items.get(0))
-            } else if (action.direction === 'prev') {
-                return state.set('selected', curIdx - 1 >= 0 ? items.get(curIdx - 1) : items.get(items.size - 1))
-            }
-
-            return state
-        }
-
-        case types.PREVIEW_ADJACENT_MACRO_IN_MODAL: {
-            const selectedMacro = state.get('modalSelected')
-
-            let items = state.get('items')
-
-            if (action.noExternal) {
-                items = getMacrosWithoutExternalActions(items)
-            }
-
-            items = items.toList().filter(item => {
-                return item.get('name', '').toLowerCase().includes(state.getIn(['state', 'modalQuery'], '').toLowerCase())
-            })
-
-            const curIdx = selectedMacro ? items.findIndex(item => item.get('id') === selectedMacro.get('id')) : 0
-
-            if (action.direction === 'next') {
-                return state.set('modalSelected', curIdx + 1 <= items.size - 1 ? items.get(curIdx + 1) : items.get(0))
-            } else if (action.direction === 'prev') {
-                return state.set('modalSelected', curIdx - 1 >= 0 ? items.get(curIdx - 1) : items.get(items.size - 1))
-            }
-            return state
-        }
-
         case types.FETCH_MACRO_LIST_SUCCESS: {
-            items = Map()
-
             const macros = action.resp.data || []
-            macros.forEach((macro) => {
-                items = items.set(macro.id, fromJS(macro))
-            })
-
             return state.merge({
-                items: items.sortBy(i => i.get('usage', 0)).reverse()
+                items: macroListToMap(macros)
             })
-        }
-
-        case types.SET_NAME:
-            return state.setIn(['modalSelected', 'name'], action.name)
-
-        case types.SAVE_SEARCH: {
-            const queryField = state.get('isModalOpen') ? 'modalQuery' : 'query'
-            const selectedField = state.get('isModalOpen') ? 'modalSelected' : 'selected'
-
-            newState = state.setIn(['state', queryField], action.query)
-
-            const selectedMacro = newState.get(selectedField)
-            items = state.get('items').toList().filter(item => {
-                return item.get('name', '').toLowerCase().includes(state.getIn(['state', queryField], '').toLowerCase())
-            })
-
-            if (!items.isEmpty()) {
-                if (!selectedMacro) {
-                    newState = newState.set(selectedField, items.first())
-                } else if (!items.includes(item => item.get('id') === selectedMacro.get('id'))) {
-                    newState = newState.set(selectedField, items.first())
-                }
-            }
-
-            return newState
         }
 
         default:

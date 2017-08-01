@@ -12,7 +12,7 @@ import Preview from '../../../common/macros/Preview'
 class TicketMacros extends React.Component {
     componentDidUpdate(prevProps) {
         // brings the preview to top when previewing another macro
-        if (this.props.macros.getIn(['selected', 'id']) !== prevProps.macros.getIn(['selected', 'id'])) {
+        if (this.props.selectedMacroId !== prevProps.selectedMacroId) {
             const element = ReactDOM.findDOMNode(this.refs.previewContainer)
 
             if (element) {
@@ -21,8 +21,7 @@ class TicketMacros extends React.Component {
         }
     }
 
-    openModalOnSelectedMacro(selectedMacroId) {
-        this.props.previewMacroInModal(selectedMacroId)
+    openModalOnSelectedMacro() {
         this.props.openModal()
     }
 
@@ -31,9 +30,9 @@ class TicketMacros extends React.Component {
             <div
                 key={macro.get('id')}
                 className={classnames('macro-item', {
-                    active: macro.get('id') === this.props.macros.getIn(['selected', 'id'])
+                    active: macro.get('id') === this.props.selectedMacroId,
                 })}
-                onMouseEnter={() => this.props.previewMacro(macro)}
+                onMouseEnter={() => this.props.setSelectedMacroId(macro.get('id'))}
                 onClick={() => this.props.applyMacro(macro)}
             >
                 <div className="content">
@@ -44,9 +43,9 @@ class TicketMacros extends React.Component {
     }
 
     render() {
-        const {macros, newMessageType, openModal, setMacrosVisible} = this.props
+        const {macros, newMessageType, openModal, searchedTerm, setMacrosVisible} = this.props
         const items = macros.get('items')
-        const macro = macros.get('selected')
+        const macro = items.get(this.props.selectedMacroId) || fromJS({})
         const macrosVisible = macros.get('visible')
 
         let content = (
@@ -58,7 +57,15 @@ class TicketMacros extends React.Component {
                     className="macro-list"
                     style={{width: '25%'}}
                 >
-                    {items.map(this.renderMacroListItem).toList()}
+                    {
+                        this.props.isLoading ? (
+                                <div className="macro-item disabled">
+                                    <i>Searching...</i>
+                                </div>
+                            ) : (
+                                items.map(this.renderMacroListItem).toList()
+                            )
+                    }
                 </div>
                 <div
                     className="macro-preview-container"
@@ -78,10 +85,16 @@ class TicketMacros extends React.Component {
             </div>
         )
 
-        if (!items.size) {
+        if (items.isEmpty()) {
             content = (
                 <div className="no-result-container">
-                    <p>You don't have any macros yet.</p>
+                    <p>
+                        {
+                            !!searchedTerm ? (
+                                    <span>No macro for <b>{searchedTerm}</b></span>
+                                ) : 'You don\'t have any macros yet'
+                        }
+                    </p>
                     <Button
                         type="button"
                         color="info"
@@ -130,11 +143,13 @@ class TicketMacros extends React.Component {
 TicketMacros.propTypes = {
     macros: PropTypes.object.isRequired,
     applyMacro: PropTypes.func.isRequired,
-    previewMacro: PropTypes.func.isRequired,
-    previewMacroInModal: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     newMessageType: PropTypes.string.isRequired,
-    setMacrosVisible: PropTypes.func.isRequired
+    setMacrosVisible: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    searchedTerm: PropTypes.string,
+    selectedMacroId: PropTypes.number,
+    setSelectedMacroId: PropTypes.func.isRequired,
 }
 
 TicketMacros.defaultProps = {

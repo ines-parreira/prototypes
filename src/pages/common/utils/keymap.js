@@ -24,21 +24,6 @@ export default {
             }
         }
     },
-    MacroModal: {
-        description: 'Manage macros',
-        actions: {
-            PREVIEW_PREV_MACRO: {
-                key: 'up'
-            },
-            PREVIEW_NEXT_MACRO: {
-                key: 'down'
-            },
-            APPLY_MACRO: {
-                key: 'mod+enter',
-                description: 'Use selected macro in ticket.'
-            }
-        }
-    },
     KeyboardHelp: {
         description: 'Help dialog',
         actions: {
@@ -52,20 +37,11 @@ export default {
         description: 'Ticket navigation',
         actions: {
             SHOW_MACROS: {
-                key: 'meta+m',
+                key: 'ctrl+m',
                 description: 'Show available macros for ticket.'
             },
             HIDE_MACROS: {
                 key: 'escape'
-            },
-            APPLY_MACRO: {
-                key: 'enter'
-            },
-            PREVIEW_PREV_MACRO: {
-                key: 'up'
-            },
-            PREVIEW_NEXT_MACRO: {
-                key: 'down'
             },
             GO_BACK: { // remember to change this shortcut in TicketReplyEditor.js:_keyBindingFn too
                 key: 'ctrl+j',

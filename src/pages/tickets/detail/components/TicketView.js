@@ -45,7 +45,6 @@ export default class TicketView extends React.Component {
         agents: PropTypes.object.isRequired,
         agentsViewing: PropTypes.object.isRequired,
         agentsTyping: PropTypes.object.isRequired,
-        applyMacro: PropTypes.func.isRequired,
         computeNextUrl: PropTypes.func.isRequired,
         currentUser: PropTypes.object.isRequired,
         hideTicket: PropTypes.func.isRequired,
@@ -294,9 +293,6 @@ export default class TicketView extends React.Component {
 
                         <TicketReplyArea
                             actions={this.props.actions}
-                            applyMacro={this.props.applyMacro}
-                            previewMacro={this.props.actions.macro.previewMacro}
-                            previewMacroInModal={this.props.actions.macro.previewMacroInModal}
                             openModal={this.props.actions.macro.openModal}
                             currentUser={this.props.currentUser}
                             users={this.props.users}
@@ -314,4 +310,3 @@ export default class TicketView extends React.Component {
         )
     }
 }
-

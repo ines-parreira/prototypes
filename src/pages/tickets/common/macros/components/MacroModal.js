@@ -14,9 +14,10 @@ import MacroList from './MacroList'
 import MacroEdit from './MacroEdit'
 import MacroPreview from './MacroPreview'
 import {DEFAULT_ACTIONS} from '../../../../../config'
-import shortcutManager from '../../../../common/utils/shortcutManager'
 import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+
+import {macroInitial} from '../../../../../state/macro/reducers'
 
 import css from './MacroModal.less'
 
@@ -27,53 +28,27 @@ export default class MacroModal extends React.Component {
         super(props)
         this.state = {
             modal: false,
-            actions: props.currentMacro ? props.currentMacro.get('actions') : fromJS([]),
+            isCreatingMacro: false,
+            actions: props.currentMacro.get('actions') || fromJS([]),
+            name: props.currentMacro.get('name') || '',
         }
     }
 
     componentDidMount() {
         logEvent('Opened macro modal')
-
-        shortcutManager.bind('MacroModal', {
-            PREVIEW_PREV_MACRO: {
-                action: (e) => {
-                    e.preventDefault()
-                    this.props.actions.macro.previewAdjacentMacroInModal('prev', this.props.disableExternalActions)
-                }
-            },
-            PREVIEW_NEXT_MACRO: {
-                action: (e) => {
-                    e.preventDefault()
-                    this.props.actions.macro.previewAdjacentMacroInModal('next', this.props.disableExternalActions)
-                }
-            },
-            APPLY_MACRO: {
-                action: (e) => {
-                    if (!this.props.selectionMode) {
-                        return
-                    }
-
-                    e.preventDefault()
-                    this._toggle()
-                    this.props.actions.tickets.bulkUpdate(
-                        this.props.selectedItemsIds,
-                        'macro',
-                        this.props.currentMacro.toJS()
-                    )
-                }
-            }
-        })
     }
 
     componentWillReceiveProps(nextProps) {
         // if it is the first time we receive a macro, set its actions
-        if (!this.props.currentMacro && nextProps.currentMacro) {
+        if (this.props.currentMacro.isEmpty() && !nextProps.currentMacro.isEmpty()) {
+            this._setName(nextProps.currentMacro.get('name'))
             this._setActions(nextProps.currentMacro.get('actions'))
         }
 
-        if (this.props.currentMacro && nextProps.currentMacro) {
+        if (!this.props.currentMacro.isEmpty() && !nextProps.currentMacro.isEmpty()) {
             // if selected macro changes, initialize actions again
             if (nextProps.currentMacro.get('id') !== this.props.currentMacro.get('id')) {
+                this._setName(nextProps.currentMacro.get('name'))
                 this._setActions(nextProps.currentMacro.get('actions'))
             }
         }
@@ -88,15 +63,25 @@ export default class MacroModal extends React.Component {
     }
 
     _addNewMacro = () => {
-        return this.props.actions.macro.addNewMacro()
+        this.setState({isCreatingMacro: true})
+        this._setName(macroInitial.get('name'))
+        this._setActions(macroInitial.get('actions'))
+    }
+
+    _handleClickItem = (macroId) => {
+        this.setState({isCreatingMacro: false})
+        return this.props.handleClickItem(macroId)
     }
 
     _createMacro = () => {
-        return this.props.actions.macro.createMacro(this.props.currentMacro.set('actions', this.state.actions))
+        return this.props.actions.macro.createMacro(this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name))
+            .then(({resp}) => {
+                this._handleClickItem(resp.id)
+            })
     }
 
     _updateMacro = () => {
-        return this.props.actions.macro.updateMacro(this.props.currentMacro.set('actions', this.state.actions))
+        return this.props.actions.macro.updateMacro(this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name))
     }
 
     _deleteMacro = () => {
@@ -123,8 +108,17 @@ export default class MacroModal extends React.Component {
         this.setState({actions})
     }
 
+    _setName = (name) => {
+        this.setState({name})
+    }
+
     render() {
-        const {macros, currentMacro, actions, selectionMode, selectedItemsIds} = this.props
+        const {macros, selectionMode, selectedItemsIds} = this.props
+        let {currentMacro} = this.props
+
+        if (this.state.isCreatingMacro) {
+            currentMacro = macroInitial
+        }
 
         const isUpdate = !!currentMacro && currentMacro.get('id') !== 'new'
 
@@ -139,7 +133,7 @@ export default class MacroModal extends React.Component {
                     <Container fluid>
                         <Row>
                             <Col
-                                xs="4"
+                                xs="3"
                                 className={classnames(css.divider, css.footer)}
                             >
                                 {
@@ -155,7 +149,7 @@ export default class MacroModal extends React.Component {
                                     )
                                 }
                             </Col>
-                            <Col xs="8">
+                            <Col xs="9">
                                 {
                                     selectionMode ? (
                                             <div className="d-inline-block pull-right">
@@ -215,17 +209,17 @@ export default class MacroModal extends React.Component {
                 <Container fluid>
                     <Row>
                         <Col
-                            xs="4"
+                            xs="3"
                             className={css.divider}
                         >
                             <MacroList
                                 macros={macros}
                                 currentMacro={currentMacro}
-                                actions={actions.macro}
                                 disableExternalActions={this.props.disableExternalActions}
+                                handleClickItem={this._handleClickItem}
                             />
                         </Col>
-                        <Col xs="8">
+                        <Col xs="9">
                             {
                                 selectionMode ? (
                                         <MacroPreview
@@ -235,8 +229,10 @@ export default class MacroModal extends React.Component {
                                         <MacroEdit
                                             currentMacro={currentMacro}
                                             agents={this.props.agents}
+                                            name={this.state.name}
                                             actions={this.state.actions}
                                             setActions={this._setActions}
+                                            setName={this._setName}
                                         />
                                     )
                             }
@@ -255,6 +251,7 @@ MacroModal.propTypes = {
     agents: PropTypes.object.isRequired,
 
     actions: PropTypes.object.isRequired,
+    handleClickItem: PropTypes.func.isRequired,
 
     disableExternalActions: PropTypes.bool.isRequired,
     selectionMode: PropTypes.bool.isRequired,

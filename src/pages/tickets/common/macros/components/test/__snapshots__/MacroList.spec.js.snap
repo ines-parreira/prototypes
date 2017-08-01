@@ -1,89 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MacroList component should render the macro list 1`] = `
-<MacroList
-  actions={
-    Object {
-      "previewMacroInModal": [Function],
-    }
-  }
-  currentMacro={
-    Immutable.Map {
-      id: 1,
-      name: "Pizza Pepperoni",
-    }
-  }
-  disableExternalActions={false}
-  macros={
-    Immutable.List [
-      Immutable.Map {
-        id: 1,
-        name: "Pizza Pepperoni",
-      },
-      Immutable.Map {
-        id: 2,
-        name: "Pizza Capricciosa",
-      },
-    ]
-  }
->
-  <div>
+<div>
+  <div
+    className="macro-list p-0"
+  >
     <div
-      className="macro-list p-0"
+      className="mt-3 mb-2"
+      style={
+        Object {
+          "position": "relative",
+        }
+      }
     >
-      <InputField
-        className="mt-3 shortcuts-enable"
+      <ei
+        className="shortcuts-enable"
         onChange={[Function]}
         placeholder="Search a macro..."
+        tag="p"
         type="text"
         value=""
-      >
-        <ml
-          className=""
-          color=""
-          tag="div"
-        >
-          <div
-            className="form-group"
-          >
-            <div
-              className=""
-            >
-              <ei
-                className="mt-3 shortcuts-enable"
-                id="id-input-1"
-                onChange={[Function]}
-                placeholder="Search a macro..."
-                tag="p"
-                type="text"
-                value=""
-              >
-                <input
-                  className="mt-3 shortcuts-enable form-control"
-                  id="id-input-1"
-                  onChange={[Function]}
-                  placeholder="Search a macro..."
-                  type="text"
-                  value=""
-                />
-              </ei>
-            </div>
-          </div>
-        </ml>
-      </InputField>
-      <div
-        className="macro-item m-0 active"
-        onClick={[Function]}
-      >
-        Pizza Pepperoni
-      </div>
-      <div
-        className="macro-item m-0"
-        onClick={[Function]}
-      >
-        Pizza Capricciosa
-      </div>
+      />
+      <i
+        className="fa fa-fw fa-circle-o-notch fa-spin text-faded hidden"
+        style={
+          Object {
+            "position": "absolute",
+            "right": "8px",
+            "top": "9px",
+          }
+        }
+      />
+    </div>
+    <div
+      className="macro-item m-0 active"
+      onClick={[Function]}
+    >
+      Pizza Pepperoni
+    </div>
+    <div
+      className="macro-item m-0"
+      onClick={[Function]}
+    >
+      Pizza Capricciosa
     </div>
   </div>
-</MacroList>
+</div>
 `;

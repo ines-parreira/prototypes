@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MacroEdit component should render the the macro edit form 1`] = `
+exports[`MacroEdit component should render the macro edit form 1`] = `
 <MacroEdit
   actions={
     Immutable.List [
@@ -13,10 +13,10 @@ exports[`MacroEdit component should render the the macro edit form 1`] = `
   currentMacro={
     Immutable.Map {
       id: 1,
-      name: "Pizza Pepperoni",
     }
   }
   hasIntegrationOfTypes={[Function]}
+  name="Pizza Pepperoni"
   setActions={[Function]}
   setName={[Function]}
 >
