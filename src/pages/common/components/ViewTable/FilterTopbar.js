@@ -26,6 +26,8 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 import * as usersSelectors from '../../../../state/users/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 
+import * as viewsConfig from '../../../../config/views'
+
 class FilterTopbar extends React.Component {
     static propTypes = {
         activeView: ImmutablePropTypes.map.isRequired,
@@ -298,7 +300,7 @@ const mapStateToProps = (state, ownProps) => {
         agents: usersSelectors.getAgents(state),
         activeView: viewsSelectors.getActiveView(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
-        config: viewsSelectors.getViewConfig(ownProps.type),
+        config: viewsConfig.getConfigByName(ownProps.type),
         currentUser: state.currentUser,
         isEditMode: viewsSelectors.isEditMode(state),
         pristineActiveView: viewsSelectors.getPristineActiveView(state),

@@ -343,7 +343,11 @@ export function getPendingMessageIndex(pendingMessages, message) {
     return index
 }
 
-// Return whether or not the message is forwarded
+/**
+ * Return whether or not the message is forwarded
+ * @param message
+ * @returns {*|any|T|boolean}
+ */
 export function isForwardedMessage(message) {
     return toImmutable(message).getIn(['source', 'extra', 'forward']) || false
 }

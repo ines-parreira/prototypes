@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import {createImmutableSelector} from '../../utils'
 import {sortViews} from './utils'
-import viewsConfig from '../../config/views'
+import * as viewsConfig from '../../config/views'
 import {getSettingsByType as getCurrentUserSettingsByType} from '../currentUser/selectors'
 
 export const getViewsState = state => state.views || fromJS({})
@@ -62,7 +62,7 @@ export const getActiveViewFilters = createSelector(
 export const getActiveViewConfig = createSelector(
     [getActiveView],
     (view) => {
-        return getViewConfigByType(view.get('type'))
+        return viewsConfig.getConfigByType(view.get('type'))
     }
 )
 
@@ -106,28 +106,6 @@ export const isLoading = name => createSelector(
 // in component usage
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
 export const makeIsLoading = state => name => isLoading(name)(state)
-
-export const getViewConfig = name => {
-    const config = viewsConfig.find(item => item.get('name') === name)
-
-    if (!config) {
-        console.error(`There is no view configuration for name "${name}"`)
-        return fromJS({})
-    }
-
-    return config
-}
-
-export const getViewConfigByType = type => {
-    const config = viewsConfig.find(item => item.get('type') === type)
-
-    if (!config) {
-        console.error(`There is no view configuration for type "${type}"`)
-        return fromJS({})
-    }
-
-    return config
-}
 
 export const getViewsByType = type => createImmutableSelector(
     [getViews, getCurrentUserSettingsByType(type.replace('list', 'views'))],
@@ -183,7 +161,7 @@ export const getView = (id, configName = '') => createImmutableSelector(
                 return fromJS({})
             }
 
-            return getViewConfig(configName).get('newView')()
+            return viewsConfig.getConfigByName(configName).get('newView')()
         }
 
         return views.find(view => view.get('id') === parseInt(id), null, fromJS({}))

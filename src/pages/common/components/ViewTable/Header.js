@@ -23,6 +23,8 @@ import {slugify} from '../../../../utils'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 
+import * as viewsConfig from '../../../../config/views'
+
 class Header extends React.Component {
     static propTypes = {
         activeView: ImmutablePropTypes.map.isRequired,
@@ -219,7 +221,7 @@ class Header extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         activeView: viewsSelectors.getActiveView(state),
-        config: viewsSelectors.getViewConfig(ownProps.type),
+        config: viewsConfig.getConfigByName(ownProps.type),
         lastViewId: viewsSelectors.getLastViewId(state),
     }
 }

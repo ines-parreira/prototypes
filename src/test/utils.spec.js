@@ -59,15 +59,15 @@ describe('global utils', () => {
             const messages = [
                 {
                     id: 2,
-                    created_datetime: new Date('2016-01-13')
+                    created_datetime: '2017-01-13T18:00:00',
                 },
                 {
                     id: 3,
-                    created_datetime: new Date('2016-01-14')
+                    created_datetime: '2017-01-14T18:00:00',
                 },
                 {
                     id: 1,
-                    created_datetime: new Date('2016-01-12')
+                    created_datetime: '2017-01-12T18:00:00',
                 }
             ]
 

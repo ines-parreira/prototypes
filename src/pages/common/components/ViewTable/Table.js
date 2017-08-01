@@ -15,12 +15,14 @@ import HeaderCell from './Table/HeaderCell'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 
+import * as viewsConfig from '../../../../config/views'
+
 import css from './Table.less'
 
 @connect((state, ownProps) => {
     return {
         activeView: viewsSelectors.getActiveView(state),
-        config: viewsSelectors.getViewConfig(ownProps.type),
+        config: viewsConfig.getConfigByName(ownProps.type),
         isLoading: viewsSelectors.makeIsLoading(state),
         pagination: viewsSelectors.getPagination(state),
         selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),

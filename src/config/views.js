@@ -1,12 +1,13 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import * as constants from './constants'
+
+import * as ticketConfig from './ticket'
 import {stripHTML} from '../utils'
 import {TagLabel} from '../pages/common/utils/labels'
 
 import _isUndefined from 'lodash/isUndefined'
 
-const defaultCell = (fieldName, item) => {
+export const defaultCell = (fieldName, item) => {
     const value = item.get(fieldName)
 
     if (_isUndefined(value)) {
@@ -18,7 +19,7 @@ const defaultCell = (fieldName, item) => {
 }
 
 // Each of the following properties are required to create a new view
-const baseView = () => fromJS({
+export const baseView = () => fromJS({
     id: 0,
     name: 'New view',
     slug: 'new-view',
@@ -44,7 +45,7 @@ const baseView = () => fromJS({
     }
 })
 
-const config = [{
+export const views = fromJS([{
     name: 'ticket',
     type: 'ticket-list',
     routeItem: 'ticket', // UI route for this object
@@ -101,14 +102,14 @@ const config = [{
             name: 'status',
             title: 'Status',
             filter: {
-                enum: constants.TICKET_STATUSES,
+                enum: ticketConfig.STATUSES,
             }
         },
         {
             name: 'channel',
             title: 'Channel',
             filter: {
-                enum: constants.TICKET_CHANNELS,
+                enum: ticketConfig.CHANNELS,
             }
         },
         {
@@ -296,6 +297,26 @@ const config = [{
             type: 'user-list',
         })
     },
-}]
+}])
 
-export default fromJS(config)
+export const getConfigByName = (name) => {
+    const config = views.find(item => item.get('name') === name)
+
+    if (!config) {
+        console.error(`There is no view configuration for name "${name}"`)
+        return fromJS({})
+    }
+
+    return config
+}
+
+export const getConfigByType = (type) => {
+    const config = views.find(item => item.get('type') === type)
+
+    if (!config) {
+        console.error(`There is no view configuration for type "${type}"`)
+        return fromJS({})
+    }
+
+    return config
+}

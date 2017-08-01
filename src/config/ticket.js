@@ -1,11 +1,14 @@
 import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 
-import {getLastMessage, compare} from '../utils'
+import {getLastMessage, compare, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
 export const DEFAULT_CHANNEL = 'email'
 export const DEFAULT_SOURCE_TYPE = 'email'
+
+export const STATUSES = ['open', 'new', 'closed']
+export const CHANNELS = ['email', 'phone', 'sms', 'chat', 'twitter', 'facebook', 'facebook-messenger', 'api']
 
 export const SYSTEM_SOURCE_TYPES = ['internal-note', 'system-message']
 
@@ -86,7 +89,12 @@ export const PREVIOUS_VARIABLES = [{
     }],
 }]
 
+/**
+ * Return passed messages ordered by created_datetime
+ * @param messages
+ */
 export const orderedMessages = (messages) => {
+    messages = toImmutable(messages)
     return messages.sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
 }
 
@@ -114,6 +122,7 @@ export const isSystemType = (sourceType) => {
  * @returns {*}
  */
 export function lastNonSystemTypeMessage(messages) {
+    messages = toImmutable(messages)
     messages = orderedMessages(messages)
     const filteredMessages = messages.filter(message => {
         return !isSystemType(message.getIn(['source', 'type'])) && !isForwardedMessage(message)
@@ -131,6 +140,8 @@ export const sourceTypeToChannel = (sourceType, messages) => {
     if (!sourceType) {
         return DEFAULT_CHANNEL
     }
+
+    messages = toImmutable(messages)
 
     if (isSystemType(sourceType)) {
         const lastMessage = lastNonSystemTypeMessage(messages)
@@ -158,6 +169,7 @@ export const sourceTypeToChannel = (sourceType, messages) => {
  * Return source type we should set on a **new** message based on the source type of messages we're responding to
  */
 export const responseSourceType = (messages) => {
+    messages = toImmutable(messages)
     messages = orderedMessages(messages)
 
     if (!messages) {
@@ -252,10 +264,20 @@ export const sourceTypeToIcon = (sourceType) => {
     }
 }
 
+/**
+ * Return variables config
+ * @returns {[*,*,*,*]}
+ */
 export const getVariables = () => {
     return VARIABLES
 }
 
+/**
+ * Return array of configs of variables
+ * Autocomplete fullName and type properties of each config
+ * @param variablesList
+ * @returns {Array}
+ */
 export const getVariablesList = (variablesList = VARIABLES) => {
     const variables = []
 
@@ -277,6 +299,11 @@ export const getVariablesList = (variablesList = VARIABLES) => {
     return variables
 }
 
+/**
+ * Return variable config with passed value
+ * @param value
+ * @returns {*}
+ */
 export const getVariableWithValue = (value) => {
     const variables = getVariablesList()
     const previousVariables = getVariablesList(PREVIOUS_VARIABLES)

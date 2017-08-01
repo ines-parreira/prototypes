@@ -10,7 +10,8 @@ import css from '../Table.less'
 
 import * as usersSelectors from '../../../../../state/users/selectors'
 import * as viewsActions from '../../../../../state/views/actions'
-import * as viewsSelectors from '../../../../../state/views/selectors'
+
+import * as viewsConfig from '../../../../../config/views'
 
 import * as viewsUtils from '../../../../../state/views/utils'
 
@@ -84,7 +85,7 @@ class Row extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        config: viewsSelectors.getViewConfig(ownProps.type),
+        config: viewsConfig.getConfigByName(ownProps.type),
         getAgentsViewing: usersSelectors.makeGetOtherAgentsOnTicket(state),
     }
 }

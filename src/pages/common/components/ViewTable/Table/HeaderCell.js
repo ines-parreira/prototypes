@@ -12,6 +12,8 @@ import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown'
 import * as viewsActions from '../../../../../state/views/actions'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
+import * as viewsConfig from '../../../../../config/views'
+
 class HeaderCell extends React.Component {
     static propTypes = {
         ActionsComponent: PropTypes.func,
@@ -123,7 +125,7 @@ class HeaderCell extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        config: viewsSelectors.getViewConfig(ownProps.type),
+        config: viewsConfig.getConfigByName(ownProps.type),
         orderBy: viewsSelectors.getActiveViewOrderBy(state),
         orderDirection: viewsSelectors.getActiveViewOrderDirection(state),
     }

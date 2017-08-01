@@ -1,6 +1,8 @@
 import React from 'react'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
+import moment from 'moment'
+
 import SocketIO from './../../pages/common/utils/socketio'
 
 import _isNull from 'lodash/isNull'
@@ -328,6 +330,9 @@ function prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActi
                 {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
             ))
         }
+
+        data.newMessage.created_datetime = moment().toISOString()
+
         data.messages.push(data.newMessage)
         delete data.newMessage
     }
@@ -426,6 +431,7 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
             }
 
             messageToSend = getLastMessage(data.messages)
+            console.log('found last', data.messages, messageToSend)
         }
 
         // Execute front-end validations for each action of the message

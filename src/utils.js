@@ -166,7 +166,8 @@ export function getLastMessage(messages, options = null) {
         messages = _filter(messages, options) || []
     }
 
-    return messages.sort((m1, m2) => moment(m2.created_datetime).diff(moment(m1.created_datetime)))[0]
+    // most recent message sorted to first element of array
+    return messages.sort((a, b) => compare(b.created_datetime, a.created_datetime))[0]
 }
 
 /**

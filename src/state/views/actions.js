@@ -9,6 +9,8 @@ import _max from 'lodash/max'
 
 import * as viewsSelectors from './selectors'
 
+import * as viewsConfig from '../../config/views'
+
 export const setViewActive = (view) => ({
     type: types.SET_VIEW_ACTIVE,
     view
@@ -202,7 +204,7 @@ export function deleteView(view) {
         axios.delete(`/api/views/${view.get('id')}/`)
             .then((json = {}) => json.data)
             .then(() => {
-                const viewConfig = viewsSelectors.getViewConfigByType(viewType)
+                const viewConfig = viewsConfig.getConfigByType(viewType)
                 const destinationView = otherViewsOfType.first()
                 const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
                 browserHistory.push(destinationRoute)
@@ -241,7 +243,7 @@ export function fetchPage(page, discreet = false) {
         dispatch(setPage(page))
 
         const activeViewType = activeView.get('type', 'ticket-list')
-        const viewConfig = viewsSelectors.getViewConfigByType(activeViewType)
+        const viewConfig = viewsConfig.getConfigByType(activeViewType)
 
         if (!isDirty && !viewId) {
             return Promise.resolve()
@@ -322,7 +324,7 @@ export function bulkUpdate(activeView, ids, key, value) {
         }
 
         const activeViewType = activeView.get('type', 'ticket-list')
-        const viewConfig = viewsSelectors.getViewConfigByType(activeViewType)
+        const viewConfig = viewsConfig.getConfigByType(activeViewType)
 
         let successMessage = `${ids.size} ${viewConfig.get('plural')}: ${key} successfully set to ${value}!`
 
@@ -389,7 +391,7 @@ export function bulkDelete(activeView, ids) {
         })
 
         const activeViewType = activeView.get('type', 'ticket-list')
-        const viewConfig = viewsSelectors.getViewConfigByType(activeViewType)
+        const viewConfig = viewsConfig.getConfigByType(activeViewType)
 
         dispatch(notify({
             type: 'info',

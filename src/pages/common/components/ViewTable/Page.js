@@ -13,11 +13,13 @@ import Table from './Table'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 
+import * as viewsConfig from '../../../../config/views'
+
 import css from './Page.less'
 
 @withRouter
 @connect((state, ownProps) => {
-    const config = viewsSelectors.getViewConfig(ownProps.type)
+    const config = viewsConfig.getConfigByName(ownProps.type)
     const currentPage = ownProps.location.query.page || 1
 
     return {
