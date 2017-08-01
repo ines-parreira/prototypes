@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {Card, CardBlock, Badge} from 'reactstrap'
 
+import {getDisplayName} from '../../../../state/users/helpers'
+
 export default class InfobarSearchResultsList extends React.Component {
     render() {
         const {searchResults, defaultUserId} = this.props
@@ -29,21 +31,19 @@ export default class InfobarSearchResultsList extends React.Component {
                                 >
                                     <CardBlock>
                                         {
-                                            user.get('name') && (
-                                                <h5 className="m-0">
-                                                    {user.get('name')}
-                                                    {
-                                                        isDefaultUser && (
-                                                            <Badge
-                                                                color="info"
-                                                                className="ml-2"
-                                                            >
-                                                                Current User
-                                                            </Badge>
-                                                        )
-                                                    }
-                                                </h5>
-                                            )
+                                            <h5 className="m-0">
+                                                {getDisplayName(user)}
+                                                {
+                                                    isDefaultUser && (
+                                                        <Badge
+                                                            color="info"
+                                                            className="ml-2"
+                                                        >
+                                                            Current User
+                                                        </Badge>
+                                                    )
+                                                }
+                                            </h5>
                                         }
                                         {
                                             user.get('email') && (

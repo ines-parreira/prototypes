@@ -17,7 +17,6 @@ export default class AddLogicalCondition extends React.Component {
         hovered: React.PropTypes.bool,
     }
 
-
     _handleAndClick = () => {
         const actionNode = {
             type: 'LogicalExpression',

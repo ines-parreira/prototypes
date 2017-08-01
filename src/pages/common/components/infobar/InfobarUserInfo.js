@@ -12,6 +12,7 @@ import InfobarAddIntegrationSuggestion from './InfobarAddIntegrationSuggestion'
 import ProfileImage from './../ProfileImage'
 import {canDrop, areSourcesReady, jsonToWidgets} from './utils'
 import {itemsWithContext} from '../../../../state/widgets/utils'
+
 import {getDisplayName} from '../../../../state/users/helpers'
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
 import {sourceTypeToIcon} from '../../../../config/ticket'
@@ -233,10 +234,12 @@ class InfobarUserInfo extends React.Component {
                     props = null
             }
 
+            const id = `address-copied-${channel.get('id')}`
+
             if (props) {
-                addressComponent = <a {...props} id={`address-copied-${idx}`}>{address}</a>
+                addressComponent = <a {...props} id={id}>{address}</a>
             } else {
-                addressComponent = <span id={`address-copied-${idx}`}>{address}</span>
+                addressComponent = <span id={id}>{address}</span>
             }
 
             return (
@@ -252,7 +255,7 @@ class InfobarUserInfo extends React.Component {
                         <i
                             id={`copy-icon-${idx}`}
                             className="fa fa-fw fa-clipboard clickable"
-                            data-clipboard-target={`#address-copied-${idx}`}
+                            data-clipboard-target={`#${id}`}
                         />
                         <UncontrolledTooltip
                             placement="top"

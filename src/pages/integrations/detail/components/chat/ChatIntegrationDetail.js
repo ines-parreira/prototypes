@@ -354,7 +354,11 @@ class ChatIntegrationDetail extends React.Component {
 
                 {this._renderInstructions(isUpdate, isSubmitting)}
 
-                <AutoResponderSection/>
+                {
+                    isUpdate && (
+                        <AutoResponderSection />
+                    )
+                }
 
                 <Container fluid>
                     <Row>

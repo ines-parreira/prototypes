@@ -26,6 +26,7 @@ let TestExpression = ({actions, rule, parent, schemas, test}) => (
             rule={rule}
             parent={parent.push('test')}
             title="IF"
+            hoverableClassName="d-inline-flex"
         />
         <Expression
             {...test}
@@ -62,6 +63,7 @@ let ConsequentStatement = ({actions, consequent, rule, parent, schemas}) => (
             rule={rule}
             parent={parent.push('consequent')}
             title="THEN"
+            hoverableClassName="d-inline-flex"
         />
         <Statement
             {...consequent}
@@ -98,6 +100,7 @@ let AlternateStatement = ({actions, alternate, rule, parent, schemas}) => (
             rule={rule}
             parent={parent.push('alternate')}
             title="ELSE"
+            hoverableClassName="d-inline-flex"
         />
         <Statement
             {...alternate}
