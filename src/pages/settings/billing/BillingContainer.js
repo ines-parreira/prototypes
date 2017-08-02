@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {withRouter, browserHistory} from 'react-router'
+import {withRouter} from 'react-router'
 import React, {Component, PropTypes} from 'react'
 
 import BillingCurrentSubscription from './BillingCurrentSubscription'
@@ -18,20 +18,17 @@ export default class BillingContainer extends Component {
         location: PropTypes.object.isRequired,
     }
 
-    componentDidMount() {
-        // display message from url
-        const {
-            notif_msg,
-            notif_type
-        } = this.props.location.query
-
-        if (notif_msg) {
+    componentWillMount() {
+        if (this.props.location.query.error === 'shopify-billing') {
             this.props.notify({
-                status: notif_type,
-                title: notif_msg.replace(/\+/g, ' ')
+                message: 'Something went wrong while activating billing with Shopify, please try again later.',
+                status: 'error'
             })
-            // remove notification from url
-            browserHistory.push(window.location.pathname)
+        } else if (this.props.location.query.success === 'shopify-billing') {
+            this.props.notify({
+                message: 'Billing with Shopify activated.',
+                status: 'success'
+            })
         }
     }
 
