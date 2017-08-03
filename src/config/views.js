@@ -211,7 +211,7 @@ export const views = fromJS([{
     },
     newView: () => {
         return baseView().merge({
-            fields: ['details', 'channel', 'assignee', 'requester', 'created'],
+            fields: ['details', 'channel', 'assignee', 'status', 'requester', 'created'],
             type: 'ticket-list',
         })
     },
@@ -219,7 +219,7 @@ export const views = fromJS([{
         return baseView().merge({
             name: `Search "${query}"`,
             search: query,
-            fields: ['details', 'channel', 'assignee', 'requester', 'created'],
+            fields: ['details', 'channel', 'assignee', 'status', 'requester', 'created', 'updated'],
             type: 'ticket-list',
         })
     },
