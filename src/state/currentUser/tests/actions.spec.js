@@ -5,7 +5,7 @@ import {submitSetting} from '../actions'
 import {initialState} from '../reducers'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {userSetting} from '../../../fixtures/user'
+import {userSetting} from '../../../fixtures/users'
 import {fromJS} from 'immutable'
 
 const middlewares = [thunk]

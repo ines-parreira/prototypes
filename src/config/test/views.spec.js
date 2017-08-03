@@ -3,8 +3,8 @@ import _isObject from 'lodash/isObject'
 
 import * as viewsConfig from '../views'
 
-import ticketFixture from '../../fixtures/ticket'
-import {user as userFixture} from '../../fixtures/user'
+import * as ticketFixtures from '../../fixtures/ticket'
+import * as userFixtures from '../../fixtures/users'
 
 global.console.error = jest.fn()
 
@@ -45,8 +45,8 @@ describe('Config: views', () => {
         const {views} = viewsConfig
 
         const fixtures = {
-            ticket: ticketFixture,
-            user: userFixture,
+            ticket: ticketFixtures.ticket,
+            user: userFixtures.user,
         }
 
         views.forEach((viewConfig) => {

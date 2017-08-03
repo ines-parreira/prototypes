@@ -15,7 +15,15 @@ import * as viewsConfig from '../../../../../config/views'
 
 import * as viewsUtils from '../../../../../state/views/utils'
 
-class Row extends React.Component {
+@connect((state, ownProps) => {
+    return {
+        config: viewsConfig.getConfigByName(ownProps.type),
+        getAgentsViewing: usersSelectors.makeGetOtherAgentsOnTicket(state),
+    }
+}, {
+    toggleSelection: viewsActions.toggleSelection,
+})
+export default class Row extends React.Component {
     static propTypes = {
         config: ImmutablePropTypes.map.isRequired,
         fields: ImmutablePropTypes.list.isRequired,
@@ -82,16 +90,3 @@ class Row extends React.Component {
         )
     }
 }
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        config: viewsConfig.getConfigByName(ownProps.type),
-        getAgentsViewing: usersSelectors.makeGetOtherAgentsOnTicket(state),
-    }
-}
-
-const mapDispatchToProps = {
-    toggleSelection: viewsActions.toggleSelection,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Row)

@@ -14,7 +14,19 @@ import * as viewsSelectors from '../../../../../state/views/selectors'
 
 import * as viewsConfig from '../../../../../config/views'
 
-class HeaderCell extends React.Component {
+@connect((state, ownProps) => {
+    return {
+        activeView: viewsSelectors.getActiveView(state),
+        config: viewsConfig.getConfigByName(ownProps.type),
+        orderBy: viewsSelectors.getActiveViewOrderBy(state),
+        orderDirection: viewsSelectors.getActiveViewOrderDirection(state),
+        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+    }
+}, {
+    fetchPage: viewsActions.fetchPage,
+    setOrderDirection: viewsActions.setOrderDirection,
+})
+export default class HeaderCell extends React.Component {
     static propTypes = {
         ActionsComponent: PropTypes.func,
         activeView: ImmutablePropTypes.map.isRequired,
@@ -122,18 +134,3 @@ class HeaderCell extends React.Component {
         )
     }
 }
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        config: viewsConfig.getConfigByName(ownProps.type),
-        orderBy: viewsSelectors.getActiveViewOrderBy(state),
-        orderDirection: viewsSelectors.getActiveViewOrderDirection(state),
-    }
-}
-
-const mapDispatchToProps = {
-    fetchPage: viewsActions.fetchPage,
-    setOrderDirection: viewsActions.setOrderDirection,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderCell)

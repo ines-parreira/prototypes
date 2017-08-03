@@ -153,8 +153,6 @@ export default class Table extends React.Component {
                                             type={type}
                                             isLast={fields.size === index + 1}
                                             isSearch={isSearch}
-                                            activeView={activeView}
-                                            selectedItemsIds={selectedItemsIds}
                                             ActionsComponent={ActionsComponent}
                                         />
                                     )

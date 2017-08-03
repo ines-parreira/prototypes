@@ -65,7 +65,6 @@ class TicketListContainer extends React.Component {
                     <ViewTable
                         type="ticket"
                         items={tickets}
-                        view={activeView}
                         isUpdate={isUpdate}
                         isSearch={isSearch}
                         urlViewId={urlViewId}

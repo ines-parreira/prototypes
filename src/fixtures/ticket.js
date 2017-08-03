@@ -1,4 +1,4 @@
-export default {
+export const ticket = {
     channel: 'email',
     priority: 'normal',
     meta: null,

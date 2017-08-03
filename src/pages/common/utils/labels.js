@@ -60,7 +60,9 @@ export const UserLabel = ({user}) => {
         <span>{usersHelpers.getDisplayName(user)}</span>
     )
 }
-UserLabel.propTypes = {user: PropTypes.object.isRequired}
+UserLabel.propTypes = {
+    user: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired
+}
 
 /**
  * TAG
@@ -241,43 +243,49 @@ const mapStateToProps = (state) => ({
 })
 connect(mapStateToProps)(DatetimeLabel)
 
-export const RenderLabel = ({field, value}) => {
-    if (!value) {
-        return null
+export class RenderLabel extends React.Component {
+    static propTypes = {
+        field: PropTypes.object.isRequired,
+        value: PropTypes.oneOfType([PropTypes.node, PropTypes.object]),
     }
 
-    if (React.isValidElement(value)) {
-        return value
-    }
+    render() {
+        const {field, value} = this.props
 
-    switch (field.get('name')) {
-        case 'tags':
-            return <TagLabel>{value}</TagLabel>
-        case 'created':
-        case 'updated':
-            return (
-                <DatetimeLabel
-                    dateTime={value}
-                />
-            )
-        case 'status':
-            return <StatusLabel status={value} />
-        case 'assignee':
-            return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
-        case 'integrations':
-            return typeof value === 'string' ? <span>{value}</span> : <IntegrationsDetailLabel integration={value} />
-        case 'requester':
-            return <UserLabel user={value} />
-        case 'roles':
-            return <RoleLabel roles={isImmutable(value) ? value.toJS() : value} />
-        case 'via':
-        case 'channel':
-            return <ChannelLabel channel={value} />
-        default:
-            return <span>{value}</span>
+        if (!value) {
+            return null
+        }
+
+        if (React.isValidElement(value)) {
+            return value
+        }
+
+        switch (field.get('name')) {
+            case 'tags':
+                return <TagLabel>{value}</TagLabel>
+            case 'created':
+            case 'updated':
+                return (
+                    <DatetimeLabel
+                        dateTime={value}
+                    />
+                )
+            case 'status':
+                return <StatusLabel status={value} />
+            case 'assignee':
+                return value.get('name') ? <AgentLabel name={value.get('name')} /> : null
+            case 'integrations':
+                return typeof value === 'string' ? <span>{value}</span> :
+                    <IntegrationsDetailLabel integration={value} />
+            case 'requester':
+                return <UserLabel user={value} />
+            case 'roles':
+                return <RoleLabel roles={isImmutable(value) ? value.toJS() : value} />
+            case 'via':
+            case 'channel':
+                return <ChannelLabel channel={value} />
+            default:
+                return <span>{value}</span>
+        }
     }
-}
-RenderLabel.propTypes = {
-    field: PropTypes.object.isRequired,
-    value: PropTypes.oneOfType([PropTypes.node, PropTypes.object]),
 }

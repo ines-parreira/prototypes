@@ -48,7 +48,6 @@ export default class Page extends React.Component {
         isSearch: PropTypes.bool.isRequired,
         isUpdate: PropTypes.bool.isRequired,
         items: ImmutablePropTypes.list.isRequired,
-        router: PropTypes.object.isRequired,
         setViewActive: PropTypes.func.isRequired,
         type: PropTypes.string.isRequired,
         urlViewId: PropTypes.string,

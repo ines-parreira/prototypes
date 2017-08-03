@@ -1,0 +1,212 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewTable::Header default view displays 1`] = `
+<div>
+  <div>
+    <div
+      className="d-flex justify-content-between mb-2"
+    >
+      <UncontrolledDropdown
+        className="d-inline-block hidden-sm-down"
+      >
+        <ei
+          aria-haspopup={true}
+          caret={true}
+          className="mr-2"
+          color="secondary"
+          data-toggle="dropdown"
+          id="settings-view-button"
+          type="button"
+        >
+          <i
+            className="fa fa-cog fa-fw mr-2"
+          />
+          View settings
+        </ei>
+        <Xo
+          tag="div"
+        >
+          <ei
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+            type="button"
+          >
+            Edit view
+          </ei>
+          <ei
+            divider={true}
+            tag="button"
+            toggle={true}
+          />
+          <ei
+            onClick={[Function]}
+            tag="button"
+            toggle={true}
+            type="button"
+          >
+            <span
+              className="text-danger"
+            >
+              Delete view
+            </span>
+            <ei
+              isOpen={false}
+              placement="bottom"
+              target="settings-view-button"
+              toggle={[Function]}
+            >
+              <nn
+                tag="h3"
+              >
+                Are you sure?
+              </nn>
+              <pn
+                tag="div"
+              >
+                <p>
+                  You are about to 
+                  <b>
+                    delete
+                  </b>
+                   this view for 
+                  <b>
+                    all users
+                  </b>
+                  .
+                </p>
+                <ei
+                  color="success"
+                  onClick={[Function]}
+                  tag="button"
+                  type="submit"
+                >
+                  Confirm
+                </ei>
+              </pn>
+            </ei>
+          </ei>
+        </Xo>
+      </UncontrolledDropdown>
+      <Search
+        bindKey={true}
+        className="pull-right"
+        disabled={false}
+        forcedQuery=""
+        location="7false"
+        onChange={[Function]}
+        placeholder="Search tickets..."
+        searchDebounceTime={400}
+        style={Object {}}
+      />
+    </div>
+    <div
+      className="clearfix d-flex flex-row align-items-center"
+    >
+      <EditableTitle
+        className="mr-2"
+        disabled={true}
+        placeholder="View name"
+        select={false}
+        size="xl"
+        style={Object {}}
+        title="New & Open Tickets"
+        update={[Function]}
+      />
+    </div>
+  </div>
+  <Connect(FilterTopbar)
+    isUpdate={true}
+    type="ticket"
+  />
+</div>
+`;
+
+exports[`ViewTable::Header empty view 1`] = `
+<div>
+  <div>
+    <div
+      className="d-flex justify-content-between mb-2"
+    >
+      <Search
+        bindKey={true}
+        className="pull-right"
+        disabled={false}
+        forcedQuery=""
+        location="undefinedfalse"
+        onChange={[Function]}
+        placeholder="Search tickets..."
+        searchDebounceTime={400}
+        style={Object {}}
+      />
+    </div>
+    <div
+      className="clearfix d-flex flex-row align-items-center"
+    >
+      <EditableTitle
+        className="mr-2"
+        disabled={true}
+        placeholder="View name"
+        select={true}
+        size="xl"
+        style={Object {}}
+        title=""
+        update={[Function]}
+      />
+    </div>
+  </div>
+  <Connect(FilterTopbar)
+    isUpdate={false}
+    type="ticket"
+  />
+</div>
+`;
+
+exports[`ViewTable::Header search view 1`] = `
+<div>
+  <div>
+    <div
+      className="d-flex justify-content-between mb-2"
+    >
+      <Link
+        className="btn btn-secondary mr-2"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/tickets"
+      >
+        <i
+          className="fa fa-fw fa-arrow-left mr-2"
+        />
+        Back
+      </Link>
+      <Search
+        bindKey={true}
+        className="pull-right"
+        disabled={false}
+        forcedQuery="term1"
+        location="7(s)"
+        onChange={[Function]}
+        placeholder="Search tickets..."
+        searchDebounceTime={400}
+        style={Object {}}
+      />
+    </div>
+    <div
+      className="clearfix d-flex flex-row align-items-center"
+    >
+      <EditableTitle
+        className="mr-2"
+        disabled={true}
+        size="xl"
+        style={Object {}}
+        title="New & Open Tickets"
+        update={[Function]}
+      />
+    </div>
+  </div>
+  <Connect(FilterTopbar)
+    isUpdate={true}
+    type="ticket"
+  />
+</div>
+`;

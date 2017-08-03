@@ -74,7 +74,6 @@ class UserListContainer extends React.Component {
                     <ViewTable
                         type="user"
                         items={users}
-                        view={activeView}
                         isUpdate={isUpdate}
                         isSearch={isSearch}
                         urlViewId={urlViewId}

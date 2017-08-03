@@ -23,13 +23,13 @@ describe('TicketView component', () => {
 
     it('should not have the hidden classes', () => {
         expect(
-            shallow(<TicketView {...minProps} isTicketHidden={false} />).find('TicketView').dive()
+            shallow(<TicketView {...minProps} isTicketHidden={false} />).dive()
         ).not.toHaveClassName('transition')
     })
 
     it('should have the hidden classes', () => {
         expect(
-            shallow(<TicketView {...minProps} isTicketHidden />).find('TicketView').dive()
+            shallow(<TicketView {...minProps} isTicketHidden />).dive()
         ).toHaveClassName('transition out fade right')
     })
 })

@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewTable::Table::Cell default cell 1`] = `
+<td>
+  <Link
+    onlyActiveOnIndex={false}
+    style={Object {}}
+    to="/url"
+  >
+    <div
+      className="cell-wrapper"
+    >
+      <RenderLabel
+        field={
+          Immutable.Map {
+            name: "details",
+            title: "Details",
+          }
+        }
+        value={
+          <div
+            style={
+              Object {
+                "marginBottom": "-5px",
+                "marginTop": "-5px",
+              }
+            }
+          >
+            <div
+              className="subject"
+            >
+              Great ticket
+            </div>
+            <div
+              className="description"
+            >
+              undefined
+            </div>
+          </div>
+        }
+      />
+    </div>
+  </Link>
+</td>
+`;
+
+exports[`ViewTable::Table::Cell should use default props 1`] = `
+Object {
+  "config": Immutable.Map {
+    mainField: "details",
+    cell: [Function],
+    plural: "tickets",
+    newView: [Function],
+    routeList: "tickets",
+    name: "ticket",
+    searchView: [Function],
+    singular: "ticket",
+    fields: Immutable.List [
+        Immutable.Map {
+            name: "details",
+            title: "Details",
+        },
+        Immutable.Map {
+            name: "subject",
+            title: "Subject",
+        },
+        Immutable.Map {
+            name: "integrations",
+            title: "Integrations",
+            path: "messages.integration_id",
+            filter: Immutable.Map {
+                type: "integration",
+            },
+            dropdown: Immutable.Map {
+                width: "350px",
+            },
+        },
+        Immutable.Map {
+            name: "tags",
+            title: "Tags",
+            path: "tags.name",
+            filter: Immutable.Map {
+                type: "tag",
+            },
+        },
+        Immutable.Map {
+            name: "requester",
+            title: "Requester",
+            path: "requester.id",
+            filter: Immutable.Map {
+                type: "user",
+            },
+        },
+        Immutable.Map {
+            name: "assignee",
+            title: "Assignee",
+            path: "assignee_user.id",
+            filter: Immutable.Map {
+                type: "agent",
+            },
+        },
+        Immutable.Map {
+            name: "status",
+            title: "Status",
+            filter: Immutable.Map {
+                enum: Immutable.List [
+                    "open",
+                    "new",
+                    "closed",
+                ],
+            },
+        },
+        Immutable.Map {
+            name: "channel",
+            title: "Channel",
+            filter: Immutable.Map {
+                enum: Immutable.List [
+                    "email",
+                    "phone",
+                    "sms",
+                    "chat",
+                    "twitter",
+                    "facebook",
+                    "facebook-messenger",
+                    "api",
+                ],
+            },
+        },
+        Immutable.Map {
+            name: "created",
+            title: "Created",
+            path: "created_datetime",
+            filter: Immutable.Map {
+                sort: Immutable.Map {
+                    created_datetime: "desc",
+                },
+            },
+        },
+        Immutable.Map {
+            name: "updated",
+            title: "Updated",
+            path: "updated_datetime",
+            filter: Immutable.Map {
+                sort: Immutable.Map {
+                    updated_datetime: "desc",
+                },
+            },
+        },
+    ],
+    api: "tickets",
+    type: "ticket-list",
+    routeItem: "ticket",
+},
+  "dispatch": [Function],
+  "field": Immutable.Map {
+    name: "details",
+    title: "Details",
+},
+  "item": Immutable.Map {
+},
+  "link": "/url",
+  "store": Object {
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+    Symbol(observable): [Function],
+  },
+  "type": "ticket",
+}
+`;

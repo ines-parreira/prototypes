@@ -12,7 +12,7 @@ describe('ReplyMessageChannel component', () => {
                 store={configureStore()}
                 ticket={fromJS({})}
             />
-        ).find('ReplyMessageChannel').dive() // dive in connect()ed component
+        ).dive() // dive in connect()ed component
         expect(component).toMatchSnapshot()
     })
 
@@ -25,7 +25,7 @@ describe('ReplyMessageChannel component', () => {
                     })
                 })}
             />
-        ).find('ReplyMessageChannel').dive() // dive in connect()ed component
+        ).dive() // dive in connect()ed component
         expect(component).toMatchSnapshot()
     })
 
@@ -60,7 +60,7 @@ describe('ReplyMessageChannel component', () => {
                         })
                     })}
                 />
-            ).find('ReplyMessageChannel').dive() // dive in connect()ed component
+            ).dive() // dive in connect()ed component
             expect(component).toMatchSnapshot()
         })
     })
@@ -94,7 +94,7 @@ describe('ReplyMessageChannel component', () => {
                     })
                 })}
             />
-        ).find('ReplyMessageChannel').dive() // dive in connect()ed component
+        ).dive() // dive in connect()ed component
         expect(component).toMatchSnapshot()
     })
 })

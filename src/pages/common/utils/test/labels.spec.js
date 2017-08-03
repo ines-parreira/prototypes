@@ -54,16 +54,18 @@ describe('components utils : labels', () => {
                     expected: null
                 }
             ].forEach(element => {
-                const renderedComponent = labels.RenderLabel({
-                    field: fromJS({name: element.type}),
-                    value: fromJS(element.value),
-                })
+                const renderedComponent = (
+                    <labels.RenderLabel
+                        field={fromJS({name: element.type})}
+                        value={fromJS(element.value)}
+                    />
+                )
 
                 // if renderedComponent is an element, shallow render it
                 let rendered
 
                 if (React.isValidElement(renderedComponent)) {
-                    rendered = shallow(renderedComponent)
+                    rendered = shallow(renderedComponent).html()
                 } else {
                     rendered = renderedComponent
                 }
@@ -73,7 +75,7 @@ describe('components utils : labels', () => {
                 it(`${element.type} label`, () => {
                     // if the expected result is an element, shallow render it
                     if (React.isValidElement(element.expected)) {
-                        expected = shallow(element.expected)
+                        expected = shallow(element.expected).html()
 
                         expect(rendered).toEqual(expected)
                     } else {

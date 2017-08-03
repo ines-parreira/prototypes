@@ -15,7 +15,7 @@ describe('TicketSubmitButtons component', () => {
                 ticket={fromJS({})}
                 submit={() => null}
             />
-        ).find('TicketSubmitButtons').dive() // dive in connect()ed component
+        ).dive() // dive in connect()ed component
         expect(component).toMatchSnapshot()
     })
 })

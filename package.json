@@ -119,7 +119,7 @@
       "!**/node_modules/**",
       "!**/vendor/**",
       "!**/bower_components/**",
-      "!**/semantic/**"
+      "!**/_build/**"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/g/static/private/js/test/__mocks__/fileMock.js",

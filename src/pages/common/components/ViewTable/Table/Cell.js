@@ -5,13 +5,16 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {RenderLabel} from '../../../utils/labels'
 
-import * as viewsActions from '../../../../../state/views/actions'
-
 import * as viewsConfig from '../../../../../config/views'
 
 import css from '../Table.less'
 
-class Cell extends React.Component {
+@connect((state, ownProps) => {
+    return {
+        config: viewsConfig.getConfigByName(ownProps.type),
+    }
+})
+export default class Cell extends React.Component {
     static propTypes = {
         config: ImmutablePropTypes.map.isRequired,
         field: ImmutablePropTypes.map.isRequired,
@@ -49,15 +52,3 @@ class Cell extends React.Component {
         )
     }
 }
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        config: viewsConfig.getConfigByName(ownProps.type),
-    }
-}
-
-const mapDispatchToProps = {
-    toggleSelection: viewsActions.toggleSelection,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cell)

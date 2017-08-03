@@ -25,7 +25,21 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 
 import * as viewsConfig from '../../../../config/views'
 
-class Header extends React.Component {
+@withRouter
+@connect((state, ownProps) => {
+    return {
+        activeView: viewsSelectors.getActiveView(state),
+        config: viewsConfig.getConfigByName(ownProps.type),
+        lastViewId: viewsSelectors.getLastViewId(state),
+    }
+}, {
+    deleteView: viewsActions.deleteView,
+    fetchPage: viewsActions.fetchPage,
+    removeFieldFilter: viewsActions.removeFieldFilter,
+    toggleSelection: viewsActions.toggleSelection,
+    updateView: viewsActions.updateView,
+})
+export default class Header extends React.Component {
     static propTypes = {
         activeView: ImmutablePropTypes.map.isRequired,
         config: ImmutablePropTypes.map.isRequired,
@@ -35,7 +49,6 @@ class Header extends React.Component {
         isUpdate: PropTypes.bool.isRequired,
         item: ImmutablePropTypes.map.isRequired,
         lastViewId: PropTypes.number,
-        router: PropTypes.object.isRequired,
         type: PropTypes.string.isRequired,
         updateView: PropTypes.func.isRequired,
         viewButtons: PropTypes.node,
@@ -217,21 +230,3 @@ class Header extends React.Component {
         )
     }
 }
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        config: viewsConfig.getConfigByName(ownProps.type),
-        lastViewId: viewsSelectors.getLastViewId(state),
-    }
-}
-
-const mapDispatchToProps = {
-    deleteView: viewsActions.deleteView,
-    fetchPage: viewsActions.fetchPage,
-    removeFieldFilter: viewsActions.removeFieldFilter,
-    toggleSelection: viewsActions.toggleSelection,
-    updateView: viewsActions.updateView,
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
