@@ -1,6 +1,5 @@
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
-import moment from 'moment'
 
 import SocketIO from './../../pages/common/utils/socketio'
 
@@ -18,7 +17,6 @@ import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 
 import {
-    getLastMessage,
     getActionTemplate,
     uploadFiles,
     toJS,
@@ -328,16 +326,17 @@ function prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActi
                 {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
             ))
         }
-
-        data.newMessage.created_datetime = moment().toISOString()
-
-        data.messages.push(data.newMessage)
-        delete data.newMessage
     }
 
+    const newMessageData = data.newMessage
     delete data.state
     delete data._internal
-    return data
+    delete data.newMessage
+
+    return {
+        ticket: data,
+        newMessage: newMessageData,
+    }
 }
 
 export const formatAction = (action, template, context) => {
@@ -417,19 +416,17 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
 
             messageToSend = retryMessage.get('originalMessage')
         } else {
-            const data = prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActions, currentUser)
+            const dataToSend = prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActions, currentUser)
 
-            if (!data || _isNull(data)) {
+            if (!dataToSend || _isNull(dataToSend)) {
                 return dispatch({
                     type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                     reason: 'Message was not sent. Sent data is invalid.',
-                    message: messageToSend,
                     messageId,
                 })
             }
 
-            messageToSend = getLastMessage(data.messages)
-            console.log('found last', data.messages, messageToSend)
+            messageToSend = dataToSend.newMessage
         }
 
         // Execute front-end validations for each action of the message
@@ -536,9 +533,12 @@ export function submitTicket(ticket, status, macroActions, currentUser, resetMes
             type: types.NEW_MESSAGE_SUBMIT_TICKET_START
         })
 
-        const data = prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActions, currentUser)
+        const dataToSend = prepareTicketDataToSend(dispatch, ticket, newMessage, status, macroActions, currentUser)
 
-        return axios.post('/api/tickets/', data)
+        const ticketToSend = dataToSend.ticket
+        ticketToSend.messages.push(dataToSend.newMessage)
+
+        return axios.post('/api/tickets/', ticketToSend)
             .then((json = {}) => json.data)
             .then(resp => {
                 onMessageSent(dispatch)

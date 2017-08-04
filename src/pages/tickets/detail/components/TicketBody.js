@@ -27,11 +27,6 @@ export class TicketBody extends React.Component {
         }
     }
 
-    shouldComponentUpdate(nextProps) {
-        return !nextProps.elements.equals(this.props.elements)
-            || !nextProps.loadingState.equals(this.props.loadingState)
-    }
-
     render() {
         const {elements, ticket, loadingState, setStatus, lastReadMessage} = this.props
 

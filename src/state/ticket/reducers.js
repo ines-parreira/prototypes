@@ -77,48 +77,33 @@ export default (state = initialState, action) => {
             let newState = state
 
             const messageIndex = newState
-                .getIn(['_internal', 'pendingMessages'])
-                .findIndex(message => message.getIn([
-                    '_internal',
-                    'id'
-                ]) === action.messageId)
+                .getIn(['_internal', 'pendingMessages'], fromJS([]))
+                .findIndex(message => message.getIn(['_internal', 'id']) === action.messageId)
 
             if (action.retry && ~messageIndex) {
                 // update the retried message
                 return newState
-                    .deleteIn([
-                        '_internal',
-                        'pendingMessages',
-                        messageIndex,
-                        'failed_datetime'
-                    ])
+                    .deleteIn(['_internal', 'pendingMessages', messageIndex, 'failed_datetime'])
             }
 
-            return newState
-                .updateIn(['_internal', 'pendingMessages'], messages => messages.unshift(message))
+            return newState.updateIn(['_internal', 'pendingMessages'], messages => messages.unshift(message))
         }
 
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR: {
-            const messageIndex = state.getIn([
-                '_internal',
-                'pendingMessages'
-            ]).findIndex(message => message.getIn([
-                '_internal',
-                'id'
-            ]) === action.messageId)
+            const messageIndex = state
+                .getIn(['_internal', 'pendingMessages'], fromJS([]))
+                .findIndex(message => message.getIn(['_internal', 'id']) === action.messageId)
 
             if (!~messageIndex) {
                 return state
             }
 
             return state
-                .updateIn([
-                    '_internal',
-                    'pendingMessages',
-                    messageIndex
-                ], message => message.mergeDeep({
-                    failed_datetime: new Date().toISOString()
-                }))
+                .updateIn(['_internal', 'pendingMessages', messageIndex], (message) => {
+                    return message.mergeDeep({
+                        failed_datetime: new Date().toISOString()
+                    })
+                })
         }
 
         case types.DELETE_TICKET_MESSAGE_START:
@@ -181,10 +166,9 @@ export default (state = initialState, action) => {
                 return state.setIn(
                     ['messages', state.get('messages').findIndex(message => message.get('id') === action.resp.id)],
                     fromJS(action.resp)
-                ).setIn(
-                    ['_internal', 'loading', 'updateMessageIds'],
-                    state.getIn(['_internal', 'loading', 'updateMessageIds']).filter(v => v !== action.resp.id)
-                )
+                ).updateIn(['_internal', 'loading', 'updateMessageIds'], (updateMessageIds) => {
+                    return updateMessageIds.filter(v => v !== action.resp.id)
+                })
             }
 
             return state
@@ -336,19 +320,20 @@ export default (state = initialState, action) => {
             })
 
             // sockets are faster then the success callback,
-            // so we need to remove pending messages here,
-            // to avoid `jumping` messages
+            // so we need to remove pending messages here to avoid `jumping` messages
             if (messagesDifference) {
-                const newMessages = newState.get('messages').slice(-messagesDifference)
-
-                newMessages.forEach((message) => {
-                    const pendingMessages = newState.getIn(['_internal', 'pendingMessages'], [])
+                // search for matching pending message from last messages to first ones
+                const currentMessages = newState.get('messages').reverse()
+                currentMessages.forEach((message) => {
+                    const pendingMessages = newState.getIn(['_internal', 'pendingMessages']) || fromJS([])
                     // pending messages don't have an id we can match on
                     const pendingIndex = getPendingMessageIndex(pendingMessages.toJS(), message.toJS())
 
                     if (~pendingIndex) {
                         // remove pending message
-                        newState = newState.updateIn(['_internal', 'pendingMessages'], messages => messages.splice(pendingIndex, 1))
+                        newState = newState.updateIn(['_internal', 'pendingMessages'], (messages) => {
+                            return messages.splice(pendingIndex, 1)
+                        })
                     }
                 })
             }
@@ -369,15 +354,11 @@ export default (state = initialState, action) => {
         }
 
         case types.DELETE_TICKET_PENDING_MESSAGE: {
-            return state.updateIn([
-                '_internal',
-                'pendingMessages'
-            ], messages => {
+            return state.updateIn(['_internal', 'pendingMessages'], (messages) => {
                 let messageIndex = messages
-                    .findIndex(message => message.getIn([
-                        '_internal',
-                        'id'
-                    ]) === action.message.getIn(['_internal', 'id']))
+                    .findIndex((message) => {
+                        return message.getIn(['_internal', 'id']) === action.message.getIn(['_internal', 'id'])
+                    })
 
                 if (~messageIndex) {
                     return messages.splice(messageIndex, 1)
