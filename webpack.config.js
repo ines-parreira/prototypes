@@ -23,7 +23,7 @@ const devServer = {
     disableHostCheck: !__PRODUCTION__
 }
 
-const cssOnlyPackages = ['semantic-ui', 'bootstrap', 'font-awesome']
+const cssOnlyPackages = ['bootstrap', 'font-awesome']
 const vendors = Object.keys(pkg.dependencies).filter(m => !cssOnlyPackages.includes(m))
 
 module.exports = (env = {}) => {
