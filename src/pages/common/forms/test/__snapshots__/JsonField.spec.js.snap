@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JsonField display invalid message 1`] = `
+<ml
+  className=""
+  color=""
+  tag="div"
+>
+  <div
+    className=""
+  >
+    <ml
+      color="danger"
+      tag="div"
+    >
+      <div
+        className="controls"
+      >
+        <ei
+          className="form-control-danger"
+          id="id-input-2"
+          onChange={[Function]}
+          rows="6"
+          tag="p"
+          type="textarea"
+          value="{}"
+        />
+        <Errors
+          tag={[Function]}
+        >
+          Invalid JSON : changes will not be saved until the JSON is fixed
+        </Errors>
+      </div>
+    </ml>
+  </div>
+</ml>
+`;
+
+exports[`JsonField should render input 1`] = `
+<JsonField
+  onChange={[Function]}
+  type="text"
+  value="value"
+>
+  <ml
+    className=""
+    color=""
+    tag="div"
+  >
+    <div
+      className="form-group"
+    >
+      <div
+        className=""
+      >
+        <ml
+          color=""
+          tag="div"
+        >
+          <div
+            className="form-group"
+          >
+            <div
+              className="controls"
+            >
+              <ei
+                className=""
+                id="id-input-1"
+                onChange={[Function]}
+                rows="6"
+                tag="p"
+                type="textarea"
+                value="\\"value\\""
+              >
+                <textarea
+                  className="form-control"
+                  id="id-input-1"
+                  onChange={[Function]}
+                  rows="6"
+                  value="\\"value\\""
+                />
+              </ei>
+            </div>
+          </div>
+        </ml>
+      </div>
+    </div>
+  </ml>
+</JsonField>
+`;

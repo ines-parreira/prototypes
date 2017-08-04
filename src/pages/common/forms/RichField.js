@@ -167,7 +167,7 @@ export default class RichField extends InputField {
             <div
                 className={classnames('rich-textarea-wrapper', {
                     'display-only': displayOnly,
-                    'alert alert-warning': alertMode === 'warning'
+                    'alert-warning': alertMode === 'warning'
                 })}
             >
                 <div
@@ -181,12 +181,8 @@ export default class RichField extends InputField {
                     onDrop={() => this.setState({isDragging: false})}
                 >
                     {
-                        alertMode
-                            ? (
-                                <div style={{
-                                    paddingTop: '10px',
-                                    textAlign: 'center'
-                                }}>
+                        alertMode ? (
+                                <div className="pt-1">
                                     {alertText}
                                 </div>
                             ) : (

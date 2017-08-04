@@ -1,0 +1,168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BooleanField should render a basic boolean input 1`] = `
+<ml
+  check={true}
+  className=""
+  color=""
+  tag="div"
+>
+  <Hl
+    check={true}
+    className="control-label"
+    htmlFor="id-input-2"
+    tag="label"
+  >
+    <ei
+      checked="value"
+      className="form-check-input"
+      id="id-input-2"
+      onChange={[Function]}
+      placeholder="placeholder"
+      tag="p"
+      type="text"
+    />
+    <span>
+      label
+    </span>
+  </Hl>
+</ml>
+`;
+
+exports[`BooleanField should render a help text 1`] = `
+<ml
+  check={true}
+  className=""
+  color=""
+  tag="div"
+>
+  <Hl
+    check={true}
+    className="control-label"
+    htmlFor="id-input-4"
+    tag="label"
+  >
+    <ei
+      checked="value"
+      className="form-check-input"
+      id="id-input-4"
+      onChange={[Function]}
+      placeholder="placeholder"
+      tag="p"
+      type="text"
+    />
+    <span>
+      label
+    </span>
+  </Hl>
+  <vl
+    color="muted"
+    tag="small"
+  >
+    help text
+  </vl>
+</ml>
+`;
+
+exports[`BooleanField should render a required input 1`] = `
+<ml
+  check={true}
+  className="undefined"
+  color=""
+  tag="div"
+>
+  <Hl
+    check={true}
+    className="control-label"
+    htmlFor="id-input-3"
+    tag="label"
+  >
+    <ei
+      checked="value"
+      className="form-check-input"
+      id="id-input-3"
+      onChange={[Function]}
+      placeholder="placeholder"
+      required={true}
+      tag="p"
+      type="text"
+    />
+    <span>
+      label
+    </span>
+  </Hl>
+</ml>
+`;
+
+exports[`BooleanField should render inline 1`] = `
+<ml
+  check={true}
+  className="d-inline-block"
+  color=""
+  tag="div"
+>
+  <Hl
+    check={true}
+    className="control-label"
+    htmlFor="id-input-6"
+    tag="label"
+  >
+    <ei
+      checked="value"
+      className="form-check-input"
+      id="id-input-6"
+      onChange={[Function]}
+      placeholder="placeholder"
+      tag="p"
+      type="text"
+    />
+    <span>
+      label
+    </span>
+  </Hl>
+</ml>
+`;
+
+exports[`BooleanField should render the input with an error 1`] = `
+<ml
+  check={true}
+  className=""
+  color="danger"
+  tag="div"
+>
+  <Hl
+    check={true}
+    className="control-label"
+    htmlFor="id-input-5"
+    tag="label"
+  >
+    <ei
+      checked="value"
+      className="form-check-input form-control-danger"
+      id="id-input-5"
+      onChange={[Function]}
+      placeholder="placeholder"
+      tag="p"
+      type="text"
+    />
+    <span>
+      label
+    </span>
+  </Hl>
+  <Errors
+    tag={[Function]}
+  >
+    the value is wrong
+  </Errors>
+</ml>
+`;
+
+exports[`BooleanField should use default props 1`] = `
+Object {
+  "label": "label",
+  "onChange": [Function],
+  "placeholder": "placeholder",
+  "type": "checkbox",
+  "value": "value",
+}
+`;

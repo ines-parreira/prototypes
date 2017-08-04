@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Errors custom tag 1`] = `
+<div>
+  text
+</div>
+`;
+
+exports[`Errors render children 1`] = `
+<cl
+  tag="div"
+>
+  text
+</cl>
+`;
+
+exports[`Errors should use default props 1`] = `
+Object {
+  "tag": [Function],
+}
+`;

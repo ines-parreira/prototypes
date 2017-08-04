@@ -1,16 +1,26 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {shallow, mount} from 'enzyme'
+import _noop from 'lodash/noop'
 
 import InputField from '../InputField'
 
-describe('InputField.spec.js component', () => {
+describe('InputField', () => {
+    const minProps = {
+        value: 'value',
+        onChange: _noop,
+    }
+
+    it('should use default props', () => {
+        const component = mount(<InputField {...minProps} />)
+        expect(component.find('InputField').props()).toMatchSnapshot()
+    })
+
     it('should render a basic text input', () => {
-        const component = mount(
+        const component = shallow(
             <InputField
+                {...minProps}
                 type="text"
                 label="label"
-                value="value"
-                onChange={() => {}}
                 placeholder="placeholder"
             />
         )
@@ -18,13 +28,9 @@ describe('InputField.spec.js component', () => {
     })
 
     it('should render a required text input', () => {
-        const component = mount(
+        const component = shallow(
             <InputField
-                type="text"
-                label="label"
-                value="value"
-                onChange={() => {}}
-                placeholder="placeholder"
+                {...minProps}
                 required
             />
         )
@@ -32,25 +38,29 @@ describe('InputField.spec.js component', () => {
     })
 
     it('should render an inline text input', () => {
-        const component = mount(
+        const component = shallow(
             <InputField
-                type="text"
-                label="label"
-                value="value"
-                placeholder="placeholder"
+                {...minProps}
                 inline
             />
         )
         expect(component).toMatchSnapshot()
     })
 
-    it('should render an inline required text input', () => {
-        const component = mount(
+    it('should render a help text', () => {
+        const component = shallow(
             <InputField
-                type="text"
-                label="label"
-                value="value"
-                placeholder="placeholder"
+                {...minProps}
+                help="help text"
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render an inline required text input', () => {
+        const component = shallow(
+            <InputField
+                {...minProps}
                 required
                 inline
             />
@@ -59,14 +69,10 @@ describe('InputField.spec.js component', () => {
     })
 
     it('should render a text input with a right addon', () => {
-        const component = mount(
+        const component = shallow(
             <InputField
-                type="text"
-                label="label"
-                value="value"
-                placeholder="placeholder"
+                {...minProps}
                 rightAddon="@rightaddon.io"
-                inline
             />
         )
         expect(component).toMatchSnapshot()
@@ -77,10 +83,8 @@ describe('InputField.spec.js component', () => {
 
         const component = mount(
             <InputField
-                type="text"
-                label="label"
+                {...minProps}
                 value={valueStorage}
-                placeholder="placeholder"
                 onChange={(value) => {valueStorage = value}}
             />
         )
@@ -93,25 +97,19 @@ describe('InputField.spec.js component', () => {
     })
 
     it('should render a hidden text input', () => {
-        const component = mount(
+        const component = shallow(
             <InputField
-                type="text"
-                label="label"
-                value="value"
-                placeholder="placeholder"
+                {...minProps}
                 hidden
             />
         )
         expect(component).toMatchSnapshot()
     })
 
-    it('should render a text input with an error', () => {
-        const component = mount(
+    it('should render the input with an error', () => {
+        const component = shallow(
             <InputField
-                type="text"
-                label="label"
-                value="value"
-                placeholder="placeholder"
+                {...minProps}
                 error="the value is wrong"
             />
         )

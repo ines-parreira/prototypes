@@ -276,10 +276,8 @@ class TicketReplyEditor extends React.Component {
             RESTRAINED_SOURCE_TYPES.includes(this.props.newMessage.getIn(['newMessage', 'source', 'type']))
             && this.props.newMessage.getIn(['newMessage', 'attachments']).size >= 1
 
-        const alertText = cantWriteTextBecauseOfAttachments
-            ? 'When using Facebook, you can either send a text message, or an attachment, ' +
+        const alertText = 'When using Facebook, you can either send a text message, or an attachment, ' +
             'but not both at the same time. If you want to write a message, remove the attachment first.'
-            : null
 
         return (
             <div className="TicketReplyEditor">
@@ -298,7 +296,7 @@ class TicketReplyEditor extends React.Component {
                     canDropFiles
                     readOnly={newMessage.getIn(['_internal', 'loading', 'submitMessage']) || cantWriteTextBecauseOfAttachments}
                     toolbarProps={toolbarProps}
-                    alertMode={cantWriteTextBecauseOfAttachments ? 'warning' : null}
+                    alertMode={cantWriteTextBecauseOfAttachments && 'warning'}
                     alertText={alertText}
                     keyBindingFn={this._keyBindingFn}
                     handleKeyCommand={this._handleKeyCommand}

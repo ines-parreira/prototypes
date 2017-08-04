@@ -1,0 +1,168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileField should display loading when loading 1`] = `
+<ml
+  className=""
+  color=""
+  tag="div"
+>
+  <div
+    className=""
+  >
+    <div
+      className="d-flex align-center"
+    >
+      <div>
+        <img
+          src="value"
+        />
+      </div>
+      <ei
+        color="secondary"
+        disabled={true}
+        tag="label"
+      >
+        <div>
+          <i
+            className="fa fa-fw fa-circle-o-notch fa-spin mr-2"
+          />
+          Uploading...
+        </div>
+        <ei
+          disabled={true}
+          hidden={true}
+          id="id-input-5"
+          onChange={[Function]}
+          tag="p"
+          type="file"
+        />
+      </ei>
+    </div>
+  </div>
+</ml>
+`;
+
+exports[`FileField should not render preview 1`] = `
+<ml
+  className=""
+  color=""
+  tag="div"
+>
+  <div
+    className=""
+  >
+    <div
+      className="d-flex align-center"
+    >
+      <ei
+        color="secondary"
+        disabled={false}
+        tag="label"
+      >
+        <div>
+          Select a file...
+        </div>
+        <ei
+          disabled={false}
+          hidden={true}
+          id="id-input-4"
+          onChange={[Function]}
+          previewUrl="url"
+          tag="p"
+          type="file"
+        />
+      </ei>
+    </div>
+  </div>
+</ml>
+`;
+
+exports[`FileField should render a basic file input 1`] = `
+<ml
+  className=""
+  color=""
+  tag="div"
+>
+  <div
+    className=""
+  >
+    <div
+      className="d-flex align-center"
+    >
+      <div>
+        <img
+          src="value"
+        />
+      </div>
+      <ei
+        color="secondary"
+        disabled={false}
+        tag="label"
+      >
+        <div>
+          Select a file...
+        </div>
+        <ei
+          disabled={false}
+          hidden={true}
+          id="id-input-2"
+          onChange={[Function]}
+          tag="p"
+          type="file"
+        />
+      </ei>
+    </div>
+  </div>
+</ml>
+`;
+
+exports[`FileField should render preview 1`] = `
+<ml
+  className=""
+  color=""
+  tag="div"
+>
+  <div
+    className=""
+  >
+    <div
+      className="d-flex align-center"
+    >
+      <div>
+        <img
+          src="value"
+        />
+      </div>
+      <ei
+        color="secondary"
+        disabled={false}
+        tag="label"
+      >
+        <div>
+          Select a file...
+        </div>
+        <ei
+          disabled={false}
+          hidden={true}
+          id="id-input-3"
+          onChange={[Function]}
+          previewUrl="url"
+          tag="p"
+          type="file"
+        />
+      </ei>
+    </div>
+  </div>
+</ml>
+`;
+
+exports[`FileField should use default props 1`] = `
+Object {
+  "noPreview": false,
+  "onChange": [Function],
+  "placeholder": "Select a file...",
+  "returnFiles": false,
+  "type": "file",
+  "value": "value",
+}
+`;
