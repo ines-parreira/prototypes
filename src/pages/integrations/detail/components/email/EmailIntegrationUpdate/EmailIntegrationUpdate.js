@@ -14,6 +14,8 @@ import {
     InputGroupButton,
     Alert,
     Input,
+    FormGroup,
+    Label
 } from 'reactstrap'
 
 import Loader from '../../../../../common/components/Loader'
@@ -24,6 +26,7 @@ import {GMAIL_IMPORTED_THREADS} from '../../../../../../config'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import InputField from '../../../../../common/forms/InputField'
+import BooleanField from '../../../../../common/forms/BooleanField'
 
 class EmailIntegrationUpdate extends React.Component {
     constructor(props) {
@@ -32,7 +35,7 @@ class EmailIntegrationUpdate extends React.Component {
         this.state = Object.assign({
             isCopied: false,
             dirty: false,
-        }, this._getForm(props.integration))
+        }, this._getIntegrationValues(props.integration))
     }
 
     componentDidMount() {
@@ -57,15 +60,32 @@ class EmailIntegrationUpdate extends React.Component {
 
         // populating the form when updating an integration
         if (!this.isInitialized && !loading.get('integration')) {
-            this.setState(this._getForm(integration))
+            this.setState(this._getIntegrationValues(integration))
             this.isInitialized = true
         }
     }
 
-    _getForm(integration) {
-        return {
+    _getIntegrationValues = (integration) => {
+        const data = {
             name: integration.get('name', '')
         }
+
+        if (integration.get('type') === 'gmail') {
+            data.use_gmail_categories = integration.getIn(['meta', 'use_gmail_categories']) || false
+        }
+        return data
+    }
+
+    _getFormValues = () => {
+        const {integration} = this.props
+        let form
+
+        form = integration.set('name', this.state.name)
+
+        if (integration.get('type') === 'gmail') {
+            form = form.setIn(['meta', 'use_gmail_categories'], this.state.use_gmail_categories)
+        }
+        return form
     }
 
     _clipboardCopy = (button) => {
@@ -87,14 +107,11 @@ class EmailIntegrationUpdate extends React.Component {
         const {updateOrCreateIntegration} = this.props.actions
 
         logEvent('Save email integration')
-        return updateOrCreateIntegration(fromJS({
-            id: this.props.integration.get('id'),
-            name: this.state.name
-        })).then((res) => {
-            this.setState({dirty: false})
-
-            return res
-        })
+        return updateOrCreateIntegration(this._getFormValues())
+            .then((res) => {
+                this.setState({dirty: false})
+                return res
+            })
     }
 
     _importEmails = () => {
@@ -236,6 +253,7 @@ class EmailIntegrationUpdate extends React.Component {
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === 'gmail'
+        const {name, use_gmail_categories} = this.state
 
         return (
             <div className="mt-4">
@@ -250,13 +268,27 @@ class EmailIntegrationUpdate extends React.Component {
                         placeholder={`${_capitalize(domain)} Support`}
                         required
                         help="The name that customers will see when they receive emails from you"
-                        value={this.state.name}
+                        value={name}
                         onChange={value => this.setState({
                             dirty: true,
                             name: value
                         })}
                     />
-
+                    {
+                        isGmail && (
+                            <FormGroup>
+                                <BooleanField
+                                    name="use_gmail_categories"
+                                    type="checkbox"
+                                    label="Tag Gorgias tickets with Gmail categories (Social, Promotions, Updates, Forums)"
+                                    value={use_gmail_categories}
+                                    onChange={value => this.setState({
+                                        dirty: true,
+                                        use_gmail_categories: value })}
+                                />
+                            </FormGroup>
+                        )
+                    }
                     <div>
                         <Button
                             type="submit"
