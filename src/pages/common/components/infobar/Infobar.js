@@ -4,7 +4,9 @@ import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {Button, UncontrolledTooltip} from 'reactstrap'
+
 import {areSourcesReady} from './utils'
+import {isCurrentlyOnTicket} from '../../../../utils'
 
 import * as infobarActions from '../../../../state/infobar/actions'
 import * as usersActions from '../../../../state/users/actions'
@@ -197,20 +199,25 @@ export default class Infobar extends React.Component {
     }
 
     _renderUserActions = () => {
+        const ticketId = this.props.sources.getIn(['ticket', 'id'])
         const requester = this.props.sources.getIn(['ticket', 'requester', 'name'])
         const newRequester = this.state.selectedUser.get('name')
 
         return (
             <div className="pull-right hidden-sm-down">
-                <ConfirmButton
-                    className="mr-2"
-                    placement="left"
-                    title="Change ticket requester"
-                    content={`Are you use you want to set ${newRequester} as the requester instead of ${requester}?`}
-                    confirm={this._setRequester}
-                >
-                    Set as requester
-                </ConfirmButton>
+                {
+                    isCurrentlyOnTicket(ticketId) && ( // do not display on user profile
+                        <ConfirmButton
+                            className="mr-2"
+                            placement="left"
+                            title="Change ticket requester"
+                            content={`Are you use you want to set ${newRequester} as the requester instead of ${requester}?`}
+                            confirm={this._setRequester}
+                        >
+                            Set as requester
+                        </ConfirmButton>
+                    )
+                }
 
                 <Button
                     type="submit"
