@@ -15,7 +15,6 @@ import {
     Alert,
     Input,
     FormGroup,
-    Label
 } from 'reactstrap'
 
 import Loader from '../../../../../common/components/Loader'
