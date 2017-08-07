@@ -2,8 +2,6 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import configureStore from '../../../../../../store/configureStore'
-
 import MacroList from '../MacroList'
 
 describe('MacroList component', () => {
@@ -26,9 +24,8 @@ describe('MacroList component', () => {
                 macros={macros}
                 currentMacro={currentMacro}
                 disableExternalActions={false}
-                store={configureStore()}
             />
-        ).find('MacroList').dive() // dive in connect()ed component
+        )
     })
 
     it('should render the macro list', () => {

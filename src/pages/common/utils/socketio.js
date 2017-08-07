@@ -9,6 +9,8 @@ import * as infobarActions from '../../../state/infobar/actions'
 import * as usersActions from '../../../state/users/actions'
 import * as viewsActions from '../../../state/views/actions'
 
+import * as macroConstants from '../../../state/macro/constants'
+
 const socket = socketio.connect(window.WS_URL, {transports: ['websocket']})
 
 /**
@@ -136,6 +138,21 @@ export default class SocketIO {
                 this._handleViewsCount(json)
                 break
             }
+            case 'macro-created': {
+                log('Macro created', json)
+                this._handleMacroCreated(json.macro)
+                break
+            }
+            case 'macro-updated': {
+                log('Macro updated', json)
+                this._handleMacroUpdated(json.macro)
+                break
+            }
+            case 'macro-deleted': {
+                log('Macro deleted', json)
+                this._handleMacroDeleted(json.macro)
+                break
+            }
             default:
                 log('Received json', json)
                 return
@@ -154,10 +171,7 @@ export default class SocketIO {
      * @type {Function}
      * @private
      */
-    _mergeUser = _throttle((json) => {
-        // merge updated user with requester of ticket
-        this._dispatch(ticketActions.mergeRequester(json))
-    }, 100)
+    _mergeUser = _throttle((json) => this._dispatch(ticketActions.mergeRequester(json)), 100)
 
     /**
      * Update current location of agents in reducer
@@ -180,6 +194,12 @@ export default class SocketIO {
     _handleExecutedAction = _throttle(json => this._dispatch(infobarActions.handleExecutedAction(json)), 100)
 
     _handleViewsCount = _throttle(json => this._dispatch(viewsActions.handleViewsCount(json)), 100)
+
+    _handleMacroCreated = _throttle(resp => this._dispatch({type: macroConstants.CREATE_MACRO_SUCCESS, resp}), 100)
+
+    _handleMacroUpdated = _throttle(resp => this._dispatch({type: macroConstants.UPDATE_MACRO_SUCCESS, resp}), 100)
+
+    _handleMacroDeleted = _throttle(resp => this._dispatch({type: macroConstants.DELETE_MACRO_SUCCESS, resp}), 100)
 
     _sendTicketViewed = (ticketId) => {
         // if ticket is updated and user is currently on it, send a 'ticket viewed' event

@@ -44,3 +44,5 @@ export function generateDefaultAction(actionType) {
 
     return ret
 }
+
+export const orderByName = (macros) => macros.sortBy((m) => m.get('name'))

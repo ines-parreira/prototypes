@@ -43,9 +43,9 @@ class TicketMacros extends React.Component {
     }
 
     render() {
-        const {macros, newMessageType, openModal, searchedTerm, setMacrosVisible} = this.props
+        const {macros, newMessageType, openModal, searchQuery, setMacrosVisible} = this.props
         const items = macros.get('items')
-        const macro = items.get(this.props.selectedMacroId) || fromJS({})
+        const macro = items.find(macro => macro.get('id') === this.props.selectedMacroId) || fromJS({})
         const macrosVisible = macros.get('visible')
 
         let content = (
@@ -55,17 +55,9 @@ class TicketMacros extends React.Component {
             >
                 <div
                     className="macro-list"
-                    style={{width: '25%'}}
+                    style={{width: '35%'}}
                 >
-                    {
-                        this.props.isLoading ? (
-                                <div className="macro-item disabled">
-                                    <i>Searching...</i>
-                                </div>
-                            ) : (
-                                items.map(this.renderMacroListItem).toList()
-                            )
-                    }
+                    {items.map(this.renderMacroListItem)}
                 </div>
                 <div
                     className="macro-preview-container"
@@ -90,8 +82,8 @@ class TicketMacros extends React.Component {
                 <div className="no-result-container">
                     <p>
                         {
-                            !!searchedTerm ? (
-                                    <span>No macro for <b>{searchedTerm}</b></span>
+                            !!searchQuery ? (
+                                    <span>No macro for <b>{searchQuery}</b></span>
                                 ) : 'You don\'t have any macros yet'
                         }
                     </p>
@@ -146,8 +138,7 @@ TicketMacros.propTypes = {
     openModal: PropTypes.func.isRequired,
     newMessageType: PropTypes.string.isRequired,
     setMacrosVisible: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    searchedTerm: PropTypes.string,
+    searchQuery: PropTypes.string,
     selectedMacroId: PropTypes.number,
     setSelectedMacroId: PropTypes.func.isRequired,
 }

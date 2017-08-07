@@ -17,7 +17,6 @@ import * as MacroActions from '../../../state/macro/actions'
 import * as UserActions from '../../../state/users/actions'
 import * as TagActions from '../../../state/tags/actions'
 import * as SettingsActions from '../../../state/settings/actions'
-import MacroContainer from '../common/macros/MacroContainer'
 import SocketIO from '../../common/utils/socketio'
 
 import * as newMessageActions from '../../../state/newMessage/actions'
@@ -108,7 +107,6 @@ export default class TicketDetailContainer extends React.Component {
     }
 
     componentWillMount() {
-        this.props.actions.macro.fetchMacros()
         this.props.actions.tag.fetchTags()
         this.props.actions.user.fetchUsers(['agent', 'admin'])
         this.props.actions.ticket.clearTicket()
@@ -396,7 +394,6 @@ export default class TicketDetailContainer extends React.Component {
                         view={this.props.activeView}
                         setStatus={this._setStatus}
                     />
-                    <MacroContainer />
                 </div>
             </DocumentTitle>
         )

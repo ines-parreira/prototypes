@@ -3,16 +3,16 @@ import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {Input} from 'reactstrap'
-import _debounce from 'lodash/debounce'
 
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
 import {onlySignature} from '../../../../../state/newMessage/responseUtils'
 
-import * as macroActions from '../../../../../state/macro/actions'
+import * as search from '../../../../../state/macro/search'
 import * as ticketActions from '../../../../../state/ticket/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getPreferences} from './../../../../../state/currentUser/selectors'
+import MacroContainer from '../../../common/macros/MacroContainer'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
 
@@ -25,25 +25,29 @@ export class TicketReplyArea extends React.Component {
         const selectedMacroId = firstMacro ? firstMacro.get('id') : null
 
         this.state = {
-            isSearching: false,
-            searchTerm: '',
+            searchQuery: '',
             searchedMacrosIds: fromJS([]),
             selectedMacroId,
         }
     }
 
     componentDidMount() {
+        search.populate(this.props.macros.get('items'))
+
         if (this.props.newMessage.getIn(CONTENT_STATE_PATH) === null) {
             this._setMacrosVisible(this.props.newMessageType === 'email')
         }
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const items = this._getMacros()
+        const macrosIds = this._getMacrosIds()
 
-        // when macros change, select first one
-        if (!items.isEmpty() && !items.equals(this._getMacros(prevProps, prevState))) {
-            this.setState({selectedMacroId: items.first().get('id')})
+        // when macros change because of a search then select first one
+        const shouldSelectFirstMacro = !macrosIds.isEmpty()
+            && this.state.searchQuery !== prevState.searchQuery
+
+        if (shouldSelectFirstMacro) {
+            this.setState({selectedMacroId: macrosIds.first()})
         }
     }
 
@@ -85,33 +89,29 @@ export class TicketReplyArea extends React.Component {
     }
 
     _getMacros = (props = this.props, state = this.state) => {
-        const macros = props.macros.get('items', fromJS([]))
-
-        if (state.searchTerm && !state.isSearching) {
-            return macros.filter(macro => state.searchedMacrosIds.includes(macro.get('id')))
+        const macros = props.macros.get('items')
+        if (state.searchQuery) {
+            return state.searchedMacrosIds.map((macroId) =>
+                macros.find((m) =>
+                    m.get('id').toString() === macroId
+                )
+            )
         }
-
         return macros
     }
 
-    _setMacrosVisible = v => this.props.actions.macro.setMacrosVisible(v)
-
-    _handleSearch = (term) => {
-        this.setState({searchTerm: term})
-        if (!!term) {
-            this.setState({isSearching: true})
-            this._debouncedSearch(term)
-        }
+    _getMacrosIds = (props = this.props, state = this.state) => {
+        return this._getMacros(props, state).map((macro) => macro.get('id')).toList()
     }
 
-    _debouncedSearch = _debounce((term) => {
-        return this.props.searchMacros(term).then((macros) => {
-            this.setState({
-                isSearching: false,
-                searchedMacrosIds: macros.map(macro => macro.get('id')),
-            })
-        })
-    }, 300)
+    _setMacrosVisible = (v) => this.props.actions.macro.setMacrosVisible(v)
+
+    _handleSearch = (query) => {
+        this.setState({searchQuery: query})
+        if (!!query) {
+            this.setState({searchedMacrosIds: fromJS(search.search(query))})
+        }
+    }
 
     // scroll in macro list until currently selected macro
     _scrollMacrosListToCurrent = () => {
@@ -122,7 +122,7 @@ export class TicketReplyArea extends React.Component {
 
     _handleSearchKeyDown = (e) => {
         const macros = this._getMacros()
-        const macrosIds = macros.map(macro => macro.get('id')).toList()
+        const macrosIds = this._getMacrosIds()
         const indexCurrentMacro = macrosIds.indexOf(this.state.selectedMacroId)
 
         if (e.key === 'ArrowDown') {
@@ -143,7 +143,7 @@ export class TicketReplyArea extends React.Component {
 
         if (e.key === 'Enter') {
             e.preventDefault()
-            const macro = macros.get(this.state.selectedMacroId)
+            const macro = macros.find(macro => macro.get('id') === this.state.selectedMacroId)
             this._applyMacro(macro)
         }
     }
@@ -165,21 +165,11 @@ export class TicketReplyArea extends React.Component {
                     <Input
                         tabIndex="3"
                         onFocus={() => this._setMacrosVisible(true)}
-                        onChange={e => this._handleSearch(e.target.value)}
+                        onChange={(e) => this._handleSearch(e.target.value)}
                         onKeyDown={this._handleSearchKeyDown}
                         className="shortcuts-enable"
-                        placeholder="Search macro by title, text, tag, etc..."
+                        placeholder="Search macros by name, tags or body..."
                         autoFocus={macrosVisible && !isNewTicket}
-                    />
-                    <i
-                        className={classnames('fa fa-fw fa-circle-o-notch fa-spin text-faded', {
-                            hidden: !this.state.isSearching,
-                        })}
-                        style={{
-                            position: 'absolute',
-                            right: '8px',
-                            top: '12px',
-                        }}
                     />
                 </div>
 
@@ -189,10 +179,9 @@ export class TicketReplyArea extends React.Component {
                         applyMacro={this.props.applyMacro}
                         openModal={this.props.openModal}
                         setMacrosVisible={this._setMacrosVisible}
-                        isLoading={this.state.isSearching}
-                        searchedTerm={this.state.searchTerm}
+                        searchQuery={this.state.searchQuery}
                         selectedMacroId={this.state.selectedMacroId}
-                        setSelectedMacroId={selectedMacroId => this.setState({selectedMacroId})}
+                        setSelectedMacroId={(selectedMacroId) => this.setState({selectedMacroId})}
                     />
 
                     <TicketReply
@@ -206,6 +195,10 @@ export class TicketReplyArea extends React.Component {
                         autoFocus={!macrosVisible}
                     />
                 </div>
+
+                <MacroContainer
+                    selectedMacroIdOnOpen={this.state.selectedMacroId}
+                />
             </div>
         )
     }
@@ -223,7 +216,6 @@ TicketReplyArea.propTypes = {
     preferences: PropTypes.object.isRequired,
     newMessage: PropTypes.object.isRequired,
     newMessageType: PropTypes.string.isRequired,
-    searchMacros: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -236,7 +228,6 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
     applyMacro: ticketActions.applyMacro,
-    searchMacros: macroActions.searchMacros,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyArea)

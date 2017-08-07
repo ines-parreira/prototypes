@@ -1,19 +1,8 @@
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 
 import * as types from './constants'
+import * as search from './search'
 import {generateDefaultAction} from './utils'
-import {toImmutable} from '../../utils'
-
-export const macroListToMap = (macros) => {
-    macros = toImmutable(macros)
-    let items = Map()
-
-    macros.forEach((macro) => {
-        items = items.set(macro.get('id'), fromJS(macro))
-    })
-
-    return items.sortBy(i => i.get('usage', 0)).reverse()
-}
 
 export const macroInitial = fromJS({
     id: 'new',
@@ -26,12 +15,10 @@ export const macroInitial = fromJS({
 const macrosInitial = fromJS({
     visible: true,
     isModalOpen: false,
-    items: {}
+    items: []
 })
 
 export default (state = macrosInitial, action) => {
-    let newState = state
-
     switch (action.type) {
         case types.CLOSE_MODAL:
             return state.set('isModalOpen', false)
@@ -40,20 +27,29 @@ export default (state = macrosInitial, action) => {
             return state.set('isModalOpen', true)
 
         case types.CREATE_MACRO_SUCCESS:
+            search.add(action.resp)
+            return state.update('items', (items) => items.push(fromJS(action.resp)))
+
         case types.UPDATE_MACRO_SUCCESS:
-            return state.setIn(['items', action.resp.id], fromJS(action.resp))
+            search.update(action.resp)
+            return state.update('items', (items) => items.map((m) => {
+                if (m.get('id') === action.resp.id) {
+                    return fromJS(action.resp)
+                }
+                return m
+            }))
 
         case types.DELETE_MACRO_SUCCESS:
-            return state.set('items', newState.get('items').delete(action.macroId))
+            search.remove(action.resp)
+            return state.update('items', (items) => items.filter((m) => m.get('id') !== action.resp.id))
 
         case types.SET_MACROS_VISIBILITY:
             return state.set('visible', action.visible)
 
         case types.FETCH_MACRO_LIST_SUCCESS: {
-            const macros = action.resp.data || []
-            return state.merge({
-                items: macroListToMap(macros)
-            })
+            const macros = fromJS(action.resp.data || [])
+            search.populate(macros, true)
+            return state.set('items', macros)
         }
 
         default:

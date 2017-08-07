@@ -26,6 +26,7 @@ export default class MacroModal extends React.Component {
 
     constructor(props) {
         super(props)
+
         this.state = {
             modal: false,
             isCreatingMacro: false,
@@ -45,12 +46,17 @@ export default class MacroModal extends React.Component {
             this._setActions(nextProps.currentMacro.get('actions'))
         }
 
+        // if selected macro changes, initialize actions again
         if (!this.props.currentMacro.isEmpty() && !nextProps.currentMacro.isEmpty()) {
-            // if selected macro changes, initialize actions again
             if (nextProps.currentMacro.get('id') !== this.props.currentMacro.get('id')) {
                 this._setName(nextProps.currentMacro.get('name'))
                 this._setActions(nextProps.currentMacro.get('actions'))
             }
+        }
+
+        // if we don't have any macros anymore (have been deleted), close modal
+        if (!this.props.macros.isEmpty() && nextProps.macros.isEmpty()) {
+            this._toggle()
         }
     }
 
@@ -75,7 +81,7 @@ export default class MacroModal extends React.Component {
 
     _createMacro = () => {
         return this.props.actions.macro.createMacro(this.props.currentMacro.set('actions', this.state.actions).set('name', this.state.name))
-            .then(({resp}) => {
+            .then((resp) => {
                 this._handleClickItem(resp.id)
             })
     }

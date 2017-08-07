@@ -1,29 +1,21 @@
 import React, {PropTypes} from 'react'
-import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {Input} from 'reactstrap'
-import _debounce from 'lodash/debounce'
 
 import {getActionTemplate} from '../../../../../utils'
+import * as search from '../../../../../state/macro/search'
 
-import * as macroActions from '../../../../../state/macro/actions'
-
-@connect(null, {
-    searchMacros: macroActions.searchMacros,
-})
 export default class MacroList extends React.Component {
     static propTypes = {
         macros: PropTypes.object.isRequired,
         currentMacro: PropTypes.object,
         disableExternalActions: PropTypes.bool,
         handleClickItem: PropTypes.func.isRequired,
-        searchMacros: PropTypes.func.isRequired,
     }
 
     state = {
-        isSearching: false,
-        searchTerm: '',
+        searchQuery: '',
         searchedMacrosIds: fromJS([]),
     }
 
@@ -41,29 +33,22 @@ export default class MacroList extends React.Component {
     }
 
     _getMacros = (props = this.props, state = this.state) => {
-        if (state.searchTerm && !state.isSearching) {
-            return props.macros.filter(macro => state.searchedMacrosIds.includes(macro.get('id')))
+        if (state.searchQuery) {
+            return state.searchedMacrosIds.map((macroId) =>
+                props.macros.find((m) =>
+                    m.get('id').toString() === macroId
+                )
+            )
         }
-
         return props.macros
     }
 
-    _handleSearch = (term) => {
-        this.setState({searchTerm: term})
-        if (!!term) {
-            this.setState({isSearching: true})
+    _handleSearch = (query) => {
+        this.setState({searchQuery: query})
+        if (!!query) {
+            this.setState({searchedMacrosIds: fromJS(search.search(query))})
         }
-        return this._debouncedSearch(term)
     }
-
-    _debouncedSearch = _debounce((term) => {
-        return this.props.searchMacros(term).then((macros) => {
-            this.setState({
-                isSearching: false,
-                searchedMacrosIds: macros.map(macro => macro.get('id')),
-            })
-        })
-    }, 200)
 
     _isMacroDisabled = (macro) => {
         if (!this.props.disableExternalActions) {
@@ -89,52 +74,34 @@ export default class MacroList extends React.Component {
                         }}
                     >
                         <Input
-                            value={this.state.searchTerm}
+                            value={this.state.searchQuery}
                             onChange={e => this._handleSearch(e.target.value)}
                             className="shortcuts-enable"
-                            placeholder="Search a macro..."
-                        />
-                        <i
-                            className={classnames('fa fa-fw fa-circle-o-notch fa-spin text-faded', {
-                                hidden: !this.state.isSearching,
-                            })}
-                            style={{
-                                position: 'absolute',
-                                right: '8px',
-                                top: '9px',
-                            }}
+                            placeholder="Search macros by name, tags or body..."
                         />
                     </div>
-                    {
-                        this.state.isSearching ? (
-                                <div className="macro-item m-0 disabled">
-                                    <i>Searching...</i>
-                                </div>
-                            ) : (
-                                macros.map(macro => {
-                                    const isDisabled = this._isMacroDisabled(macro)
+                    {macros.map((macro) => {
+                        const isDisabled = this._isMacroDisabled(macro)
 
-                                    return (
-                                        <div
-                                            key={macro.get('id')}
-                                            className={classnames('macro-item m-0', {
-                                                active: currentMacro && macro.get('id') === currentMacro.get('id'),
-                                                disabled: isDisabled,
-                                            })}
-                                            onClick={() => {
-                                                if (isDisabled) {
-                                                    return
-                                                }
+                        return (
+                            <div
+                                key={macro.get('id')}
+                                className={classnames('macro-item m-0', {
+                                    active: currentMacro && macro.get('id') === currentMacro.get('id'),
+                                    disabled: isDisabled,
+                                })}
+                                onClick={() => {
+                                    if (isDisabled) {
+                                        return
+                                    }
 
-                                                this.props.handleClickItem(macro.get('id'))
-                                            }}
-                                        >
-                                            {macro.get('name')}
-                                        </div>
-                                    )
-                                }).toList()
-                            )
-                    }
+                                    this.props.handleClickItem(macro.get('id'))
+                                }}
+                            >
+                                {macro.get('name')}
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         )
