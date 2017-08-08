@@ -34,7 +34,7 @@ const LogicalExpression = ({operator, left, right, rule, parent, actions, leftsi
                     leftsiblings={leftsiblings}
                 />
             </span>
-            <div className="d-inline-flex align-items-baseline">
+            <div className="d-flex align-items-baseline">
                 <Button
                     className="btn-frozen mr-1"
                     type="button"
