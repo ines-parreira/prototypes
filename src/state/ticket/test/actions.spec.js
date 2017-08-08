@@ -36,6 +36,36 @@ describe('actions', () => {
             })
         })
 
+        describe('setSpam()', () => {
+            it('should dispatch actions', () => {
+                store = mockStore({ticket: initialState.set('id', 1)})
+
+                const expectedActions = [{
+                    type: types.SET_SPAM,
+                    spam: true
+                }, {
+                    type: types.TICKET_PARTIAL_UPDATE_START,
+                    args: {spam: true},
+                }, {
+                    type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
+                    resp: {data: {}},
+                }]
+                mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+
+                return store.dispatch(actions.setSpam(true)).then(() => {
+                    expect(store.getActions()).toEqual(expectedActions)
+                })
+            })
+
+            it('should not dispatch actions (same status)', () => {
+                store = mockStore({ticket: initialState.set('spam', true)})
+
+                return store.dispatch(actions.setSpam(true)).then(() => {
+                    expect(store.getActions()).toEqual([])
+                })
+            })
+        })
+
         it('should set requester with partial update', () => {
             const expectedActions = [
                 {type: types.SET_REQUESTER},

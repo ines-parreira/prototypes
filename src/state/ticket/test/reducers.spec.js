@@ -182,6 +182,24 @@ describe('Ticket reducer', () => {
         )
     })
 
+    it('should handle SET_SPAM', () => {
+        expect(
+            reducer(initialState, {type: types.SET_SPAM, spam: true})
+        ).toEqualImmutable(
+            initialState.set('spam', true)
+        )
+    })
+
+    it('should mark ticket dirty', () => {
+        const expected = initialState.setIn(['state', 'dirty'], true)
+
+        expect(
+            reducer(initialState, {type: types.MARK_TICKET_DIRTY, dirty: true})
+        ).toEqualImmutable(
+            expected
+        )
+    })
+
     describe('function getLastSameSourceTypeMessage', () => {
         it('should return the last message of matching sourceType', () => {
             const messages = fromJS([

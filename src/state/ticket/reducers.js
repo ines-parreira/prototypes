@@ -215,6 +215,10 @@ export default (state = initialState, action) => {
             return state.set('priority', newPriority)
         }
 
+        case types.SET_SPAM: {
+            return state.set('spam', action.spam)
+        }
+
         case types.SET_AGENT: {
             const assigneeUser = action.args.get('assignee_user') || null // we want null if undefined
             return state.set('assignee_user', fromJS(assigneeUser))

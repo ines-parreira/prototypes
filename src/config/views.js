@@ -131,7 +131,7 @@ export const views = fromJS([{
                     updated_datetime: 'desc',
                 }
             }
-        },
+        }
     ],
     cell: (fieldName, item) => {
         switch (fieldName) {

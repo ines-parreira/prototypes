@@ -19,15 +19,18 @@ import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 
 import * as ticketActions from '../../../../state/ticket/actions'
+import TicketSpam from './ticketdetails/TicketSpam'
 
 @connect(null, {
     deleteTicket: ticketActions.deleteTicket,
+    setSpam: ticketActions.setSpam,
 })
 export default class TicketHeader extends React.Component {
     static propTypes = {
         ticket: PropTypes.object.isRequired,
         actions: PropTypes.object.isRequired,
         deleteTicket: PropTypes.func.isRequired,
+        setSpam: PropTypes.func.isRequired,
 
         computeNextUrl: PropTypes.func.isRequired,
         hideTicket: PropTypes.func.isRequired,
@@ -74,6 +77,10 @@ export default class TicketHeader extends React.Component {
         })
     }
 
+    _toggleSpam = () => {
+        return this.props.setSpam(!this.props.ticket.get('spam'))
+    }
+
     _bindKeys() {
         shortcutManager.bind('TicketHeader', {
             CLOSE_TICKET: {
@@ -108,7 +115,7 @@ export default class TicketHeader extends React.Component {
                                     size="sm"
                                     id="ticket-actions-button"
                                 >
-                                    <i className="fa fa-fw fa-caret-down" />
+                                    <i className="fa fa-fw fa-caret-down"/>
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <DropdownItem
@@ -122,6 +129,12 @@ export default class TicketHeader extends React.Component {
                                         }}
                                     >
                                         Print ticket
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={this._toggleSpam}
+                                    >
+                                        {ticket.get('spam') ? 'Unmark as spam' : 'Mark as spam'}
                                     </DropdownItem>
                                     <DropdownItem
                                         type="button"
@@ -174,12 +187,14 @@ export default class TicketHeader extends React.Component {
                             removeTag={actions.ticket.removeTag}
                         />
                     </div>
-
-                    <TicketAssignee
-                        direction="right"
-                        currentAssignee={ticket.getIn(['assignee_user', 'name'])}
-                        setAgent={actions.ticket.setAgent}
-                    />
+                    <div className="d-inline-flex">
+                        <TicketSpam spam={ticket.get('spam')} />
+                        <TicketAssignee
+                            direction="right"
+                            currentAssignee={ticket.getIn(['assignee_user', 'name'])}
+                            setAgent={actions.ticket.setAgent}
+                        />
+                    </div>
                 </div>
             </div>
         )

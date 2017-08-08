@@ -48,25 +48,56 @@ export default class Right extends React.Component {
         dropdownOpen: false,
     }
 
+    componentDidMount() {
+        // Automatically set the first option
+        // if the field has only one option
+        if (this.props.node.value === '') {
+            this._selectFirstOption()
+        }
+    }
+
+    componentDidUpdate() {
+        // Automatically set the first option
+        // if the field has only one option
+        if (this.props.node.value === '') {
+            this._selectFirstOption()
+        }
+    }
+
+    _selectFirstOption = () => {
+        const {updateFieldFilter, index} = this.props
+        const field = this._getFieldConfig()
+        const options = field.getIn(['filter', 'enum'])
+
+        if (options && options.size === 1) {
+            updateFieldFilter(index, options.first())
+        }
+    }
+
     _toggleDropdown = () => {
         this.setState({dropdownOpen: !this.state.dropdownOpen})
     }
 
+    _getFieldConfig = () => {
+        const {config, objectPath} = this.props
+        const fields = config.get('fields', fromJS([]))
+        return fields.find(field => objectPath === `${config.get('singular')}.${fieldPath(field)}`)
+    }
+
     render() {
-        const {node, config, objectPath, updateFieldFilter, updateFieldFilterOperator, index, empty} = this.props
+        const {node, config, updateFieldFilter, updateFieldFilterOperator, index, empty} = this.props
 
         if (empty) {
             return <span />
         }
 
-        const fields = config.get('fields', fromJS([]))
-        const field = fields.find(field => objectPath === `${config.get('singular')}.${fieldPath(field)}`)
+        const field = this._getFieldConfig()
 
         if (!field) {
             return (
                 <div>
                     <div className="btn btn-outline-danger btn-frozen mr-2">
-                        {node.value}
+                        {node.value ? node.value.toString() : node.value}
                     </div>
                     <Badge color="danger">
                         System condition

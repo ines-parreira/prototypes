@@ -169,6 +169,7 @@ class FilterTopbar extends React.Component {
     render() {
         const {config, activeView, areFiltersValid, isUpdate, agents, currentUser} = this.props
         const {isSubmitting} = this.state
+        const isSystemView = activeView.get('category') === 'system'
 
         if (!activeView.get('editMode')) {
             return null
@@ -197,7 +198,7 @@ class FilterTopbar extends React.Component {
                             className="mr-2"
                             onClick={() => logEvent('Click add filter on a view')}
                         >
-                            <i className="fa fa-plus fa-fw mr-2" />
+                            <i className="fa fa-plus fa-fw mr-2"/>
                             Add filter
                         </DropdownToggle>
                         <DropdownMenu>
@@ -218,9 +219,16 @@ class FilterTopbar extends React.Component {
                     </UncontrolledDropdown>
                 </CardBlock>
                 <CardFooter>
-                    {
-                        isUpdate ? (
+                    <div className="d-flex align-items-center justify-content-between">
+                        {
+                            isSystemView ? (
                                 <span>
+                                    <i className="fa fa-fw fa-info-circle mr-2"/>
+                                    System views changes cannot be saved
+                                </span>
+                            ) : (
+                                isUpdate ? (
+                                    <span>
                                     <Button
                                         type="submit"
                                         id="update-view-button"
@@ -233,12 +241,12 @@ class FilterTopbar extends React.Component {
                                     >
                                         Update view
                                     </Button>{' '}
-                                    <Popover
-                                        placement="bottom"
-                                        isOpen={this.state.askUpdateConfirmation}
-                                        target="update-view-button"
-                                        toggle={this._toggleUpdateConfirmation}
-                                    >
+                                        <Popover
+                                            placement="bottom"
+                                            isOpen={this.state.askUpdateConfirmation}
+                                            target="update-view-button"
+                                            toggle={this._toggleUpdateConfirmation}
+                                        >
                                         <PopoverTitle>Are you sure?</PopoverTitle>
                                         <PopoverContent>
                                             <p>
@@ -265,30 +273,32 @@ class FilterTopbar extends React.Component {
                                         Save as new view
                                     </Button>
                                 </span>
-                            ) : (
-                                <Button
-                                    type="submit"
-                                    color="primary"
-                                    className={classNames({
-                                        'btn-loading': this.state.isSubmitting,
-                                    })}
-                                    disabled={isSubmitting || !areFiltersValid}
-                                    onClick={this._createView}
-                                >
-                                    Create view
-                                </Button>
+                                ) : (
+                                    <Button
+                                        type="submit"
+                                        color="primary"
+                                        className={classNames({
+                                            'btn-loading': this.state.isSubmitting,
+                                        })}
+                                        disabled={isSubmitting || !areFiltersValid}
+                                        onClick={this._createView}
+                                    >
+                                        Create view
+                                    </Button>
+                                )
                             )
-                    }
+                        }
 
-                    <Button
-                        type="submit"
-                        color="secondary"
-                        className="pull-right"
-                        disabled={isSubmitting}
-                        onClick={this._cancel}
-                    >
-                        Cancel
-                    </Button>
+                        <Button
+                            type="submit"
+                            color="secondary"
+                            className="pull-right"
+                            disabled={isSubmitting}
+                            onClick={this._cancel}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
                 </CardFooter>
             </Card>
         )

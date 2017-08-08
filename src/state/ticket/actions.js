@@ -150,6 +150,22 @@ export const togglePriority = (priority = null) => (dispatch, getState) => { // 
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setPriority', getState())))
 }
 
+export const setSpam = (spam) => (dispatch, getState) => {
+    const {ticket} = getState()
+    const currentSpam = ticket.get('spam')
+
+    if (currentSpam === spam) {
+        return Promise.resolve()
+    }
+
+    dispatch({
+        type: types.SET_SPAM,
+        spam
+    })
+
+    return dispatch(ticketPartialUpdate({spam}))
+}
+
 export const setAgent = (assigneeUser) => (dispatch, getState) => {
     dispatch({
         type: types.SET_AGENT,

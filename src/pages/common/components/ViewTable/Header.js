@@ -112,6 +112,7 @@ export default class Header extends React.Component {
         } = this.props
 
         const isEditMode = activeView.get('editMode')
+        const isSystemView = activeView.get('category') === 'system'
 
         return (
             <div>
@@ -136,36 +137,43 @@ export default class Header extends React.Component {
                                         >
                                             Edit view
                                         </DropdownItem>
-                                        <DropdownItem divider />
-                                        <DropdownItem
-                                            type="button"
-                                            onClick={this._toggleDeleteConfirmation}
-                                        >
-                                            <span className="text-danger">Delete view</span>
-                                            <Popover
-                                                placement="bottom"
-                                                isOpen={this.state.askDeleteConfirmation}
-                                                target="settings-view-button"
-                                                toggle={this._toggleDeleteConfirmation}
-                                            >
-                                                <PopoverTitle>Are you sure?</PopoverTitle>
-                                                <PopoverContent>
-                                                    <p>
-                                                        You are about to <b>delete</b> this view for <b>all users</b>.
-                                                    </p>
-                                                    <Button
-                                                        type="submit"
-                                                        color="success"
-                                                        onClick={() => {
-                                                            this.props.deleteView(activeView)
-                                                            this._toggleDeleteConfirmation()
-                                                        }}
+                                        {
+                                            !isSystemView && [
+                                                <DropdownItem
+                                                    key="delete-button-divider"
+                                                    divider
+                                                />,
+                                                <DropdownItem
+                                                    key="delete-button"
+                                                    type="button"
+                                                    onClick={this._toggleDeleteConfirmation}
+                                                >
+                                                    <span className="text-danger">Delete view</span>
+                                                    <Popover
+                                                        placement="bottom"
+                                                        isOpen={this.state.askDeleteConfirmation}
+                                                        target="settings-view-button"
+                                                        toggle={this._toggleDeleteConfirmation}
                                                     >
-                                                        Confirm
-                                                    </Button>
-                                                </PopoverContent>
-                                            </Popover>
-                                        </DropdownItem>
+                                                        <PopoverTitle>Are you sure?</PopoverTitle>
+                                                        <PopoverContent>
+                                                            <p>
+                                                                You are about to <b>delete</b> this view for <b>all users</b>.
+                                                            </p>
+                                                            <Button
+                                                                type="submit"
+                                                                color="success"
+                                                                onClick={() => {
+                                                                    this.props.deleteView(activeView)
+                                                                    this._toggleDeleteConfirmation()
+                                                                }}
+                                                            >
+                                                                Confirm
+                                                            </Button>
+                                                        </PopoverContent>
+                                                    </Popover>
+                                                </DropdownItem>
+                                            ]}
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             )
