@@ -166,15 +166,11 @@ export function submitView(view) {
         return promise
             .then((json = {}) => json.data)
             .then(resp => {
-                dispatch({
-                    type: isUpdate ? types.SUBMIT_UPDATE_VIEW_SUCCESS : types.SUBMIT_NEW_VIEW_SUCCESS,
-                    resp
-                })
-
                 // redirect to the view created
                 if (!isUpdate) {
                     browserHistory.push(`/app/${objectName}/${resp.id}/${resp.slug}`)
                 }
+                return Promise.resolve(resp)
             }, error => {
                 return dispatch({
                     type: isUpdate ? types.SUBMIT_UPDATE_VIEW_ERROR : types.SUBMIT_NEW_VIEW_ERROR,
@@ -208,11 +204,7 @@ export function deleteView(view) {
                 const destinationView = otherViewsOfType.first()
                 const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
                 browserHistory.push(destinationRoute)
-
-                dispatch({
-                    type: types.DELETE_VIEW_SUCCESS,
-                    viewId: view.get('id')
-                })
+                return Promise.resolve()
             }, error => {
                 return dispatch({
                     type: 'ERROR',
@@ -220,6 +212,24 @@ export function deleteView(view) {
                     reason: `Failed to delete the view ${view.get('name')}`
                 })
             })
+    }
+}
+
+export const deleteViewSuccess = (viewId) => (dispatch, getState) => {
+    dispatch({
+        type: types.DELETE_VIEW_SUCCESS,
+        viewId
+    })
+
+    // redirect to first view of the same type if it's the currently active view
+    const state = getState().views
+    if (state.getIn(['active', 'id']) === viewId) {
+        const viewConfig = viewsConfig.getConfigByType(state.getIn(['active', 'type']))
+        const destinationView = state.get('items').find((v) => {
+            return v.get('type') === state.getIn(['active', 'type'])
+        })
+        const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
+        browserHistory.push(destinationRoute)
     }
 }
 

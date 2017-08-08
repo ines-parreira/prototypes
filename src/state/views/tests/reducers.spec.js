@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
-import reducers from '../reducers'
+import reducers, {initialState} from '../reducers'
+import * as fixtures from '../../../fixtures/views'
 import * as types from '../constants'
 
 describe('reducers', () => {
@@ -116,6 +117,38 @@ describe('reducers', () => {
                 index: 0,
                 operator: 'neq'
             })).toEqual(expectedState)
+        })
+
+        it('should create a view', () => {
+            expect(reducers(initialState, {
+                type: types.CREATE_VIEW_SUCCESS,
+                resp: fixtures.view
+            })).toMatchSnapshot()
+        })
+
+        it('should update a view', () => {
+            const state = reducers(initialState, {
+                type: types.CREATE_VIEW_SUCCESS,
+                resp: fixtures.view
+            })
+
+            fixtures.view.type = 'system'
+
+            expect(reducers(state, {
+                type: types.UPDATE_VIEW_SUCCESS,
+                resp: fixtures.view
+            })).toMatchSnapshot()
+        })
+
+        it('should delete a view ', () => {
+            const state = reducers(initialState, {
+                type: types.CREATE_VIEW_SUCCESS,
+                resp: fixtures.view
+            })
+            expect(reducers(state, {
+                type: types.DELETE_VIEW_SUCCESS,
+                viewId: fixtures.view.id
+            })).toMatchSnapshot()
         })
     })
 })

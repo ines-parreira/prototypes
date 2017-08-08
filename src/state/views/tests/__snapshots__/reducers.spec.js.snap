@@ -1,0 +1,343 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reducers views should create a view 1`] = `
+Immutable.Map {
+  items: Immutable.List [
+    Immutable.Map {
+      search: null,
+      order_by: "updated_datetime",
+      deactivated_datetime: null,
+      name: "New & Open Tickets",
+      slug: "new-&-open-tickets",
+      uri: "/api/views/7/",
+      user_id: 2,
+      decoration: null,
+      display_order: 1,
+      created_datetime: "2017-07-31T21:43:10.610368+00:00",
+      group_by: null,
+      fields: Immutable.List [
+        "details",
+        "tags",
+        "requester",
+        "created",
+      ],
+      type: "ticket-list",
+      id: 7,
+      filters: "neq(ticket.status, \\"closed\\")",
+      order_dir: "desc",
+      filters_ast: Immutable.Map {
+        sourceType: "script",
+        loc: Immutable.Map {
+          start: Immutable.Map {
+            column: 0,
+            line: 1,
+          },
+          end: Immutable.Map {
+            column: 28,
+            line: 1,
+          },
+        },
+        type: "Program",
+        body: Immutable.List [
+          Immutable.Map {
+            loc: Immutable.Map {
+              start: Immutable.Map {
+                column: 0,
+                line: 1,
+              },
+              end: Immutable.Map {
+                column: 28,
+                line: 1,
+              },
+            },
+            type: "ExpressionStatement",
+            expression: Immutable.Map {
+              arguments: Immutable.List [
+                Immutable.Map {
+                  object: Immutable.Map {
+                    type: "Identifier",
+                    loc: Immutable.Map {
+                      start: Immutable.Map {
+                        column: 4,
+                        line: 1,
+                      },
+                      end: Immutable.Map {
+                        column: 10,
+                        line: 1,
+                      },
+                    },
+                    name: "ticket",
+                  },
+                  property: Immutable.Map {
+                    type: "Identifier",
+                    loc: Immutable.Map {
+                      start: Immutable.Map {
+                        column: 11,
+                        line: 1,
+                      },
+                      end: Immutable.Map {
+                        column: 17,
+                        line: 1,
+                      },
+                    },
+                    name: "status",
+                  },
+                  loc: Immutable.Map {
+                    start: Immutable.Map {
+                      column: 4,
+                      line: 1,
+                    },
+                    end: Immutable.Map {
+                      column: 17,
+                      line: 1,
+                    },
+                  },
+                  type: "MemberExpression",
+                  computed: false,
+                },
+                Immutable.Map {
+                  value: "closed",
+                  loc: Immutable.Map {
+                    start: Immutable.Map {
+                      column: 19,
+                      line: 1,
+                    },
+                    end: Immutable.Map {
+                      column: 27,
+                      line: 1,
+                    },
+                  },
+                  type: "Literal",
+                  raw: "\\"closed\\"",
+                },
+              ],
+              callee: Immutable.Map {
+                type: "Identifier",
+                loc: Immutable.Map {
+                  start: Immutable.Map {
+                    column: 0,
+                    line: 1,
+                  },
+                  end: Immutable.Map {
+                    column: 3,
+                    line: 1,
+                  },
+                },
+                name: "neq",
+              },
+              loc: Immutable.Map {
+                start: Immutable.Map {
+                  column: 0,
+                  line: 1,
+                },
+                end: Immutable.Map {
+                  column: 28,
+                  line: 1,
+                },
+              },
+              type: "CallExpression",
+            },
+          },
+        ],
+      },
+    },
+  ],
+  counts: Immutable.Map {
+  },
+  active: Immutable.Map {
+  },
+  loading: false,
+  _internal: Immutable.Map {
+    currentViewId: null,
+    lastViewId: null,
+    selectedItemsIds: Immutable.List [
+    ],
+    loading: Immutable.Map {
+      fetchList: false,
+      fetchListDiscreet: false,
+    },
+  },
+}
+`;
+
+exports[`reducers views should delete a view  1`] = `
+Immutable.Map {
+  items: Immutable.List [
+  ],
+  counts: Immutable.Map {
+  },
+  active: Immutable.Map {
+  },
+  loading: false,
+  _internal: Immutable.Map {
+    currentViewId: null,
+    lastViewId: null,
+    selectedItemsIds: Immutable.List [
+    ],
+    loading: Immutable.Map {
+      fetchList: false,
+      fetchListDiscreet: false,
+    },
+  },
+}
+`;
+
+exports[`reducers views should update a view 1`] = `
+Immutable.Map {
+  items: Immutable.List [
+    Immutable.Map {
+      search: null,
+      order_by: "updated_datetime",
+      deactivated_datetime: null,
+      name: "New & Open Tickets",
+      slug: "new-&-open-tickets",
+      uri: "/api/views/7/",
+      user_id: 2,
+      decoration: null,
+      display_order: 1,
+      created_datetime: "2017-07-31T21:43:10.610368+00:00",
+      group_by: null,
+      fields: Immutable.List [
+        "details",
+        "tags",
+        "requester",
+        "created",
+      ],
+      type: "system",
+      id: 7,
+      filters: "neq(ticket.status, \\"closed\\")",
+      order_dir: "desc",
+      filters_ast: Immutable.Map {
+        sourceType: "script",
+        loc: Immutable.Map {
+          start: Immutable.Map {
+            column: 0,
+            line: 1,
+          },
+          end: Immutable.Map {
+            column: 28,
+            line: 1,
+          },
+        },
+        type: "Program",
+        body: Immutable.List [
+          Immutable.Map {
+            loc: Immutable.Map {
+              start: Immutable.Map {
+                column: 0,
+                line: 1,
+              },
+              end: Immutable.Map {
+                column: 28,
+                line: 1,
+              },
+            },
+            type: "ExpressionStatement",
+            expression: Immutable.Map {
+              arguments: Immutable.List [
+                Immutable.Map {
+                  object: Immutable.Map {
+                    type: "Identifier",
+                    loc: Immutable.Map {
+                      start: Immutable.Map {
+                        column: 4,
+                        line: 1,
+                      },
+                      end: Immutable.Map {
+                        column: 10,
+                        line: 1,
+                      },
+                    },
+                    name: "ticket",
+                  },
+                  property: Immutable.Map {
+                    type: "Identifier",
+                    loc: Immutable.Map {
+                      start: Immutable.Map {
+                        column: 11,
+                        line: 1,
+                      },
+                      end: Immutable.Map {
+                        column: 17,
+                        line: 1,
+                      },
+                    },
+                    name: "status",
+                  },
+                  loc: Immutable.Map {
+                    start: Immutable.Map {
+                      column: 4,
+                      line: 1,
+                    },
+                    end: Immutable.Map {
+                      column: 17,
+                      line: 1,
+                    },
+                  },
+                  type: "MemberExpression",
+                  computed: false,
+                },
+                Immutable.Map {
+                  value: "closed",
+                  loc: Immutable.Map {
+                    start: Immutable.Map {
+                      column: 19,
+                      line: 1,
+                    },
+                    end: Immutable.Map {
+                      column: 27,
+                      line: 1,
+                    },
+                  },
+                  type: "Literal",
+                  raw: "\\"closed\\"",
+                },
+              ],
+              callee: Immutable.Map {
+                type: "Identifier",
+                loc: Immutable.Map {
+                  start: Immutable.Map {
+                    column: 0,
+                    line: 1,
+                  },
+                  end: Immutable.Map {
+                    column: 3,
+                    line: 1,
+                  },
+                },
+                name: "neq",
+              },
+              loc: Immutable.Map {
+                start: Immutable.Map {
+                  column: 0,
+                  line: 1,
+                },
+                end: Immutable.Map {
+                  column: 28,
+                  line: 1,
+                },
+              },
+              type: "CallExpression",
+            },
+          },
+        ],
+      },
+    },
+  ],
+  counts: Immutable.Map {
+  },
+  active: Immutable.Map {
+  },
+  loading: false,
+  _internal: Immutable.Map {
+    currentViewId: null,
+    lastViewId: null,
+    selectedItemsIds: Immutable.List [
+    ],
+    loading: Immutable.Map {
+      fetchList: false,
+      fetchListDiscreet: false,
+    },
+  },
+}
+`;

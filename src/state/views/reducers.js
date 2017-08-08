@@ -177,11 +177,28 @@ export default (state = initialState, action) => {
             })
         }
 
+        case types.CREATE_VIEW_SUCCESS: {
+            return state.update('items', (items) => items.push(fromJS(action.resp)))
+        }
+
+        case types.UPDATE_VIEW_SUCCESS: {
+            let newState = state.update('items', (items) => items.map((v) => {
+                if (v.get('id') === action.resp.id) {
+                    return fromJS(action.resp)
+                }
+                return v
+            }))
+            // also update the active view if we're on it
+            if (newState.getIn(['active', 'id']) === action.resp.id) {
+                newState = newState.set('active', fromJS(action.resp))
+            }
+            return newState
+        }
+
         case types.DELETE_VIEW_SUCCESS: {
-            return state
-                .merge({
-                    items: state.get('items').filter(item => item.get('id') !== action.viewId),
-                })
+            return state.merge({
+                items: state.get('items').filter(item => item.get('id') !== action.viewId),
+            })
         }
 
         case types.FETCH_LIST_VIEW_START: {

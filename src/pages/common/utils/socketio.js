@@ -9,6 +9,7 @@ import * as infobarActions from '../../../state/infobar/actions'
 import * as usersActions from '../../../state/users/actions'
 import * as viewsActions from '../../../state/views/actions'
 
+import * as viewsConstants from '../../../state/views/constants'
 import * as macroConstants from '../../../state/macro/constants'
 
 const socket = socketio.connect(window.WS_URL, {transports: ['websocket']})
@@ -134,6 +135,21 @@ export default class SocketIO {
                 this._handleExecutedAction(json)
                 break
             }
+            case 'view-created': {
+                log('View created', json)
+                this._handleViewCreated(json.view)
+                break
+            }
+            case 'view-updated': {
+                log('View updated', json)
+                this._handleViewUpdated(json.view)
+                break
+            }
+            case 'view-deleted': {
+                log('View deleted', json)
+                this._handleViewDeleted(json.view)
+                break
+            }
             case 'views-count-updated': {
                 this._handleViewsCount(json)
                 break
@@ -193,12 +209,13 @@ export default class SocketIO {
      */
     _handleExecutedAction = _throttle(json => this._dispatch(infobarActions.handleExecutedAction(json)), 100)
 
+    _handleViewCreated = _throttle(resp => this._dispatch({type: viewsConstants.CREATE_VIEW_SUCCESS, resp}), 100)
+    _handleViewUpdated = _throttle(resp => this._dispatch({type: viewsConstants.UPDATE_VIEW_SUCCESS, resp}), 100)
+    _handleViewDeleted = _throttle(resp => this._dispatch(viewsActions.deleteViewSuccess(resp.id)), 100)
     _handleViewsCount = _throttle(json => this._dispatch(viewsActions.handleViewsCount(json)), 100)
 
     _handleMacroCreated = _throttle(resp => this._dispatch({type: macroConstants.CREATE_MACRO_SUCCESS, resp}), 100)
-
     _handleMacroUpdated = _throttle(resp => this._dispatch({type: macroConstants.UPDATE_MACRO_SUCCESS, resp}), 100)
-
     _handleMacroDeleted = _throttle(resp => this._dispatch({type: macroConstants.DELETE_MACRO_SUCCESS, resp}), 100)
 
     _sendTicketViewed = (ticketId) => {
