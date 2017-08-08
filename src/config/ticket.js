@@ -62,10 +62,10 @@ export const VARIABLES = [{
         value: 'ticket.requester.integrations.shopify.orders[0].name',
     }, {
         name: 'Tracking url of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_urls',
+        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_url',
     }, {
         name: 'Tracking number of last order',
-        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_numbers',
+        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_number',
     }, {
         name: 'Delivery status of last order',
         value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].shipment_status',
@@ -86,6 +86,12 @@ export const PREVIOUS_VARIABLES = [{
     children: [{
         name: 'Last order\'s number',
         value: 'ticket.requester.integrations.shopify.orders[0].order_number',
+    }, {
+        name: 'Tracking urls of last order',
+        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_urls',
+    }, {
+        name: 'Tracking numbers of last order',
+        value: 'ticket.requester.integrations.shopify.orders[0].fulfillments[0].tracking_numbers',
     }],
 }]
 
