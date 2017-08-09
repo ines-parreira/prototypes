@@ -1,5 +1,8 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
+import _noop from 'lodash/noop'
+// aphrodite is required by react-images
+import {StyleSheetTestUtils} from 'aphrodite'
 
 import {List} from 'immutable'
 import TicketAttachments from '../TicketAttachments'
@@ -16,9 +19,6 @@ describe('TicketAttachments component', () => {
         url: 'foo'
     })
 
-    function deleteAttachment() {
-    }
-
     describe('read-only', () => {
         let component
 
@@ -27,13 +27,17 @@ describe('TicketAttachments component', () => {
                 <TicketAttachments
                     removable={false}
                     attachments={attachments}
-                    deleteAttachment={deleteAttachment}
+                    deleteAttachment={_noop}
                 />
             )
         })
 
+        it('should match snapshot', () => {
+            expect(component).toMatchSnapshot()
+        })
+
         it('should display all attachments', () => {
-            expect(component.children().length).toBe(attachments.size)
+            expect(component.find('.attachments-item').length).toBe(attachments.size)
         })
 
         it('should set a preview on the first attachment', () => {
@@ -60,13 +64,62 @@ describe('TicketAttachments component', () => {
                 <TicketAttachments
                     removable
                     attachments={attachments}
-                    deleteAttachment={deleteAttachment}
+                    deleteAttachment={_noop}
                 />
             )
         })
 
         it('should show the remove button', () => {
             expect(component.find('.attachments-item-remove')).toBePresent()
+        })
+    })
+
+    describe('lightbox', () => {
+        let component
+
+        beforeEach(() => {
+            component = mount(
+                <TicketAttachments
+                    removable={false}
+                    attachments={attachments}
+                    deleteAttachment={_noop}
+                />
+            )
+
+            // aphrodite does not work in jsdom
+            StyleSheetTestUtils.suppressStyleInjection()
+        })
+
+        it('should list images in lightbox', () => {
+            component.setState({
+                isLightboxOpen: true
+            })
+
+            expect(document.body.querySelectorAll('figure').length).toBe(1)
+        })
+
+        it('should set image src', () => {
+            component.setState({
+                isLightboxOpen: true
+            })
+
+            expect(document.body.querySelector('img').src).toBe('bar')
+        })
+
+        it('image should open the lightbox', () => {
+            component.find('.attachments-item').at(0).simulate('click', {
+                preventDefault: _noop
+            })
+
+            expect(component.state().isLightboxOpen).toBe(true)
+        })
+
+        it('not-image should not open the lightbox', () => {
+            component.find('.attachments-item').at(1).simulate('click', {
+                preventDefault: _noop
+            })
+
+            expect(component.state().isLightboxOpen).toBe(false)
         })
     })
 })

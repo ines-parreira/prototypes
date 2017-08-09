@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketAttachments component read-only should match snapshot 1`] = `
+<div
+  className="attachments"
+>
+  <a
+    className="attachments-item attachments-item-has-preview"
+    href="bar"
+    onClick={[Function]}
+    style={
+      Object {
+        "backgroundImage": "url(http://image-proxy/120x80/bar)",
+      }
+    }
+    target="_blank"
+  >
+    <div
+      className="attachments-item-meta"
+    >
+      <div
+        className="attachments-item-meta-name"
+      >
+        foo
+      </div>
+      <div
+        className="attachments-item-meta-type"
+      >
+        <i
+          className="fa fa-fw fa-file-image-o"
+        />
+      </div>
+    </div>
+  </a>
+  <a
+    className="attachments-item"
+    href="foo"
+    onClick={[Function]}
+    style={null}
+    target="_blank"
+  >
+    <div
+      className="attachments-item-meta"
+    >
+      <div
+        className="attachments-item-meta-name"
+      >
+        bar
+      </div>
+      <div
+        className="attachments-item-meta-type"
+      >
+        <i
+          className="fa fa-fw fa-file-text-o"
+        />
+      </div>
+    </div>
+  </a>
+  <Lightbox
+    backdropClosesModal={true}
+    closeButtonTitle="Close (Esc)"
+    currentImage={0}
+    enableKeyboardInput={true}
+    imageCountSeparator=" of "
+    images={
+      Array [
+        Object {
+          "caption": "foo",
+          "src": "bar",
+        },
+      ]
+    }
+    isOpen={false}
+    leftArrowTitle="Previous (Left arrow key)"
+    onClickNext={[Function]}
+    onClickPrev={[Function]}
+    onClickShowNextImage={true}
+    onClickThumbnail={[Function]}
+    onClose={[Function]}
+    preloadNextImage={true}
+    rightArrowTitle="Next (Right arrow key)"
+    showCloseButton={true}
+    showImageCount={true}
+    showThumbnails={true}
+    theme={Object {}}
+    thumbnailOffset={2}
+    width={1024}
+  />
+</div>
+`;

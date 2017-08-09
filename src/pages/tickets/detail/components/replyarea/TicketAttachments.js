@@ -1,11 +1,14 @@
 import React, {PropTypes} from 'react'
 import classNames from 'classnames'
+import Lightbox from 'react-images'
 
 import {fileIconFromContentType} from '../../../common/utils'
 
 export default class TicketAttachments extends React.Component {
-    // only re-render if we have a different set of attachments
-    shouldComponentUpdate = (nextProps) => !this.props.attachments.equals(nextProps.attachments)
+    state = {
+        isLightboxOpen: false,
+        currentImage: 0
+    }
 
     renderAttachmentIcon(contentType) {
         return (
@@ -37,8 +40,12 @@ export default class TicketAttachments extends React.Component {
         return null
     }
 
+    isImage(attachment) {
+        return attachment.content_type.startsWith('image/')
+    }
+
     setImagePreview(attachment) {
-        if (!attachment.content_type.startsWith('image/')) {
+        if (!this.isImage(attachment)) {
             return null
         }
 
@@ -51,19 +58,50 @@ export default class TicketAttachments extends React.Component {
         }
     }
 
+    openLightbox = (e, attachment, images) => {
+        if (!this.isImage(attachment)) {
+            return
+        }
+
+        e.preventDefault()
+
+        this.setState({
+            isLightboxOpen: true,
+            currentImage: images.indexOf(attachment)
+        })
+    }
+
+    closeLightbox = () => {
+        this.setState({
+            isLightboxOpen: false
+        })
+    }
+
+    gotoImage = (index) => {
+        this.setState({
+            currentImage: index
+        })
+    }
+
     render() {
         const {attachments} = this.props
+        const {currentImage, isLightboxOpen} = this.state
         if (attachments.isEmpty()) {
             return null
         }
+
+        const images = attachments.filter((a) => this.isImage(a))
 
         return (
             <div className="attachments">
                 {
                     attachments.map((attachment, idx) => (
                         <a href={attachment.url || '#'} target="_blank"
-                           className={classNames('attachments-item', {'attachments-item-has-preview': !!(this.setImagePreview(attachment))})}
-                           key={idx} style={this.setImagePreview(attachment)}
+                            className={classNames('attachments-item', {
+                                'attachments-item-has-preview': this.isImage(attachment)
+                            })}
+                            key={idx} style={this.setImagePreview(attachment)}
+                            onClick={(e) => this.openLightbox(e, attachment, images)}
                         >
                             <div className="attachments-item-meta">
                                 <div className="attachments-item-meta-name">
@@ -77,6 +115,23 @@ export default class TicketAttachments extends React.Component {
                         </a>
                     ))
                 }
+
+                <Lightbox
+                    images={images.map((image) => {
+                        return {
+                            src: image.url,
+                            caption: image.name
+                        }
+                    }).toJS()}
+                    isOpen={isLightboxOpen}
+                    currentImage={currentImage}
+                    onClickPrev={() => this.gotoImage(currentImage - 1)}
+                    onClickNext={() => this.gotoImage(currentImage + 1)}
+                    onClose={this.closeLightbox}
+                    onClickThumbnail={this.gotoImage}
+                    showThumbnails
+                    backdropClosesModal
+                />
             </div>
         )
     }
