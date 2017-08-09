@@ -4,9 +4,7 @@ import {browserHistory, withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
-import _pick from 'lodash/pick'
 
-import {logEvent} from '../../../store/middlewares/amplitudeTracker'
 import shortcutManager from '../../common/utils/shortcutManager'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
@@ -308,11 +306,6 @@ export default class TicketDetailContainer extends React.Component {
         if (!this.props.canSendMessage) {
             return
         }
-
-        logEvent('Sent message', {
-            ticket: _pick(ticket.toJS(), ['id', 'channel']),
-            andClose: !!next,
-        })
 
         let promise
 

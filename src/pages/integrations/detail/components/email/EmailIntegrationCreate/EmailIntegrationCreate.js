@@ -12,7 +12,6 @@ import {
 } from 'reactstrap'
 
 import css from './EmailIntegrationCreate.less'
-import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
 import {notify} from '../../../../../../state/notifications/actions'
 
 import InputField from '../../../../../common/forms/InputField'
@@ -53,7 +52,6 @@ class EmailIntegrationCreate extends React.Component {
             }
         })
 
-        logEvent('connect_standard_email_account_click')
         return this.props.actions.updateOrCreateIntegration(integration)
     }
 
@@ -89,9 +87,6 @@ class EmailIntegrationCreate extends React.Component {
                         tag="a"
                         href="/integrations/gmail/auth"
                         block
-                        onClick={() => {
-                            logEvent('connect_gmail_account_click')
-                        }}
                         className={classnames('mb-2', css.gmailButton)}
                     >
                         <img src={googleLogo} style={{height: '100%'}} />

@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react'
-import {Link} from 'react-router'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _replace from 'lodash/replace'
@@ -7,7 +6,7 @@ import _pick from 'lodash/pick'
 import _merge from 'lodash/merge'
 import _defaults from 'lodash/defaults'
 import _isEqual from 'lodash/isEqual'
-import {browserHistory} from 'react-router'
+import {Link, browserHistory} from 'react-router'
 import Clipboard from 'clipboard'
 import {
     Button,
@@ -24,10 +23,10 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
-import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import ChatIntegrationPreview from './ChatIntegrationPreview'
 import AutoResponderSection from '../../../common/AutoResponderSection'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
 import InputField from '../../../../common/forms/InputField'
 import ColorField from '../../../../common/forms/ColorField'
@@ -236,7 +235,10 @@ class ChatIntegrationDetail extends React.Component {
                         target="_blank"
                         href="http://docs.gorgias.io/integrations/chat?utm_source=chat_integration"
                         onClick={() => {
-                            logEvent('Clicked see chat tutorial')
+                            segmentTracker.logEvent(segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED, {
+                                name: 'See chat tutorial',
+                                url: 'http://docs.gorgias.io/integrations/chat?utm_source=chat_integration',
+                            })
                         }}
                     >
                         follow this tutorial
@@ -246,7 +248,9 @@ class ChatIntegrationDetail extends React.Component {
                         target="_blank"
                         href="https://calendly.com/romainl/30"
                         onClick={() => {
-                            logEvent('Clicked book a setup call to add chat')
+                            segmentTracker.logEvent(segmentTracker.EVENTS.BOOK_CALL_CLICKED, {
+                                reason: 'Add chat',
+                            })
                         }}
                     >
                         book a 5min setup call

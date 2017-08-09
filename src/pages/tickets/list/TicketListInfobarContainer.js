@@ -13,7 +13,7 @@ import * as integrationsSelectors from '../../../state/integrations/selectors'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import * as usersSelectors from '../../../state/users/selectors'
 
-import {logEvent} from '../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 import css from './TicketListInfobarContainer.less'
 
@@ -75,7 +75,9 @@ class TicketListInfobarContainer extends React.Component {
                             to="/app/integrations/email"
                             className={css.button}
                             onClick={() => {
-                                logEvent('Clicked "Receive 1st email" on Onboarding widget')
+                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                    name: 'Receive 1st email',
+                                })
                             }}
                         >
                             <i
@@ -90,7 +92,9 @@ class TicketListInfobarContainer extends React.Component {
                             to="/app/integrations/smooch_inside"
                             className={css.button}
                             onClick={() => {
-                                logEvent('Clicked "Connect a chat" on Onboarding widget')
+                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                    name: 'Connect chat',
+                                })
                             }}
                         >
                             <i
@@ -105,7 +109,9 @@ class TicketListInfobarContainer extends React.Component {
                             to="/app/integrations/facebook"
                             className={css.button}
                             onClick={() => {
-                                logEvent('Clicked "Connect Facebook" on Onboarding widget')
+                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                    name: 'Connect Facebook',
+                                })
                             }}
                         >
                             <i
@@ -120,7 +126,9 @@ class TicketListInfobarContainer extends React.Component {
                             to="/app/settings/team"
                             className={css.button}
                             onClick={() => {
-                                logEvent('Clicked "Add team members" on Onboarding widget')
+                                segmentTracker.logEvent(segmentTracker.EVENTS.ONBOARDING_WIDGET_CLICKED, {
+                                    name: 'Add team members',
+                                })
                             }}
                         >
                             <i

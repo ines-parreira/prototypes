@@ -14,7 +14,7 @@ import {fetchTags} from '../state/tags/actions'
 
 import * as layoutSelectors from '../state/layout/selectors'
 
-import {setUserProperties} from '../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../store/middlewares/segmentTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
 import SocketIO from './common/utils/socketio'
 
@@ -61,8 +61,7 @@ class App extends React.Component {
 
     componentDidMount() {
         shortcutManager.bind('App')
-        // define Amplitude user properties
-        setUserProperties(this.props.currentUser.toJS())
+        segmentTracker.identifyUser(this.props.currentUser.toJS())
     }
 
     componentWillUnmount() {

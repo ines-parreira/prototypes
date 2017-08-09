@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {Link} from 'react-router'
 import {Card, CardBlock, Button} from 'reactstrap'
 
-import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 const InfobarAddIntegrationSuggestion = ({user}) => (
     <div className="widgets-list">
@@ -70,7 +70,9 @@ const InfobarAddIntegrationSuggestion = ({user}) => (
                                 tag={Link}
                                 color="info"
                                 to="/app/integrations"
-                                onClick={() => logEvent('Clicked add integration on add integration widget')}
+                                onClick={() => {
+                                    segmentTracker.logEvent(segmentTracker.EVENTS.INFOBAR_INTEGRATION_ADD_CLICKED)
+                                }}
                             >
                                 Add integration
                             </Button>

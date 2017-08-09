@@ -8,7 +8,7 @@ import {UncontrolledTooltip, Button} from 'reactstrap'
 import Modal from '../../Modal'
 
 import {getActionByName} from '../../../../../config/actions'
-import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
 import * as infobarActions from '../../../../../state/infobar/actions'
 import * as infobarSelectors from '../../../../../state/infobar/selectors'
@@ -78,7 +78,7 @@ class ActionButton extends React.Component {
         const actionConfig = getActionByName(this.props.actionName)
 
         if (actionConfig) {
-            logEvent('Execute action infobar', {
+            segmentTracker.logEvent(segmentTracker.EVENTS.INFOBAR_ACTION_CLICKED, {
                 type: this.context.integration.get('type'),
                 name: actionConfig.label,
             })

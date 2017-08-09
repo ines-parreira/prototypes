@@ -5,7 +5,6 @@ import {Button} from 'reactstrap'
 
 import IntegrationList from '../IntegrationList'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
-import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import gmailImg from '../../../../../../img/integrations/gmail.png'
 
 import css from './EmailIntegrationList.less'
@@ -112,9 +111,6 @@ export default class EmailIntegrationList extends React.Component {
                 longTypeDescription={longTypeDescription}
                 createIntegration={() => browserHistory.push('/app/integrations/email/new')}
                 createIntegrationButtonText="Add email address"
-                createIntegrationButtonOnClick={() => {
-                    logEvent('add_email_address_click')
-                }}
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

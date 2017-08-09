@@ -18,7 +18,7 @@ const socket = socketio.connect(window.WS_URL, {transports: ['websocket']})
  * Log sockets info only on dev environment
  */
 const log = (...args) => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (window.DEVELOPMENT || window.STAGING) {
         console.log(...args)
     }
 }

@@ -11,7 +11,7 @@ import Timeline from '../../../common/components/timeline/Timeline'
 import ReplyMessageChannel from './replyarea/ReplyMessageChannel'
 import TicketReplyArea from './replyarea/TicketReplyArea'
 import TicketSubmitButtons from './replyarea/TicketSubmitButtons'
-import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as tagsSelectors from '../../../../state/tags/selectors'
 import * as usersSelectors from '../../../../state/users/selectors'
@@ -231,18 +231,13 @@ export default class TicketView extends React.Component {
                                             && users.getIn(['userHistory', 'hasHistory'])
                                             && !isHistoryDisplayed
 
-                                        const eventName = shouldOpenHistory ? 'Opened Timeline' : 'Closed Timeline'
+                                        actions.ticket.toggleHistory(shouldOpenHistory)
 
-                                        if (shouldOpenHistory) {
-                                            actions.ticket.toggleHistory(true)
-                                        } else {
-                                            actions.ticket.toggleHistory(false)
-                                        }
-
-                                        logEvent(eventName, {
+                                        segmentTracker.logEvent(segmentTracker.EVENTS.USER_HISTORY_TOGGLED, {
+                                            open: shouldOpenHistory,
                                             nbOfTicketsInTimeline: users.getIn(['userHistory', 'tickets']).size,
                                             channel: ticket.get('channel'),
-                                            nbOfMessagesInTicket: ticket.get('messages').size
+                                            nbOfMessagesInTicket: ticket.get('messages').size,
                                         })
                                     }}
                                 >

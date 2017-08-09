@@ -13,9 +13,9 @@ import {JSONTree} from './../JSONTree'
 import {sourceTypeToIcon} from '../../../../config/ticket'
 import BinaryChoiceField from './BinaryChoiceField'
 import MultiSelectBinaryChoiceField from './MultiSelectBinaryChoiceField'
-import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import ConfirmButton from '../ConfirmButton'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 const defaultContent = {
     name: '',
@@ -43,17 +43,10 @@ class MergeUsersModal extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {destinationUser, sourceUser} = nextProps
         if (!this.props.isOpen && nextProps.isOpen) {
-            logEvent('Opened MergeUsers Modal', {
-                destinationUserChannelType: destinationUser.get('channels')
-                    .map(channel => channel.get('type'))
-                    .toList()
-                    .toJS(),
-                sourceUser: sourceUser.get('channels')
-                    .map(channel => channel.get('type'))
-                    .toList()
-                    .toJS()
+            segmentTracker.logEvent(segmentTracker.EVENTS.MODAL_TOGGLED, {
+                open: true,
+                name: 'merge users',
             })
         }
     }
@@ -63,10 +56,6 @@ class MergeUsersModal extends React.Component {
         const data = {
             user: _pick(this.state, Object.keys(defaultContent))
         }
-
-        logEvent('Confirmed MergeUser', {
-            finalUser: data.user.channels.map(channel => channel.type)
-        })
 
         return this.props.mergeUsers(
             this.props.destinationUser.get('id'),

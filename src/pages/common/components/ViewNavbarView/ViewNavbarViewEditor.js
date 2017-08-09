@@ -10,7 +10,7 @@ import _isUndefined from 'lodash/isUndefined'
 import ReactSortable from './../../../common/components/dragging/ReactSortable'
 import BooleanField from '../../forms/BooleanField'
 
-import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import {submitSetting} from '../../../../state/currentUser/actions'
 import {sortViews} from './utils'
 
@@ -90,7 +90,7 @@ class ViewNavbarViewEditor extends Component {
 
         this._submitSetting()
 
-        logEvent(`${value ? 'Showed' : 'Hided'} a view`)
+        segmentTracker.logEvent(segmentTracker.EVENTS.NAVBAR_VIEW_TOGGLED)
     }
 
     _updateOrder = (orders) => {
@@ -106,7 +106,7 @@ class ViewNavbarViewEditor extends Component {
 
         this._submitSetting()
 
-        logEvent('Moved a view')
+        segmentTracker.logEvent(segmentTracker.EVENTS.NAVBAR_VIEW_MOVED)
     }
 
     _getDisplayOrder = (view) => {

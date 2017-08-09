@@ -14,8 +14,8 @@ import MacroList from './MacroList'
 import MacroEdit from './MacroEdit'
 import MacroPreview from './MacroPreview'
 import {DEFAULT_ACTIONS} from '../../../../../config'
-import {logEvent} from '../../../../../store/middlewares/amplitudeTracker'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
 import {macroInitial} from '../../../../../state/macro/reducers'
 
@@ -36,7 +36,10 @@ export default class MacroModal extends React.Component {
     }
 
     componentDidMount() {
-        logEvent('Opened macro modal')
+        segmentTracker.logEvent(segmentTracker.EVENTS.MODAL_TOGGLED, {
+            open: true,
+            name: 'macros',
+        })
     }
 
     componentWillReceiveProps(nextProps) {

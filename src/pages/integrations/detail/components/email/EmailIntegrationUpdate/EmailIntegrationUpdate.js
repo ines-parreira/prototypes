@@ -18,7 +18,7 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../../../../common/components/Loader'
-import {logEvent} from '../../../../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import {GMAIL_IMPORTED_THREADS} from '../../../../../../config'
@@ -105,7 +105,6 @@ class EmailIntegrationUpdate extends React.Component {
         e.preventDefault()
         const {updateOrCreateIntegration} = this.props.actions
 
-        logEvent('Save email integration')
         return updateOrCreateIntegration(this._getFormValues())
             .then((res) => {
                 this.setState({dirty: false})
@@ -115,8 +114,6 @@ class EmailIntegrationUpdate extends React.Component {
 
     _importEmails = () => {
         const {integration, importEmails} = this.props
-
-        logEvent('Import Gmail emails')
 
         return importEmails(fromJS({
             id: integration.get('id'),
@@ -137,22 +134,22 @@ class EmailIntegrationUpdate extends React.Component {
         const isImporting = status === 'started' || (importActivated && !status)
 
         const statusSentence = isImporting ? (
-            <span>
+                <span>
                     We are currently importing emails from <strong>{email}</strong> into Gorgias.
                     You can see it's progress here: <Link to="/app/tickets">All tickets</Link>
                 </span>
-        ) : (
-            <span>
+            ) : (
+                <span>
                     Completed: <b>{mailsImported}</b> emails have been imported.
                 </span>
-        )
+            )
 
         return (
             <div>
                 <h2>
                     {
                         isImporting && (
-                            <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2"/>
+                            <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2" />
                         )
                     }
                     Import
@@ -160,10 +157,10 @@ class EmailIntegrationUpdate extends React.Component {
                 <p>
                     {
                         importActivated ? statusSentence : (
-                            <span>
+                                <span>
                                     We will import the last <b>{GMAIL_IMPORTED_THREADS}</b> emails from <b>{email}</b> into Gorgias.
                                 </span>
-                        )
+                            )
                     }
                 </p>
                 {
@@ -198,7 +195,10 @@ class EmailIntegrationUpdate extends React.Component {
                         target="_blank"
                         href="http://docs.gorgias.io/integrations/email"
                         onClick={() => {
-                            logEvent('Clicked step by step instructions in add email integration')
+                            segmentTracker.logEvent(segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED, {
+                                name: 'Step by step instructions in add email integration',
+                                url: 'http://docs.gorgias.io/integrations/email',
+                            })
                         }}
                     >
                         step by step tutorial
@@ -218,12 +218,12 @@ class EmailIntegrationUpdate extends React.Component {
                             data-clipboard-target="#forwarding-email"
                             getRef={this._clipboardCopy}
                         >
-                            <i className="fa fa-fw fa-files-o mr-2"/>
+                            <i className="fa fa-fw fa-files-o mr-2" />
                             {this.state.isCopied ? 'Copied!' : 'Copy'}
                         </Button>
                     </InputGroupButton>
                 </InputGroup>
-                <br/>
+                <br />
                 <Alert color="info">
                     We also <strong>highly recommend</strong> you
                     {' '}

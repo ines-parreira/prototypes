@@ -5,7 +5,7 @@ import {Link, withRouter} from 'react-router'
 import {UncontrolledTooltip} from 'reactstrap'
 
 import {isCurrentlyOnTicket} from '../../../utils'
-import {logEvent} from '../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 import {sourceTypeToIcon} from '../../../config/ticket'
 
@@ -36,7 +36,7 @@ class RecentChatsItem extends React.Component {
         return (
             <Link
                 onClick={() => {
-                    logEvent('Clicked on recent activity item', {
+                    segmentTracker.logEvent(segmentTracker.EVENTS.RECENT_ACTIVITY_CLICKED, {
                         position,
                         ticket: recentTicket.toJS(),
                     })

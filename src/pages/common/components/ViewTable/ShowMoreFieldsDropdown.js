@@ -10,7 +10,7 @@ import {
 } from 'reactstrap'
 
 import {setFieldVisibility} from '../../../../state/views/actions'
-import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import {notify} from '../../../../state/notifications/actions'
 
 import BooleanField from '../../forms/BooleanField'
@@ -33,7 +33,9 @@ class ShowMoreFieldsDropdown extends React.Component {
         return (
             <UncontrolledDropdown
                 className="d-flex"
-                onClick={() => logEvent('Opened more fields (column options)')}
+                onClick={() => {
+                    segmentTracker.logEvent(segmentTracker.EVENTS.SHOW_MORE_FIELDS_CLICKED)
+                }}
             >
                 <DropdownToggle
                     className="hidden-sm-down"

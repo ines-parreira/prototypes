@@ -12,7 +12,7 @@ import * as infobarActions from '../../../../state/infobar/actions'
 import * as usersActions from '../../../../state/users/actions'
 import * as ticketActions from '../../../../state/ticket/actions'
 
-import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import Loader from '../Loader'
 import ConfirmButton from '../ConfirmButton'
@@ -223,7 +223,9 @@ export default class Infobar extends React.Component {
                     type="submit"
                     onClick={() => {
                         this.setState({showMergeUserModal: true})
-                        logEvent('Clicked "Merge" button on user searched in infobar')
+                        segmentTracker.logEvent(segmentTracker.EVENTS.USER_MERGE_CLICK, {
+                            location: 'user searched in infobar',
+                        })
                     }}
                 >
                     Merge
@@ -421,7 +423,9 @@ export default class Infobar extends React.Component {
                                         type="button"
                                         color="secondary"
                                         onClick={() => {
-                                            logEvent('Clicked "Merge" button on suggested user in infobar')
+                                            segmentTracker.logEvent(segmentTracker.EVENTS.USER_MERGE_CLICK, {
+                                                location: 'suggested user in infobar',
+                                            })
                                             this.setState({showMergeUserModal: true})
                                         }}
                                     >

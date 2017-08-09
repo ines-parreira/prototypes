@@ -19,7 +19,7 @@ import {
 
 import Filters from './Filters'
 import {equalityOperator, slugify, fieldPath} from '../../../../utils'
-import {logEvent} from '../../../../store/middlewares/amplitudeTracker'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
@@ -73,7 +73,6 @@ class FilterTopbar extends React.Component {
         })
 
         this._submitView(this.props.activeView)
-        logEvent('Updated view')
     }
 
     _onClickNew = () => {
@@ -102,7 +101,6 @@ class FilterTopbar extends React.Component {
         }
 
         this._submitView(activeView)
-        logEvent('Saved as new view')
     }
 
     _left = (field) => {
@@ -149,7 +147,6 @@ class FilterTopbar extends React.Component {
         activeView = activeView.set('slug', slugify(activeView.get('name')))
 
         this._submitView(activeView)
-        logEvent('Created a new view')
     }
 
     _submitView = (view) => {
@@ -196,7 +193,9 @@ class FilterTopbar extends React.Component {
                             caret
                             type="button"
                             className="mr-2"
-                            onClick={() => logEvent('Click add filter on a view')}
+                            onClick={() => {
+                                segmentTracker.logEvent(segmentTracker.EVENTS.VIEW_FILTER_ADD_CLICKED)
+                            }}
                         >
                             <i className="fa fa-plus fa-fw mr-2"/>
                             Add filter
