@@ -35,6 +35,7 @@ export const initialState = fromJS({
     channel: 'email',
     assignee_user: null,
     status: 'new',
+    spam: false,
     sender: null,
     requester: null,
     receiver: null,
