@@ -66,7 +66,8 @@ class EmailIntegrationUpdate extends React.Component {
 
     _getIntegrationValues = (integration) => {
         const data = {
-            name: integration.get('name', '')
+            name: integration.get('name', ''),
+            import_spam: integration.getIn(['meta', 'import_spam']) || false
         }
 
         if (integration.get('type') === 'gmail') {
@@ -80,6 +81,7 @@ class EmailIntegrationUpdate extends React.Component {
         let form
 
         form = integration.set('name', this.state.name)
+        form = form.setIn(['meta', 'import_spam'], this.state.import_spam)
 
         if (integration.get('type') === 'gmail') {
             form = form.setIn(['meta', 'use_gmail_categories'], this.state.use_gmail_categories)
@@ -252,7 +254,7 @@ class EmailIntegrationUpdate extends React.Component {
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === 'gmail'
-        const {name, use_gmail_categories} = this.state
+        const {name, use_gmail_categories, import_spam} = this.state
 
         return (
             <div className="mt-4">
@@ -288,6 +290,19 @@ class EmailIntegrationUpdate extends React.Component {
                             </FormGroup>
                         )
                     }
+                    <FormGroup>
+                        <BooleanField
+                            name="import_spam"
+                            type="checkbox"
+                            label="Import spam emails"
+                            help="Imported spam emails will be placed in the Spam ticket view and will not be counted in statistics. Spam tickets are automatically deleted after 30 days."
+                            value={import_spam}
+                            onChange={value => this.setState({
+                                dirty: true,
+                                import_spam: value
+                            })}
+                        />
+                    </FormGroup>
                     <div>
                         <Button
                             type="submit"

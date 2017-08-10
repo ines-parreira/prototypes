@@ -17,9 +17,9 @@ import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
+import TicketSpam from './ticketdetails/TicketSpam'
 
 import * as ticketActions from '../../../../state/ticket/actions'
-import TicketSpam from './ticketdetails/TicketSpam'
 
 @connect(null, {
     deleteTicket: ticketActions.deleteTicket,
