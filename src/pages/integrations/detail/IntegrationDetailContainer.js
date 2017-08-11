@@ -21,6 +21,7 @@ import HttpIntegrationDetail from './components/http/HttpIntegrationDetail'
 
 import ChatIntegrationList from './components/chat/ChatIntegrationList'
 import ChatIntegrationDetail from './components/chat/ChatIntegrationDetail'
+import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall'
 
 import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
 import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
@@ -70,6 +71,7 @@ class IntegrationDetailContainer extends React.Component {
         const isUpdate = isDetail && params.integrationId !== 'new'
         const isSetup = params.integrationId === 'setup'
         const isForwarding = params.extra === 'forwarding'
+        const isInstall = params.extra === 'install'
         let integration = integrations.get('integration', fromJS({}))
 
         // clear cached integration
@@ -195,6 +197,15 @@ class IntegrationDetailContainer extends React.Component {
 
             case 'smooch_inside':
                 if (isDetail) {
+                    if (isInstall) {
+                        return (
+                            <ChatIntegrationInstall
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
                     return (
                         <ChatIntegrationDetail
                             actions={actions}

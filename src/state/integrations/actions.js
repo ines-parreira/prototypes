@@ -5,7 +5,9 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 
 import * as types from './constants'
+import * as integrationSelectors from './selectors'
 import {notify} from '../notifications/actions'
+
 
 export function fetchIntegrations(withDeleted = false) {
     return (dispatch) => {
@@ -56,7 +58,15 @@ function onCreateSuccess(dispatch, resp) {
 
     fetchIntegrations()(dispatch)
 
-    browserHistory.push(`/app/integrations/${resp.type}/${resp.id || ''}${resp.type === 'email' ? '/forwarding' : ''}`)
+    let nextStep = ''
+
+    if (resp.type === 'email') {
+        nextStep = '/forwarding'
+    } else if (resp.type === 'smooch_inside') {
+        nextStep = '/install'
+    }
+
+    browserHistory.push(`/app/integrations/${resp.type}/${resp.id || ''}${nextStep}`)
 
     dispatch(notify({
         status: 'success',
@@ -73,8 +83,9 @@ export function triggerCreateSuccess(integration) {
  *
  * @param dispatch: the dispatch method
  * @param resp: the raw Integration data coming back from the server
+ * @param notificationId: the id of the notification to replace with the success notification, if any
  */
-function onUpdateSuccess(dispatch, resp) {
+function onUpdateSuccess(dispatch, resp, notificationId=null) {
     dispatch({
         type: types.UPDATE_INTEGRATION_SUCCESS,
         resp
@@ -83,6 +94,7 @@ function onUpdateSuccess(dispatch, resp) {
     fetchIntegrations()(dispatch)
 
     dispatch(notify({
+        id: notificationId,
         status: 'success',
         message: 'Integration successfully updated'
     }))
@@ -163,7 +175,7 @@ export function deleteIntegration(integration) {
     }
 }
 
-function updateOrCreateIntegrationRequest(integration, action, withDeleted) {
+function updateOrCreateIntegrationRequest(integration, action, withDeleted, notificationId=null) {
     return (dispatch) => {
         const isUpdate = integration.get('id')
 
@@ -198,10 +210,10 @@ function updateOrCreateIntegrationRequest(integration, action, withDeleted) {
             .then((json = {}) => json.data)
             .then((resp) => {
                 if (isUpdate) {
-                    onUpdateSuccess(dispatch, resp)
-                } else {
-                    onCreateSuccess(dispatch, resp)
+                    return onUpdateSuccess(dispatch, resp, notificationId)
                 }
+
+                return onCreateSuccess(dispatch, resp)
             }, (error) => {
                 return dispatch({
                     type: isUpdate ? types.UPDATE_INTEGRATION_ERROR : types.CREATE_INTEGRATION_ERROR,
@@ -247,22 +259,50 @@ export function createImportIntegration(integration) {
 }
 
 export function deactivateIntegration(id) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const fullIntegration = integrationSelectors.getIntegrationById(id)(getState())
+
         const integration = fromJS({
             id,
             deactivated_datetime: moment().format(),
         })
-        return dispatch(updateOrCreateIntegrationRequest(integration))
+
+        let notificationId = null
+
+        if (fullIntegration.getIn(['meta', 'shopify_integration_ids'])) {
+            const notification = dispatch(notify({
+                status: 'loading',
+                message:'Removing the chat from your Shopify stores...'
+            }))
+
+            notificationId = notification.id
+        }
+
+        return dispatch(updateOrCreateIntegrationRequest(integration, undefined, undefined, notificationId))
     }
 }
 
 export function activateIntegration(id) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const fullIntegration = integrationSelectors.getIntegrationById(id)(getState())
+
         const integration = fromJS({
             id,
             deactivated_datetime: null,
         })
-        return dispatch(updateOrCreateIntegrationRequest(integration))
+
+        let notificationId = null
+
+        if (fullIntegration.getIn(['meta', 'shopify_integration_ids'])) {
+            const notification = dispatch(notify({
+                status: 'loading',
+                message:'Adding the chat on your Shopify stores...'
+            }))
+
+            notificationId = notification.id
+        }
+
+        return dispatch(updateOrCreateIntegrationRequest(integration, undefined, undefined, notificationId))
     }
 }
 

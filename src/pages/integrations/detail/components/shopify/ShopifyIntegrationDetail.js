@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Link, withRouter} from 'react-router'
+import {connect} from 'react-redux'
+import {notify} from './../../../../../state/notifications/actions'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
@@ -32,6 +34,17 @@ class ShopifyIntegrationDetail extends React.Component {
 
     state = {
         name: ''
+    }
+
+    componentDidMount() {
+        const needScopeUpdate = this.props.location.query.error === 'need_scope_update'
+
+        if (needScopeUpdate) {
+            this.props.notify({
+                status: 'error',
+                message: 'You need to update your app permissions in order to do that.'
+            })
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -183,7 +196,7 @@ class ShopifyIntegrationDetail extends React.Component {
                                     color="info"
                                     className={classNames({
                                         'btn-loading': isSubmitting,
-                                    })}
+                                    }, 'mr-2')}
                                     disabled={isSubmitting}
                                     onClick={this._updateAppPermissions}
                                 >
@@ -267,7 +280,10 @@ ShopifyIntegrationDetail.propTypes = {
 
     // Router
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
+
+    // Actions
+    notify: PropTypes.func.isRequired
 }
 
-export default withRouter(ShopifyIntegrationDetail)
+export default withRouter(connect(null, {notify})(ShopifyIntegrationDetail))

@@ -114,3 +114,16 @@ export const getIntegrationExtra = type => createSelector(
     [getIntegrationsState],
     state => state.getIn(['extra', type]) || fromJS({})
 )
+
+export const getShopifyIntegrationsWithoutChat = (state) => {
+    const shopifyIntegrations = getIntegrationsByTypes('shopify')(state)
+    const chatIntegrations = getIntegrationsByTypes('smooch_inside')(state)
+
+    return shopifyIntegrations.filter((shopifyIntegration) => {
+        const shopifyId = shopifyIntegration.get('id')
+
+        return !chatIntegrations.some((chatIntegration) => {
+            return chatIntegration.getIn(['meta', 'shopify_integration_ids'], fromJS([])).contains(shopifyId)
+        })
+    })
+}

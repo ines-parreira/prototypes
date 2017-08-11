@@ -1,4 +1,7 @@
-import {getIntegrationsState, getIntegrations, getEmailIntegrations, getChannels} from '../selectors'
+import {
+    getIntegrationsState, getIntegrations, getEmailIntegrations, getChannels,
+    getShopifyIntegrationsWithoutChat
+} from '../selectors'
 import state from './fixtures'
 import {fromJS} from 'immutable'
 
@@ -41,6 +44,65 @@ describe('selectors', () => {
                 })
             })
             expect(channels.equals(expected)).toEqual(true)
+        })
+
+        describe('shouldGetShopifyIntegrationsWithoutChat selector', () => {
+            it('should return one integration', () => {
+                const state = {
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                type: 'shopify'
+                            },
+                            {
+                                id: 2,
+                                type: 'shopify'
+                            },
+                            {
+                                id: 3,
+                                type: 'smooch_inside',
+                                meta: {
+                                    shopify_integration_ids: [1]
+                                }
+                            }
+                        ]
+                    })
+                }
+
+                const res = getShopifyIntegrationsWithoutChat(state)
+                expect(res.size).toEqual(1)
+
+                const integration = res.first()
+                expect(integration.get('id')).toEqual(2)
+            })
+
+            it('should return no integration', () => {
+                const state = {
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                type: 'shopify'
+                            },
+                            {
+                                id: 2,
+                                type: 'shopify'
+                            },
+                            {
+                                id: 3,
+                                type: 'smooch_inside',
+                                meta: {
+                                    shopify_integration_ids: [1, 2]
+                                }
+                            }
+                        ]
+                    })
+                }
+
+                const res = getShopifyIntegrationsWithoutChat(state)
+                expect(res.size).toEqual(0)
+            })
         })
     })
 })

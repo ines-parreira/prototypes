@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react'
+import {Link, browserHistory} from 'react-router'
+import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
-import _replace from 'lodash/replace'
 import _pick from 'lodash/pick'
 import _merge from 'lodash/merge'
 import _defaults from 'lodash/defaults'
 import _isEqual from 'lodash/isEqual'
-import {Link, browserHistory} from 'react-router'
 import Clipboard from 'clipboard'
 import {
     Button,
@@ -18,9 +18,13 @@ import {
     Col,
     Card,
     CardBlock,
-    CardHeader,
     Alert,
 } from 'reactstrap'
+
+import {renderCodeSnippet} from './utils'
+
+import * as integrationSelectors from './../../../../../state/integrations/selectors'
+import * as integrationHelpers from './../../../../../state/integrations/helpers'
 
 import Loader from '../../../../common/components/Loader'
 import ChatIntegrationPreview from './ChatIntegrationPreview'
@@ -48,6 +52,16 @@ export const defaultContent = {
 }
 
 class ChatIntegrationDetail extends React.Component {
+    static propTypes = {
+        integration: PropTypes.object.isRequired,
+        isUpdate: PropTypes.bool.isRequired,
+        actions: PropTypes.object.isRequired,
+        loading: PropTypes.object.isRequired,
+        currentUser: PropTypes.object.isRequired,
+
+        shopifyIntegrations: PropTypes.object.isRequired
+    }
+
     constructor(props) {
         super(props)
 
@@ -57,7 +71,7 @@ class ChatIntegrationDetail extends React.Component {
 
     state = _merge({
         isCopied: false,
-        isShopifySnippet: false,
+        isShopifyInstructions: true,
     }, defaultContent)
 
     componentWillUpdate(nextProps) {
@@ -105,6 +119,21 @@ class ChatIntegrationDetail extends React.Component {
         return loading.get('updateIntegration') === integration.get('id', true)
     }
 
+    _removeFromShopifyStore = (integrationId) => {
+        const {integration} = this.props
+
+        const indexToDelete = integration.getIn(['meta', 'shopify_integration_ids'])
+            .findIndex((value) => value === integrationId)
+
+        const form = {
+            id: integration.get('id'),
+            type: integration.get('type'),
+            meta: integration.get('meta').deleteIn(['shopify_integration_ids', indexToDelete])
+        }
+
+        return this.props.actions.updateOrCreateIntegration(fromJS(form))
+    }
+
     _handleSubmit = (e) => {
         e.preventDefault()
         const form = _pick(this.state, ['name', 'type'])
@@ -132,94 +161,11 @@ class ChatIntegrationDetail extends React.Component {
 
                 // reload the integration
                 this.isInitialized = false
-                if (!this.props.isUpdate) {
-                    browserHistory.push(`app/integrations/${defaultContent.type}/`)
-                }
             })
     }
 
-    // removes empty properties from an object
-    _cleanOptions(obj, newObj = {}) {
-        Object.keys(obj).forEach((key) => {
-            if (typeof obj[key] === 'object') {
-                const nested = this._cleanOptions(obj[key])
-                // no empty objects
-                if (Object.keys(nested).length) {
-                    newObj[key] = nested
-                }
-            } else if (obj[key]) {
-                newObj[key] = obj[key]
-            }
-        })
-
-        return newObj
-    }
-
-    _renderSnippet = (integration) => {
-        const options = {
-            icon: integration.getIn(['decoration', 'icon']),
-            headerColor: integration.getIn(['decoration', 'header_color']),
-            chatIconColor: integration.getIn(['decoration', 'chat_icon_color']),
-            conversationColor: integration.getIn(['decoration', 'conversation_color']),
-            smooch: {
-                appToken: integration.getIn(['meta', 'app_token']),
-                properties: {
-                    current_page: 'window.location.href'
-                },
-                customText: {
-                    headerText: integration.getIn(['decoration', 'window_title']),
-                    introductionText: integration.getIn(['decoration', 'header_text']),
-                    inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
-                    sendButtonText: integration.getIn(['decoration', 'send_button_text'])
-                }
-            }
-        }
-
-        const cleanOptions = _replace(
-            JSON.stringify(this._cleanOptions(options), null, '  '),
-            '"window.location.href"',
-            'window.location.href'
-        )
-
-        let snippet = `<script src="${window.GORGIAS_ASSETS_URL || window.location.origin}/static/public/js/gorgias-chat.js"></script>\n`
-
-        if (!this.state.isShopifySnippet) {
-            snippet += '<script>\n'
-            snippet += 'document.addEventListener("DOMContentLoaded", function() {\n'
-            snippet += `GorgiasChat.init(${cleanOptions})\n`
-            snippet += '})\n'
-            snippet += '</script>'
-        } else {
-            const extendedOptions = Object.assign({}, options)
-            extendedOptions.smooch.givenName = '{{ customer.name }}'
-            extendedOptions.smooch.email = '{{ customer.email }}'
-
-            const cleanExtendedOptions = _replace(
-                JSON.stringify(this._cleanOptions(extendedOptions), null, '  '),
-                '"window.location.href"',
-                'window.location.href'
-            )
-
-            snippet += '{% if customer %}\n'
-            snippet += '<script>\n'
-            snippet += 'document.addEventListener("DOMContentLoaded", function() {\n'
-            snippet += `GorgiasChat.init(${cleanExtendedOptions})\n`
-            snippet += '})\n'
-            snippet += '</script>\n'
-            snippet += '{% else %}\n'
-            snippet += '<script>\n'
-            snippet += 'document.addEventListener("DOMContentLoaded", function() {\n'
-            snippet += `GorgiasChat.init(${cleanOptions})\n`
-            snippet += '})\n'
-            snippet += '</script>\n'
-            snippet += '{% endif %}\n'
-        }
-
-        return snippet
-    }
-
     _renderInstructions = (isUpdate, isSubmitting) => {
-        const {integration} = this.props
+        const {integration, shopifyIntegrations} = this.props
         const dirty = this._isDirty()
 
         if (!isUpdate || !integration.get('id')) {
@@ -227,107 +173,162 @@ class ChatIntegrationDetail extends React.Component {
         }
 
         return (
-            <div>
-                <p>
-                    To activate or update the chat, copy the code below and paste it on your website above the
-                    {' '}<kbd>{'</body>'}</kbd>{' '}tag. If you need help,{' '}
-                    <a
-                        target="_blank"
-                        href="http://docs.gorgias.io/integrations/chat?utm_source=chat_integration"
-                        onClick={() => {
-                            segmentTracker.logEvent(segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED, {
-                                name: 'See chat tutorial',
-                                url: 'http://docs.gorgias.io/integrations/chat?utm_source=chat_integration',
-                            })
-                        }}
+            <div className={classnames('mt-5', css.instructions)}>
+                <h3>Install</h3>
+                <div className={classnames('mb-2', css.tabs)}>
+                    <Button
+                        type="button"
+                        color="secondary"
+                        onClick={() => this.setState({isShopifyInstructions: true})}
+                        active={this.state.isShopifyInstructions}
+                        className={classnames(css.tab)}
                     >
-                        follow this tutorial
-                    </a>
-                    {' '}or{' '}
-                    <a
-                        target="_blank"
-                        href="https://calendly.com/romainl/30"
-                        onClick={() => {
-                            segmentTracker.logEvent(segmentTracker.EVENTS.BOOK_CALL_CLICKED, {
-                                reason: 'Add chat',
-                            })
-                        }}
-                    >
-                        book a 5min setup call
-                    </a>
-                    .
-                </p>
-                <div className={css.snippet}>
-                    {
-                        dirty && (
-                            <div
-                                className={css.update}
-                            >
-                                <div className="d-inline-block">
-                                    Save the changes you made to this integration before getting the new code.
-
-                                    <Button
-                                        type="button"
-                                        color="secondary"
-                                        className={classnames('ml-2', {
-                                            'btn-loading': isSubmitting,
-                                        })}
-                                        onClick={this._handleSubmit}
-                                        disabled={isSubmitting}
-                                    >
-                                        Save changes
-                                    </Button>
-                                </div>
-                            </div>
-                        )
-                    }
-
-                    <Card>
-                        <CardHeader>
-                            <Button
-                                type="button"
-                                color={this.state.isShopifySnippet ? 'link' : 'info'}
-                                onClick={() => this.setState({isShopifySnippet: false})}
-                            >
-                                Standard code
-                            </Button>
-                            <Button
-                                type="button"
-                                color={this.state.isShopifySnippet ? 'info' : 'link'}
-                                className="ml-2"
-                                onClick={() => this.setState({isShopifySnippet: true})}
-                            >
-                                Shopify code
-                            </Button>
-                        </CardHeader>
-
-                        <CardBlock className="p-0">
-                            <Alert color="info" className="m-0">
-                                <pre
-                                    style={{
-                                        display: 'flex',
-                                        height: '200px',
-                                        color: 'inherit'
-                                    }}
-                                    id="chat-snippet"
-                                >
-                                    {this._renderSnippet(integration)}
-                                </pre>
-                            </Alert>
-                        </CardBlock>
-                    </Card>
+                        <img
+                            className={css.tabIcon}
+                            src={integrationHelpers.getIconFromType('shopify')}
+                        />
+                        <div>
+                            Shopify
+                        </div>
+                    </Button>
 
                     <Button
-                        id="copy-chat-snippet"
                         type="button"
-                        color="info"
-                        className={css.copy}
-                        data-clipboard-target="#chat-snippet"
+                        color="secondary"
+                        onClick={() => this.setState({isShopifyInstructions: false})}
+                        active={!this.state.isShopifyInstructions}
+                        className={classnames('ml-2', css.tab)}
                     >
-                        <i className="fa fa-fw fa-files-o mr-2" />
-                        {this.state.isCopied ? 'Copied!' : 'Copy'}
+                        <i className={classnames('fa fa-code', css.tabIcon)} aria-hidden/>
+                        <div>
+                            Javascript
+                        </div>
                     </Button>
                 </div>
+
+                {
+                    this.state.isShopifyInstructions && (
+                        <Card>
+                            <CardBlock>
+                                {
+                                    integration.getIn(['meta', 'shopify_integration_ids'], fromJS([]))
+                                        .map((integrationId) => {
+                                            const shopifyIntegration = shopifyIntegrations.find((integration) => {
+                                                return integration.get('id') === integrationId
+                                            })
+
+                                            if (!shopifyIntegration) {
+                                                return null
+                                            }
+
+                                            return (
+                                                <p key={integrationId}>
+                                                    Chat added on {`${shopifyIntegration.get('name')}`}.{' '}
+                                                    <a
+                                                        href=""
+                                                        onClick={() => this._removeFromShopifyStore(integrationId)}
+                                                    >
+                                                        Remove
+                                                    </a>
+                                                </p>
+                                            )
+                                        })
+                                }
+                                <Button
+                                    color="primary"
+                                    onClick={() => browserHistory.push(`/app/integrations/smooch_inside/${integration.get('id')}/install`)}
+                                >
+                                    Add chat to a store
+                                </Button>
+                            </CardBlock>
+                        </Card>
+                    )
+                }
+                {
+                    !this.state.isShopifyInstructions && (
+                        <div className={css.snippet}>
+                            {
+                                dirty && (
+                                    <div
+                                        className={css.update}
+                                    >
+                                        <div className="d-inline-block">
+                                            Save the changes you made to this integration before getting the new code.
+
+                                            <Button
+                                                type="button"
+                                                color="secondary"
+                                                className={classnames('ml-2', {
+                                                    'btn-loading': isSubmitting,
+                                                })}
+                                                onClick={this._handleSubmit}
+                                                disabled={isSubmitting}
+                                            >
+                                                Save changes
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            <Card>
+                                <CardBlock>
+                                    <p>
+                                        To activate or update the chat, copy the code below and paste it on your website above the
+                                        {' '}<kbd>{'</body>'}</kbd>{' '}tag. If you need help,{' '}
+                                        <a
+                                            target="_blank"
+                                            href="http://docs.gorgias.io/integrations/chat?utm_source=chat_integration"
+                                            onClick={() => {
+                                                segmentTracker.logEvent(segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED, {
+                                                    name: 'See chat tutorial',
+                                                    url: 'http://docs.gorgias.io/integrations/chat?utm_source=chat_integration',
+                                                })
+                                            }}
+                                        >
+                                            follow this tutorial
+                                        </a>
+                                        {' '}or{' '}
+                                        <a
+                                            target="_blank"
+                                            href="https://calendly.com/romainl/30"
+                                            onClick={() => {
+                                                segmentTracker.logEvent(segmentTracker.EVENTS.BOOK_CALL_CLICKED, {
+                                                    reason: 'Add chat',
+                                                })
+                                            }}
+                                        >
+                                            book a 5min setup call
+                                        </a>
+                                        .
+                                    </p>
+
+                                    <Alert color="info" className="m-0">
+                                        <pre
+                                            style={{
+                                                display: 'flex',
+                                                height: '200px',
+                                                color: 'inherit'
+                                            }}
+                                            id="chat-snippet"
+                                        >
+                                            {renderCodeSnippet(integration, this.state.isShopifyInstructions)}
+                                        </pre>
+                                    </Alert>
+                                </CardBlock>
+                                <Button
+                                    id="copy-chat-snippet"
+                                    type="button"
+                                    color="info"
+                                    className={css.copy}
+                                    data-clipboard-target="#chat-snippet"
+                                >
+                                    <i className="fa fa-fw fa-files-o mr-2" />
+                                    {this.state.isCopied ? 'Copied!' : 'Copy'}
+                                </Button>
+                            </Card>
+                        </div>
+                    )
+                }
             </div>
         )
     }
@@ -354,9 +355,7 @@ class ChatIntegrationDetail extends React.Component {
                     </BreadcrumbItem>
                 </Breadcrumb>
 
-                <h1>{isUpdate ? `Chat: ${integration.get('name')}` : 'Add new chat'}</h1>
-
-                {this._renderInstructions(isUpdate, isSubmitting)}
+                <h1>{isUpdate ? integration.get('name') : 'Add new chat'}</h1>
 
                 {
                     isUpdate && (
@@ -492,17 +491,17 @@ class ChatIntegrationDetail extends React.Component {
                         </Col>
                     </Row>
                 </Container>
+
+                {isUpdate && this._renderInstructions(isUpdate, isSubmitting)}
             </div>
         )
     }
 }
 
-ChatIntegrationDetail.propTypes = {
-    integration: PropTypes.object.isRequired,
-    isUpdate: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired
+const mapStateToProps = (state) => {
+    return {
+        shopifyIntegrations: integrationSelectors.getIntegrationsByTypes('shopify')(state)
+    }
 }
 
-export default ChatIntegrationDetail
+export default connect(mapStateToProps)(ChatIntegrationDetail)

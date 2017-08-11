@@ -1,0 +1,512 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatIntegrationInstall component should display a placeholder if there's no Shopify store without chat 1`] = `
+<div>
+  <gs
+    tag="ol"
+  >
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations"
+      >
+        Integrations
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/smooch_inside"
+      >
+        Chat
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/smooch_inside/2"
+      >
+        mychat
+      </Link>
+    </bs>
+    <bs
+      active={true}
+      tag="li"
+    >
+      Install
+    </bs>
+  </gs>
+  <h1>
+    Install
+  </h1>
+  <p>
+    Let's install your chat on your website.
+  </p>
+  <div>
+    <ei
+      block={true}
+      className="mb-2"
+      color="secondary"
+      onClick={[Function]}
+      tag="button"
+    >
+      <img
+        src="test-file-stub"
+      />
+      Add chat on 
+      mylittleintegration
+    </ei>
+    <p
+      className="text-muted text-center"
+    >
+      Can't see your store here?
+       
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/shopify/new/"
+      >
+        Connect it to Gorgias
+      </Link>
+    </p>
+    <div
+      className="divider"
+    >
+      OR
+    </div>
+    <rl
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <p>
+        Copy the code below and paste it on your website above the
+         
+        <kbd>
+          &lt;/body&gt;
+        </kbd>
+         
+        tag:
+      </p>
+      <div>
+        <ta
+          className="p-0 mb-2"
+          tag="div"
+        >
+          <kr
+            className="m-0"
+            color="info"
+            isOpen={true}
+            tag="div"
+            transitionAppearTimeout={150}
+            transitionEnterTimeout={150}
+            transitionLeaveTimeout={150}
+          >
+            <pre
+              id="chat-snippet"
+              style={
+                Object {
+                  "color": "inherit",
+                  "display": "flex",
+                  "height": "200px",
+                }
+              }
+            >
+              &lt;div id="gorgias-chat"&gt;
+              &lt;script src="null/static/public/js/gorgias-chat.js"&gt;&lt;/script&gt;
+              &lt;script&gt;
+              document.addEventListener("DOMContentLoaded", function() {
+              GorgiasChat.init({
+                "smooch": {
+                  "properties": {
+                    "current_page": window.location.href
+                  }
+                }
+              })
+              })
+              &lt;/script&gt;
+              &lt;/div&gt;
+            </pre>
+          </kr>
+        </ta>
+        <ei
+          color="info"
+          data-clipboard-target="#chat-snippet"
+          id="copy-chat-snippet"
+          tag="button"
+          type="button"
+        >
+          <i
+            className="fa fa-fw fa-files-o mr-2"
+          />
+          Copy
+        </ei>
+      </div>
+      <div>
+        <ei
+          block={true}
+          className=""
+          color="primary"
+          disabled={false}
+          tag="button"
+          type="submit"
+        >
+          I added the code to my website
+        </ei>
+      </div>
+    </rl>
+  </div>
+</div>
+`;
+
+exports[`ChatIntegrationInstall component should display the code snippet for custom integration 1`] = `
+<div>
+  <gs
+    tag="ol"
+  >
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations"
+      >
+        Integrations
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/smooch_inside"
+      >
+        Chat
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/smooch_inside/2"
+      >
+        mychat
+      </Link>
+    </bs>
+    <bs
+      active={true}
+      tag="li"
+    >
+      Install
+    </bs>
+  </gs>
+  <h1>
+    Install
+  </h1>
+  <p>
+    Let's install your chat on your website.
+  </p>
+  <div>
+    <ei
+      block={true}
+      className="mb-2"
+      color="secondary"
+      onClick={[Function]}
+      tag="button"
+    >
+      <img
+        src="test-file-stub"
+      />
+      Add chat on 
+      mylittleintegration
+    </ei>
+    <p
+      className="text-muted text-center"
+    >
+      Can't see your store here?
+       
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/shopify/new/"
+      >
+        Connect it to Gorgias
+      </Link>
+    </p>
+    <div
+      className="divider"
+    >
+      OR
+    </div>
+    <rl
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <p>
+        Copy the code below and paste it on your website above the
+         
+        <kbd>
+          &lt;/body&gt;
+        </kbd>
+         
+        tag:
+      </p>
+      <div>
+        <ta
+          className="p-0 mb-2"
+          tag="div"
+        >
+          <kr
+            className="m-0"
+            color="info"
+            isOpen={true}
+            tag="div"
+            transitionAppearTimeout={150}
+            transitionEnterTimeout={150}
+            transitionLeaveTimeout={150}
+          >
+            <pre
+              id="chat-snippet"
+              style={
+                Object {
+                  "color": "inherit",
+                  "display": "flex",
+                  "height": "200px",
+                }
+              }
+            >
+              &lt;div id="gorgias-chat"&gt;
+              &lt;script src="null/static/public/js/gorgias-chat.js"&gt;&lt;/script&gt;
+              &lt;script&gt;
+              document.addEventListener("DOMContentLoaded", function() {
+              GorgiasChat.init({
+                "headerColor": "#789456",
+                "chatIconColor": "#AB7891",
+                "conversationColor": "#B7B7B7",
+                "smooch": {
+                  "appToken": "a86sd47a56sd4asd",
+                  "properties": {
+                    "current_page": window.location.href
+                  },
+                  "customText": {
+                    "headerText": "some window title",
+                    "introductionText": "some introduction text",
+                    "inputPlaceholder": "type here to send messages",
+                    "sendButtonText": "Lets goooo"
+                  }
+                }
+              })
+              })
+              &lt;/script&gt;
+              &lt;/div&gt;
+            </pre>
+          </kr>
+        </ta>
+        <ei
+          color="info"
+          data-clipboard-target="#chat-snippet"
+          id="copy-chat-snippet"
+          tag="button"
+          type="button"
+        >
+          <i
+            className="fa fa-fw fa-files-o mr-2"
+          />
+          Copy
+        </ei>
+      </div>
+      <div>
+        <ei
+          block={true}
+          className=""
+          color="primary"
+          disabled={false}
+          tag="button"
+          type="submit"
+        >
+          I added the code to my website
+        </ei>
+      </div>
+    </rl>
+  </div>
+</div>
+`;
+
+exports[`ChatIntegrationInstall component should display the list of Shopify stores without chats 1`] = `
+<div>
+  <gs
+    tag="ol"
+  >
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations"
+      >
+        Integrations
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/smooch_inside"
+      >
+        Chat
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/smooch_inside/2"
+      >
+        mychat
+      </Link>
+    </bs>
+    <bs
+      active={true}
+      tag="li"
+    >
+      Install
+    </bs>
+  </gs>
+  <h1>
+    Install
+  </h1>
+  <p>
+    Let's install your chat on your website.
+  </p>
+  <div>
+    <ei
+      block={true}
+      className="mb-2"
+      color="secondary"
+      onClick={[Function]}
+      tag="button"
+    >
+      <img
+        src="test-file-stub"
+      />
+      Add chat on 
+      mylittleintegration
+    </ei>
+    <p
+      className="text-muted text-center"
+    >
+      Can't see your store here?
+       
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/shopify/new/"
+      >
+        Connect it to Gorgias
+      </Link>
+    </p>
+    <div
+      className="divider"
+    >
+      OR
+    </div>
+    <rl
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <p>
+        Copy the code below and paste it on your website above the
+         
+        <kbd>
+          &lt;/body&gt;
+        </kbd>
+         
+        tag:
+      </p>
+      <div>
+        <ta
+          className="p-0 mb-2"
+          tag="div"
+        >
+          <kr
+            className="m-0"
+            color="info"
+            isOpen={true}
+            tag="div"
+            transitionAppearTimeout={150}
+            transitionEnterTimeout={150}
+            transitionLeaveTimeout={150}
+          >
+            <pre
+              id="chat-snippet"
+              style={
+                Object {
+                  "color": "inherit",
+                  "display": "flex",
+                  "height": "200px",
+                }
+              }
+            >
+              &lt;div id="gorgias-chat"&gt;
+              &lt;script src="null/static/public/js/gorgias-chat.js"&gt;&lt;/script&gt;
+              &lt;script&gt;
+              document.addEventListener("DOMContentLoaded", function() {
+              GorgiasChat.init({
+                "smooch": {
+                  "properties": {
+                    "current_page": window.location.href
+                  }
+                }
+              })
+              })
+              &lt;/script&gt;
+              &lt;/div&gt;
+            </pre>
+          </kr>
+        </ta>
+        <ei
+          color="info"
+          data-clipboard-target="#chat-snippet"
+          id="copy-chat-snippet"
+          tag="button"
+          type="button"
+        >
+          <i
+            className="fa fa-fw fa-files-o mr-2"
+          />
+          Copy
+        </ei>
+      </div>
+      <div>
+        <ei
+          block={true}
+          className=""
+          color="primary"
+          disabled={false}
+          tag="button"
+          type="submit"
+        >
+          I added the code to my website
+        </ei>
+      </div>
+    </rl>
+  </div>
+</div>
+`;
