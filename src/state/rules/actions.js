@@ -64,30 +64,34 @@ export const create = (data) => (dispatch) => {
  * Save a rule
  * @param data
  */
-export const save = (data) => {
-    return dispatch => {
-        return axios.put(`/api/rules/${data.id}/`, data)
-            .then((json = {}) => json.data)
-            .then((resp) => {
-                dispatch(notify({
-                    status: 'success',
-                    message: 'Rule saved successfully',
-                }))
+export const save = (data) => (dispatch) => {
+    dispatch({
+        type: types.UPDATE_RULE_START,
+        ruleId: data.id,
+        rule: fromJS(data),
+    })
 
-                return dispatch({
-                    type: types.UPDATE_RULE_SUCCESS,
-                    ruleId: data.id,
-                    rule: fromJS(resp),
-                })
-            }, (error) => {
-                dispatch(fail(error, 'Unable to save the rule'))
+    return axios.put(`/api/rules/${data.id}/`, data)
+        .then((json = {}) => json.data)
+        .then((resp) => {
+            dispatch(notify({
+                status: 'success',
+                message: 'Rule saved successfully',
+            }))
 
-                return dispatch({
-                    type: types.UPDATE_RULE_ERROR,
-                    ruleId: data.id
-                })
+            return dispatch({
+                type: types.UPDATE_RULE_SUCCESS,
+                ruleId: data.id,
+                rule: fromJS(resp),
             })
-    }
+        }, (error) => {
+            dispatch(fail(error, 'Unable to save the rule'))
+
+            return dispatch({
+                type: types.UPDATE_RULE_ERROR,
+                ruleId: data.id
+            })
+        })
 }
 
 /**
@@ -178,21 +182,6 @@ export const reset = (id) => (dispatch) => (
         })
 )
 
-// Submit rule
-export function submitRule(url, comment) {
-    return (dispatch) => {
-        dispatch(addRuleStart(comment.type, comment.code)) // Not used
-
-        return axios.post(url, comment)
-            .then((json = {}) => json.data)
-            .then(resp => {
-                return dispatch(addRuleEnd(resp))
-            }, error => {
-                return dispatch(fail(error, 'Unable to submit the rule'))
-            })
-    }
-}
-
 export function fetchRules() {
     const url = '/api/rules/'
     return (dispatch) => {
@@ -207,3 +196,25 @@ export function fetchRules() {
             })
     }
 }
+
+export function updateOrder(priorities) {
+    return (dispatch) => {
+        dispatch({
+            type: types.UPDATE_ORDER_START,
+            priorities,
+        })
+
+        return axios.post('/api/rules/priorities/', {priorities})
+            .then((json = {}) => json.data)
+            .then((resp) => {
+                return dispatch(receiveRules(resp))
+            }, error => {
+                return dispatch({
+                    type: types.UPDATE_ORDER_ERROR,
+                    error,
+                    reason: 'Failed to update list of rules'
+                })
+            })
+    }
+}
+

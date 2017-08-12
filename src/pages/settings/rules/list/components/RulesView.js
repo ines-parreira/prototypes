@@ -9,6 +9,7 @@ import PageHeader from '../../../../common/components/PageHeader'
 
 import RuleForm from './RuleForm'
 import RuleRow from './RuleRow'
+import ReactSortable from '../../../../common/components/dragging/ReactSortable'
 import {getAST, getCode} from '../../../../../utils'
 
 export default class RulesView extends React.Component {
@@ -53,6 +54,17 @@ export default class RulesView extends React.Component {
         })
     }
 
+    _updateOrder = (orders) => {
+        const priorities = orders.map((id, index) => {
+            return {
+                id: parseInt(id),
+                priority: orders.length - index,
+            }
+        })
+
+        this.props.actions.rules.updateOrder(priorities)
+    }
+
     render() {
         const {actions, rules} = this.props
 
@@ -81,13 +93,25 @@ export default class RulesView extends React.Component {
                         For example you can automatically add a 'refund' tag on a ticket if the subject contains
                         the text 'refund' or send a satisfaction survey after the ticket was closed for more than 48h.
                     </p>
+                    <p>
+                        Rules are going to be executed in the order they are sorted by below.
+                    </p>
                 </div>
 
                 {
                     !rules.isEmpty() && (
                         <div className="rule-category">
                             <Table hover>
-                                <tbody>
+                                <ReactSortable
+                                    tag="tbody"
+                                    options={{
+                                        sort: true,
+                                        draggable: '.draggable',
+                                        handle: '.drag-handle',
+                                        animation: 150,
+                                    }}
+                                    onChange={this._updateOrder}
+                                >
                                     {
                                         rules.map((rule, i) => {
                                             const id = rule.get('id')
@@ -103,7 +127,7 @@ export default class RulesView extends React.Component {
                                             )
                                         }).toList()
                                     }
-                                </tbody>
+                                </ReactSortable>
                             </Table>
                         </div>
                     )
@@ -128,7 +152,6 @@ RulesView.propTypes = {
     actions: PropTypes.object,
     rules: PropTypes.object,
 }
-
 
 RulesView.defaultProps = {
     rules: fromJS([]),

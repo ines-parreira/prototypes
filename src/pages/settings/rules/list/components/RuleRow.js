@@ -42,7 +42,17 @@ class RuleRow extends React.Component {
         const toggleId = `rule-toggle-${rule.get('id')}`
 
         return (
-            <tr key={rule.get('id')}>
+            <tr
+                key={rule.get('id')}
+                data-id={rule.get('id')} // dragging info
+                className="draggable"
+            >
+                <td className="smallest align-middle">
+                    <i
+                        className="fa fa-fw fa-bars fa-lg text-faded drag-handle"
+                        style={{cursor: 'ns-resize'}}
+                    />
+                </td>
                 <td className="link-full-td">
                     <a onClick={this.props.toggleOpening}>
                         <div>

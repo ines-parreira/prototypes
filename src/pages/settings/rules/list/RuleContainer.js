@@ -7,14 +7,21 @@ import RulesView from './components/RulesView'
 import * as RuleActions from '../../../../state/rules/actions'
 import {getRules} from '../../../../state/rules/selectors'
 
-const mapStateToProps = (state) => ({
-    rules: getRules(state).filter(rule => rule.get('type') !== 'system'), // hide system rules
-})
+const mapStateToProps = (state) => {
+    return {
+        rules: getRules(state)
+            .sortBy(rule => rule.get('title')) // sort by title rules with same priority
+            .sortBy(rule => -rule.get('priority')) // sort by priority (highest first)
+            .filter(rule => rule.get('type') !== 'system'), // hide system rules
+    }
+}
 
-const mapDispatchToProps = (dispatch) => ({
-    actions: {
-        rules: bindActionCreators(RuleActions, dispatch),
-    },
-})
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: {
+            rules: bindActionCreators(RuleActions, dispatch),
+        },
+    }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(RulesView)

@@ -1,38 +1,15 @@
 import {fromJS, OrderedMap} from 'immutable'
-import fromPairs from 'lodash/fromPairs'
+import _fromPairs from 'lodash/fromPairs'
+import _find from 'lodash/find'
+
 import {getCode, getAST} from '../../utils'
 import {updateCodeAst} from '../../pages/common/components/ast/utils'
 
 import * as types from './constants'
 
 export const initialState = fromJS({
-    _internal: {
-        dirtyList: []
-    },
     rules: {}
 })
-
-function markAsDirty(ruleId, state) {
-    if (!state.getIn(['_internal', 'dirtyList']).contains(ruleId)) {
-        return state.setIn(
-            ['_internal', 'dirtyList'],
-            state.getIn(['_internal', 'dirtyList']).push(ruleId)
-        )
-    }
-
-    return state
-}
-
-function markAsClean(ruleId, state) {
-    if (!state.getIn(['_internal', 'dirtyList']).contains(ruleId)) {
-        return state.setIn(
-            ['_internal', 'dirtyList'],
-            state.getIn(['_internal', 'dirtyList']).filter(id => id !== ruleId.toString())
-        )
-    }
-
-    return state
-}
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -61,6 +38,21 @@ export default (state = initialState, action) => {
             )
         }
 
+        case types.UPDATE_ORDER_START: {
+            const {priorities} = action
+            return state.update('rules', (rules) => {
+                return rules.map((rule) => {
+                    const newPriorityData = _find(priorities, {id: rule.get('id')})
+
+                    if (!newPriorityData) {
+                        return rule
+                    }
+
+                    return rule.set('priority', newPriorityData.priority)
+                })
+            })
+        }
+
         case types.REMOVE_RULE: {
             return state.set(
                 'rules',
@@ -79,7 +71,7 @@ export default (state = initialState, action) => {
             })
             return state.set(
                 'rules',
-                fromJS(fromPairs(rules))
+                fromJS(_fromPairs(rules))
                     .sort((a, b) => a.get('created_datetime') < b.get('created_datetime'))
                     .sort((a, b) => a.get('type') < b.get('type')) // system rules at the end
             )
@@ -97,12 +89,7 @@ export default (state = initialState, action) => {
             stateItem = stateItem.set('code_ast', fromJS(ast))
             stateItem = stateItem.set('code', code)
 
-            markAsDirty(id.toString(), state)
-
-            return markAsDirty(
-                id.toString(),
-                state.setIn(['rules', id.toString()], stateItem)
-            )
+            return state.setIn(['rules', id.toString()], stateItem)
         }
 
         case types.RULES_UPDATE_CODE_AST: {
@@ -112,21 +99,20 @@ export default (state = initialState, action) => {
 
             const updatedCodeAst = fromJS(updateCodeAst(schemas, ast, path, value, operation))
 
-            const newState = state
+            return state
                 .setIn(['rules', id, 'code'], updatedCodeAst.get('code'))
                 .setIn(['rules', id, 'code_ast'], updatedCodeAst.get('ast'))
+        }
 
-            return markAsDirty(id, newState)
+        case types.UPDATE_RULE_START: {
+            return state.updateIn(['rules', String(action.ruleId)], (rule) => {
+                return rule.mergeDeep(action.rule)
+            })
         }
 
         case types.UPDATE_RULE_SUCCESS: {
-            const newState = markAsClean(action.ruleId, state)
-            return newState.update('rules', rules => rules.set(action.ruleId.toString(), action.rule))
+            return state.update('rules', rules => rules.set(action.ruleId.toString(), action.rule))
         }
-
-        case types.RESET_RULE_SUCCESS:
-        case types.UPDATE_RULE_ERROR:
-            return markAsClean(action.ruleId, state)
 
         default:
             return state
