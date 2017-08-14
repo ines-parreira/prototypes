@@ -54,6 +54,7 @@ Array [
     "ticket": Immutable.Map {
       channel: "email",
       priority: "normal",
+      spam: false,
       subject: "",
       messages: Immutable.List [
       ],
@@ -101,6 +102,7 @@ Array [
     "ticket": Immutable.Map {
       channel: "email",
       priority: "normal",
+      spam: false,
       subject: "",
       messages: Immutable.List [
       ],
@@ -189,6 +191,7 @@ Object {
   "ticket": Immutable.Map {
     channel: "email",
     priority: "normal",
+    spam: false,
     subject: "",
     messages: Immutable.List [
     ],
@@ -346,6 +349,7 @@ Array [
     "ticket": Immutable.Map {
       channel: "email",
       priority: "normal",
+      spam: false,
       subject: "",
       messages: Immutable.List [
       ],
@@ -410,6 +414,7 @@ Array [
     "ticket": Immutable.Map {
       channel: "email",
       priority: "normal",
+      spam: false,
       subject: "",
       messages: Immutable.List [
       ],
