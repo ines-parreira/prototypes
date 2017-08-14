@@ -67,7 +67,7 @@ export default class TicketAttachments extends React.Component {
 
         this.setState({
             isLightboxOpen: true,
-            currentImage: images.indexOf(attachment)
+            currentImage: images.indexOf(attachment),
         })
     }
 
@@ -78,9 +78,7 @@ export default class TicketAttachments extends React.Component {
     }
 
     gotoImage = (index) => {
-        this.setState({
-            currentImage: index
-        })
+        this.setState({currentImage: index})
     }
 
     render() {

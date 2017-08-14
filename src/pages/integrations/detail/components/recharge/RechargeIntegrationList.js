@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
+import Lightbox from 'react-images'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
 import Carousel from './../../../common/Carousel'
@@ -29,8 +30,24 @@ export default class RechargeIntegrationList extends React.Component {
         redirectUri: PropTypes.string.isRequired
     }
 
+    state = {
+        isLightboxOpen: false,
+        currentImage: 0,
+    }
+
     _shouldHideCreateButton = () => {
         return !this.props.integrations.filter((integration) => integration.get('type') === 'shopify').size
+    }
+
+    _toggleLightbox = (selectedImageId) => {
+        this.setState({
+            isLightboxOpen: !this.state.isLightboxOpen,
+            currentImage: selectedImageId || 0,
+        })
+    }
+
+    _gotoImage = (index) => {
+        this.setState({currentImage: index})
     }
 
     render() {
@@ -67,7 +84,27 @@ export default class RechargeIntegrationList extends React.Component {
                     </li>
                 </ul>
 
-                <Carousel imagesUrl={imagesUrl}/>
+
+                <Carousel
+                    imagesUrl={imagesUrl}
+                    onImageClick={({index}) => this._toggleLightbox(index)}
+                />
+
+                <Lightbox
+                    images={imagesUrl.map((imageUrl) => {
+                        return {
+                            src: imageUrl,
+                        }
+                    })}
+                    isOpen={this.state.isLightboxOpen}
+                    onClose={() => this._toggleLightbox()}
+                    currentImage={this.state.currentImage}
+                    onClickPrev={() => this._gotoImage(this.state.currentImage - 1)}
+                    onClickNext={() => this._gotoImage(this.state.currentImage + 1)}
+                    onClickThumbnail={this._gotoImage}
+                    showThumbnails
+                    backdropClosesModal
+                />
 
                 <h4>Your Recharge stores</h4>
             </div>

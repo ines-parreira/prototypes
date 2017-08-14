@@ -6,10 +6,10 @@ import css from './Carousel.less'
 export default class Carousel extends React.Component {
     static propTypes = {
         imagesUrl: PropTypes.array.isRequired,
-
         slidesToShow: PropTypes.number.isRequired,
         arrows: PropTypes.bool.isRequired,
         autoplay: PropTypes.bool.isRequired,
+        onImageClick: PropTypes.func,
     }
 
     static defaultProps = {
@@ -19,7 +19,7 @@ export default class Carousel extends React.Component {
     }
 
     render() {
-        const {imagesUrl, slidesToShow, arrows, autoplay} = this.props
+        const {imagesUrl, slidesToShow, arrows, autoplay, onImageClick} = this.props
 
         return (
             <div className={css.carouselContainer}>
@@ -31,11 +31,29 @@ export default class Carousel extends React.Component {
                     autoplaySpeed={3000}
                 >
                     {
-                        imagesUrl.map((url, idx) => (
-                            <div key={idx} className={css.carouselContent}>
-                                <a href={url} target="_blank">
-                                    <img src={url}/>
-                                </a>
+                        imagesUrl.map((url, index) => (
+                            <div
+                                key={index}
+                                className={css.carouselContent}
+                            >
+                                {
+                                    onImageClick ? (
+                                        <img
+                                            className="clickable"
+                                            src={url}
+                                            onClick={(e) => {
+                                                onImageClick({url, index, e})
+                                            }}
+                                        />
+                                    ) : (
+                                        <a
+                                            href={url}
+                                            target="_blank"
+                                        >
+                                            <img src={url} />
+                                        </a>
+                                    )
+                                }
                             </div>
                         ))
                     }
