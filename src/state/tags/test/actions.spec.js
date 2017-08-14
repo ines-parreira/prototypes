@@ -20,7 +20,7 @@ describe('actions', () => {
             mockServer = new MockAdapter(axios)
         })
 
-        it('dispatch add OK', () => {
+        it('dispatch add', () => {
             store.dispatch(actions.addTags(['refund', 'rejected']))
             const expectedActions = store.getActions()
 
@@ -30,7 +30,7 @@ describe('actions', () => {
             }])
         })
 
-        it('fetch list OK', () => {
+        it('fetch list', () => {
             mockServer
                 .onGet('/api/tags/')
                 .reply(200, {
@@ -56,7 +56,7 @@ describe('actions', () => {
                 })
         })
 
-        it('fetch list also sorts OK', () => {
+        it('fetch list also sorts', () => {
             mockServer
                 .onGet('/api/tags/')
                 .reply(config => {
@@ -89,7 +89,7 @@ describe('actions', () => {
                 })
         })
 
-        it('deletes multiple tags OK', () => {
+        it('deletes multiple tags', () => {
             mockServer.onDelete('/api/tags/')
                 .reply(config => {
                     if (config.data === '{"ids":[1,2]}') {
@@ -106,7 +106,7 @@ describe('actions', () => {
                 })
         })
 
-        it('dispatches merge actions OK', () => {
+        it('dispatches merge actions', () => {
             mockServer
                 .onPut('/api/tags/3/merge/')
                 .reply(config => {

@@ -1,0 +1,1559 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ticket reducer add tags 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [
+    Object {
+      "name": "billing",
+    },
+    Object {
+      "name": "refund",
+    },
+  ],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer add tags 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [
+    Object {
+      "name": "billing",
+    },
+    Object {
+      "name": "refund",
+    },
+  ],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer add tags 3`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [
+    Object {
+      "name": "billing",
+    },
+  ],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer apply macro 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": Object {
+      "id": 1,
+    },
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer apply macro 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": Object {
+      "id": 2,
+    },
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer clear applied macro 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer clear ticket 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer delete macro action args on applied 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": Object {
+      "actions": Object {
+        "1": Object {
+          "arguments": Object {
+            "foo": "bar",
+          },
+        },
+      },
+      "id": 1,
+    },
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer delete message 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [
+    Object {
+      "id": 1,
+    },
+  ],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer delete pending message 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [
+      Object {
+        "_internal": Object {
+          "id": 2,
+        },
+        "body_html": "<div>hello</div>",
+        "body_text": "hello",
+        "channel": "email",
+      },
+    ],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer display history on next page 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": true,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer display history on next page 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer fetch ticket 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": true,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer fetch ticket 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "id": 1,
+  "messages": Array [
+    Object {
+      "body_html": "<div>hello</div>",
+      "body_text": "hello",
+      "channel": "email",
+      "id": 1,
+    },
+  ],
+  "priority": "normal",
+  "receiver": null,
+  "requester": Object {
+    "customer": Object {
+      "id": 1,
+    },
+    "id": 1,
+  },
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "title",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer fetch ticket 3`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer mark dirty 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": true,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer mark dirty 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer merge requester 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer merge requester 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": Object {
+    "id": 1,
+    "name": "Alex",
+  },
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer merge ticket 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "id": 1,
+  "messages": Array [
+    Object {
+      "body_html": "<div>hi</div>",
+      "body_text": "hi",
+      "channel": "email",
+      "created_datetime": "2017-07-28T22:00:00",
+      "id": 1,
+    },
+    Object {
+      "body_html": "<div>hello</div>",
+      "body_text": "hello",
+      "channel": "email",
+      "created_datetime": "2017-07-29T22:00:00",
+      "id": 2,
+    },
+  ],
+  "priority": "normal",
+  "receiver": null,
+  "requester": Object {
+    "customer": Object {
+      "id": 1,
+    },
+    "id": 1,
+  },
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "title",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer merge ticket 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "id": 1,
+  "messages": Array [
+    Object {
+      "body_html": "<div>hi</div>",
+      "body_text": "hi",
+      "channel": "email",
+      "created_datetime": "2017-07-28T22:00:00",
+      "id": 1,
+    },
+    Object {
+      "body_html": "<div>hello</div>",
+      "body_text": "hello",
+      "channel": "email",
+      "created_datetime": "2017-07-29T22:00:00",
+      "id": 2,
+    },
+  ],
+  "priority": "normal",
+  "receiver": null,
+  "requester": Object {
+    "customer": Object {
+      "id": 1,
+    },
+    "id": 1,
+  },
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "title",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer merge users 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer merge users 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": Object {
+    "id": 1,
+    "name": "Alex",
+  },
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer remove tag 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [
+    Object {
+      "name": "refund",
+    },
+  ],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer remove tag 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [
+    Object {
+      "name": "billing",
+    },
+  ],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer set agent 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": Object {
+    "id": 1,
+  },
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer set agent 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer set requester 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": Object {
+    "id": 1,
+  },
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer set spam 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "spam": true,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer set spam 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer set status 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "closed",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer set subject 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "another title",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer submit new message 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [
+      Object {
+        "_internal": Object {
+          "id": "123",
+          "status": "open",
+        },
+        "body_html": "<div>hello</div>",
+        "body_text": "hello",
+        "channel": "email",
+        "created_datetime": "2017-01-01T00:00:00.000Z",
+        "originalMessage": Object {
+          "body_html": "<div>hello</div>",
+          "body_text": "hello",
+          "channel": "email",
+          "source": Object {
+            "bcc": Array [],
+            "cc": Array [],
+            "from": Object {},
+            "to": Array [
+              Object {
+                "address": "alex@gorgias.io",
+              },
+            ],
+            "type": "email",
+          },
+        },
+        "source": Object {
+          "bcc": Array [],
+          "cc": Array [],
+          "from": Object {},
+          "to": Array [
+            Object {
+              "address": "alex@gorgias.io",
+            },
+          ],
+          "type": "email",
+        },
+      },
+    ],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer submit new message 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [
+      Object {
+        "_internal": Object {
+          "id": 1,
+          "status": "open",
+        },
+        "body_html": "<div>hello</div>",
+        "body_text": "hello",
+        "channel": "email",
+        "created_datetime": "2017-07-29T22:00:00",
+        "failed_datetime": "2017-01-01T00:00:00.000Z",
+        "originalMessage": Object {
+          "body_html": "<div>hello</div>",
+          "body_text": "hello",
+          "channel": "email",
+          "source": Object {
+            "bcc": Array [],
+            "cc": Array [],
+            "from": Object {},
+            "to": Array [
+              Object {
+                "address": "alex@gorgias.io",
+              },
+            ],
+            "type": "email",
+          },
+        },
+        "source": Object {
+          "bcc": Array [],
+          "cc": Array [],
+          "from": Object {},
+          "to": Array [
+            Object {
+              "address": "alex@gorgias.io",
+            },
+          ],
+          "type": "email",
+        },
+      },
+    ],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer submit new message 3`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [
+      Object {
+        "_internal": Object {
+          "id": 1,
+          "status": "open",
+        },
+        "body_html": "<div>hello</div>",
+        "body_text": "hello",
+        "channel": "email",
+        "created_datetime": "2017-07-29T22:00:00",
+        "originalMessage": Object {
+          "body_html": "<div>hello</div>",
+          "body_text": "hello",
+          "channel": "email",
+          "source": Object {
+            "bcc": Array [],
+            "cc": Array [],
+            "from": Object {},
+            "to": Array [
+              Object {
+                "address": "alex@gorgias.io",
+              },
+            ],
+            "type": "email",
+          },
+        },
+        "source": Object {
+          "bcc": Array [],
+          "cc": Array [],
+          "from": Object {},
+          "to": Array [
+            Object {
+              "address": "alex@gorgias.io",
+            },
+          ],
+          "type": "email",
+        },
+      },
+    ],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer submit ticket 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "id": 12,
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "title",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer toggle history 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": true,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer toggle history 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer toggle history 3`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": true,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer update macro action args on applied 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": Object {
+      "actions": Object {
+        "0": Object {
+          "arguments": Object {
+            "hello": "world",
+          },
+        },
+      },
+      "id": 1,
+    },
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducer update message 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "updateMessageIds": Array [
+        1,
+      ],
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_user": null,
+  "channel": "email",
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "receiver": null,
+  "requester": null,
+  "sender": null,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "new",
+  "subject": "",
+  "tags": Array [],
+  "via": "helpdesk",
+}
+`;

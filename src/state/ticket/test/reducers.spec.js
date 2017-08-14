@@ -1,234 +1,764 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
+
 import reducer, {initialState} from '../reducers'
-import {getLastSameSourceTypeMessage} from '../utils'
+import * as newMessageTypes from '../../newMessage/constants'
+import * as userTypes from '../../users/constants'
 import * as types from '../constants'
+import * as ticketFixtures from '../../../fixtures/ticket'
+
+// mock Date object
+const DATE_TO_USE = new Date('2017')
+global.Date = jest.fn(() => DATE_TO_USE)
+global.Date.toISOString = Date.toISOString
+
+jest.mock('../../../pages/common/utils/socketio', () => {
+    return () => ({
+        joinTicket: jest.fn(),
+        joinUser: jest.fn(),
+    })
+})
+
+jest.mock('../../newMessage/ticketReplyCache', () => {
+    const Immutable = require.requireActual('immutable')
+
+    return {
+        _keys: jest.fn(),
+        _id: jest.fn(),
+        set: jest.fn(),
+        get: jest.fn(() => Immutable.fromJS({})),
+        delete: jest.fn(),
+    }
+})
 
 jest.addMatchers(immutableMatchers)
 
-describe('Ticket reducer', () => {
-    it('should return the initial state', () => {
+describe('ticket reducer', () => {
+    it('initial state', () => {
+        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+    })
+
+    it('update message', () => {
+        // start
         expect(
-            reducer(undefined, {})
-        ).toEqualImmutable(
-            initialState
-        )
+            reducer(
+                initialState,
+                {
+                    type: types.UPDATE_TICKET_MESSAGE_START,
+                    messageId: 1,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
     })
 
-    it('should return correct loading state equal true', () => {
-        let expected = initialState.setIn(['_internal', 'loading', 'deleteMessage'], true)
+    it('submit new message', () => {
+        const newMessage = {
+            source: {
+                type: 'email',
+                from: {},
+                to: [{address: 'alex@gorgias.io'}],
+                cc: [],
+                bcc: [],
+            },
+            body_text: 'hello',
+            body_html: '<div>hello</div>',
+            channel: 'email',
+        }
 
+        // start
         expect(
-            reducer(initialState, {type: types.DELETE_TICKET_MESSAGE_START})
-        ).toEqualImmutable(
-            expected
-        )
-    })
+            reducer(
+                initialState,
+                {
+                    type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                    message: newMessage,
+                    messageId: '123', // fake message id attributed in submit action,
+                    retry: false,
+                    status: 'open',
+                }
+            ).toJS()
+        ).toMatchSnapshot()
 
-    it('should return same state if state.id if undefined or different from response', () => {
-        const currentTicket = initialState.set('id', 'toto')
+        const retryMessage = {
+            ...newMessage,
+            _internal: {
+                id: 1,
+                status: 'open',
+            },
+            originalMessage: newMessage,
+            created_datetime: '2017-07-29T22:00:00',
+        }
+
+        // error
         expect(
-            reducer(currentTicket, {type: types.SUBMIT_TICKET_SUCCESS, resp: {id: 'fake'}})
-        ).toEqualImmutable(
-            currentTicket
-        )
-    })
+            reducer(
+                initialState
+                    .mergeDeep({
+                        _internal: {
+                            pendingMessages: [retryMessage]
+                        }
+                    }),
+                {
+                    type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
+                    message: newMessage,
+                    messageId: 1,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
 
-    // TODO ✅ : fetch_ticket_success
-
-    it('should return same state if ticket_id is different', () => {
+        // start retry
         expect(
-            reducer(initialState, {type: types.FETCH_MESSAGE_SUCCESS, resp: {}})
-        ).toEqualImmutable(
-            initialState
-        )
+            reducer(
+                initialState
+                    .mergeDeep({
+                        _internal: {
+                            pendingMessages: [{
+                                ...retryMessage,
+                                failed_datetime: '2017-07-29T22:01:00',
+                            }]
+                        }
+                    }),
+                {
+                    type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                    message: retryMessage.originalMessage,
+                    messageId: 1,
+                    retry: true,
+                    status: 'open',
+                }
+            ).toJS()
+        ).toMatchSnapshot()
     })
 
-    it('should return clean ticket', () => {
-        const currentTicket = initialState.set('subject', 'Hold the door!')
-
+    it('submit ticket', () => {
+        // success
         expect(
-            reducer(currentTicket, {type: types.CLEAR_TICKET})
-        ).toEqualImmutable(
-            initialState
-        )
+            reducer(
+                initialState,
+                {
+                    type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
+                    resp: {
+                        id: 12,
+                        subject: 'title',
+                    },
+                }
+            ).toJS()
+        ).toMatchSnapshot()
     })
 
-    it('should return clean ticket', () => {
-        const currentTicket = initialState.set('subject', 'Hold the door!')
-
+    it('fetch ticket', () => {
+        // start
         expect(
-            reducer(currentTicket, {type: types.CLEAR_TICKET})
-        ).toEqualImmutable(
-            initialState
-        )
-    })
+            reducer(
+                initialState,
+                {
+                    type: types.FETCH_TICKET_START,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
 
-    it('should add tags to ticket', () => {
-        const args = fromJS({tags: 'npm,drama'})
-        const expected = initialState.set('tags', fromJS([
-            {name: 'npm'},
-            {name: 'drama'},
-        ]))
-
-        expect(
-            reducer(initialState, {type: types.ADD_TICKET_TAGS, args})
-        ).toEqual(
-            expected
-        )
-    })
-
-    it('should remove one tag', () => {
-        const tags = fromJS([{name: 'npm'}, {name: 'drama'}])
-        const currentTicket = initialState.set('tags', tags)
-        const expected = initialState.set('tags', tags.delete(1))
-
-        expect(
-            reducer(currentTicket, {type: types.REMOVE_TICKET_TAG, args: fromJS({tag: 'drama'})})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should toggle priority', () => {
-        const expected = initialState.set('priority', 'high')
-
-        expect(
-            reducer(initialState, {type: types.TOGGLE_PRIORITY, args: fromJS({})})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should update action.args.priority if exists', () => {
-        const args = fromJS({priority: 'normal'})
-        const expected = initialState.set('priority', 'normal')
-
-        expect(
-            reducer(initialState, {type: types.TOGGLE_PRIORITY, args})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should set assignee_user to null if args.assignee_user is undefined', () => {
-        expect(
-            reducer(initialState, {type: types.SET_AGENT, args: fromJS({})})
-        ).toEqualImmutable(
-            initialState
-        )
-    })
-
-    it('should set assignee_user if args.assignee_user exists', () => {
-        const args = fromJS({assignee_user: 'Gordon Ramsay'})
-        const expected = initialState.set('assignee_user', 'Gordon Ramsay')
-
-        expect(
-            reducer(initialState, {type: types.SET_AGENT, args})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should set new ticket status', () => {
-        const args = fromJS({status: 'old'})
-        const expected = initialState.set('status', 'old')
-
-        expect(
-            reducer(initialState, {type: types.SET_STATUS, args})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should set subject', () => {
-        const args = fromJS({subject: 'the cake is a lie'})
-        const expected = initialState.set('subject', 'the cake is a lie')
-
-        expect(
-            reducer(initialState, {type: types.SET_SUBJECT, args})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should setup a new ticket', () => {
-        const expected = initialState
-
-        expect(
-            reducer(initialState, {type: types.CLEAR_TICKET})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should mark ticket dirty', () => {
-        const expected = initialState.setIn(['state', 'dirty'], true)
-
-        expect(
-            reducer(initialState, {type: types.MARK_TICKET_DIRTY, dirty: true})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    it('should remove correct message', () => {
-        const currentTicket = initialState.set('messages', fromJS([{id: 'foo', txt: 'coucou'}]))
-
-        expect(
-            reducer(currentTicket, {type: types.DELETE_TICKET_MESSAGE_SUCCESS, messageId: 'foo'})
-        ).toEqualImmutable(
-            initialState
-        )
-    })
-
-    it('should handle SET_SPAM', () => {
-        expect(
-            reducer(initialState, {type: types.SET_SPAM, spam: true})
-        ).toEqualImmutable(
-            initialState.set('spam', true)
-        )
-    })
-
-    it('should mark ticket dirty', () => {
-        const expected = initialState.setIn(['state', 'dirty'], true)
-
-        expect(
-            reducer(initialState, {type: types.MARK_TICKET_DIRTY, dirty: true})
-        ).toEqualImmutable(
-            expected
-        )
-    })
-
-    describe('function getLastSameSourceTypeMessage', () => {
-        it('should return the last message of matching sourceType', () => {
-            const messages = fromJS([
-                {id: 1, source: {type: 'email'}},
-                {id: 2, source: {type: 'chat'}},
-                {id: 3, source: {type: 'email'}},
-                {id: 4, source: {type: 'chat'}},
-                {id: 5, source: {type: 'email'}}
-            ])
-
-            expect(getLastSameSourceTypeMessage(messages, 'chat')).toEqualImmutable(fromJS({
-                id: 4,
-                source: {type: 'chat'}
-            }))
-        })
-    })
-
-    it('should set ticket requester', () => {
-        const requester = fromJS({
+        const ticket = {
             id: 1,
-            name: 'Pizza Pepperoni'
-        })
-        const expected = initialState.set('requester', requester)
-        const args = fromJS({requester})
+            subject: 'title',
+            messages: [{
+                id: 1,
+                body_text: 'hello',
+                body_html: '<div>hello</div>',
+                channel: 'email',
+            }],
+            requester: {
+                id: 1,
+                customer: {id: 1},
+            },
+        }
 
+        // success
         expect(
-            reducer(initialState, {type: types.SET_REQUESTER, args})
-        ).toEqualImmutable(
-            expected
-        )
+            reducer(
+                initialState,
+                {
+                    type: types.FETCH_TICKET_SUCCESS,
+                    resp: ticket,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // error
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.FETCH_TICKET_ERROR,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('clear ticket', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep(ticketFixtures.ticket),
+                {
+                    type: types.CLEAR_TICKET,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('add tags', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.ADD_TICKET_TAGS,
+                    args: fromJS({
+                        tags: 'billing, refund',
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // already existing
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        tags: [{name: 'billing'}],
+                    }),
+                {
+                    type: types.ADD_TICKET_TAGS,
+                    args: fromJS({
+                        tags: 'billing, refund',
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // empty tags
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        tags: [{name: 'billing'}],
+                    }),
+                {
+                    type: types.ADD_TICKET_TAGS,
+                    args: fromJS({
+                        tags: '',
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('remove tag', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        tags: [{name: 'billing'}, {name: 'refund'}],
+                    }),
+                {
+                    type: types.REMOVE_TICKET_TAG,
+                    args: fromJS({
+                        tag: 'billing',
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // empty tags
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        tags: [{name: 'billing'}],
+                    }),
+                {
+                    type: types.REMOVE_TICKET_TAG,
+                    args: fromJS({
+                        tag: '',
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('set spam', () => {
+        // set true
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_SPAM,
+                    spam: true,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // set false
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        spam: true,
+                    }),
+                {
+                    type: types.SET_SPAM,
+                    spam: false,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('set agent', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_AGENT,
+                    args: fromJS({
+                        assignee_user: {id: 1},
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // unassigned
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_AGENT,
+                    args: fromJS({}),
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('set status', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_STATUS,
+                    args: fromJS({
+                        status: 'closed',
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('set subject', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_SUBJECT,
+                    args: fromJS({
+                        subject: 'another title',
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('set requester', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_REQUESTER,
+                    args: fromJS({
+                        requester: {id: 1},
+                    })
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('apply macro', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.APPLY_MACRO,
+                    macro: fromJS({id: 1})
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // replace previous macro
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        state: {
+                            appliedMacro: {id: 1},
+                        },
+                    }),
+                {
+                    type: types.APPLY_MACRO,
+                    macro: fromJS({id: 2})
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('clear applied macro', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        state: {
+                            appliedMacro: {id: 1},
+                        },
+                    }),
+                {
+                    type: types.CLEAR_APPLIED_MACRO,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('update macro action args on applied', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        state: {
+                            appliedMacro: {id: 1},
+                        },
+                    }),
+                {
+                    type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
+                    actionIndex: 0,
+                    value: {
+                        hello: 'world',
+                    },
+                    ticketId: 1,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('delete macro action args on applied', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        state: {
+                            appliedMacro: {
+                                id: 1,
+                                actions: {
+                                    '0': {
+                                        arguments: {
+                                            hello: 'world',
+                                        }
+                                    },
+                                    '1': {
+                                        arguments: {
+                                            foo: 'bar',
+                                        }
+                                    }
+                                }
+                            },
+                        },
+                    }),
+                {
+                    type: types.DELETE_ACTION_ON_APPLIED,
+                    actionIndex: 0,
+                    ticketId: 1,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('mark dirty', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.MARK_TICKET_DIRTY,
+                    dirty: true,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // set false
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        state: {
+                            dirty: true,
+                        },
+                    }),
+                {
+                    type: types.MARK_TICKET_DIRTY,
+                    dirty: false,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('delete message', () => {
+        // success
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        messages: [{
+                            id: 1,
+                        }, {
+                            id: 2,
+                        }]
+                    }),
+                {
+                    type: types.DELETE_TICKET_MESSAGE_SUCCESS,
+                    messageId: 2,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('toggle history', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.TOGGLE_HISTORY,
+                    state: true,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // set false
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        _internal: {
+                            displayHistory: true,
+                        },
+                    }),
+                {
+                    type: types.TOGGLE_HISTORY,
+                    state: false,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // invert previous value if no passed state
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        _internal: {
+                            displayHistory: false,
+                        },
+                    }),
+                {
+                    type: types.TOGGLE_HISTORY,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('display history on next page', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
+                    state: true,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // set false
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        _internal: {
+                            shouldDisplayHistoryOnNextPage: true,
+                        },
+                    }),
+                {
+                    type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
+                    state: false,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('merge users', () => {
+        // success
+        // should do nothing since there is no requester in state for now
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: userTypes.MERGE_USERS_SUCCESS,
+                    resp: {
+                        id: 1,
+                        name: 'Alex',
+                    },
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // should replace requester
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        requester: {
+                            id: 1,
+                            name: 'Romain',
+                        },
+                    }),
+                {
+                    type: userTypes.MERGE_USERS_SUCCESS,
+                    resp: {
+                        id: 1,
+                        name: 'Alex',
+                    },
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('merge ticket', () => {
+        const ticket = {
+            id: 1,
+            subject: 'title',
+            messages: [{ // deliberately not ordered
+                id: 2,
+                body_text: 'hello',
+                body_html: '<div>hello</div>',
+                channel: 'email',
+                created_datetime: '2017-07-29T22:00:00',
+            }, {
+                id: 1,
+                body_text: 'hi',
+                body_html: '<div>hi</div>',
+                channel: 'email',
+                created_datetime: '2017-07-28T22:00:00',
+            }],
+            requester: {
+                id: 1,
+                customer: {id: 1},
+            },
+        }
+
+        // merge ticket and order messages
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.MERGE_TICKET,
+                    ticket,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // remove pending message
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep(ticket)
+                    .mergeDeep({
+                        _internal: {
+                            pendingMessages: [{
+                                body_text: 'hello',
+                                body_html: '<div>hello</div>',
+                                channel: 'email',
+                            }],
+                        },
+                    }),
+                {
+                    type: types.MERGE_TICKET,
+                    ticket,
+                    messagesDifference: 1,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('merge requester', () => {
+        // should do nothing since there is no requester in state for now
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.MERGE_REQUESTER,
+                    user: {
+                        id: 1,
+                        name: 'Alex',
+                    },
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // should replace requester
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        requester: {
+                            id: 1,
+                            name: 'Romain',
+                        },
+                    }),
+                {
+                    type: types.MERGE_REQUESTER,
+                    user: {
+                        id: 1,
+                        name: 'Alex',
+                    },
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('delete pending message', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        _internal: {
+                            pendingMessages: [{
+                                _internal: {
+                                    id: 1,
+                                },
+                                body_text: 'hello',
+                                body_html: '<div>hello</div>',
+                                channel: 'email',
+                            }, {
+                                _internal: {
+                                    id: 2,
+                                },
+                                body_text: 'hello',
+                                body_html: '<div>hello</div>',
+                                channel: 'email',
+                            }],
+                        },
+                    }),
+                {
+                    type: types.DELETE_TICKET_PENDING_MESSAGE,
+                    message: fromJS({
+                        _internal: {
+                            id: 1,
+                        },
+                        body_text: 'hello',
+                        body_html: '<div>hello</div>',
+                        channel: 'email',
+                    }),
+                }
+            ).toJS()
+        ).toMatchSnapshot()
     })
 })

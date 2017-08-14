@@ -10,14 +10,14 @@ import * as viewsActions from '../../../../../state/views/actions'
 import Header from '../Header'
 
 jest.mock('../../../../../state/views/actions', () => {
-    const _noop = require('lodash/noop')
+    const _identity = require('lodash/identity')
 
     return {
-        deleteView: jest.fn(() => _noop),
-        fetchPage: jest.fn(() => _noop),
-        removeFieldFilter: jest.fn(() => _noop),
-        toggleSelection: jest.fn(() => _noop),
-        updateView: jest.fn(() => _noop),
+        deleteView: jest.fn(() => _identity),
+        fetchPage: jest.fn(() => _identity),
+        removeFieldFilter: jest.fn(() => _identity),
+        toggleSelection: jest.fn(() => _identity),
+        updateView: jest.fn(() => _identity),
     }
 })
 

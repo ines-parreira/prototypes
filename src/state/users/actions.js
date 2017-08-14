@@ -82,7 +82,6 @@ export function submitUser(data, userId) {
                 dispatch({
                     type: isCurrentUser ? types.SUBMIT_CURRENT_USER_SUCCESS : types.SUBMIT_USER_SUCCESS,
                     isUpdate,
-                    userId,
                     resp
                 })
 
@@ -132,7 +131,7 @@ export function deleteUser(userId) {
     }
 }
 
-export function fetchUserHistory(userId, options) {
+export function fetchUserHistory(userId, options = {}) {
     return (dispatch, getState) => {
         dispatch({
             type: types.FETCH_USER_HISTORY_START,

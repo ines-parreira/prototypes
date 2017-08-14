@@ -10,12 +10,12 @@ import * as viewsActions from '../../../../../state/views/actions'
 import Page from '../Page'
 
 jest.mock('../../../../../state/views/actions', () => {
-    const _noop = require('lodash/noop')
+    const _identity = require('lodash/identity')
 
     return {
-        fetchPage: jest.fn(() => _noop),
-        setViewActive: jest.fn(() => _noop),
-        updateView: jest.fn(() => _noop),
+        fetchPage: jest.fn(() => _identity),
+        setViewActive: jest.fn(() => _identity),
+        updateView: jest.fn(() => _identity),
     }
 })
 

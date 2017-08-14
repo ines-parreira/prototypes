@@ -3,75 +3,139 @@ import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import * as actions from '../actions'
-import * as types from '../constants'
 import {initialState} from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-describe('actions', () => {
-    describe('users', () => {
-        let store
-        let mockServer
+jest.mock('../../notifications/actions', () => {
+    return {
+        notify: jest.fn(() => (message) => () => message),
+    }
+})
 
-        beforeEach(() => {
-            store = mockStore(initialState.toJS())
-            mockServer = new MockAdapter(axios)
-        })
+describe('users actions', () => {
+    let store
+    let mockServer
 
-        it('create user OK', () => {
-            const userData = {
-                name: 'Mario',
-                email: 'mario@nintendo.com',
-                role: 'agent'
-            }
+    beforeEach(() => {
+        store = mockStore({users: initialState})
+        mockServer = new MockAdapter(axios)
+    })
 
-            mockServer
-                .onPost('/api/users/')
-                .reply(200, {
-                    data: userData
-                })
+    it('fetch users', () => {
+        mockServer
+            .onGet('/api/users/')
+            .reply(200, {
+                data: [{id: 1}]
+            })
 
-            return store
-                .dispatch(actions.submitUser(userData))
-                .then(() => {
-                    // we do not care here about system messages and other disruptions
-                    const triggeredActions = store.getActions().filter(action => action.type.includes('SUBMIT_USER'))
+        store
+            .dispatch(actions.fetchUsers())
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
 
-                    expect(triggeredActions.length).toEqual(2)
+    it('fetch user', () => {
+        mockServer
+            .onGet('/api/users/2/')
+            .reply(200, {
+                data: {id: 2}
+            })
 
-                    expect(triggeredActions[1].type).toEqual(types.SUBMIT_USER_SUCCESS)
+        store
+            .dispatch(actions.fetchUser(2))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
 
-                    expect(triggeredActions[1].resp).toBeTruthy()
-                })
-        })
+    it('fetch current user', () => {
+        mockServer
+            .onGet('/api/users/0/')
+            .reply(200, {
+                data: {id: 12}
+            })
 
-        it('update user OK', () => {
-            const userData = {
-                id: 2,
-                name: 'Mario',
-                email: 'mario@nintendo.com',
-                role: 'agent'
-            }
+        store
+            .dispatch(actions.fetchUser(0))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
 
-            mockServer
-                .onPut('/api/users/2/')
-                .reply(200, {
-                    data: userData
-                })
+    it('create user', () => {
+        const userData = {
+            name: 'Mario',
+            email: 'mario@nintendo.com',
+            role: 'agent'
+        }
 
-            return store
-                .dispatch(actions.submitUser(userData, userData.id))
-                .then(() => {
-                    // we do not care here about system messages and other disruptions
-                    const triggeredActions = store.getActions().filter(action => action.type.includes('SUBMIT_USER'))
+        mockServer
+            .onPost('/api/users/')
+            .reply(200, {
+                data: userData
+            })
 
-                    expect(triggeredActions.length).toEqual(2)
+        store
+            .dispatch(actions.submitUser(userData))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
 
-                    expect(triggeredActions[1].type).toEqual(types.SUBMIT_USER_SUCCESS)
+    it('update user', () => {
+        const userData = {
+            id: 2,
+            name: 'Mario',
+            email: 'mario@nintendo.com',
+            role: 'agent'
+        }
 
-                    expect(triggeredActions[1].resp).toBeTruthy()
-                })
-        })
+        mockServer
+            .onPut('/api/users/2/')
+            .reply(200, {
+                data: userData
+            })
+
+        store
+            .dispatch(actions.submitUser(userData, userData.id))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('delete user', () => {
+        mockServer
+            .onDelete('/api/users/2/')
+            .reply(200)
+
+        store
+            .dispatch(actions.deleteUser(2))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('fetch user history', () => {
+        mockServer
+            .onGet('/api/users/2/tickets/?type=requested')
+            .reply(200, {
+                data: [{id: 1}]
+            })
+
+        store
+            .dispatch(actions.fetchUserHistory(2))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+            .then(() => {
+                store.clearActions()
+
+                store
+                    .dispatch(actions.fetchUserHistory(2, {
+                        successCondition: () => false,
+                    }))
+                    .then(() => expect(store.getActions()).toMatchSnapshot())
+            })
+    })
+
+    it('merge users', () => {
+        mockServer
+            .onPut('/api/users/2/merge/3/')
+            .reply(200, {
+                data: [{id: 1}]
+            })
+
+        store
+            .dispatch(actions.mergeUsers(2, 3))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 })

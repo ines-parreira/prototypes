@@ -314,13 +314,6 @@ export const ACTION_TEMPLATES = [
         partialUpdateKey: 'assignee_user',
         partialUpdateValue: 'assignee_user',
     },
-    // {
-    //     execution: 'front',
-    //     name: 'setPriority',
-    //     title: 'Set priority',
-    //     partialUpdateKey: 'priority',
-    //     partialUpdateValue: 'priority',
-    // },
     {
         execution: 'front',
         name: 'setSubject',

@@ -18,7 +18,7 @@ describe('agents', () => {
             mockServer = new MockAdapter(axios)
         })
 
-        it('dispatch invite OK', () => {
+        it('dispatch invite', () => {
             mockServer
                 .onPost('/api/users/1/invite/')
                 .reply(200)

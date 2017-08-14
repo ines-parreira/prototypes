@@ -11,12 +11,12 @@ import * as viewsActions from '../../../../../state/views/actions'
 import Table from '../Table'
 
 jest.mock('../../../../../state/views/actions', () => {
-    const _noop = require('lodash/noop')
+    const _identity = require('lodash/identity')
 
     return {
-        fetchPage: jest.fn(() => _noop),
-        toggleSelection: jest.fn(() => _noop),
-        resetView: jest.fn(() => _noop),
+        fetchPage: jest.fn(() => _identity),
+        toggleSelection: jest.fn(() => _identity),
+        resetView: jest.fn(() => _identity),
     }
 })
 

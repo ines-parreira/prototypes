@@ -1,4 +1,6 @@
 import {fromJS} from 'immutable'
+import _isEqual from 'lodash/isEqual'
+
 import {isAgent} from '../../utils'
 
 import * as types from './constants'
@@ -47,12 +49,7 @@ export default (state = initialState, action) => {
             let newState = state
 
             // This is a bit lame but that's the proper definition of an agent.
-            if (
-                action.roles
-                && action.roles.length === 2
-                && action.roles.includes('agent')
-                && action.roles.includes('admin')
-            ) {
+            if (_isEqual(action.roles, ['agent', 'admin'])) {
                 newState = newState.set('agents', fromJS(action.resp.data))
             }
 
@@ -79,22 +76,20 @@ export default (state = initialState, action) => {
             return state.setIn(['_internal', 'loading', 'submitUser'], true)
         }
 
-        case types.SUBMIT_USER_ERROR: {
-            return state.setIn(['_internal', 'loading', 'submitUser'], false)
-        }
-
         case types.SUBMIT_USER_SUCCESS: {
             let newState = state
             const responseUser = fromJS(action.resp)
 
             if (action.isUpdate) {
+                const userId = responseUser.get('id')
+
                 // if updated user is in current items list, update it
                 newState = newState.set('items',
-                    items.set(items.findIndex(item => item.get('id') === action.userId), responseUser)
+                    items.set(items.findIndex(item => item.get('id') === userId), responseUser)
                 )
 
                 // if updated user is the active one, update the active one
-                if (action.userId === state.getIn(['active', 'id'])) {
+                if (userId === state.getIn(['active', 'id'])) {
                     newState = newState.set('active', responseUser)
                 }
             }
@@ -119,6 +114,10 @@ export default (state = initialState, action) => {
             }
 
             return newState.setIn(['_internal', 'loading', 'submitUser'], false)
+        }
+
+        case types.SUBMIT_USER_ERROR: {
+            return state.setIn(['_internal', 'loading', 'submitUser'], false)
         }
 
         case types.DELETE_USER_SUCCESS: {
@@ -215,7 +214,7 @@ export default (state = initialState, action) => {
         }
 
         case agentsTypes.DELETE_AGENT_SUCCESS: {
-            return state.update('agents', agents => agents.filter(user => user.get('id').toString() !== action.id.toString()))
+            return state.update('agents', agents => agents.filter(user => String(user.get('id')) !== String(action.id)))
         }
 
         default:

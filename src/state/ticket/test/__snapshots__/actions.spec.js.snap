@@ -1,0 +1,679 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ticket actions addTags 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      tags: "refund, billing",
+},
+    "type": "addTags",
+  },
+]
+`;
+
+exports[`ticket actions applyMacro 1`] = `
+Array [
+  Object {
+    "macro": Immutable.Map {
+      id: 1,
+      actions: Immutable.List [
+            Immutable.Map {
+                  type: "user",
+                  name: "setResponseText",
+                  arguments: Immutable.Map {
+                        contentState: Immutable.Map {
+                        },
+                        selectionState: Immutable.Map {
+                        },
+                  },
+            },
+            Immutable.Map {
+                  type: "user",
+                  name: "addTags",
+                  arguments: Immutable.Map {
+                        tags: "refund, billing",
+                  },
+            },
+      ],
+},
+    "ticketId": 1,
+    "type": "APPLY_MACRO",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+      contentState: Immutable.Map {
+      },
+      selectionState: Immutable.Map {
+      },
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+},
+    "fromMacro": true,
+    "ticket": Immutable.Map {
+      channel: "email",
+      priority: "normal",
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "new",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      id: 1,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+                  updateMessageIds: Immutable.List [
+                  ],
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+      tags: "refund, billing",
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+},
+    "fromMacro": true,
+    "ticket": Immutable.Map {
+      channel: "email",
+      priority: "normal",
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "new",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      id: 1,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+                  updateMessageIds: Immutable.List [
+                  ],
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": 1,
+    "type": "addTags",
+  },
+  Object {
+    "args": Object {
+      "tags": Immutable.List [
+],
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
+  },
+  Object {
+    "macro": Immutable.Map {
+      id: 1,
+      actions: Immutable.List [
+            Immutable.Map {
+                  type: "user",
+                  name: "setResponseText",
+                  arguments: Immutable.Map {
+                        contentState: Immutable.Map {
+                        },
+                        selectionState: Immutable.Map {
+                        },
+                  },
+            },
+            Immutable.Map {
+                  type: "user",
+                  name: "addTags",
+                  arguments: Immutable.Map {
+                        tags: "refund, billing",
+                  },
+            },
+      ],
+},
+    "type": "NEW_MESSAGE_RECORD_MACRO",
+  },
+  Object {
+    "type": "SET_MACROS_VISIBILITY",
+    "visible": false,
+  },
+]
+`;
+
+exports[`ticket actions applyMacroAction 1`] = `
+Object {
+  "appliedMacro": null,
+  "args": Immutable.Map {
+    contentState: Immutable.Map {
+    },
+    selectionState: Immutable.Map {
+    },
+},
+  "currentUser": undefined,
+  "fromMacro": true,
+  "ticket": Immutable.Map {
+    channel: "email",
+    priority: "normal",
+    subject: "",
+    messages: Immutable.List [
+    ],
+    via: "helpdesk",
+    receiver: null,
+    state: Immutable.Map {
+        dirty: false,
+        latestEventDatetime: null,
+        appliedMacro: null,
+    },
+    status: "new",
+    sender: null,
+    tags: Immutable.List [
+    ],
+    events: Immutable.List [
+    ],
+    assignee_user: null,
+    id: 1,
+    _internal: Immutable.Map {
+        displayHistory: false,
+        shouldDisplayHistoryOnNextPage: false,
+        loading: Immutable.Map {
+            fetchTicket: false,
+            deleteMessage: false,
+            updateMessageIds: Immutable.List [
+            ],
+        },
+        pendingMessages: Immutable.List [
+        ],
+    },
+    requester: null,
+},
+  "ticketId": 1,
+  "type": "setResponseText",
+}
+`;
+
+exports[`ticket actions clearAppliedMacro 1`] = `
+Array [
+  Object {
+    "ticketId": 1,
+    "type": "CLEAR_APPLIED_MACRO",
+  },
+]
+`;
+
+exports[`ticket actions clearTicket 1`] = `
+Array [
+  Object {
+    "type": "SET_MACROS_VISIBILITY",
+    "visible": true,
+  },
+  Object {
+    "shouldDisplayHistoryOnNextPage": false,
+    "type": "CLEAR_TICKET",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`ticket actions deleteActionOnApplied 1`] = `
+Array [
+  Object {
+    "actionIndex": 0,
+    "ticketId": 1,
+    "type": "DELETE_ACTION_ON_APPLIED",
+  },
+]
+`;
+
+exports[`ticket actions deleteMessage 1`] = `
+Array [
+  Object {
+    "messageId": 10,
+    "type": "DELETE_TICKET_MESSAGE_SUCCESS",
+  },
+]
+`;
+
+exports[`ticket actions deleteTicket 1`] = `Array []`;
+
+exports[`ticket actions deleteTicketPendingMessage 1`] = `
+Array [
+  Object {
+    "message": Object {
+      "id": 1,
+    },
+    "type": "DELETE_TICKET_PENDING_MESSAGE",
+  },
+]
+`;
+
+exports[`ticket actions displayHistoryOnNextPage 1`] = `
+Object {
+  "state": true,
+  "type": "DISPLAY_HISTORY_ON_NEXT_PAGE",
+}
+`;
+
+exports[`ticket actions displayHistoryOnNextPage 2`] = `
+Object {
+  "state": false,
+  "type": "DISPLAY_HISTORY_ON_NEXT_PAGE",
+}
+`;
+
+exports[`ticket actions displayHistoryOnNextPage 3`] = `
+Object {
+  "state": true,
+  "type": "DISPLAY_HISTORY_ON_NEXT_PAGE",
+}
+`;
+
+exports[`ticket actions fetchTicket existing ticket 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+  Object {
+    "ticketId": 1,
+    "type": "TICKET_VIEWED",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+    },
+    "ticketId": 1,
+    "type": "FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+    },
+    "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+},
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      channel: "email",
+      priority: "normal",
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "new",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      id: 1,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+                  updateMessageIds: Immutable.List [
+                  ],
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`ticket actions fetchTicket new ticket 1`] = `
+Array [
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {
+},
+    "currentUser": undefined,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      channel: "email",
+      priority: "normal",
+      subject: "",
+      messages: Immutable.List [
+      ],
+      via: "helpdesk",
+      receiver: null,
+      state: Immutable.Map {
+            dirty: false,
+            latestEventDatetime: null,
+            appliedMacro: null,
+      },
+      status: "new",
+      sender: null,
+      tags: Immutable.List [
+      ],
+      events: Immutable.List [
+      ],
+      assignee_user: null,
+      _internal: Immutable.Map {
+            displayHistory: false,
+            shouldDisplayHistoryOnNextPage: false,
+            loading: Immutable.Map {
+                  fetchTicket: false,
+                  deleteMessage: false,
+                  updateMessageIds: Immutable.List [
+                  ],
+            },
+            pendingMessages: Immutable.List [
+            ],
+      },
+      requester: null,
+},
+    "ticketId": undefined,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+]
+`;
+
+exports[`ticket actions fetchTicketReplyMacro 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+]
+`;
+
+exports[`ticket actions handleMessageActionError 1`] = `Array []`;
+
+exports[`ticket actions mergeRequester 1`] = `
+Array [
+  Object {
+    "type": "MERGE_REQUESTER",
+    "user": Object {
+      "id": 1,
+    },
+  },
+]
+`;
+
+exports[`ticket actions mergeTicket fails because not current ticket 1`] = `Array []`;
+
+exports[`ticket actions mergeTicket success 1`] = `
+Array [
+  Object {
+    "messagesDifference": 1,
+    "ticket": Immutable.Map {
+      id: 1,
+      subject: "title",
+      messages: Immutable.List [
+            Immutable.Map {
+                  id: 1,
+                  body_text: "hello",
+                  body_html: "<div>hello</div>",
+                  channel: "email",
+            },
+      ],
+      requester: Immutable.Map {
+            id: 1,
+            customer: Immutable.Map {
+                  id: 1,
+            },
+      },
+},
+    "type": "MERGE_TICKET",
+  },
+  Object {
+    "ticket": Immutable.Map {
+      id: 1,
+      subject: "title",
+      messages: Immutable.List [
+            Immutable.Map {
+                  id: 1,
+                  body_text: "hello",
+                  body_html: "<div>hello</div>",
+                  channel: "email",
+            },
+      ],
+      requester: Immutable.Map {
+            id: 1,
+            customer: Immutable.Map {
+                  id: 1,
+            },
+      },
+},
+    "type": "NEW_MESSAGE_RESET_FROM_TICKET",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+},
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
+exports[`ticket actions removeTag 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      tag: "refund",
+},
+    "type": "REMOVE_TICKET_TAG",
+  },
+]
+`;
+
+exports[`ticket actions setAgent 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      assignee_user: Immutable.Map {
+            id: 1,
+      },
+},
+    "type": "setAssignee",
+  },
+]
+`;
+
+exports[`ticket actions setRequester 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      requester: Immutable.Map {
+            id: 1,
+            custom: true,
+      },
+},
+    "type": "setRequester",
+  },
+]
+`;
+
+exports[`ticket actions setSpam fails because same status 1`] = `Array []`;
+
+exports[`ticket actions setSpam success 1`] = `
+Array [
+  Object {
+    "spam": true,
+    "type": "setSpam",
+  },
+  Object {
+    "args": Object {
+      "spam": true,
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Object {},
+    },
+    "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
+  },
+]
+`;
+
+exports[`ticket actions setStatus 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      status: "open",
+},
+    "type": "setStatus",
+  },
+]
+`;
+
+exports[`ticket actions setSubject 1`] = `
+Array [
+  Object {
+    "args": Immutable.Map {
+      subject: "new title",
+},
+    "type": "setSubject",
+  },
+]
+`;
+
+exports[`ticket actions ticketPartialUpdate fails because new ticket 1`] = `Array []`;
+
+exports[`ticket actions ticketPartialUpdate success 1`] = `
+Array [
+  Object {
+    "args": Object {
+      "subject": "new title",
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Object {
+        "id": 1,
+      },
+    },
+    "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
+  },
+]
+`;
+
+exports[`ticket actions toggleHistory 1`] = `
+Object {
+  "state": true,
+  "type": "TOGGLE_HISTORY",
+}
+`;
+
+exports[`ticket actions toggleHistory 2`] = `
+Object {
+  "state": false,
+  "type": "TOGGLE_HISTORY",
+}
+`;
+
+exports[`ticket actions updateActionArgsOnApplied 1`] = `
+Array [
+  Object {
+    "actionIndex": 0,
+    "ticketId": 1,
+    "type": "UPDATE_ACTION_ARGS_ON_APPLIED",
+    "value": "hello",
+  },
+]
+`;
+
+exports[`ticket actions updateTicketMessage 1`] = `
+Array [
+  Object {
+    "messageId": 10,
+    "type": "UPDATE_TICKET_MESSAGE_START",
+  },
+  Object {
+    "messageId": 10,
+    "resp": Object {
+      "id": 10,
+    },
+    "type": "UPDATE_TICKET_MESSAGE_SUCCESS",
+  },
+]
+`;

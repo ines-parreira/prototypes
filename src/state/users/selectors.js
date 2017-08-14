@@ -7,7 +7,7 @@ export const getUsersState = state => state.users || fromJS({})
 
 export const getLoading = createSelector(
     [getUsersState],
-    state => state.getIn(['_internal', 'loading'], fromJS({}))
+    state => state.getIn(['_internal', 'loading']) || fromJS({})
 )
 
 // in props usage
@@ -23,7 +23,7 @@ export const makeIsLoading = state => name => isLoading(name)(state)
 
 export const getUsers = createSelector(
     [getUsersState],
-    state => state.get('items', fromJS([]))
+    state => state.get('items') || fromJS([])
 )
 
 export const getActiveUser = createSelector(
@@ -38,7 +38,7 @@ export const getActiveUserId = createSelector(
 
 export const getAgents = createSelector(
     [getUsersState],
-    state => state.get('agents', fromJS([]))
+    state => state.get('agents') || fromJS([])
 )
 
 export const getAgent = id => createSelector(
@@ -48,7 +48,7 @@ export const getAgent = id => createSelector(
             return fromJS({})
         }
 
-        return agents.find(agent => agent.get('id', '').toString() === id.toString(), null, fromJS({}))
+        return agents.find(agent => agent.get('id', '').toString() === id.toString()) || fromJS({})
     }
 )
 
@@ -57,7 +57,7 @@ export const makeGetAgent = state => id => getAgent(id)(state)
 // Location of agents in the app (ticket, view, etc.) by their ids
 export const getAgentsIdsLocation = createSelector(
     [getUsersState],
-    state => state.get('agentsLocation', fromJS([]))
+    state => state.get('agentsLocation') || fromJS([])
 )
 
 // Location of agents in the app (ticket, view, etc.)
@@ -137,7 +137,7 @@ export const makeGetOtherAgentsOnTicket = state => ticketId => getOtherAgentsOnT
 // Location of typing agents in the app by their ids
 export const getAgentsIdsTypingStatus = createSelector(
     [getUsersState],
-    state => state.get('agentsTypingStatus', fromJS([]))
+    state => state.get('agentsTypingStatus') || fromJS([])
 )
 
 // Ids of agents typing on a specific ticket

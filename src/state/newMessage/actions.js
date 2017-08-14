@@ -179,7 +179,7 @@ export const setSender = (sender) => (dispatch, getState) => {
         })
     }
 
-    dispatch({
+    return dispatch({
         type: types.NEW_MESSAGE_SET_SENDER,
         sender: _sender
     })

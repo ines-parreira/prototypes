@@ -8,10 +8,6 @@ import * as newMessageTypes from '../newMessage/constants'
 import {getPendingMessageIndex} from './utils'
 import {compare} from '../../utils'
 
-import _isUndefined from 'lodash/isUndefined'
-import _isString from 'lodash/isString'
-import _get from 'lodash/get'
-
 export const initialState = fromJS({
     state: {
         dirty: false,
@@ -42,8 +38,6 @@ export const initialState = fromJS({
     priority: 'normal',
     tags: [],
 })
-
-const updatableFields = initialState.keySeq().filter(key => !['state', '_internal'].includes(key))
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -107,12 +101,6 @@ export default (state = initialState, action) => {
                 })
         }
 
-        case types.DELETE_TICKET_MESSAGE_START:
-            return state.setIn(['_internal', 'loading', 'deleteMessage'], true)
-
-        case types.DELETE_TICKET_MESSAGE_ERROR:
-            return state.setIn(['_internal', 'loading', 'deleteMessage'], false)
-
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
             // Make sure we reset the cache before we send the message
             ticketReplyCache.delete(state.get('id'))
@@ -121,23 +109,10 @@ export default (state = initialState, action) => {
         }
 
         case types.FETCH_TICKET_START: {
-            if (action.displayLoading) {
-                return state.setIn(['_internal', 'loading', 'fetchTicket'], true)
-            }
-            return state
+            return state.setIn(['_internal', 'loading', 'fetchTicket'], true)
         }
 
         case types.FETCH_TICKET_SUCCESS: {
-            // if discreet, only update messages
-            if (!action.displayLoading) {
-                const messages = _get(action, ['resp', 'messages'], [])
-                const requesterCustomer = fromJS(_get(action, ['resp', 'requester', 'customer'], {}))
-
-                return state
-                    .set('messages', state.get('messages', fromJS([])).mergeDeep(messages))
-                    .setIn(['requester', 'customer'], requesterCustomer)
-            }
-
             const newState = state.merge(fromJS(action.resp))
 
             const ticketId = newState.get('id')
@@ -151,28 +126,11 @@ export default (state = initialState, action) => {
                 io.joinUser(requesterId)
             }
 
-            return newState
-        }
-
-        case newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
-            return state.setIn(['_internal', 'loading', 'fetchTicket'], false)
+            return newState.setIn(['_internal', 'loading', 'fetchTicket'], false)
         }
 
         case types.FETCH_TICKET_ERROR: {
             return state.setIn(['_internal', 'loading', 'fetchTicket'], false)
-        }
-
-        case types.FETCH_MESSAGE_SUCCESS: {
-            if (!_isUndefined(state.get('id')) && state.get('id') === action.resp.ticket_id) {
-                return state.setIn(
-                    ['messages', state.get('messages').findIndex(message => message.get('id') === action.resp.id)],
-                    fromJS(action.resp)
-                ).updateIn(['_internal', 'loading', 'updateMessageIds'], (updateMessageIds) => {
-                    return updateMessageIds.filter(v => v !== action.resp.id)
-                })
-            }
-
-            return state
         }
 
         case types.CLEAR_TICKET: {
@@ -202,18 +160,14 @@ export default (state = initialState, action) => {
         case types.REMOVE_TICKET_TAG: {
             const tag = action.args.get('tag')
             const ticketTags = state.get('tags', fromJS([]))
-            return state.set('tags', ticketTags.delete(ticketTags.findIndex(t => t.get('name') === tag)))
-        }
 
-        case types.TOGGLE_PRIORITY: {
-            const priority = action.args.get('priority')
-            let newPriority = state.get('priority') === 'normal' ? 'high' : 'normal'
+            const index = ticketTags.findIndex(t => t.get('name') === tag)
 
-            if (_isString(priority)) {
-                newPriority = priority
+            if (!~index) {
+                return state
             }
 
-            return state.set('priority', newPriority)
+            return state.set('tags', ticketTags.delete(index))
         }
 
         case types.SET_SPAM: {
@@ -262,19 +216,19 @@ export default (state = initialState, action) => {
         case types.UPDATE_ACTION_ARGS_ON_APPLIED: {
             const updatedCache = ticketReplyCache
                 .get(action.ticketId)
-                .setIn(['macro', 'actions', action.actionIndex.toString(), 'arguments'], action.value)
+                .setIn(['macro', 'actions', String(action.actionIndex), 'arguments'], action.value)
             ticketReplyCache.set(action.ticketId, updatedCache)
-            return state.setIn(['state', 'appliedMacro', 'actions', action.actionIndex.toString(), 'arguments'],
+            return state.setIn(['state', 'appliedMacro', 'actions', String(action.actionIndex), 'arguments'],
                 action.value)
         }
 
         case types.DELETE_ACTION_ON_APPLIED: {
             const cachedMacro = ticketReplyCache.get(action.ticketId)
             if (cachedMacro.get('macro')) {
-                const updatedCache = cachedMacro.deleteIn(['macro', 'actions', action.actionIndex.toString()])
+                const updatedCache = cachedMacro.deleteIn(['macro', 'actions', String(action.actionIndex)])
                 ticketReplyCache.set(action.ticketId, updatedCache)
             }
-            return state.deleteIn(['state', 'appliedMacro', 'actions', action.actionIndex.toString()])
+            return state.deleteIn(['state', 'appliedMacro', 'actions', String(action.actionIndex)])
         }
 
         case types.MARK_TICKET_DIRTY:
@@ -282,13 +236,15 @@ export default (state = initialState, action) => {
 
         case types.DELETE_TICKET_MESSAGE_SUCCESS:
             return state
-                .set(
-                    'messages',
-                    state.get('messages', fromJS([])).delete(
-                        state.get('messages', fromJS([])).findIndex(message => message.get('id') === action.messageId)
-                    )
-                )
-                .setIn(['_internal', 'loading', 'deleteMessage'], false)
+                .update('messages', (messages) => {
+                    const index = messages.findIndex(message => message.get('id') === action.messageId)
+
+                    if (!~index) {
+                        return messages
+                    }
+
+                    return messages.delete(index)
+                })
 
         case types.TOGGLE_HISTORY: {
             const displayHistory = action.state !== undefined
@@ -299,7 +255,7 @@ export default (state = initialState, action) => {
         }
 
         case types.DISPLAY_HISTORY_ON_NEXT_PAGE:
-            return state.setIn(['_internal', 'shouldDisplayHistoryOnNextPage'], fromJS(action.state))
+            return state.setIn(['_internal', 'shouldDisplayHistoryOnNextPage'], action.state)
 
         case userTypes.MERGE_USERS_SUCCESS: {
             if (action.resp && state.getIn(['requester', 'id']) === action.resp.id) {
@@ -310,14 +266,9 @@ export default (state = initialState, action) => {
 
         case types.MERGE_TICKET: {
             const {ticket, messagesDifference} = action
-            let newState = state
 
             // merge received ticket with current ticket
-            updatableFields.forEach((key) => {
-                if (ticket.has(key)) {
-                    newState = newState.set(key, ticket.get(key))
-                }
-            })
+            let newState = state.merge(ticket)
 
             // order messages by created datetime
             newState = newState.update('messages', messages => {

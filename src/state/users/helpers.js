@@ -11,7 +11,7 @@ export const getDisplayName = (user) => {
 
     // if not an immutable map
     if (!isImmutable(user)) {
-        return user
+        return user || 'Unknown user'
     }
 
     user = user.set('name', _trim(user.get('name')))

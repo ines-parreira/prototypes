@@ -9,7 +9,7 @@ jest.addMatchers(immutableMatchers)
 
 describe('reducers', () => {
     describe('stats', () => {
-        it('initial state OK', () => {
+        it('initial state', () => {
             expect(
                 reducer(
                     undefined,
@@ -18,7 +18,7 @@ describe('reducers', () => {
             ).toEqualImmutable(initialState)
         })
 
-        it('receive data OK', () => {
+        it('receive data', () => {
             const resp = {
                 type: 'overview',
                 data: {
@@ -41,7 +41,7 @@ describe('reducers', () => {
             )
         })
 
-        it('receive meta OK', () => {
+        it('receive meta', () => {
             const meta = {
                 start_datetime: 'now'
             }
@@ -64,7 +64,7 @@ describe('reducers', () => {
             )
         })
 
-        it('set meta OK', () => {
+        it('set meta', () => {
             const meta = {
                 start_datetime: 'now'
             }
@@ -81,7 +81,7 @@ describe('reducers', () => {
             )
         })
 
-        it('set filter OK', () => {
+        it('set filter', () => {
             const name = 'tags'
             const values = [1, 4]
 

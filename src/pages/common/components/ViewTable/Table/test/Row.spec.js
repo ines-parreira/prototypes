@@ -10,10 +10,10 @@ import * as viewsActions from '../../../../../../state/views/actions'
 import Row from '../Row'
 
 jest.mock('../../../../../../state/views/actions', () => {
-    const _noop = require('lodash/noop')
+    const _identity = require('lodash/identity')
 
     return {
-        toggleSelection: jest.fn(() => _noop),
+        toggleSelection: jest.fn(() => _identity),
     }
 })
 

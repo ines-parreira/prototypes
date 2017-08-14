@@ -6,7 +6,7 @@ import {getNewMessageState} from '../newMessage/selectors'
 
 export const getTicketState = state => state.ticket || fromJS({})
 
-export const makeGetProperty = property => createSelector(
+export const getProperty = property => createSelector(
     [getTicketState],
     state => state.get(property)
 )
@@ -15,7 +15,7 @@ export const getTicket = createImmutableSelector(
     [getTicketState],
     state => state
         .delete('_internal')
-        .delete('state')
+        .delete('state') || fromJS({})
 )
 
 export const getCustomer = createImmutableSelector(
@@ -30,7 +30,7 @@ export const getIntegrationsData = createSelector(
 
 export const getIntegrationDataByIntegrationId = integrationId => createSelector(
     [getIntegrationsData],
-    state => state.get(integrationId) || fromJS({})
+    state => state.get(String(integrationId)) || fromJS({})
 )
 
 export const getLoading = createImmutableSelector(
@@ -70,7 +70,7 @@ export const getLastMessage = createImmutableSelector(
     [getMessages],
     state => state
         .sortBy(message => message.get('created_datetime'))
-        .last()
+        .last() || fromJS({})
 )
 
 export const getReadMessages = createImmutableSelector(
@@ -83,20 +83,15 @@ export const getLastReadMessage = createImmutableSelector(
     (state) => state.maxBy((message) => message.get('sent_datetime')) || fromJS({})
 )
 
-export const getCustomerRatings = createImmutableSelector(
-    [getTicketState],
-    state => state.get('customer_ratings') || fromJS([])
-)
-
 export const getEvents = createImmutableSelector(
     [getTicketState],
     state => state.get('events') || fromJS([])
 )
 
-// return elements we display in the body of a ticket (messages, ratings, events, etc.)
+// return elements we display in the body of a ticket (messages, events, etc.)
 export const getBody = createImmutableSelector(
-    [getMessages, getPendingMessages, getCustomerRatings, getEvents],
-    (messages, pendingMessages, ratings, events) => {
+    [getMessages, getPendingMessages, getEvents],
+    (messages, pendingMessages, events) => {
         messages = messages.map((message) => {
             return message.set('isMessage', true)
         })
@@ -107,19 +102,12 @@ export const getBody = createImmutableSelector(
                 .set('isMessage', true)
         })
 
-        ratings = ratings.map((rating) => {
-            return rating
-                .set('isRating', true)
-                .set('created_datetime', rating.get('rating_datetime'))
-        })
-
         events = events.map((event) => {
             return event.set('isEvent', true)
         })
 
         return messages
             .concat(pendingMessages)
-            .concat(ratings)
             .concat(events)
             .sortBy(element => element.get('created_datetime'))
     }

@@ -4,83 +4,109 @@ import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
 import * as viewTypes from '../../views/constants'
+import * as ticketTypes from '../../ticket/constants'
 
 jest.addMatchers(immutableMatchers)
 
-describe('reducers', () => {
-    describe('tickets', () => {
-        it('initial state OK', () => {
-            expect(
-                reducer(
-                    undefined,
-                    {}
-                )
-            ).toEqualImmutable(initialState)
-        })
+describe('tickets reducer', () => {
+    it('initial state', () => {
+        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+    })
 
-        it('fetch list OK', () => {
-            const items = [{
+    it('fetch list', () => {
+        const resp = {
+            data: [{
                 name: 'A ticket'
             }, {
                 name: 'Another ticket'
-            }]
-
-            const resp = {
-                data: items,
-                meta: {
-                    nb_pages: 2,
-                    page: 1
-                }
+            }],
+            meta: {
+                nb_pages: 2,
+                page: 1
             }
+        }
 
-            const expected = initialState
-                .merge({
-                    items
-                })
-
-            expect(
-                reducer(
-                    initialState, {
-                        type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                        viewType: 'ticket-list',
-                        data: resp
-                    }
-                )
-            ).toEqualImmutable(expected)
-        })
-
-        it('bulk delete OK', () => {
-            const tickets = [
-                {
-                    id: 1,
-                    name: 'A ticket'
-                },
-                {
-                    id: 2,
-                    name: 'Another ticket'
-                },
-                {
-                    id: 3,
-                    name: 'Another nice ticket'
+        expect(
+            reducer(
+                initialState, {
+                    type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
+                    viewType: 'ticket-list',
+                    data: resp
                 }
-            ]
-
-            expect(
-                reducer(
-                    initialState
-                        .set('items', fromJS(tickets)),
-                    {
-                        type: viewTypes.BULK_DELETE_SUCCESS,
-                        viewType: 'ticket-list',
-                        ids: [1, 2]
-                    }
-                )
-            ).toEqualImmutable(
-                initialState
-                    .merge({
-                        items: fromJS([tickets[2]])
-                    })
             )
-        })
+        ).toMatchSnapshot()
+
+        // wrong view type
+        expect(
+            reducer(
+                initialState, {
+                    type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
+                    viewType: 'unknown-list',
+                    data: resp
+                }
+            )
+        ).toMatchSnapshot()
+    })
+
+    it('bulk delete', () => {
+        const tickets = [
+            {
+                id: 1,
+                name: 'A ticket'
+            },
+            {
+                id: 2,
+                name: 'Another ticket'
+            },
+            {
+                id: 3,
+                name: 'Another nice ticket'
+            }
+        ]
+
+        expect(
+            reducer(
+                initialState.set('items', fromJS(tickets)),
+                {
+                    type: viewTypes.BULK_DELETE_SUCCESS,
+                    viewType: 'ticket-list',
+                    ids: [1, 2]
+                }
+            )
+        ).toMatchSnapshot()
+    })
+
+    it('fetch ticket', () => {
+        const tickets = [
+            {
+                id: 1,
+                name: 'A ticket'
+            },
+            {
+                id: 2,
+                name: 'Another ticket',
+            },
+        ]
+
+        expect(
+            reducer(
+                initialState.set('items', fromJS(tickets)),
+                {
+                    type: ticketTypes.FETCH_TICKET_SUCCESS,
+                    ticketId: 2,
+                }
+            )
+        ).toMatchSnapshot()
+
+        // non existent ticket
+        expect(
+            reducer(
+                initialState.set('items', fromJS(tickets)),
+                {
+                    type: ticketTypes.FETCH_TICKET_SUCCESS,
+                    ticketId: 14,
+                }
+            )
+        ).toMatchSnapshot()
     })
 })

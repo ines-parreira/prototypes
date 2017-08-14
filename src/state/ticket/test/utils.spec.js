@@ -9,7 +9,8 @@ import {
     receiversStateFromValue,
     getPreferredChannel,
     getNewMessageSender,
-    isForwardedMessage
+    isForwardedMessage,
+    replaceIntegrationVariables,
 } from '../utils'
 import {
     displayUserNameFromSource,
@@ -364,5 +365,144 @@ describe('Ticket utils', () => {
             expect(isForwardedMessage(fromJS({source: {extra: {forward: false}}}))).toEqual(false)
             expect(isForwardedMessage(fromJS({}))).toEqual(false)
         })
+    })
+})
+
+describe('replace variables', () => {
+    it('should return empty value if no matching integration', () => {
+        const ticketState = fromJS({
+            requester: {
+                integrations: {
+                    15: {
+                        __integration_type__: 'weirdtype',
+                        customer: {
+                            foo: 'bar'
+                        }
+                    }
+                }
+            }
+        })
+
+        const variable = 'ticket.requester.integrations.shopify.customer.foo'
+
+        const logs = []
+        const dispatch = (arg) => logs.push(arg)
+
+        const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
+            'what is your {ticket.requester.integrations.shopify.customer.foo}?'
+
+        const res = replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
+
+        expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
+            'what is your {}?')
+        expect(logs.length).toEqual(1)
+    })
+
+    it('should update the Shopify variable with the correct integrations id', () => {
+        const ticketState = fromJS({
+            requester: {
+                integrations: {
+                    15: {
+                        __integration_type__: 'shopify',
+                        customer: {
+                            foo: 'bar'
+                        }
+                    }
+                }
+            }
+        })
+
+        const variable = 'ticket.requester.integrations.shopify.customer.foo'
+
+        const logs = []
+        const dispatch = (arg) => logs.push(arg)
+
+        const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
+            'what is your {ticket.requester.integrations.shopify.customer.foo}?'
+
+        const res = replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
+
+        expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
+            'what is your {ticket.requester.integrations[15].customer.foo}?')
+        expect(logs.length).toEqual(0)
+    })
+
+    it('should take data from first of multiple Shopify integrations', () => {
+        const ticketState = fromJS({
+            requester: {
+                integrations: {
+                    15: {
+                        __integration_type__: 'shopify',
+                        customer: {
+                            foo: 'bar'
+                        }
+                    },
+                    17: {
+                        __integration_type__: 'shopify',
+                        customer: {
+                            foo: 'bar'
+                        }
+                    }
+                }
+            }
+        })
+
+        const variable = 'ticket.requester.integrations.shopify.customer.foo'
+
+        const logs = []
+        const dispatch = (arg) => logs.push(arg)
+
+        const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
+            'what is your {ticket.requester.integrations.shopify.customer.foo}?'
+
+        const res = replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
+
+        expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
+            'what is your {ticket.requester.integrations[15].customer.foo}?')
+        expect(logs.length).toEqual(0)
+    })
+
+    it('should take data from most recent of multiple Shopify integrations updates based on updated_at info', () => {
+        const ticketState = fromJS({
+            requester: {
+                integrations: {
+                    15: {
+                        __integration_type__: 'shopify',
+                        customer: {
+                            foo: 'bar',
+                            updated_at: '2017-06-17T13:57:14-04:00',
+                        }
+                    },
+                    16: {
+                        __integration_type__: 'shopify',
+                        customer: {
+                            foo: 'bar',
+                            updated_at: '2017-06-19T13:57:14-04:00',
+                        }
+                    },
+                    17: {
+                        __integration_type__: 'shopify',
+                        customer: {
+                            foo: 'bar',
+                            updated_at: '2017-06-18T13:57:14-04:00',
+                        }
+                    }
+                }
+            }
+        })
+
+        const variable = 'ticket.requester.integrations.shopify.customer.foo'
+
+        const logs = []
+        const dispatch = (arg) => logs.push(arg)
+
+        const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
+            'what is your {ticket.requester.integrations.shopify.customer.foo}?'
+
+        const res = replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
+
+        expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
+            'what is your {ticket.requester.integrations[16].customer.foo}?')
+        expect(logs.length).toEqual(0)
     })
 })

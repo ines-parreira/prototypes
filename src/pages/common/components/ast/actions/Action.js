@@ -139,10 +139,6 @@ export const actionsConfig = {
         name: 'Set tags',
         validate: validateTags
     },
-    // setPriority: {
-    //     compact: true,
-    //     name: 'Set priority',
-    // },
     setSubject: {
         compact: true,
         name: 'Set subject',

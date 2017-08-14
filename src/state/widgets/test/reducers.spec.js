@@ -7,7 +7,7 @@ jest.addMatchers(immutableMatchers)
 
 describe('reducers', () => {
     describe('widgets', () => {
-        it('initial state OK', () => {
+        it('initial state', () => {
             expect(
                 reducer(
                     undefined,
@@ -16,7 +16,7 @@ describe('reducers', () => {
             ).toEqualImmutable(initialState)
         })
 
-        it('fetch list OK', () => {
+        it('fetch list', () => {
             const items = [{
                 order: 0,
                 type: 'card',

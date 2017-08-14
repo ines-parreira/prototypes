@@ -267,6 +267,22 @@ export const agentsLocation = [
     }
 ]
 
+export const agentsTypingStatus = [
+    {
+        users: [
+            '1',
+            '2'
+        ],
+        ticket: '1'
+    },
+    {
+        users: [
+            '1'
+        ],
+        ticket: '2'
+    }
+]
+
 export const user = {
     lastname: 'Bon',
     meta: null,

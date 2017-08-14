@@ -5,7 +5,6 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import * as types from '../constants'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 
@@ -14,241 +13,272 @@ jest.addMatchers(immutableMatchers)
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-describe('actions', () => {
-    describe('ticket', () => {
-        let store
-        let mockServer
+jest.mock('push.js', () => {
+    return {
+        create: jest.fn(),
+    }
+})
 
-        beforeEach(() => {
-            store = mockStore({ticket: initialState})
-            mockServer = new MockAdapter(axios)
+jest.mock('../../../utils', () => {
+    const utils = require.requireActual('../../../utils')
+
+    return {
+        ...utils,
+        isTabActive: jest.fn(() => false),
+        isCurrentlyOnTicket: jest.fn(() => true),
+    }
+})
+
+jest.mock('../../../pages/common/utils/socketio', () => {
+    return () => ({
+        _sendTicketViewed: jest.fn(),
+    })
+})
+
+jest.mock('../../notifications/actions', () => {
+    return {
+        notify: jest.fn(() => (args) => args),
+    }
+})
+
+describe('ticket actions', () => {
+    let store
+    let mockServer
+
+    beforeEach(() => {
+        store = mockStore({ticket: initialState})
+        mockServer = new MockAdapter(axios)
+    })
+
+    const ticket = {
+        id: 1,
+        subject: 'title',
+        messages: [{
+            id: 1,
+            body_text: 'hello',
+            body_html: '<div>hello</div>',
+            channel: 'email',
+        }],
+        requester: {
+            id: 1,
+            customer: {id: 1},
+        },
+    }
+
+    describe('mergeTicket', () => {
+        it('fails because not current ticket', () => {
+            return store.dispatch(actions.mergeTicket(ticket))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
-        it('should fail to delete ticket', () => {
-            const expectedActions = [{
-                type: types.DELETE_TICKET_ERROR
-            }]
-
-            return store.dispatch(actions.deleteTicket(13)).then(() => {
-                store.getActions().forEach((action, index) => {
-                    expect(action.type).toEqual(expectedActions[index].type)
-                })
-            })
-        })
-
-        describe('setSpam()', () => {
-            it('should dispatch actions', () => {
-                store = mockStore({ticket: initialState.set('id', 1)})
-
-                const expectedActions = [{
-                    type: types.SET_SPAM,
-                    spam: true
-                }, {
-                    type: types.TICKET_PARTIAL_UPDATE_START,
-                    args: {spam: true},
-                }, {
-                    type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
-                    resp: {data: {}},
-                }]
-                mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
-
-                return store.dispatch(actions.setSpam(true)).then(() => {
-                    expect(store.getActions()).toEqual(expectedActions)
+        it('success', () => {
+            store = mockStore({
+                ticket: fromJS({
+                    id: 1,
+                    messages: [],
                 })
             })
 
-            it('should not dispatch actions (same status)', () => {
-                store = mockStore({ticket: initialState.set('spam', true)})
-
-                return store.dispatch(actions.setSpam(true)).then(() => {
-                    expect(store.getActions()).toEqual([])
-                })
-            })
-        })
-
-        it('should set requester with partial update', () => {
-            const expectedActions = [
-                {type: types.SET_REQUESTER},
-                {type: types.TICKET_PARTIAL_UPDATE_START},
-                {type: types.TICKET_PARTIAL_UPDATE_SUCCESS},
-            ]
-            const store = mockStore({
-                ticket: initialState.merge({id: 1})
-            })
-            const requester = fromJS({id: 1})
-
-            mockServer
-                .onPut('/api/tickets/1/')
-                .reply(200)
-
-            return store.dispatch(actions.setRequester(requester)).then(() => {
-                store.getActions().forEach((action, index) => {
-                    expect(action.type).toEqual(expectedActions[index].type)
-                })
-            })
-        })
-
-        it('should only send requester id with setRequester', () => {
-            const store = mockStore({
-                ticket: initialState.merge({id: 1})
-            })
-            const requester = fromJS({
-                id: 1,
-                custom: true
-            })
-
-            mockServer
-                .onPut('/api/tickets/1/')
-                .reply(200)
-
-            return store.dispatch(actions.setRequester(requester)).then(() => {
-                store.getActions().some((action) => {
-                    if (action.type === types.TICKET_PARTIAL_UPDATE_START) {
-                        expect(action.args.requester).toEqualImmutable(fromJS({id:1}))
-
-                        return true
-                    }
-                })
-            })
+            return store.dispatch(actions.mergeTicket(ticket))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
 
-    describe('replace variables', () => {
-        it('should return empty value if no matching integration', () => {
-            const ticketState = fromJS({
-                requester: {
-                    integrations: {
-                        15: {
-                            __integration_type__: 'weirdtype',
-                            customer: {
-                                foo: 'bar'
-                            }
-                        }
-                    }
-                }
-            })
+    it('mergeRequester', () => {
+        store.dispatch(actions.mergeRequester({id: 1}))
+        return expect(store.getActions()).toMatchSnapshot()
+    })
 
-            const variable = 'ticket.requester.integrations.shopify.customer.foo'
+    it('fetchTicketReplyMacro', () => {
+        store.dispatch(actions.fetchTicketReplyMacro())
+        return expect(store.getActions()).toMatchSnapshot()
+    })
 
-            const logs = []
-            const dispatch = (arg) => logs.push(arg)
+    describe('ticketPartialUpdate', () => {
+        const update = {subject: 'new title'}
 
-            const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
-                'what is your {ticket.requester.integrations.shopify.customer.foo}?'
-
-            const res = actions.replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
-
-            expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
-                'what is your {}?')
-            expect(logs.length).toEqual(1)
+        it('fails because new ticket', () => {
+            return store.dispatch(actions.ticketPartialUpdate(update))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
-        it('should update the Shopify variable with the correct integrations id', () => {
-            const ticketState = fromJS({
-                requester: {
-                    integrations: {
-                        15: {
-                            __integration_type__: 'shopify',
-                            customer: {
-                                foo: 'bar'
-                            }
-                        }
-                    }
-                }
+        it('success', () => {
+            mockServer.onPut('/api/tickets/1/').reply(200, {data: {id: 1}})
+
+            store = mockStore({
+                ticket: fromJS({id: 1})
             })
 
-            const variable = 'ticket.requester.integrations.shopify.customer.foo'
+            return store.dispatch(actions.ticketPartialUpdate(update))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+    })
 
-            const logs = []
-            const dispatch = (arg) => logs.push(arg)
+    it('addTags', () => {
+        mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+        return store.dispatch(actions.addTags('refund, billing'))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
 
-            const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
-                'what is your {ticket.requester.integrations.shopify.customer.foo}?'
+    it('removeTag', () => {
+        mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+        return store.dispatch(actions.removeTag('refund'))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
 
-            const res = actions.replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
-
-            expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
-                'what is your {ticket.requester.integrations[15].customer.foo}?')
-            expect(logs.length).toEqual(0)
+    describe('setSpam', () => {
+        it('fails because same status', () => {
+            store = mockStore({ticket: initialState.set('spam', true)})
+            return store.dispatch(actions.setSpam(true))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
-        it('should take data from first of multiple Shopify integrations', () => {
-            const ticketState = fromJS({
-                requester: {
-                    integrations: {
-                        15: {
-                            __integration_type__: 'shopify',
-                            customer: {
-                                foo: 'bar'
-                            }
-                        },
-                        17: {
-                            __integration_type__: 'shopify',
-                            customer: {
-                                foo: 'bar'
-                            }
-                        }
-                    }
-                }
+        it('success', () => {
+            store = mockStore({ticket: initialState.set('id', 1)})
+            mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+            return store.dispatch(actions.setSpam(true))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+    })
+
+    it('setAgent', () => {
+        mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+        return store.dispatch(actions.setAgent({id: 1}))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('setRequester', () => {
+        mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+        return store.dispatch(actions.setRequester(fromJS({id: 1, custom: true})))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('setStatus', () => {
+        mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+        return store.dispatch(actions.setStatus('open'))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('setSubject', () => {
+        mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+        return store.dispatch(actions.setSubject('new title'))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('deleteMessage', () => {
+        mockServer.onDelete('/api/tickets/1/messages/10/').reply(200)
+        return store.dispatch(actions.deleteMessage(1, 10))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('deleteActionOnApplied', () => {
+        store.dispatch(actions.deleteActionOnApplied(0, 1))
+        return expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('updateActionArgsOnApplied', () => {
+        store.dispatch(actions.updateActionArgsOnApplied(0, 'hello', 1))
+        return expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('applyMacroAction', () => {
+        const action = fromJS({
+            type: 'user',
+            name: 'setResponseText',
+            arguments: {
+                contentState: {},
+                selectionState: {},
+            },
+        })
+
+        store = mockStore({ticket: initialState.set('id', 1)})
+        return expect(store.dispatch(actions.applyMacroAction(action))).toMatchSnapshot()
+    })
+
+    it('applyMacro', () => {
+        const macro = fromJS({
+            id: 1,
+            actions: [{
+                type: 'user',
+                name: 'setResponseText',
+                arguments: {
+                    contentState: {},
+                    selectionState: {},
+                },
+            }, {
+                type: 'user',
+                name: 'addTags',
+                arguments: {
+                    tags: 'refund, billing',
+                },
+            }]
+        })
+
+        store = mockStore({
+            ticket: initialState.set('id', 1),
+            currentUser: fromJS({id: 1}),
+        })
+        return store.dispatch(actions.applyMacro(macro, 1))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('clearAppliedMacro', () => {
+        store.dispatch(actions.clearAppliedMacro(1))
+        return expect(store.getActions()).toMatchSnapshot()
+    })
+
+    describe('fetchTicket', () => {
+        it('new ticket', () => {
+            return store.dispatch(actions.fetchTicket('new'))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('existing ticket', () => {
+            mockServer.onGet('/api/tickets/1/').reply(200, {id: 1})
+            store = mockStore({
+                ticket: initialState.set('id', 1),
+                currentUser: fromJS({id: 1}),
             })
-
-            const variable = 'ticket.requester.integrations.shopify.customer.foo'
-
-            const logs = []
-            const dispatch = (arg) => logs.push(arg)
-
-            const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
-                'what is your {ticket.requester.integrations.shopify.customer.foo}?'
-
-            const res = actions.replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
-
-            expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
-                'what is your {ticket.requester.integrations[15].customer.foo}?')
-            expect(logs.length).toEqual(0)
+            return store.dispatch(actions.fetchTicket(1))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
         })
+    })
 
-        it('should take data from most recent of multiple Shopify integrations updates based on updated_at info', () => {
-            const ticketState = fromJS({
-                requester: {
-                    integrations: {
-                        15: {
-                            __integration_type__: 'shopify',
-                            customer: {
-                                foo: 'bar',
-                                updated_at: '2017-06-17T13:57:14-04:00',
-                            }
-                        },
-                        16: {
-                            __integration_type__: 'shopify',
-                            customer: {
-                                foo: 'bar',
-                                updated_at: '2017-06-19T13:57:14-04:00',
-                            }
-                        },
-                        17: {
-                            __integration_type__: 'shopify',
-                            customer: {
-                                foo: 'bar',
-                                updated_at: '2017-06-18T13:57:14-04:00',
-                            }
-                        }
-                    }
-                }
-            })
+    it('handleMessageActionError', () => {
+        store.dispatch(actions.handleMessageActionError(1))
+        return expect(store.getActions()).toMatchSnapshot()
+    })
 
-            const variable = 'ticket.requester.integrations.shopify.customer.foo'
+    it('updateTicketMessage', () => {
+        mockServer.onPut('/api/tickets/1/messages/10/?action=retry').reply(200, {id: 10})
+        return store.dispatch(actions.updateTicketMessage(1, 10, {id: 10}, 'retry'))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
 
-            const logs = []
-            const dispatch = (arg) => logs.push(arg)
+    it('clearTicket', () => {
+        store.dispatch(actions.clearTicket())
+        return expect(store.getActions()).toMatchSnapshot()
+    })
 
-            const newArg = 'Hello {ticket.requester.integration.shopify.customer.name}, ' +
-                'what is your {ticket.requester.integrations.shopify.customer.foo}?'
+    it('toggleHistory', () => {
+        expect(actions.toggleHistory(true)).toMatchSnapshot()
+        expect(actions.toggleHistory(false)).toMatchSnapshot()
+    })
 
-            const res = actions.replaceIntegrationVariables('shopify', ticketState, variable, newArg, dispatch)
+    it('displayHistoryOnNextPage', () => {
+        expect(actions.displayHistoryOnNextPage(true)).toMatchSnapshot()
+        expect(actions.displayHistoryOnNextPage(false)).toMatchSnapshot()
+        expect(actions.displayHistoryOnNextPage()).toMatchSnapshot()
+    })
 
-            expect(res).toEqual('Hello {ticket.requester.integration.shopify.customer.name}, ' +
-                'what is your {ticket.requester.integrations[16].customer.foo}?')
-            expect(logs.length).toEqual(0)
-        })
+    it('deleteTicket', () => {
+        mockServer.onDelete('/api/tickets/13/').reply(200)
+        return store.dispatch(actions.deleteTicket(13))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('deleteTicketPendingMessage', () => {
+        store.dispatch(actions.deleteTicketPendingMessage({id: 1}))
+        return expect(store.getActions()).toMatchSnapshot()
     })
 })

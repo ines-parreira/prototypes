@@ -5,11 +5,12 @@ import _toLower from 'lodash/toLower'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
 
-import {makeGetProperty} from './selectors'
+import {getProperty} from './selectors'
 import {SOURCE_VALUE_PROP} from '../../config'
 import * as ticketConfig from '../../config/ticket'
 import {displayUserNameFromSource} from '../../pages/tickets/common/utils'
 import {getActionTemplate, toImmutable} from '../../utils'
+import {renderTemplate} from '../../pages/common/utils/template'
 
 /**
  * Get the most recent messages which have the matching sourceType
@@ -196,7 +197,7 @@ export function receiversStateFromValue(value, sourceType) {
 
 /**
  * Build a partial update object from macro actions (or any crafted action with the same form)
- * @param actionNames - 'addTags', 'setPriority', ['addTags', 'setStatus'], etc.
+ * @param actionNames - 'addTags', ['addTags', 'setStatus'], etc.
  * @param state - reducer state
  * @returns {*} - ex: {tags: [{name: 'refund'}], status: 'open'}
  */
@@ -213,7 +214,7 @@ export function buildPartialUpdateFromAction(actionNames, state) {
         .map(actionName => getActionTemplate(actionName))
         .filter(config => !!config.partialUpdateKey)
         .reduce((result, config) => {
-            result[config.partialUpdateKey] = makeGetProperty(config.partialUpdateValue)(state)
+            result[config.partialUpdateKey] = getProperty(config.partialUpdateValue)(state)
             return result
         }, {})
 }
@@ -350,4 +351,84 @@ export function getPendingMessageIndex(pendingMessages, message) {
  */
 export function isForwardedMessage(message) {
     return toImmutable(message).getIn(['source', 'extra', 'forward']) || false
+}
+
+export const renderObject = (argument, context) => {
+    let ret = argument
+
+    if (typeof argument === 'string') {
+        ret = renderTemplate(argument, context)
+    } else if (typeof argument === 'object') {
+        ret = argument.map(v => renderObject(v, context))
+    }
+
+    return ret
+}
+
+export const replaceIntegrationVariables = (integrationType, ticketState, variable, newArgument, notify) => {
+    let integrations = ticketState
+        .getIn(['requester', 'integrations'], fromJS([]))
+        .filter((integration) => {
+            return integration.get('__integration_type__') === integrationType
+        })
+
+    // if we have updated_at in customer, sort integrations by the update date so we use the most recent updates
+    if (!integrations.isEmpty() && integrations.first().getIn(['customer', 'updated_at'])) {
+        integrations = integrations.sortBy(integration => integration.getIn(['customer', 'updated_at'])).reverse()
+    }
+
+    const integrationIds = integrations.map((_, integrationId) => integrationId).toList()
+
+    const integrationId = integrationIds.first()
+
+    if (!integrationId) {
+        notify({
+            type: 'warning',
+            title: `This user does not have any ${integrationType} information`,
+        })
+        return newArgument.replace(variable, '')
+    }
+
+    const newVariable = variable.replace('integrations.shopify', `integrations[${integrationId}]`)
+    return newArgument.replace(variable, newVariable)
+}
+
+export const replaceVariables = (argument, state, notify) => {
+    let ticketState = state.ticket
+
+    // If there's a var of format `ticket.requester.integrations.XXX`, then it's a dynamic variable.
+    // Else, it would be `ticket.requester.integrations[XXX]`.
+    let variables = argument.match(/{ticket.requester.integrations.[\w\d\]\[._-]+}/g)
+    let newArgument = argument
+
+    if (variables) {
+        // If a variable is a dynamic variable, we try to replace `integrations.{type}` with
+        // `integrations[correct-integration-id]`.
+        variables.forEach((variable) => {
+            if (variable.includes('integrations.shopify')) {
+                newArgument = replaceIntegrationVariables('shopify', ticketState, variable, newArgument, notify)
+            }
+
+            if (variable.includes('integrations.recharge')) {
+                newArgument = replaceIntegrationVariables('recharge', ticketState, variable, newArgument, notify)
+            }
+        })
+    }
+
+    return renderObject(newArgument, {
+        ticket: ticketState.toJS(),
+        current_user: state.currentUser.toJS()
+    })
+}
+
+export const nestedReplace = (obj, state, notify) => {
+    if (typeof obj === 'string') {
+        return replaceVariables(obj, state, notify)
+    }
+
+    if (typeof obj === 'object') {
+        return obj.map((item) => nestedReplace(item, state, notify))
+    }
+
+    return obj
 }

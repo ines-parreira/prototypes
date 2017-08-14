@@ -14,7 +14,6 @@ import {DEFAULT_ACTIONS} from '../../config'
 import {setMacrosVisible} from '../macro/actions'
 import {TICKET_VIEWED} from '../activity/constants'
 import {notify} from '../notifications/actions'
-import {renderTemplate} from '../../pages/common/utils/template'
 import {
     isCurrentlyOnTicket,
     isTabActive,
@@ -22,6 +21,7 @@ import {
 } from '../../utils'
 import {
     buildPartialUpdateFromAction,
+    nestedReplace,
 } from './utils'
 
 import SocketIO from '../../pages/common/utils/socketio'
@@ -75,7 +75,7 @@ export const mergeTicket = (ticket) => (dispatch, getState) => {
         dispatch(newMessageActions.resetFromTicket(ticket))
     }
 
-    return mergeDispatch
+    return Promise.resolve(mergeDispatch)
 }
 
 export const mergeRequester = (user) => {
@@ -110,7 +110,7 @@ export const ticketPartialUpdate = (args) => (dispatch, getState) => {
     return axios.put(`/api/tickets/${ticketId}/`, args)
         .then((json = {}) => json.data)
         .then(resp => {
-            dispatch({
+            return dispatch({
                 type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
                 resp
             })
@@ -139,15 +139,6 @@ export const removeTag = (tag) => (dispatch, getState) => {
     })
 
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
-}
-
-export const togglePriority = (priority = null) => (dispatch, getState) => { // priority argument is optional
-    dispatch({
-        type: types.TOGGLE_PRIORITY,
-        args: fromJS({priority}),
-    })
-
-    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setPriority', getState())))
 }
 
 export const setSpam = (spam) => (dispatch, getState) => {
@@ -216,10 +207,6 @@ export const setSubject = (subject) => (dispatch, getState) => {
 }
 
 export const deleteMessage = (ticketId, messageId) => (dispatch) => {
-    dispatch({
-        type: types.DELETE_TICKET_MESSAGE_START
-    })
-
     return axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
         .then((json = {}) => json.data)
         .then(() => {
@@ -261,7 +248,7 @@ export const applyMacroAction = (action) => (dispatch, getState) => {
     const args = action.get('arguments')
 
     // should have the same params in state/newMessage/actions/setResponseText
-    dispatch({
+    return dispatch({
         type: name,
         args,
         ticketId: ticket.get('id'),
@@ -272,93 +259,17 @@ export const applyMacroAction = (action) => (dispatch, getState) => {
     })
 }
 
-const renderObject = (argument, context) => {
-    let ret = argument
-
-    if (typeof argument === 'string') {
-        ret = renderTemplate(argument, context)
-    } else if (typeof argument === 'object') {
-        ret = argument.map(v => renderObject(v, context))
-    }
-
-    return ret
-}
-
-export const replaceIntegrationVariables = (integrationType, ticketState, variable, newArgument, dispatch) => {
-    let integrations = ticketState
-        .getIn(['requester', 'integrations'], fromJS([]))
-        .filter((integration) => {
-            return integration.get('__integration_type__') === integrationType
-        })
-
-    // if we have updated_at in customer, sort integrations by the update date so we use the most recent updates
-    if (!integrations.isEmpty() && integrations.first().getIn(['customer', 'updated_at'])) {
-        integrations = integrations.sortBy(integration => integration.getIn(['customer', 'updated_at'])).reverse()
-    }
-
-    const integrationIds = integrations.map((_, integrationId) => integrationId).toList()
-
-    const integrationId = integrationIds.first()
-
-    if (!integrationId) {
-        dispatch(notify({
-            type: 'warning',
-            title: `This user does not have any ${integrationType} information`,
-        }))
-        return newArgument.replace(variable, '')
-    }
-
-    const newVariable = variable.replace('integrations.shopify', `integrations[${integrationId}]`)
-    return newArgument.replace(variable, newVariable)
-}
-
-const replaceVariables = (argument, state, dispatch) => {
-    let ticketState = state.ticket
-
-    // If there's a var of format `ticket.requester.integrations.XXX`, then it's a dynamic variable.
-    // Else, it would be `ticket.requester.integrations[XXX]`.
-    let variables = argument.match(/\{ticket.requester.integrations.[\w\d\]\[._-]+}/g)
-    let newArgument = argument
-
-    if (variables) {
-        // If a variable is a dynamic variable, we try to replace `integrations.{type}` with
-        // `integrations[correct-integration-id]`.
-        variables.forEach((variable) => {
-            if (variable.includes('integrations.shopify')) {
-                newArgument = replaceIntegrationVariables('shopify', ticketState, variable, newArgument, dispatch)
-            }
-
-            if (variable.includes('integrations.recharge')) {
-                newArgument = replaceIntegrationVariables('recharge', ticketState, variable, newArgument, dispatch)
-            }
-        })
-    }
-
-    return renderObject(newArgument, {
-        ticket: ticketState.toJS(),
-        current_user: state.currentUser.toJS()
-    })
-}
-
-const nestedReplace = (obj, state, dispatch) => {
-    if (typeof obj === 'string') {
-        return replaceVariables(obj, state, dispatch)
-    }
-
-    if (typeof obj === 'object') {
-        return obj.map((item) => nestedReplace(item, state, dispatch))
-    }
-
-    return obj
-}
-
 export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
     // render macro action arguments
     let state = getState()
 
-    const renderedMacro = macro.set('actions', macro.get('actions').map(
-        (action) => action.set('arguments', nestedReplace(action.get('arguments'), state, dispatch))
-    ))
+    const renderedMacro = macro.update('actions', (actions) => {
+        return actions.map((action) => {
+            return action.update('arguments', args => nestedReplace(args, state, (args) => {
+                return dispatch(notify(args))
+            }))
+        })
+    })
 
     dispatch({
         type: types.APPLY_MACRO,
@@ -383,6 +294,8 @@ export const applyMacro = (macro, ticketId) => (dispatch, getState) => {
     })
 
     dispatch(setMacrosVisible(false))
+
+    return Promise.resolve()
 }
 
 export const clearAppliedMacro = (ticketId) => ({
@@ -390,7 +303,7 @@ export const clearAppliedMacro = (ticketId) => ({
     ticketId
 })
 
-export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
+export const fetchTicket = (ticketId) => (dispatch) => {
     if (ticketId === 'new') {
         return new Promise((resolve) => {
             // wait next tick before initializing the draft
@@ -404,7 +317,6 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
 
     dispatch({
         type: types.FETCH_TICKET_START,
-        displayLoading,
     })
 
     dispatch({
@@ -430,7 +342,6 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
                 type: types.FETCH_TICKET_SUCCESS,
                 resp,
                 ticketId: parseInt(ticketId),
-                displayLoading,
             })
 
             // dispatch for newMessage reducer branch
@@ -447,10 +358,6 @@ export const fetchTicket = (ticketId, displayLoading = true) => (dispatch) => {
 
             return dispatch(newMessageActions.resetReceiversAndSender)
         }, error => {
-            if (!displayLoading) {
-                return Promise.resolve()
-            }
-
             return dispatch({
                 type: types.FETCH_TICKET_ERROR,
                 error,
