@@ -24,6 +24,7 @@ export const TICKET_PARTIAL_UPDATE_ERROR = 'TICKET_PARTIAL_UPDATE_ERROR'
 // Macro actions
 export const ADD_TICKET_TAGS = 'addTags'
 export const SET_SPAM = 'setSpam'
+export const SET_TRASHED = 'setTrashed'
 export const SET_STATUS = 'setStatus'
 export const SET_AGENT = 'setAssignee'
 export const SET_SUBJECT = 'setSubject'

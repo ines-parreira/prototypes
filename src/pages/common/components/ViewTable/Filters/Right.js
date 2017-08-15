@@ -1,11 +1,8 @@
 import React, {PropTypes} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
-import {Badge} from 'reactstrap'
 
 import {UserLabel, IntegrationsDetailLabel} from '../../../utils/labels'
-import {fieldPath} from '../../../../../utils'
 
 import * as viewsActions from '../../../../../state/views/actions'
 
@@ -17,7 +14,6 @@ import FilterDropdown from '../FilterDropdown'
 @connect((state) => {
     return {
         integrations: getMessagingIntegrations(state),
-        config: viewsSelectors.getActiveViewConfig(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
     }
 }, {
@@ -27,8 +23,9 @@ export default class Right extends React.Component {
     static propTypes = {
         areFiltersValid: PropTypes.bool.isRequired,
         config: ImmutablePropTypes.map.isRequired,
-        view: PropTypes.object.isRequired,
-        node: PropTypes.object.isRequired,
+        field: ImmutablePropTypes.map,
+        view: PropTypes.object,
+        node: PropTypes.object,
         index: PropTypes.number.isRequired,
         agents: PropTypes.object.isRequired,
         integrations: PropTypes.object.isRequired,
@@ -50,23 +47,27 @@ export default class Right extends React.Component {
 
     componentDidMount() {
         // Automatically set the first option
-        // if the field has only one option
-        if (this.props.node.value === '') {
+        // if the operator is not an empty operator AND the field has only one option
+        if (!this.props.empty && this.props.node.value === '') {
             this._selectFirstOption()
         }
     }
 
     componentDidUpdate() {
         // Automatically set the first option
-        // if the field has only one option
-        if (this.props.node.value === '') {
+        // if the operator is not an empty operator AND the field has only one option
+        if (!this.props.empty && this.props.node.value === '') {
             this._selectFirstOption()
         }
     }
 
     _selectFirstOption = () => {
-        const {updateFieldFilter, index} = this.props
-        const field = this._getFieldConfig()
+        const {updateFieldFilter, field, index} = this.props
+
+        if (!field) {
+            return
+        }
+
         const options = field.getIn(['filter', 'enum'])
 
         if (options && options.size === 1) {
@@ -78,20 +79,12 @@ export default class Right extends React.Component {
         this.setState({dropdownOpen: !this.state.dropdownOpen})
     }
 
-    _getFieldConfig = () => {
-        const {config, objectPath} = this.props
-        const fields = config.get('fields', fromJS([]))
-        return fields.find(field => objectPath === `${config.get('singular')}.${fieldPath(field)}`)
-    }
-
     render() {
-        const {node, config, updateFieldFilter, updateFieldFilterOperator, index, empty} = this.props
+        const {node, config, field, updateFieldFilter, updateFieldFilterOperator, index, empty} = this.props
 
         if (empty) {
             return <span />
         }
-
-        const field = this._getFieldConfig()
 
         if (!field) {
             return (
@@ -99,9 +92,6 @@ export default class Right extends React.Component {
                     <div className="btn btn-outline-danger btn-frozen mr-2">
                         {node.value ? node.value.toString() : node.value}
                     </div>
-                    <Badge color="danger">
-                        System condition
-                    </Badge>
                 </div>
             )
         }

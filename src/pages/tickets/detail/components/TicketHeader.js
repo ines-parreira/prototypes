@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+import moment from 'moment'
 import {browserHistory} from 'react-router'
 import {
     UncontrolledDropdown,
@@ -18,18 +19,19 @@ import TicketTags from './ticketdetails/TicketTags'
 import TicketStatus from './ticketdetails/TicketStatus'
 import TicketAssignee from './ticketdetails/TicketAssignee'
 import TicketSpam from './ticketdetails/TicketSpam'
+import TicketTrash from './ticketdetails/TicketTrash'
 
 import * as ticketActions from '../../../../state/ticket/actions'
 
 @connect(null, {
-    deleteTicket: ticketActions.deleteTicket,
+    setTrashed: ticketActions.setTrashed,
     setSpam: ticketActions.setSpam,
 })
 export default class TicketHeader extends React.Component {
     static propTypes = {
         ticket: PropTypes.object.isRequired,
         actions: PropTypes.object.isRequired,
-        deleteTicket: PropTypes.func.isRequired,
+        setTrashed: PropTypes.func.isRequired,
         setSpam: PropTypes.func.isRequired,
 
         computeNextUrl: PropTypes.func.isRequired,
@@ -37,7 +39,7 @@ export default class TicketHeader extends React.Component {
     }
 
     state = {
-        askDeleteConfirmation: false,
+        askTrashConfirmation: false,
     }
 
     componentDidMount() {
@@ -66,15 +68,19 @@ export default class TicketHeader extends React.Component {
         })
     }
 
-    _toggleDeleteConfirmation = () => {
-        this.setState({askDeleteConfirmation: !this.state.askDeleteConfirmation})
+    _toggleTrashConfirmation = () => {
+        this.setState({askTrashConfirmation: !this.state.askTrashConfirmation})
     }
 
-    _deleteTicket = () => {
-        this._toggleDeleteConfirmation()
-        return this.props.deleteTicket(this.props.ticket.get('id')).then(() => {
+    _trashTicket = () => {
+        this._toggleTrashConfirmation()
+        return this.props.setTrashed(moment.utc()).then(() => {
             this._goToNextUrl()
         })
+    }
+
+    _unTrashTicket = () => {
+        return this.props.setTrashed(null)
     }
 
     _toggleSpam = () => {
@@ -93,8 +99,8 @@ export default class TicketHeader extends React.Component {
 
     render() {
         const {ticket, actions} = this.props
-
         const isUpdate = !!ticket.get('id')
+        const isTrashed = !!ticket.get('trashed_datetime')
 
         return (
             <div className="ticket-header mb-2">
@@ -136,34 +142,44 @@ export default class TicketHeader extends React.Component {
                                     >
                                         {ticket.get('spam') ? 'Unmark as spam' : 'Mark as spam'}
                                     </DropdownItem>
-                                    <DropdownItem
-                                        type="button"
-                                        onClick={this._toggleDeleteConfirmation}
-                                    >
-                                        <div className="text-danger">
-                                            Delete ticket
-                                        </div>
-                                        <Popover
-                                            placement="bottom"
-                                            isOpen={this.state.askDeleteConfirmation}
-                                            target="ticket-actions-button"
-                                            toggle={this._toggleDeleteConfirmation}
-                                        >
-                                            <PopoverTitle>Are you sure?</PopoverTitle>
-                                            <PopoverContent>
-                                                <p>
-                                                    You are about to <b>delete</b> this ticket.
-                                                </p>
-                                                <Button
-                                                    type="submit"
-                                                    color="success"
-                                                    onClick={this._deleteTicket}
+                                    {
+                                        isTrashed ? (
+                                            <DropdownItem
+                                                type="button"
+                                                onClick={this._unTrashTicket}
+                                            >
+                                                Undelete
+                                            </DropdownItem>
+                                        ) : (
+                                            <DropdownItem
+                                                type="button"
+                                                onClick={this._toggleTrashConfirmation}
+                                            >
+                                                <div className="text-danger">
+                                                    Delete
+                                                </div>
+                                                <Popover
+                                                    placement="bottom"
+                                                    isOpen={this.state.askTrashConfirmation}
+                                                    target="ticket-actions-button"
+                                                    toggle={this._toggleTrashConfirmation}
                                                 >
-                                                    Confirm
-                                                </Button>
-                                            </PopoverContent>
-                                        </Popover>
-                                    </DropdownItem>
+                                                    <PopoverTitle>Are you sure?</PopoverTitle>
+                                                    <PopoverContent>
+                                                        <p>
+                                                            You are about to <b>delete</b> this ticket.
+                                                        </p>
+                                                        <Button
+                                                            type="submit"
+                                                            color="success"
+                                                            onClick={this._trashTicket}
+                                                        >
+                                                            Confirm
+                                                        </Button>
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </DropdownItem>
+                                        )}
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         )
@@ -188,7 +204,8 @@ export default class TicketHeader extends React.Component {
                         />
                     </div>
                     <div className="d-inline-flex">
-                        <TicketSpam spam={ticket.get('spam')} />
+                        <TicketTrash trashed={isTrashed}/>
+                        <TicketSpam spam={ticket.get('spam')}/>
                         <TicketAssignee
                             direction="right"
                             currentAssignee={ticket.getIn(['assignee_user', 'name'])}

@@ -1,8 +1,6 @@
 import {fromJS} from 'immutable'
 import _isNumber from 'lodash/isNumber'
 
-import {EMPTY_OPERATORS} from '../../config'
-
 import * as types from './constants'
 import {getCode} from '../../utils'
 import {shouldUpdateView} from '../activity/utils'
@@ -104,11 +102,6 @@ export default (state = initialState, action) => {
         case types.UPDATE_VIEW_FIELD_FILTER_OPERATOR: {
             let ast = activeView.get('filters_ast')
             ast = updateFilterOperator(ast, action.index, action.operator)
-
-            if (Object.keys(EMPTY_OPERATORS).includes(action.operator)) {
-                ast = updateFilterValue(ast, action.index, 0)
-            }
-
             code = getCode(ast.toJS())
             activeView = activeView.set('filters_ast', ast).set('filters', code)
             return state.set('active', activeView.set('dirty', true))

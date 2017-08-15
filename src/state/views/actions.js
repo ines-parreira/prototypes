@@ -355,6 +355,13 @@ export function bulkUpdate(activeView, ids, key, value) {
                 case 'macro':
                     successMessage = `Macro successfully applied to ${ids.size} tickets.`
                     break
+                case 'trashed_datetime':
+                    if (value) {
+                        successMessage = `${ids.size} tickets have been moved to the trash`
+                    } else {
+                        successMessage = `${ids.size} tickets have been undeleted`
+                    }
+                    break
                 default:
                     break
             }
@@ -364,8 +371,8 @@ export function bulkUpdate(activeView, ids, key, value) {
             type: types.BULK_UPDATE_START
         })
 
-        dispatch(notify({
-            status: 'info',
+        const notification = dispatch(notify({
+            status: 'loading',
             dismissAfter: 0,
             closeOnNext: true,
             message: `Updating ${viewConfig.get('api')}...`
@@ -379,16 +386,16 @@ export function bulkUpdate(activeView, ids, key, value) {
                 })
 
                 setTimeout(() => dispatch(fetchPage()), 800)
+                notification.status = 'success'
+                notification.message = successMessage
+                dispatch(notify(notification))
+            }, () => {
+                notification.status = 'error'
+                notification.message = `Failed to update list of ${viewConfig.get('plural')}`
+                dispatch(notify(notification))
 
-                dispatch(notify({
-                    status: 'success',
-                    message: successMessage
-                }))
-            }, error => {
                 return dispatch({
                     type: types.BULK_UPDATE_ERROR,
-                    error,
-                    reason: `Failed to update list of ${viewConfig.get('plural')}`
                 })
             })
     }
@@ -403,7 +410,7 @@ export function bulkDelete(activeView, ids) {
         const activeViewType = activeView.get('type', 'ticket-list')
         const viewConfig = viewsConfig.getConfigByType(activeViewType)
 
-        dispatch(notify({
+        const notification = dispatch(notify({
             status: 'info',
             dismissAfter: 0,
             closeOnNext: true,
@@ -426,16 +433,14 @@ export function bulkDelete(activeView, ids) {
                     dispatch(fetchUsers(['agent', 'admin']))
                 }
 
-                dispatch(notify({
-                    status: 'success',
-                    message: `${ids.size} ${viewConfig.get('plural')} successfully deleted!`
-                }))
-            }, error => {
-                return dispatch({
-                    type: types.BULK_DELETE_ERROR,
-                    error,
-                    reason: `Couldn\'t delete selected ${viewConfig.get('plural')}`
-                })
+                notification.status = 'success'
+                notification.message = `${ids.size} ${viewConfig.get('plural')} successfully deleted!`
+                dispatch(notify(notification))
+            }, () => {
+                notification.status = 'error'
+                notification.message = `Couldn\'t delete selected ${viewConfig.get('plural')}`
+                dispatch(notify(notification))
+                return dispatch({type: types.BULK_DELETE_ERROR})
             })
     }
 }

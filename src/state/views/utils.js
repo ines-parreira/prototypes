@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import esprima from 'esprima'
+import {EMPTY_OPERATORS} from '../../config'
 
 // traverse filters_ast, find all the call expressions and return a new tree
 export function addFilterAST(view, filter) {
@@ -22,8 +23,8 @@ export function removeFilterAST(view, index) {
     return ''
 }
 
-// walk and edit the ast tree
-function walk(ast, index, key, value) {
+// Update a node (CallExpression) in the ast
+function setIn(ast, index, path, value) {
     let count = 0
 
     function walker(node) {
@@ -37,7 +38,7 @@ function walk(ast, index, key, value) {
             case 'CallExpression':
                 count++
                 if ((count - 1) === index) {
-                    return node.setIn(key, value)
+                    return node.setIn(path, value)
                 }
 
                 return node
@@ -49,14 +50,67 @@ function walk(ast, index, key, value) {
     return walker(ast)
 }
 
+// Get a node (CallExpression)
+function getIn(ast, index, path) {
+    let count = 0
+
+    function walker(node) {
+        switch (node.get('type')) {
+            case 'Program':
+                return walker(node.getIn(['body', 0]))
+            case 'ExpressionStatement':
+                return walker(node.get('expression'))
+            case 'LogicalExpression': {
+
+                let _node = walker(node.get('left'))
+                if (_node) {
+                    return _node
+                }
+
+                _node = walker(node.get('right'))
+                if (_node) {
+                    return _node
+                }
+                break
+            }
+            case 'CallExpression':
+                count++
+                if ((count - 1) === index) {
+                    return node.getIn(path)
+                }
+                break
+            default:
+                return node
+        }
+    }
+
+    return walker(ast)
+}
+
+
 // traverse filters_ast and replace the callee name of the CallExpression found at `index
 // once replaced, we return the new AST
 export function updateFilterOperator(ast, index, operator) {
-    return walk(ast, index, ['callee', 'name'], operator)
+    let filter = getIn(ast, index, [])
+    filter = filter.setIn(['callee', 'name'], operator)
+
+    if (Object.keys(EMPTY_OPERATORS).includes(operator)) {
+        // remove the second arguments (value) if the operator is an empty operator
+        filter = filter.update('arguments', args => args.delete(1))
+    } else if (filter.get('arguments').size !== 2) {
+        // add a second argument (value)
+        // if there is one arguments and the operator is NOT an empty operator
+        filter = filter.update('arguments', args => args.push(fromJS({
+            'raw': '\'\'',
+            'value': '',
+            'type': 'Literal'
+        })))
+    }
+    return setIn(ast, index, [], filter)
 }
 
 export function updateFilterValue(ast, index, value) {
-    return walk(ast, index, ['arguments', 1, 'value'], value)
+    return setIn(ast, index, ['arguments', 1, 'value'], value)
 }
 
 /**

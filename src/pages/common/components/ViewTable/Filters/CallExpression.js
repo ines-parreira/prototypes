@@ -1,4 +1,9 @@
 import React, {PropTypes} from 'react'
+import {fromJS} from 'immutable'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import {Badge} from 'reactstrap'
+import {connect} from 'react-redux'
+
 import {BASIC_OPERATORS, EMPTY_OPERATORS} from '../../../../../config'
 import Left from './Left'
 import Right from './Right'
@@ -6,6 +11,9 @@ import Operator from './Operator'
 import OperatorLabel from './OperatorLabel'
 import RemoveCallExpression from './RemoveCallExpression'
 import {findProperty} from '../../../../../utils'
+
+import {fieldPath} from '../../../../../utils'
+import * as viewsSelectors from '../../../../../state/views/selectors'
 
 const resolveObjectPath = (node) => {
     switch (node.type) {
@@ -17,9 +25,14 @@ const resolveObjectPath = (node) => {
             throw Error('Unknown type', node)
     }
 }
-
+@connect((state) => {
+    return {
+        config: viewsSelectors.getActiveViewConfig(state)
+    }
+})
 export default class CallExpression extends React.Component {
     static propTypes = {
+        config: ImmutablePropTypes.map.isRequired,
         node: PropTypes.object.isRequired,
         view: PropTypes.object.isRequired,
         schemas: PropTypes.object.isRequired,
@@ -38,7 +51,7 @@ export default class CallExpression extends React.Component {
     }
 
     render() {
-        const {view, schemas, node, updateOperator, removeCondition, index, agents, currentUser, parentNode} = this.props
+        const {config, view, schemas, node, updateOperator, removeCondition, index, agents, currentUser, parentNode} = this.props
 
         const left = node.arguments[0]
         const right = node.arguments[1]
@@ -47,6 +60,9 @@ export default class CallExpression extends React.Component {
         const objectPath = resolveObjectPath(left)
         const property = findProperty(objectPath, schemas)
         let operators = property && property.meta ? property.meta.operators : BASIC_OPERATORS
+
+        const fields = config.get('fields', fromJS([]))
+        const field = fields.find(field => objectPath === `${config.get('singular')}.${fieldPath(field)}`)
 
         return (
             <div className="CallExpression">
@@ -68,9 +84,15 @@ export default class CallExpression extends React.Component {
                     updateFieldFilter={this.props.updateFieldFilter}
                     updateFieldFilterOperator={this.props.updateFieldFilterOperator}
                     index={index}
-                    view={view}
+                    config={config}
+                    field={field}
                     empty={Object.keys(EMPTY_OPERATORS).includes(operator.name)}
                 />
+                {!field && (
+                    <Badge color="danger">
+                        System condition
+                    </Badge>
+                )}
                 {
                     parentNode && (
                         <OperatorLabel operator={parentNode.operator} />

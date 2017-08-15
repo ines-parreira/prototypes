@@ -311,6 +311,14 @@ describe('ticket reducer', () => {
         ).toMatchSnapshot()
     })
 
+    it('set trash', () => {
+        expect(
+            reducer(initialState, {type: types.SET_TRASHED, trashed_datetime: 'trashed_datetime'})
+        ).toEqualImmutable(
+            initialState.set('trashed_datetime', 'trashed_datetime')
+        )
+    })
+
     it('set agent', () => {
         expect(
             reducer(
@@ -522,6 +530,7 @@ describe('ticket reducer', () => {
             ).toJS()
         ).toMatchSnapshot()
     })
+
 
     it('toggle history', () => {
         expect(

@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
+import moment from 'moment'
 import {bindActionCreators} from 'redux'
 import {
     UncontrolledButtonDropdown,
@@ -18,6 +19,7 @@ import _capitalize from 'lodash/capitalize'
 import _debounce from 'lodash/debounce'
 
 import * as viewsActions from '../../../../state/views/actions'
+import * as viewsSelectors from '../../../../state/views/selectors'
 import * as macroActions from '../../../../state/macro/actions'
 
 import {getAgents} from '../../../../state/users/selectors'
@@ -30,6 +32,7 @@ class TicketListActions extends React.Component {
         tagsSearch: '',
         tags: fromJS([]),
         isLoadingTags: false,
+        askTrashConfirmation: false,
         askDeleteConfirmation: false,
     }
 
@@ -95,6 +98,17 @@ class TicketListActions extends React.Component {
         return this.props.actions.views.bulkUpdate(this.props.view, this.props.selectedItemsIds, key, value)
     }
 
+    _bulkTrash = () => {
+        const {actions, view, selectedItemsIds} = this.props
+        this.setState({askTrashConfirmation: false})
+        return actions.views.bulkUpdate(view, selectedItemsIds, 'trashed_datetime', moment.utc())
+    }
+
+    _bulkUnTrash = () => {
+        const {actions, view, selectedItemsIds} = this.props
+        return actions.views.bulkUpdate(view, selectedItemsIds, 'trashed_datetime', null)
+    }
+
     _bulkDelete = () => {
         const {actions, view, selectedItemsIds} = this.props
         this.setState({askDeleteConfirmation: false})
@@ -107,7 +121,7 @@ class TicketListActions extends React.Component {
         if (this.state.isLoadingTags) {
             return (
                 <DropdownItem disabled>
-                    <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2" />
+                    <i className="fa fa-fw fa-circle-o-notch fa-spin mr-2"/>
                     Loading...
                 </DropdownItem>
             )
@@ -152,12 +166,16 @@ class TicketListActions extends React.Component {
         return options
     }
 
+    _toggleTrashConfirmation = () => {
+        this.setState({askTrashConfirmation: !this.state.askTrashConfirmation})
+    }
+
     _toggleDeleteConfirmation = () => {
         this.setState({askDeleteConfirmation: !this.state.askDeleteConfirmation})
     }
 
     _renderBulkActions = () => {
-        const {currentUser} = this.props
+        const {currentUser, isActiveViewTrashView} = this.props
 
         const areItemsSelected = !this.props.selectedItemsIds.isEmpty()
 
@@ -247,30 +265,30 @@ class TicketListActions extends React.Component {
                                 )
                             }
                         </DropdownItem>
-                        <DropdownItem divider />
+                        <DropdownItem divider/>
                         {
                             agents.isEmpty() ? (
-                                    <DropdownItem header>
-                                        Could not find any agent
-                                    </DropdownItem>
-                                ) : (
-                                    agents.map((agent) => {
-                                        return (
-                                            <DropdownItem
-                                                key={agent.get('id')}
-                                                type="button"
-                                                onClick={() => {
-                                                    this._bulkUpdate('assignee_user', {
-                                                        id: agent.get('id'),
-                                                        name: agent.get('name'),
-                                                    })
-                                                }}
-                                            >
-                                                {agent.get('name')}
-                                            </DropdownItem>
-                                        )
-                                    })
-                                )
+                                <DropdownItem header>
+                                    Could not find any agent
+                                </DropdownItem>
+                            ) : (
+                                agents.map((agent) => {
+                                    return (
+                                        <DropdownItem
+                                            key={agent.get('id')}
+                                            type="button"
+                                            onClick={() => {
+                                                this._bulkUpdate('assignee_user', {
+                                                    id: agent.get('id'),
+                                                    name: agent.get('name'),
+                                                })
+                                            }}
+                                        >
+                                            {agent.get('name')}
+                                        </DropdownItem>
+                                    )
+                                })
+                            )
                         }
                     </DropdownMenu>
                 </ButtonDropdown>
@@ -309,7 +327,7 @@ class TicketListActions extends React.Component {
                                 )
                             }
                         </DropdownItem>
-                        <DropdownItem divider />
+                        <DropdownItem divider/>
                         {this._renderTagsMenu()}
                     </DropdownMenu>
                 </ButtonDropdown>
@@ -332,16 +350,57 @@ class TicketListActions extends React.Component {
                         >
                             Apply macro
                         </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem
-                            type="button"
-                            className="text-danger"
-                            onClick={this._toggleDeleteConfirmation}
-                        >
-                            Delete tickets
-                        </DropdownItem>
+                        <DropdownItem divider/>
+                        {isActiveViewTrashView ?
+                            ([
+                                <DropdownItem
+                                    key="undelete-button"
+                                    type="button"
+                                    onClick={this._bulkUnTrash}
+                                >
+                                    Undelete
+                                </DropdownItem>,
+                                <DropdownItem
+                                    key="delete-button"
+                                    type="button"
+                                    className="text-danger"
+                                    onClick={this._toggleDeleteConfirmation}
+                                >
+                                    Delete forever
+                                </DropdownItem>
+                            ]) : (
+                                <DropdownItem
+                                    type="button"
+                                    className="text-danger"
+                                    onClick={this._toggleTrashConfirmation}
+                                >
+                                    Delete
+                                </DropdownItem>
+                            )
+                        }
                     </DropdownMenu>
                 </UncontrolledButtonDropdown>
+                <Popover
+                    placement="bottom"
+                    isOpen={this.state.askTrashConfirmation}
+                    target="bulk-more-button"
+                    toggle={this._toggleTrashConfirmation}
+                >
+                    <PopoverTitle>Are you sure?</PopoverTitle>
+                    <PopoverContent>
+                        <p>
+                            Are you sure you want to delete {this.props.selectedItemsIds.size}{' '}
+                            ticket{this.props.selectedItemsIds.size > 1 && 's'}?
+                        </p>
+                        <Button
+                            type="submit"
+                            color="success"
+                            onClick={this._bulkTrash}
+                        >
+                            Confirm
+                        </Button>
+                    </PopoverContent>
+                </Popover>
                 <Popover
                     placement="bottom"
                     isOpen={this.state.askDeleteConfirmation}
@@ -352,7 +411,7 @@ class TicketListActions extends React.Component {
                     <PopoverContent>
                         <p>
                             Are you sure you want to delete {this.props.selectedItemsIds.size}{' '}
-                            ticket{this.props.selectedItemsIds.size > 1 && 's'}?
+                            ticket{this.props.selectedItemsIds.size > 1 && 's'} forever?
                         </p>
                         <Button
                             type="submit"
@@ -384,12 +443,14 @@ TicketListActions.propTypes = {
     fieldEnumSearch: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired,
     agents: PropTypes.object.isRequired,
+    isActiveViewTrashView: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
         currentUser: state.currentUser,
         agents: getAgents(state),
+        isActiveViewTrashView: viewsSelectors.isActiveViewTrashView(state),
     }
 }
 

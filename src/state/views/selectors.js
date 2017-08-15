@@ -32,6 +32,11 @@ export const isDirty = createSelector(
     state => state.get('dirty') || false
 )
 
+export const isActiveViewTrashView = createSelector(
+    [getActiveView],
+    state => state.get('category') === 'system' && state.get('name').toLocaleLowerCase() === 'trash'
+)
+
 export const isEditMode = createSelector(
     [getActiveView],
     state => state.get('editMode') || false

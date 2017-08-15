@@ -160,6 +160,10 @@ export const actionsConfig = {
     //     compact: true,
     //     name: 'Send satisfaction survey'
     // },
+    trashTicket: {
+        compact: true,
+        name: 'Delete ticket',
+    }
 }
 
 class Action extends React.Component {

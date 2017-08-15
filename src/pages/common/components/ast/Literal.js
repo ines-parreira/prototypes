@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 
 import Errors from './Errors'
 import Widget from './Widget'
+import {EMPTY_OPERATORS} from '../../../../config'
 
 /*
  interface Literal <: Node, Expression {
@@ -9,8 +10,14 @@ import Widget from './Widget'
  value: string | boolean | null | number | RegExp;
  }
  */
-const Literal = ({value, rule, actions, parent, leftsiblings, schemas}) => {
+const Literal = ({value, rule, actions, parent, leftsiblings, schemas, callee}) => {
     const parentNew = parent.push('value')
+    const operator = callee && callee.name ? callee.name : ''
+    const hasEmptyOperator = Object.keys(EMPTY_OPERATORS).includes(operator)
+
+    if (hasEmptyOperator) {
+        return null
+    }
 
     return (
         <span className="Literal">
@@ -33,6 +40,7 @@ const Literal = ({value, rule, actions, parent, leftsiblings, schemas}) => {
 }
 
 Literal.propTypes = {
+    callee: PropTypes.object,
     rule: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     leftsiblings: PropTypes.object.isRequired,

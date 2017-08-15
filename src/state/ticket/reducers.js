@@ -37,6 +37,7 @@ export const initialState = fromJS({
     receiver: null,
     priority: 'normal',
     tags: [],
+    trashed_datetime: null
 })
 
 export default (state = initialState, action) => {
@@ -172,6 +173,10 @@ export default (state = initialState, action) => {
 
         case types.SET_SPAM: {
             return state.set('spam', action.spam)
+        }
+
+        case types.SET_TRASHED: {
+            return state.set('trashed_datetime', action.trashed_datetime)
         }
 
         case types.SET_AGENT: {

@@ -157,6 +157,30 @@ export const setSpam = (spam) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate({spam}))
 }
 
+export const setTrashed = (datetime) => (dispatch, getState) => {
+    const {ticket} = getState()
+    const isTrashed = !!ticket.get('trashed_datetime')
+
+    if (isTrashed && !!datetime) {
+        return Promise.resolve()
+    }
+
+    dispatch({
+        type: types.SET_TRASHED,
+        trashed_datetime: datetime
+    })
+
+    return dispatch(ticketPartialUpdate({trashed_datetime: datetime})).then(() => {
+        // display a notification when we trash a ticket
+        if (datetime) {
+            return dispatch(notify({
+                status: 'success',
+                message: 'Ticket deleted'
+            }))
+        }
+    })
+}
+
 export const setAgent = (assigneeUser) => (dispatch, getState) => {
     dispatch({
         type: types.SET_AGENT,

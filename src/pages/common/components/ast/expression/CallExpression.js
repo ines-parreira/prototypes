@@ -86,6 +86,7 @@ class CallExpression extends React.Component {
                     <Expression
                         {...funcArgs[1]}
                         parent={parent.push('arguments', 1)}
+                        callee={callee}
                         rule={rule}
                         actions={actions}
                         schemas={schemas}

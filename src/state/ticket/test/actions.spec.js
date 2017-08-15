@@ -1,5 +1,6 @@
 import configureMockStore from 'redux-mock-store'
 import axios from 'axios'
+import moment from 'moment'
 import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
@@ -139,6 +140,43 @@ describe('ticket actions', () => {
             return store.dispatch(actions.setSpam(true))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
+    })
+
+    describe('setTrashed()', () => {
+        it('should dispatch actions (trash ticket)', () => {
+            const date = moment('2017-08-11')
+            store = mockStore({ticket: initialState.set('id', 1)})
+            mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+
+            return store.dispatch(actions.setTrashed(date)).then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+            })
+        })
+
+        it('should dispatch actions (untrash ticket)', () => {
+            store = mockStore({ticket: initialState.set('id', 1).set('trashed_datetime', moment.utc())})
+            mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+
+            return store.dispatch(actions.setTrashed(null)).then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+            })
+        })
+
+
+        it('should not dispatch actions (same status)', () => {
+            store = mockStore({ticket: initialState.set('trashed_datetime', null)})
+
+            store.dispatch(actions.setTrashed(null)).then(() => {
+                expect(store.getActions()).toEqual([])
+            })
+
+            store = mockStore({ticket: initialState.set('trashed_datetime', moment.utc())})
+
+            store.dispatch(actions.setTrashed(moment.utc())).then(() => {
+                expect(store.getActions()).toEqual([])
+            })
+        })
+
     })
 
     it('setAgent', () => {
