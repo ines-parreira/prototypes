@@ -36,6 +36,7 @@ Object {
       "name": "refund",
     },
   ],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -76,6 +77,7 @@ Object {
       "name": "refund",
     },
   ],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -113,6 +115,7 @@ Object {
       "name": "billing",
     },
   ],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -148,6 +151,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -183,6 +187,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -216,6 +221,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -249,6 +255,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -291,6 +298,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -328,6 +336,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -370,6 +379,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -403,6 +413,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -436,6 +447,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -469,6 +481,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -515,6 +528,7 @@ Object {
   "status": "new",
   "subject": "title",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -548,6 +562,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -581,6 +596,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -614,6 +630,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -647,6 +664,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -683,6 +701,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -737,6 +756,7 @@ Object {
   "status": "new",
   "subject": "title",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -791,6 +811,7 @@ Object {
   "status": "new",
   "subject": "title",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -824,6 +845,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -860,6 +882,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -897,6 +920,7 @@ Object {
       "name": "refund",
     },
   ],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -934,6 +958,7 @@ Object {
       "name": "billing",
     },
   ],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -969,6 +994,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1002,6 +1028,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1037,6 +1064,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1070,6 +1098,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1103,6 +1132,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1136,6 +1166,7 @@ Object {
   "status": "closed",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1169,6 +1200,7 @@ Object {
   "status": "new",
   "subject": "another title",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1240,6 +1272,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1312,6 +1345,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1383,6 +1417,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1417,6 +1452,7 @@ Object {
   "status": "new",
   "subject": "title",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1450,6 +1486,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1483,6 +1520,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1516,6 +1554,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1558,6 +1597,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
@@ -1593,6 +1633,7 @@ Object {
   "status": "new",
   "subject": "",
   "tags": Array [],
+  "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;

@@ -52,6 +52,7 @@ Array [
 },
     "fromMacro": true,
     "ticket": Immutable.Map {
+      trashed_datetime: null,
       channel: "email",
       priority: "normal",
       spam: false,
@@ -100,6 +101,7 @@ Array [
 },
     "fromMacro": true,
     "ticket": Immutable.Map {
+      trashed_datetime: null,
       channel: "email",
       priority: "normal",
       spam: false,
@@ -189,6 +191,7 @@ Object {
   "currentUser": undefined,
   "fromMacro": true,
   "ticket": Immutable.Map {
+    trashed_datetime: null,
     channel: "email",
     priority: "normal",
     spam: false,
@@ -347,6 +350,7 @@ Array [
 },
     "fromMacro": false,
     "ticket": Immutable.Map {
+      trashed_datetime: null,
       channel: "email",
       priority: "normal",
       spam: false,
@@ -412,6 +416,7 @@ Array [
     "currentUser": undefined,
     "fromMacro": false,
     "ticket": Immutable.Map {
+      trashed_datetime: null,
       channel: "email",
       priority: "normal",
       spam: false,
@@ -617,6 +622,48 @@ Array [
       subject: "new title",
 },
     "type": "setSubject",
+  },
+]
+`;
+
+exports[`ticket actions setTrashed() should dispatch actions (trash ticket) 1`] = `
+Array [
+  Object {
+    "trashed_datetime": "2017-08-11T07:00:00.000Z",
+    "type": "setTrashed",
+  },
+  Object {
+    "args": Object {
+      "trashed_datetime": "2017-08-11T07:00:00.000Z",
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Object {},
+    },
+    "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
+  },
+]
+`;
+
+exports[`ticket actions setTrashed() should dispatch actions (untrash ticket) 1`] = `
+Array [
+  Object {
+    "trashed_datetime": null,
+    "type": "setTrashed",
+  },
+  Object {
+    "args": Object {
+      "trashed_datetime": null,
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Object {},
+    },
+    "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
   },
 ]
 `;

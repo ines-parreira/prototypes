@@ -3,38 +3,6 @@
 exports[`users actions create user 1`] = `
 Array [
   Object {
-    "type": "SUBMIT_USER_START",
-  },
-  Object {
-    "isUpdate": false,
-    "resp": Object {
-      "data": Object {
-        "email": "mario@nintendo.com",
-        "name": "Mario",
-        "role": "agent",
-      },
-    },
-    "type": "SUBMIT_USER_SUCCESS",
-  },
-]
-`;
-
-exports[`users actions delete user 1`] = `
-Array [
-  Object {
-    "type": "DELETE_USER_START",
-  },
-  Object {
-    "resp": undefined,
-    "type": "DELETE_USER_SUCCESS",
-    "userId": 2,
-  },
-]
-`;
-
-exports[`users actions fetch current user 1`] = `
-Array [
-  Object {
     "type": "FETCH_CURRENT_USER_START",
   },
   Object {
@@ -48,7 +16,27 @@ Array [
 ]
 `;
 
-exports[`users actions fetch user 1`] = `
+exports[`users actions delete user 1`] = `
+Array [
+  Object {
+    "type": "SUBMIT_USER_START",
+  },
+  Object {
+    "isUpdate": true,
+    "resp": Object {
+      "data": Object {
+        "email": "mario@nintendo.com",
+        "id": 2,
+        "name": "Mario",
+        "role": "agent",
+      },
+    },
+    "type": "SUBMIT_USER_SUCCESS",
+  },
+]
+`;
+
+exports[`users actions fetch current user 1`] = `
 Array [
   Object {
     "type": "FETCH_USER_START",
@@ -64,7 +52,39 @@ Array [
 ]
 `;
 
+exports[`users actions fetch user 1`] = `
+Array [
+  Object {
+    "type": "FETCH_USER_LIST_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Array [
+        Object {
+          "id": 1,
+        },
+      ],
+    },
+    "roles": undefined,
+    "type": "FETCH_USER_LIST_SUCCESS",
+  },
+]
+`;
+
 exports[`users actions fetch user history 1`] = `
+Array [
+  Object {
+    "type": "DELETE_USER_START",
+  },
+  Object {
+    "resp": undefined,
+    "type": "DELETE_USER_SUCCESS",
+    "userId": 2,
+  },
+]
+`;
+
+exports[`users actions merge users 1`] = `
 Array [
   Object {
     "type": "FETCH_USER_HISTORY_START",
@@ -84,35 +104,15 @@ Array [
 ]
 `;
 
-exports[`users actions fetch users 1`] = `
-Array [
-  Object {
-    "type": "FETCH_USER_LIST_START",
-  },
-  Object {
-    "resp": Object {
-      "data": Array [
-        Object {
-          "id": 1,
-        },
-      ],
-    },
-    "roles": undefined,
-    "type": "FETCH_USER_LIST_SUCCESS",
-  },
-]
-`;
-
-exports[`users actions merge users 1`] = `
-Array [
-  Object {
-    "type": "FETCH_USER_HISTORY_START",
-    "userId": 2,
-  },
-]
-`;
-
 exports[`users actions merge users 2`] = `
+Array [
+  Object {
+    "type": "MERGE_USERS_START",
+  },
+]
+`;
+
+exports[`users actions merge users 3`] = `
 Array [
   Object {
     "type": "MERGE_USERS_START",
@@ -136,11 +136,10 @@ Array [
     "type": "SUBMIT_USER_START",
   },
   Object {
-    "isUpdate": true,
+    "isUpdate": false,
     "resp": Object {
       "data": Object {
         "email": "mario@nintendo.com",
-        "id": 2,
         "name": "Mario",
         "role": "agent",
       },
