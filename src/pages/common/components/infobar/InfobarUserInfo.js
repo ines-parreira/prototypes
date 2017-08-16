@@ -193,7 +193,10 @@ class InfobarUserInfo extends React.Component {
      */
     _renderUserChannels = (channels = fromJS([])) => {
         channels = channels
-            .filter(channel => !['facebook', 'chat'].includes(channel.get('type'))) // hide chats and facebook
+            .filter((channel) => { // hide chats and facebook
+                const type = channel.get('type')
+                return type !== 'chat' && !type.includes('facebook')
+            })
             .sort((a, b) => a.get('address', '').toLowerCase() > b.get('address', '').toLowerCase() ? 1 : -1)
             .sort((a, b) => a.get('type') > b.get('type') ? 1 : -1)
 
