@@ -36,24 +36,23 @@ export default class Carousel extends React.Component {
                                 key={index}
                                 className={css.carouselContent}
                             >
-                                {
-                                    onImageClick ? (
-                                        <img
-                                            className="clickable"
-                                            src={url}
-                                            onClick={(e) => {
-                                                onImageClick({url, index, e})
-                                            }}
-                                        />
-                                    ) : (
-                                        <a
-                                            href={url}
-                                            target="_blank"
-                                        >
-                                            <img src={url} />
-                                        </a>
-                                    )
-                                }
+                                <a
+                                    href={url}
+                                    target="_blank"
+                                >
+                                    <img
+                                        src={url}
+                                        onClick={(e) => {
+                                            if (!onImageClick) {
+                                                return
+                                            }
+
+                                            e.preventDefault()
+
+                                            onImageClick({url, index, e})
+                                        }}
+                                    />
+                                </a>
                             </div>
                         ))
                     }

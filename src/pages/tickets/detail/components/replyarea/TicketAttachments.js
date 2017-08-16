@@ -10,7 +10,7 @@ export default class TicketAttachments extends React.Component {
         currentImage: 0
     }
 
-    renderAttachmentIcon(contentType) {
+    renderAttachmentIcon = (contentType) => {
         return (
             <div className="attachments-item-meta-type">
                 <i className={`fa fa-fw ${fileIconFromContentType(contentType)}`} />
@@ -18,17 +18,16 @@ export default class TicketAttachments extends React.Component {
         )
     }
 
-    removeAttachment(idx) {
+    removeAttachment = (idx) => {
         return (e) => {
             this.props.deleteAttachment(idx)
 
-            // prevent opening the thumb
-            // when clicking the delete button
+            // prevent opening the thumb when clicking the delete button
             e.preventDefault()
         }
     }
 
-    renderRemoveIcon(idx) {
+    renderRemoveIcon = (idx) => {
         if (this.props.removable) {
             return (
                 <i
@@ -37,20 +36,21 @@ export default class TicketAttachments extends React.Component {
                 />
             )
         }
+
         return null
     }
 
-    isImage(attachment) {
+    isImage = (attachment) => {
         return attachment.content_type.startsWith('image/')
     }
 
-    setImagePreview(attachment) {
+    setImagePreview = (attachment) => {
         if (!this.isImage(attachment)) {
             return null
         }
 
         if (!window.IMAGE_PROXY_URL) {
-            throw new Error('window.IMAGE_PROXY_URL is not defined 123')
+            throw new Error('window.IMAGE_PROXY_URL is not defined')
         }
 
         return {
@@ -84,21 +84,25 @@ export default class TicketAttachments extends React.Component {
     render() {
         const {attachments} = this.props
         const {currentImage, isLightboxOpen} = this.state
+
         if (attachments.isEmpty()) {
             return null
         }
 
-        const images = attachments.filter((a) => this.isImage(a))
+        const images = attachments.filter(this.isImage)
 
         return (
             <div className="attachments">
                 {
                     attachments.map((attachment, idx) => (
-                        <a href={attachment.url || '#'} target="_blank"
+                        <a
+                            href={attachment.url || '#'}
+                            target="_blank"
                             className={classNames('attachments-item', {
                                 'attachments-item-has-preview': this.isImage(attachment)
                             })}
-                            key={idx} style={this.setImagePreview(attachment)}
+                            key={idx}
+                            style={this.setImagePreview(attachment)}
                             onClick={(e) => this.openLightbox(e, attachment, images)}
                         >
                             <div className="attachments-item-meta">
