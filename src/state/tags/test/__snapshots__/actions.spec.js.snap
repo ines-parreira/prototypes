@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tags actions addTags 1`] = `
+Array [
+  Object {
+    "tags": Array [
+      "refund",
+      "rejected",
+    ],
+    "type": "ADD_TAGS",
+  },
+]
+`;
+
+exports[`tags actions bulkDelete 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 404],
+    "reason": "Unable to delete tags",
+    "type": "ERROR",
+  },
+]
+`;
+
+exports[`tags actions cancel 1`] = `
+Array [
+  Object {
+    "tag": Object {
+      "id": 1,
+    },
+    "type": "EDIT_TAG_CANCEL",
+  },
+]
+`;
+
+exports[`tags actions create 1`] = `
+Array [
+  Object {
+    "tag": Object {
+      "id": 1,
+    },
+    "type": "CREATE_TAG_START",
+  },
+  Object {
+    "tag": Object {
+      "id": 1,
+    },
+    "type": "CREATE_TAG_SUCCESS",
+  },
+]
+`;
+
+exports[`tags actions edit 1`] = `
+Array [
+  Object {
+    "tag": Object {
+      "id": 1,
+    },
+    "type": "EDIT_TAG",
+  },
+]
+`;
+
+exports[`tags actions fetchTags params change page 1`] = `
+Object {
+  "order_by": "usage_count",
+  "order_dir": "desc",
+  "page": 1,
+}
+`;
+
+exports[`tags actions fetchTags params change reverse 1`] = `
+Object {
+  "order_by": "usage_count",
+  "order_dir": "asc",
+  "page": 1,
+}
+`;
+
+exports[`tags actions fetchTags params change sort 1`] = `
+Object {
+  "order_by": "custom_sort",
+  "order_dir": "desc",
+  "page": 1,
+}
+`;
+
+exports[`tags actions fetchTags success actions 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TAG_LIST_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Array [
+        "refund",
+      ],
+    },
+    "type": "FETCH_TAG_LIST_SUCCESS",
+  },
+]
+`;
+
+exports[`tags actions merge 1`] = `
+Array [
+  Object {
+    "ids": Immutable.List [
+      1,
+      2,
+      3,
+],
+    "type": "MERGE_TAGS",
+  },
+  Object {
+    "error": [Error: Request failed with status code 400],
+    "reason": "Unable to merge these tags",
+    "type": "ERROR",
+  },
+]
+`;
+
+exports[`tags actions remove 1`] = `Array []`;
+
+exports[`tags actions save 1`] = `
+Array [
+  Object {
+    "tag": Object {
+      "id": 1,
+    },
+    "type": "SAVE_TAG",
+  },
+]
+`;
+
+exports[`tags actions select 1`] = `
+Array [
+  Object {
+    "tag": Object {
+      "id": 1,
+    },
+    "type": "SELECT_TAG",
+  },
+]
+`;
+
+exports[`tags actions selectAll 1`] = `
+Array [
+  Object {
+    "type": "SELECT_TAG_ALL",
+  },
+]
+`;
+
+exports[`tags actions setPage 1`] = `
+Array [
+  Object {
+    "page": 1,
+    "type": "SET_TAG_LIST_PAGE",
+  },
+]
+`;

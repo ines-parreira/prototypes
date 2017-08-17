@@ -32,14 +32,11 @@ export default (state = initialState, action) => {
         case types.SELECT_TAG_ALL: {
             const selected = !state.getIn(['_internal', 'selectAll'])
             const _internal = state.get('_internal', fromJS({})).set('selectAll', selected)
-            const ids = state.get('items').map((tag) => {
-                return tag.get('id')
-            })
 
             let selectAllState = state.set('_internal', _internal)
 
-            ids.forEach((id) => {
-                selectAllState = selectAllState.setIn(['meta', id, 'selected'], selected)
+            state.get('items').forEach((tag) => {
+                selectAllState = selectAllState.setIn(['meta', tag.get('id'), 'selected'], selected)
             })
 
             return selectAllState
@@ -67,17 +64,14 @@ export default (state = initialState, action) => {
             return state.setIn(['_internal', 'creating'], true)
 
         case types.CREATE_TAG_SUCCESS:
-            return state
-                .setIn(['_internal', 'creating'], false)
-
         case types.CREATE_TAG_ERROR:
             return state.setIn(['_internal', 'creating'], false)
 
-        case types.REMOVE_TAG:
-            return state
-                .set('items', state.get('items').splice(state.get('items').findIndex(item => {
-                    return item.get('id') === action.id
-                }), 1))
+        case types.REMOVE_TAG: {
+            const itemIndex = state.get('items', fromJS([])).findIndex(item => item.get('id') === action.id)
+            return state.removeIn(['items', itemIndex])
+        }
+
         case types.SET_TAG_LIST_PAGE: {
             return state.setIn(['_internal', 'pagination', 'page'], action.page)
         }

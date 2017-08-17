@@ -5,7 +5,7 @@ export const getTagsState = state => state.tags || fromJS({})
 
 export const getTags = createSelector(
     [getTagsState],
-    state => state.get('items', fromJS([]))
+    state => state.get('items') || fromJS([])
 )
 
 export const getNumberPages = createSelector(

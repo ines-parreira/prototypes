@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`selectors ticket getBody 1`] = `
+exports[`ticket selectors getBody 1`] = `
 Immutable.List [
   Immutable.Map {
     id: 2,
@@ -47,7 +47,7 @@ Immutable.List [
 ]
 `;
 
-exports[`selectors ticket getLastMessage 1`] = `
+exports[`ticket selectors getLastMessage 1`] = `
 Immutable.Map {
   id: 3,
   opened_datetime: null,

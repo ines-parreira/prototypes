@@ -19,7 +19,7 @@ export function addTags(tags) {
     }
 }
 
-export function fetchTags(page, sort='usage_count', reverse=true) {
+export function fetchTags(page, sort = 'usage_count', reverse = true) {
     return (dispatch, getState) => {
         dispatch({
             type: types.FETCH_TAG_LIST_START
@@ -35,7 +35,8 @@ export function fetchTags(page, sort='usage_count', reverse=true) {
                 page,
                 order_by: sort,
                 order_dir: reverse ? 'desc' : 'asc'
-            }})
+            }
+        })
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
@@ -59,18 +60,16 @@ export function fetchTags(page, sort='usage_count', reverse=true) {
 export function select(tag) {
     return {
         type: types.SELECT_TAG,
-        tag
+        tag,
     }
 }
 
 /**
  * Select all tags
- * @param selected
  */
-export function selectAll(selected) {
+export function selectAll() {
     return {
         type: types.SELECT_TAG_ALL,
-        selected
     }
 }
 
@@ -82,7 +81,7 @@ export function selectAll(selected) {
 export function edit(tag) {
     return {
         type: types.EDIT_TAG,
-        tag
+        tag,
     }
 }
 
@@ -93,7 +92,7 @@ export function edit(tag) {
 export function cancel(tag) {
     return {
         type: types.EDIT_TAG_CANCEL,
-        tag
+        tag,
     }
 }
 
@@ -174,9 +173,7 @@ export const remove = (id) => {
  */
 export const bulkDelete = (ids) => {
     return dispatch => {
-        return axios.delete('/api/tags/', {
-            data: {ids}
-        })
+        return axios.delete('/api/tags/', {data: {ids}})
             .then(() => {
                 dispatch(notify({
                     type: 'success',
@@ -222,7 +219,7 @@ export const merge = (ids) => {
 export function setPage(page) {
     return {
         type: types.SET_TAG_LIST_PAGE,
-        page
+        page,
     }
 }
 

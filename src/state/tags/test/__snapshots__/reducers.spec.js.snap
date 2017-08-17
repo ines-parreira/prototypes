@@ -1,0 +1,212 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tags reducers add tags 1`] = `
+Object {
+  "_internal": Object {},
+  "items": Array [
+    Object {
+      "id": 1,
+      "name": "current_fake_name",
+    },
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+    Object {
+      "id": 3,
+      "name": "new_fake_name",
+    },
+    Object {
+      "id": 4,
+      "name": "other_new_fake_name",
+    },
+  ],
+  "meta": Object {},
+}
+`;
+
+exports[`tags reducers cancel edit tag 1`] = `
+Object {
+  "_internal": Object {},
+  "items": Array [
+    Object {
+      "id": 1,
+      "name": "current_fake_name",
+    },
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+  ],
+  "meta": Object {
+    "1": Object {
+      "edit": false,
+    },
+  },
+}
+`;
+
+exports[`tags reducers create tag 1`] = `
+Object {
+  "_internal": Object {
+    "creating": true,
+  },
+  "items": Array [],
+  "meta": Object {},
+}
+`;
+
+exports[`tags reducers create tag 2`] = `
+Object {
+  "_internal": Object {
+    "creating": false,
+  },
+  "items": Array [],
+  "meta": Object {},
+}
+`;
+
+exports[`tags reducers create tag 3`] = `
+Object {
+  "_internal": Object {
+    "creating": false,
+  },
+  "items": Array [],
+  "meta": Object {},
+}
+`;
+
+exports[`tags reducers edit tag 1`] = `
+Object {
+  "_internal": Object {},
+  "items": Array [
+    Object {
+      "id": 1,
+      "name": "current_fake_name",
+    },
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+  ],
+  "meta": Object {
+    "1": Object {
+      "edit": true,
+    },
+  },
+}
+`;
+
+exports[`tags reducers fetch tag list 1`] = `
+Object {
+  "_internal": Object {
+    "pagination": Object {
+      "page": 1,
+    },
+  },
+  "items": Array [
+    Object {
+      "id": 3,
+      "name": "new_fake_name",
+    },
+    Object {
+      "id": 4,
+      "name": "other_new_fake_name",
+    },
+  ],
+  "meta": Object {},
+}
+`;
+
+exports[`tags reducers remove tag 1`] = `
+Object {
+  "_internal": Object {},
+  "items": Array [
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+  ],
+  "meta": Object {},
+}
+`;
+
+exports[`tags reducers save tag 1`] = `
+Object {
+  "_internal": Object {},
+  "items": Array [
+    Object {
+      "id": 1,
+      "name": "edited_name",
+    },
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+  ],
+  "meta": Object {
+    "1": Object {
+      "edit": false,
+    },
+  },
+}
+`;
+
+exports[`tags reducers select all tags 1`] = `
+Object {
+  "_internal": Object {
+    "selectAll": true,
+  },
+  "items": Array [
+    Object {
+      "id": 1,
+      "name": "current_fake_name",
+    },
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+  ],
+  "meta": Object {
+    "1": Object {
+      "selected": true,
+    },
+    "2": Object {
+      "selected": true,
+    },
+  },
+}
+`;
+
+exports[`tags reducers select tag 1`] = `
+Object {
+  "_internal": Object {},
+  "items": Array [
+    Object {
+      "id": 1,
+      "name": "current_fake_name",
+    },
+    Object {
+      "id": 2,
+      "name": "other_current_fake_name",
+    },
+  ],
+  "meta": Object {
+    "1": Object {
+      "selected": true,
+    },
+  },
+}
+`;
+
+exports[`tags reducers set tags list page 1`] = `
+Object {
+  "_internal": Object {
+    "pagination": Object {
+      "page": 2,
+    },
+  },
+  "items": Array [],
+  "meta": Object {},
+}
+`;

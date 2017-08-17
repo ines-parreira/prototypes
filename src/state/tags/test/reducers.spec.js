@@ -7,68 +7,170 @@ import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
-describe('reducers', () => {
-    describe('tags', () => {
-        // Simulates current tags in state
-        const currentFakeTags = fromJS([
-            {name: 'current_fake_name'},
-            {name: 'other_current_fake_name'}
-        ])
+describe('tags reducers', () => {
+    // Simulates current tags in state
+    const currentFakeTags = fromJS([
+        {id: 1, name: 'current_fake_name'},
+        {id: 2, name: 'other_current_fake_name'}
+    ])
 
-        // Simulates the arrival of new tags
-        const newFakeTags = fromJS([
-            {name: 'new_fake_name'},
-            {name: 'other_new_fake_name'}
-        ])
+    // Simulates the arrival of new tags
+    const newFakeTags = fromJS([
+        {id: 3, name: 'new_fake_name'},
+        {id: 4, name: 'other_new_fake_name'}
+    ])
 
-        it('should return the initial state', () => {
-            expect(
-                reducer(undefined, {})
-            ).toEqualImmutable(
-                initialState
-            )
-        })
+    it('initial state', () => {
+        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+    })
 
-        it('should replace current tags with tags from server', () => {
-            const fetchTagsFromServer = (state) => (
-                reducer(state, {
+    it('fetch tag list', () => {
+        // success
+        expect(
+            reducer(
+                initialState,
+                {
                     type: types.FETCH_TAG_LIST_SUCCESS,
-                    resp: {data: newFakeTags, meta: {page: 1}}
-                })
-            )
+                    resp: {data: newFakeTags, meta: {page: 1}},
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
 
-            expect(
-                fetchTagsFromServer(initialState)
-            ).toEqualImmutable(
-                initialState.merge(fromJS({items: newFakeTags, _internal: {pagination: {page: 1}}, meta: {}}))
-            )
-
-            expect(
-                fetchTagsFromServer(fromJS({items: currentFakeTags}))
-            ).toEqualImmutable(
-                fromJS({items: newFakeTags, _internal: {pagination: {page: 1}}, meta: {}})
-            )
-        })
-
-        it('should add tags', () => {
-            const addTags = (state) => (
-                reducer(state, {
+    it('add tags', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        items: currentFakeTags,
+                    }),
+                {
                     type: types.ADD_TAGS,
-                    tags: newFakeTags
-                })
-            )
+                    tags: newFakeTags,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
 
-            expect(
-                addTags(initialState)
-            ).toEqualImmutable(
-                initialState.merge(fromJS({items: newFakeTags}))
-            )
+    it('select tag', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({items: currentFakeTags}),
+                {
+                    type: types.SELECT_TAG,
+                    tag: {id: 1},
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
 
-            expect(
-                addTags(fromJS({items: currentFakeTags}))
-            ).toEqualImmutable(
-                fromJS({items: currentFakeTags.concat(newFakeTags)})
-            )
-        })
+    it('select all tags', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({items: currentFakeTags}),
+                {
+                    type: types.SELECT_TAG_ALL,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('edit tag', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({items: currentFakeTags}),
+                {
+                    type: types.EDIT_TAG,
+                    tag: {id: 1},
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('cancel edit tag', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({items: currentFakeTags}),
+                {
+                    type: types.EDIT_TAG_CANCEL,
+                    tag: {id: 1},
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('save tag', () => {
+        // success
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({items: currentFakeTags}),
+                {
+                    type: types.SAVE_TAG,
+                    tag: {id: 1, name: 'edited_name'},
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('create tag', () => {
+        // start
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.CREATE_TAG_START,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // success
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.CREATE_TAG_SUCCESS,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // error
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.CREATE_TAG_ERROR,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('remove tag', () => {
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({items: currentFakeTags}),
+                {
+                    type: types.REMOVE_TAG,
+                    id: 1,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('set tags list page', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_TAG_LIST_PAGE,
+                    page: 2,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
     })
 })
