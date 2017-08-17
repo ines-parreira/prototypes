@@ -1,8 +1,9 @@
 import {createStore, compose, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
+import createLogger from 'redux-logger'
+
 import serverErrorHandler from './middlewares/serverErrorHandler'
 import usageLimitNotifier from './middlewares/usageLimitNotifier'
-import createLogger from 'redux-logger'
 import rootReducer from '../state/reducers'
 
 export default function configureStore(initialState = {}) {

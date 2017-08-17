@@ -12,13 +12,6 @@ const DATE_TO_USE = new Date('2017')
 global.Date = jest.fn(() => DATE_TO_USE)
 global.Date.toISOString = Date.toISOString
 
-jest.mock('../../../pages/common/utils/socketio', () => {
-    return () => ({
-        joinTicket: jest.fn(),
-        joinUser: jest.fn(),
-    })
-})
-
 jest.mock('../../newMessage/ticketReplyCache', () => {
     const Immutable = require.requireActual('immutable')
 

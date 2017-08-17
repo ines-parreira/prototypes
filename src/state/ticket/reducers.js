@@ -1,9 +1,8 @@
+import {fromJS} from 'immutable'
+
 import * as types from './constants'
 import * as userTypes from './../users/constants'
-import {fromJS} from 'immutable'
 import ticketReplyCache from '../newMessage/ticketReplyCache'
-import SocketIO from '../../pages/common/utils/socketio'
-
 import * as newMessageTypes from '../newMessage/constants'
 import {getPendingMessageIndex} from './utils'
 import {compare} from '../../utils'
@@ -103,19 +102,7 @@ export default (state = initialState, action) => {
         }
 
         case types.FETCH_TICKET_SUCCESS: {
-            const newState = state.merge(fromJS(action.resp))
-
-            const ticketId = newState.get('id')
-            const requesterId = newState.getIn(['requester', 'id'])
-
-            const io = new SocketIO()
-            if (ticketId) {
-                io.joinTicket(ticketId)
-            }
-            if (requesterId) {
-                io.joinUser(requesterId)
-            }
-
+            const newState = state.merge(action.resp)
             return newState.setIn(['_internal', 'loading', 'fetchTicket'], false)
         }
 

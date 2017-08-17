@@ -1,7 +1,7 @@
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 
-import SocketIO from './../../pages/common/utils/socketio'
+import socketManager from '../../services/socketManager'
 
 import _isNull from 'lodash/isNull'
 import _assign from 'lodash/assign'
@@ -100,32 +100,28 @@ export const deleteAttachment = (index) => ({
     index
 })
 
-const _throttledIsTyping = _throttle((io, ticketId) => {
-    io.joinTypingOnTicket(ticketId)
-}, 5000)
+const _throttledIsTyping = _throttle((ticketId) => {
+    socketManager.join('ticket-typing', ticketId)
+}, 5000, {trailing: false}) // we don't want to throw event after the ticket has been left
 
 export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
     const state = getState()
     const {ticket, currentUser, newMessage} = state
 
     const contentState = args.get('contentState')
+    const ticketId = ticket.get('id')
 
-    if (contentState && newMessage) {
-        const io = new SocketIO()
-        const ticketId = ticket.get('id')
+    if (contentState && newMessage && ticketId) {
+        const plainText = contentState.getPlainText()
 
-        if (ticketId) {
-            const plainText = contentState.getPlainText()
-
-            if (plainText
-                && !responseUtils.onlySignature(contentState, currentUser)
-                && newMessage.getIn(['newMessage', 'source', 'type']) !== 'internal-note'
-            ) {
-                _throttledIsTyping(io, ticketId)
-            } else if (usersSelectors.isAgentTypingOnTicket(ticketId)(state)) {
-                _throttledIsTyping.cancel()
-                io.leaveTypingOnTicket(ticketId)
-            }
+        if (plainText
+            && !responseUtils.onlySignature(contentState, currentUser)
+            && newMessage.getIn(['newMessage', 'source', 'type']) !== 'internal-note'
+        ) {
+            _throttledIsTyping(ticketId)
+        } else if (usersSelectors.isAgentTypingOnTicket(ticketId)(state)) {
+            _throttledIsTyping.cancel()
+            socketManager.leave('ticket-typing', ticketId)
         }
     }
 
@@ -133,7 +129,7 @@ export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
     return dispatch({
         type: types.SET_RESPONSE_TEXT,
         args,
-        ticketId: ticket.get('id'),
+        ticketId,
         ticket, // used in middleware, not in reducer
         appliedMacro: ticket.getIn(['state', 'appliedMacro']),
         currentUser, // used in middleware, not in reducer

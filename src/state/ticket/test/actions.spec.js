@@ -30,10 +30,11 @@ jest.mock('../../../utils', () => {
     }
 })
 
-jest.mock('../../../pages/common/utils/socketio', () => {
-    return () => ({
-        _sendTicketViewed: jest.fn(),
-    })
+jest.mock('../../../services/socketManager', () => {
+    return {
+        join: jest.fn(),
+        send: jest.fn(),
+    }
 })
 
 jest.mock('../../notifications/actions', () => {

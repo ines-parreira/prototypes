@@ -3,7 +3,7 @@ import {Badge} from 'reactstrap'
 
 import Modal from '../components/Modal'
 
-import shortcutManager from '../utils/shortcutManager'
+import shortcutManager from '../../../services/shortcutManager'
 import keymap from '../utils/keymap'
 
 export default class KeyboardHelp extends React.Component {

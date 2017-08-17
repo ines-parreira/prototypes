@@ -18,17 +18,14 @@ const mockStore = configureMockStore(middlewares)
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
-jest.mock('../../../pages/common/utils/socketio', () => {
-    const joinTypingOnTicket = jest.fn()
-    const leaveTypingOnTicket = jest.fn()
-
-    return () => ({
-        joinTypingOnTicket,
-        leaveTypingOnTicket
-    })
+jest.mock('../../../services/socketManager', () => {
+    return {
+        join: jest.fn(),
+        leave: jest.fn(),
+    }
 })
 
-import SocketIO from '../../../pages/common/utils/socketio'
+import socketManager from '../../../services/socketManager'
 
 describe('actions', () => {
     describe('new message', () => {
@@ -278,8 +275,8 @@ describe('actions', () => {
 
         describe('setResponseText()', () => {
             beforeEach(() => {
-                SocketIO().joinTypingOnTicket.mockReset()
-                SocketIO().leaveTypingOnTicket.mockReset()
+                socketManager.join.mockReset()
+                socketManager.leave.mockReset()
             })
 
             it('should always pass the args to the reducer', () => {
@@ -306,7 +303,7 @@ describe('actions', () => {
                 })))
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(SocketIO().joinTypingOnTicket.mock.calls.length).toBe(1)
+                expect(socketManager.join.mock.calls.length).toBe(1)
             })
 
             it('should not join the typing room of the ticket when the user is typing in an internal-note', () => {
@@ -320,7 +317,7 @@ describe('actions', () => {
                 })))
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(SocketIO().joinTypingOnTicket.mock.calls.length).toBe(0)
+                expect(socketManager.join.mock.calls.length).toBe(0)
             })
 
             it('should not join the typing room of the ticket when the content is only the user\'s signature', () => {
@@ -342,7 +339,7 @@ describe('actions', () => {
                 })))
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(SocketIO().joinTypingOnTicket.mock.calls.length).toBe(0)
+                expect(socketManager.join.mock.calls.length).toBe(0)
             })
 
             it('should leave the typing room of the ticket when the user is not typing but is in the room', () => {
@@ -368,8 +365,8 @@ describe('actions', () => {
                 })))
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(SocketIO().joinTypingOnTicket.mock.calls.length).toBe(0)
-                expect(SocketIO().leaveTypingOnTicket.mock.calls.length).toBe(1)
+                expect(socketManager.join.mock.calls.length).toBe(0)
+                expect(socketManager.leave.mock.calls.length).toBe(1)
             })
 
             it('should not leave the typing room of the ticket when the user is not typing and not in the room', () => {
@@ -392,7 +389,7 @@ describe('actions', () => {
                 })))
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(SocketIO().leaveTypingOnTicket.mock.calls.length).toBe(0)
+                expect(socketManager.leave.mock.calls.length).toBe(0)
             })
         })
     })

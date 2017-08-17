@@ -8,13 +8,19 @@ import {getPluralObjectName, getHashOfObj} from '../../utils'
 import _max from 'lodash/max'
 
 import * as viewsSelectors from './selectors'
-
 import * as viewsConfig from '../../config/views'
+import socketManager from '../../services/socketManager'
 
-export const setViewActive = (view) => ({
-    type: types.SET_VIEW_ACTIVE,
-    view
-})
+export const setViewActive = (view) => (dispatch) => {
+    if (view) {
+        socketManager.join('view', view.get('id'))
+    }
+
+    return dispatch({
+        type: types.SET_VIEW_ACTIVE,
+        view
+    })
+}
 
 export const updateView = (view, edit = true) => ({
     type: types.UPDATE_VIEW,

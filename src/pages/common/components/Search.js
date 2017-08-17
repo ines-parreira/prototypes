@@ -5,7 +5,7 @@ import {Input, InputGroup, InputGroupAddon} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
-import shortcutManager from '../utils/shortcutManager'
+import shortcutManager from '../../../services/shortcutManager'
 
 import css from './Search.less'
 

@@ -3,8 +3,8 @@ import * as mousetrap from 'mousetrap'
 import _merge from 'lodash/merge'
 import _clone from 'lodash/clone'
 import _get from 'lodash/get'
-import keymap from './keymap'
-import {getModifier, isEditable, closest} from '../../../utils'
+import keymap from '../pages/common/utils/keymap'
+import {getModifier, isEditable, closest} from '../utils'
 
 class ShortcutManager {
     constructor() {

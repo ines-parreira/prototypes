@@ -16,12 +16,12 @@ import * as layoutSelectors from '../state/layout/selectors'
 
 import * as segmentTracker from '../store/middlewares/segmentTracker'
 import KeyboardHelp from './common/components/KeyboardHelp'
-import SocketIO from './common/utils/socketio'
+import socketManager from '../services/socketManager'
 
 import {POLL_ACTIVITY_INTERVAL, CHAT_POLLING_INTERVAL} from '../config'
 
 import notificationsTheme from './common/components/Notifications'
-import shortcutManager from './common/utils/shortcutManager'
+import shortcutManager from '../services/shortcutManager'
 import BannerNotifications from './common/components/BannerNotifications/'
 import ModalNotification from './common/components/ModalNotification'
 import FullPage from './common/components/FullPage'
@@ -65,9 +65,8 @@ class App extends React.Component {
     }
 
     componentWillUnmount() {
-        const io = new SocketIO()
         shortcutManager.unbind('App')
-        io.disconnect()
+        socketManager.disconnect()
     }
 
     render() {

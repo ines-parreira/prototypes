@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 
-import shortcutManager from '../../common/utils/shortcutManager'
+import shortcutManager from '../../../services/shortcutManager'
 import DocumentTitle from 'react-document-title'
 import TicketView from './components/TicketView'
 import Loader from '../../common/components/Loader'
@@ -15,7 +15,7 @@ import * as MacroActions from '../../../state/macro/actions'
 import * as UserActions from '../../../state/users/actions'
 import * as TagActions from '../../../state/tags/actions'
 import * as SettingsActions from '../../../state/settings/actions'
-import SocketIO from '../../common/utils/socketio'
+import socketManager from '../../../services/socketManager'
 
 import * as newMessageActions from '../../../state/newMessage/actions'
 
@@ -164,16 +164,15 @@ export default class TicketDetailContainer extends React.Component {
         shortcutManager.unbind('TicketDetailContainer')
 
         // leaving ticket and request user from socket io
-        const io = new SocketIO()
         const ticketId = this.props.params.ticketId
         const requesterId = this.props.ticket.getIn(['requester', 'id'])
 
         if (ticketId && ticketId !== 'new') {
-            io.leaveTicket(ticketId)
+            socketManager.leave('ticket', ticketId)
         }
 
         if (requesterId) {
-            io.leaveUser(requesterId)
+            socketManager.leave('user', requesterId)
         }
 
         this.props.actions.ticket.clearTicket()

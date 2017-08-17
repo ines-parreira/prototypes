@@ -24,7 +24,7 @@ import {
     nestedReplace,
 } from './utils'
 
-import SocketIO from '../../pages/common/utils/socketio'
+import socketManager from '../../services/socketManager'
 
 export const mergeTicket = (ticket) => (dispatch, getState) => {
     ticket = fromJS(ticket)
@@ -339,6 +339,8 @@ export const fetchTicket = (ticketId) => (dispatch) => {
         })
     }
 
+    ticketId = parseInt(ticketId)
+
     dispatch({
         type: types.FETCH_TICKET_START,
     })
@@ -361,11 +363,21 @@ export const fetchTicket = (ticketId) => (dispatch) => {
                 return Promise.resolve()
             }
 
+            const requesterId = fromJS(resp).getIn(['requester', 'id'])
+
+            if (ticketId) {
+                socketManager.join('ticket', ticketId)
+            }
+
+            if (requesterId) {
+                socketManager.join('user', requesterId)
+            }
+
             // dispatch for ticket reducer branch
             dispatch({
                 type: types.FETCH_TICKET_SUCCESS,
                 resp,
-                ticketId: parseInt(ticketId),
+                ticketId,
             })
 
             // dispatch for newMessage reducer branch
@@ -377,8 +389,7 @@ export const fetchTicket = (ticketId) => (dispatch) => {
             dispatch(newMessageActions.initializeMessageDraft())
 
             // Notify the server that we viewed this ticket
-            const io = new SocketIO()
-            io._sendTicketViewed(ticketId)
+            socketManager.send('ticket-viewed', ticketId)
 
             return dispatch(newMessageActions.resetReceiversAndSender)
         }, error => {

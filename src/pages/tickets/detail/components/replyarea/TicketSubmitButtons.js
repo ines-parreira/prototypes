@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {UncontrolledTooltip} from 'reactstrap'
 import _sample from 'lodash/sample'
 
-import shortcutManager from '../../../../common/utils/shortcutManager'
+import shortcutManager from '../../../../../services/shortcutManager'
 import keymap from '../../../../common/utils/keymap'
 
 import * as currentUserActions from '../../../../../state/currentUser/actions'

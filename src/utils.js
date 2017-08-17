@@ -48,6 +48,16 @@ export const playNotificationSound = () => {
     notificationSound.play()
 }
 
+/**
+ * Console log info only on dev environment
+ * @param args
+ */
+export const devLog = (...args) => {
+    if (window.DEVELOPMENT || window.STAGING) {
+        console.log(...args)
+    }
+}
+
 export const defined = (item) => {
     return !_.isUndefined(item) && item !== null
 }

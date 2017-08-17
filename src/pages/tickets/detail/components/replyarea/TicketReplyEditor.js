@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 
-import shortcutManager from '../../../../common/utils/shortcutManager'
+import shortcutManager from '../../../../../services/shortcutManager'
 
 import {getDefaultKeyBinding, KeyBindingUtil, EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'

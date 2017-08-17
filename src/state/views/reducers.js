@@ -4,7 +4,6 @@ import _isNumber from 'lodash/isNumber'
 import * as types from './constants'
 import {getCode} from '../../utils'
 import {shouldUpdateView} from '../activity/utils'
-import SocketIO from '../../pages/common/utils/socketio'
 import {
     addFilterAST,
     removeFilterAST,
@@ -38,9 +37,6 @@ export default (state = initialState, action) => {
     switch (action.type) {
         case types.SET_VIEW_ACTIVE: {
             if (action.view) {
-                const io = new SocketIO()
-                io.joinView(action.view.get('id'))
-
                 return state.set('active', action.view)
             }
             return state

@@ -13,7 +13,7 @@ import {
     PopoverContent,
 } from 'reactstrap'
 
-import shortcutManager from '../../../common/utils/shortcutManager'
+import shortcutManager from '../../../../services/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
 import TicketTags from './ticketdetails/TicketTags'
 import TicketStatus from './ticketdetails/TicketStatus'
