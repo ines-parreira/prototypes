@@ -3,7 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {Card, CardBlock} from 'reactstrap'
+import {Card, CardBlock, Button} from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
 
 import {getActionByName} from '../../../../config/actions'
@@ -167,12 +167,13 @@ export class Event extends React.Component {
 
                         <AgentLabel name={user.get('name')} />
 
-                        <a
-                            className="ml5i"
+                        <Button
+                            color="link"
+                            className="ml-1 p-0"
                             onClick={() => this.setState({showDetails: !this.state.showDetails})}
                         >
                             (details)
-                        </a>
+                        </Button>
                     </div>
 
                     <div className={classnames('ticket-message-time', css.date)}>

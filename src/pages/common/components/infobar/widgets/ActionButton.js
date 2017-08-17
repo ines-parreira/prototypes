@@ -171,9 +171,9 @@ class ActionButton extends React.Component {
                         </div>
                     )}
                 >
-                    <p>
+                    <div>
                         Are you sure you want to {reason}?
-                    </p>
+                    </div>
                 </Modal>
             </div>
         )
