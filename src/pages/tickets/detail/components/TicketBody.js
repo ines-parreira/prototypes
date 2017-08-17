@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
 
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
@@ -12,7 +11,6 @@ export class TicketBody extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
         elements: PropTypes.object.isRequired,
-        loadingState: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
         setStatus: PropTypes.func.isRequired,
         lastReadMessage: PropTypes.object
@@ -28,7 +26,7 @@ export class TicketBody extends React.Component {
     }
 
     render() {
-        const {elements, ticket, loadingState, setStatus, lastReadMessage} = this.props
+        const {elements, ticket, setStatus, lastReadMessage} = this.props
 
         if (elements.size === 0) {
             return null
@@ -52,10 +50,7 @@ export class TicketBody extends React.Component {
                             )
                         }
 
-                        const isLoading = (
-                            !!loadingState.get('updateMessageIds', fromJS([])).includes(element.get('id'))
-                            || element.get('isPending', false)
-                        )
+                        const isLoading = element.get('isPending', false)
 
                         const isLastReadMessage = !lastReadMessage.isEmpty()
                             && element.get('id') === lastReadMessage.get('id')
@@ -83,7 +78,6 @@ export class TicketBody extends React.Component {
 export default connect((state) => {
     return {
         currentUser: state.currentUser,
-        loadingState: ticketSelectors.getLoading(state),
         ticket: state.ticket,
         lastReadMessage: ticketSelectors.getLastReadMessage(state)
     }

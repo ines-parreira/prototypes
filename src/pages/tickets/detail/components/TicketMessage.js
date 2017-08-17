@@ -177,6 +177,11 @@ export default class TicketMessage extends React.Component {
         ]
     }
 
+    /**
+     * Message never arrived to server
+     * @returns {XML}
+     * @private
+     */
     _renderMessageNotSent() {
         const {message, ticket, setStatus} = this.props
 
@@ -193,14 +198,18 @@ export default class TicketMessage extends React.Component {
         )
     }
 
+    /**
+     * Message could not be sent to customer by server
+     * @returns {XML}
+     * @private
+     */
     _renderActionFailed() {
         const {message, ticket} = this.props
 
-        const rMsg = 'Retry to execute the failed action(s) automatically, and send the message if it succeeds.'
         return (
             <HardWarning
                 error="This message was not sent: one or more actions failed."
-                retryTooltipMessage={rMsg}
+                retryTooltipMessage="Retry to execute the failed action(s) automatically, and send the message if it succeeds."
                 messageId={message.id}
                 ticketId={message.ticket_id || ticket.get('id')}
                 messageActions={message.actions}

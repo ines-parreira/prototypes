@@ -20,7 +20,6 @@ export const initialState = fromJS({
         loading: {
             fetchTicket: false,
             deleteMessage: false,
-            updateMessageIds: [] // store the ids of all the messages being updated
         },
         pendingMessages: [],
     },
@@ -42,16 +41,6 @@ export const initialState = fromJS({
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case types.UPDATE_TICKET_MESSAGE_START: {
-            return state.mergeDeep({
-                _internal: {
-                    loading: {
-                        updateMessageIds: [action.messageId]
-                    }
-                }
-            })
-        }
-
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
             if (!action.retry) {
                 // Make sure we reset the cache before we send the message

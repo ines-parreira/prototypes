@@ -80,8 +80,6 @@ Array [
             loading: Immutable.Map {
                   fetchTicket: false,
                   deleteMessage: false,
-                  updateMessageIds: Immutable.List [
-                  ],
             },
             pendingMessages: Immutable.List [
             ],
@@ -129,8 +127,6 @@ Array [
             loading: Immutable.Map {
                   fetchTicket: false,
                   deleteMessage: false,
-                  updateMessageIds: Immutable.List [
-                  ],
             },
             pendingMessages: Immutable.List [
             ],
@@ -219,8 +215,6 @@ Object {
         loading: Immutable.Map {
             fetchTicket: false,
             deleteMessage: false,
-            updateMessageIds: Immutable.List [
-            ],
         },
         pendingMessages: Immutable.List [
         ],
@@ -378,8 +372,6 @@ Array [
             loading: Immutable.Map {
                   fetchTicket: false,
                   deleteMessage: false,
-                  updateMessageIds: Immutable.List [
-                  ],
             },
             pendingMessages: Immutable.List [
             ],
@@ -443,8 +435,6 @@ Array [
             loading: Immutable.Map {
                   fetchTicket: false,
                   deleteMessage: false,
-                  updateMessageIds: Immutable.List [
-                  ],
             },
             pendingMessages: Immutable.List [
             ],
