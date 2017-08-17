@@ -150,19 +150,19 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Magento',
         description: 'Display customer & orders info next to tickets. Edit orders with macros',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#Magento',
+        url: 'http://docs.gorgias.io/integrations/http-integrations#magento',
         image: 'integrations/magento.png',
     },
     {
         title: 'WooCommerce',
         description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#WooCommerce',
+        url: 'http://docs.gorgias.io/integrations/http-integrations#woo_commerce',
         image: 'integrations/woocommerce.png',
     },
     {
         title: 'Prestashop',
         description: 'See customer profiles & orders next to support conversations. Refund orders with macros',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#Prestashop',
+        url: 'http://docs.gorgias.io/integrations/http-integrations#prestashop',
         image: 'integrations/prestashop.png',
     },
     {
@@ -174,43 +174,43 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Salesforce',
         description: 'Display customer information next to tickets',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#Salesforce',
+        url: 'http://docs.gorgias.io/integrations/http-integrations#salesforce',
         image: 'integrations/salesforce.png',
     },
     {
         title: 'Shipstation',
         description: 'Display shipping info next to tickets',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#Shipstation',
+        url: 'http://docs.gorgias.io/integrations/http-integrations#shipstation',
         image: 'integrations/shipstation.png',
     },
     {
         title: 'ShippingEasy',
         description: 'Display tracking info next to tickets & automatically respond to "where is my order" questions.',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#ShippingEasy',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#shipping_easy',
         image: 'integrations/shippingeasy.png',
     },
     {
         title: 'LoyaltyLion',
         description: 'See loyalty points next to tickets. Award points with macros.',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#LoyaltyLion',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#loyalty_lion',
         image: 'integrations/loyaltylion.png',
     },
     {
         title: 'Swell',
         description: 'Display loyalty points next to tickets. Award points with macros.',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Swell_Rewards',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#swell_rewards',
         image: 'integrations/swell.png',
     },
     {
         title: 'Yotpo',
         description: 'Display product reviews customers left next to support tickets.',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Yotpo',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#yotpo',
         image: 'integrations/yotpo.png',
     },
     {
         title: 'Mailchimp',
         description: 'Display what lists the customer is on, along with their attributes.',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Mailchimp',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#mailchimp',
         image: 'integrations/mailchimp.png',
     },
     {
@@ -228,19 +228,19 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Slack',
         description: 'Post notifications on Slack when tickets are created or updated',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Slack',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#slack',
         image: 'integrations/slack.png',
     },
     {
         title: 'Segment',
         description: 'Use Gorgias activity data in other apps.',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Segment',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#segment',
         image: 'integrations/segment.png',
     },
     {
         title: 'Zapier',
         description: 'Trigger zaps with macros',
-        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#Zapier',
+        url: 'https://gorgias.helpdocs.io/integrations/http-integrations#zapier',
         image: 'integrations/zapier.png',
     }
 ]
@@ -401,40 +401,6 @@ export const ACTION_TEMPLATES = [
             }
         }
     },
-    // {
-    //     execution: 'back',
-    //     name: 'httpIntegration',
-    //     title: '',
-    //     arguments: {
-    //         integration_id: {
-    //             type: 'integer',
-    //             choice: '{state.integrations.http}',
-    //             required: true
-    //         }
-    //     }
-    // },
-    // {
-    //     execution: 'back',
-    //     name: 'notify',
-    //     title: '',
-    //     arguments: {
-    //         email: {
-    //             type: 'string',
-    //             format: 'email',
-    //             default: '{ticket.assignee_user.email}'
-    //         },
-    //         subject: {
-    //             type: 'string',
-    //             default: '{ticket.subject}',
-    //             editable: true
-    //         },
-    //         content: {
-    //             type: 'string',
-    //             default: '{ticket.body_html}',
-    //             editable: true
-    //         }
-    //     }
-    // },
     {
         execution: 'back',
         integrationType: 'shopify',
