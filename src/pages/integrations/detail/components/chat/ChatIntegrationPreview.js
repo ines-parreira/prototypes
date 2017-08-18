@@ -6,7 +6,7 @@ import css from './ChatIntegrationPreview.less'
 const ChatIntegrationPreview = ({
     name,
     currentUser,
-    windowTitle,
+    introductionText,
     headerText,
     inputPlaceholder,
     sendButtonText,
@@ -50,7 +50,7 @@ const ChatIntegrationPreview = ({
                     className={css.titlebar}
                     style={_bgColor(headerColor)}
                 >
-                    {nonbreak(windowTitle || 'How can we help?')}
+                    {nonbreak(headerText)}
 
                     <i className={classnames(css.icon, css.times)}></i>
                 </div>
@@ -64,7 +64,7 @@ const ChatIntegrationPreview = ({
                             {nonbreak(name)}
                         </h2>
                         <p>
-                            {nonbreak(headerText)}
+                            {nonbreak(introductionText)}
                         </p>
                     </div>
                 </div>
@@ -91,11 +91,11 @@ const ChatIntegrationPreview = ({
                 <div className={css.footer}>
                     <i className={classnames(css.icon, css.camera)}></i>
                     <div className={css.placeholder}>
-                        {nonbreak(inputPlaceholder || 'Type a message...')}
+                        {nonbreak(inputPlaceholder)}
                     </div>
 
                     <span className={classnames(css.send)}>
-                        {nonbreak(sendButtonText || 'Send')}
+                        {nonbreak(sendButtonText)}
                     </span>
                 </div>
             </div>
@@ -113,7 +113,7 @@ const ChatIntegrationPreview = ({
 ChatIntegrationPreview.propTypes = {
     name: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
-    windowTitle: PropTypes.string,
+    introductionText: PropTypes.string,
     headerText: PropTypes.string,
     inputPlaceholder: PropTypes.string,
     sendButtonText: PropTypes.string,

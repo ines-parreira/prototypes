@@ -113,13 +113,13 @@ exports[`ChatIntegrationDetail component should display correctly when creating 
                 label="Input placeholder"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Type a message..."
               />
               <InputField
                 label="Send button text"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Send"
               />
               <ColorField
                 label="Header color"
@@ -173,12 +173,12 @@ exports[`ChatIntegrationDetail component should display correctly when creating 
             }
           }
           headerColor="#0d87dd"
-          headerText=""
+          headerText="We're here to chat, so ask us anything!"
           icon=""
-          inputPlaceholder=""
+          inputPlaceholder="Type a message..."
+          introductionText=""
           name=""
-          sendButtonText=""
-          windowTitle="We're here to chat, so ask us anything!"
+          sendButtonText="Send"
         />
       </Ot>
     </bt>
@@ -300,13 +300,13 @@ exports[`ChatIntegrationDetail component should display correctly when integrati
                 label="Input placeholder"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Type a message..."
               />
               <InputField
                 label="Send button text"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Send"
               />
               <ColorField
                 label="Header color"
@@ -376,12 +376,12 @@ exports[`ChatIntegrationDetail component should display correctly when integrati
             }
           }
           headerColor="#0d87dd"
-          headerText=""
+          headerText="We're here to chat, so ask us anything!"
           icon=""
-          inputPlaceholder=""
+          inputPlaceholder="Type a message..."
+          introductionText=""
           name=""
-          sendButtonText=""
-          windowTitle="We're here to chat, so ask us anything!"
+          sendButtonText="Send"
         />
       </Ot>
     </bt>
@@ -560,13 +560,13 @@ exports[`ChatIntegrationDetail component should display correctly when updating 
                 label="Input placeholder"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Type a message..."
               />
               <InputField
                 label="Send button text"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Send"
               />
               <ColorField
                 label="Header color"
@@ -636,12 +636,12 @@ exports[`ChatIntegrationDetail component should display correctly when updating 
             }
           }
           headerColor="#0d87dd"
-          headerText=""
+          headerText="We're here to chat, so ask us anything!"
           icon=""
-          inputPlaceholder=""
+          inputPlaceholder="Type a message..."
+          introductionText=""
           name=""
-          sendButtonText=""
-          windowTitle="We're here to chat, so ask us anything!"
+          sendButtonText="Send"
         />
       </Ot>
     </bt>
@@ -820,13 +820,13 @@ exports[`ChatIntegrationDetail component should display the Shopify integrations
                 label="Input placeholder"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Type a message..."
               />
               <InputField
                 label="Send button text"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Send"
               />
               <ColorField
                 label="Header color"
@@ -896,12 +896,12 @@ exports[`ChatIntegrationDetail component should display the Shopify integrations
             }
           }
           headerColor="#0d87dd"
-          headerText=""
+          headerText="We're here to chat, so ask us anything!"
           icon=""
-          inputPlaceholder=""
+          inputPlaceholder="Type a message..."
+          introductionText=""
           name=""
-          sendButtonText=""
-          windowTitle="We're here to chat, so ask us anything!"
+          sendButtonText="Send"
         />
       </Ot>
     </bt>
@@ -1092,13 +1092,13 @@ exports[`ChatIntegrationDetail component should not raise an error if there's no
                 label="Input placeholder"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Type a message..."
               />
               <InputField
                 label="Send button text"
                 onChange={[Function]}
                 type="text"
-                value=""
+                value="Send"
               />
               <ColorField
                 label="Header color"
@@ -1168,12 +1168,12 @@ exports[`ChatIntegrationDetail component should not raise an error if there's no
             }
           }
           headerColor="#0d87dd"
-          headerText=""
+          headerText="We're here to chat, so ask us anything!"
           icon=""
-          inputPlaceholder=""
+          inputPlaceholder="Type a message..."
+          introductionText=""
           name=""
-          sendButtonText=""
-          windowTitle="We're here to chat, so ask us anything!"
+          sendButtonText="Send"
         />
       </Ot>
     </bt>

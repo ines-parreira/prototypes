@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
+<div>
+  <div />
+  <div>
+    <div
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      header
+      <i
+        className=""
+      />
+    </div>
+    <div>
+      <div>
+        <span
+          style={
+            Object {
+              "backgroundImage": "url(http://httpbin.org/image.jpg)",
+            }
+          }
+        />
+      </div>
+      <div>
+        <h2>
+          My little chat integration
+        </h2>
+        <p>
+          intro
+        </p>
+      </div>
+    </div>
+    <div>
+      <div
+        className=""
+        style={
+          Object {
+            "backgroundColor": "#456789",
+          }
+        }
+      >
+        Hey, I'm wondering about the status of my order
+      </div>
+      <div>
+        Charles
+      </div>
+      <div
+        className=""
+      >
+        Sure, what's your email / order number?
+      </div>
+      <div>
+        Messaging by 
+        <strong>
+          Gorgias
+        </strong>
+      </div>
+    </div>
+    <div>
+      <i
+        className=""
+      />
+      <div>
+        input
+      </div>
+      <span
+        className=""
+      >
+        send!
+      </span>
+    </div>
+  </div>
+  <div
+    style={
+      Object {
+        "backgroundColor": "#789123",
+      }
+    }
+  >
+    <i />
+  </div>
+</div>
+`;

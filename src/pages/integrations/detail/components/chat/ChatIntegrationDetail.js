@@ -41,10 +41,10 @@ import css from './ChatIntegrationDetail.less'
 export const defaultContent = {
     type: 'smooch_inside',
     name: '',
-    windowTitle: 'We\'re here to chat, so ask us anything!',
-    headerText: '',
-    inputPlaceholder: '',
-    sendButtonText: '',
+    headerText: 'We\'re here to chat, so ask us anything!',
+    introductionText: '',
+    inputPlaceholder: 'Type a message...',
+    sendButtonText: 'Send',
     headerColor: '#0d87dd',
     conversationColor: '#0d87dd',
     chatIconColor: '#0d87dd',
@@ -95,10 +95,13 @@ class ChatIntegrationDetail extends React.Component {
     }
 
     _getIntegration = (integration) => {
+        const oldFormat = !integration.getIn(['decoration', 'introduction_text'])
+
+        // todo(@martin): remove transition state here
         return _defaults({
             name: integration.get('name'),
-            windowTitle: integration.getIn(['decoration', 'window_title']),
-            headerText: integration.getIn(['decoration', 'header_text']),
+            headerText: oldFormat ? integration.getIn(['decoration', 'window_title']) : integration.getIn(['decoration', 'header_text']),
+            introductionText: oldFormat ? integration.getIn(['decoration', 'header_text']) : integration.getIn(['decoration', 'introduction_text']),
             inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
             sendButtonText: integration.getIn(['decoration', 'send_button_text']),
             headerColor: integration.getIn(['decoration', 'header_color']),
@@ -138,13 +141,13 @@ class ChatIntegrationDetail extends React.Component {
         e.preventDefault()
         const form = _pick(this.state, ['name', 'type'])
         form.decoration = {
-            window_title: this.state.windowTitle,
+            header_text: this.state.headerText,
             input_placeholder: this.state.inputPlaceholder,
             send_button_text: this.state.sendButtonText,
             conversation_color: this.state.conversationColor,
             chat_icon_color: this.state.chatIconColor,
             header_color: this.state.headerColor,
-            header_text: this.state.headerText,
+            introduction_text: this.state.introductionText,
             icon: this.state.icon
         }
 
@@ -400,16 +403,16 @@ class ChatIntegrationDetail extends React.Component {
                                         <InputField
                                             type="textarea"
                                             label="Header text"
-                                            value={this.state.windowTitle}
-                                            onChange={value => this.setState({windowTitle: value})}
+                                            value={this.state.headerText}
+                                            onChange={value => this.setState({headerText: value})}
                                             rows="2"
                                             required
                                         />
 
                                         <InputField
                                             type="textarea"
-                                            value={this.state.headerText}
-                                            onChange={value => this.setState({headerText: value})}
+                                            value={this.state.introductionText}
+                                            onChange={value => this.setState({introductionText: value})}
                                             label="Introduction text"
                                             rows="2"
                                         />
@@ -479,8 +482,8 @@ class ChatIntegrationDetail extends React.Component {
                             <ChatIntegrationPreview
                                 currentUser={currentUser}
                                 name={this.state.name}
-                                windowTitle={this.state.windowTitle}
                                 headerText={this.state.headerText}
+                                introductionText={this.state.introductionText}
                                 inputPlaceholder={this.state.inputPlaceholder}
                                 sendButtonText={this.state.sendButtonText}
                                 headerColor={this.state.headerColor}
