@@ -1,11 +1,16 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {List} from 'immutable'
+import {Button} from 'reactstrap'
 
 import {compare} from '../../../../../utils'
 import InfobarWidget from '../InfobarWidget'
 
 class ListInfobarWidget extends React.Component {
+    state = {
+        showMoreTimes: 0, // how many times the agent asked to show more of the list
+    }
+
     render() {
         const {
             isEditing,
@@ -46,19 +51,52 @@ class ListInfobarWidget extends React.Component {
             }
         }
 
-        // calculate limit of cards displayed in this array
-        let limit = isEditing ? 1 : template.getIn(['meta', 'limit'])
-        limit = isParentOfCard ? limit : 1
-        const sourceList = limit ? orderedSource.take(limit) : orderedSource
+        let limit = template.getIn(['meta', 'limit'])
+        let sourceList = orderedSource
+        let exclusionMessage = null
 
-        let hasExcluded = false
-        let exclusionMessage = ''
+        // display only 1 element of the list if editing widgets
+        if (isEditing) {
+            limit = 1
+        }
 
-        // if there is a limit, explain it under the card
+        // use limit only if we display cards in the list (display 1 element if list of lists)
+        if (!isParentOfCard) {
+            limit = 1
+        }
+
         if (limit) {
-            const excluded = source.size - limit
-            hasExcluded = excluded > 0
-            exclusionMessage = `${limit} shown above (${excluded} remaining)`
+            // calculate limit of cards displayed in this array
+            limit = limit * (this.state.showMoreTimes + 1)
+            // limit displayed source data
+            sourceList = orderedSource.take(limit)
+
+            // if there is a limit, explain it under the card
+            const excludedItems = source.size - limit
+            const hasExcludedItems = excludedItems > 0
+
+            if (hasExcludedItems) {
+                exclusionMessage = (
+                    <div className="d-flex align-items-center">
+                        {
+                            !isEditing && (
+                                <Button
+                                    type="button"
+                                    color="link"
+                                    className="p-0 mr-2"
+                                    onClick={() => {
+                                        this.setState({showMoreTimes: this.state.showMoreTimes + 1})
+                                    }}
+                                >
+                                    <i className="fa fa-fw fa-chevron-down mr-1" />
+                                    Show more
+                                </Button>
+                            )
+                        }
+                        <div>{isEditing ? `${excludedItems} more items` : `(${excludedItems} remaining)`}</div>
+                    </div>
+                )
+            }
         }
 
         const className = classnames('list', {
@@ -88,16 +126,12 @@ class ListInfobarWidget extends React.Component {
                         })
                 }
                 {
-                    !!sourceList.size
+                    !sourceList.isEmpty()
                     && isParentOfCard
-                    && hasExcluded
+                    && exclusionMessage
                     && (
                         <div className="footer clearfix">
-                            {
-                                hasExcluded && (
-                                    <span>{exclusionMessage}</span>
-                                )
-                            }
+                            {exclusionMessage}
                         </div>
                     )
                 }

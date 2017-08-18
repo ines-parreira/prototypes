@@ -142,7 +142,7 @@ export const ticket = {
         ],
         customer: null,
         integrations: {
-            '2': {
+            '2': { // custom HTTP
                 args: {
                     name: 'Jean Bon'
                 },
@@ -158,7 +158,7 @@ export const ticket = {
                 },
                 __integration_type__: 'http'
             },
-            '5': {
+            '5': { // shopify
                 customer: {
                     addresses: [
                         {
