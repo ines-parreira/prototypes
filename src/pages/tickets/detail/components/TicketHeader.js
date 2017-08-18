@@ -74,7 +74,7 @@ export default class TicketHeader extends React.Component {
 
     _trashTicket = () => {
         this._toggleTrashConfirmation()
-        return this.props.setTrashed(moment.utc()).then(() => {
+        return this.props.setTrashed(moment.utc(), () => {
             this._goToNextUrl()
         })
     }
@@ -84,7 +84,12 @@ export default class TicketHeader extends React.Component {
     }
 
     _toggleSpam = () => {
-        return this.props.setSpam(!this.props.ticket.get('spam'))
+        const spam = !this.props.ticket.get('spam')
+        return this.props.setSpam(spam, () => {
+            if (spam) {
+                this._goToNextUrl()
+            }
+        })
     }
 
     _bindKeys() {
@@ -121,7 +126,7 @@ export default class TicketHeader extends React.Component {
                                     size="sm"
                                     id="ticket-actions-button"
                                 >
-                                    <i className="fa fa-fw fa-caret-down"/>
+                                    <i className="fa fa-fw fa-caret-down" />
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <DropdownItem
@@ -204,8 +209,8 @@ export default class TicketHeader extends React.Component {
                         />
                     </div>
                     <div className="d-inline-flex">
-                        <TicketTrash trashed={isTrashed}/>
-                        <TicketSpam spam={ticket.get('spam')}/>
+                        <TicketTrash trashed={isTrashed} />
+                        <TicketSpam spam={ticket.get('spam')} />
                         <TicketAssignee
                             direction="right"
                             currentAssignee={ticket.getIn(['assignee_user', 'name'])}

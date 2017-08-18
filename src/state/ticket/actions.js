@@ -141,7 +141,7 @@ export const removeTag = (tag) => (dispatch, getState) => {
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
 }
 
-export const setSpam = (spam) => (dispatch, getState) => {
+export const setSpam = (spam, callback = _noop) => (dispatch, getState) => {
     const {ticket} = getState()
     const currentSpam = ticket.get('spam')
 
@@ -154,10 +154,13 @@ export const setSpam = (spam) => (dispatch, getState) => {
         spam
     })
 
+    // execute callback immediately, do not wait for server answer
+    callback()
+
     return dispatch(ticketPartialUpdate({spam}))
 }
 
-export const setTrashed = (datetime) => (dispatch, getState) => {
+export const setTrashed = (datetime, callback = _noop) => (dispatch, getState) => {
     const {ticket} = getState()
     const isTrashed = !!ticket.get('trashed_datetime')
 
@@ -169,6 +172,9 @@ export const setTrashed = (datetime) => (dispatch, getState) => {
         type: types.SET_TRASHED,
         trashed_datetime: datetime
     })
+
+    // execute callback immediately, do not wait for server answer
+    callback()
 
     return dispatch(ticketPartialUpdate({trashed_datetime: datetime})).then(() => {
         // display a notification when we trash a ticket
@@ -203,7 +209,7 @@ export const setRequester = (requester) => (dispatch) => {
     }))
 }
 
-export const setStatus = (status, onClose = _noop) => (dispatch, getState) => {
+export const setStatus = (status, callback = _noop) => (dispatch, getState) => {
     dispatch({
         type: types.SET_STATUS,
         args: fromJS({status}),
@@ -215,7 +221,8 @@ export const setStatus = (status, onClose = _noop) => (dispatch, getState) => {
             message: 'The ticket has been closed.'
         }))
 
-        onClose()
+        // execute callback immediately, do not wait for server answer
+        callback()
     }
 
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setStatus', getState())))
