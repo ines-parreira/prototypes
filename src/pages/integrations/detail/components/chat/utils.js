@@ -19,7 +19,7 @@ const _cleanOptions = (obj, newObj = {}) => {
 }
 
 export const renderCodeSnippet = (integration) => {
-    const isOldFormat = !integration.getIn(['decoration', 'introduction_text'])
+    const isOldFormat = integration.getIn(['decoration', 'introduction_text']) === null
 
     // todo(@martin): remove transition state here
     const options = {
