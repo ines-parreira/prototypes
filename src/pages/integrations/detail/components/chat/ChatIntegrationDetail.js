@@ -95,7 +95,7 @@ class ChatIntegrationDetail extends React.Component {
     }
 
     _getIntegration = (integration) => {
-        const oldFormat = integration.getIn(['decoration', 'introduction_text']) === null
+        const oldFormat = integration.getIn(['decoration', 'introduction_text']) === undefined
 
         // todo(@martin): remove transition state here
         return _defaults({

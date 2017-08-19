@@ -73,8 +73,8 @@ describe('ChatIntegrationInstall component', () => {
                         header_color: '#789456',
                         chat_icon_color: '#AB7891',
                         conversation_color: '#B7B7B7',
-                        window_title: 'some window title',
-                        header_text: 'some introduction text',
+                        header_text: 'some window title',
+                        introduction_text: 'some introduction text',
                         input_placeholder: 'type here to send messages',
                         send_button_text: 'Lets goooo'
                     },
