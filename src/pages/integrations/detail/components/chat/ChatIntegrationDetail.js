@@ -95,13 +95,10 @@ class ChatIntegrationDetail extends React.Component {
     }
 
     _getIntegration = (integration) => {
-        const oldFormat = integration.getIn(['decoration', 'introduction_text']) === undefined
-
-        // todo(@martin): remove transition state here
         return _defaults({
             name: integration.get('name'),
-            headerText: oldFormat ? integration.getIn(['decoration', 'window_title']) : integration.getIn(['decoration', 'header_text']),
-            introductionText: oldFormat ? integration.getIn(['decoration', 'header_text']) : integration.getIn(['decoration', 'introduction_text']),
+            headerText: integration.getIn(['decoration', 'header_text']),
+            introductionText: integration.getIn(['decoration', 'introduction_text']),
             inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
             sendButtonText: integration.getIn(['decoration', 'send_button_text']),
             headerColor: integration.getIn(['decoration', 'header_color']),

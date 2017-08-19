@@ -19,9 +19,6 @@ const _cleanOptions = (obj, newObj = {}) => {
 }
 
 export const renderCodeSnippet = (integration) => {
-    const isOldFormat = integration.getIn(['decoration', 'introduction_text']) === undefined
-
-    // todo(@martin): remove transition state here
     const options = {
         icon: integration.getIn(['decoration', 'icon']),
         headerColor: integration.getIn(['decoration', 'header_color']),
@@ -33,8 +30,8 @@ export const renderCodeSnippet = (integration) => {
                 current_page: 'window.location.href'
             },
             customText: {
-                headerText: isOldFormat ? integration.getIn(['decoration', 'window_title']) : integration.getIn(['decoration', 'header_text']),
-                introductionText: isOldFormat ? integration.getIn(['decoration', 'header_text']) : integration.getIn(['decoration', 'introduction_text']),
+                headerText: integration.getIn(['decoration', 'header_text']),
+                introductionText: integration.getIn(['decoration', 'introduction_text']),
                 inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
                 sendButtonText: integration.getIn(['decoration', 'send_button_text'])
             }

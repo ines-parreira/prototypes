@@ -27,31 +27,3 @@ GorgiasChat.init({
 </script>
 </div>"
 `;
-
-exports[`chat utils renderCodeSnippet should render correctly with old format 1`] = `
-"<div id=\\"gorgias-chat\\">
-<script src=\\"null/static/public/js/gorgias-chat.js\\"></script>
-<script>
-document.addEventListener(\\"DOMContentLoaded\\", function() {
-GorgiasChat.init({
-  \\"icon\\": \\"http://iconurl.com/\\",
-  \\"headerColor\\": \\"#789456\\",
-  \\"chatIconColor\\": \\"#213456\\",
-  \\"conversationColor\\": \\"#741852\\",
-  \\"smooch\\": {
-    \\"appToken\\": \\"apijdasoidkas\\",
-    \\"properties\\": {
-      \\"current_page\\": window.location.href
-    },
-    \\"customText\\": {
-      \\"headerText\\": \\"foo\\",
-      \\"introductionText\\": \\"bar\\",
-      \\"inputPlaceholder\\": \\"placeholder\\",
-      \\"sendButtonText\\": \\"send!\\"
-    }
-  }
-})
-})
-</script>
-</div>"
-`;
