@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import ReceiversSelectField from './components/ReceiversSelectField'
-import SenderSelectField from './components/SenderSelectField/index'
+import SenderSelectField from './components/SenderSelectField'
 import * as newMessageActions from '../../../../../../state/newMessage/actions'
 import {
     getNewMessageType,
@@ -119,13 +119,11 @@ class MessageSourceFields extends React.Component {
                                     channel={channel}
                                     disabled={!enabled}
                                     required={mandatoryFields.includes(prop)}
-                                    input={{
-                                        value,
-                                        onChange(recipients) {
-                                            setReceivers({
-                                                [prop]: recipients,
-                                            }, false)
-                                        },
+                                    value={value}
+                                    onChange={(recipients) => {
+                                        setReceivers({
+                                            [prop]: recipients,
+                                        }, false)
                                     }}
                                 />
                             </div>
@@ -141,11 +139,9 @@ class MessageSourceFields extends React.Component {
                             <span className="label">From: </span>
                             <SenderSelectField
                                 channels={accountChannels}
-                                input={{
-                                    value: from.address,
-                                    onChange({target}) {
-                                        setSender(target.value)
-                                    },
+                                value={from.address}
+                                onChange={({target}) => {
+                                    setSender(target.value)
                                 }}
                             />
                         </div>

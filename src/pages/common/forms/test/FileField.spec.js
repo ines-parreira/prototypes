@@ -63,7 +63,7 @@ describe('FileField', () => {
     it('should display uploading when loading', () => {
         const component = mount(<FileField {...minProps}/>)
         component.find('input').simulate('change')
-        expect(component.state().isUploading).toBe(true)
+        expect(component.state('isUploading')).toBe(true)
         expect(uploadFiles).toBeCalled()
     })
 })

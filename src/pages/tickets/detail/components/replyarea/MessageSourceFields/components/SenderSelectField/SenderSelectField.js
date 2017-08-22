@@ -1,14 +1,15 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 
 import css from './SenderSelectField.less'
 
-const SenderSelectField = ({input, channels}) => (
+const SenderSelectField = ({value, onChange, channels}) => (
     <div className={css.field}>
         <i className={classnames('fa fa-fw fa-caret-down', css.arrow)} />
         <select
             className={css.select}
-            {...input}
+            value={value}
+            onChange={onChange}
         >
             {
                 channels.map((channel, index) => (
@@ -25,8 +26,9 @@ const SenderSelectField = ({input, channels}) => (
 )
 
 SenderSelectField.propTypes = {
-    input: React.PropTypes.object.isRequired,
-    channels: React.PropTypes.object.isRequired,
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    channels: PropTypes.object.isRequired,
 }
 
 export default SenderSelectField

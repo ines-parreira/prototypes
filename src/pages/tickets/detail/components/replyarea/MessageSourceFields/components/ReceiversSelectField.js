@@ -15,7 +15,8 @@ import MultiSelectAsyncField from './MultiSelectAsyncField/index'
 
 class ReceiversSelectField extends React.Component {
     static propTypes = {
-        input: PropTypes.object.isRequired,
+        value: PropTypes.array.isRequired,
+        onChange: PropTypes.func.isRequired,
         updatePotentialRequesters: PropTypes.func.isRequired,
 
         disabled: PropTypes.bool.isRequired, // whether the dropdown should allow user interactions or not
@@ -35,7 +36,7 @@ class ReceiversSelectField extends React.Component {
     _valueFromState = (options) => receiversValueFromState({to: options}, this.props.sourceType).to
 
     _onChange = (value) => {
-        const {input: {onChange}, sourceType} = this.props
+        const {onChange, sourceType} = this.props
         onChange(receiversStateFromValue({to: value}, sourceType).to)
     }
 
@@ -53,7 +54,7 @@ class ReceiversSelectField extends React.Component {
     }, 200)
 
     render() {
-        const {sourceType, disabled, required, valueProp, input: {value}} = this.props
+        const {sourceType, disabled, required, valueProp, value} = this.props
 
         const placeholder = valueProp ? 'Search a user...' : 'Sorry, no recipient for this type of message...'
 
@@ -61,10 +62,8 @@ class ReceiversSelectField extends React.Component {
             <MultiSelectAsyncField
                 ref="receiverDropdown"
                 name="receiver-dropdown"
-                input={{
-                    value: this._valueFromState(value),
-                    onChange: this._onChange,
-                }}
+                value={this._valueFromState(value)}
+                onChange={this._onChange}
                 loadOptions={this._search}
                 disabled={disabled}
                 required={required}

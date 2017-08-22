@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import ReactDOM from 'react-dom'
 import classnames from 'classnames'
 import _initial from 'lodash/initial'
 import _find from 'lodash/find'
@@ -6,12 +7,16 @@ import _max from 'lodash/max'
 import _min from 'lodash/min'
 import _cloneDeep from 'lodash/cloneDeep'
 import _trim from 'lodash/trim'
+import _isArray from 'lodash/isArray'
 
 import css from './MultiSelectAsyncField.less'
 
+const addressesSeperator = ','
+
 class MultiSelectAsyncField extends React.Component {
     static propTypes = {
-        input: PropTypes.object.isRequired,
+        value: PropTypes.array.isRequired,
+        onChange: PropTypes.func.isRequired,
         placeholder: PropTypes.string,
         disabled: PropTypes.bool.isRequired,
         required: PropTypes.bool.isRequired, // true if a value is required
@@ -54,7 +59,7 @@ class MultiSelectAsyncField extends React.Component {
         // }
 
         // otherwise add currently written input value
-        this._createItemFromInputValue()
+        this._createItemsFromInputValues(this.state.inputValue)
     }
 
     /**
@@ -63,12 +68,20 @@ class MultiSelectAsyncField extends React.Component {
      * @private
      */
     _killEvent = (e) => {
+        if (!e) {
+            return
+        }
+
         e.stopPropagation()
         e.preventDefault()
     }
 
     _focusInput = () => {
-        $(this.refs.input).focus()
+        const input = ReactDOM.findDOMNode(this.refs.input)
+
+        if (input) {
+            input.focus()
+        }
     }
 
     _emptyInput = () => {
@@ -76,7 +89,9 @@ class MultiSelectAsyncField extends React.Component {
     }
 
     _setInputValue = (value) => {
-        this.setState({inputValue: value})
+        this.setState({inputValue: value}, () => {
+            this._emptyOptions()
+        })
     }
 
     /**
@@ -85,7 +100,7 @@ class MultiSelectAsyncField extends React.Component {
      * @private
      */
     _getItem = (index) => {
-        const {input: {value}} = this.props
+        const {value} = this.props
 
         if (value.length) {
             if (value.length > index) {
@@ -104,7 +119,7 @@ class MultiSelectAsyncField extends React.Component {
 
         if (options.length) {
             if (options.length > index) {
-                this._addValue(options[index])
+                this._addValues([options[index]])
                 this._emptyOptions()
             }
         }
@@ -138,51 +153,66 @@ class MultiSelectAsyncField extends React.Component {
         }
 
         return {
-            value: inputValue
+            value: _trim(inputValue),
         }
     }
 
+    _itemsFromValues = (values) => {
+        return values.map(this._itemFromInput)
+    }
+
     /**
-     * Generate item from input value and add it to items
-     * @param e
+     * Generate items from values (may come from input) and add it to items
+     * @param values
      * @private
      */
-    _createItemFromInputValue = (e) => {
-        const {
-            allowCreate,
-            allowCreateConstraint,
-        } = this.props
-        const {
-            inputValue,
-        } = this.state
+    _createItemsFromInputValues = (values) => {
+        if (!values) {
+            return
+        }
+
+        if (!_isArray(values)) {
+            values = [values]
+        }
+
+        const {allowCreate, allowCreateConstraint} = this.props
 
         // check if can create value
         let canCreateValue = allowCreate
 
-        // if there is a creation constraint, apply
-        if (canCreateValue && allowCreateConstraint) {
-            const item = this._itemFromInput(inputValue)
-            canCreateValue = allowCreateConstraint(item.value)
+        if (!canCreateValue) {
+            return
         }
 
-        if (canCreateValue) {
-            this._onItemCreate(e, inputValue)
+        // if there is a creation constraint, apply
+        if (allowCreateConstraint) {
+            values = values.filter((value) => {
+                const item = this._itemFromInput(value)
+                return allowCreateConstraint(item.value)
+            })
+
+            // don't do anything if there is nothing to create
+            if (values.length === 0) {
+                return
+            }
         }
+
+        this._createItems(values)
     }
 
     /**
-     * Add passed item to items list
-     * @param item
+     * Add passed items to items list
+     * @param items
      * @private
      */
-    _addValue = (item) => {
-        const {input: {value, onChange}} = this.props
+    _addValues = (items) => {
+        const {value, onChange} = this.props
 
-        const alreadyExistingValue = _find(value, {value: item.value})
+        const filteredItems = items.filter((item) => {
+            return !_find(value, {value: item.value})
+        })
 
-        if (!alreadyExistingValue) {
-            onChange(value.concat([item]))
-        }
+        onChange(value.concat(filteredItems))
     }
 
     /**
@@ -191,7 +221,7 @@ class MultiSelectAsyncField extends React.Component {
      * @private
      */
     _removeValue = (index) => {
-        const {input: {value, onChange}} = this.props
+        const {value, onChange} = this.props
         const newValue = _cloneDeep(value)
         newValue.splice(index, 1)
         onChange(newValue)
@@ -204,13 +234,21 @@ class MultiSelectAsyncField extends React.Component {
      */
     _onInputChange = (e) => {
         const inputValue = e.target.value
+
+        // if pasting a list of addresses, add them one by one to current addresses
+        if (inputValue.includes(addressesSeperator)) {
+            this._killEvent(e)
+            const splitAddresses = inputValue.split(addressesSeperator)
+            return this._createItemsFromInputValues(splitAddresses)
+        }
+
         this.setState({
             inputValue,
-            focusedOptionIndex: 0
-        })
-
-        this.props.loadOptions(inputValue, (options) => {
-            this.setState({options})
+            focusedOptionIndex: 0,
+        }, () => {
+            return this.props.loadOptions(inputValue, (options) => {
+                this.setState({options})
+            })
         })
     }
 
@@ -221,7 +259,8 @@ class MultiSelectAsyncField extends React.Component {
      */
     _onInputKeyDown = (e) => {
         const {
-            input: {value, onChange},
+            value,
+            onChange,
         } = this.props
         const {
             inputValue,
@@ -264,13 +303,13 @@ class MultiSelectAsyncField extends React.Component {
                 break
             }
             // create new value / select option
-            case ',':
+            case addressesSeperator:
             case 'Tab':
             case 'Enter': {
                 if (options.length) { // selection
                     this._onOptionClick(e, focusedOptionIndex)
                 } else { // creation
-                    this._createItemFromInputValue(e)
+                    this._createItemsFromInputValues(inputValue)
                 }
                 break
             }
@@ -278,60 +317,39 @@ class MultiSelectAsyncField extends React.Component {
         }
     }
 
-    /**
-     * Create item handler
-     * @param e
-     * @param value
-     * @private
-     */
-    _onItemCreate = (e, value) => {
-        if (e) {
-            this._killEvent(e)
-        }
-
-        this._addValue(this._itemFromInput(value))
-
+    _createItems = (values) => {
+        this._addValues(this._itemsFromValues(values))
         this._emptyInput()
         this._focusInput()
     }
 
     _onOptionClick = (e, index) => {
-        if (e) {
-            this._killEvent(e)
-        }
+        this._killEvent(e)
         this._selectOption(index)
         this._emptyInput()
         this._focusInput()
     }
 
     _onItemClickRemove = (e, index) => {
-        if (e) {
-            this._killEvent(e)
-        }
+        this._killEvent(e)
         this._removeValue(index)
         this._focusInput()
     }
 
     _onInputBlur = (e) => {
-        if (e) {
-            this._killEvent(e)
-        }
+        this._killEvent(e)
         this._onLeaving()
     }
 
     _onItemClick = (e, index) => {
-        if (e) {
-            this._killEvent(e)
-        }
+        this._killEvent(e)
         this.setState({
             focusedItemIndex: index,
         })
     }
 
     _onItemDoubleClick = (e, index) => {
-        if (e) {
-            this._killEvent(e)
-        }
+        this._killEvent(e)
         const item = this._getItem(index)
 
         if (item) {
@@ -345,9 +363,7 @@ class MultiSelectAsyncField extends React.Component {
     }
 
     _onItemBlur = (e) => {
-        if (e) {
-            this._killEvent(e)
-        }
+        this._killEvent(e)
         this.setState({
             focusedItemIndex: null,
         })
@@ -355,7 +371,7 @@ class MultiSelectAsyncField extends React.Component {
 
     render() {
         const {
-            input: {value},
+            value,
             disabled,
             placeholder,
             required,

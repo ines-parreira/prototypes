@@ -111,7 +111,7 @@ describe('TicketAttachments component', () => {
                 preventDefault: _noop
             })
 
-            expect(component.state().isLightboxOpen).toBe(true)
+            expect(component.state('isLightboxOpen')).toBe(true)
         })
 
         it('not-image should not open the lightbox', () => {
@@ -119,7 +119,7 @@ describe('TicketAttachments component', () => {
                 preventDefault: _noop
             })
 
-            expect(component.state().isLightboxOpen).toBe(false)
+            expect(component.state('isLightboxOpen')).toBe(false)
         })
     })
 })
