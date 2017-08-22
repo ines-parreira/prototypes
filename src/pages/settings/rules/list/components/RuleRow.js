@@ -50,7 +50,7 @@ class RuleRow extends React.Component {
                 <td className="smallest align-middle">
                     <i
                         className="fa fa-fw fa-bars fa-lg text-faded drag-handle"
-                        style={{cursor: 'ns-resize'}}
+                        style={{cursor: 'move'}}
                     />
                 </td>
                 <td className="link-full-td">
