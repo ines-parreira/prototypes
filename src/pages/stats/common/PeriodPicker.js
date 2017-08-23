@@ -87,6 +87,7 @@ export default class PeriodPicker extends React.Component {
                 applyClass="btn-success mr-2"
                 cancelClass="btn-secondary"
                 alwaysShowCalendars
+                showCustomRangeLabel={false}
             >
                 {button}
             </DateRangePicker>
