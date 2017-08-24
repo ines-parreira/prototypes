@@ -98,7 +98,7 @@ class TooltipWidgetEditCard extends React.Component {
                     type="text"
                     name="card.title"
                     label="Title"
-                    placeholder="Order {id}"
+                    placeholder="Order {{id}}"
                     value={this.state.title}
                     onChange={title => this.setState({title})}
                 />
@@ -108,7 +108,7 @@ class TooltipWidgetEditCard extends React.Component {
                             type="text"
                             name="card.meta.link"
                             label="Link"
-                            placeholder="http://myapi.com/{id}"
+                            placeholder="http://myapi.com/{{id}}"
                             value={this.state.link}
                             onChange={link => this.setState({link})}
                         />

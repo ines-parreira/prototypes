@@ -251,11 +251,11 @@ export default class HttpIntegrationDetail extends React.Component {
                         name="http.url"
                         label="URL"
                         title='Example: https://company.com/api'
-                        placeholder="https://company.com/api/users?email={ticket.requester.email}"
+                        placeholder="https://company.com/api/users?email={{ticket.requester.email}}"
                         required
                         help={(
                             <div>
-                                You can use <code>{'{ticket.requester.email}'}</code> to pass the email of the
+                                You can use <code>{'{{ticket.requester.email}}'}</code> to pass the email of the
                                 ticket requester. See
                                 other <a href="http://api.gorgias.io/#/definitions/User" target="_blank">vars</a>.
                             </div>
