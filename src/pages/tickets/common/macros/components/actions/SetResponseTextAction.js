@@ -49,7 +49,7 @@ export default class SetResponseTextAction extends React.Component {
         this.props.updateActionArgs(this.props.index, args.set('body_text', text).set('body_html', html))
     }
 
-    _insertVariable = variable => this._insertText(`{${variable}}`)
+    _insertVariable = variable => this._insertText(`{{${variable}}}`)
 
     _renderInsertVariable = () => {
         const {hasIntegrationOfTypes} = this.props
