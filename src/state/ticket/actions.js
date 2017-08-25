@@ -469,8 +469,6 @@ export function clearTicket() {
 
         const shouldDisplayHistoryOnNextPage = state.ticket.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
 
-        dispatch(setMacrosVisible(true))
-
         dispatch({
             type: types.CLEAR_TICKET,
             shouldDisplayHistoryOnNextPage,
