@@ -4,7 +4,7 @@ import {UncontrolledTooltip} from 'reactstrap'
 import _sample from 'lodash/sample'
 
 import shortcutManager from '../../../../../services/shortcutManager'
-import keymap from '../../../../common/utils/keymap'
+import keymap from '../../../../../config/shortcuts'
 
 import * as currentUserActions from '../../../../../state/currentUser/actions'
 
@@ -15,9 +15,13 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 const TIPS = [
-    <span>Press <kbd>Ctrl + K</kbd> to go to next ticket</span>,
-    <span>Press <kbd>Ctrl + J</kbd> to go to previous ticket</span>,
-    <span>Press <kbd>Ctrl + E</kbd> to close the ticket</span>,
+    <span>Press <kbd>→</kbd> (right arrow) to go to next ticket</span>,
+    <span>Press <kbd>←</kbd> (left arrow) to go to previous ticket</span>,
+    <span>Press <kbd>c</kbd> to close the ticket</span>,
+    <span>Press <kbd>o</kbd> to open the ticket</span>,
+    <span>Press <kbd>#</kbd> to delete the ticket</span>,
+    <span>Press <kbd>r</kbd> to reply to the ticket</span>,
+    <span>Press <kbd>m</kbd> to display macros</span>,
     'You can add attachments to macros',
     'Insert order info as variables in macros',
 ]
@@ -82,7 +86,7 @@ export default class TicketSubmitButtons extends React.Component {
                         className="mr-2"
                         color="primary"
                         disabled={disabled}
-                        tabIndex="4"
+                        tabIndex="5"
                         skip={hasTitle || isUpdating}
                         confirm={() => this.submit()}
                         content={titleConfirmation}
@@ -104,7 +108,7 @@ export default class TicketSubmitButtons extends React.Component {
                         color="primary"
                         outline
                         disabled={disabled}
-                        tabIndex="5"
+                        tabIndex="6"
                         skip={hasTitle || isUpdating}
                         confirm={() => this.submit('closed', true)}
                         content={titleConfirmation}

@@ -1,5 +1,4 @@
 import React from 'react'
-import InputField from './InputField'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
@@ -8,8 +7,10 @@ import Editor, {composeDecorators} from 'draft-js-plugins-editor'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
+
 import createToolbarPlugin from '../draftjs/plugins/toolbar'
 
+import InputField from './InputField'
 import {convertToHTML, convertFromHTML} from '../../../utils'
 
 export default class RichField extends InputField {

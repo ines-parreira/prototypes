@@ -7,6 +7,7 @@ import {Button, UncontrolledTooltip} from 'reactstrap'
 
 import {areSourcesReady} from './utils'
 import {isCurrentlyOnTicket} from '../../../../utils'
+import shortcutManager from '../../../../services/shortcutManager'
 
 import * as infobarActions from '../../../../state/infobar/actions'
 import * as usersActions from '../../../../state/users/actions'
@@ -451,6 +452,12 @@ export default class Infobar extends React.Component {
         )
     }
 
+    _onSearchKeyDown = (e) => {
+        if (e.key === 'Escape') {
+            shortcutManager.triggerAction('TicketDetailContainer', 'BLUR_EVERYTHING')
+        }
+    }
+
     render() {
         const {
             widgets,
@@ -471,9 +478,11 @@ export default class Infobar extends React.Component {
                 <div className="infobar-content">
                     <div className="infobar-search-wrapper d-flex align-items-center justify-content-between">
                         <Search
+                            tabIndex="10"
                             placeholder="Search for users by email, order number, etc."
                             bindKey
                             onChange={this._onSearch}
+                            onKeyDown={this._onSearchKeyDown}
                             style={{maxWidth: 'none'}}
                             ref={(search) => {
                                 this.search = search

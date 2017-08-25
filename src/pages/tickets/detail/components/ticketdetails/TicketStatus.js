@@ -31,7 +31,7 @@ export default class TicketStatus extends React.Component {
                     target="change-status-button"
                     delay={0}
                 >
-                    {toClose ? 'Close (Ctrl + E)' : 'Reopen'}
+                    {toClose ? 'Close (press C)' : 'Reopen (press O)'}
                 </UncontrolledTooltip>
             </div>
         )

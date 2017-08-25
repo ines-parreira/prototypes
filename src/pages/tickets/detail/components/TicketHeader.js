@@ -46,6 +46,10 @@ export default class TicketHeader extends React.Component {
         this._bindKeys()
     }
 
+    componentWillUnmount() {
+        shortcutManager.unbind('TicketDetailContainer')
+    }
+
     _toggleStatus = (status) => {
         const newStatus = status === 'closed' ? 'open' : 'closed'
         return this._setStatus(newStatus)
@@ -68,12 +72,12 @@ export default class TicketHeader extends React.Component {
         })
     }
 
-    _toggleTrashConfirmation = () => {
-        this.setState({askTrashConfirmation: !this.state.askTrashConfirmation})
+    _toggleTrashConfirmation = (state = !this.state.askTrashConfirmation) => {
+        this.setState({askTrashConfirmation: state})
     }
 
     _trashTicket = () => {
-        this._toggleTrashConfirmation()
+        this._toggleTrashConfirmation(false)
         return this.props.setTrashed(moment.utc(), () => {
             this._goToNextUrl()
         })
@@ -93,10 +97,20 @@ export default class TicketHeader extends React.Component {
     }
 
     _bindKeys() {
-        shortcutManager.bind('TicketHeader', {
+        shortcutManager.bind('TicketDetailContainer', {
             CLOSE_TICKET: {
                 action: () => {
                     this._setStatus('closed')
+                }
+            },
+            OPEN_TICKET: {
+                action: () => {
+                    this._setStatus('open')
+                }
+            },
+            DELETE_TICKET: {
+                action: () => {
+                    this._trashTicket()
                 }
             },
         })
@@ -158,7 +172,7 @@ export default class TicketHeader extends React.Component {
                                         ) : (
                                             <DropdownItem
                                                 type="button"
-                                                onClick={this._toggleTrashConfirmation}
+                                                onClick={() => this._toggleTrashConfirmation()}
                                             >
                                                 <div className="text-danger">
                                                     Delete
@@ -167,7 +181,7 @@ export default class TicketHeader extends React.Component {
                                                     placement="bottom"
                                                     isOpen={this.state.askTrashConfirmation}
                                                     target="ticket-actions-button"
-                                                    toggle={this._toggleTrashConfirmation}
+                                                    toggle={() => this._toggleTrashConfirmation()}
                                                 >
                                                     <PopoverTitle>Are you sure?</PopoverTitle>
                                                     <PopoverContent>

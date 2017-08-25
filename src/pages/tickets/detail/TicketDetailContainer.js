@@ -179,26 +179,9 @@ export default class TicketDetailContainer extends React.Component {
     }
 
     _bindKeys() {
-        // Have to bind these here so they capture at the correct level
-        const macrosVisible = () => this.props.macros.get('visible')
         const modalVisible = () => this.props.macros.get('isModalOpen')
 
         shortcutManager.bind('TicketDetailContainer', {
-            SHOW_MACROS: {
-                action: (e) => {
-                    if (!macrosVisible() && !modalVisible()) {
-                        e.preventDefault()
-                        this.props.actions.macro.setMacrosVisible(true)
-                    }
-                }
-            },
-            HIDE_MACROS: {
-                action: () => {
-                    if (macrosVisible() && !modalVisible()) {
-                        this.props.actions.macro.setMacrosVisible(false)
-                    }
-                }
-            },
             GO_BACK: {
                 action: () => {
                     if (!modalVisible()) {

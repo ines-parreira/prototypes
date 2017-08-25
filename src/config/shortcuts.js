@@ -19,7 +19,7 @@ export default {
         description: 'Search',
         actions: {
             FOCUS_SEARCH: {
-                key: 'g s',
+                key: 's',
                 description: 'Focus the search field.'
             }
         }
@@ -37,18 +37,18 @@ export default {
         description: 'Ticket navigation',
         actions: {
             SHOW_MACROS: {
-                key: 'ctrl+m',
+                key: 'm',
                 description: 'Show available macros for ticket.'
             },
-            HIDE_MACROS: {
+            BLUR_EVERYTHING: { // blurs every inputs in the page
                 key: 'escape'
             },
-            GO_BACK: { // remember to change this shortcut in TicketReplyEditor.js:_keyBindingFn too
-                key: 'ctrl+j',
+            GO_BACK: {
+                key: 'left',
                 description: 'Go to previous ticket.'
             },
-            GO_FORWARD: { // remember to change this shortcut in TicketReplyEditor.js:_keyBindingFn too
-                key: 'ctrl+k',
+            GO_FORWARD: {
+                key: 'right',
                 description: 'Go to next ticket.'
             },
             SUBMIT_TICKET: {
@@ -58,16 +58,23 @@ export default {
             SUBMIT_CLOSE_TICKET: {
                 key: 'mod+shift+enter',
                 description: 'Send message and close the ticket.'
-            }
-        }
-    },
-    TicketHeader: {
-        description: 'Ticket status',
-        actions: {
-            CLOSE_TICKET: { // remember to change this shortcut in TicketReplyEditor.js:_keyBindingFn too
-                key: 'ctrl+e',
+            },
+            FOCUS_REPLY_AREA: {
+                key: 'r',
+                description: 'Focus on reply area.'
+            },
+            CLOSE_TICKET: {
+                key: 'c',
                 description: 'Close the ticket.'
             },
+            OPEN_TICKET: {
+                key: 'o',
+                description: 'Open the ticket.'
+            },
+            DELETE_TICKET: {
+                key: '#',
+                description: 'Delete the ticket (send to trash).'
+            },
         }
-    }
+    },
 }

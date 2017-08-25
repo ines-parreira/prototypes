@@ -70,7 +70,6 @@ class ReceiversSelectField extends React.Component {
                 allowCreate={sourceType === 'email'}
                 allowCreateConstraint={isEmail}
                 placeholder={placeholder}
-                tabIndex="2"
             />
         )
     }

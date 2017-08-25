@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import ReactDOM from 'react-dom'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
@@ -7,6 +8,7 @@ import {Input} from 'reactstrap'
 import TicketReply from './TicketReply'
 import TicketMacros from './TicketMacros'
 import {onlySignature} from '../../../../../state/newMessage/responseUtils'
+import shortcutManager from '../../../../../services/shortcutManager'
 
 import * as search from '../../../../../state/macro/search'
 import * as ticketActions from '../../../../../state/ticket/actions'
@@ -32,6 +34,7 @@ export class TicketReplyArea extends React.Component {
     }
 
     componentDidMount() {
+        this._bindKeys()
         search.populate(this.props.macros.get('items'))
 
         if (this.props.newMessage.getIn(CONTENT_STATE_PATH) === null) {
@@ -84,6 +87,40 @@ export class TicketReplyArea extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        shortcutManager.unbind('TicketDetailContainer')
+    }
+
+    _bindKeys() {
+        const modalVisible = () => this.props.macros.get('isModalOpen')
+
+        shortcutManager.bind('TicketDetailContainer', {
+            SHOW_MACROS: {
+                action: (e) => {
+                    if (!modalVisible()) {
+                        e.preventDefault()
+                        this.props.actions.macro.setMacrosVisible(true)
+
+                        if (this.macroInput) {
+                            ReactDOM.findDOMNode(this.macroInput).focus()
+                        }
+                    }
+                }
+            },
+            BLUR_EVERYTHING: {
+                action: () => {
+                    if (!modalVisible()) {
+                        this.props.actions.macro.setMacrosVisible(false)
+                    }
+
+                    if ('activeElement' in document) {
+                        document.activeElement.blur()
+                    }
+                }
+            },
+        })
+    }
+
     _applyMacro = (macro) => {
         this.props.applyMacro(macro, this.props.ticket.get('id'))
     }
@@ -125,6 +162,14 @@ export class TicketReplyArea extends React.Component {
         const macrosIds = this._getMacrosIds()
         const indexCurrentMacro = macrosIds.indexOf(this.state.selectedMacroId)
 
+        if (e.key === 'Escape' || e.key === 'Tab') {
+            shortcutManager.triggerAction('TicketDetailContainer', 'BLUR_EVERYTHING')
+            // wait next React tick before focusing the reply area so React has rendered components already
+            setTimeout(() => {
+                shortcutManager.triggerAction('TicketDetailContainer', 'FOCUS_REPLY_AREA')
+            }, 1)
+        }
+
         if (e.key === 'ArrowDown') {
             if (~indexCurrentMacro && indexCurrentMacro < macrosIds.size - 1) {
                 e.preventDefault()
@@ -151,8 +196,6 @@ export class TicketReplyArea extends React.Component {
     render = () => {
         const macros = this.props.macros.set('items', this._getMacros())
 
-        // don't steal focus in New Ticket
-        const isNewTicket = !this.props.ticket.get('id')
         const macrosVisible = macros.get('visible')
 
         return (
@@ -163,13 +206,12 @@ export class TicketReplyArea extends React.Component {
             >
                 <div className="TicketReplyArea-search">
                     <Input
+                        ref={macroInput => this.macroInput = macroInput}
                         tabIndex="3"
-                        onFocus={() => this._setMacrosVisible(true)}
                         onChange={(e) => this._handleSearch(e.target.value)}
                         onKeyDown={this._handleSearchKeyDown}
-                        className="shortcuts-enable"
+                        onFocus={() => this._setMacrosVisible(true)}
                         placeholder="Search macros by name, tags or body..."
-                        autoFocus={macrosVisible && !isNewTicket}
                     />
                 </div>
 
@@ -192,7 +234,6 @@ export class TicketReplyArea extends React.Component {
                         ticket={this.props.ticket}
                         appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
                         users={this.props.users}
-                        autoFocus={!macrosVisible}
                     />
                 </div>
 

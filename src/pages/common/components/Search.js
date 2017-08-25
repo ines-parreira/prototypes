@@ -39,9 +39,9 @@ export default class Search extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const shouldSetValue = !this.isInitialized || (
-                nextProps.location &&
-                this.props.location !== nextProps.location
-            )
+            nextProps.location &&
+            this.props.location !== nextProps.location
+        )
 
         if (shouldSetValue) {
             this.setState({search: ''})
@@ -85,11 +85,22 @@ export default class Search extends React.Component {
     }
 
     render() {
-        const {disabled, style} = this.props
+        const {
+            style,
+            className,
+            onChange, // eslint-disable-line
+            params, // eslint-disable-line
+            forcedQuery, // eslint-disable-line
+            shouldResetInput, // eslint-disable-line
+            bindKey, // eslint-disable-line
+            searchDebounceTime, // eslint-disable-line
+            location, // eslint-disable-line
+            ...rest,
+        } = this.props
 
         return (
             <div
-                className={classnames(css.component, this.props.className)}
+                className={classnames(css.component, className)}
                 style={style}
             >
                 <InputGroup>
@@ -97,12 +108,10 @@ export default class Search extends React.Component {
                         ref="searchInput"
                         type="text"
                         className={css.input}
-                        placeholder={this.props.placeholder}
                         value={this.state.search}
                         onChange={e => this._handleChange(e.target.value)}
-                        autoFocus={this.props.autofocus}
-                        disabled={disabled}
                         style={{zIndex: 1}} // override the zIndex 2 of Bootstrap .form-control class
+                        {...rest}
                     />
                     <InputGroupAddon className="hidden-sm-down">
                         <i className="fa fa-fw fa-search" />
@@ -122,7 +131,6 @@ Search.propTypes = {
 
     className: PropTypes.string,
     placeholder: PropTypes.string,
-    autofocus: PropTypes.bool,
     bindKey: PropTypes.bool,
     searchDebounceTime: PropTypes.number,
 

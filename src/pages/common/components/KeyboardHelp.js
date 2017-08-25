@@ -4,7 +4,7 @@ import {Badge} from 'reactstrap'
 import Modal from '../components/Modal'
 
 import shortcutManager from '../../../services/shortcutManager'
-import keymap from '../utils/keymap'
+import keymap from '../../../config/shortcuts'
 
 export default class KeyboardHelp extends React.Component {
     state = {

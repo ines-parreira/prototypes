@@ -4,21 +4,19 @@ import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 
-import shortcutManager from '../../../../../services/shortcutManager'
-
-import {getDefaultKeyBinding, KeyBindingUtil, EditorState, ContentState} from 'draft-js'
+import {EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
 
+import shortcutManager from '../../../../../services/shortcutManager'
 import RichField from '../../../../common/forms/RichField'
 import {isRichType, acceptsOnlyImages} from '../../../../../config/ticket'
 
+import * as macroActions from '../../../../../state/macro/actions'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {notify} from '../../../../../state/notifications/actions'
 
 const dndPlugin = createDndPlugin()
-
-const {isCtrlKeyCommand} = KeyBindingUtil
 
 // Those are the source type which can send either text or attachment, but not both; they also cannot send more
 // than one attachment at a time
@@ -41,6 +39,10 @@ class TicketReplyEditor extends React.Component {
         this._updateEditorState(this._getEditorStateFromReducer(this.props))
     }
 
+    componentDidMount() {
+        this._bindKeys()
+    }
+
     componentWillReceiveProps(nextProps) {
         const forceUpdate = nextProps.newMessage.getIn(['state', 'forceUpdate'])
 
@@ -49,14 +51,27 @@ class TicketReplyEditor extends React.Component {
                 this._updateEditorState(this._getEditorStateFromReducer(nextProps))
             }, 1)
         }
+    }
 
-        if (!this.props.autoFocus && nextProps.autoFocus) {
-            setTimeout(() => {
-                if (this.richArea) {
-                    this.richArea._focusEditor()
+    componentWillUnmount() {
+        shortcutManager.unbind('TicketDetailContainer')
+    }
+
+    _bindKeys() {
+        shortcutManager.bind('TicketDetailContainer', {
+            FOCUS_REPLY_AREA: {
+                action: (e) => {
+                    if (e && e.preventDefault) { // no incoming event if manually triggered
+                        e.preventDefault()
+                    }
+
+                    if (this.richArea) {
+                        this.props.setMacrosVisible(false)
+                        this.richArea._focusEditor()
+                    }
                 }
-            }, 1)
-        }
+            },
+        })
     }
 
     _getEditorStateFromReducer = (props) => {
@@ -75,12 +90,6 @@ class TicketReplyEditor extends React.Component {
         } else {
             // empty editor state (triggered after message is sent, textarea needs to be emptied)
             editorState = EditorState.push(editorState, ContentState.createFromText(''))
-
-            // This is required because otherwise the cursor has an undefined state for an empty content
-            // See: https://github.com/facebook/draft-js/issues/410
-            if (this.props.autoFocus) {
-                editorState = EditorState.moveFocusToEnd(editorState)
-            }
         }
 
         if (selectionState) {
@@ -164,7 +173,7 @@ class TicketReplyEditor extends React.Component {
             return
         }
 
-        this.richArea._setEditorState(editorState)
+        this.richArea._setEditorState(editorState, false)
     }
 
     _updateReducer = () => {
@@ -176,44 +185,8 @@ class TicketReplyEditor extends React.Component {
         _updateMessageText(this.props, editorState)
     }
 
-    // remember to change these shortcuts in keymap.js too
-    _keyBindingFn = (e) => {
-        if (e.key === 'k' && isCtrlKeyCommand(e)) {
-            return 'next-ticket'
-        }
-
-        if (e.key === 'j' && isCtrlKeyCommand(e)) {
-            return 'previous-ticket'
-        }
-
-        if (e.key === 'e' && isCtrlKeyCommand(e)) {
-            return 'close-ticket'
-        }
-
-        return getDefaultKeyBinding(e)
-    }
-
-    // remember to change these shortcuts in keymap.js too
-    _handleKeyCommand = (command) => {
-        if (command === 'next-ticket') {
-            const key = shortcutManager.getActionConfig('TicketDetailContainer', 'GO_FORWARD').key
-            shortcutManager.trigger(key)
-            return 'handled'
-        }
-
-        if (command === 'previous-ticket') {
-            const key = shortcutManager.getActionConfig('TicketDetailContainer', 'GO_BACK').key
-            shortcutManager.trigger(key)
-            return 'handled'
-        }
-
-        if (command === 'close-ticket') {
-            const key = shortcutManager.getActionConfig('TicketHeader', 'CLOSE_TICKET').key
-            shortcutManager.trigger(key)
-            return 'handled'
-        }
-
-        return 'not-handled'
+    _handleOnEscape = () => {
+        shortcutManager.triggerAction('TicketDetailContainer', 'BLUR_EVERYTHING')
     }
 
     render() {
@@ -291,6 +264,7 @@ class TicketReplyEditor extends React.Component {
                     }}
                     onChange={this._updateReducer}
                     handleDroppedFiles={this._handleDroppedFiles}
+                    onEscape={this._handleOnEscape}
                     tabIndex="4"
                     spellCheck
                     canDropFiles
@@ -298,8 +272,6 @@ class TicketReplyEditor extends React.Component {
                     toolbarProps={toolbarProps}
                     alertMode={cantWriteTextBecauseOfAttachments && 'warning'}
                     alertText={alertText}
-                    keyBindingFn={this._keyBindingFn}
-                    handleKeyCommand={this._handleKeyCommand}
                 />
             </div>
         )
@@ -313,8 +285,8 @@ TicketReplyEditor.propTypes = {
     ticket: PropTypes.object.isRequired,
     newMessageType: PropTypes.string.isRequired,
     newMessage: PropTypes.object.isRequired,
-    autoFocus: PropTypes.bool.isRequired,
-    notify: PropTypes.func.isRequired
+    notify: PropTypes.func.isRequired,
+    setMacrosVisible: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -327,7 +299,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
     addAttachments: newMessageActions.addAttachments,
     setResponseText: newMessageActions.setResponseText,
-    notify
+    notify,
+    setMacrosVisible: macroActions.setMacrosVisible,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyEditor)

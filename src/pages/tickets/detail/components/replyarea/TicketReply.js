@@ -21,7 +21,6 @@ import {getActionTemplate} from '../../../../../utils'
 })
 export default class TicketReply extends React.Component {
     static propTypes = {
-        autoFocus: PropTypes.bool.isRequired,
         actions: PropTypes.object.isRequired,
         deleteAttachment: PropTypes.func.isRequired,
         className: PropTypes.string,
@@ -76,7 +75,7 @@ export default class TicketReply extends React.Component {
     }
 
     render() {
-        const {ticket, isNewMessagePublic, actions, autoFocus} = this.props
+        const {ticket, isNewMessagePublic, actions} = this.props
 
         const className = classNames('TicketReply', this.props.className, {
             internal: !isNewMessagePublic,
@@ -88,7 +87,6 @@ export default class TicketReply extends React.Component {
                     actions={actions}
                     ticket={ticket}
                     ref="editor"
-                    autoFocus={autoFocus}
                 />
                 {this._renderAttachments()}
                 {this._renderActions()}

@@ -1,9 +1,9 @@
-import Mousetrap from 'mousetrap'
-import * as mousetrap from 'mousetrap'
+import Mousetrap, * as mousetrap from 'mousetrap'
 import _merge from 'lodash/merge'
 import _clone from 'lodash/clone'
 import _get from 'lodash/get'
-import keymap from '../pages/common/utils/keymap'
+
+import keymap from '../config/shortcuts'
 import {getModifier, isEditable, closest} from '../utils'
 
 class ShortcutManager {
@@ -41,8 +41,14 @@ class ShortcutManager {
         })
     }
 
-    getActionConfig(component = 'global', actionName) {
-        return _get(keymap, [component, 'actions', actionName], {})
+    triggerAction(component = 'global', actionName) {
+        const config = _get(keymap, [component, 'actions', actionName], {})
+
+        if (!config) {
+            return
+        }
+
+        return this.trigger(config.key)
     }
 
     trigger(key) {

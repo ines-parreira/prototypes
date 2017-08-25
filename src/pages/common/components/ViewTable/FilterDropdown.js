@@ -87,7 +87,7 @@ class FilterDropdown extends React.Component {
                 className="dropdown-item-input"
             >
                 <Search
-                    autofocus
+                    autoFocus
                     onChange={this.onSearch}
                     searchDebounceTime={300}
                 />
