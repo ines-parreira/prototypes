@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import {Card, CardBlock} from 'reactstrap'
+import {templateRegex} from '../../../utils/template'
 
 import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
@@ -11,13 +12,12 @@ import Errors from '../Errors'
 import {isEmailList, findProperty} from '../../../../../utils'
 
 export function validateEmailList(value, schemas) {
-    const reAstVar = /{([\w\.]+)}/g
     let emailList = value
 
     // verify that all template variables are email addresses
     // if yes, we replace variables with valid email addresses to pass the validation
-    if (reAstVar.test(value)) {
-        emailList = emailList.replace(reAstVar, (match, path) => {
+    if (templateRegex.test(value)) {
+        emailList = emailList.replace(templateRegex, (match, path) => {
             const prop = findProperty(path, schemas, true)
             if (prop && prop.format === 'email') {
                 return 'placeholder@gorgias.io'

@@ -14,13 +14,13 @@ describe('components utils : template', () => {
         })
 
         it('interpolates correctly', () => {
-            expect(renderTemplate('Hello {something}', {
+            expect(renderTemplate('Hello {{something}}', {
                 something: 'world'
             })).toBe('Hello world')
         })
 
         it('interpolates nested object', () => {
-            expect(renderTemplate('Hello {somebody.name}, how about a nice {something.name}?', {
+            expect(renderTemplate('Hello {{somebody.name}}, how about a nice {{something.name}}?', {
                 somebody: {
                     name: 'Michael'
                 },
@@ -32,7 +32,7 @@ describe('components utils : template', () => {
         })
 
         it('interpolates nested nested object', () => {
-            expect(renderTemplate('Hello {somebody.bestFriend.name}', {
+            expect(renderTemplate('Hello {{somebody.bestFriend.name}}', {
                 somebody: {
                     bestFriend: {
                         name: 'Michael'
@@ -42,7 +42,7 @@ describe('components utils : template', () => {
         })
 
         it('return passed text without templates if interpolation fails', () => {
-            const text = 'Hello {somebody.bestFriend.name}'
+            const text = 'Hello {{somebody.bestFriend.name}}'
             const result = 'Hello '
 
             expect(renderTemplate(text, {
@@ -55,7 +55,7 @@ describe('components utils : template', () => {
         })
 
         it('interpolates available variables and ignores missing ones', () => {
-            expect(renderTemplate('Hello {somebody.name}, how about a nice {something.name}?', {
+            expect(renderTemplate('Hello {{somebody.name}}, how about a nice {{something.name}}?', {
                 somebody: {
                     name: 'Michael'
                 },

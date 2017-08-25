@@ -79,10 +79,10 @@ describe('DraftJS display entities', () => {
 
     it('variable entity in text', () => {
         const composite = utils.getCompositeDecorator(variableDecorator)
-        const text = 'variable {current_user.name} and {ticket.requester.email}'
+        const text = 'variable {{current_user.name}} and {{ticket.requester.email}}'
         let editorState = utils.editorStateFromHtml(text)
         editorState = attachImmutableEntitiesToVariables(editorState)
-        const positions = [{start: 9, length: 19}, {start: 33, length: 24}]
+        const positions = [{start: 9, length: 21}, {start: 35, length: 26}]
 
         const content = editorState.getCurrentContent().getBlockMap().first()
         const decorations = composite.getDecorations(content).toArray()

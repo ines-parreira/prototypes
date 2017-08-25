@@ -9,11 +9,11 @@ describe('Action', () => {
             const valid = [
                 'email@example.com',
                 'email@example.com,',
-                '{ticket.sender.email}',
-                '{ticket.receiver.email},',
+                '{{ticket.sender.email}}',
+                '{{ticket.receiver.email}},',
                 'email@example.com, email2@example.com,',
-                'email@example.com, {ticket.receiver.email}, email@example.com',
-                '{ticket.assignee_user.email}, {ticket.receiver.email}, email2@example.com,'
+                'email@example.com, {{ticket.receiver.email}}, email@example.com',
+                '{{ticket.assignee_user.email}}, {{ticket.receiver.email}}, email2@example.com,'
             ]
             valid.forEach(input => {
                 expect(validateEmailList(input, schemas)).toBeFalsy()
@@ -23,10 +23,10 @@ describe('Action', () => {
         it('should return errors and not validate email list', () => {
             const invalid = [
                 'emailexample.com',
-                '{ticket.sender.name}',
-                '{ticket.tags.name},',
-                'email@example.com, {ticket.created_datetime}, email2@example.com',
-                '{message.from_agent}, {ticket.receiver.email}, email2@example.com,'
+                '{{ticket.sender.name}}',
+                '{{ticket.tags.name}},',
+                'email@example.com, {{ticket.created_datetime}}, email2@example.com',
+                '{{message.from_agent}}, {{ticket.receiver.email}}, email2@example.com,'
             ]
             invalid.forEach(input => {
                 expect(validateEmailList(input, schemas)).toBeTruthy()
