@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketDetailContainer component should render container for new ticket 1`] = `
+<SideEffect(DocumentTitle)
+  title="New ticket"
+>
+  <div
+    className="TicketDetailContainer"
+  >
+    <Connect(TicketView)
+      actions={
+        Object {
+          "macro": Object {
+            "closeModal": [Function],
+            "createMacro": [Function],
+            "deleteMacro": [Function],
+            "fetchMacros": [Function],
+            "openModal": [Function],
+            "setMacrosVisible": [Function],
+            "updateMacro": [Function],
+          },
+          "newMessage": Object {
+            "resetReceiversAndSender": [Function],
+            "setReceivers": [Function],
+            "submitTicket": [Function],
+            "submitTicketMessage": [Function],
+          },
+          "settings": Object {
+            "fetchSettings": [Function],
+          },
+          "tag": Object {
+            "addTags": [Function],
+            "bulkDelete": [Function],
+            "cancel": [Function],
+            "create": [Function],
+            "edit": [Function],
+            "fail": [Function],
+            "fetchTags": [Function],
+            "merge": [Function],
+            "remove": [Function],
+            "save": [Function],
+            "select": [Function],
+            "selectAll": [Function],
+            "setPage": [Function],
+          },
+          "ticket": Object {
+            "clearTicket": [Function],
+            "fetchTicket": [Function],
+            "setRequester": [Function],
+          },
+          "user": Object {
+            "fetchUser": [Function],
+            "fetchUsers": [Function],
+          },
+          "views": Object {
+            "addFieldFilter": [Function],
+            "bulkApplyMacro": [Function],
+            "bulkDelete": [Function],
+            "bulkUpdate": [Function],
+            "deleteView": [Function],
+            "deleteViewSuccess": [Function],
+            "fetchPage": [Function],
+            "fetchViews": [Function],
+            "fieldEnumSearch": [Function],
+            "handleViewsCount": [Function],
+            "removeFieldFilter": [Function],
+            "resetView": [Function],
+            "setFieldVisibility": [Function],
+            "setOrderDirection": [Function],
+            "setPage": [Function],
+            "setViewActive": [Function],
+            "submitView": [Function],
+            "toggleSelection": [Function],
+            "updateFieldFilter": [Function],
+            "updateFieldFilterOperator": [Function],
+            "updateView": [Function],
+          },
+        }
+      }
+      computeNextUrl={[Function]}
+      hideTicket={[Function]}
+      isTicketHidden={false}
+      setStatus={[Function]}
+      submit={[Function]}
+      view={
+        Immutable.Map {
+        }
+      }
+    />
+  </div>
+</SideEffect(DocumentTitle)>
+`;

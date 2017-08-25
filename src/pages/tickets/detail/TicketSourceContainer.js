@@ -3,14 +3,27 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as WidgetsActions from '../../../state/widgets/actions'
 import * as TicketActions from '../../../state/ticket/actions'
+import * as UserActions from '../../../state/users/actions'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
-import {getSources} from '../../../state/widgets/selectors'
+import {getSourcesWithRequester} from '../../../state/widgets/selectors'
 
 class TicketSourceContainer extends React.Component {
     componentWillMount() {
-        const {actions, params} = this.props
+        const {actions, params, location, sources} = this.props
         actions.ticket.fetchTicket(params.ticketId)
+
+        // load requester
+        if (location.query.requester) {
+            const userId = parseInt(location.query.requester)
+            if (
+                params.ticketId === 'new' &&
+                location.query.requester &&
+                sources.getIn(['ticket', 'requester', 'id']) !== userId
+            ) {
+                actions.user.fetchUser(userId)
+            }
+        }
     }
 
     render() {
@@ -19,12 +32,13 @@ class TicketSourceContainer extends React.Component {
             widgets,
             actions,
             sources,
+            params,
         } = this.props
 
         return (
             <SourceWrapper
                 context="ticket"
-                identifier={ticket.get('id', '').toString()}
+                identifier={ticket.get('id', params.ticketId || '').toString()}
                 sources={sources}
                 widgets={widgets}
                 actions={actions}
@@ -34,18 +48,21 @@ class TicketSourceContainer extends React.Component {
 }
 
 TicketSourceContainer.propTypes = {
-    params: PropTypes.object.isRequired,
     ticket: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     sources: PropTypes.object.isRequired,
+
+    // react-router
+    params: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
         ticket: state.ticket,
         widgets: state.widgets,
-        sources: getSources(state),
+        sources: getSourcesWithRequester(state),
     }
 }
 
@@ -53,7 +70,8 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: {
             ticket: bindActionCreators(TicketActions, dispatch),
-            widgets: bindActionCreators(WidgetsActions, dispatch)
+            widgets: bindActionCreators(WidgetsActions, dispatch),
+            user: bindActionCreators(UserActions, dispatch),
         }
     }
 }

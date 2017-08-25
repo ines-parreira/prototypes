@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import {browserHistory} from 'react-router'
+import {browserHistory, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
 import {Button, UncontrolledTooltip} from 'reactstrap'
 
@@ -25,6 +25,7 @@ import Search from '../Search'
 
 import css from './Infobar.less'
 
+@withRouter
 @connect(null, {
     fetchUserHistory: usersActions.fetchUserHistory,
     search: infobarActions.search,
@@ -45,10 +46,12 @@ export default class Infobar extends React.Component {
         user: PropTypes.object.isRequired,
         widgets: PropTypes.object.isRequired,
         setRequester: PropTypes.func.isRequired,
+        // react-router
+        location: PropTypes.object.isRequired,
     }
 
     static defaultProps = {
-        user: fromJS({})
+        user: fromJS({}),
     }
 
     state = {
@@ -139,16 +142,16 @@ export default class Infobar extends React.Component {
     }
 
     _toggleEditionMode = (isEditing) => {
-        const {identifier, context} = this.props
+        const {identifier, context, location} = this.props
 
         if (!identifier) {
             return
         }
 
         if (isEditing) {
-            browserHistory.push(`/app/${context}/${identifier}/edit-widgets`)
+            browserHistory.push(`/app/${context}/${identifier}/edit-widgets${location.search}`)
         } else {
-            browserHistory.push(`/app/${context}/${identifier}`)
+            browserHistory.push(`/app/${context}/${identifier}${location.search}`)
         }
     }
 

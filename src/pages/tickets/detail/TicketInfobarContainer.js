@@ -3,10 +3,11 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Infobar from '../../common/components/infobar/Infobar'
 import {fromJS} from 'immutable'
+import {withRouter} from 'react-router'
 
 import * as WidgetActions from '../../../state/widgets/actions'
 import * as InfobarActions from '../../../state/infobar/actions'
-import {getSources} from '../../../state/widgets/selectors'
+import {getSourcesWithRequester} from '../../../state/widgets/selectors'
 
 class TicketInfobarContainer extends React.Component {
     componentWillMount() {
@@ -19,15 +20,16 @@ class TicketInfobarContainer extends React.Component {
     render() {
         const {
             actions,
-            ticket,
             widgets,
             route,
             infobar,
+            ticket,
             sources,
+            params,
         } = this.props
 
         // the || is used to replace null
-        const user = ticket.get('requester') || fromJS({})
+        const user = sources.getIn(['ticket', 'requester']) || fromJS({})
 
         return (
             <Infobar
@@ -35,7 +37,7 @@ class TicketInfobarContainer extends React.Component {
                 infobar={infobar}
                 sources={sources}
                 isRouteEditingWidgets={!!route.isEditingWidgets}
-                identifier={ticket.get('id', '').toString()}
+                identifier={ticket.get('id', params.ticketId || '').toString()}
                 user={user}
                 widgets={widgets}
                 context="ticket"
@@ -51,6 +53,11 @@ TicketInfobarContainer.propTypes = {
     ticket: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
     sources: PropTypes.object.isRequired,
+
+    // react-router
+    params: PropTypes.shape({
+        ticketId: PropTypes.string,
+    }).isRequired,
 }
 
 function mapStateToProps(state) {
@@ -58,7 +65,7 @@ function mapStateToProps(state) {
         infobar: state.infobar,
         ticket: state.ticket,
         widgets: state.widgets,
-        sources: getSources(state),
+        sources: getSourcesWithRequester(state),
     }
 }
 
@@ -71,4 +78,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketInfobarContainer)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TicketInfobarContainer))

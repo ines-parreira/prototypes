@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Link, browserHistory} from 'react-router'
+import {Link, browserHistory, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
 import {Card, CardBlock} from 'reactstrap'
 
@@ -113,9 +113,9 @@ class SourceWrapper extends React.Component {
     }
 
     _leaveEditionMode = () => {
-        const {actions, context, identifier} = this.props
+        const {actions, context, identifier, location} = this.props
         actions.widgets.stopEditionMode()
-        browserHistory.push(`/app/${context}/${identifier}`)
+        browserHistory.push(`/app/${context}/${identifier}${location.search}`)
     }
 
     render() {
@@ -186,7 +186,10 @@ SourceWrapper.propTypes = {
     sources: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    getIntegrationById: PropTypes.func.isRequired
+    getIntegrationById: PropTypes.func.isRequired,
+
+    // react-router
+    location: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => {
@@ -195,4 +198,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(SourceWrapper)
+export default withRouter(connect(mapStateToProps)(SourceWrapper))

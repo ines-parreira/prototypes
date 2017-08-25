@@ -39,6 +39,13 @@ export const getSources = state => {
     })
 }
 
+export const getSourcesWithRequester = createSelector(
+    [getSources],
+    state => {
+        return !state.getIn(['ticket', 'id']) ? state.setIn(['ticket', 'requester'], state.get('user')) : state
+    }
+)
+
 export const isEditing = createSelector(
     [getWidgetsState],
     state => state.getIn(['_internal', 'isEditing'], false) || false

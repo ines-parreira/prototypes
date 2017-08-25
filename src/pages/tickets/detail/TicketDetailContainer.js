@@ -23,11 +23,13 @@ import * as currentAccountSelectors from '../../../state/currentAccount/selector
 import * as newMessageSelectors from '../../../state/newMessage/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 import * as ticketSelectors from '../../../state/ticket/selectors'
+import * as userSelectors from '../../../state/users/selectors'
 
 @withRouter
 @connect((state) => {
     return {
         activeView: viewsSelectors.getActiveView(state),
+        activeUser: userSelectors.getActiveUser(state),
         currentUser: state.currentUser,
         macros: state.macros,
         pagination: viewsSelectors.getPagination(state),
@@ -48,6 +50,7 @@ import * as ticketSelectors from '../../../state/ticket/selectors'
             ticket: bindActionCreators(TicketActions, dispatch),
             user: bindActionCreators(UserActions, dispatch),
             views: bindActionCreators(ViewsActions, dispatch),
+            newMessage: bindActionCreators(newMessageActions, dispatch),
         },
         submitTicket: bindActionCreators(newMessageActions.submitTicket, dispatch),
         submitTicketMessage: bindActionCreators(newMessageActions.submitTicketMessage, dispatch),
@@ -58,7 +61,7 @@ export default class TicketDetailContainer extends React.Component {
         params: PropTypes.shape({
             view: PropTypes.string,
             page: PropTypes.string,
-            ticketId: PropTypes.string
+            ticketId: PropTypes.string,
         }).isRequired,
         isTicketDirty: PropTypes.bool.isRequired,
         canSendMessage: PropTypes.bool.isRequired,
@@ -74,12 +77,14 @@ export default class TicketDetailContainer extends React.Component {
         tickets: PropTypes.object,
         users: PropTypes.object,
         pagination: ImmutablePropTypes.map.isRequired,
+        activeUser: PropTypes.object,
 
         routing: PropTypes.object,
 
         // React Router
         router: PropTypes.object.isRequired,
-        route: PropTypes.object.isRequired
+        route: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
     }
 
     static defaultProps = {
@@ -109,6 +114,15 @@ export default class TicketDetailContainer extends React.Component {
         this.props.actions.user.fetchUsers(['agent', 'admin'])
         this.props.actions.ticket.clearTicket()
         this._fetchTicketData(this.props.params.ticketId)
+
+        const userId = parseInt(this.props.location.query.requester)
+        if (
+            this.props.params.ticketId === 'new' &&
+            this.props.location.query.requester &&
+            this.props.activeUser.get('id') !== userId
+        ) {
+            this.props.actions.user.fetchUser(userId)
+        }
     }
 
     componentDidMount() {
@@ -149,6 +163,26 @@ export default class TicketDetailContainer extends React.Component {
 
         if (nextProps.params.ticketId !== this.props.params.ticketId) {
             this._showTicket()
+        }
+
+        // set requester and receiver from query
+        // map default channel (email) to address, for the receivers select.
+        const receiver = nextProps.activeUser.set('address', nextProps.activeUser.get('email'))
+        const requester = this.props.ticket.get('requester') || fromJS({})
+        if (
+            nextProps.params.ticketId === 'new' &&
+            nextProps.location.query.requester &&
+            nextProps.activeUser.get('id') === parseInt(nextProps.location.query.requester) &&
+            !requester.equals(receiver)
+        ) {
+            // set requester on ticket
+            // (to show in infobar and be used in macros)
+            this.props.actions.ticket.setRequester(receiver).then(() => {
+                // set in receivers selector
+                return this.props.actions.newMessage.setReceivers({
+                    to: [receiver.toJS()]
+                }, true)
+            })
         }
     }
 

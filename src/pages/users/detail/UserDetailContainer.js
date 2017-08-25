@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Button} from 'reactstrap'
+import {Link} from 'react-router'
 
 import * as UsersActions from '../../../state/users/actions'
 
@@ -96,13 +97,22 @@ class UserDetailContainer extends React.Component {
                 <div className="flex-spaced-row">
                     <h1>{usersHelpers.getDisplayName(activeUser)}</h1>
 
-                    <Button
-                        type="button"
-                        color="success"
-                        onClick={this._openModal}
-                    >
-                        Edit user
-                    </Button>
+                    <div className="pull-right">
+                        <Link
+                            className="btn btn-secondary mr-2"
+                            to={`/app/ticket/new?requester=${activeUser.get('id')}`}
+                        >
+                            Create ticket
+                        </Link>
+
+                        <Button
+                            type="button"
+                            color="success"
+                            onClick={this._openModal}
+                        >
+                            Edit user
+                        </Button>
+                    </div>
                 </div>
 
                 {this._renderTimeline()}

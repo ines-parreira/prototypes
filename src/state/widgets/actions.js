@@ -5,9 +5,10 @@ import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
 import _last from 'lodash/last'
+import _isUndefined from 'lodash/isUndefined'
 import * as integrationsSelectors from './../integrations/selectors'
 
-import {getSources} from '../widgets/selectors'
+import {getSources, getSourcesWithRequester} from '../widgets/selectors'
 
 export function fetchWidgets() {
     return (dispatch) => {
@@ -131,6 +132,15 @@ export function drop(eventType, targetParentTemplatePath = '', key = '', toIndex
             }
         }
 
+        let source = getSources(state)
+        // edit-widgets for new tickets
+        if (
+            source.get('ticket')
+            && _isUndefined(source.getIn(['ticket', 'id']))
+        ) {
+            source = getSourcesWithRequester(state)
+        }
+
         dispatch({
             type: types.DROP,
             eventType,
@@ -138,7 +148,7 @@ export function drop(eventType, targetParentTemplatePath = '', key = '', toIndex
             toIndex,
             fromIndex,
             targetParentTemplatePath,
-            source: getSources(state),
+            source,
             widgetType: type,
             integrationId
         })

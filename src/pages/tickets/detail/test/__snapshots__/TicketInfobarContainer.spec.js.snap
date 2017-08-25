@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketInfobarContainer component should render infobar for new ticket 1`] = `
+<withRouter(Connect(Infobar))
+  actions={
+    Object {
+      "infobar": Object {
+        "executeAction": [Function],
+        "fetchPreviewUser": [Function],
+        "fetchUserPicture": [Function],
+        "handleExecutedAction": [Function],
+        "search": [Function],
+        "similarUser": [Function],
+      },
+      "widgets": Object {
+        "cancelDrag": [Function],
+        "drag": [Function],
+        "drop": [Function],
+        "fetchWidgets": [Function],
+        "generateAndSetWidgets": [Function],
+        "removeEditedWidget": [Function],
+        "resetWidgets": [Function],
+        "selectContext": [Function],
+        "setEditedWidgets": [Function],
+        "setEditionAsDirty": [Function],
+        "startEditionMode": [Function],
+        "startWidgetEdition": [Function],
+        "stopEditionMode": [Function],
+        "stopWidgetEdition": [Function],
+        "submitWidgets": [Function],
+        "updateEditedWidget": [Function],
+      },
+    }
+  }
+  context="ticket"
+  identifier="new"
+  infobar={
+    Immutable.Map {
+    }
+  }
+  isRouteEditingWidgets={false}
+  sources={
+    Immutable.Map {
+      ticket: Immutable.Map {
+        requester: Immutable.Map {
+        },
+      },
+      user: Immutable.Map {
+      },
+    }
+  }
+  user={
+    Immutable.Map {
+    }
+  }
+  widgets={
+    Immutable.Map {
+    }
+  }
+/>
+`;
