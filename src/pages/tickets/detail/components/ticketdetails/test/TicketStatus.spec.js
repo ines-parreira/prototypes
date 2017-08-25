@@ -13,15 +13,6 @@ describe('TicketStatus component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('new ticket', () => {
-        const component = shallow(
-            <TicketStatus
-                currentStatus="new"
-            />
-        )
-        expect(component).toMatchSnapshot()
-    })
-
     it('open ticket', () => {
         const component = shallow(
             <TicketStatus

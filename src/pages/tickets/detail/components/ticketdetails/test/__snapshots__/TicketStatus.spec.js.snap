@@ -26,33 +26,6 @@ exports[`TicketStatus component closed ticket 1`] = `
 </div>
 `;
 
-exports[`TicketStatus component new ticket 1`] = `
-<div
-  className="d-inline-block mr-2"
->
-  <ei
-    className="d-inline-block"
-    color="secondary"
-    id="change-status-button"
-    onClick={[Function]}
-    tag="button"
-    type="button"
-  >
-    <i
-      className="fa fa-fw fa-check mr-1"
-    />
-    Close
-  </ei>
-  <UncontrolledTooltip
-    delay={0}
-    placement="bottom"
-    target="change-status-button"
-  >
-    Close (press C)
-  </UncontrolledTooltip>
-</div>
-`;
-
 exports[`TicketStatus component open ticket 1`] = `
 <div
   className="d-inline-block mr-2"

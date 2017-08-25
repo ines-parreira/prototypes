@@ -99,7 +99,6 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
               filter: Immutable.Map {
                 enum: Immutable.List [
                   "open",
-                  "new",
                   "closed",
                 ],
               },
@@ -197,7 +196,6 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
             filter: Immutable.Map {
               enum: Immutable.List [
                 "open",
-                "new",
                 "closed",
               ],
             },

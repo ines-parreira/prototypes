@@ -15,7 +15,6 @@ import {
     PopoverTitle,
     PopoverContent,
 } from 'reactstrap'
-import _capitalize from 'lodash/capitalize'
 import _debounce from 'lodash/debounce'
 
 import * as viewsActions from '../../../../state/views/actions'
@@ -207,19 +206,13 @@ class TicketListActions extends React.Component {
                         <DropdownItem header>
                             Set status
                         </DropdownItem>
-                        {
-                            ['open', 'new'].map((status) => {
-                                return (
-                                    <DropdownItem
-                                        key={status}
-                                        type="button"
-                                        onClick={() => this._bulkUpdate('status', status)}
-                                    >
-                                        {_capitalize(status)}
-                                    </DropdownItem>
-                                )
-                            })
-                        }
+                        <DropdownItem
+                            key="open"
+                            type="button"
+                            onClick={() => this._bulkUpdate('status', 'open')}
+                        >
+                            Open
+                        </DropdownItem>
                     </DropdownMenu>
                 </UncontrolledButtonDropdown>
                 <ButtonDropdown

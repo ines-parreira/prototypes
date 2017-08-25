@@ -28,7 +28,7 @@ export const initialState = fromJS({
     via: 'helpdesk',
     channel: 'email',
     assignee_user: null,
-    status: 'new',
+    status: 'open',
     spam: false,
     sender: null,
     requester: null,

@@ -143,7 +143,7 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
      * Operating on the syntax tree to delete the binary expression.
      * We assume the statement includes only AND. And the order is
      * enforced like:
-     * if (ticket.status == 'channel' && (ticket.status == 'channel' && ticket.status == 'new'))
+     * if (ticket.status == 'channel' && (ticket.status == 'channel' && ticket.status == 'open'))
      *
      * This assumption will stay true since in UPDATE_LOGICAL_OPERATOR, we force this order.
      */

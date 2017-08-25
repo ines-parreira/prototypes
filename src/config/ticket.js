@@ -7,7 +7,7 @@ import {isForwardedMessage} from '../state/ticket/utils'
 export const DEFAULT_CHANNEL = 'email'
 export const DEFAULT_SOURCE_TYPE = 'email'
 
-export const STATUSES = ['open', 'new', 'closed']
+export const STATUSES = ['open', 'closed']
 export const CHANNELS = ['email', 'phone', 'sms', 'chat', 'twitter', 'facebook', 'facebook-messenger', 'api']
 
 export const SYSTEM_SOURCE_TYPES = ['internal-note', 'system-message']

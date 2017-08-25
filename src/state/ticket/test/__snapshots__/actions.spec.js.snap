@@ -66,7 +66,7 @@ Array [
             latestEventDatetime: null,
             appliedMacro: null,
       },
-      status: "new",
+      status: "open",
       sender: null,
       tags: Immutable.List [
       ],
@@ -113,7 +113,7 @@ Array [
             latestEventDatetime: null,
             appliedMacro: null,
       },
-      status: "new",
+      status: "open",
       sender: null,
       tags: Immutable.List [
       ],
@@ -201,7 +201,7 @@ Object {
         latestEventDatetime: null,
         appliedMacro: null,
     },
-    status: "new",
+    status: "open",
     sender: null,
     tags: Immutable.List [
     ],
@@ -358,7 +358,7 @@ Array [
             latestEventDatetime: null,
             appliedMacro: null,
       },
-      status: "new",
+      status: "open",
       sender: null,
       tags: Immutable.List [
       ],
@@ -422,7 +422,7 @@ Array [
             latestEventDatetime: null,
             appliedMacro: null,
       },
-      status: "new",
+      status: "open",
       sender: null,
       tags: Immutable.List [
       ],

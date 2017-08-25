@@ -98,9 +98,6 @@ export const StatusLabel = ({status, ...rest}) => {
         case 'open':
             color = 'secondary'
             break
-        case 'new':
-            color = 'info'
-            break
         case 'closed':
             color = 'success'
             break

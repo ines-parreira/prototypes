@@ -66,7 +66,7 @@ export const SOURCE_VALUE_PROP = {
     'facebook-post': 'address'
 }
 
-export const TICKET_STATUSES = ['open', 'new', 'closed']
+export const TICKET_STATUSES = ['open', 'closed']
 
 /**
  * Widget related

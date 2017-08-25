@@ -1807,7 +1807,6 @@
                             "widget": "multi-select"
                         },
                         "enum": [
-                            "new",
                             "open",
                             "closed"
                         ],
@@ -1822,7 +1821,7 @@
                     },
                     "type": "string",
                     "description": "Ticket status is used for managing the lifecycle of the ticket",
-                    "default": "new"
+                    "default": "open"
                 },
                 "last_received_message_datetime": {
                     "format": "date-time",
