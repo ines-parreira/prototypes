@@ -2,8 +2,10 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
-import {ContentState} from 'draft-js'
+import {ContentState, EditorState, convertToRaw} from 'draft-js'
 import schemasJSON from '../fixtures/openapi'
+
+import addMention from '../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -513,6 +515,20 @@ describe('global utils', () => {
 
             expect(utils.errorToChildren(error))
                 .toMatch('<li>hello: world</li><li>receiver: Missing data</li><li>receiver: Invalid value</li>')
+        })
+    })
+
+    describe('removeMentions', () => {
+        it('should remove any mention entites from editor state', () => {
+            const html = '<div>Hey @Bob</div>'
+            const text = 'Hey @Bob'
+            const value = {html, text}
+
+            const contentState = ContentState.createFromText(text)
+            const editorState = addMention(EditorState.createWithContent(contentState), fromJS({name: 'Bob', id: 1}), '@', '@', 'SEGMENTED')
+
+            const cleanEditorState = utils.removeMentions(editorState, value)
+            expect(convertToRaw(cleanEditorState.getCurrentContent()).entityMap).toEqual({})
         })
     })
 })

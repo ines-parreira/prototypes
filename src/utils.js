@@ -512,6 +512,13 @@ export function convertToHTML(contentState) {
                 return `<img src="${entity.data.src}" width="${width}px" />`
             }
 
+            if (entity.type === 'mention') {
+                return {
+                    start: '<span class="gorgias-mention">',
+                    end: '</span>'
+                }
+            }
+
             return originalText
         }
     })(contentState), {
@@ -583,6 +590,26 @@ export function insertText(editorState, text) {
     const contentState = editorState.getCurrentContent()
     const modifier = Modifier.replaceText(contentState, selection, text)
     return EditorState.push(editorState, modifier, 'insert-fragment')
+}
+
+/**
+ * Remove mentions from editor state
+ * @param editorState
+ * @param value
+ * @returns {EditorState}
+ */
+export function removeMentions(editorState, value) {
+
+    // use convertFromHTML/fromText to create a new content state w/o mention
+    // because mentions are not present in the html/text of the body
+    let contentState = ContentState.createFromText('')
+    if (value.html) {
+        contentState = convertFromHTML(value.html)
+    } else if (value.text) {
+        contentState = ContentState.createFromText(value.text)
+    }
+
+    return EditorState.push(editorState, contentState)
 }
 
 /**

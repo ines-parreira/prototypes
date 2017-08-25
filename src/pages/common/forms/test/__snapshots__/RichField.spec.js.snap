@@ -29,6 +29,228 @@ exports[`RichField display alert 1`] = `
         >
           alert
         </div>
+        <Decorated(MentionSuggestions)
+          canAddMention={false}
+          onSearchChange={[Function]}
+        />
+      </div>
+      <Decorated(Toolbar) />
+    </div>
+  </div>
+</ml>
+`;
+
+exports[`RichField should render a MentionSuggestions component to the DOM if in internal-note mode 1`] = `
+<ml
+  className=""
+  color=""
+  tag="div"
+>
+  <div
+    className=""
+  >
+    <div
+      className="rich-textarea-wrapper"
+    >
+      <div
+        className="editor-wrapper"
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onDragOver={[Function]}
+        onDrop={[Function]}
+        style={
+          Object {
+            "paddingBottom": "26px",
+          }
+        }
+      >
+        <PluginEditor
+          customStyleMap={Object {}}
+          decorators={Array []}
+          defaultBlockRenderMap={true}
+          defaultKeyBindings={true}
+          editorState={
+            EditorState {
+              "_immutable": Object {
+                "allowUndo": true,
+                "currentContent": Object {
+                  "blockMap": Object {
+                    "123": Object {
+                      "characterList": Array [
+                        Object {
+                          "entity": null,
+                          "style": Array [],
+                        },
+                        Object {
+                          "entity": null,
+                          "style": Array [],
+                        },
+                        Object {
+                          "entity": null,
+                          "style": Array [],
+                        },
+                        Object {
+                          "entity": null,
+                          "style": Array [],
+                        },
+                      ],
+                      "data": Object {},
+                      "depth": 0,
+                      "key": "123",
+                      "text": "html",
+                      "type": "unstyled",
+                    },
+                  },
+                  "selectionAfter": Object {
+                    "anchorKey": "123",
+                    "anchorOffset": 0,
+                    "focusKey": "123",
+                    "focusOffset": 0,
+                    "hasFocus": false,
+                    "isBackward": false,
+                  },
+                  "selectionBefore": Object {
+                    "anchorKey": "123",
+                    "anchorOffset": 0,
+                    "focusKey": "123",
+                    "focusOffset": 0,
+                    "hasFocus": true,
+                    "isBackward": false,
+                  },
+                },
+                "decorator": null,
+                "directionMap": Object {
+                  "123": "LTR",
+                },
+                "forceSelection": true,
+                "inCompositionMode": false,
+                "inlineStyleOverride": null,
+                "lastChangeType": undefined,
+                "nativelyRenderedContent": null,
+                "redoStack": Array [],
+                "selection": Object {
+                  "anchorKey": "123",
+                  "anchorOffset": 0,
+                  "focusKey": "123",
+                  "focusOffset": 0,
+                  "hasFocus": false,
+                  "isBackward": false,
+                },
+                "treeMap": Object {
+                  "123": Array [
+                    Object {
+                      "decoratorKey": null,
+                      "end": 4,
+                      "leaves": Array [
+                        Object {
+                          "end": 4,
+                          "start": 0,
+                        },
+                      ],
+                      "start": 0,
+                    },
+                  ],
+                },
+                "undoStack": Array [
+                  Object {
+                    "blockMap": Object {
+                      "123": Object {
+                        "characterList": Array [],
+                        "data": Object {},
+                        "depth": 0,
+                        "key": "123",
+                        "text": "",
+                        "type": "unstyled",
+                      },
+                    },
+                    "selectionAfter": Object {
+                      "anchorKey": "123",
+                      "anchorOffset": 0,
+                      "focusKey": "123",
+                      "focusOffset": 0,
+                      "hasFocus": false,
+                      "isBackward": false,
+                    },
+                    "selectionBefore": Object {
+                      "anchorKey": "123",
+                      "anchorOffset": 0,
+                      "focusKey": "123",
+                      "focusOffset": 0,
+                      "hasFocus": false,
+                      "isBackward": false,
+                    },
+                  },
+                ],
+              },
+            }
+          }
+          handleDroppedFiles={[Function]}
+          handleKeyCommand={[Function]}
+          onChange={[Function]}
+          plugins={
+            Array [
+              Object {
+                "decorator": [Function],
+                "handleDrop": [Function],
+                "handleDroppedFiles": [Function],
+                "initialize": [Function],
+              },
+              Object {
+                "handleReturn": [Function],
+              },
+              Object {
+                "blockRendererFn": [Function],
+                "decorator": [Function],
+                "initialize": [Function],
+              },
+              Object {
+                "Toolbar": [Function],
+                "blockRendererFn": [Function],
+                "decorators": Array [
+                  Object {
+                    "component": [Function],
+                    "strategy": [Function],
+                  },
+                  Object {
+                    "component": [Function],
+                    "strategy": [Function],
+                  },
+                  Object {
+                    "component": [Function],
+                    "strategy": [Function],
+                  },
+                ],
+                "initialize": [Function],
+                "onChange": [Function],
+              },
+              Object {
+                "MentionSuggestions": [Function],
+                "decorators": Array [
+                  Object {
+                    "component": [Function],
+                    "strategy": [Function],
+                  },
+                  Object {
+                    "component": [Function],
+                    "strategy": [Function],
+                  },
+                ],
+                "getAccessibilityProps": [Function],
+                "handleReturn": [Function],
+                "initialize": [Function],
+                "onChange": [Function],
+                "onDownArrow": [Function],
+                "onEscape": [Function],
+                "onTab": [Function],
+                "onUpArrow": [Function],
+              },
+            ]
+          }
+        />
+        <Decorated(MentionSuggestions)
+          canAddMention={true}
+          onSearchChange={[Function]}
+        />
       </div>
       <Decorated(Toolbar) />
     </div>
@@ -219,8 +441,33 @@ exports[`RichField should render a basic input 1`] = `
                 "initialize": [Function],
                 "onChange": [Function],
               },
+              Object {
+                "MentionSuggestions": [Function],
+                "decorators": Array [
+                  Object {
+                    "component": [Function],
+                    "strategy": [Function],
+                  },
+                  Object {
+                    "component": [Function],
+                    "strategy": [Function],
+                  },
+                ],
+                "getAccessibilityProps": [Function],
+                "handleReturn": [Function],
+                "initialize": [Function],
+                "onChange": [Function],
+                "onDownArrow": [Function],
+                "onEscape": [Function],
+                "onTab": [Function],
+                "onUpArrow": [Function],
+              },
             ]
           }
+        />
+        <Decorated(MentionSuggestions)
+          canAddMention={false}
+          onSearchChange={[Function]}
         />
       </div>
       <Decorated(Toolbar) />

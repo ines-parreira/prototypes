@@ -19,6 +19,8 @@ Immutable.Map {
   },
   newMessage: Immutable.Map {
     channel: "email",
+    mention_ids: Immutable.List [
+    ],
     macros: Immutable.List [
     ],
     body_html: "",

@@ -1,5 +1,6 @@
 import * as types from './constants'
 import {fromJS} from 'immutable'
+import {convertToRaw} from 'draft-js'
 import {convertToHTML} from '../../utils'
 import * as responseUtils from './responseUtils'
 import {
@@ -13,6 +14,7 @@ import * as ticketTypes from '../ticket/constants'
 import _pick from 'lodash/pick'
 import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
+import _forOwn from 'lodash/forOwn'
 
 import {
     getSourceTypeOfResponse,
@@ -36,7 +38,8 @@ export const makeNewMessage = (channel, sourceType) => fromJS({
     body_html: '',
     channel,
     attachments: [],
-    macros: []
+    macros: [],
+    mention_ids: [],
 })
 
 export const initialState = fromJS({
@@ -238,6 +241,23 @@ export default (state = initialState, action) => {
             contentState = context.contentState
             selectionState = context.selectionState
 
+            // get ids of all mentions within any entities in contentState, only if in internal note
+            let ids = fromJS([])
+            const isInternalNote = ticketConfig.canLeaveInternalNote(state.getIn(['newMessage', 'source', 'type']))
+
+            if (contentState && isInternalNote) {
+                const entityMap = convertToRaw(contentState).entityMap
+                _forOwn(entityMap, (entity) => {
+                    if (entity.type === 'mention') {
+                        // don't push duplicate ids
+                        const id = entity.data.mention.get('id')
+                        if (!ids.includes(id)) {
+                            ids = ids.push(id)
+                        }
+                    }
+                })
+            }
+
             const dirty = contentState
                 && contentState.hasText()
                 && !responseUtils.onlySignature(contentState, action.currentUser)
@@ -256,6 +276,7 @@ export default (state = initialState, action) => {
             // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
                 .setIn(['state', 'contentState'], contentState)
                 .setIn(['state', 'selectionState'], selectionState)
+                .setIn(['newMessage', 'mention_ids'], ids)
         }
 
         case types.NEW_MESSAGE_SET_SENDER: {

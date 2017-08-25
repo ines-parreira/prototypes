@@ -221,6 +221,15 @@ export const isRichType = (sourceType) => {
 }
 
 /**
+ * Return true if can leave internal note
+ * @param sourceType
+ * @returns {boolean}
+ */
+export const canLeaveInternalNote = (sourceType) => {
+    return sourceType === 'internal-note'
+}
+
+/**
  * Return true if type supports only images as attachments (no PDF, etc.)
  * @param sourceType
  * @returns {boolean}

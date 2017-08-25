@@ -29,4 +29,15 @@ describe('RichField', () => {
         )
         expect(component).toMatchSnapshot()
     })
+
+    it('should render a MentionSuggestions component to the DOM if in internal-note mode', () => {
+        const component = shallow(
+            <RichField
+                value={{text: 'text', html: 'html'}}
+                onChange={_noop}
+                mentionProps={{canAddMention: true}}
+                />
+        )
+        expect(component).toMatchSnapshot()
+    })
 })

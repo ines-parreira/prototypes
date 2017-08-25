@@ -3,17 +3,21 @@ import classnames from 'classnames'
 import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import {EditorState, ContentState} from 'draft-js'
 import createDndPlugin from 'draft-js-dnd-plugin'
 
 import shortcutManager from '../../../../../services/shortcutManager'
 import RichField from '../../../../common/forms/RichField'
-import {isRichType, acceptsOnlyImages} from '../../../../../config/ticket'
+
+import {isRichType, acceptsOnlyImages, canLeaveInternalNote} from '../../../../../config/ticket'
 
 import * as macroActions from '../../../../../state/macro/actions'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import { getOtherAgents } from '../../../../../state/users/selectors'
+
 import {notify} from '../../../../../state/notifications/actions'
 
 const dndPlugin = createDndPlugin()
@@ -190,16 +194,22 @@ class TicketReplyEditor extends React.Component {
     }
 
     render() {
-        const {newMessage, newMessageType} = this.props
+        const {newMessage, newMessageType, agents} = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
         const newMessageAcceptsOnlyImages = acceptsOnlyImages(newMessageType)
+        const canAddMention = canLeaveInternalNote(newMessageType)
 
         const attachmentInputProps = {}
 
         // if not rich type (like chat or Facebook message), only accept images
         if (newMessageAcceptsOnlyImages) {
             attachmentInputProps.accept = 'image/*'
+        }
+
+        const mentionProps = {
+            canAddMention,
+            suggestions: agents
         }
 
         const toolbarProps = {
@@ -241,6 +251,7 @@ class TicketReplyEditor extends React.Component {
             ],
         }
 
+
         if (!isNewMessageRichType) {
             toolbarProps.displayedActions = ['emoji']
         }
@@ -270,8 +281,11 @@ class TicketReplyEditor extends React.Component {
                     canDropFiles
                     readOnly={newMessage.getIn(['_internal', 'loading', 'submitMessage']) || cantWriteTextBecauseOfAttachments}
                     toolbarProps={toolbarProps}
+                    mentionProps={mentionProps}
                     alertMode={cantWriteTextBecauseOfAttachments && 'warning'}
                     alertText={alertText}
+                    keyBindingFn={this._keyBindingFn}
+                    handleKeyCommand={this._handleKeyCommand}
                 />
             </div>
         )
@@ -287,12 +301,14 @@ TicketReplyEditor.propTypes = {
     newMessage: PropTypes.object.isRequired,
     notify: PropTypes.func.isRequired,
     setMacrosVisible: PropTypes.func.isRequired,
+    agents: ImmutablePropTypes.list.isRequired
 }
 
 function mapStateToProps(state) {
     return {
         newMessageType: newMessageSelectors.getNewMessageType(state),
         newMessage: state.newMessage,
+        agents: getOtherAgents(state)
     }
 }
 

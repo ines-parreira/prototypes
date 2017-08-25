@@ -72,6 +72,13 @@ describe('selectors', () => {
             expect(selectors.getAgents({})).toEqualImmutable(fromJS([]))
         })
 
+        it('getOtherAgents', () => {
+            const expected = fromJS([
+                {id: 1}
+            ])
+            expect(selectors.getOtherAgents(state)).toEqualImmutable(expected)
+        })
+
         it('getAgent', () => {
             expect(selectors.getAgent(1)(state)).toEqualImmutable(state.users.get('agents').first())
             expect(selectors.getAgent('1')(state)).toEqualImmutable(state.users.get('agents').first())

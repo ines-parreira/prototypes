@@ -1,5 +1,7 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
+import {EditorState, ContentState} from 'draft-js'
+import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as types from '../constants'
 
@@ -162,6 +164,62 @@ describe('New message reducer', () => {
         ).toEqualImmutable(
             expected
         )
+    })
+
+    describe('SET_RESPONSE_TEXT action', () => {
+        it('should attach ids of any agent mentioned if in internal-note mode', () => {
+            const editorState = EditorState.push(EditorState.createEmpty(), ContentState.createFromText('@Bob'))
+            const newEditorState = addMention(editorState, fromJS({name: 'Bob', id: 8}), '@', '@', 'SEGMENTED')
+
+            expect(
+                reducer(initialState.mergeDeep({
+                    newMessage: {
+                        source: {
+                            type: 'internal-note'
+                        }
+                    },
+                }), {
+                    type: types.SET_RESPONSE_TEXT,
+                    args: fromJS({contentState: newEditorState.getCurrentContent()})
+                }).getIn(['newMessage', 'mention_ids'])
+            ).toEqual(fromJS([8]))
+        })
+
+        it('should not attach any ids if not in private-mode', () => {
+            const editorState = EditorState.push(EditorState.createEmpty(), ContentState.createFromText('@Bob'))
+            const newEditorState = addMention(editorState, fromJS({name: 'Bob', id: 8}), '@', '@', 'SEGMENTED')
+
+            expect(
+                reducer(initialState.mergeDeep({
+                    newMessage: {
+                        source: {
+                            type: 'facebook-message'
+                        }
+                    },
+                }), {
+                    type: types.SET_RESPONSE_TEXT,
+                    args: fromJS({contentState: newEditorState.getCurrentContent()})
+                }).getIn(['newMessage', 'mention_ids'])
+            ).toEqual(fromJS([]))
+        })
+
+        it('should not attach duplicate ids', () => {
+            const editorState = EditorState.push(EditorState.createEmpty(), ContentState.createFromText('@Bob @Bob'))
+            const newEditorState = addMention(editorState, fromJS({name: 'Bob', id: 8}), '@', '@', 'SEGMENTED')
+
+            expect(
+                reducer(initialState.mergeDeep({
+                    newMessage: {
+                        source: {
+                            type: 'internal-note'
+                        }
+                    },
+                }), {
+                    type: types.SET_RESPONSE_TEXT,
+                    args: fromJS({contentState: newEditorState.getCurrentContent()})
+                }).getIn(['newMessage', 'mention_ids'])
+            ).toEqual(fromJS([8]))
+        })
     })
 
     describe('NEW_MESSAGE_SET_RECEIVERS action', () => {

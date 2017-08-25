@@ -2,6 +2,7 @@ import _take from 'lodash/take'
 import _takeRight from 'lodash/takeRight'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
+import _pickBy from 'lodash/pickBy'
 import {fromJS} from 'immutable'
 import {convertFromHTML} from '../../utils'
 import {isRichType} from '../../config/ticket'
@@ -83,13 +84,34 @@ export const updateCache = (context) => {
     ) {
         // TODO (@xarg): We also need to keep the attachments in the cache
         ticketReplyCache.set(action.ticketId, {
-            contentState: convertToRaw(contentState),
+            contentState: convertToRawWithoutMentions(contentState),
             selectionState
         })
     } else {
         // we're deleting the data from cache so we don't explode the storage
         ticketReplyCache.delete(action.ticketId)
     }
+}
+
+/**
+ * Return a raw content state without any mention entities
+ *
+ * @param contentState
+ * @return {{blocks: Array, entityMap: {}}}
+ */
+export const convertToRawWithoutMentions = (contentState) => {
+    // We don't store mentions in cache because when we fetch the message from cache,
+    // the mention entity would be applied even if the ticket channel is not private
+
+    const rawContent = convertToRaw(contentState)
+    let newRaw = {blocks: [], entityMap: {}}
+
+    newRaw.blocks = rawContent.blocks.slice()
+    newRaw.entityMap = _pickBy(rawContent.entityMap, (val) => {
+        return val.type !== 'mention'
+    })
+
+    return newRaw
 }
 
 /**

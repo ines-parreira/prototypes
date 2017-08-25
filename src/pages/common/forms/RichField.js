@@ -10,8 +10,11 @@ import createResizeablePlugin from 'draft-js-resizeable-plugin'
 
 import createToolbarPlugin from '../draftjs/plugins/toolbar'
 
+import createMentionPlugin, { suggestionsFilter } from '../draftjs/plugins/mentions'
+
 import InputField from './InputField'
-import {convertToHTML, convertFromHTML} from '../../../utils'
+import {convertToHTML, convertFromHTML, removeMentions} from '../../../utils'
+
 
 export default class RichField extends InputField {
     constructor(props) {
@@ -29,11 +32,14 @@ export default class RichField extends InputField {
 
         this.toolbarPlugin = createToolbarPlugin({imageDecorator})
 
+        this.mentionPlugin = createMentionPlugin()
+
         this.plugins = [
             this.dndPlugin,
             this.blockBreakoutPlugin,
             this.resizeablePlugin,
             this.toolbarPlugin,
+            this.mentionPlugin
         ]
 
         let editorState = EditorState.createEmpty()
@@ -43,6 +49,11 @@ export default class RichField extends InputField {
             editorState,
             isDragging: false,
         }
+
+        if (this.props.mentionProps) {
+            this.state.mentionSuggestions = this.props.mentionProps.suggestions
+            this.state.canAddMention = this.props.mentionProps.canAddMention
+        }
     }
 
     componentWillMount() {
@@ -50,6 +61,14 @@ export default class RichField extends InputField {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (this.props.mentionProps && nextProps.mentionProps) {
+            if (this.props.mentionProps.canAddMention && !nextProps.mentionProps.canAddMention) {
+                this.setState({
+                    editorState: removeMentions(this.state.editorState, nextProps.value)
+                })
+            }
+        }
+
         if (!_isEqual(nextProps.value, this.props.value)) {
             this._updateEditorState(nextProps.value)
         }
@@ -140,6 +159,14 @@ export default class RichField extends InputField {
         })
     }
 
+    onSearchChange = ({value}) => {
+        if (this.props.mentionProps) {
+            this.setState({
+                mentionSuggestions: suggestionsFilter(value, this.props.mentionProps.suggestions)
+            })
+        }
+    }
+
     _getField = () => {
         const {
             children, // eslint-disable-line
@@ -157,12 +184,19 @@ export default class RichField extends InputField {
             alertMode,  // eslint-disable-line
             alertText,  // eslint-disable-line
             canDropFiles,
+            mentionProps,
             toolbarProps,
             displayOnly,
             ...rest,
         } = this.props
 
         const {Toolbar} = this.toolbarPlugin
+        const {MentionSuggestions} = this.mentionPlugin
+
+        let canAddMention = false
+        if (mentionProps) {
+            canAddMention = mentionProps.canAddMention
+        }
 
         return (
             <div
@@ -201,9 +235,15 @@ export default class RichField extends InputField {
                                 />
                             )
                     }
+                    <MentionSuggestions
+                        onSearchChange={this.onSearchChange}
+                        suggestions={this.state.mentionSuggestions}
+                        canAddMention={canAddMention}
+                    />
                 </div>
                 <Toolbar {...toolbarProps} />
             </div>
         )
     }
 }
+

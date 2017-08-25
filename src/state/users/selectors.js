@@ -41,6 +41,11 @@ export const getAgents = createSelector(
     state => state.get('agents') || fromJS([])
 )
 
+export const getOtherAgents = createSelector(
+    [getAgents, currentUserSelectors.getCurrentUser],
+    (agents, currentUser) => agents.filter(agent => String(agent.get('id', '')) !== String(currentUser.get('id', '')))
+)
+
 export const getAgent = id => createSelector(
     [getAgents],
     agents => {
