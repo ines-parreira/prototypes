@@ -238,10 +238,6 @@ Array [
 exports[`ticket actions clearTicket 1`] = `
 Array [
   Object {
-    "type": "SET_MACROS_VISIBILITY",
-    "visible": true,
-  },
-  Object {
     "shouldDisplayHistoryOnNextPage": false,
     "type": "CLEAR_TICKET",
   },
