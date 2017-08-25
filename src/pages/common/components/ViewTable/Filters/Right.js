@@ -99,7 +99,7 @@ export default class Right extends React.Component {
         let displayedValue = node.value
 
 
-        if (displayedValue === '{current_user.id}') { // display current user variable
+        if (displayedValue === '{{current_user.id}}') { // display current user variable
             displayedValue = 'Me (current user)'
         } else if (field.get('name') === 'integrations') { // display integration
             const integration = this.props.integrations.find(integration => integration.get('id').toString() === displayedValue.toString())

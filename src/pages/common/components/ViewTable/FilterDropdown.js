@@ -50,7 +50,7 @@ class FilterDropdown extends React.Component {
     }
 
     _onClickMe = () => {
-        this.props.updateFieldFilter('{current_user.id}')
+        this.props.updateFieldFilter('{{current_user.id}}')
     }
 
     // query search from server and save it in state
