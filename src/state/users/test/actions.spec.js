@@ -10,7 +10,7 @@ const mockStore = configureMockStore(middlewares)
 
 jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (message) => () => message),
+        notify: jest.fn(() => (args) => args),
     }
 })
 
@@ -24,97 +24,64 @@ describe('users actions', () => {
     })
 
     it('fetch users', () => {
-        mockServer
-            .onGet('/api/users/')
-            .reply(200, {
-                data: [{id: 1}]
-            })
+        mockServer.onGet('/api/users/').reply(200, {data: [{id: 1}]})
 
-        store
-            .dispatch(actions.fetchUsers())
+        return store.dispatch(actions.fetchUsers())
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('fetch user', () => {
-        mockServer
-            .onGet('/api/users/2/')
-            .reply(200, {
-                data: {id: 2}
-            })
+        mockServer.onGet('/api/users/2/').reply(200, {data: {id: 2}})
 
-        store
-            .dispatch(actions.fetchUser(2))
+        return store.dispatch(actions.fetchUser(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('fetch current user', () => {
-        mockServer
-            .onGet('/api/users/0/')
-            .reply(200, {
-                data: {id: 12}
-            })
+        mockServer.onGet('/api/users/0/').reply(200, {data: {id: 12}})
 
-        store
-            .dispatch(actions.fetchUser(0))
+        return store.dispatch(actions.fetchUser(0))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('create user', () => {
-        const userData = {
-            name: 'Mario',
-            email: 'mario@nintendo.com',
+        const data = {
+            name: 'Alex',
+            email: 'alex@gorgias.io',
             role: 'agent'
         }
 
-        mockServer
-            .onPost('/api/users/')
-            .reply(200, {
-                data: userData
-            })
+        mockServer.onPost('/api/users/').reply(200, {data})
 
-        store
-            .dispatch(actions.submitUser(userData))
+        return store.dispatch(actions.submitUser(data))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('update user', () => {
-        const userData = {
+        const data = {
             id: 2,
-            name: 'Mario',
-            email: 'mario@nintendo.com',
+            name: 'Alex',
+            email: 'alex@gorgias.io',
             role: 'agent'
         }
 
-        mockServer
-            .onPut('/api/users/2/')
-            .reply(200, {
-                data: userData
-            })
+        mockServer.onPut('/api/users/2/').reply(200, {data})
 
-        store
-            .dispatch(actions.submitUser(userData, userData.id))
+        return store.dispatch(actions.submitUser(data, data.id))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('delete user', () => {
-        mockServer
-            .onDelete('/api/users/2/')
-            .reply(200)
+        mockServer.onDelete('/api/users/2/').reply(200)
 
-        store
-            .dispatch(actions.deleteUser(2))
+        return store.dispatch(actions.deleteUser(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('fetch user history', () => {
-        mockServer
-            .onGet('/api/users/2/tickets/?type=requested')
-            .reply(200, {
-                data: [{id: 1}]
-            })
+        mockServer.onGet('/api/users/2/tickets/?type=requested').reply(200, {data: [{id: 1}]})
 
-        store
-            .dispatch(actions.fetchUserHistory(2))
+        return store.dispatch(actions.fetchUserHistory(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
             .then(() => {
                 store.clearActions()
@@ -128,14 +95,9 @@ describe('users actions', () => {
     })
 
     it('merge users', () => {
-        mockServer
-            .onPut('/api/users/2/merge/3/')
-            .reply(200, {
-                data: [{id: 1}]
-            })
+        mockServer.onPut('/api/users/2/merge/3/').reply(200, {data: [{id: 1}]})
 
-        store
-            .dispatch(actions.mergeUsers(2, 3))
+        return store.dispatch(actions.mergeUsers(2, 3))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 })

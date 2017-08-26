@@ -8,24 +8,21 @@ import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
 import * as types from './constants'
 
-export const search = (query, searchType = 'user_profile') => ((dispatch) => {
+export const search = (query) => ((dispatch) => {
     dispatch({
-        type: searchType === 'user_profile' ? types.SEARCH_USERS_START : types.SEARCH_TICKETS_START
+        type: types.SEARCH_USERS_START,
     })
 
-    return axios.post('/api/search/', {
-        type: searchType,
-        query
-    })
+    return axios.post('/api/search/', {type: 'user_profile', query})
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({
-                type: searchType === 'user_profile' ? types.SEARCH_USERS_SUCCESS : types.SEARCH_TICKETS_SUCCESS,
+                type: types.SEARCH_USERS_SUCCESS,
                 resp,
             })
         }, error => {
             return dispatch({
-                type: searchType === 'user_profile' ? types.SEARCH_USERS_ERROR : types.SEARCH_TICKETS_ERROR,
+                type: types.SEARCH_USERS_ERROR,
                 error,
                 reason: 'Failed to do the search. Please try again...'
             })

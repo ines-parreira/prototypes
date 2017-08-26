@@ -2,7 +2,7 @@ import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
 import {getActiveIntegrations} from '../integrations/selectors'
 
-const DEFAULT_PLAN = 'standard-usd-1'
+export const DEFAULT_PLAN = 'standard-usd-1'
 
 export const getBillingState = (state) => state.billing || fromJS({})
 
@@ -15,7 +15,7 @@ export const plans = createSelector(
     [getBillingState],
     state => {
         return state.get('plans', fromJS({}))
-            .sortBy(p => p.get('order') || Infinity)
+            .sortBy(plan => plan.get('order') || Infinity)
             .map(plan => {
                 const amount = plan.get('amount') || 0
                 return plan
@@ -37,23 +37,23 @@ export const getPlan = (planId) => createSelector(
 
 export const invoices = createSelector(
     [getBillingState],
-    billing => billing.get('invoices') || fromJS([])
+    billing => billing.get('invoices', fromJS([]))
         .filter((invoice) => invoice.get('attempted') && invoice.get('amount_due') > 0)
 )
 
 export const creditCard = createSelector(
     [getBillingState],
-    billing => billing.get('creditCard') || fromJS([])
+    billing => billing.get('creditCard') || fromJS({})
 )
 
 export const paymentMethod = createSelector(
     [getBillingState],
-    billing => billing.get('paymentMethod') || fromJS([])
+    billing => billing.get('paymentMethod') || ''
 )
 
 export const currentUsage = createSelector(
     [getBillingState],
-    billing => billing.get('currentUsage') || fromJS([])
+    billing => billing.get('currentUsage') || fromJS({})
 )
 
 export const isAllowedToCreateIntegration = createSelector(
@@ -63,7 +63,7 @@ export const isAllowedToCreateIntegration = createSelector(
     }
 )
 
-const isAllowedToChangePlan = (planId) => createSelector(
+export const isAllowedToChangePlan = (planId) => createSelector(
     [getPlan(planId), getActiveIntegrations],
     (plan, activeIntegrations) => {
         return plan.get('integrations', 0) >= activeIntegrations.size

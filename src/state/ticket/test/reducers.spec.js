@@ -26,7 +26,7 @@ jest.mock('../../newMessage/ticketReplyCache', () => {
 
 jest.addMatchers(immutableMatchers)
 
-describe('ticket reducer', () => {
+describe('ticket reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })

@@ -1,52 +1,73 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import * as types from '../constants'
+import {fromJS} from 'immutable'
+
 import reducer, {initialState} from '../reducers'
+import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
-describe('reducers', () => {
-    describe('currentAccount', () => {
-        it('should return the initial state', () => {
-            expect(reducer(undefined, {})).toEqualImmutable(initialState)
-        })
+describe('current account reducers', () => {
+    it('initial state', () => {
+        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+    })
 
-        it('should handle UPDATE_ACCOUNT_START', () => {
-            const action = {
-                type: types.UPDATE_ACCOUNT_START
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'updateAccount'], true)
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
-        it('should handle UPDATE_ACCOUNT_ERROR', () => {
-            const action = {
-                type: types.UPDATE_ACCOUNT_ERROR
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'updateAccount'], false)
-
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
-
-        it('should handle UPDATE_ACCOUNT_SUCCESS', () => {
-            const action = {
-                type: types.UPDATE_ACCOUNT_SUCCESS,
-                resp: {
-                    id: 1,
-                    domain: 'acme',
-                    channels: [{
-                        id: 1,
-                        type: 'email',
-                        name: 'Acme Support',
-                        address: 'support@acme.io',
-                        preferred: true
-                    }]
+    it('update agent', () => {
+        // start
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.UPDATE_ACCOUNT_START,
                 }
-            }
-            const expectedState = initialState.setIn(['_internal', 'loading', 'updateAccount'], false)
-                .merge(action.resp)
+            ).toJS()
+        ).toMatchSnapshot()
 
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
-        })
+        // success
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.UPDATE_ACCOUNT_SUCCESS,
+                    resp: fromJS({settings: [{id: 10}]}),
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // fail
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.UPDATE_ACCOUNT_ERROR,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('update setting', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.UPDATE_ACCOUNT_SETTING,
+                    setting: {hello: 'world'},
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // update
+        expect(
+            reducer(
+                initialState
+                    .mergeDeep({
+                        settings: [{id: 1, hello: 'goodbye'}],
+                    }),
+                {
+                    type: types.UPDATE_ACCOUNT_SETTING,
+                    setting: {id: 1, hello: 'world'},
+                    isUpdate: true,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
     })
 })

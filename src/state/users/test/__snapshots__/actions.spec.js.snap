@@ -9,8 +9,8 @@ Array [
     "isUpdate": false,
     "resp": Object {
       "data": Object {
-        "email": "mario@nintendo.com",
-        "name": "Mario",
+        "email": "alex@gorgias.io",
+        "name": "Alex",
         "role": "agent",
       },
     },
@@ -84,6 +84,15 @@ Array [
 ]
 `;
 
+exports[`users actions fetch user history 2`] = `
+Array [
+  Object {
+    "type": "FETCH_USER_HISTORY_START",
+    "userId": 2,
+  },
+]
+`;
+
 exports[`users actions fetch users 1`] = `
 Array [
   Object {
@@ -104,15 +113,6 @@ Array [
 `;
 
 exports[`users actions merge users 1`] = `
-Array [
-  Object {
-    "type": "FETCH_USER_HISTORY_START",
-    "userId": 2,
-  },
-]
-`;
-
-exports[`users actions merge users 2`] = `
 Array [
   Object {
     "type": "MERGE_USERS_START",
@@ -139,9 +139,9 @@ Array [
     "isUpdate": true,
     "resp": Object {
       "data": Object {
-        "email": "mario@nintendo.com",
+        "email": "alex@gorgias.io",
         "id": 2,
-        "name": "Mario",
+        "name": "Alex",
         "role": "agent",
       },
     },

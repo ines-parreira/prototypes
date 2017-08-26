@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`New message reducer should handle NEW_MESSAGE_SET_SUBJECT 1`] = `
+exports[`New message reducers should handle NEW_MESSAGE_SET_SUBJECT 1`] = `
 Immutable.Map {
   state: Immutable.Map {
     dirty: false,

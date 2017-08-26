@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`integrations actions delete integration 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "type": "DELETE_INTEGRATION_START",
+  },
+  Object {
+    "id": 1,
+    "type": "DELETE_INTEGRATION_SUCCESS",
+  },
+]
+`;
+
+exports[`integrations actions fetch integration fails 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "type": "FETCH_INTEGRATION_START",
+  },
+  Object {
+    "error": [Error: Request failed with status code 404],
+    "reason": "Failed to fetch integration",
+    "type": "FETCH_INTEGRATION_ERROR",
+  },
+]
+`;
+
+exports[`integrations actions fetch integration success 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "type": "FETCH_INTEGRATION_START",
+  },
+  Object {
+    "error": [Error: Request failed with status code 404],
+    "reason": "Failed to fetch integration",
+    "type": "FETCH_INTEGRATION_ERROR",
+  },
+]
+`;
+
+exports[`integrations actions fetch integration success waiting for authentication 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 404],
+    "reason": "Failed to fetch integration",
+    "type": "FETCH_INTEGRATION_ERROR",
+  },
+]
+`;
+
+exports[`integrations actions fetch integrations 1`] = `
+Array [
+  Object {
+    "type": "FETCH_INTEGRATIONS_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Array [
+        Object {
+          "id": 1,
+          "name": "http",
+        },
+      ],
+    },
+    "type": "FETCH_INTEGRATIONS_SUCCESS",
+  },
+]
+`;
+
+exports[`integrations actions on create success 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "id": 1,
+      "type": "email",
+    },
+    "type": "CREATE_INTEGRATION_SUCCESS",
+  },
+  Object {
+    "type": "FETCH_INTEGRATIONS_START",
+  },
+]
+`;
+
+exports[`integrations actions on update success 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "id": 1,
+      "type": "email",
+    },
+    "type": "UPDATE_INTEGRATION_SUCCESS",
+  },
+  Object {
+    "type": "FETCH_INTEGRATIONS_START",
+  },
+]
+`;

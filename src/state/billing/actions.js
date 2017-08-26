@@ -108,23 +108,23 @@ export function updateCreditCard(creditCard) {
                     })
                         .then((json = {}) => json.data)
                         .then((resp) => {
-                            resolve(resp)
                             dispatch(notify({
                                 status: 'success',
                                 message: 'Your payment info was updated',
                             }))
                             browserHistory.push('/app/settings/billing/')
-                            return dispatch({
+                            dispatch({
                                 type: types.UPDATE_CREDIT_CARD_SUCCESS,
                                 resp
                             })
+                            return resolve(resp)
                         }, (error) => {
-                            resolve(error)
-                            return dispatch({
+                            dispatch({
                                 type: types.UPDATE_CREDIT_CARD_ERROR,
                                 error,
                                 reason: 'Unable to update credit card.'
                             })
+                            return resolve(error)
                         })
                 })
 

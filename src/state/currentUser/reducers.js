@@ -4,6 +4,7 @@ import {fromJS} from 'immutable'
 import {isUndefined as _isUndefined} from 'lodash'
 
 export const initialState = fromJS({
+    settings: [],
     _internal: {
         loading: {
             settings: {},
@@ -24,6 +25,7 @@ export default (state = initialState, action) => {
         case userTypes.SUBMIT_CURRENT_USER_START:
         case types.CHANGE_PASSWORD_START:
             return state.setIn(['_internal', 'loading', 'currentUser'], true)
+
         case types.SUBMIT_SETTING_START:
             return state.setIn(['_internal', 'loading', 'settings', action.settingType], true)
 
@@ -47,17 +49,18 @@ export default (state = initialState, action) => {
         case types.CHANGE_PASSWORD_ERROR:
             return state.setIn(['_internal', 'loading', 'currentUser'], false)
 
-        case userTypes.SUBMIT_CURRENT_USER_ERROR:
-        case types.SUBMIT_SETTING_ERROR:
-            return state
-                .setIn(['_internal', 'loading', 'currentUser'], false)
-                .setIn(['_internal', 'loading', 'settings', action.settingType], false)
+        case userTypes.SUBMIT_CURRENT_USER_ERROR: {
+            return state.setIn(['_internal', 'loading', 'currentUser'], false)
+        }
 
+        case types.SUBMIT_SETTING_ERROR: {
+            return state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
+        }
 
         case types.SUBMIT_SETTING_SUCCESS: {
             const newState = state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
             if (action.isUpdate) {
-                return newState.updateIn(['settings'], settings => {
+                return newState.update('settings', settings => {
                     return settings.map(setting => {
                         if (setting.get('id') === action.resp.id) {
                             return setting.set('data', fromJS(action.resp.data))
@@ -66,7 +69,7 @@ export default (state = initialState, action) => {
                     })
                 })
             }
-            return newState.updateIn(['settings'], settings => settings.push(fromJS(action.resp)))
+            return newState.update('settings', settings => settings.push(fromJS(action.resp)))
         }
         default:
             return state

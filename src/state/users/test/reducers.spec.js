@@ -9,7 +9,7 @@ import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
-describe('users reducer', () => {
+describe('users reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })

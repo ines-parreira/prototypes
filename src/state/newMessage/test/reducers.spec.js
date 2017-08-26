@@ -7,7 +7,7 @@ import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
-describe('New message reducer', () => {
+describe('New message reducers', () => {
     it('should return the initial state', () => {
         expect(
             reducer(undefined, {})

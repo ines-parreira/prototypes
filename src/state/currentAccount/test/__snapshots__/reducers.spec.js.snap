@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`current account reducers update agent 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "updateAccount": true,
+    },
+  },
+  "settings": Array [],
+}
+`;
+
+exports[`current account reducers update agent 2`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "updateAccount": false,
+    },
+  },
+  "settings": Array [
+    Object {
+      "id": 10,
+    },
+  ],
+}
+`;
+
+exports[`current account reducers update agent 3`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "updateAccount": false,
+    },
+  },
+  "settings": Array [],
+}
+`;
+
+exports[`current account reducers update setting 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {},
+  },
+  "settings": Array [
+    Object {
+      "hello": "world",
+    },
+  ],
+}
+`;
+
+exports[`current account reducers update setting 2`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {},
+  },
+  "settings": Array [
+    Object {
+      "hello": "world",
+      "id": 1,
+    },
+  ],
+}
+`;

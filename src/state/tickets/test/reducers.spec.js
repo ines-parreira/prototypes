@@ -8,7 +8,7 @@ import * as ticketTypes from '../../ticket/constants'
 
 jest.addMatchers(immutableMatchers)
 
-describe('tickets reducer', () => {
+describe('tickets reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })

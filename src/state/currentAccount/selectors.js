@@ -3,7 +3,6 @@ import {fromJS} from 'immutable'
 
 export const getCurrentAccountState = (state) => state.currentAccount || fromJS({})
 
-
 export const getCurrentAccountMeta = createSelector(
     [getCurrentAccountState],
     state => state.get('meta') || fromJS({})

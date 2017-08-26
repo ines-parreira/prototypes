@@ -1,0 +1,54 @@
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
+
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
+
+jest.mock('../../notifications/actions', () => {
+    return {
+        notify: jest.fn(() => (args) => args),
+    }
+})
+
+describe('current account actions', () => {
+    let store
+    let mockServer
+
+    beforeEach(() => {
+        store = mockStore({currentAccount: initialState})
+        mockServer = new MockAdapter(axios)
+    })
+
+    it('update account', () => {
+        const data = {id: 2}
+
+        mockServer.onPut('/api/account/').reply(200, data)
+
+        return store.dispatch(actions.updateAccount(data))
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    describe('submit setting', () => {
+        it('creation', () => {
+            const data = {hello: 'world'}
+
+            mockServer.onPost('/api/account/settings/').reply(200, data)
+
+            return store.dispatch(actions.submitSetting(data))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('update', () => {
+            const data = {id: 1, hello: 'world'}
+
+            mockServer.onPut('/api/account/settings/1/').reply(200, data)
+
+            return store.dispatch(actions.submitSetting(data))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+    })
+})

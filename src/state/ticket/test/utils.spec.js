@@ -1,6 +1,6 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {getChannels} from '../../integrations/selectors'
-import integrationState from '../../integrations/tests/fixtures'
+import {integrationsState} from '../../../fixtures/integrations'
 import {smoochTicket, emailTicket, facebookPost} from './fixtures'
 import {fromJS} from 'immutable'
 import {
@@ -162,9 +162,9 @@ const receiversStateExample = {
         address: receiversValueExample.cc[0].value,
     }],
 }
-const channels = getChannels(integrationState)
+const channels = getChannels({integrations: fromJS(integrationsState)})
 
-describe('Ticket utils', () => {
+describe('ticket utils', () => {
     describe('guessReceiversFromTicket', () => {
         it('guess receivers empty', () => {
             const updatedTicket = ticket.delete('messages').delete('requester')

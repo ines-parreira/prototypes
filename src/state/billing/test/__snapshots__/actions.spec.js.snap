@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`billing actions fetch credit card 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "brand": "visa",
+      "exp_month": 12,
+      "exp_year": 35,
+      "last4": "4242",
+    },
+    "type": "FETCH_CREDIT_CARD_SUCCESS",
+  },
+]
+`;
+
+exports[`billing actions fetch current usage 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "data": Object {
+        "cost": 12.35,
+        "ticket": 12323,
+      },
+      "meta": Object {
+        "endDate": "2016-12-13T18:30:19+00:00",
+        "startDate": "2016-11-13T18:30:19+00:00",
+      },
+    },
+    "type": "FETCH_CURRENT_USAGE_SUCCESS",
+  },
+]
+`;
+
+exports[`billing actions fetch invoices 1`] = `
+Array [
+  Object {
+    "resp": Array [
+      Object {
+        "amount_due": 1234,
+        "date": "2016-11-13T18:30:19+00:00",
+        "metadata": Object {},
+        "paid": true,
+      },
+    ],
+    "type": "FETCH_INVOICES_SUCCESS",
+  },
+]
+`;
+
+exports[`billing actions fetch payment method 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "active": false,
+      "method": "stripe",
+    },
+    "type": "FETCH_PAYMENT_METHOD_SUCCESS",
+  },
+]
+`;
+
+exports[`billing actions update credit card Stripe error 1`] = `
+Array [
+  Object {
+    "error": "Sorry you can only buy ice cream with this credit card",
+    "reason": "Unable to update credit card.",
+    "type": "UPDATE_CREDIT_CARD_ERROR",
+  },
+]
+`;
+
+exports[`billing actions update credit card fails because no Stripe 1`] = `
+Array [
+  Object {
+    "reason": "Unable to update credit card. Please reload this page.",
+    "type": "UPDATE_CREDIT_CARD_ERROR",
+  },
+]
+`;
+
+exports[`billing actions update credit card success 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "cvc": "123",
+      "expDate": "10/23",
+      "name": "Alex",
+      "number": "545454545454",
+    },
+    "type": "UPDATE_CREDIT_CARD_SUCCESS",
+  },
+]
+`;
+
+exports[`billing actions update subscription 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "plan": "basic",
+    },
+    "type": "UPDATE_SUBSCRIPTION_SUCCESS",
+  },
+]
+`;

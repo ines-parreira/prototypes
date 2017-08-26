@@ -13,21 +13,22 @@ export const getCurrentUser = createSelector(
 
 export const getSettings = createSelector(
     [getCurrentUserState],
-    state => state.get('settings', fromJS([]))
+    state => state.get('settings') || fromJS([])
 )
 
+// used to get ticket-views and user-views user preferences
 export const getSettingsByType = type => createSelector(
     [getViews, getSettings],
     (views, settings) => {
-        settings = settings.find(setting => setting.get('type') === type, null, fromJS({type, data: {}}))
+        settings = settings.find(setting => setting.get('type') === type) || fromJS({type, data: {}})
 
-        // update settings according to views configuration
+        // add vies and update settings according to views configuration
         views.forEach((view) => {
             const viewId = view.get('id')
             const viewSetting = settings.getIn(['data', viewId.toString()], fromJS({}))
 
-            const hide = viewSetting.get('hide', false)
-            const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
+            const hide = viewSetting.get('hide') || false
+            const displayOrder = viewSetting.get('display_order') || view.get('display_order') || 0
 
             settings = settings
                 .setIn(['data', viewId.toString(), 'hide'], hide)
@@ -50,16 +51,16 @@ export const getPreferences = createSelector(
             type: 'preferences',
             data: DEFAULT_PREFERENCES
         })
-            .mergeDeep(state.find((s) => s.get('type') === 'preferences'))
+            .mergeDeep(state.find((s) => s.get('type') === 'preferences') || fromJS({}))
     }
 )
 
 export const isAvailableForChat = createSelector(
     [getPreferences],
-    state => state.getIn(['data', 'available_for_chat'], true)
+    state => state.getIn(['data', 'available_for_chat']) || true
 )
 
 export const isHidingTips = createSelector(
     [getPreferences],
-    state => state.getIn(['data', 'hide_tips'], false)
+    state => state.getIn(['data', 'hide_tips']) || false
 )

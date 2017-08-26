@@ -7,7 +7,7 @@ import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
 
-import integrationState from '../../integrations/tests/fixtures'
+import {integrationsState} from '../../../fixtures/integrations'
 import * as integrationSelectors from '../../integrations/selectors'
 import {getPreferredChannel,} from '../../ticket/utils'
 import {smoochTicket, emailTicket} from '../../ticket/test/fixtures'
@@ -29,12 +29,12 @@ import socketManager from '../../../services/socketManager'
 
 describe('actions', () => {
     describe('new message', () => {
-        const channels = integrationSelectors.getChannels(integrationState)
+        const channels = integrationSelectors.getChannels({integrations: fromJS(integrationsState)})
         let store
 
         it('dispatch setSender - with address', () => {
             store = mockStore({
-                integrations: integrationState.integrations,
+                integrations: fromJS(integrationsState),
                 ticket: emailTicket,
                 newMessage: initialState,
             })
@@ -57,7 +57,7 @@ describe('actions', () => {
                 address: from.get('address'),
             })
             store = mockStore({
-                integrations: integrationState.integrations,
+                integrations: fromJS(integrationsState),
                 ticket: smoochTicket,
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
             })
@@ -79,7 +79,7 @@ describe('actions', () => {
                 address: from.get('address'),
             })
             store = mockStore({
-                integrations: integrationState.integrations,
+                integrations: fromJS(integrationsState),
                 ticket: _smoochTicket,
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
             })
@@ -101,7 +101,7 @@ describe('actions', () => {
                 address: preferred.get('address'),
             })
             store = mockStore({
-                integrations: integrationState.integrations,
+                integrations: fromJS(integrationsState),
                 ticket: _emailTicket,
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
@@ -121,7 +121,7 @@ describe('actions', () => {
                 address: from.get('address'),
             })
             store = mockStore({
-                integrations: integrationState.integrations,
+                integrations: fromJS(integrationsState),
                 ticket: emailTicket,
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
@@ -143,7 +143,7 @@ describe('actions', () => {
                 address: from.get('address'),
             })
             store = mockStore({
-                integrations: integrationState.integrations,
+                integrations: fromJS(integrationsState),
                 ticket: _emailTicket,
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
@@ -170,7 +170,7 @@ describe('actions', () => {
                 address: from.get('address'),
             })
             store = mockStore({
-                integrations: integrationState.integrations,
+                integrations: fromJS(integrationsState),
                 ticket: _emailTicket,
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
@@ -192,7 +192,7 @@ describe('actions', () => {
                 address: from.get('address'),
             })
             store = mockStore({
-                integrations: integrationState.integrations,
+                integrations: fromJS(integrationsState),
                 ticket: _emailTicket,
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
             })
@@ -207,7 +207,7 @@ describe('actions', () => {
 
         it('dispatch setSender - empty name and address (internal-note)', () => {
             store = mockStore({
-                integrations: integrationState.integrations,
+                integrations: fromJS(integrationsState),
                 ticket: emailTicket,
                 newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'internal-note'),
             })

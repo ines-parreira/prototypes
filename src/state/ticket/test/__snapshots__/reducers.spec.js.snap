@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ticket reducer add tags 1`] = `
+exports[`ticket reducers add tags 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -40,7 +40,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer add tags 2`] = `
+exports[`ticket reducers add tags 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -80,7 +80,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer add tags 3`] = `
+exports[`ticket reducers add tags 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -117,7 +117,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer apply macro 1`] = `
+exports[`ticket reducers apply macro 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -152,7 +152,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer apply macro 2`] = `
+exports[`ticket reducers apply macro 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -187,7 +187,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer clear applied macro 1`] = `
+exports[`ticket reducers clear applied macro 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -220,7 +220,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer clear ticket 1`] = `
+exports[`ticket reducers clear ticket 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -253,7 +253,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer delete macro action args on applied 1`] = `
+exports[`ticket reducers delete macro action args on applied 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -295,7 +295,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer delete message 1`] = `
+exports[`ticket reducers delete message 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -332,7 +332,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer delete pending message 1`] = `
+exports[`ticket reducers delete pending message 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -374,7 +374,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer display history on next page 1`] = `
+exports[`ticket reducers display history on next page 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -407,7 +407,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer display history on next page 2`] = `
+exports[`ticket reducers display history on next page 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -440,7 +440,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer fetch ticket 1`] = `
+exports[`ticket reducers fetch ticket 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -473,7 +473,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer fetch ticket 2`] = `
+exports[`ticket reducers fetch ticket 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -519,7 +519,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer fetch ticket 3`] = `
+exports[`ticket reducers fetch ticket 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -552,7 +552,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer mark dirty 1`] = `
+exports[`ticket reducers mark dirty 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -585,7 +585,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer mark dirty 2`] = `
+exports[`ticket reducers mark dirty 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -618,7 +618,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer merge requester 1`] = `
+exports[`ticket reducers merge requester 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -651,7 +651,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer merge requester 2`] = `
+exports[`ticket reducers merge requester 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -687,7 +687,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer merge ticket 1`] = `
+exports[`ticket reducers merge ticket 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -741,7 +741,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer merge ticket 2`] = `
+exports[`ticket reducers merge ticket 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -795,7 +795,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer merge users 1`] = `
+exports[`ticket reducers merge users 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -828,7 +828,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer merge users 2`] = `
+exports[`ticket reducers merge users 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -864,7 +864,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer remove tag 1`] = `
+exports[`ticket reducers remove tag 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -901,7 +901,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer remove tag 2`] = `
+exports[`ticket reducers remove tag 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -938,7 +938,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer set agent 1`] = `
+exports[`ticket reducers set agent 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -973,7 +973,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer set agent 2`] = `
+exports[`ticket reducers set agent 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1006,7 +1006,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer set requester 1`] = `
+exports[`ticket reducers set requester 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1041,7 +1041,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer set spam 1`] = `
+exports[`ticket reducers set spam 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1074,7 +1074,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer set spam 2`] = `
+exports[`ticket reducers set spam 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1107,7 +1107,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer set status 1`] = `
+exports[`ticket reducers set status 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1140,7 +1140,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer set subject 1`] = `
+exports[`ticket reducers set subject 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1173,7 +1173,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer submit new message 1`] = `
+exports[`ticket reducers submit new message 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1244,7 +1244,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer submit new message 2`] = `
+exports[`ticket reducers submit new message 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1316,7 +1316,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer submit new message 3`] = `
+exports[`ticket reducers submit new message 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1387,7 +1387,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer submit ticket 1`] = `
+exports[`ticket reducers submit ticket 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1421,7 +1421,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer toggle history 1`] = `
+exports[`ticket reducers toggle history 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": true,
@@ -1454,7 +1454,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer toggle history 2`] = `
+exports[`ticket reducers toggle history 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1487,7 +1487,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer toggle history 3`] = `
+exports[`ticket reducers toggle history 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": true,
@@ -1520,7 +1520,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer update macro action args on applied 1`] = `
+exports[`ticket reducers update macro action args on applied 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
@@ -1562,7 +1562,7 @@ Object {
 }
 `;
 
-exports[`ticket reducer update message 1`] = `
+exports[`ticket reducers update message 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,

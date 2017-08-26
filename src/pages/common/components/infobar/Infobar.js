@@ -241,7 +241,7 @@ export default class Infobar extends React.Component {
     _onSearch = (query) => {
         if (query) {
             this.setState({isSearching: true})
-            this.props.search(query, 'user_profile').then(({resp}) => {
+            this.props.search(query).then(({resp}) => {
                 this.setState({
                     displaySelectedUser: false,
                     displaySearchResults: true,

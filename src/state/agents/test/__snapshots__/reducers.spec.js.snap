@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`agents reducers fetch agents pagination 1`] = `
+Immutable.Map {
+  pagination: Immutable.Map {
+    data: Immutable.List [
+      Immutable.Map {
+        name: "Alex",
+      },
+      Immutable.Map {
+        name: "Romain",
+      },
+    ],
+    meta: Immutable.Map {
+      nb_pages: 2,
+      page: 1,
+    },
+  },
+}
+`;

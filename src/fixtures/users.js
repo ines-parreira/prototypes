@@ -72,6 +72,15 @@ export const currentUser = {
             },
             id: 2,
             type: 'user-views'
+        },
+        {
+            data: {
+                show_macros: true,
+                available_for_chat: true,
+                hide_tips: true,
+            },
+            id: 3,
+            type: 'preferences'
         }
     ],
     meta: null,

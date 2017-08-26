@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`current user reducers change password 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": true,
+      "settings": Object {},
+    },
+  },
+  "settings": Array [],
+}
+`;
+
+exports[`current user reducers change password 2`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+    },
+  },
+  "email": "alex@gorgias.io",
+  "id": 1,
+  "name": "Alex",
+}
+`;
+
+exports[`current user reducers change password 3`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+      "settings": Object {},
+    },
+  },
+  "settings": Array [],
+}
+`;
+
+exports[`current user reducers fetch current user 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": true,
+      "settings": Object {},
+    },
+  },
+  "settings": Array [],
+}
+`;
+
+exports[`current user reducers fetch current user 2`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+    },
+  },
+  "email": "alex@gorgias.io",
+  "id": 1,
+  "name": "Alex",
+}
+`;
+
+exports[`current user reducers submit current user 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": true,
+      "settings": Object {},
+    },
+  },
+  "settings": Array [],
+}
+`;
+
+exports[`current user reducers submit current user 2`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+    },
+  },
+  "email": "alex@gorgias.io",
+  "id": 1,
+  "name": "Alex",
+}
+`;
+
+exports[`current user reducers submit current user 3`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+      "settings": Object {},
+    },
+  },
+  "settings": Array [],
+}
+`;
+
+exports[`current user reducers submit setting 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+      "settings": Object {
+        "view": true,
+      },
+    },
+  },
+  "settings": Array [],
+}
+`;
+
+exports[`current user reducers submit setting 2`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+      "settings": Object {
+        "view": false,
+      },
+    },
+  },
+  "settings": Array [
+    Object {
+      "data": Object {
+        "value": 1,
+      },
+    },
+  ],
+}
+`;
+
+exports[`current user reducers submit setting 3`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+      "settings": Object {
+        "view": false,
+      },
+    },
+  },
+  "settings": Array [
+    Object {
+      "data": Object {
+        "value": 1,
+      },
+      "id": 1,
+    },
+  ],
+}
+`;
+
+exports[`current user reducers submit setting 4`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+      "settings": Object {
+        "view": false,
+      },
+    },
+  },
+  "settings": Array [],
+}
+`;

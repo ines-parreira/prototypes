@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import moment from 'moment'
 import * as types from './constants.js'
 
-const initialState = fromJS({
+export const initialState = fromJS({
     integrations: [],
     integration: {},
     authentication: {},  // store data necessary for authenticating from the front-end, for each integration type

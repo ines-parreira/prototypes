@@ -2,6 +2,7 @@ import * as types from './constants'
 import {fromJS} from 'immutable'
 
 export const initialState = fromJS({
+    settings: [],
     _internal: {
         loading: {}
     }

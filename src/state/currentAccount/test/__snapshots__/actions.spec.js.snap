@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`current account actions submit setting creation 1`] = `
+Array [
+  Object {
+    "isUpdate": false,
+    "setting": Object {
+      "hello": "world",
+    },
+    "type": "UPDATE_ACCOUNT_SETTING",
+  },
+]
+`;
+
+exports[`current account actions submit setting update 1`] = `
+Array [
+  Object {
+    "isUpdate": true,
+    "setting": Object {
+      "hello": "world",
+      "id": 1,
+    },
+    "type": "UPDATE_ACCOUNT_SETTING",
+  },
+]
+`;
+
+exports[`current account actions update account 1`] = `
+Array [
+  Object {
+    "type": "UPDATE_ACCOUNT_START",
+  },
+  Object {
+    "resp": Object {
+      "id": 2,
+    },
+    "type": "UPDATE_ACCOUNT_SUCCESS",
+  },
+]
+`;

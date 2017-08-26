@@ -8,7 +8,6 @@ import * as types from './constants'
 import * as integrationSelectors from './selectors'
 import {notify} from '../notifications/actions'
 
-
 export function fetchIntegrations(withDeleted = false) {
     return (dispatch) => {
         dispatch({
@@ -50,7 +49,7 @@ export function fetchIntegrations(withDeleted = false) {
  * @param dispatch: the dispatch method
  * @param resp: the raw Integration data coming back from the server
  */
-function onCreateSuccess(dispatch, resp) {
+export function onCreateSuccess(dispatch, resp) {
     dispatch({
         type: types.CREATE_INTEGRATION_SUCCESS,
         resp
@@ -85,7 +84,7 @@ export function triggerCreateSuccess(integration) {
  * @param resp: the raw Integration data coming back from the server
  * @param notificationId: the id of the notification to replace with the success notification, if any
  */
-function onUpdateSuccess(dispatch, resp, notificationId=null) {
+export function onUpdateSuccess(dispatch, resp, notificationId=null) {
     dispatch({
         type: types.UPDATE_INTEGRATION_SUCCESS,
         resp

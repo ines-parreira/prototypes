@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`current user actions change password 1`] = `
+Array [
+  Object {
+    "type": "CHANGE_PASSWORD_START",
+  },
+  Object {
+    "resp": Object {
+      "new_password": "newPassword",
+      "old_password": "password",
+    },
+    "type": "CHANGE_PASSWORD_SUCCESS",
+  },
+]
+`;
+
+exports[`current user actions submit setting creation 1`] = `
+Array [
+  Object {
+    "settingType": "macro",
+    "type": "SUBMIT_SETTING_START",
+  },
+  Object {
+    "isUpdate": false,
+    "resp": Object {
+      "hello": "world",
+      "type": "macro",
+    },
+    "settingType": "macro",
+    "type": "SUBMIT_SETTING_SUCCESS",
+  },
+]
+`;
+
+exports[`current user actions submit setting update 1`] = `
+Array [
+  Object {
+    "settingType": "macro",
+    "type": "SUBMIT_SETTING_START",
+  },
+  Object {
+    "isUpdate": true,
+    "resp": Object {
+      "hello": "world",
+      "id": 1,
+      "type": "macro",
+    },
+    "settingType": "macro",
+    "type": "SUBMIT_SETTING_SUCCESS",
+  },
+]
+`;

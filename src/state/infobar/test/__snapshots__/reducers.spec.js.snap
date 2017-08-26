@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`infobar reducers execute action 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "displayedUserPictureUrl": false,
+    },
+  },
+  "pendingActionsCallbacks": Array [],
+  "picture": Object {
+    "email": null,
+    "url": null,
+  },
+}
+`;
+
+exports[`infobar reducers execute action 2`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "displayedUserPictureUrl": false,
+    },
+  },
+  "pendingActionsCallbacks": Array [
+    Object {
+      "callback": [Function],
+      "id": "shopifyRefundShippingCostOfOrder-34-5-4194477515",
+    },
+  ],
+  "picture": Object {
+    "email": null,
+    "url": null,
+  },
+}
+`;
+
+exports[`infobar reducers execute action 3`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "displayedUserPictureUrl": false,
+    },
+  },
+  "pendingActionsCallbacks": Array [],
+  "picture": Object {
+    "email": null,
+    "url": null,
+  },
+}
+`;
+
+exports[`infobar reducers execute action 4`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "displayedUserPictureUrl": false,
+    },
+  },
+  "pendingActionsCallbacks": Array [],
+  "picture": Object {
+    "email": null,
+    "url": null,
+  },
+}
+`;
+
+exports[`infobar reducers fetch user picture 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "displayedUserPictureUrl": true,
+    },
+  },
+  "pendingActionsCallbacks": Array [],
+  "picture": Object {
+    "email": null,
+    "url": null,
+  },
+}
+`;
+
+exports[`infobar reducers fetch user picture 2`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "displayedUserPictureUrl": false,
+    },
+  },
+  "pendingActionsCallbacks": Array [],
+  "picture": Object {
+    "email": "alex@gorgias.io",
+    "url": "http://good.url",
+  },
+}
+`;
+
+exports[`infobar reducers fetch user picture 3`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "displayedUserPictureUrl": false,
+    },
+  },
+  "displayedUserPictureUrl": null,
+  "pendingActionsCallbacks": Array [],
+  "picture": Object {
+    "email": null,
+    "url": null,
+  },
+}
+`;
