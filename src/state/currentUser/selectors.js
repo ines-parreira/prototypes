@@ -57,7 +57,7 @@ export const getPreferences = createSelector(
 
 export const isAvailableForChat = createSelector(
     [getPreferences],
-    state => state.getIn(['data', 'available_for_chat']) || true
+    state => state.getIn(['data', 'available_for_chat'], true)
 )
 
 export const isHidingTips = createSelector(
