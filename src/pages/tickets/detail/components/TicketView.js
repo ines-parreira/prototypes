@@ -82,6 +82,11 @@ export default class TicketView extends React.Component {
         }
     }
 
+    componentDidMount() {
+        // scroll to the bottom of the ticket content the first time the ticket is viewed.
+        this.refs.ticketContent.scrollTop = this.refs.ticketContent.scrollHeight
+    }
+
     componentWillReceiveProps(nextProps) {
         const isHistoryDisplayed = nextProps.ticket.getIn(['_internal', 'displayHistory'])
 
@@ -133,7 +138,7 @@ export default class TicketView extends React.Component {
                     // we want to hide text during animation if there is no agents viewing
                     agentsTyping.size > 0 && (
                         <span className="mr-3">
-                            <i className="fa fa-fw fa-pencil mr-2" />
+                            <i className="fa fa-fw fa-pencil mr-2"/>
                             {viewsUtils.agentsTypingMessage(agentsTyping)}
                         </span>
                     )
@@ -142,7 +147,7 @@ export default class TicketView extends React.Component {
                     // we want to hide text during animation if there is no agents viewing
                     agentsViewingNotTyping.size > 0 && (
                         <span>
-                            <i className="fa fa-fw fa-eye mr-2" />
+                            <i className="fa fa-fw fa-eye mr-2"/>
                             {viewsUtils.agentsViewingMessage(agentsViewingNotTyping)}
                         </span>
                     )
@@ -181,13 +186,13 @@ export default class TicketView extends React.Component {
             ? 'Hide user history'
             : (
                 <div>
-                    <i className="fa fa-fw fa-arrow-up mr-1" />
+                    <i className="fa fa-fw fa-arrow-up mr-1"/>
                     {
                         hasOpenedTicketsInHistory ? (
-                                <span>Show other open tickets ({historyOpenedTickets})</span>
-                            ) : (
-                                <span>Show user history ({itemsCountInHistory})</span>
-                            )
+                            <span>Show other open tickets ({historyOpenedTickets})</span>
+                        ) : (
+                            <span>Show user history ({itemsCountInHistory})</span>
+                        )
                     }
                 </div>
             )
@@ -248,7 +253,7 @@ export default class TicketView extends React.Component {
                     }
                     {
                         isHistoryDisplayed && (
-                            <hr />
+                            <hr/>
                         )
                     }
                     <TicketHeader
@@ -266,6 +271,7 @@ export default class TicketView extends React.Component {
                         'mt-3': isCreating,
                         'history-displayed': isHistoryDisplayed,
                     })}
+                    ref="ticketContent"
                 >
                     {
                         !isCreating && (

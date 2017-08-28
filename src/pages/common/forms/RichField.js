@@ -10,10 +10,11 @@ import createResizeablePlugin from 'draft-js-resizeable-plugin'
 
 import createToolbarPlugin from '../draftjs/plugins/toolbar'
 
-import createMentionPlugin, { suggestionsFilter } from '../draftjs/plugins/mentions'
+import createMentionPlugin, {suggestionsFilter} from '../draftjs/plugins/mentions'
 
 import InputField from './InputField'
 import {convertToHTML, convertFromHTML, removeMentions} from '../../../utils'
+import 'draft-js/dist/Draft.css'
 
 
 export default class RichField extends InputField {
@@ -47,6 +48,7 @@ export default class RichField extends InputField {
 
         this.state = {
             editorState,
+            placeholder: props.placeholder,
             isDragging: false,
         }
 
@@ -159,6 +161,11 @@ export default class RichField extends InputField {
         })
     }
 
+    _onFocus = () => {
+        // once focused we're removing the placeholder (Gmail style)
+        this.setState({placeholder: ''})
+    }
+
     onSearchChange = ({value}) => {
         if (this.props.mentionProps) {
             this.setState({
@@ -181,8 +188,8 @@ export default class RichField extends InputField {
             required, // eslint-disable-line
             type, // eslint-disable-line
             value, // eslint-disable-line
-            alertMode,  // eslint-disable-line
-            alertText,  // eslint-disable-line
+            alertMode,
+            alertText,
             canDropFiles,
             mentionProps,
             toolbarProps,
@@ -217,23 +224,26 @@ export default class RichField extends InputField {
                 >
                     {
                         alertMode ? (
-                                <div className="pt-1">
-                                    {alertText}
-                                </div>
-                            ) : (
-                                <Editor
-                                    editorState={this.state.editorState}
-                                    onChange={editorState => this._onChange(editorState)}
-                                    plugins={this.plugins}
-                                    handleKeyCommand={this._handleKeyCommand}
-                                    handleDroppedFiles={this._handleDroppedFiles}
-                                    ref={(editor) => {
-                                        this.editor = editor
-                                    }}
-                                    readOnly={displayOnly}
-                                    {...rest}
-                                />
-                            )
+                            <div className="pt-1">
+                                {alertText}
+                            </div>
+                        ) : (
+                            <Editor
+                                editorState={this.state.editorState}
+                                onChange={editorState => this._onChange(editorState)}
+                                onFocus={this._onFocus}
+                                onBlur={this._onBlur}
+                                plugins={this.plugins}
+                                handleKeyCommand={this._handleKeyCommand}
+                                handleDroppedFiles={this._handleDroppedFiles}
+                                readOnly={displayOnly}
+                                placeholder={this.state.placeholder}
+                                ref={(editor) => {
+                                    this.editor = editor
+                                }}
+                                {...rest}
+                            />
+                        )
                     }
                     <MentionSuggestions
                         onSearchChange={this.onSearchChange}

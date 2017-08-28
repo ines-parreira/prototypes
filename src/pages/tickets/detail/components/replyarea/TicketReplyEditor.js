@@ -16,7 +16,7 @@ import {isRichType, acceptsOnlyImages, canLeaveInternalNote} from '../../../../.
 import * as macroActions from '../../../../../state/macro/actions'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import { getOtherAgents } from '../../../../../state/users/selectors'
+import {getOtherAgents} from '../../../../../state/users/selectors'
 
 import {notify} from '../../../../../state/notifications/actions'
 
@@ -222,7 +222,7 @@ class TicketReplyEditor extends React.Component {
                         {
                             newMessage.getIn(['_internal', 'loading', 'addAttachment'])
                                 ? (
-                                    <i className="fa fa-fw fa-circle-o-notch fa-spin" />
+                                    <i className="fa fa-fw fa-circle-o-notch fa-spin"/>
                                 ) : (
                                     <i
                                         className={classnames('fa fa-fw', {
@@ -279,13 +279,17 @@ class TicketReplyEditor extends React.Component {
                     tabIndex="4"
                     spellCheck
                     canDropFiles
-                    readOnly={newMessage.getIn(['_internal', 'loading', 'submitMessage']) || cantWriteTextBecauseOfAttachments}
+                    readOnly={
+                        newMessage.getIn(['_internal', 'loading', 'submitMessage']) ||
+                        cantWriteTextBecauseOfAttachments
+                    }
                     toolbarProps={toolbarProps}
                     mentionProps={mentionProps}
                     alertMode={cantWriteTextBecauseOfAttachments && 'warning'}
                     alertText={alertText}
                     keyBindingFn={this._keyBindingFn}
                     handleKeyCommand={this._handleKeyCommand}
+                    placeholder="Click here to reply, or press r."
                 />
             </div>
         )

@@ -187,6 +187,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           handleDroppedFiles={[Function]}
           handleKeyCommand={[Function]}
           onChange={[Function]}
+          onFocus={[Function]}
           plugins={
             Array [
               Object {
@@ -405,6 +406,7 @@ exports[`RichField should render a basic input 1`] = `
           handleDroppedFiles={[Function]}
           handleKeyCommand={[Function]}
           onChange={[Function]}
+          onFocus={[Function]}
           plugins={
             Array [
               Object {
