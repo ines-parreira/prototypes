@@ -102,5 +102,31 @@ describe('components', () => {
 
             expect(component).toMatchSnapshot()
         })
+
+        it('should set target=_blank for linkified links', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: 'https://gorgias.io',
+                        body_html: ''
+                    }}
+                />
+            )
+
+            expect(component.render().find('a').prop('target')).toBe('_blank')
+        })
+
+        it('should set target=_blank for body_html links', () => {
+            const component = mount(
+                <TicketMessageBody
+                    message={{
+                        body_text: '',
+                        body_html: '<a href="#">text</a>'
+                    }}
+                />
+            )
+
+            expect(component.render().find('a').prop('target')).toBe('_blank')
+        })
     })
 })

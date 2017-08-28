@@ -351,7 +351,10 @@ export function sanitizeHtmlDefault(html) {
             '*': ['align', 'alt', 'bgcolor', 'border', 'class', 'color', 'colspan', 'dir',
                 'height', 'href', 'id', 'rel', 'rowspan', 'src', 'style', 'target', 'title', 'width', 'controls']
         },
-        nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title']
+        nonTextTags: ['style', 'script', 'textarea', 'noscript', 'title'],
+        transformTags: {
+            'a': sanitizeHtml.simpleTransform('a', {target: '_blank'})
+        }
     })
 }
 
