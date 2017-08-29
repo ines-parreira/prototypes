@@ -215,6 +215,7 @@ export default class TicketDetailContainer extends React.Component {
     _bindKeys() {
         const modalVisible = () => this.props.macros.get('isModalOpen')
 
+        shortcutManager.bind('Search')
         shortcutManager.bind('TicketDetailContainer', {
             GO_BACK: {
                 action: () => {

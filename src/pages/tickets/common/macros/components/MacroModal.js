@@ -16,6 +16,7 @@ import MacroPreview from './MacroPreview'
 import {DEFAULT_ACTIONS} from '../../../../../config'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
+import shortcutManager from '../../../../../services/shortcutManager'
 
 import {macroInitial} from '../../../../../state/macro/reducers'
 
@@ -36,6 +37,9 @@ export default class MacroModal extends React.Component {
     }
 
     componentDidMount() {
+        // Unbind the ticket shortcuts when in the modal.
+        shortcutManager.unbind('TicketDetailContainer')
+        shortcutManager.unbind('Search')
         segmentTracker.logEvent(segmentTracker.EVENTS.MODAL_TOGGLED, {
             open: true,
             name: 'macros',
@@ -161,54 +165,54 @@ export default class MacroModal extends React.Component {
                             <Col xs="9">
                                 {
                                     selectionMode ? (
+                                        <div className="d-inline-block pull-right">
+                                            <Button
+                                                type="submit"
+                                                color="primary"
+                                                onClick={this._applyMacro}
+                                            >
+                                                Apply macro to {selectedItemsIds.size} tickets
+                                            </Button>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <div className="d-inline-block">
+                                                {
+                                                    isUpdate && (
+                                                        <ConfirmButton
+                                                            color="danger"
+                                                            outline
+                                                            confirm={this._deleteMacro}
+                                                            content={`Do you really want to delete the macro ${this.props.currentMacro.get('name', '')}?`}
+                                                        >
+                                                            Delete macro
+                                                        </ConfirmButton>
+                                                    )
+                                                }
+                                            </div>
                                             <div className="d-inline-block pull-right">
-                                                <Button
-                                                    type="submit"
-                                                    color="primary"
-                                                    onClick={this._applyMacro}
-                                                >
-                                                    Apply macro to {selectedItemsIds.size} tickets
-                                                </Button>
+                                                {
+                                                    isUpdate ? (
+                                                        <Button
+                                                            type="submit"
+                                                            color="primary"
+                                                            onClick={this._updateMacro}
+                                                        >
+                                                            Update macro
+                                                        </Button>
+                                                    ) : (
+                                                        <Button
+                                                            type="submit"
+                                                            color="primary"
+                                                            onClick={this._createMacro}
+                                                        >
+                                                            Create macro
+                                                        </Button>
+                                                    )
+                                                }
                                             </div>
-                                        ) : (
-                                            <div>
-                                                <div className="d-inline-block">
-                                                    {
-                                                        isUpdate && (
-                                                            <ConfirmButton
-                                                                color="danger"
-                                                                outline
-                                                                confirm={this._deleteMacro}
-                                                                content={`Do you really want to delete the macro ${this.props.currentMacro.get('name', '')}?`}
-                                                            >
-                                                                Delete macro
-                                                            </ConfirmButton>
-                                                        )
-                                                    }
-                                                </div>
-                                                <div className="d-inline-block pull-right">
-                                                    {
-                                                        isUpdate ? (
-                                                                <Button
-                                                                    type="submit"
-                                                                    color="primary"
-                                                                    onClick={this._updateMacro}
-                                                                >
-                                                                    Update macro
-                                                                </Button>
-                                                            ) : (
-                                                                <Button
-                                                                    type="submit"
-                                                                    color="primary"
-                                                                    onClick={this._createMacro}
-                                                                >
-                                                                    Create macro
-                                                                </Button>
-                                                            )
-                                                    }
-                                                </div>
-                                            </div>
-                                        )
+                                        </div>
+                                    )
                                 }
                             </Col>
                         </Row>
@@ -231,19 +235,19 @@ export default class MacroModal extends React.Component {
                         <Col xs="9">
                             {
                                 selectionMode ? (
-                                        <MacroPreview
-                                            currentMacro={currentMacro}
-                                        />
-                                    ) : (
-                                        <MacroEdit
-                                            currentMacro={currentMacro}
-                                            agents={this.props.agents}
-                                            name={this.state.name}
-                                            actions={this.state.actions}
-                                            setActions={this._setActions}
-                                            setName={this._setName}
-                                        />
-                                    )
+                                    <MacroPreview
+                                        currentMacro={currentMacro}
+                                    />
+                                ) : (
+                                    <MacroEdit
+                                        currentMacro={currentMacro}
+                                        agents={this.props.agents}
+                                        name={this.state.name}
+                                        actions={this.state.actions}
+                                        setActions={this._setActions}
+                                        setName={this._setName}
+                                    />
+                                )
                             }
                         </Col>
                     </Row>
