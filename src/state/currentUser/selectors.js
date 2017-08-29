@@ -28,7 +28,7 @@ export const getSettingsByType = type => createSelector(
             const viewSetting = settings.getIn(['data', viewId.toString()], fromJS({}))
 
             const hide = viewSetting.get('hide') || false
-            const displayOrder = viewSetting.get('display_order') || view.get('display_order') || 0
+            const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
 
             settings = settings
                 .setIn(['data', viewId.toString(), 'hide'], hide)
