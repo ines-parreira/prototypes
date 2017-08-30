@@ -6,6 +6,7 @@ import {updateSubscription} from '../../../state/billing/actions'
 import * as billingSelectors from '../../../state/billing/selectors'
 import css from './BillingPlans.less'
 import classnames from 'classnames'
+import {openChat} from '../../../utils'
 
 export class BillingPlans extends Component {
     static propTypes = {
@@ -42,14 +43,16 @@ export class BillingPlans extends Component {
     render() {
         const {currentPlanId, plans} = this.props
         const {isUpdating} = this.state
+        let i = 0
 
         return (
             <div className="mb-4">
                 <h4>Plans</h4>
                 <Row className="mb-3">
-                    <Col sm="9">
+                    <Col sm="12">
                         <CardDeck>
                             {plans.map((plan, planId) => {
+                                i++
                                 if (!plan.get('public')) {
                                     return null
                                 }
@@ -60,7 +63,7 @@ export class BillingPlans extends Component {
                                 return (
                                     <Card
                                         key={planId}
-                                        className={classnames('text-center', css.plan, css[planId])}
+                                        className={classnames('text-center', css.plan, css[`plan-${i}`])}
                                         outline
                                     >
                                         <CardBlock>
@@ -78,7 +81,7 @@ export class BillingPlans extends Component {
                                                         + {plan.get('currencySign')}{costPerTicket}
                                                     </strong> per {costMultiplier} tickets </span>
                                                 <a id={`additional-tickets-tooltip-${planId}`}>
-                                                    <i className="fa fa-question-circle" />
+                                                    <i className="fa fa-question-circle"/>
                                                 </a>
                                                 <UncontrolledTooltip target={`additional-tickets-tooltip-${planId}`}>
                                                     If you reply to more tickets than included in your plan
@@ -101,6 +104,28 @@ export class BillingPlans extends Component {
                                     </Card>
                                 )
                             }).toList()}
+                            <Card className={classnames('text-center', css.plan, css['plan-enterprise'])} outline>
+                                <CardBlock>
+                                    <CardTitle>Enterprise Plan</CardTitle>
+                                    <div className="mb-4 mt-3">
+                                        <h3>Contact us</h3>
+                                        Billed annually
+
+                                    </div>
+                                    <div><strong>Includes:</strong></div>
+                                    <div>Unlimited agents</div>
+                                    <div>Discounted prices for volumes
+                                        of <strong>10,000+</strong> tickets.
+                                    </div>
+                                    <div className="mb-3">Premium support</div>
+                                    <Button
+                                        color="info"
+                                        outline
+                                        onClick={openChat}>
+                                        Contact Us
+                                    </Button>
+                                </CardBlock>
+                            </Card>
                         </CardDeck>
                     </Col>
                 </Row>

@@ -5,6 +5,7 @@ import {Card, CardGroup, Row, Col} from 'reactstrap'
 import * as billingSelectors from '../../../state/billing/selectors'
 import Loader from '../../common/components/Loader'
 import {fetchCurrentUsage} from '../../../state/billing/actions'
+import {openChat} from '../../../utils'
 
 export class BillingUsage extends Component {
     static propTypes = {
@@ -26,7 +27,7 @@ export class BillingUsage extends Component {
     render() {
         const {currentUsage} = this.props
         if (this.state.isLoading) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (
@@ -65,7 +66,9 @@ export class BillingUsage extends Component {
 
                 <p>
                     If you have any questions or if you want to unsubscribe, please
-                    contact us at <a href="mailto:support@gorgias.io">support@gorgias.io</a>.
+                    contact us at <a href="mailto:support@gorgias.io">support@gorgias.io</a> or
+                    {' '}
+                    <a href="" onClick={openChat}>Live Chat</a>.
                 </p>
             </div>
         )

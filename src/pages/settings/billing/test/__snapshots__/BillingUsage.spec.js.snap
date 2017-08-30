@@ -131,6 +131,14 @@ exports[`BillingUsage component should display price 1`] = `
       >
         support@gorgias.io
       </a>
+       or
+       
+      <a
+        href=""
+        onClick={[Function]}
+      >
+        Live Chat
+      </a>
       .
     </p>
   </div>
@@ -234,6 +242,14 @@ exports[`BillingUsage component should load with empty props 1`] = `
         href="mailto:support@gorgias.io"
       >
         support@gorgias.io
+      </a>
+       or
+       
+      <a
+        href=""
+        onClick={[Function]}
+      >
+        Live Chat
       </a>
       .
     </p>

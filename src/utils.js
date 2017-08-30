@@ -314,8 +314,8 @@ export function compactInteger(input, digits = 0) {
     si.reverse().forEach((s) => {
         if (input >= s.value) {
             result = (input / s.value)
-                    .toFixed(digits)
-                    .replace(rx, '$1') + s.symbol
+                .toFixed(digits)
+                .replace(rx, '$1') + s.symbol
         }
     })
 
@@ -928,12 +928,12 @@ export const errorToChildren = (incomingError) => {
     return `
         <ul className="m-0">
             ${
-                _map(data, (fieldErrors, fieldName) => {
-                    return _valuesDeep(fieldErrors).map((fieldError) => {
-                        return `<li>${fieldName}: ${fieldError}</li>`
-                    }).join('')
-                }).join('')
-            }
+        _map(data, (fieldErrors, fieldName) => {
+            return _valuesDeep(fieldErrors).map((fieldError) => {
+                return `<li>${fieldName}: ${fieldError}</li>`
+            }).join('')
+        }).join('')
+        }
         </ul>
     `
 }
@@ -992,4 +992,14 @@ export const validateWebhookURL = (val) => {
     }
 
     return errors.join(' + ')
+}
+
+/**
+ * Open the smooch chat (if present)
+ */
+export const openChat = (e) => {
+    if (window.Smooch) {
+        e.preventDefault()
+        window.Smooch.open()
+    }
 }
