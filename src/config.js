@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import _get from 'lodash/get'
 import _find from 'lodash/find'
 
@@ -8,6 +10,12 @@ export const CHAT_POLLING_INTERVAL = 9000
 export const POLL_ACTIVITY_TIMEOUT = 8000
 
 // TODO @jebarjonet switch all configuration to modular version
+
+/**
+ * Set default axios headers
+ */
+
+axios.defaults.headers.common['X-CSRF-Token'] = window.CSRF_TOKEN
 
 /**
  * Action related
