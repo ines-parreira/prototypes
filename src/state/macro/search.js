@@ -8,6 +8,10 @@ const _initIndex = () => elasticlunr(function () {
     this.addField('name')
     this.addField('tags')
     this.addField('body')
+
+    // We remove the stemmer because we want any substring of a word to match the word
+    // ex: we want `dyi` to match `dying`, which is stemmed to `dy` when using the stemmer
+    this.pipeline.remove(elasticlunr.stemmer)
 })
 
 export let index = _initIndex()
