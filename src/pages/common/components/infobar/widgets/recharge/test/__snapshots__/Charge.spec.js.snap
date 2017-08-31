@@ -1,0 +1,212 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Charge BeforeContent should aggregate line_items by subscriptions 1`] = `
+<div>
+  <div
+    className="simple-field"
+  >
+    <span
+      className="field-label"
+    >
+      Status:
+    </span>
+    <span
+      className="field-value"
+    >
+      <Zs
+        color="default"
+        pill={false}
+        tag="span"
+      />
+    </span>
+  </div>
+  <div
+    className="card"
+  >
+    <div
+      className="header clearfix card-block"
+    >
+      <a
+        target="_blank"
+      >
+        <span>
+          🔄 Subscription #
+          1
+        </span>
+      </a>
+      <SubscriptionAfterTitle
+        source={
+          Immutable.Map {
+            charge_id: undefined,
+            subscription_id: "1",
+          }
+        }
+      />
+    </div>
+    <div
+      className="content card-block"
+    >
+      <span>
+        foo
+         (
+        7
+        )
+      </span>
+      <span>
+        bar
+         (
+        5
+        )
+      </span>
+    </div>
+  </div>
+  <div
+    className="card"
+  >
+    <div
+      className="header clearfix card-block"
+    >
+      <a
+        target="_blank"
+      >
+        <span>
+          🔄 Subscription #
+          2
+        </span>
+      </a>
+      <SubscriptionAfterTitle
+        source={
+          Immutable.Map {
+            charge_id: undefined,
+            subscription_id: "2",
+          }
+        }
+      />
+    </div>
+    <div
+      className="content card-block"
+    >
+      <span>
+        baz
+         (
+        1
+        )
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Charge BeforeContent should display default color if there's no matching status 1`] = `
+<div>
+  <div
+    className="simple-field"
+  >
+    <span
+      className="field-label"
+    >
+      Status:
+    </span>
+    <span
+      className="field-value"
+    >
+      <Zs
+        color="default"
+        pill={false}
+        tag="span"
+      >
+        Foobar
+      </Zs>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Charge BeforeContent should display the appropriate color if there's a matching status 1`] = `
+<div>
+  <div
+    className="simple-field"
+  >
+    <span
+      className="field-label"
+    >
+      Status:
+    </span>
+    <span
+      className="field-value"
+    >
+      <Zs
+        color="danger"
+        pill={false}
+        tag="span"
+      >
+        Error
+      </Zs>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Charge SubscriptionAfterTitle should display the skipCharge action if the charge is queued 1`] = `
+<div
+  className="action-buttons"
+>
+  <Connect(ActionButton)
+    actionName="rechargeSkipCharge"
+    className="btn btn-sm btn-secondary action-button"
+    payload={
+      Object {
+        "charge_id": undefined,
+        "subscription_id": undefined,
+      }
+    }
+    reason="skip this charge for this subscription"
+    tag="button"
+    tooltip="Skip the charge for this subscription on Recharge"
+  >
+    <div>
+      <i
+        className="fa fa-fw fa-ban mr-1"
+      />
+      Skip charge on subscription
+    </div>
+  </Connect(ActionButton)>
+</div>
+`;
+
+exports[`Charge SubscriptionAfterTitle should display the skipCharge action with the correct payload taken from the source 1`] = `
+<div
+  className="action-buttons"
+>
+  <Connect(ActionButton)
+    actionName="rechargeSkipCharge"
+    className="btn btn-sm btn-secondary action-button"
+    payload={
+      Object {
+        "charge_id": 2,
+        "subscription_id": 3,
+      }
+    }
+    reason="skip this charge for this subscription"
+    tag="button"
+    tooltip="Skip the charge for this subscription on Recharge"
+  >
+    <div>
+      <i
+        className="fa fa-fw fa-ban mr-1"
+      />
+      Skip charge on subscription
+    </div>
+  </Connect(ActionButton)>
+</div>
+`;
+
+exports[`Charge SubscriptionAfterTitle should not display the skipCharge action if the charge is not queued 1`] = `
+<div
+  className="action-buttons"
+/>
+`;
+
+exports[`Charge SubscriptionAfterTitle should return null if isEditing 1`] = `null`;
+
+exports[`Charge SubscriptionAfterTitle should return null if there's no integrationId 1`] = `null`;

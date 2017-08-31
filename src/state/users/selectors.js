@@ -36,6 +36,16 @@ export const getActiveUserId = createSelector(
     activeUser => activeUser.get('id')
 )
 
+export const getActiveUserIntegrationData = createSelector(
+    [getActiveUser],
+    activeUser => activeUser.get('integrations') || fromJS([])
+)
+
+export const getActiveUserIntegrationDataByIntegrationId = (integrationId) => createSelector(
+    [getActiveUserIntegrationData],
+    data => data.get(String(integrationId)) || fromJS({})
+)
+
 export const getAgents = createSelector(
     [getUsersState],
     state => state.get('agents') || fromJS([])

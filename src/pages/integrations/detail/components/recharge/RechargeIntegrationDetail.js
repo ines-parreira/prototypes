@@ -3,6 +3,7 @@ import {Link, withRouter} from 'react-router'
 import classNames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 import {
+    Alert,
     Button,
     Breadcrumb,
     BreadcrumbItem,
@@ -53,6 +54,11 @@ class RechargeIntegrationDetail extends React.Component {
         }
     }
 
+    _updateAppPermissions = () => {
+        const name = this.props.integration.getIn(['meta', 'store_name'])
+        window.location.href = this.props.redirectUri.concat('?store_name=').concat(name)
+    }
+
     _submit = () => {
         window.location.href = this.props.redirectUri.concat('?store_name=').concat(this.state.store_name)
     }
@@ -65,6 +71,9 @@ class RechargeIntegrationDetail extends React.Component {
         const isActive = !integration.get('deactivated_datetime')
 
         const authenticationRequired = this.props.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
+
+        const needScopeUpdate = integration.getIn(['meta', 'need_scope_update'])
+        const isSyncOver = integration.getIn(['meta', 'sync_state', 'is_initialized'])
 
         if (loading.get('integration')) {
             return <Loader />
@@ -86,6 +95,32 @@ class RechargeIntegrationDetail extends React.Component {
 
                 <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
 
+                {
+                    isUpdate && (
+                        isSyncOver
+                            ? (
+                                <p>
+                                    All your Recharge users have been imported. You can now see their info in the
+                                    sidebar. <Link to="/app/users">Review your users.</Link>
+                                </p>
+                            ) : (
+                                <Alert color="info" className="mb-4">
+                                    <p>
+                                        <b className="alert-heading">
+                                            <i className="fa fa-refresh fa-spin mr-2" />
+                                            Importing your Recharge customers
+                                        </b>
+                                    </p>
+                                    <p>
+                                        We're currently importing all your Recharge customers. This way, you'll see
+                                        customer info & orders next to tickets. We'll notify you via email when the
+                                        import is done. <Link to="/app/users">Review imported users.</Link>
+                                    </p>
+                                </Alert>
+                            )
+                    )
+                }
+
                 <InputField
                     type="text"
                     name="name"
@@ -99,6 +134,21 @@ class RechargeIntegrationDetail extends React.Component {
                 />
 
                 <div>
+                    {
+                        isUpdate && needScopeUpdate && (
+                            <Button
+                                type="button"
+                                color="info"
+                                className={classNames('mr-2', {
+                                    'btn-loading': isSubmitting,
+                                })}
+                                disabled={isSubmitting}
+                                onClick={this._updateAppPermissions}
+                            >
+                                Update app permissions
+                            </Button>
+                        )
+                    }
                     {
                         !isUpdate && (
                             <Button

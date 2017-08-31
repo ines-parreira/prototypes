@@ -9,6 +9,7 @@ import {
 import {humanizeString} from '../../../../../../utils'
 
 import * as ticketSelectors from './../../../../../../state/ticket/selectors'
+import * as userSelectors from './../../../../../../state/users/selectors'
 
 import ActionButton from '../ActionButton'
 
@@ -130,7 +131,23 @@ class BeforeContent extends React.Component { // eslint-disable-line
 
 @connect((state) => {
     return {
-        getIntegrationData: (id) => ticketSelectors.getIntegrationDataByIntegrationId(id.toString())(state)
+        getIntegrationData: (integrationId, customerId) => {
+            // Here we don't know if we're in a ticket- or user- context.
+            // So we get both data from the ticket.requester and the active user, and if any match
+            // the subscription's customer_id, then it means it's the correct data.
+            const ticketData = ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
+            const userData = userSelectors.getActiveUserIntegrationDataByIntegrationId(integrationId)(state)
+
+            if (ticketData.getIn(['customer', 'id']) === customerId) {
+                return ticketData
+            }
+
+            if (userData.getIn(['customer', 'id']) === customerId) {
+                return userData
+            }
+
+            return fromJS({})
+        }
     }
 })
 class TitleWrapper extends React.Component { // eslint-disable-line
@@ -146,7 +163,8 @@ class TitleWrapper extends React.Component { // eslint-disable-line
 
     render() {
         const {children, source, getIntegrationData} = this.props
-        const customerHash = getIntegrationData(this.context.integration.get('id')).getIn(['customer', 'hash'])
+        const customerHash = getIntegrationData(this.context.integration.get('id'), source.get('customer_id'))
+            .getIn(['customer', 'hash'])
 
         return (
             <a
