@@ -96,7 +96,7 @@ class RechargeIntegrationDetail extends React.Component {
                 <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
 
                 {
-                    isUpdate && (
+                    isUpdate && isSyncOver !== undefined && (
                         isSyncOver
                             ? (
                                 <p>
