@@ -154,13 +154,13 @@ export const addCache = (context) => {
  * @param blocks
  * @private
  */
-const _selectionBefore = (blocks) => {
-    if (blocks && blocks.length) {
-        // we only want the first block, we put the selection just before it
-        return SelectionState.createEmpty(blocks[0].key)
-    }
-    return null
-}
+// const _selectionBefore = (blocks) => {
+//     if (blocks && blocks.length) {
+//         // we only want the first block, we put the selection just before it
+//         return SelectionState.createEmpty(blocks[0].key)
+//     }
+//     return null
+// }
 
 /**
  * Return a selectionState after the last ContentBlock
