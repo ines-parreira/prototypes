@@ -510,6 +510,7 @@ Array [
           },
 },
     "currentUser": undefined,
+    "forceFocus": false,
     "fromMacro": false,
     "ticket": Immutable.Map {
       messages: Immutable.List [
@@ -609,6 +610,7 @@ Array [
           },
 },
     "currentUser": undefined,
+    "forceFocus": false,
     "fromMacro": false,
     "ticket": Immutable.Map {
       id: 1,
@@ -656,6 +658,7 @@ Array [
     "currentUser": Immutable.Map {
       id: 1,
 },
+    "forceFocus": false,
     "fromMacro": false,
     "ticket": Immutable.Map {
       id: 1,
@@ -740,6 +743,7 @@ Array [
     "currentUser": Immutable.Map {
       signature_text: "signature",
 },
+    "forceFocus": false,
     "fromMacro": false,
     "ticket": Immutable.Map {
       id: 1,
@@ -798,6 +802,7 @@ Array [
           },
 },
     "currentUser": undefined,
+    "forceFocus": false,
     "fromMacro": false,
     "ticket": Immutable.Map {
       id: 1,
@@ -845,6 +850,7 @@ Array [
     "currentUser": Immutable.Map {
       id: 1,
 },
+    "forceFocus": false,
     "fromMacro": false,
     "ticket": Immutable.Map {
       id: 1,

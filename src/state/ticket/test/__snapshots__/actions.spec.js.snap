@@ -338,6 +338,7 @@ Array [
     "currentUser": Immutable.Map {
       id: 1,
 },
+    "forceFocus": false,
     "fromMacro": false,
     "ticket": Immutable.Map {
       trashed_datetime: null,
@@ -402,6 +403,7 @@ Array [
     "args": Immutable.Map {
 },
     "currentUser": undefined,
+    "forceFocus": false,
     "fromMacro": false,
     "ticket": Immutable.Map {
       trashed_datetime: null,
