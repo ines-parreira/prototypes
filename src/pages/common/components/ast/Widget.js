@@ -89,7 +89,6 @@ class Widget extends React.Component {
         }
 
         const left = this._resolveLeft(leftsiblings, schemas)
-
         // widget data used for rendering
         const widget = {
             type: 'select',

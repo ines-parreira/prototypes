@@ -2,7 +2,8 @@ import React from 'react'
 import {fromJS} from 'immutable'
 
 import * as ticketConfig from './ticket'
-import {stripHTML} from '../utils'
+import TICKET_LANGUAGES from './ticketLanguages'
+import {stripHTML, getLanguageDisplayName} from '../utils'
 import {TagLabel} from '../pages/common/utils/labels'
 
 import _isUndefined from 'lodash/isUndefined'
@@ -106,6 +107,13 @@ export const views = fromJS([{
             }
         },
         {
+            name: 'language',
+            title: 'Language',
+            filter: {
+                enum: TICKET_LANGUAGES.map(lang => lang.localeName)
+            }
+        },
+        {
             name: 'channel',
             title: 'Channel',
             filter: {
@@ -143,6 +151,9 @@ export const views = fromJS([{
                 return item.get('requester') || fromJS({})
             case 'assignee':
                 return item.get('assignee_user') || fromJS({})
+            case 'language': {
+                return getLanguageDisplayName(item.get('language'))
+            }
             case 'details': {
                 let subject = stripHTML(item.get('subject'))
 

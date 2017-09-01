@@ -2,6 +2,7 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
+import TICKET_LANGUAGES from '../config/ticketLanguages'
 import {ContentState, EditorState, convertToRaw} from 'draft-js'
 import schemasJSON from '../fixtures/openapi'
 
@@ -521,6 +522,14 @@ describe('global utils', () => {
         it('should render multiple errors for each error in url', () => {
             const url = 'http://foobar.local'
             expect(utils.validateWebhookURL(url)).toContain('+')
+        })
+    })
+
+    describe('getLanguageDisplayName', () => {
+        it('should return the display name correctly from the locale name', () => {
+            TICKET_LANGUAGES.forEach(lang => {
+                expect(utils.getLanguageDisplayName(lang.localeName)).toEqual(lang.displayName)
+            })
         })
     })
 

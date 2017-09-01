@@ -9,7 +9,7 @@ import {
 
 import Search from '../Search'
 import {RenderLabel} from '../../utils/labels'
-import {resolveLiteral, isImmutable, fieldPath} from '../../../../utils'
+import {resolveLiteral, isImmutable, fieldPath, getLanguageDisplayName} from '../../../../utils'
 import {fieldEnumSearch} from '../../../../state/views/actions'
 
 import * as schemasSelectors from '../../../../state/schemas/selectors'
@@ -132,6 +132,8 @@ class FilterDropdown extends React.Component {
                 renderValue = value.get('name')
             } else if (field.get('name') === 'requester') {
                 renderValue = usersHelpers.getDisplayName(value)
+            } else if (field.get('name') === 'language') {
+                renderValue = getLanguageDisplayName(value)
             } else if (typeof value === 'object' || field.get('name') === 'roles') {
                 renderValue = (
                     <RenderLabel
@@ -191,15 +193,21 @@ class FilterDropdown extends React.Component {
         const canSearch = !!field.getIn(['filter', 'type'])
         const width = field.getIn(['dropdown', 'width'], '230px')
 
+        const style = {
+            width: canSearch && width
+        }
+
+        if (field.get('name') === 'language') {
+            Object.assign(style, {height: '230px', overflow: 'scroll'})
+        }
+
         return (
             <Dropdown
                 isOpen
                 toggle={this.props.toggleDropdown}
             >
                 <DropdownMenu
-                    style={{
-                        width: canSearch && width,
-                    }}
+                    style={style}
                 >
                     {this.renderSearch()}
                     {this.renderEnum()}

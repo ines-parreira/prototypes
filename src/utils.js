@@ -9,6 +9,7 @@ import _get from 'lodash/get'
 import _uniq from 'lodash/uniq'
 import _compact from 'lodash/compact'
 import _trim from 'lodash/trim'
+import _find from 'lodash/find'
 import _last from 'lodash/last'
 import _ from 'lodash'
 import _flatMapDeep from 'lodash/flatMapDeep'
@@ -26,6 +27,7 @@ import Immutable, {fromJS} from 'immutable'
 import md5 from 'md5'
 import linkifyIt from 'linkify-it'
 import htmlparser from 'htmlparser2'
+import TICKET_LANGUAGES from './config/ticketLanguages'
 
 import {ACTION_TEMPLATES} from './config'
 
@@ -1005,6 +1007,24 @@ export const validateWebhookURL = (val) => {
     }
 
     return errors.join(' + ')
+}
+
+/**
+ * Get the display name of a language from its locale name
+ * @param locale: string
+ * @returns: displayName: string
+ */
+export const getLanguageDisplayName = (locale) => {
+
+    if (!locale) {
+        return null
+    }
+
+    const langObj = _find(TICKET_LANGUAGES, lang => {
+        return lang.localeName === locale
+    })
+
+    return langObj ? langObj.displayName : null
 }
 
 /**

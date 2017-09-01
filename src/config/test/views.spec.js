@@ -87,6 +87,7 @@ describe('Config: views', () => {
                     ticket: {
                         details: 'object',
                         tags: 'object',
+                        language: 'object',
                         requester: 'object', // user (then passed to RenderLabel)
                         assignee: 'object', // user (then passed to RenderLabel)
                     },

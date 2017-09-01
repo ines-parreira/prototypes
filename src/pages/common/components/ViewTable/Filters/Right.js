@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 
 import {UserLabel, IntegrationsDetailLabel} from '../../../utils/labels'
+import {getLanguageDisplayName} from '../../../../../utils'
 
 import * as viewsActions from '../../../../../state/views/actions'
 
@@ -117,6 +118,8 @@ export default class Right extends React.Component {
             }
         } else if (field.get('name') === 'requester') { // display requester
             displayedValue = `User #${displayedValue}`
+        } else if (field.get('name') === 'language') { // show the display name
+            displayedValue = getLanguageDisplayName(displayedValue)
         }
 
         return (
