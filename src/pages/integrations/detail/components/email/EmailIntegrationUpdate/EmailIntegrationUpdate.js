@@ -17,6 +17,7 @@ import {
     FormGroup,
 } from 'reactstrap'
 
+import {isGorgiasSupportAddress} from '../../../../../../utils'
 import Loader from '../../../../../common/components/Loader'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
 import * as notificationActions from '../../../../../../state/notifications/actions'
@@ -184,6 +185,16 @@ class EmailIntegrationUpdate extends React.Component {
     _renderInstructions = () => {
         const {domain, integration} = this.props
         const address = integration.getIn(['meta', 'address'], '')
+
+        if (isGorgiasSupportAddress(address)) {
+            // no need to display instructions for our own support address
+            return (
+                <Alert color="info">
+                    Emails sent to <b>{address}</b> will arrive in the helpdesk, but we recommend
+                    using your own company support address.
+                </Alert>
+            )
+        }
 
         return (
             <div>

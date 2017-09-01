@@ -116,6 +116,19 @@ export function isEmailList(string, delimiter = ',') {
     return addresses.every(address => isEmail(address.trim()))
 }
 
+/**
+ * check if an email integration is our base email integration
+ * @param address
+ * @return {boolean}
+ */
+export function isGorgiasSupportAddress(address) {
+    if (!_isString(address)) {
+        return false
+    }
+
+    return /^support@[a-zA-Z0-9-]+.gorgias.io$/.test(address)
+}
+
 export function formatDatetime(datetime, timezone, format = 'calendar') {
     try {
         let momentDate = moment(datetime)

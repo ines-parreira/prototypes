@@ -223,6 +223,36 @@ describe('global utils', () => {
         })
     })
 
+    describe('isGorgiasSupportAddress', () => {
+
+        it('should find our base gorgias address', () => {
+            const gorgiasSupportAddresses = [
+                'support@acme.gorgias.io',
+                'support@ACmE.gorgias.io',
+                'support@acm5678e.gorgias.io',
+                'support@ac-meee.gorgias.io',
+                'support@ac-meee78.gorgias.io'
+            ]
+
+            gorgiasSupportAddresses.forEach(address => {
+                expect(utils.isGorgiasSupportAddress(address)).toEqual(true)
+            })
+        })
+
+        it('should detect non-gorgias addresses', () => {
+            const notGorgiasAddresses = [
+                'support@acme.io',
+                'support@acme.com',
+                'SuppOrT@acme-gorgias.io'
+            ]
+
+            notGorgiasAddresses.forEach(address => {
+                expect(utils.isGorgiasSupportAddress(address)).toEqual(false)
+            })
+        })
+
+    })
+
     describe('toQueryParams', () => {
         it('should convert object to query params', () => {
             const obj = {
