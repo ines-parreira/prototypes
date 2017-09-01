@@ -38,6 +38,16 @@ const _updateMessageText = _debounce((props, editorState) => {
     }))
 }, 100)
 
+// we're debouncing the update so it's performed only once
+const _updateEditorState = _debounce((self, props) => {
+    self._updateEditorState(self._getEditorStateFromReducer(props))
+}, 5)
+
+const _focusEditor = _debounce((self) => {
+    self.richArea._focusEditor()
+}, 5)
+
+
 class TicketReplyEditor extends React.Component {
     componentWillMount() {
         this._updateEditorState(this._getEditorStateFromReducer(this.props))
@@ -49,11 +59,14 @@ class TicketReplyEditor extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const forceUpdate = nextProps.newMessage.getIn(['state', 'forceUpdate'])
+        const forceFocus = nextProps.newMessage.getIn(['state', 'forceFocus'])
 
         if (forceUpdate) {
-            setTimeout(() => {
-                this._updateEditorState(this._getEditorStateFromReducer(nextProps))
-            }, 1)
+            _updateEditorState(this, nextProps)
+        }
+
+        if (forceFocus) {
+            _focusEditor(this)
         }
     }
 

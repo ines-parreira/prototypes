@@ -130,6 +130,7 @@ export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
         type: types.SET_RESPONSE_TEXT,
         args,
         ticketId,
+        forceFocus: args.get('forceFocus', false),
         ticket, // used in middleware, not in reducer
         appliedMacro: ticket.getIn(['state', 'appliedMacro']),
         currentUser, // used in middleware, not in reducer
@@ -465,8 +466,8 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
 
         onMessageSent(dispatch)
 
-        // We're trying to add a signature if any
-        dispatch(setResponseText())
+        // clear the message (since it was just sent) but force the focus on the field
+        dispatch(setResponseText(fromJS({forceFocus: true})))
         dispatch(resetReceiversAndSender)
 
         let promise

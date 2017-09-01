@@ -59,6 +59,7 @@ export const getCache = (context) => {
         const cachedContentState = cachedContent.get('contentState')
         if (cachedContentState) {
             context.contentState = convertFromRaw(cachedContentState.toJS())
+            context.forceUpdate = true
             const cachedSelectionState = cachedContent.get('selectionState')
             if (cachedSelectionState) {
                 // create a new selection and just copy the props from the cached state
@@ -143,7 +144,6 @@ export const addCache = (context) => {
     }
 
     context = getCache(context)
-    context.forceUpdate = true
 
     return _markCacheAdded(context)
 }
@@ -233,8 +233,9 @@ export const addSignature = (context) => {
     // Concat the signature blocks at the end of the content
     context.contentState = ContentState.createFromBlockArray(signatureBlocks)
 
+    // TODO(@xarg): commented this out because we don't want to force the selection if a signature is set
     // Set the position of the cursor just before the signature. Only if we don't already have a selection state!
-    context.selectionState = _selectionBefore(context.contentState.getBlocksAsArray())
+    // context.selectionState = _selectionBefore(context.contentState.getBlocksAsArray())
     context.forceUpdate = true
 
     return _markSignatureAdded(context)

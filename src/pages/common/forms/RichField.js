@@ -77,7 +77,7 @@ export default class RichField extends InputField {
     }
 
     // used by parents that want to set a new editor state
-    _setEditorState = (editorState, focus = true) => {
+    _setEditorState = (editorState, focus = false) => {
         this._onChange(editorState, () => {
             if (focus) {
                 this._focusEditor()

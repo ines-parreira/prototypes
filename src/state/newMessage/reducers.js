@@ -47,7 +47,8 @@ export const initialState = fromJS({
         dirty: false,
         signatureAdded: false,
         cacheAdded: false,
-        forceUpdate: true,
+        forceUpdate: false,
+        forceFocus: false,
         contentState: null,
         selectionState: null,
         appliedMacro: null,
@@ -220,14 +221,14 @@ export default (state = initialState, action) => {
         case types.SET_RESPONSE_TEXT: {
             let contentState = action.args.get('contentState') || state.getIn(['state', 'contentState'])
             let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
-            const {appliedMacro} = action
+            const {appliedMacro, forceFocus} = action
 
             let context = {
                 action,
                 state,
                 contentState,
                 selectionState,
-                appliedMacro,
+                appliedMacro
             }
 
             context = responseUtils.addCache(context)
@@ -268,6 +269,7 @@ export default (state = initialState, action) => {
                 },
                 state: {
                     dirty,
+                    forceFocus,
                     forceUpdate: !!context.forceUpdate,
                     signatureAdded: !!context.signatureAdded,
                     cacheAdded: !!context.cacheAdded,
