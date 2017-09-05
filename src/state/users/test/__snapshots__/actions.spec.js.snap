@@ -130,6 +130,24 @@ Array [
 ]
 `;
 
+exports[`users actions merge users 2`] = `
+Array [
+  Object {
+    "type": "MERGE_USERS_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Array [
+        Object {
+          "id": 1,
+        },
+      ],
+    },
+    "type": "MERGE_USERS_SUCCESS",
+  },
+]
+`;
+
 exports[`users actions update user 1`] = `
 Array [
   Object {

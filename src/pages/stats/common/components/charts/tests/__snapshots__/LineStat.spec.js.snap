@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LineStat should render a line chart 1`] = `
+<Line
+  data={
+    Object {
+      "datasets": Array [
+        Object {
+          "backgroundColor": "#466fde",
+          "data": Array [
+            23,
+            4,
+            445,
+            56,
+          ],
+          "label": "median",
+        },
+        Object {
+          "backgroundColor": "#ca77b7",
+          "data": Array [
+            65,
+            45,
+            87,
+            9,
+          ],
+          "label": "95%",
+        },
+      ],
+      "labels": Array [
+        123434533,
+        123435636,
+        123456568,
+        123876542,
+      ],
+    }
+  }
+  height={400}
+  options={
+    Object {
+      "scales": Object {
+        "xAxes": Array [
+          Object {
+            "gridLines": Object {
+              "display": false,
+            },
+            "scaleLabel": Object {
+              "display": true,
+              "fontColor": "rgba(0, 0, 0, 0.4)",
+              "labelString": "50%",
+            },
+            "ticks": Object {
+              "callback": [Function],
+              "fontColor": "rgba(0, 0, 0, 0.4)",
+            },
+          },
+        ],
+        "yAxes": Array [
+          Object {
+            "gridLines": Object {
+              "borderDash": Array [
+                3,
+                6,
+              ],
+            },
+            "scaleLabel": Object {
+              "display": true,
+              "fontColor": "rgba(0, 0, 0, 0.4)",
+              "labelString": "90%",
+            },
+            "ticks": Object {
+              "callback": [Function],
+              "fontColor": "rgba(0, 0, 0, 0.4)",
+              "min": 0,
+              "suggestedMax": 1,
+            },
+          },
+        ],
+      },
+      "title": Object {
+        "display": true,
+        "text": "Resolution time (percentiles)",
+      },
+      "tooltips": Object {
+        "callbacks": Object {
+          "label": [Function],
+        },
+      },
+    }
+  }
+/>
+`;

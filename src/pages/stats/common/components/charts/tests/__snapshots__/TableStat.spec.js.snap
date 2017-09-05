@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableStat should render a table chart 1`] = `
+<Jn
+  hover={true}
+  responsiveTag="div"
+  tag="table"
+>
+  <thead>
+    <tr>
+      <th
+        className=""
+      >
+        TAGS
+      </th>
+      <th
+        className="text-center"
+      >
+        NEW TICKETS #
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        className=""
+      >
+        refund
+      </td>
+      <td
+        className="text-center"
+      >
+        42
+      </td>
+    </tr>
+  </tbody>
+</Jn>
+`;

@@ -180,6 +180,7 @@ export default (
                 content: OverviewStatsContainer,
                 navbar: StatsNavbarContainer
             }}
+            noContainerWidthLimit
         />
         <Route
             path="stats/:type"
@@ -187,6 +188,7 @@ export default (
                 content: SimpleStatsContainer,
                 navbar: StatsNavbarContainer
             }}
+            noContainerWidthLimit
         />
         <Route path="settings">
             <IndexRoute

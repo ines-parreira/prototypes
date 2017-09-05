@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Stat should render a bar chart 1`] = `
+<ta
+  className="stats-card mb-3"
+  tag="div"
+>
+  <ba
+    tag="div"
+  >
+    <div>
+      <BarStat
+        config={
+          Immutable.Map {
+            style: "bar",
+          }
+        }
+        data={
+          Immutable.Map {
+          }
+        }
+        label="Stat label"
+        legend={
+          Immutable.Map {
+          }
+        }
+        meta={
+          Immutable.Map {
+          }
+        }
+        name="stat_name"
+      />
+    </div>
+  </ba>
+</ta>
+`;
+
+exports[`Stat should render a key metrics chart 1`] = `
+<ta
+  className="stats-card mb-3"
+  tag="div"
+>
+  <ba
+    tag="div"
+  >
+    <div>
+      <KeyMetricStat
+        config={
+          Immutable.Map {
+            style: "key-metrics",
+          }
+        }
+        data={
+          Immutable.Map {
+          }
+        }
+        label="Stat label"
+        legend={
+          Immutable.Map {
+          }
+        }
+        meta={
+          Immutable.Map {
+          }
+        }
+        name="stat_name"
+      />
+    </div>
+  </ba>
+</ta>
+`;
+
+exports[`Stat should render a line chart 1`] = `
+<ta
+  className="stats-card mb-3"
+  tag="div"
+>
+  <ba
+    tag="div"
+  >
+    <div>
+      <LineStat
+        config={
+          Immutable.Map {
+            style: "line",
+          }
+        }
+        data={
+          Immutable.Map {
+          }
+        }
+        label="Stat label"
+        legend={
+          Immutable.Map {
+          }
+        }
+        meta={
+          Immutable.Map {
+          }
+        }
+        name="stat_name"
+      />
+    </div>
+  </ba>
+</ta>
+`;
+
+exports[`Stat should render a table chart 1`] = `
+<ta
+  className="stats-card mb-3"
+  tag="div"
+>
+  <ba
+    tag="div"
+  >
+    <div>
+      <TableStat
+        config={
+          Immutable.Map {
+            style: "table",
+          }
+        }
+        data={
+          Immutable.Map {
+          }
+        }
+        label="Stat label"
+        legend={
+          Immutable.Map {
+          }
+        }
+        meta={
+          Immutable.Map {
+          }
+        }
+        name="stat_name"
+      />
+    </div>
+  </ba>
+</ta>
+`;

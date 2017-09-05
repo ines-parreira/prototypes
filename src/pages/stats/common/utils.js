@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import classnames from 'classnames'
 import _isUndefined from 'lodash/isUndefined'
 import _isNumber from 'lodash/isNumber'
@@ -52,3 +53,39 @@ export const comparedPeriodString = (previousStartDatetime, previousEndDatetime)
 
     return `Compared to : ${previousPeriod}`
 }
+
+
+// format a value and display it as a percentage
+export const formatPercent = (value) => {
+    return _isNumber(value) ? `${value}%` : ''
+}
+
+// format a value and display it as a duration (days, hours, minutes or seconds)
+export const formatDuration = (value) => {
+    const duration = moment.duration(value, 'seconds')
+    let response = ''
+
+    const days = duration.days()
+    const hours = duration.hours()
+    const minutes = duration.minutes()
+    const seconds = duration.seconds()
+
+    if (days) {
+        response += `${days}d `
+    }
+
+    if (hours) {
+        response += `${hours}h `
+    }
+
+    if (minutes) {
+        response += `${minutes}m `
+    }
+
+    if (seconds) {
+        response += `${seconds}s`
+    }
+
+    return response
+}
+

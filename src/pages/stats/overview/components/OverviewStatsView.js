@@ -2,107 +2,15 @@ import React, {PropTypes} from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
-import _isNumber from 'lodash/isNumber'
 import _debounce from 'lodash/debounce'
-import {Card, CardBlock, UncontrolledTooltip} from 'reactstrap'
+import {config as statsConfig} from '../../../../config/stats'
 
 import PeriodPicker from '../../common/PeriodPicker'
 import PageHeader from '../../../common/components/PageHeader'
 import Loader from '../../../common/components/Loader'
-import {renderDifference, comparedPeriodString} from '../../common/utils'
 import {fieldEnumSearch} from '../../../../state/views/actions'
 import SearchableSelectField from '../../common/SearchableSelectField'
-
-// format a value and display it as a percentage
-const formatPercent = (value) => {
-    return _isNumber(value) ? `${value}%` : ''
-}
-
-// format a value and display it as a duration (days, hours, minutes or seconds)
-const formatDuration = (value) => {
-    const duration = moment.duration(value, 'seconds')
-    let response = ''
-
-    const days = duration.days()
-    if (days) {
-        response += `${days}d `
-    }
-
-    const hours = duration.hours()
-    if (hours) {
-        response += `${hours}h `
-    }
-
-    const minutes = duration.minutes()
-    if (minutes) {
-        response += `${minutes}m `
-    }
-
-    const seconds = duration.seconds()
-    if (!response && seconds) {
-        response = `${seconds}s`
-    }
-
-    return response
-}
-
-const availableStats = fromJS([
-    {
-        name: 'total_new_tickets',
-        value: v => v,
-        label: 'New tickets',
-        tooltip: 'Tickets created during this period',
-    },
-    {
-        name: 'total_closed_tickets',
-        value: v => v,
-        label: 'Closed tickets',
-        tooltip: 'Tickets closed during this period. If a ticket was closed multiple times, we only take into account the last time it was closed',
-    },
-    {
-        name: 'total_ticket_messages_sent',
-        value: v => v,
-        tooltip: 'Total number of messages on all channels sent by agents',
-        label: 'Messages sent',
-    },
-    {
-        name: 'total_ticket_messages_received',
-        value: v => v,
-        tooltip: 'Total number of messages on all channels received from user',
-        label: 'Messages received',
-    },
-    {
-        name: 'median_first_response_time',
-        value: v => formatDuration(v),
-        tooltip: `Difference between the date when the first message was received from 
-the user and the first response of the agent. Only tickets with at least 1 response are taken into account. This
-doesn't take into account responses sent by the rules (median)`,
-        label: 'First response time',
-        moreIsBetter: false,
-    },
-    {
-        name: 'median_resolution_time',
-        value: v => formatDuration(v),
-        tooltip: `Difference between the date the ticket was created and when it was closed (median). 
-                        Only tickets with at least 1 response are taken into account`,
-        label: 'Resolution time',
-        moreIsBetter: false,
-    },
-    {
-        name: 'total_one_touch_tickets',
-        value: v => formatPercent(v),
-        tooltip: 'Percentage of tickets that were solved with only one response from your agents',
-        label: 'One-touch tickets',
-        moreIsBetter: true,
-    },
-    // {
-    //     name: 'satisfaction_score',
-    //     value: v => formatPercent(v),
-    //     tooltip: 'Positive satisfaction ratings minus negative satisfaction ratings',
-    //     label: 'Satisfaction score',
-    //     moreIsBetter: true,
-    // }
-])
+import Stat from '../../common/components/charts/Stat'
 
 class OverviewStatsView extends React.Component {
     constructor(props) {
@@ -142,99 +50,6 @@ class OverviewStatsView extends React.Component {
             })
     }, 300)
 
-    // render helper tooltip displaying description of each statistic
-    _renderTooltip = (id, text, content) => {
-        return (
-            <span>
-                <span id={id}>
-                    {content}
-                </span>
-                <UncontrolledTooltip
-                    placement="top"
-                    target={id}
-                    delay={0}
-                >
-                    {text}
-                </UncontrolledTooltip>
-            </span>
-        )
-    }
-
-    _renderValue = (config, value, key, tooltipDelta) => {
-        const {stats} = this.props
-
-        value = config.get('value')(value)
-
-        if (value || value === 0) {
-            return (
-                <div className="value">
-                    {value}
-                    {
-                        this._renderTooltip(
-                            `value-${config.get('name')}`,
-                            tooltipDelta,
-                            renderDifference(
-                                stats.getIn(['difference_period', key]),
-                                config.get('moreIsBetter')
-                            )
-                        )
-                    }
-                </div>
-            )
-        }
-
-        return <div className="value">n/a</div>
-    }
-
-    // render the grid of statistics
-    _renderStatistics = () => {
-        const {stats, meta} = this.props
-
-        const previousStartDatetime = moment(meta.get('previous_start_datetime'))
-        const previousEndDatetime = moment(meta.get('previous_end_datetime'))
-
-        const tooltipDelta = comparedPeriodString(previousStartDatetime, previousEndDatetime)
-
-        const currentPeriod = stats.get('current_period') || fromJS({})
-
-        return (
-            <Card className="stats-card">
-                <CardBlock>
-                    <div className="statistics">
-                        {
-                            availableStats.map((config) => {
-                                const currentPeriodStat = currentPeriod.find((value, key) => key === config.get('name'))
-
-                                if (currentPeriodStat === null) {
-                                    return null
-                                }
-
-                                return (
-                                    <div
-                                        className="statistic"
-                                        key={config.get('name')}
-                                    >
-                                        <div className="label">
-                                            {config.get('label')}
-                                            {
-                                                this._renderTooltip(
-                                                    `title-${config.get('name')}`,
-                                                    config.get('tooltip'),
-                                                    <i className="fa fa-fw fa-question-circle ml-1" />
-                                                )
-                                            }
-                                        </div>
-                                        {this._renderValue(config, currentPeriodStat, config.get('name'), tooltipDelta)}
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </CardBlock>
-            </Card>
-        )
-    }
-
     // returns a redux-form like input to use the field outside of redux-form context
     _makeInputControl = (name) => {
         const {filters} = this.props
@@ -246,13 +61,12 @@ class OverviewStatsView extends React.Component {
     }
 
     render() {
-        const {meta, isLoading} = this.props
-
+        const {meta, isLoading, stats} = this.props
         const startDatetime = moment(meta.get('start_datetime'))
         const endDatetime = moment(meta.get('end_datetime'))
 
         return (
-            <div className="view stats">
+            <div className="stats">
                 <PageHeader title="Overview">
                     <div className="d-flex flex-wrap pull-right">
                         <SearchableSelectField
@@ -285,7 +99,21 @@ class OverviewStatsView extends React.Component {
                         />
                     </div>
                 </PageHeader>
-                {isLoading ? <Loader /> : this._renderStatistics()}
+                {isLoading || stats.isEmpty() ?
+                    <Loader/>
+                    :
+                    stats.map((stat, idx) => {
+                        const config = statsConfig.get(stat.get('name'))
+                        return (
+                            <Stat
+                                key={idx}
+                                config={config}
+                                meta={meta}
+                                {...stat.toObject()}
+                            />
+                        )
+                    })
+                }
             </div>
         )
     }
