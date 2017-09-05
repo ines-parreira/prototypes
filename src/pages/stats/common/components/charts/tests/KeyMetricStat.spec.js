@@ -24,7 +24,10 @@ const barStat = fromJS({
             }
         ]
     },
-    meta: {}
+    meta: {
+        previous_start_datetime: '2017-09-05 00:00:00',
+        previous_end_datetime: '2017-09-06 23:59:59',
+    }
 })
 
 describe('KeyMetricStat', () => {

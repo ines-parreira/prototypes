@@ -52,7 +52,7 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
           placement="top"
           target="value-0"
         >
-          Compared to : Sep 01, 2017
+          Compared to : Sep 05, 2017 - Sep 06, 2017
         </UncontrolledTooltip>
       </span>
     </div>
