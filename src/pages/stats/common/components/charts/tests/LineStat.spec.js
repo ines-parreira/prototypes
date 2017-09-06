@@ -30,6 +30,10 @@ const barStat = fromJS({
             name: '90%',
             data: [65, 45, 87, 9]
         }]
+    },
+    meta: {
+        'start_datetime': '2017-09-05 00:00:00',
+        'end_datetime': '2017-09-05 23:59:59'
     }
 })
 

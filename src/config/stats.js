@@ -28,6 +28,7 @@ export const colors = [
 ]
 
 export const chartMaxHeight = 400
+export const chartPointRadius = 4
 
 // Default configuration for Chart.js
 _merge(defaults, {
