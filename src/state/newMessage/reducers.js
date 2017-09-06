@@ -221,14 +221,15 @@ export default (state = initialState, action) => {
         case types.SET_RESPONSE_TEXT: {
             let contentState = action.args.get('contentState') || state.getIn(['state', 'contentState'])
             let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
-            const {appliedMacro, forceFocus} = action
+            const {appliedMacro, forceFocus, forceUpdate} = action
 
             let context = {
                 action,
                 state,
                 contentState,
                 selectionState,
-                appliedMacro
+                appliedMacro,
+                forceUpdate
             }
 
             context = responseUtils.addCache(context)

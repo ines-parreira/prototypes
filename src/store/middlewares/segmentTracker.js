@@ -1,4 +1,5 @@
 import _isUndefined from 'lodash/isUndefined'
+import {devLog} from '../../utils'
 
 const analytics = window.analytics
 
@@ -12,10 +13,7 @@ export const logEvent = (event, props = {}) => {
         return
     }
 
-    // in dev env do not send data to Segment
-    if (window.DEVELOPMENT || window.STAGING) {
-        return console.log('Track Segment', event, props)
-    }
+    devLog('Track Segment', event, props)
 
     analytics.track(event, props)
 }
@@ -42,11 +40,7 @@ export const identifyUser = (user) => {
         created_at: user.created_datetime,
     }
 
-    // in dev env do not send data to Segment
-    if (window.DEVELOPMENT || window.STAGING) {
-        return console.log('Identify Segment user', userId, userData)
-    }
-
+    devLog('Identify Segment user', userId, userData)
     analytics.identify(userId, userData)
 }
 

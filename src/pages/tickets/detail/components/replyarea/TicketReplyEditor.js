@@ -62,6 +62,8 @@ class TicketReplyEditor extends React.Component {
         const forceFocus = nextProps.newMessage.getIn(['state', 'forceFocus'])
 
         if (forceUpdate) {
+            // cancel any previously debounced update if any
+            _updateEditorState.cancel()
             _updateEditorState(this, nextProps)
         }
 

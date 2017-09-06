@@ -35,11 +35,9 @@ export class TicketReplyArea extends React.Component {
 
     componentDidMount() {
         this._bindKeys()
-        search.populate(this.props.macros.get('items'))
 
-        if (this.props.newMessage.getIn(CONTENT_STATE_PATH) === null) {
-            this._setMacrosVisible(this.props.newMessageType === 'email')
-        }
+        // TODO(@xarg): move this closer after the loading of the initial state.
+        search.populate(this.props.macros.get('items'))
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -60,7 +58,8 @@ export class TicketReplyArea extends React.Component {
 
         // here we make sure that we only toggle the macros
         // if the current contentState is null.
-        if (prevContentState === null && this.props.newMessageType === 'email') {
+        if (prevContentState === null && nextProps.newMessageType === 'email' &&
+            nextProps.macros.get('visible') === this.props.macros.get('visible')) {
             // default
             let showMacros = nextProps.preferences.get('show_macros')
 
@@ -99,7 +98,7 @@ export class TicketReplyArea extends React.Component {
                 action: (e) => {
                     if (!modalVisible()) {
                         e.preventDefault()
-                        this.props.actions.macro.setMacrosVisible(true)
+                        this._setMacrosVisible(true)
 
                         if (this.macroInput) {
                             ReactDOM.findDOMNode(this.macroInput).focus()
@@ -110,7 +109,7 @@ export class TicketReplyArea extends React.Component {
             BLUR_EVERYTHING: {
                 action: () => {
                     if (!modalVisible()) {
-                        this.props.actions.macro.setMacrosVisible(false)
+                        this._setMacrosVisible(false)
                     }
 
                     if ('activeElement' in document) {

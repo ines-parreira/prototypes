@@ -131,6 +131,7 @@ export const setResponseText = (args = fromJS({})) => (dispatch, getState) => {
         args,
         ticketId,
         forceFocus: args.get('forceFocus', false),
+        forceUpdate: args.get('forceUpdate', false),
         ticket, // used in middleware, not in reducer
         appliedMacro: ticket.getIn(['state', 'appliedMacro']),
         currentUser, // used in middleware, not in reducer
@@ -467,7 +468,7 @@ export function submitTicketMessage(status, macroActions, action, resetMessage =
         onMessageSent(dispatch)
 
         // clear the message (since it was just sent) but force the focus on the field
-        dispatch(setResponseText(fromJS({forceFocus: true})))
+        dispatch(setResponseText(fromJS({forceFocus: true, forceUpdate: true})))
         dispatch(resetReceiversAndSender)
 
         let promise
