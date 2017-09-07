@@ -21,22 +21,21 @@ import * as integrationHelpers from './../../../../../../state/integrations/help
 
 import {renderCodeSnippet} from '../utils'
 
-import detailCss from '../ChatIntegrationDetail.less'
-
 
 class ChatIntegrationInstall extends React.Component {
     static propTypes = {
         domain: PropTypes.string.isRequired,
         actions: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
         notify: PropTypes.func.isRequired,
         shopifyIntegrations: PropTypes.object.isRequired,
+        shopifyIntegrationsWithoutChat: PropTypes.object.isRequired,
         integration: PropTypes.object.isRequired
     }
 
     state = {
         name: '',
         email: '',
+        integrationLoading: null
     }
 
     componentDidMount() {
@@ -49,7 +48,9 @@ class ChatIntegrationInstall extends React.Component {
         })
     }
 
-    _installOnShopify = (shopifyIntegration) => {
+    _installOnShopifyStore = (shopifyIntegration) => {
+        this.setState({integrationLoading: shopifyIntegration.get('id')})
+
         if (shopifyIntegration.getIn(['meta', 'need_scope_update'])) {
             return browserHistory.push(
                 `/app/integrations/shopify/${shopifyIntegration.get('id')}/?error=need_scope_update`
@@ -66,18 +67,31 @@ class ChatIntegrationInstall extends React.Component {
         const integration = this.props.integration.setIn(['meta', 'shopify_integration_ids'], shopifyIntegrationIdsList)
 
         return this.props.actions.updateOrCreateIntegration(integration).then(() => {
-            browserHistory.push(`/app/integrations/smooch_inside/${integration.get('id')}/`)
+            this.setState({integrationLoading: null})
         })
+    }
+
+    _removeFromShopifyStore = (integrationId) => {
+        const {integration} = this.props
+
+        const indexToDelete = integration.getIn(['meta', 'shopify_integration_ids'])
+            .findIndex((value) => value === integrationId)
+
+        const form = {
+            id: integration.get('id'),
+            type: integration.get('type'),
+            meta: integration.get('meta').deleteIn(['shopify_integration_ids', indexToDelete])
+        }
+
+        return this.props.actions.updateOrCreateIntegration(fromJS(form))
     }
 
     render() {
         const {
             integration,
-            loading,
             shopifyIntegrations,
+            shopifyIntegrationsWithoutChat
         } = this.props
-
-        const isSubmitting = loading.get('updateIntegration') === integration.get('id')
 
         return (
             <div>
@@ -89,30 +103,57 @@ class ChatIntegrationInstall extends React.Component {
                         <Link to="/app/integrations/smooch_inside">Chat</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem>
-                        <Link to={`/app/integrations/smooch_inside/${integration.get('id')}`}>
-                            {integration.get('name')}
-                            </Link>
+                        {integration.get('name')}
                     </BreadcrumbItem>
                     <BreadcrumbItem active>
-                        Install
+                        Installation
                     </BreadcrumbItem>
                 </Breadcrumb>
 
                 <h1>
-                    Install
+                    Installation
                 </h1>
 
                 <p>Let's install your chat on your website.</p>
 
+                <div>
+                    {
+                        integration.getIn(['meta', 'shopify_integration_ids'], fromJS([]))
+                            .map((integrationId) => {
+                                const shopifyIntegration = shopifyIntegrations.find((integration) => {
+                                    return integration.get('id') === integrationId
+                                })
+
+                                if (!shopifyIntegration) {
+                                    return null
+                                }
+
+                                return (
+                                    <p key={integrationId}>
+                                        Chat installed on {`${shopifyIntegration.get('name')}`}.{' '}
+                                        <a
+                                            href=""
+                                            onClick={() => this._removeFromShopifyStore(integrationId)}
+                                        >
+                                            Remove
+                                        </a>
+                                    </p>
+                                )
+                            })
+                    }
+                </div>
+
                 <div className={css.form}>
                     {
-                        shopifyIntegrations.map((integration, idx) => {
+                        shopifyIntegrationsWithoutChat.map((integration, idx) => {
                             return (
                                 <Button
                                     key={idx}
                                     block
-                                    onClick={() => {this._installOnShopify(integration)}}
-                                    className="mb-2"
+                                    onClick={() => {this._installOnShopifyStore(integration)}}
+                                    className={classnames('mb-2', {
+                                        'btn-loading': this.state.integrationLoading === integration.get('id')
+                                    })}
                                     color="secondary"
                                 >
                                     <img
@@ -125,7 +166,7 @@ class ChatIntegrationInstall extends React.Component {
                         })
                     }
                     {
-                        !shopifyIntegrations.isEmpty()
+                        !shopifyIntegrationsWithoutChat.isEmpty()
                             ? (
                                 <p className="text-muted text-center">
                                     Can't see your store here?{' '}
@@ -150,7 +191,7 @@ class ChatIntegrationInstall extends React.Component {
                             {' '}<kbd>{'</body>'}</kbd>{' '}tag:
                         </p>
 
-                        <div className={detailCss.snippet}>
+                        <div className={css.snippet}>
                         <Card className="p-0 mb-2">
                             <Alert color="info" className="m-0">
                                 <pre
@@ -170,26 +211,12 @@ class ChatIntegrationInstall extends React.Component {
                             id="copy-chat-snippet"
                             type="button"
                             color="info"
-                            className={detailCss.copy}
+                            className={css.copy}
                             data-clipboard-target="#chat-snippet"
                         >
                             <i className="fa fa-fw fa-files-o mr-2" />
                             {this.state.isCopied ? 'Copied!' : 'Copy'}
                         </Button>
-                        </div>
-
-                        <div>
-                            <Button
-                                type="submit"
-                                block
-                                color="primary"
-                                className={classnames({
-                                    'btn-loading': isSubmitting,
-                                })}
-                                disabled={isSubmitting}
-                            >
-                                I added the code to my website
-                            </Button>
                         </div>
                     </Form>
                 </div>
@@ -200,7 +227,8 @@ class ChatIntegrationInstall extends React.Component {
 
 const mapStateToProps = state => ({
     domain: state.currentAccount.get('domain'),
-    shopifyIntegrations: integrationSelectors.getShopifyIntegrationsWithoutChat(state)
+    shopifyIntegrationsWithoutChat: integrationSelectors.getShopifyIntegrationsWithoutChat(state),
+    shopifyIntegrations: integrationSelectors.getIntegrationsByTypes('shopify')(state)
 })
 
 export default connect(mapStateToProps, {notify})(ChatIntegrationInstall)

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChatIntegrationInstall component should display a placeholder if there's no Shopify store without chat 1`] = `
+exports[`ChatIntegrationInstall component should display a placeholder if there's no Shopify store without chat, andshould display the list of Shopify stores where the chat is installed 1`] = `
 <div>
   <gs
     tag="ol"
@@ -30,27 +30,35 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
     <bs
       tag="li"
     >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations/smooch_inside/2"
-      >
-        mychat
-      </Link>
+      mychat
     </bs>
     <bs
       active={true}
       tag="li"
     >
-      Install
+      Installation
     </bs>
   </gs>
   <h1>
-    Install
+    Installation
   </h1>
   <p>
     Let's install your chat on your website.
   </p>
+  <div>
+    <p>
+      Chat installed on 
+      mylittleintegration
+      .
+       
+      <a
+        href=""
+        onClick={[Function]}
+      >
+        Remove
+      </a>
+    </p>
+  </div>
   <div>
     <ei
       block={true}
@@ -150,18 +158,6 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
           Copy
         </ei>
       </div>
-      <div>
-        <ei
-          block={true}
-          className=""
-          color="primary"
-          disabled={false}
-          tag="button"
-          type="submit"
-        >
-          I added the code to my website
-        </ei>
-      </div>
     </rl>
   </div>
 </div>
@@ -197,27 +193,22 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
     <bs
       tag="li"
     >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations/smooch_inside/2"
-      >
-        mychat
-      </Link>
+      mychat
     </bs>
     <bs
       active={true}
       tag="li"
     >
-      Install
+      Installation
     </bs>
   </gs>
   <h1>
-    Install
+    Installation
   </h1>
   <p>
     Let's install your chat on your website.
   </p>
+  <div />
   <div>
     <ei
       block={true}
@@ -327,18 +318,6 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
           Copy
         </ei>
       </div>
-      <div>
-        <ei
-          block={true}
-          className=""
-          color="primary"
-          disabled={false}
-          tag="button"
-          type="submit"
-        >
-          I added the code to my website
-        </ei>
-      </div>
     </rl>
   </div>
 </div>
@@ -374,27 +353,22 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
     <bs
       tag="li"
     >
-      <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/integrations/smooch_inside/2"
-      >
-        mychat
-      </Link>
+      mychat
     </bs>
     <bs
       active={true}
       tag="li"
     >
-      Install
+      Installation
     </bs>
   </gs>
   <h1>
-    Install
+    Installation
   </h1>
   <p>
     Let's install your chat on your website.
   </p>
+  <div />
   <div>
     <ei
       block={true}
@@ -492,18 +466,6 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
             className="fa fa-fw fa-files-o mr-2"
           />
           Copy
-        </ei>
-      </div>
-      <div>
-        <ei
-          block={true}
-          className=""
-          color="primary"
-          disabled={false}
-          tag="button"
-          type="submit"
-        >
-          I added the code to my website
         </ei>
       </div>
     </rl>

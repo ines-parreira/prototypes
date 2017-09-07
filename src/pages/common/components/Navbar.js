@@ -74,7 +74,7 @@ export default class Navbar extends React.Component {
         currentUserPreferences: PropTypes.object.isRequired,
         availableForChat: PropTypes.bool.isRequired,
         activeContent: PropTypes.string,
-        children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+        children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
         submitSetting: PropTypes.func.isRequired,
         isOpenedPanel: PropTypes.bool.isRequired,
         closePanels: PropTypes.func.isRequired,

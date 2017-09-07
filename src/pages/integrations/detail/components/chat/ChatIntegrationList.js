@@ -34,7 +34,7 @@ export default class ChatIntegrationList extends React.Component {
                 return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
             }
 
-            const editLink = `/app/integrations/smooch_inside/${int.get('id')}`
+            const editLink = `/app/integrations/smooch_inside/${int.get('id')}/appearance`
             const isDisabled = int.get('deactivated_datetime')
 
             return (

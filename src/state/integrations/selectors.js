@@ -19,7 +19,8 @@ export const getActiveIntegrations = createSelector(
 export const getIntegrationById = id => createSelector(
     [getIntegrations],
     (integrations) => {
-        return integrations.find(integration => integration.get('id') === id) || fromJS({})
+        return integrations.find(integration => integration.get('id', '').toString() === (id || '').toString())
+            || fromJS({})
     }
 )
 

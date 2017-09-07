@@ -43,7 +43,8 @@ describe('ChatIntegrationInstall component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should display a placeholder if there\'s no Shopify store without chat', () => {
+    it('should display a placeholder if there\'s no Shopify store without chat, and' +
+        'should display the list of Shopify stores where the chat is installed', () => {
         const component = shallow(
             <ChatIntegrationInstall
                 {...minProps}

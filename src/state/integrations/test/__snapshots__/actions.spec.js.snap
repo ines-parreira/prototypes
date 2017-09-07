@@ -70,12 +70,27 @@ Array [
 ]
 `;
 
-exports[`integrations actions on create success 1`] = `
+exports[`integrations actions on create email success 1`] = `
 Array [
   Object {
     "resp": Object {
       "id": 1,
       "type": "email",
+    },
+    "type": "CREATE_INTEGRATION_SUCCESS",
+  },
+  Object {
+    "type": "FETCH_INTEGRATIONS_START",
+  },
+]
+`;
+
+exports[`integrations actions on create smooch_inside success 1`] = `
+Array [
+  Object {
+    "resp": Object {
+      "id": 1,
+      "type": "smooch_inside",
     },
     "type": "CREATE_INTEGRATION_SUCCESS",
   },

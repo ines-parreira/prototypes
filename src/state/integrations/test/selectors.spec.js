@@ -49,7 +49,7 @@ describe('integrations selectors', () => {
         expect(channels.equals(expected)).toEqual(true)
     })
 
-    describe('shouldGetShopifyIntegrationsWithoutChat selector', () => {
+    describe('getShopifyIntegrationsWithoutChat selector', () => {
         it('should return one integration', () => {
             const state = {
                 integrations: fromJS({

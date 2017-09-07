@@ -62,7 +62,7 @@ export function onCreateSuccess(dispatch, resp) {
     if (resp.type === 'email') {
         nextStep = '/forwarding'
     } else if (resp.type === 'smooch_inside') {
-        nextStep = '/install'
+        nextStep = '/installation'
     }
 
     browserHistory.push(`/app/integrations/${resp.type}/${resp.id || ''}${nextStep}`)

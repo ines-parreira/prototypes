@@ -1,0 +1,585 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatIntegrationAppearance component should display correctly when creating a new chat integration 1`] = `
+<div>
+  <gs
+    tag="ol"
+  >
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations"
+      >
+        Integrations
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/smooch_inside"
+      >
+        Chat
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      New chat integration
+    </bs>
+  </gs>
+  <h1>
+    New chat integration
+  </h1>
+  <gt
+    fluid={true}
+    tag="div"
+  >
+    <bt
+      tag="div"
+    >
+      <Ot
+        style={
+          Object {
+            "paddingLeft": 0,
+          }
+        }
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <rl
+          className="ui form"
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div>
+            <div>
+              <InputField
+                help="Can be set only once! If you want to change the title you will have to create another chat"
+                label="Chat title"
+                onChange={[Function]}
+                placeholder="Ex: Company Support"
+                readOnly={false}
+                required={true}
+                type="text"
+                value=""
+              />
+              <FileField
+                accept="image/*"
+                help="The image must have a square format. Example: 200x200 pixels"
+                label="Company icon"
+                noPreview={false}
+                onChange={[Function]}
+                placeholder="Select a file..."
+                returnFiles={false}
+                type="file"
+                value=""
+              />
+              <InputField
+                label="Header text"
+                onChange={[Function]}
+                required={true}
+                rows="2"
+                type="textarea"
+                value="We're here to chat, so ask us anything!"
+              />
+              <InputField
+                label="Introduction text"
+                onChange={[Function]}
+                rows="2"
+                type="textarea"
+                value=""
+              />
+              <InputField
+                label="Input placeholder"
+                onChange={[Function]}
+                type="text"
+                value="Type a message..."
+              />
+              <InputField
+                label="Send button text"
+                onChange={[Function]}
+                type="text"
+                value="Send"
+              />
+              <ColorField
+                label="Header color"
+                onChange={[Function]}
+                type="text"
+                value="#0d87dd"
+              />
+              <ColorField
+                label="Conversation color"
+                onChange={[Function]}
+                type="text"
+                value="#0d87dd"
+              />
+              <ColorField
+                label="Chat icon color"
+                onChange={[Function]}
+                type="text"
+                value="#0d87dd"
+              />
+            </div>
+          </div>
+          <ei
+            className=""
+            color="primary"
+            disabled={false}
+            tag="button"
+            type="submit"
+          >
+            Add new chat
+          </ei>
+        </rl>
+      </Ot>
+      <Ot
+        className="p-0"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <ChatIntegrationPreview
+          chatIconColor="#0d87dd"
+          conversationColor="#0d87dd"
+          currentUser={
+            Immutable.Map {
+            }
+          }
+          headerColor="#0d87dd"
+          headerText="We're here to chat, so ask us anything!"
+          icon=""
+          inputPlaceholder="Type a message..."
+          introductionText=""
+          name=""
+          sendButtonText="Send"
+        />
+      </Ot>
+    </bt>
+  </gt>
+</div>
+`;
+
+exports[`ChatIntegrationAppearance component should display correctly when integration is loading 1`] = `
+<div>
+  <gs
+    tag="ol"
+  >
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations"
+      >
+        Integrations
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/smooch_inside"
+      >
+        Chat
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      hellosmoochintegration
+    </bs>
+    <bs
+      active={true}
+      tag="li"
+    >
+      Appearance
+    </bs>
+  </gs>
+  <h1>
+    Appearance
+  </h1>
+  <gt
+    fluid={true}
+    tag="div"
+  >
+    <bt
+      tag="div"
+    >
+      <Ot
+        style={
+          Object {
+            "paddingLeft": 0,
+          }
+        }
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <rl
+          className="ui form"
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div>
+            <div>
+              <InputField
+                help={false}
+                label="Chat title"
+                onChange={[Function]}
+                placeholder="Ex: Company Support"
+                readOnly={true}
+                required={true}
+                type="text"
+                value=""
+              />
+              <FileField
+                accept="image/*"
+                help="The image must have a square format. Example: 200x200 pixels"
+                label="Company icon"
+                noPreview={false}
+                onChange={[Function]}
+                placeholder="Select a file..."
+                returnFiles={false}
+                type="file"
+                value=""
+              />
+              <InputField
+                label="Header text"
+                onChange={[Function]}
+                required={true}
+                rows="2"
+                type="textarea"
+                value="We're here to chat, so ask us anything!"
+              />
+              <InputField
+                label="Introduction text"
+                onChange={[Function]}
+                rows="2"
+                type="textarea"
+                value=""
+              />
+              <InputField
+                label="Input placeholder"
+                onChange={[Function]}
+                type="text"
+                value="Type a message..."
+              />
+              <InputField
+                label="Send button text"
+                onChange={[Function]}
+                type="text"
+                value="Send"
+              />
+              <ColorField
+                label="Header color"
+                onChange={[Function]}
+                type="text"
+                value="#0d87dd"
+              />
+              <ColorField
+                label="Conversation color"
+                onChange={[Function]}
+                type="text"
+                value="#0d87dd"
+              />
+              <ColorField
+                label="Chat icon color"
+                onChange={[Function]}
+                type="text"
+                value="#0d87dd"
+              />
+            </div>
+          </div>
+          <ei
+            className="btn-loading"
+            color="primary"
+            disabled={true}
+            tag="button"
+            type="submit"
+          >
+            Save changes
+          </ei>
+          <ConfirmButton
+            className="pull-right"
+            color="danger"
+            confirm={[Function]}
+            content="Are you sure you want to delete this integration?"
+            disabled={false}
+            id=""
+            loading={false}
+            outline={true}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            Delete chat
+          </ConfirmButton>
+        </rl>
+      </Ot>
+      <Ot
+        className="p-0"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <ChatIntegrationPreview
+          chatIconColor="#0d87dd"
+          conversationColor="#0d87dd"
+          currentUser={
+            Immutable.Map {
+            }
+          }
+          headerColor="#0d87dd"
+          headerText="We're here to chat, so ask us anything!"
+          icon=""
+          inputPlaceholder="Type a message..."
+          introductionText=""
+          name=""
+          sendButtonText="Send"
+        />
+      </Ot>
+    </bt>
+  </gt>
+</div>
+`;
+
+exports[`ChatIntegrationAppearance component should display correctly when updating an existing integration 1`] = `
+<div>
+  <gs
+    tag="ol"
+  >
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations"
+      >
+        Integrations
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/integrations/smooch_inside"
+      >
+        Chat
+      </Link>
+    </bs>
+    <bs
+      tag="li"
+    >
+      hellosmoochintegration
+    </bs>
+    <bs
+      active={true}
+      tag="li"
+    >
+      Appearance
+    </bs>
+  </gs>
+  <h1>
+    Appearance
+  </h1>
+  <gt
+    fluid={true}
+    tag="div"
+  >
+    <bt
+      tag="div"
+    >
+      <Ot
+        style={
+          Object {
+            "paddingLeft": 0,
+          }
+        }
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <rl
+          className="ui form"
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div>
+            <div>
+              <InputField
+                help={false}
+                label="Chat title"
+                onChange={[Function]}
+                placeholder="Ex: Company Support"
+                readOnly={true}
+                required={true}
+                type="text"
+                value=""
+              />
+              <FileField
+                accept="image/*"
+                help="The image must have a square format. Example: 200x200 pixels"
+                label="Company icon"
+                noPreview={false}
+                onChange={[Function]}
+                placeholder="Select a file..."
+                returnFiles={false}
+                type="file"
+                value=""
+              />
+              <InputField
+                label="Header text"
+                onChange={[Function]}
+                required={true}
+                rows="2"
+                type="textarea"
+                value="We're here to chat, so ask us anything!"
+              />
+              <InputField
+                label="Introduction text"
+                onChange={[Function]}
+                rows="2"
+                type="textarea"
+                value=""
+              />
+              <InputField
+                label="Input placeholder"
+                onChange={[Function]}
+                type="text"
+                value="Type a message..."
+              />
+              <InputField
+                label="Send button text"
+                onChange={[Function]}
+                type="text"
+                value="Send"
+              />
+              <ColorField
+                label="Header color"
+                onChange={[Function]}
+                type="text"
+                value="#0d87dd"
+              />
+              <ColorField
+                label="Conversation color"
+                onChange={[Function]}
+                type="text"
+                value="#0d87dd"
+              />
+              <ColorField
+                label="Chat icon color"
+                onChange={[Function]}
+                type="text"
+                value="#0d87dd"
+              />
+            </div>
+          </div>
+          <ei
+            className=""
+            color="primary"
+            disabled={false}
+            tag="button"
+            type="submit"
+          >
+            Save changes
+          </ei>
+          <ConfirmButton
+            className="pull-right"
+            color="danger"
+            confirm={[Function]}
+            content="Are you sure you want to delete this integration?"
+            disabled={false}
+            id=""
+            loading={false}
+            outline={true}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            Delete chat
+          </ConfirmButton>
+        </rl>
+      </Ot>
+      <Ot
+        className="p-0"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <ChatIntegrationPreview
+          chatIconColor="#0d87dd"
+          conversationColor="#0d87dd"
+          currentUser={
+            Immutable.Map {
+            }
+          }
+          headerColor="#0d87dd"
+          headerText="We're here to chat, so ask us anything!"
+          icon=""
+          inputPlaceholder="Type a message..."
+          introductionText=""
+          name=""
+          sendButtonText="Send"
+        />
+      </Ot>
+    </bt>
+  </gt>
+</div>
+`;

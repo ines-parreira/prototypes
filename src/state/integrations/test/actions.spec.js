@@ -47,10 +47,20 @@ describe('integrations actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('on create success', () => {
+    it('on create email success', () => {
         const integration = {
             id: 1,
             type: 'email',
+        }
+
+        actions.onCreateSuccess(store.dispatch, integration)
+        expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('on create smooch_inside success', () => {
+        const integration = {
+            id: 1,
+            type: 'smooch_inside',
         }
 
         actions.onCreateSuccess(store.dispatch, integration)
