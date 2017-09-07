@@ -60,6 +60,7 @@ export const getCache = (context) => {
         if (cachedContentState) {
             context.contentState = convertFromRaw(cachedContentState.toJS())
             context.forceUpdate = true
+            context.forceFocus = true
             const cachedSelectionState = cachedContent.get('selectionState')
             if (cachedSelectionState) {
                 // create a new selection and just copy the props from the cached state
@@ -315,6 +316,7 @@ export const applyMacro = (context) => {
 
     context.contentState = ContentState.createFromBlockArray(blocks)
     context.forceUpdate = true
+    context.forceFocus = true
 
     return context
 }

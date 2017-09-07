@@ -27,7 +27,7 @@ const dndPlugin = createDndPlugin()
 const RESTRAINED_SOURCE_TYPES = ['facebook-messenger']
 
 // debounce the updating of the redux because it's slow otherwise when we type
-const _updateMessageText = _debounce((props, editorState) => {
+export const updateMessageText = _debounce((props, editorState) => {
     if (!props.newMessage.getIn(['state', 'cacheAdded'])) {
         return
     }
@@ -37,16 +37,6 @@ const _updateMessageText = _debounce((props, editorState) => {
         selectionState: editorState.getSelection()
     }))
 }, 100)
-
-// we're debouncing the update so it's performed only once
-const _updateEditorState = _debounce((self, props) => {
-    self._updateEditorState(self._getEditorStateFromReducer(props))
-}, 5)
-
-const _focusEditor = _debounce((self) => {
-    self.richArea._focusEditor()
-}, 5)
-
 
 class TicketReplyEditor extends React.Component {
     componentWillMount() {
@@ -58,17 +48,23 @@ class TicketReplyEditor extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const forceUpdate = nextProps.newMessage.getIn(['state', 'forceUpdate'])
-        const forceFocus = nextProps.newMessage.getIn(['state', 'forceFocus'])
+        // only update if forceUpdate is true and it changed
+        const prevForceUpdate = this.props.newMessage.getIn(['state', 'forceUpdate'])
+        const nextForceUpdate = nextProps.newMessage.getIn(['state', 'forceUpdate'])
+        const shouldUpdate = nextForceUpdate && prevForceUpdate !== nextForceUpdate
 
-        if (forceUpdate) {
-            // cancel any previously debounced update if any
-            _updateEditorState.cancel()
-            _updateEditorState(this, nextProps)
+        if (shouldUpdate) {
+            this._updateEditorState(this._getEditorStateFromReducer(nextProps))
         }
 
-        if (forceFocus) {
-            _focusEditor(this)
+        // only focus if focus changed
+        const prevForceFocus = this.props.newMessage.getIn(['state', 'forceFocus'])
+        const nextForceFocus = nextProps.newMessage.getIn(['state', 'forceFocus'])
+        const shouldFocus = nextForceFocus && prevForceFocus !== nextForceFocus
+
+        if (shouldFocus && this.richArea) {
+            // wait for the next tick to focus
+            setTimeout(() => this.richArea._focusEditor(), 1)
         }
     }
 
@@ -123,7 +119,7 @@ class TicketReplyEditor extends React.Component {
 
     _onChange = (editorState) => {
         this.setState({editorState})
-        _updateMessageText(this.props, editorState)
+        updateMessageText(this.props, editorState)
     }
 
     _canAddAttachments = (files) => {
@@ -192,7 +188,7 @@ class TicketReplyEditor extends React.Component {
             return
         }
 
-        this.richArea._setEditorState(editorState, false)
+        this.richArea._setEditorState(editorState)
     }
 
     _updateReducer = () => {
@@ -201,7 +197,7 @@ class TicketReplyEditor extends React.Component {
         }
 
         const {editorState} = this.richArea.state
-        _updateMessageText(this.props, editorState)
+        updateMessageText(this.props, editorState)
     }
 
     _handleOnEscape = () => {

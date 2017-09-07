@@ -230,7 +230,7 @@ export default class RichField extends InputField {
                         ) : (
                             <Editor
                                 editorState={this.state.editorState}
-                                onChange={editorState => this._onChange(editorState)}
+                                onChange={(editorState) => this._onChange(editorState)}
                                 onFocus={this._onFocus}
                                 onBlur={this._onBlur}
                                 plugins={this.plugins}

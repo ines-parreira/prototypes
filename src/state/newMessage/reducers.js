@@ -229,7 +229,8 @@ export default (state = initialState, action) => {
                 contentState,
                 selectionState,
                 appliedMacro,
-                forceUpdate
+                forceUpdate,
+                forceFocus
             }
 
             context = responseUtils.addCache(context)
@@ -270,7 +271,7 @@ export default (state = initialState, action) => {
                 },
                 state: {
                     dirty,
-                    forceFocus,
+                    forceFocus: !!context.forceFocus,
                     forceUpdate: !!context.forceUpdate,
                     signatureAdded: !!context.signatureAdded,
                     cacheAdded: !!context.cacheAdded,

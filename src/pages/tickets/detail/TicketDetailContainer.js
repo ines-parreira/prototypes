@@ -24,6 +24,7 @@ import * as newMessageSelectors from '../../../state/newMessage/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 import * as ticketSelectors from '../../../state/ticket/selectors'
 import * as userSelectors from '../../../state/users/selectors'
+import {updateMessageText} from './components/replyarea/TicketReplyEditor'
 
 @withRouter
 @connect((state) => {
@@ -244,10 +245,7 @@ export default class TicketDetailContainer extends React.Component {
                     if (!modalVisible()) {
                         if (e.preventDefault) {
                             e.preventDefault()
-                        }
-
-                        if (!this.props.canSendMessage) {
-                            return
+                            e.stopImmediatePropagation()
                         }
 
                         this._submit()
@@ -259,10 +257,7 @@ export default class TicketDetailContainer extends React.Component {
                     if (!modalVisible()) {
                         if (e.preventDefault) {
                             e.preventDefault()
-                        }
-
-                        if (!this.props.canSendMessage) {
-                            return
+                            e.stopImmediatePropagation()
                         }
 
                         this._submit('closed', true)
@@ -323,6 +318,9 @@ export default class TicketDetailContainer extends React.Component {
         if (!this.props.canSendMessage) {
             return
         }
+
+        // flush any pending updates from the TicketReplyEditor debouncer
+        updateMessageText.flush()
 
         let promise
 
@@ -389,7 +387,7 @@ export default class TicketDetailContainer extends React.Component {
             || (this.props.params.ticketId === 'new' && this.props.ticket.get('id'))
             || this.props.ticket.getIn(['_internal', 'loading', 'fetchTicket'])
         ) {
-            return <Loader message="Loading ticket..." />
+            return <Loader message="Loading ticket..."/>
         }
 
         return (
