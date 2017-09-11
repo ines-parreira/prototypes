@@ -20,7 +20,7 @@ describe('reducers', () => {
 
         it('receive data', () => {
             const resp = {
-                type: 'overview',
+                name: 'overview',
                 data: {
                     hello: 'world'
                 },
@@ -33,6 +33,7 @@ describe('reducers', () => {
                 reducer(
                     initialState, {
                         type: types.FETCH_STATS_SUCCESS,
+                        name:'overview',
                         resp,
                     }
                 ).get('overview')
@@ -47,7 +48,7 @@ describe('reducers', () => {
             }
 
             const resp = {
-                type: 'overview',
+                name: 'overview',
                 data: {},
                 meta,
             }

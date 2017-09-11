@@ -54,17 +54,21 @@ export const comparedPeriodString = (previousStartDatetime, previousEndDatetime)
     return `Compared to : ${previousPeriod}`
 }
 
-
 // format a value and display it as a percentage
 export const formatPercent = (value) => {
     return _isNumber(value) ? `${value}%` : ''
 }
+/**
+ * Display a duration in days, hours, minutes and seconds
 
-// format a value and display it as a duration (days, hours, minutes or seconds)
-export const formatDuration = (value) => {
+ * @param value a duration in seconds
+ * @param precision Number of unit to display
+ * @returns {string}
+ */
+export const formatDuration = (value, precision = 9) => {
     const duration = moment.duration(value, 'seconds')
     let response = ''
-
+    let curPrecision = 0
     const days = duration.days()
     const hours = duration.hours()
     const minutes = duration.minutes()
@@ -72,14 +76,29 @@ export const formatDuration = (value) => {
 
     if (days) {
         response += `${days}d `
+        curPrecision++
+
+        if (curPrecision >= precision) {
+            return response
+        }
     }
 
     if (hours) {
         response += `${hours}h `
+        curPrecision++
+
+        if (curPrecision >= precision) {
+            return response
+        }
     }
 
     if (minutes) {
         response += `${minutes}m `
+        curPrecision++
+
+        if (curPrecision >= precision) {
+            return response
+        }
     }
 
     if (seconds) {

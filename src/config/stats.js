@@ -4,6 +4,17 @@ import _merge from 'lodash/merge'
 import {formatDuration} from '../pages/stats/common/utils'
 import {defaults} from 'react-chartjs-2'
 
+// Available Stats. These names should match names in `g/stats/config`
+export const OVERVIEW = 'overview'
+export const SUPPORT_VOLUME = 'support-volume'
+export const RESOLUTION_TIME = 'resolution-time'
+export const FIRST_RESPONSE_TIME = 'first-response-time'
+export const TICKETS_PER_TAG = 'tickets-per-tag'
+export const TICKETS_CREATED_PER_CHANNEL = 'tickets-created-per-channel'
+export const TICKETS_CREATED_PER_CHANNEL_PER_DAY = 'tickets-created-per-channel-per-day'
+export const TICKETS_CLOSED_PER_AGENT = 'tickets-closed-per-agent'
+export const TICKETS_CLOSED_PER_AGENT_PER_DAY = 'tickets-closed-per-agent-per-day'
+
 export const colors = [
     '#06cd96',
     '#e88850',
@@ -94,9 +105,9 @@ const defaultScaleLabel = {
 const defaultGridLines = {
     borderDash: [3, 6]
 }
-// configuration for every stats
-export const config = fromJS({
-    tickets_created_per_channel: {
+// configuration for each stat
+export const stats = fromJS({
+    [TICKETS_CREATED_PER_CHANNEL]: {
         style: 'table',
         options: () => ({
             scales: {
@@ -109,7 +120,7 @@ export const config = fromJS({
             }
         })
     },
-    tickets_created_per_channel_per_day: {
+    [TICKETS_CREATED_PER_CHANNEL_PER_DAY]: {
         style: 'bar',
         lines: {
             facebook: {
@@ -150,10 +161,6 @@ export const config = fromJS({
             }
         },
         options: (legend) => ({
-            title: {
-                display: true,
-                text: 'Tickets created per channel'
-            },
             scales: {
                 xAxes: [{
                     scaleLabel: _merge({}, defaultScaleLabel, {
@@ -183,7 +190,7 @@ export const config = fromJS({
             }
         })
     },
-    tickets_closed_per_agent: {
+    [TICKETS_CLOSED_PER_AGENT]: {
         style: 'table',
         options: () => ({
             scales: {
@@ -196,7 +203,7 @@ export const config = fromJS({
             }
         })
     },
-    tickets_per_tag: {
+    [TICKETS_PER_TAG]: {
         style: 'table',
         options: () => ({
             scales: {
@@ -209,13 +216,9 @@ export const config = fromJS({
             }
         })
     },
-    tickets_closed_per_agent_per_day: {
+    [TICKETS_CLOSED_PER_AGENT_PER_DAY]: {
         style: 'bar',
         options: (legend) => ({
-            title: {
-                display: true,
-                text: 'Tickets closed per agent'
-            },
             scales: {
                 xAxes: [{
                     scaleLabel: _merge({}, defaultScaleLabel, {
@@ -246,7 +249,7 @@ export const config = fromJS({
             }
         })
     },
-    tickets_per_status_per_day: {
+    [SUPPORT_VOLUME]: {
         style: 'bar',
         lines: {
             created: {
@@ -259,10 +262,6 @@ export const config = fromJS({
             }
         },
         options: (legend) => ({
-            title: {
-                display: true,
-                text: 'Support volume'
-            },
             scales: {
                 xAxes: [{
                     scaleLabel: _merge({}, defaultScaleLabel, {
@@ -293,7 +292,7 @@ export const config = fromJS({
             }
         })
     },
-    overview: {
+    [OVERVIEW]: {
         style: 'key-metrics',
         metrics: {
             total_new_tickets: {
@@ -305,11 +304,11 @@ export const config = fromJS({
                 tooltip: 'Tickets closed during this period. If a ticket was closed multiple times, ' +
                 'we only take into account the last time it was closed',
             },
-            total_ticket_messages_sent: {
+            total_messages_sent: {
                 tooltip: 'Total number of messages on all channels sent by agents',
                 label: 'Messages sent',
             },
-            total_ticket_messages_received: {
+            total_messages_received: {
                 tooltip: 'Total number of messages on all channels received from user',
                 label: 'Messages received',
             },
@@ -318,27 +317,20 @@ export const config = fromJS({
                 'the user and the first response of the agent. Only tickets with at least 1 response ' +
                 'are taken into account. This doesn\'t take into account responses sent by the rules (median)',
                 label: 'First response time',
-                moreIsBetter: false,
-                type: 'duration'
             },
             median_resolution_time: {
-                name: 'median_resolution_time',
                 tooltip: 'Difference between the date the ticket was created and when it was closed (median). ' +
                 'Only tickets with at least 1 response are taken into account',
                 label: 'Resolution time',
-                moreIsBetter: false,
-                type: 'duration'
             },
             total_one_touch_tickets: {
                 tooltip: 'Percentage of tickets that were solved with only one response from your agents',
                 label: 'One-touch tickets',
-                moreIsBetter: true,
-                type: 'percent'
             },
         }
 
     },
-    resolution_time_per_day: {
+    [RESOLUTION_TIME]: {
         style: 'line',
         lines: {
             '50%': {
@@ -351,10 +343,6 @@ export const config = fromJS({
             }
         },
         options: (legend) => ({
-            title: {
-                display: true,
-                text: 'Resolution time (percentiles)'
-            },
             tooltips: {
                 callbacks: {
                     label: formatDurationTooltipCb
@@ -388,7 +376,7 @@ export const config = fromJS({
             }
         })
     },
-    first_response_time_per_day: {
+    [FIRST_RESPONSE_TIME]: {
         style: 'line',
         lines: {
             '50%': {
@@ -401,10 +389,6 @@ export const config = fromJS({
             }
         },
         options: (legend) => ({
-            title: {
-                display: true,
-                text: 'First response time (percentiles)'
-            },
             tooltips: {
                 callbacks: {
                     label: formatDurationTooltipCb
@@ -442,28 +426,8 @@ export const config = fromJS({
 })
 
 // Callbacks to format values of datasets or axes
-const formatDurationAxeCb = (val) => {
-    const duration = moment.duration(val, 'seconds')
-    const days = duration.days()
-    if (days) {
-        return `${days}d `
-    }
+const formatDurationAxeCb = (val) => formatDuration(val, 1)
 
-    const hours = duration.hours()
-    if (hours) {
-        return `${hours}h `
-    }
-
-    const minutes = duration.minutes()
-    if (minutes) {
-        return `${minutes}m `
-    }
-
-    const seconds = duration.seconds()
-    if (seconds) {
-        return `${seconds}s`
-    }
-}
 
 const formatDateAxeCb = (val) => {
     return moment.unix(val).format('MMM Do')
@@ -475,5 +439,47 @@ const formatTicketAxeCb = (val) => {
 }
 
 const formatDurationTooltipCb = (item, data) => {
-    return `${data.datasets[item.datasetIndex].label}: ${formatDuration(item.yLabel)}`
+    return `${data.datasets[item.datasetIndex].label}: ${formatDuration(item.yLabel, 2)}`
 }
+
+/**
+ *  A view is a statistics page with a bunch of statistics (table and/or charts)
+ * name: the name of the view
+ * filters: filters available on the view applied on statistics
+ * stats: statistics displayed on the view
+ */
+export const views = fromJS({
+    overview: {
+        name: 'Overview',
+        filters: ['channels', 'agents', 'tags', 'date'],
+        stats: [
+            OVERVIEW,
+            SUPPORT_VOLUME,
+            RESOLUTION_TIME,
+            FIRST_RESPONSE_TIME,
+        ]
+    },
+    tags: {
+        name: 'Tags',
+        filters: ['date'],
+        stats: [
+            TICKETS_PER_TAG,
+        ]
+    },
+    channels: {
+        name: 'Channels',
+        filters: ['date'],
+        stats: [
+            TICKETS_CREATED_PER_CHANNEL_PER_DAY,
+            TICKETS_CREATED_PER_CHANNEL,
+        ]
+    },
+    agents: {
+        name: 'Agents',
+        filters: ['date'],
+        stats: [
+            TICKETS_CLOSED_PER_AGENT_PER_DAY,
+            TICKETS_CLOSED_PER_AGENT
+        ]
+    }
+})

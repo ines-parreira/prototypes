@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import throttle from 'lodash/throttle'
 import {BlankState} from './components/BlankState'
-import {fetchStats} from '../../../../state/stats/actions'
+import {fetchStat} from '../../../../state/stats/actions'
 
 const _fetch = throttle((props) => {
     props.fetchStats(
@@ -55,7 +55,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchStats: bindActionCreators(fetchStats, dispatch)
+        fetchStats: bindActionCreators(fetchStat, dispatch)
     }
 }
 

@@ -17,37 +17,31 @@ export function setFilter(filterName, values) {
     }
 }
 
-export function fetchStats(newMeta = {}, newFilters = {}) {
+export function fetchStat(name, newMeta = {}, newFilters = {}) {
     return (dispatch, getState) => {
         const statsState = getState().stats
-
         // get current meta
         const meta = statsState.getIn(['_internal', 'meta'], fromJS({}))
-
         // get current filters
         const filters = statsState.getIn(['_internal', 'filters'], fromJS({})).merge(newFilters)
-
         // merge with passed meta
         const params = meta.merge(newMeta).toJS()
 
         // update stats meta to match what is asked to server
         dispatch(setMeta(params))
-
         params.filters = filters.toJS()
 
         dispatch({
             type: types.FETCH_STATS_START
         })
 
-        return axios.post(`/api/stats/${params.type}/`, params)
+        return axios.post(`/api/stats/${name}/`, params)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
                     type: types.FETCH_STATS_SUCCESS,
-                    resp: {
-                        ...resp,
-                        type: params.type,
-                    }
+                    name,
+                    resp
                 })
             }, error => {
                 return dispatch({

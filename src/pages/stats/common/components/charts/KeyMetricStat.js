@@ -3,7 +3,6 @@ import moment from 'moment'
 import {comparedPeriodString, formatDuration, formatPercent} from '../../utils'
 import {UncontrolledTooltip} from 'reactstrap'
 import {renderDifference} from '../../utils'
-import {fromJS} from 'immutable'
 
 export default class KeyMetricStat extends React.Component {
     static propTypes = {
@@ -30,13 +29,13 @@ export default class KeyMetricStat extends React.Component {
         )
     }
 
-    _renderValue = (config, value, index, tooltipDelta) => {
-        const {data} = this.props
+    _renderValue = (config, metric, index, tooltipDelta) => {
+        let value = metric.get('value')
 
-        if (config.get('type') === 'duration') {
-            value = formatDuration(value)
-        } else if (config.get('type') === 'percent') {
-            value = formatPercent(value)
+        if (metric.get('type') === 'duration') {
+            value = formatDuration(metric.get('value'), 2)
+        } else if (metric.get('type') === 'percent') {
+            value = formatPercent(metric.get('value'))
         }
 
         if (value || value === 0) {
@@ -47,9 +46,7 @@ export default class KeyMetricStat extends React.Component {
                         this._renderTooltip(
                             `value-${index}`,
                             tooltipDelta,
-                            renderDifference(
-                                data.getIn(['difference_period', index, 'data']),
-                                config.get('moreIsBetter')
+                            renderDifference(metric.get('delta'), metric.get('more_is_better')
                             )
                         )
                     }
@@ -65,11 +62,10 @@ export default class KeyMetricStat extends React.Component {
         const previousStartDatetime = moment(meta.get('previous_start_datetime'))
         const previousEndDatetime = moment(meta.get('previous_end_datetime'))
         const tooltipDelta = comparedPeriodString(previousStartDatetime, previousEndDatetime)
-        const currentPeriod = data.get('current_period') || fromJS({})
 
         return (
             <div className="statistics">
-                {currentPeriod.map((metric, index) => {
+                {data.map((metric, index) => {
                     const metricName = metric.get('name')
                     const metricConfig = config.getIn(['metrics', metricName])
 
@@ -90,7 +86,7 @@ export default class KeyMetricStat extends React.Component {
                                     <i className="fa fa-fw fa-question-circle ml-1"/>
                                 )}
                             </div>
-                            {this._renderValue(metricConfig, metric.get('data'), index, tooltipDelta)}
+                            {this._renderValue(metricConfig, metric, index, tooltipDelta)}
                         </div>
                     )
                 })}

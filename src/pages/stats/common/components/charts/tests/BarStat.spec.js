@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import BarStat from '../BarStat'
-import {config as statsConfig} from '../../../../../../config/stats'
+import {stats as statsConfig, SUPPORT_VOLUME} from '../../../../../../config/stats'
 
 const barStat = fromJS({
     name: 'stat_name',
@@ -35,7 +35,7 @@ const barStat = fromJS({
 
 describe('BarStat', () => {
     it('should render a bar chart', () => {
-        const config = statsConfig.find((config, key) => key === 'tickets_per_status_per_day')
+        const config = statsConfig.find((config, key) => key === SUPPORT_VOLUME)
         const component = shallow(
             <BarStat config={config} {...barStat.toObject()}/>
         )

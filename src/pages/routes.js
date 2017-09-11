@@ -15,9 +15,7 @@ import UserNavbarContainer from './users/common/UserNavbarContainer'
 import UserDetailContainer from './users/detail/UserDetailContainer'
 import UserSourceContainer from './users/detail/UserSourceContainer'
 import UserInfobarContainer from './users/detail/UserInfobarContainer'
-import OverviewStatsContainer from './stats/overview/OverviewStatsContainer'
-import SimpleStatsContainer from './stats/simple/SimpleStatsContainer'
-
+import StatsViewContainer from './stats/StatsViewContainer'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
 import ChangePasswordContainer from './settings/yourProfile/ChangePasswordContainer'
@@ -174,17 +172,9 @@ export default (
             <Route path=":integrationId(/:extra)" />
         </Route>
         <Route
-            path="stats"
+            path="stats(/:view)"
             components={{
-                content: OverviewStatsContainer,
-                navbar: StatsNavbarContainer
-            }}
-            noContainerWidthLimit
-        />
-        <Route
-            path="stats/:type"
-            components={{
-                content: SimpleStatsContainer,
+                content: StatsViewContainer,
                 navbar: StatsNavbarContainer
             }}
             noContainerWidthLimit

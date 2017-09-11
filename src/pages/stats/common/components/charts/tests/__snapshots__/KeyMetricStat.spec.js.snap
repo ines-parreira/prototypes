@@ -10,10 +10,10 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
     <div
       className="label"
     >
-      New tickets
+      First response time
       <span>
         <span
-          id="title-total_new_tickets"
+          id="title-median_first_response_time"
         >
           <i
             className="fa fa-fw fa-question-circle ml-1"
@@ -22,28 +22,28 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
         <UncontrolledTooltip
           delay={0}
           placement="top"
-          target="title-total_new_tickets"
+          target="title-median_first_response_time"
         >
-          Tickets created during this period
+          Difference between the date when the first message was received from the user and the first response of the agent. Only tickets with at least 1 response are taken into account. This doesn't take into account responses sent by the rules (median)
         </UncontrolledTooltip>
       </span>
     </div>
     <div
       className="value"
     >
-      103
+      37m 
       <span>
         <span
           id="value-0"
         >
           <div
-            className="stats-difference"
+            className="stats-difference negative"
           >
             <i
-              className="fa fa-fw fa-arrow-down"
+              className="fa fa-fw fa-arrow-up"
             />
              
-            -65
+            100
             %
           </div>
         </span>
@@ -51,6 +51,109 @@ exports[`KeyMetricStat should render a key metrics chart 1`] = `
           delay={0}
           placement="top"
           target="value-0"
+        >
+          Compared to : Sep 05, 2017 - Sep 06, 2017
+        </UncontrolledTooltip>
+      </span>
+    </div>
+  </div>
+  <div
+    className="statistic"
+  >
+    <div
+      className="label"
+    >
+      Resolution time
+      <span>
+        <span
+          id="title-median_resolution_time"
+        >
+          <i
+            className="fa fa-fw fa-question-circle ml-1"
+          />
+        </span>
+        <UncontrolledTooltip
+          delay={0}
+          placement="top"
+          target="title-median_resolution_time"
+        >
+          Difference between the date the ticket was created and when it was closed (median). Only tickets with at least 1 response are taken into account
+        </UncontrolledTooltip>
+      </span>
+    </div>
+    <div
+      className="value"
+    >
+      3d 23h 
+      <span>
+        <span
+          id="value-1"
+        >
+          <div
+            className="stats-difference negative"
+          >
+            <i
+              className="fa fa-fw fa-arrow-up"
+            />
+             
+            100
+            %
+          </div>
+        </span>
+        <UncontrolledTooltip
+          delay={0}
+          placement="top"
+          target="value-1"
+        >
+          Compared to : Sep 05, 2017 - Sep 06, 2017
+        </UncontrolledTooltip>
+      </span>
+    </div>
+  </div>
+  <div
+    className="statistic"
+  >
+    <div
+      className="label"
+    >
+      One-touch tickets
+      <span>
+        <span
+          id="title-total_one_touch_tickets"
+        >
+          <i
+            className="fa fa-fw fa-question-circle ml-1"
+          />
+        </span>
+        <UncontrolledTooltip
+          delay={0}
+          placement="top"
+          target="title-total_one_touch_tickets"
+        >
+          Percentage of tickets that were solved with only one response from your agents
+        </UncontrolledTooltip>
+      </span>
+    </div>
+    <div
+      className="value"
+    >
+      20%
+      <span>
+        <span
+          id="value-2"
+        >
+          <div
+            className="stats-difference negative"
+          >
+             
+            0
+            %
+          </div>
+        </span>
+        <UncontrolledTooltip
+          delay={0}
+          placement="top"
+          target="value-2"
         >
           Compared to : Sep 05, 2017 - Sep 06, 2017
         </UncontrolledTooltip>

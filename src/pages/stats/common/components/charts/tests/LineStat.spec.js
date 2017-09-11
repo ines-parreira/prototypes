@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import LineStat from '../LineStat'
-import {config as statsConfig} from '../../../../../../config/stats'
+import {stats as statsConfig, RESOLUTION_TIME} from '../../../../../../config/stats'
 
 const barStat = fromJS({
     name: 'stat_name',
@@ -39,7 +39,7 @@ const barStat = fromJS({
 
 describe('LineStat', () => {
     it('should render a line chart', () => {
-        const config = statsConfig.find((config, key) => key === 'resolution_time_per_day')
+        const config = statsConfig.find((config, key) => key === RESOLUTION_TIME)
         const component = shallow(
             <LineStat config={config} {...barStat.toObject()}/>
         )

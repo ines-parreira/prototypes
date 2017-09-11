@@ -7,7 +7,8 @@ import {Card, CardBlock} from 'reactstrap'
 
 export default class Stat extends React.Component {
     static propTypes = {
-        config: PropTypes.object.isRequired
+        config: PropTypes.object.isRequired,
+        label: PropTypes.string
     }
 
     render() {
@@ -34,6 +35,7 @@ export default class Stat extends React.Component {
         return (
             <Card className="stats-card mb-3">
                 <CardBlock>
+                    <h5 className="text-center">{this.props.label}</h5>
                     <div>
                         <Component {...this.props}/>
                     </div>

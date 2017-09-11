@@ -82,10 +82,6 @@ exports[`LineStat should render a line chart 1`] = `
           },
         ],
       },
-      "title": Object {
-        "display": true,
-        "text": "Resolution time (percentiles)",
-      },
       "tooltips": Object {
         "callbacks": Object {
           "label": [Function],

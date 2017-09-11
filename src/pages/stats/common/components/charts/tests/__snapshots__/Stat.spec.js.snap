@@ -8,6 +8,11 @@ exports[`Stat should render a bar chart 1`] = `
   <ba
     tag="div"
   >
+    <h5
+      className="text-center"
+    >
+      Stat label
+    </h5>
     <div>
       <BarStat
         config={
@@ -43,6 +48,11 @@ exports[`Stat should render a key metrics chart 1`] = `
   <ba
     tag="div"
   >
+    <h5
+      className="text-center"
+    >
+      Stat label
+    </h5>
     <div>
       <KeyMetricStat
         config={
@@ -78,6 +88,11 @@ exports[`Stat should render a line chart 1`] = `
   <ba
     tag="div"
   >
+    <h5
+      className="text-center"
+    >
+      Stat label
+    </h5>
     <div>
       <LineStat
         config={
@@ -113,6 +128,11 @@ exports[`Stat should render a table chart 1`] = `
   <ba
     tag="div"
   >
+    <h5
+      className="text-center"
+    >
+      Stat label
+    </h5>
     <div>
       <TableStat
         config={

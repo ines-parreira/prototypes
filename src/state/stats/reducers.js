@@ -19,11 +19,8 @@ export default (state = initialState, action) => {
 
         case types.FETCH_STATS_SUCCESS: {
             return state
-                .set(action.resp.type, fromJS(action.resp.data))
-                .setIn(['_internal', 'meta'],
-                    state.getIn(['_internal', 'meta'], fromJS({}))
-                        .merge(fromJS(action.resp.meta))
-                )
+                .set(action.name, fromJS(action.resp.data))
+                .updateIn(['_internal', 'meta'], meta => (meta || fromJS({})).merge(fromJS(action.resp.meta)))
                 .setIn(['_internal', 'loading', 'stats'], false)
         }
 
@@ -32,10 +29,7 @@ export default (state = initialState, action) => {
         }
 
         case types.SET_STATS_META: {
-            return state.setIn(['_internal', 'meta'],
-                state.getIn(['_internal', 'meta'], fromJS({}))
-                    .merge(fromJS(action.meta))
-            )
+            return state.updateIn(['_internal', 'meta'], meta => (meta || fromJS({})).merge(fromJS(action.meta)))
         }
 
         case types.SET_STATS_FILTER: {
