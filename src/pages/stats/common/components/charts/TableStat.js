@@ -7,7 +7,7 @@ import {renderDifference, comparedPeriodString} from '../../utils'
 
 export default class TableStat extends React.Component {
     static propTypes = {
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string,
         data: PropTypes.object.isRequired,
         meta: PropTypes.object.isRequired,
     }

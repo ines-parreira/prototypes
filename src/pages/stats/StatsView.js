@@ -132,22 +132,22 @@ class OverviewStatsView extends React.Component {
                         )}
                     </div>
                 </PageHeader>
-                {config.get('stats').map(statName => {
+                {config.get('stats').map((statName, idx) => {
                     if (isLoading) {
-                        return <Loader/>
+                        return <Loader key={idx}/>
                     }
 
                     const stat = stats.get(statName)
 
                     if (!stat) {
-                        return <Loader/>
+                        return <Loader key={idx}/>
                     }
 
                     const statConfig = statsConfig.get(statName)
 
                     return (
                         <Stat
-                            key={statName}
+                            key={idx}
                             config={statConfig}
                             meta={meta}
                             {...stat.toObject()}
