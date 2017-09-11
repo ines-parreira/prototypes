@@ -5,6 +5,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
+import {browserHistory} from 'react-router'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -47,24 +48,58 @@ describe('integrations actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('on create email success', () => {
+    it('should do some action and redirect correctly on create email success', () => {
         const integration = {
             id: 1,
             type: 'email',
         }
 
+        const p = browserHistory.push
+        let logUrl = ''
+
+        browserHistory.push = (url) => logUrl = url
+
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
+        expect(logUrl).toMatchSnapshot()
+
+        browserHistory.push = p
     })
 
-    it('on create smooch_inside success', () => {
+    it('should do some action and redirect correctly on create smooch_inside success', () => {
         const integration = {
             id: 1,
             type: 'smooch_inside',
         }
 
+        const p = browserHistory.push
+        let logUrl = ''
+
+        browserHistory.push = (url) => logUrl = url
+
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
+        expect(logUrl).toMatchSnapshot()
+
+        browserHistory.push = p
+    })
+
+    it('should do some action and redirect correctly on create smooch success', () => {
+        const integration = {
+            id: 1,
+            type: 'smooch',
+        }
+
+        const p = browserHistory.push
+        let logUrl = ''
+
+        browserHistory.push = (url) => logUrl = url
+
+        actions.onCreateSuccess(store.dispatch, integration)
+        expect(store.getActions()).toMatchSnapshot()
+        expect(logUrl).toMatchSnapshot()
+
+        browserHistory.push = p
     })
 
     it('on update success', () => {

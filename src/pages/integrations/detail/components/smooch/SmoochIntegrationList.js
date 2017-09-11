@@ -65,7 +65,7 @@ export default class SmoochIntegrationList extends React.Component {
                 return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
             }
 
-            const editLink = `/app/integrations/smooch/${int.get('id')}`
+            const editLink = `/app/integrations/smooch/${int.get('id')}/overview`
             const isDisabled = int.get('deactivated_datetime')
 
             return (

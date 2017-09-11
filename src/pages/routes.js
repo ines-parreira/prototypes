@@ -10,7 +10,6 @@ import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbarContainer from './tickets/common/TicketNavbarContainer'
 import TicketListContainer from './tickets/list/TicketListContainer'
 import RuleContainer from './settings/rules/list/RuleContainer'
-import ChatContainer from './settings/chat/ChatContainer'
 import UserListContainer from './users/list/UserListContainer'
 import UserNavbarContainer from './users/common/UserNavbarContainer'
 import UserDetailContainer from './users/detail/UserDetailContainer'
@@ -194,13 +193,6 @@ export default (
             <IndexRoute
                 components={{
                     content: YourProfileContainer,
-                    navbar: SettingsNavbarContainer
-                }}
-            />
-            <Route
-                path="chat"
-                components={{
-                    content: ChatContainer,
                     navbar: SettingsNavbarContainer
                 }}
             />

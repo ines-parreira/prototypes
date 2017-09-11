@@ -92,8 +92,11 @@ export default class FacebookIntegrationDetail extends React.Component {
                     <BreadcrumbItem>
                         <Link to="/app/integrations/facebook">Facebook</Link>
                     </BreadcrumbItem>
-                    <BreadcrumbItem active>
+                    <BreadcrumbItem>
                         {page.get('name')}
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        Overview
                     </BreadcrumbItem>
                 </Breadcrumb>
 

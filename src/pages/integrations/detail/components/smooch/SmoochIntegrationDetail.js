@@ -12,7 +12,6 @@ import {
 } from 'reactstrap'
 
 import ConfirmButton from '../../../../common/components/ConfirmButton'
-import AutoResponderSection from '../../../common/AutoResponderSection'
 import InputField from '../../../../common/forms/InputField'
 
 import Loader from '../../../../common/components/Loader'
@@ -22,11 +21,18 @@ class SmoochIntegrationDetail extends React.Component {
         super(props)
 
         // used to know if form has been asynchronously initialized when updating
-        this.isInitialized = false
+        this.isInitialized = !props.isUpdate
     }
 
     state = {
         name: ''
+    }
+
+    componentDidMount() {
+        if (!this.state.integration && !this.props.integration.isEmpty()) {
+            this.setState({name: this.props.integration.get('name')})
+            this.isInitialized = true
+        }
     }
 
     componentWillUpdate(nextProps) {
@@ -34,9 +40,7 @@ class SmoochIntegrationDetail extends React.Component {
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
-            this.setState({
-                name: integration.get('name')
-            })
+            this.setState({name: integration.get('name')})
             this.isInitialized = true
         }
     }
@@ -109,14 +113,19 @@ class SmoochIntegrationDetail extends React.Component {
                     <BreadcrumbItem>
                         <Link to="/app/integrations/smooch">Smooch</Link>
                     </BreadcrumbItem>
-                    <BreadcrumbItem active>
+                    <BreadcrumbItem active={!isUpdate}>
                         {isUpdate ? integration.get('name') : 'Add'}
                     </BreadcrumbItem>
+                    {
+                        isUpdate && (
+                            <BreadcrumbItem active>
+                                Overview
+                            </BreadcrumbItem>
+                        )
+                    }
                 </Breadcrumb>
 
                 <h1>{isUpdate ? integration.get('name') : 'Add integration'}</h1>
-
-                <AutoResponderSection/>
 
                 <Form onSubmit={this._handleSubmit}>
                     {

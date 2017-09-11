@@ -20,8 +20,9 @@ import HttpIntegrationList from './components/http/HttpIntegrationList'
 import HttpIntegrationDetail from './components/http/HttpIntegrationDetail'
 
 import ChatIntegrationList from './components/chat/ChatIntegrationList'
-import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall'
 import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance'
+import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall'
+import RealtimeMessagingIntegrationPreferences from './../common/RealtimeMessagingIntegrationPreferences'
 
 import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
 import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
@@ -36,6 +37,7 @@ import EmailIntegrationList from './components/email/EmailIntegrationList'
 import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/index'
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/index'
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/index'
+
 
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
@@ -148,7 +150,19 @@ class IntegrationDetailContainer extends React.Component {
                                 loading={commonProps.loading}
                             />
                         )
-                    } else if (isUpdate) {
+                    }
+
+                    if (isUpdate) {
+                        if (params.extra === 'preferences') {
+                            return (
+                                <RealtimeMessagingIntegrationPreferences
+                                    actions={actions}
+                                    loading={commonProps.loading}
+                                    integration={commonProps.integration}
+                                />
+                            )
+                        }
+
                         return (
                             <FacebookIntegrationDetail
                                 actions={actions}
@@ -206,6 +220,16 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
+                    if (params.extra === 'preferences') {
+                        return (
+                            <RealtimeMessagingIntegrationPreferences
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
                     return (
                         <ChatIntegrationAppearance
                             actions={actions}
@@ -227,6 +251,16 @@ class IntegrationDetailContainer extends React.Component {
 
             case 'smooch':
                 if (isDetail) {
+                    if (params.extra === 'preferences') {
+                        return (
+                            <RealtimeMessagingIntegrationPreferences
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
                     return (
                         <SmoochIntegrationDetail
                             integration={commonProps.integration}

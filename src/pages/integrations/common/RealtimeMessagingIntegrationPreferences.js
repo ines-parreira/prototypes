@@ -1,75 +1,129 @@
 import React, {Component, PropTypes} from 'react'
 import classnames from 'classnames'
-import {Form, Label, Button, FormGroup} from 'reactstrap'
 import {connect} from 'react-redux'
+import {Link} from 'react-router'
+import {fromJS} from 'immutable'
 
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
-import * as currentAccountActions from '../../../state/currentAccount/actions'
+import {capitalize} from 'lodash'
 
-import {TIMES_BEFORE_SPLIT} from './../../../config'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    Form,
+    FormGroup,
+    Label
+} from 'reactstrap'
+
+import {TIMES_BEFORE_SPLIT} from '../../../config'
 
 import InputField from '../../common/forms/InputField'
 import BooleanField from '../../common/forms/BooleanField'
-import PageHeader from '../../../pages/common/components/PageHeader'
+import {updateOrCreateIntegration} from '../../../state/integrations/actions'
 
-function mapStateToProps(state) {
-    return {
-        chatSettings: currentAccountSelectors.getChatSettings(state)
-    }
-}
-const mapDispatchToProps = {
-    submitSetting: currentAccountActions.submitSetting
-}
-
-export class ChatContainer extends Component {
+@connect(null, {
+    updateOrCreateIntegration
+})
+export default class RealtimeMessagingIntegrationPreferences extends Component {
     static propTypes = {
-        submitSetting: PropTypes.func.isRequired,
-        chatSettings: PropTypes.object.isRequired
+        updateOrCreateIntegration: PropTypes.func.isRequired,
+        integration: PropTypes.object.isRequired
     }
 
-    constructor(props) {
-        super(props)
-        const setting = props.chatSettings
-        this.state = {
-            autoResponderEnabled: setting.getIn(['data', 'autoResponderEnabled']) || false,
-            autoResponderText: setting.getIn(['data', 'autoResponderText']) ||
-            'We\'re not online at the moment. Leave us your email and we\'ll follow up shortly.',
-            timeBeforeSplit: setting.getIn(['data', 'time_before_split'], TIMES_BEFORE_SPLIT[0].value),
+    state = {}
+
+    _initState = (integration) => {
+        this.setState({
+            autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled'])
+                || false,
+            autoResponderText: integration.getIn(['meta', 'preferences', 'auto_responder', 'text']) ||
+                'We\'re not online at the moment. Leave us your email and we\'ll follow up shortly.',
+            timeBeforeSplit: integration.getIn(['meta', 'preferences', 'time_before_split'],
+                TIMES_BEFORE_SPLIT[0].value),
             isUpdating: false
+        })
+
+        this.isInitialized = true
+    }
+
+    componentDidMount() {
+        this.isInitialized = false
+
+        if (!this.props.integration.isEmpty()) {
+            this._initState(this.props.integration)
         }
     }
 
-    _submitAccountChatSetting = (event) => {
+    componentDidUpdate() {
+        if (!this.isInitialized && !this.props.integration.isEmpty()) {
+            this._initState(this.props.integration)
+        }
+    }
+
+    _submitPreferences = (event) => {
+        const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
 
-        const {chatSettings, submitSetting} = this.props
         this.setState({isUpdating: true})
 
-        const setting = chatSettings.mergeDeep({
-            type: 'chat',
-            data: {
-                autoResponderEnabled: this.state.autoResponderEnabled,
-                autoResponderText: this.state.autoResponderText,
-                time_before_split: this.state.timeBeforeSplit
-            }
-        }).toJS()
+        const existingMeta = integration.get('meta') || fromJS({})
 
-        return submitSetting(setting)
-            .then(() => this.setState({isUpdating: false}))
+        const payload = fromJS({
+            id: integration.get('id'),
+            meta: existingMeta.mergeDeep({
+                preferences: {
+                    auto_responder: {
+                        enabled: this.state.autoResponderEnabled,
+                        text: this.state.autoResponderText
+                    },
+                    time_before_split: parseInt(this.state.timeBeforeSplit)
+                }
+            })
+        })
+
+        return updateOrCreateIntegration(payload).then(() => this.setState({isUpdating: false}))
+    }
+
+    _getDisplayableType = (integrationType) => {
+        if (integrationType === 'smooch_inside') {
+            return 'chat'
+        }
+
+        return integrationType
     }
 
     render() {
         const {autoResponderEnabled, autoResponderText, isUpdating, timeBeforeSplit} = this.state
+        const {integration} = this.props
 
         return (
             <div>
-                <PageHeader title="Chat" icon="comments" />
+                <Breadcrumb>
+                    <BreadcrumbItem>
+                        <Link to="/app/integrations">Integrations</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to={`/app/integrations/${integration.get('type')}`}>
+                            {capitalize(this._getDisplayableType(integration.get('type')))}
+                        </Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        {integration.get('name')}
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        Preferences
+                    </BreadcrumbItem>
+                </Breadcrumb>
+
+                <h1>
+                    Preferences
+                </h1>
+
                 <div className="mb-3">
                     <p>
                         When your team is not available to chat, you can configure an auto-response for your customers.
-                        This will impact chat & Facebook Messenger.
                     </p>
-                    <Form onSubmit={this._submitAccountChatSetting}>
+                    <Form onSubmit={this._submitPreferences}>
                         <FormGroup>
                             <Label>
                                 Auto-responder status
@@ -131,5 +185,3 @@ export class ChatContainer extends Component {
         )
     }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer)

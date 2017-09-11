@@ -35,10 +35,6 @@ export default class SettingsNavbar extends React.Component {
         }, {
             name: 'General',
             links: [{
-                requiredRole: 'admin',
-                to: 'chat',
-                text: 'Chat'
-            }, {
                 to: 'rules',
                 text: 'Rules',
                 className: 'hidden-sm-down',

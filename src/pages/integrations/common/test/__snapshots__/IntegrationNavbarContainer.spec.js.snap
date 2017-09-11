@@ -1,0 +1,1074 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IntegrationNavbarContainer should display correctly the name of Facebook integration 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(IntegrationNavbarContainer)
+    params={
+      Object {
+        "extra": "overview",
+        "integrationId": "78945",
+        "integrationType": "facebook",
+      }
+    }
+  >
+    <IntegrationNavbarContainer
+      currentIntegration={
+        Immutable.Map {
+          id: 78945,
+          name: "foo",
+          facebook: Immutable.Map {
+            name: "bar",
+          },
+        }
+      }
+      dispatch={[Function]}
+      params={
+        Object {
+          "extra": "overview",
+          "integrationId": "78945",
+          "integrationType": "facebook",
+        }
+      }
+    >
+      <Connect(Navbar)
+        activeContent="integrations"
+      >
+        <Navbar
+          activeContent="integrations"
+          availableForChat={true}
+          closePanels={[Function]}
+          currentUser={
+            Immutable.Map {
+            }
+          }
+          currentUserPreferences={
+            Immutable.Map {
+              type: "preferences",
+              data: Immutable.Map {
+                show_macros: false,
+                available_for_chat: true,
+              },
+            }
+          }
+          isOpenedPanel={false}
+          submitSetting={[Function]}
+        >
+          <div
+            className="nav-primary navbar-panel hidden-panel"
+          >
+            <UncontrolledDropdown
+              className="nav-dropdown"
+            >
+              <ei
+                className="nav-dropdown"
+                isOpen={false}
+                tag="div"
+                toggle={[Function]}
+              >
+                <div
+                  className="nav-dropdown dropdown"
+                >
+                  <ei
+                    aria-haspopup={true}
+                    color="secondary"
+                    data-toggle="dropdown"
+                  >
+                    <ei
+                      aria-expanded={false}
+                      aria-haspopup="true"
+                      className=""
+                      color="secondary"
+                      data-toggle="dropdown"
+                      onClick={[Function]}
+                      tag="button"
+                    >
+                      <button
+                        aria-expanded={false}
+                        aria-haspopup="true"
+                        className="btn btn-secondary"
+                        data-toggle="dropdown"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        <div>
+                          <div
+                            style={
+                              Object {
+                                "fontSize": "18px",
+                              }
+                            }
+                          >
+                            Integrations
+                          </div>
+                          <i
+                            className="fa fa-caret-down"
+                          />
+                        </div>
+                      </button>
+                    </ei>
+                  </ei>
+                  <Xo
+                    tag="div"
+                  >
+                    <div
+                      aria-hidden={true}
+                      className="dropdown-menu"
+                      role="menu"
+                      tabIndex="-1"
+                    >
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/tickets"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/tickets"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/tickets"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Tickets
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/users"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/users"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/users"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Users
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/integrations"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/integrations"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/integrations"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Integrations
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        className="hidden-sm-down"
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/stats"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="hidden-sm-down dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/stats"
+                        >
+                          <Link
+                            className="hidden-sm-down dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/stats"
+                          >
+                            <a
+                              className="hidden-sm-down dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Statistics
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/settings"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/settings"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/settings"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Settings
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                    </div>
+                  </Xo>
+                </div>
+              </ei>
+            </UncontrolledDropdown>
+            <div
+              className="navbar-content"
+            >
+              <div>
+                <div
+                  className="item"
+                >
+                  <h4>
+                    bar
+                  </h4>
+                  <div
+                    className="menu"
+                  >
+                    <Link
+                      className="item active"
+                      onlyActiveOnIndex={false}
+                      style={Object {}}
+                      title="Overview"
+                      to="/app/integrations/facebook/78945/overview"
+                    >
+                      <a
+                        className="item active"
+                        onClick={[Function]}
+                        style={Object {}}
+                        title="Overview"
+                      >
+                        Overview
+                      </a>
+                    </Link>
+                    <Link
+                      className="item"
+                      onlyActiveOnIndex={false}
+                      style={Object {}}
+                      title="Preferences"
+                      to="/app/integrations/facebook/78945/preferences"
+                    >
+                      <a
+                        className="item"
+                        onClick={[Function]}
+                        style={Object {}}
+                        title="Preferences"
+                      >
+                        Preferences
+                      </a>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <UncontrolledDropdown
+              className="nav-dropdown"
+              dropup={true}
+            >
+              <ei
+                className="nav-dropdown"
+                dropup={true}
+                isOpen={false}
+                tag="div"
+                toggle={[Function]}
+              >
+                <div
+                  className="nav-dropdown dropdown dropup"
+                >
+                  <ei
+                    aria-haspopup={true}
+                    color="secondary"
+                    data-toggle="dropdown"
+                  >
+                    <ei
+                      aria-expanded={false}
+                      aria-haspopup="true"
+                      className=""
+                      color="secondary"
+                      data-toggle="dropdown"
+                      onClick={[Function]}
+                      tag="button"
+                    >
+                      <button
+                        aria-expanded={false}
+                        aria-haspopup="true"
+                        className="btn btn-secondary"
+                        data-toggle="dropdown"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        <div>
+                          <span>
+                            <i
+                              className="fa fa-circle mr-2"
+                              style={
+                                Object {
+                                  "color": "#2DCF57",
+                                }
+                              }
+                            />
+                          </span>
+                          <i
+                            className="fa fa-ellipsis-h"
+                          />
+                        </div>
+                      </button>
+                    </ei>
+                  </ei>
+                  <Xo
+                    tag="div"
+                  >
+                    <div
+                      aria-hidden={true}
+                      className="dropdown-menu"
+                      role="menu"
+                      tabIndex="-1"
+                    >
+                      <ei
+                        className="mt-2"
+                        tag="button"
+                        toggle={false}
+                      >
+                        <button
+                          className="mt-2 dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                        >
+                          <div
+                            className="d-flex justify-content-between align-items-center"
+                          >
+                            <div>
+                              Available for chat
+                            </div>
+                            <div>
+                              <ToggleButton
+                                onChange={[Function]}
+                                value={true}
+                              >
+                                <label
+                                  onClick={[Function]}
+                                >
+                                  <input
+                                    checked={true}
+                                    readOnly={true}
+                                    type="checkbox"
+                                  />
+                                  <div />
+                                </label>
+                              </ToggleButton>
+                            </div>
+                          </div>
+                        </button>
+                      </ei>
+                      <ei
+                        divider={true}
+                        tag="button"
+                        toggle={true}
+                      >
+                        <div
+                          className="dropdown-divider"
+                          onClick={[Function]}
+                          tabIndex="-1"
+                        />
+                      </ei>
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/settings/profile"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/settings/profile"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/settings/profile"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              <i
+                                className="fa fa-fw fa-user mr-2"
+                              />
+                              Your profile
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        href="http://docs.gorgias.io/"
+                        tag="a"
+                        target="_blank"
+                        toggle={true}
+                      >
+                        <a
+                          className="dropdown-item"
+                          href="http://docs.gorgias.io/"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          target="_blank"
+                        >
+                          <i
+                            className="fa fa-fw fa-book mr-2"
+                          />
+                          Documentation
+                        </a>
+                      </ei>
+                      <ei
+                        href="/logout"
+                        tag="a"
+                        toggle={true}
+                      >
+                        <a
+                          className="dropdown-item"
+                          href="/logout"
+                          onClick={[Function]}
+                          tabIndex="0"
+                        >
+                          <i
+                            className="fa fa-fw fa-sign-out mr-2"
+                          />
+                          Log out
+                        </a>
+                      </ei>
+                    </div>
+                  </Xo>
+                </div>
+              </ei>
+            </UncontrolledDropdown>
+          </div>
+        </Navbar>
+      </Connect(Navbar)>
+    </IntegrationNavbarContainer>
+  </Connect(IntegrationNavbarContainer)>
+</Provider>
+`;
+
+exports[`IntegrationNavbarContainer should display correctly the name of Smooch Inside integration 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(IntegrationNavbarContainer)
+    params={
+      Object {
+        "extra": "appearance",
+        "integrationId": "78945",
+        "integrationType": "smooch_inside",
+      }
+    }
+  >
+    <IntegrationNavbarContainer
+      currentIntegration={
+        Immutable.Map {
+          id: 78945,
+          name: "foo",
+        }
+      }
+      dispatch={[Function]}
+      params={
+        Object {
+          "extra": "appearance",
+          "integrationId": "78945",
+          "integrationType": "smooch_inside",
+        }
+      }
+    >
+      <Connect(Navbar)
+        activeContent="integrations"
+      >
+        <Navbar
+          activeContent="integrations"
+          availableForChat={true}
+          closePanels={[Function]}
+          currentUser={
+            Immutable.Map {
+            }
+          }
+          currentUserPreferences={
+            Immutable.Map {
+              type: "preferences",
+              data: Immutable.Map {
+                show_macros: false,
+                available_for_chat: true,
+              },
+            }
+          }
+          isOpenedPanel={false}
+          submitSetting={[Function]}
+        >
+          <div
+            className="nav-primary navbar-panel hidden-panel"
+          >
+            <UncontrolledDropdown
+              className="nav-dropdown"
+            >
+              <ei
+                className="nav-dropdown"
+                isOpen={false}
+                tag="div"
+                toggle={[Function]}
+              >
+                <div
+                  className="nav-dropdown dropdown"
+                >
+                  <ei
+                    aria-haspopup={true}
+                    color="secondary"
+                    data-toggle="dropdown"
+                  >
+                    <ei
+                      aria-expanded={false}
+                      aria-haspopup="true"
+                      className=""
+                      color="secondary"
+                      data-toggle="dropdown"
+                      onClick={[Function]}
+                      tag="button"
+                    >
+                      <button
+                        aria-expanded={false}
+                        aria-haspopup="true"
+                        className="btn btn-secondary"
+                        data-toggle="dropdown"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        <div>
+                          <div
+                            style={
+                              Object {
+                                "fontSize": "18px",
+                              }
+                            }
+                          >
+                            Integrations
+                          </div>
+                          <i
+                            className="fa fa-caret-down"
+                          />
+                        </div>
+                      </button>
+                    </ei>
+                  </ei>
+                  <Xo
+                    tag="div"
+                  >
+                    <div
+                      aria-hidden={true}
+                      className="dropdown-menu"
+                      role="menu"
+                      tabIndex="-1"
+                    >
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/tickets"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/tickets"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/tickets"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Tickets
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/users"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/users"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/users"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Users
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/integrations"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/integrations"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/integrations"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Integrations
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        className="hidden-sm-down"
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/stats"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="hidden-sm-down dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/stats"
+                        >
+                          <Link
+                            className="hidden-sm-down dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/stats"
+                          >
+                            <a
+                              className="hidden-sm-down dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Statistics
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/settings"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/settings"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/settings"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              Settings
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                    </div>
+                  </Xo>
+                </div>
+              </ei>
+            </UncontrolledDropdown>
+            <div
+              className="navbar-content"
+            >
+              <div>
+                <div
+                  className="item"
+                >
+                  <h4>
+                    foo
+                  </h4>
+                  <div
+                    className="menu"
+                  >
+                    <Link
+                      className="item active"
+                      onlyActiveOnIndex={false}
+                      style={Object {}}
+                      title="Appearance"
+                      to="/app/integrations/smooch_inside/78945/appearance"
+                    >
+                      <a
+                        className="item active"
+                        onClick={[Function]}
+                        style={Object {}}
+                        title="Appearance"
+                      >
+                        Appearance
+                      </a>
+                    </Link>
+                    <Link
+                      className="item"
+                      onlyActiveOnIndex={false}
+                      style={Object {}}
+                      title="Installation"
+                      to="/app/integrations/smooch_inside/78945/installation"
+                    >
+                      <a
+                        className="item"
+                        onClick={[Function]}
+                        style={Object {}}
+                        title="Installation"
+                      >
+                        Installation
+                      </a>
+                    </Link>
+                    <Link
+                      className="item"
+                      onlyActiveOnIndex={false}
+                      style={Object {}}
+                      title="Preferences"
+                      to="/app/integrations/smooch_inside/78945/preferences"
+                    >
+                      <a
+                        className="item"
+                        onClick={[Function]}
+                        style={Object {}}
+                        title="Preferences"
+                      >
+                        Preferences
+                      </a>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <UncontrolledDropdown
+              className="nav-dropdown"
+              dropup={true}
+            >
+              <ei
+                className="nav-dropdown"
+                dropup={true}
+                isOpen={false}
+                tag="div"
+                toggle={[Function]}
+              >
+                <div
+                  className="nav-dropdown dropdown dropup"
+                >
+                  <ei
+                    aria-haspopup={true}
+                    color="secondary"
+                    data-toggle="dropdown"
+                  >
+                    <ei
+                      aria-expanded={false}
+                      aria-haspopup="true"
+                      className=""
+                      color="secondary"
+                      data-toggle="dropdown"
+                      onClick={[Function]}
+                      tag="button"
+                    >
+                      <button
+                        aria-expanded={false}
+                        aria-haspopup="true"
+                        className="btn btn-secondary"
+                        data-toggle="dropdown"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        <div>
+                          <span>
+                            <i
+                              className="fa fa-circle mr-2"
+                              style={
+                                Object {
+                                  "color": "#2DCF57",
+                                }
+                              }
+                            />
+                          </span>
+                          <i
+                            className="fa fa-ellipsis-h"
+                          />
+                        </div>
+                      </button>
+                    </ei>
+                  </ei>
+                  <Xo
+                    tag="div"
+                  >
+                    <div
+                      aria-hidden={true}
+                      className="dropdown-menu"
+                      role="menu"
+                      tabIndex="-1"
+                    >
+                      <ei
+                        className="mt-2"
+                        tag="button"
+                        toggle={false}
+                      >
+                        <button
+                          className="mt-2 dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                        >
+                          <div
+                            className="d-flex justify-content-between align-items-center"
+                          >
+                            <div>
+                              Available for chat
+                            </div>
+                            <div>
+                              <ToggleButton
+                                onChange={[Function]}
+                                value={true}
+                              >
+                                <label
+                                  onClick={[Function]}
+                                >
+                                  <input
+                                    checked={true}
+                                    readOnly={true}
+                                    type="checkbox"
+                                  />
+                                  <div />
+                                </label>
+                              </ToggleButton>
+                            </div>
+                          </div>
+                        </button>
+                      </ei>
+                      <ei
+                        divider={true}
+                        tag="button"
+                        toggle={true}
+                      >
+                        <div
+                          className="dropdown-divider"
+                          onClick={[Function]}
+                          tabIndex="-1"
+                        />
+                      </ei>
+                      <ei
+                        onClick={[Function]}
+                        tag={[Function]}
+                        to="/app/settings/profile"
+                        toggle={true}
+                      >
+                        <NavLink
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          to="/app/settings/profile"
+                        >
+                          <Link
+                            className="dropdown-item dropdown-item"
+                            onClick={[Function]}
+                            onlyActiveOnIndex={false}
+                            style={Object {}}
+                            tabIndex="0"
+                            to="/app/settings/profile"
+                          >
+                            <a
+                              className="dropdown-item dropdown-item"
+                              onClick={[Function]}
+                              style={Object {}}
+                              tabIndex="0"
+                            >
+                              <i
+                                className="fa fa-fw fa-user mr-2"
+                              />
+                              Your profile
+                            </a>
+                          </Link>
+                        </NavLink>
+                      </ei>
+                      <ei
+                        href="http://docs.gorgias.io/"
+                        tag="a"
+                        target="_blank"
+                        toggle={true}
+                      >
+                        <a
+                          className="dropdown-item"
+                          href="http://docs.gorgias.io/"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          target="_blank"
+                        >
+                          <i
+                            className="fa fa-fw fa-book mr-2"
+                          />
+                          Documentation
+                        </a>
+                      </ei>
+                      <ei
+                        href="/logout"
+                        tag="a"
+                        toggle={true}
+                      >
+                        <a
+                          className="dropdown-item"
+                          href="/logout"
+                          onClick={[Function]}
+                          tabIndex="0"
+                        >
+                          <i
+                            className="fa fa-fw fa-sign-out mr-2"
+                          />
+                          Log out
+                        </a>
+                      </ei>
+                    </div>
+                  </Xo>
+                </div>
+              </ei>
+            </UncontrolledDropdown>
+          </div>
+        </Navbar>
+      </Connect(Navbar)>
+    </IntegrationNavbarContainer>
+  </Connect(IntegrationNavbarContainer)>
+</Provider>
+`;
