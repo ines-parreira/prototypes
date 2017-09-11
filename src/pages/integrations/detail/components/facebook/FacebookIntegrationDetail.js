@@ -14,7 +14,6 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader'
-import AutoResponderSection from '../../../common/AutoResponderSection'
 
 import BooleanField from '../../../../common/forms/BooleanField'
 
@@ -115,8 +114,6 @@ export default class FacebookIntegrationDetail extends React.Component {
                         </p>
                     </div>
                 </div>
-
-                <AutoResponderSection/>
 
                 <div>
                     <FormGroup>
