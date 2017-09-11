@@ -663,6 +663,10 @@ export const DEFAULT_PREFERENCES = {
  */
 export const TIMES_BEFORE_SPLIT = [
     {
+        value: hoursToSeconds(0.5),
+        label: '30 min'
+    },
+    {
         value: hoursToSeconds(3),
         label: '3 hrs'
     },

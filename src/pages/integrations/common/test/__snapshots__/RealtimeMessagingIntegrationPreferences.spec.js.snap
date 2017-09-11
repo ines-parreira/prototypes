@@ -287,6 +287,11 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
                         value={10800}
                       >
                         <option
+                          value={1800}
+                        >
+                          30 min
+                        </option>
+                        <option
                           value={10800}
                         >
                           3 hrs

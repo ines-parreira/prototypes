@@ -39,7 +39,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
             autoResponderText: integration.getIn(['meta', 'preferences', 'auto_responder', 'text']) ||
                 'We\'re not online at the moment. Leave us your email and we\'ll follow up shortly.',
             timeBeforeSplit: integration.getIn(['meta', 'preferences', 'time_before_split'],
-                TIMES_BEFORE_SPLIT[0].value),
+                TIMES_BEFORE_SPLIT[1].value),
             isUpdating: false
         })
 
