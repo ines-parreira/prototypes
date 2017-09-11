@@ -1,6 +1,5 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
 import {BlankState} from '../components/BlankState'
 
 describe('BlankState component', () => {
@@ -23,9 +22,7 @@ describe('BlankState component', () => {
     it('more than 10 tickets closed', () => {
         const component = shallow(
             <BlankState
-                stats={fromJS({
-                    agents: [['Alex', 11]]
-                })}
+                totalClosedTickets={11}
             />
         )
 
@@ -35,9 +32,7 @@ describe('BlankState component', () => {
     it('more than 100 tickets closed', () => {
         const component = shallow(
             <BlankState
-                stats={fromJS({
-                    agents: [['Alex', 101]]
-                })}
+                totalClosedTickets={101}
             />
         )
 
@@ -47,9 +42,7 @@ describe('BlankState component', () => {
     it('more than 500 tickets closed', () => {
         const component = shallow(
             <BlankState
-                stats={fromJS({
-                    agents: [['Alex', 501]]
-                })}
+                totalClosedTickets={501}
             />
         )
 

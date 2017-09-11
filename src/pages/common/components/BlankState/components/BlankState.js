@@ -3,10 +3,7 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {Emoji} from '../../Emoji'
 
-export const BlankState = ({message, stats}) => {
-    // total closed tickets in the last 7 days
-    const closedTickets = stats.getIn(['agents', 0, 1], 0)
-
+export const BlankState = ({message, totalClosedTickets}) => {
     const messages = [
         {
             count: 10,
@@ -14,7 +11,7 @@ export const BlankState = ({message, stats}) => {
             title: 'No more tickets here!',
             text: (
                 <div>
-                    You closed {closedTickets} tickets this week, that's a good start
+                    You closed {totalClosedTickets} tickets this week, that's a good start
                     <Emoji name="ok_hand" />
                 </div>
             )
@@ -25,7 +22,7 @@ export const BlankState = ({message, stats}) => {
             title: 'Done!',
             text: (
                 <div>
-                    You've helped {closedTickets} people this week, you deserve some
+                    You've helped {totalClosedTickets} people this week, you deserve some
                     <Emoji name="cookie" />
                 </div>
             )
@@ -36,7 +33,7 @@ export const BlankState = ({message, stats}) => {
             title: 'All good!',
             text: (
                 <div>
-                    You closed {closedTickets} tickets this week, you're awesome
+                    You closed {totalClosedTickets} tickets this week, you're awesome
                     <Emoji name="rocket" />
                 </div>
             )
@@ -57,7 +54,7 @@ export const BlankState = ({message, stats}) => {
         // match message based on number of closed tickets
         let messageMatch
         messages.reverse().some((message) => {
-            if (closedTickets > message.count) {
+            if (totalClosedTickets > message.count) {
                 messageMatch = message
                 return true
             }
@@ -88,8 +85,7 @@ export const BlankState = ({message, stats}) => {
 }
 
 BlankState.propTypes = {
-    stats: PropTypes.object,
-
+    totalClosedTickets: PropTypes.number,
     message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 }
 

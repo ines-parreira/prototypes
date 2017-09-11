@@ -1,62 +1,55 @@
 import React, {PropTypes} from 'react'
-import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import throttle from 'lodash/throttle'
 import {BlankState} from './components/BlankState'
 import {fetchStat} from '../../../../state/stats/actions'
+import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
+import moment from 'moment'
 
 const _fetch = throttle((props) => {
-    props.fetchStats(
-        {
-            type: 'agents',
-            period: 'last-7-days',
-            start_datetime: null,
-            end_datetime: null,
-        },
-        {
-            agents: [
-                props.currentUser.get('id')
-            ]
-        }
-    )
+    props.fetchStat(TICKETS_CLOSED_PER_AGENT, {
+        start_datetime: moment().subtract(7, 'days'),
+        end_datetime: moment(),
+    }, {
+        agents: [props.currentUser.get('id')]
+    })
 }, 15000)
 
-class BlankStateContainer extends React.Component {
+function mapStateToProps(state) {
+    let totalClosedTickets = 0
+
+    if (state.stats && !state.stats.isEmpty()) {
+        totalClosedTickets = state.stats.getIn([TICKETS_CLOSED_PER_AGENT, 'data', 'lines', 0, 1])
+    }
+
+    return {
+        totalClosedTickets: totalClosedTickets,
+        currentUser: state.currentUser
+    }
+}
+
+@connect(mapStateToProps, {fetchStat})
+export default class BlankStateContainer extends React.Component {
+    static propTypes = {
+        fetchStat: PropTypes.func.isRequired,
+        totalClosedTickets: PropTypes.number,
+        currentUser: PropTypes.object,
+        message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
+    }
+
     componentWillMount() {
         _fetch(this.props)
     }
 
     render() {
-        const {message, stats} = this.props
+        const {message, totalClosedTickets} = this.props
 
         return (
             <BlankState
                 message={message}
-                stats={stats}
+                totalClosedTickets={totalClosedTickets}
             />
         )
     }
 }
 
-BlankStateContainer.propTypes = {
-    fetchStats: PropTypes.func.isRequired,
-
-    stats: PropTypes.object,
-    currentUser: PropTypes.object,
-    message: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
-}
-
-function mapStateToProps(state) {
-    return {
-        stats: state.stats,
-        currentUser: state.currentUser
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        fetchStats: bindActionCreators(fetchStat, dispatch)
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(BlankStateContainer)
