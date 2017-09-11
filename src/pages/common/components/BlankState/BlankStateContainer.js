@@ -19,7 +19,7 @@ function mapStateToProps(state) {
     let totalClosedTickets = 0
 
     if (state.stats && !state.stats.isEmpty()) {
-        totalClosedTickets = state.stats.getIn([TICKETS_CLOSED_PER_AGENT, 'data', 'lines', 0, 1])
+        totalClosedTickets = state.stats.getIn([TICKETS_CLOSED_PER_AGENT, 'data', 'lines', 0, 1], 0)
     }
 
     return {
