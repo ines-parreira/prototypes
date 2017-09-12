@@ -46,7 +46,7 @@ export default class KeyMetricStat extends React.Component {
                         this._renderTooltip(
                             `value-${index}`,
                             tooltipDelta,
-                            renderDifference(metric.get('delta'), metric.get('more_is_better')
+                            renderDifference(metric.get('delta'), metric.get('delta'), metric.get('more_is_better')
                             )
                         )
                     }

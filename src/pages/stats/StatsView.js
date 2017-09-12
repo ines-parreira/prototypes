@@ -3,6 +3,7 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
+import _assign from 'lodash/assign'
 import {stats as statsConfig} from '../../config/stats'
 
 import PeriodPicker from './common/PeriodPicker'
@@ -32,6 +33,7 @@ class OverviewStatsView extends React.Component {
 
         this.state = {
             tags: props.tags,
+            loadings: {} // store loading state of each stat on the view
         }
     }
 
@@ -47,7 +49,10 @@ class OverviewStatsView extends React.Component {
 
     _fetchStats = (stats, meta) => {
         stats.forEach(stat => {
-            this.props.fetchStat(stat, meta)
+            this.setState({loadings: _assign({}, this.state.loadings, {[stat]: true})})
+            this.props.fetchStat(stat, meta).then(() => {
+                this.setState({loadings: _assign({}, this.state.loadings, {[stat]: false})})
+            })
         })
     }
 
@@ -86,7 +91,7 @@ class OverviewStatsView extends React.Component {
     }
 
     render() {
-        const {meta, isLoading, stats, config,} = this.props
+        const {meta, isLoading, stats, config} = this.props
         const startDatetime = moment(meta.get('start_datetime'))
         const endDatetime = moment(meta.get('end_datetime'))
 
@@ -136,10 +141,10 @@ class OverviewStatsView extends React.Component {
                     if (isLoading) {
                         return <Loader key={idx}/>
                     }
-
+                    const isCurrentStatLoading = this.state.loadings[statName]
                     const stat = stats.get(statName)
 
-                    if (!stat) {
+                    if (isCurrentStatLoading || !stat) {
                         return <Loader key={idx}/>
                     }
 

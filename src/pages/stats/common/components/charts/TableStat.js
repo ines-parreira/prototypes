@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
+import _isFunction from 'lodash/isFunction'
 import {UncontrolledTooltip, Table} from 'reactstrap'
 
 import {renderDifference, comparedPeriodString} from '../../utils'
@@ -10,11 +11,17 @@ export default class TableStat extends React.Component {
         name: PropTypes.string,
         data: PropTypes.object.isRequired,
         meta: PropTypes.object.isRequired,
+        config: PropTypes.object.isRequired,
     }
 
     // render a value depending on its type (like a percent, a delta, etc.)
-    _renderCell = (value, type, index) => {
-        const {meta} = this.props
+    _renderCell = (line, value, type, index) => {
+        const {meta, config} = this.props
+        let callback = config.getIn(['callbacks', 'cell'])
+
+        if (!_isFunction(callback)) {
+            callback = ((line, val) => val)
+        }
 
         switch (type) {
             case 'delta': {
@@ -28,7 +35,7 @@ export default class TableStat extends React.Component {
                 return (
                     <span>
                         <span id={id}>
-                            {renderDifference(value)}
+                            {renderDifference(callback(line, value), value)}
                         </span>
                         <UncontrolledTooltip
                             placement="top"
@@ -41,10 +48,10 @@ export default class TableStat extends React.Component {
                 )
             }
             case 'percent': {
-                return `${value}%`
+                return callback(line, `${value}%`)
             }
             default:
-                return value
+                return callback(line, value)
         }
     }
 
@@ -86,7 +93,7 @@ export default class TableStat extends React.Component {
                         <tr key={lineIdx}>
                             {
                                 line.map((val, valIdx) => {
-                                    const type = data.getIn(['axes', 'x',  valIdx, 'type'])
+                                    const type = data.getIn(['axes', 'x', valIdx, 'type'])
                                     return (
                                         <td
                                             key={valIdx}
@@ -94,7 +101,7 @@ export default class TableStat extends React.Component {
                                                 'text-center': valIdx > 0,
                                             })}
                                         >
-                                            {this._renderCell(val, type, lineIdx)}
+                                            {this._renderCell(line, val, type, lineIdx)}
                                         </td>
                                     )
                                 })

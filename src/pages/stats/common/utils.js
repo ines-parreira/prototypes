@@ -6,11 +6,12 @@ import _isNumber from 'lodash/isNumber'
 
 /**
  * Render a difference (between two values, passed as percentage) showing if it increases or decreases
- * @param percentage
+ * @param label {Integer|String|JSX} value displayed
+ * @param percentage {Integer} value used to determine direction of the arrow (up or down)
  * @param moreIsBetter {boolean} (optional) - if passed, color the label in green or red accordingly
  * @returns {*}
  */
-export const renderDifference = (percentage, moreIsBetter) => {
+export const renderDifference = (label, percentage, moreIsBetter) => {
     if (!_isNumber(percentage)) {
         return null
     }
@@ -39,7 +40,7 @@ export const renderDifference = (percentage, moreIsBetter) => {
                         })}
                     />
                 )
-            } {percentage}%
+            } {label}%
         </div>
     )
 }

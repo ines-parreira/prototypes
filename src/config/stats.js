@@ -1,3 +1,4 @@
+import React from 'react'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import _merge from 'lodash/merge'
@@ -108,17 +109,7 @@ const defaultGridLines = {
 // configuration for each stat
 export const stats = fromJS({
     [TICKETS_CREATED_PER_CHANNEL]: {
-        style: 'table',
-        options: () => ({
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        min: 0,
-                        suggestedMax: 1,
-                    }
-                }]
-            }
-        })
+        style: 'table'
     },
     [TICKETS_CREATED_PER_CHANNEL_PER_DAY]: {
         style: 'bar',
@@ -191,30 +182,19 @@ export const stats = fromJS({
         })
     },
     [TICKETS_CLOSED_PER_AGENT]: {
-        style: 'table',
-        options: () => ({
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        min: 0,
-                        suggestedMax: 1,
-                    }
-                }]
-            }
-        })
+        style: 'table'
     },
     [TICKETS_PER_TAG]: {
         style: 'table',
-        options: () => ({
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        min: 0,
-                        suggestedMax: 1,
-                    }
-                }]
+        callbacks:{
+            cell: (line, val) => {
+                // display values of untagged tickets line in italic
+                if (line.first().toLowerCase() == 'untagged tickets') {
+                    return (<i>{val}</i>)
+                }
+                return val
             }
-        })
+        }
     },
     [TICKETS_CLOSED_PER_AGENT_PER_DAY]: {
         style: 'bar',
