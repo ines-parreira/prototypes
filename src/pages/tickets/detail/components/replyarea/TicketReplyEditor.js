@@ -298,8 +298,6 @@ class TicketReplyEditor extends React.Component {
                     mentionProps={mentionProps}
                     alertMode={cantWriteTextBecauseOfAttachments && 'warning'}
                     alertText={alertText}
-                    keyBindingFn={this._keyBindingFn}
-                    handleKeyCommand={this._handleKeyCommand}
                     placeholder="Click here to reply, or press r."
                 />
             </div>
