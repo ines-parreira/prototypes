@@ -1,7 +1,6 @@
 import * as userTypes from '../users/constants'
 import * as types from './constants'
 import {fromJS} from 'immutable'
-import {isUndefined as _isUndefined} from 'lodash'
 
 export const initialState = fromJS({
     settings: [],
@@ -12,8 +11,6 @@ export const initialState = fromJS({
         }
     }
 })
-
-const Raven = window.Raven
 
 export default (state = initialState, action) => {
     if (!action) {
