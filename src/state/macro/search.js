@@ -65,8 +65,15 @@ const _macro2doc = (macro) => {
  * @returns {*} - an array of macro ids ordered by rank (TF-IDF)
  */
 export const search = (query, config = defaultSearchConfig) => {
-    const hits = index.search(query, config)
-    return hits.map((hit) => hit.ref)
+    const hits = index.search(query, config).map((hit) => hit.ref)
+    // TODO(@xarg): remove this condition below when this bug on Safari is fixed:
+    // https://github.com/weixsong/elasticlunr.js/issues/58
+    // On safari (for some queries, ex: `a`) the search returns an array like ["0", "1", ...]
+    // since we can't have "0" ids we're just checking if it's present in the array and return an empty array instead
+    if (hits.includes('0')) {
+        return []
+    }
+    return hits
 }
 
 /**
