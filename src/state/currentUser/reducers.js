@@ -30,16 +30,6 @@ export default (state = initialState, action) => {
             return state.setIn(['_internal', 'loading', 'settings', action.settingType], true)
 
         case userTypes.FETCH_CURRENT_USER_SUCCESS:
-            if (!_isUndefined(Raven) && Raven.setUserContext) {
-                const user = action.resp
-
-                Raven.setUserContext({
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                })
-            }
-
             return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
 
         case userTypes.SUBMIT_CURRENT_USER_SUCCESS:
