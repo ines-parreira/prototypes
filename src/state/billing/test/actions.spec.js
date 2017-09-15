@@ -3,6 +3,8 @@ import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
+import {fromJS} from 'immutable'
+
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 
@@ -31,7 +33,11 @@ describe('billing actions', () => {
     let mockServer
 
     beforeEach(() => {
-        store = mockStore({billing: initialState})
+        store = mockStore({
+            billing: initialState,
+            currentUser: fromJS({id: 1}),
+            currentAccount: fromJS({id: 1}),
+        })
         mockServer = new MockAdapter(axios)
     })
 
@@ -94,7 +100,9 @@ describe('billing actions', () => {
     })
 
     describe('update credit card', () => {
+
         it('success', () => {
+
             const card = {
                 name: 'Alex',
                 number: '545454545454',

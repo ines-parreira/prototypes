@@ -9,11 +9,11 @@ const analytics = window.analytics
  * @param props (object of props)
  */
 export const logEvent = (event, props = {}) => {
+    devLog('Track Segment', event, props)
+
     if (_isUndefined(analytics)) {
         return
     }
-
-    devLog('Track Segment', event, props)
 
     analytics.track(event, props)
 }
@@ -59,4 +59,5 @@ export const EVENTS = {
     USER_HISTORY_TOGGLED: 'user-history-toggled',
     USER_MERGE_CLICKED: 'user-merge-clicked',
     VIEW_FILTER_ADD_CLICKED: 'view-filter-add-clicked',
+    PAYMENT_METHOD_ADDED: 'payment-method-added',
 }

@@ -1,6 +1,8 @@
 import axios from 'axios'
 import {browserHistory} from 'react-router'
+import {fromJS} from 'immutable'
 import {notify} from '../notifications/actions'
+import * as segmentTracker from '../../store/middlewares/segmentTracker'
 import * as types from './constants'
 
 export function fetchCurrentUsage() {
@@ -81,7 +83,12 @@ export function fetchCreditCard() {
 }
 
 export function updateCreditCard(creditCard) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const state = getState()
+        const hasCreditCard = !state.billing.get('creditCard', fromJS({})).isEmpty()
+        const currentUser = state.currentUser
+        const currentAccount = state.currentAccount
+
         if (Stripe) {
             return new Promise((resolve) => {
                 const expiry = creditCard.expDate.split('/')
@@ -117,6 +124,15 @@ export function updateCreditCard(creditCard) {
                                 type: types.UPDATE_CREDIT_CARD_SUCCESS,
                                 resp
                             })
+
+                            if (!hasCreditCard) {
+                                segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
+                                    payment_method: 'stripe',
+                                    user_id: currentUser.get('id'),
+                                    account_id: currentAccount.get('id')
+                                })
+                            }
+
                             return resolve(resp)
                         }, (error) => {
                             dispatch({

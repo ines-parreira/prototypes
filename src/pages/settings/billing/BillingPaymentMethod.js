@@ -6,6 +6,7 @@ import * as billingSelectors from '../../../state/billing/selectors'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import {fetchPaymentMethod, fetchCreditCard} from '../../../state/billing/actions'
 import Loader from '../../common/components/Loader'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 export class BillingPaymentMethod extends Component {
     static propTypes = {
@@ -14,6 +15,8 @@ export class BillingPaymentMethod extends Component {
         creditCard: PropTypes.object.isRequired,
         paymentMethod: PropTypes.string.isRequired,
         paymentIsActive: PropTypes.bool.isRequired,
+        currentUserId: PropTypes.number.isRequired,
+        currentAccountId: PropTypes.number.isRequired,
     }
 
     state = {
@@ -67,7 +70,7 @@ export class BillingPaymentMethod extends Component {
     }
 
     _renderShopify() {
-        const {paymentIsActive} = this.props
+        const {paymentIsActive, currentUserId, currentAccountId} = this.props
         return (
             <div>
                 {paymentIsActive ? (
@@ -77,6 +80,11 @@ export class BillingPaymentMethod extends Component {
                         tag="a"
                         color="success"
                         href="/integrations/shopify/billing/activate/"
+                        onClick={() => segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
+                            payment_method: 'shopify',
+                            user_id: currentUserId,
+                            account_id: currentAccountId
+                        })}
                     >
                         Activate billing with Shopify
                     </Button>
@@ -102,6 +110,8 @@ export class BillingPaymentMethod extends Component {
 }
 export default connect((state) => {
     return {
+        currentUserId: state.currentUser.get('id'),
+        currentAccountId: state.currentAccount.get('id'),
         creditCard: billingSelectors.creditCard(state),
         paymentMethod: currentAccountSelectors.paymentMethod(state),
         paymentIsActive: currentAccountSelectors.paymentIsActive(state),

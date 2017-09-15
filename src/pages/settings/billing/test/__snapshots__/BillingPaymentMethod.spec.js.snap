@@ -127,6 +127,7 @@ exports[`BillingPaymentMethod.spec.js component should render shopify inactive 1
       <ei
         color="success"
         href="/integrations/shopify/billing/activate/"
+        onClick={[Function]}
         tag="a"
       >
         <a
