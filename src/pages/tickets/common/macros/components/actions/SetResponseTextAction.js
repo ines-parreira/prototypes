@@ -13,7 +13,7 @@ import * as integrationsSelectors from '../../../../../../state/integrations/sel
 
 import RichField from '../../../../../common/forms/RichField'
 
-import {insertText} from '../../../../../../utils'
+import {convertToHTML, insertText} from '../../../../../../utils'
 
 import {getVariables} from '../../../../../../config/ticket'
 
@@ -44,12 +44,19 @@ export default class SetResponseTextAction extends React.Component {
         this.richArea._setEditorState(editorState)
     }
 
-    _setResponseText = ({text, html}) => {
+    _setResponseText = (editorState) => {
         const args = this.props.action.get('arguments')
-        this.props.updateActionArgs(this.props.index, args.set('body_text', text).set('body_html', html))
+        const contentState = editorState.getCurrentContent()
+        this.props.updateActionArgs(
+            this.props.index,
+            args.merge({
+                body_text: contentState.getPlainText(),
+                body_html: convertToHTML(contentState),
+            })
+        )
     }
 
-    _insertVariable = variable => this._insertText(`{{${variable}}}`)
+    _insertVariable = (variable) => this._insertText(`{{${variable}}}`)
 
     _renderInsertVariable = () => {
         const {hasIntegrationOfTypes} = this.props

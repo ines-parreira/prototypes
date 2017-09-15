@@ -28,7 +28,19 @@ class Toolbar extends React.Component {
 
         const getEditorState = store.getItem('getEditorState')
 
-        const isActive = action.isActive(getEditorState)
+        // sometimes the editor state is not present - so we're augmenting the exception here.
+        let isActive = false
+        try {
+            isActive = action.isActive(getEditorState)
+        } catch (e) {
+            if (window.Raven) {
+                window.Raven.captureException(e, {
+                    editorState: getEditorState()
+                })
+            } else {
+                throw e
+            }
+        }
         const isDisabled = action.isDisabled(getEditorState)
 
         // pass getter and setter of editorState to functions
@@ -96,7 +108,7 @@ class Toolbar extends React.Component {
         }
 
         if (displayedActions) {
-            filteredActions = filteredActions.filter(action => displayedActions.includes(action.key))
+            filteredActions = filteredActions.filter((action) => displayedActions.includes(action.key))
         }
 
         return (

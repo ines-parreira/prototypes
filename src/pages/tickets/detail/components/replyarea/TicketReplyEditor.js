@@ -34,17 +34,37 @@ export const updateMessageText = _debounce((props, editorState) => {
 
     props.setResponseText(Map({
         contentState: editorState.getCurrentContent(),
-        selectionState: editorState.getSelection()
+        selectionState: editorState.getSelection(),
+        forceUpdate: false,
+        forceFocus: false,
     }))
 }, 100)
 
 class TicketReplyEditor extends React.Component {
     componentWillMount() {
+        // set the initial state of the editor - there might be drafts
         this._updateEditorState(this._getEditorStateFromReducer(this.props))
     }
 
     componentDidMount() {
-        this._bindKeys()
+        shortcutManager.bind('TicketDetailContainer', {
+            FOCUS_REPLY_AREA: {
+                action: (e) => {
+                    if (e && e.preventDefault) { // no incoming event if manually triggered
+                        e.preventDefault()
+                    }
+
+                    if (this.richArea) {
+                        this.props.setMacrosVisible(false)
+                        this.richArea._focusEditor()
+                    }
+                }
+            },
+        })
+    }
+
+    componentWillUnmount() {
+        shortcutManager.unbind('TicketDetailContainer')
     }
 
     componentWillReceiveProps(nextProps) {
@@ -64,29 +84,13 @@ class TicketReplyEditor extends React.Component {
 
         if (shouldFocus && this.richArea) {
             // wait for the next tick to focus
-            setTimeout(() => this.richArea._focusEditor(), 1)
-        }
-    }
-
-    componentWillUnmount() {
-        shortcutManager.unbind('TicketDetailContainer')
-    }
-
-    _bindKeys() {
-        shortcutManager.bind('TicketDetailContainer', {
-            FOCUS_REPLY_AREA: {
-                action: (e) => {
-                    if (e && e.preventDefault) { // no incoming event if manually triggered
-                        e.preventDefault()
-                    }
-
-                    if (this.richArea) {
-                        this.props.setMacrosVisible(false)
-                        this.richArea._focusEditor()
-                    }
+            setTimeout(() => {
+                // it's rare, but sometimes the richArea disappears after the tick
+                if (this.richArea) {
+                    this.richArea._focusEditor()
                 }
-            },
-        })
+            }, 1)
+        }
     }
 
     _getEditorStateFromReducer = (props) => {
@@ -115,11 +119,6 @@ class TicketReplyEditor extends React.Component {
         }
 
         return editorState
-    }
-
-    _onChange = (editorState) => {
-        this.setState({editorState})
-        updateMessageText(this.props, editorState)
     }
 
     _canAddAttachments = (files) => {
@@ -168,7 +167,10 @@ class TicketReplyEditor extends React.Component {
     _handleDroppedFiles = (selection, files) => {
         dndPlugin.handleDroppedFiles(selection, files, {
             getEditorState: () => this.state.editorState,
-            setEditorState: this._onChange
+            setEditorState: (editorState) => {
+                this.setState({editorState})
+                updateMessageText(this.props, editorState)
+            }
         })
 
         this._handleFiles(files)
@@ -187,20 +189,15 @@ class TicketReplyEditor extends React.Component {
         if (!this.richArea) {
             return
         }
-
         this.richArea._setEditorState(editorState)
     }
 
-    _updateReducer = () => {
-        if (!this.richArea) {
-            return
-        }
-
-        const {editorState} = this.richArea.state
+    _onEditorChange = (editorState) => {
+        // update the reducer when the editor state is changed
         updateMessageText(this.props, editorState)
     }
 
-    _handleOnEscape = () => {
+    _onEditorEscape = () => {
         shortcutManager.triggerAction('TicketDetailContainer', 'BLUR_EVERYTHING')
     }
 
@@ -225,7 +222,7 @@ class TicketReplyEditor extends React.Component {
 
         const toolbarProps = {
             buttons: [
-                <div className="attachment">
+                <div className="attachment" key="attachments">
                     <label
                         htmlFor="attachments-input"
                         className="m-0"
@@ -284,12 +281,12 @@ class TicketReplyEditor extends React.Component {
                         text: newMessage.getIn(['newMessage', 'body_text']),
                         html: newMessage.getIn(['newMessage', 'body_html']),
                     }}
-                    onChange={this._updateReducer}
+                    onChange={this._onEditorChange}
+                    onEscape={this._onEditorEscape}
                     handleDroppedFiles={this._handleDroppedFiles}
-                    onEscape={this._handleOnEscape}
+                    canDropFiles
                     tabIndex="4"
                     spellCheck
-                    canDropFiles
                     readOnly={
                         newMessage.getIn(['_internal', 'loading', 'submitMessage']) ||
                         cantWriteTextBecauseOfAttachments
@@ -306,15 +303,16 @@ class TicketReplyEditor extends React.Component {
 }
 
 TicketReplyEditor.propTypes = {
-    addAttachments: PropTypes.func.isRequired,
-    setResponseText: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
-    ticket: PropTypes.object.isRequired,
-    newMessageType: PropTypes.string.isRequired,
+    agents: ImmutablePropTypes.list.isRequired,
     newMessage: PropTypes.object.isRequired,
+    newMessageType: PropTypes.string.isRequired,
+    ticket: PropTypes.object.isRequired,
+
+    addAttachments: PropTypes.func.isRequired,
     notify: PropTypes.func.isRequired,
     setMacrosVisible: PropTypes.func.isRequired,
-    agents: ImmutablePropTypes.list.isRequired
+    setResponseText: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -327,9 +325,9 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
     addAttachments: newMessageActions.addAttachments,
-    setResponseText: newMessageActions.setResponseText,
     notify,
     setMacrosVisible: macroActions.setMacrosVisible,
+    setResponseText: newMessageActions.setResponseText,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyEditor)

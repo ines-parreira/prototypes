@@ -231,6 +231,9 @@ export const addSignature = (context) => {
         return context
     }
 
+    // mark blocks with signature meta flag - useful later for removing it when switching to chat or internal note
+    signatureBlocks = signatureBlocks.map((b) => b.set('data', fromJS({signature: true})))
+
     // Concat the signature blocks at the end of the content
     context.contentState = ContentState.createFromBlockArray(signatureBlocks)
 

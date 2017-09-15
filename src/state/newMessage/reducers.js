@@ -133,7 +133,8 @@ export default (state = initialState, action) => {
                         selectionState: null,
                         signatureAdded: false,
                         cacheAdded: false,
-                        forceUpdate: true,
+                        forceUpdate: false,
+                        forceFocus: false,
                     }
                 })
 
@@ -177,7 +178,8 @@ export default (state = initialState, action) => {
                         signatureAdded: false,
                         cacheAdded: false,
                         appliedMacro: null,
-                        forceUpdate: true,
+                        forceUpdate: false,
+                        forceFocus: false,
                     }
                 })
                 .setIn(['_internal', 'loading', 'submitMessage'], false)

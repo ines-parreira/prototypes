@@ -86,7 +86,7 @@ describe('New message reducers', () => {
     })
 
     it('should return same state if state.id is undefined or different from response', () => {
-        const currentTicket = initialState.mergeDeep({id: 'toto', state: {forceUpdate: true}})
+        const currentTicket = initialState.mergeDeep({id: 'toto', state: {forceUpdate: false}})
         expect(
             reducer(currentTicket, {type: types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS, resp: {id: 'fake'}})
         ).toEqualImmutable(
@@ -100,7 +100,7 @@ describe('New message reducers', () => {
             .mergeDeep({
                 state: {
                     dirty: false,
-                    forceUpdate: true,
+                    forceUpdate: false,
                 }
             })
 
@@ -116,7 +116,7 @@ describe('New message reducers', () => {
             .mergeDeep({
                 state: {
                     dirty: false,
-                    forceUpdate: true
+                    forceUpdate: false
                 },
             })
 

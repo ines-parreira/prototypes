@@ -12,7 +12,7 @@ const createStore = (initialState) => {
         }
     }
 
-    const getItem = key => state[key]
+    const getItem = (key) => state[key]
 
     return {
         updateItem,

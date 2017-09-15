@@ -10,6 +10,7 @@ import {AVAILABLE_LANGUAGES} from './../../../../config'
 import BooleanField from '../../../common/forms/BooleanField'
 import RichField from '../../../common/forms/RichField'
 import InputField from '../../../common/forms/InputField'
+import {convertToHTML} from '../../../../utils'
 
 const defaultContent = {
     name: '',
@@ -88,6 +89,17 @@ class YourProfileView extends React.Component {
             })
     }
 
+    _onSignatureChange = (editorState) => {
+        const contentState = editorState.getCurrentContent()
+
+        this.setState({
+            signature: {
+                text: contentState.getPlainText(),
+                html: convertToHTML(contentState),
+            }
+        })
+    }
+
     render() {
         const {isLoading} = this.props
         const loadingUser = isLoading && !this.state.loadingPreferences
@@ -95,7 +107,7 @@ class YourProfileView extends React.Component {
         return (
             <div>
                 <h1>
-                    <i className="fa fa-fw fa-user blue mr-2" />
+                    <i className="fa fa-fw fa-user blue mr-2"/>
                     Your profile
                 </h1>
 
@@ -159,7 +171,7 @@ class YourProfileView extends React.Component {
                         name="signature"
                         label="Signature"
                         value={this.state.signature}
-                        onChange={signature => this.setState({signature})}
+                        onChange={this._onSignatureChange}
                     />
 
                     <div>

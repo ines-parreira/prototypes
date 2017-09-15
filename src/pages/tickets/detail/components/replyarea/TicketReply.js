@@ -86,7 +86,6 @@ export default class TicketReply extends React.Component {
                 <TicketReplyEditor
                     actions={actions}
                     ticket={ticket}
-                    ref="editor"
                 />
                 {this._renderAttachments()}
                 {this._renderActions()}

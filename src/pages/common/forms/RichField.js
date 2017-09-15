@@ -2,7 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
-import {EditorState, RichUtils, ContentState} from 'draft-js'
+import {ContentState, EditorState, RichUtils} from 'draft-js'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
 import createDndPlugin from 'draft-js-dnd-plugin'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
@@ -13,7 +13,7 @@ import createToolbarPlugin from '../draftjs/plugins/toolbar'
 import createMentionPlugin, {suggestionsFilter} from '../draftjs/plugins/mentions'
 
 import InputField from './InputField'
-import {convertToHTML, convertFromHTML, removeMentions} from '../../../utils'
+import {convertFromHTML, convertToHTML, removeMentions} from '../../../utils'
 import 'draft-js/dist/Draft.css'
 
 
@@ -71,7 +71,8 @@ export default class RichField extends InputField {
             }
         }
 
-        if (!_isEqual(nextProps.value, this.props.value)) {
+        // when we do a preview we're changing the value directly and so we need to update the editor state
+        if (!_isEqual(nextProps.value, this.props.value) && this.props.displayOnly) {
             this._updateEditorState(nextProps.value)
         }
     }
@@ -146,18 +147,10 @@ export default class RichField extends InputField {
         }
     }
 
-    _onChange = (editorState, callback) => {
-        const contentState = editorState.getCurrentContent()
-
+    _onChange = (editorState) => {
         this.setState({editorState}, () => {
-            if (callback) {
-                callback()
-            }
-
-            this.props.onChange({
-                text: contentState.getPlainText(),
-                html: convertToHTML(contentState),
-            })
+            // notify the parent of the new editor state
+            this.props.onChange(editorState)
         })
     }
 
@@ -230,9 +223,8 @@ export default class RichField extends InputField {
                         ) : (
                             <Editor
                                 editorState={this.state.editorState}
-                                onChange={(editorState) => this._onChange(editorState)}
+                                onChange={this._onChange}
                                 onFocus={this._onFocus}
-                                onBlur={this._onBlur}
                                 plugins={this.plugins}
                                 handleKeyCommand={this._handleKeyCommand}
                                 handleDroppedFiles={this._handleDroppedFiles}

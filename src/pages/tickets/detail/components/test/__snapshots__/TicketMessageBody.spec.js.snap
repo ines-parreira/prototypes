@@ -277,6 +277,7 @@ exports[`components TicketMessageBody use stripped_html if available 1`] = `
       <div
         className="mail-quote-toggle"
         onClick={[Function]}
+        title="Show full content"
       >
         <i
           className="fa fa-fw fa-ellipsis-h"

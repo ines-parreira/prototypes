@@ -23,6 +23,7 @@ export default class TicketMessageBody extends React.Component {
                 quoteButton = (
                     <div
                         className="mail-quote-toggle"
+                        title="Show full content"
                         onClick={() => this.setState({showFullBody: !this.state.showFullBody})}
                     >
                         <i className="fa fa-fw fa-ellipsis-h" />
