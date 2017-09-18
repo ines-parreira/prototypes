@@ -16,7 +16,8 @@ describe('chat utils', () => {
                     send_button_text: 'send!'
                 },
                 meta: {
-                    app_token: 'apijdasoidkas'
+                    app_token: 'apijdasoidkas',
+                    script_url: 'config.gorgias.io/foo/chat/bar.js'
                 }
             })
 

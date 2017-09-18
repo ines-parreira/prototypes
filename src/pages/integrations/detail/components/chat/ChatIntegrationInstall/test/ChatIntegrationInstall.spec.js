@@ -34,7 +34,8 @@ describe('ChatIntegrationInstall component', () => {
                     name: 'mychat',
                     type: 'smooch_inside',
                     meta: {
-                        shopify_integration_ids: [2]
+                        shopify_integration_ids: [2],
+                        script_url: 'config.gorgias.io/foo/chat/bar'
                     }
                 })}
             />
@@ -53,7 +54,8 @@ describe('ChatIntegrationInstall component', () => {
                     name: 'mychat',
                     type: 'smooch_inside',
                     meta: {
-                        shopify_integration_ids: [1]
+                        shopify_integration_ids: [1],
+                        script_url: 'config.gorgias.io/foo/chat/bar'
                     }
                 })}
             />
@@ -81,6 +83,7 @@ describe('ChatIntegrationInstall component', () => {
                     },
                     meta: {
                         app_token: 'a86sd47a56sd4asd',
+                        script_url: 'config.gorgias.io/foo/chat/bar'
                     }
                 })}
             />

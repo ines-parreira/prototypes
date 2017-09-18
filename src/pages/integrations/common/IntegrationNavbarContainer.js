@@ -41,9 +41,8 @@ export default class IntegrationNavbarContainer extends React.Component {
         return (
             <Navbar activeContent="integrations">
                 {
-                    Object.keys(pagesPerIntegrationType).includes(integrationType)
-                    && !currentIntegration.isEmpty()
-                    && (
+                    Object.keys(pagesPerIntegrationType).includes(integrationType) && !currentIntegration.isEmpty()
+                    ? (
                         <div>
                             <div className="item">
                                 <h4>
@@ -71,7 +70,11 @@ export default class IntegrationNavbarContainer extends React.Component {
                                 </div>
                             </div>
                         </div>
-                    )
+                    ) :  (<div></div>)
+                    // todo(@martin): remove the empty div above when we merge flow, and instead modify the propType
+                    // of `Navbar.children` to accept empty values (can't be done with propType but can be done with
+                    // Flow).
+                    // https://stackoverflow.com/questions/40729634/how-to-specify-null-prop-type-in-reactjs
                 }
             </Navbar>
         )

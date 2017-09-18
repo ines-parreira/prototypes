@@ -52,7 +52,7 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
       .
        
       <a
-        href=""
+        href={true}
         onClick={[Function]}
       >
         Remove
@@ -124,24 +124,16 @@ exports[`ChatIntegrationInstall component should display a placeholder if there'
                 Object {
                   "color": "inherit",
                   "display": "flex",
-                  "height": "200px",
+                  "height": "160px",
                 }
               }
             >
+              &lt;!-- Gorgias Chat Widget Start --&gt;
               &lt;div id="gorgias-chat"&gt;
-              &lt;script src="null/static/public/js/gorgias-chat.js"&gt;&lt;/script&gt;
-              &lt;script&gt;
-              document.addEventListener("DOMContentLoaded", function() {
-              GorgiasChat.init({
-                "smooch": {
-                  "properties": {
-                    "current_page": window.location.href
-                  }
-                }
-              })
-              })
-              &lt;/script&gt;
+              &lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
+              &lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
               &lt;/div&gt;
+              &lt;!-- Gorgias Chat Widget End --&gt;
             </pre>
           </kr>
         </ta>
@@ -274,34 +266,16 @@ exports[`ChatIntegrationInstall component should display the code snippet for cu
                 Object {
                   "color": "inherit",
                   "display": "flex",
-                  "height": "200px",
+                  "height": "160px",
                 }
               }
             >
+              &lt;!-- Gorgias Chat Widget Start --&gt;
               &lt;div id="gorgias-chat"&gt;
-              &lt;script src="null/static/public/js/gorgias-chat.js"&gt;&lt;/script&gt;
-              &lt;script&gt;
-              document.addEventListener("DOMContentLoaded", function() {
-              GorgiasChat.init({
-                "headerColor": "#789456",
-                "chatIconColor": "#AB7891",
-                "conversationColor": "#B7B7B7",
-                "smooch": {
-                  "appToken": "a86sd47a56sd4asd",
-                  "properties": {
-                    "current_page": window.location.href
-                  },
-                  "customText": {
-                    "headerText": "some window title",
-                    "introductionText": "some introduction text",
-                    "inputPlaceholder": "type here to send messages",
-                    "sendButtonText": "Lets goooo"
-                  }
-                }
-              })
-              })
-              &lt;/script&gt;
+              &lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
+              &lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
               &lt;/div&gt;
+              &lt;!-- Gorgias Chat Widget End --&gt;
             </pre>
           </kr>
         </ta>
@@ -434,24 +408,16 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 Object {
                   "color": "inherit",
                   "display": "flex",
-                  "height": "200px",
+                  "height": "160px",
                 }
               }
             >
+              &lt;!-- Gorgias Chat Widget Start --&gt;
               &lt;div id="gorgias-chat"&gt;
-              &lt;script src="null/static/public/js/gorgias-chat.js"&gt;&lt;/script&gt;
-              &lt;script&gt;
-              document.addEventListener("DOMContentLoaded", function() {
-              GorgiasChat.init({
-                "smooch": {
-                  "properties": {
-                    "current_page": window.location.href
-                  }
-                }
-              })
-              })
-              &lt;/script&gt;
+              &lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
+              &lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
               &lt;/div&gt;
+              &lt;!-- Gorgias Chat Widget End --&gt;
             </pre>
           </kr>
         </ta>

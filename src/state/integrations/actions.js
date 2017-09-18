@@ -85,8 +85,9 @@ export function triggerCreateSuccess(integration) {
  * @param dispatch: the dispatch method
  * @param resp: the raw Integration data coming back from the server
  * @param notificationId: the id of the notification to replace with the success notification, if any
+ * @param didInvalidateCache: whether this update invalidated the cache of this integration or not
  */
-export function onUpdateSuccess(dispatch, resp, notificationId=null) {
+export function onUpdateSuccess(dispatch, resp, notificationId=null, didInvalidateCache=false) {
     dispatch({
         type: types.UPDATE_INTEGRATION_SUCCESS,
         resp
@@ -94,10 +95,17 @@ export function onUpdateSuccess(dispatch, resp, notificationId=null) {
 
     fetchIntegrations()(dispatch)
 
+    let message = 'Integration successfully updated'
+
+    if (resp.type === 'smooch_inside' && didInvalidateCache) {
+        message = 'Integration successfully updated. It may take up to 10 minutes for the changes to reflect on your ' +
+            'website.'
+    }
+
     dispatch(notify({
         id: notificationId,
         status: 'success',
-        message: 'Integration successfully updated'
+        message
     }))
 }
 
@@ -179,6 +187,7 @@ export function deleteIntegration(integration) {
 function updateOrCreateIntegrationRequest(integration, action, withDeleted, notificationId=null) {
     return (dispatch) => {
         const isUpdate = integration.get('id')
+        const oldDecoration = integration.get('decoration', fromJS({}))
 
         dispatch({
             type: isUpdate ? types.UPDATE_INTEGRATION_START : types.CREATE_INTEGRATION_START,
@@ -211,7 +220,7 @@ function updateOrCreateIntegrationRequest(integration, action, withDeleted, noti
             .then((json = {}) => json.data)
             .then((resp) => {
                 if (isUpdate) {
-                    return onUpdateSuccess(dispatch, resp, notificationId)
+                    return onUpdateSuccess(dispatch, resp, notificationId, !oldDecoration.isEmpty())
                 }
 
                 return onCreateSuccess(dispatch, resp)

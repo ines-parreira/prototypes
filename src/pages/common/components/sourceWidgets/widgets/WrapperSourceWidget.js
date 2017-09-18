@@ -40,6 +40,8 @@ class WrapperSourceWidget extends React.Component {
 
             if (integration.get('type') === 'http') {
                 displayName = integration.get('name')
+            } else if (integration.get('type') === 'smooch_inside') {
+                displayName = 'Chat'
             } else {
                 displayName = humanizeString(integration.get('type'))
             }

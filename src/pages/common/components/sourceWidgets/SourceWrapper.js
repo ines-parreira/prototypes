@@ -31,6 +31,16 @@ export const WIDGET_DATA_TYPES = [
         )
     },
     {
+        type: 'smooch_inside',
+        title: 'Chat data',
+        description: (
+            <div>
+                The following data comes from your{' '}
+                <Link to="/app/integrations/smooch_inside" target="_blank"><b>Chat integrations</b></Link>.
+            </div>
+        )
+    },
+    {
         type: 'http',
         title: 'HTTP data',
         description: (

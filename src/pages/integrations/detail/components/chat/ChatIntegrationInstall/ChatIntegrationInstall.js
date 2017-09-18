@@ -66,7 +66,13 @@ class ChatIntegrationInstall extends React.Component {
 
         const integration = this.props.integration.setIn(['meta', 'shopify_integration_ids'], shopifyIntegrationIdsList)
 
-        return this.props.actions.updateOrCreateIntegration(integration).then(() => {
+        const form = {
+            id: integration.get('id'),
+            type: integration.get('type'),
+            meta: integration.get('meta')
+        }
+
+        return this.props.actions.updateOrCreateIntegration(fromJS(form)).then(() => {
             this.setState({integrationLoading: null})
         })
     }
@@ -132,8 +138,11 @@ class ChatIntegrationInstall extends React.Component {
                                     <p key={integrationId}>
                                         Chat installed on {`${shopifyIntegration.get('name')}`}.{' '}
                                         <a
-                                            href=""
-                                            onClick={() => this._removeFromShopifyStore(integrationId)}
+                                            href
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                this._removeFromShopifyStore(integrationId)
+                                            }}
                                         >
                                             Remove
                                         </a>
@@ -197,7 +206,7 @@ class ChatIntegrationInstall extends React.Component {
                                 <pre
                                     style={{
                                         display: 'flex',
-                                        height: '200px',
+                                        height: '160px',
                                         color: 'inherit'
                                     }}
                                     id="chat-snippet"
