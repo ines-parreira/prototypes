@@ -389,7 +389,7 @@ export const replaceIntegrationVariables = (integrationType, ticketState, variab
         return newArgument.replace(variable, '')
     }
 
-    const newVariable = variable.replace('integrations.shopify', `integrations[${integrationId}]`)
+    const newVariable = variable.replace(`integrations.${integrationType}`, `integrations[${integrationId}]`)
     return newArgument.replace(variable, newVariable)
 }
 
