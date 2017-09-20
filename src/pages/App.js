@@ -38,7 +38,7 @@ import * as activityActions from '../state/activity/actions'
 const intervals = {}
 class App extends React.Component {
     componentWillMount() {
-        this.props.fetchUsers(['agent', 'admin'])
+        this.props.fetchUsers(['agent', 'admin', 'bot'])
         // activity polling
         let shouldPoll = true
         const pollingParameter = this.props.location.query._activity_polling || ''

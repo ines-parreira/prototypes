@@ -112,7 +112,7 @@ export default class TicketDetailContainer extends React.Component {
 
     componentWillMount() {
         this.props.actions.tag.fetchTags()
-        this.props.actions.user.fetchUsers(['agent', 'admin'])
+        this.props.actions.user.fetchUsers(['agent', 'admin', 'bot'])
         this.props.actions.ticket.clearTicket()
         this._fetchTicketData(this.props.params.ticketId)
 
