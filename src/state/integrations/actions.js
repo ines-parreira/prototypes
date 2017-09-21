@@ -187,7 +187,7 @@ export function deleteIntegration(integration) {
 function updateOrCreateIntegrationRequest(integration, action, withDeleted, notificationId=null) {
     return (dispatch) => {
         const isUpdate = integration.get('id')
-        const oldDecoration = integration.get('decoration', fromJS({}))
+        const oldDecoration = integration.get('decoration') || fromJS({})
 
         dispatch({
             type: isUpdate ? types.UPDATE_INTEGRATION_START : types.CREATE_INTEGRATION_START,
