@@ -11,12 +11,6 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
         }
       }
     >
-      header
-      <i
-        className=""
-      />
-    </div>
-    <div>
       <div>
         <span
           style={
@@ -27,12 +21,12 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
         />
       </div>
       <div>
-        <h2>
+        <div>
           My little chat integration
-        </h2>
-        <p>
+        </div>
+        <div>
           intro
-        </p>
+        </div>
       </div>
     </div>
     <div>
@@ -44,7 +38,17 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
           }
         }
       >
-        Hey, I'm wondering about the status of my order
+        Hey there
+      </div>
+      <div
+        className=""
+        style={
+          Object {
+            "backgroundColor": "#456789",
+          }
+        }
+      >
+        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
       </div>
       <div>
         Charles
@@ -54,31 +58,23 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
       >
         Sure, what's your email / order number?
       </div>
-      <div>
-        Messaging by 
-        <strong>
-          Gorgias
-        </strong>
-      </div>
     </div>
     <div>
-      <i
-        className=""
-      />
+      Powered by Gorgias
+    </div>
+    <div>
       <div>
         input
       </div>
-      <span
+      <i
         className=""
-      >
-        send!
-      </span>
+      />
     </div>
   </div>
   <div
     style={
       Object {
-        "backgroundColor": "#789123",
+        "backgroundColor": "#123456",
       }
     }
   >

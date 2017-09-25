@@ -68,11 +68,9 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
           <div>
             <div>
               <InputField
-                help="Can be set only once! If you want to change the title you will have to create another chat"
                 label="Chat title"
                 onChange={[Function]}
                 placeholder="Ex: Company Support"
-                readOnly={false}
                 required={true}
                 type="text"
                 value=""
@@ -89,19 +87,10 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
                 value=""
               />
               <InputField
-                label="Header text"
-                onChange={[Function]}
-                required={true}
-                rows="2"
-                type="textarea"
-                value="We're here to chat, so ask us anything!"
-              />
-              <InputField
                 label="Introduction text"
                 onChange={[Function]}
-                rows="2"
-                type="textarea"
-                value=""
+                type="text"
+                value="What can we do for you?"
               />
               <InputField
                 label="Input placeholder"
@@ -109,26 +98,14 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
                 type="text"
                 value="Type a message..."
               />
-              <InputField
-                label="Send button text"
-                onChange={[Function]}
-                type="text"
-                value="Send"
-              />
               <ColorField
-                label="Header color"
+                label="Main color"
                 onChange={[Function]}
                 type="text"
                 value="#0d87dd"
               />
               <ColorField
                 label="Conversation color"
-                onChange={[Function]}
-                type="text"
-                value="#0d87dd"
-              />
-              <ColorField
-                label="Chat icon color"
                 onChange={[Function]}
                 type="text"
                 value="#0d87dd"
@@ -160,19 +137,16 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
         }
       >
         <ChatIntegrationPreview
-          chatIconColor="#0d87dd"
           conversationColor="#0d87dd"
           currentUser={
             Immutable.Map {
             }
           }
-          headerColor="#0d87dd"
-          headerText="We're here to chat, so ask us anything!"
           icon=""
           inputPlaceholder="Type a message..."
-          introductionText=""
+          introductionText="What can we do for you?"
+          mainColor="#0d87dd"
           name=""
-          sendButtonText="Send"
         />
       </Ot>
     </bt>
@@ -254,11 +228,9 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
           <div>
             <div>
               <InputField
-                help={false}
                 label="Chat title"
                 onChange={[Function]}
                 placeholder="Ex: Company Support"
-                readOnly={true}
                 required={true}
                 type="text"
                 value=""
@@ -275,19 +247,10 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 value=""
               />
               <InputField
-                label="Header text"
-                onChange={[Function]}
-                required={true}
-                rows="2"
-                type="textarea"
-                value="We're here to chat, so ask us anything!"
-              />
-              <InputField
                 label="Introduction text"
                 onChange={[Function]}
-                rows="2"
-                type="textarea"
-                value=""
+                type="text"
+                value="What can we do for you?"
               />
               <InputField
                 label="Input placeholder"
@@ -295,26 +258,14 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 type="text"
                 value="Type a message..."
               />
-              <InputField
-                label="Send button text"
-                onChange={[Function]}
-                type="text"
-                value="Send"
-              />
               <ColorField
-                label="Header color"
+                label="Main color"
                 onChange={[Function]}
                 type="text"
                 value="#0d87dd"
               />
               <ColorField
                 label="Conversation color"
-                onChange={[Function]}
-                type="text"
-                value="#0d87dd"
-              />
-              <ColorField
-                label="Chat icon color"
                 onChange={[Function]}
                 type="text"
                 value="#0d87dd"
@@ -362,19 +313,16 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
         }
       >
         <ChatIntegrationPreview
-          chatIconColor="#0d87dd"
           conversationColor="#0d87dd"
           currentUser={
             Immutable.Map {
             }
           }
-          headerColor="#0d87dd"
-          headerText="We're here to chat, so ask us anything!"
           icon=""
           inputPlaceholder="Type a message..."
-          introductionText=""
+          introductionText="What can we do for you?"
+          mainColor="#0d87dd"
           name=""
-          sendButtonText="Send"
         />
       </Ot>
     </bt>
@@ -456,11 +404,9 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
           <div>
             <div>
               <InputField
-                help={false}
                 label="Chat title"
                 onChange={[Function]}
                 placeholder="Ex: Company Support"
-                readOnly={true}
                 required={true}
                 type="text"
                 value=""
@@ -477,19 +423,10 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 value=""
               />
               <InputField
-                label="Header text"
-                onChange={[Function]}
-                required={true}
-                rows="2"
-                type="textarea"
-                value="We're here to chat, so ask us anything!"
-              />
-              <InputField
                 label="Introduction text"
                 onChange={[Function]}
-                rows="2"
-                type="textarea"
-                value=""
+                type="text"
+                value="What can we do for you?"
               />
               <InputField
                 label="Input placeholder"
@@ -497,26 +434,14 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 type="text"
                 value="Type a message..."
               />
-              <InputField
-                label="Send button text"
-                onChange={[Function]}
-                type="text"
-                value="Send"
-              />
               <ColorField
-                label="Header color"
+                label="Main color"
                 onChange={[Function]}
                 type="text"
                 value="#0d87dd"
               />
               <ColorField
                 label="Conversation color"
-                onChange={[Function]}
-                type="text"
-                value="#0d87dd"
-              />
-              <ColorField
-                label="Chat icon color"
                 onChange={[Function]}
                 type="text"
                 value="#0d87dd"
@@ -564,19 +489,16 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
         }
       >
         <ChatIntegrationPreview
-          chatIconColor="#0d87dd"
           conversationColor="#0d87dd"
           currentUser={
             Immutable.Map {
             }
           }
-          headerColor="#0d87dd"
-          headerText="We're here to chat, so ask us anything!"
           icon=""
           inputPlaceholder="Type a message..."
-          introductionText=""
+          introductionText="What can we do for you?"
+          mainColor="#0d87dd"
           name=""
-          sendButtonText="Send"
         />
       </Ot>
     </bt>

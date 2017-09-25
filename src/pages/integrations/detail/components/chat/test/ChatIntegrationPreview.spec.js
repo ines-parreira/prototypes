@@ -13,12 +13,9 @@ describe('ChatIntegrationPreview', () => {
                     name: 'Charles'
                 })}
                 introductionText="intro"
-                headerText="header"
                 inputPlaceholder="input"
-                sendButtonText="send!"
-                headerColor="#123456"
+                mainColor="#123456"
                 conversationColor="#456789"
-                chatIconColor="#789123"
                 icon="http://httpbin.org/image.jpg"
             />
         )

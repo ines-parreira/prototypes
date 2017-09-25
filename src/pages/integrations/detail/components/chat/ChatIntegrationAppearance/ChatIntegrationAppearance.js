@@ -32,13 +32,10 @@ import css from './ChatIntegrationAppearance.less'
 export const defaultContent = {
     type: 'smooch_inside',
     name: '',
-    headerText: 'We\'re here to chat, so ask us anything!',
-    introductionText: '',
+    introductionText: 'What can we do for you?',
     inputPlaceholder: 'Type a message...',
-    sendButtonText: 'Send',
-    headerColor: '#0d87dd',
+    mainColor: '#0d87dd',
     conversationColor: '#0d87dd',
-    chatIconColor: '#0d87dd',
     icon: ''
 }
 
@@ -84,13 +81,10 @@ class ChatIntegrationAppearance extends React.Component {
     _getIntegration = (integration) => {
         return _defaults({
             name: integration.get('name'),
-            headerText: integration.getIn(['decoration', 'header_text']),
             introductionText: integration.getIn(['decoration', 'introduction_text']),
             inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
-            sendButtonText: integration.getIn(['decoration', 'send_button_text']),
-            headerColor: integration.getIn(['decoration', 'header_color']),
+            mainColor: integration.getIn(['decoration', 'main_color'], integration.getIn(['decoration', 'header_color'])), // todo(@martin): remove this fallback when everybody has migrated to the new design (latest: Nov. 1, 2017)
             conversationColor: integration.getIn(['decoration', 'conversation_color']),
-            chatIconColor: integration.getIn(['decoration', 'chat_icon_color']),
             icon: integration.getIn(['decoration', 'icon'])
         }, defaultContent)
     }
@@ -104,12 +98,9 @@ class ChatIntegrationAppearance extends React.Component {
         e.preventDefault()
         const form = _pick(this.state, ['name', 'type'])
         form.decoration = {
-            header_text: this.state.headerText,
             input_placeholder: this.state.inputPlaceholder,
-            send_button_text: this.state.sendButtonText,
             conversation_color: this.state.conversationColor,
-            chat_icon_color: this.state.chatIconColor,
-            header_color: this.state.headerColor,
+            main_color: this.state.mainColor,
             introduction_text: this.state.introductionText,
             icon: this.state.icon
         }
@@ -175,11 +166,9 @@ class ChatIntegrationAppearance extends React.Component {
                                         <InputField
                                             type="text"
                                             label="Chat title"
-                                            help={!isUpdate && 'Can be set only once! If you want to change the title you will have to create another chat'}
                                             value={this.state.name}
                                             onChange={value => this.setState({name: value})}
                                             placeholder="Ex: Company Support"
-                                            readOnly={isUpdate}
                                             required
                                         />
 
@@ -192,20 +181,10 @@ class ChatIntegrationAppearance extends React.Component {
                                         />
 
                                         <InputField
-                                            type="textarea"
-                                            label="Header text"
-                                            value={this.state.headerText}
-                                            onChange={value => this.setState({headerText: value})}
-                                            rows="2"
-                                            required
-                                        />
-
-                                        <InputField
-                                            type="textarea"
+                                            type="text"
                                             value={this.state.introductionText}
                                             onChange={value => this.setState({introductionText: value})}
                                             label="Introduction text"
-                                            rows="2"
                                         />
 
                                         <InputField
@@ -215,29 +194,16 @@ class ChatIntegrationAppearance extends React.Component {
                                             label="Input placeholder"
                                         />
 
-                                        <InputField
-                                            type="text"
-                                            value={this.state.sendButtonText}
-                                            onChange={value => this.setState({sendButtonText: value})}
-                                            label="Send button text"
-                                        />
-
                                         <ColorField
-                                            value={this.state.headerColor}
-                                            onChange={value => this.setState({headerColor: value})}
-                                            label="Header color"
+                                            value={this.state.mainColor}
+                                            onChange={value => this.setState({mainColor: value})}
+                                            label="Main color"
                                         />
 
                                         <ColorField
                                             value={this.state.conversationColor}
                                             onChange={value => this.setState({conversationColor: value})}
                                             label="Conversation color"
-                                        />
-
-                                        <ColorField
-                                            value={this.state.chatIconColor}
-                                            onChange={value => this.setState({chatIconColor: value})}
-                                            label="Chat icon color"
                                         />
 
                                     </div>
@@ -273,13 +239,10 @@ class ChatIntegrationAppearance extends React.Component {
                             <ChatIntegrationPreview
                                 currentUser={currentUser}
                                 name={this.state.name}
-                                headerText={this.state.headerText}
                                 introductionText={this.state.introductionText}
                                 inputPlaceholder={this.state.inputPlaceholder}
-                                sendButtonText={this.state.sendButtonText}
-                                headerColor={this.state.headerColor}
+                                mainColor={this.state.mainColor}
                                 conversationColor={this.state.conversationColor}
-                                chatIconColor={this.state.chatIconColor}
                                 icon={this.state.icon}
                             />
                         </Col>
