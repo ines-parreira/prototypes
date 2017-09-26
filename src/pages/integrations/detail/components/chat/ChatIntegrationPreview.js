@@ -34,7 +34,7 @@ const ChatIntegrationPreview = ({
         return (
             <svg version="1.0" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 100 100"
                  style={{overflow: 'visible', shapeRendering: 'geometricPrecision'}}>
-                <filter id="33c9df204aeec9aa096f1fd360bd4160">
+                <filter id="preview-default-icon-filter">
                     <feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur>
                     <feOffset dx="0" dy="4" result="offsetblur"></feOffset>
                     <feComponentTransfer>
