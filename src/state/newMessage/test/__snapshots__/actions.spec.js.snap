@@ -563,116 +563,7 @@ Array [
 ]
 `;
 
-exports[`actions new message setResponseText() should join the typing room of the ticket when the user is typing 1`] = `
-Array [
-  Object {
-    "appliedMacro": undefined,
-    "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                  Object {
-                    "entity": null,
-                    "style": Array [],
-                  },
-                ],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "foo",
-                "type": "unstyled",
-              },
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-          },
-},
-    "currentUser": undefined,
-    "forceFocus": false,
-    "forceUpdate": false,
-    "fromMacro": false,
-    "ticket": Immutable.Map {
-      id: 1,
-},
-    "ticketId": 1,
-    "type": "setResponseText",
-  },
-]
-`;
-
-exports[`actions new message setResponseText() should leave the typing room of the ticket when the user is not typing but is in the room 1`] = `
-Array [
-  Object {
-    "appliedMacro": undefined,
-    "args": Immutable.Map {
-      contentState: Object {
-            "blockMap": Object {
-              "someRandomKey": Object {
-                "characterList": Array [],
-                "data": Object {},
-                "depth": 0,
-                "key": "someRandomKey",
-                "text": "",
-                "type": "unstyled",
-              },
-            },
-            "selectionAfter": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-            "selectionBefore": Object {
-              "anchorKey": "someRandomKey",
-              "anchorOffset": 0,
-              "focusKey": "someRandomKey",
-              "focusOffset": 0,
-              "hasFocus": false,
-              "isBackward": false,
-            },
-          },
-},
-    "currentUser": Immutable.Map {
-      id: 1,
-},
-    "forceFocus": false,
-    "forceUpdate": false,
-    "fromMacro": false,
-    "ticket": Immutable.Map {
-      id: 1,
-},
-    "ticketId": 1,
-    "type": "setResponseText",
-  },
-]
-`;
-
-exports[`actions new message setResponseText() should not join the typing room of the ticket when the content is only the user's signature 1`] = `
+exports[`actions new message setResponseText() should not send a typing event when the content is only the user's signature 1`] = `
 Array [
   Object {
     "appliedMacro": undefined,
@@ -758,7 +649,7 @@ Array [
 ]
 `;
 
-exports[`actions new message setResponseText() should not join the typing room of the ticket when the user is typing in an internal-note 1`] = `
+exports[`actions new message setResponseText() should not send a typing event when the user is typing in an internal-note 1`] = `
 Array [
   Object {
     "appliedMacro": undefined,
@@ -818,7 +709,7 @@ Array [
 ]
 `;
 
-exports[`actions new message setResponseText() should not leave the typing room of the ticket when the user is not typing and not in the room 1`] = `
+exports[`actions new message setResponseText() should not send an end typing event when the user is not typing and not in ticket 1`] = `
 Array [
   Object {
     "appliedMacro": undefined,
@@ -855,6 +746,115 @@ Array [
     "currentUser": Immutable.Map {
       id: 1,
 },
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      id: 1,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message setResponseText() should send an end typing event on ticket when the user is not typing but is in the room 1`] = `
+Array [
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "",
+                "type": "unstyled",
+              },
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+},
+    "currentUser": Immutable.Map {
+      id: 1,
+},
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "ticket": Immutable.Map {
+      id: 1,
+},
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+]
+`;
+
+exports[`actions new message setResponseText() should send typing event when the user is typing 1`] = `
+Array [
+  Object {
+    "appliedMacro": undefined,
+    "args": Immutable.Map {
+      contentState: Object {
+            "blockMap": Object {
+              "someRandomKey": Object {
+                "characterList": Array [
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                  Object {
+                    "entity": null,
+                    "style": Array [],
+                  },
+                ],
+                "data": Object {},
+                "depth": 0,
+                "key": "someRandomKey",
+                "text": "foo",
+                "type": "unstyled",
+              },
+            },
+            "selectionAfter": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+            "selectionBefore": Object {
+              "anchorKey": "someRandomKey",
+              "anchorOffset": 0,
+              "focusKey": "someRandomKey",
+              "focusOffset": 0,
+              "hasFocus": false,
+              "isBackward": false,
+            },
+          },
+},
+    "currentUser": undefined,
     "forceFocus": false,
     "forceUpdate": false,
     "fromMacro": false,

@@ -20,10 +20,10 @@ Immutable.Map {
     events: Immutable.List [
     ],
   },
-  agentsLocation: Immutable.List [
-  ],
-  agentsTypingStatus: Immutable.List [
-  ],
+  agentsLocation: Immutable.Map {
+  },
+  agentsTypingStatus: Immutable.Map {
+  },
   _internal: Immutable.Map {
     loading: Immutable.Map {
       history: false,
@@ -47,8 +47,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -71,8 +71,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -100,8 +100,8 @@ Object {
       "name": "Romain",
     },
   ],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -129,8 +129,8 @@ Object {
       "name": "Romain",
     },
   ],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -163,10 +163,10 @@ Immutable.Map {
     events: Immutable.List [
     ],
   },
-  agentsLocation: Immutable.List [
-  ],
-  agentsTypingStatus: Immutable.List [
-  ],
+  agentsLocation: Immutable.Map {
+  },
+  agentsTypingStatus: Immutable.Map {
+  },
   _internal: Immutable.Map {
     loading: Immutable.Map {
       history: false,
@@ -200,10 +200,10 @@ Immutable.Map {
     events: Immutable.List [
     ],
   },
-  agentsLocation: Immutable.List [
-  ],
-  agentsTypingStatus: Immutable.List [
-  ],
+  agentsLocation: Immutable.Map {
+  },
+  agentsTypingStatus: Immutable.Map {
+  },
   _internal: Immutable.Map {
     loading: Immutable.Map {
       history: false,
@@ -231,10 +231,10 @@ Immutable.Map {
     events: Immutable.List [
     ],
   },
-  agentsLocation: Immutable.List [
-  ],
-  agentsTypingStatus: Immutable.List [
-  ],
+  agentsLocation: Immutable.Map {
+  },
+  agentsTypingStatus: Immutable.Map {
+  },
   _internal: Immutable.Map {
     loading: Immutable.Map {
       history: false,
@@ -258,8 +258,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -284,8 +284,8 @@ Object {
     "id": 1,
   },
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -308,8 +308,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -332,8 +332,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -356,8 +356,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -387,8 +387,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -415,8 +415,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -443,10 +443,10 @@ Immutable.Map {
     events: Immutable.List [
     ],
   },
-  agentsLocation: Immutable.List [
-  ],
-  agentsTypingStatus: Immutable.List [
-  ],
+  agentsLocation: Immutable.Map {
+  },
+  agentsTypingStatus: Immutable.Map {
+  },
   _internal: Immutable.Map {
     loading: Immutable.Map {
       history: false,
@@ -474,10 +474,10 @@ Immutable.Map {
     events: Immutable.List [
     ],
   },
-  agentsLocation: Immutable.List [
-  ],
-  agentsTypingStatus: Immutable.List [
-  ],
+  agentsLocation: Immutable.Map {
+  },
+  agentsTypingStatus: Immutable.Map {
+  },
   _internal: Immutable.Map {
     loading: Immutable.Map {
       history: false,
@@ -511,10 +511,10 @@ Immutable.Map {
     events: Immutable.List [
     ],
   },
-  agentsLocation: Immutable.List [
-  ],
-  agentsTypingStatus: Immutable.List [
-  ],
+  agentsLocation: Immutable.Map {
+  },
+  agentsTypingStatus: Immutable.Map {
+  },
   _internal: Immutable.Map {
     loading: Immutable.Map {
       history: false,
@@ -538,8 +538,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -565,8 +565,8 @@ Object {
     "name": "Alex",
   },
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -592,8 +592,8 @@ Object {
     "name": "Romain",
   },
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -631,7 +631,7 @@ Object {
       ],
     },
   ],
-  "agentsTypingStatus": Array [],
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -654,7 +654,7 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
+  "agentsLocation": Object {},
   "agentsTypingStatus": Array [
     Object {
       "ticket": "1",
@@ -692,8 +692,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -719,8 +719,8 @@ Object {
     "name": "Alex",
   },
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [
     Object {
       "id": 1,
@@ -751,8 +751,8 @@ Object {
     "name": "Romain",
   },
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [
     Object {
       "id": 1,
@@ -798,8 +798,8 @@ Object {
       ],
     },
   ],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [
     Object {
       "id": 1,
@@ -844,8 +844,8 @@ Object {
       ],
     },
   ],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [
     Object {
       "id": 1,
@@ -876,8 +876,8 @@ Object {
     "name": "Alex",
   },
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [
     Object {
       "id": 1,
@@ -905,8 +905,8 @@ Object {
   },
   "active": Object {},
   "agents": Array [],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -938,8 +938,8 @@ Object {
       "name": "John",
     },
   ],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],
@@ -971,8 +971,8 @@ Object {
       "name": "John",
     },
   ],
-  "agentsLocation": Array [],
-  "agentsTypingStatus": Array [],
+  "agentsLocation": Object {},
+  "agentsTypingStatus": Object {},
   "items": Array [],
   "userHistory": Object {
     "events": Array [],

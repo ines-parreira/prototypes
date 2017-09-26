@@ -7,6 +7,7 @@ import * as socketEvents from '../config/socketEvents'
 
 import {store} from '../init'
 import {devLog} from '../utils'
+import {ROOM_JOINED, ROOM_LEFT} from '../config/socketConstants'
 
 /**
  * Manage active socket of app
@@ -71,7 +72,7 @@ class SocketManager {
         // join rooms that were active before being disconnected
         if (this.roomsData.length) {
             devLog('joining rooms', this.roomsData)
-            this.roomsData.forEach(roomData => this._joinRoom(roomData))
+            this.roomsData.forEach((roomData) => this._joinRoom(roomData))
         }
     }
 
@@ -181,14 +182,15 @@ class SocketManager {
      * @param callback
      */
     _joinRoom = (data, callback = _noop) => {
-        // if no object id, we don't join anything
+        // if no object id or object type, we don't join anything
         if (!data.objectId || !data.objectType) {
             return
         }
 
         const roomData = {
-            ...data,
-            event: 'join-room',
+            event: ROOM_JOINED,
+            objectType: data.objectType,
+            objectId: data.objectId,
         }
 
         devLog('socket join room', roomData)
@@ -225,14 +227,15 @@ class SocketManager {
      * @param callback
      */
     _leaveRoom = (data, callback = _noop) => {
-        // if no object id, we don't leave anything
-        if (!data.objectType) {
+        // if no object id or object type, we don't leave anything
+        if (!data.objectId || !data.objectType) {
             return
         }
 
         const roomData = {
-            ...data,
-            event: 'leave-room',
+            event: ROOM_LEFT,
+            objectType: data.objectType,
+            objectId: data.objectId,
         }
 
         devLog('socket leave room', roomData)

@@ -87,52 +87,12 @@ describe('users selectors', () => {
 
     it('getAgentsIdsLocation', () => {
         expect(selectors.getAgentsIdsLocation(state)).toEqualImmutable(state.users.get('agentsLocation'))
-        expect(selectors.getAgentsIdsLocation({})).toEqualImmutable(fromJS([]))
-    })
-
-    it('getAgentsLocation', () => {
-        const expected = fromJS([
-            {
-                users: [{id: 1}, {id: 2}],
-                ticket: '1'
-            },
-            {
-                users: [{id: 1}],
-                ticket: '2'
-            }
-        ])
-        expect(selectors.getAgentsLocation(state)).toEqualImmutable(expected)
-        expect(selectors.getAgentsLocation({})).toEqualImmutable(fromJS([]))
-    })
-
-    it('getOtherAgentsLocation', () => {
-        const expected = fromJS([
-            {
-                users: [{id: 1}],
-                ticket: '1'
-            },
-            {
-                users: [{id: 1}],
-                ticket: '2'
-            }
-        ])
-        expect(selectors.getOtherAgentsLocation(state)).toEqualImmutable(expected)
-        expect(selectors.getOtherAgentsLocation({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getAgentsIdsLocation({})).toEqualImmutable(fromJS({}))
     })
 
     it('getAgentsIdsOnTicket', () => {
-        const expected = fromJS([
-            {
-                users: ['1', '2'],
-                ticket: '1'
-            },
-            {
-                users: ['1'],
-                ticket: '2'
-            }
-        ])
-        expect(selectors.getAgentsIdsOnTicket(1)(state)).toEqualImmutable(expected.first().get('users'))
-        expect(selectors.getAgentsIdsOnTicket('2')(state)).toEqualImmutable(expected.last().get('users'))
+        expect(selectors.getAgentsIdsOnTicket(1)(state)).toEqualImmutable(fromJS(['1', '2']))
+        expect(selectors.getAgentsIdsOnTicket(2)(state)).toEqualImmutable(fromJS(['1']))
         expect(selectors.getAgentsIdsOnTicket()(state)).toEqualImmutable(fromJS([]))
         expect(selectors.getAgentsIdsOnTicket()({})).toEqualImmutable(fromJS([]))
     })
@@ -173,7 +133,7 @@ describe('users selectors', () => {
 
     it('getAgentsIdsTypingStatus', () => {
         expect(selectors.getAgentsIdsTypingStatus(state)).toEqualImmutable(state.users.get('agentsTypingStatus'))
-        expect(selectors.getAgentsIdsTypingStatus({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getAgentsIdsTypingStatus({})).toEqualImmutable(fromJS({}))
     })
 
     it('getAgentsIdsTypingStatusOnTicket', () => {

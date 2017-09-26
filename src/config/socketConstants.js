@@ -1,0 +1,5 @@
+export const TICKET_VIEWED = 'ticket-viewed'
+export const ROOM_JOINED = 'room-joined'
+export const ROOM_LEFT = 'room-left'
+export const AGENT_TYPING_STARTED = 'agent-typing-started'
+export const AGENT_TYPING_STOPPED = 'agent-typing-stopped'

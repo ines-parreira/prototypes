@@ -5,6 +5,7 @@ import * as viewsActions from '../state/views/actions'
 
 import * as viewsConstants from '../state/views/constants'
 import * as macroConstants from '../state/macro/constants'
+import * as socketConstants from './socketConstants'
 
 import {isCurrentlyOnTicket} from '../utils'
 
@@ -13,15 +14,38 @@ import {isCurrentlyOnTicket} from '../utils'
  * @enum name name of config (used to send the event)
  * @enum dataToSend function returning data that is sent to server when sending this event (bound to SocketManager instance)
  */
-export const sendEvents = [{
-    name: 'ticket-viewed',
-    dataToSend: function (id) {
-        return {
-            event: 'ticket-viewed',
-            ticketId: id,
-        }
+export const sendEvents = [
+    {
+        name: socketConstants.TICKET_VIEWED,
+        dataToSend: function (id) {
+            return {
+                event: socketConstants.TICKET_VIEWED,
+                objectType: 'Ticket',
+                objectId: id,
+            }
+        },
     },
-}]
+    {
+        name: socketConstants.AGENT_TYPING_STARTED,
+        dataToSend: function (id) {
+            return {
+                event: socketConstants.AGENT_TYPING_STARTED,
+                objectType: 'Ticket',
+                objectId: id,
+            }
+        },
+    },
+    {
+        name: socketConstants.AGENT_TYPING_STOPPED,
+        dataToSend: function (id) {
+            return {
+                event: socketConstants.AGENT_TYPING_STOPPED,
+                objectType: 'Ticket',
+                objectId: id,
+            }
+        },
+    }
+]
 
 /**
  * Events describing a room to join on server via socket
@@ -39,17 +63,8 @@ export const joinEvents = [{
         }
     },
     onLeave: function (id) {
-        return this.leave('ticket-typing', id)
+        return this.send(socketConstants.AGENT_TYPING_STOPPED, id)
     }
-}, {
-    name: 'ticket-typing',
-    dataToSend: function (id) {
-        return {
-            objectType: 'Ticket',
-            objectId: id,
-            action: 'typing',
-        }
-    },
 }, {
     name: 'user',
     dataToSend: function (id) {
@@ -93,7 +108,7 @@ export const receivedEvents = [{
     name: 'ticket-updated',
     onReceive: function (json) {
         if (isCurrentlyOnTicket(json.ticket.id)) {
-            this.send('ticket-viewed', json.ticket.id)
+            this.send(socketConstants.TICKET_VIEWED, json.ticket.id)
         }
 
         return this.dispatch(ticketActions.mergeTicket(json.ticket))
@@ -102,7 +117,7 @@ export const receivedEvents = [{
     name: 'ticket-message-created',
     onReceive: function (json) {
         if (isCurrentlyOnTicket(json.ticket.id)) {
-            this.send('ticket-viewed', json.ticket.id)
+            this.send(socketConstants.TICKET_VIEWED, json.ticket.id)
         }
 
         return this.dispatch(ticketActions.mergeTicket(json.ticket))

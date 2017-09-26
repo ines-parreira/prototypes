@@ -22,6 +22,7 @@ jest.mock('../../../services/socketManager', () => {
     return {
         join: jest.fn(),
         leave: jest.fn(),
+        send: jest.fn(),
     }
 })
 
@@ -277,6 +278,7 @@ describe('actions', () => {
             beforeEach(() => {
                 socketManager.join.mockReset()
                 socketManager.leave.mockReset()
+                socketManager.send.mockReset()
             })
 
             it('should always pass the args to the reducer', () => {
@@ -287,7 +289,7 @@ describe('actions', () => {
                 expect(store.getActions()).toMatchSnapshot()
             })
 
-            it('should join the typing room of the ticket when the user is typing', () => {
+            it('should send typing event when the user is typing', () => {
                 store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
@@ -303,10 +305,10 @@ describe('actions', () => {
                 })))
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(socketManager.join.mock.calls.length).toBe(1)
+                expect(socketManager.send.mock.calls.length).toBe(1)
             })
 
-            it('should not join the typing room of the ticket when the user is typing in an internal-note', () => {
+            it('should not send a typing event when the user is typing in an internal-note', () => {
                 store = mockStore({
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'internal-note'),
                     ticket: fromJS({id: 1})
@@ -317,10 +319,10 @@ describe('actions', () => {
                 })))
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(socketManager.join.mock.calls.length).toBe(0)
+                expect(socketManager.send.mock.calls.length).toBe(0)
             })
 
-            it('should not join the typing room of the ticket when the content is only the user\'s signature', () => {
+            it('should not send a typing event when the content is only the user\'s signature', () => {
                 store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
@@ -339,18 +341,19 @@ describe('actions', () => {
                 })))
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(socketManager.join.mock.calls.length).toBe(0)
+                expect(socketManager.send.mock.calls.length).toBe(0)
             })
 
-            it('should leave the typing room of the ticket when the user is not typing but is in the room', () => {
+            it('should send an end typing event on ticket when the user is not typing but is in the room', () => {
                 store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
                     users: fromJS({
-                        agentsTypingStatus: [{
-                            ticket: 1,
-                            users: [1]
-                        }],
+                        agentsTypingStatus: {
+                            1: {
+                                Ticket: [1]
+                            }
+                        },
                         agents: [{
                             id: 1
                         }]
@@ -366,15 +369,15 @@ describe('actions', () => {
 
                 expect(store.getActions()).toMatchSnapshot()
                 expect(socketManager.join.mock.calls.length).toBe(0)
-                expect(socketManager.leave.mock.calls.length).toBe(1)
+                expect(socketManager.send.mock.calls.length).toBe(1)
             })
 
-            it('should not leave the typing room of the ticket when the user is not typing and not in the room', () => {
+            it('should not send an end typing event when the user is not typing and not in ticket', () => {
                 store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
                     users: fromJS({
-                        agentsTypingStatus: [],
+                        agentsTypingStatus: {},
                         agents: [{
                             id: 1
                         }]
@@ -389,7 +392,7 @@ describe('actions', () => {
                 })))
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(socketManager.leave.mock.calls.length).toBe(0)
+                expect(socketManager.send.mock.calls.length).toBe(0)
             })
         })
     })

@@ -18,8 +18,8 @@ export const initialState = fromJS({
         tickets: [],
         events: []
     },
-    agentsLocation: [],
-    agentsTypingStatus: [],
+    agentsLocation: {},
+    agentsTypingStatus: {},
     _internal: {
         loading: {
             history: false,

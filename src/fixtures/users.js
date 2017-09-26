@@ -260,37 +260,24 @@ export const agents = [
     }
 ]
 
-export const agentsLocation = [
-    {
-        users: [
-            '1',
-            '2'
-        ],
-        ticket: '1'
+export const agentsLocation = {
+    1: {
+        Ticket: [1, 2]
     },
-    {
-        users: [
-            '1'
-        ],
-        ticket: '2'
+    2: {
+        Ticket: [1]
     }
-]
+}
 
-export const agentsTypingStatus = [
-    {
-        users: [
-            '1',
-            '2'
-        ],
-        ticket: '1'
+export const agentsTypingStatus = {
+    1: {
+        Ticket: [1, 2]
     },
-    {
-        users: [
-            '1'
-        ],
-        ticket: '2'
+    2: {
+        Ticket: [1]
     }
-]
+}
+
 
 export const user = {
     lastname: 'Bon',
