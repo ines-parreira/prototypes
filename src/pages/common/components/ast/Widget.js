@@ -45,14 +45,26 @@ export default class Widget extends React.Component {
         // E.g: current field is: `sendEmail.body_html`. We get `sendEmail.body_text` property
         // to automatically update its value when the html version changes.
         if (config.widget === 'rich-field' && config.textField) {
-            const textFieldParent = parent.slice(0, -3)
-            const textFieldPropIndex = properties.findIndex(property => {
-                return property.key.name === config.textField
-            })
-            this.state = {
-                textFieldPropIndex: textFieldPropIndex,
-                textFieldParent: textFieldParent.concat([textFieldPropIndex, 'value', 'value']),
-            }
+            this.state = this._getTextField(config, parent, properties)
+        }
+    }
+
+    _getTextField = (config, parent, properties, ) => {
+        const textFieldParent = parent.slice(0, -3)
+        const textFieldPropIndex = properties.findIndex(property => {
+            return property.key.name === config.textField
+        })
+        return {
+            textFieldPropIndex: textFieldPropIndex,
+            textFieldParent: textFieldParent.concat([textFieldPropIndex, 'value', 'value']),
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const{config, parent, properties} = nextProps
+        // update text field state when props changes
+        if (config.widget === 'rich-field' && config.textField) {
+            this.setState(this._getTextField(config, parent, properties))
         }
     }
 
@@ -116,6 +128,7 @@ export default class Widget extends React.Component {
 
         return (
             <RichField
+                allowExternalChanges
                 type="text"
                 rows="8"
                 label={config.name}

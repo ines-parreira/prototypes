@@ -18,6 +18,10 @@ import 'draft-js/dist/Draft.css'
 
 
 export default class RichField extends InputField {
+    static defaultProps = {
+        allowExternalChanges: false
+    }
+
     constructor(props) {
         super(props)
 
@@ -72,7 +76,7 @@ export default class RichField extends InputField {
         }
 
         // when we do a preview we're changing the value directly and so we need to update the editor state
-        if (!_isEqual(nextProps.value, this.props.value) && this.props.displayOnly) {
+        if (!_isEqual(nextProps.value, this.props.value) && (this.props.displayOnly || this.props.allowExternalChanges)) {
             this._updateEditorState(nextProps.value)
         }
     }
