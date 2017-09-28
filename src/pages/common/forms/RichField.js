@@ -185,6 +185,7 @@ export default class RichField extends InputField {
             required, // eslint-disable-line
             type, // eslint-disable-line
             value, // eslint-disable-line
+            allowExternalChanges, // eslint-disable-line
             alertMode,
             alertText,
             canDropFiles,
