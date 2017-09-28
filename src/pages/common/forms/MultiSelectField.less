@@ -1,0 +1,38 @@
+:local .select {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #464a4c;
+    background-color: #ffffff;
+    background-image: none;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+    padding: 0 .25rem;
+
+    .input-container {
+        position: relative;
+        display: inline-block;
+
+        .input {
+            outline: none;
+            border: none;
+            padding: .50rem .50rem;
+        }
+        .options {
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+
+            .option {
+                &:hover,
+                &.option--focused {
+                    background: #f2f9fe !important;
+                }
+            }
+        }
+    }
+}
+

@@ -2,10 +2,10 @@ import React, {PropTypes} from 'react'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import {Button, Form as BootstrapForm, FormGroup} from 'reactstrap'
-import _xor from 'lodash/xor'
 
 import InputField from '../../../../common/forms/InputField'
-import TriggersSelector from './TriggersSelector'
+import SelectField from '../../../../common/forms/MultiSelectField'
+import * as rulesConfig from '../../../../../config/rules'
 
 import EditableTitle from '../../../../common/components/EditableTitle'
 import Program from '../../../../common/components/ast/Program'
@@ -104,9 +104,9 @@ class RuleItem extends React.Component {
             })
     }
 
-    _handleChangeTriggers = (trigger) => {
+    _handleChangeEvents = (value) => {
         return this.setState({
-            eventTypes: _xor(this.state.eventTypes, [trigger])
+            eventTypes: value
         })
     }
 
@@ -229,9 +229,12 @@ class RuleItem extends React.Component {
                         >
                             WHEN
                         </Button>
-                        <TriggersSelector
-                            triggers={this.state.eventTypes}
-                            onChange={this._handleChangeTriggers}
+                        <SelectField
+                            values={this.state.eventTypes}
+                            options={rulesConfig.events.toJS()}
+                            singular="event"
+                            plural="events"
+                            onChange={this._handleChangeEvents}
                         />
                         {
                             this.state.eventTypes.length === 0 && (

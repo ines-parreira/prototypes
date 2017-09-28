@@ -36,8 +36,6 @@ describe('Action', () => {
 
     describe('validateBody', () => {
         it('should validate body', () => {
-            expect(validateBody({body_html: 'hey'}, schemas))
-                .toBeFalsy()
             expect(validateBody({body_text: 'hey'}, schemas))
                 .toBeFalsy()
         })
@@ -53,13 +51,13 @@ describe('Action', () => {
                 body_text: 'hey',
                 to: 'email@example.com'
             }, {
-                body_html: 'hey',
+                body_text: 'hey',
                 to: 'email@example.com'
             }, {
-                body_html: 'hey',
+                body_text: 'hey',
                 cc: 'email@example.com'
             }, {
-                body_html: 'hey',
+                body_text: 'hey',
                 bcc: 'emai@example.com'
             }]
 

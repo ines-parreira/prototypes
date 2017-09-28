@@ -35,7 +35,7 @@ exports[`ViewTable::Table default view 1`] = `
               },
               Immutable.Map {
                 name: "integrations",
-                title: "Integrations",
+                title: "Integration",
                 path: "messages.integration_id",
                 filter: Immutable.Map {
                   type: "integration",
@@ -69,7 +69,7 @@ exports[`ViewTable::Table default view 1`] = `
               },
               Immutable.Map {
                 name: "integrations",
-                title: "Integrations",
+                title: "Integration",
                 path: "messages.integration_id",
                 filter: Immutable.Map {
                   type: "integration",
@@ -88,7 +88,7 @@ exports[`ViewTable::Table default view 1`] = `
           field={
             Immutable.Map {
               name: "integrations",
-              title: "Integrations",
+              title: "Integration",
               path: "messages.integration_id",
               filter: Immutable.Map {
                 type: "integration",
@@ -110,7 +110,7 @@ exports[`ViewTable::Table default view 1`] = `
               },
               Immutable.Map {
                 name: "integrations",
-                title: "Integrations",
+                title: "Integration",
                 path: "messages.integration_id",
                 filter: Immutable.Map {
                   type: "integration",
@@ -141,7 +141,7 @@ exports[`ViewTable::Table default view 1`] = `
             },
             Immutable.Map {
               name: "integrations",
-              title: "Integrations",
+              title: "Integration",
               path: "messages.integration_id",
               filter: Immutable.Map {
                 type: "integration",

@@ -31,16 +31,16 @@ export function validateEmailList(value, schemas) {
 }
 
 export function validateBody(values) {
-    if (!values.body_text && !values.body_html) {
-        return 'Body text or body HTML must be filled'
+    if (!values.body_text) {
+        return 'Body must be filled'
     }
 }
 
 export function validateSendEmail(values) {
     const errors = []
 
-    if (!values.body_text && !values.body_html) {
-        errors.push('Body text or body HTML must be filled')
+    if (!values.body_text) {
+        errors.push('Body must be filled')
     }
 
     if (!values.to && !values.cc && !values.bcc) {
@@ -65,12 +65,14 @@ export const actionsConfig = {
                 name: 'Subject',
             },
             body_text: {
-                name: 'Text',
-                widget: 'textarea'
+                // we declare and hide this field
+                // because it contains the text version of `body_html` field
+                hide: true
             },
             body_html: {
-                name: 'HTML',
-                widget: 'textarea',
+                name: 'Body',
+                widget: 'rich-field',
+                textField: 'body_text'
             }
         },
         validate: validateBody
@@ -97,14 +99,12 @@ export const actionsConfig = {
                 name: 'Subject',
             },
             body_text: {
-                name: 'Text',
-                widget: 'textarea'
+                hide: true
             },
             body_html: {
-                name: 'HTML',
-                widget: 'textarea',
-                placeholder: 'If you don\'t want anything specific here, leave this field blank; ' +
-                'we will automatically generate HTML from the Text.'
+                name: 'Body',
+                widget: 'rich-field',
+                textField: 'body_text'
             }
         },
         validate: validateSendEmail
@@ -112,15 +112,14 @@ export const actionsConfig = {
     replyToTicket: {
         compact: false,
         name: 'Reply to ticket',
-        note: '* only taken into account if the last message is an email.',
         args: {
             body_text: {
-                name: 'Text',
-                widget: 'textarea'
+                hide: true
             },
             body_html: {
-                name: 'HTML*',
-                widget: 'textarea',
+                name: 'Body',
+                widget: 'rich-field',
+                textField: 'body_text'
             }
         },
         validate: validateBody
@@ -238,7 +237,7 @@ class Action extends React.Component {
         return (
             <div
                 className={classnames('mb-2', {
-                    'd-flex align-items-center': config.compact,
+                    'd-flex align-items-baseline': config.compact,
                 })}
             >
                 <ActionSelect

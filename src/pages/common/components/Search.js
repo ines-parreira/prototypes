@@ -10,6 +10,30 @@ import shortcutManager from '../../../services/shortcutManager'
 import css from './Search.less'
 
 export default class Search extends React.Component {
+    static propTypes = {
+        onChange: PropTypes.func.isRequired,
+        params: PropTypes.object,
+        forcedQuery: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+        shouldResetInput: PropTypes.bool,
+        disabled: PropTypes.bool,
+
+        className: PropTypes.string,
+        placeholder: PropTypes.string,
+        bindKey: PropTypes.bool,
+        searchDebounceTime: PropTypes.number.isRequired,
+
+        // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
+        location: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        style: PropTypes.object.isRequired,
+    }
+
+    static defaultProps = {
+        disabled: false,
+        placeholder: 'Search...',
+        style: {},
+        searchDebounceTime: 0
+    }
+
     state = {
         search: '',
     }
@@ -73,7 +97,7 @@ export default class Search extends React.Component {
     // search every XXXms
     _debouncedSearch = _debounce(() => {
         return this.props.onChange(this.state.search)
-    }, this.props.searchDebounceTime || 200)
+    }, this.props.searchDebounceTime)
 
     _handleChange = (search) => {
         this.setState({search})
@@ -120,27 +144,4 @@ export default class Search extends React.Component {
             </div>
         )
     }
-}
-
-Search.propTypes = {
-    onChange: PropTypes.func.isRequired,
-    params: PropTypes.object,
-    forcedQuery: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    shouldResetInput: PropTypes.bool,
-    disabled: PropTypes.bool,
-
-    className: PropTypes.string,
-    placeholder: PropTypes.string,
-    bindKey: PropTypes.bool,
-    searchDebounceTime: PropTypes.number,
-
-    // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
-    location: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    style: PropTypes.object.isRequired,
-}
-
-Search.defaultProps = {
-    disabled: false,
-    placeholder: 'Search...',
-    style: {},
 }

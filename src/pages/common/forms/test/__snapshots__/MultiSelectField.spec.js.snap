@@ -1,0 +1,193 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MultiSelectField should init state with custom props 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": -1,
+}
+`;
+
+exports[`MultiSelectField should init state with default props 1`] = `
+Object {
+  "filteredOptions": Array [],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`MultiSelectField should render a multi select input with custom props 1`] = `
+<div>
+  <div
+    className="undefined"
+    onClick={[Function]}
+  >
+    <Zs
+      className="tag"
+      color="default"
+      pill={false}
+      style={
+        Object {
+          "color": "#0275d8",
+          "margin": "0.25em 0",
+        }
+      }
+      tag="span"
+    >
+      <span>
+        First
+        <i
+          className="fa fa-fw fa-close cursor-pointer ml-1"
+          onClick={[Function]}
+        />
+      </span>
+    </Zs>
+    <Zs
+      className="tag"
+      color="default"
+      pill={false}
+      style={
+        Object {
+          "color": "#0275d8",
+          "margin": "0.25em 0",
+        }
+      }
+      tag="span"
+    >
+      <span>
+        Third
+        <i
+          className="fa fa-fw fa-close cursor-pointer ml-1"
+          onClick={[Function]}
+        />
+      </span>
+    </Zs>
+    <div>
+      <input
+        className="undefined ml-2"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Add tags..."
+        value=""
+      />
+      <UncontrolledDropdown
+        isOpen={false}
+        style={
+          Object {
+            "width": "230px",
+          }
+        }
+      >
+        <Xo
+          tag="div"
+        >
+          <ei
+            className=""
+            onMouseDown={[Function]}
+            onMouseEnter={[Function]}
+            tag="button"
+            toggle={true}
+            type="button"
+          >
+            Second
+          </ei>
+        </Xo>
+      </UncontrolledDropdown>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MultiSelectField should render a select input with default props 1`] = `
+<div>
+  <div
+    className="undefined"
+    onClick={[Function]}
+  >
+    <div>
+      <input
+        className="undefined ml-2"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Add items..."
+        value=""
+      />
+      <UncontrolledDropdown
+        isOpen={false}
+        style={
+          Object {
+            "width": "230px",
+          }
+        }
+      >
+        <Xo
+          tag="div"
+        >
+          <ei
+            header={true}
+            tag="button"
+            toggle={true}
+          >
+            No result
+          </ei>
+        </Xo>
+      </UncontrolledDropdown>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MultiSelectField should use custom props 1`] = `
+Object {
+  "allowCustomValues": true,
+  "onChange": [Function],
+  "options": Array [
+    Object {
+      "label": "First",
+      "text": "first",
+      "value": 1,
+    },
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+    Object {
+      "label": "Third",
+      "text": "third",
+      "value": 3,
+    },
+  ],
+  "plural": "tags",
+  "showNoResult": true,
+  "singular": "tag",
+  "values": Array [
+    1,
+    3,
+  ],
+}
+`;
+
+exports[`MultiSelectField should use default props 1`] = `
+Object {
+  "allowCustomValues": false,
+  "onChange": [Function],
+  "options": Array [],
+  "plural": "items",
+  "showNoResult": false,
+  "singular": "item",
+  "values": Array [],
+}
+`;

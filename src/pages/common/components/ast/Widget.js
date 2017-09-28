@@ -2,18 +2,60 @@ import React from 'react'
 
 import {List} from 'immutable'
 import drop from 'lodash/drop'
+import _get from 'lodash/get'
 
 import Select from './widget/ReactSelect'
 import StatusSelect from './widget/StatusSelect'
 import PrioritySelect from './widget/PrioritySelect'
 import MacroSelect from './widget/MacroSelect'
 import AssigneeSelect from './widget/AssigneeSelect'
+import IntegrationSelect from './widget/IntegrationSelect'
 
 import InputField from '../../forms/InputField'
 
-import {humanizeString} from '../../../../utils'
+import {convertToHTML, humanizeString} from '../../../../utils'
+import TagsSelect from './widget/TagsSelect'
+import RichField from '../../forms/RichField'
 
-class Widget extends React.Component {
+export default class Widget extends React.Component {
+    static propTypes = {
+        rule: React.PropTypes.object,
+        value: React.PropTypes.any,
+        parent: React.PropTypes.object,
+        schemas: React.PropTypes.object,
+        actions: React.PropTypes.object,
+        type: React.PropTypes.string,
+        leftsiblings: React.PropTypes.object,
+        compact: React.PropTypes.bool,
+
+        config: React.PropTypes.object,
+        properties: React.PropTypes.array,
+    }
+
+    static defaultProps = {
+        config: {}
+    }
+
+    constructor(props) {
+        super(props)
+        const {config, parent, properties} = props
+
+        // Concerns rich fields of Actions:
+        // We get the property of the text field if the current field is a rich field and has a text version.
+        // E.g: current field is: `sendEmail.body_html`. We get `sendEmail.body_text` property
+        // to automatically update its value when the html version changes.
+        if (config.widget === 'rich-field' && config.textField) {
+            const textFieldParent = parent.slice(0, -3)
+            const textFieldPropIndex = properties.findIndex(property => {
+                return property.key.name === config.textField
+            })
+            this.state = {
+                textFieldPropIndex: textFieldPropIndex,
+                textFieldParent: textFieldParent.concat([textFieldPropIndex, 'value', 'value']),
+            }
+        }
+    }
+
     _handleChange = (value) => {
         const {actions, parent} = this.props
         return actions.modifyCodeAST(parent, value, 'UPDATE')
@@ -45,6 +87,40 @@ class Widget extends React.Component {
                 label={config.name}
                 value={value}
                 onChange={this._handleChange}
+                placeholder={config.placeholder || ''}
+                required={config.required || false}
+            />
+        )
+    }
+
+    _onRichFieldChange = (editorState) => {
+        const contentState = editorState.getCurrentContent()
+        const {actions, parent} = this.props
+        const {textFieldParent} = this.state
+
+        // fill the text field with the text version
+        if (textFieldParent) {
+            actions.modifyCodeAST(textFieldParent, contentState.getPlainText(), 'UPDATE')
+        }
+
+        return actions.modifyCodeAST(parent, convertToHTML(contentState), 'UPDATE')
+    }
+
+    _richField = (html) => {
+        const {config = {}, properties} = this.props
+        const {textFieldPropIndex} = this.state
+        const value = {
+            text: properties[textFieldPropIndex].value.value,
+            html: html,
+        }
+
+        return (
+            <RichField
+                type="text"
+                rows="8"
+                label={config.name}
+                value={value}
+                onChange={this._onRichFieldChange}
                 placeholder={config.placeholder || ''}
                 required={config.required || false}
             />
@@ -109,23 +185,24 @@ class Widget extends React.Component {
 
                 // only show props that have a meta value or a refs
                 if (prop.hasOwnProperty('meta')) {
-                    widget.options.push(key)
+                    widget.options.push({
+                        value: key,
+                        label: _get(prop, ['meta', 'rules', 'label']) || humanizeString(key).toLowerCase(),
+                    })
                     widget.description = prop.description
                 } else if (prop.hasOwnProperty('$ref')) {
-                    widget.options.push(key)
+                    widget.options.push({
+                        value: key,
+                        label: humanizeString(key).toLowerCase(),
+                    })
                     widget.description = ''
                 }
             }
 
-            widget.options = widget.options.map((option) => {
-                return {
-                    value: option,
-                    label: humanizeString(option).toLowerCase(),
-                }
-            })
         } else if (left.last() === 'operators') {
             // operators are using simple select widget, all we need is the options
             const operators = schemas.getIn(left)
+
             if (operators) {
                 widget.options = operators.toJS()
             }
@@ -153,36 +230,23 @@ class Widget extends React.Component {
                 return <Select {...widget} onChange={this._handleChange} />
             case 'status-select':
                 return <StatusSelect {...widget} onChange={this._handleChange} />
+            case 'tags-select':
+                return <TagsSelect {...widget} onChange={this._handleChange} />
             case 'priority-select':
                 return <PrioritySelect {...widget} onChange={this._handleChange} />
             case 'macro-select':
                 return <MacroSelect {...widget} onChange={this._handleChange} />
             case 'assignee_user-select':
                 return <AssigneeSelect {...widget} onChange={this._handleChange} />
+            case 'integration-select':
+                return <IntegrationSelect {...widget} onChange={this._handleChange} />
             case 'textarea':
                 return this._textarea(value)
+            case 'rich-field':
+                return this._richField(value)
             case 'input':
             default:
                 return this._input(value)
         }
     }
 }
-
-Widget.defaultProps = {
-    config: {}
-}
-
-Widget.propTypes = {
-    rule: React.PropTypes.object,
-    value: React.PropTypes.any,
-    parent: React.PropTypes.object,
-    schemas: React.PropTypes.object,
-    actions: React.PropTypes.object,
-    type: React.PropTypes.string,
-    leftsiblings: React.PropTypes.object,
-    compact: React.PropTypes.bool,
-
-    config: React.PropTypes.object,
-}
-
-export default Widget

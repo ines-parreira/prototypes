@@ -1,13 +1,15 @@
-export const triggers = [{
-    event: 'ticket-created',
-    name: 'Ticket created',
+import {fromJS} from 'immutable'
+
+export const events = fromJS([{
+    label: 'Ticket created',
+    value: 'ticket-created',
 }, {
-    event: 'ticket-updated',
-    name: 'Ticket updated',
+    label: 'Ticket updated',
+    value: 'ticket-updated',
 }, {
-    event: 'ticket-assigned',
-    name: 'Ticket assigned',
+    label: 'Ticket assigned',
+    value: 'ticket-assigned',
 }, {
-    event: 'ticket-message-created',
-    name: 'New message in ticket',
-}]
+    label: 'New message in ticket',
+    value: 'ticket-message-created',
+}])

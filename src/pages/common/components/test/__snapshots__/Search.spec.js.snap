@@ -5,6 +5,7 @@ exports[`Search component handle change function 1`] = `
   disabled={false}
   onChange={[Function]}
   placeholder="Search..."
+  searchDebounceTime={0}
   style={Object {}}
 >
   <div
@@ -67,6 +68,7 @@ exports[`Search component reset function 1`] = `
   disabled={false}
   onChange={[Function]}
   placeholder="Search..."
+  searchDebounceTime={0}
   style={Object {}}
 >
   <div
@@ -129,6 +131,7 @@ exports[`Search component reset function 2`] = `
   disabled={false}
   onChange={[Function]}
   placeholder="Search..."
+  searchDebounceTime={0}
   style={Object {}}
 >
   <div

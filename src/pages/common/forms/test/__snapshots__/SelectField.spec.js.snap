@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectField should init state with custom props 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+  ],
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`SelectField should init state with default props 1`] = `
+Object {
+  "filteredOptions": Array [],
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`SelectField should render a select input with custom props 1`] = `
+<div
+  style={
+    Object {
+      "background": "red",
+    }
+  }
+>
+  <div>
+    <div
+      className="btn btn-secondary dropdown-toggle clickable"
+      onClick={[Function]}
+    >
+      First
+    </div>
+  </div>
+  <ei
+    isOpen={false}
+    tag="div"
+    toggle={[Function]}
+  >
+    <Xo
+      tag="div"
+    >
+      <ei
+        className="dropdown-item-input"
+        header={true}
+        tag="button"
+        toggle={true}
+      >
+        <Search
+          autoFocus={true}
+          disabled={false}
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Search..."
+          searchDebounceTime={0}
+          style={Object {}}
+        />
+      </ei>
+      <ei
+        divider={true}
+        tag="button"
+        toggle={true}
+      />
+      <ei
+        className="undefined"
+        onMouseDown={[Function]}
+        onMouseEnter={[Function]}
+        tag="button"
+        toggle={true}
+        type="button"
+      >
+        Second
+      </ei>
+    </Xo>
+  </ei>
+</div>
+`;
+
+exports[`SelectField should render a select input with default props 1`] = `
+<div
+  style={Object {}}
+>
+  <div>
+    <div
+      className="btn btn-secondary dropdown-toggle clickable"
+      onClick={[Function]}
+    />
+  </div>
+  <ei
+    isOpen={false}
+    tag="div"
+    toggle={[Function]}
+  >
+    <Xo
+      tag="div"
+    >
+      <ei
+        className="dropdown-item-input"
+        header={true}
+        tag="button"
+        toggle={true}
+      >
+        <Search
+          autoFocus={true}
+          disabled={false}
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Search..."
+          searchDebounceTime={0}
+          style={Object {}}
+        />
+      </ei>
+      <ei
+        divider={true}
+        tag="button"
+        toggle={true}
+      />
+      <ei
+        header={true}
+        tag="button"
+        toggle={true}
+      >
+        No result
+      </ei>
+    </Xo>
+  </ei>
+</div>
+`;
+
+exports[`SelectField should use custom props 1`] = `
+Object {
+  "onChange": [Function],
+  "options": Array [
+    Object {
+      "label": "First",
+      "text": "first",
+      "value": 1,
+    },
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+  ],
+  "placeholder": "placeholder",
+  "style": Object {
+    "background": "red",
+  },
+  "value": 1,
+}
+`;
+
+exports[`SelectField should use default props 1`] = `
+Object {
+  "onChange": [Function],
+  "options": Array [],
+  "placeholder": "",
+  "style": Object {},
+}
+`;

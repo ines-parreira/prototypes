@@ -487,6 +487,7 @@ export default class Infobar extends React.Component {
                             onChange={this._onSearch}
                             onKeyDown={this._onSearchKeyDown}
                             style={{maxWidth: 'none'}}
+                            searchDebounceTime={200}
                             ref={(search) => {
                                 this.search = search
                             }}

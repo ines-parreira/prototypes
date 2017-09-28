@@ -60,7 +60,7 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
             },
             Immutable.Map {
               name: "integrations",
-              title: "Integrations",
+              title: "Integration",
               path: "messages.integration_id",
               filter: Immutable.Map {
                 type: "integration",
@@ -219,7 +219,7 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
           },
           Immutable.Map {
             name: "integrations",
-            title: "Integrations",
+            title: "Integration",
             path: "messages.integration_id",
             filter: Immutable.Map {
               type: "integration",
@@ -374,7 +374,7 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
           },
           Immutable.Map {
             name: "integrations",
-            title: "Integrations",
+            title: "Integration",
             path: "messages.integration_id",
             filter: Immutable.Map {
               type: "integration",

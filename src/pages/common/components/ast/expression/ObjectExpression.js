@@ -31,6 +31,10 @@ export default class ObjectExpression extends React.Component {
             const parentProperty = parent.push('properties', idx)
             const argConfig = config ? config[property.key.name] : undefined
 
+            if (argConfig && argConfig.hide) {
+                return null
+            }
+
             return (
                 <Property
                     {...this.props}

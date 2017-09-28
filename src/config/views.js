@@ -66,7 +66,7 @@ export const views = fromJS([{
         },
         {
             name: 'integrations',
-            title: 'Integrations',
+            title: 'Integration',
             path: 'messages.integration_id',
             filter: {
                 type: 'integration',

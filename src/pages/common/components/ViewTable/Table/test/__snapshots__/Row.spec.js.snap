@@ -1151,7 +1151,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
     field={
       Immutable.Map {
         name: "integrations",
-        title: "Integrations",
+        title: "Integration",
         path: "messages.integration_id",
         filter: Immutable.Map {
           type: "integration",
@@ -2882,7 +2882,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
     field={
       Immutable.Map {
         name: "integrations",
-        title: "Integrations",
+        title: "Integration",
         path: "messages.integration_id",
         filter: Immutable.Map {
           type: "integration",

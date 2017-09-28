@@ -46,7 +46,7 @@ Literal.propTypes = {
     leftsiblings: PropTypes.object.isRequired,
     parent: PropTypes.object.isRequired,
     schemas: PropTypes.object.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool]).isRequired,
 }
 
 export default Literal
