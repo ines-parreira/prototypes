@@ -49,7 +49,7 @@ export default class Widget extends React.Component {
         }
     }
 
-    _getTextField = (config, parent, properties, ) => {
+    _getTextField = (config, parent, properties) => {
         const textFieldParent = parent.slice(0, -3)
         const textFieldPropIndex = properties.findIndex(property => {
             return property.key.name === config.textField
