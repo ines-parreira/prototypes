@@ -87,6 +87,7 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
+                value="We're offline!"
               />
               <InputField
                 label="Input placeholder"
@@ -244,6 +245,7 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
+                value="We're offline!"
               />
               <InputField
                 label="Input placeholder"
@@ -417,6 +419,7 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 onChange={[Function]}
                 onFocus={[Function]}
                 type="text"
+                value="We're offline!"
               />
               <InputField
                 label="Input placeholder"
