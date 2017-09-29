@@ -75,22 +75,18 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
                 type="text"
                 value=""
               />
-              <FileField
-                accept="image/*"
-                help="The image must have a square format. Example: 200x200 pixels"
-                label="Company icon"
-                noPreview={false}
-                onChange={[Function]}
-                placeholder="Select a file..."
-                returnFiles={false}
-                type="file"
-                value=""
-              />
               <InputField
                 label="Introduction text"
                 onChange={[Function]}
+                onFocus={[Function]}
                 type="text"
                 value="What can we do for you?"
+              />
+              <InputField
+                label="Offline introduction text"
+                onChange={[Function]}
+                onFocus={[Function]}
+                type="text"
               />
               <InputField
                 label="Input placeholder"
@@ -142,11 +138,12 @@ exports[`ChatIntegrationAppearance component should display correctly when creat
             Immutable.Map {
             }
           }
-          icon=""
           inputPlaceholder="Type a message..."
           introductionText="What can we do for you?"
+          isOnline={true}
           mainColor="#0d87dd"
           name=""
+          offlineIntroductionText="We're offline!"
         />
       </Ot>
     </bt>
@@ -235,22 +232,18 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
                 type="text"
                 value=""
               />
-              <FileField
-                accept="image/*"
-                help="The image must have a square format. Example: 200x200 pixels"
-                label="Company icon"
-                noPreview={false}
-                onChange={[Function]}
-                placeholder="Select a file..."
-                returnFiles={false}
-                type="file"
-                value=""
-              />
               <InputField
                 label="Introduction text"
                 onChange={[Function]}
+                onFocus={[Function]}
                 type="text"
                 value="What can we do for you?"
+              />
+              <InputField
+                label="Offline introduction text"
+                onChange={[Function]}
+                onFocus={[Function]}
+                type="text"
               />
               <InputField
                 label="Input placeholder"
@@ -318,11 +311,12 @@ exports[`ChatIntegrationAppearance component should display correctly when integ
             Immutable.Map {
             }
           }
-          icon=""
           inputPlaceholder="Type a message..."
           introductionText="What can we do for you?"
+          isOnline={true}
           mainColor="#0d87dd"
           name=""
+          offlineIntroductionText="We're offline!"
         />
       </Ot>
     </bt>
@@ -411,22 +405,18 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
                 type="text"
                 value=""
               />
-              <FileField
-                accept="image/*"
-                help="The image must have a square format. Example: 200x200 pixels"
-                label="Company icon"
-                noPreview={false}
-                onChange={[Function]}
-                placeholder="Select a file..."
-                returnFiles={false}
-                type="file"
-                value=""
-              />
               <InputField
                 label="Introduction text"
                 onChange={[Function]}
+                onFocus={[Function]}
                 type="text"
                 value="What can we do for you?"
+              />
+              <InputField
+                label="Offline introduction text"
+                onChange={[Function]}
+                onFocus={[Function]}
+                type="text"
               />
               <InputField
                 label="Input placeholder"
@@ -494,11 +484,12 @@ exports[`ChatIntegrationAppearance component should display correctly when updat
             Immutable.Map {
             }
           }
-          icon=""
           inputPlaceholder="Type a message..."
           introductionText="What can we do for you?"
+          isOnline={true}
           mainColor="#0d87dd"
           name=""
+          offlineIntroductionText="We're offline!"
         />
       </Ot>
     </bt>

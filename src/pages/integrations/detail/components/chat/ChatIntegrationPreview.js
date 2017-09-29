@@ -7,54 +7,20 @@ const ChatIntegrationPreview = ({
     name,
     currentUser,
     introductionText,
+    offlineIntroductionText,
     inputPlaceholder,
     mainColor,
     conversationColor,
-    icon,
+    isOnline
 }) => {
     const _bgColor = (color) => ({backgroundColor: color})
 
-    function _renderBrandIcon() {
-        if (icon) {
-            // icon is url
-            let preview = icon
-
-            // icon is FileList
-            if (icon instanceof FileList && icon.length) {
-                preview = icon[0].preview
-            }
-
-            const style = {
-                backgroundImage: `url(${preview})`
-            }
-
-            return (<span className={css.image} style={style}/>)
-        }
-
-        return (
-            <svg version="1.0" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 100 100"
-                 style={{overflow: 'visible', shapeRendering: 'geometricPrecision'}}>
-                <filter id="preview-default-icon-filter">
-                    <feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur>
-                    <feOffset dx="0" dy="4" result="offsetblur"></feOffset>
-                    <feComponentTransfer>
-                        <feFuncA type="linear" slope="0.4"></feFuncA>
-                    </feComponentTransfer>
-                    <feComposite operator="in" in2="offsetblur"></feComposite>
-                    <feMerge>
-                        <feMergeNode></feMergeNode>
-                        <feMergeNode in="SourceGraphic"></feMergeNode>
-                    </feMerge>
-                </filter>
-                <path fill="#fff"
-                      d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"></path>
-            </svg>
-        )
-    }
-
-    function nonbreak(str) {
+    // Preserve the space which should be occupied by a string when the string is empty
+    const nonbreak = (str) => {
         return str || '\u00a0'
     }
+
+    const offlineColor = '#9DA8B8'
 
     return (
         <div className={css.preview}>
@@ -62,10 +28,30 @@ const ChatIntegrationPreview = ({
             <div className={css.dialog}>
                 <div
                     className={css.header}
-                    style={_bgColor(mainColor)}
+                    style={_bgColor(isOnline ? mainColor : offlineColor)}
                 >
-                    <div className={css.brand}>
-                        {_renderBrandIcon()}
+                    <div className={css.agents}>
+                        <div
+                            className={classnames(css.agent, css.first)}
+                            style={{borderColor: isOnline ? mainColor : offlineColor}}
+                        >
+                            <i className="fa fa-user"/>
+                            {isOnline && <div className={css.onlineMarker}/>}
+                        </div>
+                        <div
+                            className={classnames(css.agent, css.middle)}
+                            style={{borderColor: isOnline ? mainColor : offlineColor}}
+                        >
+                            <i className="fa fa-user"/>
+                            {isOnline && <div className={css.onlineMarker}/>}
+                        </div>
+                        <div
+                            className={classnames(css.agent, css.last)}
+                            style={{borderColor: isOnline ? mainColor : offlineColor}}
+                        >
+                            <i className="fa fa-user"/>
+                            {isOnline && <div className={css.onlineMarker}/>}
+                        </div>
                     </div>
 
                     <div className={css.details}>
@@ -73,7 +59,7 @@ const ChatIntegrationPreview = ({
                             {nonbreak(name)}
                         </div>
                         <div className={css.introductionText}>
-                            {nonbreak(introductionText)}
+                            {nonbreak(isOnline ? introductionText : offlineIntroductionText)}
                         </div>
                     </div>
                 </div>
@@ -128,11 +114,13 @@ ChatIntegrationPreview.propTypes = {
     name: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
     introductionText: PropTypes.string,
+    offlineIntroductionText: PropTypes.string,
     headerText: PropTypes.string,
     inputPlaceholder: PropTypes.string,
     mainColor: PropTypes.string,
     conversationColor: PropTypes.string,
-    icon: PropTypes.string,
+
+    isOnline: PropTypes.bool
 }
 
 export default ChatIntegrationPreview

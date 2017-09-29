@@ -25,7 +25,6 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import InputField from '../../../../../common/forms/InputField'
 import ColorField from '../../../../../common/forms/ColorField'
-import FileField from '../../../../../common/forms/FileField'
 
 import css from './ChatIntegrationAppearance.less'
 
@@ -33,10 +32,11 @@ export const defaultContent = {
     type: 'smooch_inside',
     name: '',
     introductionText: 'What can we do for you?',
+    offlineIntroductionText: 'We\'re offline!',
     inputPlaceholder: 'Type a message...',
     mainColor: '#0d87dd',
     conversationColor: '#0d87dd',
-    icon: ''
+    isOnline: true
 }
 
 class ChatIntegrationAppearance extends React.Component {
@@ -82,10 +82,10 @@ class ChatIntegrationAppearance extends React.Component {
         return _defaults({
             name: integration.get('name'),
             introductionText: integration.getIn(['decoration', 'introduction_text']),
+            offlineIntroductionText: integration.getIn(['decoration', 'offline_introduction_text']),
             inputPlaceholder: integration.getIn(['decoration', 'input_placeholder']),
             mainColor: integration.getIn(['decoration', 'main_color'], integration.getIn(['decoration', 'header_color'])), // todo(@martin): remove this fallback when everybody has migrated to the new design (latest: Nov. 1, 2017)
             conversationColor: integration.getIn(['decoration', 'conversation_color']),
-            icon: integration.getIn(['decoration', 'icon'])
         }, defaultContent)
     }
 
@@ -102,7 +102,7 @@ class ChatIntegrationAppearance extends React.Component {
             conversation_color: this.state.conversationColor,
             main_color: this.state.mainColor,
             introduction_text: this.state.introductionText,
-            icon: this.state.icon
+            offline_introduction_text: this.state.offlineIntroductionText,
         }
 
         // if update, set ids for server
@@ -172,19 +172,20 @@ class ChatIntegrationAppearance extends React.Component {
                                             required
                                         />
 
-                                        <FileField
-                                            label="Company icon"
-                                            help="The image must have a square format. Example: 200x200 pixels"
-                                            value={this.state.icon}
-                                            onChange={url => this.setState({icon: url})}
-                                            accept="image/*"
+                                        <InputField
+                                            type="text"
+                                            value={this.state.introductionText}
+                                            onFocus={() => this.setState({isOnline: true})}
+                                            onChange={value => this.setState({introductionText: value})}
+                                            label="Introduction text"
                                         />
 
                                         <InputField
                                             type="text"
-                                            value={this.state.introductionText}
-                                            onChange={value => this.setState({introductionText: value})}
-                                            label="Introduction text"
+                                            value={this.state.offlineItroductionText}
+                                            onFocus={() => {this.setState({isOnline: false})}}
+                                            onChange={value => {this.setState({offlineIntroductionText: value})}}
+                                            label="Offline introduction text"
                                         />
 
                                         <InputField
@@ -240,10 +241,11 @@ class ChatIntegrationAppearance extends React.Component {
                                 currentUser={currentUser}
                                 name={this.state.name}
                                 introductionText={this.state.introductionText}
+                                offlineIntroductionText={this.state.offlineIntroductionText}
                                 inputPlaceholder={this.state.inputPlaceholder}
                                 mainColor={this.state.mainColor}
                                 conversationColor={this.state.conversationColor}
-                                icon={this.state.icon}
+                                isOnline={this.state.isOnline}
                             />
                         </Col>
                     </Row>

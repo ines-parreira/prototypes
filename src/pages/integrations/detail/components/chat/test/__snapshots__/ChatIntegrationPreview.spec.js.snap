@@ -7,25 +7,54 @@ exports[`ChatIntegrationPreview should display the properties correctly 1`] = `
     <div
       style={
         Object {
-          "backgroundColor": "#123456",
+          "backgroundColor": "#9DA8B8",
         }
       }
     >
       <div>
-        <span
+        <div
+          className=""
           style={
             Object {
-              "backgroundImage": "url(http://httpbin.org/image.jpg)",
+              "borderColor": "#9DA8B8",
             }
           }
-        />
+        >
+          <i
+            className="fa fa-user"
+          />
+        </div>
+        <div
+          className=""
+          style={
+            Object {
+              "borderColor": "#9DA8B8",
+            }
+          }
+        >
+          <i
+            className="fa fa-user"
+          />
+        </div>
+        <div
+          className=""
+          style={
+            Object {
+              "borderColor": "#9DA8B8",
+            }
+          }
+        >
+          <i
+            className="fa fa-user"
+          />
+        </div>
       </div>
       <div>
         <div>
           My little chat integration
         </div>
         <div>
-          intro
+           
         </div>
       </div>
     </div>
