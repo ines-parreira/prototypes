@@ -182,7 +182,7 @@ class ChatIntegrationAppearance extends React.Component {
 
                                         <InputField
                                             type="text"
-                                            value={this.state.offlineItroductionText}
+                                            value={this.state.offlineIntroductionText}
                                             onFocus={() => {this.setState({isOnline: false})}}
                                             onChange={value => {this.setState({offlineIntroductionText: value})}}
                                             label="Offline introduction text"
