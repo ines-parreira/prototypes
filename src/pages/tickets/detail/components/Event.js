@@ -77,12 +77,20 @@ export class Event extends React.Component {
         return content
     }
 
+    getDisplayableType(integrationType) {
+        if (integrationType) {
+            return 'chat'
+        }
+
+        return integrationType
+    }
+
     render() {
         const {currentUser, event, isLast, integration} = this.props
-        const user = event.get('user')
+        const user = event.get('user') || fromJS({})
         const status = event.getIn(['data', 'status'])
         const actionName = event.getIn(['data', 'action_name'])
-        const payload = event.getIn(['data', 'payload'])
+        const payload = event.getIn(['data', 'payload']) || fromJS({})
 
         const isError = status === 'error'
         const isSuccess = !isError
@@ -158,7 +166,7 @@ export class Event extends React.Component {
                         </span>
 
                         <span className={css.actionName}>
-                            {_capitalize(integration.get('type'))} ({integration.get('name')})
+                            {_capitalize(this.getDisplayableType(integration.get('type')))} ({integration.get('name')})
                         </span>
 
                         <span className={css.filler}>

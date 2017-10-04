@@ -9,10 +9,8 @@ import {capitalize} from 'lodash'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Button,
+    Button, ButtonGroup,
     Form,
-    FormGroup,
-    Label
 } from 'reactstrap'
 
 import {TIMES_BEFORE_SPLIT} from '../../../config'
@@ -40,8 +38,25 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                 'We\'re not online at the moment. Leave us your email and we\'ll follow up shortly.',
             timeBeforeSplit: integration.getIn(['meta', 'preferences', 'time_before_split'],
                 TIMES_BEFORE_SPLIT[1].value),
-            isUpdating: false
+            isUpdating: false,
         })
+
+        if (integration.get('type') === 'smooch_inside') {
+            const emailCapturePreferences = integration.getIn(['meta', 'preferences', 'email_capture']) || fromJS({})
+
+            this.setState({
+                emailCaptureEnabled: emailCapturePreferences.get('enabled') || false,
+                emailCaptureOnlineTriggerText: emailCapturePreferences.getIn(['online', 'trigger_text'])
+                    || 'Leave us your email in case we reply later.',
+                emailCaptureOnlineThanksText: emailCapturePreferences.getIn(['online', 'thanks_text'])
+                    || 'Thanks! We\'ll email you at {email} if you leave.',
+                emailCaptureOfflineTriggerText: emailCapturePreferences.getIn(['offline', 'trigger_text'])
+                    || 'We\'re offline, leave us your email and we\'ll respond shortly.',
+                emailCaptureOfflineThanksText: emailCapturePreferences.getIn(['offline', 'thanks_text'])
+                    || 'Thanks {email}! We\'ll get back to you shortly.',
+                isModifyingOnlineData: true
+            })
+        }
 
         this.isInitialized = true
     }
@@ -68,7 +83,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
 
         const existingMeta = integration.get('meta') || fromJS({})
 
-        const payload = fromJS({
+        let payload = fromJS({
             id: integration.get('id'),
             meta: existingMeta.mergeDeep({
                 preferences: {
@@ -80,6 +95,20 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                 }
             })
         })
+
+        if (integration.get('type') === 'smooch_inside') {
+            payload = payload.setIn(['meta', 'preferences', 'email_capture'], {
+                enabled: this.state.emailCaptureEnabled,
+                online: {
+                    trigger_text: this.state.emailCaptureOnlineTriggerText,
+                    thanks_text: this.state.emailCaptureOnlineThanksText,
+                },
+                offline: {
+                    trigger_text: this.state.emailCaptureOfflineTriggerText,
+                    thanks_text: this.state.emailCaptureOfflineThanksText,
+                }
+            })
+        }
 
         return updateOrCreateIntegration(payload).then(() => this.setState({isUpdating: false}))
     }
@@ -93,7 +122,15 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
     }
 
     render() {
-        const {autoResponderEnabled, autoResponderText, isUpdating, timeBeforeSplit} = this.state
+        const {
+            autoResponderEnabled, autoResponderText,
+            emailCaptureEnabled, emailCaptureOnlineTriggerText, emailCaptureOnlineThanksText,
+            emailCaptureOfflineTriggerText, emailCaptureOfflineThanksText,
+            isUpdating,
+            timeBeforeSplit,
+            isModifyingOnlineData
+        } = this.state
+
         const {integration} = this.props
 
         return (
@@ -115,19 +152,107 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                     </BreadcrumbItem>
                 </Breadcrumb>
 
-                <h1>
+                <h1 className="mb-4">
                     Preferences
                 </h1>
 
-                <div className="mb-3">
-                    <p>
-                        When your team is not available to chat, you can configure an auto-response for your customers.
-                    </p>
-                    <Form onSubmit={this._submitPreferences}>
-                        <FormGroup>
-                            <Label>
-                                Auto-responder status
-                            </Label>
+                <Form onSubmit={this._submitPreferences}>
+
+                    {
+                        integration.get('type') === 'smooch_inside' && (
+                            <div className="mb-4">
+                                <h4>
+                                    Email capture
+                                </h4>
+                                <p>
+                                    If a visitor is anonymous, we'll automatically ask for its email address.
+                                </p>
+
+                                <div className="mb-3">
+                                    <BooleanField
+                                        name="emailCaptureEnabled"
+                                        type="checkbox"
+                                        label="Enable email capture"
+                                        value={emailCaptureEnabled}
+                                        onChange={value => this.setState({emailCaptureEnabled: value})}
+                                    />
+                                </div>
+
+                                <ButtonGroup className="mb-3">
+                                    <Button
+                                        type="button"
+                                        color={isModifyingOnlineData ? 'info' : 'secondary'}
+                                        onClick={() => this.setState({isModifyingOnlineData: true})}
+                                    >
+                                        Online
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        color={!isModifyingOnlineData ? 'info' : 'secondary'}
+                                        onClick={() => this.setState({isModifyingOnlineData: false})}
+                                    >
+                                        Offline
+                                    </Button>
+                                </ButtonGroup>
+
+                                {
+                                    isModifyingOnlineData ? (
+                                        <div>
+                                            <InputField
+                                                type="textarea"
+                                                name="emailCaptureOnlineTriggerText"
+                                                label="Email capture text"
+                                                value={emailCaptureOnlineTriggerText}
+                                                onChange={value => this.setState({emailCaptureOnlineTriggerText: value})}
+                                                rows="3"
+                                            />
+
+                                            <InputField
+                                                type="textarea"
+                                                name="emailCaptureOnlineThanksText"
+                                                label="Thanks for your email message"
+                                                value={emailCaptureOnlineThanksText}
+                                                onChange={value => this.setState({emailCaptureOnlineThanksText: value})}
+                                                rows="3"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <InputField
+                                                type="textarea"
+                                                name="emailCaptureOfflineTriggerText"
+                                                label="Email capture text"
+                                                value={emailCaptureOfflineTriggerText}
+                                                onChange={value => this.setState({emailCaptureOfflineTriggerText: value})}
+                                                rows="3"
+                                            />
+
+                                            <InputField
+                                                type="textarea"
+                                                name="emailCaptureOfflineThanksText"
+                                                label="Thanks for your email message"
+                                                value={emailCaptureOfflineThanksText}
+                                                onChange={value => this.setState({emailCaptureOfflineThanksText: value})}
+                                                rows="3"
+                                            />
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        )
+                    }
+
+                    <div className="mb-4">
+                        <h4>
+                            Offline auto-responder
+                        </h4>
+
+                        <p>
+                            When your team is not available to chat, you can configure an auto-response for your{' '}
+                            customers.
+                        </p>
+
+                        <div className="mb-3">
                             <BooleanField
                                 name="autoResponderEnabled"
                                 type="checkbox"
@@ -135,7 +260,7 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                 value={autoResponderEnabled}
                                 onChange={value => this.setState({autoResponderEnabled: value})}
                             />
-                        </FormGroup>
+                        </div>
 
                         <InputField
                             type="textarea"
@@ -146,12 +271,18 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                             rows="3"
                             required
                         />
+                    </div>
 
+                    <div className="mb-4">
+                        <h4>
+                            Inactivity settings
+                        </h4>
                         <InputField
                             type="select"
                             name="timeBeforeSplit"
                             label="Inactivity period between chat tickets"
-                            help="After a certain period without any new message on a chat ticket, Gorgias will create a new ticket the next time the customer contacts you over chat."
+                            help="After a certain period without any new message on a chat ticket, Gorgias will create
+                            a new ticket the next time the customer contacts you over chat."
                             value={timeBeforeSplit}
                             onChange={timeBeforeSplit => this.setState({timeBeforeSplit})}
                         >
@@ -166,21 +297,21 @@ export default class RealtimeMessagingIntegrationPreferences extends Component {
                                 ))
                             }
                         </InputField>
+                    </div>
 
-                        <div>
-                            <Button
-                                type="submit"
-                                color="primary"
-                                className={classnames({
-                                    'btn-loading': isUpdating
-                                })}
-                                disabled={isUpdating}
-                            >
-                                Save
-                            </Button>
-                        </div>
-                    </Form>
-                </div>
+                    <div>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            className={classnames({
+                                'btn-loading': isUpdating
+                            })}
+                            disabled={isUpdating}
+                        >
+                            Save
+                        </Button>
+                    </div>
+                </Form>
             </div>
         )
     }

@@ -10,7 +10,7 @@ const mockStore = configureMockStore([thunk])
 
 import RealtimeMessagingIntegrationPreferences from '../RealtimeMessagingIntegrationPreferences'
 
-describe('ChatIntegrationPreferences component', () => {
+describe('RealtimeMessagingIntegrationPreferences component', () => {
 
     it('should render the chat settings container', () => {
         const component = mount(
@@ -18,6 +18,30 @@ describe('ChatIntegrationPreferences component', () => {
                 store={mockStore({})}
                 integration={fromJS({
                     type: 'smooch_inside'
+                })}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should not render emailCapture if the integration is of type Facebook', () => {
+        const component = mount(
+            <RealtimeMessagingIntegrationPreferences
+                store={mockStore({})}
+                integration={fromJS({
+                    type: 'facebook'
+                })}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should not render emailCapture if the integration is of type Smooch', () => {
+        const component = mount(
+            <RealtimeMessagingIntegrationPreferences
+                store={mockStore({})}
+                integration={fromJS({
+                    type: 'smooch'
                 })}
             />
         )
@@ -89,7 +113,18 @@ describe('ChatIntegrationPreferences component', () => {
                         enabled: false,
                         text: 'We\'re not online at the moment. Leave us your email and we\'ll follow up shortly.',
                     },
-                    time_before_split: 3 * 60 * 60
+                    time_before_split: 3 * 60 * 60,
+                    email_capture: {
+                        enabled: false,
+                        online: {
+                            trigger_text: 'Leave us your email in case we reply later.',
+                            thanks_text: 'Thanks! We\'ll email you at {email} if you leave.',
+                        },
+                        offline: {
+                            trigger_text: 'We\'re offline, leave us your email and we\'ll respond shortly.',
+                            thanks_text: 'Thanks {email}! We\'ll get back to you shortly.',
+                        }
+                    }
                 }
             }
         }
@@ -116,6 +151,7 @@ describe('ChatIntegrationPreferences component', () => {
 
         const integration = {
             id: 1,
+            type: 'smooch_inside',
             meta: {
                 preferences: {
                     auto_responder: {
@@ -123,7 +159,18 @@ describe('ChatIntegrationPreferences component', () => {
                         enabled: true,
                         text: 'Pizza Pepperoni',
                     },
-                    time_before_split: 1
+                    time_before_split: 1,
+                    email_capture: {
+                        enabled: false,
+                        online: {
+                            trigger_text: 'foo',
+                            thanks_text: 'bar',
+                        },
+                        offline: {
+                            trigger_text: 'baz',
+                            thanks_text: 'boo',
+                        }
+                    }
                 }
             }
         }
@@ -141,6 +188,8 @@ describe('ChatIntegrationPreferences component', () => {
         expect(actions.length).toBe(1)
 
         const action = actions[0]
+
+        delete integration.type
 
         expect(action.integration.toJS()).toEqual(integration)
     })

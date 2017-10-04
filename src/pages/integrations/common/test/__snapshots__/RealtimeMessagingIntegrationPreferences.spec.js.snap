@@ -1,6 +1,714 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChatIntegrationPreferences component should render the chat settings container 1`] = `
+exports[`RealtimeMessagingIntegrationPreferences component should not render emailCapture if the integration is of type Facebook 1`] = `
+<Connect(RealtimeMessagingIntegrationPreferences)
+  integration={
+    Immutable.Map {
+      type: "facebook",
+    }
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <RealtimeMessagingIntegrationPreferences
+    integration={
+      Immutable.Map {
+        type: "facebook",
+      }
+    }
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateOrCreateIntegration={[Function]}
+  >
+    <div>
+      <gs
+        tag="ol"
+      >
+        <ol
+          className="breadcrumb"
+        >
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Integrations
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations/facebook"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Facebook
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            />
+          </bs>
+          <bs
+            active={true}
+            tag="li"
+          >
+            <li
+              className="active breadcrumb-item"
+            >
+              Preferences
+            </li>
+          </bs>
+        </ol>
+      </gs>
+      <h1
+        className="mb-4"
+      >
+        Preferences
+      </h1>
+      <rl
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <form
+          className=""
+          onSubmit={[Function]}
+        >
+          <div
+            className="mb-4"
+          >
+            <h4>
+              Offline auto-responder
+            </h4>
+            <p>
+              When your team is not available to chat, you can configure an auto-response for your
+               
+              customers.
+            </p>
+            <div
+              className="mb-3"
+            >
+              <BooleanField
+                label="Enable auto-responder when no agent is available for chat"
+                name="autoResponderEnabled"
+                onChange={[Function]}
+                type="checkbox"
+                value={false}
+              >
+                <ml
+                  check={true}
+                  className=""
+                  color=""
+                  tag="div"
+                >
+                  <div
+                    className="form-check"
+                  >
+                    <Hl
+                      check={true}
+                      className="control-label"
+                      htmlFor="id-autoResponderEnabled"
+                      tag="label"
+                    >
+                      <label
+                        className="control-label form-check-label "
+                        htmlFor="id-autoResponderEnabled"
+                      >
+                        <ei
+                          checked={false}
+                          className="form-check-input"
+                          id="id-autoResponderEnabled"
+                          onChange={[Function]}
+                          tag="p"
+                          type="checkbox"
+                        >
+                          <input
+                            checked={false}
+                            className="form-check-input form-check-input"
+                            id="id-autoResponderEnabled"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                        </ei>
+                        <span>
+                          Enable auto-responder when no agent is available for chat
+                        </span>
+                      </label>
+                    </Hl>
+                  </div>
+                </ml>
+              </BooleanField>
+            </div>
+            <InputField
+              label="Auto-responder text"
+              name="autoResponderText"
+              onChange={[Function]}
+              required={true}
+              rows="3"
+              type="textarea"
+              value="We're not online at the moment. Leave us your email and we'll follow up shortly."
+            >
+              <ml
+                className="undefined"
+                color=""
+                tag="div"
+              >
+                <div
+                  className="undefined form-group"
+                >
+                  <Hl
+                    className="control-label"
+                    htmlFor="id-autoResponderText"
+                    tag="label"
+                  >
+                    <label
+                      className="control-label "
+                      htmlFor="id-autoResponderText"
+                    >
+                      Auto-responder text
+                    </label>
+                  </Hl>
+                  <div
+                    className=""
+                  >
+                    <ei
+                      className=""
+                      id="id-autoResponderText"
+                      onChange={[Function]}
+                      required={true}
+                      rows="3"
+                      tag="p"
+                      type="textarea"
+                      value="We're not online at the moment. Leave us your email and we'll follow up shortly."
+                    >
+                      <textarea
+                        className="form-control"
+                        id="id-autoResponderText"
+                        onChange={[Function]}
+                        required={true}
+                        rows="3"
+                        value="We're not online at the moment. Leave us your email and we'll follow up shortly."
+                      />
+                    </ei>
+                  </div>
+                </div>
+              </ml>
+            </InputField>
+          </div>
+          <div
+            className="mb-4"
+          >
+            <h4>
+              Inactivity settings
+            </h4>
+            <InputField
+              help="After a certain period without any new message on a chat ticket, Gorgias will create a new ticket the next time the customer contacts you over chat."
+              label="Inactivity period between chat tickets"
+              name="timeBeforeSplit"
+              onChange={[Function]}
+              type="select"
+              value={10800}
+            >
+              <ml
+                className=""
+                color=""
+                tag="div"
+              >
+                <div
+                  className="form-group"
+                >
+                  <Hl
+                    className="control-label"
+                    htmlFor="id-timeBeforeSplit"
+                    tag="label"
+                  >
+                    <label
+                      className="control-label "
+                      htmlFor="id-timeBeforeSplit"
+                    >
+                      Inactivity period between chat tickets
+                    </label>
+                  </Hl>
+                  <div
+                    className=""
+                  >
+                    <ei
+                      className=""
+                      id="id-timeBeforeSplit"
+                      onChange={[Function]}
+                      tag="p"
+                      type="select"
+                      value={10800}
+                    >
+                      <select
+                        className="form-control"
+                        id="id-timeBeforeSplit"
+                        onChange={[Function]}
+                        value={10800}
+                      >
+                        <option
+                          value={1800}
+                        >
+                          30 min
+                        </option>
+                        <option
+                          value={10800}
+                        >
+                          3 hrs
+                        </option>
+                        <option
+                          value={21600}
+                        >
+                          6 hrs
+                        </option>
+                        <option
+                          value={86400}
+                        >
+                          1 day
+                        </option>
+                        <option
+                          value={604800}
+                        >
+                          7 days
+                        </option>
+                      </select>
+                    </ei>
+                  </div>
+                  <vl
+                    color="muted"
+                    tag="small"
+                  >
+                    <small
+                      className="form-text text-muted"
+                    >
+                      After a certain period without any new message on a chat ticket, Gorgias will create a new ticket the next time the customer contacts you over chat.
+                    </small>
+                  </vl>
+                </div>
+              </ml>
+            </InputField>
+          </div>
+          <div>
+            <ei
+              className=""
+              color="primary"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                type="submit"
+              >
+                Save
+              </button>
+            </ei>
+          </div>
+        </form>
+      </rl>
+    </div>
+  </RealtimeMessagingIntegrationPreferences>
+</Connect(RealtimeMessagingIntegrationPreferences)>
+`;
+
+exports[`RealtimeMessagingIntegrationPreferences component should not render emailCapture if the integration is of type Smooch 1`] = `
+<Connect(RealtimeMessagingIntegrationPreferences)
+  integration={
+    Immutable.Map {
+      type: "smooch",
+    }
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <RealtimeMessagingIntegrationPreferences
+    integration={
+      Immutable.Map {
+        type: "smooch",
+      }
+    }
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateOrCreateIntegration={[Function]}
+  >
+    <div>
+      <gs
+        tag="ol"
+      >
+        <ol
+          className="breadcrumb"
+        >
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Integrations
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations/smooch"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Smooch
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            />
+          </bs>
+          <bs
+            active={true}
+            tag="li"
+          >
+            <li
+              className="active breadcrumb-item"
+            >
+              Preferences
+            </li>
+          </bs>
+        </ol>
+      </gs>
+      <h1
+        className="mb-4"
+      >
+        Preferences
+      </h1>
+      <rl
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <form
+          className=""
+          onSubmit={[Function]}
+        >
+          <div
+            className="mb-4"
+          >
+            <h4>
+              Offline auto-responder
+            </h4>
+            <p>
+              When your team is not available to chat, you can configure an auto-response for your
+               
+              customers.
+            </p>
+            <div
+              className="mb-3"
+            >
+              <BooleanField
+                label="Enable auto-responder when no agent is available for chat"
+                name="autoResponderEnabled"
+                onChange={[Function]}
+                type="checkbox"
+                value={false}
+              >
+                <ml
+                  check={true}
+                  className=""
+                  color=""
+                  tag="div"
+                >
+                  <div
+                    className="form-check"
+                  >
+                    <Hl
+                      check={true}
+                      className="control-label"
+                      htmlFor="id-autoResponderEnabled"
+                      tag="label"
+                    >
+                      <label
+                        className="control-label form-check-label "
+                        htmlFor="id-autoResponderEnabled"
+                      >
+                        <ei
+                          checked={false}
+                          className="form-check-input"
+                          id="id-autoResponderEnabled"
+                          onChange={[Function]}
+                          tag="p"
+                          type="checkbox"
+                        >
+                          <input
+                            checked={false}
+                            className="form-check-input form-check-input"
+                            id="id-autoResponderEnabled"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                        </ei>
+                        <span>
+                          Enable auto-responder when no agent is available for chat
+                        </span>
+                      </label>
+                    </Hl>
+                  </div>
+                </ml>
+              </BooleanField>
+            </div>
+            <InputField
+              label="Auto-responder text"
+              name="autoResponderText"
+              onChange={[Function]}
+              required={true}
+              rows="3"
+              type="textarea"
+              value="We're not online at the moment. Leave us your email and we'll follow up shortly."
+            >
+              <ml
+                className="undefined"
+                color=""
+                tag="div"
+              >
+                <div
+                  className="undefined form-group"
+                >
+                  <Hl
+                    className="control-label"
+                    htmlFor="id-autoResponderText"
+                    tag="label"
+                  >
+                    <label
+                      className="control-label "
+                      htmlFor="id-autoResponderText"
+                    >
+                      Auto-responder text
+                    </label>
+                  </Hl>
+                  <div
+                    className=""
+                  >
+                    <ei
+                      className=""
+                      id="id-autoResponderText"
+                      onChange={[Function]}
+                      required={true}
+                      rows="3"
+                      tag="p"
+                      type="textarea"
+                      value="We're not online at the moment. Leave us your email and we'll follow up shortly."
+                    >
+                      <textarea
+                        className="form-control"
+                        id="id-autoResponderText"
+                        onChange={[Function]}
+                        required={true}
+                        rows="3"
+                        value="We're not online at the moment. Leave us your email and we'll follow up shortly."
+                      />
+                    </ei>
+                  </div>
+                </div>
+              </ml>
+            </InputField>
+          </div>
+          <div
+            className="mb-4"
+          >
+            <h4>
+              Inactivity settings
+            </h4>
+            <InputField
+              help="After a certain period without any new message on a chat ticket, Gorgias will create a new ticket the next time the customer contacts you over chat."
+              label="Inactivity period between chat tickets"
+              name="timeBeforeSplit"
+              onChange={[Function]}
+              type="select"
+              value={10800}
+            >
+              <ml
+                className=""
+                color=""
+                tag="div"
+              >
+                <div
+                  className="form-group"
+                >
+                  <Hl
+                    className="control-label"
+                    htmlFor="id-timeBeforeSplit"
+                    tag="label"
+                  >
+                    <label
+                      className="control-label "
+                      htmlFor="id-timeBeforeSplit"
+                    >
+                      Inactivity period between chat tickets
+                    </label>
+                  </Hl>
+                  <div
+                    className=""
+                  >
+                    <ei
+                      className=""
+                      id="id-timeBeforeSplit"
+                      onChange={[Function]}
+                      tag="p"
+                      type="select"
+                      value={10800}
+                    >
+                      <select
+                        className="form-control"
+                        id="id-timeBeforeSplit"
+                        onChange={[Function]}
+                        value={10800}
+                      >
+                        <option
+                          value={1800}
+                        >
+                          30 min
+                        </option>
+                        <option
+                          value={10800}
+                        >
+                          3 hrs
+                        </option>
+                        <option
+                          value={21600}
+                        >
+                          6 hrs
+                        </option>
+                        <option
+                          value={86400}
+                        >
+                          1 day
+                        </option>
+                        <option
+                          value={604800}
+                        >
+                          7 days
+                        </option>
+                      </select>
+                    </ei>
+                  </div>
+                  <vl
+                    color="muted"
+                    tag="small"
+                  >
+                    <small
+                      className="form-text text-muted"
+                    >
+                      After a certain period without any new message on a chat ticket, Gorgias will create a new ticket the next time the customer contacts you over chat.
+                    </small>
+                  </vl>
+                </div>
+              </ml>
+            </InputField>
+          </div>
+          <div>
+            <ei
+              className=""
+              color="primary"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                type="submit"
+              >
+                Save
+              </button>
+            </ei>
+          </div>
+        </form>
+      </rl>
+    </div>
+  </RealtimeMessagingIntegrationPreferences>
+</Connect(RealtimeMessagingIntegrationPreferences)>
+`;
+
+exports[`RealtimeMessagingIntegrationPreferences component should render the chat settings container 1`] = `
 <Connect(RealtimeMessagingIntegrationPreferences)
   integration={
     Immutable.Map {
@@ -102,90 +810,293 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
           </bs>
         </ol>
       </gs>
-      <h1>
+      <h1
+        className="mb-4"
+      >
         Preferences
       </h1>
-      <div
-        className="mb-3"
+      <rl
+        onSubmit={[Function]}
+        tag="form"
       >
-        <p>
-          When your team is not available to chat, you can configure an auto-response for your customers.
-        </p>
-        <rl
+        <form
+          className=""
           onSubmit={[Function]}
-          tag="form"
         >
-          <form
-            className=""
-            onSubmit={[Function]}
+          <div
+            className="mb-4"
           >
-            <ml
+            <h4>
+              Email capture
+            </h4>
+            <p>
+              If a visitor is anonymous, we'll automatically ask for its email address.
+            </p>
+            <div
+              className="mb-3"
+            >
+              <BooleanField
+                label="Enable email capture"
+                name="emailCaptureEnabled"
+                onChange={[Function]}
+                type="checkbox"
+                value={false}
+              >
+                <ml
+                  check={true}
+                  className=""
+                  color=""
+                  tag="div"
+                >
+                  <div
+                    className="form-check"
+                  >
+                    <Hl
+                      check={true}
+                      className="control-label"
+                      htmlFor="id-emailCaptureEnabled"
+                      tag="label"
+                    >
+                      <label
+                        className="control-label form-check-label "
+                        htmlFor="id-emailCaptureEnabled"
+                      >
+                        <ei
+                          checked={false}
+                          className="form-check-input"
+                          id="id-emailCaptureEnabled"
+                          onChange={[Function]}
+                          tag="p"
+                          type="checkbox"
+                        >
+                          <input
+                            checked={false}
+                            className="form-check-input form-check-input"
+                            id="id-emailCaptureEnabled"
+                            onChange={[Function]}
+                            type="checkbox"
+                          />
+                        </ei>
+                        <span>
+                          Enable email capture
+                        </span>
+                      </label>
+                    </Hl>
+                  </div>
+                </ml>
+              </BooleanField>
+            </div>
+            <ws
+              className="mb-3"
+              role="group"
               tag="div"
             >
               <div
-                className="form-group"
+                className="mb-3 btn-group"
+                role="group"
               >
-                <Hl
-                  tag="label"
+                <ei
+                  color="info"
+                  onClick={[Function]}
+                  tag="button"
+                  type="button"
                 >
-                  <label
-                    className=""
+                  <button
+                    className="btn btn-info"
+                    onClick={[Function]}
+                    type="button"
                   >
-                    Auto-responder status
-                  </label>
-                </Hl>
-                <BooleanField
-                  label="Enable auto-responder when no agent is available for chat"
-                  name="autoResponderEnabled"
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={false}
+                    Online
+                  </button>
+                </ei>
+                <ei
+                  color="secondary"
+                  onClick={[Function]}
+                  tag="button"
+                  type="button"
                 >
-                  <ml
-                    check={true}
-                    className=""
-                    color=""
-                    tag="div"
+                  <button
+                    className="btn btn-secondary"
+                    onClick={[Function]}
+                    type="button"
                   >
-                    <div
-                      className="form-check"
+                    Offline
+                  </button>
+                </ei>
+              </div>
+            </ws>
+            <div>
+              <InputField
+                label="Email capture text"
+                name="emailCaptureOnlineTriggerText"
+                onChange={[Function]}
+                rows="3"
+                type="textarea"
+                value="Leave us your email in case we reply later."
+              >
+                <ml
+                  className=""
+                  color=""
+                  tag="div"
+                >
+                  <div
+                    className="form-group"
+                  >
+                    <Hl
+                      className="control-label"
+                      htmlFor="id-emailCaptureOfflineTriggerText"
+                      tag="label"
                     >
-                      <Hl
-                        check={true}
-                        className="control-label"
-                        htmlFor="id-autoResponderEnabled"
-                        tag="label"
+                      <label
+                        className="control-label "
+                        htmlFor="id-emailCaptureOfflineTriggerText"
                       >
-                        <label
-                          className="control-label form-check-label "
-                          htmlFor="id-autoResponderEnabled"
+                        Email capture text
+                      </label>
+                    </Hl>
+                    <div
+                      className=""
+                    >
+                      <ei
+                        className=""
+                        id="id-emailCaptureOfflineTriggerText"
+                        onChange={[Function]}
+                        rows="3"
+                        tag="p"
+                        type="textarea"
+                        value="Leave us your email in case we reply later."
+                      >
+                        <textarea
+                          className="form-control"
+                          id="id-emailCaptureOfflineTriggerText"
+                          onChange={[Function]}
+                          rows="3"
+                          value="Leave us your email in case we reply later."
+                        />
+                      </ei>
+                    </div>
+                  </div>
+                </ml>
+              </InputField>
+              <InputField
+                label="Thanks for your email message"
+                name="emailCaptureOnlineThanksText"
+                onChange={[Function]}
+                rows="3"
+                type="textarea"
+                value="Thanks! We'll email you at {email} if you leave."
+              >
+                <ml
+                  className=""
+                  color=""
+                  tag="div"
+                >
+                  <div
+                    className="form-group"
+                  >
+                    <Hl
+                      className="control-label"
+                      htmlFor="id-emailCaptureOfflineThanksText"
+                      tag="label"
+                    >
+                      <label
+                        className="control-label "
+                        htmlFor="id-emailCaptureOfflineThanksText"
+                      >
+                        Thanks for your email message
+                      </label>
+                    </Hl>
+                    <div
+                      className=""
+                    >
+                      <ei
+                        className=""
+                        id="id-emailCaptureOfflineThanksText"
+                        onChange={[Function]}
+                        rows="3"
+                        tag="p"
+                        type="textarea"
+                        value="Thanks! We'll email you at {email} if you leave."
+                      >
+                        <textarea
+                          className="form-control"
+                          id="id-emailCaptureOfflineThanksText"
+                          onChange={[Function]}
+                          rows="3"
+                          value="Thanks! We'll email you at {email} if you leave."
+                        />
+                      </ei>
+                    </div>
+                  </div>
+                </ml>
+              </InputField>
+            </div>
+          </div>
+          <div
+            className="mb-4"
+          >
+            <h4>
+              Offline auto-responder
+            </h4>
+            <p>
+              When your team is not available to chat, you can configure an auto-response for your
+               
+              customers.
+            </p>
+            <div
+              className="mb-3"
+            >
+              <BooleanField
+                label="Enable auto-responder when no agent is available for chat"
+                name="autoResponderEnabled"
+                onChange={[Function]}
+                type="checkbox"
+                value={false}
+              >
+                <ml
+                  check={true}
+                  className=""
+                  color=""
+                  tag="div"
+                >
+                  <div
+                    className="form-check"
+                  >
+                    <Hl
+                      check={true}
+                      className="control-label"
+                      htmlFor="id-autoResponderEnabled"
+                      tag="label"
+                    >
+                      <label
+                        className="control-label form-check-label "
+                        htmlFor="id-autoResponderEnabled"
+                      >
+                        <ei
+                          checked={false}
+                          className="form-check-input"
+                          id="id-autoResponderEnabled"
+                          onChange={[Function]}
+                          tag="p"
+                          type="checkbox"
                         >
-                          <ei
+                          <input
                             checked={false}
-                            className="form-check-input"
+                            className="form-check-input form-check-input"
                             id="id-autoResponderEnabled"
                             onChange={[Function]}
-                            tag="p"
                             type="checkbox"
-                          >
-                            <input
-                              checked={false}
-                              className="form-check-input form-check-input"
-                              id="id-autoResponderEnabled"
-                              onChange={[Function]}
-                              type="checkbox"
-                            />
-                          </ei>
-                          <span>
-                            Enable auto-responder when no agent is available for chat
-                          </span>
-                        </label>
-                      </Hl>
-                    </div>
-                  </ml>
-                </BooleanField>
-              </div>
-            </ml>
+                          />
+                        </ei>
+                        <span>
+                          Enable auto-responder when no agent is available for chat
+                        </span>
+                      </label>
+                    </Hl>
+                  </div>
+                </ml>
+              </BooleanField>
+            </div>
             <InputField
               label="Auto-responder text"
               name="autoResponderText"
@@ -241,6 +1152,13 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
                 </div>
               </ml>
             </InputField>
+          </div>
+          <div
+            className="mb-4"
+          >
+            <h4>
+              Inactivity settings
+            </h4>
             <InputField
               help="After a certain period without any new message on a chat ticket, Gorgias will create a new ticket the next time the customer contacts you over chat."
               label="Inactivity period between chat tickets"
@@ -327,27 +1245,27 @@ exports[`ChatIntegrationPreferences component should render the chat settings co
                 </div>
               </ml>
             </InputField>
-            <div>
-              <ei
-                className=""
-                color="primary"
+          </div>
+          <div>
+            <ei
+              className=""
+              color="primary"
+              disabled={false}
+              tag="button"
+              type="submit"
+            >
+              <button
+                className="btn btn-primary"
                 disabled={false}
-                tag="button"
+                onClick={[Function]}
                 type="submit"
               >
-                <button
-                  className="btn btn-primary"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="submit"
-                >
-                  Save
-                </button>
-              </ei>
-            </div>
-          </form>
-        </rl>
-      </div>
+                Save
+              </button>
+            </ei>
+          </div>
+        </form>
+      </rl>
     </div>
   </RealtimeMessagingIntegrationPreferences>
 </Connect(RealtimeMessagingIntegrationPreferences)>
