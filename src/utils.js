@@ -30,6 +30,7 @@ import htmlparser from 'htmlparser2'
 import TICKET_LANGUAGES from './config/ticketLanguages'
 
 import {ACTION_TEMPLATES} from './config'
+import {availableVariables} from './config/rules'
 
 const notificationSoundData = require('../../private/audio/notification.mp3')
 
@@ -439,6 +440,7 @@ export const camelCaseToTitleCase = (text) => (
     })
 )
 
+
 /**
  * Slugify a string
  * @param string
@@ -564,7 +566,7 @@ export function convertFromHTML(html) {
                 return Entity.create(
                     'link',
                     'MUTABLE',
-                    {url: node.href}
+                    {url: unescapeTemplateVars(node.href)}
                 )
             }
 
@@ -1035,4 +1037,21 @@ export const openChat = (e) => {
         e.preventDefault()
         window.Smooch.open()
     }
+}
+
+/**
+ * Unescape template variables from a string
+ *
+ * Input: `send email to %7B%7Bticket.requester.email%7D%7D`
+ * Output: `send email to {{ticket.requester.email}}`
+ */
+export function unescapeTemplateVars(string) {
+    // `%7B%7B` : {{
+    // `(?:${availableVariables.join('|')})` : variable needs to start by one of the available variable names in rules
+    // `[\w\.\[\]` : followed by alphanumeric, dot or square bracket characters
+    // `%7D%7D` : }}
+    const reg = new RegExp(`%7B%7B((?:${availableVariables.join('|')})[\\w\\.\\[\\]]*?)%7D%7D`, 'g')
+    return string.replace(reg, (_, match) => {
+        return `{{${match}}}`
+    })
 }

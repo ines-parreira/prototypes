@@ -297,6 +297,15 @@ describe('global utils', () => {
         })
     })
 
+    describe('from HTML', () => {
+        it('should ONLY unescape template variables', () => {
+            const baseHTML = '<div><a href="http://{{ticket.account.domain}}.gorgias.io/app/ticket/{{ticket.id}}/hel%7B%7Bhello%7D%7D" target="_blank">link</a></div>'
+            const contentState = utils.convertFromHTML(baseHTML)
+            const newHTML = utils.convertToHTML(contentState)
+            expect(newHTML).toEqual(baseHTML)
+        })
+    })
+
     describe('toHTML', () => {
         it('should convert links (www.xxx.com) to html', () => {
             const text = 'Hello there\n\nwww.google.com'
@@ -435,7 +444,6 @@ describe('global utils', () => {
         })
     })
 
-
     describe('proxifyImages', () => {
         beforeEach(() => {
             window.IMAGE_PROXY_URL = 'http://proxy-url/'
@@ -568,6 +576,20 @@ describe('global utils', () => {
 
             const cleanEditorState = utils.removeMentions(editorState, value)
             expect(convertToRaw(cleanEditorState.getCurrentContent()).entityMap).toEqual({})
+        })
+    })
+
+    describe('unescape template variables', () => {
+        it('should ONLY unescape template variables', () => {
+            expect(utils.unescapeTemplateVars('%7Bh%7B%7Bello%7D%7D %7B%7Bticket.requester.email%7D%7D %7B%7Bmessage.from_agent%7D%7D %7B%7Bevent.type%7D%7D %7B%7Buser.email%7D%7D'))
+                .toEqual('%7Bh%7B%7Bello%7D%7D {{ticket.requester.email}} {{message.from_agent}} {{event.type}} {{user.email}}')
+        })
+
+        it('should NOT unescape variables (invalid template variables)', () => {
+            expect(utils.unescapeTemplateVars('hello %7B%7Baccount.id%7D%7D'))
+                .toEqual('hello %7B%7Baccount.id%7D%7D')
+            expect(utils.unescapeTemplateVars('hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D'))
+                .toEqual('hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D')
         })
     })
 })

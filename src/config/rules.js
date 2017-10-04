@@ -13,3 +13,6 @@ export const events = fromJS([{
     label: 'New message in ticket',
     value: 'ticket-message-created',
 }])
+
+// variables available in rules
+export const availableVariables = ['ticket', 'message', 'event', 'user']
