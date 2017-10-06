@@ -240,9 +240,9 @@ export const prepare = (sourceType) => (dispatch, getState) => {
  * @param query
  * @returns {function(*)}
  */
-export const updatePotentialRequesters = query => (dispatch) => (
+export const updatePotentialRequesters = (query) => (dispatch) => (
     axios.post('/api/search/', {
-        type: 'user_channel',
+        type: 'user_channel_email',
         query
     })
         .then((json = {}) => json.data)
