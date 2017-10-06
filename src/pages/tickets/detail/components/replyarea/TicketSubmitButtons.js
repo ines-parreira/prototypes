@@ -21,6 +21,7 @@ const TIPS = [
     <span>Press <kbd>c</kbd> to close the ticket</span>,
     <span>Press <kbd>o</kbd> to open the ticket</span>,
     <span>Press <kbd>#</kbd> to delete the ticket</span>,
+    <span>Press <kbd>?</kbd> to display all keyboard shortcuts</span>,
     <span>Press <kbd>r</kbd> to reply to the ticket</span>,
     <span>Press <kbd>m</kbd> to display macros</span>,
     'You can add attachments to macros',
