@@ -1,11 +1,10 @@
+// @flow
 import * as types from './constants'
 import {fromJS} from 'immutable'
 import {convertToRaw} from 'draft-js'
 import {convertToHTML} from '../../utils'
 import * as responseUtils from './responseUtils'
-import {
-    getReceiversProperties,
-} from './selectors'
+import {getReceiversProperties} from './selectors'
 
 import * as ticketConfig from '../../config/ticket'
 
@@ -21,7 +20,10 @@ import {
     getChannelFromSourceType,
 } from '../ticket/utils'
 
-export const makeNewMessage = (channel, sourceType) => fromJS({
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
+
+export const makeNewMessage = (channel: string, sourceType: string) => fromJS({
     via: 'helpdesk',
     public: true,
     from_agent: true,
@@ -62,7 +64,7 @@ export const initialState = fromJS({
     newMessage: makeNewMessage('email', 'email')
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
         case types.NEW_MESSAGE_ADD_ATTACHMENT_START: {
             return state.setIn(['_internal', 'loading', 'addAttachment'], true)
@@ -102,9 +104,10 @@ export default (state = initialState, action) => {
 
         case types.NEW_MESSAGE_RECORD_MACRO: {
             const macroId = action.macro.get('id')
+            const macros = state.getIn(['newMessage', 'macros']) || fromJS([])
 
             // if macro already added, do not do anything
-            if (state.getIn(['newMessage', 'macros']).find(macro => macro.id === macroId)) {
+            if (macros.find(macro => macro.id === macroId)) {
                 return state
             }
 

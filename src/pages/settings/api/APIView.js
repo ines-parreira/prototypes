@@ -88,16 +88,13 @@ export default class APIView extends React.Component {
                 </h1>
                 <p>
                     Gorgias prides itself on being a developer-friendly helpdesk.
-                    We expose a <a href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
-                                   target="_blank">
-                    RESTful API
-                </a> to make it easy for you to get, create, update and delete many objects including users, tickets,
+                    We expose a <a href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming" target="_blank" rel="noopener noreferrer">RESTful API</a> to make it easy for you to get, create, update and delete many objects including users, tickets,
                     messages and events. To find out more our API please consult our docs here:
-                    <a href="http://api.gorgias.io/" target="_blank"> http://api.gorgias.io/</a>.
+                    <a href="http://api.gorgias.io/" target="_blank" rel="noopener noreferrer"> http://api.gorgias.io/</a>.
                 </p>
                 <p>
                     Below are the parameters you will need to access our API. We're
-                    using <a href="https://en.wikipedia.org/wiki/Basic_access_authentication">HTTP basic
+                    using <a href="https://en.wikipedia.org/wiki/Basic_access_authentication" rel="noopener noreferrer">HTTP basic
                     authentication</a> to authenticate API requests.</p>
                 <h4>API Access &amp; Credentials</h4>
                 <FormGroup>
@@ -166,7 +163,7 @@ export default class APIView extends React.Component {
                 <br />
                 <h4>Postman collection</h4>
                 <p>
-                    You can also import our <a href="https://www.getpostman.com/" target="_blank">Postman </a>
+                    You can also import our <a href="https://www.getpostman.com/" target="_blank" rel="noopener noreferrer">Postman</a>
                     collection below to quickly connect and use our REST API.
                 </p>
                 <div

@@ -1,24 +1,27 @@
+// @flow
 import axios from 'axios'
 import {fromJS} from 'immutable'
-import * as types from './constants'
+import * as constants from './constants'
 
-export function setMeta(meta = {}) {
+import type {dispatchType, actionType, getStateType} from '../types'
+
+export function setMeta(meta: {} = {}): actionType {
     return {
-        type: types.SET_STATS_META,
+        type: constants.SET_STATS_META,
         meta
     }
 }
 
-export function setFilter(filterName, values) {
+export function setFilter(filterName: string, values: {}): actionType {
     return {
-        type: types.SET_STATS_FILTER,
+        type: constants.SET_STATS_FILTER,
         name: filterName,
         values,
     }
 }
 
-export function fetchStat(name, newMeta = {}, newFilters = {}) {
-    return (dispatch, getState) => {
+export function fetchStat(name: string, newMeta: {} = {}, newFilters: {} = {}) {
+    return (dispatch: dispatchType, getState: getStateType) => {
         const statsState = getState().stats
         // get current meta
         const meta = statsState.getIn(['_internal', 'meta'], fromJS({}))
@@ -32,20 +35,20 @@ export function fetchStat(name, newMeta = {}, newFilters = {}) {
         params.filters = filters.toJS()
 
         dispatch({
-            type: types.FETCH_STATS_START
+            type: constants.FETCH_STATS_START
         })
 
         return axios.post(`/api/stats/${name}/`, params)
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
-                    type: types.FETCH_STATS_SUCCESS,
+                    type: constants.FETCH_STATS_SUCCESS,
                     name,
                     resp
                 })
             }, error => {
                 return dispatch({
-                    type: types.FETCH_STATS_ERROR,
+                    type: constants.FETCH_STATS_ERROR,
                     error,
                     reason: 'Unable to receive stats'
                 })

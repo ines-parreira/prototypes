@@ -1,3 +1,4 @@
+// @flow
 import {fromJS, OrderedMap} from 'immutable'
 import _fromPairs from 'lodash/fromPairs'
 import _find from 'lodash/find'
@@ -5,15 +6,18 @@ import _find from 'lodash/find'
 import {getCode, getAST} from '../../utils'
 import {updateCodeAst} from '../../pages/common/components/ast/utils'
 
-import * as types from './constants'
+import * as constants from './constants'
+
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     rules: {}
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
-        case types.ADD_RULE_END: {
+        case constants.ADD_RULE_END: {
             const rule = action.rule
             if (rule.code) {
                 rule.code_ast = getAST(rule.code)
@@ -24,21 +28,21 @@ export default (state = initialState, action) => {
             return state.set('rules', newRule.merge(state.get('rules')))
         }
 
-        case types.ACTIVATE_RULE: {
+        case constants.ACTIVATE_RULE: {
             return state.updateIn(
                 ['rules', action.id.toString()],
                 r => r.set('deactivated_datetime', null)
             )
         }
 
-        case types.DEACTIVATE_RULE: {
+        case constants.DEACTIVATE_RULE: {
             return state.updateIn(
                 ['rules', action.id.toString()],
                 r => r.set('deactivated_datetime', (new Date()).toISOString())
             )
         }
 
-        case types.UPDATE_ORDER_START: {
+        case constants.UPDATE_ORDER_START: {
             const {priorities} = action
             return state.update('rules', (rules) => {
                 return rules.map((rule) => {
@@ -53,14 +57,14 @@ export default (state = initialState, action) => {
             })
         }
 
-        case types.REMOVE_RULE: {
+        case constants.REMOVE_RULE: {
             return state.set(
                 'rules',
                 state.get('rules').remove(action.id.toString())
             )
         }
 
-        case types.RULES_RECEIVE_POSTS: {
+        case constants.RULES_RECEIVE_POSTS: {
             // Given the code of the rules received from server convert the code to AST
             const rules = action.rules.map((ruleItem) => {
                 if (ruleItem.code) {
@@ -77,12 +81,12 @@ export default (state = initialState, action) => {
             )
         }
 
-        case types.RULES_INITIALISE_CODE_AST: {
+        case constants.RULES_INITIALISE_CODE_AST: {
             const {id} = action
-            let stateItem = state.getIn(['rules', id.toString()])
+            let stateItem = state.getIn(['rules', id.toString()], fromJS({}))
 
-            // let ast = types.DEFAULT_IF_STATEMENT
-            let ast = types.DEFAULT_STATEMENT
+            // let ast = constants.DEFAULT_IF_STATEMENT
+            let ast = constants.DEFAULT_STATEMENT
             const code = getCode(ast)
             ast = getAST(code)
 
@@ -92,7 +96,7 @@ export default (state = initialState, action) => {
             return state.setIn(['rules', id.toString()], stateItem)
         }
 
-        case types.RULES_UPDATE_CODE_AST: {
+        case constants.RULES_UPDATE_CODE_AST: {
             const {path, value, operation, schemas} = action
             const id = action.id.toString()
             const ast = state.getIn(['rules', id, 'code_ast'])
@@ -104,13 +108,13 @@ export default (state = initialState, action) => {
                 .setIn(['rules', id, 'code_ast'], updatedCodeAst.get('ast'))
         }
 
-        case types.UPDATE_RULE_START: {
+        case constants.UPDATE_RULE_START: {
             return state.updateIn(['rules', String(action.ruleId)], (rule) => {
                 return rule.mergeDeep(action.rule)
             })
         }
 
-        case types.UPDATE_RULE_SUCCESS: {
+        case constants.UPDATE_RULE_SUCCESS: {
             return state.update('rules', rules => rules.set(action.ruleId.toString(), action.rule))
         }
 

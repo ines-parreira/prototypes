@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import {Container, Button} from 'reactstrap'
@@ -35,8 +36,46 @@ import css from './App.less'
 
 import * as activityActions from '../state/activity/actions'
 
+import type {reactRouterLocation} from '../types'
+import type {Node} from 'react'
+import type {currentUserType} from '../state/types'
+
+type Props = {
+    // current logged in user
+    currentUser: currentUserType,
+
+    currentRoute: {
+        infobarOnMobile?: boolean,
+        noContainerPadding?: boolean,
+    },
+    fetchUser: typeof fetchUser,
+    fetchUsers: typeof fetchUsers,
+    fetchSettings: typeof fetchSettings,
+    fetchTags: typeof fetchTags,
+    pollActivity: typeof activityActions.pollActivity,
+    pollChats: typeof activityActions.pollChats,
+    openPanel: typeof layoutActions.openPanel,
+    closePanels: typeof layoutActions.closePanels,
+
+    openedPanel?: string,
+
+    // Injected by React Router
+    children?: any,
+    params?: {},
+    location: reactRouterLocation,
+
+    // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
+    navbar: Node,
+    infobar: Node,
+    activeContent: {},
+
+    content: any,
+    notifications: Array<*>,
+}
+
 const intervals = {}
-class App extends React.Component {
+
+class App extends React.Component<Props> {
     componentWillMount() {
         this.props.fetchUsers(['agent', 'admin', 'bot'])
         // activity polling
@@ -152,36 +191,6 @@ class App extends React.Component {
             </DocumentTitle>
         )
     }
-}
-
-
-App.propTypes = {
-    // current logged in user
-    currentUser: PropTypes.object,
-
-    currentRoute: PropTypes.object.isRequired,
-    fetchUser: PropTypes.func.isRequired,
-    fetchUsers: PropTypes.func.isRequired,
-    fetchSettings: PropTypes.func.isRequired,
-    fetchTags: PropTypes.func.isRequired,
-    pollActivity: PropTypes.func.isRequired,
-    pollChats: PropTypes.func.isRequired,
-    openedPanel: PropTypes.string,
-    openPanel: PropTypes.func.isRequired,
-    closePanels: PropTypes.func.isRequired,
-
-    // Injected by React Router
-    children: PropTypes.node,
-    params: PropTypes.object.isRequired,
-    location: PropTypes.object,
-
-    // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
-    navbar: PropTypes.node,
-    infobar: PropTypes.node,
-    activeContent: PropTypes.object,
-
-    content: PropTypes.node,
-    notifications: PropTypes.array,
 }
 
 function mapStateToProps(state, ownProps) {

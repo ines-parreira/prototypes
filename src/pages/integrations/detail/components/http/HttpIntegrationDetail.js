@@ -202,6 +202,7 @@ export default class HttpIntegrationDetail extends React.Component {
                     <a
                         href="http://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
                         target="_blank"
+                        rel="noopener noreferrer"
                     >
                         docs
                     </a> or contact us.
@@ -257,7 +258,7 @@ export default class HttpIntegrationDetail extends React.Component {
                             <div>
                                 You can use <code>{'{{ticket.requester.email}}'}</code> to pass the email of the
                                 ticket requester. See
-                                other <a href="http://api.gorgias.io/#/definitions/User" target="_blank">vars</a>.
+                                other <a href="http://api.gorgias.io/#/definitions/User" target="_blank" rel="noopener noreferrer">vars</a>.
                             </div>
                         )}
                         value={this.state.url}

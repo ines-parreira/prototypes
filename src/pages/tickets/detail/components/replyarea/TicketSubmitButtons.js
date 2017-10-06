@@ -14,6 +14,7 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
+/* eslint-disable react/jsx-key */
 const TIPS = [
     <span>Press <kbd>→</kbd> (right arrow) to go to next ticket</span>,
     <span>Press <kbd>←</kbd> (left arrow) to go to previous ticket</span>,
@@ -25,6 +26,7 @@ const TIPS = [
     'You can add attachments to macros',
     'Insert order info as variables in macros',
 ]
+/* eslint-enable */
 
 @connect((state) => {
     return {

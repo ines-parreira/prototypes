@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import moment from 'moment'
@@ -23,7 +24,36 @@ import * as macroActions from '../../../../state/macro/actions'
 
 import {getAgents} from '../../../../state/users/selectors'
 
-class TicketListActions extends React.Component {
+import type {List, Map} from 'immutable'
+import type {currentUserType} from '../../../../state/types'
+import type {agentsType} from '../../../../state/agents/types'
+import type {viewType} from '../../../../state/views/types'
+
+type Props = {
+    view: viewType,
+    actions: {
+        views: typeof viewsActions,
+        macro: typeof macroActions
+    },
+    selectedItemsIds: List<Map<*,*>>,
+    fieldEnumSearch: typeof viewsActions.fieldEnumSearch,
+    currentUser: currentUserType,
+    agents: agentsType,
+    isActiveViewTrashView: boolean
+}
+
+type State = {
+    agentsDropdownOpen: boolean,
+    agentsSearch: string,
+    tagsDropdownOpen: boolean,
+    tagsSearch: string,
+    tags: List<Map<*,*>>,
+    isLoadingTags: boolean,
+    askTrashConfirmation: boolean,
+    askDeleteConfirmation: boolean
+}
+
+class TicketListActions extends React.Component<Props, State> {
     state = {
         agentsDropdownOpen: false,
         agentsSearch: '',
@@ -426,17 +456,6 @@ class TicketListActions extends React.Component {
             </div>
         )
     }
-}
-
-TicketListActions.propTypes = {
-    view: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired, // tickets actions
-    selectedItemsIds: PropTypes.object.isRequired, // list of ids of selected tickets
-
-    fieldEnumSearch: PropTypes.func.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    agents: PropTypes.object.isRequired,
-    isActiveViewTrashView: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state) {

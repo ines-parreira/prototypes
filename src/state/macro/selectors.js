@@ -1,7 +1,11 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 
-export const getMacrosState = state => state.macros || fromJS({})
+import type {Map} from 'immutable'
+import type {stateType} from '../types'
+
+export const getMacrosState = (state: stateType): Map<*,*> => state.macros || fromJS({})
 
 export const getMacros = createSelector(
     [getMacrosState],

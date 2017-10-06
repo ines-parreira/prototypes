@@ -1,22 +1,31 @@
+// @flow
 import axios from 'axios'
 import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {notify} from '../notifications/actions'
 import * as segmentTracker from '../../store/middlewares/segmentTracker'
-import * as types from './constants'
+import * as constants from './constants'
+
+import type {dispatchType, getStateType} from '../types'
+type creditCardType = {
+    expDate: string,
+    name: string,
+    number: string,
+    cvc: string
+}
 
 export function fetchCurrentUsage() {
-    return (dispatch) => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.get('/api/billing/current-usage/')
             .then((json = {}) => json.data)
             .then((resp) => {
                 return dispatch({
-                    type: types.FETCH_CURRENT_USAGE_SUCCESS,
+                    type: constants.FETCH_CURRENT_USAGE_SUCCESS,
                     resp
                 })
             }, (error) => {
                 return dispatch({
-                    type: types.FETCH_CURRENT_USAGE_ERROR,
+                    type: constants.FETCH_CURRENT_USAGE_ERROR,
                     error,
                     reason: 'Unable to get current usage information.'
                 })
@@ -25,17 +34,17 @@ export function fetchCurrentUsage() {
 }
 
 export function fetchInvoices() {
-    return (dispatch) => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.get('/api/billing/invoices/')
             .then((json = {}) => json.data.data)
             .then((resp) => {
                 return dispatch({
-                    type: types.FETCH_INVOICES_SUCCESS,
+                    type: constants.FETCH_INVOICES_SUCCESS,
                     resp
                 })
             }, (error) => {
                 return dispatch({
-                    type: types.FETCH_INVOICES_ERROR,
+                    type: constants.FETCH_INVOICES_ERROR,
                     error,
                     reason: 'Unable to get invoices.'
                 })
@@ -45,17 +54,17 @@ export function fetchInvoices() {
 
 
 export function fetchPaymentMethod() {
-    return (dispatch) => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.get('/api/billing/payment-method/')
             .then((json = {}) => json.data)
             .then((resp) => {
                 return dispatch({
-                    type: types.FETCH_PAYMENT_METHOD_SUCCESS,
+                    type: constants.FETCH_PAYMENT_METHOD_SUCCESS,
                     resp
                 })
             }, (error) => {
                 return dispatch({
-                    type: types.FETCH_PAYMENT_METHOD_ERROR,
+                    type: constants.FETCH_PAYMENT_METHOD_ERROR,
                     error,
                     reason: 'Failed to get payment method information.'
                 })
@@ -64,17 +73,17 @@ export function fetchPaymentMethod() {
 }
 
 export function fetchCreditCard() {
-    return (dispatch) => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.get('/api/billing/credit-card/')
             .then((json = {}) => json.data)
             .then((resp) => {
                 return dispatch({
-                    type: types.FETCH_CREDIT_CARD_SUCCESS,
+                    type: constants.FETCH_CREDIT_CARD_SUCCESS,
                     resp
                 })
             }, (error) => {
                 return dispatch({
-                    type: types.FETCH_CREDIT_CARD_ERROR,
+                    type: constants.FETCH_CREDIT_CARD_ERROR,
                     error,
                     reason: 'Unable to get credit card information.'
                 })
@@ -82,13 +91,14 @@ export function fetchCreditCard() {
     }
 }
 
-export function updateCreditCard(creditCard) {
-    return (dispatch, getState) => {
+export function updateCreditCard(creditCard: creditCardType) {
+    return (dispatch: dispatchType, getState: getStateType): Promise<{}> | dispatchType => {
         const state = getState()
         const hasCreditCard = !state.billing.get('creditCard', fromJS({})).isEmpty()
         const currentUser = state.currentUser
         const currentAccount = state.currentAccount
 
+        // $FlowFixMe
         if (Stripe) {
             return new Promise((resolve) => {
                 const expiry = creditCard.expDate.split('/')
@@ -104,7 +114,7 @@ export function updateCreditCard(creditCard) {
                     if (response.error) {
                         resolve(response)
                         return dispatch({
-                            type: types.UPDATE_CREDIT_CARD_ERROR,
+                            type: constants.UPDATE_CREDIT_CARD_ERROR,
                             error: response.error,
                             reason: 'Unable to update credit card.'
                         })
@@ -121,7 +131,7 @@ export function updateCreditCard(creditCard) {
                             }))
                             browserHistory.push('/app/settings/billing/')
                             dispatch({
-                                type: types.UPDATE_CREDIT_CARD_SUCCESS,
+                                type: constants.UPDATE_CREDIT_CARD_SUCCESS,
                                 resp
                             })
 
@@ -136,7 +146,7 @@ export function updateCreditCard(creditCard) {
                             return resolve(resp)
                         }, (error) => {
                             dispatch({
-                                type: types.UPDATE_CREDIT_CARD_ERROR,
+                                type: constants.UPDATE_CREDIT_CARD_ERROR,
                                 error,
                                 reason: 'Unable to update credit card.'
                             })
@@ -147,15 +157,15 @@ export function updateCreditCard(creditCard) {
             })
         } else {
             return dispatch({
-                type: types.UPDATE_CREDIT_CARD_ERROR,
+                type: constants.UPDATE_CREDIT_CARD_ERROR,
                 reason: 'Unable to update credit card. Please reload this page.'
             })
         }
     }
 }
 
-export function updateSubscription(subscription) {
-    return (dispatch) => {
+export function updateSubscription(subscription: {}) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.put('/api/billing/subscription/', subscription)
             .then((json = {}) => json.data)
             .then((resp) => {
@@ -164,12 +174,12 @@ export function updateSubscription(subscription) {
                     message: 'Your subscription was updated.',
                 }))
                 return dispatch({
-                    type: types.UPDATE_SUBSCRIPTION_SUCCESS,
+                    type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
                     resp
                 })
             }, (error) => {
                 return dispatch({
-                    type: types.UPDATE_SUBSCRIPTION_ERROR,
+                    type: constants.UPDATE_SUBSCRIPTION_ERROR,
                     error,
                     reason: 'Failed to update the current subscription.'
                 })

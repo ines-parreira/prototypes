@@ -59,7 +59,7 @@ export default class AircallIntegrationCreate extends Component {
                         <ul>
                             <li>1. Copy the webhook url below</li>
                             <li>2. Add a Webhook integration in your Aircall account, under{' '}
-                                <a href="https://dashboard-v2.aircall.io/integrations" target="_blank">
+                                <a href="https://dashboard-v2.aircall.io/integrations" target="_blank" rel="noopener noreferrer">
                                     integrations
                                 </a>
                             </li>

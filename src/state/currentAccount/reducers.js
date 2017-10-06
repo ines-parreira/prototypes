@@ -1,5 +1,10 @@
-import * as types from './constants'
+// @flow
+import * as constants from './constants'
 import {fromJS} from 'immutable'
+
+// type
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     settings: [],
@@ -8,15 +13,15 @@ export const initialState = fromJS({
     }
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
-        case types.UPDATE_ACCOUNT_START:
+        case constants.UPDATE_ACCOUNT_START:
             return state.setIn(['_internal', 'loading', 'updateAccount'], true)
-        case types.UPDATE_ACCOUNT_ERROR:
+        case constants.UPDATE_ACCOUNT_ERROR:
             return state.setIn(['_internal', 'loading', 'updateAccount'], false)
-        case types.UPDATE_ACCOUNT_SUCCESS:
+        case constants.UPDATE_ACCOUNT_SUCCESS:
             return state.setIn(['_internal', 'loading', 'updateAccount'], false).merge(action.resp)
-        case types.UPDATE_ACCOUNT_SETTING: {
+        case constants.UPDATE_ACCOUNT_SETTING: {
             const new_setting = action.setting
 
             if (!action.isUpdate) {

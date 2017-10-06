@@ -50,7 +50,15 @@ export default class SmoochIntegrationList extends React.Component {
 
         const longTypeDescription = (
             <div>
-                <b><a href="https://smooch.io/" target="_blank">Smooch</a></b> is a messaging platform which enables
+                <b>
+                    <a
+                        href="https://smooch.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Smooch
+                    </a>
+                </b> is a messaging platform which enables
                 you to interact with your customers across multiple channels, and to build your own bot. You can use
                 Gorgias as an interface for your team to respond to Smooch conversations.
                 <br /><br />

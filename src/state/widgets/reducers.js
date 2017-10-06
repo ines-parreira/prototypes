@@ -1,3 +1,4 @@
+// @flow
 import * as types from './constants'
 import {fromJS} from 'immutable'
 import _isObject from 'lodash/isObject'
@@ -14,6 +15,9 @@ import {
     itemsWithUpdatedWidgets,
     reorderWidgets,
 } from './utils'
+
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     items: [],
@@ -33,7 +37,7 @@ export const initialState = fromJS({
     }
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
         case types.FETCH_WIDGETS_SUCCESS: {
             const receivedItems = fromJS(action.items)
@@ -122,7 +126,7 @@ export default (state = initialState, action) => {
                 integrationId
             } = action
 
-            const currentGroup = state.getIn(['_internal', 'drag', 'group'])
+            const currentGroup = state.getIn(['_internal', 'drag', 'group']) || ''
 
             const isDraggingARootSource = isRootSource(currentGroup)
 
@@ -170,7 +174,7 @@ export default (state = initialState, action) => {
                 const strippedSourceFlattenAbsolutePath = stripLastListsFromPath(sourceFlattenAbsolutePath)
 
                 widget = makeWrapper({
-                    order: widgetsItems.size,
+                    order: widgetsItems.length,
                     context,
                     child: widget,
                     sourcePath: strippedSourceFlattenAbsolutePath.split('.'),
@@ -194,7 +198,7 @@ export default (state = initialState, action) => {
                 let shouldAddWidget = true
 
                 if (isDraggingARootSource) {
-                    newState.getIn(widgetsItems).forEach((widget) => {
+                    newState.getIn(widgetsItems, []).forEach((widget) => {
                         const type = element.get('type')
                         const integrationId = element.get('integration_id')
                         const typeIsAlreadyPresent = type !== 'http' && widget.get('type') === type
@@ -264,7 +268,7 @@ export default (state = initialState, action) => {
             return state
                 .setIn(widgetsPath, reorderWidgets(
                         state
-                            .getIn(widgetsPath)
+                            .getIn(widgetsPath, fromJS({}))
                             .removeIn(newTemplatePath.split('.'))
                     )
                 )
@@ -283,7 +287,7 @@ export default (state = initialState, action) => {
 
             return state
                 .setIn(widgetPath, state
-                    .getIn(widgetPath)
+                    .getIn(widgetPath, fromJS({}))
                     .mergeDeep(item)
                 )
                 .setIn(['_internal', 'isDirty'], true)

@@ -1,3 +1,4 @@
+// @flow
 import axios from 'axios'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
@@ -10,8 +11,24 @@ import * as integrationsSelectors from './../integrations/selectors'
 
 import {getSources, getSourcesWithRequester} from '../widgets/selectors'
 
+import type {Map} from 'immutable'
+import type {dispatchType, getStateType} from '../types'
+type widgetUpdateType = {
+    title: string,
+    meta: {
+        link: string,
+        displayCard: boolean
+    }
+}
+type widgetType = {
+    order: number,
+    type: string,
+    context: {},
+    template: {}
+}
+
 export function fetchWidgets() {
-    return (dispatch) => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: types.FETCH_WIDGETS_START
         })
@@ -23,7 +40,7 @@ export function fetchWidgets() {
         })
             .then((json = {}) => json.data)
             .then((resp) => {
-                dispatch({
+                return dispatch({
                     type: types.FETCH_WIDGETS_SUCCESS,
                     items: resp.data
                 })
@@ -37,7 +54,7 @@ export function fetchWidgets() {
     }
 }
 
-export function startEditionMode(context = 'ticket') {
+export function startEditionMode(context: string = 'ticket') {
     return {
         type: types.START_EDITION_MODE,
         context
@@ -50,7 +67,7 @@ export function stopEditionMode() {
     }
 }
 
-export function startWidgetEdition(templatePath) {
+export function startWidgetEdition(templatePath: string) {
     return {
         type: types.START_WIDGET_EDITION,
         path: templatePath
@@ -63,12 +80,12 @@ export function stopWidgetEdition() {
     }
 }
 
-export function generateAndSetWidgets(sources, context = 'ticket') {
-    return (dispatch) => {
+export function generateAndSetWidgets(sources: Map<*,*>, context: string = 'ticket') {
+    return (dispatch: dispatchType): dispatchType => {
         // generate template
         const items = jsonToWidgets(sources.toJS(), context)
 
-        dispatch({
+        return dispatch({
             type: types.GENERATE_AND_SET_WIDGETS,
             items,
             context
@@ -76,7 +93,7 @@ export function generateAndSetWidgets(sources, context = 'ticket') {
     }
 }
 
-export function setEditedWidgets(items) {
+export function setEditedWidgets(items: Array<Map<*,*>>) {
     return {
         type: types.SET_EDITED_WIDGETS,
         items
@@ -89,14 +106,14 @@ export function setEditionAsDirty() {
     }
 }
 
-export function selectContext(context = 'ticket') {
+export function selectContext(context: string = 'ticket') {
     return {
         type: types.SELECT_CONTEXT,
         context
     }
 }
 
-export function drag(group) {
+export function drag(group: string) {
     return {
         type: types.DRAG,
         group
@@ -109,8 +126,8 @@ export function cancelDrag() {
     }
 }
 
-export function drop(eventType, targetParentTemplatePath = '', key = '', toIndex = 0, fromIndex = 0) {
-    return (dispatch, getState) => {
+export function drop(eventType: 'add' | 'update', targetParentTemplatePath: string = '', key: string = '', toIndex: number = 0, fromIndex: number = 0) {
+    return (dispatch: dispatchType, getState: getStateType): dispatchType => {
         const state = getState()
         const splitKey = key.split('.')
         let type = null
@@ -155,14 +172,14 @@ export function drop(eventType, targetParentTemplatePath = '', key = '', toIndex
     }
 }
 
-export function updateEditedWidget(data) {
+export function updateEditedWidget(data: widgetUpdateType) {
     return {
         type: types.UPDATE_EDITED_WIDGET,
         item: data
     }
 }
 
-export function removeEditedWidget(templatePath = '', absolutePath = '') {
+export function removeEditedWidget(templatePath: string = '', absolutePath: string = '') {
     return {
         type: types.REMOVE_EDITED_WIDGET,
         templatePath,
@@ -170,8 +187,8 @@ export function removeEditedWidget(templatePath = '', absolutePath = '') {
     }
 }
 
-export function submitWidgets(data) {
-    return (dispatch, getState) => {
+export function submitWidgets(data: ?Array<widgetType>) {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         const context = getState().widgets.get('currentContext', 'ticket')
 
         dispatch({

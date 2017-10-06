@@ -1,3 +1,4 @@
+// @flow
 import axios from 'axios'
 import {fromJS} from 'immutable'
 import {browserHistory} from 'react-router'
@@ -11,7 +12,11 @@ import * as viewsSelectors from './selectors'
 import * as viewsConfig from '../../config/views'
 import socketManager from '../../services/socketManager'
 
-export const setViewActive = (view) => (dispatch) => {
+import type {Map, List} from 'immutable'
+import type {dispatchType, getStateType, thunkActionType} from '../types'
+import type {viewType, filterType} from './types'
+
+export const setViewActive = (view: viewType) => (dispatch: dispatchType): dispatchType => {
     if (view) {
         socketManager.join('view', view.get('id'))
     }
@@ -22,13 +27,13 @@ export const setViewActive = (view) => (dispatch) => {
     })
 }
 
-export const updateView = (view, edit = true) => ({
+export const updateView = (view: ?viewType, edit: boolean = true) => ({
     type: types.UPDATE_VIEW,
     view,
     edit
 })
 
-export const setOrderDirection = (fieldPath, direction = 'asc') => (dispatch) => {
+export const setOrderDirection = (fieldPath: string, direction: 'asc' | 'desc' = 'asc') => (dispatch: dispatchType) => {
     dispatch({
         type: types.SET_ORDER_DIRECTION,
         fieldPath,
@@ -38,7 +43,7 @@ export const setOrderDirection = (fieldPath, direction = 'asc') => (dispatch) =>
     dispatch(updateView())
 }
 
-export const setFieldVisibility = (name, state) => (dispatch) => {
+export const setFieldVisibility = (name: string, state: boolean) => (dispatch: dispatchType) => {
     dispatch({
         type: types.SET_FIELD_VISIBILITY,
         name,
@@ -49,35 +54,35 @@ export const setFieldVisibility = (name, state) => (dispatch) => {
 }
 
 // add filter for 1 field
-export const addFieldFilter = (field, filter) => ({
+export const addFieldFilter = (field: string, filter: filterType) => ({
     type: types.ADD_VIEW_FIELD_FILTER,
     field,
     filter
 })
 
 // remove a filter based on index
-export const removeFieldFilter = (index) => ({
+export const removeFieldFilter = (index: number) => ({
     type: types.REMOVE_VIEW_FIELD_FILTER,
     index
 })
 
 // update a filter value
-export const updateFieldFilter = (index, value) => ({
+export const updateFieldFilter = (index: number, value: string) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER,
     index,
     value
 })
 
 // remove a filter based on index
-export const updateFieldFilterOperator = (index, operator) => ({
+export const updateFieldFilterOperator = (index: number, operator: string) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,
     index,
     operator
 })
 
 // not a real redux action, is used to return data, not to be used in the reducer
-export function fieldEnumSearch(field, query) {
-    return (dispatch) => {
+export function fieldEnumSearch(field: Map<*,*>, query: string): thunkActionType {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: types.UPDATE_VIEW_FIELD_ENUM_START
         })
@@ -103,15 +108,15 @@ export function fieldEnumSearch(field, query) {
     }
 }
 
-export const resetView = (configName) => {
+export const resetView = (configName: string) => {
     return {
         type: types.RESET_VIEW,
         configName,
     }
 }
 
-export function fetchViews(currentViewId) {
-    return (dispatch) => {
+export function fetchViews(currentViewId: string): thunkActionType {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: types.FETCH_VIEW_LIST_START
         })
@@ -134,15 +139,15 @@ export function fetchViews(currentViewId) {
     }
 }
 
-export function setPage(page) {
+export function setPage(page: number) {
     return {
         type: types.SET_PAGE,
         page
     }
 }
 
-export function submitView(view) {
-    return (dispatch, getState) => {
+export function submitView(view: viewType): thunkActionType {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         const {views} = getState()
         const isUpdate = !!view.get('id', '')
         const objectName = getPluralObjectName(view.get('type', ''))
@@ -187,12 +192,12 @@ export function submitView(view) {
     }
 }
 
-export function deleteView(view) {
-    return (dispatch, getState) => {
-        const viewType = view.get('type', 'ticket-list')
+export function deleteView(view: viewType): thunkActionType {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+        const vType = view.get('type', 'ticket-list')
         const otherViewsOfType = getState().views
             .get('items', fromJS([]))
-            .filter((v) => v.get('type', 'ticket-list') === viewType && v.get('id') !== view.get('id'))
+            .filter((v) => v.get('type', 'ticket-list') === vType && v.get('id') !== view.get('id'))
 
         // prevent deletion of the last view of this type
         if (otherViewsOfType.size === 0) {
@@ -203,10 +208,10 @@ export function deleteView(view) {
             }))
         }
 
-        axios.delete(`/api/views/${view.get('id')}/`)
+        return axios.delete(`/api/views/${view.get('id')}/`)
             .then((json = {}) => json.data)
             .then(() => {
-                const viewConfig = viewsConfig.getConfigByType(viewType)
+                const viewConfig = viewsConfig.getConfigByType(vType)
                 const destinationView = otherViewsOfType.first()
                 const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
                 browserHistory.push(destinationRoute)
@@ -221,7 +226,7 @@ export function deleteView(view) {
     }
 }
 
-export const deleteViewSuccess = (viewId) => (dispatch, getState) => {
+export const deleteViewSuccess = (viewId: number): thunkActionType => (dispatch: dispatchType, getState: getStateType) => {
     dispatch({
         type: types.DELETE_VIEW_SUCCESS,
         viewId
@@ -239,8 +244,8 @@ export const deleteViewSuccess = (viewId) => (dispatch, getState) => {
     }
 }
 
-export function fetchPage(page, discreet = false) {
-    return (dispatch, getState) => {
+export function fetchPage(page: ?number, discreet: boolean = false): thunkActionType {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         const state = getState()
         let views = state.views
 
@@ -322,7 +327,7 @@ export function fetchPage(page, discreet = false) {
     }
 }
 
-export function toggleSelection(idOrIds, selectAll = false) {
+export function toggleSelection(idOrIds: number | Array<number>, selectAll: boolean = false) {
     return {
         type: types.TOGGLE_SELECTION,
         idOrIds,
@@ -330,8 +335,8 @@ export function toggleSelection(idOrIds, selectAll = false) {
     }
 }
 
-export function bulkUpdate(activeView, ids, key, value) {
-    return (dispatch) => {
+export function bulkUpdate(activeView: viewType, ids: List<*>, key: string, value: any): thunkActionType {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         const data = {
             ids: ids.toJS(),
             updates: {
@@ -407,8 +412,8 @@ export function bulkUpdate(activeView, ids, key, value) {
     }
 }
 
-export function bulkDelete(activeView, ids) {
-    return (dispatch) => {
+export function bulkDelete(activeView: viewType, ids: List<*>): thunkActionType {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: types.BULK_DELETE_START
         })
@@ -452,7 +457,7 @@ export function bulkDelete(activeView, ids) {
 }
 
 
-export function bulkApplyMacro(macroId) {
+export function bulkApplyMacro(macroId: string) {
     return {
         type: types.BULK_APPLY_MACRO,
         macroId
@@ -463,7 +468,7 @@ export function bulkApplyMacro(macroId) {
  * Handle views item count update
  * @param response
  */
-export const handleViewsCount = ({counts}) => ({
+export const handleViewsCount = ({counts}: {counts: number}) => ({
     type: types.UPDATE_COUNTS,
     counts,
 })

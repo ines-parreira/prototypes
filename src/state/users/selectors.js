@@ -1,64 +1,70 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 
 import * as currentUserSelectors from '../currentUser/selectors'
 
-export const getUsersState = (state) => state.users || fromJS({})
+import type {List, Map} from 'immutable'
+import type {stateType, currentUserType} from '../types'
+import type {agentsType} from '../agents/types'
+type ticketIdType = string
+
+export const getUsersState = (state: stateType) => state.users || fromJS({})
 
 export const getLoading = createSelector(
     [getUsersState],
-    (state) => state.getIn(['_internal', 'loading']) || fromJS({})
+    (state: Map<*,*>) => state.getIn(['_internal', 'loading']) || fromJS({})
 )
 
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
-export const isLoading = (name) => createSelector(
+export const isLoading = (name: string) => createSelector(
     [getLoading],
-    (loading) => loading.get(name, false)
+    (loading: Map<*,*>) => loading.get(name, false)
 )
 
 // in component usage
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
-export const makeIsLoading = (state) => (name) => isLoading(name)(state)
+export const makeIsLoading = (state: stateType) => (name: string): boolean => isLoading(name)(state)
 
 export const getUsers = createSelector(
     [getUsersState],
-    (state) => state.get('items') || fromJS([])
+    (state: Map<*,*>) => state.get('items') || fromJS([])
 )
 
 export const getActiveUser = createSelector(
     [getUsersState],
-    (state) => state.get('active') || fromJS({})
+    (state: Map<*,*>) => state.get('active') || fromJS({})
 )
 
 export const getActiveUserId = createSelector(
     [getActiveUser],
-    (activeUser) => activeUser.get('id')
+    (activeUser: Map<*,*>) => activeUser.get('id')
 )
 
 export const getActiveUserIntegrationData = createSelector(
     [getActiveUser],
-    (activeUser) => activeUser.get('integrations') || fromJS([])
+    (activeUser: Map<*,*>) => activeUser.get('integrations') || fromJS([])
 )
 
-export const getActiveUserIntegrationDataByIntegrationId = (integrationId) => createSelector(
+export const getActiveUserIntegrationDataByIntegrationId = (integrationId: string) => createSelector(
     [getActiveUserIntegrationData],
-    (data) => data.get(String(integrationId)) || fromJS({})
+    (data: Map<*,*>) => data.get(String(integrationId)) || fromJS({})
 )
 
 export const getAgents = createSelector(
     [getUsersState],
-    (state) => state.get('agents') || fromJS([])
+    (state: Map<*,*>) => state.get('agents') || fromJS([])
 )
 
 export const getOtherAgents = createSelector(
     [getAgents, currentUserSelectors.getCurrentUser],
-    (agents, currentUser) => agents.filter((agent) => String(agent.get('id', '')) !== String(currentUser.get('id', '')))
+    (agents: List<*>, currentUser: currentUserType) => agents.filter((agent) => String(agent.get('id', '')) !== String(currentUser.get('id', '')))
 )
 
-export const getAgent = (id) => createSelector(
+export const getAgent = (id: number) => createSelector(
     [getAgents],
-    (agents) => {
+    (agents: agentsType) => {
         if (!id) {
             return fromJS({})
         }
@@ -67,18 +73,18 @@ export const getAgent = (id) => createSelector(
     }
 )
 
-export const makeGetAgent = (state) => (id) => getAgent(id)(state)
+export const makeGetAgent = (state: stateType) => (id: number): Map<*,*> => getAgent(id)(state)
 
 // Location of agents in the app (ticket, view, etc.) by their ids
 export const getAgentsIdsLocation = createSelector(
     [getUsersState],
-    (state) => state.get('agentsLocation') || fromJS({})
+    (state: Map<*,*>) => state.get('agentsLocation') || fromJS({})
 )
 
 // Ids of agents on a specific ticket
-export const getAgentsIdsOnTicket = (ticketId) => createSelector(
+export const getAgentsIdsOnTicket = (ticketId: ticketIdType) => createSelector(
     [getAgentsIdsLocation],
-    (agentsLocation) => {
+    (agentsLocation: Array<Map<*,*>>) => {
         if (!ticketId) {
             return fromJS([])
         }
@@ -96,9 +102,9 @@ export const getAgentsIdsOnTicket = (ticketId) => createSelector(
 )
 
 // Agents on a specific ticket
-export const getAgentsOnTicket = (ticketId) => createSelector(
+export const getAgentsOnTicket = (ticketId: ticketIdType) => createSelector(
     [getAgentsIdsOnTicket(ticketId), makeGetAgent],
-    (agentsIds, getUserObject) => {
+    (agentsIds: List<Map<*,*>>, getUserObject: (Map<*,*>) => Map<*,*>) => {
         if (!ticketId) {
             return fromJS([])
         }
@@ -111,25 +117,25 @@ export const getAgentsOnTicket = (ticketId) => createSelector(
 )
 
 // Agents on a specific ticket EXCEPT current user
-export const getOtherAgentsOnTicket = (ticketId) => createSelector(
+export const getOtherAgentsOnTicket = (ticketId: ticketIdType) => createSelector(
     [currentUserSelectors.getCurrentUser, getAgentsOnTicket(ticketId)],
-    (currentUser, agents) => {
+    (currentUser: currentUserType, agents: agentsType) => {
         return agents.filter((agent) => agent.get('id', '').toString() !== currentUser.get('id', '').toString())
     }
 )
 
-export const makeGetOtherAgentsOnTicket = (state) => (ticketId) => getOtherAgentsOnTicket(ticketId)(state)
+export const makeGetOtherAgentsOnTicket = (state: stateType) => (ticketId: ticketIdType) => getOtherAgentsOnTicket(ticketId)(state)
 
 // Location of typing agents in the app by their ids
 export const getAgentsIdsTypingStatus = createSelector(
     [getUsersState],
-    (state) => state.get('agentsTypingStatus') || fromJS({})
+    (state: Map<*,*>) => state.get('agentsTypingStatus') || fromJS({})
 )
 
 // Ids of agents typing on a specific ticket
-export const getAgentsIdsTypingStatusOnTicket = (ticketId) => createSelector(
+export const getAgentsIdsTypingStatusOnTicket = (ticketId: ticketIdType) => createSelector(
     [getAgentsIdsTypingStatus],
-    (agentsTypingStatuses) => {
+    (agentsTypingStatuses: Array<Map<*,*>>) => {
         if (!ticketId) {
             return fromJS([])
         }
@@ -146,9 +152,9 @@ export const getAgentsIdsTypingStatusOnTicket = (ticketId) => createSelector(
 )
 
 // Agents typing on a specific ticket
-export const getAgentsTypingOnTicket = (ticketId) => createSelector(
+export const getAgentsTypingOnTicket = (ticketId: ticketIdType) => createSelector(
     [getAgentsIdsTypingStatusOnTicket(ticketId), makeGetAgent],
-    (agentsIds, getUserObject) => {
+    (agentsIds: List<Map<*,*>>, getUserObject: (Map<*,*>) => Map<*,*>) => {
         if (!ticketId) {
             return fromJS([])
         }
@@ -161,16 +167,16 @@ export const getAgentsTypingOnTicket = (ticketId) => createSelector(
 )
 
 // Agents typing on a specific ticket EXCEPT current user
-export const getOtherAgentsTypingOnTicket = (ticketId) => createSelector(
+export const getOtherAgentsTypingOnTicket = (ticketId: ticketIdType) => createSelector(
     [currentUserSelectors.getCurrentUser, getAgentsTypingOnTicket(ticketId)],
-    (currentUser, agents) => {
+    (currentUser: currentUserType, agents: agentsType) => {
         return agents.filter((agent) => agent.get('id', '').toString() !== currentUser.get('id', '').toString())
     }
 )
 
-export const isAgentTypingOnTicket = (ticketId) => createSelector(
+export const isAgentTypingOnTicket = (ticketId: ticketIdType) => createSelector(
     [currentUserSelectors.getCurrentUser, getAgentsTypingOnTicket(ticketId)],
-    (currentUser, agents) => {
+    (currentUser: currentUserType, agents: agentsType) => {
         return !!agents.find((agent) => agent.get('id', '').toString() === currentUser.get('id', '').toString())
     }
 )

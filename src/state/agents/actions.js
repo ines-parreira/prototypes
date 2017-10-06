@@ -1,15 +1,20 @@
+// @flow
 import axios from 'axios'
 
 import {toJS, toImmutable} from '../../utils'
 import {notify} from '../notifications/actions'
-import * as types from './constants'
+import * as constants from './constants'
 
-export const createAgent = (agent) => (dispatch) => {
+import type {Map} from 'immutable'
+import type {dispatchType} from '../types'
+type agentType = {}
+
+export const createAgent = (agent: agentType) => (dispatch: dispatchType): Promise<dispatchType> => {
     agent = toJS(agent)
     return axios.post('/api/users/', agent)
         .then((json = {}) => json.data)
-        .then(resp => {
-            resp = toImmutable(resp)
+        .then(data => {
+            const resp: Map<*,*> = toImmutable(data)
 
             dispatch(notify({
                 status: 'success',
@@ -17,19 +22,19 @@ export const createAgent = (agent) => (dispatch) => {
             }))
 
             return dispatch({
-                type: types.CREATE_AGENT_SUCCESS,
+                type: constants.CREATE_AGENT_SUCCESS,
                 resp,
             })
         }, error => {
             return dispatch({
-                type: types.CREATE_AGENT_ERROR,
+                type: constants.CREATE_AGENT_ERROR,
                 error,
                 reason: 'Failed to create team member',
             })
         })
 }
 
-export const deleteAgent = (id) => (dispatch) => {
+export const deleteAgent = (id: string) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.delete(`/api/users/${id}/`)
         .then((json = {}) => json.data)
         .then(resp => {
@@ -39,53 +44,54 @@ export const deleteAgent = (id) => (dispatch) => {
             }))
 
             return dispatch({
-                type: types.DELETE_AGENT_SUCCESS,
+                type: constants.DELETE_AGENT_SUCCESS,
                 resp,
                 id,
             })
         }, error => {
             return dispatch({
-                type: types.DELETE_AGENT_ERROR,
+                type: constants.DELETE_AGENT_ERROR,
                 error,
                 reason: 'Failed to delete team member',
             })
         })
 }
 
-export const fetchAgent = (id) => (dispatch) => {
+export const fetchAgent = (id: string) => (dispatch: dispatchType): Promise<dispatchType | Map<*,*>> => {
     return axios.get(`/api/users/${id}/`)
         .then((json = {}) => json.data)
         .then(resp => {
             return Promise.resolve(toImmutable(resp))
         }, error => {
             return dispatch({
-                type: types.FETCH_AGENT_ERROR,
+                type: constants.FETCH_AGENT_ERROR,
                 error,
                 reason: `Failed to fetch team member #${id}`,
             })
         })
 }
 
-export const fetchPagination = (page = 1) => (dispatch) => { // eslint-disable-line
+// eslint-disable-next-line
+export const fetchPagination = (page: number = 1) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.get('/api/users/?roles[]=admin&roles[]=agent&roles[]=staff')
         .then((json = {}) => json.data)
         .then(resp => {
             resp = toImmutable(resp)
 
             return dispatch({
-                type: types.FETCH_AGENTS_PAGINATION_SUCCESS,
+                type: constants.FETCH_AGENTS_PAGINATION_SUCCESS,
                 resp,
             })
         }, error => {
             return dispatch({
-                type: types.FETCH_AGENTS_PAGINATION_ERROR,
+                type: constants.FETCH_AGENTS_PAGINATION_ERROR,
                 error,
                 reason: 'Failed to fetch team members',
             })
         })
 }
 
-export const inviteAgent = (id) => (dispatch) => {
+export const inviteAgent = (id: string) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.post(`/api/users/${id}/invite/`)
         .then((json = {}) => json.data)
         .then(() => {
@@ -95,14 +101,14 @@ export const inviteAgent = (id) => (dispatch) => {
             }))
         }, error => {
             return dispatch({
-                type: types.INVITE_AGENT_ERROR,
+                type: constants.INVITE_AGENT_ERROR,
                 error,
                 reason: 'Failed to invite team member',
             })
         })
 }
 
-export const updateAgent = (id, agent) => (dispatch) => {
+export const updateAgent = (id: string, agent: agentType) => (dispatch: dispatchType): Promise<dispatchType> => {
     agent = toJS(agent)
     return axios.put(`/api/users/${id}/`, agent)
         .then((json = {}) => json.data)
@@ -115,12 +121,12 @@ export const updateAgent = (id, agent) => (dispatch) => {
             }))
 
             return dispatch({
-                type: types.UPDATE_AGENT_SUCCESS,
+                type: constants.UPDATE_AGENT_SUCCESS,
                 resp,
             })
         }, error => {
             return dispatch({
-                type: types.UPDATE_AGENT_ERROR,
+                type: constants.UPDATE_AGENT_ERROR,
                 error,
                 reason: 'Failed to update team member',
             })

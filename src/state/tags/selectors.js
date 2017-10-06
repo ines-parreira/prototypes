@@ -1,7 +1,11 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 
-export const getTagsState = state => state.tags || fromJS({})
+import type {stateType} from '../types'
+import type {Map} from 'immutable'
+
+export const getTagsState = (state: stateType): Map<*,*> => state.tags || fromJS({})
 
 export const getTags = createSelector(
     [getTagsState],

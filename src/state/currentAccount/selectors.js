@@ -1,7 +1,11 @@
+// @flow
 import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
 
-export const getCurrentAccountState = (state) => state.currentAccount || fromJS({})
+// types
+import type {stateType} from '../types'
+
+export const getCurrentAccountState = (state: stateType) => state.currentAccount || fromJS({})
 
 export const getCurrentAccountMeta = createSelector(
     [getCurrentAccountState],
@@ -38,9 +42,9 @@ export const doesPayWithShopify = createSelector(
     state => state.getIn(['shopify_billing', 'active'], false)
 )
 
-export const paymentMethod = (state) => shouldPayWithShopify(state) ? 'shopify' : 'stripe'
+export const paymentMethod = (state: stateType) => shouldPayWithShopify(state) ? 'shopify' : 'stripe'
 
-export const paymentIsActive = (state) => {
+export const paymentIsActive = (state: stateType) => {
     const currentPaymentMethod = paymentMethod(state)
 
     if (currentPaymentMethod === 'shopify') {

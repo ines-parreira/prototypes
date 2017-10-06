@@ -1,14 +1,17 @@
-import * as types from './constants'
+// @flow
+import * as constants from './constants'
 
-export const openPanel = (panelName) => {
+import type {dispatchType} from '../types'
+
+export const openPanel = (panelName: string): dispatchType => {
     return {
-        type: types.OPEN_PANEL,
+        type: constants.OPEN_PANEL,
         panelName,
     }
 }
 
-export const closePanels = () => {
+export const closePanels = (): dispatchType => {
     return {
-        type: types.CLOSE_PANELS,
+        type: constants.CLOSE_PANELS,
     }
 }

@@ -1,12 +1,16 @@
+// @flow
 import {fromJS} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
 import {isAgent} from '../../utils'
 
-import * as types from './constants'
-import * as agentsTypes from '../agents/constants'
-import * as ticketTypes from '../ticket/constants'
-import * as viewsTypes from '../views/constants'
+import * as constants from './constants'
+import * as agentsConstants from '../agents/constants'
+import * as ticketConstants from '../ticket/constants'
+import * as viewsConstants from '../views/constants'
+
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     active: {},
@@ -30,11 +34,11 @@ export const initialState = fromJS({
     }
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     const items = state.get('items', fromJS([]))
 
     switch (action.type) {
-        case viewsTypes.FETCH_LIST_VIEW_SUCCESS: {
+        case viewsConstants.FETCH_LIST_VIEW_SUCCESS: {
             if (action.viewType !== 'user-list') {
                 return state
             }
@@ -45,7 +49,7 @@ export default (state = initialState, action) => {
         }
 
         // THE FOLLOWING FUNCTION IS ONLY USED TO FETCH AGENTS AND ADMINS
-        case types.FETCH_USER_LIST_SUCCESS: {
+        case constants.FETCH_USER_LIST_SUCCESS: {
             let newState = state
 
             // This is a bit lame but that's the proper definition of an agent.
@@ -56,27 +60,27 @@ export default (state = initialState, action) => {
             return newState
         }
 
-        case types.FETCH_USER_START: {
+        case constants.FETCH_USER_START: {
             return state
                 .set('active', fromJS({}))
                 .setIn(['_internal', 'loading', 'active'], true)
         }
 
-        case types.FETCH_USER_SUCCESS: {
+        case constants.FETCH_USER_SUCCESS: {
             return state
                 .set('active', fromJS(action.resp))
                 .setIn(['_internal', 'loading', 'active'], false)
         }
 
-        case types.FETCH_USER_ERROR: {
+        case constants.FETCH_USER_ERROR: {
             return state.setIn(['_internal', 'loading', 'active'], false)
         }
 
-        case types.SUBMIT_USER_START: {
+        case constants.SUBMIT_USER_START: {
             return state.setIn(['_internal', 'loading', 'submitUser'], true)
         }
 
-        case types.SUBMIT_USER_SUCCESS: {
+        case constants.SUBMIT_USER_SUCCESS: {
             let newState = state
             const responseUser = fromJS(action.resp)
 
@@ -116,11 +120,11 @@ export default (state = initialState, action) => {
             return newState.setIn(['_internal', 'loading', 'submitUser'], false)
         }
 
-        case types.SUBMIT_USER_ERROR: {
+        case constants.SUBMIT_USER_ERROR: {
             return state.setIn(['_internal', 'loading', 'submitUser'], false)
         }
 
-        case types.DELETE_USER_SUCCESS: {
+        case constants.DELETE_USER_SUCCESS: {
             return state
                 .merge({
                     items: state.get('items').filter(item => item.get('id') !== action.userId),
@@ -128,13 +132,13 @@ export default (state = initialState, action) => {
                 })
         }
 
-        case types.FETCH_USER_HISTORY_START: {
+        case constants.FETCH_USER_HISTORY_START: {
             return state
                 .setIn(['userHistory', 'triedLoading'], true)
                 .setIn(['_internal', 'loading', 'history'], true)
         }
 
-        case types.FETCH_USER_HISTORY_SUCCESS: {
+        case constants.FETCH_USER_HISTORY_SUCCESS: {
             const hasHistory = action.resp.meta.item_count > 1
 
             return state
@@ -143,8 +147,8 @@ export default (state = initialState, action) => {
                 .setIn(['userHistory', 'hasHistory'], hasHistory)
         }
 
-        case ticketTypes.CLEAR_TICKET:
-        case types.FETCH_USER_HISTORY_ERROR: {
+        case ticketConstants.CLEAR_TICKET:
+        case constants.FETCH_USER_HISTORY_ERROR: {
             let newState = state
                 .setIn(['_internal', 'loading', 'history'], false)
                 .setIn(['userHistory', 'triedLoading'], false)
@@ -158,11 +162,11 @@ export default (state = initialState, action) => {
             return newState
         }
 
-        case types.CLEAR_USER: {
+        case constants.CLEAR_USER: {
             return state.set('active', fromJS({}))
         }
 
-        case viewsTypes.BULK_DELETE_SUCCESS: {
+        case viewsConstants.BULK_DELETE_SUCCESS: {
             if (action.viewType !== 'user-list') {
                 return state
             }
@@ -174,12 +178,12 @@ export default (state = initialState, action) => {
             return state.set('items', newItems)
         }
 
-        case types.MERGE_USERS_START: {
+        case constants.MERGE_USERS_START: {
             return state.setIn(['_internal', 'loading', 'merge'], true)
         }
 
-        case types.MERGE_USERS_ERROR:
-        case types.MERGE_USERS_SUCCESS: {
+        case constants.MERGE_USERS_ERROR:
+        case constants.MERGE_USERS_SUCCESS: {
             let newState = state.setIn(['_internal', 'loading', 'merge'], false)
 
             if (action.resp && state.getIn(['active', 'id']) === action.resp.id) {
@@ -189,19 +193,19 @@ export default (state = initialState, action) => {
             return newState
         }
 
-        case types.SET_AGENTS_LOCATION: {
+        case constants.SET_AGENTS_LOCATION: {
             return state.set('agentsLocation', fromJS(action.data))
         }
 
-        case types.SET_AGENTS_TYPING_STATUS: {
+        case constants.SET_AGENTS_TYPING_STATUS: {
             return state.set('agentsTypingStatus', fromJS(action.data))
         }
 
-        case agentsTypes.CREATE_AGENT_SUCCESS: {
+        case agentsConstants.CREATE_AGENT_SUCCESS: {
             return state.update('agents', agents => agents.push(action.resp))
         }
 
-        case agentsTypes.UPDATE_AGENT_SUCCESS: {
+        case agentsConstants.UPDATE_AGENT_SUCCESS: {
             const agent = action.resp
 
             const existingAgentIndex = state.get('agents').findIndex(user => user.get('id') === agent.get('id'))
@@ -213,7 +217,7 @@ export default (state = initialState, action) => {
             return state.setIn(['agents', existingAgentIndex], agent)
         }
 
-        case agentsTypes.DELETE_AGENT_SUCCESS: {
+        case agentsConstants.DELETE_AGENT_SUCCESS: {
             return state.update('agents', agents => agents.filter(user => String(user.get('id')) !== String(action.id)))
         }
 

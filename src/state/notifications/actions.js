@@ -1,3 +1,4 @@
+// @flow
 import _words from 'lodash/words'
 import _max from 'lodash/max'
 import _isEqual from 'lodash/isEqual'
@@ -8,6 +9,18 @@ import {
     addNotification,
     removeNotification
 } from 'reapop'
+
+import type {dispatchType, getStateType} from '../types'
+// TODO(@ghinda): use existing array for status when flow implements it
+// https://github.com/facebook/flow/issues/961
+type notificationType = {
+    status: 'success' | 'error' | 'warning' | 'info' | 'loading',
+    message: string,
+    id?: ?string,
+    title?: string,
+    dismissAfter?: number,
+    closeOnNext?: boolean
+}
 
 const AUTHORIZED_NOTIFICATION_TYPES = [
     'success',
@@ -29,12 +42,12 @@ export const INITIAL_MESSAGE = {
 }
 
 // clean-up notification for comparison
-const cleanNotification = (n) => _omit(n, _functions(n).concat([
+const cleanNotification = (n): {} => _omit(n, _functions(n).concat([
     'id'
 ]))
 
 // detect duplicate notifications
-const isDuplicate = (notification, oldNotification) => {
+const isDuplicate = (notification: notificationType, oldNotification: notificationType): boolean => {
     return _isEqual(
         cleanNotification(notification),
         cleanNotification(oldNotification)
@@ -49,7 +62,7 @@ const isDuplicate = (notification, oldNotification) => {
  * set closeOnNext = true to make the notification close on next notification addition
  * @param message
  */
-export const notify = (message) => (dispatch, getState) => {
+export const notify = (message: notificationType) => (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
     // don't add empty notifications
     if (!message) {
         return Promise.resolve()
@@ -65,6 +78,7 @@ export const notify = (message) => (dispatch, getState) => {
         ...{status}
     }
 
+    // TODO(@ghinda): use message everywhere, and remove this conditional
     // if no content, set title as the content
     if (finalMessage.title && !finalMessage.message) {
         finalMessage.message = finalMessage.title

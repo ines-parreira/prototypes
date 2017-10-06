@@ -1,6 +1,10 @@
+// @flow
 import {fromJS} from 'immutable'
 
-export const isStaff = (user) => {
+import type {Map} from 'immutable'
+type userType = Map<*,*>
+
+export const isStaff = (user: userType): boolean => {
     if (!user) {
         return false
     }
@@ -14,7 +18,7 @@ export const isStaff = (user) => {
  * @param user
  * @returns {any}
  */
-export const getHighestRole = (user) => {
+export const getHighestRole = (user: userType): Map<*,*> => {
     if (!user) {
         return fromJS({})
     }

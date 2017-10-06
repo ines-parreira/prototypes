@@ -1,10 +1,14 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import {getViews} from '../views/selectors'
 
 import {DEFAULT_PREFERENCES} from './../../config'
 
-export const getCurrentUserState = state => state.currentUser || fromJS({})
+// types
+import type {stateType} from '../types'
+
+export const getCurrentUserState = (state: stateType) => state.currentUser || fromJS({})
 
 export const getCurrentUser = createSelector(
     [getCurrentUserState],
@@ -17,7 +21,7 @@ export const getSettings = createSelector(
 )
 
 // used to get ticket-views and user-views user preferences
-export const getSettingsByType = type => createSelector(
+export const getSettingsByType = (type: string) => createSelector(
     [getViews, getSettings],
     (views, settings) => {
         settings = settings.find(setting => setting.get('type') === type) || fromJS({type, data: {}})

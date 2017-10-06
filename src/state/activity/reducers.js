@@ -1,4 +1,5 @@
-import * as types from './constants'
+// @flow
+import * as constants from './constants'
 import {fromJS} from 'immutable'
 
 export const initialState = fromJS({
@@ -10,26 +11,37 @@ export const initialState = fromJS({
     newVersion: false
 })
 
-export default (state = initialState, action) => {
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
+
+type defaultActionType = actionType & {
+    ticketId: string,
+    resp: {
+        git_commit: string,
+        tickets: Array<{}>
+    }
+}
+
+export default (state: Map<*,*> = initialState, action: defaultActionType): Map<*,*> => {
     switch (action.type) {
-        case types.SUBMIT_ACTIVITY_START:
+        case constants.SUBMIT_ACTIVITY_START:
             return state.setIn(['_internal', 'loading'], true)
 
-        case types.SUBMIT_ACTIVITY_ERROR:
+        case constants.SUBMIT_ACTIVITY_ERROR:
             return state.setIn(['_internal', 'loading'], false)
 
-        case types.SUBMIT_ACTIVITY_SUCCESS: {
+        case constants.SUBMIT_ACTIVITY_SUCCESS: {
             return state.merge({
                 git_commit: action.resp.git_commit
             }).setIn(['_internal', 'loading'], false)
         }
 
-        case types.SUBMIT_CHATS_SUCCESS: {
+        case constants.SUBMIT_CHATS_SUCCESS: {
             const tickets = action.resp.tickets
             return state.merge({tickets})
         }
 
-        case types.TICKET_VIEWED: {
+        case constants.TICKET_VIEWED: {
             const ticketId = parseInt(action.ticketId, 10)
 
             // Don't display the red dot if the current ticket has something new

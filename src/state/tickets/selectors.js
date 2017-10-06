@@ -1,7 +1,11 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createImmutableSelector} from '../../utils'
 
-export const getTicketsState = state => state.tickets || fromJS({})
+import type {Map} from 'immutable'
+import type {stateType} from '../types'
+
+export const getTicketsState = (state: stateType): Map<*,*> => state.tickets || fromJS({})
 
 export const getTickets = createImmutableSelector(
     [getTicketsState],

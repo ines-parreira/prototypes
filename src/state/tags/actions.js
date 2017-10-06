@@ -1,28 +1,36 @@
+// @flow
 import axios from 'axios'
-import * as types from './constants'
+import * as constants from './constants'
 import {notify} from '../notifications/actions'
 
-export const fail = (error, reason) => ({
+import type {List} from 'immutable'
+import type {actionType, thunkActionType, dispatchType, getStateType} from '../types'
+type tagType = {
+    id: string,
+    name: string
+}
+
+export const fail = (error: {}, reason: string) => ({
     type: 'ERROR',
     error,
     reason,
 })
 
-/**
+/**types
  * Add tags to ticket.
  * @param tags
  */
-export function addTags(tags) {
+export function addTags(tags: Array<string> | string) {
     return {
-        type: types.ADD_TAGS,
+        type: constants.ADD_TAGS,
         tags
     }
 }
 
-export function fetchTags(page, sort = 'usage_count', reverse = true) {
-    return (dispatch, getState) => {
+export function fetchTags(page: ?number, sort: string = 'usage_count', reverse: boolean = true): thunkActionType {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         dispatch({
-            type: types.FETCH_TAG_LIST_START
+            type: constants.FETCH_TAG_LIST_START
         })
 
         const {tags} = getState()
@@ -39,13 +47,13 @@ export function fetchTags(page, sort = 'usage_count', reverse = true) {
         })
             .then((json = {}) => json.data)
             .then(resp => {
-                dispatch({
-                    type: types.FETCH_TAG_LIST_SUCCESS,
+                return dispatch({
+                    type: constants.FETCH_TAG_LIST_SUCCESS,
                     resp
                 })
             }, error => {
                 return dispatch({
-                    type: types.FETCH_TAG_LIST_ERROR,
+                    type: constants.FETCH_TAG_LIST_ERROR,
                     error,
                     reason: 'Failed to fetch tags'
                 })
@@ -57,9 +65,9 @@ export function fetchTags(page, sort = 'usage_count', reverse = true) {
  * Select tag
  * @param tag
  */
-export function select(tag) {
+export function select(tag: tagType) {
     return {
-        type: types.SELECT_TAG,
+        type: constants.SELECT_TAG,
         tag,
     }
 }
@@ -69,7 +77,7 @@ export function select(tag) {
  */
 export function selectAll() {
     return {
-        type: types.SELECT_TAG_ALL,
+        type: constants.SELECT_TAG_ALL,
     }
 }
 
@@ -78,9 +86,9 @@ export function selectAll() {
  * Edit tag
  * @param tag
  */
-export function edit(tag) {
+export function edit(tag: tagType) {
     return {
-        type: types.EDIT_TAG,
+        type: constants.EDIT_TAG,
         tag,
     }
 }
@@ -89,9 +97,9 @@ export function edit(tag) {
  * Cancel edit tag
  * @param tag
  */
-export function cancel(tag) {
+export function cancel(tag: tagType) {
     return {
-        type: types.EDIT_TAG_CANCEL,
+        type: constants.EDIT_TAG_CANCEL,
         tag,
     }
 }
@@ -100,8 +108,8 @@ export function cancel(tag) {
  * Save tag details
  * @param tag
  */
-export const save = (tag) => {
-    return dispatch => {
+export const save = (tag: tagType): thunkActionType => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.put(`/api/tags/${tag.id}/`, tag)
             .then(() => {
                 dispatch(notify({
@@ -109,7 +117,7 @@ export const save = (tag) => {
                     message: 'Tag saved successfully',
                 }))
                 return dispatch({
-                    type: types.SAVE_TAG,
+                    type: constants.SAVE_TAG,
                     tag
                 })
             })
@@ -123,26 +131,26 @@ export const save = (tag) => {
  * Create a tag
  * @param tag
  */
-export const create = (tag) => {
-    return dispatch => {
+export const create = (tag: tagType): thunkActionType => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.CREATE_TAG_START,
+            type: constants.CREATE_TAG_START,
             tag
         })
 
         return axios.post('/api/tags/', tag)
             .then((resp) => {
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: `Created tag: ${tag.name}`
                 }))
                 dispatch({
-                    type: types.CREATE_TAG_SUCCESS,
+                    type: constants.CREATE_TAG_SUCCESS,
                     tag: resp.data
                 })
             }, (error) => {
                 return dispatch({
-                    type: types.CREATE_TAG_ERROR,
+                    type: constants.CREATE_TAG_ERROR,
                     error
                 })
             })
@@ -153,8 +161,8 @@ export const create = (tag) => {
  * Delete a tag
  * @param id
  */
-export const remove = (id) => {
-    return dispatch => {
+export const remove = (id: string): thunkActionType => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.delete(`/api/tags/${id}/`)
             .then(() => {
                 dispatch(notify({
@@ -171,12 +179,12 @@ export const remove = (id) => {
  * Delete multiple tags
  * @param ids: an array of ids of the tags that should be deleted
  */
-export const bulkDelete = (ids) => {
-    return dispatch => {
+export const bulkDelete = (ids: Array<string>): thunkActionType => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         return axios.delete('/api/tags/', {data: {ids}})
             .then(() => {
                 dispatch(notify({
-                    type: 'success',
+                    status: 'success',
                     message: `${ids.length} tags deleted successfully`
                 }))
             }, error => {
@@ -189,10 +197,10 @@ export const bulkDelete = (ids) => {
  * Merge tags
  * @param ids: an array of ids of the tags which should be merged
  */
-export const merge = (ids) => {
-    return (dispatch) => {
+export const merge = (ids: List<*>): thunkActionType => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.MERGE_TAGS,
+            type: constants.MERGE_TAGS,
             ids
         })
 
@@ -216,9 +224,9 @@ export const merge = (ids) => {
  * @param page
  * @returns {{type: *, page: *}}
  */
-export function setPage(page) {
+export function setPage(page: number): actionType & {page: number} {
     return {
-        type: types.SET_TAG_LIST_PAGE,
+        type: constants.SET_TAG_LIST_PAGE,
         page,
     }
 }

@@ -1,16 +1,20 @@
+// @flow
 import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
 
-export const getRulesState = (state) => state.rules || fromJS({})
+import type {Map} from 'immutable'
+import type {stateType} from '../types'
+
+export const getRulesState = (state: stateType): Map<*,*> => state.rules || fromJS({})
 
 export const getRules = createSelector(
     [getRulesState],
-    state => state.get('rules') || fromJS({})
+    (state: stateType) => state.get('rules') || fromJS({})
 )
 
-export const getRule = id => createSelector(
+export const getRule = (id: string) => createSelector(
     [getRules],
-    state => {
+    (state: stateType) => {
         if (!id) {
             return fromJS({})
         }
@@ -21,5 +25,5 @@ export const getRule = id => createSelector(
 
 export const getInternal = createSelector(
     [getRulesState],
-    state => state.get('_internal') || fromJS({})
+    (state: stateType) => state.get('_internal') || fromJS({})
 )

@@ -1,10 +1,14 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import {isImmutable, createImmutableSelector} from '../../utils'
 
+import type {Map} from 'immutable'
+import type {stateType} from '../types'
+
 export const getReceiversProperties = () => ['to', 'cc', 'bcc']
 
-export const getNewMessageState = state => state.newMessage || fromJS({})
+export const getNewMessageState = (state: stateType): Map<*,*> => state.newMessage || fromJS({})
 
 export const getLoading = createImmutableSelector(
     [getNewMessageState],
@@ -13,14 +17,14 @@ export const getLoading = createImmutableSelector(
 
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
-export const isLoading = name => createSelector(
+export const isLoading = (name: string) => createSelector(
     [getLoading],
     loading => loading.get(name, false)
 )
 
 // in component usage
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
-export const makeIsLoading = state => name => isLoading(name)(state)
+export const makeIsLoading = (state: stateType) => (name: string): boolean => isLoading(name)(state)
 
 export const getNewMessage = createImmutableSelector(
     [getNewMessageState],
@@ -58,7 +62,7 @@ export const isForward = (() => {
 // in props usage
 // property like 'to', 'from', 'cc', etc.
 // ex: newMessageTo: getNewMessageSourceProperty('to')(state)
-export const getNewMessageSourceProperty = property => createImmutableSelector(
+export const getNewMessageSourceProperty = (property: string) => createImmutableSelector(
     [getNewMessageSource],
     state => state.get(property) || fromJS({})
 )
@@ -66,18 +70,18 @@ export const getNewMessageSourceProperty = property => createImmutableSelector(
 // in component usage
 // ex: newMessageSourceProperty: makeGetNewMessageSourceProperty(state)
 // then : const newMessageTo = newMessageSourceProperty('to')
-export const makeGetNewMessageSourceProperty = state => property => getNewMessageSourceProperty(property)(state)
+export const makeGetNewMessageSourceProperty = (state: stateType) => (property: string): Map<*,*> => getNewMessageSourceProperty(property)(state)
 
-export const getMandatoryContactProperties = (sourceType) => () => { // eslint-disable-line no-unused-vars
+export const getMandatoryContactProperties = (sourceType: string) => (): Array<string> => { // eslint-disable-line no-unused-vars
     return ['to']
 }
 
-export const getOptionalContactProperties = (sourceType) => () => {
+export const getOptionalContactProperties = (sourceType: string) => (): Array<string> => {
     return sourceType === 'email' ? ['cc', 'bcc'] : []
 }
 
 // return all contact properties (mandatory + optional) for a source type
-export const getContactProperties = sourceType => createImmutableSelector(
+export const getContactProperties = (sourceType: string) => createImmutableSelector(
     [getMandatoryContactProperties(sourceType), getOptionalContactProperties(sourceType)],
     (mandatory, optional) => mandatory.concat(optional)
 )

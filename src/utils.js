@@ -1,3 +1,4 @@
+// @flow
 import _has from 'lodash/has'
 import _map from 'lodash/map'
 import _upperFirst from 'lodash/upperFirst'
@@ -23,6 +24,7 @@ import linkifyhtml from 'linkifyjs/html'
 import sanitizeHtml from 'sanitize-html'
 import {Entity, Modifier, EditorState, ContentState} from 'draft-js'
 import {convertToHTML as _convertToHTML, convertFromHTML as _convertFromHTML} from 'draft-convert'
+// $FlowFixMe: will be fixed with immutable 4.x
 import Immutable, {fromJS} from 'immutable'
 import md5 from 'md5'
 import linkifyIt from 'linkify-it'
@@ -33,6 +35,29 @@ import {ACTION_TEMPLATES} from './config'
 import {availableVariables} from './config/rules'
 
 const notificationSoundData = require('../../private/audio/notification.mp3')
+
+// types
+import type {Map, Iterable} from 'immutable'
+import type {viewsStateType} from './state/views/types'
+import type {
+    actionTemplateType,
+    attachmentType,
+    schemasType,
+    esprimaParse,
+    reactRouterRoute
+} from './types'
+type userType = {roles: Array<string | {name:string}>} | Map<*,*>
+type messageType = {
+    created_datetime: Date,
+    source: {type: string}
+}
+type propertyType = {
+    type: string,
+    meta: {},
+    items: {$ref:{}}
+}
+type equalityOperatorType = 'eq' | 'contains'
+
 
 // note that 2 letters tlds are automatically interpreted
 const tlds = 'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(' ')
@@ -46,6 +71,7 @@ export const isTabActive = () => activeTab
 
 // play sound notification
 export const playNotificationSound = () => {
+    // $FlowFixMe
     const notificationSound = new Audio(notificationSoundData)
     notificationSound.load()
     notificationSound.play()
@@ -55,13 +81,13 @@ export const playNotificationSound = () => {
  * Console log info only on dev environment
  * @param args
  */
-export const devLog = (...args) => {
+export const devLog = (...args: Array<any>) => {
     if (window.DEVELOPMENT || window.STAGING) {
         console.log(...args)
     }
 }
 
-export const defined = (item) => {
+export const defined = (item: any): boolean => {
     return !_.isUndefined(item) && item !== null
 }
 
@@ -69,14 +95,14 @@ export const defined = (item) => {
  * Serialize an object and return it's md5 hash.
  * @param obj the object of which we want the hash
  */
-export const getHashOfObj = obj => md5(JSON.stringify(obj))
+export const getHashOfObj = (obj: {}): string => md5(JSON.stringify(obj))
 
 /**
  * Guess if a passed string is a url
  * @param string
  * @returns {boolean|*}
  */
-export function isUrl(string) {
+export function isUrl(string: string): boolean {
     if (!_isString(string)) {
         return false
     }
@@ -89,7 +115,7 @@ export function isUrl(string) {
  * @param string
  * @returns {boolean|*}
  */
-export function isEmail(string) {
+export function isEmail(string: string): boolean {
     if (!_isString(string)) {
         return false
     }
@@ -103,7 +129,7 @@ export function isEmail(string) {
  * @param delimiter
  * @returns {boolean}
  */
-export function isEmailList(string, delimiter = ',') {
+export function isEmailList(string: string, delimiter: string = ','): boolean {
     if (!string) {
         return false
     }
@@ -124,7 +150,7 @@ export function isEmailList(string, delimiter = ',') {
  * @param address
  * @return {boolean}
  */
-export function isGorgiasSupportAddress(address) {
+export function isGorgiasSupportAddress(address: string): boolean {
     if (!_isString(address)) {
         return false
     }
@@ -132,7 +158,7 @@ export function isGorgiasSupportAddress(address) {
     return /^support@[a-zA-Z0-9-]+.gorgias.io$/.test(address)
 }
 
-export function formatDatetime(datetime, timezone, format = 'calendar') {
+export function formatDatetime(datetime: Date | number, timezone: string, format: string = 'calendar'): Date | number {
     try {
         let momentDate = moment(datetime)
 
@@ -159,14 +185,14 @@ export function formatDatetime(datetime, timezone, format = 'calendar') {
     }
 }
 
-export function getAST(code) {
+export function getAST(code: string): esprimaParse {
     if (!_isString(code)) {
         console.error('Not a string:', code)
     }
     return esprima.parse(code, {loc: true})
 }
 
-export function getCode(ast) {
+export function getCode(ast: {type: string}): string {
     if (!_isString(ast.type)) {
         console.error('Not an AST:', ast)
     }
@@ -183,7 +209,7 @@ export function getCode(ast) {
  * @param {Object} options filters to apply on messages
  * @returns {Object|Array}
  */
-export function getLastMessage(messages, options = null) {
+export function getLastMessage(messages: Array<messageType>, options: any = null): ?messageType {
     if (!messages || !messages.length) {
         return
     }
@@ -200,7 +226,7 @@ export function getLastMessage(messages, options = null) {
  * @param messages
  * @returns {Array}
  */
-export function ticketSourceTypes(messages) {
+export function ticketSourceTypes(messages: Array<messageType>): Array<{}> {
     let sources = []
 
     if (!messages) {
@@ -216,7 +242,7 @@ export function ticketSourceTypes(messages) {
     return _uniq(_compact(sources))
 }
 
-export function resolvePropertyName(name = '') {
+export function resolvePropertyName(name: string = ''): string {
     switch (name) {
         case 'Message':
             return 'TicketMessage'
@@ -236,7 +262,7 @@ export function resolvePropertyName(name = '') {
  *      false: return properties of `ticket.requester.id` field
  * @returns {Object} API spec data of the last property
  */
-export function findProperty(field, schemas, alwaysRef = false) {
+export function findProperty(field: string, schemas: schemasType, alwaysRef: boolean = false): ?propertyType {
     const parts = field.split('.')
     const firstPart = resolvePropertyName(_upperFirst(parts.shift()))
     const definitions = schemas.get('definitions')
@@ -272,8 +298,12 @@ export function findProperty(field, schemas, alwaysRef = false) {
     return prop
 }
 
-export function equalityOperator(field, schemas) {
+export function equalityOperator(field: string, schemas: schemasType): ?equalityOperatorType {
     const prop = findProperty(field, schemas)
+    if (!prop) {
+        return null
+    }
+
     switch (prop.type) {
         case 'integer':
             return 'eq'
@@ -290,7 +320,7 @@ export function equalityOperator(field, schemas) {
     }
 }
 
-export function resolveLiteral(value, path) {
+export function resolveLiteral(value: {} | string, path: string): string {
     switch (typeof value) {
         case 'object':
             return resolveLiteral(value[path.split('.').reverse()[0]], path)
@@ -303,13 +333,14 @@ export function resolveLiteral(value, path) {
  * Return '⌘' if the user is using a Mac, Ctrl/Meta otherwise
  * @returns {string}
  */
-export function getModifier(defaultKey = 'Ctrl') {
+export function getModifier(defaultKey: string = 'Ctrl'): string {
     const isMac = navigator.platform.toLowerCase().startsWith('mac')
     return isMac ? '⌘' : defaultKey
 }
 
-export function compactInteger(input, digits = 0) {
+export function compactInteger(input: number, digits: number = 0): string {
     if (!_isNumber(input)) {
+        // $FlowFixMe
         return input
     }
 
@@ -338,7 +369,7 @@ export function compactInteger(input, digits = 0) {
     return result
 }
 
-export function stripHTML(text) {
+export function stripHTML(text: string): ?string {
     try {
         const doc = document.implementation.createHTMLDocument()
         const body = doc.createElement('div')
@@ -357,7 +388,7 @@ export function stripHTML(text) {
 }
 
 /** sanitizeHtml with a sensible config. */
-export function sanitizeHtmlDefault(html) {
+export function sanitizeHtmlDefault(html: string): string {
     return sanitizeHtml(html, {
         allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
             'nl', 'li', 'b', 'i', 'u', 'strong', 'em', 'ins', 'strike', 'code', 'hr', 'br', 'div',
@@ -380,7 +411,7 @@ export function sanitizeHtmlDefault(html) {
  * @param html - the html body that contains the images
  * @param format
  */
-export const proxifyImages = (html, format = '1000x') => {
+export const proxifyImages = (html: string, format: string = '1000x'): string => {
     if (html.indexOf('img') === -1) {
         return html
     }
@@ -434,7 +465,7 @@ export const proxifyImages = (html, format = '1000x') => {
 /**
  * Convert camelCase text to Title Case text
  */
-export const camelCaseToTitleCase = (text) => (
+export const camelCaseToTitleCase = (text: string): string => (
     text.replace(/^[a-z]|[A-Z]/g, (value, index) => {
         return index === 0 ? value.toUpperCase() : ` ${value.toUpperCase()}`
     })
@@ -446,7 +477,7 @@ export const camelCaseToTitleCase = (text) => (
  * @param string
  * @returns {*}
  */
-export function slugify(string) {
+export function slugify(string: string): string {
     if (!_isString(string)) {
         return string
     }
@@ -461,7 +492,7 @@ export function slugify(string) {
 /**
  * Check if element is editable (form elements, contentEditable)
  */
-export function isEditable(element) {
+export function isEditable(element: HTMLElement): boolean {
     return element.tagName === 'INPUT'
         || element.tagName === 'SELECT'
         || element.tagName === 'TEXTAREA'
@@ -474,22 +505,22 @@ export function isEditable(element) {
 /**
  * Find the closest parent that matches the selector
  */
-export function closest(element, selector) {
+export function closest(element: HTMLElement, selector: string): ?Element {
     let $matches
     let $elem = element
 
     // loop through parents
     while ($elem && $elem !== document) {
-        if ($elem.parentNode) {
+        if ($elem.parentElement) {
             // find all siblings that match the selector
-            $matches = $elem.parentNode.querySelectorAll(selector)
+            $matches = $elem.parentElement.querySelectorAll(selector)
             // check if our element is matched (poor-man's Element.matches())
             if ([].indexOf.call($matches, $elem) !== -1) {
                 return $elem
             }
 
             // go up the tree
-            $elem = $elem.parentNode
+            $elem = $elem.parentElement
         } else {
             return null
         }
@@ -502,7 +533,7 @@ export function closest(element, selector) {
  * Single convertToHTML config for the entire app (same options everywhere if needed)
  * @param contentState
  */
-export function convertToHTML(contentState) {
+export function convertToHTML(contentState: ContentState): string {
     // linkify transforms linkified urls into actual HTML links
     return linkifyhtml(_convertToHTML({
         blockToHTML: {
@@ -554,7 +585,7 @@ export function convertToHTML(contentState) {
  * Single convertFromHTML config for the entire app (same options everywhere if needed)
  * @param html
  */
-export function convertFromHTML(html) {
+export function convertFromHTML(html: string): ContentState {
     let converted = _convertFromHTML({
         htmlToBlock: (nodeName) => {
             if (nodeName === 'figure') {
@@ -605,7 +636,7 @@ export function convertFromHTML(html) {
  * @param text
  * @returns {EditorState}
  */
-export function insertText(editorState, text) {
+export function insertText(editorState: EditorState, text: string): EditorState {
     const selection = editorState.getSelection()
     const contentState = editorState.getCurrentContent()
     const modifier = Modifier.replaceText(contentState, selection, text)
@@ -618,7 +649,7 @@ export function insertText(editorState, text) {
  * @param value
  * @returns {EditorState}
  */
-export function removeMentions(editorState, value) {
+export function removeMentions(editorState: EditorState, value: {text: string, html: string}): EditorState {
 
     // use convertFromHTML/fromText to create a new content state w/o mention
     // because mentions are not present in the html/text of the body
@@ -636,73 +667,89 @@ export function removeMentions(editorState, value) {
  * Return true if passed object is immutable (from Immutable JS)
  * @param object
  */
-export const isImmutable = object => Immutable.Iterable.isIterable(object)
+export const isImmutable = (object: {} | Iterable<*,*>): boolean => Immutable.Iterable.isIterable(object)
 
 /**
  * Return a passed object as immutable
  * @param object
  */
-export const toImmutable = object => isImmutable(object) ? object : fromJS(object)
+export const toImmutable = (object: {} | Iterable<*,*>): any => isImmutable(object) ? object : fromJS(object)
 
 /**
  * Return a passed object as plain JS (not Immutable)
  * @param object
  */
-export const toJS = object => isImmutable(object) ? object.toJS() : object
+// throws error on missing toJS() for plain object.
+// $FlowFixMe
+export const toJS = (object: {} | Iterable<*,*>): any => isImmutable(object) ? object.toJS() : object
 
 /**
  * Return field path
  * @param field
  * @returns {*|string|string|string}
  */
-export const fieldPath = (field = {}) => {
+export const fieldPath = (field: {} | Iterable<*,*> = {}): string => {
     field = toJS(field)
+    // $FlowFixMe
     return field.path || field.name
 }
 
 /**
  * Test if user is agent
  * @param user
- * @returns {*|Array|boolean}
+ * @returns {boolean}
  */
-export const isAgent = (user) => {
+export const isAgent = (user: userType): boolean => {
     if (isImmutable(user)) {
+        // $FlowFixMe
         user = user.toJS()
     }
 
+    // flow has issues with changing var type
+    // user.roles = List to user.roles = Array<{}>
     let roles = user.roles || []
 
+    // $FlowFixMe
     if (roles[0] && _isObject(roles[0])) {
+        // $FlowFixMe
         roles = roles.map(role => role.name)
     }
 
+    // $FlowFixMe
     return roles.includes('agent')
+        // $FlowFixMe
         || roles.includes('admin')
+        // $FlowFixMe
         || roles.includes('staff')
 }
 
 /**
  * Test if user is admin
  * @param user
- * @returns {*|Array|boolean}
+ * @returns {boolean}
  */
-export const isAdmin = (user) => {
+export const isAdmin = (user: userType): boolean => {
     if (isImmutable(user)) {
+        // $FlowFixMe
         user = user.toJS()
     }
 
     let roles = user.roles || []
 
+    // $FlowFixMe
     if (roles[0] && _isObject(roles[0])) {
+        // $FlowFixMe
         roles = roles.map(role => role.name)
     }
 
+    // $FlowFixMe
     return roles.includes('admin')
+        // $FlowFixMe
         || roles.includes('staff')
 }
 
 // Check if a user has a role
-export function hasRole(user, requiredRole) {
+export function hasRole(user: userType, requiredRole: string): boolean {
     switch (requiredRole) {
         case 'agent':
             return isAgent(user)
@@ -718,7 +765,7 @@ export function hasRole(user, requiredRole) {
  * @param ticketId
  * @returns {boolean}
  */
-export const isCurrentlyOnTicket = (ticketId = '') => {
+export const isCurrentlyOnTicket = (ticketId: string = ''): boolean => {
     if (!ticketId) {
         return false
     }
@@ -741,7 +788,7 @@ export const isCurrentlyOnTicket = (ticketId = '') => {
  * @param viewsState - state branch "views"
  * @returns {boolean}
  */
-export const isCurrentlyOnView = (viewId = '', viewsState = {}) => {
+export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateType = fromJS({})): boolean => {
     const prefix = [
         '/app/tickets',
         '/app/users',
@@ -767,7 +814,7 @@ export const isCurrentlyOnView = (viewId = '', viewsState = {}) => {
  * @param {String} viewType E.g: user-list, ticket-list
  * @returns {String} plural object name E.g: users, tickets
  */
-export function getPluralObjectName(viewType) {
+export function getPluralObjectName(viewType: string): string {
     return viewType.replace('-list', 's')
 }
 
@@ -778,12 +825,12 @@ export function getPluralObjectName(viewType) {
  * @param plan A plan in `config.py` - billing section
  * @returns {boolean}
  */
-export function hasReachedLimit(limit, tickets, plan) {
+export function hasReachedLimit(limit: string, tickets: number, plan: Iterable<*,*>): boolean {
     const freeTickets = plan.get('free_tickets', 0)
     return tickets >= plan.getIn(['limits', limit], freeTickets)
 }
 
-export function toQueryParams(obj) {
+export function toQueryParams(obj: {}): string {
     return Object.keys(obj).map((key) => (
         `${key}=${encodeURIComponent(obj[key])}`
     )).join('&')
@@ -794,7 +841,7 @@ export function toQueryParams(obj) {
  * @param {String|Object} emojiContainer string or dom node with emojis
  * @returns {String|Object}
  */
-export function emoji(emojiContainer) {
+export function emoji(emojiContainer: string | {}): string | {} {
     if (typeof window.twemoji === 'undefined') {
         return emojiContainer
     }
@@ -804,13 +851,13 @@ export function emoji(emojiContainer) {
     })
 }
 
-export function getActionTemplate(actionName) {
+export function getActionTemplate(actionName: string): actionTemplateType {
     return ACTION_TEMPLATES.find(template => template.name === actionName) || {}
 }
 
 export const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is)
 
-export function loadScript(url, callback) {
+export function loadScript(url: string, callback: () => void) {
     const elem = document.createElement('script')
     const script = document.getElementsByTagName('script')[0]
     elem.src = url
@@ -818,6 +865,8 @@ export function loadScript(url, callback) {
     if (callback) {
         elem.addEventListener('load', callback)
     }
+
+    // $FlowFixMe
     script.parentNode.insertBefore(elem, script)
 }
 
@@ -826,7 +875,7 @@ export function loadScript(url, callback) {
  * @param files
  * @return {Array} - [{content_type, name, size, url}]
  */
-export const uploadFiles = (files) => {
+export const uploadFiles = (files: Array<attachmentType>): Promise<*> => {
     const formData = new window.FormData()
 
     for (let i = 0; i < files.length; i++) {
@@ -842,7 +891,7 @@ export const uploadFiles = (files) => {
  * Clean error message sent from server before we display it
  * @param text
  */
-export const stripErrorMessage = (text) => {
+export const stripErrorMessage = (text: string): string => {
     // Match all tags like [SHOPIFY] [full-refund] [STUFF-FOO-bar]
     const regex = /\[[\w-]+]/g
     text = text.replace(regex, '')
@@ -855,7 +904,7 @@ export const stripErrorMessage = (text) => {
  * @param text
  * @returns {*}
  */
-export function humanizeString(text) {
+export function humanizeString(text: string): string {
     return _.chain(text)
         .trim('.-_')
         .replace(/([A-Z])/g, ' $1')
@@ -871,7 +920,7 @@ export function humanizeString(text) {
  * @param b
  * @returns {number}
  */
-export const compare = (a, b) => {
+export const compare = (a: *, b: *): number => {
     if (a < b) {
         return -1
     }
@@ -887,7 +936,7 @@ export const compare = (a, b) => {
  * Return current route object from routes config
  * @param routes (this.props.routes in a component)
  */
-export const currentRoute = (routes) => {
+export const currentRoute = (routes: Array<reactRouterRoute>): reactRouterRoute => {
     return _last(routes)
 }
 
@@ -896,7 +945,7 @@ export const currentRoute = (routes) => {
  * ex: 'acme' for 'http://acme.shopify.com'
  * @param url (full url, part of url, subdomain (without url))
  */
-export const subdomain = (url) => {
+export const subdomain = (url: string): string => {
     if (!url) {
         return url
     }
@@ -911,7 +960,7 @@ export const subdomain = (url) => {
 /**
  * Deep flatten object, keeping only values.
  */
-const _valuesDeep = (obj) => {
+const _valuesDeep = (obj: {}): {} => {
     if (typeof obj === 'object' && !obj.hasOwnProperty('length')) {
         return _flatMapDeep(obj, _valuesDeep)
     }
@@ -933,7 +982,7 @@ const _valuesDeep = (obj) => {
  * "
  * @param incomingError server error
  */
-export const errorToChildren = (incomingError) => {
+export const errorToChildren = (incomingError: {response: {data: {error:{data:{}}}}}): ?string => {
     const error = _get(incomingError, 'response.data.error', {})
     const {data} = error
     const hasErrors = !!data
@@ -946,6 +995,7 @@ export const errorToChildren = (incomingError) => {
         <ul className="m-0">
             ${
         _map(data, (fieldErrors, fieldName) => {
+            // $FlowFixMe
             return _valuesDeep(fieldErrors).map((fieldError) => {
                 return `<li>${fieldName}: ${fieldError}</li>`
             }).join('')
@@ -959,7 +1009,7 @@ export const errorToChildren = (incomingError) => {
  * Convert hours to seconds.
  * @param hours number of hours
  */
-export function hoursToSeconds(hours = 0) {
+export function hoursToSeconds(hours: number = 0): number {
     if (typeof hours !== 'number') {
         return 0
     }
@@ -972,7 +1022,7 @@ export function hoursToSeconds(hours = 0) {
  * @param val - url string
  * @returns string of error messages if there are errors with url
  */
-export const validateWebhookURL = (val) => {
+export const validateWebhookURL = (val: string): ?string => {
     const rules = [
         {
             test: /^((?!(\..)).)*$/,
@@ -1016,7 +1066,7 @@ export const validateWebhookURL = (val) => {
  * @param locale: string
  * @returns: displayName: string
  */
-export const getLanguageDisplayName = (locale) => {
+export const getLanguageDisplayName = (locale: string): ?string => {
 
     if (!locale) {
         return null
@@ -1032,7 +1082,7 @@ export const getLanguageDisplayName = (locale) => {
 /**
  * Open the smooch chat (if present)
  */
-export const openChat = (e) => {
+export const openChat = (e: Event) => {
     if (window.Smooch) {
         e.preventDefault()
         window.Smooch.open()
@@ -1045,7 +1095,7 @@ export const openChat = (e) => {
  * Input: `send email to %7B%7Bticket.requester.email%7D%7D`
  * Output: `send email to {{ticket.requester.email}}`
  */
-export function unescapeTemplateVars(string) {
+export function unescapeTemplateVars(string: string): string {
     // `%7B%7B` : {{
     // `(?:${availableVariables.join('|')})` : variable needs to start by one of the available variable names in rules
     // `[\w\.\[\]` : followed by alphanumeric, dot or square bracket characters

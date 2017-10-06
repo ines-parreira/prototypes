@@ -1,9 +1,18 @@
+// @flow
 import {fromJS} from 'immutable'
 import esprima from 'esprima'
 import {EMPTY_OPERATORS} from '../../config'
 
+import type {Map} from 'immutable'
+import type {filterType} from './types'
+import type {agentsType} from '../agents/types'
+type viewType = Map<*,*>
+type astType = Map<*,*>
+type pathType = Array<string | number>
+type nodeType = Map<*,*>
+
 // traverse filters_ast, find all the call expressions and return a new tree
-export function addFilterAST(view, filter) {
+export function addFilterAST(view: viewType, filter: filterType): Map<*,*> {
     // generate a new call expression for the new filter as a string
     const newCallExprCode = `${filter.operator}(${filter.left}, ${filter.right})`
     // since we only ever have AND operators just concatenate existing expressions
@@ -13,24 +22,24 @@ export function addFilterAST(view, filter) {
 }
 
 // traverse filters_ast, remove the call expressions and return a new tree
-export function removeFilterAST(view, index) {
+export function removeFilterAST(view: viewType, index: number): ?Map<*,*> {
     // As always, we assume that we only have && operators
     const codeSplit = view.get('filters').split('&&')
     codeSplit.splice(index, 1)
     if (codeSplit.length !== 0) {
         return fromJS(esprima.parse(codeSplit.join('&&')))
     }
-    return ''
+    return null
 }
 
 // Update a node (CallExpression) in the ast
-function setIn(ast, index, path, value) {
+function setIn(ast: astType, index: number, path: pathType, value: any): nodeType {
     let count = 0
 
-    function walker(node) {
+    function walker(node: nodeType): nodeType {
         switch (node.get('type')) {
             case 'Program':
-                return node.setIn(['body', 0], walker(node.getIn(['body', 0])))
+                return node.setIn(['body', 0], walker(node.getIn(['body', 0], fromJS({}))))
             case 'ExpressionStatement':
                 return node.set('expression', walker(node.get('expression')))
             case 'LogicalExpression':
@@ -51,13 +60,13 @@ function setIn(ast, index, path, value) {
 }
 
 // Get a node (CallExpression)
-function getIn(ast, index, path) {
+function getIn(ast: astType, index: number, path: pathType): any {
     let count = 0
 
-    function walker(node) {
+    function walker(node: Map<*,*>) {
         switch (node.get('type')) {
             case 'Program':
-                return walker(node.getIn(['body', 0]))
+                return walker(node.getIn(['body', 0], fromJS({})))
             case 'ExpressionStatement':
                 return walker(node.get('expression'))
             case 'LogicalExpression': {
@@ -90,7 +99,7 @@ function getIn(ast, index, path) {
 
 // traverse filters_ast and replace the callee name of the CallExpression found at `index
 // once replaced, we return the new AST
-export function updateFilterOperator(ast, index, operator) {
+export function updateFilterOperator(ast: astType, index: number, operator: string): nodeType {
     let filter = getIn(ast, index, [])
     filter = filter.setIn(['callee', 'name'], operator)
 
@@ -109,7 +118,7 @@ export function updateFilterOperator(ast, index, operator) {
     return setIn(ast, index, [], filter)
 }
 
-export function updateFilterValue(ast, index, value) {
+export function updateFilterValue(ast: astType, index: number, value: any): nodeType {
     return setIn(ast, index, ['arguments', 1, 'value'], value)
 }
 
@@ -120,7 +129,7 @@ export function updateFilterValue(ast, index, value) {
  * @param {Map} view2
  * @returns {number}
  */
-export function sortViews(view1, view2) {
+export function sortViews(view1: viewType, view2: viewType): number {
     const isView1Hidden = view1.get('hide', false)
     const isView2Hidden = view2.get('hide', false)
 
@@ -133,12 +142,12 @@ export function sortViews(view1, view2) {
     return view1.get('display_order', 0) - view2.get('display_order', 0)
 }
 
-export function agentsViewingMessage(agents) {
+export function agentsViewingMessage(agents: agentsType): string {
     const agentsNames = agents.map(agent => agent.get('name')).join(', ')
     return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} viewing`
 }
 
-export function agentsTypingMessage(agents) {
+export function agentsTypingMessage(agents: agentsType): string {
     const agentsNames = agents.map(agent => agent.get('name')).join(', ')
     return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} typing`
 }

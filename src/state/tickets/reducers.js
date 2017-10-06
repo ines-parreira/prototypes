@@ -1,12 +1,16 @@
+// @flow
 import * as ticketTypes from '../ticket/constants'
 import * as viewsTypes from '../views/constants'
 import {fromJS} from 'immutable'
+
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     items: [],
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
         case viewsTypes.FETCH_LIST_VIEW_SUCCESS: {
             if (action.viewType !== 'ticket-list') {

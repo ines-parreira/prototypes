@@ -1,5 +1,9 @@
+// @flow
 import {fromJS} from 'immutable'
-import * as types from './constants'
+import * as constants from './constants'
+
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     _internal: {
@@ -11,28 +15,28 @@ export const initialState = fromJS({
     }
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
-        case types.FETCH_STATS_START: {
+        case constants.FETCH_STATS_START: {
             return state.setIn(['_internal', 'loading', 'stats'], true)
         }
 
-        case types.FETCH_STATS_SUCCESS: {
+        case constants.FETCH_STATS_SUCCESS: {
             return state
                 .set(action.name, fromJS(action.resp.data))
                 .updateIn(['_internal', 'meta'], meta => (meta || fromJS({})).merge(fromJS(action.resp.meta)))
                 .setIn(['_internal', 'loading', 'stats'], false)
         }
 
-        case types.FETCH_STATS_ERROR: {
+        case constants.FETCH_STATS_ERROR: {
             return state.setIn(['_internal', 'loading', 'stats'], false)
         }
 
-        case types.SET_STATS_META: {
+        case constants.SET_STATS_META: {
             return state.updateIn(['_internal', 'meta'], meta => (meta || fromJS({})).merge(fromJS(action.meta)))
         }
 
-        case types.SET_STATS_FILTER: {
+        case constants.SET_STATS_FILTER: {
             return state.setIn(['_internal', 'filters', action.name], fromJS(action.values))
         }
 

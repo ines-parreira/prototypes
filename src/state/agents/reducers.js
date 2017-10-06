@@ -1,13 +1,17 @@
+// @flow
 import {fromJS} from 'immutable'
-import * as types from './constants.js'
+import * as constants from './constants.js'
+
+import type {Map} from 'immutable'
+import {actionType} from '../types'
 
 export const initialState = fromJS({
     pagination: {},
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
-        case types.FETCH_AGENTS_PAGINATION_SUCCESS: {
+        case constants.FETCH_AGENTS_PAGINATION_SUCCESS: {
             return state.set('pagination', fromJS(action.resp))
         }
 

@@ -1,16 +1,19 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createImmutableSelector} from '../../utils'
 
-export const getInfobarState = state => state.infobar || fromJS({})
+import type {stateType} from '../types'
+
+export const getInfobarState = (state: stateType) => state.infobar || fromJS({})
 
 export const getPendingActionsCallbacks = createImmutableSelector(
     [getInfobarState],
     state => state.get('pendingActionsCallbacks') || fromJS([])
 )
 
-export const getPendingActionCallbacks = id => createImmutableSelector(
+export const getPendingActionCallbacks = (id: string) => createImmutableSelector(
     [getPendingActionsCallbacks],
     state => state.find(action => action.get('id') === id)
 )
 
-export const makeGetPendingActionCallbacks = state => id => getPendingActionCallbacks(id)(state)
+export const makeGetPendingActionCallbacks = (state: stateType) => (id: string) => getPendingActionCallbacks(id)(state)

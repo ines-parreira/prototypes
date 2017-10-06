@@ -1,8 +1,11 @@
+// @flow
 import {fromJS} from 'immutable'
 import {getActionTemplate} from '../../utils'
 import _forEach from 'lodash/forEach'
 
-export function generateDefaultAction(actionType) {
+import type {Map} from 'immutable'
+
+export function generateDefaultAction(actionType: string): ?Map<*,*> {
     const actionTemplate = getActionTemplate(actionType)
 
     if (!actionTemplate) {
@@ -45,4 +48,4 @@ export function generateDefaultAction(actionType) {
     return ret
 }
 
-export const orderByName = (macros) => macros.sortBy((m) => m.get('name'))
+export const orderByName = (macros: Map<*,*>): Map<*,*> => macros.sortBy((m) => m.get('name'))

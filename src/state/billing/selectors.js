@@ -1,10 +1,14 @@
+// @flow
 import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
 import {getActiveIntegrations} from '../integrations/selectors'
 
+// types
+import type {stateType} from '../types'
+
 export const DEFAULT_PLAN = 'standard-usd-1'
 
-export const getBillingState = (state) => state.billing || fromJS({})
+export const getBillingState = (state: stateType) => state.billing || fromJS({})
 
 export const currentPlanId = createSelector(
     [getBillingState],
@@ -30,7 +34,7 @@ export const currentPlan = createSelector(
     (p, id) => p.get(id) || fromJS({})
 )
 
-export const getPlan = (planId) => createSelector(
+export const getPlan = (planId: string) => createSelector(
     [plans],
     (p) => p.get(planId) || fromJS({})
 )
@@ -63,11 +67,11 @@ export const isAllowedToCreateIntegration = createSelector(
     }
 )
 
-export const isAllowedToChangePlan = (planId) => createSelector(
+export const isAllowedToChangePlan = (planId: string) => createSelector(
     [getPlan(planId), getActiveIntegrations],
     (plan, activeIntegrations) => {
         return plan.get('integrations', 0) >= activeIntegrations.size
     }
 )
 
-export const makeIsAllowedToChangePlan = (state) => (planId) => isAllowedToChangePlan(planId)(state)
+export const makeIsAllowedToChangePlan = (state: stateType) => (planId: string) => isAllowedToChangePlan(planId)(state)

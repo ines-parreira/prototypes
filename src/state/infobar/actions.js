@@ -1,3 +1,4 @@
+// @flow
 import axios from 'axios'
 import {fromJS} from 'immutable'
 import md5 from 'md5'
@@ -6,53 +7,61 @@ import {browserHistory} from 'react-router'
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
-import * as types from './constants'
+import * as constants from './constants'
 
-export const search = (query) => ((dispatch) => {
+import type {dispatchType, getStateType} from '../types'
+type responseType = {
+    status: string,
+    user_id: string,
+    ticket_id: string,
+    msg: string
+}
+
+export const search = (query: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
-        type: types.SEARCH_USERS_START,
+        type: constants.SEARCH_USERS_START,
     })
 
     return axios.post('/api/search/', {type: 'user_profile', query})
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({
-                type: types.SEARCH_USERS_SUCCESS,
+                type: constants.SEARCH_USERS_SUCCESS,
                 resp,
             })
         }, error => {
             return dispatch({
-                type: types.SEARCH_USERS_ERROR,
+                type: constants.SEARCH_USERS_ERROR,
                 error,
                 reason: 'Failed to do the search. Please try again...'
             })
         })
 })
 
-export const similarUser = (userId) => ((dispatch) => {
+export const similarUser = (userId: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
-        type: types.SEARCH_SIMILAR_USER_START
+        type: constants.SEARCH_SIMILAR_USER_START
     })
 
     return axios.get(`/api/users/${userId}/similar/`)
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({
-                type: types.SEARCH_SIMILAR_USER_SUCCESS,
+                type: constants.SEARCH_SIMILAR_USER_SUCCESS,
                 user: resp,
             })
         }, error => {
             return dispatch({
-                type: types.SEARCH_SIMILAR_USER_ERROR,
+                type: constants.SEARCH_SIMILAR_USER_ERROR,
                 error,
                 reason: 'Failed to do the search similar users. Please try again...'
             })
         })
 })
 
-export const fetchUserPicture = (email = '') => ((dispatch) => {
+export const fetchUserPicture = (email: string = '') => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
-        type: types.FETCH_USER_PICTURE_START
+        type: constants.FETCH_USER_PICTURE_START
     })
 
     // s = 50 means the picture's width=height=50px; d=404 means if there's no image, returns a 404 error
@@ -62,7 +71,7 @@ export const fetchUserPicture = (email = '') => ((dispatch) => {
     return axios.get(GRAVATAR_URL)
         .then(() => {
             return dispatch({
-                type: types.FETCH_USER_PICTURE_SUCCESS,
+                type: constants.FETCH_USER_PICTURE_SUCCESS,
                 url: GRAVATAR_URL,
                 email
             })
@@ -74,40 +83,40 @@ export const fetchUserPicture = (email = '') => ((dispatch) => {
 
                     if (thumbnailUrl) {
                         dispatch({
-                            type: types.FETCH_USER_PICTURE_SUCCESS,
+                            type: constants.FETCH_USER_PICTURE_SUCCESS,
                             url: thumbnailUrl,
                             email
                         })
                     } else {
                         dispatch({
-                            type: types.FETCH_USER_PICTURE_ERROR
+                            type: constants.FETCH_USER_PICTURE_ERROR
                         })
                     }
                 }, () => {
                     // DO NOT ADD AN ERROR FIELD HERE: it's on purpose, we don't want an error message to be
                     // displayed if there's no picture for a user
                     return dispatch({
-                        type: types.FETCH_USER_PICTURE_ERROR,
+                        type: constants.FETCH_USER_PICTURE_ERROR,
                     })
                 })
         })
 })
 
-export const fetchPreviewUser = (userId) => ((dispatch) => {
+export const fetchPreviewUser = (userId: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
-        type: types.FETCH_PREVIEW_USER_START
+        type: constants.FETCH_PREVIEW_USER_START
     })
 
     return axios.get(`/api/users/${userId}/`)
         .then((json = {}) => json.data)
         .then(resp => {
             return dispatch({
-                type: types.FETCH_PREVIEW_USER_SUCCESS,
+                type: constants.FETCH_PREVIEW_USER_SUCCESS,
                 resp
             })
         }, error => {
             return dispatch({
-                type: types.FETCH_PREVIEW_USER_ERROR,
+                type: constants.FETCH_PREVIEW_USER_ERROR,
                 error,
                 reason: 'Couldn\'t fetch the user. Please try again in a few minutes.'
             })
@@ -122,7 +131,7 @@ export const fetchPreviewUser = (userId) => ((dispatch) => {
  * @param payload
  * @param callback
  */
-export const executeAction = (actionName, integrationId, userId, payload = {}, callback) => ((dispatch, getState) => {
+export const executeAction = (actionName: string, integrationId: string, userId: string, payload: {} = {}, callback: () => void) => ((dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
     const state = getState()
     const {ticket} = state
 
@@ -137,7 +146,7 @@ export const executeAction = (actionName, integrationId, userId, payload = {}, c
     }
 
     dispatch({
-        type: types.EXECUTE_ACTION_START,
+        type: constants.EXECUTE_ACTION_START,
         data,
         callback,
     })
@@ -148,7 +157,7 @@ export const executeAction = (actionName, integrationId, userId, payload = {}, c
             return Promise.resolve()
         }, error => {
             return dispatch({
-                type: types.EXECUTE_ACTION_ERROR,
+                type: constants.EXECUTE_ACTION_ERROR,
                 data,
                 error,
                 reason: `Failed to execute action ${actionName} on user ${userId} for integration ${integrationId}`
@@ -160,7 +169,7 @@ export const executeAction = (actionName, integrationId, userId, payload = {}, c
  * Handle asynchronous result from an executed action from server (returned by socket)
  * @param response
  */
-export const handleExecutedAction = (response) => ((dispatch) => {
+export const handleExecutedAction = (response: responseType) => ((dispatch: dispatchType): Promise<dispatchType> => {
     if (response.status === 'error') {
         let buttons = [{
             primary: true,
@@ -189,13 +198,13 @@ export const handleExecutedAction = (response) => ((dispatch) => {
         }))
 
         return dispatch({
-            type: types.EXECUTE_ACTION_ERROR,
+            type: constants.EXECUTE_ACTION_ERROR,
             data: response,
         })
     }
 
     return dispatch({
-        type: types.EXECUTE_ACTION_SUCCESS,
+        type: constants.EXECUTE_ACTION_SUCCESS,
         data: response,
     })
 })

@@ -1,8 +1,17 @@
+// @flow
 import {fromJS} from 'immutable'
 import _difference from 'lodash/difference'
 import _values from 'lodash/values'
 import _forEach from 'lodash/forEach'
 import {DEFAULT_SOURCE_PATHS} from '../../config'
+
+import type {List, Map} from 'immutable'
+import type {contextType} from './types'
+type itemsType = List<Map<*,*>>
+type contextFromSourcePathType = {
+    context: contextType,
+    type: string
+}
 
 /**
  * Return item from items list where context matches
@@ -10,11 +19,11 @@ import {DEFAULT_SOURCE_PATHS} from '../../config'
  * @param context
  * @returns {*}
  */
-export function itemsWithContext(items = fromJS([]), context) {
+export function itemsWithContext(items: itemsType = fromJS([]), context: contextType): itemsType {
     return items.filter((w) => w.get('context', '') === context)
 }
 
-export function itemsWithoutContext(items = fromJS([]), context) {
+export function itemsWithoutContext(items: itemsType = fromJS([]), context: contextType): itemsType {
     return items.filter((w) => w.get('context', '') !== context)
 }
 
@@ -24,7 +33,7 @@ export function itemsWithoutContext(items = fromJS([]), context) {
  * @param type (Optional) - type of widget (custom, shopify, etc.)
  * @returns {string/Array}
  */
-export function getSourcePathFromContext(context, type = '') {
+export function getSourcePathFromContext(context: contextType, type: string = ''): string | Array<string> {
     const config = DEFAULT_SOURCE_PATHS[context]
 
     const defaultSourcePath = config.custom
@@ -45,7 +54,7 @@ export function getSourcePathFromContext(context, type = '') {
  * @param sourcePath - path of wrapper (ticket.requester.customer, etc.)
  * @returns {{context: string, type: string}}
  */
-export function getContextFromSourcePath(sourcePath) {
+export function getContextFromSourcePath(sourcePath: Array<string>): contextFromSourcePathType {
     const config = DEFAULT_SOURCE_PATHS
 
     let result = {
@@ -74,11 +83,11 @@ export function getContextFromSourcePath(sourcePath) {
  * @param newWidgets
  * @returns {*}
  */
-export function itemsWithUpdatedWidgets(items = fromJS([]), context, newWidgets) {
+export function itemsWithUpdatedWidgets(items: itemsType = fromJS([]), context: contextType, newWidgets: {}): itemsType {
     const otherWidgets = itemsWithoutContext(items, context)
     return otherWidgets.merge(fromJS(newWidgets))
 }
 
-export function reorderWidgets(items = fromJS([])) {
+export function reorderWidgets(items: itemsType = fromJS([])): itemsType {
     return items.map((item, i) => item.set('order', i))
 }

@@ -1,22 +1,25 @@
+// @flow
 import axios from 'axios'
-import * as types from './constants'
+import * as constants from './constants'
+
+import type {dispatchType} from '../types'
 
 export function fetchSettings() {
-    return (dispatch) => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.FETCH_SETTINGS_START
+            type: constants.FETCH_SETTINGS_START
         })
 
         return axios.get('/api/settings/')
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
-                    type: types.FETCH_SETTINGS_SUCCESS,
+                    type: constants.FETCH_SETTINGS_SUCCESS,
                     resp
                 })
             }, error => {
                 return dispatch({
-                    type: types.FETCH_SETTINGS_ERROR,
+                    type: constants.FETCH_SETTINGS_ERROR,
                     error,
                     reason: 'Failed to fetch settings'
                 })

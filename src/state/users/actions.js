@@ -1,12 +1,15 @@
+// @flow
 import axios from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import * as types from './constants'
 import {notify} from '../notifications/actions'
 
+import type {dispatchType, stateType, getStateType} from '../types'
+
 // THE FOLLOWING FUNCTION IS ONLY USED TO FETCH AGENTS AND ADMINS
 // SHOULD BE UPDATED TO AN AGENTS SPECIFIC REDUCER
-export function fetchUsers(roles) {
-    return (dispatch) => {
+export function fetchUsers(roles: Array<string>) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: types.FETCH_USER_LIST_START
         })
@@ -35,8 +38,8 @@ export function fetchUsers(roles) {
     }
 }
 
-export function fetchUser(userId) {
-    return (dispatch) => {
+export function fetchUser(userId: number) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         const isCurrentUser = userId === 0
 
         dispatch({
@@ -46,7 +49,7 @@ export function fetchUser(userId) {
         return axios.get(`/api/users/${userId}/`)
             .then((json = {}) => json.data)
             .then(resp => {
-                dispatch({
+                return dispatch({
                     type: isCurrentUser ? types.FETCH_CURRENT_USER_SUCCESS : types.FETCH_USER_SUCCESS,
                     resp
                 })
@@ -60,8 +63,8 @@ export function fetchUser(userId) {
     }
 }
 
-export function submitUser(data, userId) {
-    return (dispatch) => {
+export function submitUser(data: {}, userId: number) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         const isCurrentUser = userId === 0
         const isUpdate = !_isUndefined(userId)
         let promise
@@ -102,8 +105,8 @@ export function submitUser(data, userId) {
     }
 }
 
-export function deleteUser(userId) {
-    return (dispatch) => {
+export function deleteUser(userId: number) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: types.DELETE_USER_START
         })
@@ -131,8 +134,8 @@ export function deleteUser(userId) {
     }
 }
 
-export function fetchUserHistory(userId, options = {}) {
-    return (dispatch, getState) => {
+export function fetchUserHistory(userId: number, options: {successCondition?: (T: stateType) => void} = {}) {
+    return (dispatch: dispatchType, getState: getStateType) => {
         dispatch({
             type: types.FETCH_USER_HISTORY_START,
             userId,
@@ -167,8 +170,8 @@ export function fetchUserHistory(userId, options = {}) {
     }
 }
 
-export function mergeUsers(baseUserId, mergeUserId, data) {
-    return (dispatch) => {
+export function mergeUsers(baseUserId: number, mergeUserId: number, data: {}) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: types.MERGE_USERS_START
         })
@@ -200,12 +203,12 @@ export function mergeUsers(baseUserId, mergeUserId, data) {
 
 export const clearUser = () => ({type: types.CLEAR_USER})
 
-export const setAgentsLocation = (locations) => ({
+export const setAgentsLocation = (locations: {}) => ({
     type: types.SET_AGENTS_LOCATION,
     data: locations,
 })
 
-export const setAgentsTypingStatus = (locations) => ({
+export const setAgentsTypingStatus = (locations: {}) => ({
     type: types.SET_AGENTS_TYPING_STATUS,
     data: locations,
 })

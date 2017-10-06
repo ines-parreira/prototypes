@@ -1,4 +1,12 @@
+// @flow
 import _keys from 'lodash/keys'
+
+type dataType = {
+    action_name: string,
+    user_id: string,
+    integration_id: string,
+    payload: {}
+}
 
 /**
  * Generate a hash identifying an action on a user for an integration id on a particular object (order, item, etc.)
@@ -8,7 +16,7 @@ import _keys from 'lodash/keys'
  * @param payload
  * @returns {*}
  */
-export const actionButtonHashForData = ({action_name, user_id, integration_id, payload}) => {
+export const actionButtonHashForData = ({action_name, user_id, integration_id, payload}: dataType): string => {
     let identifier = [
         action_name, // eslint-disable-line
         user_id, // eslint-disable-line

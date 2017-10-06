@@ -42,6 +42,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
      
     <a
       href="http://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
+      rel="noopener noreferrer"
       target="_blank"
     >
       docs
@@ -110,6 +111,7 @@ exports[`HttpIntegrationDetail component should display data about the integrati
            to pass the email of the ticket requester. See other 
           <a
             href="http://api.gorgias.io/#/definitions/User"
+            rel="noopener noreferrer"
             target="_blank"
           >
             vars
@@ -300,6 +302,7 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
      
     <a
       href="http://docs.gorgias.io/integrations/http-integrations#Connecting_your_own_back-office"
+      rel="noopener noreferrer"
       target="_blank"
     >
       docs
@@ -368,6 +371,7 @@ exports[`HttpIntegrationDetail component should display default if it's a new in
            to pass the email of the ticket requester. See other 
           <a
             href="http://api.gorgias.io/#/definitions/User"
+            rel="noopener noreferrer"
             target="_blank"
           >
             vars

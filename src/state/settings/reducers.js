@@ -1,5 +1,9 @@
+// @flow
 import * as types from './constants'
 import {fromJS} from 'immutable'
+
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     data: {},
@@ -7,7 +11,7 @@ export const initialState = fromJS({
     loaded: false
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
         case types.FETCH_SETTINGS_START:
             return state.set('loading', true)

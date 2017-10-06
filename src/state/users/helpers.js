@@ -1,3 +1,4 @@
+// @flow
 import {toImmutable, isImmutable} from '../../utils'
 import _trim from 'lodash/trim'
 
@@ -6,9 +7,10 @@ import _trim from 'lodash/trim'
  * @param user
  * @returns {string}
  */
-export const getDisplayName = (user) => {
+export const getDisplayName = (user: {name: string, id: string}): string => {
     user = toImmutable(user)
 
+    // TODO toImmutable should always return a map.
     // if not an immutable map
     if (!isImmutable(user)) {
         return user || 'Unknown user'

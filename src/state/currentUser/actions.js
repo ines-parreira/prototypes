@@ -1,9 +1,13 @@
+// @flow
 import axios from 'axios'
-import * as types from './constants'
+import * as constants from './constants'
 import {notify} from '../notifications/actions'
 
-export const changePassword = (oldPassword, newPassword) => (dispatch => {
-    dispatch({type: types.CHANGE_PASSWORD_START})
+// types
+import type {dispatchType} from '../types'
+
+export const changePassword = (oldPassword: string, newPassword: string) => ((dispatch: dispatchType): Promise<dispatchType> => {
+    dispatch({type: constants.CHANGE_PASSWORD_START})
 
     return axios.put('/api/users/0/', {
         old_password: oldPassword,
@@ -12,7 +16,7 @@ export const changePassword = (oldPassword, newPassword) => (dispatch => {
         .then((json = {}) => json.data)
         .then(resp => {
             dispatch({
-                type: types.CHANGE_PASSWORD_SUCCESS,
+                type: constants.CHANGE_PASSWORD_SUCCESS,
                 resp
             })
             dispatch(notify({
@@ -21,24 +25,25 @@ export const changePassword = (oldPassword, newPassword) => (dispatch => {
             }))
         }, error => {
             return dispatch({
-                type: types.CHANGE_PASSWORD_ERROR,
+                type: constants.CHANGE_PASSWORD_ERROR,
                 error,
                 reason: 'Failed to modify your password'
             })
         })
 })
 
-export function submitSetting(data, notification) {
-    return (dispatch) => {
+export function submitSetting(data: {id?: string, type: string}, notification: boolean) {
+    return (dispatch: dispatchType): Promise<dispatchType | {}> => {
         const isUpdate = !!data.id
         let promise
 
         dispatch({
-            type: types.SUBMIT_SETTING_START,
+            type: constants.SUBMIT_SETTING_START,
             settingType: data.type
         })
 
         if (isUpdate) {
+            // $FlowFixMe
             promise = axios.put(`/api/users/0/settings/${data.id}/`, data)
         } else {
             promise = axios.post('/api/users/0/settings/', data)
@@ -48,7 +53,7 @@ export function submitSetting(data, notification) {
             .then((json = {}) => json.data)
             .then(resp => {
                 dispatch({
-                    type: types.SUBMIT_SETTING_SUCCESS,
+                    type: constants.SUBMIT_SETTING_SUCCESS,
                     settingType: data.type,
                     isUpdate,
                     resp
@@ -64,7 +69,7 @@ export function submitSetting(data, notification) {
                 return resp
             }, error => {
                 return dispatch({
-                    type: types.SUBMIT_SETTING_ERROR,
+                    type: constants.SUBMIT_SETTING_ERROR,
                     settingType: data.type,
                     error,
                     reason: 'Failed to update settings'

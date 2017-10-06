@@ -1,5 +1,5 @@
-import React, {PropTypes} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+// @flow
+import React from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
@@ -17,13 +17,16 @@ import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 import css from './TicketListInfobarContainer.less'
 
-class TicketListInfobarContainer extends React.Component {
-    static propTypes = {
-        agents: ImmutablePropTypes.list.isRequired,
-        currentUser: ImmutablePropTypes.map.isRequired,
-        emailIntegrations: ImmutablePropTypes.list.isRequired,
-        hasIntegrationsOfTypes: PropTypes.func.isRequired,
-    }
+import type {Map, List} from 'immutable'
+
+type Props = {
+    agents: List<*>,
+    currentUser: Map<*,*>,
+    emailIntegrations: List<*>,
+    hasIntegrationsOfTypes: typeof integrationsSelectors.hasIntegrationOfTypes,
+}
+
+class TicketListInfobarContainer extends React.Component<Props> {
 
     _hideBoarding = () => {
         window.localStorage.setItem('hideBoarding', true)

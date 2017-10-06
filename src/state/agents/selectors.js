@@ -1,7 +1,11 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createImmutableSelector} from '../../utils'
 
-export const getState = state => state.agents || fromJS({})
+// types
+import type {stateType} from '../types'
+
+export const getState = (state: stateType) => state.agents || fromJS({})
 
 export const getPaginatedAgents = createImmutableSelector(
     [getState],

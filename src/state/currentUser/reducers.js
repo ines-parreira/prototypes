@@ -1,6 +1,11 @@
-import * as userTypes from '../users/constants'
-import * as types from './constants'
+// @flow
+import * as userConstants from '../users/constants'
+import * as constants from './constants'
 import {fromJS} from 'immutable'
+
+// types
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     settings: [],
@@ -12,39 +17,39 @@ export const initialState = fromJS({
     }
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     if (!action) {
         return state
     }
 
     switch (action.type) {
-        case userTypes.FETCH_CURRENT_USER_START:
-        case userTypes.SUBMIT_CURRENT_USER_START:
-        case types.CHANGE_PASSWORD_START:
+        case userConstants.FETCH_CURRENT_USER_START:
+        case userConstants.SUBMIT_CURRENT_USER_START:
+        case constants.CHANGE_PASSWORD_START:
             return state.setIn(['_internal', 'loading', 'currentUser'], true)
 
-        case types.SUBMIT_SETTING_START:
+        case constants.SUBMIT_SETTING_START:
             return state.setIn(['_internal', 'loading', 'settings', action.settingType], true)
 
-        case userTypes.FETCH_CURRENT_USER_SUCCESS:
+        case userConstants.FETCH_CURRENT_USER_SUCCESS:
             return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
 
-        case userTypes.SUBMIT_CURRENT_USER_SUCCESS:
-        case types.CHANGE_PASSWORD_SUCCESS:
+        case userConstants.SUBMIT_CURRENT_USER_SUCCESS:
+        case constants.CHANGE_PASSWORD_SUCCESS:
             return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
 
-        case types.CHANGE_PASSWORD_ERROR:
+        case constants.CHANGE_PASSWORD_ERROR:
             return state.setIn(['_internal', 'loading', 'currentUser'], false)
 
-        case userTypes.SUBMIT_CURRENT_USER_ERROR: {
+        case userConstants.SUBMIT_CURRENT_USER_ERROR: {
             return state.setIn(['_internal', 'loading', 'currentUser'], false)
         }
 
-        case types.SUBMIT_SETTING_ERROR: {
+        case constants.SUBMIT_SETTING_ERROR: {
             return state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
         }
 
-        case types.SUBMIT_SETTING_SUCCESS: {
+        case constants.SUBMIT_SETTING_SUCCESS: {
             const newState = state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
             if (action.isUpdate) {
                 return newState.update('settings', settings => {

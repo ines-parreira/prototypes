@@ -1,7 +1,8 @@
+// @flow
 import {fromJS} from 'immutable'
 import _isNumber from 'lodash/isNumber'
 
-import * as types from './constants'
+import * as constants from './constants'
 import {getCode} from '../../utils'
 import {shouldUpdateView} from '../activity/utils'
 import {
@@ -11,6 +12,9 @@ import {
     updateFilterValue
 } from './utils'
 import * as selectors from './selectors'
+
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     items: [],
@@ -28,26 +32,26 @@ export const initialState = fromJS({
     }
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     let items
     let ast = ''
     let code = ''
     let activeView = state.get('active', fromJS({}))
 
     switch (action.type) {
-        case types.SET_VIEW_ACTIVE: {
+        case constants.SET_VIEW_ACTIVE: {
             if (action.view) {
                 return state.set('active', action.view)
             }
             return state
         }
 
-        case types.UPDATE_VIEW: {
+        case constants.UPDATE_VIEW: {
             const view = action.view || activeView
             return state.set('active', view.set('dirty', true).set('editMode', action.edit))
         }
 
-        case types.SET_FIELD_VISIBILITY: {
+        case constants.SET_FIELD_VISIBILITY: {
             const visibleFields = activeView.get('fields', fromJS([]))
 
             const fields = action.state
@@ -59,14 +63,14 @@ export default (state = initialState, action) => {
             return state.set('active', activeView)
         }
 
-        case types.SET_ORDER_DIRECTION: {
+        case constants.SET_ORDER_DIRECTION: {
             return state.set('active', activeView.merge({
                 order_by: action.fieldPath,
                 order_dir: action.direction,
             }))
         }
 
-        case types.ADD_VIEW_FIELD_FILTER: {
+        case constants.ADD_VIEW_FIELD_FILTER: {
             // given a filter and our code+ast => generate new code/ast and save it to the state
             ast = addFilterAST(activeView, action.filter)
             code = getCode(ast.toJS())
@@ -78,7 +82,7 @@ export default (state = initialState, action) => {
             return state.set('active', activeView.set('dirty', true))
         }
 
-        case types.REMOVE_VIEW_FIELD_FILTER: {
+        case constants.REMOVE_VIEW_FIELD_FILTER: {
             ast = removeFilterAST(activeView, action.index)
             if (ast) {
                 code = getCode(ast.toJS())
@@ -87,7 +91,7 @@ export default (state = initialState, action) => {
             return state.set('active', activeView.set('dirty', true))
         }
 
-        case types.UPDATE_VIEW_FIELD_FILTER: {
+        case constants.UPDATE_VIEW_FIELD_FILTER: {
             let ast = activeView.get('filters_ast')
             ast = updateFilterValue(ast, action.index, action.value)
             code = getCode(ast.toJS())
@@ -95,7 +99,7 @@ export default (state = initialState, action) => {
             return state.set('active', activeView.set('dirty', true))
         }
 
-        case types.UPDATE_VIEW_FIELD_FILTER_OPERATOR: {
+        case constants.UPDATE_VIEW_FIELD_FILTER_OPERATOR: {
             let ast = activeView.get('filters_ast')
             ast = updateFilterOperator(ast, action.index, action.operator)
             code = getCode(ast.toJS())
@@ -103,7 +107,7 @@ export default (state = initialState, action) => {
             return state.set('active', activeView.set('dirty', true))
         }
 
-        case types.RESET_VIEW: {
+        case constants.RESET_VIEW: {
             // find the original view from the state and replace the active view
             let original = selectors.getView(activeView.get('id'), action.configName)({views: state})
 
@@ -121,7 +125,7 @@ export default (state = initialState, action) => {
             return state.set('active', original)
         }
 
-        case types.SUBMIT_UPDATE_VIEW_SUCCESS: {
+        case constants.SUBMIT_UPDATE_VIEW_SUCCESS: {
             const updatedView = fromJS(action.resp)
             // we need to replace the old view with the new one
             items = state.get('items')
@@ -135,7 +139,7 @@ export default (state = initialState, action) => {
             return newState
         }
 
-        case types.SUBMIT_NEW_VIEW_SUCCESS: {
+        case constants.SUBMIT_NEW_VIEW_SUCCESS: {
             const newView = fromJS(action.resp)
             return state.merge({
                 items: state.get('items').push(newView),
@@ -143,15 +147,15 @@ export default (state = initialState, action) => {
             })
         }
 
-        case types.FETCH_VIEW_LIST_START: {
+        case constants.FETCH_VIEW_LIST_START: {
             return state.set('loading', true)
         }
 
-        case types.UPDATE_VIEW_LIST: {
+        case constants.UPDATE_VIEW_LIST: {
             return state.set('items', fromJS(action.items))
         }
 
-        case types.FETCH_VIEW_LIST_SUCCESS: {
+        case constants.FETCH_VIEW_LIST_SUCCESS: {
             items = fromJS(action.resp.data)
 
             // also populate the active view state
@@ -166,11 +170,11 @@ export default (state = initialState, action) => {
             })
         }
 
-        case types.CREATE_VIEW_SUCCESS: {
+        case constants.CREATE_VIEW_SUCCESS: {
             return state.update('items', (items) => items.push(fromJS(action.resp)))
         }
 
-        case types.UPDATE_VIEW_SUCCESS: {
+        case constants.UPDATE_VIEW_SUCCESS: {
             let newState = state.update('items', (items) => items.map((v) => {
                 if (v.get('id') === action.resp.id) {
                     return fromJS(action.resp)
@@ -184,13 +188,13 @@ export default (state = initialState, action) => {
             return newState
         }
 
-        case types.DELETE_VIEW_SUCCESS: {
+        case constants.DELETE_VIEW_SUCCESS: {
             return state.merge({
                 items: state.get('items').filter(item => item.get('id') !== action.viewId),
             })
         }
 
-        case types.FETCH_LIST_VIEW_START: {
+        case constants.FETCH_LIST_VIEW_START: {
             let newState = state
                 .setIn(['_internal', 'currentViewId'], action.viewId)
 
@@ -211,7 +215,7 @@ export default (state = initialState, action) => {
             return newState
         }
 
-        case types.FETCH_LIST_VIEW_SUCCESS: {
+        case constants.FETCH_LIST_VIEW_SUCCESS: {
             const payload = action.data
 
             return state
@@ -220,11 +224,11 @@ export default (state = initialState, action) => {
                 .setIn(['_internal', 'loading', 'fetchListDiscreet'], false)
         }
 
-        case types.FETCH_LIST_VIEW_ERROR:
+        case constants.FETCH_LIST_VIEW_ERROR:
             return state.setIn(['_internal', 'loading', 'fetchList'], false)
                 .setIn(['_internal', 'loading', 'fetchListDiscreet'], false)
 
-        case types.TOGGLE_SELECTION: {
+        case constants.TOGGLE_SELECTION: {
             const currentlySelected = state.getIn(['_internal', 'selectedItemsIds'], fromJS([]))
 
             // if it is a "select all" action where we select every items
@@ -247,16 +251,16 @@ export default (state = initialState, action) => {
             return state.setIn(['_internal', 'selectedItemsIds'], currentlySelected.push(action.idOrIds))
         }
 
-        case types.BULK_DELETE_SUCCESS: {
+        case constants.BULK_DELETE_SUCCESS: {
             return state
                 .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
         }
 
-        case types.SET_PAGE: {
+        case constants.SET_PAGE: {
             return state.setIn(['_internal', 'pagination', 'page'], action.page)
         }
 
-        case types.UPDATE_COUNTS: {
+        case constants.UPDATE_COUNTS: {
             return state.mergeDeep({
                 counts: action.counts
             })

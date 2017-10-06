@@ -1,17 +1,25 @@
+// @flow
 import axios from 'axios'
 import {sortBy as _sortBy} from 'lodash'
 import {browserHistory} from 'react-router'
 import moment from 'moment'
 import {fromJS} from 'immutable'
 
-import * as types from './constants'
+import * as constants from './constants'
 import * as integrationSelectors from './selectors'
 import {notify} from '../notifications/actions'
 
-export function fetchIntegrations(withDeleted = false) {
-    return (dispatch) => {
+import type {Map} from 'immutable'
+import type {dispatchType, getStateType} from '../types'
+type integrationType = {
+    type: string,
+    id: string
+}
+
+export function fetchIntegrations(withDeleted: boolean = false) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.FETCH_INTEGRATIONS_START
+            type: constants.FETCH_INTEGRATIONS_START
         })
 
         const params = {}
@@ -30,12 +38,12 @@ export function fetchIntegrations(withDeleted = false) {
                 }
 
                 dispatch({
-                    type: types.FETCH_INTEGRATIONS_SUCCESS,
+                    type: constants.FETCH_INTEGRATIONS_SUCCESS,
                     resp: newResp
                 })
             }, error => {
                 return dispatch({
-                    type: types.FETCH_INTEGRATIONS_ERROR,
+                    type: constants.FETCH_INTEGRATIONS_ERROR,
                     error,
                     reason: 'Failed to fetch integrations'
                 })
@@ -49,9 +57,9 @@ export function fetchIntegrations(withDeleted = false) {
  * @param dispatch: the dispatch method
  * @param resp: the raw Integration data coming back from the server
  */
-export function onCreateSuccess(dispatch, resp) {
+export function onCreateSuccess(dispatch: dispatchType, resp: integrationType): dispatchType {
     dispatch({
-        type: types.CREATE_INTEGRATION_SUCCESS,
+        type: constants.CREATE_INTEGRATION_SUCCESS,
         resp
     })
 
@@ -75,8 +83,8 @@ export function onCreateSuccess(dispatch, resp) {
     }))
 }
 
-export function triggerCreateSuccess(integration) {
-    return (dispatch) => onCreateSuccess(dispatch, integration)
+export function triggerCreateSuccess(integration: integrationType) {
+    return (dispatch: dispatchType) => onCreateSuccess(dispatch, integration)
 }
 
 /**
@@ -87,9 +95,9 @@ export function triggerCreateSuccess(integration) {
  * @param notificationId: the id of the notification to replace with the success notification, if any
  * @param didInvalidateCache: whether this update invalidated the cache of this integration or not
  */
-export function onUpdateSuccess(dispatch, resp, notificationId=null, didInvalidateCache=false) {
+export function onUpdateSuccess(dispatch: dispatchType, resp: {type: string}, notificationId: ?string = null, didInvalidateCache: boolean = false): dispatchType {
     dispatch({
-        type: types.UPDATE_INTEGRATION_SUCCESS,
+        type: constants.UPDATE_INTEGRATION_SUCCESS,
         resp
     })
 
@@ -102,18 +110,18 @@ export function onUpdateSuccess(dispatch, resp, notificationId=null, didInvalida
             'website.'
     }
 
-    dispatch(notify({
+    return dispatch(notify({
         id: notificationId,
         status: 'success',
         message
     }))
 }
 
-export function fetchIntegration(integrationId, integrationType, waitingForAuthentication = false) {
-    return (dispatch) => {
+export function fetchIntegration(integrationId: string, integrationType: string, waitingForAuthentication: boolean = false) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         if (!waitingForAuthentication) {
             dispatch({
-                type: types.FETCH_INTEGRATION_START,
+                type: constants.FETCH_INTEGRATION_START,
                 id: integrationId
             })
         }
@@ -122,7 +130,7 @@ export function fetchIntegration(integrationId, integrationType, waitingForAuthe
             .then((json = {}) => json.data)
             .then((resp) => {
                 dispatch({
-                    type: types.FETCH_INTEGRATION_SUCCESS,
+                    type: constants.FETCH_INTEGRATION_SUCCESS,
                     integration: resp
                 })
 
@@ -139,7 +147,7 @@ export function fetchIntegration(integrationId, integrationType, waitingForAuthe
                 // We redirect to the integrations home page if we can't find the wanted integration on the server
                 browserHistory.replace(`/app/integrations/${integrationType}`)
                 return dispatch({
-                    type: types.FETCH_INTEGRATION_ERROR,
+                    type: constants.FETCH_INTEGRATION_ERROR,
                     error,
                     reason: 'Failed to fetch integration'
                 })
@@ -148,10 +156,10 @@ export function fetchIntegration(integrationId, integrationType, waitingForAuthe
 }
 
 
-export function deleteIntegration(integration) {
-    return (dispatch) => {
+export function deleteIntegration(integration: Map<*,*>) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.DELETE_INTEGRATION_START,
+            type: constants.DELETE_INTEGRATION_START,
             id: integration.get('id')
         })
 
@@ -159,7 +167,7 @@ export function deleteIntegration(integration) {
             .then((json = {}) => json.data)
             .then(() => {
                 dispatch({
-                    type: types.DELETE_INTEGRATION_SUCCESS,
+                    type: constants.DELETE_INTEGRATION_SUCCESS,
                     id: integration.get('id')
                 })
                 const currentUrl = window.location.pathname
@@ -176,7 +184,7 @@ export function deleteIntegration(integration) {
                 }))
             }, (error) => {
                 return dispatch({
-                    type: types.DELETE_INTEGRATION_ERROR,
+                    type: constants.DELETE_INTEGRATION_ERROR,
                     error,
                     reason: 'Failed to delete the integration'
                 })
@@ -184,13 +192,13 @@ export function deleteIntegration(integration) {
     }
 }
 
-function updateOrCreateIntegrationRequest(integration, action, withDeleted, notificationId=null) {
-    return (dispatch) => {
+function updateOrCreateIntegrationRequest(integration: Map<*,*>, action: ?{}, withDeleted: ?boolean, notificationId: ?string = null) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         const isUpdate = integration.get('id')
         const oldDecoration = integration.get('decoration') || fromJS({})
 
         dispatch({
-            type: isUpdate ? types.UPDATE_INTEGRATION_START : types.CREATE_INTEGRATION_START,
+            type: isUpdate ? constants.UPDATE_INTEGRATION_START : constants.CREATE_INTEGRATION_START,
             integration
         })
 
@@ -226,7 +234,7 @@ function updateOrCreateIntegrationRequest(integration, action, withDeleted, noti
                 return onCreateSuccess(dispatch, resp)
             }, (error) => {
                 return dispatch({
-                    type: isUpdate ? types.UPDATE_INTEGRATION_ERROR : types.CREATE_INTEGRATION_ERROR,
+                    type: isUpdate ? constants.UPDATE_INTEGRATION_ERROR : constants.CREATE_INTEGRATION_ERROR,
                     error,
                     reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration'
                 })
@@ -234,12 +242,12 @@ function updateOrCreateIntegrationRequest(integration, action, withDeleted, noti
     }
 }
 
-export function createImportIntegration(integration) {
-    return (dispatch) => {
+export function createImportIntegration(integration: Map<*,*>) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         const isUpdate = !!integration.get('id')
 
         dispatch({
-            type: types.CREATE_INTEGRATION_START,
+            type: constants.CREATE_INTEGRATION_START,
             integration
         })
 
@@ -254,12 +262,12 @@ export function createImportIntegration(integration) {
                 }))
 
                 return dispatch({
-                    type: types.CREATE_INTEGRATION_SUCCESS,
+                    type: constants.CREATE_INTEGRATION_SUCCESS,
                     resp
                 })
             }, (error) => {
                 return dispatch({
-                    type: isUpdate ? types.UPDATE_INTEGRATION_ERROR : types.CREATE_INTEGRATION_ERROR,
+                    type: isUpdate ? constants.UPDATE_INTEGRATION_ERROR : constants.CREATE_INTEGRATION_ERROR,
                     error,
                     reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration',
                     verbose: true
@@ -268,8 +276,8 @@ export function createImportIntegration(integration) {
     }
 }
 
-export function deactivateIntegration(id) {
-    return (dispatch, getState) => {
+export function deactivateIntegration(id: number) {
+    return (dispatch: dispatchType, getState: getStateType): dispatchType => {
         const fullIntegration = integrationSelectors.getIntegrationById(id)(getState())
 
         const integration = fromJS({
@@ -292,8 +300,8 @@ export function deactivateIntegration(id) {
     }
 }
 
-export function activateIntegration(id) {
-    return (dispatch, getState) => {
+export function activateIntegration(id: number) {
+    return (dispatch: dispatchType, getState: getStateType): dispatchType => {
         const fullIntegration = integrationSelectors.getIntegrationById(id)(getState())
 
         const integration = fromJS({
@@ -322,16 +330,16 @@ export function activateIntegration(id) {
  * @param action
  * @returns {Function}
  */
-export function updateOrCreateIntegration(integration, action, withDeleted) {
-    return (dispatch) => {
+export function updateOrCreateIntegration(integration: Map<*,*>, action: {}, withDeleted: boolean) {
+    return (dispatch: dispatchType): dispatchType => {
         return dispatch(updateOrCreateIntegrationRequest(integration, action, withDeleted))
     }
 }
 
-export function importEmails(integration) {
-    return (dispatch) => {
+export function importEmails(integration: Map<*,*>) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.GMAIL_INTEGRATION_IMPORT_START,
+            type: constants.GMAIL_INTEGRATION_IMPORT_START,
             id: integration.get('id')
         })
 
@@ -346,12 +354,12 @@ export function importEmails(integration) {
                     message: 'Importation successfully started'
                 }))
                 return dispatch({
-                    type: types.GMAIL_INTEGRATION_IMPORT_SUCCESS,
+                    type: constants.GMAIL_INTEGRATION_IMPORT_SUCCESS,
                     resp
                 })
             }, error => {
                 return dispatch({
-                    type: types.GMAIL_INTEGRATION_IMPORT_ERROR,
+                    type: constants.GMAIL_INTEGRATION_IMPORT_ERROR,
                     error,
                     reason: 'Failed to start importation'
                 })
@@ -359,10 +367,10 @@ export function importEmails(integration) {
     }
 }
 
-export function activateFacebookOnboardingPage(data) {
-    return (dispatch) => {
+export function activateFacebookOnboardingPage(data: Array<{}>) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_START
+            type: constants.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_START
         })
 
         return axios.put('/integrations/facebook/onboarding-pages/', data)
@@ -373,12 +381,12 @@ export function activateFacebookOnboardingPage(data) {
                     message: `Facebook page${data.length > 1 ? 's' : ''} successfully activated.`
                 }))
                 return dispatch({
-                    type: types.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
+                    type: constants.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_SUCCESS,
                     resp
                 })
             }, (error) => {
                 return dispatch({
-                    type: types.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_ERROR,
+                    type: constants.ACTIVATE_FACEBOOK_ONBOARDING_PAGES_ERROR,
                     error,
                     reason: 'Failed to activate your Facebook page'
                 })

@@ -1,3 +1,4 @@
+// @flow
 import _take from 'lodash/take'
 import _takeRight from 'lodash/takeRight'
 import _findIndex from 'lodash/findIndex'
@@ -15,13 +16,37 @@ import * as selectors from './selectors'
 const signatureHTMLPrefix = '<div></div><div></div>'
 const signatureTextPrefix = '\n\n'
 
+import type {Map} from 'immutable'
+import type {currentUserType} from '../types'
+type contextType = {
+    action: {
+        fromMacro: boolean,
+        ticketId: string,
+        currentUser: currentUserType,
+        ticket: Map<*,*>,
+        args: Map<*,*>
+    },
+    appliedMacro: {},
+    contentState: ContentState,
+    forceUpdate: boolean,
+    forceFocus: boolean,
+    state: Map<*,*>,
+    signatureAdded?: boolean,
+    cacheAdded?: boolean,
+    selectionState?: SelectionState,
+}
+type rawType = {
+    blocks: Array<*>,
+    entityMap: {}
+}
+
 /**
  * Test if a signature was already add to our content to avoid adding it twice
  *
  * @param contentState
  * @param currentUser
  */
-export const isSignatureAdded = (contentState, currentUser = fromJS({})) => (
+export const isSignatureAdded = (contentState: ContentState, currentUser: currentUserType = fromJS({})): boolean => (
     contentState.getPlainText().includes(`${signatureTextPrefix}${currentUser.get('signature_text')}`)
 )
 
@@ -31,7 +56,7 @@ export const isSignatureAdded = (contentState, currentUser = fromJS({})) => (
  * @param contentState
  * @param currentUser
  */
-export const onlySignature = (contentState, currentUser = fromJS({})) => {
+export const onlySignature = (contentState: ContentState, currentUser: currentUserType = fromJS({})): boolean => {
     if (!contentState) {
         return false
     }
@@ -45,7 +70,7 @@ export const onlySignature = (contentState, currentUser = fromJS({})) => {
  * @param context
  * @returns {*}
  */
-export const getCache = (context) => {
+export const getCache = (context: contextType): contextType => {
     const {action} = context
 
     // Proceed only if the change didn't come from a macro
@@ -77,7 +102,7 @@ export const getCache = (context) => {
  *
  * @param context
  */
-export const updateCache = (context) => {
+export const updateCache = (context: contextType) => {
     const {contentState, selectionState, appliedMacro, action} = context
     // We're storing the content state in a persistent storage so we can keep it after page refresh
     if (
@@ -101,7 +126,7 @@ export const updateCache = (context) => {
  * @param contentState
  * @return {{blocks: Array, entityMap: {}}}
  */
-export const convertToRawWithoutMentions = (contentState) => {
+export const convertToRawWithoutMentions = (contentState: ContentState): rawType => {
     // We don't store mentions in cache because when we fetch the message from cache,
     // the mention entity would be applied even if the ticket channel is not private
 
@@ -123,7 +148,7 @@ export const convertToRawWithoutMentions = (contentState) => {
  * @returns {*}
  * @private
  */
-const _markCacheAdded = (context) => {
+const _markCacheAdded = (context: contextType): contextType => {
     context.cacheAdded = true
     context.state = context.state.setIn(['state', 'cacheAdded'], true)
     return context
@@ -135,7 +160,7 @@ const _markCacheAdded = (context) => {
  * @param context
  * @returns {*}
  */
-export const addCache = (context) => {
+export const addCache = (context: contextType): contextType => {
     const {state} = context
 
     context.cacheAdded = state.getIn(['state', 'cacheAdded'], false)
@@ -168,7 +193,7 @@ export const addCache = (context) => {
  * @param blocks
  * @private
  */
-const _selectionAfter = (blocks) => {
+const _selectionAfter = (blocks: Array<{key: string, text: string}>) => {
     if (blocks && blocks.length) {
         // we only want the last block, we put the selection after it
         const block = blocks.slice(-1)[0]
@@ -187,7 +212,7 @@ const _selectionAfter = (blocks) => {
  * @returns {*}
  * @private
  */
-const _markSignatureAdded = (context) => {
+const _markSignatureAdded = (context: contextType): contextType => {
     context.signatureAdded = true
     context.state = context.state.setIn(['state', 'signatureAdded'], true)
     return context
@@ -199,7 +224,7 @@ const _markSignatureAdded = (context) => {
  * @param context
  * @returns {*}
  */
-export const addSignature = (context) => {
+export const addSignature = (context: contextType): contextType => {
     const {action, state, contentState} = context
 
     context.signatureAdded = state.getIn(['state', 'signatureAdded'], false)
@@ -251,7 +276,7 @@ export const addSignature = (context) => {
  * @param context
  * @returns {*}
  */
-export const applyMacro = (context) => {
+export const applyMacro = (context: contextType): contextType => {
     const {contentState, selectionState, action, state} = context
 
     // Only when it's from a macro

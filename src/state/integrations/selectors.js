@@ -1,10 +1,14 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
 import {compare} from '../../utils'
 
-export const getIntegrationsState = state => state.integrations || fromJS({})
+import type {stateType} from '../types'
+type typesType = Array<string> | string
+
+export const getIntegrationsState = (state: stateType) => state.integrations || fromJS({})
 
 export const getIntegrations = createSelector(
     [getIntegrationsState],
@@ -16,7 +20,7 @@ export const getActiveIntegrations = createSelector(
     state => state.filter(i => !i.get('deactivated_datetime'))
 )
 
-export const getIntegrationById = id => createSelector(
+export const getIntegrationById = (id: number) => createSelector(
     [getIntegrations],
     (integrations) => {
         return integrations.find(integration => integration.get('id', '').toString() === (id || '').toString())
@@ -24,12 +28,13 @@ export const getIntegrationById = id => createSelector(
     }
 )
 
-export const makeGetIntegrationById = state => id => getIntegrationById(id)(state)
+export const makeGetIntegrationById = (state: stateType) => (id: number) => getIntegrationById(id)(state)
 
-export const getIntegrationsByTypes = types => createSelector(
+export const getIntegrationsByTypes = (types: typesType) => createSelector(
     [getIntegrations],
     (integrations) => {
         if (!_isArray(types)) {
+            // $FlowFixMe
             types = [types]
         }
 
@@ -74,22 +79,22 @@ export const getChannels = createSelector(
     })
 )
 
-export const getChannelsByType = type => createSelector(
+export const getChannelsByType = (type: string) => createSelector(
     [getChannels],
     state => state.filter(integration => integration.get('type') === type)
 )
 
-export const getAuthData = type => createSelector(
+export const getAuthData = (type: string) => createSelector(
     [getIntegrationsState],
     state => state.getIn(['authentication', type], fromJS({}))
 )
 
-export const getRedirectUri = type => createSelector(
+export const getRedirectUri = (type: string) => createSelector(
     [getAuthData(type)],
     state => state.get('redirect_uri', '')
 )
 
-export const makeGetRedirectUri = state => type => getRedirectUri(type)(state)
+export const makeGetRedirectUri = (state: stateType) => (type: string) => getRedirectUri(type)(state)
 
 // return the list of integration used to send messages from the helpdesk
 export const getMessagingIntegrations = createSelector(
@@ -104,19 +109,19 @@ export const getMessagingIntegrations = createSelector(
     }
 )
 
-export const hasIntegrationOfTypes = types => createSelector(
+export const hasIntegrationOfTypes = (types: typesType) => createSelector(
     [getIntegrationsByTypes(types)],
     integrations => !integrations.isEmpty()
 )
 
-export const makeHasIntegrationOfTypes = state => types => hasIntegrationOfTypes(types)(state)
+export const makeHasIntegrationOfTypes = (state: stateType) => (types: typesType) => hasIntegrationOfTypes(types)(state)
 
-export const getIntegrationExtra = type => createSelector(
+export const getIntegrationExtra = (type: string) => createSelector(
     [getIntegrationsState],
     state => state.getIn(['extra', type]) || fromJS({})
 )
 
-export const getShopifyIntegrationsWithoutChat = (state) => {
+export const getShopifyIntegrationsWithoutChat = (state: stateType) => {
     const shopifyIntegrations = getIntegrationsByTypes('shopify')(state)
     const chatIntegrations = getIntegrationsByTypes('smooch_inside')(state)
 

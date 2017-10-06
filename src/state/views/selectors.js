@@ -1,3 +1,4 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import {createImmutableSelector} from '../../utils'
@@ -5,7 +6,10 @@ import {sortViews} from './utils'
 import * as viewsConfig from '../../config/views'
 import {getSettingsByType as getCurrentUserSettingsByType} from '../currentUser/selectors'
 
-export const getViewsState = state => state.views || fromJS({})
+import type {Map, List} from 'immutable'
+import type {stateType} from '../types'
+
+export const getViewsState = (state: stateType) => state.views || fromJS({})
 
 export const getViews = createImmutableSelector(
     [getViewsState],
@@ -22,7 +26,7 @@ export const hasActiveView = createSelector(
     state => !state.isEmpty()
 )
 
-export const hasActiveViewOfType = type => createSelector(
+export const hasActiveViewOfType = (type: string) => createSelector(
     [hasActiveView, getActiveView],
     (isActive, activeView) => isActive && activeView.get('type') === type
 )
@@ -44,7 +48,7 @@ export const isEditMode = createSelector(
 
 export const areFiltersValid = createSelector(
     [getActiveView],
-    (view) => {
+    view => {
         return !view.get('filters').includes(', \'\')')
     }
 )
@@ -66,7 +70,7 @@ export const getActiveViewFilters = createSelector(
 
 export const getActiveViewConfig = createSelector(
     [getActiveView],
-    (view) => {
+    view => {
         return viewsConfig.getConfigByType(view.get('type'))
     }
 )
@@ -103,16 +107,16 @@ export const getLoading = createSelector(
 
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
-export const isLoading = name => createSelector(
+export const isLoading = (name: string) => createSelector(
     [getLoading],
     loading => loading.get(name, false)
 )
 
 // in component usage
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
-export const makeIsLoading = state => name => isLoading(name)(state)
+export const makeIsLoading = (state: stateType) => (name: string) => isLoading(name)(state)
 
-export const getViewsByType = type => createImmutableSelector(
+export const getViewsByType = (type: string) => createImmutableSelector(
     [getViews, getCurrentUserSettingsByType(type.replace('list', 'views'))],
     (views, currentUserSettings) => {
         return views
@@ -135,9 +139,9 @@ export const getViewsByType = type => createImmutableSelector(
     }
 )
 
-export const getViewIdToDisplay = (type, urlViewId) => createSelector(
+export const getViewIdToDisplay = (type: string, urlViewId: ?string) => createSelector(
     [getViewsByType(type)],
-    (views) => {
+    (views: List<Map<*,*>>) => {
         if (urlViewId) {
             return parseInt(urlViewId)
         }
@@ -150,19 +154,19 @@ export const getViewIdToDisplay = (type, urlViewId) => createSelector(
     }
 )
 
-export const makeGetViewIdToDisplay = state => (type, urlViewId) => getViewIdToDisplay(type, urlViewId)(state)
+export const makeGetViewIdToDisplay = (state: stateType) => (type: string, urlViewId: ?string) => getViewIdToDisplay(type, urlViewId)(state)
 
 /**
  * Return view of asked id, if id is 'new' it generates a new view according to config
  * @param id {String}
  * @param configName {String} - optional
  */
-export const getView = (id, configName = '') => createImmutableSelector(
+export const getView = (id: string, configName: ?string = '') => createImmutableSelector(
     [getViews],
     views => {
         if (id === 'new' || !id) {
             if (!configName) {
-                console.error(`Can't get new view with config name "${configName}"`)
+                console.error(`Can't get new view with config name "${String(configName)}"`)
                 return fromJS({})
             }
 
@@ -173,13 +177,13 @@ export const getView = (id, configName = '') => createImmutableSelector(
     }
 )
 
-export const makeGetView = state => (id, configName) => getView(id, configName)(state)
+export const makeGetView = (state: stateType) => (id: string, configName: ?string) => getView(id, configName)(state)
 
 /**
  * Return the count for a given view. Default to 0
  * @param viewId
  */
-export const getViewCount = (viewId) => createSelector(
+export const getViewCount = (viewId: string) => createSelector(
     [getViewsState],
     state => {
         const counts = state.get('counts', fromJS({}))
@@ -187,4 +191,4 @@ export const getViewCount = (viewId) => createSelector(
     }
 )
 
-export const makeGetViewCount = state => (viewId) => getViewCount(viewId)(state)
+export const makeGetViewCount = (state: stateType) => (viewId: string) => getViewCount(viewId)(state)

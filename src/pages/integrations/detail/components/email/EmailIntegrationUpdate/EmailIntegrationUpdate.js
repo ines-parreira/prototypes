@@ -206,6 +206,7 @@ class EmailIntegrationUpdate extends React.Component {
                     {' '}
                     <a
                         target="_blank"
+                        rel="noopener noreferrer"
                         href="http://docs.gorgias.io/integrations/email"
                         onClick={() => {
                             segmentTracker.logEvent(segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED, {
@@ -242,6 +243,7 @@ class EmailIntegrationUpdate extends React.Component {
                     {' '}
                     <a
                         target="_blank"
+                        rel="noopener noreferrer"
                         href="http://docs.gorgias.io/integrations/email#improve_email_deliverability_using_spf_and_dkim"
                     >
                         setup SPF

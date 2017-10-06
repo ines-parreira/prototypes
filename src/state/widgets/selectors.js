@@ -1,10 +1,15 @@
+// @flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import {itemsWithContext} from './utils'
 
 import {getActiveUser} from '../users/selectors'
 
-export const getWidgetsState = state => state.widgets || fromJS({})
+import type {Map} from 'immutable'
+import type {stateType} from '../types'
+import type {contextType} from './types'
+
+export const getWidgetsState = (state: stateType): Map<*,*> => state.widgets || fromJS({})
 
 export const getContext = createSelector(
     [getWidgetsState],
@@ -21,18 +26,18 @@ export const hasWidgets = createSelector(
     widgets => !widgets.isEmpty()
 )
 
-export const getWidgetsWithContext = context => createSelector(
+export const getWidgetsWithContext = (context: contextType) => createSelector(
     [getWidgets, getContext],
     // take current context by default
     (widgets, currentContext) => itemsWithContext(widgets, context || currentContext)
 )
 
-export const hasWidgetsWithContext = context => createSelector(
+export const hasWidgetsWithContext = (context: contextType) => createSelector(
     [getWidgetsWithContext(context)],
     widgets => !widgets.isEmpty()
 )
 
-export const getSources = state => {
+export const getSources = (state: stateType) => {
     return fromJS({
         ticket: state.ticket,
         user: getActiveUser(state)

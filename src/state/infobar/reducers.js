@@ -1,6 +1,10 @@
+// @flow
 import {fromJS} from 'immutable'
-import * as types from './constants'
+import * as constants from './constants'
 import * as utils from './utils'
+
+import type {Map} from 'immutable'
+import type {actionType} from '../types'
 
 export const initialState = fromJS({
     _internal: {
@@ -15,13 +19,13 @@ export const initialState = fromJS({
     pendingActionsCallbacks: [],
 })
 
-export default (state = initialState, action) => {
+export default (state: Map<*,*> = initialState, action: actionType): Map<*,*> => {
     switch (action.type) {
-        case types.FETCH_USER_PICTURE_START: {
+        case constants.FETCH_USER_PICTURE_START: {
             return state.setIn(['_internal', 'loading', 'displayedUserPictureUrl'], true)
         }
 
-        case types.FETCH_USER_PICTURE_SUCCESS: {
+        case constants.FETCH_USER_PICTURE_SUCCESS: {
             return state
                 .setIn(['_internal', 'loading', 'displayedUserPictureUrl'], false)
                 .set('picture', fromJS({
@@ -30,13 +34,13 @@ export default (state = initialState, action) => {
                 }))
         }
 
-        case types.FETCH_USER_PICTURE_ERROR: {
+        case constants.FETCH_USER_PICTURE_ERROR: {
             return state
                 .set('displayedUserPictureUrl', null)
                 .setIn(['_internal', 'loading', 'displayedUserPictureUrl'], false)
         }
 
-        case types.EXECUTE_ACTION_START: {
+        case constants.EXECUTE_ACTION_START: {
             if (!action.callback) {
                 return state
             }
@@ -51,8 +55,8 @@ export default (state = initialState, action) => {
             })
         }
 
-        case types.EXECUTE_ACTION_ERROR:
-        case types.EXECUTE_ACTION_SUCCESS: {
+        case constants.EXECUTE_ACTION_ERROR:
+        case constants.EXECUTE_ACTION_SUCCESS: {
             const actionId = utils.actionButtonHashForData(action.data)
 
             const actionIndex = state

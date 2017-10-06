@@ -1,16 +1,23 @@
+// @flow
 import axios from 'axios'
 import _capitalize from 'lodash/capitalize'
-import * as types from './constants'
+import * as constants from './constants'
 import {notify} from '../notifications/actions'
 
-export const updateAccount = (values) => (dispatch => {
-    dispatch({type: types.UPDATE_ACCOUNT_START})
+import type {dispatchType} from '../types'
+type settingType = {
+    id: string,
+    type: string
+}
+
+export const updateAccount = (values: {}) => ((dispatch: dispatchType): Promise<dispatchType> => {
+    dispatch({type: constants.UPDATE_ACCOUNT_START})
 
     return axios.put('/api/account/', values)
         .then((json = {}) => json.data)
         .then(resp => {
             dispatch({
-                type: types.UPDATE_ACCOUNT_SUCCESS,
+                type: constants.UPDATE_ACCOUNT_SUCCESS,
                 resp
             })
             dispatch(notify({
@@ -19,15 +26,15 @@ export const updateAccount = (values) => (dispatch => {
             }))
         }, error => {
             return dispatch({
-                type: types.UPDATE_ACCOUNT_ERROR,
+                type: constants.UPDATE_ACCOUNT_ERROR,
                 error,
                 reason: 'Failed to update account settings'
             })
         })
 })
 
-export function submitSetting(setting) {
-    return (dispatch) => {
+export function submitSetting(setting: settingType) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         const isUpdate = !!setting.id
         let promise
 
@@ -46,14 +53,14 @@ export function submitSetting(setting) {
                 }))
 
                 return dispatch({
-                    type: types.UPDATE_ACCOUNT_SETTING,
+                    type: constants.UPDATE_ACCOUNT_SETTING,
                     isUpdate,
                     setting
                 })
 
             }, error => {
                 return dispatch({
-                    type: types.UPDATE_ACCOUNT_SETTING_ERROR,
+                    type: constants.UPDATE_ACCOUNT_SETTING_ERROR,
                     error,
                     reason: `Failed to update ${setting.type} settings`
                 })

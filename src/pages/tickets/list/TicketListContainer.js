@@ -1,5 +1,5 @@
-import React, {PropTypes} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+// @flow
+import React from 'react'
 import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import {Link} from 'react-router'
@@ -17,7 +17,29 @@ import * as viewsSelectors from '../../../state/views/selectors'
 import TicketListActions from './components/TicketListActions'
 import ViewTable from '../../common/components/ViewTable/Page'
 
-class TicketListContainer extends React.Component {
+import type {Map, List} from 'immutable'
+import type {reactRouterLocation, reactRouterRoute} from '../../../types'
+
+type Props = {
+    activeView: Map<*,*>,
+    hasActiveView: boolean,
+    fetchTags: typeof tagsActions.fetchTags,
+    selectedItemsIds: List<*>,
+    views: {},
+    tickets: {},
+
+    route: reactRouterRoute,
+    location: reactRouterLocation,
+    params?: {},
+    urlViewId?: string,
+}
+
+type State = {
+    isSearch: boolean,
+    isUpdate: boolean
+}
+
+class TicketListContainer extends React.Component<Props, State> {
     state = {
         isSearch: false,
         isUpdate: true,
@@ -91,19 +113,6 @@ class TicketListContainer extends React.Component {
             </DocumentTitle>
         )
     }
-}
-
-TicketListContainer.propTypes = {
-    activeView: ImmutablePropTypes.map.isRequired,
-    hasActiveView: PropTypes.bool.isRequired,
-    fetchTags: PropTypes.func.isRequired,
-    location: PropTypes.object,
-    params: PropTypes.object,
-    route: PropTypes.object.isRequired,
-    selectedItemsIds: ImmutablePropTypes.list.isRequired,
-    tickets: PropTypes.object.isRequired,
-    urlViewId: PropTypes.string,
-    views: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {

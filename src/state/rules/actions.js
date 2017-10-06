@@ -1,33 +1,38 @@
+// @flow
 import axios from 'axios'
 import {fromJS, List} from 'immutable'
 
-import * as types from './constants'
+import * as constants from './constants'
 import {notify} from '../notifications/actions'
 
-export const addRuleStart = (type, code) => ({
-    type: types.ADD_RULE_START,
+import type {dispatchType, getStateType} from '../types'
+import type {ruleType} from './types'
+type operationType = 'UPDATE' | 'INSERT' | 'DELETE' | 'UPDATE_LOGICAL_OPERATOR' | 'DELETE_BINARY_EXPRESSION'
+
+export const addRuleStart = (type: string, code: string) => ({
+    type: constants.ADD_RULE_START,
     title: type,
     code
 })
 
-export const addRuleEnd = (rule) => ({
-    type: types.ADD_RULE_END,
+export const addRuleEnd = (rule: ruleType) => ({
+    type: constants.ADD_RULE_END,
     rule
 })
 
-export const requestRules = (url) => ({
-    type: types.RULES_REQUESTS_POSTS,
+export const requestRules = (url: string) => ({
+    type: constants.RULES_REQUESTS_POSTS,
     url
 })
 
-export const receiveRules = (rules) => ({
-    type: types.RULES_RECEIVE_POSTS,
+export const receiveRules = (rules: Array<ruleType>) => ({
+    type: constants.RULES_RECEIVE_POSTS,
     rules
 })
 
-export const modifyCodeAST = (id, path, value, operation) => (dispatch, getState) => (
+export const modifyCodeAST = (id: string, path: List<*>, value: string, operation: operationType) => (dispatch: dispatchType, getState: getStateType): dispatchType=> (
     dispatch({
-        type: types.RULES_UPDATE_CODE_AST,
+        type: constants.RULES_UPDATE_CODE_AST,
         schemas: getState().schemas,
         id,
         path,
@@ -36,12 +41,12 @@ export const modifyCodeAST = (id, path, value, operation) => (dispatch, getState
     })
 )
 
-export const initialiseCodeAST = (id) => ({
-    type: types.RULES_INITIALISE_CODE_AST,
+export const initialiseCodeAST = (id: string) => ({
+    type: constants.RULES_INITIALISE_CODE_AST,
     id,
 })
 
-export const fail = (error, reason) => ({
+export const fail = (error: {} = {}, reason: string) => ({
     type: 'ERROR',
     error,
     reason,
@@ -51,7 +56,7 @@ export const fail = (error, reason) => ({
  * Create a rule
  * @param data
  */
-export const create = (data) => (dispatch) => {
+export const create = (data: ruleType) => (dispatch: dispatchType): Promise<dispatchType> => {
     return axios.post('/api/rules/', data)
         .then((response) => {
             return dispatch(addRuleEnd(response.data))
@@ -64,9 +69,9 @@ export const create = (data) => (dispatch) => {
  * Save a rule
  * @param data
  */
-export const save = (data) => (dispatch) => {
+export const save = (data: ruleType) => (dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
-        type: types.UPDATE_RULE_START,
+        type: constants.UPDATE_RULE_START,
         ruleId: data.id,
         rule: fromJS(data),
     })
@@ -80,7 +85,7 @@ export const save = (data) => (dispatch) => {
             }))
 
             return dispatch({
-                type: types.UPDATE_RULE_SUCCESS,
+                type: constants.UPDATE_RULE_SUCCESS,
                 ruleId: data.id,
                 rule: fromJS(resp),
             })
@@ -88,7 +93,7 @@ export const save = (data) => (dispatch) => {
             dispatch(fail(error, 'Unable to save the rule'))
 
             return dispatch({
-                type: types.UPDATE_RULE_ERROR,
+                type: constants.UPDATE_RULE_ERROR,
                 ruleId: data.id
             })
         })
@@ -98,7 +103,7 @@ export const save = (data) => (dispatch) => {
  * Activate a rule
  * @param id rule id
  */
-export const activate = (id) => (dispatch) => (
+export const activate = (id: string) => (dispatch: dispatchType): Promise<dispatchType> => (
     axios.put(`/api/rules/${id}/`, {deactivated_datetime: null})
         .then((json = {}) => json.data)
         .then(() => {
@@ -108,7 +113,7 @@ export const activate = (id) => (dispatch) => (
             }))
 
             return dispatch(({
-                type: types.ACTIVATE_RULE,
+                type: constants.ACTIVATE_RULE,
                 id,
             }))
         }, error => {
@@ -121,7 +126,7 @@ export const activate = (id) => (dispatch) => (
  * Deactivate a rule
  * @param id
  */
-export const deactivate = (id) => (dispatch) => (
+export const deactivate = (id: string) => (dispatch: dispatchType): Promise<dispatchType> => (
     axios.put(`/api/rules/${id}/`, {deactivated_datetime: new Date()})
         .then((json = {}) => json.data)
         .then(() => {
@@ -131,7 +136,7 @@ export const deactivate = (id) => (dispatch) => (
             }))
 
             return dispatch(({
-                type: types.DEACTIVATE_RULE,
+                type: constants.DEACTIVATE_RULE,
                 id,
             }))
         }, error => {
@@ -143,7 +148,7 @@ export const deactivate = (id) => (dispatch) => (
  * Delete a rule
  * @param id
  */
-export const remove = (id) => (dispatch) => (
+export const remove = (id: string) => (dispatch: dispatchType): Promise<dispatchType> => (
     axios.delete(`/api/rules/${id}/`)
         .then((json = {}) => json.data)
         .then(() => {
@@ -153,7 +158,7 @@ export const remove = (id) => (dispatch) => (
             }))
 
             return dispatch(({
-                type: types.REMOVE_RULE,
+                type: constants.REMOVE_RULE,
                 id,
             }))
         }, error => {
@@ -165,18 +170,18 @@ export const remove = (id) => (dispatch) => (
  * Reset the code ast of a rule
  * @param id
  */
-export const reset = (id) => (dispatch) => (
+export const reset = (id: string) => (dispatch: dispatchType): Promise<dispatchType> => (
     axios.get(`/api/rules/${id}`)
         .then((json = {}) => json.data)
         .then(response => {
             dispatch({
-                type: types.RESET_RULE_SUCCESS,
+                type: constants.RESET_RULE_SUCCESS,
                 ruleId: id
             })
             return dispatch(modifyCodeAST(
                 id,
                 List([]),
-                response.code_ast || types.DEFAULT_STATEMENT,
+                response.code_ast || constants.DEFAULT_STATEMENT,
                 'UPDATE'
             ))
         })
@@ -184,7 +189,7 @@ export const reset = (id) => (dispatch) => (
 
 export function fetchRules() {
     const url = '/api/rules/'
-    return (dispatch) => {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch(requestRules(url))
 
         return axios.get(url)
@@ -197,10 +202,10 @@ export function fetchRules() {
     }
 }
 
-export function updateOrder(priorities) {
-    return (dispatch) => {
+export function updateOrder(priorities: {}) {
+    return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.UPDATE_ORDER_START,
+            type: constants.UPDATE_ORDER_START,
             priorities,
         })
 
@@ -210,7 +215,7 @@ export function updateOrder(priorities) {
                 return dispatch(receiveRules(resp))
             }, error => {
                 return dispatch({
-                    type: types.UPDATE_ORDER_ERROR,
+                    type: constants.UPDATE_ORDER_ERROR,
                     error,
                     reason: 'Failed to update list of rules'
                 })
