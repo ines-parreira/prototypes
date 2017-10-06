@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import SelectField from '../../../forms/MultiSelectField'
+import MultiSelectField from '../../../forms/MultiSelectField'
 
 function mapStateToProps(state) {
     return {
@@ -33,7 +33,7 @@ export default class TagsSelect extends Component {
         }).toJS()
 
         return (
-            <SelectField
+            <MultiSelectField
                 values={value.split(',').filter(value => value !== '')}
                 options={options}
                 singular="tag"

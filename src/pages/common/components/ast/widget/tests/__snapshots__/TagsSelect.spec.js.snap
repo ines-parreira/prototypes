@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ast widgets TagsSelect should render a MultiSelectField 1`] = `
+<MultiSelectField
+  allowCustomValues={true}
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "billing",
+        "value": "billing",
+      },
+      Object {
+        "label": "refund",
+        "value": "refund",
+      },
+      Object {
+        "label": "question",
+        "value": "question",
+      },
+    ]
+  }
+  plural="tags"
+  showNoResult={false}
+  singular="tag"
+  style={null}
+  tagColor="#0275d8"
+  values={Array []}
+/>
+`;

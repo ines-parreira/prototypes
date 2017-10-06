@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
+<SelectField
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": <RenderLabel
+          field={
+                Immutable.Map {
+                      name: "integrations",
+                }
+          }
+          value={
+                Immutable.Map {
+                      id: 1,
+                      name: "Acme Support",
+                      type: "email",
+                      meta: Immutable.Map {
+                            address: "support@acme.gorgias.io",
+                      },
+                }
+          }
+    />,
+        "text": "Acme Support",
+        "value": 1,
+      },
+      Object {
+        "label": <RenderLabel
+          field={
+                Immutable.Map {
+                      name: "integrations",
+                }
+          }
+          value={
+                Immutable.Map {
+                      id: 2,
+                      name: "Acme Chat",
+                      type: "smooch_inside",
+                      meta: Immutable.Map {
+                            app_id: "123456uy5tr1d2g3h4",
+                      },
+                }
+          }
+    />,
+        "text": "Acme Chat",
+        "value": 2,
+      },
+    ]
+  }
+  placeholder="Select an integration"
+  style={
+    Object {
+      "display": "inline-block",
+      "verticalAlign": "top",
+    }
+  }
+  value={1}
+/>
+`;
+
+exports[`ast widgets IntegrationSelect should render a loading imput (no integrations) 1`] = `
+<ei
+  placeholder="Loading integrations..."
+  readOnly={true}
+  tag="p"
+  type="text"
+/>
+`;

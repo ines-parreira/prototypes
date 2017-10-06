@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ast expressions ArrayExpression should render component 1`] = `
+<span
+  className="Literal"
+>
+  <Widget
+    actions={Object {}}
+    compact={true}
+    config={Object {}}
+    leftsiblings={Object {}}
+    parent={
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "arguments",
+        1,
+        "elements",
+      ]
+    }
+    rule={Object {}}
+    schemas={Object {}}
+    value={
+      Array [
+        "hello",
+        "world!",
+      ]
+    }
+  />
+</span>
+`;

@@ -117,7 +117,7 @@ export default class SelectField extends Component {
         const {value, style, placeholder} = this.props
         const {filteredOptions, optionsOpen, selectedOptionIndex} = this.state
         const selectedOption = this.props.options.find(option => option.value === value)
-        const label = selectedOption ? selectedOption.label : value
+        const label = selectedOption ? selectedOption.label : placeholder
 
         return (
             <div style={style}>
@@ -126,7 +126,7 @@ export default class SelectField extends Component {
                         className="btn btn-secondary dropdown-toggle clickable"
                         onClick={this._toggleDropdown}
                     >
-                        {label || placeholder}
+                        {label}
                     </div>
                 </div>
                 <Dropdown

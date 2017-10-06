@@ -25,7 +25,9 @@ Object {
 `;
 
 exports[`MultiSelectField should render a multi select input with custom props 1`] = `
-<div>
+<div
+  style={null}
+>
   <div
     className="undefined"
     onClick={[Function]}
@@ -109,7 +111,9 @@ exports[`MultiSelectField should render a multi select input with custom props 1
 `;
 
 exports[`MultiSelectField should render a select input with default props 1`] = `
-<div>
+<div
+  style={null}
+>
   <div
     className="undefined"
     onClick={[Function]}
@@ -173,6 +177,8 @@ Object {
   "plural": "tags",
   "showNoResult": true,
   "singular": "tag",
+  "style": null,
+  "tagColor": "#0275d8",
   "values": Array [
     1,
     3,
@@ -188,6 +194,8 @@ Object {
   "plural": "items",
   "showNoResult": false,
   "singular": "item",
+  "style": null,
+  "tagColor": "#0275d8",
   "values": Array [],
 }
 `;

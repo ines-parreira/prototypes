@@ -3,6 +3,7 @@ import React from 'react'
 import {List} from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
+import _isArray from 'lodash/isArray'
 
 import Select from './widget/ReactSelect'
 import StatusSelect from './widget/StatusSelect'
@@ -16,6 +17,8 @@ import InputField from '../../forms/InputField'
 import {convertToHTML, humanizeString} from '../../../../utils'
 import TagsSelect from './widget/TagsSelect'
 import RichField from '../../forms/RichField'
+import MultiSelectField from '../../forms/MultiSelectField'
+import {collectionOperators, deprecatedOperators} from '../../../../config/rules'
 
 export default class Widget extends React.Component {
     static propTypes = {
@@ -61,7 +64,7 @@ export default class Widget extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const{config, parent, properties} = nextProps
+        const {config, parent, properties} = nextProps
         // update text field state when props changes
         if (config.widget === 'rich-field' && config.textField) {
             this.setState(this._getTextField(config, parent, properties))
@@ -70,6 +73,16 @@ export default class Widget extends React.Component {
 
     _handleChange = (value) => {
         const {actions, parent} = this.props
+
+        // transform the array of string to an array of AST Literal object
+        if (_isArray(value)) {
+            value = value.map((val) => ({
+                type: 'Literal',
+                raw: `'${val}'`,
+                value: val
+            }))
+        }
+
         return actions.modifyCodeAST(parent, value, 'UPDATE')
     }
 
@@ -168,7 +181,7 @@ export default class Widget extends React.Component {
     }
 
     render() {
-        const {leftsiblings, schemas, value} = this.props
+        const {leftsiblings, schemas, value, rule, parent} = this.props
 
         // todo should depend on triggers (should be described in schemas)
         const rootObjects = ['ticket', 'message']
@@ -198,6 +211,11 @@ export default class Widget extends React.Component {
 
                 // only show props that have a meta value or a refs
                 if (prop.hasOwnProperty('meta')) {
+                    // prop is hidden in rules
+                    if (_get(prop, ['meta', 'rules', 'hide']) === true) {
+                        continue
+                    }
+
                     widget.options.push({
                         value: key,
                         label: _get(prop, ['meta', 'rules', 'label']) || humanizeString(key).toLowerCase(),
@@ -214,9 +232,17 @@ export default class Widget extends React.Component {
 
         } else if (left.last() === 'operators') {
             // operators are using simple select widget, all we need is the options
-            const operators = schemas.getIn(left)
+            let operators = schemas.getIn(left)
+
 
             if (operators) {
+                // exclude deprecated operators which are not already used
+                operators = operators.filter((ope, operatorName) => {
+                    if (deprecatedOperators.includes(operatorName)) {
+                        return deprecatedOperators.includes(widget.value)
+                    }
+                    return true
+                })
                 widget.options = operators.toJS()
             }
         } else if (left.first() === 'actions') {
@@ -224,21 +250,38 @@ export default class Widget extends React.Component {
         } else {
             // all other properties
             const right = schemas.getIn(left)
-            if (!right) {
-                return this._input(value)
+            const calleeName = rule.getIn(parent.slice(0, -3).concat(['callee', 'name']).insert(0, 'code_ast'))
+            widget.type = right ? right.getIn(['meta', 'rules', 'widget']) : 'input'
+
+            // display a multi select field in case current attribute is an array AND
+            // it's has no specific input AND callee is a collection operator
+            if (_isArray(widget.value) && (!widget.type || widget.type === 'input') &&
+                collectionOperators.includes(calleeName)) {
+                widget.type = 'multi-select'
             }
 
-            widget.type = right.getIn(['meta', 'rules', 'widget']) || 'input'
-
-            const options = right.getIn(['meta', 'enum'])
-            widget.options = options ? options.toJS() : []
-
-            widget.description = right.get('description')
+            if (right) {
+                const options = right.getIn(['meta', 'enum'])
+                widget.options = options ? options.toJS() : []
+                widget.description = right.get('description')
+            }
         }
 
         const widgetType = this.props.type || widget.type
 
         switch (widgetType) {
+            case 'multi-select':
+                return <MultiSelectField
+                    style={{
+                        display:'inline-block',
+                        verticalAlign:'top'
+                    }}
+                    values={widget.value}
+                    singular="word"
+                    plural="words"
+                    allowCustomValues
+                    onChange={this._handleChange}
+                />
             case 'select':
                 return <Select {...widget} onChange={this._handleChange} />
             case 'status-select':

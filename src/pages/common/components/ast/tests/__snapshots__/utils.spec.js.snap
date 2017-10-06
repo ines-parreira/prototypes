@@ -1,0 +1,1753 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (first attribute changed 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 36,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 22,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 14,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "name": "message",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 22,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 15,
+                    "line": 1,
+                  },
+                },
+                "name": "channel",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 33,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 24,
+                  "line": 1,
+                },
+              },
+              "raw": "'aircall'",
+              "type": "Literal",
+              "value": "aircall",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 6,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "eq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 34,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (eq(message.channel, 'aircall')) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (middle attribute changed 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 28,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 13,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 21,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 14,
+                    "line": 1,
+                  },
+                },
+                "name": "subject",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 25,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 23,
+                  "line": 1,
+                },
+              },
+              "raw": "''",
+              "type": "Literal",
+              "value": "",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 6,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "eq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 26,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (eq(ticket.subject, '')) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (middle attribute changed 2`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 36,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 29,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "computed": false,
+                "loc": WrappingSourceLocation {
+                  "end": Object {
+                    "column": 23,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "object": Object {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 13,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 7,
+                      "line": 1,
+                    },
+                  },
+                  "name": "ticket",
+                  "type": "Identifier",
+                },
+                "property": Object {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 23,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 14,
+                      "line": 1,
+                    },
+                  },
+                  "name": "requester",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 29,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 24,
+                    "line": 1,
+                  },
+                },
+                "name": "email",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 33,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 31,
+                  "line": 1,
+                },
+              },
+              "raw": "''",
+              "type": "Literal",
+              "value": "",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 6,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "eq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 34,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (eq(ticket.requester.email, '')) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (middle attribute changed 3`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 33,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 24,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 13,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 24,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 14,
+                    "line": 1,
+                  },
+                },
+                "name": "from_agent",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 30,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 26,
+                  "line": 1,
+                },
+              },
+              "raw": "true",
+              "type": "Literal",
+              "value": true,
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 6,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "eq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 31,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (eq(ticket.from_agent, true)) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property name and reset value (last attribute name changed) 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 33,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 24,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 13,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 24,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 14,
+                    "line": 1,
+                  },
+                },
+                "name": "from_agent",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 30,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 26,
+                  "line": 1,
+                },
+              },
+              "raw": "true",
+              "type": "Literal",
+              "value": true,
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 6,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "eq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 31,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (eq(ticket.from_agent, true)) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed arguments changed should update value (ArrayExpression value changed) 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 6,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 5,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 5,
+            },
+            "start": Position {
+              "column": 8,
+              "line": 4,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 6,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 30,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 16,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 22,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 16,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 30,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 23,
+                    "line": 1,
+                  },
+                },
+                "name": "subject",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "elements": Array [
+                Object {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 15,
+                      "line": 2,
+                    },
+                    "start": Position {
+                      "column": 8,
+                      "line": 2,
+                    },
+                  },
+                  "raw": "'hello'",
+                  "type": "Literal",
+                  "value": "hello",
+                },
+                Object {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 15,
+                      "line": 3,
+                    },
+                    "start": Position {
+                      "column": 8,
+                      "line": 3,
+                    },
+                  },
+                  "raw": "'world'",
+                  "type": "Literal",
+                  "value": "world",
+                },
+              ],
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 5,
+                  "line": 4,
+                },
+                "start": Position {
+                  "column": 32,
+                  "line": 1,
+                },
+              },
+              "type": "ArrayExpression",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 15,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "containsAll",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 6,
+              "line": 4,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 6,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (containsAll(ticket.subject, [
+        'hello',
+        'world'
+    ])) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed arguments changed should update value (Literal value changed) 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 40,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 13,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 21,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 14,
+                    "line": 1,
+                  },
+                },
+                "name": "subject",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 37,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 23,
+                  "line": 1,
+                },
+              },
+              "raw": "'hello world!'",
+              "type": "Literal",
+              "value": "hello world!",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 6,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "eq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 38,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (eq(ticket.subject, 'hello world!')) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed callee changed should ONLY change callee and keep value (from a collection operator to a collection operator) 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 47,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 33,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 19,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 25,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 19,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 33,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 26,
+                    "line": 1,
+                  },
+                },
+                "name": "subject",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "elements": Array [
+                Object {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 43,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 36,
+                      "line": 1,
+                    },
+                  },
+                  "raw": "'hello'",
+                  "type": "Literal",
+                  "value": "hello",
+                },
+              ],
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 44,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 35,
+                  "line": 1,
+                },
+              },
+              "type": "ArrayExpression",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 18,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "notContainsAll",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 45,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (notContainsAll(ticket.subject, ['hello'])) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed callee changed should ONLY change callee and keep value (from a string operator to a string operator) 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 34,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 22,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 14,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 8,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 22,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 15,
+                    "line": 1,
+                  },
+                },
+                "name": "subject",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 31,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 24,
+                  "line": 1,
+                },
+              },
+              "raw": "'hello'",
+              "type": "Literal",
+              "value": "hello",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "neq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 32,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (neq(ticket.subject, 'hello')) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed callee changed should change callee and reset value (changed from a collection operator to string operator) 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 28,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 21,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 13,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 21,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 14,
+                    "line": 1,
+                  },
+                },
+                "name": "subject",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 25,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 23,
+                  "line": 1,
+                },
+              },
+              "raw": "''",
+              "type": "Literal",
+              "value": "",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 6,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "eq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 26,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (eq(ticket.subject, '')) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed callee changed should change callee and reset value (from string operator to a collection operator) 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 44,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 30,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 16,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 22,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 16,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 30,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 23,
+                    "line": 1,
+                  },
+                },
+                "name": "subject",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "elements": Array [
+                Object {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 40,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 33,
+                      "line": 1,
+                    },
+                  },
+                  "raw": "'hello'",
+                  "type": "Literal",
+                  "value": "hello",
+                },
+              ],
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 41,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 32,
+                  "line": 1,
+                },
+              },
+              "type": "ArrayExpression",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 15,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "containsAll",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 42,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (containsAll(ticket.subject, ['hello'])) {
+} else {
+}",
+}
+`;

@@ -1,8 +1,13 @@
 // @flow
 import {fromJS} from 'immutable'
 import drop from 'lodash/drop'
+import _isUndefined from 'lodash/isUndefined'
+import _isArray from 'lodash/isArray'
+import _isString from 'lodash/isString'
+
 import {OBJECT_DEFINITIONS} from './constants'
 import {getAST} from '../../utils'
+import {collectionOperators} from '../../config/rules'
 
 import type {Map, List} from 'immutable'
 import type {schemasType} from '../../types'
@@ -265,12 +270,46 @@ function resolveCallee(callExpression: Map<*,*>, firstArgSchema: schemasType): s
  *
  * @param callExpression - callExpression that we need to change
  * @param firstArgSchema - schema of the first argument of the callExpression that is used to get possible vals
+ * @param callee - callee name. E.g: contains, eq, etc...
+ * @param reset - reset or not the current value to the default one
  * @returns {String} The new value of the second argument.
  */
-function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType) {
-    const def = '\'\''
-    const oldLiteral = callExpression.getIn(['arguments', 1], fromJS({}))
-    const oldLiteralValue = oldLiteral.get('value')
+function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType, callee, reset) {
+    const isCollectionCallee = collectionOperators.includes(callee)
+    const args = callExpression.getIn(['arguments', 1])
+    let cur_default = 'null'
+    let cur_value = undefined
+
+    // define the current default and value
+    switch (args.get('type')) {
+        case 'ArrayExpression':
+            cur_default = '[]'
+            cur_value = args.get('elements').map(elem => elem.get('value')).toJS()
+            break
+        case 'Literal':
+            cur_default = '\'\''
+            cur_value = args.get('value')
+            break
+        default:
+    }
+
+    const useCurValue = !reset && !_isUndefined(cur_value)
+
+    if (isCollectionCallee) {
+        // property has changed, so we have to reset the second argument
+        if (!useCurValue) {
+            return '[]'
+        }
+
+        // current value is an array so we just create the raw value
+        if (_isArray(cur_value)) {
+            return `[${args.get('elements').map(elem => elem.get('raw')).toJS()}]`
+        }
+
+        // argument is not an array but new callee needs one
+        // so we transform the current value to an array
+        return `[${args.get('raw')}]`
+    }
 
     if (firstArgSchema) {
         switch (firstArgSchema.get('type')) {
@@ -278,22 +317,26 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType)
                 if (firstArgSchema.getIn(['meta', 'enum'])) {
                     const possibleLiterals = firstArgSchema.getIn(['meta', 'enum']).toJS()
                     const firstLit = possibleLiterals[0]
-                    for (const lit of possibleLiterals.slice(1)) {
-                        // just leave the same value as before
-                        if (lit === oldLiteralValue) {
-                            return `'${lit}'`
+
+                    if (!reset) {
+                        for (const lit of possibleLiterals.slice(1)) {
+                            // just leave the same value as before
+                            if (lit === cur_value) {
+                                return `'${lit}'`
+                            }
                         }
                     }
                     return `'${firstLit}'`
                 }
-                return def
-            case 'bool':
+
+                return useCurValue && _isString(cur_value) ? `'${cur_value}'` : '\'\''
+            case 'boolean':
                 return 'true'
             default:
-                return def
         }
     }
-    return def
+
+    return cur_default
 }
 
 /**
@@ -335,28 +378,43 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType)
  * Again, we try to keep the existing second argument if it's valid for the new `first argument`.
  * If it's not we'll have to look in the schemas for possible values (enum, object type, etc..)
  *
- * @param state - redux state
- * @param callExpressionPath - the path of our callExpression that we'll need to modify
- * @param fullPath - full path of the place where the change happened
+ * @param state - AST code
+ * @param path - index in the AST code where the change happened
  * @param schemas - OpenAPI schemas
  * @returns {*}
  */
-export function updateCallExpression(state: Map<*,*>, callExpressionPath: Map<*,*>, fullPath: List<*>, schemas: schemasType) {
+export function updateCallExpression(state: Map<*,*>, path: List<*>, schemas: schemasType) {
     // nothing to do if it's just a value change, just return the same state
-    if (fullPath.last() === 'value') {
+    // `value`: value of an AST Literal
+    // `elements`: values of an AST ArrayExpression
+    if (['value', 'elements'].includes(path.last())) {
         return state
     }
 
-    const callExpression = state.getIn(callExpressionPath.toJS()) || fromJS({})
-    const stopPath = fullPath.takeLast(fullPath.size - (callExpressionPath.size + 2))
+    const argumentsIndex = path.lastIndexOf('arguments')
+    const calleeIndex= path.lastIndexOf('callee')
+    let callExpressionPath = path
+    let stopPath = null
+    // Property is the first argument of a call expression.
+    // E.g: message.from_agent, ticket.subject, etc...
+    const hasPropertyChanged = ~argumentsIndex && path.get(argumentsIndex + 1) === 0
 
+    if (~argumentsIndex) {
+        // an argument has changed
+        callExpressionPath = path.setSize(argumentsIndex)
+        stopPath = path.takeLast(path.size - callExpressionPath.size - 2)
+    } else if (~calleeIndex) {
+        // callee has changed
+        callExpressionPath = path.setSize(calleeIndex)
+        stopPath = path.takeLast(path.size - callExpressionPath.size)
+    }
+
+    const callExpression = state.getIn(callExpressionPath.toJS())
     const [firstArg, firstArgSchema] = resolveFirstArg(callExpression, stopPath, schemas)
     const callee = resolveCallee(callExpression, firstArgSchema)
-    const secondArg = resolveSecondArg(callExpression, firstArgSchema)
-
+    const secondArg = resolveSecondArg(callExpression, firstArgSchema, callee, hasPropertyChanged)
     // generate the new CallExpression and replace the old one
     const rawCallExpression = `${callee}(${firstArg.join('.')}, ${secondArg})`
-
     // getAST will give us the whole Program, but we're only interested in the first CallExpression
     const newCallExpression = fromJS(getAST(rawCallExpression)).getIn(['body', 0, 'expression'])
     return state.setIn(callExpressionPath, newCallExpression)

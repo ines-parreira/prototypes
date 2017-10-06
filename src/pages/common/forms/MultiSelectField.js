@@ -18,6 +18,8 @@ export default class MultiSelectField extends Component {
         plural: PropTypes.string,
         showNoResult: PropTypes.bool,
         singular: PropTypes.string,
+        style: PropTypes.object,
+        tagColor: PropTypes.string,
         values: PropTypes.array,
 
         onChange: PropTypes.func.isRequired
@@ -27,8 +29,10 @@ export default class MultiSelectField extends Component {
         allowCustomValues: false,
         options: [],
         plural: 'items',
-        singular: 'item',
         showNoResult: false,
+        singular: 'item',
+        style: null,
+        tagColor: '#0275d8',
         values: [],
     }
 
@@ -163,11 +167,11 @@ export default class MultiSelectField extends Component {
     }
 
     render() {
-        const {plural, showNoResult, values} = this.props
+        const {plural, showNoResult, values, style, tagColor} = this.props
         const {filteredOptions, input, optionsOpen, selectedOptionIndex} = this.state
 
         return (
-            <div>
+            <div style={style}>
                 <div
                     className={`${css.select}`}
                     onClick={this._focusInput}
@@ -180,7 +184,7 @@ export default class MultiSelectField extends Component {
                             <Badge
                                 className="tag"
                                 style={{
-                                    color: '#0275d8',
+                                    color: tagColor,
                                     margin: '0.25em 0',
                                 }}
                                 key={index}

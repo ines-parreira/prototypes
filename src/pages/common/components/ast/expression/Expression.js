@@ -6,6 +6,7 @@ import Literal from '../Literal'
 import Identifier from '../Identifier'
 import MemberExpression from './MemberExpression'
 import CallExpression from './CallExpression'
+import ArrayExpression from './ArrayExpression'
 import ObjectExpression from './ObjectExpression'
 import UnknownSyntax from '../UnknownSyntax'
 
@@ -19,6 +20,7 @@ class Expression extends React.Component {
         MemberExpression,
         CallExpression,
         ObjectExpression,
+        ArrayExpression,
     }
 
     render() {

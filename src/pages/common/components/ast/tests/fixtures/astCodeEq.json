@@ -1,0 +1,143 @@
+{
+    "loc": {
+        "end": {
+            "line": 3,
+            "column": 1
+        },
+        "start": {
+            "line": 1,
+            "column": 0
+        }
+    },
+    "body": [
+        {
+            "loc": {
+                "end": {
+                    "line": 3,
+                    "column": 1
+                },
+                "start": {
+                    "line": 1,
+                    "column": 0
+                }
+            },
+            "test": {
+                "loc": {
+                    "end": {
+                        "line": 1,
+                        "column": 31
+                    },
+                    "start": {
+                        "line": 1,
+                        "column": 4
+                    }
+                },
+                "type": "CallExpression",
+                "callee": {
+                    "loc": {
+                        "end": {
+                            "line": 1,
+                            "column": 6
+                        },
+                        "start": {
+                            "line": 1,
+                            "column": 4
+                        }
+                    },
+                    "name": "eq",
+                    "type": "Identifier"
+                },
+                "arguments": [
+                    {
+                        "loc": {
+                            "end": {
+                                "line": 1,
+                                "column": 21
+                            },
+                            "start": {
+                                "line": 1,
+                                "column": 7
+                            }
+                        },
+                        "type": "MemberExpression",
+                        "object": {
+                            "loc": {
+                                "end": {
+                                    "line": 1,
+                                    "column": 13
+                                },
+                                "start": {
+                                    "line": 1,
+                                    "column": 7
+                                }
+                            },
+                            "name": "ticket",
+                            "type": "Identifier"
+                        },
+                        "computed": false,
+                        "property": {
+                            "loc": {
+                                "end": {
+                                    "line": 1,
+                                    "column": 21
+                                },
+                                "start": {
+                                    "line": 1,
+                                    "column": 14
+                                }
+                            },
+                            "name": "subject",
+                            "type": "Identifier"
+                        }
+                    },
+                    {
+                        "loc": {
+                            "end": {
+                                "line": 1,
+                                "column": 30
+                            },
+                            "start": {
+                                "line": 1,
+                                "column": 23
+                            }
+                        },
+                        "raw": "'hello'",
+                        "type": "Literal",
+                        "value": "hello"
+                    }
+                ]
+            },
+            "type": "IfStatement",
+            "alternate": {
+                "loc": {
+                    "end": {
+                        "line": 3,
+                        "column": 1
+                    },
+                    "start": {
+                        "line": 2,
+                        "column": 7
+                    }
+                },
+                "body": [],
+                "type": "BlockStatement"
+            },
+            "consequent": {
+                "loc": {
+                    "end": {
+                        "line": 2,
+                        "column": 1
+                    },
+                    "start": {
+                        "line": 1,
+                        "column": 33
+                    }
+                },
+                "body": [],
+                "type": "BlockStatement"
+            }
+        }
+    ],
+    "type": "Program",
+    "sourceType": "script"
+}

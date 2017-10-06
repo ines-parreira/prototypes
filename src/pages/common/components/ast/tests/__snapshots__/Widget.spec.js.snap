@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ast Widget should handle change AST ExpressionArray value 1`] = `
+Object {
+  "calls": Array [
+    Array [
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "arguments",
+        1,
+        "elements",
+],
+      Array [
+        Object {
+          "raw": "'hello'",
+          "type": "Literal",
+          "value": "hello",
+        },
+        Object {
+          "raw": "'you!'",
+          "type": "Literal",
+          "value": "you!",
+        },
+      ],
+      "UPDATE",
+    ],
+  ],
+  "instances": Array [
+    Object {
+      "modifyCodeAST": [Function],
+    },
+  ],
+}
+`;
+
+exports[`ast Widget should handle change AST Literal value 1`] = `
+Object {
+  "calls": Array [
+    Array [
+      Immutable.List [
+        "body",
+        0,
+        "test",
+        "arguments",
+        1,
+        "elements",
+],
+      "hello you!",
+      "UPDATE",
+    ],
+  ],
+  "instances": Array [
+    Object {
+      "modifyCodeAST": [Function],
+    },
+  ],
+}
+`;
+
+exports[`ast Widget should render InputField (eq operator) 1`] = `
+<InputField
+  inline={false}
+  onChange={[Function]}
+  placeholder=""
+  required={false}
+  type="text"
+  value="hello world!"
+/>
+`;
+
+exports[`ast Widget should render MultiSelectField (containsAll operator) 1`] = `
+<MultiSelectField
+  allowCustomValues={true}
+  onChange={[Function]}
+  options={Array []}
+  plural="words"
+  showNoResult={false}
+  singular="word"
+  style={
+    Object {
+      "display": "inline-block",
+      "verticalAlign": "top",
+    }
+  }
+  tagColor="#0275d8"
+  values={
+    Array [
+      "hello",
+      "world!",
+    ]
+  }
+/>
+`;

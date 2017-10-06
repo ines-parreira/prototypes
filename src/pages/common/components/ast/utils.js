@@ -55,17 +55,12 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
 
         // Do the updates only in the IfStatement.test
         if (path.contains('test')) {
-            const argumentsIndex = path.lastIndexOf('arguments')
-            if (~argumentsIndex) {
-                const pathParentCallExpression = path.setSize(argumentsIndex)
-                // generate a new CallExpression with some default values based on the schema
-                newAst = updateCallExpression(
-                    newAst,
-                    pathParentCallExpression,
-                    path,
-                    schemas
-                )
-            }
+            // generate a new CallExpression based on changes and schemas
+            newAst = updateCallExpression(
+                newAst,
+                path,
+                schemas
+            )
         } else {
             // Update the arguments for actions when action name is updated
             const argumentsIndex = path.lastIndexOf('arguments')
