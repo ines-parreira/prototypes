@@ -211,8 +211,8 @@ export default class Widget extends React.Component {
 
                 // only show props that have a meta value or a refs
                 if (prop.hasOwnProperty('meta')) {
-                    // prop is hidden in rules
-                    if (_get(prop, ['meta', 'rules', 'hide']) === true) {
+                    // hide prop if it is hidden in rules and not used
+                    if (_get(prop, ['meta', 'rules', 'hide']) === true && key !== widget.value) {
                         continue
                     }
 
