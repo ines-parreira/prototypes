@@ -202,6 +202,8 @@ export const setRequester = (requester) => (dispatch) => {
         args: fromJS({requester}),
     })
 
+    socketManager.join('user', requester.get('id'))
+
     return dispatch(ticketPartialUpdate({
         requester: fromJS({
             id: requester.get('id')
