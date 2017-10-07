@@ -38,6 +38,10 @@ class UserDetailContainer extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.actions.clearUser()
+    }
+
     _fetchUser = (id) => {
         const {actions} = this.props
 
