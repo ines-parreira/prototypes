@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {Input} from 'reactstrap'
+import {collectionOperators} from '../../../../../config/rules'
 
 export default class Operator extends React.Component {
     static propTypes = {
@@ -17,6 +18,7 @@ export default class Operator extends React.Component {
                 value: operator,
                 name: operators[operator].label
             }))
+            .filter((operator) => !collectionOperators.includes(operator.value))
     }
 
     render() {
