@@ -55,7 +55,7 @@ class AfterTitle extends React.Component { // eslint-disable-line
             {
                 actionName: 'shopifyCancelOrder',
                 reason: 'cancel this order',
-                tooltip: 'Cancel & refund the order on Shopify. Notify the customer via email',
+                tooltip: 'Cancel & refund the order on Shopify. Notify the customer via email. No restocking.',
                 child: (
                     <div>
                         <i className="fa fa-fw fa-ban mr-1" />
