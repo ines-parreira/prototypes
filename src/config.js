@@ -150,13 +150,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/helpdocs.png',
     },
     {
-        title: 'Elev.io',
-        description: 'Let your customers contact you from your help center',
-        url: 'http://docs.gorgias.io/integrations/elevio',
-        image: 'integrations/elevio.png',
-    },
-    {
-        title: 'Magento',
+        title: 'Magento 2',
         description: 'Display customer & orders info next to tickets. Edit orders with macros',
         url: 'http://docs.gorgias.io/integrations/http-integrations#magento',
         image: 'integrations/magento.png',
@@ -180,16 +174,16 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/veeqo.png',
     },
     {
-        title: 'Salesforce',
-        description: 'Display customer information next to tickets',
-        url: 'http://docs.gorgias.io/integrations/http-integrations#salesforce',
-        image: 'integrations/salesforce.png',
-    },
-    {
         title: 'Shipstation',
         description: 'Display shipping info next to tickets',
         url: 'http://docs.gorgias.io/integrations/http-integrations#shipstation',
         image: 'integrations/shipstation.png',
+    },
+    {
+        title: 'Ordoro',
+        description: 'Display orders & inventory status next to tickets',
+        url: 'http://docs.gorgias.io/integrations/ordoro',
+        image: 'integrations/ordoro.png',
     },
     {
         title: 'ShippingEasy',
