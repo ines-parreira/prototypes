@@ -641,6 +641,17 @@ exports[`CampaignDetail component should display default value when it's a new c
                           placeholder="Write your message"
                           required={true}
                           rows="8"
+                          toolbarProps={
+                            Object {
+                              "displayedActions": Array [
+                                "bold",
+                                "italic",
+                                "underline",
+                                "image",
+                                "emoji",
+                              ],
+                            }
+                          }
                           type="text"
                           value={
                             Object {
@@ -1740,7 +1751,17 @@ exports[`CampaignDetail component should display default value when it's a new c
                                       />
                                     </Decorated(MentionSuggestions)>
                                   </div>
-                                  <Decorated(Toolbar)>
+                                  <Decorated(Toolbar)
+                                    displayedActions={
+                                      Array [
+                                        "bold",
+                                        "italic",
+                                        "underline",
+                                        "image",
+                                        "emoji",
+                                      ]
+                                    }
+                                  >
                                     <Toolbar
                                       actions={
                                         Array [
@@ -1817,6 +1838,15 @@ exports[`CampaignDetail component should display default value when it's a new c
                                         ]
                                       }
                                       buttons={Array []}
+                                      displayedActions={
+                                        Array [
+                                          "bold",
+                                          "italic",
+                                          "underline",
+                                          "image",
+                                          "emoji",
+                                        ]
+                                      }
                                       hideActions={false}
                                       store={
                                         Object {
@@ -1858,50 +1888,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                                             title="Underline"
                                           />
                                         </div>
-                                        <AddLink
-                                          action={
-                                            Object {
-                                              "active": [Function],
-                                              "component": [Function],
-                                              "functions": Object {
-                                                "addLink": [Function],
-                                                "onClick": [Function],
-                                              },
-                                              "isActive": [Function],
-                                              "isDisabled": [Function],
-                                              "key": "link",
-                                              "name": "Insert link",
-                                            }
-                                          }
-                                          functions={
-                                            Object {
-                                              "addLink": [Function],
-                                              "onClick": [Function],
-                                            }
-                                          }
-                                          isActive={false}
-                                          isDisabled={false}
-                                        >
-                                          <Popover
-                                            icon="fa-link"
-                                            isActive={false}
-                                            isDisabled={false}
-                                            name="Insert link"
-                                            onIconClick={[Function]}
-                                          >
-                                            <span>
-                                              <i
-                                                className="fa fa-fw fa-link"
-                                                onMouseUp={[Function]}
-                                                title="Insert link"
-                                              />
-                                              <div
-                                                className="undefined"
-                                                onClick={[Function]}
-                                              />
-                                            </span>
-                                          </Popover>
-                                        </AddLink>
                                         <AddImage
                                           action={
                                             Object {
