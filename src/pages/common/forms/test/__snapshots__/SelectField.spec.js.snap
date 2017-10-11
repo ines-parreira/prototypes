@@ -69,7 +69,7 @@ exports[`SelectField should render a select input with custom props 1`] = `
       />
       <ei
         className="undefined"
-        onMouseDown={[Function]}
+        onClick={[Function]}
         onMouseEnter={[Function]}
         tag="button"
         toggle={true}

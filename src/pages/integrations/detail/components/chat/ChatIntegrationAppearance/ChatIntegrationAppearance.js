@@ -20,7 +20,7 @@ import {
 import * as integrationSelectors from './../../../../../../state/integrations/selectors'
 
 import Loader from '../../../../../common/components/Loader'
-import ChatIntegrationPreview from '.././ChatIntegrationPreview'
+import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import InputField from '../../../../../common/forms/InputField'

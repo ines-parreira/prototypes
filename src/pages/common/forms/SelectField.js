@@ -166,7 +166,7 @@ export default class SelectField extends Component {
                                         onMouseEnter={() => {
                                             this.setState({selectedOptionIndex: index})
                                         }}
-                                        onMouseDown={(event) => {
+                                        onClick={(event) => {
                                             this._onOptionClick(event, item.value)
                                         }}
                                     >

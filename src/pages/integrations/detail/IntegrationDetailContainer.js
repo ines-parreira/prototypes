@@ -37,6 +37,8 @@ import EmailIntegrationList from './components/email/EmailIntegrationList'
 import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/index'
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/index'
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/index'
+import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns'
+import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail/CampaignDetail'
 
 
 class IntegrationDetailContainer extends React.Component {
@@ -223,6 +225,25 @@ class IntegrationDetailContainer extends React.Component {
                     if (params.extra === 'preferences') {
                         return (
                             <RealtimeMessagingIntegrationPreferences
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
+                    if (params.extra === 'campaigns') {
+                        if (params.subId) {
+                            return (
+                                <CampaignDetail
+                                    integration={commonProps.integration}
+                                    id={params.subId}
+                                />
+                            )
+                        }
+
+                        return (
+                            <ChatIntegrationCampaigns
                                 actions={actions}
                                 loading={commonProps.loading}
                                 integration={commonProps.integration}

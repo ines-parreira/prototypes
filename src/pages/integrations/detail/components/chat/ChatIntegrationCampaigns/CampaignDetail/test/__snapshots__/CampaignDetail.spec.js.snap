@@ -1,0 +1,2872 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CampaignDetail component should display default value when it's a new campaign 1`] = `
+<Connect(CampaignDetail)
+  campaign={
+    Immutable.Map {
+    }
+  }
+  id="new"
+  integration={
+    Immutable.Map {
+      id: 1,
+      type: "smooch_inside",
+      name: "My new chat",
+      decoration: Immutable.Map {
+        main_color: "#fefefe",
+      },
+    }
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <CampaignDetail
+    agents={
+      Immutable.List [
+        Immutable.Map {
+          name: "John",
+          email: "john@gorgias.io",
+          id: 1,
+        },
+        Immutable.Map {
+          name: "Doe",
+          email: "doe@gorgias.io",
+          id: 2,
+        },
+      ]
+    }
+    campaign={
+      Immutable.Map {
+      }
+    }
+    createCampaign={[Function]}
+    deleteCampaign={[Function]}
+    id="new"
+    integration={
+      Immutable.Map {
+        id: 1,
+        type: "smooch_inside",
+        name: "My new chat",
+        decoration: Immutable.Map {
+          main_color: "#fefefe",
+        },
+      }
+    }
+    notify={[Function]}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateCampaign={[Function]}
+  >
+    <div>
+      <gs
+        tag="ol"
+      >
+        <ol
+          className="breadcrumb"
+        >
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Integrations
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations/smooch_inside/\${integration.get('id')}"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Chat
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations/smooch_inside/1"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  My new chat
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations/smooch_inside/1/campaigns"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Campaigns
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            active={true}
+            tag="li"
+          >
+            <li
+              className="active breadcrumb-item"
+            >
+              New
+            </li>
+          </bs>
+        </ol>
+      </gs>
+      <h1>
+        Create campaign
+      </h1>
+      <gt
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="container-fluid"
+        >
+          <bt
+            tag="div"
+          >
+            <div
+              className="row"
+            >
+              <Ot
+                style={
+                  Object {
+                    "paddingLeft": 0,
+                  }
+                }
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="col"
+                  style={
+                    Object {
+                      "paddingLeft": 0,
+                    }
+                  }
+                >
+                  <rl
+                    onSubmit={[Function]}
+                    tag="form"
+                  >
+                    <form
+                      className=""
+                      onSubmit={[Function]}
+                    >
+                      <div
+                        className="mb-4"
+                      >
+                        <InputField
+                          label="Campaign name"
+                          name="name"
+                          onChange={[Function]}
+                          placeholder="My new campaign"
+                          required={true}
+                          type="input"
+                        >
+                          <ml
+                            className="undefined"
+                            color=""
+                            tag="div"
+                          >
+                            <div
+                              className="undefined form-group"
+                            >
+                              <Hl
+                                className="control-label"
+                                htmlFor="id-name"
+                                tag="label"
+                              >
+                                <label
+                                  className="control-label "
+                                  htmlFor="id-name"
+                                >
+                                  Campaign name
+                                </label>
+                              </Hl>
+                              <div
+                                className=""
+                              >
+                                <ei
+                                  className=""
+                                  id="id-name"
+                                  onChange={[Function]}
+                                  placeholder="My new campaign"
+                                  required={true}
+                                  tag="p"
+                                  type="input"
+                                >
+                                  <input
+                                    className="form-control"
+                                    id="id-name"
+                                    onChange={[Function]}
+                                    placeholder="My new campaign"
+                                    required={true}
+                                    type="input"
+                                  />
+                                </ei>
+                              </div>
+                            </div>
+                          </ml>
+                        </InputField>
+                      </div>
+                      <h5>
+                        Choose your audience
+                      </h5>
+                      <div
+                        className="mb-4"
+                      >
+                        <UncontrolledDropdown>
+                          <ei
+                            isOpen={false}
+                            tag="div"
+                            toggle={[Function]}
+                          >
+                            <div
+                              className="dropdown"
+                            >
+                              <ei
+                                aria-haspopup={true}
+                                caret={true}
+                                className="mr-2"
+                                color="secondary"
+                                data-toggle="dropdown"
+                                type="button"
+                              >
+                                <ei
+                                  aria-expanded={false}
+                                  aria-haspopup="true"
+                                  className="mr-2 dropdown-toggle"
+                                  color="secondary"
+                                  data-toggle="dropdown"
+                                  onClick={[Function]}
+                                  tag="button"
+                                  type="button"
+                                >
+                                  <button
+                                    aria-expanded={false}
+                                    aria-haspopup="true"
+                                    className="mr-2 dropdown-toggle btn btn-secondary"
+                                    data-toggle="dropdown"
+                                    onClick={[Function]}
+                                    type="button"
+                                  >
+                                    <i
+                                      className="fa fa-plus fa-fw mr-2"
+                                    />
+                                    Add condition
+                                  </button>
+                                </ei>
+                              </ei>
+                              <Xo
+                                tag="div"
+                              >
+                                <div
+                                  aria-hidden={true}
+                                  className="dropdown-menu"
+                                  role="menu"
+                                  tabIndex="-1"
+                                >
+                                  <ei
+                                    onClick={[Function]}
+                                    tag="button"
+                                    toggle={true}
+                                    type="button"
+                                  >
+                                    <button
+                                      className="dropdown-item"
+                                      onClick={[Function]}
+                                      tabIndex="0"
+                                      type="button"
+                                    >
+                                      Current URL
+                                    </button>
+                                  </ei>
+                                  <ei
+                                    onClick={[Function]}
+                                    tag="button"
+                                    toggle={true}
+                                    type="button"
+                                  >
+                                    <button
+                                      className="dropdown-item"
+                                      onClick={[Function]}
+                                      tabIndex="0"
+                                      type="button"
+                                    >
+                                      Time spent on page
+                                    </button>
+                                  </ei>
+                                </div>
+                              </Xo>
+                            </div>
+                          </ei>
+                        </UncontrolledDropdown>
+                      </div>
+                      <h5>
+                        Write your message
+                      </h5>
+                      <div
+                        className="mb-4"
+                      >
+                        <div
+                          className="mb-2"
+                        >
+                          <span>
+                            From: 
+                          </span>
+                          <SelectField
+                            onChange={[Function]}
+                            options={
+                              Array [
+                                Object {
+                                  "label": <AgentLabel
+                                    maxWidth="100"
+                                    name="John"
+                              />,
+                                  "text": "John",
+                                  "value": "john@gorgias.io",
+                                },
+                                Object {
+                                  "label": <AgentLabel
+                                    maxWidth="100"
+                                    name="Doe"
+                              />,
+                                  "text": "Doe",
+                                  "value": "doe@gorgias.io",
+                                },
+                                Object {
+                                  "label": "Random agent",
+                                  "text": "randomagent",
+                                  "value": null,
+                                },
+                              ]
+                            }
+                            placeholder=""
+                            style={Object {}}
+                            value={null}
+                          >
+                            <div
+                              style={Object {}}
+                            >
+                              <div>
+                                <div
+                                  className="btn btn-secondary dropdown-toggle clickable"
+                                  onClick={[Function]}
+                                >
+                                  Random agent
+                                </div>
+                              </div>
+                              <ei
+                                isOpen={false}
+                                tag="div"
+                                toggle={[Function]}
+                              >
+                                <div
+                                  className="dropdown"
+                                >
+                                  <Xo
+                                    tag="div"
+                                  >
+                                    <div
+                                      aria-hidden={true}
+                                      className="dropdown-menu"
+                                      role="menu"
+                                      tabIndex="-1"
+                                    >
+                                      <ei
+                                        className="dropdown-item-input"
+                                        header={true}
+                                        tag="button"
+                                        toggle={true}
+                                      >
+                                        <h6
+                                          className="dropdown-item-input dropdown-header"
+                                          onClick={[Function]}
+                                          tabIndex="-1"
+                                        >
+                                          <Search
+                                            autoFocus={true}
+                                            disabled={false}
+                                            onChange={[Function]}
+                                            onKeyDown={[Function]}
+                                            placeholder="Search..."
+                                            searchDebounceTime={0}
+                                            style={Object {}}
+                                          >
+                                            <div
+                                              className=""
+                                              style={Object {}}
+                                            >
+                                              <El
+                                                tag="div"
+                                              >
+                                                <div
+                                                  className="input-group"
+                                                >
+                                                  <ei
+                                                    autoFocus={true}
+                                                    disabled={false}
+                                                    onChange={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    placeholder="Search..."
+                                                    style={
+                                                      Object {
+                                                        "zIndex": 1,
+                                                      }
+                                                    }
+                                                    tag="p"
+                                                    type="text"
+                                                    value=""
+                                                  >
+                                                    <input
+                                                      autoFocus={true}
+                                                      className="form-control"
+                                                      disabled={false}
+                                                      onChange={[Function]}
+                                                      onKeyDown={[Function]}
+                                                      placeholder="Search..."
+                                                      style={
+                                                        Object {
+                                                          "zIndex": 1,
+                                                        }
+                                                      }
+                                                      type="text"
+                                                      value=""
+                                                    />
+                                                  </ei>
+                                                  <jl
+                                                    className="hidden-sm-down"
+                                                    tag="div"
+                                                  >
+                                                    <div
+                                                      className="hidden-sm-down input-group-addon"
+                                                    >
+                                                      <i
+                                                        className="fa fa-fw fa-search"
+                                                      />
+                                                    </div>
+                                                  </jl>
+                                                </div>
+                                              </El>
+                                            </div>
+                                          </Search>
+                                        </h6>
+                                      </ei>
+                                      <ei
+                                        divider={true}
+                                        tag="button"
+                                        toggle={true}
+                                      >
+                                        <div
+                                          className="dropdown-divider"
+                                          onClick={[Function]}
+                                          tabIndex="-1"
+                                        />
+                                      </ei>
+                                      <ei
+                                        className="undefined"
+                                        onClick={[Function]}
+                                        onMouseEnter={[Function]}
+                                        tag="button"
+                                        toggle={true}
+                                        type="button"
+                                      >
+                                        <button
+                                          className="undefined dropdown-item"
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          tabIndex="0"
+                                          type="button"
+                                        >
+                                          <AgentLabel
+                                            maxWidth="100"
+                                            name="John"
+                                          >
+                                            <span
+                                              className="agent-label d-inline-flex align-items-center"
+                                            >
+                                              <Zs
+                                                className="agent-id-label"
+                                                color="warning"
+                                                pill={false}
+                                                tag="span"
+                                              >
+                                                <span
+                                                  className="agent-id-label badge badge-warning"
+                                                >
+                                                  A
+                                                </span>
+                                              </Zs>
+                                              <span
+                                                className="secondary-action"
+                                                style={
+                                                  Object {
+                                                    "maxWidth": "100px",
+                                                  }
+                                                }
+                                              >
+                                                John
+                                              </span>
+                                            </span>
+                                          </AgentLabel>
+                                        </button>
+                                      </ei>
+                                      <ei
+                                        className=""
+                                        onClick={[Function]}
+                                        onMouseEnter={[Function]}
+                                        tag="button"
+                                        toggle={true}
+                                        type="button"
+                                      >
+                                        <button
+                                          className="dropdown-item"
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          tabIndex="0"
+                                          type="button"
+                                        >
+                                          <AgentLabel
+                                            maxWidth="100"
+                                            name="Doe"
+                                          >
+                                            <span
+                                              className="agent-label d-inline-flex align-items-center"
+                                            >
+                                              <Zs
+                                                className="agent-id-label"
+                                                color="warning"
+                                                pill={false}
+                                                tag="span"
+                                              >
+                                                <span
+                                                  className="agent-id-label badge badge-warning"
+                                                >
+                                                  A
+                                                </span>
+                                              </Zs>
+                                              <span
+                                                className="secondary-action"
+                                                style={
+                                                  Object {
+                                                    "maxWidth": "100px",
+                                                  }
+                                                }
+                                              >
+                                                Doe
+                                              </span>
+                                            </span>
+                                          </AgentLabel>
+                                        </button>
+                                      </ei>
+                                    </div>
+                                  </Xo>
+                                </div>
+                              </ei>
+                            </div>
+                          </SelectField>
+                        </div>
+                        <RichField
+                          allowExternalChanges={false}
+                          onChange={[Function]}
+                          placeholder="Write your message"
+                          required={true}
+                          rows="8"
+                          type="text"
+                          value={
+                            Object {
+                              "html": "<br>",
+                            }
+                          }
+                        >
+                          <ml
+                            className="undefined"
+                            color=""
+                            tag="div"
+                          >
+                            <div
+                              className="undefined form-group"
+                            >
+                              <div
+                                className=""
+                              >
+                                <div
+                                  className="rich-textarea-wrapper"
+                                >
+                                  <div
+                                    className="editor-wrapper"
+                                    onClick={[Function]}
+                                    onDragLeave={[Function]}
+                                    onDragOver={[Function]}
+                                    onDrop={[Function]}
+                                    style={
+                                      Object {
+                                        "paddingBottom": "26px",
+                                      }
+                                    }
+                                  >
+                                    <PluginEditor
+                                      customStyleMap={Object {}}
+                                      decorators={Array []}
+                                      defaultBlockRenderMap={true}
+                                      defaultKeyBindings={true}
+                                      editorState={
+                                        EditorState {
+                                          "_immutable": Object {
+                                            "allowUndo": true,
+                                            "currentContent": Object {
+                                              "blockMap": Object {
+                                                "someRandomKey": Object {
+                                                  "characterList": Array [],
+                                                  "data": Object {},
+                                                  "depth": 0,
+                                                  "key": "someRandomKey",
+                                                  "text": "",
+                                                  "type": "unstyled",
+                                                },
+                                              },
+                                              "selectionAfter": Object {
+                                                "anchorKey": "someRandomKey",
+                                                "anchorOffset": 0,
+                                                "focusKey": "someRandomKey",
+                                                "focusOffset": 0,
+                                                "hasFocus": false,
+                                                "isBackward": false,
+                                              },
+                                              "selectionBefore": Object {
+                                                "anchorKey": "someRandomKey",
+                                                "anchorOffset": 0,
+                                                "focusKey": "someRandomKey",
+                                                "focusOffset": 0,
+                                                "hasFocus": true,
+                                                "isBackward": false,
+                                              },
+                                            },
+                                            "decorator": MultiDecorator {
+                                              "decorators": Immutable.List [
+                                                CompositeDraftDecorator {
+                                                        "_decorators": Array [
+                                                          Object {
+                                                            "component": [Function],
+                                                            "strategy": [Function],
+                                                          },
+                                                          Object {
+                                                            "component": [Function],
+                                                            "strategy": [Function],
+                                                          },
+                                                          Object {
+                                                            "component": [Function],
+                                                            "strategy": [Function],
+                                                          },
+                                                          Object {
+                                                            "component": [Function],
+                                                            "strategy": [Function],
+                                                          },
+                                                          Object {
+                                                            "component": [Function],
+                                                            "strategy": [Function],
+                                                          },
+                                                        ],
+                                                      },
+                                        ],
+                                            },
+                                            "directionMap": Object {
+                                              "someRandomKey": "LTR",
+                                            },
+                                            "forceSelection": false,
+                                            "inCompositionMode": false,
+                                            "inlineStyleOverride": null,
+                                            "lastChangeType": undefined,
+                                            "nativelyRenderedContent": null,
+                                            "redoStack": Array [],
+                                            "selection": Object {
+                                              "anchorKey": "someRandomKey",
+                                              "anchorOffset": 0,
+                                              "focusKey": "someRandomKey",
+                                              "focusOffset": 0,
+                                              "hasFocus": false,
+                                              "isBackward": false,
+                                            },
+                                            "treeMap": Object {
+                                              "someRandomKey": Array [
+                                                Object {
+                                                  "decoratorKey": null,
+                                                  "end": 0,
+                                                  "leaves": Array [
+                                                    Object {
+                                                      "end": 0,
+                                                      "start": 0,
+                                                    },
+                                                  ],
+                                                  "start": 0,
+                                                },
+                                              ],
+                                            },
+                                            "undoStack": Array [
+                                              Object {
+                                                "blockMap": Object {
+                                                  "someRandomKey": Object {
+                                                    "characterList": Array [],
+                                                    "data": Object {},
+                                                    "depth": 0,
+                                                    "key": "someRandomKey",
+                                                    "text": "",
+                                                    "type": "unstyled",
+                                                  },
+                                                },
+                                                "selectionAfter": Object {
+                                                  "anchorKey": "someRandomKey",
+                                                  "anchorOffset": 0,
+                                                  "focusKey": "someRandomKey",
+                                                  "focusOffset": 0,
+                                                  "hasFocus": false,
+                                                  "isBackward": false,
+                                                },
+                                                "selectionBefore": Object {
+                                                  "anchorKey": "someRandomKey",
+                                                  "anchorOffset": 0,
+                                                  "focusKey": "someRandomKey",
+                                                  "focusOffset": 0,
+                                                  "hasFocus": false,
+                                                  "isBackward": false,
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        }
+                                      }
+                                      handleDroppedFiles={[Function]}
+                                      handleKeyCommand={[Function]}
+                                      onChange={[Function]}
+                                      onFocus={[Function]}
+                                      placeholder="Write your message"
+                                      plugins={
+                                        Array [
+                                          Object {
+                                            "decorator": [Function],
+                                            "handleDrop": [Function],
+                                            "handleDroppedFiles": [Function],
+                                            "initialize": [Function],
+                                          },
+                                          Object {
+                                            "handleReturn": [Function],
+                                          },
+                                          Object {
+                                            "blockRendererFn": [Function],
+                                            "decorator": [Function],
+                                            "initialize": [Function],
+                                          },
+                                          Object {
+                                            "Toolbar": [Function],
+                                            "blockRendererFn": [Function],
+                                            "decorators": Array [
+                                              Object {
+                                                "component": [Function],
+                                                "strategy": [Function],
+                                              },
+                                              Object {
+                                                "component": [Function],
+                                                "strategy": [Function],
+                                              },
+                                              Object {
+                                                "component": [Function],
+                                                "strategy": [Function],
+                                              },
+                                            ],
+                                            "initialize": [Function],
+                                            "onChange": [Function],
+                                          },
+                                          Object {
+                                            "MentionSuggestions": [Function],
+                                            "decorators": Array [
+                                              Object {
+                                                "component": [Function],
+                                                "strategy": [Function],
+                                              },
+                                              Object {
+                                                "component": [Function],
+                                                "strategy": [Function],
+                                              },
+                                            ],
+                                            "getAccessibilityProps": [Function],
+                                            "handleReturn": [Function],
+                                            "initialize": [Function],
+                                            "onChange": [Function],
+                                            "onDownArrow": [Function],
+                                            "onEscape": [Function],
+                                            "onTab": [Function],
+                                            "onUpArrow": [Function],
+                                          },
+                                        ]
+                                      }
+                                      rows="8"
+                                    >
+                                      <DraftEditor
+                                        ariaAutoComplete="list"
+                                        ariaExpanded="false"
+                                        ariaHasPopup="false"
+                                        blockRenderMap={
+                                          Immutable.Map {
+                                            ordered-list-item: Object {
+                                              "element": "li",
+                                              "wrapper": <ol
+                                                className="public-DraftStyleDefault-ol"
+                                            />,
+                                            },
+                                            header-six: Object {
+                                              "element": "h6",
+                                            },
+                                            header-four: Object {
+                                              "element": "h4",
+                                            },
+                                            header-one: Object {
+                                              "element": "h1",
+                                            },
+                                            unordered-list-item: Object {
+                                              "element": "li",
+                                              "wrapper": <ul
+                                                className="public-DraftStyleDefault-ul"
+                                            />,
+                                            },
+                                            atomic: Object {
+                                              "element": "figure",
+                                            },
+                                            unstyled: Object {
+                                              "element": "div",
+                                            },
+                                            header-two: Object {
+                                              "element": "h2",
+                                            },
+                                            code-block: Object {
+                                              "element": "pre",
+                                              "wrapper": <pre
+                                                className="public-DraftStyleDefault-pre"
+                                            />,
+                                            },
+                                            blockquote: Object {
+                                              "element": "blockquote",
+                                            },
+                                            header-five: Object {
+                                              "element": "h5",
+                                            },
+                                            header-three: Object {
+                                              "element": "h3",
+                                            },
+                                          }
+                                        }
+                                        blockRendererFn={[Function]}
+                                        blockStyleFn={[Function]}
+                                        customStyleMap={Object {}}
+                                        decorators={Array []}
+                                        defaultBlockRenderMap={true}
+                                        defaultKeyBindings={true}
+                                        editorState={
+                                          EditorState {
+                                            "_immutable": Object {
+                                              "allowUndo": true,
+                                              "currentContent": Object {
+                                                "blockMap": Object {
+                                                  "someRandomKey": Object {
+                                                    "characterList": Array [],
+                                                    "data": Object {},
+                                                    "depth": 0,
+                                                    "key": "someRandomKey",
+                                                    "text": "",
+                                                    "type": "unstyled",
+                                                  },
+                                                },
+                                                "selectionAfter": Object {
+                                                  "anchorKey": "someRandomKey",
+                                                  "anchorOffset": 0,
+                                                  "focusKey": "someRandomKey",
+                                                  "focusOffset": 0,
+                                                  "hasFocus": false,
+                                                  "isBackward": false,
+                                                },
+                                                "selectionBefore": Object {
+                                                  "anchorKey": "someRandomKey",
+                                                  "anchorOffset": 0,
+                                                  "focusKey": "someRandomKey",
+                                                  "focusOffset": 0,
+                                                  "hasFocus": true,
+                                                  "isBackward": false,
+                                                },
+                                              },
+                                              "decorator": MultiDecorator {
+                                                "decorators": Immutable.List [
+                                                  CompositeDraftDecorator {
+                                                          "_decorators": Array [
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                          ],
+                                                        },
+                                          ],
+                                              },
+                                              "directionMap": Object {
+                                                "someRandomKey": "LTR",
+                                              },
+                                              "forceSelection": false,
+                                              "inCompositionMode": false,
+                                              "inlineStyleOverride": null,
+                                              "lastChangeType": undefined,
+                                              "nativelyRenderedContent": null,
+                                              "redoStack": Array [],
+                                              "selection": Object {
+                                                "anchorKey": "someRandomKey",
+                                                "anchorOffset": 0,
+                                                "focusKey": "someRandomKey",
+                                                "focusOffset": 0,
+                                                "hasFocus": false,
+                                                "isBackward": false,
+                                              },
+                                              "treeMap": Object {
+                                                "someRandomKey": Array [
+                                                  Object {
+                                                    "decoratorKey": null,
+                                                    "end": 0,
+                                                    "leaves": Array [
+                                                      Object {
+                                                        "end": 0,
+                                                        "start": 0,
+                                                      },
+                                                    ],
+                                                    "start": 0,
+                                                  },
+                                                ],
+                                              },
+                                              "undoStack": Array [
+                                                Object {
+                                                  "blockMap": Object {
+                                                    "someRandomKey": Object {
+                                                      "characterList": Array [],
+                                                      "data": Object {},
+                                                      "depth": 0,
+                                                      "key": "someRandomKey",
+                                                      "text": "",
+                                                      "type": "unstyled",
+                                                    },
+                                                  },
+                                                  "selectionAfter": Object {
+                                                    "anchorKey": "someRandomKey",
+                                                    "anchorOffset": 0,
+                                                    "focusKey": "someRandomKey",
+                                                    "focusOffset": 0,
+                                                    "hasFocus": false,
+                                                    "isBackward": false,
+                                                  },
+                                                  "selectionBefore": Object {
+                                                    "anchorKey": "someRandomKey",
+                                                    "anchorOffset": 0,
+                                                    "focusKey": "someRandomKey",
+                                                    "focusOffset": 0,
+                                                    "hasFocus": false,
+                                                    "isBackward": false,
+                                                  },
+                                                },
+                                              ],
+                                            },
+                                          }
+                                        }
+                                        handleDrop={[Function]}
+                                        handleDroppedFiles={[Function]}
+                                        handleKeyCommand={[Function]}
+                                        handleReturn={[Function]}
+                                        keyBindingFn={[Function]}
+                                        onChange={[Function]}
+                                        onDownArrow={[Function]}
+                                        onEscape={[Function]}
+                                        onFocus={[Function]}
+                                        onTab={[Function]}
+                                        onUpArrow={[Function]}
+                                        placeholder="Write your message"
+                                        plugins={
+                                          Array [
+                                            Object {
+                                              "decorator": [Function],
+                                              "handleDrop": [Function],
+                                              "handleDroppedFiles": [Function],
+                                              "initialize": [Function],
+                                            },
+                                            Object {
+                                              "handleReturn": [Function],
+                                            },
+                                            Object {
+                                              "blockRendererFn": [Function],
+                                              "decorator": [Function],
+                                              "initialize": [Function],
+                                            },
+                                            Object {
+                                              "Toolbar": [Function],
+                                              "blockRendererFn": [Function],
+                                              "decorators": Array [
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                              ],
+                                              "initialize": [Function],
+                                              "onChange": [Function],
+                                            },
+                                            Object {
+                                              "MentionSuggestions": [Function],
+                                              "decorators": Array [
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                                Object {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
+                                              ],
+                                              "getAccessibilityProps": [Function],
+                                              "handleReturn": [Function],
+                                              "initialize": [Function],
+                                              "onChange": [Function],
+                                              "onDownArrow": [Function],
+                                              "onEscape": [Function],
+                                              "onTab": [Function],
+                                              "onUpArrow": [Function],
+                                            },
+                                          ]
+                                        }
+                                        readOnly={false}
+                                        role="combobox"
+                                        rows="8"
+                                        spellCheck={false}
+                                        stripPastedStyles={false}
+                                      >
+                                        <div
+                                          className="DraftEditor-root"
+                                        >
+                                          <DraftEditorPlaceholder
+                                            accessibilityID="placeholder-someRandomKey"
+                                            editorState={
+                                              EditorState {
+                                                "_immutable": Object {
+                                                  "allowUndo": true,
+                                                  "currentContent": Object {
+                                                    "blockMap": Object {
+                                                      "someRandomKey": Object {
+                                                        "characterList": Array [],
+                                                        "data": Object {},
+                                                        "depth": 0,
+                                                        "key": "someRandomKey",
+                                                        "text": "",
+                                                        "type": "unstyled",
+                                                      },
+                                                    },
+                                                    "selectionAfter": Object {
+                                                      "anchorKey": "someRandomKey",
+                                                      "anchorOffset": 0,
+                                                      "focusKey": "someRandomKey",
+                                                      "focusOffset": 0,
+                                                      "hasFocus": false,
+                                                      "isBackward": false,
+                                                    },
+                                                    "selectionBefore": Object {
+                                                      "anchorKey": "someRandomKey",
+                                                      "anchorOffset": 0,
+                                                      "focusKey": "someRandomKey",
+                                                      "focusOffset": 0,
+                                                      "hasFocus": true,
+                                                      "isBackward": false,
+                                                    },
+                                                  },
+                                                  "decorator": MultiDecorator {
+                                                    "decorators": Immutable.List [
+                                                      CompositeDraftDecorator {
+                                                              "_decorators": Array [
+                                                                Object {
+                                                                  "component": [Function],
+                                                                  "strategy": [Function],
+                                                                },
+                                                                Object {
+                                                                  "component": [Function],
+                                                                  "strategy": [Function],
+                                                                },
+                                                                Object {
+                                                                  "component": [Function],
+                                                                  "strategy": [Function],
+                                                                },
+                                                                Object {
+                                                                  "component": [Function],
+                                                                  "strategy": [Function],
+                                                                },
+                                                                Object {
+                                                                  "component": [Function],
+                                                                  "strategy": [Function],
+                                                                },
+                                                              ],
+                                                            },
+                                              ],
+                                                  },
+                                                  "directionMap": Object {
+                                                    "someRandomKey": "LTR",
+                                                  },
+                                                  "forceSelection": false,
+                                                  "inCompositionMode": false,
+                                                  "inlineStyleOverride": null,
+                                                  "lastChangeType": undefined,
+                                                  "nativelyRenderedContent": null,
+                                                  "redoStack": Array [],
+                                                  "selection": Object {
+                                                    "anchorKey": "someRandomKey",
+                                                    "anchorOffset": 0,
+                                                    "focusKey": "someRandomKey",
+                                                    "focusOffset": 0,
+                                                    "hasFocus": false,
+                                                    "isBackward": false,
+                                                  },
+                                                  "treeMap": Object {
+                                                    "someRandomKey": Array [
+                                                      Object {
+                                                        "decoratorKey": null,
+                                                        "end": 0,
+                                                        "leaves": Array [
+                                                          Object {
+                                                            "end": 0,
+                                                            "start": 0,
+                                                          },
+                                                        ],
+                                                        "start": 0,
+                                                      },
+                                                    ],
+                                                  },
+                                                  "undoStack": Array [
+                                                    Object {
+                                                      "blockMap": Object {
+                                                        "someRandomKey": Object {
+                                                          "characterList": Array [],
+                                                          "data": Object {},
+                                                          "depth": 0,
+                                                          "key": "someRandomKey",
+                                                          "text": "",
+                                                          "type": "unstyled",
+                                                        },
+                                                      },
+                                                      "selectionAfter": Object {
+                                                        "anchorKey": "someRandomKey",
+                                                        "anchorOffset": 0,
+                                                        "focusKey": "someRandomKey",
+                                                        "focusOffset": 0,
+                                                        "hasFocus": false,
+                                                        "isBackward": false,
+                                                      },
+                                                      "selectionBefore": Object {
+                                                        "anchorKey": "someRandomKey",
+                                                        "anchorOffset": 0,
+                                                        "focusKey": "someRandomKey",
+                                                        "focusOffset": 0,
+                                                        "hasFocus": false,
+                                                        "isBackward": false,
+                                                      },
+                                                    },
+                                                  ],
+                                                },
+                                              }
+                                            }
+                                            text="Write your message"
+                                          >
+                                            <div
+                                              className="public-DraftEditorPlaceholder-root"
+                                            >
+                                              <div
+                                                className="public-DraftEditorPlaceholder-inner"
+                                                id="placeholder-someRandomKey"
+                                              >
+                                                Write your message
+                                              </div>
+                                            </div>
+                                          </DraftEditorPlaceholder>
+                                          <div
+                                            className="DraftEditor-editorContainer"
+                                          >
+                                            <div
+                                              aria-autocomplete="list"
+                                              aria-describedby="placeholder-someRandomKey"
+                                              aria-expanded="false"
+                                              aria-haspopup="false"
+                                              className="public-DraftEditor-content"
+                                              contentEditable={true}
+                                              onBeforeInput={[Function]}
+                                              onBlur={[Function]}
+                                              onCompositionEnd={[Function]}
+                                              onCompositionStart={[Function]}
+                                              onCopy={[Function]}
+                                              onCut={[Function]}
+                                              onDragEnd={[Function]}
+                                              onDragEnter={[Function]}
+                                              onDragLeave={[Function]}
+                                              onDragOver={[Function]}
+                                              onDragStart={[Function]}
+                                              onDrop={[Function]}
+                                              onFocus={[Function]}
+                                              onInput={[Function]}
+                                              onKeyDown={[Function]}
+                                              onKeyPress={[Function]}
+                                              onKeyUp={[Function]}
+                                              onMouseUp={[Function]}
+                                              onPaste={[Function]}
+                                              onSelect={[Function]}
+                                              role="combobox"
+                                              spellCheck={false}
+                                              style={
+                                                Object {
+                                                  "outline": "none",
+                                                  "whiteSpace": "pre-wrap",
+                                                  "wordWrap": "break-word",
+                                                }
+                                              }
+                                              suppressContentEditableWarning={true}
+                                            >
+                                              <DraftEditorContents
+                                                blockRenderMap={
+                                                  Immutable.Map {
+                                                    ordered-list-item: Object {
+                                                      "element": "li",
+                                                      "wrapper": <ol
+                                                        className="public-DraftStyleDefault-ol"
+                                                    />,
+                                                    },
+                                                    header-six: Object {
+                                                      "element": "h6",
+                                                    },
+                                                    header-four: Object {
+                                                      "element": "h4",
+                                                    },
+                                                    header-one: Object {
+                                                      "element": "h1",
+                                                    },
+                                                    unordered-list-item: Object {
+                                                      "element": "li",
+                                                      "wrapper": <ul
+                                                        className="public-DraftStyleDefault-ul"
+                                                    />,
+                                                    },
+                                                    atomic: Object {
+                                                      "element": "figure",
+                                                    },
+                                                    unstyled: Object {
+                                                      "element": "div",
+                                                    },
+                                                    header-two: Object {
+                                                      "element": "h2",
+                                                    },
+                                                    code-block: Object {
+                                                      "element": "pre",
+                                                      "wrapper": <pre
+                                                        className="public-DraftStyleDefault-pre"
+                                                    />,
+                                                    },
+                                                    blockquote: Object {
+                                                      "element": "blockquote",
+                                                    },
+                                                    header-five: Object {
+                                                      "element": "h5",
+                                                    },
+                                                    header-three: Object {
+                                                      "element": "h3",
+                                                    },
+                                                  }
+                                                }
+                                                blockRendererFn={[Function]}
+                                                blockStyleFn={[Function]}
+                                                customStyleMap={
+                                                  Object {
+                                                    "BOLD": Object {
+                                                      "fontWeight": "bold",
+                                                    },
+                                                    "CODE": Object {
+                                                      "fontFamily": "monospace",
+                                                      "wordWrap": "break-word",
+                                                    },
+                                                    "ITALIC": Object {
+                                                      "fontStyle": "italic",
+                                                    },
+                                                    "STRIKETHROUGH": Object {
+                                                      "textDecoration": "line-through",
+                                                    },
+                                                    "UNDERLINE": Object {
+                                                      "textDecoration": "underline",
+                                                    },
+                                                  }
+                                                }
+                                                editorKey="someRandomKey"
+                                                editorState={
+                                                  EditorState {
+                                                    "_immutable": Object {
+                                                      "allowUndo": true,
+                                                      "currentContent": Object {
+                                                        "blockMap": Object {
+                                                          "someRandomKey": Object {
+                                                            "characterList": Array [],
+                                                            "data": Object {},
+                                                            "depth": 0,
+                                                            "key": "someRandomKey",
+                                                            "text": "",
+                                                            "type": "unstyled",
+                                                          },
+                                                        },
+                                                        "selectionAfter": Object {
+                                                          "anchorKey": "someRandomKey",
+                                                          "anchorOffset": 0,
+                                                          "focusKey": "someRandomKey",
+                                                          "focusOffset": 0,
+                                                          "hasFocus": false,
+                                                          "isBackward": false,
+                                                        },
+                                                        "selectionBefore": Object {
+                                                          "anchorKey": "someRandomKey",
+                                                          "anchorOffset": 0,
+                                                          "focusKey": "someRandomKey",
+                                                          "focusOffset": 0,
+                                                          "hasFocus": true,
+                                                          "isBackward": false,
+                                                        },
+                                                      },
+                                                      "decorator": MultiDecorator {
+                                                        "decorators": Immutable.List [
+                                                          CompositeDraftDecorator {
+                                                                  "_decorators": Array [
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                    Object {
+                                                                      "component": [Function],
+                                                                      "strategy": [Function],
+                                                                    },
+                                                                  ],
+                                                                },
+                                                  ],
+                                                      },
+                                                      "directionMap": Object {
+                                                        "someRandomKey": "LTR",
+                                                      },
+                                                      "forceSelection": false,
+                                                      "inCompositionMode": false,
+                                                      "inlineStyleOverride": null,
+                                                      "lastChangeType": undefined,
+                                                      "nativelyRenderedContent": null,
+                                                      "redoStack": Array [],
+                                                      "selection": Object {
+                                                        "anchorKey": "someRandomKey",
+                                                        "anchorOffset": 0,
+                                                        "focusKey": "someRandomKey",
+                                                        "focusOffset": 0,
+                                                        "hasFocus": false,
+                                                        "isBackward": false,
+                                                      },
+                                                      "treeMap": Object {
+                                                        "someRandomKey": Array [
+                                                          Object {
+                                                            "decoratorKey": null,
+                                                            "end": 0,
+                                                            "leaves": Array [
+                                                              Object {
+                                                                "end": 0,
+                                                                "start": 0,
+                                                              },
+                                                            ],
+                                                            "start": 0,
+                                                          },
+                                                        ],
+                                                      },
+                                                      "undoStack": Array [
+                                                        Object {
+                                                          "blockMap": Object {
+                                                            "someRandomKey": Object {
+                                                              "characterList": Array [],
+                                                              "data": Object {},
+                                                              "depth": 0,
+                                                              "key": "someRandomKey",
+                                                              "text": "",
+                                                              "type": "unstyled",
+                                                            },
+                                                          },
+                                                          "selectionAfter": Object {
+                                                            "anchorKey": "someRandomKey",
+                                                            "anchorOffset": 0,
+                                                            "focusKey": "someRandomKey",
+                                                            "focusOffset": 0,
+                                                            "hasFocus": false,
+                                                            "isBackward": false,
+                                                          },
+                                                          "selectionBefore": Object {
+                                                            "anchorKey": "someRandomKey",
+                                                            "anchorOffset": 0,
+                                                            "focusKey": "someRandomKey",
+                                                            "focusOffset": 0,
+                                                            "hasFocus": false,
+                                                            "isBackward": false,
+                                                          },
+                                                        },
+                                                      ],
+                                                    },
+                                                  }
+                                                }
+                                              >
+                                                <div
+                                                  data-contents="true"
+                                                >
+                                                  <div
+                                                    className=""
+                                                    data-block={true}
+                                                    data-editor="someRandomKey"
+                                                    data-offset-key="someRandomKey-0-0"
+                                                  >
+                                                    <DraftEditorBlock
+                                                      block={
+                                                        Object {
+                                                          "characterList": Array [],
+                                                          "data": Object {},
+                                                          "depth": 0,
+                                                          "key": "someRandomKey",
+                                                          "text": "",
+                                                          "type": "unstyled",
+                                                        }
+                                                      }
+                                                      customStyleMap={
+                                                        Object {
+                                                          "BOLD": Object {
+                                                            "fontWeight": "bold",
+                                                          },
+                                                          "CODE": Object {
+                                                            "fontFamily": "monospace",
+                                                            "wordWrap": "break-word",
+                                                          },
+                                                          "ITALIC": Object {
+                                                            "fontStyle": "italic",
+                                                          },
+                                                          "STRIKETHROUGH": Object {
+                                                            "textDecoration": "line-through",
+                                                          },
+                                                          "UNDERLINE": Object {
+                                                            "textDecoration": "underline",
+                                                          },
+                                                        }
+                                                      }
+                                                      decorator={
+                                                        MultiDecorator {
+                                                          "decorators": Immutable.List [
+                                                            CompositeDraftDecorator {
+                                                                "_decorators": Array [
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                  Object {
+                                                                    "component": [Function],
+                                                                    "strategy": [Function],
+                                                                  },
+                                                                ],
+                                                              },
+                                                        ],
+                                                        }
+                                                      }
+                                                      direction="LTR"
+                                                      forceSelection={false}
+                                                      offsetKey="someRandomKey-0-0"
+                                                      selection={
+                                                        Object {
+                                                          "anchorKey": "someRandomKey",
+                                                          "anchorOffset": 0,
+                                                          "focusKey": "someRandomKey",
+                                                          "focusOffset": 0,
+                                                          "hasFocus": false,
+                                                          "isBackward": false,
+                                                        }
+                                                      }
+                                                      tree={
+                                                        Immutable.List [
+                                                          Object {
+                                                            "decoratorKey": null,
+                                                            "end": 0,
+                                                            "leaves": Array [
+                                                              Object {
+                                                                "end": 0,
+                                                                "start": 0,
+                                                              },
+                                                            ],
+                                                            "start": 0,
+                                                          },
+                                                        ]
+                                                      }
+                                                    >
+                                                      <div
+                                                        className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                                        data-offset-key="someRandomKey-0-0"
+                                                      >
+                                                        <DraftEditorLeaf
+                                                          blockKey="someRandomKey"
+                                                          customStyleMap={
+                                                            Object {
+                                                              "BOLD": Object {
+                                                                "fontWeight": "bold",
+                                                              },
+                                                              "CODE": Object {
+                                                                "fontFamily": "monospace",
+                                                                "wordWrap": "break-word",
+                                                              },
+                                                              "ITALIC": Object {
+                                                                "fontStyle": "italic",
+                                                              },
+                                                              "STRIKETHROUGH": Object {
+                                                                "textDecoration": "line-through",
+                                                              },
+                                                              "UNDERLINE": Object {
+                                                                "textDecoration": "underline",
+                                                              },
+                                                            }
+                                                          }
+                                                          forceSelection={false}
+                                                          isLast={true}
+                                                          offsetKey="someRandomKey-0-0"
+                                                          selection={
+                                                            Object {
+                                                              "anchorKey": "someRandomKey",
+                                                              "anchorOffset": 0,
+                                                              "focusKey": "someRandomKey",
+                                                              "focusOffset": 0,
+                                                              "hasFocus": false,
+                                                              "isBackward": false,
+                                                            }
+                                                          }
+                                                          start={0}
+                                                          styleSet={
+                                                            Immutable.OrderedSet [
+                                                            ]
+                                                          }
+                                                          text=""
+                                                        >
+                                                          <span
+                                                            data-offset-key="someRandomKey-0-0"
+                                                            style={Object {}}
+                                                          >
+                                                            <DraftEditorTextNode>
+                                                              <br
+                                                                data-text="true"
+                                                              />
+                                                            </DraftEditorTextNode>
+                                                          </span>
+                                                        </DraftEditorLeaf>
+                                                      </div>
+                                                    </DraftEditorBlock>
+                                                  </div>
+                                                </div>
+                                              </DraftEditorContents>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </DraftEditor>
+                                    </PluginEditor>
+                                    <Decorated(MentionSuggestions)
+                                      canAddMention={false}
+                                      onSearchChange={[Function]}
+                                    >
+                                      <MentionSuggestions
+                                        ariaProps={
+                                          Object {
+                                            "ariaExpanded": "false",
+                                            "ariaHasPopup": "false",
+                                          }
+                                        }
+                                        callbacks={
+                                          Object {
+                                            "handleKeyCommand": undefined,
+                                            "handleReturn": undefined,
+                                            "keyBindingFn": undefined,
+                                            "onChange": [Function],
+                                            "onDownArrow": undefined,
+                                            "onEscape": undefined,
+                                            "onTab": undefined,
+                                            "onUpArrow": undefined,
+                                          }
+                                        }
+                                        canAddMention={false}
+                                        entityMutability="SEGMENTED"
+                                        mentionPrefix="@"
+                                        mentionTrigger="@"
+                                        onSearchChange={[Function]}
+                                        positionSuggestions={[Function]}
+                                        store={
+                                          Object {
+                                            "escapeSearch": [Function],
+                                            "getAllSearches": [Function],
+                                            "getEditorState": [Function],
+                                            "getPortalClientRect": [Function],
+                                            "isEscaped": [Function],
+                                            "register": [Function],
+                                            "resetEscapedSearch": [Function],
+                                            "setEditorState": [Function],
+                                            "unregister": [Function],
+                                            "updatePortalClientRect": [Function],
+                                          }
+                                        }
+                                        suggestions={
+                                          Immutable.List [
+                                          ]
+                                        }
+                                        theme={
+                                          Object {
+                                            "mention": undefined,
+                                            "mentionSuggestions": undefined,
+                                            "mentionSuggestionsEntry": undefined,
+                                            "mentionSuggestionsEntryAvatar": undefined,
+                                            "mentionSuggestionsEntryFocused": undefined,
+                                            "mentionSuggestionsEntryText": undefined,
+                                          }
+                                        }
+                                      />
+                                    </Decorated(MentionSuggestions)>
+                                  </div>
+                                  <Decorated(Toolbar)>
+                                    <Toolbar
+                                      actions={
+                                        Array [
+                                          Object {
+                                            "active": [Function],
+                                            "functions": Object {
+                                              "toggle": [Function],
+                                            },
+                                            "icon": "fa-bold",
+                                            "isActive": [Function],
+                                            "isDisabled": [Function],
+                                            "key": "bold",
+                                            "name": "Bold",
+                                            "style": "BOLD",
+                                          },
+                                          Object {
+                                            "active": [Function],
+                                            "functions": Object {
+                                              "toggle": [Function],
+                                            },
+                                            "icon": "fa-italic",
+                                            "isActive": [Function],
+                                            "isDisabled": [Function],
+                                            "key": "italic",
+                                            "name": "Italic",
+                                            "style": "ITALIC",
+                                          },
+                                          Object {
+                                            "active": [Function],
+                                            "functions": Object {
+                                              "toggle": [Function],
+                                            },
+                                            "icon": "fa-underline",
+                                            "isActive": [Function],
+                                            "isDisabled": [Function],
+                                            "key": "underline",
+                                            "name": "Underline",
+                                            "style": "UNDERLINE",
+                                          },
+                                          Object {
+                                            "active": [Function],
+                                            "component": [Function],
+                                            "functions": Object {
+                                              "addLink": [Function],
+                                              "onClick": [Function],
+                                            },
+                                            "isActive": [Function],
+                                            "isDisabled": [Function],
+                                            "key": "link",
+                                            "name": "Insert link",
+                                          },
+                                          Object {
+                                            "active": [Function],
+                                            "component": [Function],
+                                            "functions": Object {
+                                              "addImage": [Function],
+                                            },
+                                            "isActive": [Function],
+                                            "isDisabled": [Function],
+                                            "key": "image",
+                                            "name": "Insert image",
+                                          },
+                                          Object {
+                                            "active": [Function],
+                                            "component": [Function],
+                                            "functions": Object {
+                                              "addEmoji": [Function],
+                                            },
+                                            "isActive": [Function],
+                                            "isDisabled": [Function],
+                                            "key": "emoji",
+                                            "name": "Insert emoji",
+                                          },
+                                        ]
+                                      }
+                                      buttons={Array []}
+                                      hideActions={false}
+                                      store={
+                                        Object {
+                                          "getItem": [Function],
+                                          "updateItem": [Function],
+                                        }
+                                      }
+                                    >
+                                      <div
+                                        className="editor-toolbar"
+                                      >
+                                        <div
+                                          className=""
+                                          onClick={[Function]}
+                                          onMouseDown={[Function]}
+                                        >
+                                          <i
+                                            className="fa fa-fw fa-bold"
+                                            title="Bold"
+                                          />
+                                        </div>
+                                        <div
+                                          className=""
+                                          onClick={[Function]}
+                                          onMouseDown={[Function]}
+                                        >
+                                          <i
+                                            className="fa fa-fw fa-italic"
+                                            title="Italic"
+                                          />
+                                        </div>
+                                        <div
+                                          className=""
+                                          onClick={[Function]}
+                                          onMouseDown={[Function]}
+                                        >
+                                          <i
+                                            className="fa fa-fw fa-underline"
+                                            title="Underline"
+                                          />
+                                        </div>
+                                        <AddLink
+                                          action={
+                                            Object {
+                                              "active": [Function],
+                                              "component": [Function],
+                                              "functions": Object {
+                                                "addLink": [Function],
+                                                "onClick": [Function],
+                                              },
+                                              "isActive": [Function],
+                                              "isDisabled": [Function],
+                                              "key": "link",
+                                              "name": "Insert link",
+                                            }
+                                          }
+                                          functions={
+                                            Object {
+                                              "addLink": [Function],
+                                              "onClick": [Function],
+                                            }
+                                          }
+                                          isActive={false}
+                                          isDisabled={false}
+                                        >
+                                          <Popover
+                                            icon="fa-link"
+                                            isActive={false}
+                                            isDisabled={false}
+                                            name="Insert link"
+                                            onIconClick={[Function]}
+                                          >
+                                            <span>
+                                              <i
+                                                className="fa fa-fw fa-link"
+                                                onMouseUp={[Function]}
+                                                title="Insert link"
+                                              />
+                                              <div
+                                                className="undefined"
+                                                onClick={[Function]}
+                                              />
+                                            </span>
+                                          </Popover>
+                                        </AddLink>
+                                        <AddImage
+                                          action={
+                                            Object {
+                                              "active": [Function],
+                                              "component": [Function],
+                                              "functions": Object {
+                                                "addImage": [Function],
+                                              },
+                                              "isActive": [Function],
+                                              "isDisabled": [Function],
+                                              "key": "image",
+                                              "name": "Insert image",
+                                            }
+                                          }
+                                          functions={
+                                            Object {
+                                              "addImage": [Function],
+                                            }
+                                          }
+                                          isActive={false}
+                                          isDisabled={false}
+                                        >
+                                          <Popover
+                                            icon="fa-file-image-o"
+                                            isActive={false}
+                                            isDisabled={false}
+                                            name="Insert image"
+                                          >
+                                            <span>
+                                              <i
+                                                className="fa fa-fw fa-file-image-o"
+                                                onMouseUp={[Function]}
+                                                title="Insert image"
+                                              />
+                                              <div
+                                                className="undefined"
+                                                onClick={[Function]}
+                                              />
+                                            </span>
+                                          </Popover>
+                                        </AddImage>
+                                        <AddEmoji
+                                          action={
+                                            Object {
+                                              "active": [Function],
+                                              "component": [Function],
+                                              "functions": Object {
+                                                "addEmoji": [Function],
+                                              },
+                                              "isActive": [Function],
+                                              "isDisabled": [Function],
+                                              "key": "emoji",
+                                              "name": "Insert emoji",
+                                            }
+                                          }
+                                          functions={
+                                            Object {
+                                              "addEmoji": [Function],
+                                            }
+                                          }
+                                          isActive={false}
+                                          isDisabled={false}
+                                        >
+                                          <Popover
+                                            className="p-0 d-flex"
+                                            icon="fa-smile-o"
+                                            isActive={false}
+                                            isDisabled={false}
+                                            name="Insert emoji"
+                                          >
+                                            <span>
+                                              <i
+                                                className="fa fa-fw fa-smile-o"
+                                                onMouseUp={[Function]}
+                                                title="Insert emoji"
+                                              />
+                                              <div
+                                                className="p-0 d-flex undefined"
+                                                onClick={[Function]}
+                                              />
+                                            </span>
+                                          </Popover>
+                                        </AddEmoji>
+                                      </div>
+                                    </Toolbar>
+                                  </Decorated(Toolbar)>
+                                </div>
+                              </div>
+                            </div>
+                          </ml>
+                        </RichField>
+                      </div>
+                      <ei
+                        className=""
+                        color="primary"
+                        tag="button"
+                      >
+                        <button
+                          className="btn btn-primary"
+                          onClick={[Function]}
+                        >
+                          Create & activate campaign
+                        </button>
+                      </ei>
+                    </form>
+                  </rl>
+                </div>
+              </Ot>
+              <Ot
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="col"
+                >
+                  <CampaignPreview
+                    html="<br>"
+                    mainColor="#fefefe"
+                  >
+                    <div>
+                      <div />
+                      <div>
+                        <div>
+                          <div>
+                            <img
+                              src="https://www.gravatar.com/avatar/0?d=mm"
+                            />
+                          </div>
+                          <div>
+                            <div>
+                              <b>
+                                [Random agent's name]
+                              </b>
+                            </div>
+                            <div
+                              dangerouslySetInnerHTML={
+                                Object {
+                                  "__html": "<br>",
+                                }
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          Click to reply
+                        </div>
+                      </div>
+                      <div
+                        style={
+                          Object {
+                            "backgroundColor": "#fefefe",
+                          }
+                        }
+                      >
+                        <img
+                          src="/static/private/img/icons/DefaultCloseIcon.svg"
+                        />
+                      </div>
+                    </div>
+                  </CampaignPreview>
+                </div>
+              </Ot>
+            </div>
+          </bt>
+        </div>
+      </gt>
+    </div>
+  </CampaignDetail>
+</Connect(CampaignDetail)>
+`;
+
+exports[`CampaignDetail component should display the campaign correctly when updating it 1`] = `
+<Connect(CampaignDetail)
+  campaign={
+    Immutable.Map {
+      name: "My little campaign",
+      id: "789das-ds54f6s-asd64",
+      message: Immutable.Map {
+        author: Immutable.Map {
+          name: "John",
+          email: "john@gorgias.io",
+          avatar_url: "https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg",
+        },
+        html: "<div>My little message</div>",
+        text: "My little message",
+      },
+      triggers: Immutable.List [
+        Immutable.Map {
+          key: "current_url",
+          operator: "contains",
+          value: "gorgias",
+        },
+        Immutable.Map {
+          key: "time_spent_on_page",
+          operator: "gt",
+          value: 42,
+        },
+      ],
+    }
+  }
+  id="my-litte-campaign-789das-ds54f6s-asd64"
+  integration={
+    Immutable.Map {
+      id: 1,
+      type: "smooch_inside",
+      name: "My new chat",
+      decoration: Immutable.Map {
+        main_color: "#fefefe",
+      },
+    }
+  }
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <CampaignDetail
+    agents={
+      Immutable.List [
+        Immutable.Map {
+          name: "John",
+          email: "john@gorgias.io",
+          id: 1,
+        },
+        Immutable.Map {
+          name: "Doe",
+          email: "doe@gorgias.io",
+          id: 2,
+        },
+      ]
+    }
+    campaign={
+      Immutable.Map {
+      }
+    }
+    createCampaign={[Function]}
+    deleteCampaign={[Function]}
+    id="my-litte-campaign-789das-ds54f6s-asd64"
+    integration={
+      Immutable.Map {
+        id: 1,
+        type: "smooch_inside",
+        name: "My new chat",
+        decoration: Immutable.Map {
+          main_color: "#fefefe",
+        },
+      }
+    }
+    notify={[Function]}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    updateCampaign={[Function]}
+  >
+    <div>
+      <gs
+        tag="ol"
+      >
+        <ol
+          className="breadcrumb"
+        >
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Integrations
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations/smooch_inside/\${integration.get('id')}"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Chat
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations/smooch_inside/1"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  My new chat
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            tag="li"
+          >
+            <li
+              className="breadcrumb-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/integrations/smooch_inside/1/campaigns"
+              >
+                <a
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Campaigns
+                </a>
+              </Link>
+            </li>
+          </bs>
+          <bs
+            active={true}
+            tag="li"
+          >
+            <li
+              className="active breadcrumb-item"
+            />
+          </bs>
+        </ol>
+      </gs>
+      <h1 />
+      <gt
+        fluid={true}
+        tag="div"
+      >
+        <div
+          className="container-fluid"
+        >
+          <bt
+            tag="div"
+          >
+            <div
+              className="row"
+            >
+              <Ot
+                style={
+                  Object {
+                    "paddingLeft": 0,
+                  }
+                }
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="col"
+                  style={
+                    Object {
+                      "paddingLeft": 0,
+                    }
+                  }
+                >
+                  <rl
+                    onSubmit={[Function]}
+                    tag="form"
+                  >
+                    <form
+                      className=""
+                      onSubmit={[Function]}
+                    >
+                      <div
+                        className="mb-4"
+                      >
+                        <InputField
+                          label="Campaign name"
+                          name="name"
+                          onChange={[Function]}
+                          placeholder="My new campaign"
+                          required={true}
+                          type="input"
+                          value=""
+                        >
+                          <ml
+                            className="undefined"
+                            color=""
+                            tag="div"
+                          >
+                            <div
+                              className="undefined form-group"
+                            >
+                              <Hl
+                                className="control-label"
+                                htmlFor="id-name"
+                                tag="label"
+                              >
+                                <label
+                                  className="control-label "
+                                  htmlFor="id-name"
+                                >
+                                  Campaign name
+                                </label>
+                              </Hl>
+                              <div
+                                className=""
+                              >
+                                <ei
+                                  className=""
+                                  id="id-name"
+                                  onChange={[Function]}
+                                  placeholder="My new campaign"
+                                  required={true}
+                                  tag="p"
+                                  type="input"
+                                  value=""
+                                >
+                                  <input
+                                    className="form-control"
+                                    id="id-name"
+                                    onChange={[Function]}
+                                    placeholder="My new campaign"
+                                    required={true}
+                                    type="input"
+                                    value=""
+                                  />
+                                </ei>
+                              </div>
+                            </div>
+                          </ml>
+                        </InputField>
+                      </div>
+                      <h5>
+                        Choose your audience
+                      </h5>
+                      <div
+                        className="mb-4"
+                      >
+                        <UncontrolledDropdown>
+                          <ei
+                            isOpen={false}
+                            tag="div"
+                            toggle={[Function]}
+                          >
+                            <div
+                              className="dropdown"
+                            >
+                              <ei
+                                aria-haspopup={true}
+                                caret={true}
+                                className="mr-2"
+                                color="secondary"
+                                data-toggle="dropdown"
+                                type="button"
+                              >
+                                <ei
+                                  aria-expanded={false}
+                                  aria-haspopup="true"
+                                  className="mr-2 dropdown-toggle"
+                                  color="secondary"
+                                  data-toggle="dropdown"
+                                  onClick={[Function]}
+                                  tag="button"
+                                  type="button"
+                                >
+                                  <button
+                                    aria-expanded={false}
+                                    aria-haspopup="true"
+                                    className="mr-2 dropdown-toggle btn btn-secondary"
+                                    data-toggle="dropdown"
+                                    onClick={[Function]}
+                                    type="button"
+                                  >
+                                    <i
+                                      className="fa fa-plus fa-fw mr-2"
+                                    />
+                                    Add condition
+                                  </button>
+                                </ei>
+                              </ei>
+                              <Xo
+                                tag="div"
+                              >
+                                <div
+                                  aria-hidden={true}
+                                  className="dropdown-menu"
+                                  role="menu"
+                                  tabIndex="-1"
+                                >
+                                  <ei
+                                    onClick={[Function]}
+                                    tag="button"
+                                    toggle={true}
+                                    type="button"
+                                  >
+                                    <button
+                                      className="dropdown-item"
+                                      onClick={[Function]}
+                                      tabIndex="0"
+                                      type="button"
+                                    >
+                                      Current URL
+                                    </button>
+                                  </ei>
+                                  <ei
+                                    onClick={[Function]}
+                                    tag="button"
+                                    toggle={true}
+                                    type="button"
+                                  >
+                                    <button
+                                      className="dropdown-item"
+                                      onClick={[Function]}
+                                      tabIndex="0"
+                                      type="button"
+                                    >
+                                      Time spent on page
+                                    </button>
+                                  </ei>
+                                </div>
+                              </Xo>
+                            </div>
+                          </ei>
+                        </UncontrolledDropdown>
+                      </div>
+                      <h5>
+                        Write your message
+                      </h5>
+                      <div
+                        className="mb-4"
+                      >
+                        <div
+                          className="mb-2"
+                        >
+                          <span>
+                            From: 
+                          </span>
+                          <SelectField
+                            onChange={[Function]}
+                            options={
+                              Array [
+                                Object {
+                                  "label": <AgentLabel
+                                    maxWidth="100"
+                                    name="John"
+                              />,
+                                  "text": "John",
+                                  "value": "john@gorgias.io",
+                                },
+                                Object {
+                                  "label": <AgentLabel
+                                    maxWidth="100"
+                                    name="Doe"
+                              />,
+                                  "text": "Doe",
+                                  "value": "doe@gorgias.io",
+                                },
+                                Object {
+                                  "label": "Random agent",
+                                  "text": "randomagent",
+                                  "value": null,
+                                },
+                              ]
+                            }
+                            placeholder=""
+                            style={Object {}}
+                            value={null}
+                          >
+                            <div
+                              style={Object {}}
+                            >
+                              <div>
+                                <div
+                                  className="btn btn-secondary dropdown-toggle clickable"
+                                  onClick={[Function]}
+                                >
+                                  Random agent
+                                </div>
+                              </div>
+                              <ei
+                                isOpen={false}
+                                tag="div"
+                                toggle={[Function]}
+                              >
+                                <div
+                                  className="dropdown"
+                                >
+                                  <Xo
+                                    tag="div"
+                                  >
+                                    <div
+                                      aria-hidden={true}
+                                      className="dropdown-menu"
+                                      role="menu"
+                                      tabIndex="-1"
+                                    >
+                                      <ei
+                                        className="dropdown-item-input"
+                                        header={true}
+                                        tag="button"
+                                        toggle={true}
+                                      >
+                                        <h6
+                                          className="dropdown-item-input dropdown-header"
+                                          onClick={[Function]}
+                                          tabIndex="-1"
+                                        >
+                                          <Search
+                                            autoFocus={true}
+                                            disabled={false}
+                                            onChange={[Function]}
+                                            onKeyDown={[Function]}
+                                            placeholder="Search..."
+                                            searchDebounceTime={0}
+                                            style={Object {}}
+                                          >
+                                            <div
+                                              className=""
+                                              style={Object {}}
+                                            >
+                                              <El
+                                                tag="div"
+                                              >
+                                                <div
+                                                  className="input-group"
+                                                >
+                                                  <ei
+                                                    autoFocus={true}
+                                                    disabled={false}
+                                                    onChange={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    placeholder="Search..."
+                                                    style={
+                                                      Object {
+                                                        "zIndex": 1,
+                                                      }
+                                                    }
+                                                    tag="p"
+                                                    type="text"
+                                                    value=""
+                                                  >
+                                                    <input
+                                                      autoFocus={true}
+                                                      className="form-control"
+                                                      disabled={false}
+                                                      onChange={[Function]}
+                                                      onKeyDown={[Function]}
+                                                      placeholder="Search..."
+                                                      style={
+                                                        Object {
+                                                          "zIndex": 1,
+                                                        }
+                                                      }
+                                                      type="text"
+                                                      value=""
+                                                    />
+                                                  </ei>
+                                                  <jl
+                                                    className="hidden-sm-down"
+                                                    tag="div"
+                                                  >
+                                                    <div
+                                                      className="hidden-sm-down input-group-addon"
+                                                    >
+                                                      <i
+                                                        className="fa fa-fw fa-search"
+                                                      />
+                                                    </div>
+                                                  </jl>
+                                                </div>
+                                              </El>
+                                            </div>
+                                          </Search>
+                                        </h6>
+                                      </ei>
+                                      <ei
+                                        divider={true}
+                                        tag="button"
+                                        toggle={true}
+                                      >
+                                        <div
+                                          className="dropdown-divider"
+                                          onClick={[Function]}
+                                          tabIndex="-1"
+                                        />
+                                      </ei>
+                                      <ei
+                                        className="undefined"
+                                        onClick={[Function]}
+                                        onMouseEnter={[Function]}
+                                        tag="button"
+                                        toggle={true}
+                                        type="button"
+                                      >
+                                        <button
+                                          className="undefined dropdown-item"
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          tabIndex="0"
+                                          type="button"
+                                        >
+                                          <AgentLabel
+                                            maxWidth="100"
+                                            name="John"
+                                          >
+                                            <span
+                                              className="agent-label d-inline-flex align-items-center"
+                                            >
+                                              <Zs
+                                                className="agent-id-label"
+                                                color="warning"
+                                                pill={false}
+                                                tag="span"
+                                              >
+                                                <span
+                                                  className="agent-id-label badge badge-warning"
+                                                >
+                                                  A
+                                                </span>
+                                              </Zs>
+                                              <span
+                                                className="secondary-action"
+                                                style={
+                                                  Object {
+                                                    "maxWidth": "100px",
+                                                  }
+                                                }
+                                              >
+                                                John
+                                              </span>
+                                            </span>
+                                          </AgentLabel>
+                                        </button>
+                                      </ei>
+                                      <ei
+                                        className=""
+                                        onClick={[Function]}
+                                        onMouseEnter={[Function]}
+                                        tag="button"
+                                        toggle={true}
+                                        type="button"
+                                      >
+                                        <button
+                                          className="dropdown-item"
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          tabIndex="0"
+                                          type="button"
+                                        >
+                                          <AgentLabel
+                                            maxWidth="100"
+                                            name="Doe"
+                                          >
+                                            <span
+                                              className="agent-label d-inline-flex align-items-center"
+                                            >
+                                              <Zs
+                                                className="agent-id-label"
+                                                color="warning"
+                                                pill={false}
+                                                tag="span"
+                                              >
+                                                <span
+                                                  className="agent-id-label badge badge-warning"
+                                                >
+                                                  A
+                                                </span>
+                                              </Zs>
+                                              <span
+                                                className="secondary-action"
+                                                style={
+                                                  Object {
+                                                    "maxWidth": "100px",
+                                                  }
+                                                }
+                                              >
+                                                Doe
+                                              </span>
+                                            </span>
+                                          </AgentLabel>
+                                        </button>
+                                      </ei>
+                                    </div>
+                                  </Xo>
+                                </div>
+                              </ei>
+                            </div>
+                          </SelectField>
+                        </div>
+                      </div>
+                      <ei
+                        className=""
+                        color="primary"
+                        tag="button"
+                      >
+                        <button
+                          className="btn btn-primary"
+                          onClick={[Function]}
+                        >
+                          Save
+                        </button>
+                      </ei>
+                      <ConfirmButton
+                        className="pull-right"
+                        color="danger"
+                        confirm={[Function]}
+                        content="Are you sure you want to delete this campaign?"
+                        disabled={false}
+                        id="delete-campaign-button"
+                        loading={false}
+                        outline={true}
+                        placement="bottom right"
+                        skip={false}
+                        title="Are you sure?"
+                        type="button"
+                      >
+                        <div
+                          className="d-inline-block pull-right"
+                          id="delete-campaign-button"
+                        >
+                          <ei
+                            className=""
+                            color="danger"
+                            disabled={false}
+                            id="confirm-button-delete-campaign-button"
+                            onClick={[Function]}
+                            outline={true}
+                            tag="button"
+                            type="button"
+                          >
+                            <button
+                              className="btn btn-outline-danger"
+                              disabled={false}
+                              id="confirm-button-delete-campaign-button"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              Delete campaign
+                            </button>
+                          </ei>
+                          <ei
+                            isOpen={false}
+                            placement="bottom right"
+                            target="confirm-button-delete-campaign-button"
+                            toggle={[Function]}
+                          />
+                        </div>
+                      </ConfirmButton>
+                    </form>
+                  </rl>
+                </div>
+              </Ot>
+              <Ot
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="col"
+                >
+                  <CampaignPreview
+                    mainColor="#fefefe"
+                  >
+                    <div>
+                      <div />
+                      <div>
+                        <div>
+                          <div>
+                            <img
+                              src="https://www.gravatar.com/avatar/0?d=mm"
+                            />
+                          </div>
+                          <div>
+                            <div>
+                              <b>
+                                [Random agent's name]
+                              </b>
+                            </div>
+                            <div
+                              dangerouslySetInnerHTML={
+                                Object {
+                                  "__html": undefined,
+                                }
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          Click to reply
+                        </div>
+                      </div>
+                      <div
+                        style={
+                          Object {
+                            "backgroundColor": "#fefefe",
+                          }
+                        }
+                      >
+                        <img
+                          src="/static/private/img/icons/DefaultCloseIcon.svg"
+                        />
+                      </div>
+                    </div>
+                  </CampaignPreview>
+                </div>
+              </Ot>
+            </div>
+          </bt>
+        </div>
+      </gt>
+    </div>
+  </CampaignDetail>
+</Connect(CampaignDetail)>
+`;

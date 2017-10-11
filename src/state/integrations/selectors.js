@@ -133,3 +133,13 @@ export const getShopifyIntegrationsWithoutChat = (state: stateType) => {
         })
     })
 }
+
+export const getChatIntegrationCampaigns = (id) => createSelector(
+    [getIntegrationById(id)],
+    (integration) => integration.getIn(['meta', 'campaigns']) || fromJS([])
+)
+
+export const getChatIntegrationCampaignById = (id, campaignId) => createSelector(
+    [getChatIntegrationCampaigns(id)],
+    (campaigns) => campaigns.find((campaign) => campaign.get('id') === campaignId) || fromJS({})
+)

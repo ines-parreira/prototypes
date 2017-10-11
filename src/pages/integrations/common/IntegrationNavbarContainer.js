@@ -10,7 +10,7 @@ import Navbar from '../../common/components/Navbar'
 import * as integrationSelectors from './../../../state/integrations/selectors'
 
 const pagesPerIntegrationType = {
-    'smooch_inside': ['appearance', 'installation', 'preferences'],
+    'smooch_inside': ['appearance', 'installation', 'preferences', 'campaigns'],
     smooch: ['overview', 'preferences'],
     facebook: ['overview', 'preferences'],
 }

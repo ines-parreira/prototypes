@@ -15,37 +15,41 @@ import * as usersHelpers from '../../../state/users/helpers'
 /**
  * AGENT
  */
-export const AgentLabel = ({name = '', maxWidth}) => {
-    const style = {}
-
-    if (maxWidth) {
-        style.maxWidth = `${maxWidth}px`
+export class AgentLabel extends React.Component {
+    static propTypes = {
+        name: PropTypes.string,
+        maxWidth: PropTypes.string,
     }
 
-    return (
-        <span className="agent-label d-inline-flex align-items-center">
-            <Badge
-                className="agent-id-label"
-                color="warning"
-            >
-                A
-            </Badge>
-            {
-                name && (
-                    <span
-                        className="secondary-action"
-                        style={style}
-                    >
-                        {name}
-                    </span>
-                )
-            }
-        </span>
-    )
-}
-AgentLabel.propTypes = {
-    name: PropTypes.string,
-    maxWidth: PropTypes.string,
+    render() {
+        const {name = '', maxWidth} = this.props
+        const style = {}
+
+        if (maxWidth) {
+            style.maxWidth = `${maxWidth}px`
+        }
+
+        return (
+            <span className="agent-label d-inline-flex align-items-center">
+                <Badge
+                    className="agent-id-label"
+                    color="warning"
+                >
+                    A
+                </Badge>
+                {
+                    name && (
+                        <span
+                            className="secondary-action"
+                            style={style}
+                        >
+                            {name}
+                        </span>
+                    )
+                }
+            </span>
+        )
+    }
 }
 
 /**

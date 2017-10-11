@@ -1,6 +1,6 @@
 import {
     getIntegrationsState, getIntegrations, getEmailIntegrations, getChannels,
-    getShopifyIntegrationsWithoutChat
+    getShopifyIntegrationsWithoutChat, getChatIntegrationCampaigns, getChatIntegrationCampaignById
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 import {fromJS} from 'immutable'
@@ -105,6 +105,82 @@ describe('integrations selectors', () => {
 
             const res = getShopifyIntegrationsWithoutChat(state)
             expect(res.size).toEqual(0)
+        })
+    })
+
+    describe('getChatIntegrationCampaigns selector', () => {
+        it('should return the campaigns of the correct chat integration', () => {
+            const expectedCampaigns = [{
+                name: 'una campagnita'
+            }, {
+                name: 'una otra campagnita'
+            }]
+
+            const state = {
+                integrations: fromJS({
+                    integrations: [{
+                        id: 1,
+                        type: 'smooch_inside',
+                        meta: {
+                            campaigns: [{
+                                name: 'some campaign'
+                            }, {
+                                name: 'another campaign'
+                            }]
+                        }
+                    }, {
+                        id: 3,
+                        type: 'smooch_inside',
+                        meta: {
+                            campaigns: expectedCampaigns
+                        }
+                    }]
+                })
+            }
+
+            const res = getChatIntegrationCampaigns(3)(state)
+
+            expect(res.toJS()).toEqual(expectedCampaigns)
+        })
+    })
+
+    describe('getChatIntegrationCampaignById selector', () => {
+        it('should return the correct campaign of the correct chat integration', () => {
+            const expectedCampaign = {
+                name: 'campaign inte 3',
+                id: 'una-campagnita-123'
+            }
+
+            const state = {
+                integrations: fromJS({
+                    integrations: [{
+                        id: 1,
+                        type: 'smooch_inside',
+                        meta: {
+                            campaigns: [{
+                                name: 'campaign inte 1',
+                                id: 'una-campagnita-123'
+                            }, {
+                                name: 'una otra campagnita',
+                                id: 'una-otra-campagnita-456'
+                            }]
+                        }
+                    }, {
+                        id: 3,
+                        type: 'smooch_inside',
+                        meta: {
+                            campaigns: [expectedCampaign, {
+                                name: 'una otra campagnita',
+                                id: 'una-otra-campagnita-456'
+                            }]
+                        }
+                    }]
+                })
+            }
+
+            const res = getChatIntegrationCampaignById(3, 'una-campagnita-123')(state)
+
+            expect(res.toJS()).toEqual(expectedCampaign)
         })
     })
 })

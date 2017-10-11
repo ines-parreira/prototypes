@@ -169,7 +169,8 @@ export default (
                 navbar: IntegrationNavbarContainer
             }}
         >
-            <Route path=":integrationId(/:extra)" />
+            <Route path=":integrationId(/:extra)"/>
+            <Route path=":integrationId/:extra/:subId"/>
         </Route>
         <Route
             path="stats(/:view)"
