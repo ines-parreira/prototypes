@@ -40,6 +40,7 @@ describe('Campaign actions', () => {
         it('should fetch the integration and execute onUpdateSuccess when creating a campaign successfully', () => {
             mockServer.onPost('/api/integrations/1/campaigns/').reply(201, {data: {id: '123-456'}})
             mockServer.onGet('/api/integrations/1').reply(200, {data: {}})
+            mockServer.onGet('/api/integrations/').reply(200, {data: {}})
 
             return store.dispatch(actions.createCampaign(fromJS({}), integration)).then(() => {
                 let storeActions = store.getActions()
@@ -78,6 +79,7 @@ describe('Campaign actions', () => {
         it('should fetch the integration and execute onUpdateSuccess when updating a campaign successfully', () => {
             mockServer.onPut(`/api/integrations/${integration.get('id')}/campaigns/${campaign.get('id')}`).reply(202, {})
             mockServer.onGet('/api/integrations/1').reply(200, {data: {}})
+            mockServer.onGet('/api/integrations/').reply(200, {data: {}})
 
             return store.dispatch(actions.updateCampaign(campaign, integration)).then(() => {
                 let storeActions = store.getActions()
