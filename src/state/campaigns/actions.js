@@ -20,7 +20,7 @@ export function createCampaign(campaign, integration) {
                 return dispatch({
                     type: types.UPDATE_INTEGRATION_ERROR,
                     error,
-                    reason: 'Failed to update integration'
+                    verbose: true
                 })
             })
     }
@@ -40,7 +40,7 @@ export function updateCampaign(campaign, integration) {
                 return dispatch({
                     type: types.UPDATE_INTEGRATION_ERROR,
                     error,
-                    reason: 'Failed to update integration'
+                    verbose: true
                 })
             })
     }

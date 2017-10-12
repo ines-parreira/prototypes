@@ -284,6 +284,373 @@ exports[`CampaignDetail component should display default value when it's a new c
                       <div
                         className="mb-4"
                       >
+                        <TriggerRow
+                          idx={0}
+                          nbOfTriggers={1}
+                          onDelete={[Function]}
+                          onOperatorChange={[Function]}
+                          onValueChange={[Function]}
+                          trigger={
+                            Immutable.Map {
+                              key: "current_url",
+                              operator: "eq",
+                              value: "",
+                            }
+                          }
+                        >
+                          <div>
+                            <ei
+                              className="btn-frozen"
+                              color="info"
+                              tag="div"
+                            >
+                              <div
+                                className="btn-frozen btn btn-info"
+                                onClick={[Function]}
+                              >
+                                Current URL
+                              </div>
+                            </ei>
+                            <SelectField
+                              onChange={[Function]}
+                              options={
+                                Array [
+                                  Object {
+                                    "label": "is",
+                                    "text": "eq",
+                                    "value": "eq",
+                                  },
+                                  Object {
+                                    "label": "is not",
+                                    "text": "neq",
+                                    "value": "neq",
+                                  },
+                                  Object {
+                                    "label": "contains",
+                                    "text": "contains",
+                                    "value": "contains",
+                                  },
+                                  Object {
+                                    "label": "does not contain",
+                                    "text": "notContains",
+                                    "value": "notContains",
+                                  },
+                                  Object {
+                                    "label": "starts with",
+                                    "text": "startsWith",
+                                    "value": "startsWith",
+                                  },
+                                  Object {
+                                    "label": "ends with",
+                                    "text": "endsWith",
+                                    "value": "endsWith",
+                                  },
+                                ]
+                              }
+                              placeholder=""
+                              style={Object {}}
+                              value="eq"
+                            >
+                              <div
+                                style={Object {}}
+                              >
+                                <div>
+                                  <div
+                                    className="btn btn-secondary dropdown-toggle clickable"
+                                    onClick={[Function]}
+                                  >
+                                    is
+                                  </div>
+                                </div>
+                                <ei
+                                  isOpen={false}
+                                  tag="div"
+                                  toggle={[Function]}
+                                >
+                                  <div
+                                    className="dropdown"
+                                  >
+                                    <Xo
+                                      tag="div"
+                                    >
+                                      <div
+                                        aria-hidden={true}
+                                        className="dropdown-menu"
+                                        role="menu"
+                                        tabIndex="-1"
+                                      >
+                                        <ei
+                                          className="dropdown-item-input"
+                                          header={true}
+                                          tag="button"
+                                          toggle={true}
+                                        >
+                                          <h6
+                                            className="dropdown-item-input dropdown-header"
+                                            onClick={[Function]}
+                                            tabIndex="-1"
+                                          >
+                                            <Search
+                                              autoFocus={true}
+                                              disabled={false}
+                                              onChange={[Function]}
+                                              onKeyDown={[Function]}
+                                              placeholder="Search..."
+                                              searchDebounceTime={0}
+                                              style={Object {}}
+                                            >
+                                              <div
+                                                className=""
+                                                style={Object {}}
+                                              >
+                                                <El
+                                                  tag="div"
+                                                >
+                                                  <div
+                                                    className="input-group"
+                                                  >
+                                                    <ei
+                                                      autoFocus={true}
+                                                      disabled={false}
+                                                      onChange={[Function]}
+                                                      onKeyDown={[Function]}
+                                                      placeholder="Search..."
+                                                      style={
+                                                        Object {
+                                                          "zIndex": 1,
+                                                        }
+                                                      }
+                                                      tag="p"
+                                                      type="text"
+                                                      value=""
+                                                    >
+                                                      <input
+                                                        autoFocus={true}
+                                                        className="form-control"
+                                                        disabled={false}
+                                                        onChange={[Function]}
+                                                        onKeyDown={[Function]}
+                                                        placeholder="Search..."
+                                                        style={
+                                                          Object {
+                                                            "zIndex": 1,
+                                                          }
+                                                        }
+                                                        type="text"
+                                                        value=""
+                                                      />
+                                                    </ei>
+                                                    <jl
+                                                      className="hidden-sm-down"
+                                                      tag="div"
+                                                    >
+                                                      <div
+                                                        className="hidden-sm-down input-group-addon"
+                                                      >
+                                                        <i
+                                                          className="fa fa-fw fa-search"
+                                                        />
+                                                      </div>
+                                                    </jl>
+                                                  </div>
+                                                </El>
+                                              </div>
+                                            </Search>
+                                          </h6>
+                                        </ei>
+                                        <ei
+                                          divider={true}
+                                          tag="button"
+                                          toggle={true}
+                                        >
+                                          <div
+                                            className="dropdown-divider"
+                                            onClick={[Function]}
+                                            tabIndex="-1"
+                                          />
+                                        </ei>
+                                        <ei
+                                          className="undefined"
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          tag="button"
+                                          toggle={true}
+                                          type="button"
+                                        >
+                                          <button
+                                            className="undefined dropdown-item"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            tabIndex="0"
+                                            type="button"
+                                          >
+                                            is not
+                                          </button>
+                                        </ei>
+                                        <ei
+                                          className=""
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          tag="button"
+                                          toggle={true}
+                                          type="button"
+                                        >
+                                          <button
+                                            className="dropdown-item"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            tabIndex="0"
+                                            type="button"
+                                          >
+                                            contains
+                                          </button>
+                                        </ei>
+                                        <ei
+                                          className=""
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          tag="button"
+                                          toggle={true}
+                                          type="button"
+                                        >
+                                          <button
+                                            className="dropdown-item"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            tabIndex="0"
+                                            type="button"
+                                          >
+                                            does not contain
+                                          </button>
+                                        </ei>
+                                        <ei
+                                          className=""
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          tag="button"
+                                          toggle={true}
+                                          type="button"
+                                        >
+                                          <button
+                                            className="dropdown-item"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            tabIndex="0"
+                                            type="button"
+                                          >
+                                            starts with
+                                          </button>
+                                        </ei>
+                                        <ei
+                                          className=""
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          tag="button"
+                                          toggle={true}
+                                          type="button"
+                                        >
+                                          <button
+                                            className="dropdown-item"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            tabIndex="0"
+                                            type="button"
+                                          >
+                                            ends with
+                                          </button>
+                                        </ei>
+                                      </div>
+                                    </Xo>
+                                  </div>
+                                </ei>
+                              </div>
+                            </SelectField>
+                            <ValueInput
+                              keyConfig={
+                                Immutable.Map {
+                                  label: "Current URL",
+                                  name: "current_url",
+                                  operators: Immutable.Map {
+                                    eq: Immutable.Map {
+                                      label: "is",
+                                    },
+                                    neq: Immutable.Map {
+                                      label: "is not",
+                                    },
+                                    contains: Immutable.Map {
+                                      label: "contains",
+                                    },
+                                    notContains: Immutable.Map {
+                                      label: "does not contain",
+                                    },
+                                    startsWith: Immutable.Map {
+                                      label: "starts with",
+                                    },
+                                    endsWith: Immutable.Map {
+                                      label: "ends with",
+                                    },
+                                  },
+                                  value: Immutable.Map {
+                                    input: "text",
+                                    default: "",
+                                  },
+                                }
+                              }
+                              onChange={[Function]}
+                              trigger={
+                                Immutable.Map {
+                                  key: "current_url",
+                                  operator: "eq",
+                                  value: "",
+                                }
+                              }
+                            >
+                              <InputField
+                                name="value"
+                                onChange={[Function]}
+                                type="input"
+                                value=""
+                              >
+                                <ml
+                                  className=""
+                                  color=""
+                                  tag="div"
+                                >
+                                  <div
+                                    className="form-group"
+                                  >
+                                    <div
+                                      className=""
+                                    >
+                                      <ei
+                                        className=""
+                                        id="id-value"
+                                        onChange={[Function]}
+                                        tag="p"
+                                        type="input"
+                                        value=""
+                                      >
+                                        <input
+                                          className="form-control"
+                                          id="id-value"
+                                          onChange={[Function]}
+                                          type="input"
+                                          value=""
+                                        />
+                                      </ei>
+                                    </div>
+                                  </div>
+                                </ml>
+                              </InputField>
+                            </ValueInput>
+                            <div>
+                              <i
+                                className="fa fa-times text-danger clickable"
+                                onClick={[Function]}
+                              />
+                            </div>
+                          </div>
+                        </TriggerRow>
                         <UncontrolledDropdown>
                           <ei
                             isOpen={false}
@@ -1750,6 +2117,19 @@ exports[`CampaignDetail component should display default value when it's a new c
                                         }
                                       />
                                     </Decorated(MentionSuggestions)>
+                                    <input
+                                      required={true}
+                                      style={
+                                        Object {
+                                          "height": 0,
+                                          "margin": "none",
+                                          "opacity": 0,
+                                          "overflow": "hidden",
+                                          "padding": 0,
+                                        }
+                                      }
+                                      value=""
+                                    />
                                   </div>
                                   <Decorated(Toolbar)
                                     displayedActions={

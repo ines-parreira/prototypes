@@ -247,6 +247,25 @@ export default class RichField extends InputField {
                         suggestions={this.state.mentionSuggestions}
                         canAddMention={canAddMention}
                     />
+                    {
+                        required && (
+                            <input
+                                value={
+                                    this.state.editorState
+                                        ? this.state.editorState.getCurrentContent().getPlainText()
+                                        : ''
+                                }
+                                style={{
+                                    opacity: 0,
+                                    height: 0,
+                                    padding: 0,
+                                    margin: 'none',
+                                    overflow: 'hidden'
+                                }}
+                                required
+                            />
+                        )
+                    }
                 </div>
                 <Toolbar {...toolbarProps} />
             </div>

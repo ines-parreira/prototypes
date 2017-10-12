@@ -204,7 +204,9 @@ export default class CampaignDetail extends React.Component {
     _initState = (campaign) => {
         this.setState({
             name: campaign.get('name'),
-            triggers: campaign.get('triggers') || fromJS([]),
+            triggers: campaign.get('triggers') || fromJS([
+                DEFAULT_TRIGGER(0)  // default `current_url` empty trigger in case of new campaign
+            ]),
             message: campaign.get('message') || fromJS({}),
         })
 
