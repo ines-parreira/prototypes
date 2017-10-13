@@ -293,7 +293,7 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
         default:
     }
 
-    const useCurValue = !reset && !_isUndefined(cur_value)
+    const useCurValue = !reset && !_isUndefined(cur_value) && cur_value !== ''
 
     if (isCollectionCallee) {
         // property has changed, so we have to reset the second argument
