@@ -276,7 +276,7 @@ function resolveCallee(callExpression: Map<*,*>, firstArgSchema: schemasType): s
  */
 function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType, callee, reset) {
     const isCollectionCallee = collectionOperators.includes(callee)
-    const args = callExpression.getIn(['arguments', 1])
+    const args = callExpression.getIn(['arguments', 1]) || fromJS({})
     let cur_default = 'null'
     let cur_value = undefined
 
@@ -329,6 +329,7 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
                     return `'${firstLit}'`
                 }
 
+                // $FlowFixMe
                 return useCurValue && _isString(cur_value) ? `'${cur_value}'` : '\'\''
             case 'boolean':
                 return 'true'
@@ -394,7 +395,7 @@ export function updateCallExpression(state: Map<*,*>, path: List<*>, schemas: sc
     const argumentsIndex = path.lastIndexOf('arguments')
     const calleeIndex= path.lastIndexOf('callee')
     let callExpressionPath = path
-    let stopPath = null
+    let stopPath = fromJS({})
     // Property is the first argument of a call expression.
     // E.g: message.from_agent, ticket.subject, etc...
     const hasPropertyChanged = ~argumentsIndex && path.get(argumentsIndex + 1) === 0
@@ -409,7 +410,7 @@ export function updateCallExpression(state: Map<*,*>, path: List<*>, schemas: sc
         stopPath = path.takeLast(path.size - callExpressionPath.size)
     }
 
-    const callExpression = state.getIn(callExpressionPath.toJS())
+    const callExpression = state.getIn(callExpressionPath.toJS()) || fromJS({})
     const [firstArg, firstArgSchema] = resolveFirstArg(callExpression, stopPath, schemas)
     const callee = resolveCallee(callExpression, firstArgSchema)
     const secondArg = resolveSecondArg(callExpression, firstArgSchema, callee, hasPropertyChanged)

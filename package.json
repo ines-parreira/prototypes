@@ -8,9 +8,11 @@
   "scripts": {
     "types": "flow check g/static/private/js",
     "lint": "eslint --quiet g/static/private/js",
-    "pretest": "npm run lint && npm run types",
+    "quality": "npm run lint && npm run types",
+    "pretest": "npm run quality",
     "test": "jest",
     "test:debug": "node --inspect --debug-brk ./node_modules/.bin/jest -i",
+    "pretest:cover": "npm run quality",
     "test:cover": "jest --coverage",
     "test:update": "jest --updateSnapshot",
     "test:watch": "npm test -- --watch",
