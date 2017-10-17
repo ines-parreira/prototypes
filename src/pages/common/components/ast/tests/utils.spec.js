@@ -2,21 +2,30 @@ import {updateCodeAst} from '../utils'
 import _schemas from '../../../../../fixtures/openapi'
 import _astCodeContains from './fixtures/astCodeContains'
 import _astCodeEq from './fixtures/astCodeEq'
+import _astCodeNeq from './fixtures/astCodeNeq'
 import {fromJS} from 'immutable'
 
 const schemas = fromJS(_schemas)
 const astCodeContains = fromJS(_astCodeContains)
 const astCodeEq = fromJS(_astCodeEq)
+const astCodeNeq = fromJS(_astCodeNeq)
 
 describe('ast', () => {
     describe('utils', () => {
         describe('updateCodeAst', () => {
             describe('CallExpression changed', () => {
                 describe('callee changed', () => {
-                    it('should ONLY change callee and keep value (from a collection operator to a collection operator)', () => {
+                    it('should ONLY change callee and keep value (array value - from a collection operator to a collection operator)', () => {
                         // containsAll(ticket.subject, ['hello']) -> notContainsAll(ticket.subject, ['hello'])
                         const path = fromJS(['body', 0, 'test', 'callee', 'name'])
                         const newAst = updateCodeAst(schemas, astCodeContains, path, 'notContainsAll', 'UPDATE')
+                        expect(newAst).toMatchSnapshot()
+                    })
+
+                    it('should ONLY change callee and keep value (integer value)', () => {
+                        // eq(message.integration_id, 7) -> neq(message.integration_id, 7)
+                        const path = fromJS(['body', 0, 'test', 'callee', 'name'])
+                        const newAst = updateCodeAst(schemas, astCodeNeq, path, 'neq', 'UPDATE')
                         expect(newAst).toMatchSnapshot()
                     })
 
@@ -55,6 +64,7 @@ describe('ast', () => {
                         const newAst = updateCodeAst(schemas, astCodeContains, path, newValue, 'UPDATE')
                         expect(newAst).toMatchSnapshot()
                     })
+
                     it('should update value (Literal value changed)', () => {
                         // eq(ticket.subject, 'hello') -> eq(ticket.subject, 'hello world!')
                         const path = fromJS(['body', 0, 'test', 'arguments', 1, 'value'])

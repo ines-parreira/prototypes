@@ -76,7 +76,6 @@ exports[`ast Widget should render MultiSelectField (containsAll operator) 1`] = 
   onChange={[Function]}
   options={Array []}
   plural="words"
-  showNoResult={false}
   singular="word"
   style={
     Object {
@@ -91,5 +90,27 @@ exports[`ast Widget should render MultiSelectField (containsAll operator) 1`] = 
       "world!",
     ]
   }
+/>
+`;
+
+exports[`ast Widget should render TagsSelect should render TagsSelect field (tags properties) 1`] = `
+<Connect(TagsSelect)
+  description="Name of the tag. Keep it simple, a short 1 word tag is the best. The tag names are case sensitive."
+  multiple={false}
+  onChange={[Function]}
+  options={Array []}
+  type="tags-select"
+  value="tag"
+/>
+`;
+
+exports[`ast Widget should render TagsSelect should render multi TagsSelect field (addTags action) 1`] = `
+<Connect(TagsSelect)
+  description=""
+  multiple={true}
+  onChange={[Function]}
+  options={Array []}
+  type="tags-select"
+  value="hello, world, !"
 />
 `;

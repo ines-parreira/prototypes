@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react'
-import ReactSelect from 'react-select'
 import {List} from 'immutable'
 import sortBy from 'lodash/sortBy'
 import _isObject from 'lodash/isObject'
 
 import 'react-select/dist/react-select.css'
+import SelectField from '../../../forms/SelectField'
 
 export default class Select extends React.Component {
     _getOptions = () => {
@@ -34,7 +34,7 @@ export default class Select extends React.Component {
     }
 
     _onChange = (value) => {
-        let val = value.value
+        let val = value
         // We can't have boolean values so we're transforming them just before sending
         if (val === 'true') {
             val = true
@@ -45,33 +45,19 @@ export default class Select extends React.Component {
     }
 
     render() {
-        const {value} = this.props
-        const options = this._getOptions()
-        // get the longest label option to determine the perfect width of the select
-        const longestOption = [...options]
-            .sort((option1, option2) => option1.label.length - option2.label.length)
-            .slice(-1)[0]
-        // 6: approximate width for a character
-        // 50: padding + width of the arrow of the select
-        let selectWidth = 120
-        if (longestOption && longestOption.label) {
-            selectWidth = longestOption.label.length * 6 + 50
-        }
 
         return (
             <div
                 style={{
                     display: 'inline-block',
-                    width: `${selectWidth}px`,
                     verticalAlign: 'middle',
                     paddingBottom: '3px',
                 }}
             >
-                <ReactSelect
-                    value={value.toString()}
-                    clearable={false}
+                <SelectField
+                    value={this.props.value.toString()}
                     onChange={this._onChange}
-                    options={options}
+                    options={this._getOptions()}
                 />
             </div>
         )

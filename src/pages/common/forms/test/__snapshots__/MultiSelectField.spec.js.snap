@@ -1,5 +1,88 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`MultiSelectField should handle key down event Enter/Tab (existing value) 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "First",
+      "text": "first",
+      "value": 1,
+    },
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+    Object {
+      "label": "Third",
+      "text": "third",
+      "value": 3,
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`MultiSelectField should handle key down event Enter/Tab (existing value) 2`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "First",
+      "text": "first",
+      "value": 1,
+    },
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+    Object {
+      "label": "Third",
+      "text": "third",
+      "value": 3,
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`MultiSelectField should handle key down event Enter/tab (custom value) 1`] = `
+Object {
+  "filteredOptions": Array [],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": -1,
+}
+`;
+
+exports[`MultiSelectField should handle key down event Enter/tab (custom value) 2`] = `
+Object {
+  "filteredOptions": Array [],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": -1,
+}
+`;
+
+exports[`MultiSelectField should handle key down event Escape 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": -1,
+}
+`;
+
 exports[`MultiSelectField should init state with custom props 1`] = `
 Object {
   "filteredOptions": Array [
@@ -84,11 +167,6 @@ exports[`MultiSelectField should render a multi select input with custom props 1
       />
       <UncontrolledDropdown
         isOpen={false}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
       >
         <Xo
           tag="div"
@@ -130,11 +208,6 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
       />
       <UncontrolledDropdown
         isOpen={false}
-        style={
-          Object {
-            "width": "230px",
-          }
-        }
       >
         <Xo
           tag="div"
@@ -151,6 +224,85 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
     </div>
   </div>
 </div>
+`;
+
+exports[`MultiSelectField should reset state on blur 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": -1,
+}
+`;
+
+exports[`MultiSelectField should update state when search changes (custom NOT values allowed) 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+  ],
+  "input": "hello",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`MultiSelectField should update state when search changes (custom NOT values allowed) 2`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+    Object {
+      "label": "World",
+      "value": "world",
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`MultiSelectField should update state when search changes (custom values allowed) 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+  ],
+  "input": "hello",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`MultiSelectField should update state when search changes (custom values allowed) 2`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+    Object {
+      "label": "World",
+      "value": "world",
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
 `;
 
 exports[`MultiSelectField should use custom props 1`] = `
@@ -175,7 +327,6 @@ Object {
     },
   ],
   "plural": "tags",
-  "showNoResult": true,
   "singular": "tag",
   "style": null,
   "tagColor": "#0275d8",
@@ -192,7 +343,6 @@ Object {
   "onChange": [Function],
   "options": Array [],
   "plural": "items",
-  "showNoResult": false,
   "singular": "item",
   "style": null,
   "tagColor": "#0275d8",

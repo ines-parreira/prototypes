@@ -1,6 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ast widgets TagsSelect should render a MultiSelectField 1`] = `
+exports[`ast widgets TagsSelect MultiSelectField should render array as value 1`] = `
+<SelectField
+  allowCustomValue={true}
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "billing",
+        "value": "billing",
+      },
+      Object {
+        "label": "refund",
+        "value": "refund",
+      },
+      Object {
+        "label": "question",
+        "value": "question",
+      },
+    ]
+  }
+  placeholder="Add a tag"
+  singular="tag"
+  style={
+    Object {
+      "display": "inline-block",
+      "verticalAlign": "top",
+    }
+  }
+  value={
+    Array [
+      "billing",
+      "bugs",
+    ]
+  }
+/>
+`;
+
+exports[`ast widgets TagsSelect MultiSelectField should render string as value 1`] = `
 <MultiSelectField
   allowCustomValues={true}
   onChange={[Function]}
@@ -21,10 +58,51 @@ exports[`ast widgets TagsSelect should render a MultiSelectField 1`] = `
     ]
   }
   plural="tags"
-  showNoResult={false}
   singular="tag"
-  style={null}
+  style={
+    Object {
+      "display": "inline-block",
+      "verticalAlign": "top",
+    }
+  }
   tagColor="#0275d8"
-  values={Array []}
+  values={
+    Array [
+      "billing",
+      " bugs",
+    ]
+  }
+/>
+`;
+
+exports[`ast widgets TagsSelect should render a SelectField 1`] = `
+<SelectField
+  allowCustomValue={true}
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "billing",
+        "value": "billing",
+      },
+      Object {
+        "label": "refund",
+        "value": "refund",
+      },
+      Object {
+        "label": "question",
+        "value": "question",
+      },
+    ]
+  }
+  placeholder="Add a tag"
+  singular="tag"
+  style={
+    Object {
+      "display": "inline-block",
+      "verticalAlign": "top",
+    }
+  }
+  value="billing"
 />
 `;

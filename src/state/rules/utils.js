@@ -4,6 +4,7 @@ import drop from 'lodash/drop'
 import _isUndefined from 'lodash/isUndefined'
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
+import _isInteger from 'lodash/isInteger'
 
 import {OBJECT_DEFINITIONS} from './constants'
 import {getAST} from '../../utils'
@@ -331,6 +332,10 @@ function resolveSecondArg(callExpression: Map<*,*>, firstArgSchema: schemasType,
 
                 // $FlowFixMe
                 return useCurValue && _isString(cur_value) ? `'${cur_value}'` : '\'\''
+
+            case 'integer':
+                return useCurValue && _isInteger(cur_value) ? args.get('raw') : cur_default
+
             case 'boolean':
                 return 'true'
             default:

@@ -312,6 +312,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                               </div>
                             </ei>
                             <SelectField
+                              allowCustomValue={false}
                               onChange={[Function]}
                               options={
                                 Array [
@@ -347,7 +348,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                   },
                                 ]
                               }
-                              placeholder=""
+                              placeholder="Select an option"
+                              singular="option"
                               style={Object {}}
                               value="eq"
                             >
@@ -356,213 +358,149 @@ exports[`CampaignDetail component should display default value when it's a new c
                               >
                                 <div>
                                   <div
-                                    className="btn btn-secondary dropdown-toggle clickable"
+                                    className="undefined dropdown-toggle"
                                     onClick={[Function]}
                                   >
-                                    is
+                                    <span
+                                      className=""
+                                      style={
+                                        Object {
+                                          "minWidth": 10,
+                                          "opacity": 1,
+                                        }
+                                      }
+                                    >
+                                      is
+                                    </span>
+                                    <input
+                                      onChange={[Function]}
+                                      onKeyDown={[Function]}
+                                      style={
+                                        Object {
+                                          "minWidth": 10,
+                                        }
+                                      }
+                                      type="text"
+                                      value=""
+                                    />
                                   </div>
                                 </div>
-                                <ei
+                                <UncontrolledDropdown
                                   isOpen={false}
-                                  tag="div"
                                   toggle={[Function]}
                                 >
-                                  <div
-                                    className="dropdown"
+                                  <ei
+                                    isOpen={false}
+                                    tag="div"
+                                    toggle={[Function]}
                                   >
-                                    <Xo
-                                      tag="div"
+                                    <div
+                                      className="dropdown"
                                     >
-                                      <div
-                                        aria-hidden={true}
-                                        className="dropdown-menu"
-                                        role="menu"
-                                        tabIndex="-1"
+                                      <Xo
+                                        tag="div"
                                       >
-                                        <ei
-                                          className="dropdown-item-input"
-                                          header={true}
-                                          tag="button"
-                                          toggle={true}
+                                        <div
+                                          aria-hidden={true}
+                                          className="dropdown-menu"
+                                          role="menu"
+                                          tabIndex="-1"
                                         >
-                                          <h6
-                                            className="dropdown-item-input dropdown-header"
+                                          <ei
+                                            className="undefined"
                                             onClick={[Function]}
-                                            tabIndex="-1"
+                                            onMouseEnter={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
                                           >
-                                            <Search
-                                              autoFocus={true}
-                                              disabled={false}
-                                              onChange={[Function]}
-                                              onKeyDown={[Function]}
-                                              placeholder="Search..."
-                                              searchDebounceTime={0}
-                                              style={Object {}}
+                                            <button
+                                              className="undefined dropdown-item"
+                                              onClick={[Function]}
+                                              onMouseEnter={[Function]}
+                                              tabIndex="0"
+                                              type="button"
                                             >
-                                              <div
-                                                className=""
-                                                style={Object {}}
-                                              >
-                                                <El
-                                                  tag="div"
-                                                >
-                                                  <div
-                                                    className="input-group"
-                                                  >
-                                                    <ei
-                                                      autoFocus={true}
-                                                      disabled={false}
-                                                      onChange={[Function]}
-                                                      onKeyDown={[Function]}
-                                                      placeholder="Search..."
-                                                      style={
-                                                        Object {
-                                                          "zIndex": 1,
-                                                        }
-                                                      }
-                                                      tag="p"
-                                                      type="text"
-                                                      value=""
-                                                    >
-                                                      <input
-                                                        autoFocus={true}
-                                                        className="form-control"
-                                                        disabled={false}
-                                                        onChange={[Function]}
-                                                        onKeyDown={[Function]}
-                                                        placeholder="Search..."
-                                                        style={
-                                                          Object {
-                                                            "zIndex": 1,
-                                                          }
-                                                        }
-                                                        type="text"
-                                                        value=""
-                                                      />
-                                                    </ei>
-                                                    <jl
-                                                      className="hidden-sm-down"
-                                                      tag="div"
-                                                    >
-                                                      <div
-                                                        className="hidden-sm-down input-group-addon"
-                                                      >
-                                                        <i
-                                                          className="fa fa-fw fa-search"
-                                                        />
-                                                      </div>
-                                                    </jl>
-                                                  </div>
-                                                </El>
-                                              </div>
-                                            </Search>
-                                          </h6>
-                                        </ei>
-                                        <ei
-                                          divider={true}
-                                          tag="button"
-                                          toggle={true}
-                                        >
-                                          <div
-                                            className="dropdown-divider"
-                                            onClick={[Function]}
-                                            tabIndex="-1"
-                                          />
-                                        </ei>
-                                        <ei
-                                          className="undefined"
-                                          onClick={[Function]}
-                                          onMouseEnter={[Function]}
-                                          tag="button"
-                                          toggle={true}
-                                          type="button"
-                                        >
-                                          <button
-                                            className="undefined dropdown-item"
+                                              is not
+                                            </button>
+                                          </ei>
+                                          <ei
+                                            className=""
                                             onClick={[Function]}
                                             onMouseEnter={[Function]}
-                                            tabIndex="0"
+                                            tag="button"
+                                            toggle={true}
                                             type="button"
                                           >
-                                            is not
-                                          </button>
-                                        </ei>
-                                        <ei
-                                          className=""
-                                          onClick={[Function]}
-                                          onMouseEnter={[Function]}
-                                          tag="button"
-                                          toggle={true}
-                                          type="button"
-                                        >
-                                          <button
-                                            className="dropdown-item"
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              onMouseEnter={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              contains
+                                            </button>
+                                          </ei>
+                                          <ei
+                                            className=""
                                             onClick={[Function]}
                                             onMouseEnter={[Function]}
-                                            tabIndex="0"
+                                            tag="button"
+                                            toggle={true}
                                             type="button"
                                           >
-                                            contains
-                                          </button>
-                                        </ei>
-                                        <ei
-                                          className=""
-                                          onClick={[Function]}
-                                          onMouseEnter={[Function]}
-                                          tag="button"
-                                          toggle={true}
-                                          type="button"
-                                        >
-                                          <button
-                                            className="dropdown-item"
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              onMouseEnter={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              does not contain
+                                            </button>
+                                          </ei>
+                                          <ei
+                                            className=""
                                             onClick={[Function]}
                                             onMouseEnter={[Function]}
-                                            tabIndex="0"
+                                            tag="button"
+                                            toggle={true}
                                             type="button"
                                           >
-                                            does not contain
-                                          </button>
-                                        </ei>
-                                        <ei
-                                          className=""
-                                          onClick={[Function]}
-                                          onMouseEnter={[Function]}
-                                          tag="button"
-                                          toggle={true}
-                                          type="button"
-                                        >
-                                          <button
-                                            className="dropdown-item"
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              onMouseEnter={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              starts with
+                                            </button>
+                                          </ei>
+                                          <ei
+                                            className=""
                                             onClick={[Function]}
                                             onMouseEnter={[Function]}
-                                            tabIndex="0"
+                                            tag="button"
+                                            toggle={true}
                                             type="button"
                                           >
-                                            starts with
-                                          </button>
-                                        </ei>
-                                        <ei
-                                          className=""
-                                          onClick={[Function]}
-                                          onMouseEnter={[Function]}
-                                          tag="button"
-                                          toggle={true}
-                                          type="button"
-                                        >
-                                          <button
-                                            className="dropdown-item"
-                                            onClick={[Function]}
-                                            onMouseEnter={[Function]}
-                                            tabIndex="0"
-                                            type="button"
-                                          >
-                                            ends with
-                                          </button>
-                                        </ei>
-                                      </div>
-                                    </Xo>
-                                  </div>
-                                </ei>
+                                            <button
+                                              className="dropdown-item"
+                                              onClick={[Function]}
+                                              onMouseEnter={[Function]}
+                                              tabIndex="0"
+                                              type="button"
+                                            >
+                                              ends with
+                                            </button>
+                                          </ei>
+                                        </div>
+                                      </Xo>
+                                    </div>
+                                  </ei>
+                                </UncontrolledDropdown>
                               </div>
                             </SelectField>
                             <ValueInput
@@ -751,6 +689,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                             From: 
                           </span>
                           <SelectField
+                            allowCustomValue={false}
                             onChange={[Function]}
                             options={
                               Array [
@@ -777,7 +716,8 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 },
                               ]
                             }
-                            placeholder=""
+                            placeholder="Select an option"
+                            singular="option"
                             style={Object {}}
                             value={null}
                           >
@@ -786,219 +726,155 @@ exports[`CampaignDetail component should display default value when it's a new c
                             >
                               <div>
                                 <div
-                                  className="btn btn-secondary dropdown-toggle clickable"
+                                  className="undefined dropdown-toggle"
                                   onClick={[Function]}
                                 >
-                                  Random agent
+                                  <span
+                                    className=""
+                                    style={
+                                      Object {
+                                        "minWidth": 10,
+                                        "opacity": 1,
+                                      }
+                                    }
+                                  >
+                                    Random agent
+                                  </span>
+                                  <input
+                                    onChange={[Function]}
+                                    onKeyDown={[Function]}
+                                    style={
+                                      Object {
+                                        "minWidth": 10,
+                                      }
+                                    }
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
-                              <ei
+                              <UncontrolledDropdown
                                 isOpen={false}
-                                tag="div"
                                 toggle={[Function]}
                               >
-                                <div
-                                  className="dropdown"
+                                <ei
+                                  isOpen={false}
+                                  tag="div"
+                                  toggle={[Function]}
                                 >
-                                  <Xo
-                                    tag="div"
+                                  <div
+                                    className="dropdown"
                                   >
-                                    <div
-                                      aria-hidden={true}
-                                      className="dropdown-menu"
-                                      role="menu"
-                                      tabIndex="-1"
+                                    <Xo
+                                      tag="div"
                                     >
-                                      <ei
-                                        className="dropdown-item-input"
-                                        header={true}
-                                        tag="button"
-                                        toggle={true}
+                                      <div
+                                        aria-hidden={true}
+                                        className="dropdown-menu"
+                                        role="menu"
+                                        tabIndex="-1"
                                       >
-                                        <h6
-                                          className="dropdown-item-input dropdown-header"
+                                        <ei
+                                          className="undefined"
                                           onClick={[Function]}
-                                          tabIndex="-1"
+                                          onMouseEnter={[Function]}
+                                          tag="button"
+                                          toggle={true}
+                                          type="button"
                                         >
-                                          <Search
-                                            autoFocus={true}
-                                            disabled={false}
-                                            onChange={[Function]}
-                                            onKeyDown={[Function]}
-                                            placeholder="Search..."
-                                            searchDebounceTime={0}
-                                            style={Object {}}
+                                          <button
+                                            className="undefined dropdown-item"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            tabIndex="0"
+                                            type="button"
                                           >
-                                            <div
-                                              className=""
-                                              style={Object {}}
+                                            <AgentLabel
+                                              maxWidth="100"
+                                              name="John"
                                             >
-                                              <El
-                                                tag="div"
+                                              <span
+                                                className="agent-label d-inline-flex align-items-center"
                                               >
-                                                <div
-                                                  className="input-group"
+                                                <Zs
+                                                  className="agent-id-label"
+                                                  color="warning"
+                                                  pill={false}
+                                                  tag="span"
                                                 >
-                                                  <ei
-                                                    autoFocus={true}
-                                                    disabled={false}
-                                                    onChange={[Function]}
-                                                    onKeyDown={[Function]}
-                                                    placeholder="Search..."
-                                                    style={
-                                                      Object {
-                                                        "zIndex": 1,
-                                                      }
+                                                  <span
+                                                    className="agent-id-label badge badge-warning"
+                                                  >
+                                                    A
+                                                  </span>
+                                                </Zs>
+                                                <span
+                                                  className="secondary-action"
+                                                  style={
+                                                    Object {
+                                                      "maxWidth": "100px",
                                                     }
-                                                    tag="p"
-                                                    type="text"
-                                                    value=""
-                                                  >
-                                                    <input
-                                                      autoFocus={true}
-                                                      className="form-control"
-                                                      disabled={false}
-                                                      onChange={[Function]}
-                                                      onKeyDown={[Function]}
-                                                      placeholder="Search..."
-                                                      style={
-                                                        Object {
-                                                          "zIndex": 1,
-                                                        }
-                                                      }
-                                                      type="text"
-                                                      value=""
-                                                    />
-                                                  </ei>
-                                                  <jl
-                                                    className="hidden-sm-down"
-                                                    tag="div"
-                                                  >
-                                                    <div
-                                                      className="hidden-sm-down input-group-addon"
-                                                    >
-                                                      <i
-                                                        className="fa fa-fw fa-search"
-                                                      />
-                                                    </div>
-                                                  </jl>
-                                                </div>
-                                              </El>
-                                            </div>
-                                          </Search>
-                                        </h6>
-                                      </ei>
-                                      <ei
-                                        divider={true}
-                                        tag="button"
-                                        toggle={true}
-                                      >
-                                        <div
-                                          className="dropdown-divider"
-                                          onClick={[Function]}
-                                          tabIndex="-1"
-                                        />
-                                      </ei>
-                                      <ei
-                                        className="undefined"
-                                        onClick={[Function]}
-                                        onMouseEnter={[Function]}
-                                        tag="button"
-                                        toggle={true}
-                                        type="button"
-                                      >
-                                        <button
-                                          className="undefined dropdown-item"
+                                                  }
+                                                >
+                                                  John
+                                                </span>
+                                              </span>
+                                            </AgentLabel>
+                                          </button>
+                                        </ei>
+                                        <ei
+                                          className=""
                                           onClick={[Function]}
                                           onMouseEnter={[Function]}
-                                          tabIndex="0"
+                                          tag="button"
+                                          toggle={true}
                                           type="button"
                                         >
-                                          <AgentLabel
-                                            maxWidth="100"
-                                            name="John"
+                                          <button
+                                            className="dropdown-item"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            tabIndex="0"
+                                            type="button"
                                           >
-                                            <span
-                                              className="agent-label d-inline-flex align-items-center"
+                                            <AgentLabel
+                                              maxWidth="100"
+                                              name="Doe"
                                             >
-                                              <Zs
-                                                className="agent-id-label"
-                                                color="warning"
-                                                pill={false}
-                                                tag="span"
-                                              >
-                                                <span
-                                                  className="agent-id-label badge badge-warning"
-                                                >
-                                                  A
-                                                </span>
-                                              </Zs>
                                               <span
-                                                className="secondary-action"
-                                                style={
-                                                  Object {
-                                                    "maxWidth": "100px",
-                                                  }
-                                                }
+                                                className="agent-label d-inline-flex align-items-center"
                                               >
-                                                John
-                                              </span>
-                                            </span>
-                                          </AgentLabel>
-                                        </button>
-                                      </ei>
-                                      <ei
-                                        className=""
-                                        onClick={[Function]}
-                                        onMouseEnter={[Function]}
-                                        tag="button"
-                                        toggle={true}
-                                        type="button"
-                                      >
-                                        <button
-                                          className="dropdown-item"
-                                          onClick={[Function]}
-                                          onMouseEnter={[Function]}
-                                          tabIndex="0"
-                                          type="button"
-                                        >
-                                          <AgentLabel
-                                            maxWidth="100"
-                                            name="Doe"
-                                          >
-                                            <span
-                                              className="agent-label d-inline-flex align-items-center"
-                                            >
-                                              <Zs
-                                                className="agent-id-label"
-                                                color="warning"
-                                                pill={false}
-                                                tag="span"
-                                              >
-                                                <span
-                                                  className="agent-id-label badge badge-warning"
+                                                <Zs
+                                                  className="agent-id-label"
+                                                  color="warning"
+                                                  pill={false}
+                                                  tag="span"
                                                 >
-                                                  A
-                                                </span>
-                                              </Zs>
-                                              <span
-                                                className="secondary-action"
-                                                style={
-                                                  Object {
-                                                    "maxWidth": "100px",
+                                                  <span
+                                                    className="agent-id-label badge badge-warning"
+                                                  >
+                                                    A
+                                                  </span>
+                                                </Zs>
+                                                <span
+                                                  className="secondary-action"
+                                                  style={
+                                                    Object {
+                                                      "maxWidth": "100px",
+                                                    }
                                                   }
-                                                }
-                                              >
-                                                Doe
+                                                >
+                                                  Doe
+                                                </span>
                                               </span>
-                                            </span>
-                                          </AgentLabel>
-                                        </button>
-                                      </ei>
-                                    </div>
-                                  </Xo>
-                                </div>
-                              </ei>
+                                            </AgentLabel>
+                                          </button>
+                                        </ei>
+                                      </div>
+                                    </Xo>
+                                  </div>
+                                </ei>
+                              </UncontrolledDropdown>
                             </div>
                           </SelectField>
                         </div>
@@ -2853,6 +2729,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                             From: 
                           </span>
                           <SelectField
+                            allowCustomValue={false}
                             onChange={[Function]}
                             options={
                               Array [
@@ -2879,7 +2756,8 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 },
                               ]
                             }
-                            placeholder=""
+                            placeholder="Select an option"
+                            singular="option"
                             style={Object {}}
                             value={null}
                           >
@@ -2888,219 +2766,155 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                             >
                               <div>
                                 <div
-                                  className="btn btn-secondary dropdown-toggle clickable"
+                                  className="undefined dropdown-toggle"
                                   onClick={[Function]}
                                 >
-                                  Random agent
+                                  <span
+                                    className=""
+                                    style={
+                                      Object {
+                                        "minWidth": 10,
+                                        "opacity": 1,
+                                      }
+                                    }
+                                  >
+                                    Random agent
+                                  </span>
+                                  <input
+                                    onChange={[Function]}
+                                    onKeyDown={[Function]}
+                                    style={
+                                      Object {
+                                        "minWidth": 10,
+                                      }
+                                    }
+                                    type="text"
+                                    value=""
+                                  />
                                 </div>
                               </div>
-                              <ei
+                              <UncontrolledDropdown
                                 isOpen={false}
-                                tag="div"
                                 toggle={[Function]}
                               >
-                                <div
-                                  className="dropdown"
+                                <ei
+                                  isOpen={false}
+                                  tag="div"
+                                  toggle={[Function]}
                                 >
-                                  <Xo
-                                    tag="div"
+                                  <div
+                                    className="dropdown"
                                   >
-                                    <div
-                                      aria-hidden={true}
-                                      className="dropdown-menu"
-                                      role="menu"
-                                      tabIndex="-1"
+                                    <Xo
+                                      tag="div"
                                     >
-                                      <ei
-                                        className="dropdown-item-input"
-                                        header={true}
-                                        tag="button"
-                                        toggle={true}
+                                      <div
+                                        aria-hidden={true}
+                                        className="dropdown-menu"
+                                        role="menu"
+                                        tabIndex="-1"
                                       >
-                                        <h6
-                                          className="dropdown-item-input dropdown-header"
+                                        <ei
+                                          className="undefined"
                                           onClick={[Function]}
-                                          tabIndex="-1"
+                                          onMouseEnter={[Function]}
+                                          tag="button"
+                                          toggle={true}
+                                          type="button"
                                         >
-                                          <Search
-                                            autoFocus={true}
-                                            disabled={false}
-                                            onChange={[Function]}
-                                            onKeyDown={[Function]}
-                                            placeholder="Search..."
-                                            searchDebounceTime={0}
-                                            style={Object {}}
+                                          <button
+                                            className="undefined dropdown-item"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            tabIndex="0"
+                                            type="button"
                                           >
-                                            <div
-                                              className=""
-                                              style={Object {}}
+                                            <AgentLabel
+                                              maxWidth="100"
+                                              name="John"
                                             >
-                                              <El
-                                                tag="div"
+                                              <span
+                                                className="agent-label d-inline-flex align-items-center"
                                               >
-                                                <div
-                                                  className="input-group"
+                                                <Zs
+                                                  className="agent-id-label"
+                                                  color="warning"
+                                                  pill={false}
+                                                  tag="span"
                                                 >
-                                                  <ei
-                                                    autoFocus={true}
-                                                    disabled={false}
-                                                    onChange={[Function]}
-                                                    onKeyDown={[Function]}
-                                                    placeholder="Search..."
-                                                    style={
-                                                      Object {
-                                                        "zIndex": 1,
-                                                      }
+                                                  <span
+                                                    className="agent-id-label badge badge-warning"
+                                                  >
+                                                    A
+                                                  </span>
+                                                </Zs>
+                                                <span
+                                                  className="secondary-action"
+                                                  style={
+                                                    Object {
+                                                      "maxWidth": "100px",
                                                     }
-                                                    tag="p"
-                                                    type="text"
-                                                    value=""
-                                                  >
-                                                    <input
-                                                      autoFocus={true}
-                                                      className="form-control"
-                                                      disabled={false}
-                                                      onChange={[Function]}
-                                                      onKeyDown={[Function]}
-                                                      placeholder="Search..."
-                                                      style={
-                                                        Object {
-                                                          "zIndex": 1,
-                                                        }
-                                                      }
-                                                      type="text"
-                                                      value=""
-                                                    />
-                                                  </ei>
-                                                  <jl
-                                                    className="hidden-sm-down"
-                                                    tag="div"
-                                                  >
-                                                    <div
-                                                      className="hidden-sm-down input-group-addon"
-                                                    >
-                                                      <i
-                                                        className="fa fa-fw fa-search"
-                                                      />
-                                                    </div>
-                                                  </jl>
-                                                </div>
-                                              </El>
-                                            </div>
-                                          </Search>
-                                        </h6>
-                                      </ei>
-                                      <ei
-                                        divider={true}
-                                        tag="button"
-                                        toggle={true}
-                                      >
-                                        <div
-                                          className="dropdown-divider"
-                                          onClick={[Function]}
-                                          tabIndex="-1"
-                                        />
-                                      </ei>
-                                      <ei
-                                        className="undefined"
-                                        onClick={[Function]}
-                                        onMouseEnter={[Function]}
-                                        tag="button"
-                                        toggle={true}
-                                        type="button"
-                                      >
-                                        <button
-                                          className="undefined dropdown-item"
+                                                  }
+                                                >
+                                                  John
+                                                </span>
+                                              </span>
+                                            </AgentLabel>
+                                          </button>
+                                        </ei>
+                                        <ei
+                                          className=""
                                           onClick={[Function]}
                                           onMouseEnter={[Function]}
-                                          tabIndex="0"
+                                          tag="button"
+                                          toggle={true}
                                           type="button"
                                         >
-                                          <AgentLabel
-                                            maxWidth="100"
-                                            name="John"
+                                          <button
+                                            className="dropdown-item"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            tabIndex="0"
+                                            type="button"
                                           >
-                                            <span
-                                              className="agent-label d-inline-flex align-items-center"
+                                            <AgentLabel
+                                              maxWidth="100"
+                                              name="Doe"
                                             >
-                                              <Zs
-                                                className="agent-id-label"
-                                                color="warning"
-                                                pill={false}
-                                                tag="span"
-                                              >
-                                                <span
-                                                  className="agent-id-label badge badge-warning"
-                                                >
-                                                  A
-                                                </span>
-                                              </Zs>
                                               <span
-                                                className="secondary-action"
-                                                style={
-                                                  Object {
-                                                    "maxWidth": "100px",
-                                                  }
-                                                }
+                                                className="agent-label d-inline-flex align-items-center"
                                               >
-                                                John
-                                              </span>
-                                            </span>
-                                          </AgentLabel>
-                                        </button>
-                                      </ei>
-                                      <ei
-                                        className=""
-                                        onClick={[Function]}
-                                        onMouseEnter={[Function]}
-                                        tag="button"
-                                        toggle={true}
-                                        type="button"
-                                      >
-                                        <button
-                                          className="dropdown-item"
-                                          onClick={[Function]}
-                                          onMouseEnter={[Function]}
-                                          tabIndex="0"
-                                          type="button"
-                                        >
-                                          <AgentLabel
-                                            maxWidth="100"
-                                            name="Doe"
-                                          >
-                                            <span
-                                              className="agent-label d-inline-flex align-items-center"
-                                            >
-                                              <Zs
-                                                className="agent-id-label"
-                                                color="warning"
-                                                pill={false}
-                                                tag="span"
-                                              >
-                                                <span
-                                                  className="agent-id-label badge badge-warning"
+                                                <Zs
+                                                  className="agent-id-label"
+                                                  color="warning"
+                                                  pill={false}
+                                                  tag="span"
                                                 >
-                                                  A
-                                                </span>
-                                              </Zs>
-                                              <span
-                                                className="secondary-action"
-                                                style={
-                                                  Object {
-                                                    "maxWidth": "100px",
+                                                  <span
+                                                    className="agent-id-label badge badge-warning"
+                                                  >
+                                                    A
+                                                  </span>
+                                                </Zs>
+                                                <span
+                                                  className="secondary-action"
+                                                  style={
+                                                    Object {
+                                                      "maxWidth": "100px",
+                                                    }
                                                   }
-                                                }
-                                              >
-                                                Doe
+                                                >
+                                                  Doe
+                                                </span>
                                               </span>
-                                            </span>
-                                          </AgentLabel>
-                                        </button>
-                                      </ei>
-                                    </div>
-                                  </Xo>
-                                </div>
-                              </ei>
+                                            </AgentLabel>
+                                          </button>
+                                        </ei>
+                                      </div>
+                                    </Xo>
+                                  </div>
+                                </ei>
+                              </UncontrolledDropdown>
                             </div>
                           </SelectField>
                         </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import TagsSelect from '../TagsSelect'
+import TagsSelectContainer, {TagsSelect} from '../TagsSelect'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
@@ -11,27 +11,103 @@ const mockStore = configureMockStore(middlewares)
 describe('ast', () => {
     describe('widgets', () => {
         describe('TagsSelect', () => {
-            it('should render a MultiSelectField', () => {
-                const tags = fromJS([{
-                    name: 'billing',
-                }, {
-                    name: 'refund',
-                }, {
-                    name: 'question',
-                }])
-                const store = mockStore({
+            const tags = fromJS([{
+                name: 'billing',
+            }, {
+                name: 'refund',
+            }, {
+                name: 'question',
+            }])
+            let store = null
+
+            beforeEach(() => {
+                store = mockStore({
                     tags: fromJS({
                         items: tags
                     })
                 })
+            })
+
+            describe('MultiSelectField', () => {
+                it('should render array as value', () => {
+                    const component = shallow(
+                        <TagsSelectContainer
+                            value={['billing', 'bugs']}
+                            store={store}
+                            onChange={jest.fn()}
+                        />
+                    )
+                    expect(component.dive()).toMatchSnapshot()
+                })
+
+                it('should render string as value', () => {
+                    const component = shallow(
+                        <TagsSelectContainer
+                            value={'billing, bugs'}
+                            store={store}
+                            multiple={true}
+                            onChange={jest.fn()}
+                        />
+                    )
+                    expect(component.dive()).toMatchSnapshot()
+                })
+
+                it('should handle change (array as value)', () => {
+                    const onChangeSpy = jest.fn()
+                    const component = shallow(
+                        <TagsSelect
+                            tags={tags}
+                            value={['billing', 'bugs']}
+                            multiple={true}
+                            onChange={onChangeSpy}
+                        />
+                    ).instance()
+
+                    component._onChange(['new', 'value'])
+                    expect(onChangeSpy.mock.calls[0]).toEqual([['new', 'value']])
+
+                })
+
+                it('should handle change (string as value)', () => {
+                    const onChangeSpy = jest.fn()
+                    const component = shallow(
+                        <TagsSelect
+                            tags={tags}
+                            value={'billing, bugs'}
+                            multiple={true}
+                            onChange={onChangeSpy}
+                        />
+                    ).instance()
+
+                    component._onChange(['new', 'value'])
+                    expect(onChangeSpy.mock.calls[0]).toEqual(['new,value'])
+                })
+            })
+
+            it('should render a SelectField', () => {
                 const component = shallow(
-                    <TagsSelect
-                        values={['billing', 'bugs']}
+                    <TagsSelectContainer
+                        value={'billing'}
                         store={store}
                         onChange={jest.fn()}
                     />
                 )
                 expect(component.dive()).toMatchSnapshot()
+            })
+
+            it('should handle change', () => {
+                const onChange = jest.fn()
+                const component = shallow(
+                    <TagsSelect
+                        tags={tags}
+                        value={'billing'}
+                        multiple={false}
+                        onChange={onChange}
+                    />
+                ).instance()
+
+                component._onChange(['new'])
+                expect(onChange.mock.calls[0]).toEqual([['new']])
             })
         })
     })

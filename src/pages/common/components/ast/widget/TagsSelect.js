@@ -1,49 +1,84 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import MultiSelectField from '../../../forms/MultiSelectField'
+import _isString from 'lodash/isString'
 
-function mapStateToProps(state) {
-    return {
-        tags: state.tags.get('items')
-    }
+import MultiSelectField from '../../../forms/MultiSelectField'
+import SelectField from '../../../forms/SelectField'
+
+type Props = {
+    tags?: Object,
+    value?: string,
+    onChange: Function,
+    multiple?: boolean,
 }
 
-@connect(mapStateToProps)
-export default class TagsSelect extends Component {
+export class TagsSelect extends Component<Props> {
     static defaultProps = {
-        value: ''
-    }
-    static propTypes = {
-        tags: PropTypes.object,
-        value: PropTypes.string,
-        onChange: PropTypes.func.isRequired
+        value: '',
+        multiple: false
     }
 
-    _onChange = (value) => {
-        this.props.onChange(value.join(','))
+    _onChange = (val) => {
+        const {multiple, value} = this.props
+
+        if (multiple && _isString(value)) {
+            this.props.onChange(val.join(','))
+        } else {
+            this.props.onChange(val)
+        }
     }
 
     render() {
-        const {tags, value} = this.props
+        const {multiple, tags, value} = this.props
+        const style = {
+            display: 'inline-block',
+            verticalAlign: 'top'
+        }
         const options = tags.map(tag => {
             return {
                 label: tag.get('name'),
                 value: tag.get('name')
             }
         }).toJS()
+        let values = value
+
+        if (multiple) {
+            // this component is used to select tags for `add tags` and `set tags` actions
+            // in this case, these functions have a (comma separated) list of tags as a string
+            if (_isString(value)) {
+                values = value.split(',').filter(value => value !== '')
+            }
+
+            return (
+                <MultiSelectField
+                    allowCustomValues
+                    onChange={this._onChange}
+                    options={options}
+                    plural="tags"
+                    singular="tag"
+                    style={style}
+                    values={values}
+                />
+            )
+        }
 
         return (
-            <MultiSelectField
-                values={value.split(',').filter(value => value !== '')}
+            <SelectField
+                allowCustomValue
                 options={options}
-                singular="tag"
-                plural="tags"
-                allowCustomValues
                 onChange={this._onChange}
+                placeholder="Add a tag"
+                singular="tag"
+                style={style}
+                value={values}
             />
-
         )
     }
-
+}
+function mapStateToProps(state) {
+    return {
+        tags: state.tags.get('items')
+    }
 }
 
+export default connect(mapStateToProps)(TagsSelect)

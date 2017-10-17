@@ -1,6 +1,61 @@
-:local .option {
-    &:hover,
-    &.option--focused {
-        background: #f2f9fe !important;
+:local .select {
+    display: block;
+    position: relative;
+    width: 100%;
+    line-height: 1.25;
+    padding: 0 1rem;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+    background-clip: padding-box;
+    -webkit-background-clip: padding-box;
+    background-image: none;
+    background-color: #ffffff;
+    color: #464a4c;
+    font-size: 1rem;
+    white-space: nowrap;
+
+    .input {
+        position: absolute;
+        left: 1rem;
+        height: 100%;
+        line-height: 2.25;
+        width: 2px; // input will grow dynamically with the min width
+        max-width: 350px;
+        padding: .50rem 0;
+        margin: 0;
+        outline: none;
+        border: none;
+        background: transparent;
+    }
+
+    .placeholder {
+        color: #A4AAAE;
+    }
+
+    .placeholder,
+    .label {
+        display: inline-block;
+        position: relative;
+        top:0;
+        left: 0;
+        line-height: 2.25;
+        height: 100%;
+    }
+}
+
+:local .options {
+    overflow-y: auto;
+    max-height: 200px;
+    max-width: 350px;
+
+    .option {
+        &.option--focused {
+            background: #f2f9fe !important;
+
+            &:active {
+                outline: none;
+                background: #0275d8 !important;
+            }
+        }
     }
 }

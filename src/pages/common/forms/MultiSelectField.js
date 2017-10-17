@@ -16,7 +16,6 @@ export default class MultiSelectField extends Component {
         allowCustomValues: PropTypes.bool,
         options: PropTypes.array,
         plural: PropTypes.string,
-        showNoResult: PropTypes.bool,
         singular: PropTypes.string,
         style: PropTypes.object,
         tagColor: PropTypes.string,
@@ -29,7 +28,6 @@ export default class MultiSelectField extends Component {
         allowCustomValues: false,
         options: [],
         plural: 'items',
-        showNoResult: false,
         singular: 'item',
         style: null,
         tagColor: '#0275d8',
@@ -38,7 +36,11 @@ export default class MultiSelectField extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
+        this.state = this._initialState(props)
+    }
+
+    _initialState = (props) => {
+        return {
             input: '',
             optionsOpen: false,
             // select first option by default if custom values are not allowed
@@ -48,7 +50,10 @@ export default class MultiSelectField extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextState) {
-        if (this.props.values.length !== nextProps.values.length) {
+        const hasNewOptions = this.props.options.length !== nextProps.options.length ||
+            !!nextProps.options.filter(option => !this.props.options.includes(option))
+
+        if (this.props.values.length !== nextProps.values.length || hasNewOptions) {
             this.setState({
                 filteredOptions: this._filterOptions(nextProps.options, nextProps.values, nextState.input)
             })
@@ -97,6 +102,12 @@ export default class MultiSelectField extends Component {
         })
     }
 
+    _onOptionClick = (event, value) => {
+        this._stopPropagation(event)
+        this._addValue(value)
+        this._focusInput()
+    }
+
     _stopPropagation = (event) => {
         if (!event) {
             return
@@ -115,6 +126,7 @@ export default class MultiSelectField extends Component {
     _blurInput = () => {
         if (this.refs.input) {
             this.refs.input.blur()
+            this.setState(this._initialState(this.props))
         }
     }
 
@@ -124,10 +136,11 @@ export default class MultiSelectField extends Component {
      * @private
      */
     _onInputKeyDown = (event) => {
+        const {allowCustomValues, values} = this.props
         const {filteredOptions, selectedOptionIndex, input} = this.state
-        const {values} = this.props
         const key = event.key
-        const killedEventsKeys = ['ArrowUp', 'ArrowDown', 'Enter']
+        const killedEventsKeys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
+        const minSelectedOptionIndex = allowCustomValues ? -1 : 0
 
         if (killedEventsKeys.includes(key)) {
             this._stopPropagation(event)
@@ -156,7 +169,7 @@ export default class MultiSelectField extends Component {
                 break
             // move option selection down
             case 'ArrowUp':
-                this.setState({selectedOptionIndex: _max([selectedOptionIndex - 1, 0])})
+                this.setState({selectedOptionIndex: _max([selectedOptionIndex - 1, minSelectedOptionIndex])})
                 break
             // move option selection up
             case 'ArrowDown':
@@ -167,9 +180,9 @@ export default class MultiSelectField extends Component {
     }
 
     render() {
-        const {plural, showNoResult, values, style, tagColor} = this.props
+        const {allowCustomValues, plural, singular, values, style, tagColor} = this.props
         const {filteredOptions, input, optionsOpen, selectedOptionIndex} = this.state
-
+        const hasNoFilteredOptions = filteredOptions.length === 0
         return (
             <div style={style}>
                 <div
@@ -220,17 +233,39 @@ export default class MultiSelectField extends Component {
                             onChange={this._onInputChange}
                         />
                         <UncontrolledDropdown
-                            className={css.options}
-                            style={{width: '230px'}}
-                            isOpen={optionsOpen && (filteredOptions.length > 0 || showNoResult)}
+                            isOpen={optionsOpen && (!hasNoFilteredOptions || !!input)}
                         >
-                            <DropdownMenu>
-                                {filteredOptions.length === 0 ? (
+                            <DropdownMenu
+                                className={css.options}
+                            >
+                                {hasNoFilteredOptions && !allowCustomValues ? (
                                     <DropdownItem header>
                                         No result
                                     </DropdownItem>
-                                ) : (
-                                    filteredOptions.map((item, index) => {
+                                ) : ([
+                                    input && allowCustomValues && (
+                                        <DropdownItem
+                                            key={-1}
+                                            type="button"
+                                            className={classnames(css.option, {
+                                                [`${css['option--focused']}`]: -1 === selectedOptionIndex
+                                            })}
+                                            onMouseEnter={() => {
+                                                this.setState({selectedOptionIndex: -1})
+                                            }}
+                                            onMouseDown={(event) => {
+                                                this._onOptionClick(event, input)
+                                            }}
+                                        >
+                                            <i>
+                                                {`Add ${singular} "`}
+                                                <b>{`${input}`}</b>
+                                                "
+                                            </i>
+                                        </DropdownItem>
+                                    )
+                                    ,
+                                    ...filteredOptions.map((item, index) => {
                                         return (
                                             <DropdownItem
                                                 key={item.value}
@@ -241,18 +276,15 @@ export default class MultiSelectField extends Component {
                                                 onMouseEnter={() => {
                                                     this.setState({selectedOptionIndex: index})
                                                 }}
-                                                onMouseDown={(e) => {
-                                                    e.preventDefault()
-                                                    e.stopPropagation()
-                                                    this._addValue(item.value)
-                                                    this._focusInput()
+                                                onMouseDown={(event) => {
+                                                    this._onOptionClick(event, item.value)
                                                 }}
                                             >
                                                 {item.label}
                                             </DropdownItem>
                                         )
                                     })
-                                )}
+                                ])}
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     </div>

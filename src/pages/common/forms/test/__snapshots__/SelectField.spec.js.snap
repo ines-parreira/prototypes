@@ -1,5 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SelectField should handle key down event Enter/Tab (existing value) 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "First",
+      "text": "first",
+      "value": 1,
+    },
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`SelectField should handle key down event Enter/Tab (existing value) 2`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "First",
+      "text": "first",
+      "value": 1,
+    },
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`SelectField should handle key down event Enter/tab (custom value) 1`] = `
+Object {
+  "filteredOptions": Array [],
+  "input": "custom value",
+  "optionsOpen": true,
+  "selectedOptionIndex": -1,
+}
+`;
+
+exports[`SelectField should handle key down event Enter/tab (custom value) 2`] = `
+Object {
+  "filteredOptions": Array [],
+  "input": "custom value",
+  "optionsOpen": true,
+  "selectedOptionIndex": -1,
+}
+`;
+
+exports[`SelectField should handle key down event Escape 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
 exports[`SelectField should init state with custom props 1`] = `
 Object {
   "filteredOptions": Array [
@@ -9,6 +82,7 @@ Object {
       "value": 2,
     },
   ],
+  "input": "",
   "optionsOpen": false,
   "selectedOptionIndex": 0,
 }
@@ -17,6 +91,7 @@ Object {
 exports[`SelectField should init state with default props 1`] = `
 Object {
   "filteredOptions": Array [],
+  "input": "",
   "optionsOpen": false,
   "selectedOptionIndex": 0,
 }
@@ -32,41 +107,40 @@ exports[`SelectField should render a select input with custom props 1`] = `
 >
   <div>
     <div
-      className="btn btn-secondary dropdown-toggle clickable"
+      className="undefined dropdown-toggle"
       onClick={[Function]}
     >
-      First
+      <span
+        className=""
+        style={
+          Object {
+            "minWidth": 10,
+            "opacity": 1,
+          }
+        }
+      >
+        First
+      </span>
+      <input
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        style={
+          Object {
+            "minWidth": 10,
+          }
+        }
+        type="text"
+        value=""
+      />
     </div>
   </div>
-  <ei
+  <UncontrolledDropdown
     isOpen={false}
-    tag="div"
     toggle={[Function]}
   >
     <Xo
       tag="div"
     >
-      <ei
-        className="dropdown-item-input"
-        header={true}
-        tag="button"
-        toggle={true}
-      >
-        <Search
-          autoFocus={true}
-          disabled={false}
-          onChange={[Function]}
-          onKeyDown={[Function]}
-          placeholder="Search..."
-          searchDebounceTime={0}
-          style={Object {}}
-        />
-      </ei>
-      <ei
-        divider={true}
-        tag="button"
-        toggle={true}
-      />
       <ei
         className="undefined"
         onClick={[Function]}
@@ -78,7 +152,7 @@ exports[`SelectField should render a select input with custom props 1`] = `
         Second
       </ei>
     </Xo>
-  </ei>
+  </UncontrolledDropdown>
 </div>
 `;
 
@@ -88,39 +162,40 @@ exports[`SelectField should render a select input with default props 1`] = `
 >
   <div>
     <div
-      className="btn btn-secondary dropdown-toggle clickable"
+      className="undefined dropdown-toggle"
       onClick={[Function]}
-    />
+    >
+      <span
+        className="undefined"
+        style={
+          Object {
+            "minWidth": 10,
+            "opacity": 1,
+          }
+        }
+      >
+        Select an option
+      </span>
+      <input
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        style={
+          Object {
+            "minWidth": 10,
+          }
+        }
+        type="text"
+        value=""
+      />
+    </div>
   </div>
-  <ei
+  <UncontrolledDropdown
     isOpen={false}
-    tag="div"
     toggle={[Function]}
   >
     <Xo
       tag="div"
     >
-      <ei
-        className="dropdown-item-input"
-        header={true}
-        tag="button"
-        toggle={true}
-      >
-        <Search
-          autoFocus={true}
-          disabled={false}
-          onChange={[Function]}
-          onKeyDown={[Function]}
-          placeholder="Search..."
-          searchDebounceTime={0}
-          style={Object {}}
-        />
-      </ei>
-      <ei
-        divider={true}
-        tag="button"
-        toggle={true}
-      />
       <ei
         header={true}
         tag="button"
@@ -129,12 +204,92 @@ exports[`SelectField should render a select input with default props 1`] = `
         No result
       </ei>
     </Xo>
-  </ei>
+  </UncontrolledDropdown>
 </div>
+`;
+
+exports[`SelectField should reset state on blur 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Second",
+      "text": "second",
+      "value": 2,
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`SelectField should update state when search changes (custom NOT values allowed) 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+  ],
+  "input": "hello",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`SelectField should update state when search changes (custom NOT values allowed) 2`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+    Object {
+      "label": "World",
+      "value": "world",
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`SelectField should update state when search changes (custom values allowed) 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+  ],
+  "input": "hello",
+  "optionsOpen": false,
+  "selectedOptionIndex": -1,
+}
+`;
+
+exports[`SelectField should update state when search changes (custom values allowed) 2`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+    Object {
+      "label": "World",
+      "value": "world",
+    },
+  ],
+  "input": "",
+  "optionsOpen": false,
+  "selectedOptionIndex": -1,
+}
 `;
 
 exports[`SelectField should use custom props 1`] = `
 Object {
+  "allowCustomValue": false,
   "onChange": [Function],
   "options": Array [
     Object {
@@ -149,6 +304,7 @@ Object {
     },
   ],
   "placeholder": "placeholder",
+  "singular": "option",
   "style": Object {
     "background": "red",
   },
@@ -158,9 +314,11 @@ Object {
 
 exports[`SelectField should use default props 1`] = `
 Object {
+  "allowCustomValue": false,
   "onChange": [Function],
   "options": Array [],
-  "placeholder": "",
+  "placeholder": "Select an option",
+  "singular": "option",
   "style": Object {},
 }
 `;

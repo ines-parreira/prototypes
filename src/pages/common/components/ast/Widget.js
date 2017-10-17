@@ -4,6 +4,7 @@ import {List} from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
+import _isUndefined from 'lodash/isUndefined'
 
 import Select from './widget/ReactSelect'
 import StatusSelect from './widget/StatusSelect'
@@ -234,7 +235,6 @@ export default class Widget extends React.Component {
             // operators are using simple select widget, all we need is the options
             let operators = schemas.getIn(left)
 
-
             if (operators) {
                 // exclude deprecated operators which are not already used
                 operators = operators.filter((ope, operatorName) => {
@@ -260,6 +260,12 @@ export default class Widget extends React.Component {
                 widget.type = 'multi-select'
             }
 
+            // current properties is a tag field so we used the specific
+            if (leftsiblings.join('.').includes('Ticket.properties.tags.name')) {
+                widget.type = 'tags-select'
+                widget.multiple = collectionOperators.includes(calleeName)
+            }
+
             if (right) {
                 const options = right.getIn(['meta', 'enum'])
                 widget.options = options ? options.toJS() : []
@@ -273,8 +279,8 @@ export default class Widget extends React.Component {
             case 'multi-select':
                 return <MultiSelectField
                     style={{
-                        display:'inline-block',
-                        verticalAlign:'top'
+                        display: 'inline-block',
+                        verticalAlign: 'top'
                     }}
                     values={widget.value}
                     singular="word"
@@ -287,7 +293,13 @@ export default class Widget extends React.Component {
             case 'status-select':
                 return <StatusSelect {...widget} onChange={this._handleChange} />
             case 'tags-select':
-                return <TagsSelect {...widget} onChange={this._handleChange} />
+                return (
+                    <TagsSelect
+                        {...widget}
+                        onChange={this._handleChange}
+                        multiple={_isUndefined(widget.multiple) ? true : widget.multiple}
+                    />
+                )
             case 'priority-select':
                 return <PrioritySelect {...widget} onChange={this._handleChange} />
             case 'macro-select':

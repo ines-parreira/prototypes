@@ -57,4 +57,280 @@ describe('SelectField', () => {
         const component = shallow(<SelectField {...minProps} {...props} />)
         expect(component).toMatchSnapshot()
     })
+
+    it('should update state when search changes (custom values allowed)', () => {
+        const options = [{
+            value: 'hello',
+            label: 'Hello'
+        }, {
+            value: 'world',
+            label: 'World'
+        }]
+
+        const wrapper = shallow(
+            <SelectField
+                {...minProps}
+                options={options}
+                allowCustomValue
+            />
+        )
+        const component = wrapper.instance()
+
+        component._onSearchChange({
+            target: {value: 'hello'}
+        })
+        expect(wrapper.state()).toMatchSnapshot()
+
+        component._onSearchChange({
+            target: {value: ''}
+        })
+        expect(wrapper.state()).toMatchSnapshot()
+    })
+
+    it('should update state when search changes (custom NOT values allowed)', () => {
+        const options = [{
+            value: 'hello',
+            label: 'Hello'
+        }, {
+            value: 'world',
+            label: 'World'
+        }]
+
+        const wrapper = mount(
+            <SelectField
+                {...minProps}
+                options={options}
+            />
+        )
+        const component = wrapper.instance()
+        component._onSearchChange({
+            target: {value: 'hello'}
+        })
+        expect(wrapper.state()).toMatchSnapshot()
+
+        component._onSearchChange({
+            target: {value: ''}
+        })
+        expect(wrapper.state()).toMatchSnapshot()
+    })
+
+    it('should reset state on blur', () => {
+        const wrapper = mount(
+            <SelectField
+                {...minProps}
+                {...props}
+            />
+        )
+        const component = wrapper.instance()
+
+        component._focusInput()
+        component._onSearchChange({
+            target: {value: ''}
+        })
+        component._blurInput()
+        expect(wrapper.state()).toMatchSnapshot()
+
+    })
+
+    it('stopPropagation()', () => {
+        const stopPropagationSpy = jest.fn()
+        const preventDefaultSpy = jest.fn()
+        const event = {
+            stopPropagation: stopPropagationSpy,
+            preventDefault: preventDefaultSpy,
+        }
+        const wrapper = mount(
+            <SelectField
+                {...minProps}
+                {...props}
+            />
+        )
+        const component = wrapper.instance()
+
+        component._stopPropagation(event)
+        expect(stopPropagationSpy.mock.calls.length).toBe(1)
+        expect(preventDefaultSpy.mock.calls.length).toBe(1)
+    })
+
+    it('should handle click on option (custom value NOT allowed)', () => {
+        const stopPropagationSpy = jest.fn()
+        const onChangeSpy = jest.fn()
+        const wrapper = mount(
+            <SelectField
+                {...minProps}
+                {...props}
+                value={undefined}
+                onChange={onChangeSpy}
+            />
+        )
+        const component = wrapper.instance()
+
+        component._stopPropagation = stopPropagationSpy
+        wrapper.find('button').first().simulate('click')
+
+        expect(stopPropagationSpy.mock.calls.length).toBe(1)
+        expect(onChangeSpy.mock.calls[0][0]).toEqual(1)
+    })
+
+    it('should handle click on option (custom value allowed)', () => {
+        const stopPropagationSpy = jest.fn()
+        const onChangeSpy = jest.fn()
+        const wrapper = mount(
+            <SelectField
+                {...minProps}
+                {...props}
+                value={undefined}
+                onChange={onChangeSpy}
+                allowCustomValue
+            />
+        )
+        const component = wrapper.instance()
+        component._onSearchChange({
+            target: {value: 'hello'}
+        })
+        component._stopPropagation = stopPropagationSpy
+        wrapper.find('button').first().simulate('click')
+
+        expect(stopPropagationSpy.mock.calls.length).toBe(1)
+        expect(onChangeSpy.mock.calls[0][0]).toEqual('hello')
+    })
+
+    describe('should handle key down event', () => {
+        const addKeys = ['Enter', 'Tab']
+
+        it('Escape', () => {
+            const wrapper = mount(
+                <SelectField
+                    {...minProps}
+                    {...props}
+                />
+            )
+            const component = wrapper.instance()
+
+            component._onSearchChange({
+                target: {value: 'hello'}
+            })
+
+            component._toggleDropdown()
+            wrapper.find('input').simulate('keyDown', {key: 'Escape'})
+            expect(wrapper.state()).toMatchSnapshot()
+        })
+
+        it('ArrowUp/ArrowDown', () => {
+            const wrapper = mount(
+                <SelectField
+                    {...minProps}
+                    {...props}
+                    value={undefined}
+                />
+            )
+            const component = wrapper.instance()
+
+            component._toggleDropdown()
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(1)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+            // cannot select an item that does not exist
+            expect(wrapper.state().selectedOptionIndex).toEqual(1)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(0)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(0)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
+            // cannot select an item that does not exist
+            expect(wrapper.state().selectedOptionIndex).toEqual(0)
+        })
+
+        it('ArrowUp/ArrowDown (custom value allowed)', () => {
+            const wrapper = mount(
+                <SelectField
+                    {...minProps}
+                    {...props}
+                    value={undefined}
+                    allowCustomValue
+                />
+            )
+            const component = wrapper.instance()
+            component._toggleDropdown()
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(0)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(-1)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
+            // cannot select an item that does not exist
+            expect(wrapper.state().selectedOptionIndex).toEqual(-1)
+        })
+
+        it('Enter/tab (custom value)', () => {
+            addKeys.forEach(key => {
+                const onChangeSpy = jest.fn()
+                const wrapper = mount(
+                    <SelectField
+                        {...minProps}
+                        {...props}
+                        onChange={onChangeSpy}
+                        allowCustomValue
+                    />
+                )
+                const component = wrapper.instance()
+
+                component._onSearchChange({
+                    target: {value: 'custom value'}
+                })
+                wrapper.find('input').simulate('keyDown', {key})
+
+                expect(wrapper.state()).toMatchSnapshot()
+                expect(onChangeSpy.mock.calls[0][0]).toEqual('custom value')
+            })
+        })
+
+        it('Enter/Tab (existing value)', () => {
+            addKeys.forEach(key => {
+                const onChangeSpy = jest.fn()
+                const wrapper = mount(
+                    <SelectField
+                        {...minProps}
+                        {...props}
+                        value={undefined}
+                        onChange={onChangeSpy}
+                    />
+                )
+                const component = wrapper.instance()
+
+                component._toggleDropdown()
+                wrapper.find('input').simulate('keyDown', {key})
+
+                expect(wrapper.state()).toMatchSnapshot()
+                expect(onChangeSpy.mock.calls[0][0]).toEqual(props.options[0].value)
+            })
+        })
+
+        it('should stop propagation of events', () => {
+            const keys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
+            keys.forEach(key => {
+                const stopPropagationSpy = jest.fn()
+                const wrapper = mount(
+                    <SelectField
+                        {...minProps}
+                        {...props}
+                        value={undefined}
+                    />
+                )
+                const component = wrapper.instance()
+
+                component._stopPropagation = stopPropagationSpy
+                wrapper.find('input').simulate('keyDown', {key})
+
+                expect(stopPropagationSpy.mock.calls.length).toEqual(1)
+            })
+        })
+    })
 })

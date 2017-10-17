@@ -13,7 +13,7 @@ const astCodeContains = fromJS(_astCodeContains)
 describe('ast', () => {
     describe('Widget', () => {
         const parent = fromJS(['body', 0, 'test', 'arguments', 1, 'elements'])
-        const leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'subject'])
+        let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'subject'])
 
         describe('should render', () => {
             it('MultiSelectField (containsAll operator)', () => {
@@ -54,6 +54,50 @@ describe('ast', () => {
                     )
                 ).toMatchSnapshot()
             })
+
+            describe('TagsSelect', () => {
+                it('should render TagsSelect field (tags properties)', () => {
+                    let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'tags', 'name'])
+                    const value = 'tag'
+                    const rule = fromJS({
+                        code_ast: astCodeEq
+                    })
+                    expect(
+                        shallow(
+                            <Widget
+                                actions={{}}
+                                value={value}
+                                leftsiblings={leftsiblings}
+                                parent={parent}
+                                rule={rule}
+                                schemas={schemas}
+                            />
+                        )
+                    ).toMatchSnapshot()
+                })
+
+                it('should render multi TagsSelect field (addTags action)', () => {
+                    let leftsiblings = fromJS(['actions', 'addTags', 'tags'])
+                    const value = 'hello, world, !'
+                    const rule = fromJS({
+                        code_ast: astCodeEq
+                    })
+                    expect(
+                        shallow(
+                            <Widget
+                                actions={{}}
+                                value={value}
+                                leftsiblings={leftsiblings}
+                                parent={parent}
+                                rule={rule}
+                                schemas={schemas}
+                            />
+                        )
+                    ).toMatchSnapshot()
+                })
+
+            })
+
 
         })
 

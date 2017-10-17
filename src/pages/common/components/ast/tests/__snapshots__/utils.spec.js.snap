@@ -1118,7 +1118,7 @@ Object {
 }
 `;
 
-exports[`ast utils updateCodeAst CallExpression changed callee changed should ONLY change callee and keep value (from a collection operator to a collection operator) 1`] = `
+exports[`ast utils updateCodeAst CallExpression changed callee changed should ONLY change callee and keep value (array value - from a collection operator to a collection operator) 1`] = `
 Object {
   "ast": Object {
     "body": Array [
@@ -1430,6 +1430,157 @@ Object {
     "type": "Program",
   },
   "code": "if (neq(ticket.subject, 'hello')) {
+} else {
+}",
+}
+`;
+
+exports[`ast utils updateCodeAst CallExpression changed callee changed should ONLY change callee and keep value (integer value) 1`] = `
+Object {
+  "ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 36,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 30,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 15,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 8,
+                    "line": 1,
+                  },
+                },
+                "name": "message",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 30,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 16,
+                    "line": 1,
+                  },
+                },
+                "name": "integration_id",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 33,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 32,
+                  "line": 1,
+                },
+              },
+              "raw": "7",
+              "type": "Literal",
+              "value": 7,
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "neq",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 34,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "code": "if (neq(message.integration_id, 7)) {
 } else {
 }",
 }
